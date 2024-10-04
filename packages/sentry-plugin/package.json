@@ -22,7 +22,7 @@
     },
     "devDependencies": {
         "@sentry/node": "^7.106.1",
-        "@vendure/common": "^2.3.1",
-        "@vendure/core": "^2.3.1"
+        "@vendure/common": "workspace:*",
+        "@vendure/core": "workspace:*"
     }
 }
