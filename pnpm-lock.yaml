@@ -10798,7 +10798,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1703.10(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1703.10(chokidar@3.6.0)(webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)))(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
+      '@angular-devkit/build-webpack': 0.1703.10(chokidar@3.6.0)(webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)))(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
       '@angular-devkit/core': 17.3.10(chokidar@3.6.0)
       '@angular/compiler-cli': 17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3)
       '@babel/core': 7.24.0
@@ -10854,11 +10854,11 @@ snapshots:
       tslib: 2.6.2
       typescript: 5.3.3
       undici: 6.11.1
-      vite: 5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.79.4)(terser@5.29.1)
+      vite: 5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.71.1)(terser@5.29.1)
       watchpack: 2.4.0
       webpack: 5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
+      webpack-dev-server: 4.15.1(webpack@5.94.0(@swc/core@1.7.26))
       webpack-merge: 5.10.0
       webpack-subresource-integrity: 5.1.0(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
     optionalDependencies:
@@ -10888,7 +10888,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1703.10(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1703.10(chokidar@3.6.0)(webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)))(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
+      '@angular-devkit/build-webpack': 0.1703.10(chokidar@3.6.0)(webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)))(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
       '@angular-devkit/core': 17.3.10(chokidar@3.6.0)
       '@angular/compiler-cli': 17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3)
       '@babel/core': 7.24.0
@@ -10948,7 +10948,7 @@ snapshots:
       watchpack: 2.4.0
       webpack: 5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
-      webpack-dev-server: 4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
+      webpack-dev-server: 4.15.1(webpack@5.94.0(@swc/core@1.7.26))
       webpack-merge: 5.10.0
       webpack-subresource-integrity: 5.1.0(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
     optionalDependencies:
@@ -10974,12 +10974,12 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-webpack@0.1703.10(chokidar@3.6.0)(webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)))(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))':
+  '@angular-devkit/build-webpack@0.1703.10(chokidar@3.6.0)(webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)))(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))':
     dependencies:
       '@angular-devkit/architect': 0.1703.10(chokidar@3.6.0)
       rxjs: 7.8.1
       webpack: 5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)
-      webpack-dev-server: 4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
+      webpack-dev-server: 4.15.1(webpack@5.94.0(@swc/core@1.7.26))
     transitivePeerDependencies:
       - chokidar
 
@@ -15670,7 +15670,7 @@ snapshots:
 
   '@vitejs/plugin-basic-ssl@1.1.0(vite@5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.71.1)(terser@5.29.1))':
     dependencies:
-      vite: 5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.79.4)(terser@5.29.1)
+      vite: 5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.71.1)(terser@5.29.1)
 
   '@vitejs/plugin-basic-ssl@1.1.0(vite@5.1.8(@types/node@20.16.10)(less@4.2.0)(sass@1.71.1)(terser@5.29.1))':
     dependencies:
@@ -22279,7 +22279,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.79.4)(terser@5.29.1):
+  vite@5.1.8(@types/node@18.19.54)(less@4.2.0)(sass@1.71.1)(terser@5.29.1):
     dependencies:
       esbuild: 0.19.12
       postcss: 8.4.47
@@ -22288,7 +22288,7 @@ snapshots:
       '@types/node': 18.19.54
       fsevents: 2.3.3
       less: 4.2.0
-      sass: 1.79.4
+      sass: 1.71.1
       terser: 5.29.1
 
   vite@5.1.8(@types/node@20.16.10)(less@4.2.0)(sass@1.71.1)(terser@5.29.1):
@@ -22394,7 +22394,7 @@ snapshots:
 
   webidl-conversions@3.0.1: {}
 
-  webpack-dev-middleware@5.3.4(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)):
+  webpack-dev-middleware@5.3.4(webpack@5.94.0(@swc/core@1.7.26)):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -22413,7 +22413,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)
 
-  webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)):
+  webpack-dev-server@4.15.1(webpack@5.94.0(@swc/core@1.7.26)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -22443,7 +22443,7 @@ snapshots:
       serve-index: 1.9.1
       sockjs: 0.3.24
       spdy: 4.0.2
-      webpack-dev-middleware: 5.3.4(webpack@5.94.0(@swc/core@1.7.26)(esbuild@0.20.1))
+      webpack-dev-middleware: 5.3.4(webpack@5.94.0(@swc/core@1.7.26))
       ws: 8.18.0
     optionalDependencies:
       webpack: 5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)

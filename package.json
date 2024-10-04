@@ -14,7 +14,7 @@
     "codegen": "tsc -p scripts/codegen/plugins && ts-node scripts/codegen/generate-graphql-types.ts",
     "version": "npm run check-imports && npm run check-angular-versions && npm run build && npm run check-core-type-defs && npm run generate-changelog && git add CHANGELOG* && git add */version.ts",
     "dev-server:start": "cd packages/dev-server && pnpm start",
-    "build": "pnpm -r --filter='!@vendure/admin-ui' --filter='!@vendure/admin-ui-plugin' --filter='!@vendure/cli' --filter='!@vendure/elasticsearch-plugin' --filter='!@vendure/sentry-plugin' --filter='!@vendure/stellate-plugin' --filter='!@vendure/payments-plugin' --filter='!@vendure/testing' run build",
+    "build": "pnpm -r --filter='!@vendure/cli' --filter='!@vendure/admin-ui-plugin' --filter='!@vendure/elasticsearch-plugin' --filter='!@vendure/sentry-plugin' --filter='!@vendure/stellate-plugin' --filter='!@vendure/payments-plugin' --filter='!@vendure/testing' run build",
     "check-imports": "ts-node scripts/check-imports.ts",
     "check-core-type-defs": "ts-node scripts/check-core-type-defs.ts",
     "check-angular-versions": "ts-node scripts/check-angular-versions.ts",
@@ -67,5 +67,5 @@
     "eslint-plugin-jsdoc": "^45.0.0",
     "eslint-plugin-prefer-arrow": "^1.2.3"
   },
-  "packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
+  "packageManager": "pnpm@9.12.0+sha512.4abf725084d7bcbafbd728bfc7bee61f2f791f977fd87542b3579dcb23504d170d46337945e4c66485cd12d588a0c0e570ed9c477e7ccdd8507cf05f3f92eaca"
 }
