@@ -35,7 +35,7 @@ class TestResolver {
 }
 
 // A plugin to explore solutions to https://github.com/vendure-ecommerce/vendure/issues/1107
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: gql`

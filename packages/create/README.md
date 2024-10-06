@@ -19,7 +19,7 @@ npx @deenruv/create my-app
 ### npm
 
 ```sh
-npm init @vendure my-app
+npm init @deenruv my-app
 ```
 
 *`npm init <initializer>` is available in npm 6+*
@@ -27,7 +27,7 @@ npm init @vendure my-app
 ### Yarn
 
 ```sh
-yarn create @vendure my-app
+yarn create @deenruv my-app
 ```
 
 *`yarn create` is available in Yarn 0.25+*

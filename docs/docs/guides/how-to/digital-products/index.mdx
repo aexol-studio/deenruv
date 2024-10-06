@@ -23,7 +23,7 @@ If some products are digital and some are physical, we can distinguish between t
 ```ts title="src/plugins/digital-products/digital-products-plugin.ts"
 import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         // highlight-start
@@ -46,7 +46,7 @@ We will also define a custom field on the `ShippingMethod` entity to indicate th
 ```ts title="src/plugins/digital-products/digital-products-plugin.ts"
 import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         // config.customFields.ProductVariant.push({ ... omitted
@@ -70,7 +70,7 @@ wish to handle this part differently, e.g. storing download links on the `Order`
 ```ts title="src/plugins/digital-products/digital-products-plugin.ts"
 import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         // config.customFields.ProductVariant.push({ ... omitted

@@ -69,7 +69,7 @@ export class SlowMutationResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         resolvers: [SlowMutationResolver],

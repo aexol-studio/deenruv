@@ -21,7 +21,7 @@ export type GoogleAuthPluginOptions = {
  * public-looking url such as `http://google-login-test.com` by modifying your OS
  * hosts file.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.authOptions.shopAuthenticationStrategy = [

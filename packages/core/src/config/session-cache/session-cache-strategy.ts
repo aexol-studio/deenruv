@@ -131,7 +131,7 @@ export type CachedSession = {
  *   }
  * }
  *
- * \@VendurePlugin({
+ * \@DeenruvPlugin({
  *   configuration: config => {
  *     config.authOptions.sessionCacheStrategy = new RedisSessionCacheStrategy(
  *       RedisSessionCachePlugin.options,

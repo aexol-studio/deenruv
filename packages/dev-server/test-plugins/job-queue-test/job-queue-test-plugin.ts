@@ -92,7 +92,7 @@ export class JobQueueTestResolver {
  * A plugin which can be used to test job queue strategies. Exposes a mutation `startTask` in
  * the Admin API which triggers a job.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         resolvers: [JobQueueTestResolver],

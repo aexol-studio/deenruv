@@ -234,7 +234,7 @@ function lineContainsIds(ids: ID[], line: OrderLine): boolean {
 	return !!ids.find((id) => idsAreEqual(id, line.productVariant.id));
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
 	configuration: (config) => {
 		config.customFields.OrderLine.push({
 			name: "freeGiftPromotionId",

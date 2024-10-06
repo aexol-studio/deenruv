@@ -96,7 +96,7 @@ import { EventBus, ProductEvent, PluginCommonModule, VendurePlugin } from '@deen
 
 import { StorefrontBuildService } from './services/storefront-build.service';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
 })
 export class StorefrontBuildPlugin implements OnModuleInit {
@@ -153,7 +153,7 @@ import {
     ProductVariantEvent,
 } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
 })
 export class MyPluginPlugin implements OnModuleInit {
@@ -276,7 +276,7 @@ import { filter } from 'rxjs/operators';
 
 import { BlogPostEvent } from './events/blog-post-event';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     // ...
 })
@@ -329,7 +329,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { EventBus, PluginCommonModule, VendurePlugin, CustomerEvent } from '@deenruv/core';
 import { CustomerSyncService } from './services/customer-sync.service';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
 })
 export class MyPluginPlugin implements OnModuleInit {

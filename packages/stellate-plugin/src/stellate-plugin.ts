@@ -243,7 +243,7 @@ const StellateOptionsProvider = {
  * @since 2.1.5
  * @docsCategory core plugins/StellatePlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [StellateOptionsProvider, StellateService],
     shopApiExtensions: {

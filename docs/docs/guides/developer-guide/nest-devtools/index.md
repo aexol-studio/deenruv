@@ -25,7 +25,7 @@ Next you need to create a plugin which imports the `DevToolsModule` and adds it 
 import { VendurePlugin } from '@deenruv/core';
 import { DevtoolsModule } from '@nestjs/devtools-integration';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [
         DevtoolsModule.register({
             // The reason we are checking the NODE_ENV environment 

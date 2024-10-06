@@ -158,7 +158,7 @@ import { StripePluginOptions } from './types';
  * @docsCategory core plugins/PaymentsPlugin
  * @docsPage StripePlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     controllers: [StripeController],
     providers: [

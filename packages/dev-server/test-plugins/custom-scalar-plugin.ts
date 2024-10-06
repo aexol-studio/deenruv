@@ -23,7 +23,7 @@ export class DateScalar implements CustomScalar<number, Date> {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     providers: [DateScalar],
     shopApiExtensions: {
         resolvers: [DateScalar],

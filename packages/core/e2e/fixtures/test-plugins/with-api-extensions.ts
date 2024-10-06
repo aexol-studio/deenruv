@@ -38,7 +38,7 @@ const PizzaScalar = new GraphQLScalarType({
     },
 });
 
-@VendurePlugin({
+@DeenruvPlugin({
     shopApiExtensions: {
         resolvers: [TestShopPluginResolver],
         schema: gql`

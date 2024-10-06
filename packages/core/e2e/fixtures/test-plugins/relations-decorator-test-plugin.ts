@@ -59,7 +59,7 @@ export class TestResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         resolvers: () => [TestResolver],

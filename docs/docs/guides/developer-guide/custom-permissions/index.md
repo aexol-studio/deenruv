@@ -48,7 +48,7 @@ import { VendurePlugin } from '@deenruv/core';
 import { InventorySyncResolver } from './api/inventory-sync.resolver'
 import { sync } from './constants';
 
-@VendurePlugin({
+@DeenruvPlugin({
     adminApiExtensions: {
         schema: gql`
             input InventoryDataInput {
@@ -136,7 +136,7 @@ import { VendurePlugin } from '@deenruv/core';
 import { ProductReviewResolver } from './api/product-review.resolver'
 import { productReviewPermission } from './constants';
 
-@VendurePlugin({
+@DeenruvPlugin({
     adminApiExtensions: {
         schema: gql`
             # omitted for brevity
@@ -165,7 +165,7 @@ plugin.
 import { VendurePlugin } from '@deenruv/core';
 import { productReviewPermission } from './constants';
 
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         config.authOptions.customPermissions.push(productReviewPermission);
         

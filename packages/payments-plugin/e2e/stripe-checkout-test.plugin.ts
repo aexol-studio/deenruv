@@ -81,7 +81,7 @@ form.addEventListener('submit', async (event) => {
 /**
  * Test plugin for serving the Stripe intent checkout page
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     controllers: [StripeTestCheckoutController],
 })

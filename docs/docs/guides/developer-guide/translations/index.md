@@ -120,7 +120,7 @@ class CustomError extends ErrorResult {
     readonly message = 'CUSTOM_ERROR'; //< looks up errorResult.CUSTOM_ERROR
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [I18nService],
     // ...

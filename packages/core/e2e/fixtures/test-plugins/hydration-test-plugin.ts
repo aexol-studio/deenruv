@@ -153,7 +153,7 @@ export class AdditionalConfig extends VendureEntity {
     backgroundImage: Asset;
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [AdditionalConfig],
     adminApiExtensions: {

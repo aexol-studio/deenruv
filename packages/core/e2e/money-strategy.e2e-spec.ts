@@ -50,7 +50,7 @@ class CustomMoneyStrategy implements MoneyStrategy {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         config.entityOptions.moneyStrategy = new CustomMoneyStrategy();
         return config;

@@ -38,7 +38,7 @@ Here's a bare-minimum example of a plugin:
 ```ts title="src/plugins/avatar-plugin/avatar.plugin.ts"
 import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.customFields.Customer.push({
@@ -68,7 +68,7 @@ export const config: VendureConfig = {
 };
 ```
 
-The key feature is the `@VendurePlugin()` decorator, which marks the class as a Vendure plugin and accepts a configuration
+The key feature is the `@DeenruvPlugin()` decorator, which marks the class as a Vendure plugin and accepts a configuration
 object on the type [`VendurePluginMetadata`](/reference/typescript-api/plugin/vendure-plugin-metadata/).
 
 A VendurePlugin is actually an enhanced version of a [NestJS Module](https://docs.nestjs.com/modules), and supports
@@ -121,7 +121,7 @@ import { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { EventBus, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { MyMiddleware } from './api/my-middleware';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule]
 })
 export class MyPlugin implements NestModule {
@@ -192,7 +192,7 @@ We'll start by creating a new directory to house our plugin, add create the main
 ```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
 })
 export class WishlistPlugin {}
@@ -248,7 +248,7 @@ Next we need to register this entity with our plugin:
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { WishlistItem } from './entities/wishlist-item.entity';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [WishlistItem],
 })
@@ -265,7 +265,7 @@ Custom fields are defined in the VendureConfig object, and in a plugin we use th
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { WishlistItem } from './entities/wishlist-item.entity';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [WishlistItem],
     configuration: config => {
@@ -431,7 +431,7 @@ The service is then registered with the plugin metadata as a provider:
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { WishlistService } from './services/wishlist.service';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     // highlight-next-line
     providers: [WishlistService],
@@ -494,7 +494,7 @@ Next we need to pass these extensions to our plugin's metadata:
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { shopApiExtensions } from './api/api-extensions';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: shopApiExtensions,
@@ -568,7 +568,7 @@ import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { shopApiExtensions } from './api/api-extensions';
 import { WishlistShopResolver } from './api/wishlist.resolver';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: shopApiExtensions,
@@ -595,7 +595,7 @@ Since Vendure v2.0.0, it is possible for a plugin to specify which versions of V
 The compatibility is specified via the `compatibility` property in the plugin metadata:
 
 ```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
-@VendurePlugin({
+@DeenruvPlugin({
     // ...
     // highlight-next-line
     compatibility: '^2.0.0',

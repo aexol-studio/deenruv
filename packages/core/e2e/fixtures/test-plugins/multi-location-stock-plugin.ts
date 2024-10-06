@@ -62,7 +62,7 @@ export class TestStockDisplayStrategy implements StockDisplayStrategy {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.catalogOptions.stockLocationStrategy = new TestStockLocationStrategy();

@@ -19,7 +19,7 @@ export class ProductEntityResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     adminApiExtensions: {
         resolvers: [ProductEntityResolver],
         schema: gql`

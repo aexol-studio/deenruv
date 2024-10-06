@@ -39,7 +39,7 @@ plugin module. To use it in your plugin, you'll need to import the <a href='/ref
 import { HealthCheckRegistryService, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { TerminusModule } from '@nestjs/terminus';
 
-@VendurePlugin({
+@DeenruvPlugin({
   imports: [PluginCommonModule, TerminusModule],
 })
 export class MyPlugin {

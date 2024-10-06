@@ -3,7 +3,7 @@ import { ScaffoldEntity } from './entity';
 
 type PluginInitOptions = any;
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     compatibility: '^2.0.0',
     entities: [ScaffoldEntity],

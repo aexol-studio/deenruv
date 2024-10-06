@@ -13,7 +13,7 @@ const FooScalar = new GraphQLScalarType({
     },
 });
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: gql`

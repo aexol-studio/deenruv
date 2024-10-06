@@ -38,7 +38,7 @@ export class TestWishlistResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [],
     adminApiExtensions: {
         resolvers: [TestWishlistResolver],

@@ -447,7 +447,7 @@ export class TypescriptDocsParser {
     /**
      * TypeScript from v3.5.1 interprets all '@' tokens in a tag comment as a new tag. This is a problem e.g.
      * when a plugin includes in its description some text like "install the @deenruv/some-plugin package". Here,
-     * TypeScript will interpret "@vendure" as a JSDoc tag and remove it and all remaining text from the comment.
+     * TypeScript will interpret "@deenruv" as a JSDoc tag and remove it and all remaining text from the comment.
      *
      * The solution is to replace all escaped @ tokens ("\@") with a replacer string so that TypeScript treats them
      * as regular comment text, and then once it has parsed the statement, we replace them with the "@" character.

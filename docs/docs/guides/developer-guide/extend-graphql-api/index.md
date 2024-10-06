@@ -21,7 +21,7 @@ const schemaExtension = gql`
   }
 `
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     // highlight-start
     // We pass our schema extension and any related resolvers
@@ -100,7 +100,7 @@ import { BannerService } from './services/banner.service';
 import { BannerShopResolver } from './api/banner-shop.resolver';
 import { shopApiExtensions } from './api/api-extensions';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     // highlight-start
     shopApiExtensions: {
@@ -169,7 +169,7 @@ import { BannerShopResolver } from './api/banner-shop.resolver';
 import { BannerAdminResolver } from './api/banner-admin.resolver';
 import { shopApiExtensions, adminApiExtensions } from './api/api-extensions';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: shopApiExtensions,
@@ -254,7 +254,7 @@ import { ReviewsResolver } from './api/reviews.resolver';
 import { apiExtensions } from './api/api-extensions';
 import { ProductReview } from './entities/product-review.entity';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         // highlight-next-line
@@ -320,7 +320,7 @@ import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { ProductVariantEntityResolver } from './api/product-variant-entity.resolver';
 import { shopApiExtensions } from './api/api-extensions';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         // highlight-start
@@ -427,7 +427,7 @@ export class MyCustomMutationResultResolver {
 This resolver is then passed in to your plugin metadata like any other resolver:
 
 ```ts
-@VendurePlugin({
+@DeenruvPlugin({
   imports: [PluginCommonModule],
   shopApiExtensions: {
     schema: apiExtensions,
@@ -459,7 +459,7 @@ const FooScalar = new GraphQLScalarType({
   },
 });
 
-@VendurePlugin({
+@DeenruvPlugin({
   imports: [PluginCommonModule],
   shopApiExtensions: {
     schema: gql`

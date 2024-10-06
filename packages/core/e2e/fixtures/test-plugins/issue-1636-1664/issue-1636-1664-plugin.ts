@@ -63,7 +63,7 @@ const profileType = gql`
  *
  * https://github.com/vendure-ecommerce/vendure/issues/1664
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [Vendor, Profile, ProfileAsset],
     shopApiExtensions: {

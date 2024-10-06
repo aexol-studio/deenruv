@@ -66,7 +66,7 @@ Let's define a custom field to associate the avatar `Asset` with the `Customer` 
 ```ts title="src/plugins/customer-avatar/customer-avatar.plugin.ts"
 import { Asset, LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configure: config => {
         // highlight-start
@@ -163,7 +163,7 @@ import { Asset, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { shopApiExtensions } from './api/api-extensions';
 import { CustomerAvatarResolver } from './api/customer-avatar.resolver';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: shopApiExtensions,

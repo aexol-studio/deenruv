@@ -27,7 +27,7 @@ import { HealthIndicatorFunction } from '@nestjs/terminus';
  * import { HealthCheckRegistryService, PluginCommonModule, VendurePlugin } from '\@deenruv/core';
  * import { TerminusModule } from '\@nestjs/terminus';
  *
- * \@VendurePlugin({
+ * \@DeenruvPlugin({
  *   imports: [PluginCommonModule, TerminusModule],
  * })
  * export class MyPlugin {

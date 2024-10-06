@@ -44,7 +44,7 @@ The key points to note here are:
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { ProductsController } from './api/products.controller';
 
-@VendurePlugin({
+@DeenruvPlugin({
   imports: [PluginCommonModule],
   controllers: [ProductsController],
 })

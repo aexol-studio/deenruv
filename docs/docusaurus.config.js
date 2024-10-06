@@ -45,9 +45,7 @@ const config = {
                         keywords: ['cli'],
                         extendDefaults: true,
                     },
-                    exclude: [
-                        'user-guide/**/*'
-                    ]
+                    exclude: ['user-guide/**/*'],
                 },
                 blog: false,
                 theme: {
@@ -137,7 +135,7 @@ const config = {
                             },
                             {
                                 label: 'YouTube',
-                                href: 'https://www.youtube.com/@vendure_io',
+                                href: 'https://www.youtube.com/@dendure_io',
                             },
                         ],
                     },

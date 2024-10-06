@@ -131,7 +131,7 @@ import { BullMQPluginOptions } from './types';
  *
  * @docsCategory core plugins/JobQueuePlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.jobQueueOptions.jobQueueStrategy = new BullMQJobQueueStrategy();

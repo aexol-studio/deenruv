@@ -189,7 +189,7 @@ export interface MolliePluginOptions {
  * @docsPage MolliePlugin
  * @docsWeight 0
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     controllers: [MollieController],
     providers: [MollieService, { provide: PLUGIN_INIT_OPTIONS, useFactory: () => MolliePlugin.options }],

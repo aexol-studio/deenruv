@@ -143,7 +143,7 @@ import { HardenPluginOptions } from './types';
  *
  * @docsCategory core plugins/HardenPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     providers: [
         {
             provide: HARDEN_PLUGIN_OPTIONS,

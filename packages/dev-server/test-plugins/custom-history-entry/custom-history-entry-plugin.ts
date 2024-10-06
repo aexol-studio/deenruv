@@ -54,7 +54,7 @@ class AddHistoryEntryResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: gql`

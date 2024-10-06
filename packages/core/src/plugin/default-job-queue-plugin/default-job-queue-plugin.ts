@@ -180,7 +180,7 @@ export interface DefaultJobQueueOptions {
  * @docsCategory JobQueue
  * @docsWeight 0
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: () =>
         DefaultJobQueuePlugin.options.useDatabaseForBuffer === true

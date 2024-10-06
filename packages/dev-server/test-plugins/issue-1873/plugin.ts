@@ -13,7 +13,7 @@ import type { PluginInitOptions } from './types';
 
 const services = [SupplierStockInTransitService, SupplierStockService];
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [SupplierStock, SupplierStockInTransit],
     adminApiExtensions: {

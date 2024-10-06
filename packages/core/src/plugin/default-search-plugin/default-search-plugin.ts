@@ -66,7 +66,7 @@ export interface DefaultSearchReindexResponse extends SearchReindexResponse {
  *
  * @docsCategory DefaultSearchPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [
         FulltextSearchService,

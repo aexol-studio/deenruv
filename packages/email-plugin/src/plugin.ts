@@ -301,7 +301,7 @@ import {
  *
  * @docsCategory core plugins/EmailPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [{ provide: EMAIL_PLUGIN_OPTIONS, useFactory: () => EmailPlugin.options }, EmailProcessor],
     compatibility: '^2.0.0',

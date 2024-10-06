@@ -21,7 +21,7 @@ export class TestController {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     controllers: [TestController],
 })
 export class TestRestPlugin {}

@@ -105,7 +105,7 @@ const SentryOptionsProvider = {
  *
  * @docsCategory core plugins/SentryPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [SentryOptionsProvider, SentryService, ErrorTestService],
     configuration: config => {

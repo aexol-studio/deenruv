@@ -17,7 +17,7 @@ import { KeycloakAuthenticationStrategy } from './keycloak-authentication-strate
  *
  * Video demo of this: https://youtu.be/Tj4kwjNd2nM
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule, HttpModule],
     configuration: config => {
         config.authOptions.adminAuthenticationStrategy = [

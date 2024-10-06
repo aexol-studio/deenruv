@@ -168,7 +168,7 @@ export interface UpdateCustomerHistoryEntryArgs<T extends keyof CustomerHistoryE
  * import { PluginCommonModule, VendurePlugin } from '\@deenruv/core';
  * import { VerificationService } from './verification.service';
  *
- * \@VendurePlugin({
+ * \@DeenruvPlugin({
  *   imports: [PluginCommonModule],
  *   adminApiExtensions: {
  *     schema: gql`

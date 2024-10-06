@@ -33,7 +33,7 @@ First of all we'd extend the GraphQL `HistoryEntryType` enum for our new type as
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { VerificationService } from './verification.service';
 
-@VendurePlugin({
+@DeenruvPlugin({
   imports: [PluginCommonModule],
   adminApiExtensions: {
     schema: gql`

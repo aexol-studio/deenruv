@@ -62,7 +62,7 @@ const schema = gql`
  * }
  * ```
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: () => [Profile, ProfileAsset],
     shopApiExtensions: { schema, resolvers: [] },

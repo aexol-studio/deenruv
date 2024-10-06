@@ -139,7 +139,7 @@ export type PluginConfigurationFn = (
  *
  *
  * //A simple plugin which adds a REST endpoint for querying products.
- * \@VendurePlugin({
+ * \@DeenruvPlugin({
  *     imports: [PluginCommonModule],
  *     controllers: [ProductsController],
  * })

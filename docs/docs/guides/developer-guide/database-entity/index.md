@@ -61,7 +61,7 @@ The new entity is then passed to the `entities` array of the VendurePlugin metad
 import { VendurePlugin } from '@deenruv/core';
 import { ProductReview } from './entities/product-review.entity';
 
-@VendurePlugin({
+@DeenruvPlugin({
     // highlight-next-line
     entities: [ProductReview],
 })

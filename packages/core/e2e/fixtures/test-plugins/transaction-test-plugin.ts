@@ -280,7 +280,7 @@ class TestResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [TestAdminService, TestUserService],
     adminApiExtensions: {

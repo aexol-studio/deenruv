@@ -23,7 +23,7 @@ export class TestEntityB extends VendureEntity {
     textB: string;
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     entities: () => {
         return DynamicEntitiesPlugin.useEntity === 'A' ? [TestEntityA] : [TestEntityB];
     },

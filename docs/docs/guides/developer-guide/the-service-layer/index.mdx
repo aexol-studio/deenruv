@@ -72,7 +72,7 @@ then inject the desired service into your own service's constructor:
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { MyService } from './services/my.service';
 
-@VendurePlugin({
+@DeenruvPlugin({
     // highlight-start
     imports: [PluginCommonModule],
     providers: [MyService],

@@ -57,7 +57,7 @@ class TestResolver implements OnApplicationBootstrap {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: gql`

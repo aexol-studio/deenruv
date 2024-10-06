@@ -10,7 +10,7 @@ export class TestLazyResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     shopApiExtensions: {
         resolvers: () => [TestLazyResolver],
         schema: () => gql`

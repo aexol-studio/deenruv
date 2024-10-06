@@ -305,7 +305,7 @@ const apiExtensions = gql`
     input TestEntityListOptions
 `;
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [
         TestEntity,

@@ -126,7 +126,7 @@ export interface AdminUiPluginOptions {
  *
  * @docsCategory core plugins/AdminUiPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: adminApiExtensions,

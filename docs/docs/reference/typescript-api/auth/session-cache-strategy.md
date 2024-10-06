@@ -100,7 +100,7 @@ export class RedisSessionCacheStrategy implements SessionCacheStrategy {
   }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
   configuration: config => {
     config.authOptions.sessionCacheStrategy = new RedisSessionCacheStrategy(
       RedisSessionCachePlugin.options,

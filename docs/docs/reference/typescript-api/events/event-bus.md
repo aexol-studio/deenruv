@@ -32,7 +32,7 @@ import { OnApplicationBootstrap } from '@nestjs/common';
 import { EventBus, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { filter } from 'rxjs/operators';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule]
 })
 export class MyPlugin implements OnApplicationBootstrap {

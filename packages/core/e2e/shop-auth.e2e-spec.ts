@@ -53,7 +53,7 @@ let sendEmailFn: Mock;
  * This mock plugin simulates an EmailPlugin which would send emails
  * on the registration & password reset events.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [EventBusModule],
 })
 class TestEmailPlugin implements OnModuleInit {

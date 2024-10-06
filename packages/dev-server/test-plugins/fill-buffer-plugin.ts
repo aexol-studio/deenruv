@@ -48,7 +48,7 @@ class FillBufferResolver {
  * Plugin to create a lot of buffered jobs to test help investigate and fix
  * issue https://github.com/vendure-ecommerce/vendure/issues/1433
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: gql`

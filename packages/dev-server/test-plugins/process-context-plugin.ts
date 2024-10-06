@@ -4,7 +4,7 @@ import { Logger, PluginCommonModule, ProcessContext, VendurePlugin } from '@deen
 /**
  * Testing whether the ProcessContext service is giving the correct results.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
 })
 export class ProcessContextPlugin implements OnApplicationBootstrap, OnModuleInit {

@@ -220,7 +220,7 @@ function getCustomResolvers(options: ElasticsearchRuntimeOptions) {
  *
  * @docsCategory core plugins/ElasticsearchPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [
         ElasticsearchIndexService,

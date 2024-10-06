@@ -67,7 +67,7 @@ export class TestResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: gql`

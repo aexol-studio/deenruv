@@ -9,7 +9,7 @@ import { ProductReviewShopResolver } from './api/product-review-shop.resolver';
 import path from 'path';
 import { AdminUiExtension } from '@deenruv/ui-devkit/compiler';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [ProductReview],
     adminApiExtensions: {

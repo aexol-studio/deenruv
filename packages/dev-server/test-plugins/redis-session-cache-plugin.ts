@@ -63,7 +63,7 @@ export interface RedisSessionCachePluginOptions {
     redisOptions?: RedisOptions;
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         config.authOptions.sessionCacheStrategy = new RedisSessionCacheStrategy(
             RedisSessionCachePlugin.options,

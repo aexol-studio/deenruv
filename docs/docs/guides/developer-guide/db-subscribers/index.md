@@ -84,7 +84,7 @@ export class ProductSubscriber implements EntitySubscriberInterface<Product> {
 ```
 
 ```ts title="src/plugins/my-plugin/my.plugin.ts"
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [ProductSubscriber, MyService],
 })

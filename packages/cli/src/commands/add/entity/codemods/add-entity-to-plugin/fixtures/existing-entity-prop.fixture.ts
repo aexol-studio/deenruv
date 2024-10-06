@@ -2,7 +2,7 @@ import { PluginCommonModule, Type, VendurePlugin, Product } from '@deenruv/core'
 
 type PluginInitOptions = any;
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [Product],
     compatibility: '^2.0.0',

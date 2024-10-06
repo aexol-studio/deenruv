@@ -62,7 +62,7 @@ class TokenActiveOrderStrategy implements ActiveOrderStrategy {
     // }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         config.customFields.Order.push({
             name: 'orderToken',

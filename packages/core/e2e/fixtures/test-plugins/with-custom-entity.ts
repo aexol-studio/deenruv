@@ -24,7 +24,7 @@ export class TestCustomEntity extends VendureEntity {
     customEntityInverse: Collection[];
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [TestCustomEntity],
     adminApiExtensions: {

@@ -45,7 +45,7 @@ class TestController implements OnModuleInit {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     controllers: [TestController],
 })

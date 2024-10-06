@@ -150,7 +150,7 @@ async function getFileType(buffer: Buffer) {
  *
  * @docsCategory core plugins/AssetServerPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => AssetServerPlugin.configure(config),
     compatibility: '^2.0.0',

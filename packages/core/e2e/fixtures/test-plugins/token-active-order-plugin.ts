@@ -88,7 +88,7 @@ export class CreateOrderResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.customFields.Order.push({

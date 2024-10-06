@@ -3,7 +3,7 @@ import { PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
 import { TEMPLATE_PLUGIN_OPTIONS } from './constants.template';
 import { PluginInitOptions } from './types.template';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [{ provide: TEMPLATE_PLUGIN_OPTIONS, useFactory: () => TemplatePlugin.options }],
     configuration: config => {

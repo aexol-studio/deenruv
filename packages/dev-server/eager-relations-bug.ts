@@ -142,7 +142,7 @@ export class EagerRelationsBugOrderResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [],
     entities: [Cut, CutCode],

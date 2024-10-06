@@ -20,7 +20,7 @@ export class TestResolverWithInjection {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     providers: [NameService],
     shopApiExtensions: {
         resolvers: [TestResolverWithInjection],
