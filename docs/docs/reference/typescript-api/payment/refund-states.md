@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## RefundStates
 
-<GenerationInfo sourceFile="packages/core/src/service/helpers/refund-state-machine/refund-state.ts" sourceLine="19" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/service/helpers/refund-state-machine/refund-state.ts" sourceLine="19" packageName="@deenruv/core" />
 
 An interface to extend standard <a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a>.
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { INestApplication } from '@nestjs/common';
-import { GlobalFlag } from '@vendure/common/lib/generated-types';
+import { GlobalFlag } from '@deenruv/common/lib/generated-types';
 import {
     bootstrap,
     Importer,
@@ -8,10 +8,10 @@ import {
     LanguageCode,
     OrderService,
     RequestContextService,
-} from '@vendure/core';
-import { populate } from '@vendure/core/cli/populate';
-import { ParsedProductWithVariants } from '@vendure/core/src/index';
-import { clearAllTables } from '@vendure/testing';
+} from '@deenruv/core';
+import { populate } from '@deenruv/core/cli/populate';
+import { ParsedProductWithVariants } from '@deenruv/core/src/index';
+import { clearAllTables } from '@deenruv/testing';
 import { spawn } from 'child_process';
 import program from 'commander';
 import path from 'path';

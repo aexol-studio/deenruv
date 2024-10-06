@@ -22,8 +22,8 @@ import {
     QueryProductVariantArgs,
     QueryProductVariantsArgs,
     RemoveOptionGroupFromProductResult,
-} from '@vendure/common/lib/generated-types';
-import { PaginatedList } from '@vendure/common/lib/shared-types';
+} from '@deenruv/common/lib/generated-types';
+import { PaginatedList } from '@deenruv/common/lib/shared-types';
 
 import { ErrorResultUnion } from '../../../common/error/error-result';
 import { UserInputError } from '../../../common/error/errors';

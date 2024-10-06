@@ -1,5 +1,5 @@
-import { OrderAddress } from '@vendure/common/lib/generated-types';
-import { DeepPartial } from '@vendure/common/lib/shared-types';
+import { OrderAddress } from '@deenruv/common/lib/generated-types';
+import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { Calculated } from '../../common/calculated-decorator';

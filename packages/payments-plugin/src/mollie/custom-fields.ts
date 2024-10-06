@@ -1,4 +1,4 @@
-import { CustomFieldConfig, Order, CustomOrderFields } from '@vendure/core';
+import { CustomFieldConfig, Order, CustomOrderFields } from '@deenruv/core';
 
 export interface OrderWithMollieReference extends Order {
     customFields: CustomOrderFields & {

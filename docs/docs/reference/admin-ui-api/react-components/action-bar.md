@@ -11,14 +11,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## ActionBar
 
-<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-components/ActionBar.tsx" sourceLine="22" packageName="@vendure/admin-ui" />
+<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-components/ActionBar.tsx" sourceLine="22" packageName="@deenruv/admin-ui" />
 
 A container for the primary actions on a list or detail page
 
 *Example*
 
 ```ts
-import { ActionBar } from '@vendure/admin-ui/react';
+import { ActionBar } from '@deenruv/admin-ui/react';
 
 export function MyComponent() {
   return (

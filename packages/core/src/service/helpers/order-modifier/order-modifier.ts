@@ -7,9 +7,9 @@ import {
     ModifyOrderResult,
     OrderLineInput,
     RefundOrderInput,
-} from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
-import { getGraphQlInputName, summate } from '@vendure/common/lib/shared-utils';
+} from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
+import { getGraphQlInputName, summate } from '@deenruv/common/lib/shared-utils';
 
 import { RequestContext } from '../../../api/common/request-context';
 import { isGraphQlErrorResult, JustErrorResults } from '../../../common/error/error-result';

@@ -7,10 +7,10 @@ import {
     DeletionResult,
     UpdateChannelInput,
     UpdateChannelResult,
-} from '@vendure/common/lib/generated-types';
-import { DEFAULT_CHANNEL_CODE } from '@vendure/common/lib/shared-constants';
-import { ID, PaginatedList, Type } from '@vendure/common/lib/shared-types';
-import { unique } from '@vendure/common/lib/unique';
+} from '@deenruv/common/lib/generated-types';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
+import { ID, PaginatedList, Type } from '@deenruv/common/lib/shared-types';
+import { unique } from '@deenruv/common/lib/unique';
 import { FindOptionsWhere } from 'typeorm';
 
 import { RelationPaths } from '../../api';

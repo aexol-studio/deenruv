@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## Refund
 
-<GenerationInfo sourceFile="packages/core/src/entity/refund/refund.entity.ts" sourceLine="17" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/entity/refund/refund.entity.ts" sourceLine="17" packageName="@deenruv/core" />
 
 A refund the belongs to an order
 

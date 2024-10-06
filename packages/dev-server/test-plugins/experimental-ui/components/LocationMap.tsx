@@ -1,5 +1,5 @@
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { Card } from '@vendure/admin-ui/react';
+import { Card } from '@deenruv/admin-ui/react';
 import React, { useEffect } from 'react';
 
 const containerStyle = {

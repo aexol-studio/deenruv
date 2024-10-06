@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ROOT_COLLECTION_NAME } from '@vendure/common/lib/shared-constants';
+import { ROOT_COLLECTION_NAME } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultJobQueuePlugin,
     facetValueCollectionFilter,
     productIdCollectionFilter,
     variantIdCollectionFilter,
     variantNameCollectionFilter,
-} from '@vendure/core';
-import { createTestEnvironment, E2E_DEFAULT_CHANNEL_TOKEN } from '@vendure/testing';
+} from '@deenruv/core';
+import { createTestEnvironment, E2E_DEFAULT_CHANNEL_TOKEN } from '@deenruv/testing';
 import gql from 'graphql-tag';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

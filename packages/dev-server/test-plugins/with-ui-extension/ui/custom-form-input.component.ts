@@ -5,7 +5,7 @@ import {
     FormInputComponent,
     registerFormInputComponent,
     StringCustomFieldConfig, DataService,
-} from '@vendure/admin-ui/core';
+} from '@deenruv/admin-ui/core';
 
 @Component({
     template: `

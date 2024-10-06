@@ -5,7 +5,7 @@ import {
     ModalService,
     NotificationService,
     Permission,
-} from '@vendure/admin-ui/core';
+} from '@deenruv/admin-ui/core';
 import {
     CustomerGroupMember,
     CustomerGroupMemberListComponent,

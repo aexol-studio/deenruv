@@ -1,4 +1,4 @@
-import { VendureConfig } from '@vendure/core';
+import { VendureConfig } from '@deenruv/core';
 import path from 'node:path';
 import { register } from 'ts-node';
 

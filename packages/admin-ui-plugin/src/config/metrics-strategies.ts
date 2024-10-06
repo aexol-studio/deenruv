@@ -1,4 +1,4 @@
-import { RequestContext } from '@vendure/core';
+import { RequestContext } from '@deenruv/core';
 
 import { MetricData } from '../service/metrics.service';
 import { MetricInterval, MetricSummaryEntry, MetricType } from '../types';

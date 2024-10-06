@@ -1,4 +1,4 @@
-import { pick } from '@vendure/common/lib/pick';
+import { pick } from '@deenruv/common/lib/pick';
 import { from } from 'rxjs';
 import { bufferCount, concatMap } from 'rxjs/operators';
 

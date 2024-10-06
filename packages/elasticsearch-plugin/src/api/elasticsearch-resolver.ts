@@ -4,8 +4,8 @@ import {
     Permission,
     QuerySearchArgs,
     SearchResponse,
-} from '@vendure/common/lib/generated-types';
-import { Omit } from '@vendure/common/lib/omit';
+} from '@deenruv/common/lib/generated-types';
+import { Omit } from '@deenruv/common/lib/omit';
 import {
     Allow,
     Collection,
@@ -14,7 +14,7 @@ import {
     RequestContext,
     SearchJobBufferService,
     SearchResolver,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 import { ElasticsearchService } from '../elasticsearch.service';
 import { ElasticSearchInput, SearchPriceData } from '../types';

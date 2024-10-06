@@ -12,14 +12,14 @@ import { CustomDetailComponentService } from '../providers/custom-detail-compone
  * import { Component, OnInit } from '\@angular/core';
  * import { switchMap } from 'rxjs';
  * import { FormGroup } from '\@angular/forms';
- * import { CustomFieldConfig } from '\@vendure/common/lib/generated-types';
+ * import { CustomFieldConfig } from '\@deenruv/common/lib/generated-types';
  * import {
  *     DataService,
  *     SharedModule,
  *     CustomDetailComponent,
  *     registerCustomDetailComponent,
  *     GetProductWithVariants
- * } from '\@vendure/admin-ui/core';
+ * } from '\@deenruv/admin-ui/core';
  *
  * \@Component({
  *     template: `{{ extraInfo$ | async | json }}`,

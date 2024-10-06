@@ -1,6 +1,6 @@
-import { Permission } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
-import { unique } from '@vendure/common/lib/unique';
+import { Permission } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
+import { unique } from '@deenruv/common/lib/unique';
 
 import { Role } from '../../../entity/role/role.entity';
 import { User } from '../../../entity/user/user.entity';

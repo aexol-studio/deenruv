@@ -17,7 +17,7 @@ import { HistoryEntryComponentService } from '../providers/custom-history-entry-
  *     SharedModule,
  *     TimelineDisplayType,
  *     TimelineHistoryEntry,
- * } from '\@vendure/admin-ui/core';
+ * } from '\@deenruv/admin-ui/core';
  *
  * \@Component({
  *     selector: 'tax-id-verification-component',

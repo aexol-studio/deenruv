@@ -1,4 +1,4 @@
-import { InjectableStrategy, VendureEvent } from '@vendure/core';
+import { InjectableStrategy, VendureEvent } from '@deenruv/core';
 
 import { EmailDetails, EmailPluginOptions } from '../types';
 

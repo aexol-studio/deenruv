@@ -1,5 +1,5 @@
 import { ApolloServerPlugin, GraphQLRequestListener, GraphQLRequestContext } from '@apollo/server';
-import { InternalServerError, Logger } from '@vendure/core';
+import { InternalServerError, Logger } from '@deenruv/core';
 import {
     getNamedType,
     getNullableType,

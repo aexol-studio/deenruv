@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## SearchStrategy
 
-<GenerationInfo sourceFile="packages/core/src/plugin/default-search-plugin/search-strategy/search-strategy.ts" sourceLine="21" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/plugin/default-search-plugin/search-strategy/search-strategy.ts" sourceLine="21" packageName="@deenruv/core" />
 
 This interface defines the contract that any database-specific search implementations
 should follow.

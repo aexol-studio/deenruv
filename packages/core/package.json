@@ -1,5 +1,5 @@
 {
-    "name": "@vendure/core",
+    "name": "@deenruv/core",
     "version": "2.3.1",
     "description": "A modern, headless ecommerce framework",
     "repository": {
@@ -40,8 +40,8 @@
         "cli/**/*"
     ],
     "dependencies": {
-        "@vendure/core": "workspace:*",
-        "@vendure/common": "workspace:*",
+        "@deenruv/core": "workspace:*",
+        "@deenruv/common": "workspace:*",
         "@apollo/server": "^4.10.4",
         "@apollographql/graphql-playground-html": "^1.6.29",
         "@graphql-tools/stitch": "^9.2.10",

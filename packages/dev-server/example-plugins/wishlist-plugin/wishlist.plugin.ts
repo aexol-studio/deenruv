@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
 import { shopApiExtensions } from './api/api-extensions';
 import { WishlistShopResolver } from './api/wishlist.resolver';

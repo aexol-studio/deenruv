@@ -1,5 +1,5 @@
-import { SearchInput, SearchResult } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { SearchInput, SearchResult } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../../api';
 import { InjectableStrategy } from '../../../common';

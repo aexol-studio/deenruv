@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { VerifyCustomerAccountResult } from '@vendure/common/lib/generated-shop-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { VerifyCustomerAccountResult } from '@deenruv/common/lib/generated-shop-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { ErrorResultUnion, isGraphQlErrorResult } from '../../common/error/error-result';

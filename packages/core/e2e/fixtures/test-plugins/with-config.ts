@@ -1,5 +1,5 @@
-import { LanguageCode } from '@vendure/common/lib/generated-types';
-import { ConfigModule, VendurePlugin } from '@vendure/core';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
+import { ConfigModule, VendurePlugin } from '@deenruv/core';
 
 @VendurePlugin({
     imports: [ConfigModule],

@@ -1,5 +1,5 @@
-import { ConfigurableOperation } from '@vendure/common/lib/generated-types';
-import { DeepPartial, ID } from '@vendure/common/lib/shared-types';
+import { ConfigurableOperation } from '@deenruv/common/lib/generated-types';
+import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
 import {
     Column,
     Entity,

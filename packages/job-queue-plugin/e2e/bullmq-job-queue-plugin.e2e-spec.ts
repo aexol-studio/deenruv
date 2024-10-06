@@ -1,5 +1,5 @@
-import { DefaultLogger, LogLevel, mergeConfig } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { DefaultLogger, LogLevel, mergeConfig } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import { RedisConnection } from 'bullmq';
 import path from 'path';
 

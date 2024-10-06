@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { pick } from '@vendure/common/lib/pick';
-import { mergeConfig } from '@vendure/core';
+import { pick } from '@deenruv/common/lib/pick';
+import { mergeConfig } from '@deenruv/core';
 import {
     createErrorResultGuard,
     createTestEnvironment,
     E2E_DEFAULT_CHANNEL_TOKEN,
     ErrorResultGuard,
-} from '@vendure/testing';
+} from '@deenruv/testing';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 

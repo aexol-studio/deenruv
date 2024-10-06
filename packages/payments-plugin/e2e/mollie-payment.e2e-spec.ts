@@ -8,18 +8,18 @@ import {
     OrderPlacedEvent,
     OrderService,
     RequestContext,
-} from '@vendure/core';
+} from '@deenruv/core';
 import {
     SettlePaymentMutation,
     SettlePaymentMutationVariables,
-} from '@vendure/core/e2e/graphql/generated-e2e-admin-types';
-import { SETTLE_PAYMENT } from '@vendure/core/e2e/graphql/shared-definitions';
+} from '@deenruv/core/e2e/graphql/generated-e2e-admin-types';
+import { SETTLE_PAYMENT } from '@deenruv/core/e2e/graphql/shared-definitions';
 import {
     createTestEnvironment,
     E2E_DEFAULT_CHANNEL_TOKEN,
     SimpleGraphQLClient,
     TestServer,
-} from '@vendure/testing';
+} from '@deenruv/testing';
 import nock from 'nock';
 import fetch from 'node-fetch';
 import path from 'path';

@@ -1,4 +1,4 @@
-import { LanguageCode, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
 import './types';
 import { digitalFulfillmentHandler } from './config/digital-fulfillment-handler';

@@ -47,7 +47,7 @@ There are three types of button:
 
 ```tsx
 import React from 'react';
-import { CdsIcon, Link } from '@vendure/admin-ui/react';
+import { CdsIcon, Link } from '@deenruv/admin-ui/react';
 
 export function DemoComponent() {
     return (
@@ -116,7 +116,7 @@ Admin UI app.
 ```tsx
 import React from 'react';
 import { starIcon, userIcon } from '@cds/core/icon';
-import { CdsIcon } from '@vendure/admin-ui/react';
+import { CdsIcon } from '@deenruv/admin-ui/react';
 
 export function DemoComponent() {
     return (
@@ -193,7 +193,7 @@ Form inputs are styled globally, so you don't need to use special components for
 ```tsx
 import React from 'react';
 import { starIcon, userIcon } from '@cds/core/icon';
-import { FormField, RichTextEditor } from '@vendure/admin-ui/react';
+import { FormField, RichTextEditor } from '@deenruv/admin-ui/react';
 
 export function DemoComponent() {
     return (
@@ -263,7 +263,7 @@ Cards are used as a general-purpose container for page content, as a way to visu
 
 ```tsx
 import React from 'react';
-import { Card } from '@vendure/admin-ui/react';
+import { Card } from '@deenruv/admin-ui/react';
 
 export function DemoComponent() {
     return (
@@ -323,7 +323,7 @@ import {
     Card,
     PageBlock,
     PageDetailLayout,
-} from '@vendure/admin-ui/react';
+} from '@deenruv/admin-ui/react';
 
 export function DemoComponent() {
     return (

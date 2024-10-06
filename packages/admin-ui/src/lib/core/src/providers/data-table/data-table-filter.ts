@@ -1,6 +1,6 @@
 import { Type as ComponentType } from '@angular/core';
-import { LocalizedString } from '@vendure/common/lib/generated-types';
-import { assertNever } from '@vendure/common/lib/shared-utils';
+import { LocalizedString } from '@deenruv/common/lib/generated-types';
+import { assertNever } from '@deenruv/common/lib/shared-utils';
 import dayjs from 'dayjs';
 import { FormInputComponent } from '../../common/component-registry-types';
 import {

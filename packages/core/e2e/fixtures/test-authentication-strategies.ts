@@ -5,7 +5,7 @@ import {
     RequestContext,
     RoleService,
     User,
-} from '@vendure/core';
+} from '@deenruv/core';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
 

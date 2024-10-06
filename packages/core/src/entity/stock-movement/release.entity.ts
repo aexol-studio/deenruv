@@ -1,5 +1,5 @@
-import { StockMovementType } from '@vendure/common/lib/generated-types';
-import { DeepPartial } from '@vendure/common/lib/shared-types';
+import { StockMovementType } from '@deenruv/common/lib/generated-types';
+import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { ChildEntity, ManyToOne } from 'typeorm';
 
 import { OrderLine } from '../order-line/order-line.entity';

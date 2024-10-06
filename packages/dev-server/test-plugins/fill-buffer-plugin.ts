@@ -7,7 +7,7 @@ import {
     ProductVariantService,
     RequestContext,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 
 @Resolver()

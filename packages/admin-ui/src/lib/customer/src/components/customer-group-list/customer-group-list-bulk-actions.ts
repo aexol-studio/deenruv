@@ -1,4 +1,4 @@
-import { createBulkDeleteAction, GetCustomerGroupsQuery, ItemOf, Permission } from '@vendure/admin-ui/core';
+import { createBulkDeleteAction, GetCustomerGroupsQuery, ItemOf, Permission } from '@deenruv/admin-ui/core';
 import { map } from 'rxjs/operators';
 
 export const deleteCustomerGroupsBulkAction = createBulkDeleteAction<

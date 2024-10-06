@@ -5,8 +5,8 @@ import {
     manualFulfillmentHandler,
     mergeConfig,
     TransactionalConnection,
-} from '@vendure/core';
-import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@vendure/testing';
+} from '@deenruv/core';
+import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@deenruv/testing';
 import path from 'path';
 import { vi } from 'vitest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

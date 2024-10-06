@@ -8,8 +8,8 @@ import { HostedComponentContext } from '../directives/react-component-host.direc
  *
  * @example
  * ```ts
- * import { useInjector } from '\@vendure/admin-ui/react';
- * import { NotificationService } from '\@vendure/admin-ui/core';
+ * import { useInjector } from '\@deenruv/admin-ui/react';
+ * import { NotificationService } from '\@deenruv/admin-ui/core';
  *
  * export const MyComponent = () => {
  *     const notificationService = useInjector(NotificationService);

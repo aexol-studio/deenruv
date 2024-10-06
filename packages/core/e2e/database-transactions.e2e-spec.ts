@@ -1,5 +1,5 @@
-import { mergeConfig } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { mergeConfig } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import { fail } from 'assert';
 import gql from 'graphql-tag';
 import path from 'path';

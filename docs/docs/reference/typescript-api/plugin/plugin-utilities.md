@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## createProxyHandler
 
-<GenerationInfo sourceFile="packages/core/src/plugin/plugin-utils.ts" sourceLine="37" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/plugin/plugin-utils.ts" sourceLine="37" packageName="@deenruv/core" />
 
 Creates a proxy middleware which proxies the given route to the given port.
 Useful for plugins which start their own servers but should be accessible
@@ -53,7 +53,7 @@ Parameters
 
 ## ProxyOptions
 
-<GenerationInfo sourceFile="packages/core/src/plugin/plugin-utils.ts" sourceLine="76" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/plugin/plugin-utils.ts" sourceLine="76" packageName="@deenruv/core" />
 
 Options to configure proxy middleware via <a href='/reference/typescript-api/plugin/plugin-utilities#createproxyhandler'>createProxyHandler</a>.
 

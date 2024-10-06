@@ -20,9 +20,9 @@ import {
     ProductVariant,
     ProductVariantService,
     RequestContext,
-} from '@vendure/core';
-import { OrderStateMachine } from '@vendure/core/';
-import { totalCoveredByPayments } from '@vendure/core/dist/service/helpers/utils/order-utils';
+} from '@deenruv/core';
+import { OrderStateMachine } from '@deenruv/core/';
+import { totalCoveredByPayments } from '@deenruv/core/dist/service/helpers/utils/order-utils';
 
 import { loggerCtx, PLUGIN_INIT_OPTIONS } from './constants';
 import { OrderWithMollieReference } from './custom-fields';

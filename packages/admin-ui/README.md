@@ -10,12 +10,12 @@ The UI is powered by the [Clarity Design System](https://clarity.design).
 
 ### Library
 
-The Admin UI is structured as an Angular library conforming to the [ng-packagr format](https://github.com/ng-packagr/ng-packagr). This library is what is published to npm as `@vendure/admin-ui`. The library consists
+The Admin UI is structured as an Angular library conforming to the [ng-packagr format](https://github.com/ng-packagr/ng-packagr). This library is what is published to npm as `@deenruv/admin-ui`. The library consists
 of a set of modules which are accessible from consuming applications as sub-packages:
 
-* `@vendure/admin-ui/core`
-* `@vendure/admin-ui/catalog`
-* `@vendure/admin-ui/orders`
+* `@deenruv/admin-ui/core`
+* `@deenruv/admin-ui/catalog`
+* `@deenruv/admin-ui/orders`
 
 etc. These library packages are located at [./src/lib](./src/lib)
 

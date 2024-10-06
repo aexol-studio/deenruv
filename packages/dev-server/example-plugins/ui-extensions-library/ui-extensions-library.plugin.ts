@@ -1,4 +1,4 @@
-import { AdminUiExtension } from '@vendure/ui-devkit/compiler';
+import { AdminUiExtension } from '@deenruv/ui-devkit/compiler';
 import path from 'path';
 
 export class UiExtensionsLibraryPlugin {

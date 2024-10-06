@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## AdministratorService
 
-<GenerationInfo sourceFile="packages/core/src/service/services/administrator.service.ts" sourceLine="40" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/service/services/administrator.service.ts" sourceLine="40" packageName="@deenruv/core" />
 
 Contains methods relating to <a href='/reference/typescript-api/entities/administrator#administrator'>Administrator</a> entities.
 

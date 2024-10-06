@@ -229,7 +229,7 @@ export class TypescriptDocsParser {
     private getPackageName(sourceFile: string): string {
         const matches = sourceFile.match(/\/packages\/([^/]+)\//);
         if (matches) {
-            return `@vendure/${matches[1]}`;
+            return `@deenruv/${matches[1]}`;
         } else {
             return '';
         }
@@ -446,7 +446,7 @@ export class TypescriptDocsParser {
 
     /**
      * TypeScript from v3.5.1 interprets all '@' tokens in a tag comment as a new tag. This is a problem e.g.
-     * when a plugin includes in its description some text like "install the @vendure/some-plugin package". Here,
+     * when a plugin includes in its description some text like "install the @deenruv/some-plugin package". Here,
      * TypeScript will interpret "@vendure" as a JSDoc tag and remove it and all remaining text from the comment.
      *
      * The solution is to replace all escaped @ tokens ("\@") with a replacer string so that TypeScript treats them

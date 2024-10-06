@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { pick } from '@vendure/common/lib/pick';
-import { ID, Type } from '@vendure/common/lib/shared-types';
-import { getGraphQlInputName } from '@vendure/common/lib/shared-utils';
+import { pick } from '@deenruv/common/lib/pick';
+import { ID, Type } from '@deenruv/common/lib/shared-types';
+import { getGraphQlInputName } from '@deenruv/common/lib/shared-utils';
 import { In } from 'typeorm';
 
 import { RequestContext } from '../../../api/common/request-context';

@@ -72,8 +72,8 @@ If your plugin needs to load a translatable entity, you will need to use the [`T
 For example, if you are loading a `Facet` entity, you would do the following:
 
 ```ts
-import { Facet } from '@vendure/core';
-import { LanguageCode, RequestContext, TranslatorService, TransactionalConnection } from '@vendure/core';
+import { Facet } from '@deenruv/core';
+import { LanguageCode, RequestContext, TranslatorService, TransactionalConnection } from '@deenruv/core';
 
 @Injectable()
 export class MyService {

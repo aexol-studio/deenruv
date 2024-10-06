@@ -1,4 +1,4 @@
-import { ConfigArg, RefundOrderInput } from '@vendure/common/lib/generated-types';
+import { ConfigArg, RefundOrderInput } from '@deenruv/common/lib/generated-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import {
@@ -307,7 +307,7 @@ export interface PaymentMethodConfigOptions<T extends ConfigArgs> extends Config
  *
  * @example
  * ```ts
- * import { PaymentMethodHandler, CreatePaymentResult, SettlePaymentResult, LanguageCode } from '\@vendure/core';
+ * import { PaymentMethodHandler, CreatePaymentResult, SettlePaymentResult, LanguageCode } from '\@deenruv/core';
  * // A mock 3rd-party payment SDK
  * import gripeSDK from 'gripe';
  *

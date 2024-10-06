@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## GlobalSettings
 
-<GenerationInfo sourceFile="packages/core/src/entity/global-settings/global-settings.entity.ts" sourceLine="14" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/entity/global-settings/global-settings.entity.ts" sourceLine="14" packageName="@deenruv/core" />
 
 Stores global settings for the whole application
 

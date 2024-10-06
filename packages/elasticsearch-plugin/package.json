@@ -1,5 +1,5 @@
 {
-    "name": "@vendure/elasticsearch-plugin",
+    "name": "@deenruv/elasticsearch-plugin",
     "version": "2.3.1",
     "license": "MIT",
     "main": "lib/index.js",
@@ -26,8 +26,8 @@
         "fast-deep-equal": "^3.1.3"
     },
     "devDependencies": {
-        "@vendure/common": "workspace:*",
-        "@vendure/core": "workspace:*",
+        "@deenruv/common": "workspace:*",
+        "@deenruv/core": "workspace:*",
         "rimraf": "^5.0.5",
         "typescript": "5.3.3"
     }

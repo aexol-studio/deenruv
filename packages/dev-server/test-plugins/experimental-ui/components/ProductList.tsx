@@ -1,5 +1,5 @@
-import { NotificationService } from '@vendure/admin-ui/core';
-import { Link, useInjector, useMutation, useQuery } from '@vendure/admin-ui/react';
+import { NotificationService } from '@deenruv/admin-ui/core';
+import { Link, useInjector, useMutation, useQuery } from '@deenruv/admin-ui/react';
 import gql from 'graphql-tag';
 import React from 'react';
 

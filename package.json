@@ -1,5 +1,5 @@
 {
-  "name": "vendure",
+  "name": "deenruv",
   "version": "0.0.0",
   "private": true,
   "engines": {
@@ -14,7 +14,7 @@
     "codegen": "tsc -p scripts/codegen/plugins && ts-node scripts/codegen/generate-graphql-types.ts",
     "version": "npm run check-imports && npm run check-angular-versions && npm run build && npm run check-core-type-defs && npm run generate-changelog && git add CHANGELOG* && git add */version.ts",
     "dev-server:start": "cd packages/dev-server && pnpm start",
-    "build": "pnpm -r --filter='!@vendure/cli' --filter='!@vendure/admin-ui-plugin' --filter='!@vendure/elasticsearch-plugin' --filter='!@vendure/sentry-plugin' --filter='!@vendure/stellate-plugin' --filter='!@vendure/payments-plugin' --filter='!@vendure/testing' run build",
+    "build": "pnpm -r --filter='!@deenruv/cli' --filter='!@deenruv/admin-ui-plugin' --filter='!@deenruv/elasticsearch-plugin' --filter='!@deenruv/sentry-plugin' --filter='!@deenruv/stellate-plugin' --filter='!@deenruv/payments-plugin' --filter='!@deenruv/testing' run build",
     "check-imports": "ts-node scripts/check-imports.ts",
     "check-core-type-defs": "ts-node scripts/check-core-type-defs.ts",
     "check-angular-versions": "ts-node scripts/check-angular-versions.ts",
@@ -48,15 +48,6 @@
     "typescript": "5.3.3",
     "unplugin-swc": "^1.4.4",
     "vitest": "^1.3.1"
-  },
-  "//": "Fix for https://github.com/npm/cli/issues/4828",
-  "optionalDependencies": {
-    "@nx/nx-darwin-arm64": "17.2.8",
-    "@nx/nx-darwin-x64": "17.2.8",
-    "@nx/nx-linux-x64-gnu": "17.2.8",
-    "@nx/nx-win32-x64-msvc": "17.2.8",
-    "@rollup/rollup-linux-x64-gnu": "^4.13.0",
-    "@swc/core-linux-x64-gnu": "1.4.7"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.54.1",

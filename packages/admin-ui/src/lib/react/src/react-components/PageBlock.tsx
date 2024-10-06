@@ -6,7 +6,7 @@ import React, { PropsWithChildren } from 'react';
  *
  * @example
  * ```ts
- * import { PageBlock } from '@vendure/admin-ui/react';
+ * import { PageBlock } from '@deenruv/admin-ui/react';
  *
  * export function MyComponent() {
  *   return (

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LanguageCode } from '@vendure/common/lib/generated-types';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
 import { FindOneOptions } from 'typeorm';
 
 import { RequestContext } from '../../../api/common/request-context';

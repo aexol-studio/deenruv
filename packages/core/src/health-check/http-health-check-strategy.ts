@@ -19,7 +19,7 @@ export interface HttpHealthCheckOptions {
  *
  * @example
  * ```ts
- * import { HttpHealthCheckStrategy, TypeORMHealthCheckStrategy } from '\@vendure/core';
+ * import { HttpHealthCheckStrategy, TypeORMHealthCheckStrategy } from '\@deenruv/core';
  *
  * export const config = {
  *   // ...

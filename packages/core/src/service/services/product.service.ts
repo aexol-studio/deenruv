@@ -9,9 +9,9 @@ import {
     RemoveOptionGroupFromProductResult,
     RemoveProductsFromChannelInput,
     UpdateProductInput,
-} from '@vendure/common/lib/generated-types';
-import { ID, PaginatedList } from '@vendure/common/lib/shared-types';
-import { unique } from '@vendure/common/lib/unique';
+} from '@deenruv/common/lib/generated-types';
+import { ID, PaginatedList } from '@deenruv/common/lib/shared-types';
+import { unique } from '@deenruv/common/lib/unique';
 import { FindOptionsUtils, In, IsNull } from 'typeorm';
 
 import { RequestContext } from '../../api/common/request-context';

@@ -1,5 +1,5 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { VendurePlugin } from '@vendure/core';
+import { VendurePlugin } from '@deenruv/core';
 import gql from 'graphql-tag';
 
 @Resolver()

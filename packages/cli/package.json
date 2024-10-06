@@ -1,5 +1,5 @@
 {
-    "name": "@vendure/cli",
+    "name": "@deenruv/cli",
     "version": "2.3.1",
     "description": "A modern, headless ecommerce framework",
     "repository": {
@@ -28,14 +28,14 @@
         "access": "public"
     },
     "bin": {
-        "vendure": "dist/cli.js"
+        "deenruv": "dist/cli.js"
     },
     "files": [
         "dist/**/*"
     ],
     "dependencies": {
         "@clack/prompts": "^0.7.0",
-        "@vendure/common": "workspace:*",
+        "@deenruv/common": "workspace:*",
         "change-case": "^4.1.2",
         "commander": "^11.0.0",
         "dotenv": "^16.4.5",
@@ -46,7 +46,7 @@
         "tsconfig-paths": "^4.2.0"
     },
     "devDependencies": {
-        "@vendure/core": "workspace:*",
+        "@deenruv/core": "workspace:*",
         "typescript": "5.3.3",
         "rimraf": "^5.0.5"
     }

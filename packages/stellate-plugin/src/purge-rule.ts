@@ -1,5 +1,5 @@
-import { Type } from '@vendure/common/lib/shared-types';
-import { VendureEvent, Injector } from '@vendure/core';
+import { Type } from '@deenruv/common/lib/shared-types';
+import { VendureEvent, Injector } from '@deenruv/core';
 
 import { StellateService } from './service/stellate.service';
 

@@ -1,4 +1,4 @@
-import { HistoryEntryType } from '@vendure/common/lib/generated-types';
+import { HistoryEntryType } from '@deenruv/common/lib/generated-types';
 
 import { RefundState } from '../../service/helpers/refund-state-machine/refund-state';
 

@@ -1,4 +1,4 @@
-import { CreateCustomerInput, SetCustomerForOrderResult } from '@vendure/common/lib/generated-shop-types';
+import { CreateCustomerInput, SetCustomerForOrderResult } from '@deenruv/common/lib/generated-shop-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { ErrorResultUnion } from '../../common/error/error-result';
@@ -43,7 +43,7 @@ export interface DefaultGuestCheckoutStrategyOptions {
  *
  * @example
  * ```ts
- * import { DefaultGuestCheckoutStrategy, VendureConfig } from '\@vendure/core';
+ * import { DefaultGuestCheckoutStrategy, VendureConfig } from '\@deenruv/core';
  *
  * export const config: VendureConfig = {
  *   orderOptions: {

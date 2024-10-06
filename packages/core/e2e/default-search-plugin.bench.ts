@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { DefaultJobQueuePlugin, DefaultSearchPlugin, mergeConfig } from '@vendure/core';
-import { createTestEnvironment, registerInitializer, SqljsInitializer } from '@vendure/testing';
+import { DefaultJobQueuePlugin, DefaultSearchPlugin, mergeConfig } from '@deenruv/core';
+import { createTestEnvironment, registerInitializer, SqljsInitializer } from '@deenruv/testing';
 import path from 'path';
 import { Bench } from 'tinybench';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

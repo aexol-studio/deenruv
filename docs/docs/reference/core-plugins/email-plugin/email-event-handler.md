@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## EmailEventHandler
 
-<GenerationInfo sourceFile="packages/email-plugin/src/handler/event-handler.ts" sourceLine="136" packageName="@vendure/email-plugin" />
+<GenerationInfo sourceFile="packages/email-plugin/src/handler/event-handler.ts" sourceLine="136" packageName="@deenruv/email-plugin" />
 
 The EmailEventHandler defines how the EmailPlugin will respond to a given event.
 
@@ -68,7 +68,7 @@ You now want to email the customer with their quote. Here are the steps you woul
 ### 1. Create a new handler
 
 ```ts
-import { EmailEventListener } from `@vendure/email-plugin`;
+import { EmailEventListener } from `@deenruv/email-plugin`;
 import { QuoteRequestedEvent } from `./events`;
 
 const quoteRequestedHandler = new EmailEventListener('quote-requested')
@@ -111,7 +111,7 @@ You can find pre-made templates on the [MJML website](https://mjml.io/templates/
 Finally, you need to register the handler with the EmailPlugin:
 
 ```ts {hl_lines=[8]}
-import { defaultEmailHandlers, EmailPlugin } from '@vendure/email-plugin';
+import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
 import { quoteRequestedHandler } from './plugins/quote-plugin';
 
 const config: VendureConfig = {

@@ -28,7 +28,7 @@ export function addUiExtensionStaticProp(plugin: VendurePluginRef) {
 
     // Add the AdminUiExtension import if it doesn't already exist
     addImportsToFile(pluginClass.getSourceFile(), {
-        moduleSpecifier: '@vendure/ui-devkit/compiler',
+        moduleSpecifier: '@deenruv/ui-devkit/compiler',
         namedImports: [adminUiExtensionType],
         order: 0,
     });

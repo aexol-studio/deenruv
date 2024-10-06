@@ -139,7 +139,7 @@ export interface BulkAction<ItemType = any, ComponentType = any> {
      *
      * @example
      * ```ts
-     * import { registerBulkAction, DataService } from '\@vendure/admin-ui/core';
+     * import { registerBulkAction, DataService } from '\@deenruv/admin-ui/core';
      *
      * registerBulkAction({
      *   location: 'product-list',

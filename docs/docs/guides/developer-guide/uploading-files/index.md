@@ -64,7 +64,7 @@ How about if you want to implement a custom mutation for file uploads? Let's tak
 Let's define a custom field to associate the avatar `Asset` with the `Customer` entity. To keep everything encapsulated, we'll do all of this in a [plugin](/guides/developer-guide/plugins/)
 
 ```ts title="src/plugins/customer-avatar/customer-avatar.plugin.ts"
-import { Asset, LanguageCode, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { Asset, LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
 @VendurePlugin({
     imports: [PluginCommonModule],
@@ -103,11 +103,11 @@ The resolver will make use of the built-in [AssetService](/reference/typescript-
 
 ```ts title="src/plugins/customer-avatar/api/customer-avatar.resolver.ts"
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Asset } from '@vendure/common/lib/generated-types';
+import { Asset } from '@deenruv/common/lib/generated-types';
 import {
     Allow, AssetService, Ctx, CustomerService, isGraphQlErrorResult,
     Permission, RequestContext, Transaction
-} from '@vendure/core';
+} from '@deenruv/core';
 
 @Resolver()
 export class CustomerAvatarResolver {
@@ -158,7 +158,7 @@ export class CustomerAvatarResolver {
 Let's put all these parts together into the plugin:
 
 ```ts
-import { Asset, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { Asset, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
 import { shopApiExtensions } from './api/api-extensions';
 import { CustomerAvatarResolver } from './api/customer-avatar.resolver';

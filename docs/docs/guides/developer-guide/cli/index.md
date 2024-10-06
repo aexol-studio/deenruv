@@ -23,14 +23,14 @@ To manually install the CLI, run:
 <TabItem value="npm" label="npm" default>
 
 ```bash
-npm install -D @vendure/cli
+npm install -D @deenruv/cli
 ```
 
 </TabItem>
 <TabItem value="yarn" label="yarn">
 
 ```bash
-yarn add -D @vendure/cli
+yarn add -D @deenruv/cli
 ```
 
 </TabItem>

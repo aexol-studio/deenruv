@@ -1,4 +1,4 @@
-import { RequestContext, VendureEvent } from '@vendure/core';
+import { RequestContext, VendureEvent } from '@deenruv/core';
 
 import { EmailDetails } from './types';
 

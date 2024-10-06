@@ -5,7 +5,7 @@ import {
     Translatable,
     Translation,
     VendureEntity,
-} from '@vendure/core';
+} from '@deenruv/core';
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { ScaffoldTranslation } from './entity-translation.template';

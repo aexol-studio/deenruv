@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { CustomFieldConfig, OrderDetailFragment, ServerConfigService } from '@vendure/admin-ui/core';
-import { isObject } from '@vendure/common/lib/shared-utils';
+import { CustomFieldConfig, OrderDetailFragment, ServerConfigService } from '@deenruv/admin-ui/core';
+import { isObject } from '@deenruv/common/lib/shared-utils';
 
 @Component({
     selector: 'vdr-fulfillment-detail',

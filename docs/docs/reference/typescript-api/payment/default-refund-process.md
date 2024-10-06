@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## defaultRefundProcess
 
-<GenerationInfo sourceFile="packages/core/src/config/refund/default-refund-process.ts" sourceLine="16" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/config/refund/default-refund-process.ts" sourceLine="16" packageName="@deenruv/core" />
 
 The default <a href='/reference/typescript-api/payment/refund-process#refundprocess'>RefundProcess</a>.
 

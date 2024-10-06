@@ -1,4 +1,4 @@
-import { PluginCommonModule, Type, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
 
 import { TEMPLATE_PLUGIN_OPTIONS } from './constants.template';
 import { PluginInitOptions } from './types.template';
