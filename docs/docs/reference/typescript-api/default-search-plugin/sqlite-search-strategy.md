@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## SqliteSearchStrategy
 
-<GenerationInfo sourceFile="packages/core/src/plugin/default-search-plugin/search-strategy/sqlite-search-strategy.ts" sourceLine="30" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/plugin/default-search-plugin/search-strategy/sqlite-search-strategy.ts" sourceLine="30" packageName="@deenruv/core" />
 
 A rather naive search for SQLite / SQL.js. Rather than proper
 full-text searching, it uses a weighted `LIKE "%term%"` operator instead.

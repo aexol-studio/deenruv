@@ -1,5 +1,5 @@
-import { CreateRoleInput, UpdateRoleInput } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { CreateRoleInput, UpdateRoleInput } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Role } from '../../entity';

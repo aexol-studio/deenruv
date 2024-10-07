@@ -14,7 +14,7 @@ import {
     Transaction,
     TransactionalConnection,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 
 @Resolver()
@@ -35,7 +35,7 @@ class TestResolver {
 }
 
 // A plugin to explore solutions to https://github.com/vendure-ecommerce/vendure/issues/1107
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: gql`
@@ -47,7 +47,10 @@ class TestResolver {
     },
 })
 export class EventBusTransactionsPlugin implements OnModuleInit {
-    constructor(private eventBus: EventBus, private connection: TransactionalConnection) {}
+    constructor(
+        private eventBus: EventBus,
+        private connection: TransactionalConnection,
+    ) {}
 
     onModuleInit(): any {
         this.eventBus.ofType(AssetEvent).subscribe(async event => {

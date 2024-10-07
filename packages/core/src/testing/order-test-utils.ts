@@ -1,6 +1,6 @@
-import { LanguageCode } from '@vendure/common/lib/generated-types';
-import { Omit } from '@vendure/common/lib/omit';
-import { ID } from '@vendure/common/lib/shared-types';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
+import { Omit } from '@deenruv/common/lib/omit';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../api/common/request-context';
 import { Surcharge } from '../entity';

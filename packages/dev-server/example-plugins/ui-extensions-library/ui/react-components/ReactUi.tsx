@@ -1,5 +1,5 @@
 import { arrowIcon, layersIcon, starIcon, userIcon } from '@cds/core/icon';
-import { NotificationService } from '@vendure/admin-ui/core';
+import { NotificationService } from '@deenruv/admin-ui/core';
 import {
     ActionBar,
     Card,
@@ -10,8 +10,8 @@ import {
     PageDetailLayout,
     useInjector,
     usePageMetadata,
-} from '@vendure/admin-ui/react';
-import { RichTextEditor } from '@vendure/admin-ui/react';
+} from '@deenruv/admin-ui/react';
+import { RichTextEditor } from '@deenruv/admin-ui/react';
 import React, { PropsWithChildren, useState } from 'react';
 
 export function ReactUi() {

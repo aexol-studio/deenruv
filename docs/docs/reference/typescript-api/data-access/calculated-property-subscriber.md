@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## CalculatedPropertySubscriber
 
-<GenerationInfo sourceFile="packages/core/src/entity/subscribers.ts" sourceLine="14" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/entity/subscribers.ts" sourceLine="14" packageName="@deenruv/core" />
 
 
 

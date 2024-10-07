@@ -1,4 +1,4 @@
-import { OrderProcess, OrderService } from '@vendure/core';
+import { OrderProcess, OrderService } from '@deenruv/core';
 
 import { digitalFulfillmentHandler } from './digital-fulfillment-handler';
 

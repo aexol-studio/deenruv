@@ -1,6 +1,6 @@
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import { SUPER_ADMIN_USER_IDENTIFIER, SUPER_ADMIN_USER_PASSWORD } from '@vendure/common/lib/shared-constants';
-import { VendureConfig } from '@vendure/core';
+import { SUPER_ADMIN_USER_IDENTIFIER, SUPER_ADMIN_USER_PASSWORD } from '@deenruv/common/lib/shared-constants';
+import { VendureConfig } from '@deenruv/core';
 import FormData from 'form-data';
 import fs from 'fs';
 import { DocumentNode } from 'graphql';
@@ -44,7 +44,10 @@ export class SimpleGraphQLClient {
         'Apollo-Require-Preflight': 'true',
     };
 
-    constructor(private vendureConfig: Required<VendureConfig>, private apiUrl: string = '') {}
+    constructor(
+        private vendureConfig: Required<VendureConfig>,
+        private apiUrl: string = '',
+    ) {}
 
     /**
      * @description
@@ -136,15 +139,13 @@ export class SimpleGraphQLClient {
     async asUserWithCredentials(username: string, password: string) {
         // first log out as the current user
         if (this.authToken) {
-            await this.query(
-                gql`
-                    mutation {
-                        logout {
-                            success
-                        }
+            await this.query(gql`
+                mutation {
+                    logout {
+                        success
                     }
-                `,
-            );
+                }
+            `);
         }
         const result = await this.query(LOGIN, { username, password });
         if (result.login.channels?.length === 1) {
@@ -170,15 +171,13 @@ export class SimpleGraphQLClient {
      * Logs out so that the client is then treated as an anonymous user.
      */
     async asAnonymousUser() {
-        await this.query(
-            gql`
-                mutation {
-                    logout {
-                        success
-                    }
+        await this.query(gql`
+            mutation {
+                logout {
+                    success
                 }
-            `,
-        );
+            }
+        `);
     }
 
     private async makeGraphQlRequest(
@@ -256,7 +255,10 @@ export class SimpleGraphQLClient {
 }
 
 export class ClientError extends Error {
-    constructor(public response: any, public request: any) {
+    constructor(
+        public response: any,
+        public request: any,
+    ) {
         super(ClientError.extractMessage(response));
     }
     private static extractMessage(response: any): string {

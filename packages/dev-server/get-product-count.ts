@@ -1,4 +1,4 @@
-import { bootstrapWorker, Logger, ProductService, RequestContextService } from '@vendure/core';
+import { bootstrapWorker, Logger, ProductService, RequestContextService } from '@deenruv/core';
 
 import { devConfig } from './dev-config';
 

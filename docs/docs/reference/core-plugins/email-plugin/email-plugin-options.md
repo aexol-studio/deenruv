@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## EmailPluginOptions
 
-<GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="77" packageName="@vendure/email-plugin" />
+<GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="77" packageName="@deenruv/email-plugin" />
 
 Configuration for the EmailPlugin.
 
@@ -84,7 +84,7 @@ better match with custom email sending functionality.
 
 ## GlobalTemplateVarsFn
 
-<GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="64" packageName="@vendure/email-plugin" since="2.3.0" />
+<GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="64" packageName="@deenruv/email-plugin" since="2.3.0" />
 
 Allows you to dynamically load the "globalTemplateVars" key async and access Vendure services
 to create the object. This is not a requirement. You can also specify a simple static object if your
@@ -121,7 +121,7 @@ type GlobalTemplateVarsFn = (
 
 ## EmailPluginDevModeOptions
 
-<GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="150" packageName="@vendure/email-plugin" />
+<GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="150" packageName="@deenruv/email-plugin" />
 
 Configuration for running the EmailPlugin in development mode.
 

@@ -34,7 +34,7 @@ export interface DefaultProductVariantPriceUpdateStrategyOptions {
  *
  * @example
  * ```ts
- * import { DefaultProductVariantPriceUpdateStrategy, VendureConfig } from '\@vendure/core';
+ * import { DefaultProductVariantPriceUpdateStrategy, VendureConfig } from '\@deenruv/core';
  *
  * export const config: VendureConfig = {
  *   // ...

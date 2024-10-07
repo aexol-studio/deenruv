@@ -11,8 +11,8 @@ import {
     GetProductVariantDetailDocument,
     PageService,
     SharedModule,
-} from '@vendure/admin-ui/core';
-import { SortOrder } from '@vendure/common/lib/generated-types';
+} from '@deenruv/admin-ui/core';
+import { SortOrder } from '@deenruv/common/lib/generated-types';
 
 import { createRoutes } from './catalog.routes';
 import { ApplyFacetDialogComponent } from './components/apply-facet-dialog/apply-facet-dialog.component';

@@ -1,6 +1,6 @@
-import { TaxLine } from '@vendure/common/lib/generated-types';
-import { DeepPartial } from '@vendure/common/lib/shared-types';
-import { summate } from '@vendure/common/lib/shared-utils';
+import { TaxLine } from '@deenruv/common/lib/generated-types';
+import { DeepPartial } from '@deenruv/common/lib/shared-types';
+import { summate } from '@deenruv/common/lib/shared-utils';
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { Calculated } from '../../common/calculated-decorator';

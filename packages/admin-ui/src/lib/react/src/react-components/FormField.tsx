@@ -6,7 +6,7 @@ import React, { PropsWithChildren } from 'react';
  *
  * @example
  * ```ts
- * import { FormField } from '@vendure/admin-ui/react';
+ * import { FormField } from '@deenruv/admin-ui/react';
  *
  * export function MyReactComponent() {
  *     return (

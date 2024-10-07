@@ -23,10 +23,10 @@ Migration will consist of these main steps:
    {
      // ...
      "dependencies": {
-   -    "@vendure/common": "1.9.7",
-   -    "@vendure/core": "1.9.7",
-   +    "@vendure/common": "2.0.0",
-   +    "@vendure/core": "2.0.0",
+   -    "@deenruv/common": "1.9.7",
+   -    "@deenruv/core": "1.9.7",
+   +    "@deenruv/common": "2.0.0",
+   +    "@deenruv/core": "2.0.0",
         // etc.
      },
      "devDependencies": {

@@ -6,7 +6,7 @@ import {
     NativeAuthenticationResult,
     Permission,
     Success,
-} from '@vendure/common/lib/generated-types';
+} from '@deenruv/common/lib/generated-types';
 import { Request, Response } from 'express';
 
 import { NativeAuthStrategyError } from '../../../common/error/generated-graphql-admin-errors';

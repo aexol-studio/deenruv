@@ -10,7 +10,7 @@ import { ComponentRegistryService } from '../providers/component-registry/compon
  *
  * @example
  * ```ts title="providers.ts"
- * import { registerFormInputComponent } from '\@vendure/admin-ui/core';
+ * import { registerFormInputComponent } from '\@deenruv/admin-ui/core';
  *
  * export default [
  *     // highlight-next-line
@@ -22,7 +22,7 @@ import { ComponentRegistryService } from '../providers/component-registry/compon
  *
  * @example
  * ```ts title="src/vendure-config.ts"
- * import { VendureConfig } from '\@vendure/core';
+ * import { VendureConfig } from '\@deenruv/core';
  *
  * const config: VendureConfig = {
  *   // ...

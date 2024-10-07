@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## PostgresSearchStrategy
 
-<GenerationInfo sourceFile="packages/core/src/plugin/default-search-plugin/search-strategy/postgres-search-strategy.ts" sourceLine="28" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/plugin/default-search-plugin/search-strategy/postgres-search-strategy.ts" sourceLine="28" packageName="@deenruv/core" />
 
 A weighted fulltext search for PostgeSQL.
 

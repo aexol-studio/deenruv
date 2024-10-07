@@ -22,8 +22,8 @@ import {
     TransactionalConnection,
     VendureEntity,
     VendurePlugin,
-} from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+} from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import gql from 'graphql-tag';
 import path from 'path';
 import { Repository } from 'typeorm';

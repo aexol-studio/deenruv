@@ -1,5 +1,5 @@
-import type { CustomFieldConfig } from '@vendure/core';
-import { LanguageCode } from '@vendure/core';
+import type { CustomFieldConfig } from '@deenruv/core';
+import { LanguageCode } from '@deenruv/core';
 
 import { Campaign } from './campaign.entity.js';
 

@@ -9,8 +9,8 @@ import {
     UseExistingStrategy,
     UseGuestIfExistingEmptyStrategy,
     UseGuestStrategy,
-} from '@vendure/core';
-import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@vendure/testing';
+} from '@deenruv/core';
+import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@deenruv/testing';
 import gql from 'graphql-tag';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

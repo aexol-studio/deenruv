@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## StellatePluginOptions
 
-<GenerationInfo sourceFile="packages/stellate-plugin/src/types.ts" sourceLine="9" packageName="@vendure/stellate-plugin" />
+<GenerationInfo sourceFile="packages/stellate-plugin/src/types.ts" sourceLine="9" packageName="@deenruv/stellate-plugin" />
 
 Configuration options for the StellatePlugin.
 

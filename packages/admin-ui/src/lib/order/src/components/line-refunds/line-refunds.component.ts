@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { OrderDetailFragment, PaymentWithRefundsFragment } from '@vendure/admin-ui/core';
+import { OrderDetailFragment, PaymentWithRefundsFragment } from '@deenruv/admin-ui/core';
 
 @Component({
     selector: 'vdr-line-refunds',

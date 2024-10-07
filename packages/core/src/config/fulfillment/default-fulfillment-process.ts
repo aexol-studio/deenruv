@@ -1,5 +1,5 @@
-import { HistoryEntryType } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { HistoryEntryType } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { isGraphQlErrorResult } from '../../common/error/error-result';

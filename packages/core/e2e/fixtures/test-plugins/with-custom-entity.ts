@@ -1,8 +1,8 @@
-import { Collection, PluginCommonModule, VendureEntity, VendurePlugin } from '@vendure/core';
+import { Collection, PluginCommonModule, VendureEntity, VendurePlugin } from '@deenruv/core';
 import gql from 'graphql-tag';
 import { DeepPartial, Entity, ManyToMany, OneToMany } from 'typeorm';
 
-declare module '@vendure/core/dist/entity/custom-entity-fields' {
+declare module '@deenruv/core/dist/entity/custom-entity-fields' {
     interface CustomCollectionFields {
         customEntity: TestCustomEntity;
         customEntityList: TestCustomEntity[];
@@ -24,7 +24,7 @@ export class TestCustomEntity extends VendureEntity {
     customEntityInverse: Collection[];
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [TestCustomEntity],
     adminApiExtensions: {

@@ -1,4 +1,4 @@
-import { Type } from '@vendure/common/lib/shared-types';
+import { Type } from '@deenruv/common/lib/shared-types';
 
 import { Job } from '../../job-queue/job';
 import { BackoffStrategy } from '../../job-queue/polling-job-queue-strategy';
@@ -98,7 +98,7 @@ export interface DefaultJobQueueOptions {
  *
  * @example
  * ```ts
- * import { DefaultJobQueuePlugin, VendureConfig } from '\@vendure/core';
+ * import { DefaultJobQueuePlugin, VendureConfig } from '\@deenruv/core';
  *
  * export const config: VendureConfig = {
  *   // Add an instance of the plugin to the plugins array
@@ -180,7 +180,7 @@ export interface DefaultJobQueueOptions {
  * @docsCategory JobQueue
  * @docsWeight 0
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: () =>
         DefaultJobQueuePlugin.options.useDatabaseForBuffer === true

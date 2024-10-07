@@ -1,4 +1,4 @@
-import { CollectionDefinition, InitialData } from '@vendure/core';
+import { CollectionDefinition, InitialData } from '@deenruv/core';
 import fs from 'fs';
 import path from 'path';
 

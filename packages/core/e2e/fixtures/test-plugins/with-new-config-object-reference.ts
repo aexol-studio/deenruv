@@ -1,10 +1,10 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { VendurePlugin } from '@vendure/core';
+import { VendurePlugin } from '@deenruv/core';
 
 /**
  * https://github.com/vendure-ecommerce/vendure/issues/2906
  */
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         return {
             ...config,

@@ -26,10 +26,10 @@ import {
     UntypedFormArray,
     UntypedFormControl,
 } from '@angular/forms';
-import { StringCustomFieldConfig } from '@vendure/common/lib/generated-types';
-import { ConfigArgType, CustomFieldType, DefaultFormComponentId } from '@vendure/common/lib/shared-types';
-import { assertNever, notNullOrUndefined } from '@vendure/common/lib/shared-utils';
-import { simpleDeepClone } from '@vendure/common/lib/simple-deep-clone';
+import { StringCustomFieldConfig } from '@deenruv/common/lib/generated-types';
+import { ConfigArgType, CustomFieldType, DefaultFormComponentId } from '@deenruv/common/lib/shared-types';
+import { assertNever, notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { simpleDeepClone } from '@deenruv/common/lib/simple-deep-clone';
 import { Subject, Subscription } from 'rxjs';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
 
@@ -280,7 +280,7 @@ export class DynamicFormInputComponent
                         ({
                             id: this.listId++,
                             control: new UntypedFormControl(getConfigArgValue(value)),
-                        } as InputListItem),
+                        }) as InputListItem,
                 );
                 this.renderList$.next();
             }

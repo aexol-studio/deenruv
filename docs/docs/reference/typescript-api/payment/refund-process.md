@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## RefundProcess
 
-<GenerationInfo sourceFile="packages/core/src/config/refund/refund-process.ts" sourceLine="25" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/config/refund/refund-process.ts" sourceLine="25" packageName="@deenruv/core" />
 
 A RefundProcess is used to define the way the refund process works as in: what states a Refund can be
 in, and how it may transition from one state to another. Using the `onTransitionStart()` hook, a

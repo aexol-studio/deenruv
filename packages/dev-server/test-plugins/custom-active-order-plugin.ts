@@ -7,11 +7,11 @@ import {
     RequestContext,
     TransactionalConnection,
     VendurePlugin,
-} from '@vendure/core';
-import { CustomOrderFields } from '@vendure/core/dist/entity/custom-entity-fields';
+} from '@deenruv/core';
+import { CustomOrderFields } from '@deenruv/core/dist/entity/custom-entity-fields';
 import gql from 'graphql-tag';
 
-declare module '@vendure/core/dist/entity/custom-entity-fields' {
+declare module '@deenruv/core/dist/entity/custom-entity-fields' {
     interface CustomOrderFields {
         orderToken: string;
     }
@@ -62,7 +62,7 @@ class TokenActiveOrderStrategy implements ActiveOrderStrategy {
     // }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         config.customFields.Order.push({
             name: 'orderToken',

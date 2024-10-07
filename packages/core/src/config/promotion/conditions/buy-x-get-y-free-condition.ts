@@ -1,5 +1,5 @@
-import { LanguageCode } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { OrderLine } from '../../../entity/order-line/order-line.entity';
 import { PromotionCondition } from '../promotion-condition';

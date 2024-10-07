@@ -1,5 +1,5 @@
-import { DefaultJobQueuePlugin, DefaultSearchPlugin, mergeConfig } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { DefaultJobQueuePlugin, DefaultSearchPlugin, mergeConfig } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 

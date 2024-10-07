@@ -11,7 +11,7 @@ import {
     RequestContextService,
     TransactionalConnection,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 import { shopApiExtensions } from './api/api-extensions';
 import { MultivendorResolver } from './api/mv.resolver';
@@ -123,7 +123,7 @@ import { MultivendorPluginOptions } from './types';
  * After that, you should be able to see that the Order has been split into an "aggregate" order in the default Channel,
  * and then one or more "seller" orders in each Channel from which the customer bought items.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.customFields.Seller.push({

@@ -1,4 +1,4 @@
-import { DeepPartial } from '@vendure/common/lib/shared-types';
+import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { ChildEntity, Index, ManyToOne } from 'typeorm';
 
 import { Order } from '../order/order.entity';

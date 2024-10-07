@@ -2,8 +2,8 @@ import { Module, Provider, Type as NestType } from '@nestjs/common';
 import { MODULE_METADATA } from '@nestjs/common/constants';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-import { pick } from '@vendure/common/lib/pick';
-import { Type } from '@vendure/common/lib/shared-types';
+import { pick } from '@deenruv/common/lib/pick';
+import { Type } from '@deenruv/common/lib/shared-types';
 import { DocumentNode, GraphQLScalarType } from 'graphql';
 
 import { RuntimeVendureConfig } from '../config/vendure-config';
@@ -125,7 +125,7 @@ export type PluginConfigurationFn = (
  * @example
  * ```ts
  * import { Controller, Get } from '\@nestjs/common';
- * import { Ctx, PluginCommonModule, ProductService, RequestContext, VendurePlugin } from '\@vendure/core';
+ * import { Ctx, PluginCommonModule, ProductService, RequestContext, VendurePlugin } from '\@deenruv/core';
  *
  * \@Controller('products')
  * export class ProductsController {
@@ -139,7 +139,7 @@ export type PluginConfigurationFn = (
  *
  *
  * //A simple plugin which adds a REST endpoint for querying products.
- * \@VendurePlugin({
+ * \@DeenruvPlugin({
  *     imports: [PluginCommonModule],
  *     controllers: [ProductsController],
  * })

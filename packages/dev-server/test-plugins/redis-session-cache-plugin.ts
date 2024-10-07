@@ -1,4 +1,4 @@
-import { CachedSession, Logger, SessionCacheStrategy, VendurePlugin } from '@vendure/core';
+import { CachedSession, Logger, SessionCacheStrategy, VendurePlugin } from '@deenruv/core';
 import { Redis, RedisOptions } from 'ioredis';
 
 const loggerCtx = 'RedisSessionCacheStrategy';
@@ -63,7 +63,7 @@ export interface RedisSessionCachePluginOptions {
     redisOptions?: RedisOptions;
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     configuration: config => {
         config.authOptions.sessionCacheStrategy = new RedisSessionCacheStrategy(
             RedisSessionCachePlugin.options,

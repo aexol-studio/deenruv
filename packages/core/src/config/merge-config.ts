@@ -1,5 +1,5 @@
-import { isClassInstance, isObject } from '@vendure/common/lib/shared-utils';
-import { simpleDeepClone } from '@vendure/common/lib/simple-deep-clone';
+import { isClassInstance, isObject } from '@deenruv/common/lib/shared-utils';
+import { simpleDeepClone } from '@deenruv/common/lib/simple-deep-clone';
 
 import { PartialVendureConfig, VendureConfig } from './vendure-config';
 

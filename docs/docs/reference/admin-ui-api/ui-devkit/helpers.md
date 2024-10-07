@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## setBranding
 
-<GenerationInfo sourceFile="packages/ui-devkit/src/compiler/helpers.ts" sourceLine="26" packageName="@vendure/ui-devkit" />
+<GenerationInfo sourceFile="packages/ui-devkit/src/compiler/helpers.ts" sourceLine="26" packageName="@deenruv/ui-devkit" />
 
 A helper function to simplify the process of setting custom branding images.
 

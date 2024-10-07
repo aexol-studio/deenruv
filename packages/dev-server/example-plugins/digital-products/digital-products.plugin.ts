@@ -1,4 +1,4 @@
-import { LanguageCode, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
 import './types';
 import { digitalFulfillmentHandler } from './config/digital-fulfillment-handler';
@@ -10,7 +10,7 @@ import { DigitalShippingLineAssignmentStrategy } from './config/digital-shipping
  * @description
  * This is an example plugin which demonstrates how to add support for digital products.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.customFields.ProductVariant.push({

@@ -1,4 +1,4 @@
-import { ConfigArg } from '@vendure/common/lib/generated-types';
+import { ConfigArg } from '@deenruv/common/lib/generated-types';
 import { SelectQueryBuilder } from 'typeorm';
 
 import {
@@ -31,7 +31,7 @@ export interface CollectionFilterConfig<T extends ConfigArgs> extends Configurab
  *
  * @example
  * ```ts
- * import { CollectionFilter, LanguageCode } from '\@vendure/core';
+ * import { CollectionFilter, LanguageCode } from '\@deenruv/core';
  *
  * export const skuCollectionFilter = new CollectionFilter({
  *   args: {

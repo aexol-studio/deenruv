@@ -8,8 +8,8 @@ import {
     Permission,
     ServerConfig,
     UpdateGlobalSettingsResult,
-} from '@vendure/common/lib/generated-types';
-import { notNullOrUndefined } from '@vendure/common/lib/shared-utils';
+} from '@deenruv/common/lib/generated-types';
+import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
 import {
     GraphQLOutputType,
     GraphQLResolveInfo,
@@ -134,8 +134,8 @@ export class GlobalSettingsResolver {
                         c.requiresPermission = Array.isArray(requiresPermission)
                             ? requiresPermission
                             : !!requiresPermission
-                            ? [requiresPermission]
-                            : [];
+                              ? [requiresPermission]
+                              : [];
                         return c;
                     })
                     .map(c => {

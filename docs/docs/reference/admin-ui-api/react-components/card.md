@@ -11,14 +11,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## Card
 
-<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-components/Card.tsx" sourceLine="22" packageName="@vendure/admin-ui" />
+<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-components/Card.tsx" sourceLine="22" packageName="@deenruv/admin-ui" />
 
 A card component which can be used to group related content.
 
 *Example*
 
 ```ts
-import { Card } from '@vendure/admin-ui/react';
+import { Card } from '@deenruv/admin-ui/react';
 
 export function MyComponent() {
   return (

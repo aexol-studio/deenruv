@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { JobState } from '@vendure/common/lib/generated-types';
-import { JobQueue, JobQueueService, Logger, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { JobState } from '@deenruv/common/lib/generated-types';
+import { JobQueue, JobQueueService, Logger, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { gql } from 'graphql-tag';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -92,7 +92,7 @@ export class JobQueueTestResolver {
  * A plugin which can be used to test job queue strategies. Exposes a mutation `startTask` in
  * the Admin API which triggers a job.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         resolvers: [JobQueueTestResolver],

@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, NestModule, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
-import { PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import express from 'express';
 import path from 'path';
 
@@ -21,7 +21,7 @@ export type GoogleAuthPluginOptions = {
  * public-looking url such as `http://google-login-test.com` by modifying your OS
  * hosts file.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.authOptions.shopAuthenticationStrategy = [

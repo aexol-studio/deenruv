@@ -8,7 +8,7 @@ import {
     getAppConfig,
     LocalizationDirectionType,
     LocalizationService,
-} from '@vendure/admin-ui/core';
+} from '@deenruv/admin-ui/core';
 
 @Component({
     selector: 'vdr-login',

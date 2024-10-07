@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## InitializerService
 
-<GenerationInfo sourceFile="packages/core/src/service/initializer.service.ts" sourceLine="26" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/service/initializer.service.ts" sourceLine="26" packageName="@deenruv/core" />
 
 Only used internally to run the various service init methods in the correct
 sequence on bootstrap.

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { AdminUiPlugin } from '@vendure/admin-ui-plugin';
-import { AssetServerPlugin } from '@vendure/asset-server-plugin';
-import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@vendure/common/lib/shared-constants';
+import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
+import { AssetServerPlugin } from '@deenruv/asset-server-plugin';
+import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     Asset,
     DefaultJobQueuePlugin,
@@ -11,12 +11,12 @@ import {
     LanguageCode,
     LogLevel,
     VendureConfig,
-} from '@vendure/core';
-import { ElasticsearchPlugin } from '@vendure/elasticsearch-plugin';
-import { defaultEmailHandlers, EmailPlugin } from '@vendure/email-plugin';
-// import { BullMQJobQueuePlugin } from '@vendure/job-queue-plugin/package/bullmq';
+} from '@deenruv/core';
+import { ElasticsearchPlugin } from '@deenruv/elasticsearch-plugin';
+import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
+// import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
-import { compileUiExtensions } from '@vendure/ui-devkit/compiler';
+import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import path from 'path';
 import { DataSourceOptions } from 'typeorm';
 

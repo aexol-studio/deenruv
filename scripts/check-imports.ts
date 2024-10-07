@@ -10,14 +10,12 @@ const find = require('find');
  * and go undetected) from getting into published releases of Vendure.
  */
 const illegalImportPatterns: RegExp[] = [
-    /@vendure\/common\/src/,
-    /@vendure\/core\/src/,
-    /@vendure\/admin-ui\/src/,
+    /@deenruv\/common\/src/,
+    /@deenruv\/core\/src/,
+    /@deenruv\/admin-ui\/src/,
 ];
 
-const exclude: string[] = [
-    path.join(__dirname, '../packages/dev-server'),
-];
+const exclude: string[] = [path.join(__dirname, '../packages/dev-server')];
 
 findInFiles(illegalImportPatterns, path.join(__dirname, '../packages'), /\.ts$/, exclude);
 
@@ -38,8 +36,7 @@ function findInFiles(patterns: RegExp[], directory: string, fileFilter: RegExp, 
 
 async function getMatchedFiles(patterns: RegExp[], files: string[], excludePaths: string[]) {
     const matchedFiles = [];
-    outer:
-    for (let i = files.length - 1; i >= 0; i--) {
+    outer: for (let i = files.length - 1; i >= 0; i--) {
         for (const excludedPath of excludePaths) {
             if (files[i].includes(excludedPath)) {
                 continue outer;

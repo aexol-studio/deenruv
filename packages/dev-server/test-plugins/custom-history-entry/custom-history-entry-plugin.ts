@@ -9,14 +9,17 @@ import {
     RequestContext,
     TransactionalConnection,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 
 import { CUSTOM_TYPE } from './types';
 
 @Resolver()
 class AddHistoryEntryResolver {
-    constructor(private connection: TransactionalConnection, private historyService: HistoryService) {}
+    constructor(
+        private connection: TransactionalConnection,
+        private historyService: HistoryService,
+    ) {}
 
     @Mutation()
     async addCustomOrderHistoryEntry(
@@ -51,7 +54,7 @@ class AddHistoryEntryResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: gql`

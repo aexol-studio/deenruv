@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## HealthCheckRegistryService
 
-<GenerationInfo sourceFile="packages/core/src/health-check/health-check-registry.service.ts" sourceLine="47" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/health-check/health-check-registry.service.ts" sourceLine="47" packageName="@deenruv/core" />
 
 This service is used to register health indicator functions to be included in the
 health check. Health checks can be used by automated services such as Kubernetes
@@ -36,10 +36,10 @@ plugin module. To use it in your plugin, you'll need to import the <a href='/ref
 *Example*
 
 ```ts
-import { HealthCheckRegistryService, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { HealthCheckRegistryService, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { TerminusModule } from '@nestjs/terminus';
 
-@VendurePlugin({
+@DeenruvPlugin({
   imports: [PluginCommonModule, TerminusModule],
 })
 export class MyPlugin {

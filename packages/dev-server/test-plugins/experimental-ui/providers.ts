@@ -1,5 +1,5 @@
-import { registerDataTableComponent } from '@vendure/admin-ui/core';
-import { registerReactCustomDetailComponent, registerReactDataTableComponent } from '@vendure/admin-ui/react';
+import { registerDataTableComponent } from '@deenruv/admin-ui/core';
+import { registerReactCustomDetailComponent, registerReactDataTableComponent } from '@deenruv/admin-ui/react';
 
 import { ProductInfo } from './components/CustomDetailComponent';
 import { SlugWithLinkComponent } from './components/slug-with-link.component';

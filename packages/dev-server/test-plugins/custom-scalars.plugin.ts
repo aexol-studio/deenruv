@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { GraphQLScalarType, Kind } from 'graphql';
 import gql from 'graphql-tag';
 
@@ -13,7 +13,7 @@ const FooScalar = new GraphQLScalarType({
     },
 });
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     shopApiExtensions: {
         schema: gql`

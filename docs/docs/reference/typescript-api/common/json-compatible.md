@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## JsonCompatible
 
-<GenerationInfo sourceFile="packages/common/src/shared-types.ts" sourceLine="52" packageName="@vendure/common" />
+<GenerationInfo sourceFile="packages/common/src/shared-types.ts" sourceLine="52" packageName="@deenruv/common" />
 
 A type representing JSON-compatible values.
 From https://github.com/microsoft/TypeScript/issues/1897#issuecomment-580962081

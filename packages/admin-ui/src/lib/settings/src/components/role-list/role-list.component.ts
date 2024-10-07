@@ -7,8 +7,8 @@ import {
     Role,
     ROLE_FRAGMENT,
     TypedBaseListComponent,
-} from '@vendure/admin-ui/core';
-import { CUSTOMER_ROLE_CODE, SUPER_ADMIN_ROLE_CODE } from '@vendure/common/lib/shared-constants';
+} from '@deenruv/admin-ui/core';
+import { CUSTOMER_ROLE_CODE, SUPER_ADMIN_ROLE_CODE } from '@deenruv/common/lib/shared-constants';
 import { gql } from 'apollo-angular';
 
 export const GET_ROLE_LIST = gql`

@@ -11,7 +11,7 @@ import {
     PasswordResetEvent,
     RequestContext,
     ShippingLine,
-} from '@vendure/core';
+} from '@deenruv/core';
 import { Request } from 'express';
 
 import { EmailEventListener } from '../event-listener';

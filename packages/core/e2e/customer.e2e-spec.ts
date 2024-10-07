@@ -1,15 +1,15 @@
 import { OnModuleInit } from '@nestjs/common';
-import { HistoryEntryType } from '@vendure/common/lib/generated-types';
-import { omit } from '@vendure/common/lib/omit';
-import { pick } from '@vendure/common/lib/pick';
+import { HistoryEntryType } from '@deenruv/common/lib/generated-types';
+import { omit } from '@deenruv/common/lib/omit';
+import { pick } from '@deenruv/common/lib/pick';
 import {
     AccountRegistrationEvent,
     EventBus,
     EventBusModule,
     mergeConfig,
     VendurePlugin,
-} from '@vendure/core';
-import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@vendure/testing';
+} from '@deenruv/core';
+import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@deenruv/testing';
 import gql from 'graphql-tag';
 import path from 'path';
 import { vi } from 'vitest';
@@ -53,7 +53,7 @@ let sendEmailFn: Mock;
  * This mock plugin simulates an EmailPlugin which would send emails
  * on the registration & password reset events.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [EventBusModule],
 })
 class TestEmailPlugin implements OnModuleInit {

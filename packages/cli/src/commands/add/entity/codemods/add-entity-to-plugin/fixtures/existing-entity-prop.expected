@@ -1,9 +1,9 @@
-import { PluginCommonModule, Type, VendurePlugin, Product } from '@vendure/core';
+import { PluginCommonModule, Type, VendurePlugin, Product } from '@deenruv/core';
 import { ScaffoldEntity } from './entity';
 
 type PluginInitOptions = any;
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [Product, ScaffoldEntity],
     compatibility: '^2.0.0',

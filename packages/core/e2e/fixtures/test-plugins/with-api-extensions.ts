@@ -1,5 +1,5 @@
 import { Query, Resolver } from '@nestjs/graphql';
-import { VendurePlugin } from '@vendure/core';
+import { VendurePlugin } from '@deenruv/core';
 import { GraphQLScalarType } from 'graphql';
 import gql from 'graphql-tag';
 
@@ -38,7 +38,7 @@ const PizzaScalar = new GraphQLScalarType({
     },
 });
 
-@VendurePlugin({
+@DeenruvPlugin({
     shopApiExtensions: {
         resolvers: [TestShopPluginResolver],
         schema: gql`

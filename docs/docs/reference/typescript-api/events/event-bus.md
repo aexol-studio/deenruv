@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## EventBus
 
-<GenerationInfo sourceFile="packages/core/src/event-bus/event-bus.ts" sourceLine="97" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/event-bus/event-bus.ts" sourceLine="97" packageName="@deenruv/core" />
 
 The EventBus is used to globally publish events which can then be subscribed to.
 
@@ -29,10 +29,10 @@ stream of events:
 
 ```ts
 import { OnApplicationBootstrap } from '@nestjs/common';
-import { EventBus, PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { EventBus, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { filter } from 'rxjs/operators';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule]
 })
 export class MyPlugin implements OnApplicationBootstrap {

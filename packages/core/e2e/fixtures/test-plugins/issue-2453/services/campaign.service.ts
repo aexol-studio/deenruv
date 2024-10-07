@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DeletionResponse, DeletionResult } from '@vendure/common/lib/generated-types';
-import type { ID, ListQueryOptions, PaginatedList, Translated } from '@vendure/core';
+import { DeletionResponse, DeletionResult } from '@deenruv/common/lib/generated-types';
+import type { ID, ListQueryOptions, PaginatedList, Translated } from '@deenruv/core';
 import {
     assertFound,
     CollectionService,
@@ -10,7 +10,7 @@ import {
     TransactionalConnection,
     TranslatableSaver,
     translateDeep,
-} from '@vendure/core';
+} from '@deenruv/core';
 import { In } from 'typeorm';
 
 import { CampaignTranslation } from '../entities/campaign-translation.entity';

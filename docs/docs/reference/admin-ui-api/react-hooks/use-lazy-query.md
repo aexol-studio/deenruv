@@ -11,14 +11,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## useLazyQuery
 
-<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-hooks/use-query.ts" sourceLine="119" packageName="@vendure/admin-ui" since="2.2.0" />
+<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-hooks/use-query.ts" sourceLine="119" packageName="@deenruv/admin-ui" since="2.2.0" />
 
 A React hook which allows you to execute a GraphQL query lazily.
 
 *Example*
 
 ```ts
-import { useLazyQuery } from '@vendure/admin-ui/react';
+import { useLazyQuery } from '@deenruv/admin-ui/react';
 import { gql } from 'graphql-tag';
 
 const GET_PRODUCT = gql`

@@ -1,5 +1,5 @@
-import { CreateAdministratorInput, UpdateAdministratorInput } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { CreateAdministratorInput, UpdateAdministratorInput } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Administrator } from '../../entity';

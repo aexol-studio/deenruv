@@ -1,5 +1,5 @@
-import { mergeConfig, Zone } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { mergeConfig, Zone } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import gql from 'graphql-tag';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

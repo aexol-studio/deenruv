@@ -1,6 +1,6 @@
 // product-review.entity.ts
-import { DeepPartial } from '@vendure/common/lib/shared-types';
-import { VendureEntity, VendurePlugin } from '@vendure/core';
+import { DeepPartial } from '@deenruv/common/lib/shared-types';
+import { VendureEntity, VendurePlugin } from '@deenruv/core';
 import { Column, Entity } from 'typeorm';
 
 @Entity()
@@ -23,7 +23,7 @@ export class TestEntityB extends VendureEntity {
     textB: string;
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     entities: () => {
         return DynamicEntitiesPlugin.useEntity === 'A' ? [TestEntityA] : [TestEntityB];
     },

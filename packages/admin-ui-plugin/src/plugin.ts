@@ -2,13 +2,13 @@ import { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import {
     DEFAULT_AUTH_TOKEN_HEADER_KEY,
     DEFAULT_CHANNEL_TOKEN_KEY,
-} from '@vendure/common/lib/shared-constants';
+} from '@deenruv/common/lib/shared-constants';
 import {
     AdminUiAppConfig,
     AdminUiAppDevModeConfig,
     AdminUiConfig,
     Type,
-} from '@vendure/common/lib/shared-types';
+} from '@deenruv/common/lib/shared-types';
 import {
     ConfigService,
     createProxyHandler,
@@ -17,7 +17,7 @@ import {
     ProcessContext,
     registerPluginStartupMessage,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import express from 'express';
 import fs from 'fs-extra';
 import path from 'path';
@@ -87,15 +87,15 @@ export interface AdminUiPluginOptions {
  *
  * ## Installation
  *
- * `yarn add \@vendure/admin-ui-plugin`
+ * `yarn add \@deenruv/admin-ui-plugin`
  *
  * or
  *
- * `npm install \@vendure/admin-ui-plugin`
+ * `npm install \@deenruv/admin-ui-plugin`
  *
  * @example
  * ```ts
- * import { AdminUiPlugin } from '\@vendure/admin-ui-plugin';
+ * import { AdminUiPlugin } from '\@deenruv/admin-ui-plugin';
  *
  * const config: VendureConfig = {
  *   // Add an instance of the plugin to the plugins array
@@ -114,7 +114,7 @@ export interface AdminUiPluginOptions {
  *
  * @example
  * ```ts
- * import { AdminUiPlugin } from '\@vendure/admin-ui-plugin';
+ * import { AdminUiPlugin } from '\@deenruv/admin-ui-plugin';
  *
  * const config: VendureConfig = {
  *   plugins: [
@@ -126,7 +126,7 @@ export interface AdminUiPluginOptions {
  *
  * @docsCategory core plugins/AdminUiPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         schema: adminApiExtensions,

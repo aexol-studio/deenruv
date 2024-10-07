@@ -1,6 +1,6 @@
-import { omit } from '@vendure/common/lib/omit';
-import { User } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { omit } from '@deenruv/common/lib/omit';
+import { User } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import * as fs from 'fs';
 import gql from 'graphql-tag';
 import http from 'http';

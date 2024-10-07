@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { ID } from '@vendure/common/lib/shared-types';
-import { PaymentMethodHandler } from '@vendure/core';
-import { SimpleGraphQLClient } from '@vendure/testing';
+import { ID } from '@deenruv/common/lib/shared-types';
+import { PaymentMethodHandler } from '@deenruv/core';
+import { SimpleGraphQLClient } from '@deenruv/testing';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import * as CodegenShop from '../graphql/generated-e2e-shop-types';

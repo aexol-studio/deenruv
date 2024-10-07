@@ -1,6 +1,6 @@
-import { CreateProductInput, ProductTranslationInput } from '@vendure/common/lib/generated-types';
-import { ensureConfigLoaded, FastImporterService, LanguageCode } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { CreateProductInput, ProductTranslationInput } from '@deenruv/common/lib/generated-types';
+import { ensureConfigLoaded, FastImporterService, LanguageCode } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 

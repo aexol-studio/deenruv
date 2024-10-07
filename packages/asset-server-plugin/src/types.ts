@@ -3,7 +3,7 @@ import {
     AssetPreviewStrategy,
     AssetStorageStrategy,
     RequestContext,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 export type ImageTransformFormat = 'jpg' | 'jpeg' | 'png' | 'webp' | 'avif';
 

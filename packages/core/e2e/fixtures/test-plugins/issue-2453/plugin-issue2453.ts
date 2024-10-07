@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 
 import { apiExtensions } from './api/index';
 import { CampaignTranslation } from './entities/campaign-translation.entity';
@@ -6,7 +6,7 @@ import { Campaign } from './entities/campaign.entity';
 import { collectionCustomFields } from './entities/custom-fields-collection.entity';
 import { CampaignService } from './services/campaign.service';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [Campaign, CampaignTranslation],
     adminApiExtensions: {

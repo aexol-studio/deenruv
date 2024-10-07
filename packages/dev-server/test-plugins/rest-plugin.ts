@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Ctx, PluginCommonModule, ProductService, RequestContext, VendurePlugin } from '@vendure/core';
+import { Ctx, PluginCommonModule, ProductService, RequestContext, VendurePlugin } from '@deenruv/core';
 
 @Controller('products')
 export class ProductsController {
@@ -14,7 +14,7 @@ export class ProductsController {
 /**
  * A proof-of-concept plugin which adds a REST endpoint for querying products.
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     controllers: [ProductsController],
 })

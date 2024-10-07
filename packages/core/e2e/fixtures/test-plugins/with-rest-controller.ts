@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { Permission } from '@vendure/common/lib/generated-shop-types';
-import { Allow, InternalServerError, VendurePlugin } from '@vendure/core';
+import { Permission } from '@deenruv/common/lib/generated-shop-types';
+import { Allow, InternalServerError, VendurePlugin } from '@deenruv/core';
 
 @Controller('test')
 export class TestController {
@@ -21,7 +21,7 @@ export class TestController {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     controllers: [TestController],
 })
 export class TestRestPlugin {}

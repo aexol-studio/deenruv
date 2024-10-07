@@ -8,14 +8,17 @@ import {
     RequestContext,
     Transaction,
     TransactionalConnection,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 import { ProductReview } from '../entities/product-review.entity';
 import { MutationSubmitProductReviewArgs, MutationVoteOnReviewArgs } from '../generated-shop-types';
 
 @Resolver()
 export class ProductReviewShopResolver {
-    constructor(private connection: TransactionalConnection, private listQueryBuilder: ListQueryBuilder) {}
+    constructor(
+        private connection: TransactionalConnection,
+        private listQueryBuilder: ListQueryBuilder,
+    ) {}
 
     @Transaction()
     @Mutation()

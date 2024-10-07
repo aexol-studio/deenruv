@@ -1,5 +1,5 @@
 import { Component, inject, InjectionToken, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { CustomColumnComponent } from '@vendure/admin-ui/core';
+import { CustomColumnComponent } from '@deenruv/admin-ui/core';
 import { ElementType } from 'react';
 import { ReactComponentHostDirective } from '../directives/react-component-host.directive';
 

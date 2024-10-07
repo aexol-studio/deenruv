@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { mergeConfig, OrderService } from '@vendure/core';
-import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@vendure/testing';
+import { mergeConfig, OrderService } from '@deenruv/core';
+import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@deenruv/testing';
 import { multivendorPaymentMethodHandler } from 'dev-server/example-plugins/multivendor-plugin/config/mv-payment-handler';
 import { CONNECTED_PAYMENT_METHOD_CODE } from 'dev-server/example-plugins/multivendor-plugin/constants';
 import { MultivendorPlugin } from 'dev-server/example-plugins/multivendor-plugin/multivendor.plugin';
@@ -25,7 +25,7 @@ import {
     TRANSITION_TO_STATE,
 } from './graphql/shop-definitions';
 
-declare module '@vendure/core/dist/entity/custom-entity-fields' {
+declare module '@deenruv/core/dist/entity/custom-entity-fields' {
     interface CustomShippingMethodFields {
         minPrice: number;
         maxPrice: number;

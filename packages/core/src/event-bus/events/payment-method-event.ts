@@ -1,5 +1,5 @@
-import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { CreatePaymentMethodInput, UpdatePaymentMethodInput } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { PaymentMethod } from '../../entity';

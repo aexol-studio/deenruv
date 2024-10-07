@@ -1,7 +1,7 @@
-import { OrderLineInput } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
-import { summate } from '@vendure/common/lib/shared-utils';
-import { unique } from '@vendure/common/lib/unique';
+import { OrderLineInput } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
+import { summate } from '@deenruv/common/lib/shared-utils';
+import { unique } from '@deenruv/common/lib/unique';
 import { In } from 'typeorm';
 
 import { RequestContext } from '../../../api/common/request-context';
@@ -126,10 +126,13 @@ function getOrderFulfillmentLines(order: Order): FulfillmentLine[] {
  */
 function isOrderPartiallyFulfilled(order: Order) {
     const fulfillmentLines = getOrderFulfillmentLines(order);
-    const lines = fulfillmentLines.reduce((acc, item) => {
-        acc[item.orderLineId] = (acc[item.orderLineId] || 0) + item.quantity;
-        return acc;
-    }, {} as { [orderLineId: string]: number });
+    const lines = fulfillmentLines.reduce(
+        (acc, item) => {
+            acc[item.orderLineId] = (acc[item.orderLineId] || 0) + item.quantity;
+            return acc;
+        },
+        {} as { [orderLineId: string]: number },
+    );
     return order.lines.some(line => line.quantity > lines[line.id]);
 }
 

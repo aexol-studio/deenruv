@@ -1,5 +1,5 @@
 import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { ID } from '@vendure/common/lib/shared-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 import {
     ActiveOrderStrategy,
     Ctx,
@@ -14,10 +14,10 @@ import {
     TransactionalConnection,
     UserInputError,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 
-declare module '@vendure/core/dist/entity/custom-entity-fields' {
+declare module '@deenruv/core/dist/entity/custom-entity-fields' {
     interface CustomOrderFields {
         orderToken: string;
     }
@@ -69,7 +69,10 @@ export class OrderTokenResolver {
 
 @Resolver()
 export class CreateOrderResolver {
-    constructor(private orderService: OrderService, private customerService: CustomerService) {}
+    constructor(
+        private orderService: OrderService,
+        private customerService: CustomerService,
+    ) {}
 
     @Mutation()
     @Transaction()
@@ -85,7 +88,7 @@ export class CreateOrderResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     configuration: config => {
         config.customFields.Order.push({

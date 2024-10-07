@@ -17,7 +17,7 @@ import {
     registerPluginStartupMessage,
     Type,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 import { isDevModeOptions, resolveTransportSettings } from './common';
 import { EMAIL_PLUGIN_OPTIONS, loggerCtx } from './constants';
@@ -52,15 +52,15 @@ import {
  *
  * ## Installation
  *
- * `yarn add \@vendure/email-plugin`
+ * `yarn add \@deenruv/email-plugin`
  *
  * or
  *
- * `npm install \@vendure/email-plugin`
+ * `npm install \@deenruv/email-plugin`
  *
  * @example
  * ```ts
- * import { defaultEmailHandlers, EmailPlugin } from '\@vendure/email-plugin';
+ * import { defaultEmailHandlers, EmailPlugin } from '\@deenruv/email-plugin';
  *
  * const config: VendureConfig = {
  *   // Add an instance of the plugin to the plugins array
@@ -85,11 +85,11 @@ import {
  * ## Email templates
  *
  * In the example above, the plugin has been configured to look in `<app-root>/static/email/templates`
- * for the email template files. If you used `\@vendure/create` to create your application, the templates will have
+ * for the email template files. If you used `\@deenruv/create` to create your application, the templates will have
  * been copied to that location during setup.
  *
  * If you are installing the EmailPlugin separately, then you'll need to copy the templates manually from
- * `node_modules/\@vendure/email-plugin/templates` to a location of your choice, and then point the `templatePath` config
+ * `node_modules/\@deenruv/email-plugin/templates` to a location of your choice, and then point the `templatePath` config
  * property at that directory.
  *
  * * ### Dynamic Email Templates
@@ -183,8 +183,8 @@ import {
  *   emailVerificationHandler,
  *   passwordResetHandler,
  *   emailAddressChangeHandler,
- * } from '\@vendure/email-plugin';
- * import { CustomerService } from '\@vendure/core';
+ * } from '\@deenruv/email-plugin';
+ * import { CustomerService } from '\@deenruv/core';
  *
  * // This allows you to then customize each handler to your needs.
  * // For example, let's set a new subject line to the order confirmation:
@@ -226,7 +226,7 @@ import {
  *
  * @example
  * ```ts
- * import { defaultEmailHandlers, EmailPlugin } from '\@vendure/email-plugin';
+ * import { defaultEmailHandlers, EmailPlugin } from '\@deenruv/email-plugin';
  * import { MyTransportService } from './transport.services.ts';
  * const config: VendureConfig = {
  *   plugins: [
@@ -301,7 +301,7 @@ import {
  *
  * @docsCategory core plugins/EmailPlugin
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [{ provide: EMAIL_PLUGIN_OPTIONS, useFactory: () => EmailPlugin.options }, EmailProcessor],
     compatibility: '^2.0.0',

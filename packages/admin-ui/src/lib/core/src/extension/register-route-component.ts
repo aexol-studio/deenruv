@@ -42,8 +42,8 @@ export type RegisterRouteComponentOptions<
  *
  * @example
  * ```ts title="routes.ts"
- * import { registerRouteComponent } from '\@vendure/admin-ui/core';
- * import { registerReactRouteComponent } from '\@vendure/admin-ui/react';
+ * import { registerRouteComponent } from '\@deenruv/admin-ui/core';
+ * import { registerReactRouteComponent } from '\@deenruv/admin-ui/react';
  *
  * import { ProductReviewDetailComponent } from './components/product-review-detail/product-review-detail.component';
  * import { AllProductReviewsList } from './components/all-product-reviews-list/all-product-reviews-list.component';

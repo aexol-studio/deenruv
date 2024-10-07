@@ -1,5 +1,5 @@
 import { Message, PubSub, Subscription, Topic } from '@google-cloud/pubsub';
-import { JobState } from '@vendure/common/lib/generated-types';
+import { JobState } from '@deenruv/common/lib/generated-types';
 import {
     InjectableJobQueueStrategy,
     Injector,
@@ -8,7 +8,7 @@ import {
     JobQueueStrategy,
     Logger,
     QueueNameProcessStorage,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 import { loggerCtx, PUB_SUB_OPTIONS } from './constants';
 import { PubSubOptions } from './options';

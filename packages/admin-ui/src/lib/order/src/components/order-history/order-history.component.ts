@@ -5,7 +5,7 @@ import {
     OrderDetailFragment,
     TimelineDisplayType,
     TimelineHistoryEntry,
-} from '@vendure/admin-ui/core';
+} from '@deenruv/admin-ui/core';
 
 @Component({
     selector: 'vdr-order-history',

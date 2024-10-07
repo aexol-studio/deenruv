@@ -24,9 +24,9 @@ import {
     ShippingMethodQuote,
     TransitionOrderToStateResult,
     UpdateOrderItemsResult,
-} from '@vendure/common/lib/generated-shop-types';
-import { QueryCountriesArgs } from '@vendure/common/lib/generated-types';
-import { unique } from '@vendure/common/lib/unique';
+} from '@deenruv/common/lib/generated-shop-types';
+import { QueryCountriesArgs } from '@deenruv/common/lib/generated-types';
+import { unique } from '@deenruv/common/lib/unique';
 
 import { ErrorResultUnion, isGraphQlErrorResult } from '../../../common/error/error-result';
 import { ForbiddenError } from '../../../common/error/errors';

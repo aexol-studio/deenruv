@@ -4,8 +4,8 @@ import {
     DeletionResponse,
     DeletionResult,
     UpdateTaxCategoryInput,
-} from '@vendure/common/lib/generated-types';
-import { ID, PaginatedList } from '@vendure/common/lib/shared-types';
+} from '@deenruv/common/lib/generated-types';
+import { ID, PaginatedList } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { EntityNotFoundError } from '../../common/error/errors';

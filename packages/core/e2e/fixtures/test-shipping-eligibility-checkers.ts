@@ -1,5 +1,5 @@
-import { LanguageCode } from '@vendure/common/lib/generated-types';
-import { EntityHydrator, ShippingEligibilityChecker } from '@vendure/core';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
+import { EntityHydrator, ShippingEligibilityChecker } from '@deenruv/core';
 
 export const countryCodeShippingEligibilityChecker = new ShippingEligibilityChecker({
     code: 'country-code-shipping-eligibility-checker',

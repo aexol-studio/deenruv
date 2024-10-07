@@ -11,7 +11,7 @@ import {
     Transaction,
     TransactionalConnection,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 
 @Resolver()
@@ -69,7 +69,7 @@ export class SlowMutationResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
         resolvers: [SlowMutationResolver],

@@ -15,7 +15,7 @@ import { Logger, RuntimeVendureConfig, VendureConfig } from '../config';
  * // Imagine that we have started a Node server on port 5678
  * // running some service which we want to access via the `/my-plugin/`
  * // route of the main Vendure server.
- * \@VendurePlugin({
+ * \@DeenruvPlugin({
  *   configuration: (config: Required<VendureConfig>) => {
  *       config.apiOptions.middleware.push({
  *           handler: createProxyHandler({

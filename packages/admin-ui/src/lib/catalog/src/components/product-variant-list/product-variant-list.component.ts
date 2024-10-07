@@ -6,7 +6,7 @@ import {
     ProductVariantFilterParameter,
     ProductVariantListQueryDocument,
     TypedBaseListComponent,
-} from '@vendure/admin-ui/core';
+} from '@deenruv/admin-ui/core';
 
 @Component({
     selector: 'vdr-product-variant-list',

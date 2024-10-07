@@ -17,7 +17,7 @@ import {
     TransactionalConnection,
     VendureEntity,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 import { Entity, ManyToOne } from 'typeorm';
 
@@ -153,7 +153,7 @@ export class AdditionalConfig extends VendureEntity {
     backgroundImage: Asset;
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [AdditionalConfig],
     adminApiExtensions: {

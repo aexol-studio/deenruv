@@ -11,15 +11,15 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## useInjector
 
-<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-hooks/use-injector.ts" sourceLine="27" packageName="@vendure/admin-ui" />
+<GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-hooks/use-injector.ts" sourceLine="27" packageName="@deenruv/admin-ui" />
 
 Exposes the Angular injector which allows the injection of services into React components.
 
 *Example*
 
 ```ts
-import { useInjector } from '@vendure/admin-ui/react';
-import { NotificationService } from '@vendure/admin-ui/core';
+import { useInjector } from '@deenruv/admin-ui/react';
+import { NotificationService } from '@deenruv/admin-ui/core';
 
 export const MyComponent = () => {
     const notificationService = useInjector(NotificationService);

@@ -1,5 +1,5 @@
-import { ID } from '@vendure/common/lib/shared-types';
-import { isObject } from '@vendure/common/lib/shared-utils';
+import { ID } from '@deenruv/common/lib/shared-types';
+import { isObject } from '@deenruv/common/lib/shared-utils';
 
 import { EntityIdStrategy } from '../../config/entity/entity-id-strategy';
 import { VendureEntity } from '../../entity/base/base.entity';

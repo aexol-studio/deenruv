@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## registerCustomDetailComponent
 
-<GenerationInfo sourceFile="packages/admin-ui/src/lib/core/src/extension/register-custom-detail-component.ts" sourceLine="57" packageName="@vendure/admin-ui" />
+<GenerationInfo sourceFile="packages/admin-ui/src/lib/core/src/extension/register-custom-detail-component.ts" sourceLine="57" packageName="@deenruv/admin-ui" />
 
 Registers a <a href='/reference/admin-ui-api/custom-detail-components/custom-detail-component#customdetailcomponent'>CustomDetailComponent</a> to be placed in a given location. This allows you
 to embed any type of custom Angular component in the entity detail pages of the Admin UI.
@@ -22,14 +22,14 @@ to embed any type of custom Angular component in the entity detail pages of the 
 import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { CustomFieldConfig } from '@vendure/common/lib/generated-types';
+import { CustomFieldConfig } from '@deenruv/common/lib/generated-types';
 import {
     DataService,
     SharedModule,
     CustomDetailComponent,
     registerCustomDetailComponent,
     GetProductWithVariants
-} from '@vendure/admin-ui/core';
+} from '@deenruv/admin-ui/core';
 
 @Component({
     template: `{{ extraInfo$ | async | json }}`,

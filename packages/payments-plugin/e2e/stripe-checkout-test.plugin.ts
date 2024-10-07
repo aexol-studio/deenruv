@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Controller, Res, Get } from '@nestjs/common';
-import { PluginCommonModule, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { Response } from 'express';
 
 import { clientSecret } from './stripe-dev-server';
@@ -81,7 +81,7 @@ form.addEventListener('submit', async (event) => {
 /**
  * Test plugin for serving the Stripe intent checkout page
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     controllers: [StripeTestCheckoutController],
 })

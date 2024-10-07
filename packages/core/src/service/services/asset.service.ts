@@ -10,11 +10,11 @@ import {
     LogicalOperator,
     Permission,
     UpdateAssetInput,
-} from '@vendure/common/lib/generated-types';
-import { omit } from '@vendure/common/lib/omit';
-import { ID, PaginatedList, Type } from '@vendure/common/lib/shared-types';
-import { notNullOrUndefined } from '@vendure/common/lib/shared-utils';
-import { unique } from '@vendure/common/lib/unique';
+} from '@deenruv/common/lib/generated-types';
+import { omit } from '@deenruv/common/lib/omit';
+import { ID, PaginatedList, Type } from '@deenruv/common/lib/shared-types';
+import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
+import { unique } from '@deenruv/common/lib/unique';
 import { ReadStream as FSReadStream } from 'fs';
 import { ReadStream } from 'fs-extra';
 import { IncomingMessage } from 'http';

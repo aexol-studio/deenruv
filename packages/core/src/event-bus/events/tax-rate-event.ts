@@ -1,5 +1,5 @@
-import { CreateTaxRateInput, UpdateTaxRateInput } from '@vendure/common/lib/generated-types';
-import { ID } from '@vendure/common/lib/shared-types';
+import { CreateTaxRateInput, UpdateTaxRateInput } from '@deenruv/common/lib/generated-types';
+import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { TaxRate } from '../../entity';

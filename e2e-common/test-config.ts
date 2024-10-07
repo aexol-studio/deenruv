@@ -1,11 +1,11 @@
-import { mergeConfig } from '@vendure/core';
+import { mergeConfig } from '@deenruv/core';
 import {
     MysqlInitializer,
     PostgresInitializer,
     registerInitializer,
     SqljsInitializer,
     testConfig as defaultTestConfig,
-} from '@vendure/testing';
+} from '@deenruv/testing';
 import fs from 'fs-extra';
 import path from 'path';
 import { DataSourceOptions } from 'typeorm';

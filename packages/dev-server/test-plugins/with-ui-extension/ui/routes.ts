@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { PageMetadataService, registerRouteComponent, SharedModule } from '@vendure/admin-ui/core';
+import { PageMetadataService, registerRouteComponent, SharedModule } from '@deenruv/admin-ui/core';
 
 @Component({
     selector: 'greeter',

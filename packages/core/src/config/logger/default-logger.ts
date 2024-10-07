@@ -12,7 +12,7 @@ const DEFAULT_CONTEXT = 'Vendure Server';
  *
  * @example
  * ```ts
- * import { DefaultLogger, LogLevel, VendureConfig } from '\@vendure/core';
+ * import { DefaultLogger, LogLevel, VendureConfig } from '\@deenruv/core';
  *
  * export config: VendureConfig = {
  *     // ...

@@ -7,7 +7,7 @@ import {
     PluginCommonModule,
     RequestContext,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 import path from 'path';
 
@@ -38,7 +38,7 @@ class TestResolver {
 
 export const CUSTOM_ERROR_MESSAGE_TRANSLATION = 'A custom error message';
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [I18nService],
     adminApiExtensions: {

@@ -11,7 +11,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 ## PaymentService
 
-<GenerationInfo sourceFile="packages/core/src/service/services/payment.service.ts" sourceLine="43" packageName="@vendure/core" />
+<GenerationInfo sourceFile="packages/core/src/service/services/payment.service.ts" sourceLine="43" packageName="@deenruv/core" />
 
 Contains methods relating to <a href='/reference/typescript-api/entities/payment#payment'>Payment</a> entities.
 

@@ -7,14 +7,14 @@ import {
     LocalizedString,
     Maybe,
     StringFieldOption,
-} from '@vendure/common/lib/generated-types';
+} from '@deenruv/common/lib/generated-types';
 import {
     ConfigArgType,
     DefaultFormComponentConfig,
     ID,
     UiComponentConfig,
-} from '@vendure/common/lib/shared-types';
-import { assertNever } from '@vendure/common/lib/shared-utils';
+} from '@deenruv/common/lib/shared-types';
+import { assertNever } from '@deenruv/common/lib/shared-utils';
 
 import { RequestContext } from '../api/common/request-context';
 
@@ -71,8 +71,8 @@ export type IntArgConfig = WithArgConfig<{
 export type ConfigArgDef<T extends ConfigArgType> = T extends 'string'
     ? ConfigArgCommonDef<'string'> & StringArgConfig
     : T extends 'int'
-    ? ConfigArgCommonDef<'int'> & IntArgConfig
-    : ConfigArgCommonDef<T> & WithArgConfig<never>;
+      ? ConfigArgCommonDef<'int'> & IntArgConfig
+      : ConfigArgCommonDef<T> & WithArgConfig<never>;
 
 /**
  * @description
@@ -133,7 +133,7 @@ export type ConfigArgDef<T extends ConfigArgType> = T extends 'string'
  * ```
  * The available components as well as their configuration options can be found in the {@link DefaultFormConfigHash} docs.
  * Custom UI components may also be defined via an Admin UI extension using the `registerFormInputComponent()` function
- * which is exported from `@vendure/admin-ui/core`.
+ * which is exported from `@deenruv/admin-ui/core`.
  *
  * @docsCategory ConfigurableOperationDef
  */
@@ -155,27 +155,26 @@ export type ConfigArgValues<T extends ConfigArgs> = {
  * ConfigArgListDef<'datetime'> -> Date[]
  * ConfigArgDef<'boolean'> -> boolean
  */
-export type ConfigArgDefToType<D extends ConfigArgDef<ConfigArgType>> = D extends ConfigArgListDef<
-    'int' | 'float'
->
-    ? number[]
-    : D extends ConfigArgDef<'int' | 'float'>
-    ? number
-    : D extends ConfigArgListDef<'datetime'>
-    ? Date[]
-    : D extends ConfigArgDef<'datetime'>
-    ? Date
-    : D extends ConfigArgListDef<'boolean'>
-    ? boolean[]
-    : D extends ConfigArgDef<'boolean'>
-    ? boolean
-    : D extends ConfigArgListDef<'ID'>
-    ? ID[]
-    : D extends ConfigArgDef<'ID'>
-    ? ID
-    : D extends ConfigArgListDef<'string'>
-    ? string[]
-    : string;
+export type ConfigArgDefToType<D extends ConfigArgDef<ConfigArgType>> =
+    D extends ConfigArgListDef<'int' | 'float'>
+        ? number[]
+        : D extends ConfigArgDef<'int' | 'float'>
+          ? number
+          : D extends ConfigArgListDef<'datetime'>
+            ? Date[]
+            : D extends ConfigArgDef<'datetime'>
+              ? Date
+              : D extends ConfigArgListDef<'boolean'>
+                ? boolean[]
+                : D extends ConfigArgDef<'boolean'>
+                  ? boolean
+                  : D extends ConfigArgListDef<'ID'>
+                    ? ID[]
+                    : D extends ConfigArgDef<'ID'>
+                      ? ID
+                      : D extends ConfigArgListDef<'string'>
+                        ? string[]
+                        : string;
 
 /**
  * Converts a ConfigArgType to a TypeScript type
@@ -185,14 +184,14 @@ export type ConfigArgDefToType<D extends ConfigArgDef<ConfigArgType>> = D extend
 export type ConfigArgTypeToTsType<T extends ConfigArgType> = T extends 'string'
     ? string
     : T extends 'int'
-    ? number
-    : T extends 'float'
-    ? number
-    : T extends 'boolean'
-    ? boolean
-    : T extends 'datetime'
-    ? Date
-    : ID;
+      ? number
+      : T extends 'float'
+        ? number
+        : T extends 'boolean'
+          ? boolean
+          : T extends 'datetime'
+            ? Date
+            : ID;
 
 /**
  * Converts a TS type to a ConfigArgDef, e.g:
@@ -203,22 +202,22 @@ export type ConfigArgTypeToTsType<T extends ConfigArgType> = T extends 'string'
 export type TypeToConfigArgDef<T extends ConfigArgDefToType<any>> = T extends number
     ? ConfigArgDef<'int' | 'float'>
     : T extends number[]
-    ? ConfigArgListDef<'int' | 'float'>
-    : T extends Date[]
-    ? ConfigArgListDef<'datetime'>
-    : T extends Date
-    ? ConfigArgDef<'datetime'>
-    : T extends boolean[]
-    ? ConfigArgListDef<'boolean'>
-    : T extends boolean
-    ? ConfigArgDef<'boolean'>
-    : T extends string[]
-    ? ConfigArgListDef<'string'>
-    : T extends string
-    ? ConfigArgDef<'string'>
-    : T extends ID[]
-    ? ConfigArgListDef<'ID'>
-    : ConfigArgDef<'ID'>;
+      ? ConfigArgListDef<'int' | 'float'>
+      : T extends Date[]
+        ? ConfigArgListDef<'datetime'>
+        : T extends Date
+          ? ConfigArgDef<'datetime'>
+          : T extends boolean[]
+            ? ConfigArgListDef<'boolean'>
+            : T extends boolean
+              ? ConfigArgDef<'boolean'>
+              : T extends string[]
+                ? ConfigArgListDef<'string'>
+                : T extends string
+                  ? ConfigArgDef<'string'>
+                  : T extends ID[]
+                    ? ConfigArgListDef<'ID'>
+                    : ConfigArgDef<'ID'>;
 
 /**
  * @description
@@ -297,7 +296,7 @@ export interface ConfigurableOperationDefOptions<T extends ConfigArgs> extends I
  *
  * @example
  * ```ts
- * import { Injector, ShippingCalculator } from '\@vendure/core';
+ * import { Injector, ShippingCalculator } from '\@deenruv/core';
  * import { ShippingRatesService } from './shipping-rates.service';
  *
  * // We keep reference to our injected service by keeping it
@@ -383,7 +382,7 @@ export class ConfigurableOperationDef<T extends ConfigArgs = ConfigArgs> {
                                 ctx.languageCode,
                                 ctx.channel.defaultLanguageCode,
                             ),
-                    } as Required<ConfigArgDefinition>),
+                    }) as Required<ConfigArgDefinition>,
             ),
         };
     }

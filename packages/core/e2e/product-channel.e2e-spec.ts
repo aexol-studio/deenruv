@@ -4,7 +4,7 @@ import {
     createTestEnvironment,
     E2E_DEFAULT_CHANNEL_TOKEN,
     ErrorResultGuard,
-} from '@vendure/testing';
+} from '@deenruv/testing';
 import { fail } from 'assert';
 import gql from 'graphql-tag';
 import path from 'path';

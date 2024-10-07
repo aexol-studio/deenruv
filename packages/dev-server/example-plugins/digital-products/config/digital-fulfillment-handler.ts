@@ -1,4 +1,4 @@
-import { FulfillmentHandler, LanguageCode, OrderLine, TransactionalConnection } from '@vendure/core';
+import { FulfillmentHandler, LanguageCode, OrderLine, TransactionalConnection } from '@deenruv/core';
 import { In } from 'typeorm';
 
 let connection: TransactionalConnection;

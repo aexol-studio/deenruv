@@ -8,8 +8,8 @@ import {
     Permission,
     QueryRoleArgs,
     QueryRolesArgs,
-} from '@vendure/common/lib/generated-types';
-import { PaginatedList } from '@vendure/common/lib/shared-types';
+} from '@deenruv/common/lib/generated-types';
+import { PaginatedList } from '@deenruv/common/lib/shared-types';
 
 import { Role } from '../../../entity/role/role.entity';
 import { RoleService } from '../../../service/services/role.service';

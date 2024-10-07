@@ -14,7 +14,7 @@ import {
     User,
     VendureEvent,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { vi } from 'vitest';
@@ -280,7 +280,7 @@ class TestResolver {
     }
 }
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [TestAdminService, TestUserService],
     adminApiExtensions: {

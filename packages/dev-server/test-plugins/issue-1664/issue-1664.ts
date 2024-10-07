@@ -1,5 +1,5 @@
 import { OnApplicationBootstrap } from '@nestjs/common';
-import { DEFAULT_CHANNEL_CODE } from '@vendure/common/lib/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/lib/shared-constants';
 import {
     Asset,
     Channel,
@@ -13,13 +13,13 @@ import {
     TransactionalConnection,
     User,
     VendurePlugin,
-} from '@vendure/core';
+} from '@deenruv/core';
 import gql from 'graphql-tag';
 
 import { ProfileAsset } from './profile-asset.entity';
 import { Profile } from './profile.entity';
 
-declare module '@vendure/core' {
+declare module '@deenruv/core' {
     interface CustomOrderFields {
         productOwner: User;
     }
@@ -62,7 +62,7 @@ const schema = gql`
  * }
  * ```
  */
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: () => [Profile, ProfileAsset],
     shopApiExtensions: { schema, resolvers: [] },
@@ -102,7 +102,10 @@ const schema = gql`
     },
 })
 export class Test1664Plugin implements OnApplicationBootstrap {
-    constructor(private connection: TransactionalConnection, private orderService: OrderService) {}
+    constructor(
+        private connection: TransactionalConnection,
+        private orderService: OrderService,
+    ) {}
 
     async onApplicationBootstrap() {
         await this.createDummyProfiles();

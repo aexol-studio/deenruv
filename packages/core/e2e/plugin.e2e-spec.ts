@@ -1,6 +1,6 @@
-import { LanguageCode } from '@vendure/common/lib/generated-types';
-import { ConfigService } from '@vendure/core';
-import { createTestEnvironment } from '@vendure/testing';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
+import { ConfigService } from '@deenruv/core';
+import { createTestEnvironment } from '@deenruv/testing';
 import gql from 'graphql-tag';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';

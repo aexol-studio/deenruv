@@ -1,8 +1,8 @@
-import { PluginCommonModule, Type, VendurePlugin } from '@vendure/core';
+import { PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
 
 type PluginInitOptions = any;
 
-@VendurePlugin({
+@DeenruvPlugin({
     imports: [PluginCommonModule],
     compatibility: '^2.0.0',
 })

@@ -13,7 +13,7 @@ import {
  * @example
  * ```ts title="components/custom-table.component.ts"
  * import { Component, Input } from '\@angular/core';
- * import { CustomColumnComponent } from '\@vendure/admin-ui/core';
+ * import { CustomColumnComponent } from '\@deenruv/admin-ui/core';
  *
  * \@Component({
  *     selector: 'custom-slug-component',
@@ -28,7 +28,7 @@ import {
  * ```
  *
  * ```ts title="providers.ts"
- * import { registerDataTableComponent } from '\@vendure/admin-ui/core';
+ * import { registerDataTableComponent } from '\@deenruv/admin-ui/core';
  * import { CustomTableComponent } from './components/custom-table.component';
  *
  * export default [

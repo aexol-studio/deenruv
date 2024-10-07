@@ -4,7 +4,7 @@ import createMollieClient, {
     RefundStatus,
     Order as MollieOrder,
 } from '@mollie/api-client';
-import { LanguageCode } from '@vendure/common/lib/generated-types';
+import { LanguageCode } from '@deenruv/common/lib/generated-types';
 import {
     CreatePaymentErrorResult,
     CreatePaymentResult,
@@ -12,7 +12,7 @@ import {
     Logger,
     PaymentMethodHandler,
     SettlePaymentResult,
-} from '@vendure/core';
+} from '@deenruv/core';
 
 import { loggerCtx } from './constants';
 import { toAmount } from './mollie.helpers';

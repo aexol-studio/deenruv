@@ -1,5 +1,5 @@
-import { NotificationService } from '@vendure/admin-ui/core';
-import { useFormControl, ReactFormInputOptions, useInjector } from '@vendure/admin-ui/react';
+import { NotificationService } from '@deenruv/admin-ui/core';
+import { useFormControl, ReactFormInputOptions, useInjector } from '@deenruv/admin-ui/react';
 import React from 'react';
 
 export function ReactNumberInput({ readonly }: ReactFormInputOptions) {

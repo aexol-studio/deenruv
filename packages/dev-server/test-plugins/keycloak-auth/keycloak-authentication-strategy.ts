@@ -8,7 +8,7 @@ import {
     Role,
     TransactionalConnection,
     User,
-} from '@vendure/core';
+} from '@deenruv/core';
 import { DocumentNode } from 'graphql';
 import gql from 'graphql-tag';
 
