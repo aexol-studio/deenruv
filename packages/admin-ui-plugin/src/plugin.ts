@@ -22,7 +22,6 @@ import express from 'express';
 import fs from 'fs-extra';
 import path from 'path';
 
-import { adminApiExtensions } from './api/api-extensions';
 import { MetricsResolver } from './api/metrics.resolver';
 import {
     defaultAvailableLanguages,
@@ -33,6 +32,7 @@ import {
     defaultAvailableLocales,
 } from './constants';
 import { MetricsService } from './service/metrics.service';
+import gql from 'graphql-tag';
 
 /**
  * @description
@@ -129,7 +129,37 @@ export interface AdminUiPluginOptions {
 @DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {
-        schema: adminApiExtensions,
+        schema: gql`
+            type MetricSummary {
+                interval: MetricInterval!
+                type: MetricType!
+                title: String!
+                entries: [MetricSummaryEntry!]!
+            }
+            enum MetricInterval {
+                Daily
+            }
+            enum MetricType {
+                OrderCount
+                OrderTotal
+                AverageOrderValue
+            }
+            type MetricSummaryEntry {
+                label: String!
+                value: Float!
+            }
+            input MetricSummaryInput {
+                interval: MetricInterval!
+                types: [MetricType!]!
+                refresh: Boolean
+            }
+            extend type Query {
+                """
+                Get metrics for the given interval and metric types.
+                """
+                metricSummary(input: MetricSummaryInput): [MetricSummary!]!
+            }
+        `,
         resolvers: [MetricsResolver],
     },
     providers: [MetricsService],

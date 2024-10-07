@@ -1,8 +1,8 @@
-import { MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
+import { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import gql from 'graphql-tag';
 
 import { SentryAdminTestResolver } from './api/admin-test.resolver';
-import { testApiExtensions } from './api/api-extensions';
 import { ErrorTestService } from './api/error-test.service';
 import { SENTRY_PLUGIN_OPTIONS } from './constants';
 import { SentryApolloPlugin } from './sentry-apollo-plugin';
@@ -105,6 +105,18 @@ const SentryOptionsProvider = {
  *
  * @docsCategory core plugins/SentryPlugin
  */
+const testApiExtensions = gql`
+    enum TestErrorType {
+        UNCAUGHT_ERROR
+        THROWN_ERROR
+        CAPTURED_ERROR
+        CAPTURED_MESSAGE
+        DATABASE_ERROR
+    }
+    extend type Mutation {
+        createTestError(errorType: TestErrorType!): Boolean
+    }
+`;
 @DeenruvPlugin({
     imports: [PluginCommonModule],
     providers: [SentryOptionsProvider, SentryService, ErrorTestService],

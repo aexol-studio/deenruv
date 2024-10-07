@@ -499,6 +499,9 @@ importers:
       commander:
         specifier: ^11.0.0
         version: 11.1.0
+      cross-spawn:
+        specifier: ^7.0.3
+        version: 7.0.3
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -521,6 +524,9 @@ importers:
       '@deenruv/core':
         specifier: workspace:*
         version: link:../core
+      '@types/cross-spawn':
+        specifier: ^6.0.6
+        version: 6.0.6
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
@@ -574,7 +580,7 @@ importers:
         version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)
       '@nestjs/terminus':
         specifier: ~10.2.3
-        version: 10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3)))
+        version: 10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3)))
       '@nestjs/testing':
         specifier: ~10.3.10
         version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/platform-express@10.3.10)
@@ -819,7 +825,7 @@ importers:
         version: link:../email-plugin
       '@nestjs/axios':
         specifier: ^3.0.2
-        version: 3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1)
+        version: 3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1)
       typeorm:
         specifier: 0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))
@@ -854,12 +860,33 @@ importers:
       '@elastic/elasticsearch':
         specifier: ~7.9.1
         version: 7.9.1
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ~10.3.10
+        version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.0(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      '@nestjs/terminus':
+        specifier: ~10.2.3
+        version: 10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)))
       deepmerge:
         specifier: ^4.2.2
         version: 4.3.1
       fast-deep-equal:
         specifier: ^3.1.3
         version: 3.1.3
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
+      typeorm:
+        specifier: 0.3.20
+        version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))
     devDependencies:
       '@deenruv/common':
         specifier: workspace:*
@@ -955,7 +982,7 @@ importers:
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/terminus':
         specifier: ~10.2.3
-        version: 10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)))
+        version: 10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)))
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -984,10 +1011,6 @@ importers:
 
   packages/payments-plugin:
     dependencies:
-      currency.js:
-        specifier: 2.0.4
-        version: 2.0.4
-    devDependencies:
       '@deenruv/common':
         specifier: workspace:*
         version: link:../common
@@ -997,12 +1020,49 @@ importers:
       '@deenruv/testing':
         specifier: workspace:*
         version: link:../testing
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ~10.3.10
+        version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.0(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.7
+      body-parser:
+        specifier: ^1.20.2
+        version: 1.20.3
+      currency.js:
+        specifier: 2.0.4
+        version: 2.0.4
+      express:
+        specifier: ^4.21.0
+        version: 4.21.0
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+    devDependencies:
       '@mollie/api-client':
         specifier: ^3.7.0
         version: 3.7.0
+      '@types/body-parser':
+        specifier: ^1.19.5
+        version: 1.19.5
       '@types/braintree':
         specifier: ^3.3.11
         version: 3.3.12
+      '@types/connect':
+        specifier: ^3.4.38
+        version: 3.4.38
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
       '@types/localtunnel':
         specifier: 2.0.4
         version: 2.0.4
@@ -1026,6 +1086,28 @@ importers:
         version: 5.1.6
 
   packages/sentry-plugin:
+    dependencies:
+      '@apollo/server':
+        specifier: ^4.10.4
+        version: 4.11.0(encoding@0.1.13)(graphql@16.9.0)
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ~10.3.10
+        version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.0(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      express:
+        specifier: ^4.21.0
+        version: 4.21.0
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
     devDependencies:
       '@deenruv/common':
         specifier: workspace:*
@@ -1034,14 +1116,38 @@ importers:
         specifier: workspace:*
         version: link:../core
       '@sentry/node':
-        specifier: ^7.106.1
-        version: 7.119.1
+        specifier: 7.106.1
+        version: 7.106.1
+      '@sentry/types':
+        specifier: 7.106.1
+        version: 7.106.1
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
 
   packages/stellate-plugin:
     dependencies:
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ~10.3.10
+        version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.0(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
       node-fetch:
         specifier: ^2.7.0
         version: 2.7.0(encoding@0.1.13)
+      rxjs:
+        specifier: ^7.8.1
+        version: 7.8.1
     devDependencies:
       '@deenruv/common':
         specifier: workspace:*
@@ -1049,6 +1155,12 @@ importers:
       '@deenruv/core':
         specifier: workspace:*
         version: link:../core
+      '@types/node-fetch':
+        specifier: ^2.6.11
+        version: 2.6.11
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
 
   packages/testing:
     dependencies:
@@ -1058,6 +1170,15 @@ importers:
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
         version: 3.2.0(graphql@16.9.0)
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ~10.3.10
+        version: 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      express:
+        specifier: ^4.21.0
+        version: 4.21.0
       faker:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1076,10 +1197,16 @@ importers:
       sql.js:
         specifier: 1.8.0
         version: 1.8.0
+      typeorm:
+        specifier: 0.3.20
+        version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.8.0)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))
     devDependencies:
       '@deenruv/core':
         specifier: workspace:*
         version: link:../core
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
       '@types/faker':
         specifier: ^5.5.9
         version: 5.5.9
@@ -4130,28 +4257,24 @@ packages:
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
 
-  '@sentry-internal/tracing@7.119.1':
-    resolution: {integrity: sha512-cI0YraPd6qBwvUA3wQdPGTy8PzAoK0NZiaTN1LM3IczdPegehWOaEG5GVTnpGnTsmBAzn1xnBXNBhgiU4dgcrQ==}
+  '@sentry-internal/tracing@7.106.1':
+    resolution: {integrity: sha512-Ui9zSmW88jTdmNnNBLYYpNoAi31esX5/auysC3v7+SpwxIsC3AGLFvXs4EPziyz8d0F62Ji0fNQZ96ui4fO6BQ==}
     engines: {node: '>=8'}
 
-  '@sentry/core@7.119.1':
-    resolution: {integrity: sha512-YUNnH7O7paVd+UmpArWCPH4Phlb5LwrkWVqzFWqL3xPyCcTSof2RL8UmvpkTjgYJjJ+NDfq5mPFkqv3aOEn5Sw==}
+  '@sentry/core@7.106.1':
+    resolution: {integrity: sha512-cwCd66wkbutXCI8j14JLkyod9RHtqSNfzGpx/ieBE+N786jX+Yj1DiaZJ6ZYjKQpnToipFnacEakCd9Vc9oePA==}
     engines: {node: '>=8'}
 
-  '@sentry/integrations@7.119.1':
-    resolution: {integrity: sha512-CGmLEPnaBqbUleVqrmGYjRjf5/OwjUXo57I9t0KKWViq81mWnYhaUhRZWFNoCNQHns+3+GPCOMvl0zlawt+evw==}
+  '@sentry/node@7.106.1':
+    resolution: {integrity: sha512-KB2Lkb9WqocD/gbKIZCk2mQQmx+G3khI9ChJUw6GJzd5mvdQ5xxr4/yQKIHR6L9z3oGWBno9/Xc8Aw9s3ZwGwQ==}
     engines: {node: '>=8'}
 
-  '@sentry/node@7.119.1':
-    resolution: {integrity: sha512-rpnoQCMxWh/ccjOe+qsmvXAdlTxQHXEWdaltSxnwj7QY+kOGKGP18WTQFLq/gdOBRw9aa6PEQGwhnLfhBXXaYg==}
+  '@sentry/types@7.106.1':
+    resolution: {integrity: sha512-g3OcyAHGugBwkQP4fZYCCZqF2ng9K7yQc9FVngKq/y7PwHm84epXdYYGDGgfQOIC1d5/GMaPxmzI5IIrZexzkg==}
     engines: {node: '>=8'}
 
-  '@sentry/types@7.119.1':
-    resolution: {integrity: sha512-4G2mcZNnYzK3pa2PuTq+M2GcwBRY/yy1rF+HfZU+LAPZr98nzq2X3+mJHNJoobeHRkvVh7YZMPi4ogXiIS5VNQ==}
-    engines: {node: '>=8'}
-
-  '@sentry/utils@7.119.1':
-    resolution: {integrity: sha512-ju/Cvyeu/vkfC5/XBV30UNet5kLEicZmXSyuLwZu95hEbL+foPdxN+re7pCI/eNqfe3B2vz7lvz5afLVOlQ2Hg==}
+  '@sentry/utils@7.106.1':
+    resolution: {integrity: sha512-NIeuvB9MeDwrObbi6W5xRrNTcQj8klVvwWWYQB0zotY/LDjyl+c+cZzUshFOxBTp9ljVnYzWqZ7J8x/i4baj7w==}
     engines: {node: '>=8'}
 
   '@sigstore/bundle@2.3.2':
@@ -5263,6 +5386,9 @@ packages:
 
   axios@0.27.2:
     resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   axobject-query@4.0.0:
     resolution: {integrity: sha512-+60uv1hiVFhHZeO+Lz0RYzsVHy5Wr1ayX0mwda9KPDVLNJgZ1T9Ny7VmFbLDzxsH0D87I86vgj3gFrjTJUYznw==}
@@ -7141,9 +7267,6 @@ packages:
     engines: {node: '>=16.x'}
     hasBin: true
 
-  immediate@3.0.6:
-    resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
-
   immutable@3.7.6:
     resolution: {integrity: sha512-AizQPcaofEtO11RZhPPHBOJRdo/20MKQF9mBLnVkBoyHi1/zXK8fzVdnEpSV9gxqtnh6Qomfp3F0xT5qP/vThw==}
     engines: {node: '>=0.8.0'}
@@ -7691,9 +7814,6 @@ packages:
       webpack:
         optional: true
 
-  lie@3.1.1:
-    resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
-
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
@@ -7757,9 +7877,6 @@ packages:
   local-pkg@0.5.0:
     resolution: {integrity: sha512-ok6z3qlYyCDS4ZEU27HaU6x/xZa9Whf8jD4ptH5UZTQYZVYeb9bnZ3ojVhiJNLiXK1Hfc0GNbLXcmZ5plLDDBg==}
     engines: {node: '>=14'}
-
-  localforage@1.10.0:
-    resolution: {integrity: sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==}
 
   localtunnel@2.0.2:
     resolution: {integrity: sha512-n418Cn5ynvJd7m/N1d9WVJISLJF/ellZnfsLnx8WBWGzxv/ntNcFkJ1o6se5quUhCplfLGBNL5tYHiq5WF3Nug==}
@@ -13770,7 +13887,7 @@ snapshots:
     dependencies:
       '@graphql-tools/utils': 10.5.4(graphql@16.9.0)
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@graphql-tools/merge@9.0.7(graphql@16.9.0)':
     dependencies:
@@ -13781,7 +13898,7 @@ snapshots:
   '@graphql-tools/optimize@2.0.0(graphql@16.9.0)':
     dependencies:
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@graphql-tools/prisma-loader@8.0.4(@types/node@20.16.10)(encoding@0.1.13)(graphql@16.9.0)':
     dependencies:
@@ -13814,7 +13931,7 @@ snapshots:
       '@ardatan/relay-compiler': 12.0.0(encoding@0.1.13)(graphql@16.9.0)
       '@graphql-tools/utils': 10.5.4(graphql@16.9.0)
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.7.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -13824,7 +13941,7 @@ snapshots:
       '@graphql-tools/merge': 9.0.4(graphql@16.9.0)
       '@graphql-tools/utils': 10.5.4(graphql@16.9.0)
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.7.0
       value-or-promise: 1.0.12
 
   '@graphql-tools/schema@10.0.6(graphql@16.9.0)':
@@ -13884,7 +14001,7 @@ snapshots:
       cross-inspect: 1.0.0
       dset: 3.1.4
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@graphql-tools/utils@10.5.4(graphql@16.9.0)':
     dependencies:
@@ -14230,10 +14347,10 @@ snapshots:
       lodash.omit: 4.5.0
       tslib: 2.6.3
 
-  '@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1)':
+  '@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      axios: 0.27.2
+      axios: 1.7.7
       rxjs: 7.8.1
 
   '@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)':
@@ -14303,7 +14420,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nestjs/terminus@10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3)))':
+  '@nestjs/terminus@10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3)))':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -14314,11 +14431,11 @@ snapshots:
     optionalDependencies:
       '@grpc/grpc-js': 1.6.12
       '@grpc/proto-loader': 0.7.13
-      '@nestjs/axios': 3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1)
+      '@nestjs/axios': 3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1)
       '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3)))
       typeorm: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@18.19.54)(typescript@5.3.3))
 
-  '@nestjs/terminus@10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)))':
+  '@nestjs/terminus@10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)))':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.10(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -14329,7 +14446,7 @@ snapshots:
     optionalDependencies:
       '@grpc/grpc-js': 1.6.12
       '@grpc/proto-loader': 0.7.13
-      '@nestjs/axios': 3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@0.27.2)(rxjs@7.8.1)
+      '@nestjs/axios': 3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1)
       '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)))
       typeorm: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3))
 
@@ -14657,37 +14774,29 @@ snapshots:
 
   '@sec-ant/readable-stream@0.4.1': {}
 
-  '@sentry-internal/tracing@7.119.1':
+  '@sentry-internal/tracing@7.106.1':
     dependencies:
-      '@sentry/core': 7.119.1
-      '@sentry/types': 7.119.1
-      '@sentry/utils': 7.119.1
+      '@sentry/core': 7.106.1
+      '@sentry/types': 7.106.1
+      '@sentry/utils': 7.106.1
 
-  '@sentry/core@7.119.1':
+  '@sentry/core@7.106.1':
     dependencies:
-      '@sentry/types': 7.119.1
-      '@sentry/utils': 7.119.1
+      '@sentry/types': 7.106.1
+      '@sentry/utils': 7.106.1
 
-  '@sentry/integrations@7.119.1':
+  '@sentry/node@7.106.1':
     dependencies:
-      '@sentry/core': 7.119.1
-      '@sentry/types': 7.119.1
-      '@sentry/utils': 7.119.1
-      localforage: 1.10.0
+      '@sentry-internal/tracing': 7.106.1
+      '@sentry/core': 7.106.1
+      '@sentry/types': 7.106.1
+      '@sentry/utils': 7.106.1
 
-  '@sentry/node@7.119.1':
+  '@sentry/types@7.106.1': {}
+
+  '@sentry/utils@7.106.1':
     dependencies:
-      '@sentry-internal/tracing': 7.119.1
-      '@sentry/core': 7.119.1
-      '@sentry/integrations': 7.119.1
-      '@sentry/types': 7.119.1
-      '@sentry/utils': 7.119.1
-
-  '@sentry/types@7.119.1': {}
-
-  '@sentry/utils@7.119.1':
-    dependencies:
-      '@sentry/types': 7.119.1
+      '@sentry/types': 7.106.1
 
   '@sigstore/bundle@2.3.2':
     dependencies:
@@ -16085,6 +16194,14 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  axios@1.7.7:
+    dependencies:
+      follow-redirects: 1.15.9(debug@4.3.2)
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axobject-query@4.0.0:
     dependencies:
       dequal: 2.0.3
@@ -16882,7 +16999,7 @@ snapshots:
 
   cross-inspect@1.0.0:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   cross-inspect@1.0.1:
     dependencies:
@@ -17738,7 +17855,7 @@ snapshots:
 
   extract-zip@2.0.1:
     dependencies:
-      debug: 4.3.4
+      debug: 4.3.7
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
@@ -18520,8 +18637,6 @@ snapshots:
     dependencies:
       queue: 6.0.2
 
-  immediate@3.0.6: {}
-
   immutable@3.7.6: {}
 
   immutable@4.3.7: {}
@@ -18698,7 +18813,7 @@ snapshots:
 
   is-lower-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   is-module@1.0.0: {}
 
@@ -18771,7 +18886,7 @@ snapshots:
 
   is-upper-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   is-url@1.2.4: {}
 
@@ -19091,10 +19206,6 @@ snapshots:
     optionalDependencies:
       webpack: 5.94.0(@swc/core@1.7.26)(esbuild@0.20.1)
 
-  lie@3.1.1:
-    dependencies:
-      immediate: 3.0.6
-
   lines-and-columns@1.2.4: {}
 
   lines-and-columns@2.0.4: {}
@@ -19183,10 +19294,6 @@ snapshots:
     dependencies:
       mlly: 1.7.1
       pkg-types: 1.2.0
-
-  localforage@1.10.0:
-    dependencies:
-      lie: 3.1.1
 
   localtunnel@2.0.2:
     dependencies:
@@ -19283,13 +19390,13 @@ snapshots:
 
   lower-case-first@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   lower-case@1.1.4: {}
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   lru-cache@10.4.3: {}
 
@@ -21528,7 +21635,7 @@ snapshots:
 
   sponge-case@1.0.1:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   sprintf-js@1.0.3: {}
 
@@ -21710,7 +21817,7 @@ snapshots:
 
   swap-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   symbol-observable@1.2.0: {}
 
@@ -21812,7 +21919,7 @@ snapshots:
 
   title-case@3.0.3:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   tmp@0.0.33:
     dependencies:
@@ -22055,6 +22162,33 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.8.0)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)):
+    dependencies:
+      '@sqltools/formatter': 1.2.5
+      app-root-path: 3.1.0
+      buffer: 6.0.3
+      chalk: 4.1.2
+      cli-highlight: 2.1.11
+      dayjs: 1.11.13
+      debug: 4.3.7
+      dotenv: 16.4.5
+      glob: 10.4.5
+      mkdirp: 2.1.6
+      reflect-metadata: 0.2.2
+      sha.js: 2.4.11
+      tslib: 2.7.0
+      uuid: 9.0.1
+      yargs: 17.7.2
+    optionalDependencies:
+      better-sqlite3: 9.6.0
+      ioredis: 5.4.1
+      pg: 8.13.0
+      sql.js: 1.8.0
+      sqlite3: 5.1.7
+      ts-node: 10.9.2(@swc/core@1.7.26)(@types/node@20.16.10)(typescript@5.3.3)
+    transitivePeerDependencies:
+      - supports-color
+
   typescript@5.1.6: {}
 
   typescript@5.3.3: {}
@@ -22161,13 +22295,13 @@ snapshots:
 
   upper-case-first@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   upper-case@1.1.3: {}
 
   upper-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   uri-js@4.4.1:
     dependencies:
