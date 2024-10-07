@@ -40,8 +40,5 @@
         "file-type": "^19.0.0",
         "fs-extra": "^11.2.0",
         "sharp": "~0.33.2"
-    },
-    "peerDependencies": {
-        "@aws-sdk/types": "^3.664.0"
     }
 }
