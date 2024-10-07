@@ -7,7 +7,7 @@ import { OrderLine } from '..';
 import { Calculated } from '../../common/calculated-decorator';
 import { roundMoney } from '../../common/round-money';
 import { grossPriceOf, netPriceOf } from '../../common/tax-utils';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { EntityId } from '../entity-id.decorator';
 import { Money } from '../money.decorator';
 import { Order } from '../order/order.entity';
@@ -22,7 +22,7 @@ import { ShippingMethod } from '../shipping-method/shipping-method.entity';
  * @docsCategory entities
  */
 @Entity()
-export class ShippingLine extends VendureEntity {
+export class ShippingLine extends DeenruvEntity {
     constructor(input?: DeepPartial<ShippingLine>) {
         super(input);
     }

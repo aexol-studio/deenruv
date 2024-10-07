@@ -4,7 +4,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 
 import { ChannelAware, Taggable } from '../../common/types/common-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { Collection } from '../collection/collection.entity';
 import { CustomAssetFields } from '../custom-entity-fields';
@@ -20,7 +20,7 @@ import { Tag } from '../tag/tag.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Asset extends VendureEntity implements Taggable, ChannelAware, HasCustomFields {
+export class Asset extends DeenruvEntity implements Taggable, ChannelAware, HasCustomFields {
     constructor(input?: DeepPartial<Asset>) {
         super(input);
     }

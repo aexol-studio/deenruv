@@ -1,13 +1,13 @@
 import { Orderable } from '../../../common/types/common-types';
 import { idsAreEqual } from '../../../common/utils';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 /**
  * Moves the target Orderable entity to the given index amongst its siblings.
  * Returns the siblings (including the target) which should then be
  * persisted to the database.
  */
-export function moveToIndex<T extends Orderable & VendureEntity>(
+export function moveToIndex<T extends Orderable & DeenruvEntity>(
     index: number,
     target: T,
     siblings: T[],

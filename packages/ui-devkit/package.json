@@ -1,14 +1,14 @@
 {
     "name": "@deenruv/ui-devkit",
     "version": "2.3.1",
-    "description": "A library for authoring Vendure Admin UI extensions",
+    "description": "A library for authoring Deenruv Admin UI extensions",
     "keywords": [
-        "vendure",
+        "deenruv",
         "javascript",
         "extensions"
     ],
     "author": "Michael Bromley <michael@michaelbromley.co.uk>",
-    "homepage": "https://www.vendure.io/",
+    "homepage": "https://www.deenruv.io/",
     "license": "MIT",
     "files": [
         "client",
@@ -23,7 +23,7 @@
     "types": "client/index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/vendure-ecommerce/vendure.git"
+        "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
     },
     "scripts": {
         "build:client": "rimraf ./client && rollup -c rollup.config.mjs --configProduction",
@@ -33,7 +33,7 @@
         "lint": "eslint --fix ."
     },
     "bugs": {
-        "url": "https://github.com/vendure-ecommerce/vendure/issues"
+        "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
     },
     "dependencies": {
         "@angular-devkit/build-angular": "^17.2.3",

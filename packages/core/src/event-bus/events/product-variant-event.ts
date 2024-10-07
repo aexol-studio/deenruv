@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { ProductVariant } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ProductVariantInputTypes = CreateProductVariantInput[] | UpdateProductVariantInput[] | ID | ID[];
 
@@ -15,7 +15,7 @@ type ProductVariantInputTypes = CreateProductVariantInput[] | UpdateProductVaria
  * @docsCategory events
  * @docsPage Event Types
  */
-export class ProductVariantEvent extends VendureEntityEvent<ProductVariant[], ProductVariantInputTypes> {
+export class ProductVariantEvent extends DeenruvEntityEvent<ProductVariant[], ProductVariantInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: ProductVariant[],

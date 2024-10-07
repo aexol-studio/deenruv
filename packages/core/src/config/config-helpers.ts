@@ -1,9 +1,9 @@
 import path from 'path';
 
 import { mergeConfig } from './merge-config';
-import { PartialVendureConfig, RuntimeVendureConfig } from './vendure-config';
+import { PartialDeenruvConfig, RuntimeDeenruvConfig } from './deenruv-config';
 
-let activeConfig: RuntimeVendureConfig;
+let activeConfig: RuntimeDeenruvConfig;
 const defaultConfigPath = path.join(__dirname, 'default-config');
 /**
  * Reset the activeConfig object back to the initial default state.
@@ -17,7 +17,7 @@ export function resetConfig() {
  * Override the default config by merging in the supplied values. Should only be used prior to
  * bootstrapping the app.
  */
-export async function setConfig(userConfig: PartialVendureConfig) {
+export async function setConfig(userConfig: PartialDeenruvConfig) {
     if (!activeConfig) {
         activeConfig = (await import(defaultConfigPath)).defaultConfig;
     }
@@ -39,7 +39,7 @@ export async function ensureConfigLoaded() {
  * used before bootstrapping the app. In all other contexts, the {@link ConfigService}
  * should be used to access config settings.
  */
-export function getConfig(): Readonly<RuntimeVendureConfig> {
+export function getConfig(): Readonly<RuntimeDeenruvConfig> {
     if (!activeConfig) {
         try {
             // eslint-disable-next-line @typescript-eslint/no-var-requires

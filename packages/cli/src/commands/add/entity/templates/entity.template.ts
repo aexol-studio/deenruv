@@ -4,7 +4,7 @@ import {
     LocaleString,
     Translatable,
     Translation,
-    VendureEntity,
+    DeenruvEntity,
 } from '@deenruv/core';
 import { Column, Entity, OneToMany } from 'typeorm';
 
@@ -13,7 +13,7 @@ import { ScaffoldTranslation } from './entity-translation.template';
 export class ScaffoldEntityCustomFields {}
 
 @Entity()
-export class ScaffoldEntity extends VendureEntity implements Translatable, HasCustomFields {
+export class ScaffoldEntity extends DeenruvEntity implements Translatable, HasCustomFields {
     constructor(input?: DeepPartial<ScaffoldEntity>) {
         super(input);
     }

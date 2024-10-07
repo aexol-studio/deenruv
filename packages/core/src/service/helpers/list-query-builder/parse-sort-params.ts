@@ -7,7 +7,7 @@ import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 import { UserInputError } from '../../../common/error/errors';
 import { NullOptionals, SortParameter } from '../../../common/types/common-types';
 import { CustomFieldConfig } from '../../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 import { escapeCalculatedColumnExpression, getColumnMetadata } from './connection-utils';
 import { getCalculatedColumns } from './get-calculated-columns';
@@ -22,7 +22,7 @@ import { getCalculatedColumns } from './get-calculated-columns';
  * @param entityAlias
  * @param customFields
  */
-export function parseSortParams<T extends VendureEntity>(
+export function parseSortParams<T extends DeenruvEntity>(
     connection: DataSource,
     entity: Type<T>,
     sortParams?: NullOptionals<SortParameter<T>> | null,

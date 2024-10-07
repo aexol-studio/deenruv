@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 
 import { BullMQJobQueueStrategy } from './bullmq-job-queue-strategy';
 import { BULLMQ_PLUGIN_OPTIONS } from './constants';
@@ -17,7 +17,7 @@ import { BullMQPluginOptions } from './types';
  * The advantage of this approach is that jobs are stored in Redis rather than in the database. For more complex
  * applications with many job queues and/or multiple worker instances, this can massively reduce the load on the
  * DB server. The reason for this is that the DefaultJobQueuePlugin uses polling to check for new jobs. By default
- * it will poll every 200ms. A typical Vendure instance uses at least 3 queues (handling emails, collections, search index),
+ * it will poll every 200ms. A typical Deenruv instance uses at least 3 queues (handling emails, collections, search index),
  * so even with a single worker instance this results in 15 queries per second to the DB constantly. Adding more
  * custom queues and multiple worker instances can easily result in 50 or 100 queries per second. At this point
  * performance may be impacted.
@@ -40,7 +40,7 @@ import { BullMQPluginOptions } from './types';
  * ```ts
  * import { BullMQJobQueuePlugin } from '\@deenruv/job-queue-plugin/package/bullmq';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     // DefaultJobQueuePlugin should be removed from the plugins array
@@ -87,7 +87,7 @@ import { BullMQPluginOptions } from './types';
  *
  * @example
  * ```ts
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   plugins: [
  *     BullMQJobQueuePlugin.init({
  *       workerOptions: {
@@ -101,14 +101,14 @@ import { BullMQPluginOptions } from './types';
  * ## Removing old jobs
  *
  * By default, BullMQ will keep completed jobs in the `completed` set and failed jobs in the `failed` set. Over time,
- * these sets can grow very large. Since Vendure v2.1, the default behaviour is to remove jobs from these sets after
+ * these sets can grow very large. Since Deenruv v2.1, the default behaviour is to remove jobs from these sets after
  * 30 days or after a maximum of 5,000 completed or failed jobs.
  *
  * This can be configured using the `removeOnComplete` and `removeOnFail` options:
  *
  * @example
  * ```ts
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   plugins: [
  *     BullMQJobQueuePlugin.init({
  *       workerOptions: {

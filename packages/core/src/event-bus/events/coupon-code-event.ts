@@ -1,7 +1,7 @@
 import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -12,7 +12,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsPage Event Types
  * @since 1.4
  */
-export class CouponCodeEvent extends VendureEvent {
+export class CouponCodeEvent extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public couponCode: string,

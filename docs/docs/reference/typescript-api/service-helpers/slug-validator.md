@@ -66,17 +66,13 @@ type InputWithSlug = {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{
-         id?: <a href='/reference/typescript-api/common/id#id'>ID</a> | null;
-         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;
-         slug?: string | null;
-     }&#62; | null`}   />
+<MemberInfo kind="property" type={`Array&#60;{         id?: <a href='/reference/typescript-api/common/id#id'>ID</a> | null;         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         slug?: string | null;     }&#62; | null`}   />
 
 
 
 
 </div>
-@deenruv/
+
 
 ## TranslationEntity
 

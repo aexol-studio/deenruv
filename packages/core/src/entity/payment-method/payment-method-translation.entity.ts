@@ -4,14 +4,14 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomPaymentMethodFieldsTranslation } from '../custom-entity-fields';
 
 import { PaymentMethod } from './payment-method.entity';
 
 @Entity()
 export class PaymentMethodTranslation
-    extends VendureEntity
+    extends DeenruvEntity
     implements Translation<PaymentMethod>, HasCustomFields
 {
     constructor(input?: DeepPartial<Translation<PaymentMethod>>) {

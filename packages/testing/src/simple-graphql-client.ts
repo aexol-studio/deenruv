@@ -1,6 +1,6 @@
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { SUPER_ADMIN_USER_IDENTIFIER, SUPER_ADMIN_USER_PASSWORD } from '@deenruv/common/lib/shared-constants';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import FormData from 'form-data';
 import fs from 'fs';
 import { DocumentNode } from 'graphql';
@@ -45,7 +45,7 @@ export class SimpleGraphQLClient {
     };
 
     constructor(
-        private vendureConfig: Required<VendureConfig>,
+        private deenruvConfig: Required<DeenruvConfig>,
         private apiUrl: string = '',
     ) {}
 
@@ -64,8 +64,8 @@ export class SimpleGraphQLClient {
      */
     setChannelToken(token: string | null) {
         this.channelToken = token;
-        if (this.vendureConfig.apiOptions.channelTokenKey) {
-            this.headers[this.vendureConfig.apiOptions.channelTokenKey] = this.channelToken;
+        if (this.deenruvConfig.apiOptions.channelTokenKey) {
+            this.headers[this.deenruvConfig.apiOptions.channelTokenKey] = this.channelToken;
         }
     }
 
@@ -113,7 +113,7 @@ export class SimpleGraphQLClient {
             ...options,
             headers,
         });
-        const authToken = response.headers.get(this.vendureConfig.authOptions.authTokenHeaderKey || '');
+        const authToken = response.headers.get(this.deenruvConfig.authOptions.authTokenHeaderKey || '');
         if (authToken != null) {
             this.setAuthToken(authToken);
         }
@@ -159,7 +159,7 @@ export class SimpleGraphQLClient {
      * Logs in as the SuperAdmin user.
      */
     async asSuperAdmin() {
-        const { superadminCredentials } = this.vendureConfig.authOptions;
+        const { superadminCredentials } = this.deenruvConfig.authOptions;
         await this.asUserWithCredentials(
             superadminCredentials?.identifier ?? SUPER_ADMIN_USER_IDENTIFIER,
             superadminCredentials?.password ?? SUPER_ADMIN_USER_PASSWORD,

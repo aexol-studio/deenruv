@@ -28,7 +28,7 @@ import { ChannelAware, ListQueryOptions } from '../../common/types/common-types'
 import { assertFound, idsAreEqual } from '../../common/utils';
 import { ConfigService } from '../../config/config.service';
 import { TransactionalConnection } from '../../connection/transactional-connection';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 import { Channel } from '../../entity/channel/channel.entity';
 import { Order } from '../../entity/order/order.entity';
 import { ProductVariantPrice } from '../../entity/product-variant/product-variant-price.entity';
@@ -113,7 +113,7 @@ export class ChannelService {
      * Assigns a ChannelAware entity to the default Channel as well as any channel
      * specified in the RequestContext.
      */
-    async assignToCurrentChannel<T extends ChannelAware & VendureEntity>(
+    async assignToCurrentChannel<T extends ChannelAware & DeenruvEntity>(
         entity: T,
         ctx: RequestContext,
     ): Promise<T> {
@@ -135,7 +135,7 @@ export class ChannelService {
      * @returns A promise that resolves to an array of objects, each containing a channel ID.
      * @private
      */
-    private async getAssignedEntityChannels<T extends ChannelAware & VendureEntity>(
+    private async getAssignedEntityChannels<T extends ChannelAware & DeenruvEntity>(
         ctx: RequestContext,
         entityType: Type<T>,
         entityId: T['id'],
@@ -173,14 +173,14 @@ export class ChannelService {
      * @description
      * Assigns the entity to the given Channels and saves.
      */
-    async assignToChannels<T extends ChannelAware & VendureEntity>(
+    async assignToChannels<T extends ChannelAware & DeenruvEntity>(
         ctx: RequestContext,
         entityType: Type<T>,
         entityId: ID,
         channelIds: ID[],
     ): Promise<T> {
         const relations = [];
-        // This is a work-around for https://github.com/vendure-ecommerce/vendure/issues/1391
+        // This is a work-around for https://github.com/deenruv-ecommerce/deenruv/issues/1391
         // A better API would be to allow the consumer of this method to supply an entity instance
         // so that this join could be done prior to invoking this method.
         // TODO: overload the assignToChannels method to allow it to take an entity instance
@@ -216,7 +216,7 @@ export class ChannelService {
      * @description
      * Removes the entity from the given Channels and saves.
      */
-    async removeFromChannels<T extends ChannelAware & VendureEntity>(
+    async removeFromChannels<T extends ChannelAware & DeenruvEntity>(
         ctx: RequestContext,
         entityType: Type<T>,
         entityId: ID,
@@ -475,7 +475,7 @@ export class ChannelService {
      * Type guard method which returns true if the given entity is an
      * instance of a class which implements the {@link ChannelAware} interface.
      */
-    public isChannelAware(entity: VendureEntity): entity is VendureEntity & ChannelAware {
+    public isChannelAware(entity: DeenruvEntity): entity is DeenruvEntity & ChannelAware {
         const entityType = Object.getPrototypeOf(entity).constructor;
         return !!this.connection.rawConnection
             .getMetadata(entityType)

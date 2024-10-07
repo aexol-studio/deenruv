@@ -5,13 +5,13 @@ import { Node, Scope } from 'ts-morph';
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { ServiceRef } from '../../../shared/service-ref';
 import { analyzeProject, selectPlugin, selectServiceRef } from '../../../shared/shared-prompts';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import { addImportsToFile } from '../../../utilities/ast-utils';
 
 const cancelledMessage = 'Add API extension cancelled';
 
 export interface AddJobQueueOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
 }
 
 export const addJobQueueCommand = new CliCommand({
@@ -24,9 +24,9 @@ export const addJobQueueCommand = new CliCommand({
 async function addJobQueue(
     options?: AddJobQueueOptions,
 ): Promise<CliCommandReturnVal<{ serviceRef: ServiceRef }>> {
-    const providedVendurePlugin = options?.plugin;
-    const { project } = await analyzeProject({ providedVendurePlugin, cancelledMessage });
-    const plugin = providedVendurePlugin ?? (await selectPlugin(project, cancelledMessage));
+    const providedDeenruvPlugin = options?.plugin;
+    const { project } = await analyzeProject({ providedDeenruvPlugin, cancelledMessage });
+    const plugin = providedDeenruvPlugin ?? (await selectPlugin(project, cancelledMessage));
     const serviceRef = await selectServiceRef(project, plugin);
 
     const jobQueueName = await text({

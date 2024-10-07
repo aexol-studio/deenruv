@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { Permission } from '@deenruv/common/lib/generated-shop-types';
-import { Allow, InternalServerError, VendurePlugin } from '@deenruv/core';
+import { Allow, InternalServerError, DeenruvPlugin } from '@deenruv/core';
 
 @Controller('test')
 export class TestController {

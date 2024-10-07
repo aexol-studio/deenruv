@@ -6,19 +6,19 @@ const darkCodeTheme = require('prism-react-renderer/themes/nightOwl');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'Vendure Docs',
+    title: 'Deenruv Docs',
     favicon: 'img/logo.webp',
 
     // Set the production url of your site here
-    url: 'https://docs.vendure.io',
+    url: 'https://docs.deenruv.io',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
-    organizationName: 'vendure-ecommerce', // Usually your GitHub org/user name.
-    projectName: 'vendure', // Usually your repo name.
+    organizationName: 'deenruv-ecommerce', // Usually your GitHub org/user name.
+    projectName: 'deenruv', // Usually your repo name.
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
@@ -39,7 +39,7 @@ const config = {
                 docs: {
                     routeBasePath: '/',
                     sidebarPath: require.resolve('./sidebars.js'),
-                    editUrl: 'https://github.com/vendure-ecommerce/vendure/blob/master/docs/',
+                    editUrl: 'https://github.com/deenruv-ecommerce/deenruv/blob/master/docs/',
                     showLastUpdateTime: true,
                     admonitions: {
                         keywords: ['cli'],
@@ -74,7 +74,7 @@ const config = {
             navbar: {
                 title: '',
                 logo: {
-                    alt: 'Vendure logo',
+                    alt: 'Deenruv logo',
                     src: 'img/logo.webp',
                 },
                 items: [
@@ -91,12 +91,12 @@ const config = {
                         label: 'Reference',
                     },
                     {
-                        href: 'https://vendure.io',
-                        label: 'vendure.io',
+                        href: 'https://deenruv.io',
+                        label: 'deenruv.io',
                         position: 'right',
                     },
                     {
-                        href: 'https://github.com/vendure-ecommerce/vendure',
+                        href: 'https://github.com/deenruv-ecommerce/deenruv',
                         label: 'GitHub',
                         position: 'right',
                     },
@@ -113,12 +113,12 @@ const config = {
                         title: 'Resources',
                         items: [
                             {
-                                label: 'vendure.io',
-                                href: 'https://www.vendure.io',
+                                label: 'deenruv.io',
+                                href: 'https://www.deenruv.io',
                             },
                             {
                                 label: 'GitHub',
-                                href: 'https://github.com/vendure-ecommerce/vendure',
+                                href: 'https://github.com/deenruv-ecommerce/deenruv',
                             },
                         ],
                     },
@@ -127,11 +127,11 @@ const config = {
                         items: [
                             {
                                 label: 'Discord',
-                                href: 'https://vendure.io/community/',
+                                href: 'https://deenruv.io/community/',
                             },
                             {
                                 label: 'Twitter',
-                                href: 'https://twitter.com/vendure_io',
+                                href: 'https://twitter.com/deenruv_io',
                             },
                             {
                                 label: 'YouTube',
@@ -140,7 +140,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} Vendure GmbH.`,
+                copyright: `Copyright © ${new Date().getFullYear()} Deenruv GmbH.`,
             },
             prism: {
                 theme: lightCodeTheme,
@@ -150,7 +150,7 @@ const config = {
             typesense: {
                 // Replace this with the name of your index/collection.
                 // It should match the "index_name" entry in the scraper's "config.json" file.
-                typesenseCollectionName: 'vendure-docs',
+                typesenseCollectionName: 'deenruv-docs',
 
                 typesenseServerConfig: {
                     nodes: [

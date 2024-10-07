@@ -363,7 +363,7 @@ describe('Draft Orders resolver', () => {
         expect(setDraftOrderShippingMethod.shippingLines[0].shippingMethod.id).toBe('T_2');
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/2105
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2105
     it('sets order as placed when payment is settled', async () => {
         TestOrderPlacedStrategy.spy.mockClear();
         expect(TestOrderPlacedStrategy.spy.mock.calls.length).toBe(0);

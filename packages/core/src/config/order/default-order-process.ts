@@ -133,11 +133,11 @@ export interface DefaultOrderProcessOptions {
 
 /**
  * @description
- * Used to configure a customized instance of the default {@link OrderProcess} that ships with Vendure.
+ * Used to configure a customized instance of the default {@link OrderProcess} that ships with Deenruv.
  * Using this function allows you to turn off certain checks and constraints that are enabled by default.
  *
  * ```ts
- * import { configureDefaultOrderProcess, VendureConfig } from '\@deenruv/core';
+ * import { configureDefaultOrderProcess, DeenruvConfig } from '\@deenruv/core';
  *
  * const myCustomOrderProcess = configureDefaultOrderProcess({
  *   // Disable the constraint that requires
@@ -146,7 +146,7 @@ export interface DefaultOrderProcessOptions {
  *   arrangingPaymentRequiresShipping: false,
  * });
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   orderOptions: {
  *     process: [myCustomOrderProcess],
  *   },
@@ -464,7 +464,7 @@ export function configureDefaultOrderProcess(options: DefaultOrderProcessOptions
 
 /**
  * @description
- * This is the built-in {@link OrderProcess} that ships with Vendure. A customized version of this process
+ * This is the built-in {@link OrderProcess} that ships with Deenruv. A customized version of this process
  * can be created using the {@link configureDefaultOrderProcess} function, which allows you to pass in an object
  * to enable/disable certain checks.
  *

@@ -6,7 +6,7 @@ import { RequestContext } from '../../../api/common/request-context';
 import { RequestContextCacheService } from '../../../cache/request-context-cache.service';
 import { Translatable, TranslatableKeys, Translated } from '../../../common/types/locale-types';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 import { TranslatorService } from '../translator/translator.service';
 
 /**
@@ -21,7 +21,7 @@ export class LocaleStringHydrator {
         private translator: TranslatorService,
     ) {}
 
-    async hydrateLocaleStringField<T extends VendureEntity & Translatable & { languageCode?: LanguageCode }>(
+    async hydrateLocaleStringField<T extends DeenruvEntity & Translatable & { languageCode?: LanguageCode }>(
         ctx: RequestContext,
         entity: T,
         fieldName: TranslatableKeys<T> | 'languageCode',
@@ -41,7 +41,7 @@ export class LocaleStringHydrator {
      * This method includes a caching optimization to prevent multiple DB calls when many
      * translatable fields are needed on the same entity in a resolver.
      */
-    private async hydrateLocaleStrings<T extends VendureEntity & Translatable>(
+    private async hydrateLocaleStrings<T extends DeenruvEntity & Translatable>(
         ctx: RequestContext,
         entity: T,
     ): Promise<Translated<T>> {

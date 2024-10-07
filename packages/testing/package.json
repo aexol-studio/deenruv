@@ -1,14 +1,14 @@
 {
     "name": "@deenruv/testing",
     "version": "2.3.1",
-    "description": "End-to-end testing tools for Vendure projects",
+    "description": "End-to-end testing tools for deenruv projects",
     "keywords": [
-        "vendure",
+        "deenruv",
         "testing",
         "e2e"
     ],
     "author": "Michael Bromley <michael@michaelbromley.co.uk>",
-    "homepage": "https://www.vendure.io/",
+    "homepage": "https://www.deenruv.io/",
     "license": "MIT",
     "directories": {
         "lib": "lib"
@@ -23,7 +23,7 @@
     "types": "lib/index.d.ts",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/vendure-ecommerce/vendure.git"
+        "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
     },
     "funding": "https://github.com/sponsors/michaelbromley",
     "scripts": {
@@ -33,7 +33,7 @@
         "ci": "npm run build"
     },
     "bugs": {
-        "url": "https://github.com/vendure-ecommerce/vendure/issues"
+        "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
     },
     "dependencies": {
         "@graphql-typed-document-node/core": "^3.2.0",

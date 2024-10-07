@@ -4,13 +4,13 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomPromotionFieldsTranslation } from '../custom-entity-fields';
 
 import { Promotion } from './promotion.entity';
 
 @Entity()
-export class PromotionTranslation extends VendureEntity implements Translation<Promotion>, HasCustomFields {
+export class PromotionTranslation extends DeenruvEntity implements Translation<Promotion>, HasCustomFields {
     constructor(input?: DeepPartial<Translation<Promotion>>) {
         super(input);
         // This is a workaround for the fact that

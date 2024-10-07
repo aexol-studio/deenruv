@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Customer, DeepPartial, Product, ProductVariant, VendureEntity } from '@deenruv/core';
+import { Customer, DeepPartial, Product, ProductVariant, DeenruvEntity } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { ReviewState } from '../types';
 
 @Entity()
-export class ProductReview extends VendureEntity {
+export class ProductReview extends DeenruvEntity {
     constructor(input?: DeepPartial<ProductReview>) {
         super(input);
     }

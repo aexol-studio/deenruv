@@ -155,7 +155,7 @@ export interface UpdateCustomerHistoryEntryArgs<T extends keyof CustomerHistoryE
  *
  * ## Custom History Entry Types
  *
- * Since Vendure v1.9.0, it is possible to define custom HistoryEntry types.
+ * Since Deenruv v1.9.0, it is possible to define custom HistoryEntry types.
  *
  * Let's take an example where we have some Customers who are businesses. We want to verify their
  * tax ID in order to allow them wholesale rates. As part of this verification, we'd like to add
@@ -165,7 +165,7 @@ export interface UpdateCustomerHistoryEntryArgs<T extends keyof CustomerHistoryE
  *
  * @example
  * ```ts
- * import { PluginCommonModule, VendurePlugin } from '\@deenruv/core';
+ * import { PluginCommonModule, DeenruvPlugin } from '\@deenruv/core';
  * import { VerificationService } from './verification.service';
  *
  * \@DeenruvPlugin({

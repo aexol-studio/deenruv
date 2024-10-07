@@ -15,7 +15,7 @@ import { ShippingLine } from '../../entity/shipping-line/shipping-line.entity';
  * :::info
  *
  * This is configured via the `shippingOptions.shippingLineAssignmentStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

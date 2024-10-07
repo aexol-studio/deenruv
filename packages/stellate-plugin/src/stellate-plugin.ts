@@ -1,6 +1,6 @@
 import { Inject, OnApplicationBootstrap } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { EventBus, Injector, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { EventBus, Injector, PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 import { buffer, debounceTime } from 'rxjs/operators';
 
 import { shopApiExtensions } from './api/api-extensions';
@@ -16,9 +16,9 @@ const StellateOptionsProvider = {
 
 /**
  * @description
- * A plugin to integrate the [Stellate](https://stellate.co/) GraphQL caching service with your Vendure server.
+ * A plugin to integrate the [Stellate](https://stellate.co/) GraphQL caching service with your Deenruv server.
  * The main purpose of this plugin is to ensure that cached data gets correctly purged in
- * response to events inside Vendure. For example, changes to a Product's description should
+ * response to events inside Deenruv. For example, changes to a Product's description should
  * purge any associated record for that Product in Stellate's cache.
  *
  * ## Pre-requisites
@@ -38,15 +38,15 @@ const StellateOptionsProvider = {
  *
  * The plugin is configured via the `StellatePlugin.init()` method. This method accepts an options object
  * which defines the Stellate service name and API token, as well as an array of {@link PurgeRule}s which
- * define how the plugin will respond to Vendure events in order to trigger calls to the
+ * define how the plugin will respond to Deenruv events in order to trigger calls to the
  * Stellate [Purging API](https://stellate.co/docs/graphql-edge-cache/purging-api).
  *
  * @example
  * ```ts
  * import { StellatePlugin, defaultPurgeRules } from '\@deenruv/stellate-plugin';
- * import { VendureConfig } from '\@deenruv/core';
+ * import { Deenruv } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: Deenruv = {
  *    // ...
  *    plugins: [
  *        StellatePlugin.init({
@@ -66,7 +66,7 @@ const StellateOptionsProvider = {
  * ```
  *
  * In your Stellate dashboard, you can use the following configuration example as a sensible default for a
- * Vendure application:
+ * Deenruv application:
  *
  * @example
  * ```ts
@@ -74,15 +74,15 @@ const StellateOptionsProvider = {
  *
  * const config: Config = {
  *   config: {
- *     name: "my-vendure-server",
- *     originUrl: "https://my-vendure-server.com/shop-api",
+ *     name: "my-Deenruv-server",
+ *     originUrl: "https://my-Deenruv-server.com/shop-api",
  *     ignoreOriginCacheControl: true,
  *     passThroughOnly: false,
  *     scopes: {
  *       SESSION_BOUND: "header:authorization|cookie:session",
  *     },
  *     headers: {
- *       "access-control-expose-headers": "vendure-auth-token",
+ *       "access-control-expose-headers": "Deenruv-auth-token",
  *     },
  *     rootTypeNames: {
  *       query: "Query",
@@ -155,11 +155,11 @@ const StellateOptionsProvider = {
  *
  * ## Custom PurgeRules
  *
- * The configuration above only accounts for caching of some of the built-in Vendure entity types. If you have
+ * The configuration above only accounts for caching of some of the built-in Deenruv entity types. If you have
  * custom entity types, you may well want to add them to the Stellate cache. In this case, you'll also need a way to
  * purge those entities from the cache when they are updated. This is where the {@link PurgeRule} comes in.
  *
- * Let's imagine that you have built a simple CMS plugin for Vendure which exposes an `Article` entity in your Shop API, and
+ * Let's imagine that you have built a simple CMS plugin for Deenruv which exposes an `Article` entity in your Shop API, and
  * you have added this to your Stellate configuration:
  *
  * @example
@@ -189,10 +189,10 @@ const StellateOptionsProvider = {
  * @example
  * ```ts
  * import { StellatePlugin, defaultPurgeRules } from "\@deenruv/stellate-plugin";
- * import { VendureConfig } from "\@deenruv/core";
+ * import { Deenruv } from "\@deenruv/core";
  * import { ArticleEvent } from "./plugins/cms/events/article-event";
  *
- * export const config: VendureConfig = {
+ * export const config: Deenruv = {
  *     // ...
  *     plugins: [
  *         StellatePlugin.init({
@@ -222,9 +222,9 @@ const StellateOptionsProvider = {
  * @example
  * ```ts
  * import { StellatePlugin, defaultPurgeRules } from '\@deenruv/stellate-plugin';
- * import { VendureConfig } from '\@deenruv/core';
+ * import { Deenruv } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: Deenruv = {
  *    // ...
  *    plugins: [
  *        StellatePlugin.init({

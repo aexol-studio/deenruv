@@ -2,7 +2,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 import { isObject } from '@deenruv/common/lib/shared-utils';
 
 import { EntityIdStrategy } from '../../config/entity/entity-id-strategy';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 const ID_KEYS = ['id'];
 

@@ -5,7 +5,7 @@ import { DataSourceOptions, getMetadataArgsStorage } from 'typeorm';
 import { getConfig } from './config-helpers';
 import { CustomFields } from './custom-field/custom-field-types';
 import { EntityIdStrategy } from './entity/entity-id-strategy';
-import { Logger, VendureLogger } from './logger/vendure-logger';
+import { Logger, DeenruvLogger } from './logger/deenruv-logger';
 import {
     ApiOptions,
     AssetOptions,
@@ -17,16 +17,16 @@ import {
     OrderOptions,
     PaymentOptions,
     PromotionOptions,
-    RuntimeVendureConfig,
+    RuntimeDeenruvConfig,
     ShippingOptions,
     SystemOptions,
     TaxOptions,
-    VendureConfig,
-} from './vendure-config';
+    DeenruvConfig,
+} from './deenruv-config';
 
 @Injectable()
-export class ConfigService implements VendureConfig {
-    private activeConfig: RuntimeVendureConfig;
+export class ConfigService implements DeenruvConfig {
+    private activeConfig: RuntimeDeenruvConfig;
     private allCustomFieldsConfig: Required<CustomFields> | undefined;
 
     constructor() {
@@ -108,7 +108,7 @@ export class ConfigService implements VendureConfig {
         return this.activeConfig.plugins;
     }
 
-    get logger(): VendureLogger {
+    get logger(): DeenruvLogger {
         return this.activeConfig.logger;
     }
 

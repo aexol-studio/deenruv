@@ -7,7 +7,7 @@ import { ADMIN_API_PATH, API_PORT } from '../../packages/common/src/shared-const
 /* eslint-disable no-console */
 
 /**
- * Makes an introspection query to the Vendure server and writes the result to a
+ * Makes an introspection query to the Deenruv server and writes the result to a
  * schema.json file.
  *
  * If there is an error connecting to the server, the promise resolves to false.
@@ -39,7 +39,7 @@ export function downloadIntrospectionSchema(apiPath: string, outputFilePath: str
         request.on('error', (err: any) => {
             if (err.code === 'ECONNREFUSED') {
                 console.error(
-                    `ERROR: Could not connect to the Vendure server at http://localhost:${API_PORT}/${apiPath}`,
+                    `ERROR: Could not connect to the Deenruv server at http://localhost:${API_PORT}/${apiPath}`,
                 );
                 resolve(false);
             }

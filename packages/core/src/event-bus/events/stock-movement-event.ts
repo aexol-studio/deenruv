@@ -2,7 +2,7 @@ import { StockMovementType } from '@deenruv/common/lib/generated-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { StockMovement } from '../../entity/stock-movement/stock-movement.entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -13,7 +13,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class StockMovementEvent extends VendureEvent {
+export class StockMovementEvent extends DeenruvEvent {
     public readonly type: StockMovementType;
 
     constructor(

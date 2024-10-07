@@ -11,7 +11,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 import { RequestContext } from '../../api/common/request-context';
 import { Translated } from '../../common/types/locale-types';
 import { assertFound } from '../../common/utils';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../connection/transactional-connection';
 import { ProductOptionTranslation } from '../../entity/product-option/product-option-translation.entity';
 import { ProductOption } from '../../entity/product-option/product-option.entity';

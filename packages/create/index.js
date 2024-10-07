@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('./lib/create-vendure-app');
+require('./lib/create-deenruv-app');

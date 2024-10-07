@@ -43,7 +43,7 @@ async function runMollieDevServer() {
                 route: 'admin',
                 port: 5001,
             }),
-            MolliePlugin.init({ vendureHost: tunnel.url }),
+            MolliePlugin.init({ deenruvHost: tunnel.url }),
         ],
         logger: new DefaultLogger({ level: LogLevel.Debug }),
         apiOptions: {

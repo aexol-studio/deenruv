@@ -1,6 +1,6 @@
 import { Project, SourceFile } from 'ts-morph';
 
-import { VendurePluginRef } from './vendure-plugin-ref';
+import { DeenruvPluginRef } from './deenruv-plugin-ref';
 
 export type CommandCategory =
     | `Plugin`
@@ -13,7 +13,7 @@ export type CommandCategory =
     | `Other`;
 
 export interface BaseCliCommandOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
 }
 
 export type CliCommandReturnVal<T extends Record<string, any> = Record<string, any>> = {

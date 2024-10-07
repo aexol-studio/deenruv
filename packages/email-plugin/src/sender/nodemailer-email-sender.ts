@@ -145,7 +145,7 @@ export class NodemailerEmailSender implements EmailSender {
     }
 
     /**
-     * Adapts the VendureLogger to work with the bunyan-compatible logger format
+     * Adapts the DeenruvLogger to work with the bunyan-compatible logger format
      * used by Nodemailer.
      */
     private createLogger() {

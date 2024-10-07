@@ -21,7 +21,7 @@ import { getLoadTestConfig } from './load-test-config';
 
 /**
  * This set of benchmarks aims to specifically test the performance issues discussed
- * in issue https://github.com/vendure-ecommerce/vendure/issues/1506.
+ * in issue https://github.com/deenruv-ecommerce/deenruv/issues/1506.
  *
  * In order to test these issues, we need a test dataset that will create:
  *
@@ -36,7 +36,7 @@ import { getLoadTestConfig } from './load-test-config';
  *    This will test optimization of selecting & joining only the needed fields.
  */
 
-const DATABASE_NAME = 'vendure-benchmarks';
+const DATABASE_NAME = 'deenruv-benchmarks';
 const PRODUCT_COUNT = 1000;
 const VARIANTS_PER_PRODUCT = 10;
 const ORDER_COUNT = 10000;

@@ -16,7 +16,7 @@ import {
     ProcessContext,
     registerPluginStartupMessage,
     Type,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 
 import { isDevModeOptions, resolveTransportSettings } from './common';
@@ -35,11 +35,11 @@ import {
 
 /**
  * @description
- * The EmailPlugin creates and sends transactional emails based on Vendure events. By default, it uses an [MJML](https://mjml.io/)-based
+ * The EmailPlugin creates and sends transactional emails based on Deenruv events. By default, it uses an [MJML](https://mjml.io/)-based
  * email generator to generate the email body and [Nodemailer](https://nodemailer.com/about/) to send the emails.
  *
  * ## High-level description
- * Vendure has an internal events system (see {@link EventBus}) that allows plugins to subscribe to events. The EmailPlugin is configured with {@link EmailEventHandler}s
+ * Deenruv has an internal events system (see {@link EventBus}) that allows plugins to subscribe to events. The EmailPlugin is configured with {@link EmailEventHandler}s
  * that listen for a specific event and when it is published, the handler defines which template to use to generate the resulting email.
  *
  * The plugin comes with a set of default handler for the following events:
@@ -62,7 +62,7 @@ import {
  * ```ts
  * import { defaultEmailHandlers, EmailPlugin } from '\@deenruv/email-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     EmailPlugin.init({
@@ -104,7 +104,7 @@ import {
  *
  * Emails are generated from templates which use [MJML](https://mjml.io/) syntax. MJML is an open-source HTML-like markup
  * language which makes the task of creating responsive email markup simple. By default, the templates are installed to
- * `<project root>/vendure/email/templates` and can be freely edited.
+ * `<project root>/deenruv/email/templates` and can be freely edited.
  *
  * Dynamic data such as the recipient's name or order items are specified using [Handlebars syntax](https://handlebarsjs.com/):
  *
@@ -160,17 +160,17 @@ import {
  *
  * The following helper functions are available for use in email templates:
  *
- * * `formatMoney`: Formats an amount of money (which are always stored as integers in Vendure) as a decimal, e.g. `123` => `1.23`
+ * * `formatMoney`: Formats an amount of money (which are always stored as integers in Deenruv) as a decimal, e.g. `123` => `1.23`
  * * `formatDate`: Formats a Date value with the [dateformat](https://www.npmjs.com/package/dateformat) package.
  *
  * ## Extending the default email handler
  *
  * The `defaultEmailHandlers` array defines the default handler such as for handling new account registration, order confirmation, password reset
  * etc. These defaults can be extended by adding custom templates for languages other than the default, or even completely new types of emails
- * which respond to any of the available [VendureEvents](/reference/typescript-api/events/).
+ * which respond to any of the available [DeenruvEvents](/reference/typescript-api/events/).
  *
  * A good way to learn how to create your own email handler is to take a look at the
- * [source code of the default handler](https://github.com/vendure-ecommerce/vendure/blob/master/packages/email-plugin/src/handler/default-email-handlers.ts).
+ * [source code of the default handler](https://github.com/deenruv-ecommerce/deenruv/blob/master/packages/email-plugin/src/handler/default-email-handlers.ts).
  * New handler are defined in exactly the same way.
  *
  * It is also possible to modify the default handler:
@@ -228,7 +228,7 @@ import {
  * ```ts
  * import { defaultEmailHandlers, EmailPlugin } from '\@deenruv/email-plugin';
  * import { MyTransportService } from './transport.services.ts';
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   plugins: [
  *     EmailPlugin.init({
  *       handler: defaultEmailHandlers,
@@ -251,7 +251,7 @@ import {
  *
  * ## Dev mode
  *
- * For development, the `transport` option can be replaced by `devMode: true`. Doing so configures Vendure to use the
+ * For development, the `transport` option can be replaced by `devMode: true`. Doing so configures Deenruv to use the
  * file transport (See {@link FileTransportOptions}) and outputs emails as rendered HTML files in the directory specified by the
  * `outputPath` property.
  *
@@ -260,7 +260,7 @@ import {
  *   devMode: true,
  *   route: 'mailbox',
  *   handler: defaultEmailHandlers,
- *   templatePath: path.join(__dirname, 'vendure/email/templates'),
+ *   templatePath: path.join(__dirname, 'deenruv/email/templates'),
  *   outputPath: path.join(__dirname, 'test-emails'),
  * })
  * ```
@@ -274,10 +274,10 @@ import {
  *
  * If you are having trouble sending email over and SMTP connection, set the `logging` and `debug` options to `true`. This will
  * send detailed information from the SMTP transporter to the configured logger (defaults to console). For maximum detail combine
- * this with a detail log level in the configured VendureLogger:
+ * this with a detail log level in the configured DeenruvLogger:
  *
  * ```ts
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   logger: new DefaultLogger({ level: LogLevel.Debug })
  *   // ...
  *   plugins: [

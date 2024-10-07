@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DefaultLogger, JobQueueService, Logger, VendureConfig } from '@deenruv/core';
+import { DefaultLogger, JobQueueService, Logger, DeenruvConfig } from '@deenruv/core';
 import { preBootstrapConfig, configureSessionCookies } from '@deenruv/core/dist/bootstrap';
 
 import { populateForTesting } from './data-population/populate-for-testing';
@@ -10,31 +10,31 @@ import { TestServerOptions } from './types';
 /* eslint-disable no-console */
 /**
  * @description
- * A real Vendure server against which the e2e tests should be run.
+ * A real Deenruv server against which the e2e tests should be run.
  *
  * @docsCategory testing
  */
 export class TestServer {
     public app: INestApplication;
 
-    constructor(private vendureConfig: Required<VendureConfig>) {}
+    constructor(private deenruvConfig: Required<DeenruvConfig>) {}
 
     /**
      * @description
-     * Bootstraps an instance of Vendure server and populates the database according to the options
+     * Bootstraps an instance of Deenruv server and populates the database according to the options
      * passed in. Should be called in the `beforeAll` function.
      *
      * The populated data is saved into an .sqlite file for each test file. On subsequent runs, this file
      * is loaded so that the populate step can be skipped, which speeds up the tests significantly.
      */
     async init(options: TestServerOptions): Promise<void> {
-        const { type } = this.vendureConfig.dbConnectionOptions;
-        const { dbConnectionOptions } = this.vendureConfig;
+        const { type } = this.deenruvConfig.dbConnectionOptions;
+        const { dbConnectionOptions } = this.deenruvConfig;
         const testFilename = this.getCallerFilename(1);
         const initializer = getInitializerFor(type);
         try {
             await initializer.init(testFilename, dbConnectionOptions);
-            const populateFn = () => this.populateInitialData(this.vendureConfig, options);
+            const populateFn = () => this.populateInitialData(this.deenruvConfig, options);
             await initializer.populate(populateFn);
             await initializer.destroy();
         } catch (e: any) {
@@ -45,17 +45,17 @@ export class TestServer {
 
     /**
      * @description
-     * Bootstraps a Vendure server instance. Generally the `.init()` method should be used, as that will also
+     * Bootstraps a Deenruv server instance. Generally the `.init()` method should be used, as that will also
      * populate the test data. However, the `bootstrap()` method is sometimes useful in tests which need to
-     * start and stop a Vendure instance multiple times without re-populating data.
+     * start and stop a Deenruv instance multiple times without re-populating data.
      */
     async bootstrap() {
-        this.app = await this.bootstrapForTesting(this.vendureConfig);
+        this.app = await this.bootstrapForTesting(this.deenruvConfig);
     }
 
     /**
      * @description
-     * Destroy the Vendure server instance and clean up all resources.
+     * Destroy the Deenruv server instance and clean up all resources.
      * Should be called after all tests have run, e.g. in an `afterAll` function.
      */
     async destroy() {
@@ -90,7 +90,7 @@ export class TestServer {
      * Populates an .sqlite database file based on the PopulateOptions.
      */
     private async populateInitialData(
-        testingConfig: Required<VendureConfig>,
+        testingConfig: Required<DeenruvConfig>,
         options: TestServerOptions,
     ): Promise<void> {
         const app = await populateForTesting(testingConfig, this.bootstrapForTesting, {
@@ -101,11 +101,11 @@ export class TestServer {
     }
 
     /**
-     * Bootstraps an instance of the Vendure server for testing against.
+     * Bootstraps an instance of the Deenruv server for testing against.
      */
     private async bootstrapForTesting(
         this: void,
-        userConfig: Partial<VendureConfig>,
+        userConfig: Partial<DeenruvConfig>,
     ): Promise<INestApplication> {
         const config = await preBootstrapConfig(userConfig);
         Logger.useLogger(config.logger);

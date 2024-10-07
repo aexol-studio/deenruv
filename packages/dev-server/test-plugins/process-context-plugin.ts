@@ -1,5 +1,5 @@
 import { OnApplicationBootstrap, OnModuleInit } from '@nestjs/common';
-import { Logger, PluginCommonModule, ProcessContext, VendurePlugin } from '@deenruv/core';
+import { Logger, PluginCommonModule, ProcessContext, DeenruvPlugin } from '@deenruv/core';
 
 /**
  * Testing whether the ProcessContext service is giving the correct results.

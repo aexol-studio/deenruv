@@ -12,8 +12,8 @@ import { Connection, DataSourceOptions, EntitySubscriberInterface } from 'typeor
 import { InternalServerError } from './common/error/errors';
 import { getConfig, setConfig } from './config/config-helpers';
 import { DefaultLogger } from './config/logger/default-logger';
-import { Logger } from './config/logger/vendure-logger';
-import { RuntimeVendureConfig, VendureConfig } from './config/vendure-config';
+import { Logger } from './config/logger/deenruv-logger';
+import { RuntimeDeenruvConfig, DeenruvConfig } from './config/deenruv-config';
 import { Administrator } from './entity/administrator/administrator.entity';
 import { coreEntitiesMap } from './entity/entities';
 import { registerCustomEntityFields } from './entity/register-custom-entity-fields';
@@ -24,15 +24,15 @@ import { validateCustomFieldsConfig } from './entity/validate-custom-fields-conf
 import { getCompatibility, getConfigurationFunction, getEntitiesFromPlugins } from './plugin/plugin-metadata';
 import { getPluginStartupMessages } from './plugin/plugin-utils';
 import { setProcessContext } from './process-context/process-context';
-import { VENDURE_VERSION } from './version';
-import { VendureWorker } from './worker/vendure-worker';
+import { DEENRUV_VERSION } from './version';
+import { DeenruvWorker } from './worker/deenruv-worker';
 
-export type VendureBootstrapFunction = (config: VendureConfig) => Promise<INestApplication>;
+export type DeenruvBootstrapFunction = (config: DeenruvConfig) => Promise<INestApplication>;
 
 /**
  * @description
  * Additional options that can be used to configure the bootstrap process of the
- * Vendure server.
+ * Deenruv server.
  *
  * @since 2.2.0
  * @docsCategory common
@@ -49,7 +49,7 @@ export interface BootstrapOptions {
 /**
  * @description
  * Additional options that can be used to configure the bootstrap process of the
- * Vendure worker.
+ * Deenruv worker.
  *
  * @since 2.2.0
  * @docsCategory worker
@@ -65,12 +65,12 @@ export interface BootstrapWorkerOptions {
 
 /**
  * @description
- * Bootstraps the Vendure server. This is the entry point to the application.
+ * Bootstraps the Deenruv server. This is the entry point to the application.
  *
  * @example
  * ```ts
  * import { bootstrap } from '\@deenruv/core';
- * import { config } from './vendure-config';
+ * import { config } from './deenruv-config';
  *
  * bootstrap(config).catch(err => {
  *   console.log(err);
@@ -86,7 +86,7 @@ export interface BootstrapWorkerOptions {
  *
  * ```ts
  * import { bootstrap } from '\@deenruv/core';
- * import { config } from './vendure-config';
+ * import { config } from './deenruv-config';
  *
  * bootstrap(config, {
  *   // highlight-start
@@ -104,12 +104,12 @@ export interface BootstrapWorkerOptions {
  * @docsWeight 0
  * */
 export async function bootstrap(
-    userConfig: Partial<VendureConfig>,
+    userConfig: Partial<DeenruvConfig>,
     options?: BootstrapOptions,
 ): Promise<INestApplication> {
     const config = await preBootstrapConfig(userConfig);
     Logger.useLogger(config.logger);
-    Logger.info(`Bootstrapping Vendure Server (pid: ${process.pid})...`);
+    Logger.info(`Bootstrapping Deenruv Server (pid: ${process.pid})...`);
     checkPluginCompatibility(config);
 
     // The AppModule *must* be loaded only after the entities have been set in the
@@ -144,16 +144,16 @@ export async function bootstrap(
 
 /**
  * @description
- * Bootstraps a Vendure worker. Resolves to a {@link VendureWorker} object containing a reference to the underlying
+ * Bootstraps a Deenruv worker. Resolves to a {@link DeenruvWorker} object containing a reference to the underlying
  * NestJs [standalone application](https://docs.nestjs.com/standalone-applications) as well as convenience
  * methods for starting the job queue and health check server.
  *
- * Read more about the [Vendure Worker](/guides/developer-guide/worker-job-queue/).
+ * Read more about the [Deenruv Worker](/guides/developer-guide/worker-job-queue/).
  *
  * @example
  * ```ts
  * import { bootstrapWorker } from '\@deenruv/core';
- * import { config } from './vendure-config';
+ * import { config } from './deenruv-config';
  *
  * bootstrapWorker(config)
  *   .then(worker => worker.startJobQueue())
@@ -168,14 +168,14 @@ export async function bootstrap(
  * @docsWeight 0
  * */
 export async function bootstrapWorker(
-    userConfig: Partial<VendureConfig>,
+    userConfig: Partial<DeenruvConfig>,
     options?: BootstrapWorkerOptions,
-): Promise<VendureWorker> {
-    const vendureConfig = await preBootstrapConfig(userConfig);
-    const config = disableSynchronize(vendureConfig);
-    config.logger.setDefaultContext?.('Vendure Worker');
+): Promise<DeenruvWorker> {
+    const deenruvConfig = await preBootstrapConfig(userConfig);
+    const config = disableSynchronize(deenruvConfig);
+    config.logger.setDefaultContext?.('Deenruv Worker');
     Logger.useLogger(config.logger);
-    Logger.info(`Bootstrapping Vendure Worker (pid: ${process.pid})...`);
+    Logger.info(`Bootstrapping Deenruv Worker (pid: ${process.pid})...`);
     checkPluginCompatibility(config);
 
     setProcessContext('worker');
@@ -190,16 +190,16 @@ export async function bootstrapWorker(
     workerApp.useLogger(new Logger());
     workerApp.enableShutdownHooks();
     await validateDbTablesForWorker(workerApp);
-    Logger.info('Vendure Worker is ready');
-    return new VendureWorker(workerApp);
+    Logger.info('Deenruv Worker is ready');
+    return new DeenruvWorker(workerApp);
 }
 
 /**
  * Setting the global config must be done prior to loading the AppModule.
  */
 export async function preBootstrapConfig(
-    userConfig: Partial<VendureConfig>,
-): Promise<Readonly<RuntimeVendureConfig>> {
+    userConfig: Partial<DeenruvConfig>,
+): Promise<Readonly<RuntimeDeenruvConfig>> {
     if (userConfig) {
         await setConfig(userConfig);
     }
@@ -238,22 +238,22 @@ export async function preBootstrapConfig(
     return config;
 }
 
-function checkPluginCompatibility(config: RuntimeVendureConfig): void {
+function checkPluginCompatibility(config: RuntimeDeenruvConfig): void {
     for (const plugin of config.plugins) {
         const compatibility = getCompatibility(plugin);
         const pluginName = (plugin as any).name as string;
         if (!compatibility) {
             Logger.info(
-                `The plugin "${pluginName}" does not specify a compatibility range, so it is not guaranteed to be compatible with this version of Vendure.`,
+                `The plugin "${pluginName}" does not specify a compatibility range, so it is not guaranteed to be compatible with this version of Deenruv.`,
             );
         } else {
-            if (!satisfies(VENDURE_VERSION, compatibility, { loose: true, includePrerelease: true })) {
+            if (!satisfies(DEENRUV_VERSION, compatibility, { loose: true, includePrerelease: true })) {
                 Logger.error(
-                    `Plugin "${pluginName}" is not compatible with this version of Vendure. ` +
-                        `It specifies a semver range of "${compatibility}" but the current version is "${VENDURE_VERSION}".`,
+                    `Plugin "${pluginName}" is not compatible with this version of Deenruv. ` +
+                        `It specifies a semver range of "${compatibility}" but the current version is "${DEENRUV_VERSION}".`,
                 );
                 throw new InternalServerError(
-                    `Plugin "${pluginName}" is not compatible with this version of Vendure.`,
+                    `Plugin "${pluginName}" is not compatible with this version of Deenruv.`,
                 );
             }
         }
@@ -263,7 +263,7 @@ function checkPluginCompatibility(config: RuntimeVendureConfig): void {
 /**
  * Initialize any configured plugins.
  */
-async function runPluginConfigurations(config: RuntimeVendureConfig): Promise<RuntimeVendureConfig> {
+async function runPluginConfigurations(config: RuntimeDeenruvConfig): Promise<RuntimeDeenruvConfig> {
     for (const plugin of config.plugins) {
         const configFn = getConfigurationFunction(plugin);
         if (typeof configFn === 'function') {
@@ -277,7 +277,7 @@ async function runPluginConfigurations(config: RuntimeVendureConfig): Promise<Ru
 /**
  * Returns an array of core entities and any additional entities defined in plugins.
  */
-export function getAllEntities(userConfig: Partial<VendureConfig>): Array<Type<any>> {
+export function getAllEntities(userConfig: Partial<DeenruvConfig>): Array<Type<any>> {
     const coreEntities = Object.values(coreEntitiesMap) as Array<Type<any>>;
     const pluginEntities = getEntitiesFromPlugins(userConfig.plugins);
 
@@ -299,7 +299,7 @@ export function getAllEntities(userConfig: Partial<VendureConfig>): Array<Type<a
  * If the 'bearer' tokenMethod is being used, then we automatically expose the authTokenHeaderKey header
  * in the CORS options, making sure to preserve any user-configured exposedHeaders.
  */
-function setExposedHeaders(config: Readonly<RuntimeVendureConfig>) {
+function setExposedHeaders(config: Readonly<RuntimeDeenruvConfig>) {
     const { tokenMethod } = config.authOptions;
     const isUsingBearerToken =
         tokenMethod === 'bearer' || (Array.isArray(tokenMethod) && tokenMethod.includes('bearer'));
@@ -324,7 +324,7 @@ function setExposedHeaders(config: Readonly<RuntimeVendureConfig>) {
     }
 }
 
-function logWelcomeMessage(config: RuntimeVendureConfig) {
+function logWelcomeMessage(config: RuntimeDeenruvConfig) {
     const { port, shopApiPath, adminApiPath, hostname } = config.apiOptions;
     const apiCliGreetings: Array<readonly [string, string]> = [];
     const pathToUrl = (path: string) => `http://${hostname || 'localhost'}:${port}/${path}`;
@@ -334,7 +334,7 @@ function logWelcomeMessage(config: RuntimeVendureConfig) {
         ...getPluginStartupMessages().map(({ label, path }) => [label, pathToUrl(path)] as const),
     );
     const columnarGreetings = arrangeCliGreetingsInColumns(apiCliGreetings);
-    const title = `Vendure server (v${VENDURE_VERSION}) now running on port ${port}`;
+    const title = `Deenruv server (v${DEENRUV_VERSION}) now running on port ${port}`;
     const maxLineLength = Math.max(title.length, ...columnarGreetings.map(l => l.length));
     const titlePadLength = title.length < maxLineLength ? Math.floor((maxLineLength - title.length) / 2) : 0;
     Logger.info('='.repeat(maxLineLength));
@@ -351,9 +351,9 @@ function arrangeCliGreetingsInColumns(lines: Array<readonly [string, string]>): 
 
 /**
  * Fix race condition when modifying DB
- * See: https://github.com/vendure-ecommerce/vendure/issues/152
+ * See: https://github.com/deenruv-ecommerce/deenruv/issues/152
  */
-function disableSynchronize(userConfig: Readonly<RuntimeVendureConfig>): Readonly<RuntimeVendureConfig> {
+function disableSynchronize(userConfig: Readonly<RuntimeDeenruvConfig>): Readonly<RuntimeDeenruvConfig> {
     const config = {
         ...userConfig,
         dbConnectionOptions: {
@@ -365,7 +365,7 @@ function disableSynchronize(userConfig: Readonly<RuntimeVendureConfig>): Readonl
 }
 
 /**
- * Check that the Database tables exist. When running Vendure server & worker
+ * Check that the Database tables exist. When running Deenruv server & worker
  * concurrently for the first time, the worker will attempt to access the
  * DB tables before the server has populated them (assuming synchronize = true
  * in config). This method will use polling to check the existence of a known table
@@ -408,7 +408,7 @@ async function validateDbTablesForWorker(worker: INestApplicationContext) {
 
 export function configureSessionCookies(
     app: INestApplication,
-    userConfig: Readonly<RuntimeVendureConfig>,
+    userConfig: Readonly<RuntimeDeenruvConfig>,
 ): void {
     const { cookieOptions } = userConfig.authOptions;
 

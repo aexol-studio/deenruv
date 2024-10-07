@@ -8,7 +8,7 @@ import {
     ConfigurableOperationDef,
     ConfigurableOperationDefOptions,
 } from '../../common/configurable-operation';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 /**
  * @description
@@ -23,7 +23,7 @@ export type DuplicateEntityFn<T extends ConfigArgs> = (input: {
     entityName: string;
     id: ID;
     args: ConfigArgValues<T>;
-}) => Promise<VendureEntity>;
+}) => Promise<DeenruvEntity>;
 
 /**
  * @description
@@ -133,13 +133,13 @@ export interface EntityDuplicatorConfig<T extends ConfigArgs> extends Configurab
  * });
  * ```
  *
- * The duplicator then gets passed to your VendureConfig object:
+ * The duplicator then gets passed to your DeenruvConfig object:
  *
- * ```ts title=src/vendure-config.ts
- * import { VendureConfig, defaultEntityDuplicators } from '\@deenruv/core';
+ * ```ts title=src/deenruv-config.ts
+ * import { DeenruvConfig, defaultEntityDuplicators } from '\@deenruv/core';
  * import { customCollectionDuplicator } from './config/custom-collection-duplicator';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *    // ...
  *    entityOptions: {
  *      entityDuplicators: [
@@ -189,7 +189,7 @@ export class EntityDuplicator<T extends ConfigArgs = ConfigArgs> extends Configu
         entityName: string;
         id: ID;
         args: ConfigArg[];
-    }): Promise<VendureEntity> {
+    }): Promise<DeenruvEntity> {
         return this.duplicateFn({
             ...input,
             args: this.argsArrayToHash(input.args),

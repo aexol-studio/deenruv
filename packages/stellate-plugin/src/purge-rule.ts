@@ -1,5 +1,5 @@
 import { Type } from '@deenruv/common/lib/shared-types';
-import { VendureEvent, Injector } from '@deenruv/core';
+import { DeenruvEvent, Injector } from '@deenruv/core';
 
 import { StellateService } from './service/stellate.service';
 
@@ -10,10 +10,10 @@ import { StellateService } from './service/stellate.service';
  * @docsCategory core plugins/StellatePlugin
  * @docsPage PurgeRule
  */
-export interface PurgeRuleConfig<Event extends VendureEvent> {
+export interface PurgeRuleConfig<Event extends DeenruvEvent> {
     /**
      * @description
-     * Specifies which VendureEvent will trigger this purge rule.
+     * Specifies which DeenruvEvent will trigger this purge rule.
      */
     eventType: Type<Event>;
     /**
@@ -38,7 +38,7 @@ export interface PurgeRuleConfig<Event extends VendureEvent> {
 
 /**
  * @description
- * Defines a rule that listens for a particular VendureEvent and uses that to
+ * Defines a rule that listens for a particular DeenruvEvent and uses that to
  * make calls to the [Stellate Purging API](https://docs.stellate.co/docs/purging-api) via
  * the provided {@link StellateService} instance.
  *
@@ -46,7 +46,7 @@ export interface PurgeRuleConfig<Event extends VendureEvent> {
  * @docsPage PurgeRule
  * @docsWeight 0
  */
-export class PurgeRule<Event extends VendureEvent = VendureEvent> {
+export class PurgeRule<Event extends DeenruvEvent = DeenruvEvent> {
     get eventType(): Type<Event> {
         return this.config.eventType;
     }

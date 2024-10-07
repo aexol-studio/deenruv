@@ -1,4 +1,4 @@
-import { PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, Type, DeenruvPlugin } from '@deenruv/core';
 
 type PluginInitOptions = any;
 

@@ -6,8 +6,8 @@ import {
     PluginCommonModule,
     ProcessContext,
     registerPluginStartupMessage,
-    RuntimeVendureConfig,
-    VendurePlugin,
+    RuntimeDeenruvConfig,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { createHash } from 'crypto';
 import express, { NextFunction, Request, Response } from 'express';
@@ -45,7 +45,7 @@ async function getFileType(buffer: Buffer) {
  * ```ts
  * import { AssetServerPlugin } from '\@deenruv/asset-server-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     AssetServerPlugin.init({
@@ -72,7 +72,7 @@ async function getFileType(buffer: Buffer) {
  *
  * ### Focal point
  *
- * When cropping an image (`mode=crop`), Vendure will attempt to keep the most "interesting" area of the image in the cropped frame. It does this
+ * When cropping an image (`mode=crop`), Deenruv will attempt to keep the most "interesting" area of the image in the cropped frame. It does this
  * by finding the area of the image with highest entropy (the busiest area of the image). However, sometimes this does not yield a satisfactory
  * result - part or all of the main subject may still be cropped out.
  *
@@ -178,7 +178,7 @@ export class AssetServerPlugin implements NestModule, OnApplicationBootstrap {
     }
 
     /** @internal */
-    static async configure(config: RuntimeVendureConfig) {
+    static async configure(config: RuntimeDeenruvConfig) {
         const storageStrategyFactory =
             this.options.storageStrategyFactory || defaultAssetStorageStrategyFactory;
         this.assetStorage = await storageStrategyFactory(this.options);

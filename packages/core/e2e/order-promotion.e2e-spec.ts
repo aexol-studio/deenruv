@@ -246,7 +246,7 @@ describe('Promotions applied to Orders', () => {
             expect(removeCouponCode!.totalWithTax).toBe(6000);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/649
+        // https://github.com/deenruv-ecommerce/deenruv/issues/649
         it('discounts array cleared after coupon code removed', async () => {
             const { activeOrder } = await shopClient.query<CodegenShop.GetActiveOrderQuery>(GET_ACTIVE_ORDER);
 
@@ -345,7 +345,7 @@ describe('Promotions applied to Orders', () => {
                 shopClient.setChannelToken(E2E_DEFAULT_CHANNEL_TOKEN);
             });
 
-            // https://github.com/vendure-ecommerce/vendure/issues/1692
+            // https://github.com/deenruv-ecommerce/deenruv/issues/1692
             it('does not allow a couponCode from another channel', async () => {
                 shopClient.setChannelToken(OTHER_CHANNEL_TOKEN);
                 const { applyCouponCode } = await shopClient.query<
@@ -681,7 +681,7 @@ describe('Promotions applied to Orders', () => {
                 expect(applyCouponCode.totalWithTax).toBe(4800);
             });
 
-            // https://github.com/vendure-ecommerce/vendure/issues/1773
+            // https://github.com/deenruv-ecommerce/deenruv/issues/1773
             it('decimal percentage', async () => {
                 const decimalPercentageCouponCode = 'DPCC';
                 await createPromotion({
@@ -1219,7 +1219,7 @@ describe('Promotions applied to Orders', () => {
                 expect(applyCouponCode.totalWithTax).toBe(6000);
             });
 
-            // https://github.com/vendure-ecommerce/vendure/pull/1150
+            // https://github.com/deenruv-ecommerce/deenruv/pull/1150
             it('shipping discounts get correctly removed', async () => {
                 shopClient.setChannelToken(TAX_INCLUDED_CHANNEL_TOKEN);
                 const { addItemToOrder } = await shopClient.query<
@@ -1630,7 +1630,7 @@ describe('Promotions applied to Orders', () => {
                 expect(activeOrder!.couponCodes).toEqual([]);
             });
 
-            // https://github.com/vendure-ecommerce/vendure/issues/1466
+            // https://github.com/deenruv-ecommerce/deenruv/issues/1466
             it('cancelled orders do not count against usage limit', async () => {
                 const { cancelOrder } = await adminClient.query<
                     Codegen.CancelOrderMutation,
@@ -1817,7 +1817,7 @@ describe('Promotions applied to Orders', () => {
                 expect(applyCouponCode.errorCode).toBe(ErrorCode.COUPON_CODE_LIMIT_ERROR);
             });
 
-            // https://github.com/vendure-ecommerce/vendure/issues/1466
+            // https://github.com/deenruv-ecommerce/deenruv/issues/1466
             it('cancelled orders do not count against usage limit', async () => {
                 const { cancelOrder } = await adminClient.query<
                     Codegen.CancelOrderMutation,
@@ -1846,7 +1846,7 @@ describe('Promotions applied to Orders', () => {
         });
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/710
+    // https://github.com/deenruv-ecommerce/deenruv/issues/710
     it('removes order-level discount made invalid by removing OrderLine', async () => {
         const promotion = await createPromotion({
             enabled: true,
@@ -1899,7 +1899,7 @@ describe('Promotions applied to Orders', () => {
         expect(check2!.discounts.length).toBe(0);
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/1492
+    // https://github.com/deenruv-ecommerce/deenruv/issues/1492
     it('correctly handles pro-ration of variants with 0 price', async () => {
         const couponCode = '20%_off_order';
         const promotion = await createPromotion({
@@ -1937,7 +1937,7 @@ describe('Promotions applied to Orders', () => {
         expect(applyCouponCode.totalWithTax).toBe(96);
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/2385
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2385
     describe('prevents negative line price', () => {
         const TAX_INCLUDED_CHANNEL_TOKEN_2 = 'tax_included_channel_2';
         const couponCode1 = '100%_off';

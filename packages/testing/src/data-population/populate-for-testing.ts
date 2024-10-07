@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { INestApplicationContext } from '@nestjs/common';
 import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { importProductsFromCsv, populateCollections, populateInitialData } from '@deenruv/core/cli';
 
 import { TestServerOptions } from '../types';
@@ -13,8 +13,8 @@ import { populateCustomers } from './populate-customers';
  * Clears all tables from the database and populates with (deterministic) random data.
  */
 export async function populateForTesting<T extends INestApplicationContext>(
-    config: Required<VendureConfig>,
-    bootstrapFn: (config: VendureConfig) => Promise<T>,
+    config: Required<DeenruvConfig>,
+    bootstrapFn: (config: DeenruvConfig) => Promise<T>,
     options: TestServerOptions,
 ): Promise<T> {
     (config.dbConnectionOptions as any).logging = false;

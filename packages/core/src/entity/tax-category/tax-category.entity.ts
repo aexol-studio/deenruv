@@ -3,7 +3,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 import { TaxRate } from '..';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomTaxCategoryFields } from '../custom-entity-fields';
 import { ProductVariant } from '../product-variant/product-variant.entity';
 
@@ -14,7 +14,7 @@ import { ProductVariant } from '../product-variant/product-variant.entity';
  * @docsCategory entities
  */
 @Entity()
-export class TaxCategory extends VendureEntity implements HasCustomFields {
+export class TaxCategory extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<TaxCategory>) {
         super(input);
     }

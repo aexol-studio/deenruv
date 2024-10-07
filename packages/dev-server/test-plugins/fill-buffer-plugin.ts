@@ -6,7 +6,7 @@ import {
     PluginCommonModule,
     ProductVariantService,
     RequestContext,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 
@@ -46,7 +46,7 @@ class FillBufferResolver {
 
 /**
  * Plugin to create a lot of buffered jobs to test help investigate and fix
- * issue https://github.com/vendure-ecommerce/vendure/issues/1433
+ * issue https://github.com/deenruv-ecommerce/deenruv/issues/1433
  */
 @DeenruvPlugin({
     imports: [PluginCommonModule],

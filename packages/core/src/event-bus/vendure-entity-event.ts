@@ -1,6 +1,6 @@
 import { RequestContext } from '../api';
 
-import { VendureEvent } from './vendure-event';
+import { DeenruvEvent } from './deenruv-event';
 
 /**
  * @description
@@ -9,7 +9,7 @@ import { VendureEvent } from './vendure-event';
  *
  * @docsCategory events
  * */
-export abstract class VendureEntityEvent<Entity, Input = any> extends VendureEvent {
+export abstract class DeenruvEntityEvent<Entity, Input = any> extends DeenruvEvent {
     public readonly entity: Entity;
     public readonly type: 'created' | 'updated' | 'deleted';
     public readonly ctx: RequestContext;

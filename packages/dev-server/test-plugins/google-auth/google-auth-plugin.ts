@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, NestModule, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
-import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 import express from 'express';
 import path from 'path';
 

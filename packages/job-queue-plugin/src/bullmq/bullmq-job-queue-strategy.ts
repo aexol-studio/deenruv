@@ -29,7 +29,7 @@ import { RedisHealthIndicator } from './redis-health-indicator';
 import { getJobsByType } from './scripts/get-jobs-by-type';
 import { BullMQPluginOptions, CustomScriptDefinition } from './types';
 
-const QUEUE_NAME = 'vendure-job-queue';
+const QUEUE_NAME = 'deenruv-job-queue';
 const DEFAULT_CONCURRENCY = 3;
 
 /**
@@ -50,7 +50,7 @@ export class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
     private cancellationSub: Redis;
     private cancelRunningJob$ = new Subject<string>();
     private readonly CANCEL_JOB_CHANNEL = 'cancel-job';
-    private readonly CANCELLED_JOB_LIST_NAME = 'vendure:cancelled-jobs';
+    private readonly CANCELLED_JOB_LIST_NAME = 'deenruv:cancelled-jobs';
 
     async init(injector: Injector): Promise<void> {
         const options = injector.get<BullMQPluginOptions>(BULLMQ_PLUGIN_OPTIONS);
@@ -114,7 +114,7 @@ export class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
             );
             const processFn = this.queueNameProcessFnMap.get(queueName);
             if (processFn) {
-                const job = await this.createVendureJob(bullJob);
+                const job = await this.createDeenruvJob(bullJob);
                 const completed$ = new Subject<void>();
                 try {
                     // eslint-disable-next-line
@@ -163,7 +163,7 @@ export class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
             attempts: retries + 1,
             backoff,
         });
-        return this.createVendureJob(bullJob);
+        return this.createDeenruvJob(bullJob);
     }
 
     async cancelJob(jobId: string): Promise<Job | undefined> {
@@ -171,10 +171,10 @@ export class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
         if (bullJob) {
             if (await bullJob.isActive()) {
                 await this.setActiveJobAsCancelled(jobId);
-                return this.createVendureJob(bullJob);
+                return this.createDeenruvJob(bullJob);
             } else {
                 try {
-                    const job = await this.createVendureJob(bullJob);
+                    const job = await this.createDeenruvJob(bullJob);
                     await bullJob.remove();
                     return job;
                 } catch (e: any) {
@@ -244,20 +244,20 @@ export class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
         }
 
         return {
-            items: await Promise.all(items.map(bullJob => this.createVendureJob(bullJob))),
+            items: await Promise.all(items.map(bullJob => this.createDeenruvJob(bullJob))),
             totalItems,
         };
     }
 
     async findManyById(ids: ID[]): Promise<Job[]> {
         const bullJobs = await Promise.all(ids.map(id => this.queue.getJob(id.toString())));
-        return Promise.all(bullJobs.filter(notNullOrUndefined).map(j => this.createVendureJob(j)));
+        return Promise.all(bullJobs.filter(notNullOrUndefined).map(j => this.createDeenruvJob(j)));
     }
 
     async findOne(id: ID): Promise<Job | undefined> {
         const bullJob = await this.queue.getJob(id.toString());
         if (bullJob) {
-            return this.createVendureJob(bullJob);
+            return this.createDeenruvJob(bullJob);
         }
     }
 
@@ -362,7 +362,7 @@ export class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
         await this.redisConnection.sadd(this.CANCELLED_JOB_LIST_NAME, jobId.toString());
     }
 
-    private async createVendureJob(bullJob: Bull.Job): Promise<Job> {
+    private async createDeenruvJob(bullJob: Bull.Job): Promise<Job> {
         const jobJson = bullJob.toJSON();
         return new Job({
             queueName: bullJob.name,

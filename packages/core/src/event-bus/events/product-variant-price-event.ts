@@ -2,7 +2,7 @@ import { CreateProductVariantInput, UpdateProductVariantInput } from '@deenruv/c
 
 import { RequestContext } from '../../api/common/request-context';
 import { ProductVariantPrice } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ProductVariantInputTypes = undefined;
 
@@ -14,7 +14,7 @@ type ProductVariantInputTypes = undefined;
  * @docsPage Event Types
  * @since 2.2.0
  */
-export class ProductVariantPriceEvent extends VendureEntityEvent<
+export class ProductVariantPriceEvent extends DeenruvEntityEvent<
     ProductVariantPrice[],
     ProductVariantInputTypes
 > {

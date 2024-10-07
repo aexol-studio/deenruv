@@ -1,6 +1,6 @@
 import { RequestContext } from '../../api/common/request-context';
 import { Customer } from '../../entity/customer/customer.entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -10,7 +10,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class AccountVerifiedEvent extends VendureEvent {
+export class AccountVerifiedEvent extends DeenruvEvent {
     constructor(public ctx: RequestContext, public customer: Customer) {
         super();
     }

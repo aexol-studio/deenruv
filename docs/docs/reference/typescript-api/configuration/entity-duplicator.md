@@ -123,17 +123,12 @@ class EntityDuplicator<T extends ConfigArgs = ConfigArgs> extends ConfigurableOp
 
 ### duplicate
 
-<MemberInfo kind="method" type={`(input: {
-         ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>;
-         entityName: string;
-         id: <a href='/reference/typescript-api/common/id#id'>ID</a>;
-         args: ConfigArg[];
-     }) => Promise&#60;<a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a>&#62;`}   />
+<MemberInfo kind="method" type={`(input: {         ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>;         entityName: string;         id: <a href='/reference/typescript-api/common/id#id'>ID</a>;         args: ConfigArg[];     }) => Promise&#60;<a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a>&#62;`}   />
 
 
 
 
-</div>@deenruv/
+</div>
 
 
 ## DuplicateEntityFn
@@ -149,7 +144,7 @@ type DuplicateEntityFn<T extends ConfigArgs> = (input: {
     id: ID;
     args: ConfigArgValues<T>;
 }) => Promise<VendureEntity>
-```@deenruv/
+```
 
 
 ## EntityDuplicatorConfig

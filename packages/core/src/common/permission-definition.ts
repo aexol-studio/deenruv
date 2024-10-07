@@ -61,7 +61,7 @@ export type PermissionMetadata = Required<PermissionDefinitionConfig>;
  * ```
  *
  * ```ts
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   authOptions: {
  *     customPermissions: [sync],
  *   },
@@ -120,7 +120,7 @@ export class PermissionDefinition {
  * ```
  *
  * ```ts
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   authOptions: {
  *     customPermissions: [wishlist],
  *   },

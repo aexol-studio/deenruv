@@ -24,7 +24,7 @@ import {
  * :::info
  *
  * This is configured via the `orderOptions.process` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

@@ -29,7 +29,7 @@ export class HandlebarsMjmlGenerator implements EmailGenerator {
         const compiledTemplate = Handlebars.compile(template);
         // We enable prototype properties here, aware of the security implications
         // described here: https://handlebarsjs.com/api-reference/runtime-options.html#options-to-control-prototype-access
-        // This is needed because some Vendure entities use getters on the entity
+        // This is needed because some Deenruv entities use getters on the entity
         // prototype (e.g. Order.total) which may need to be interpolated.
         const templateOptions: RuntimeOptions = { allowProtoPropertiesByDefault: true };
         const fromResult = compiledFrom(templateVars, { allowProtoPropertiesByDefault: true });

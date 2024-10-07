@@ -11,7 +11,7 @@ import {
     ProductVariantService,
     RequestContext,
     TransactionalConnection,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 
@@ -36,7 +36,7 @@ class TestResolver {
     }
 }
 
-// A plugin to explore solutions to https://github.com/vendure-ecommerce/vendure/issues/1103
+// A plugin to explore solutions to https://github.com/deenruv-ecommerce/deenruv/issues/1103
 @DeenruvPlugin({
     imports: [PluginCommonModule],
     adminApiExtensions: {

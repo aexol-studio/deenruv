@@ -3,8 +3,8 @@ import { runMigrations } from '@deenruv/core';
 
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { analyzeProject } from '../../../shared/shared-prompts';
-import { VendureConfigRef } from '../../../shared/vendure-config-ref';
-import { loadVendureConfigFile } from '../load-vendure-config-file';
+import { DeenruvConfigRef } from '../../../shared/deenruv-config-ref';
+import { loadDeenruvConfigFile } from '../load-deenruv-config-file';
 
 const cancelledMessage = 'Run migrations cancelled';
 
@@ -17,9 +17,9 @@ export const runMigrationCommand = new CliCommand({
 
 async function runRunMigration(): Promise<CliCommandReturnVal> {
     const { project } = await analyzeProject({ cancelledMessage });
-    const vendureConfig = new VendureConfigRef(project);
-    log.info('Using VendureConfig from ' + vendureConfig.getPathRelativeToProjectRoot());
-    const config = await loadVendureConfigFile(vendureConfig);
+    const deenruvConfig = new DeenruvConfigRef(project);
+    log.info('Using DeenruvConfig from ' + deenruvConfig.getPathRelativeToProjectRoot());
+    const config = await loadDeenruvConfigFile(deenruvConfig);
 
     const runSpinner = spinner();
     runSpinner.start('Running migrations...');

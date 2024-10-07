@@ -4,7 +4,7 @@ import { lastValueFrom, Observable, Observer } from 'rxjs';
 import { FindOptionsRelations } from 'typeorm/find-options/FindOptionsRelations';
 
 import { RelationPaths } from '../api/decorators/relations.decorator';
-import { VendureEntity } from '../entity/base/base.entity';
+import { DeenruvEntity } from '../entity/base/base.entity';
 
 /**
  * Takes a predicate function and returns a negated version.
@@ -128,7 +128,7 @@ export function asyncObservable<T>(work: (observer: Observer<T>) => Promise<T | 
     });
 }
 
-export function convertRelationPaths<T extends VendureEntity>(
+export function convertRelationPaths<T extends DeenruvEntity>(
     relationPaths?: RelationPaths<T> | null,
 ): FindOptionsRelations<T> | undefined {
     const result: FindOptionsRelations<T> = {};

@@ -1,7 +1,7 @@
 import { SearchInput } from '@deenruv/common/lib/generated-types';
 
 import { RequestContext } from '../../api/common/request-context';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 type ExtendedSearchInput = SearchInput & {
     [extendedInputField: string]: any;
@@ -15,7 +15,7 @@ type ExtendedSearchInput = SearchInput & {
  * @docsPage Event Types
  * @since 1.6.0
  */
-export class SearchEvent extends VendureEvent {
+export class SearchEvent extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public input: ExtendedSearchInput,

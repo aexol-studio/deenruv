@@ -18,7 +18,7 @@ export class WelcomeWidgetComponent implements OnInit {
     version = ADMIN_UI_VERSION;
     administrator$: Observable<GetActiveAdministratorQuery['activeAdministrator']>;
     brand = getAppConfig().brand;
-    hideVendureBranding = getAppConfig().hideVendureBranding;
+    hideDeenruvBranding = getAppConfig().hideDeenruvBranding;
     hideVersion = getAppConfig().hideVersion;
 
     constructor(private dataService: DataService) {}

@@ -10,7 +10,7 @@ import {
     PluginCommonModule,
     RequestContextService,
     TransactionalConnection,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 
 import { shopApiExtensions } from './api/api-extensions';
@@ -27,11 +27,11 @@ import { MultivendorPluginOptions } from './types';
 /**
  * @description
  * This is an example of how to implement a multivendor marketplace app using the new features introduced in
- * Vendure v2.0.
+ * Deenruv v2.0.
  *
  * ## Setup
  *
- * Add this plugin to your VendureConfig:
+ * Add this plugin to your DeenruvConfig:
  * ```ts
  *  plugins: [
  *    MultivendorPlugin.init({

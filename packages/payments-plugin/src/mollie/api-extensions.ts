@@ -1,10 +1,9 @@
 import { gql } from 'graphql-tag';
 
 const commonSchemaExtensions = gql`
-
     input MolliePaymentIntentInput {
         """
-        The code of the Vendure payment method to use for the payment.
+        The code of the Deenruv payment method to use for the payment.
         Must have Mollie as payment method handler.
         Without this, the first method with Mollie as handler will be used.
         """
@@ -40,12 +39,10 @@ const commonSchemaExtensions = gql`
     extend type Mutation {
         createMolliePaymentIntent(input: MolliePaymentIntentInput!): MolliePaymentIntentResult!
     }
-
 `;
 
 export const shopApiExtensions = gql`
-
-   ${commonSchemaExtensions}
+    ${commonSchemaExtensions}
 
     type MollieAmount {
         value: String
@@ -76,10 +73,9 @@ export const shopApiExtensions = gql`
 `;
 
 export const adminApiExtensions = gql`
-    
-        ${commonSchemaExtensions}
+    ${commonSchemaExtensions}
 
-        extend enum ErrorCode {
-            ORDER_PAYMENT_STATE_ERROR
-        }
+    extend enum ErrorCode {
+        ORDER_PAYMENT_STATE_ERROR
+    }
 `;

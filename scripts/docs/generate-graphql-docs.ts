@@ -247,8 +247,8 @@ function renderTypeAsLink(type: GraphQLType): string {
     const fileName = isEnumType(innerType)
         ? FileName.ENUM
         : isInputObjectType(innerType)
-        ? FileName.INPUT
-        : FileName.OBJECT;
+          ? FileName.INPUT
+          : FileName.OBJECT;
     const url = `${docsUrl}${fileName}#${innerType.name.toLowerCase()}`;
     return type.toString().replace(innerType.name, `<a href="${url}">${innerType.name}</a>`);
 }

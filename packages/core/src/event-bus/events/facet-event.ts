@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Facet } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type FacetInputTypes = CreateFacetInput | UpdateFacetInput | ID;
 
@@ -15,7 +15,7 @@ type FacetInputTypes = CreateFacetInput | UpdateFacetInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class FacetEvent extends VendureEntityEvent<Facet, FacetInputTypes> {
+export class FacetEvent extends DeenruvEntityEvent<Facet, FacetInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Facet,

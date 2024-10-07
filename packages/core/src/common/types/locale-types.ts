@@ -1,7 +1,7 @@
 import { LanguageCode } from '@deenruv/common/lib/generated-types';
 import { CustomFieldsObject, ID } from '@deenruv/common/lib/shared-types';
 
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 import { TranslatableRelationsKeys } from '../../service/helpers/utils/translate-entity';
 
 import { UnwrappedArray } from './common-types';
@@ -27,7 +27,7 @@ export type NonTranslateableKeys<T> = { [K in keyof T]: T[K] extends LocaleStrin
  * @docsPage interfaces
  */
 export interface Translatable {
-    translations: Array<Translation<VendureEntity>>;
+    translations: Array<Translation<DeenruvEntity>>;
 }
 
 export type TranslationCustomFields<T> = { [K in keyof T]: K extends 'customFields' ? K : never }[keyof T];

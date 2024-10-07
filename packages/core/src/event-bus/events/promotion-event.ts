@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Promotion } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type PromotionInputTypes = CreatePromotionInput | UpdatePromotionInput | ID;
 
@@ -15,7 +15,7 @@ type PromotionInputTypes = CreatePromotionInput | UpdatePromotionInput | ID;
  * @docsCategory events
  * @docsPage Event Types
  */
-export class PromotionEvent extends VendureEntityEvent<Promotion, PromotionInputTypes> {
+export class PromotionEvent extends DeenruvEntityEvent<Promotion, PromotionInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Promotion,

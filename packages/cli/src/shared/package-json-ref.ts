@@ -12,19 +12,19 @@ export interface PackageToInstall {
 }
 
 export class PackageJson {
-    private _vendurePackageJsonPath: string | undefined;
+    private _deenruvPackageJsonPath: string | undefined;
     private _rootPackageJsonPath: string | undefined;
     constructor(private readonly project: Project) {}
 
-    get vendurePackageJsonPath() {
-        return this.locatePackageJsonWithVendureDependency();
+    get deenruvPackageJsonPath() {
+        return this.locatePackageJsonWithDeenruvDependency();
     }
 
     get rootPackageJsonPath() {
         return this.locateRootPackageJson();
     }
 
-    determineVendureVersion(): string | undefined {
+    determineDeenruvVersion(): string | undefined {
         const packageJson = this.getPackageJsonContent();
         return packageJson.dependencies['@deenruv/core'];
     }
@@ -53,10 +53,10 @@ export class PackageJson {
     }
 
     getPackageJsonContent() {
-        const packageJsonPath = this.locatePackageJsonWithVendureDependency();
+        const packageJsonPath = this.locatePackageJsonWithDeenruvDependency();
         if (!packageJsonPath || !fs.existsSync(packageJsonPath)) {
             note(
-                `Could not find a package.json in the current directory. Please run this command from the root of a Vendure project.`,
+                `Could not find a package.json in the current directory. Please run this command from the root of a Deenruv project.`,
             );
             return false;
         }
@@ -84,7 +84,7 @@ export class PackageJson {
         const packageJson = this.getPackageJsonContent();
         packageJson.scripts = packageJson.scripts || {};
         packageJson.scripts[scriptName] = script;
-        const packageJsonPath = this.vendurePackageJsonPath;
+        const packageJsonPath = this.deenruvPackageJsonPath;
         if (packageJsonPath) {
             fs.writeJsonSync(packageJsonPath, packageJson, { spaces: 2 });
         }
@@ -111,15 +111,15 @@ export class PackageJson {
         return null;
     }
 
-    locatePackageJsonWithVendureDependency() {
-        if (this._vendurePackageJsonPath) {
-            return this._vendurePackageJsonPath;
+    locatePackageJsonWithDeenruvDependency() {
+        if (this._deenruvPackageJsonPath) {
+            return this._deenruvPackageJsonPath;
         }
         const rootDir = this.getPackageRootDir().getPath();
         const potentialMonorepoDirs = ['packages', 'apps', 'libs'];
 
         const rootPackageJsonPath = path.join(this.getPackageRootDir().getPath(), 'package.json');
-        if (this.hasVendureDependency(rootPackageJsonPath)) {
+        if (this.hasDeenruvDependency(rootPackageJsonPath)) {
             return rootPackageJsonPath;
         }
         for (const dir of potentialMonorepoDirs) {
@@ -127,8 +127,8 @@ export class PackageJson {
             // Check for a package.json in all subdirs
             for (const subDir of fs.readdirSync(monorepoDir)) {
                 const packageJsonPath = path.join(monorepoDir, subDir, 'package.json');
-                if (this.hasVendureDependency(packageJsonPath)) {
-                    this._vendurePackageJsonPath = packageJsonPath;
+                if (this.hasDeenruvDependency(packageJsonPath)) {
+                    this._deenruvPackageJsonPath = packageJsonPath;
                     return packageJsonPath;
                 }
             }
@@ -136,7 +136,7 @@ export class PackageJson {
         return null;
     }
 
-    private hasVendureDependency(packageJsonPath: string) {
+    private hasDeenruvDependency(packageJsonPath: string) {
         if (!fs.existsSync(packageJsonPath)) {
             return false;
         }

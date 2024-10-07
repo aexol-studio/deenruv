@@ -12,8 +12,8 @@ export type DeepPartial<T> = {
         | (T[P] extends Array<infer U>
               ? Array<DeepPartial<U>>
               : T[P] extends ReadonlyArray<infer U>
-              ? ReadonlyArray<DeepPartial<U>>
-              : DeepPartial<T[P]>);
+                ? ReadonlyArray<DeepPartial<U>>
+                : DeepPartial<T[P]>);
 };
 /* eslint-enable no-shadow, @typescript-eslint/no-shadow */
 
@@ -53,13 +53,13 @@ export type JsonCompatible<T> = {
     [P in keyof T]: T[P] extends Json
         ? T[P]
         : Pick<T, P> extends Required<Pick<T, P>>
-        ? never
-        : JsonCompatible<T[P]>;
+          ? never
+          : JsonCompatible<T[P]>;
 };
 
 /**
  * @description
- * A type describing the shape of a paginated list response. In Vendure, almost all list queries
+ * A type describing the shape of a paginated list response. In Deenruv, almost all list queries
  * (`products`, `collections`, `orders`, `customers` etc) return an object of this type.
  *
  * @docsCategory common
@@ -206,7 +206,7 @@ export type CustomFieldsObject = { [key: string]: any };
 
 /**
  * @description
- * This interface describes JSON config file (vendure-ui-config.json) used by the Admin UI.
+ * This interface describes JSON config file (deenruv-ui-config.json) used by the Admin UI.
  * The values are loaded at run-time by the Admin UI app, and allow core configuration to be
  * managed without the need to re-build the application.
  *
@@ -215,7 +215,7 @@ export type CustomFieldsObject = { [key: string]: any };
 export interface AdminUiConfig {
     /**
      * @description
-     * The hostname of the Vendure server which the admin UI will be making API calls
+     * The hostname of the Deenruv server which the admin UI will be making API calls
      * to. If set to "auto", the Admin UI app will determine the hostname from the
      * current location (i.e. `window.location.hostname`).
      *
@@ -224,7 +224,7 @@ export interface AdminUiConfig {
     apiHost: string | 'auto';
     /**
      * @description
-     * The port of the Vendure server which the admin UI will be making API calls
+     * The port of the Deenruv server which the admin UI will be making API calls
      * to. If set to "auto", the Admin UI app will determine the port from the
      * current location (i.e. `window.location.port`).
      *
@@ -252,7 +252,7 @@ export interface AdminUiConfig {
      * The header used when using the 'bearer' auth method. Should match the
      * setting of the server's `authOptions.authTokenHeaderKey` config option.
      *
-     * @default 'vendure-auth-token'
+     * @default 'deenruv-auth-token'
      */
     authTokenHeaderKey: string;
     /**
@@ -260,7 +260,7 @@ export interface AdminUiConfig {
      * The name of the header which contains the channel token. Should match the
      * setting of the server's `apiOptions.channelTokenKey` config option.
      *
-     * @default 'vendure-token'
+     * @default 'deenruv-token'
      */
     channelTokenKey: string;
     /**
@@ -309,11 +309,11 @@ export interface AdminUiConfig {
     brand?: string;
     /**
      * @description
-     * Option to hide vendure branding.
+     * Option to hide deenruv branding.
      *
      * @default false
      */
-    hideVendureBranding?: boolean;
+    hideDeenruvBranding?: boolean;
     /**
      * @description
      * Option to hide version.
@@ -323,7 +323,7 @@ export interface AdminUiConfig {
     hideVersion?: boolean;
     /**
      * @description
-     * A url of a custom image to be used on the login screen, to override the images provided by Vendure's login image server.
+     * A url of a custom image to be used on the login screen, to override the images provided by Deenruv's login image server.
      *
      * @since 1.9.0
      */
@@ -350,7 +350,7 @@ export interface AdminUiAppConfig {
     /**
      * @description
      * The path to the compiled admin UI app files. If not specified, an internal
-     * default build is used. This path should contain the `vendure-ui-config.json` file,
+     * default build is used. This path should contain the `deenruv-ui-config.json` file,
      * index.html, the compiled js bundles etc.
      */
     path: string;
@@ -377,7 +377,7 @@ export interface AdminUiAppConfig {
 export interface AdminUiAppDevModeConfig {
     /**
      * @description
-     * The path to the uncompiled UI app source files. This path should contain the `vendure-ui-config.json` file.
+     * The path to the uncompiled UI app source files. This path should contain the `deenruv-ui-config.json` file.
      */
     sourcePath: string;
     /**

@@ -18,8 +18,8 @@ import {
     Translatable,
     translateDeep,
     Translation,
-    VendureEntity,
-    VendurePlugin,
+    DeenruvEntity,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, OneToOne, Relation } from 'typeorm';
@@ -27,7 +27,7 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, OneToOne, 
 import { Calculated } from '../../../src/common/calculated-decorator';
 
 @Entity()
-export class CustomFieldRelationTestEntity extends VendureEntity {
+export class CustomFieldRelationTestEntity extends DeenruvEntity {
     constructor(input: Partial<CustomFieldRelationTestEntity>) {
         super(input);
     }
@@ -40,7 +40,7 @@ export class CustomFieldRelationTestEntity extends VendureEntity {
 }
 
 @Entity()
-export class CustomFieldOtherRelationTestEntity extends VendureEntity {
+export class CustomFieldOtherRelationTestEntity extends DeenruvEntity {
     constructor(input: Partial<CustomFieldOtherRelationTestEntity>) {
         super(input);
     }
@@ -61,7 +61,7 @@ class TestEntityCustomFields {
 }
 
 @Entity()
-export class TestEntity extends VendureEntity implements Translatable, HasCustomFields {
+export class TestEntity extends DeenruvEntity implements Translatable, HasCustomFields {
     constructor(input: Partial<TestEntity>) {
         super(input);
     }
@@ -153,7 +153,7 @@ export class TestEntity extends VendureEntity implements Translatable, HasCustom
 }
 
 @Entity()
-export class TestEntityTranslation extends VendureEntity implements Translation<TestEntity> {
+export class TestEntityTranslation extends DeenruvEntity implements Translation<TestEntity> {
     constructor(input?: DeepPartial<Translation<TestEntity>>) {
         super(input);
     }
@@ -169,7 +169,7 @@ export class TestEntityTranslation extends VendureEntity implements Translation<
 }
 
 @Entity()
-export class TestEntityPrice extends VendureEntity {
+export class TestEntityPrice extends DeenruvEntity {
     constructor(input: Partial<TestEntityPrice>) {
         super(input);
     }

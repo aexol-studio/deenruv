@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Channel } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ChannelInputTypes = CreateChannelInput | UpdateChannelInput | ID;
 
@@ -15,7 +15,7 @@ type ChannelInputTypes = CreateChannelInput | UpdateChannelInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class ChannelEvent extends VendureEntityEvent<Channel, ChannelInputTypes> {
+export class ChannelEvent extends DeenruvEntityEvent<Channel, ChannelInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Channel,

@@ -1,11 +1,11 @@
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Asset, VendureEntity } from '@deenruv/core';
+import { Asset, DeenruvEntity } from '@deenruv/core';
 import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
 import { Profile } from './profile.entity';
 
 @Entity()
-export class ProfileAsset extends VendureEntity {
+export class ProfileAsset extends DeenruvEntity {
     constructor(input?: DeepPartial<ProfileAsset>) {
         super(input);
     }

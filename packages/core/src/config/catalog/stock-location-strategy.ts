@@ -44,7 +44,7 @@ export interface LocationWithQuantity {
  * :::info
  *
  * This is configured via the `catalogOptions.stockLocationStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

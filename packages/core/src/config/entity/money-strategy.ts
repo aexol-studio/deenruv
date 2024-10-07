@@ -9,7 +9,7 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  *
  * @example
  * ```ts
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   entityOptions: {
  *     moneyStrategy: new MyCustomMoneyStrategy(),
  *   }
@@ -36,13 +36,13 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  *
  * @example
  * ```ts
- * import { DefaultMoneyStrategy, VendureConfig } from '\@deenruv/core';
+ * import { DefaultMoneyStrategy, DeenruvConfig } from '\@deenruv/core';
  *
  * export class ThreeDecimalPlacesMoneyStrategy extends DefaultMoneyStrategy {
  *   readonly precision = 3;
  * }
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   // ...
  *   entityOptions: {
  *     moneyStrategy: new ThreeDecimalPlacesMoneyStrategy(),
@@ -53,7 +53,7 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  * :::info
  *
  * This is configured via the `entityOptions.moneyStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

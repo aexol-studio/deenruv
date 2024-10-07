@@ -487,7 +487,7 @@
   },
   "error": {
     "403-forbidden": "Vous n'êtes pas autorisés à accéder à \"{ path }\". Vous n'avez pas la permission ou votre session a expiré.",
-    "could-not-connect-to-server": "Connexion échoué au serveur Vendure à { url }",
+    "could-not-connect-to-server": "Connexion échoué au serveur Deenruv à { url }",
     "health-check-failed": "Vérification de santé du système a échoué",
     "no-default-shipping-zone-set": "Ce canal n'a pas de zone de livraison par défaut. Cela peut causer des erreur de calcul du cout de frais d'expédition.",
     "no-default-tax-zone-set": "Ce canal n'a pas de zone de taxe par défaut, ce qui peut causer des erreur lors du calcul du prix. Créez ou choisissez une zone."

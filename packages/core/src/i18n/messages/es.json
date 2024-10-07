@@ -14,7 +14,7 @@
     "invalid-sort-field": "El campo de ordenar \"{ fieldName }\" es inválido. Campos válidos: { validFields }",
     "missing-password-on-registration": "Una contraseña debe proporcionarse cuándo `authOptions.requireVerification` está en \"false\"",
     "no-search-plugin-configured": "No se ha configurado ningún plugin de búsqueda",
-    "no-valid-channel-specified": "No se ha especificado ningún canal válido (asegúrate de que el encabezado 'vendure-token'  sea especificado en el requisito)",
+    "no-valid-channel-specified": "No se ha especificado ningún canal válido (asegúrate de que el encabezado 'deenruv-token'  sea especificado en el requisito)",
     "order-contents-may-only-be-modified-in-addingitems-state": "Los contenidos de un pedido solo pueden ser modificados durante el \"AddingItems\" estado ",
     "order-does-not-contain-line-with-id": "Este pedido no contiene una línea de pedido con el id { id }",
     "order-item-quantity-must-be-positive": "no es una cantidad válida para una linea de pedido",

@@ -5,13 +5,13 @@ import { EntityIdStrategy } from './entity-id-strategy';
  * An id strategy which uses string uuids as primary keys
  * for all entities. This strategy can be configured with the
  * `entityIdStrategy` property of the `entityOptions` property
- * of {@link VendureConfig}.
+ * of {@link DeenruvConfig}.
  *
  * @example
  * ```ts
- * import { UuidIdStrategy, VendureConfig } from '\@deenruv/core';
+ * import { UuidIdStrategy, DeenruvConfig } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   entityOptions: {
  *     entityIdStrategy: new UuidIdStrategy(),
  *     // ...

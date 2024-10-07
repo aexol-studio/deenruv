@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { vi, Mock } from 'vitest';
 
-import { VendureEntity } from '../entity/base/base.entity';
+import { DeenruvEntity } from '../entity/base/base.entity';
 import { MockClass } from '../testing/testing-types';
 
 import { ConfigService } from './config.service';
@@ -9,7 +9,7 @@ import { EntityIdStrategy, PrimaryKeyType } from './entity/entity-id-strategy';
 
 export class MockConfigService implements MockClass<ConfigService> {
     apiOptions = {
-        channelTokenKey: 'vendure-token',
+        channelTokenKey: 'deenruv-token',
         adminApiPath: 'admin-api',
         adminApiPlayground: false,
         adminApiDebug: true,

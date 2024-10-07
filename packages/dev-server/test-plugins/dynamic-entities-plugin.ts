@@ -1,10 +1,10 @@
 // product-review.entity.ts
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { VendureEntity, VendurePlugin } from '@deenruv/core';
+import { DeenruvEntity, DeenruvPlugin } from '@deenruv/core';
 import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class TestEntityA extends VendureEntity {
+export class TestEntityA extends DeenruvEntity {
     constructor(input?: DeepPartial<TestEntityA>) {
         super(input);
     }
@@ -14,7 +14,7 @@ export class TestEntityA extends VendureEntity {
 }
 
 @Entity()
-export class TestEntityB extends VendureEntity {
+export class TestEntityB extends DeenruvEntity {
     constructor(input?: DeepPartial<TestEntityA>) {
         super(input);
     }

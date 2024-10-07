@@ -12,7 +12,7 @@ import { AsyncQueue } from '../../../common/async-queue';
 import { Translatable, Translation } from '../../../common/types/locale-types';
 import { asyncObservable, idsAreEqual } from '../../../common/utils';
 import { ConfigService } from '../../../config/config.service';
-import { Logger } from '../../../config/logger/vendure-logger';
+import { Logger } from '../../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
 import { Channel } from '../../../entity/channel/channel.entity';
 import { FacetValue } from '../../../entity/facet-value/facet-value.entity';
@@ -608,7 +608,7 @@ export class IndexerController {
 
     /**
      * Prevent postgres errors from too-long indices
-     * https://github.com/vendure-ecommerce/vendure/issues/745
+     * https://github.com/deenruv-ecommerce/deenruv/issues/745
      */
     private constrainDescription(description: string): string {
         const { type } = this.connection.rawConnection.options;

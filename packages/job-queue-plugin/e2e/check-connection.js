@@ -9,7 +9,7 @@ const connection = new RedisConnection({
 let timer;
 
 /**
- * When contributing to Vendure, developers who made changes unrelated to
+ * When contributing to Deenruv, developers who made changes unrelated to
  * this plugin should not be expected to set up an Redis instance
  * locally just so they can get the pre-push hook to pass. So if no
  * instance is available, we skip the tests.

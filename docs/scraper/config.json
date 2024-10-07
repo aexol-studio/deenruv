@@ -1,12 +1,12 @@
 {
-  "index_name": "vendure-docs",
+  "index_name": "deenruv-docs",
   "start_urls": [
-    "https://docs.vendure.io/"
+    "https://docs.deenruv.io/"
   ],
   "sitemap_urls": [
-    "https://docs.vendure.io/sitemap.xml"
+    "https://docs.deenruv.io/sitemap.xml"
   ],
-  "allowed_domains":["docs.vendure.io"],
+  "allowed_domains":["docs.deenruv.io"],
   "sitemap_alternate_links": true,
   "stop_urls": [],
   "selectors": {

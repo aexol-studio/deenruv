@@ -15,7 +15,7 @@ import { OrderLine } from '../../entity/order-line/order-line.entity';
  * :::info
  *
  * This is configured via the `orderOptions.changedPriceHandlingStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

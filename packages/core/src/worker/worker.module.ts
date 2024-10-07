@@ -1,7 +1,7 @@
 import { Module, OnApplicationShutdown } from '@nestjs/common';
 
 import { ConfigModule } from '../config/config.module';
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 import { ConnectionModule } from '../connection/connection.module';
 import { I18nModule } from '../i18n/i18n.module';
 import { PluginModule } from '../plugin/plugin.module';

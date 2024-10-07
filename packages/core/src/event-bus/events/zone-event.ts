@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Zone } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ZoneInputTypes = CreateZoneInput | UpdateZoneInput | ID;
 
@@ -15,7 +15,7 @@ type ZoneInputTypes = CreateZoneInput | UpdateZoneInput | ID;
  * @docsCategory events
  * @docsPage Event Types
  */
-export class ZoneEvent extends VendureEntityEvent<Zone, ZoneInputTypes> {
+export class ZoneEvent extends DeenruvEntityEvent<Zone, ZoneInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Zone,

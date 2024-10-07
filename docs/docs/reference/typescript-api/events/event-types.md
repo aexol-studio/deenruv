@@ -1133,10 +1133,7 @@ class ProductOptionGroupEvent extends VendureEntityEvent<
     constructor(ctx: RequestContext, entity: ProductOptionGroup, type: 'created' | 'updated' | 'deleted', input?: ProductOptionGroupInputTypes)
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/events/vendure-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;
-     <a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a>,
-     ProductOptionGroupInputTypes
- &#62;</code>
+* Extends: <code><a href='/reference/typescript-api/events/vendure-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;     <a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a>,     ProductOptionGroupInputTypes &#62;</code>
 
 
 
@@ -1151,7 +1148,7 @@ class ProductOptionGroupEvent extends VendureEntityEvent<
 
 </div>
 
-@deenruv/
+
 ## ProductVariantChannelEvent
 
 <GenerationInfo sourceFile="packages/core/src/event-bus/events/product-variant-channel-event.ts" sourceLine="14" packageName="@deenruv/core" />
@@ -1178,7 +1175,7 @@ class ProductVariantChannelEvent extends VendureEvent {
 
 </div>
 
-@deenruv/
+
 ## ProductVariantEvent
 
 <GenerationInfo sourceFile="packages/core/src/event-bus/events/product-variant-event.ts" sourceLine="18" packageName="@deenruv/core" />
@@ -1212,7 +1209,7 @@ class ProductVariantEvent extends VendureEntityEvent<ProductVariant[], ProductVa
 
 </div>
 
-@deenruv/
+
 ## ProductVariantPriceEvent
 
 <GenerationInfo sourceFile="packages/core/src/event-bus/events/product-variant-price-event.ts" sourceLine="17" packageName="@deenruv/core" since="2.2.0" />
@@ -1227,10 +1224,7 @@ class ProductVariantPriceEvent extends VendureEntityEvent<
     constructor(ctx: RequestContext, entity: ProductVariantPrice[], type: 'created' | 'updated' | 'deleted', input?: ProductVariantInputTypes)
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/events/vendure-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;
-     <a href='/reference/typescript-api/entities/product-variant-price#productvariantprice'>ProductVariantPrice</a>[],
-     ProductVariantInputTypes
- &#62;</code>
+* Extends: <code><a href='/reference/typescript-api/events/vendure-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;     <a href='/reference/typescript-api/entities/product-variant-price#productvariantprice'>ProductVariantPrice</a>[],     ProductVariantInputTypes &#62;</code>
 
 
 
@@ -1242,7 +1236,7 @@ class ProductVariantPriceEvent extends VendureEntityEvent<
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1270,7 +1264,7 @@ class PromotionEvent extends VendureEntityEvent<Promotion, PromotionInputTypes> 
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1297,7 +1291,7 @@ class ProvinceEvent extends VendureEntityEvent<Province, ProvinceInputTypes> {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1324,7 +1318,7 @@ class RefundEvent extends VendureEvent {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1351,7 +1345,7 @@ class RefundStateTransitionEvent extends VendureEvent {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1379,7 +1373,7 @@ class RoleChangeEvent extends VendureEvent {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1406,7 +1400,7 @@ class RoleEvent extends VendureEntityEvent<Role, RoleInputTypes> {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1433,7 +1427,7 @@ class SearchEvent extends VendureEvent {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1460,7 +1454,7 @@ class SellerEvent extends VendureEntityEvent<Seller, SellerInputTypes> {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1488,7 +1482,7 @@ class ShippingMethodEvent extends VendureEntityEvent<ShippingMethod, ShippingMet
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1522,7 +1516,7 @@ class StockMovementEvent extends VendureEvent {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1550,7 +1544,7 @@ class TaxCategoryEvent extends VendureEntityEvent<TaxCategory, TaxCategoryInputT
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1578,7 +1572,7 @@ class TaxRateEvent extends VendureEntityEvent<TaxRate, TaxRateInputTypes> {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1605,7 +1599,7 @@ class TaxRateModificationEvent extends VendureEvent {
 
 
 
-@deenruv/
+
 </div>
 
 
@@ -1633,7 +1627,7 @@ class ZoneEvent extends VendureEntityEvent<Zone, ZoneInputTypes> {
 
 
 
-@deenruv/
+
 </div>
 
 

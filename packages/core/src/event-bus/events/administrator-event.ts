@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Administrator } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type AdministratorInputTypes = CreateAdministratorInput | UpdateAdministratorInput | ID;
 
@@ -15,7 +15,7 @@ type AdministratorInputTypes = CreateAdministratorInput | UpdateAdministratorInp
  * @docsPage Event Types
  * @since 1.4
  */
-export class AdministratorEvent extends VendureEntityEvent<Administrator, AdministratorInputTypes> {
+export class AdministratorEvent extends DeenruvEntityEvent<Administrator, AdministratorInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Administrator,

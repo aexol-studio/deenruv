@@ -56,7 +56,7 @@ export function getPluginClasses(project: Project) {
         })
         .filter(c => {
             const hasPluginDecorator = c.getModifiers().find(m => {
-                return Node.isDecorator(m) && m.getName() === 'VendurePlugin';
+                return Node.isDecorator(m) && m.getName() === 'DeenruvPlugin';
             });
             return !!hasPluginDecorator;
         });

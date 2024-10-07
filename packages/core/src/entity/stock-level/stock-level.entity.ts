@@ -1,7 +1,7 @@
 import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { EntityId } from '../entity-id.decorator';
 import { ProductVariant } from '../product-variant/product-variant.entity';
 import { StockLocation } from '../stock-location/stock-location.entity';
@@ -15,7 +15,7 @@ import { StockLocation } from '../stock-location/stock-location.entity';
  */
 @Entity()
 @Index(['productVariantId', 'stockLocationId'], { unique: true })
-export class StockLevel extends VendureEntity {
+export class StockLevel extends DeenruvEntity {
     constructor(input: DeepPartial<StockLevel>) {
         super(input);
     }

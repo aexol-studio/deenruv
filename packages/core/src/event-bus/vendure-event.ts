@@ -4,7 +4,7 @@
  *
  * @docsCategory events
  * */
-export abstract class VendureEvent {
+export abstract class DeenruvEvent {
     public readonly createdAt: Date;
     protected constructor() {
         this.createdAt = new Date();

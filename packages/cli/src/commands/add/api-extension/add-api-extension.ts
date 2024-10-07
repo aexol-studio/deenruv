@@ -18,7 +18,7 @@ import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { EntityRef } from '../../../shared/entity-ref';
 import { ServiceRef } from '../../../shared/service-ref';
 import { analyzeProject, selectPlugin, selectServiceRef } from '../../../shared/shared-prompts';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import {
     addImportsToFile,
     createFile,
@@ -29,7 +29,7 @@ import { pauseForPromptDisplay } from '../../../utilities/utils';
 const cancelledMessage = 'Add API extension cancelled';
 
 export interface AddApiExtensionOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
 }
 
 export const addApiExtensionCommand = new CliCommand({
@@ -42,9 +42,9 @@ export const addApiExtensionCommand = new CliCommand({
 async function addApiExtension(
     options?: AddApiExtensionOptions,
 ): Promise<CliCommandReturnVal<{ serviceRef: ServiceRef }>> {
-    const providedVendurePlugin = options?.plugin;
-    const { project } = await analyzeProject({ providedVendurePlugin, cancelledMessage });
-    const plugin = providedVendurePlugin ?? (await selectPlugin(project, cancelledMessage));
+    const providedDeenruvPlugin = options?.plugin;
+    const { project } = await analyzeProject({ providedDeenruvPlugin, cancelledMessage });
+    const plugin = providedDeenruvPlugin ?? (await selectPlugin(project, cancelledMessage));
     const serviceRef = await selectServiceRef(project, plugin, false);
     const serviceEntityRef = serviceRef.crudEntityRef;
     const modifiedSourceFiles: SourceFile[] = [];
@@ -177,7 +177,7 @@ function getResolverFileName(
 
 function createSimpleResolver(
     project: Project,
-    plugin: VendurePluginRef,
+    plugin: DeenruvPluginRef,
     serviceRef: ServiceRef,
     queryName: string,
     mutationName: string,
@@ -238,7 +238,7 @@ function createSimpleResolver(
 
 function createCrudResolver(
     project: Project,
-    plugin: VendurePluginRef,
+    plugin: DeenruvPluginRef,
     serviceRef: ServiceRef,
     serviceEntityRef: EntityRef,
 ) {
@@ -338,7 +338,7 @@ function createCrudResolver(
 
 function createSimpleApiExtension(
     project: Project,
-    plugin: VendurePluginRef,
+    plugin: DeenruvPluginRef,
     serviceRef: ServiceRef,
     queryName: string,
     mutationName: string,
@@ -405,7 +405,7 @@ function createSimpleApiExtension(
     return adminApiExtensions;
 }
 
-function createCrudApiExtension(project: Project, plugin: VendurePluginRef, serviceRef: ServiceRef) {
+function createCrudApiExtension(project: Project, plugin: DeenruvPluginRef, serviceRef: ServiceRef) {
     const apiExtensionsFile = getOrCreateApiExtensionsFile(project, plugin);
     const adminApiExtensions = apiExtensionsFile.getVariableDeclaration('adminApiExtensions');
     const insertAtIndex = adminApiExtensions?.getParent().getParent().getChildIndex() ?? 2;
@@ -461,7 +461,7 @@ function createCrudApiExtension(project: Project, plugin: VendurePluginRef, serv
                             writer.writeLine(`  }`);
                             writer.newLine();
 
-                            writer.writeLine(`  # Generated at run-time by Vendure`);
+                            writer.writeLine(`  # Generated at run-time by Deenruv`);
                             writer.writeLine(`  input ${entityRef.name}ListOptions`);
                             writer.newLine();
 
@@ -624,7 +624,7 @@ function getGraphQLType(type: Type): string | undefined {
     return;
 }
 
-function getOrCreateApiExtensionsFile(project: Project, plugin: VendurePluginRef): SourceFile {
+function getOrCreateApiExtensionsFile(project: Project, plugin: DeenruvPluginRef): SourceFile {
     const existingApiExtensionsFile = project.getSourceFiles().find(sf => {
         const filePath = sf.getDirectory().getPath();
         return (

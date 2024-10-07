@@ -9,7 +9,7 @@ import {
     InMemorySessionCacheStrategy,
     LogLevel,
     mergeConfig,
-    VendureConfig,
+    DeenruvConfig,
 } from '@deenruv/core';
 import path from 'path';
 
@@ -41,7 +41,7 @@ export function getLoadTestConfig(
     tokenMethod: 'cookie' | 'bearer',
     databaseName: string,
     db?: 'postgres' | 'mysql',
-): Required<VendureConfig> {
+): Required<DeenruvConfig> {
     const connectionOptions =
         process.env.DB === 'postgres' || db === 'postgres'
             ? getPostgresConnectionOptions(databaseName)

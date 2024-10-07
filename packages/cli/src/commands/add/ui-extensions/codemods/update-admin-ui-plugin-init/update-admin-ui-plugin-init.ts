@@ -1,14 +1,14 @@
 import { Node, ObjectLiteralExpression, StructureKind, SyntaxKind } from 'ts-morph';
 
 import { AdminUiAppConfigName } from '../../../../../constants';
-import { VendureConfigRef } from '../../../../../shared/vendure-config-ref';
+import { DeenruvConfigRef } from '../../../../../shared/deenruv-config-ref';
 import { addImportsToFile } from '../../../../../utilities/ast-utils';
 
 export function updateAdminUiPluginInit(
-    vendureConfig: VendureConfigRef,
+    deenruvConfig: DeenruvConfigRef,
     options: { pluginClassName: string; pluginPath: string },
 ): boolean {
-    const adminUiPlugin = vendureConfig
+    const adminUiPlugin = deenruvConfig
         .getPluginsArray()
         ?.getChildrenOfKind(SyntaxKind.CallExpression)
         .find(c => {
@@ -49,19 +49,19 @@ export function updateAdminUiPluginInit(
             }
         }
 
-        addImportsToFile(vendureConfig.sourceFile, {
+        addImportsToFile(deenruvConfig.sourceFile, {
             moduleSpecifier: '@deenruv/ui-devkit/compiler',
             namedImports: ['compileUiExtensions'],
             order: 0,
         });
 
-        addImportsToFile(vendureConfig.sourceFile, {
+        addImportsToFile(deenruvConfig.sourceFile, {
             moduleSpecifier: 'path',
             namespaceImport: 'path',
             order: 0,
         });
 
-        addImportsToFile(vendureConfig.sourceFile, {
+        addImportsToFile(deenruvConfig.sourceFile, {
             moduleSpecifier: options.pluginPath,
             namedImports: [options.pluginClassName],
         });

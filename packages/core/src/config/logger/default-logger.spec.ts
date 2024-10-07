@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, SpyInstance, vi } from 'vitest';
 
 import { DefaultLogger } from './default-logger';
-import { Logger, LogLevel } from './vendure-logger';
+import { Logger, LogLevel } from './deenruv-logger';
 
 describe('DefaultLogger', () => {
     let stdOutSpy: SpyInstance;

@@ -12,7 +12,7 @@ import {
     PasswordResetEvent,
     PasswordValidationStrategy,
     RequestContext,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@deenruv/testing';
 import { DocumentNode } from 'graphql';
@@ -607,7 +607,7 @@ describe('Shop auth & accounts', () => {
         });
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/1659
+    // https://github.com/deenruv-ecommerce/deenruv/issues/1659
     describe('password reset before verification', () => {
         const password = 'password';
         const emailAddress = 'test3@test.com';

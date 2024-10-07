@@ -14,7 +14,7 @@ import { User } from '../../entity/user/user.entity';
  * :::info
  *
  * This is configured via the `authOptions.shopAuthenticationStrategy` and `authOptions.adminAuthenticationStrategy`
- * properties of your VendureConfig.
+ * properties of your DeenruvConfig.
  *
  * :::
  *

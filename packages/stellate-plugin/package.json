@@ -12,7 +12,7 @@
         "build": "rimraf lib && tsc -p ./tsconfig.build.json",
         "lint": "eslint --fix ."
     },
-    "homepage": "https://www.vendure.io",
+    "homepage": "https://www.deenruv.io",
     "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"

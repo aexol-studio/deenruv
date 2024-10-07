@@ -1,4 +1,4 @@
-import { VendureLogger } from '@deenruv/core';
+import { DeenruvLogger } from '@deenruv/core';
 
 /**
  * @description
@@ -52,7 +52,7 @@ import { VendureLogger } from '@deenruv/core';
  *
  * @docsCategory testing
  */
-export class TestingLogger<Spy extends (...args: any[]) => any> implements VendureLogger {
+export class TestingLogger<Spy extends (...args: any[]) => any> implements DeenruvLogger {
     constructor(private createSpyFn: () => Spy) {
         this.debugSpy = createSpyFn();
         this.errorSpy = createSpyFn();

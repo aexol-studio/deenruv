@@ -4,7 +4,7 @@ import { Cluster, Redis, RedisOptions } from 'ioredis';
 import { BULLMQ_PLUGIN_OPTIONS, loggerCtx } from './constants';
 import { BullMQPluginOptions } from './types';
 
-const BUFFER_LIST_PREFIX = 'vendure-job-buffer';
+const BUFFER_LIST_PREFIX = 'deenruv-job-buffer';
 
 export class RedisJobBufferStorageStrategy implements JobBufferStorageStrategy {
     private redis: Redis | Cluster;

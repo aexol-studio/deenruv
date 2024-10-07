@@ -13,7 +13,7 @@ import { AdminUiExtensionTypeName } from '../constants';
 
 import { EntityRef } from './entity-ref';
 
-export class VendurePluginRef {
+export class DeenruvPluginRef {
     constructor(public classDeclaration: ClassDeclaration) {}
 
     get name(): string {
@@ -29,13 +29,13 @@ export class VendurePluginRef {
     }
 
     getMetadataOptions() {
-        const pluginDecorator = this.classDeclaration.getDecorator('VendurePlugin');
+        const pluginDecorator = this.classDeclaration.getDecorator('DeenruvPlugin');
         if (!pluginDecorator) {
-            throw new Error('Could not find VendurePlugin decorator');
+            throw new Error('Could not find DeenruvPlugin decorator');
         }
         const pluginOptions = pluginDecorator.getArguments()[0];
         if (!pluginOptions || !Node.isObjectLiteralExpression(pluginOptions)) {
-            throw new Error('Could not find VendurePlugin options');
+            throw new Error('Could not find DeenruvPlugin options');
         }
         return pluginOptions;
     }
@@ -191,7 +191,7 @@ export class VendurePluginRef {
             .map(imp => imp.getModuleSpecifierSourceFileOrThrow());
         return entitySourceFiles
             .map(sourceFile =>
-                sourceFile.getClasses().filter(c => c.getExtends()?.getText() === 'VendureEntity'),
+                sourceFile.getClasses().filter(c => c.getExtends()?.getText() === 'DeenruvEntity'),
             )
             .flat()
             .map(classDeclaration => new EntityRef(classDeclaration));

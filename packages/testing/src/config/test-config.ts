@@ -5,7 +5,7 @@ import {
     DefaultLogger,
     mergeConfig,
     NoopLogger,
-    VendureConfig,
+    DeenruvConfig,
 } from '@deenruv/core';
 
 import { TestingAssetPreviewStrategy } from './testing-asset-preview-strategy';
@@ -18,7 +18,7 @@ const logger = process.env.LOG ? new DefaultLogger() : new NoopLogger();
 
 /**
  * @description
- * A {@link VendureConfig} object used for e2e tests. This configuration uses sqljs as the database
+ * A {@link DeenruvConfig} object used for e2e tests. This configuration uses sqljs as the database
  * and configures some special settings which are optimized for e2e tests:
  *
  * * `entityIdStrategy: new TestingEntityIdStrategy()` This ID strategy uses auto-increment IDs but encodes all IDs
@@ -39,7 +39,7 @@ const logger = process.env.LOG ? new DefaultLogger() : new NoopLogger();
  *
  * @docsCategory testing
  */
-export const testConfig: Required<VendureConfig> = mergeConfig(defaultConfig, {
+export const testConfig: Required<DeenruvConfig> = mergeConfig(defaultConfig, {
     apiOptions: {
         port: 3050,
         adminApiPath: ADMIN_API_PATH,

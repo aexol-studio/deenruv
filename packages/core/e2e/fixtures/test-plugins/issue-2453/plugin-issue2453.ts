@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 
 import { apiExtensions } from './api/index';
 import { CampaignTranslation } from './entities/campaign-translation.entity';

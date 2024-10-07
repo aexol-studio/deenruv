@@ -1,7 +1,7 @@
 import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
 
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { Customer } from '../customer/customer.entity';
 import { EntityId } from '../entity-id.decorator';
@@ -17,7 +17,7 @@ import { User } from '../user/user.entity';
  */
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
-export abstract class Session extends VendureEntity {
+export abstract class Session extends DeenruvEntity {
     @Index({ unique: true })
     @Column()
     token: string;

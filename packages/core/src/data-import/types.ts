@@ -40,7 +40,7 @@ export interface RoleDefinition {
 
 /**
  * @description
- * An object defining initial settings for a new Vendure installation.
+ * An object defining initial settings for a new Deenruv installation.
  *
  * @docsCategory import-export
  */

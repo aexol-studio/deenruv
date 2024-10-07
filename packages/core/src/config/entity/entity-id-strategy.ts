@@ -8,20 +8,20 @@ export type PrimaryKeyType<T> = T extends 'uuid' ? string : T extends 'increment
  * database, as well as how they are transformed when being passed from the API to the
  * service layer and vice versa.
  *
- * Vendure ships with two strategies: {@link AutoIncrementIdStrategy} and {@link UuidIdStrategy},
+ * Deenruv ships with two strategies: {@link AutoIncrementIdStrategy} and {@link UuidIdStrategy},
  * but custom strategies can be used, e.g. to apply some custom encoding to the ID before exposing
  * it in the GraphQL API.
  *
  * :::info
  *
  * This is configured via the `entityOptions.entityIdStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *
  * :::caution
  * Note: changing from an integer-based strategy to a uuid-based strategy
- * on an existing Vendure database will lead to problems with broken foreign-key
+ * on an existing Deenruv database will lead to problems with broken foreign-key
  * references. To change primary key types like this, you'll need to start with
  * a fresh database.
  * :::

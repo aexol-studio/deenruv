@@ -12,12 +12,12 @@ if (require.main === module) {
 }
 
 async function getProductCount() {
-    // This will bootstrap an instance of the Vendure Worker, providing
-    // us access to all of the services defined in the Vendure core.
+    // This will bootstrap an instance of the Deenruv Worker, providing
+    // us access to all of the services defined in the Deenruv core.
     const { app } = await bootstrapWorker(devConfig);
 
     // Using `app.get()` we can grab an instance of _any_ provider defined in the
-    // Vendure core as well as by our plugins.
+    // Deenruv core as well as by our plugins.
     const productService = app.get(ProductService);
 
     // For most service methods, we'll need to pass a RequestContext object.

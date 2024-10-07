@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { ShippingMethod } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ShippingMethodInputTypes = CreateShippingMethodInput | UpdateShippingMethodInput | ID;
 
@@ -15,7 +15,7 @@ type ShippingMethodInputTypes = CreateShippingMethodInput | UpdateShippingMethod
  * @docsCategory events
  * @docsPage Event Types
  */
-export class ShippingMethodEvent extends VendureEntityEvent<ShippingMethod, ShippingMethodInputTypes> {
+export class ShippingMethodEvent extends DeenruvEntityEvent<ShippingMethod, ShippingMethodInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: ShippingMethod,

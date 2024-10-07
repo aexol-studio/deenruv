@@ -1,7 +1,7 @@
 import { LogicalOperator } from '@deenruv/common/lib/generated-types';
 import { Type } from '@deenruv/common/lib/shared-types';
 
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 import { Channel } from '../../entity/channel/channel.entity';
 import { Tag } from '../../entity/tag/tag.entity';
 
@@ -65,7 +65,7 @@ export type UnwrappedArray<T extends any[]> = T[number];
 /**
  * Parameters for list queries
  */
-export interface ListQueryOptions<T extends VendureEntity> {
+export interface ListQueryOptions<T extends DeenruvEntity> {
     take?: number | null;
     skip?: number | null;
     sort?: NullOptionals<SortParameter<T>> | null;
@@ -85,12 +85,12 @@ export type NullOptionals<T> = {
 export type SortOrder = 'ASC' | 'DESC';
 
 // prettier-ignore
-export type PrimitiveFields<T extends VendureEntity> = {
+export type PrimitiveFields<T extends DeenruvEntity> = {
     [K in keyof T]: NonNullable<T[K]> extends LocaleString | number | string | boolean | Date ? K : never
 }[keyof T];
 
 // prettier-ignore
-export type SortParameter<T extends VendureEntity> = {
+export type SortParameter<T extends DeenruvEntity> = {
     [K in PrimitiveFields<T>]?: SortOrder
 };
 
@@ -100,7 +100,7 @@ export type CustomFieldSortParameter = {
 };
 
 // prettier-ignore
-export type FilterParameter<T extends VendureEntity> = {
+export type FilterParameter<T extends DeenruvEntity> = {
     [K in PrimitiveFields<T>]?: T[K] extends string | LocaleString ? StringOperators
         : T[K] extends number ? NumberOperators
             : T[K] extends boolean ? BooleanOperators
@@ -186,16 +186,16 @@ export type MiddlewareHandler = Type<any> | Function;
  *
  * ## Increasing the maximum request body size limit
  *
- * Internally, Vendure relies on the body-parser middleware to parse incoming JSON data. By default, the maximum
+ * Internally, Deenruv relies on the body-parser middleware to parse incoming JSON data. By default, the maximum
  * body size is set to 100kb. Attempting to send a request with more than 100kb of JSON data will result in a
  * `PayloadTooLargeError`. To increase this limit, we can manually configure the body-parser middleware:
  *
  * @example
  * ```ts
- * import { VendureConfig } from '\@deenruv/core';
+ * import { DeenruvConfig } from '\@deenruv/core';
  * import { json } from 'body-parser';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   // ...
  *   apiOptions: {
  *     middleware: [{
@@ -225,7 +225,7 @@ export interface Middleware {
     route: string;
     /**
      * @description
-     * When set to `true`, this will cause the middleware to be applied before the Vendure server (and underlying Express server) starts listening
+     * When set to `true`, this will cause the middleware to be applied before the Deenruv server (and underlying Express server) starts listening
      * for connections. In practical terms this means that the middleware will be at the very start of the middleware stack, before even the
      * `body-parser` middleware which is automatically applied by NestJS. This can be useful in certain cases such as when you need to access the
      * raw unparsed request for a specific route.

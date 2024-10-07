@@ -4,7 +4,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 import { RequestContext } from '../../api/common/request-context';
 import { Role } from '../../entity';
 import { Seller } from '../../entity/seller/seller.entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type SellerInputTypes = CreateSellerInput | UpdateSellerInput | ID;
 
@@ -16,7 +16,7 @@ type SellerInputTypes = CreateSellerInput | UpdateSellerInput | ID;
  * @docsPage Event Types
  * @since 2.0.1
  */
-export class SellerEvent extends VendureEntityEvent<Seller, SellerInputTypes> {
+export class SellerEvent extends DeenruvEntityEvent<Seller, SellerInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Seller,

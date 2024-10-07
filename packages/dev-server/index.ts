@@ -3,7 +3,7 @@ import { bootstrap, JobQueueService } from '@deenruv/core';
 import { devConfig } from './dev-config';
 
 /**
- * This bootstraps the dev server, used for testing Vendure during development.
+ * This bootstraps the dev server, used for testing Deenruv during development.
  */
 bootstrap(devConfig)
     .then(app => {

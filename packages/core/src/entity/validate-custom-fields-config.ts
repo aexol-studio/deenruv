@@ -3,10 +3,10 @@ import { getMetadataArgsStorage } from 'typeorm';
 
 import { CustomFieldConfig, CustomFields } from '../config/custom-field/custom-field-types';
 
-import { VendureEntity } from './base/base.entity';
+import { DeenruvEntity } from './base/base.entity';
 
 function validateCustomFieldsForEntity(
-    entity: Type<VendureEntity>,
+    entity: Type<DeenruvEntity>,
     customFields: CustomFieldConfig[],
 ): string[] {
     return [
@@ -112,7 +112,7 @@ function getAllColumnNames(entity: Type<any>): string[] {
     const ownColumns = metadata.filterColumns(entity);
     const relationColumns = metadata.filterRelations(entity);
     const embeddedColumns = metadata.filterEmbeddeds(entity);
-    const baseColumns = metadata.filterColumns(VendureEntity);
+    const baseColumns = metadata.filterColumns(DeenruvEntity);
     return [...ownColumns, ...relationColumns, ...embeddedColumns, ...baseColumns].map(c => c.propertyName);
 }
 

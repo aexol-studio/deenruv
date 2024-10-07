@@ -2,7 +2,7 @@ import { RequestContext } from '../../api/common/request-context';
 import { Order } from '../../entity/order/order.entity';
 import { Payment } from '../../entity/payment/payment.entity';
 import { PaymentState } from '../../service/helpers/payment-state-machine/payment-state';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -12,7 +12,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class PaymentStateTransitionEvent extends VendureEvent {
+export class PaymentStateTransitionEvent extends DeenruvEvent {
     constructor(
         public fromState: PaymentState,
         public toState: PaymentState,

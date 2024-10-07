@@ -23,7 +23,7 @@ import {
  * :::info
  *
  * This is configured via the `paymentOptions.process` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

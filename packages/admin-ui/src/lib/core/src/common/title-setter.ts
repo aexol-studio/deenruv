@@ -9,6 +9,6 @@ import { I18nService } from '../providers/i18n/i18n.service';
 export function titleSetter() {
     const titleService = inject(Title);
     const i18nService = inject(I18nService);
-    const brand = getAppConfig().brand || 'Vendure';
+    const brand = getAppConfig().brand || 'Deenruv';
     return (title: string) => titleService.setTitle(`${i18nService.translate(title)} • ${brand}`);
 }

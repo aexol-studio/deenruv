@@ -10,7 +10,7 @@ import { WorkerHealthCheckConfig, WorkerHealthService } from './worker-health.se
  *
  * @docsCategory worker
  */
-export class VendureWorker {
+export class DeenruvWorker {
     /**
      * @description
      * A reference to the `INestApplicationContext` object, which represents
@@ -26,7 +26,7 @@ export class VendureWorker {
      * @description
      * Starts the job queues running so that the worker can handle background jobs.
      */
-    async startJobQueue(): Promise<VendureWorker> {
+    async startJobQueue(): Promise<DeenruvWorker> {
         await this.app.get(JobQueueService).start();
         return this;
     }
@@ -39,7 +39,7 @@ export class VendureWorker {
      *
      * @since 1.2.0
      */
-    async startHealthCheckServer(healthCheckConfig: WorkerHealthCheckConfig): Promise<VendureWorker> {
+    async startHealthCheckServer(healthCheckConfig: WorkerHealthCheckConfig): Promise<DeenruvWorker> {
         await this.app.get(WorkerHealthService).initializeHealthCheckEndpoint(healthCheckConfig);
         return this;
     }

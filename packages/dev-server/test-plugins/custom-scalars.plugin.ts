@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 import { GraphQLScalarType, Kind } from 'graphql';
 import gql from 'graphql-tag';
 

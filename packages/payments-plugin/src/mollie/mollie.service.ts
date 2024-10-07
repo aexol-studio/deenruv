@@ -155,9 +155,9 @@ export class MollieService {
             return new PaymentIntentError(`Paymentmethod ${paymentMethod.code} has no apiKey configured`);
         }
         const mollieClient = createExtendedMollieClient({ apiKey });
-        const vendureHost = this.options.vendureHost.endsWith('/')
-            ? this.options.vendureHost.slice(0, -1)
-            : this.options.vendureHost; // remove appending slash
+        const deenruvHost = this.options.deenruvHost.endsWith('/')
+            ? this.options.deenruvHost.slice(0, -1)
+            : this.options.deenruvHost; // remove appending slash
         const billingAddress =
             toMollieAddress(order.billingAddress, order.customer) ||
             toMollieAddress(order.shippingAddress, order.customer);
@@ -195,7 +195,7 @@ export class MollieService {
             orderNumber: order.code,
             amount: toAmount(amountToPay, order.currencyCode),
             redirectUrl,
-            webhookUrl: `${vendureHost}/payments/mollie/${ctx.channel.token}/${paymentMethod.id}`,
+            webhookUrl: `${deenruvHost}/payments/mollie/${ctx.channel.token}/${paymentMethod.id}`,
             billingAddress,
             locale: getLocale(billingAddress.country, ctx.languageCode),
             lines: toMollieOrderLines(order, alreadyPaid),
@@ -247,7 +247,7 @@ export class MollieService {
     }
 
     /**
-     * Update Vendure payments and order status based on the incoming Mollie order
+     * Update Deenruv payments and order status based on the incoming Mollie order
      */
     async handleMollieStatusUpdate(
         ctx: RequestContext,
@@ -332,7 +332,7 @@ export class MollieService {
             // because the order will be transitioned to PaymentSettled during auto capture
             return;
         }
-        // Any other combination of Mollie status and Vendure status indicates something is wrong.
+        // Any other combination of Mollie status and Deenruv status indicates something is wrong.
         throw Error(
             `Unhandled incoming Mollie status '${mollieOrder.status}' for order ${order.code} with status '${order.state}'`,
         );
@@ -444,7 +444,7 @@ export class MollieService {
     }
 
     /**
-     * Update an existing Mollie order based on the given Vendure order.
+     * Update an existing Mollie order based on the given Deenruv order.
      */
     async updateMollieOrder(
         mollieClient: ExtendedMollieClient,
@@ -476,13 +476,13 @@ export class MollieService {
     }
 
     /**
-     * Delete all order lines of current Mollie order, and create new ones based on the new Vendure order lines
+     * Delete all order lines of current Mollie order, and create new ones based on the new Deenruv order lines
      */
     private async updateMollieOrderLines(
         mollieClient: ExtendedMollieClient,
         existingMollieOrder: MollieOrder,
         /**
-         * These are the new order lines based on the Vendure order
+         * These are the new order lines based on the Deenruv order
          */
         newMollieOrderLines: CreateParameters['lines'],
     ): Promise<MollieOrder> {

@@ -1,20 +1,20 @@
 import pc from 'picocolors';
 
-import { Logger, LogLevel, VendureLogger } from './vendure-logger';
+import { Logger, LogLevel, DeenruvLogger } from './deenruv-logger';
 
-const DEFAULT_CONTEXT = 'Vendure Server';
+const DEFAULT_CONTEXT = 'Deenruv Server';
 
 /**
  * @description
  * The default logger, which logs to the console (stdout) with optional timestamps. Since this logger is part of the
- * default Vendure configuration, you do not need to specify it explicitly in your server config. You would only need
+ * default Deenruv configuration, you do not need to specify it explicitly in your server config. You would only need
  * to specify it if you wish to change the log level (which defaults to `LogLevel.Info`) or remove the timestamp.
  *
  * @example
  * ```ts
- * import { DefaultLogger, LogLevel, VendureConfig } from '\@deenruv/core';
+ * import { DefaultLogger, LogLevel, DeenruvConfig } from '\@deenruv/core';
  *
- * export config: VendureConfig = {
+ * export config: DeenruvConfig = {
  *     // ...
  *     logger: new DefaultLogger({ level: LogLevel.Debug, timestamp: false }),
  * }
@@ -22,7 +22,7 @@ const DEFAULT_CONTEXT = 'Vendure Server';
  *
  * @docsCategory Logger
  */
-export class DefaultLogger implements VendureLogger {
+export class DefaultLogger implements DeenruvLogger {
     /** @internal */
     level: LogLevel = LogLevel.Info;
     private readonly timestamp: boolean;

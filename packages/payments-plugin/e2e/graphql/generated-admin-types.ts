@@ -702,7 +702,7 @@ export type CouponCodeLimitError = ErrorResult & {
  * Input used to create an Address.
  *
  * The countryCode must correspond to a `code` property of a Country that has been defined in the
- * Vendure server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
+ * Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
  * If an invalid code is passed, the mutation will fail.
  */
 export type CreateAddressInput = {
@@ -2622,7 +2622,7 @@ export type MolliePaymentIntentInput = {
      */
     orderId?: InputMaybe<Scalars['String']['input']>;
     /**
-     * The code of the Vendure payment method to use for the payment.
+     * The code of the Deenruv payment method to use for the payment.
      * Must have Mollie as payment method handler.
      * Without this, the first method with Mollie as handler will be used.
      */
@@ -4112,7 +4112,7 @@ export type PaymentStateTransitionError = ErrorResult & {
  *
  * ## Understanding Permission.Owner
  *
- * `Permission.Owner` is a special permission which is used in some Vendure resolvers to indicate that that resolver should only
+ * `Permission.Owner` is a special permission which is used in some Deenruv resolvers to indicate that that resolver should only
  * be accessible to the "owner" of that resource.
  *
  * For example, the Shop API `activeCustomer` query resolver should only return the Customer object for the "owner" of that Customer, i.e.
@@ -5957,7 +5957,7 @@ export type UpdateActiveAdministratorInput = {
  * Input used to update an Address.
  *
  * The countryCode must correspond to a `code` property of a Country that has been defined in the
- * Vendure server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
+ * Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
  * If an invalid code is passed, the mutation will fail.
  */
 export type UpdateAddressInput = {

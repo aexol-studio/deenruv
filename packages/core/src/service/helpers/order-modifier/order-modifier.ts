@@ -36,7 +36,7 @@ import { idsAreEqual } from '../../../common/utils';
 import { ConfigService } from '../../../config/config.service';
 import { CustomFieldConfig } from '../../../config/custom-field/custom-field-types';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 import { Order } from '../../../entity/order/order.entity';
 import { OrderLine } from '../../../entity/order-line/order-line.entity';
 import { FulfillmentLine } from '../../../entity/order-line-reference/fulfillment-line.entity';
@@ -106,7 +106,7 @@ export class OrderModifier {
      * - `quantityInOtherOrderLines` is used when we have more than 1 OrderLine containing the same
      * ProductVariant. This occurs when there are custom fields defined on the OrderLine and the lines
      * have differing values for one or more custom fields. In this case, we need to take _all_ of these
-     * OrderLines into account when constraining the quantity. See https://github.com/vendure-ecommerce/vendure/issues/2702
+     * OrderLines into account when constraining the quantity. See https://github.com/deenruv-ecommerce/deenruv/issues/2702
      * for more on this.
      */
     async constrainQuantityToSaleable(
@@ -869,7 +869,7 @@ export class OrderModifier {
                     const customFieldNotEqual = def.list
                         ? JSON.stringify((inputValue as ID[]).sort()) !==
                           JSON.stringify(
-                              existingRelation?.map((relation: VendureEntity) => relation.id).sort(),
+                              existingRelation?.map((relation: DeenruvEntity) => relation.id).sort(),
                           )
                         : inputValue !== existingRelation?.id;
                     if (customFieldNotEqual) {

@@ -39,12 +39,12 @@ export enum LogLevel {
 
 /**
  * @description
- * The VendureLogger interface defines the shape of a logger service which may be provided in
+ * The DeenruvLogger interface defines the shape of a logger service which may be provided in
  * the config.
  *
  * @docsCategory Logger
  */
-export interface VendureLogger {
+export interface DeenruvLogger {
     error(message: string, context?: string, trace?: string): void;
     warn(message: string, context?: string): void;
     info(message: string, context?: string): void;
@@ -53,7 +53,7 @@ export interface VendureLogger {
     setDefaultContext?(defaultContext: string): void;
 }
 
-const noopLogger: VendureLogger = {
+const noopLogger: DeenruvLogger = {
     error() {
         /* */
     },
@@ -73,7 +73,7 @@ const noopLogger: VendureLogger = {
 
 /**
  * @description
- * The Logger is responsible for all logging in a Vendure application.
+ * The Logger is responsible for all logging in a Deenruv application.
  *
  * It is intended to be used as a static class:
  *
@@ -81,26 +81,26 @@ const noopLogger: VendureLogger = {
  * ```ts
  * import { Logger } from '\@deenruv/core';
  *
- * Logger.info(`Some log message`, 'My Vendure Plugin');
+ * Logger.info(`Some log message`, 'My Deenruv Plugin');
  * ```
  *
- * The actual implementation - where the logs are written to - is defined by the {@link VendureLogger}
- * instance configured in the {@link VendureConfig}. By default, the {@link DefaultLogger} is used, which
+ * The actual implementation - where the logs are written to - is defined by the {@link DeenruvLogger}
+ * instance configured in the {@link DeenruvConfig}. By default, the {@link DefaultLogger} is used, which
  * logs to the console.
  *
  * ## Implementing a custom logger
  *
  * A custom logger can be passed to the `logger` config option by creating a class which implements the
- * {@link VendureLogger} interface. For example, here is how you might go about implementing a logger which
+ * {@link DeenruvLogger} interface. For example, here is how you might go about implementing a logger which
  * logs to a file:
  *
  * @example
  * ```ts
- * import { VendureLogger } from '\@deenruv/core';
+ * import { DeenruvLogger } from '\@deenruv/core';
  * import fs from 'fs';
  *
  * // A simple custom logger which writes all logs to a file.
- * export class SimpleFileLogger implements VendureLogger {
+ * export class SimpleFileLogger implements DeenruvLogger {
  *     private logfile: fs.WriteStream;
  *
  *     constructor(logfileLocation: string) {
@@ -124,7 +124,7 @@ const noopLogger: VendureLogger = {
  *     }
  * }
  *
- * // in the VendureConfig
+ * // in the DeenruvConfig
  * export const config = {
  *     // ...
  *     logger: new SimpleFileLogger('server.log'),
@@ -135,9 +135,9 @@ const noopLogger: VendureLogger = {
  */
 export class Logger implements LoggerService {
     private static _instance: typeof Logger = Logger;
-    private static _logger: VendureLogger;
+    private static _logger: DeenruvLogger;
 
-    static get logger(): VendureLogger {
+    static get logger(): DeenruvLogger {
         return this._logger || noopLogger;
     }
 
@@ -147,7 +147,7 @@ export class Logger implements LoggerService {
     }
 
     /** @internal */
-    static useLogger(logger: VendureLogger) {
+    static useLogger(logger: DeenruvLogger) {
         Logger._logger = logger;
     }
 

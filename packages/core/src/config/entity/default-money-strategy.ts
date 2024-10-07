@@ -1,13 +1,13 @@
 import { ColumnOptions } from 'typeorm';
 
-import { Logger } from '../logger/vendure-logger';
+import { Logger } from '../logger/deenruv-logger';
 
 import { MoneyStrategy } from './money-strategy';
 
 /**
  * @description
  * A {@link MoneyStrategy} that stores monetary values as a `int` type in the database.
- * The storage configuration and rounding logic replicates the behaviour of Vendure pre-2.0.
+ * The storage configuration and rounding logic replicates the behaviour of Deenruv pre-2.0.
  *
  * @docsCategory money
  * @since 2.0.0

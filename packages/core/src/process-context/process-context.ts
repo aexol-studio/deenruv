@@ -6,7 +6,7 @@ let currentContext: ProcessContextType = 'server';
 /**
  * @description
  * The ProcessContext can be injected into your providers & modules in order to know whether it
- * is being executed in the context of the main Vendure server or the worker.
+ * is being executed in the context of the main Deenruv server or the worker.
  *
  * @example
  * ```ts

@@ -2,7 +2,7 @@ import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomZoneFields } from '../custom-entity-fields';
 import { Country } from '../region/country.entity';
@@ -17,7 +17,7 @@ import { TaxRate } from '../tax-rate/tax-rate.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Zone extends VendureEntity implements HasCustomFields {
+export class Zone extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<Zone>) {
         super(input);
     }

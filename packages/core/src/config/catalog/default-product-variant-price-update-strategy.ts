@@ -34,9 +34,9 @@ export interface DefaultProductVariantPriceUpdateStrategyOptions {
  *
  * @example
  * ```ts
- * import { DefaultProductVariantPriceUpdateStrategy, VendureConfig } from '\@deenruv/core';
+ * import { DefaultProductVariantPriceUpdateStrategy, DeenruvConfig } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   // ...
  *   catalogOptions: {
  *     // highlight-start

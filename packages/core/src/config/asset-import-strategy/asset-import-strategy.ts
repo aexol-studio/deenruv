@@ -15,7 +15,7 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  * :::info
  *
  * This is configured via the `importExportOptions.assetImportStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

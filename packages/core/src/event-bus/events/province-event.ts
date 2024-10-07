@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Province } from '../../entity/region/province.entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ProvinceInputTypes = CreateProvinceInput | UpdateProvinceInput | ID;
 
@@ -15,7 +15,7 @@ type ProvinceInputTypes = CreateProvinceInput | UpdateProvinceInput | ID;
  * @docsPage Event Types
  * @since 2.0
  */
-export class ProvinceEvent extends VendureEntityEvent<Province, ProvinceInputTypes> {
+export class ProvinceEvent extends DeenruvEntityEvent<Province, ProvinceInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Province,

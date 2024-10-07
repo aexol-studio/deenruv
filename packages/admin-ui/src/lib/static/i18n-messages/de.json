@@ -487,7 +487,7 @@
   },
   "error": {
     "403-forbidden": "Sie sind derzeit nicht berechtigt, auf \"{ path }\" zuzugreifen. Entweder fehlen Ihnen die Berechtigungen, oder Ihre Sitzung ist abgelaufen.",
-    "could-not-connect-to-server": "Es konnte keine Verbindung zum Vendure-Server auf { url } hergestellt werden.",
+    "could-not-connect-to-server": "Es konnte keine Verbindung zum Deenruv-Server auf { url } hergestellt werden.",
     "health-check-failed": "Systemzustandsprüfung fehlgeschlagen",
     "no-default-shipping-zone-set": "Dieser Kanal verfügt nicht über eine Standard-Versandzone. Dies kann zu Fehlern bei der Berechnung der Auftragsversandkosten führen.",
     "no-default-tax-zone-set": "Dieser Kanal verfügt nicht über eine Standard-Steuerzone, was zu Fehlern bei der Preisberechnung führen kann. Bitte erstellen oder wählen Sie eine Zone."

@@ -34,7 +34,7 @@ export type OnProgressFn = (progess: ImportProgress) => void;
  *
  * Internally it is using the {@link ImportParser} to parse the CSV file, and then the
  * {@link FastImporterService} and the {@link AssetImporter} to actually create the resulting
- * entities in the Vendure database.
+ * entities in the Deenruv database.
  *
  * @docsCategory import-export
  */

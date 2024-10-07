@@ -9,13 +9,13 @@ export default function AdmonitionWrapper(props) {
     return (
         <Admonition
             icon={<CliIcon />}
-            title={'Vendure CLI'}
+            title={'Deenruv CLI'}
             {...props}
             children={
                 <>
                     {props.children}
                     <div style={{ fontSize: '12px' }}>
-                        Learn more about the <Link href={'/guides/developer-guide/cli/'}>Vendure CLI</Link>
+                        Learn more about the <Link href={'/guides/developer-guide/cli/'}>Deenruv CLI</Link>
                     </div>
                 </>
             }

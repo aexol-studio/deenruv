@@ -5,7 +5,7 @@ import { AuthenticationMethod } from './authentication-method.entity';
 
 /**
  * @description
- * This method is used when an external authentication service is used to authenticate Vendure Users.
+ * This method is used when an external authentication service is used to authenticate Deenruv Users.
  * Examples of external auth include social logins or corporate identity servers.
  *
  * @docsCategory entities

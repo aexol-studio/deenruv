@@ -1,4 +1,4 @@
-import { Collection, PluginCommonModule, VendureEntity, VendurePlugin } from '@deenruv/core';
+import { Collection, PluginCommonModule, DeenruvEntity, DeenruvPlugin } from '@deenruv/core';
 import gql from 'graphql-tag';
 import { DeepPartial, Entity, ManyToMany, OneToMany } from 'typeorm';
 
@@ -10,7 +10,7 @@ declare module '@deenruv/core/dist/entity/custom-entity-fields' {
 }
 
 @Entity()
-export class TestCustomEntity extends VendureEntity {
+export class TestCustomEntity extends DeenruvEntity {
     constructor(input?: DeepPartial<TestCustomEntity>) {
         super(input);
     }

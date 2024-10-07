@@ -20,7 +20,7 @@ import { ListQueryOptions } from '../../common/types/common-types';
 import { Translated } from '../../common/types/locale-types';
 import { assertFound, idsAreEqual } from '../../common/utils';
 import { ConfigService } from '../../config/config.service';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../connection/transactional-connection';
 import { ShippingMethodTranslation } from '../../entity/shipping-method/shipping-method-translation.entity';
 import { ShippingMethod } from '../../entity/shipping-method/shipping-method.entity';
@@ -61,7 +61,7 @@ export class ShippingMethodService {
         if (this.configService.shippingOptions.fulfillmentHandlers.length === 0) {
             throw new Error(
                 'No FulfillmentHandlers were found.' +
-                    ' Please ensure the VendureConfig.shippingOptions.fulfillmentHandlers array contains at least one FulfillmentHandler.',
+                    ' Please ensure the DeenruvConfig.shippingOptions.fulfillmentHandlers array contains at least one FulfillmentHandler.',
             );
         }
         await this.verifyShippingMethods();

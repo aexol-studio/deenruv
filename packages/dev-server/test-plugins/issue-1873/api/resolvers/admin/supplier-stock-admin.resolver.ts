@@ -45,7 +45,7 @@ export class SupplierStockAdminResolver {
         return this.supplierStockService.findAll(ctx, args.options, relations);
     }
 
-    private async initVendureData(@Ctx() ctx: RequestContext) {
+    private async initDeenruvData(@Ctx() ctx: RequestContext) {
         const channel = await this.channelService.getDefaultChannel();
         await this.populator.populateInitialData(initialData, channel);
 
@@ -56,7 +56,7 @@ export class SupplierStockAdminResolver {
         const importResult = await this.importer.parseAndImport(productData, ctx, true).toPromise();
 
         if (importResult.errors && importResult.errors.length) {
-            const errorFile = path.join(process.cwd(), 'vendure-import-error.log');
+            const errorFile = path.join(process.cwd(), 'deenruv-import-error.log');
             Logger.error(
                 `${importResult.errors.length} errors encountered when importing product data. See: ${errorFile}`,
                 LOGGER_CTX,
@@ -71,7 +71,7 @@ export class SupplierStockAdminResolver {
     async initializeDemo(@Ctx() ctx: RequestContext) {
         const { totalItems } = await this.productService.findAll(ctx, {});
         if (totalItems === 0) {
-            await this.initVendureData(ctx);
+            await this.initDeenruvData(ctx);
         }
 
         const supplierStock = await this.connection.getRepository(ctx, SupplierStock).save({

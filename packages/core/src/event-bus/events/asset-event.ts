@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Asset } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type AssetInputTypes = CreateAssetInput | UpdateAssetInput | DeleteAssetInput | ID;
 
@@ -15,7 +15,7 @@ type AssetInputTypes = CreateAssetInput | UpdateAssetInput | DeleteAssetInput | 
  * @docsPage Event Types
  * @since 1.4
  */
-export class AssetEvent extends VendureEntityEvent<Asset, AssetInputTypes> {
+export class AssetEvent extends DeenruvEntityEvent<Asset, AssetInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Asset,

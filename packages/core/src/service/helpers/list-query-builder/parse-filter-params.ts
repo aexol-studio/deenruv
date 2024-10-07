@@ -14,7 +14,7 @@ import {
     NumberOperators,
     StringOperators,
 } from '../../../common/types/common-types';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 import { escapeCalculatedColumnExpression, getColumnMetadata } from './connection-utils';
 import { getCalculatedColumns } from './get-calculated-columns';
@@ -33,7 +33,7 @@ type AllOperators = StringOperators & BooleanOperators & NumberOperators & DateO
 type Operator = { [K in keyof AllOperators]-?: K }[keyof AllOperators];
 
 export function parseFilterParams<
-    T extends VendureEntity,
+    T extends DeenruvEntity,
     FP extends NullOptionals<FilterParameter<T>>,
     R extends FP extends { _and: Array<FilterParameter<T>> }
         ? WhereGroup[]
@@ -219,7 +219,7 @@ function buildWhereCondition(
 
 /**
  * Converts a JS Date object to a string format recognized by all DB engines.
- * See https://github.com/vendure-ecommerce/vendure/issues/251
+ * See https://github.com/deenruv-ecommerce/deenruv/issues/251
  */
 function convertDate(input: Date | string | number): string | number {
     if (input instanceof Date) {

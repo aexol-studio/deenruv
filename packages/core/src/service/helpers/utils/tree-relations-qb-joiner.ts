@@ -3,7 +3,7 @@ import { EntityTarget } from 'typeorm/common/EntityTarget';
 import { FindOptionsRelationByString, FindOptionsRelations } from 'typeorm/find-options/FindOptionsRelations';
 
 import { findOptionsObjectToArray } from '../../../connection/find-options-object-to-array';
-import { VendureEntity } from '../../../entity';
+import { DeenruvEntity } from '../../../entity';
 
 /**
  * @description
@@ -39,7 +39,7 @@ function isTreeEntityMetadata(metadata: EntityMetadata): boolean {
  * @param {string[]} [requestedRelations=[]] - An array of relation paths (e.g., 'parent.children') to join dynamically.
  * @param {number} [maxEagerDepth=1] - Limits the depth of eager relation joins to avoid excessively deep joins.
  * @returns {Map<string, string>} - A Map of joined relation paths to their aliases, aiding in tracking and preventing duplicates.
- * @template T - The entity type, extending VendureEntity for compatibility with Vendure's data layer.
+ * @template T - The entity type, extending DeenruvEntity for compatibility with Deenruv's data layer.
  *
  * Usage Notes:
  * - Only entities utilizing TypeORM tree decorators and having nested relations are supported.
@@ -54,7 +54,7 @@ function isTreeEntityMetadata(metadata: EntityMetadata): boolean {
  * joinTreeRelationsDynamically(qb, EntityClass, ["parent.children"], 2);
  * ```
  */
-export function joinTreeRelationsDynamically<T extends VendureEntity>(
+export function joinTreeRelationsDynamically<T extends DeenruvEntity>(
     qb: SelectQueryBuilder<T>,
     entity: EntityTarget<T>,
     requestedRelations: FindOneOptions['relations'] = {},

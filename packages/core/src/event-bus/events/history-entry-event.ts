@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { HistoryEntry } from '../../entity/history-entry/history-entry.entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type HistoryInput =
     | {
@@ -20,7 +20,7 @@ type HistoryInput =
  * @docsPage Event Types
  * @since 1.4
  */
-export class HistoryEntryEvent extends VendureEntityEvent<HistoryEntry, HistoryInput> {
+export class HistoryEntryEvent extends DeenruvEntityEvent<HistoryEntry, HistoryInput> {
     public readonly historyType: 'order' | 'customer' | string;
 
     constructor(

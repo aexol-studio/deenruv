@@ -2,7 +2,7 @@ import { RequestContext } from '../../api/common/request-context';
 import { Order } from '../../entity/order/order.entity';
 import { Refund } from '../../entity/refund/refund.entity';
 import { RefundState } from '../../service/helpers/refund-state-machine/refund-state';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -11,7 +11,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class RefundStateTransitionEvent extends VendureEvent {
+export class RefundStateTransitionEvent extends DeenruvEvent {
     constructor(
         public fromState: RefundState,
         public toState: RefundState,

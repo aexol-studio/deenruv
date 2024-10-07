@@ -2,10 +2,10 @@ import { JobState } from '@deenruv/common/lib/generated-types';
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity } from 'typeorm';
 
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 @Entity()
-export class JobRecord extends VendureEntity {
+export class JobRecord extends DeenruvEntity {
     constructor(input: DeepPartial<JobRecord>) {
         super(input);
     }

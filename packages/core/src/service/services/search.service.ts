@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JobState } from '@deenruv/common/lib/generated-types';
 
 import { RequestContext } from '../../api/common/request-context';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { Job } from '../../job-queue/job';
 
 /**

@@ -7,7 +7,7 @@ const find = require('find');
 /**
  * An array of regular expressions defining illegal import patterns to be checked in the
  * source files of the monorepo packages. This prevents bad imports (which work locally
- * and go undetected) from getting into published releases of Vendure.
+ * and go undetected) from getting into published releases of Deenruv.
  */
 const illegalImportPatterns: RegExp[] = [
     /@deenruv\/common\/src/,

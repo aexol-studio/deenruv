@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { RequestContext } from '../../../api/common/request-context';
 import { Translatable } from '../../../common/types/locale-types';
 import { ConfigService } from '../../../config';
-import { VendureEntity } from '../../../entity';
+import { DeenruvEntity } from '../../../entity';
 import { DeepTranslatableRelations, translateDeep } from '../utils/translate-entity';
 
 /**
@@ -43,7 +43,7 @@ import { DeepTranslatableRelations, translateDeep } from '../utils/translate-ent
 export class TranslatorService {
     constructor(private configService: ConfigService) {}
 
-    translate<T extends Translatable & VendureEntity>(
+    translate<T extends Translatable & DeenruvEntity>(
         translatable: T,
         ctx: RequestContext,
         translatableRelations: DeepTranslatableRelations<T> = [],

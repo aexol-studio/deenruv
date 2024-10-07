@@ -323,7 +323,7 @@ describe('Authorization & permissions', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/730
+        // https://github.com/deenruv-ecommerce/deenruv/issues/730
         it('protects against deep query data leakage', async () => {
             await adminClient.asSuperAdmin();
             const { createCustomerGroup } = await adminClient.query<

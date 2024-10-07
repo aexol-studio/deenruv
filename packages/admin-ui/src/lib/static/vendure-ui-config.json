@@ -3,8 +3,8 @@
     "apiPort": "3000",
     "adminApiPath": "admin-api",
     "tokenMethod": "bearer",
-    "authTokenHeaderKey": "vendure-auth-token",
-    "channelTokenKey": "vendure-token",
+    "authTokenHeaderKey": "deenruv-auth-token",
+    "channelTokenKey": "deenruv-token",
     "defaultLanguage": "en",
     "defaultLocale": "US",
     "availableLanguages": [
@@ -281,7 +281,7 @@
         "AX"
     ],
     "brand": "",
-    "hideVendureBranding": false,
+    "hideDeenruvBranding": false,
     "hideVersion": false,
     "cancellationReasons": [
         "order.cancel-reason-customer-request",

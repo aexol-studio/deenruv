@@ -21,10 +21,10 @@ import { ComponentRegistryService } from '../providers/component-registry/compon
  * This input component can then be used in a custom field:
  *
  * @example
- * ```ts title="src/vendure-config.ts"
- * import { VendureConfig } from '\@deenruv/core';
+ * ```ts title="src/deenruv-config.ts"
+ * import { DeenruvConfig } from '\@deenruv/core';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // ...
  *   customFields: {
  *     ProductVariant: [

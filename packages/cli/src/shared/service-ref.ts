@@ -62,7 +62,7 @@ export class ServiceRef {
                     const unwrappedReturnType = this.unwrapReturnType(returnType);
                     const typeDeclaration = unwrappedReturnType.getSymbolOrThrow().getDeclarations()[0];
                     if (typeDeclaration && Node.isClassDeclaration(typeDeclaration)) {
-                        if (typeDeclaration.getExtends()?.getText() === 'VendureEntity') {
+                        if (typeDeclaration.getExtends()?.getText() === 'DeenruvEntity') {
                             return new EntityRef(typeDeclaration);
                         }
                     }

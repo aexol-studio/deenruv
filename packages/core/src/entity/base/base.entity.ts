@@ -10,8 +10,8 @@ import { PrimaryGeneratedId } from '../entity-id.decorator';
  *
  * @docsCategory entities
  */
-export abstract class VendureEntity {
-    protected constructor(input?: DeepPartial<VendureEntity>) {
+export abstract class DeenruvEntity {
+    protected constructor(input?: DeepPartial<DeenruvEntity>) {
         if (input) {
             for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(input))) {
                 if (descriptor.get && !descriptor.set) {

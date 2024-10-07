@@ -17,7 +17,7 @@ import { LoadTemplateInput, Partial } from '../types';
  *      }
  * }
  *
- * // In vendure-config.ts:
+ * // In deenruv-config.ts:
  * ...
  * EmailPlugin.init({
  *     templateLoader: new MyTemplateLoader()

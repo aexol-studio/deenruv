@@ -1,11 +1,11 @@
 import { isClassInstance, isObject } from '@deenruv/common/lib/shared-utils';
 import { simpleDeepClone } from '@deenruv/common/lib/simple-deep-clone';
 
-import { PartialVendureConfig, VendureConfig } from './vendure-config';
+import { PartialDeenruvConfig, DeenruvConfig } from './deenruv-config';
 
 /**
  * @description
- * Performs a deep merge of two VendureConfig objects. Unlike `Object.assign()` the `target` object is
+ * Performs a deep merge of two DeenruvConfig objects. Unlike `Object.assign()` the `target` object is
  * not mutated, instead the function returns a new object which is the result of deeply merging the
  * values of `source` into `target`.
  *
@@ -27,7 +27,7 @@ import { PartialVendureConfig, VendureConfig } from './vendure-config';
  *
  * @docsCategory configuration
  */
-export function mergeConfig<T extends VendureConfig>(target: T, source: PartialVendureConfig, depth = 0): T {
+export function mergeConfig<T extends DeenruvConfig>(target: T, source: PartialDeenruvConfig, depth = 0): T {
     if (!source) {
         return target;
     }

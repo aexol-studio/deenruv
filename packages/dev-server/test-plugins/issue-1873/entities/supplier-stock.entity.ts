@@ -1,4 +1,4 @@
-import { DeepPartial, ID, Product, ProductVariant, VendureEntity } from '@deenruv/core';
+import { DeepPartial, ID, Product, ProductVariant, DeenruvEntity } from '@deenruv/core';
 import { Column, Entity, OneToMany, ManyToOne } from 'typeorm';
 import { SupplierStockInTransit } from './supplier-stock-in-transit.entity';
 
@@ -8,7 +8,7 @@ import { SupplierStockInTransit } from './supplier-stock-in-transit.entity';
  * @docsCategory entities
  */
 @Entity('supplier_stock')
-export class SupplierStock extends VendureEntity {
+export class SupplierStock extends DeenruvEntity {
     constructor(input?: DeepPartial<SupplierStock>) {
         super(input);
     }

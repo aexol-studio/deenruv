@@ -27,7 +27,7 @@ import { CustomDetailComponentService } from '../providers/custom-detail-compone
  *     imports: [SharedModule],
  * })
  * export class ProductInfoComponent implements CustomDetailComponent, OnInit {
- *     // These two properties are provided by Vendure and will vary
+ *     // These two properties are provided by Deenruv and will vary
  *     // depending on the particular detail page you are embedding this
  *     // component into.
  *     entity$: Observable<GetProductWithVariants.Product>

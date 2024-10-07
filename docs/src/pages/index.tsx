@@ -8,8 +8,8 @@ import styles from './index.module.css';
 export default function Home(): JSX.Element {
     return (
         <Layout
-            title={`Vendure documentation`}
-            description="Developer docs for Vendure: the open-source headless commerce platform"
+            title={`Deenruv documentation`}
+            description="Developer docs for Deenruv: the open-source headless commerce platform"
         >
             <div className={styles.heroBanner}>
                 <svg
@@ -36,7 +36,8 @@ export default function Home(): JSX.Element {
                 </svg>
                 <h1 className={styles.tagline}>Developer Documentation</h1>
                 <div className={styles.description}>
-                    Build better multichannel commerce experiences faster. Vendure is the headless commerce platform that is built to adapt to your needs. Not the other way round.
+                    Build better multichannel commerce experiences faster. Deenruv is the headless commerce
+                    platform that is built to adapt to your needs. Not the other way round.
                 </div>
             </div>
             <main>
@@ -45,7 +46,7 @@ export default function Home(): JSX.Element {
                         Get Started
                     </Link>
                     <Link className="button button--secondary" to="/guides/developer-guide/overview/">
-                        Learn Vendure
+                        Learn Deenruv
                     </Link>
                     <Link className="button button--secondary" to="/reference/">
                         API Reference

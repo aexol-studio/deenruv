@@ -1,5 +1,5 @@
 import { bootstrapWorker } from '@deenruv/core';
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 bootstrapWorker(config)
     .then(worker => worker.startJobQueue())

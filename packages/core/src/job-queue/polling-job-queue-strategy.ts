@@ -4,7 +4,7 @@ import { isObject } from '@deenruv/common/lib/shared-utils';
 import { from, interval, mergeMap, race, Subject, Subscription } from 'rxjs';
 import { filter, switchMap, take, throttleTime } from 'rxjs/operators';
 
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 
 import { InjectableJobQueueStrategy } from './injectable-job-queue-strategy';
 import { Job } from './job';

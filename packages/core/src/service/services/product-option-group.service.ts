@@ -11,7 +11,7 @@ import { RequestContext } from '../../api/common/request-context';
 import { RelationPaths } from '../../api/decorators/relations.decorator';
 import { Translated } from '../../common/types/locale-types';
 import { assertFound, idsAreEqual } from '../../common/utils';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../connection/transactional-connection';
 import { Product } from '../../entity/product/product.entity';
 import { ProductOptionGroupTranslation } from '../../entity/product-option-group/product-option-group-translation.entity';

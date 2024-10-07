@@ -50,7 +50,7 @@ import { defaultShippingEligibilityChecker } from './shipping-method/default-shi
 import { DefaultShippingLineAssignmentStrategy } from './shipping-method/default-shipping-line-assignment-strategy';
 import { DefaultTaxLineCalculationStrategy } from './tax/default-tax-line-calculation-strategy';
 import { DefaultTaxZoneStrategy } from './tax/default-tax-zone-strategy';
-import { RuntimeVendureConfig } from './vendure-config';
+import { RuntimeDeenruvConfig } from './deenruv-config';
 
 /**
  * @description
@@ -58,7 +58,7 @@ import { RuntimeVendureConfig } from './vendure-config';
  *
  * @docsCategory configuration
  */
-export const defaultConfig: RuntimeVendureConfig = {
+export const defaultConfig: RuntimeDeenruvConfig = {
     defaultChannelToken: null,
     defaultLanguageCode: LanguageCode.en,
     logger: new DefaultLogger(),

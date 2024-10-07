@@ -283,7 +283,7 @@ describe('Order process', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/963
+        // https://github.com/deenruv-ecommerce/deenruv/issues/963
         it('allows addPaymentToOrder from a custom state', async () => {
             await shopClient.query<
                 CodegenShop.SetShippingMethodMutation,

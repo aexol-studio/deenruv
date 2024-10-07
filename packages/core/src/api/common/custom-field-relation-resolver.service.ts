@@ -6,7 +6,7 @@ import { Translatable } from '../../common/types/locale-types';
 import { ConfigService } from '../../config/config.service';
 import { RelationCustomFieldConfig } from '../../config/custom-field/custom-field-types';
 import { TransactionalConnection } from '../../connection/transactional-connection';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 import { ProductVariant } from '../../entity/product-variant/product-variant.entity';
 import { ProductPriceApplicator } from '../../service/helpers/product-price-applicator/product-price-applicator';
 import { TranslatorService } from '../../service/helpers/translator/translator.service';
@@ -35,7 +35,7 @@ export class CustomFieldRelationResolverService {
      * config, this method is able to query the correct entity or entities from the database
      * to be returned through the GraphQL API.
      */
-    async resolveRelation(config: ResolveRelationConfig): Promise<VendureEntity | VendureEntity[]> {
+    async resolveRelation(config: ResolveRelationConfig): Promise<DeenruvEntity | DeenruvEntity[]> {
         const { ctx, entityId, entityName, fieldDef } = config;
 
         const subQb = this.connection
@@ -60,7 +60,7 @@ export class CustomFieldRelationResolverService {
 
     async translateEntity(
         ctx: RequestContext,
-        result: VendureEntity | VendureEntity[] | null,
+        result: DeenruvEntity | DeenruvEntity[] | null,
         fieldDef: RelationCustomFieldConfig,
     ) {
         if (result == null) return null;

@@ -8,14 +8,14 @@ import { CalculatedColumnDefinition, CALCULATED_PROPERTIES } from '../../common/
 import { InternalServerError } from '../../common/error/errors';
 import { TtlCache } from '../../common/ttl-cache';
 import { EntityRelationPaths } from '../../common/types/entity-relation-paths';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const graphqlFields = require('graphql-fields');
 
-export type RelationPaths<T extends VendureEntity> = Array<EntityRelationPaths<T>>;
+export type RelationPaths<T extends DeenruvEntity> = Array<EntityRelationPaths<T>>;
 
-export type FieldsDecoratorConfig<T extends VendureEntity> =
+export type FieldsDecoratorConfig<T extends DeenruvEntity> =
     | Type<T>
     | {
           entity: Type<T>;
@@ -133,7 +133,7 @@ const cache = new TtlCache({ cacheSize: 500, ttl: 5 * 60 * 1000 });
  * @docsPage Relations Decorator
  * @since 1.6.0
  */
-export const Relations: <T extends VendureEntity>(data: FieldsDecoratorConfig<T>) => ParameterDecorator =
+export const Relations: <T extends DeenruvEntity>(data: FieldsDecoratorConfig<T>) => ParameterDecorator =
     createParamDecorator<FieldsDecoratorConfig<any>>((data, ctx: ExecutionContext) => {
         const info = ctx.getArgByIndex(3);
         if (data == null) {
@@ -163,7 +163,7 @@ export const Relations: <T extends VendureEntity>(data: FieldsDecoratorConfig<T>
 
 function getRelationPaths(
     fields: Record<string, Record<string, any>>,
-    entity: Type<VendureEntity>,
+    entity: Type<DeenruvEntity>,
     maxDepth: number,
     depth = 1,
 ): string[] {
@@ -181,7 +181,7 @@ function getRelationPaths(
                     depth++;
                     const subPaths = getRelationPaths(
                         value,
-                        customFieldEntity as Type<VendureEntity>,
+                        customFieldEntity as Type<DeenruvEntity>,
                         maxDepth,
                         depth,
                     );
@@ -204,7 +204,7 @@ function getRelationPaths(
                     depth++;
                     const subPaths = getRelationPaths(
                         value,
-                        relatedEntity as Type<VendureEntity>,
+                        relatedEntity as Type<DeenruvEntity>,
                         maxDepth,
                         depth,
                     );

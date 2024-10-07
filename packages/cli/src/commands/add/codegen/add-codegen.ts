@@ -5,14 +5,14 @@ import { StructureKind } from 'ts-morph';
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { PackageJson } from '../../../shared/package-json-ref';
 import { analyzeProject, selectMultiplePluginClasses } from '../../../shared/shared-prompts';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import { getRelativeImportPath } from '../../../utilities/ast-utils';
 import { pauseForPromptDisplay } from '../../../utilities/utils';
 
 import { CodegenConfigRef } from './codegen-config-ref';
 
 export interface AddCodegenOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
 }
 
 export const addCodegenCommand = new CliCommand({
@@ -23,13 +23,13 @@ export const addCodegenCommand = new CliCommand({
 });
 
 async function addCodegen(options?: AddCodegenOptions): Promise<CliCommandReturnVal> {
-    const providedVendurePlugin = options?.plugin;
+    const providedDeenruvPlugin = options?.plugin;
     const { project } = await analyzeProject({
-        providedVendurePlugin,
+        providedDeenruvPlugin,
         cancelledMessage: 'Add codegen cancelled',
     });
-    const plugins = providedVendurePlugin
-        ? [providedVendurePlugin]
+    const plugins = providedDeenruvPlugin
+        ? [providedDeenruvPlugin]
         : await selectMultiplePluginClasses(project, 'Add codegen cancelled');
 
     const packageJson = new PackageJson(project);
@@ -52,10 +52,10 @@ async function addCodegen(options?: AddCodegenOptions): Promise<CliCommandReturn
         });
     }
     const packageManager = packageJson.determinePackageManager();
-    const packageJsonFile = packageJson.locatePackageJsonWithVendureDependency();
+    const packageJsonFile = packageJson.locatePackageJsonWithDeenruvDependency();
     log.info(`Detected package manager: ${packageManager}`);
     if (!packageJsonFile) {
-        cancel(`Could not locate package.json file with a dependency on Vendure.`);
+        cancel(`Could not locate package.json file with a dependency on Deenruv.`);
         process.exit(1);
     }
     log.info(`Detected package.json: ${packageJsonFile}`);

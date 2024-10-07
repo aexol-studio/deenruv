@@ -1,4 +1,4 @@
-import { InjectableStrategy, VendureEvent } from '@deenruv/core';
+import { InjectableStrategy, DeenruvEvent } from '@deenruv/core';
 
 import { EmailDetails, EmailPluginOptions } from '../types';
 
@@ -10,7 +10,7 @@ import { EmailDetails, EmailPluginOptions } from '../types';
  * @docsPage EmailGenerator
  * @docsWeight 0
  */
-export interface EmailGenerator<T extends string = any, E extends VendureEvent = any>
+export interface EmailGenerator<T extends string = any, E extends DeenruvEvent = any>
     extends InjectableStrategy {
     /**
      * @description

@@ -12,7 +12,7 @@ services:
     environment:
       DB_HOST: database
       DB_PORT: 5432
-      DB_NAME: vendure
+      DB_NAME: deenruv
       DB_USERNAME: postgres
       DB_PASSWORD: password
   worker:
@@ -25,7 +25,7 @@ services:
     environment:
       DB_HOST: database
       DB_PORT: 5432
-      DB_NAME: vendure
+      DB_NAME: deenruv
       DB_USERNAME: postgres
       DB_PASSWORD: password
   database:
@@ -36,4 +36,4 @@ services:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: vendure
+      POSTGRES_DB: deenruv

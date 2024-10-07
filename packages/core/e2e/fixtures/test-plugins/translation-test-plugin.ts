@@ -6,7 +6,7 @@ import {
     I18nService,
     PluginCommonModule,
     RequestContext,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 import path from 'path';

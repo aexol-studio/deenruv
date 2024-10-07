@@ -5,7 +5,7 @@ import path from 'path';
  * Checks the versions of the Angular compiler packages between the `admin-ui` and `ui-devkit` packages.
  * These must match exactly since using different packages can introduce errors when compiling
  * with the ui-devkit.
- * See https://github.com/vendure-ecommerce/vendure/issues/758 for more on this issue.
+ * See https://github.com/deenruv-ecommerce/deenruv/issues/758 for more on this issue.
  */
 async function checkAngularVersions() {
     const adminUiPackageJson = require('../packages/admin-ui/package.json');

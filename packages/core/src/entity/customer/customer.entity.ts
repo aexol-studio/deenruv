@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne 
 import { ChannelAware, SoftDeletable } from '../../common/types/common-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { Address } from '../address/address.entity';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomCustomerFields } from '../custom-entity-fields';
 import { CustomerGroup } from '../customer-group/customer-group.entity';
@@ -20,7 +20,7 @@ import { User } from '../user/user.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Customer extends VendureEntity implements ChannelAware, HasCustomFields, SoftDeletable {
+export class Customer extends DeenruvEntity implements ChannelAware, HasCustomFields, SoftDeletable {
     constructor(input?: DeepPartial<Customer>) {
         super(input);
     }

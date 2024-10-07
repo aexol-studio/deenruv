@@ -3,7 +3,7 @@ import { Project } from 'ts-morph';
 import { describe, it } from 'vitest';
 
 import { defaultManipulationSettings } from '../../../../../constants';
-import { VendureConfigRef } from '../../../../../shared/vendure-config-ref';
+import { DeenruvConfigRef } from '../../../../../shared/deenruv-config-ref';
 import { expectSourceFileContentToMatch } from '../../../../../utilities/testing-utils';
 
 import { updateAdminUiPluginInit } from './update-admin-ui-plugin-init';
@@ -14,8 +14,8 @@ describe('updateAdminUiPluginInit', () => {
             manipulationSettings: defaultManipulationSettings,
         });
         project.addSourceFileAtPath(path.join(__dirname, 'fixtures', 'no-app-prop.fixture.ts'));
-        const vendureConfig = new VendureConfigRef(project, { checkFileName: false });
-        updateAdminUiPluginInit(vendureConfig, {
+        const deenruvConfig = new DeenruvConfigRef(project, { checkFileName: false });
+        updateAdminUiPluginInit(deenruvConfig, {
             pluginClassName: 'TestPlugin',
             pluginPath: './plugins/test-plugin/test.plugin',
         });
@@ -32,8 +32,8 @@ describe('updateAdminUiPluginInit', () => {
             manipulationSettings: defaultManipulationSettings,
         });
         project.addSourceFileAtPath(path.join(__dirname, 'fixtures', 'existing-app-prop.fixture.ts'));
-        const vendureConfig = new VendureConfigRef(project, { checkFileName: false });
-        updateAdminUiPluginInit(vendureConfig, {
+        const deenruvConfig = new DeenruvConfigRef(project, { checkFileName: false });
+        updateAdminUiPluginInit(deenruvConfig, {
             pluginClassName: 'TestPlugin',
             pluginPath: './plugins/test-plugin/test.plugin',
         });

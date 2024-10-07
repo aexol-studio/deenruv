@@ -7,7 +7,7 @@ import {
     Order,
     OrderService,
     RequestContext,
-    VendurePlugin,
+    DeenruvPlugin,
     Relations,
     RelationPaths,
     PluginCommonModule,

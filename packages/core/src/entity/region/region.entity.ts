@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, TableInheritan
 
 import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomRegionFields } from '../custom-entity-fields';
 import { EntityId } from '../entity-id.decorator';
 
@@ -21,7 +21,7 @@ export type RegionType = 'country' | 'province' | string;
  */
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'discriminator' } })
-export abstract class Region extends VendureEntity implements Translatable, HasCustomFields {
+export abstract class Region extends DeenruvEntity implements Translatable, HasCustomFields {
     /**
      * @description
      * A code representing the region. The code format will depend on the type of region. For

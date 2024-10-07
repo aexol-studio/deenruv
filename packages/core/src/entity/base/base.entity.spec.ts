@@ -4,9 +4,9 @@ import { describe, expect, it } from 'vitest';
 import { Calculated } from '../../common/index';
 import { CalculatedPropertySubscriber } from '../subscribers';
 
-import { VendureEntity } from './base.entity';
+import { DeenruvEntity } from './base.entity';
 
-class ChildEntity extends VendureEntity {
+class ChildEntity extends DeenruvEntity {
     constructor(input?: DeepPartial<ChildEntity>) {
         super(input);
     }
@@ -18,7 +18,7 @@ class ChildEntity extends VendureEntity {
     }
 }
 
-class ChildEntityWithCalculated extends VendureEntity {
+class ChildEntityWithCalculated extends DeenruvEntity {
     constructor(input?: DeepPartial<ChildEntity>) {
         super(input);
     }
@@ -31,7 +31,7 @@ class ChildEntityWithCalculated extends VendureEntity {
     }
 }
 
-describe('VendureEntity', () => {
+describe('DeenruvEntity', () => {
     it('instantiating a child entity', () => {
         const child = new ChildEntity({
             name: 'foo',

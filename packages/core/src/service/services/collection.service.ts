@@ -28,7 +28,7 @@ import { ListQueryOptions } from '../../common/types/common-types';
 import { Translated } from '../../common/types/locale-types';
 import { assertFound, idsAreEqual } from '../../common/utils';
 import { ConfigService } from '../../config/config.service';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../connection/transactional-connection';
 import { CollectionTranslation } from '../../entity/collection/collection-translation.entity';
 import { Collection } from '../../entity/collection/collection.entity';
@@ -614,7 +614,7 @@ export class CollectionService implements OnModuleInit {
      * If applyToChangedVariantsOnly (default: true) is true, then apply collection job will process only changed variants
      * If applyToChangedVariantsOnly (default: true) is false, then apply collection job will process all variants
      * This param is used when we update collection and collection filters are changed to update all
-     * variants (because other attributes of collection can be changed https://github.com/vendure-ecommerce/vendure/issues/1015)
+     * variants (because other attributes of collection can be changed https://github.com/deenruv-ecommerce/deenruv/issues/1015)
      */
     private async applyCollectionFiltersInternal(
         collection: Collection,

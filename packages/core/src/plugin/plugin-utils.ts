@@ -1,22 +1,22 @@
 import { RequestHandler } from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
-import { Logger, RuntimeVendureConfig, VendureConfig } from '../config';
+import { Logger, RuntimeDeenruvConfig, DeenruvConfig } from '../config';
 
 /**
  * @description
  * Creates a proxy middleware which proxies the given route to the given port.
  * Useful for plugins which start their own servers but should be accessible
- * via the main Vendure url.
+ * via the main Deenruv url.
  *
  * @example
  * ```ts
- * // Example usage in the `configuration` method of a VendurePlugin.
+ * // Example usage in the `configuration` method of a DeenruvPlugin.
  * // Imagine that we have started a Node server on port 5678
  * // running some service which we want to access via the `/my-plugin/`
- * // route of the main Vendure server.
+ * // route of the main Deenruv server.
  * \@DeenruvPlugin({
- *   configuration: (config: Required<VendureConfig>) => {
+ *   configuration: (config: Required<DeenruvConfig>) => {
  *       config.apiOptions.middleware.push({
  *           handler: createProxyHandler({
  *               label: 'Admin UI',
@@ -82,7 +82,7 @@ export interface ProxyOptions {
     label: string;
     /**
      * @description
-     * The route of the Vendure server which will act as the proxy url.
+     * The route of the Deenruv server which will act as the proxy url.
      */
     route: string;
     /**

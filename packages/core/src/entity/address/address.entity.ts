@@ -2,7 +2,7 @@ import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomAddressFields } from '../custom-entity-fields';
 import { Customer } from '../customer/customer.entity';
 import { Country } from '../region/country.entity';
@@ -14,7 +14,7 @@ import { Country } from '../region/country.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Address extends VendureEntity implements HasCustomFields {
+export class Address extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<Address>) {
         super(input);
     }

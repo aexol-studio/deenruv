@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { PaymentMethod } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type PaymentMethodInputTypes = CreatePaymentMethodInput | UpdatePaymentMethodInput | ID;
 
@@ -15,7 +15,7 @@ type PaymentMethodInputTypes = CreatePaymentMethodInput | UpdatePaymentMethodInp
  * @docsCategory events
  * @docsPage Event Types
  */
-export class PaymentMethodEvent extends VendureEntityEvent<PaymentMethod, PaymentMethodInputTypes> {
+export class PaymentMethodEvent extends DeenruvEntityEvent<PaymentMethod, PaymentMethodInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: PaymentMethod,

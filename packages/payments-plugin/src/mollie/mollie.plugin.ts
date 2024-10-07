@@ -4,8 +4,8 @@ import {
     Order,
     PluginCommonModule,
     RequestContext,
-    RuntimeVendureConfig,
-    VendurePlugin,
+    RuntimeDeenruvConfig,
+    DeenruvPlugin,
 } from '@deenruv/core';
 
 import { shopApiExtensions, adminApiExtensions } from './api-extensions';
@@ -29,10 +29,10 @@ export type AdditionalEnabledPaymentMethodsParams = Partial<Omit<ListParameters,
 export interface MolliePluginOptions {
     /**
      * @description
-     * The host of your Vendure server, e.g. `'https://my-vendure.io'`.
-     * This is used by Mollie to send webhook events to the Vendure server
+     * The host of your Deenruv server, e.g. `'https://my-deenruv.io'`.
+     * This is used by Mollie to send webhook events to the Deenruv server
      */
-    vendureHost: string;
+    deenruvHost: string;
 
     /**
      * @description
@@ -46,10 +46,10 @@ export interface MolliePluginOptions {
      *
      * @example
      * ```ts
-     * import { VendureConfig } from '\@deenruv/core';
+     * import { DeenruvConfig } from '\@deenruv/core';
      * import { MolliePlugin, getLocale } from '\@deenruv/payments-plugin/package/mollie';
      *
-     * export const config: VendureConfig = {
+     * export const config: DeenruvConfig = {
      *   // ...
      *   plugins: [
      *     MolliePlugin.init({
@@ -95,14 +95,14 @@ export interface MolliePluginOptions {
  *
  * ## Setup
  *
- * 1. Add the plugin to your VendureConfig `plugins` array:
+ * 1. Add the plugin to your DeenruvConfig `plugins` array:
  *     ```ts
  *     import { MolliePlugin } from '\@deenruv/payments-plugin/package/mollie';
  *
  *     // ...
  *
  *     plugins: [
- *       MolliePlugin.init({ vendureHost: 'https://yourhost.io/' }),
+ *       MolliePlugin.init({ deenruvHost: 'https://yourhost.io/' }),
  *     ]
  *     ```
  * 2. Run a database migration to add the `mollieOrderId` custom field to the order entity.
@@ -193,7 +193,7 @@ export interface MolliePluginOptions {
     imports: [PluginCommonModule],
     controllers: [MollieController],
     providers: [MollieService, { provide: PLUGIN_INIT_OPTIONS, useFactory: () => MolliePlugin.options }],
-    configuration: (config: RuntimeVendureConfig) => {
+    configuration: (config: RuntimeDeenruvConfig) => {
         config.paymentOptions.paymentMethodHandlers.push(molliePaymentHandler);
         config.customFields.Order.push(...orderCustomFields);
         return config;
@@ -214,7 +214,7 @@ export class MolliePlugin {
     /**
      * @description
      * Initialize the mollie payment plugin
-     * @param vendureHost is needed to pass to mollie for callback
+     * @param deenruvHost is needed to pass to mollie for callback
      */
     static init(options: MolliePluginOptions): typeof MolliePlugin {
         this.options = options;

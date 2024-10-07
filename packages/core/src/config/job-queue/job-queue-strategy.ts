@@ -15,7 +15,7 @@ import { JobOptions } from '../../job-queue';
  * :::info
  *
  * This is configured via the `jobQueueOptions.jobQueueStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

@@ -1,4 +1,4 @@
-import { LanguageCode, PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
+import { LanguageCode, PluginCommonModule, Type, DeenruvPlugin } from '@deenruv/core';
 import { json } from 'body-parser';
 import { gql } from 'graphql-tag';
 
@@ -19,7 +19,7 @@ import { StripePluginOptions } from './types';
  * 1. You will need to create a Stripe account and get your secret key in the dashboard.
  * 2. Create a webhook endpoint in the Stripe dashboard (Developers -> Webhooks, "Add an endpoint") which listens to the `payment_intent.succeeded`
  * and `payment_intent.payment_failed` events. The URL should be `https://my-server.com/payments/stripe`, where
- * `my-server.com` is the host of your Vendure server. *Note:* for local development, you'll need to use
+ * `my-server.com` is the host of your Deenruv server. *Note:* for local development, you'll need to use
  * the Stripe CLI to test your webhook locally. See the _local development_ section below.
  * 3. Get the signing secret for the newly created webhook.
  * 4. Install the Payments plugin and the Stripe Node library:
@@ -32,7 +32,7 @@ import { StripePluginOptions } from './types';
  *
  * ## Setup
  *
- * 1. Add the plugin to your VendureConfig `plugins` array:
+ * 1. Add the plugin to your DeenruvConfig `plugins` array:
  *     ```ts
  *     import { StripePlugin } from '\@deenruv/payments-plugin/package/stripe';
  *
@@ -141,7 +141,7 @@ import { StripePluginOptions } from './types';
  *
  * :::info
  * A full working storefront example of the Stripe integration can be found in the
- * [Remix Starter repo](https://github.com/vendure-ecommerce/storefront-remix-starter/tree/master/app/components/checkout/stripe)
+ * [Remix Starter repo](https://github.com/deenruv-ecommerce/storefront-remix-starter/tree/master/app/components/checkout/stripe)
  * :::
  *
  * ## Local development

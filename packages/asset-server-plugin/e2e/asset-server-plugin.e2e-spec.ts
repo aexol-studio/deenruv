@@ -265,7 +265,7 @@ describe('AssetServerPlugin', () => {
         });
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/1563
+    // https://github.com/deenruv-ecommerce/deenruv/issues/1563
     it('falls back to binary preview if image file cannot be processed', async () => {
         const filesToUpload = [path.join(__dirname, 'fixtures/assets/bad-image.jpg')];
         const { createAssets }: CreateAssets.Mutation = await adminClient.fileUploadMutation({

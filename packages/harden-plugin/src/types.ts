@@ -21,8 +21,8 @@ export interface HardenPluginOptions {
     /**
      * @description
      * An array of custom estimator functions for calculating the complexity of a query. By default,
-     * the plugin will use the {@link defaultVendureComplexityEstimator} which is specifically
-     * tuned to accurately estimate Vendure queries.
+     * the plugin will use the {@link defaultDeenruvComplexityEstimator} which is specifically
+     * tuned to accurately estimate Deenruv queries.
      */
     queryComplexityEstimators?: ComplexityEstimator[];
     /**

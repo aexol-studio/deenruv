@@ -4,7 +4,7 @@ import {
     mergeConfig,
     Job,
     ErrorHandlerStrategy,
-    VendurePlugin,
+    DeenruvPlugin,
     PluginCommonModule,
     JobQueueService,
     JobQueue,

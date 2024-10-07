@@ -6,8 +6,8 @@ import { Project, SourceFile } from 'ts-morph';
 
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { analyzeProject } from '../../../shared/shared-prompts';
-import { VendureConfigRef } from '../../../shared/vendure-config-ref';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvConfigRef } from '../../../shared/deenruv-config-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import { addImportsToFile, createFile, getPluginClasses } from '../../../utilities/ast-utils';
 import { pauseForPromptDisplay } from '../../../utilities/utils';
 import { addApiExtensionCommand } from '../api-extension/add-api-extension';
@@ -22,7 +22,7 @@ import { GeneratePluginOptions, NewPluginTemplateContext } from './types';
 export const createNewPluginCommand = new CliCommand({
     id: 'create-new-plugin',
     category: 'Plugin',
-    description: 'Create a new Vendure plugin',
+    description: 'Create a new Deenruv plugin',
     run: createNewPlugin,
 });
 
@@ -30,7 +30,7 @@ const cancelledMessage = 'Plugin setup cancelled.';
 
 export async function createNewPlugin(): Promise<CliCommandReturnVal> {
     const options: GeneratePluginOptions = { name: '', customEntityName: '', pluginDir: '' } as any;
-    intro('Adding a new Vendure plugin!');
+    intro('Adding a new Deenruv plugin!');
     const { project } = await analyzeProject({ cancelledMessage });
     if (!options.name) {
         const name = await text({
@@ -72,16 +72,16 @@ export async function createNewPlugin(): Promise<CliCommandReturnVal> {
     const { plugin, modifiedSourceFiles } = await generatePlugin(project, options);
 
     const configSpinner = spinner();
-    configSpinner.start('Updating VendureConfig...');
+    configSpinner.start('Updating DeenruvConfig...');
     await pauseForPromptDisplay();
-    const vendureConfig = new VendureConfigRef(project);
-    vendureConfig.addToPluginsArray(`${plugin.name}.init({})`);
-    addImportsToFile(vendureConfig.sourceFile, {
+    const deenruvConfig = new DeenruvConfigRef(project);
+    deenruvConfig.addToPluginsArray(`${plugin.name}.init({})`);
+    addImportsToFile(deenruvConfig.sourceFile, {
         moduleSpecifier: plugin.getSourceFile(),
         namedImports: [plugin.name],
     });
-    await vendureConfig.sourceFile.getProject().save();
-    configSpinner.stop('Updated VendureConfig');
+    await deenruvConfig.sourceFile.getProject().save();
+    configSpinner.stop('Updated DeenruvConfig');
 
     let done = false;
     const followUpCommands = [
@@ -137,7 +137,7 @@ export async function createNewPlugin(): Promise<CliCommandReturnVal> {
 export async function generatePlugin(
     project: Project,
     options: GeneratePluginOptions,
-): Promise<{ plugin: VendurePluginRef; modifiedSourceFiles: SourceFile[] }> {
+): Promise<{ plugin: DeenruvPluginRef; modifiedSourceFiles: SourceFile[] }> {
     const nameWithoutPlugin = options.name.replace(/-?plugin$/i, '');
     const normalizedName = nameWithoutPlugin + '-plugin';
     const templateContext: NewPluginTemplateContext = {
@@ -186,7 +186,7 @@ export async function generatePlugin(
     await project.save();
     return {
         modifiedSourceFiles: [pluginFile, typesFile, constantsFile],
-        plugin: new VendurePluginRef(pluginClass),
+        plugin: new DeenruvPluginRef(pluginClass),
     };
 }
 

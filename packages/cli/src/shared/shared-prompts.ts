@@ -8,17 +8,17 @@ import { pauseForPromptDisplay } from '../utilities/utils';
 
 import { EntityRef } from './entity-ref';
 import { ServiceRef } from './service-ref';
-import { VendurePluginRef } from './vendure-plugin-ref';
+import { DeenruvPluginRef } from './deenruv-plugin-ref';
 
 export async function analyzeProject(options: {
-    providedVendurePlugin?: VendurePluginRef;
+    providedDeenruvPlugin?: DeenruvPluginRef;
     cancelledMessage?: string;
 }) {
-    const providedVendurePlugin = options.providedVendurePlugin;
-    let project = providedVendurePlugin?.classDeclaration.getProject();
+    const providedDeenruvPlugin = options.providedDeenruvPlugin;
+    let project = providedDeenruvPlugin?.classDeclaration.getProject();
     let tsConfigPath: string | undefined;
 
-    if (!providedVendurePlugin) {
+    if (!providedDeenruvPlugin) {
         const projectSpinner = spinner();
         const tsConfigFile = await selectTsConfigFile();
         projectSpinner.start('Analyzing project...');
@@ -31,7 +31,7 @@ export async function analyzeProject(options: {
     return { project: project as Project, tsConfigPath };
 }
 
-export async function selectPlugin(project: Project, cancelledMessage: string): Promise<VendurePluginRef> {
+export async function selectPlugin(project: Project, cancelledMessage: string): Promise<DeenruvPluginRef> {
     const pluginClasses = getPluginClasses(project);
     if (pluginClasses.length === 0) {
         cancel(Messages.NoPluginsFound);
@@ -49,10 +49,10 @@ export async function selectPlugin(project: Project, cancelledMessage: string): 
         cancel(cancelledMessage);
         process.exit(0);
     }
-    return new VendurePluginRef(targetPlugin as ClassDeclaration);
+    return new DeenruvPluginRef(targetPlugin as ClassDeclaration);
 }
 
-export async function selectEntity(plugin: VendurePluginRef): Promise<EntityRef> {
+export async function selectEntity(plugin: DeenruvPluginRef): Promise<EntityRef> {
     const entities = plugin.getEntities();
     if (entities.length === 0) {
         throw new Error(Messages.NoEntitiesFound);
@@ -77,7 +77,7 @@ export async function selectEntity(plugin: VendurePluginRef): Promise<EntityRef>
 export async function selectMultiplePluginClasses(
     project: Project,
     cancelledMessage: string,
-): Promise<VendurePluginRef[]> {
+): Promise<DeenruvPluginRef[]> {
     const pluginClasses = getPluginClasses(project);
     if (pluginClasses.length === 0) {
         cancel(Messages.NoPluginsFound);
@@ -101,7 +101,7 @@ export async function selectMultiplePluginClasses(
         process.exit(0);
     }
     if (selectAll === 'all') {
-        return pluginClasses.map(pc => new VendurePluginRef(pc));
+        return pluginClasses.map(pc => new DeenruvPluginRef(pc));
     }
     const targetPlugins = await multiselect({
         message: 'Select one or more plugins (use ↑, ↓, space to select)',
@@ -114,12 +114,12 @@ export async function selectMultiplePluginClasses(
         cancel(cancelledMessage);
         process.exit(0);
     }
-    return (targetPlugins as ClassDeclaration[]).map(pc => new VendurePluginRef(pc));
+    return (targetPlugins as ClassDeclaration[]).map(pc => new DeenruvPluginRef(pc));
 }
 
 export async function selectServiceRef(
     project: Project,
-    plugin: VendurePluginRef,
+    plugin: DeenruvPluginRef,
     canCreateNew = true,
 ): Promise<ServiceRef> {
     const serviceRefs = getServices(project).filter(sr => {

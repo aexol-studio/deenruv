@@ -9,7 +9,7 @@ import { Job } from '../job';
  * :::info
  *
  * This is configured via the `jobQueueOptions.jobBufferStorageStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

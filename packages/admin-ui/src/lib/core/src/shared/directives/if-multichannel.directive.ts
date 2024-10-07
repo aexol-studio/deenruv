@@ -6,7 +6,7 @@ import { IfDirectiveBase } from './if-directive-base';
 
 /**
  * @description
- * Structural directive that displays the given element if the Vendure instance has multiple channels
+ * Structural directive that displays the given element if the Deenruv instance has multiple channels
  * configured.
  *
  * @example

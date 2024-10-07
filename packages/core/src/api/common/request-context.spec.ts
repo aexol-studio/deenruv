@@ -58,7 +58,7 @@ describe('RequestContext', () => {
             expect(result.session).toEqual(original.session);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/864
+        // https://github.com/deenruv-ecommerce/deenruv/issues/864
         it('serialize request context with circular refs', () => {
             const cyclic: any = {};
             const cyclic1: any = {

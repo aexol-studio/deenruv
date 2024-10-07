@@ -1,6 +1,6 @@
 import { Json } from '@deenruv/common/lib/shared-types';
 
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 
 /**
  * @description

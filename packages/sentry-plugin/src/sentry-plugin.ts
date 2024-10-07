@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 
 import { SentryAdminTestResolver } from './api/admin-test.resolver';
 import { testApiExtensions } from './api/api-extensions';
@@ -19,7 +19,7 @@ const SentryOptionsProvider = {
 /**
  * @description
  * This plugin integrates the [Sentry](https://sentry.io) error tracking & performance monitoring
- * service with your Vendure server. In addition to capturing errors, it also provides built-in
+ * service with your Deenruv server. In addition to capturing errors, it also provides built-in
  * support for [tracing](https://docs.sentry.io/product/sentry-basics/concepts/tracing/) as well as
  * enriching your Sentry events with additional context about the request.
  *
@@ -46,10 +46,10 @@ const SentryOptionsProvider = {
  * Before using the plugin, you must configure it with the DSN provided by Sentry:
  *
  * ```ts
- * import { VendureConfig } from '\@deenruv/core';
+ * import { Deenruv } from '\@deenruv/core';
  * import { SentryPlugin } from '\@deenruv/sentry-plugin';
  *
- * export const config: VendureConfig = {
+ * export const config: Deenruv = {
  *     // ...
  *     plugins: [
  *         // ...

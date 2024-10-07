@@ -13,7 +13,7 @@ export const PERMISSIONS_METADATA_KEY = '__permissions__';
  * For REST controllers, it can be applied to route handler.
  *
  * ## Allow and Sessions
- * The `@Allow()` decorator is closely linked to the way Vendure manages sessions. For any operation or route that is decorated
+ * The `@Allow()` decorator is closely linked to the way Deenruv manages sessions. For any operation or route that is decorated
  * with `@Allow()`, there must be an authenticated session in progress, which would have been created during a prior authentication
  * step.
  *

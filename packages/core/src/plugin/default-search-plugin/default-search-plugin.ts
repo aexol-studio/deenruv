@@ -17,7 +17,7 @@ import { ProductVariantEvent } from '../../event-bus/events/product-variant-even
 import { TaxRateModificationEvent } from '../../event-bus/events/tax-rate-modification-event';
 import { JobQueueService } from '../../job-queue/job-queue.service';
 import { PluginCommonModule } from '../plugin-common.module';
-import { VendurePlugin } from '../vendure-plugin';
+import { DeenruvPlugin } from '../deenruv-plugin';
 
 import { stockStatusExtension } from './api/api-extensions';
 import { AdminFulltextSearchResolver, ShopFulltextSearchResolver } from './api/fulltext-search.resolver';
@@ -51,9 +51,9 @@ export interface DefaultSearchReindexResponse extends SearchReindexResponse {
  *
  * @example
  * ```ts
- * import { DefaultSearchPlugin, VendureConfig } from '\@deenruv/core';
+ * import { DefaultSearchPlugin, DeenruvConfig } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     DefaultSearchPlugin.init({

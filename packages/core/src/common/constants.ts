@@ -4,12 +4,12 @@ import { CrudPermissionDefinition, PermissionDefinition, PermissionMetadata } fr
 
 /**
  * This value should be rarely used - only in those contexts where we have no access to the
- * VendureConfig to ensure at least a valid LanguageCode is available.
+ * DeenruvConfig to ensure at least a valid LanguageCode is available.
  */
 export const DEFAULT_LANGUAGE_CODE = LanguageCode.en;
 export const TRANSACTION_MANAGER_KEY = Symbol('TRANSACTION_MANAGER');
-export const REQUEST_CONTEXT_KEY = 'vendureRequestContext';
-export const REQUEST_CONTEXT_MAP_KEY = 'vendureRequestContextMap';
+export const REQUEST_CONTEXT_KEY = 'deenruvRequestContext';
+export const REQUEST_CONTEXT_MAP_KEY = 'deenruvRequestContextMap';
 export const DEFAULT_PERMISSIONS: PermissionDefinition[] = [
     new PermissionDefinition({
         name: 'Authenticated',

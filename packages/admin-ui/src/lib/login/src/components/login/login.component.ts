@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     version = ADMIN_UI_VERSION;
     errorMessage: string | undefined;
     brand = getAppConfig().brand;
-    hideVendureBranding = getAppConfig().hideVendureBranding;
+    hideDeenruvBranding = getAppConfig().hideDeenruvBranding;
     customImageUrl = getAppConfig().loginImageUrl;
     imageUrl = '';
     imageUnsplashUrl = '';
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
 
     loadImage() {
         this.httpClient
-            .get('https://login-image.vendure.io')
+            .get('https://login-image.deenruv.io')
             .toPromise()
             .then(res => {
                 this.updateImage(res);
@@ -77,10 +77,10 @@ export class LoginComponent implements OnInit {
         const user: any = (res as any).user;
         const location: any = (res as any).location;
 
-        this.imageUrl = res.urls.regular + '?utm_source=Vendure+Login+Image&utm_medium=referral';
+        this.imageUrl = res.urls.regular + '?utm_source=Deenruv+Login+Image&utm_medium=referral';
         this.imageCreator = user.name;
         this.imageLocation = location.name;
-        this.imageCreatorUrl = user.links.html + '?utm_source=Vendure+Login+Image&utm_medium=referral';
+        this.imageCreatorUrl = user.links.html + '?utm_source=Deenruv+Login+Image&utm_medium=referral';
         this.imageUnsplashUrl = res.links.html;
     }
 

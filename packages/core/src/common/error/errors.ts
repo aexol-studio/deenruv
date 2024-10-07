@@ -1,6 +1,6 @@
 import { ID } from '@deenruv/common/lib/shared-types';
 
-import { LogLevel } from '../../config/logger/vendure-logger';
+import { LogLevel } from '../../config/logger/deenruv-logger';
 import { coreEntitiesMap } from '../../entity/entities';
 import { I18nError } from '../../i18n/i18n-error';
 

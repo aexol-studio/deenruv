@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -27,10 +27,8 @@
                 </div>
             </div>
             <div class="mt-4 row">
-                <div class="card" style="width: 18rem;">
-                  <div class="card-header" id="header">
-                    Result
-                  </div>
+                <div class="card" style="width: 18rem">
+                    <div class="card-header" id="header">Result</div>
                     <div class="card-body" id="result"></div>
                 </div>
             </div>
@@ -67,7 +65,7 @@
                         token: googleUser.getAuthResponse().id_token,
                     },
                 )
-                    .then((res) => {
+                    .then(res => {
                         console.log(res);
                         return graphQlQuery(
                             `{
@@ -86,8 +84,8 @@
                             {},
                         );
                     })
-                    .then((res) => {
-                        header.innerText = 'Signed in!'
+                    .then(res => {
+                        header.innerText = 'Signed in!';
                         result.innerHTML = `<pre>${JSON.stringify(res, null, 2)}</pre>`;
                         console.log(res);
                     });
@@ -104,11 +102,11 @@
                         ...(bearerToken ? { Authorization: `Bearer ${bearerToken}` } : {}),
                     },
                     body: JSON.stringify({ query, variables }),
-                }).then((r) => {
-                    if (r.headers.has('vendure-auth-token')) {
-                        bearerToken = r.headers.get('vendure-auth-token');
+                }).then(r => {
+                    if (r.headers.has('deenruv-auth-token')) {
+                        bearerToken = r.headers.get('deenruv-auth-token');
                     }
-                    return r.json()
+                    return r.json();
                 });
             }
         </script>

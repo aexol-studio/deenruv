@@ -17,7 +17,7 @@ import {
     SearchJobBufferService,
     TaxRateModificationEvent,
     Type,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { buffer, debounceTime, delay, filter, map } from 'rxjs/operators';
 
@@ -74,7 +74,7 @@ function getCustomResolvers(options: ElasticsearchRuntimeOptions) {
  *
  * `npm install \@elastic/elasticsearch \@deenruv/elasticsearch-plugin`
  *
- * Make sure to remove the `DefaultSearchPlugin` if it is still in the VendureConfig plugins array.
+ * Make sure to remove the `DefaultSearchPlugin` if it is still in the DeenruvConfig plugins array.
  *
  * Then add the `ElasticsearchPlugin`, calling the `.init()` method with {@link ElasticsearchOptions}:
  *
@@ -82,7 +82,7 @@ function getCustomResolvers(options: ElasticsearchRuntimeOptions) {
  * ```ts
  * import { ElasticsearchPlugin } from '\@deenruv/elasticsearch-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     ElasticsearchPlugin.init({

@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { JobState } from '@deenruv/common/lib/generated-types';
-import { JobQueue, JobQueueService, Logger, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { JobQueue, JobQueueService, Logger, PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 import { gql } from 'graphql-tag';
 import { forkJoin, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';

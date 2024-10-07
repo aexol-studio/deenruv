@@ -92,7 +92,7 @@ export function checkNodeVersion(requiredVersion: string) {
         console.error(
             pc.red(
                 'You are running Node %s.\n' +
-                    'Vendure requires Node %s or higher. \n' +
+                    'Deenruv requires Node %s or higher. \n' +
                     'Please update your version of Node.',
             ),
             process.version,
@@ -254,18 +254,18 @@ export function installPackages(
 
 export function getDependencies(
     dbType: DbType,
-    vendurePkgVersion = '',
+    deenruvPkgVersion = '',
 ): { dependencies: string[]; devDependencies: string[] } {
     const dependencies = [
-        `@deenruv/core${vendurePkgVersion}`,
-        `@deenruv/email-plugin${vendurePkgVersion}`,
-        `@deenruv/asset-server-plugin${vendurePkgVersion}`,
-        `@deenruv/admin-ui-plugin${vendurePkgVersion}`,
+        `@deenruv/core${deenruvPkgVersion}`,
+        `@deenruv/email-plugin${deenruvPkgVersion}`,
+        `@deenruv/asset-server-plugin${deenruvPkgVersion}`,
+        `@deenruv/admin-ui-plugin${deenruvPkgVersion}`,
         'dotenv',
         dbDriverPackage(dbType),
     ];
     const devDependencies = [
-        `@deenruv/cli${vendurePkgVersion}`,
+        `@deenruv/cli${deenruvPkgVersion}`,
         'concurrently',
         `typescript@${TYPESCRIPT_VERSION}`,
     ];
@@ -386,7 +386,7 @@ async function checkPostgresDbExists(options: any, root: string): Promise<true> 
 function throwConnectionError(err: any) {
     throw new Error(
         'Could not connect to the database. ' +
-            `Please check the connection settings in your Vendure config.\n[${
+            `Please check the connection settings in your Deenruv config.\n[${
                 (err.message || err.toString()) as string
             }]`,
     );
@@ -398,7 +398,7 @@ function throwSSLConnectionError(err: any, sslEnabled?: any) {
             (sslEnabled === undefined
                 ? 'Is your server requiring an SSL connection?'
                 : 'Are you sure your server supports SSL?') +
-            `Please check the connection settings in your Vendure config.\n[${
+            `Please check the connection settings in your Deenruv config.\n[${
                 (err.message || err.toString()) as string
             }]`,
     );

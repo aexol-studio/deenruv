@@ -27,7 +27,7 @@ import { awaitRunningJobs } from '../../core/e2e/utils/await-running-jobs';
 if (require.main === module) {
     // Running from command line
     const count = getProductCount();
-    const databaseName = `vendure-load-testing-${count}`;
+    const databaseName = `deenruv-load-testing-${count}`;
     isDatabasePopulated(databaseName)
         .then(isPopulated => {
             console.log('isPopulated:', isPopulated);
@@ -142,7 +142,7 @@ async function isDatabasePopulated(databaseName: string): Promise<boolean> {
 }
 
 /**
- * Generates a CSV file of test product data which can then be imported into Vendure.
+ * Generates a CSV file of test product data which can then be imported into Deenruv.
  */
 function generateProductsCsv(productCount: number = 100): Promise<void> {
     const result: any[] = [];

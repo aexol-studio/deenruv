@@ -193,7 +193,7 @@ describe('AuthenticationStrategy', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/695
+        // https://github.com/deenruv-ecommerce/deenruv/issues/695
         it('multiple external auth strategies to not interfere with one another', async () => {
             const EXPECTED_CUSTOMERS = [
                 {
@@ -300,7 +300,7 @@ describe('AuthenticationStrategy', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/926
+        // https://github.com/deenruv-ecommerce/deenruv/issues/926
         it('Customer and Admin external auth does not reuse same User for different strategies', async () => {
             const emailAddress = 'hello@test-domain.com';
             await adminClient.asAnonymousUser();
@@ -335,7 +335,7 @@ describe('AuthenticationStrategy', () => {
     describe('native auth', () => {
         const testEmailAddress = 'test-person@testdomain.com';
 
-        // https://github.com/vendure-ecommerce/vendure/issues/486#issuecomment-704991768
+        // https://github.com/deenruv-ecommerce/deenruv/issues/486#issuecomment-704991768
         it('allows login for an email address which is shared by a previously-deleted Customer', async () => {
             const { createCustomer: result1 } = await adminClient.query<
                 Codegen.CreateCustomerMutation,
@@ -410,7 +410,7 @@ describe('No NativeAuthStrategy on Shop API', () => {
         await server.destroy();
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/2282
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2282
     it('can log in to Admin API', async () => {
         const { login } = await adminClient.query(AttemptLoginDocument, {
             username: 'superadmin',

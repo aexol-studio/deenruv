@@ -1,14 +1,14 @@
 import { AdminUiConfig } from '@deenruv/common/lib/shared-types';
 
-let vendureUiConfig: AdminUiConfig | undefined;
+let deenruvUiConfig: AdminUiConfig | undefined;
 
 export async function loadAppConfig(): Promise<void> {
-    vendureUiConfig = await fetch('./vendure-ui-config.json').then(res => res.json());
+    deenruvUiConfig = await fetch('./deenruv-ui-config.json').then(res => res.json());
 }
 
 export function getAppConfig(): AdminUiConfig {
-    if (!vendureUiConfig) {
-        throw new Error(`vendure ui config not loaded`);
+    if (!deenruvUiConfig) {
+        throw new Error(`deenruv ui config not loaded`);
     }
-    return vendureUiConfig;
+    return deenruvUiConfig;
 }

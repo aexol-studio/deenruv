@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { Ctx, PluginCommonModule, ProductService, RequestContext, VendurePlugin } from '@deenruv/core';
+import { Ctx, PluginCommonModule, ProductService, RequestContext, DeenruvPlugin } from '@deenruv/core';
 
 @Controller('products')
 export class ProductsController {

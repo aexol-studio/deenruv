@@ -1,4 +1,4 @@
-import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 import { SupplierStockAdminResolver } from './api/resolvers/admin/supplier-stock-admin.resolver';
 import { SupplierStockInTransitAdminResolver } from './api/resolvers/admin/supplier-stock-in-transit-admin.resolver';
 import { SupplierStockEntityResolver } from './api/resolvers/entity/suppiler-stock-entity.resolver';
@@ -43,7 +43,7 @@ export class IssueSupplierPlugin {
     static options: PluginInitOptions = {};
 
     /**
-     * The static `init()` method is a convention used by Vendure plugins which allows options
+     * The static `init()` method is a convention used by Deenruv plugins which allows options
      * to be configured by the user.
      */
     static init(options: Partial<PluginInitOptions>) {

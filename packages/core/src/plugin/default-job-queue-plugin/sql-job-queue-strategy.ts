@@ -4,7 +4,7 @@ import { Brackets, Connection, EntityManager, FindOptionsWhere, In, LessThan } f
 
 import { Injector } from '../../common/injector';
 import { InspectableJobQueueStrategy, JobQueueStrategy } from '../../config';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../connection/transactional-connection';
 import { Job, JobData, JobQueueStrategyJobOptions } from '../../job-queue';
 import { PollingJobQueueStrategy } from '../../job-queue/polling-job-queue-strategy';

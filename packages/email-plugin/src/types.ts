@@ -1,6 +1,6 @@
 import { LanguageCode } from '@deenruv/common/lib/generated-types';
 import { Omit } from '@deenruv/common/lib/omit';
-import { Injector, RequestContext, SerializedRequestContext, VendureEvent } from '@deenruv/core';
+import { Injector, RequestContext, SerializedRequestContext, DeenruvEvent } from '@deenruv/core';
 import { Attachment } from 'nodemailer/lib/mailer';
 import SESTransport from 'nodemailer/lib/ses-transport';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
@@ -12,18 +12,18 @@ import { TemplateLoader } from './template-loader/template-loader';
 
 /**
  * @description
- * A VendureEvent which also includes a `ctx` property containing the current
+ * A DeenruvEvent which also includes a `ctx` property containing the current
  * {@link RequestContext}, which is used to determine the channel and language
  * to use when generating the email.
  *
  * @docsCategory core plugins/EmailPlugin
  * @docsPage Email Plugin Types
  */
-export type EventWithContext = VendureEvent & { ctx: RequestContext };
+export type EventWithContext = DeenruvEvent & { ctx: RequestContext };
 
 /**
  * @description
- * A VendureEvent with a {@link RequestContext} and a `data` property which contains the
+ * A DeenruvEvent with a {@link RequestContext} and a `data` property which contains the
  * value resolved from the {@link EmailEventHandler}`.loadData()` callback.
  *
  * @docsCategory core plugins/EmailPlugin
@@ -33,7 +33,7 @@ export type EventWithAsyncData<Event extends EventWithContext, R> = Event & { da
 
 /**
  * @description
- * Allows you to dynamically load the "globalTemplateVars" key async and access Vendure services
+ * Allows you to dynamically load the "globalTemplateVars" key async and access Deenruv services
  * to create the object. This is not a requirement. You can also specify a simple static object if your
  * projects doesn't need to access async or dynamic values.
  *
@@ -77,8 +77,8 @@ export type GlobalTemplateVarsFn = (
 export interface EmailPluginOptions {
     /**
      * @description
-     * The path to the location of the email templates. In a default Vendure installation,
-     * the templates are installed to `<project root>/vendure/email/templates`.
+     * The path to the location of the email templates. In a default Deenruv installation,
+     * the templates are installed to `<project root>/deenruv/email/templates`.
      *
      * @deprecated Use `templateLoader` to define a template path: `templateLoader: new FileBasedTemplateLoader('../your-path/templates')`
      */
@@ -86,7 +86,7 @@ export interface EmailPluginOptions {
     /**
      * @description
      * An optional TemplateLoader which can be used to load templates from a custom location or async service.
-     * The default uses the FileBasedTemplateLoader which loads templates from `<project root>/vendure/email/templates`
+     * The default uses the FileBasedTemplateLoader which loads templates from `<project root>/deenruv/email/templates`
      *
      * @since 2.0.0
      */
@@ -103,7 +103,7 @@ export interface EmailPluginOptions {
           ) => EmailTransportOptions | Promise<EmailTransportOptions>);
     /**
      * @description
-     * An array of {@link EmailEventHandler}s which define which Vendure events will trigger
+     * An array of {@link EmailEventHandler}s which define which Deenruv events will trigger
      * emails, and how those emails are generated.
      */
     handlers: Array<EmailEventHandler<string, any>>;
@@ -111,7 +111,7 @@ export interface EmailPluginOptions {
      * @description
      * An object containing variables which are made available to all templates. For example,
      * the storefront URL could be defined here and then used in the "email address verification"
-     * email. Use the GlobalTemplateVarsFn if you need to retrieve variables from Vendure or
+     * email. Use the GlobalTemplateVarsFn if you need to retrieve variables from Deenruv or
      * plugin services.
      */
     globalTemplateVars?: { [key: string]: any } | GlobalTemplateVarsFn;
@@ -187,7 +187,7 @@ export interface SMTPTransportOptions extends SMTPTransport.Options {
     type: 'smtp';
     /**
      * @description
-     * If true, uses the configured {@link VendureLogger} to log messages from Nodemailer as it interacts with
+     * If true, uses the configured {@link DeenruvLogger} to log messages from Nodemailer as it interacts with
      * the SMTP server.
      *
      * @default false
@@ -214,7 +214,7 @@ export interface SMTPTransportOptions extends SMTPTransport.Options {
  *     },
  *  })
  *
- *  const config: VendureConfig = {
+ *  const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     EmailPlugin.init({

@@ -31,7 +31,7 @@ import { EntityMetadataModifier } from './entity-metadata/entity-metadata-modifi
 import { FulfillmentHandler } from './fulfillment/fulfillment-handler';
 import { FulfillmentProcess } from './fulfillment/fulfillment-process';
 import { JobQueueStrategy } from './job-queue/job-queue-strategy';
-import { VendureLogger } from './logger/vendure-logger';
+import { DeenruvLogger } from './logger/deenruv-logger';
 import { ActiveOrderStrategy } from './order/active-order-strategy';
 import { ChangedPriceHandlingStrategy } from './order/changed-price-handling-strategy';
 import { GuestCheckoutStrategy } from './order/guest-checkout-strategy';
@@ -60,7 +60,7 @@ import { TaxZoneStrategy } from './tax/tax-zone-strategy';
 
 /**
  * @description
- * The ApiOptions define how the Vendure GraphQL APIs are exposed, as well as allowing the API layer
+ * The ApiOptions define how the Deenruv GraphQL APIs are exposed, as well as allowing the API layer
  * to be extended with middleware.
  *
  * @docsCategory configuration
@@ -75,7 +75,7 @@ export interface ApiOptions {
     hostname?: string;
     /**
      * @description
-     * Which port the Vendure server should listen on.
+     * Which port the Deenruv server should listen on.
      *
      * @default 3000
      */
@@ -164,7 +164,7 @@ export interface ApiOptions {
      * active channel. This property can be included either in
      * the request header or as a query string.
      *
-     * @default 'vendure-token'
+     * @default 'deenruv-token'
      */
     channelTokenKey?: string;
     /**
@@ -184,7 +184,7 @@ export interface ApiOptions {
     /**
      * @description
      * Custom [ApolloServerPlugins](https://www.apollographql.com/docs/apollo-server/integrations/plugins/) which
-     * allow the extension of the Apollo Server, which is the underlying GraphQL server used by Vendure.
+     * allow the extension of the Apollo Server, which is the underlying GraphQL server used by Deenruv.
      *
      * Apollo plugins can be used e.g. to perform custom data transformations on incoming operations or outgoing
      * data.
@@ -347,8 +347,8 @@ export interface AuthOptions {
      * * 'bearer': Upon login, the token is returned in the response and should be then stored by the
      *   client app. Each request should include the header `Authorization: Bearer <token>`.
      *
-     * Note that if the bearer method is used, Vendure will automatically expose the configured
-     * `authTokenHeaderKey` in the server's CORS configuration (adding `Access-Control-Expose-Headers: vendure-auth-token`
+     * Note that if the bearer method is used, Deenruv will automatically expose the configured
+     * `authTokenHeaderKey` in the server's CORS configuration (adding `Access-Control-Expose-Headers: deenruv-auth-token`
      * by default).
      *
      * From v1.2.0 it is possible to specify both methods as a tuple: `['cookie', 'bearer']`.
@@ -365,7 +365,7 @@ export interface AuthOptions {
      * @description
      * Sets the header property which will be used to send the auth token when using the 'bearer' method.
      *
-     * @default 'vendure-auth-token'
+     * @default 'deenruv-auth-token'
      */
     authTokenHeaderKey?: string;
     /**
@@ -486,11 +486,11 @@ export interface OrderOptions {
      * The maximum number of individual items allowed in a single order. This option exists
      * to prevent excessive resource usage when dealing with very large orders. For example,
      * if an order contains a million items, then any operations on that order (modifying a quantity,
-     * adding or removing an item) will require Vendure to loop through all million items
+     * adding or removing an item) will require Deenruv to loop through all million items
      * to perform price calculations against active promotions and taxes. This can have a significant
      * performance impact for very large values.
      *
-     * Attempting to exceed this limit will cause Vendure to throw a `OrderLimitError`.
+     * Attempting to exceed this limit will cause Deenruv to throw a `OrderLimitError`.
      *
      * @default 999
      */
@@ -501,7 +501,7 @@ export interface OrderOptions {
      * on the `orderItemsLimit` for more granular control. Note `orderItemsLimit` is still
      * important in order to prevent excessive resource usage.
      *
-     * Attempting to exceed this limit will cause Vendure to throw a OrderLimitError`.
+     * Attempting to exceed this limit will cause Deenruv to throw a OrderLimitError`.
      *
      * @default 999
      */
@@ -548,7 +548,7 @@ export interface OrderOptions {
     /**
      * @description
      * Allows a user-defined function to create Order codes. This can be useful when
-     * integrating with existing systems. By default, Vendure will generate a 16-character
+     * integrating with existing systems. By default, Deenruv will generate a 16-character
      * alphanumeric string.
      *
      * Note: when using a custom function for Order codes, bear in mind the database limit
@@ -797,7 +797,7 @@ export interface ShippingOptions {
 /**
  * @description
  * These credentials will be used to create the Superadmin user & administrator
- * when Vendure first bootstraps.
+ * when Deenruv first bootstraps.
  *
  * @docsCategory auth
  */
@@ -819,7 +819,7 @@ export interface SuperadminCredentials {
 
 /**
  * @description
- * Defines payment-related options in the {@link VendureConfig}.
+ * Defines payment-related options in the {@link DeenruvConfig}.
  *
  * @docsCategory payment
  * */
@@ -961,7 +961,7 @@ export interface EntityOptions {
      *
      * :::caution
      * Note: changing from an integer-based strategy to a uuid-based strategy
-     * on an existing Vendure database will lead to problems with broken foreign-key
+     * on an existing Deenruv database will lead to problems with broken foreign-key
      * references. To change primary key types like this, you'll need to start with
      * a fresh database.
      * :::
@@ -1044,7 +1044,7 @@ export interface SystemOptions {
     /**
      * @description
      * Defines an array of {@link HealthCheckStrategy} instances which are used by the `/health` endpoint to verify
-     * that any critical systems which the Vendure server depends on are also healthy.
+     * that any critical systems which the Deenruv server depends on are also healthy.
      *
      * @default [TypeORMHealthCheckStrategy]
      * @since 1.6.0
@@ -1064,11 +1064,11 @@ export interface SystemOptions {
 /**
  * @description
  * All possible configuration options are defined by the
- * [`VendureConfig`](https://github.com/vendure-ecommerce/vendure/blob/master/server/src/config/vendure-config.ts) interface.
+ * [`DeenruvConfig`](https://github.com/deenruv-ecommerce/deenruv/blob/master/server/src/config/deenruv-config.ts) interface.
  *
  * @docsCategory configuration
  * */
-export interface VendureConfig {
+export interface DeenruvConfig {
     /**
      * @description
      * Configuration for the GraphQL APIs, including hostname, port, CORS settings,
@@ -1165,13 +1165,13 @@ export interface VendureConfig {
     shippingOptions?: ShippingOptions;
     /**
      * @description
-     * Provide a logging service which implements the {@link VendureLogger} interface.
+     * Provide a logging service which implements the {@link DeenruvLogger} interface.
      * Note that the logging of SQL queries is controlled separately by the
      * `dbConnectionOptions.logging` property.
      *
      * @default DefaultLogger
      */
-    logger?: VendureLogger;
+    logger?: DeenruvLogger;
     /**
      * @description
      * Configures how taxes are calculated on products.
@@ -1193,12 +1193,12 @@ export interface VendureConfig {
 
 /**
  * @description
- * This interface represents the VendureConfig object available at run-time, i.e. the user-supplied
+ * This interface represents the DeenruvConfig object available at run-time, i.e. the user-supplied
  * config values have been merged with the {@link defaultConfig} values.
  *
  * @docsCategory configuration
  */
-export interface RuntimeVendureConfig extends Required<VendureConfig> {
+export interface RuntimeDeenruvConfig extends Required<DeenruvConfig> {
     apiOptions: Required<ApiOptions>;
     assetOptions: Required<AssetOptions>;
     authOptions: Required<AuthOptions>;
@@ -1226,4 +1226,4 @@ type DeepPartialSimple<T> = {
                   : DeepPartialSimple<T[P]>);
 };
 
-export type PartialVendureConfig = DeepPartialSimple<VendureConfig>;
+export type PartialDeenruvConfig = DeepPartialSimple<DeenruvConfig>;

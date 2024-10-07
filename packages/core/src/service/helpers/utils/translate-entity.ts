@@ -4,7 +4,7 @@ import { DEFAULT_LANGUAGE_CODE } from '../../../common/constants';
 import { InternalServerError } from '../../../common/error/errors';
 import { UnwrappedArray } from '../../../common/types/common-types';
 import { Translatable, Translated, Translation } from '../../../common/types/locale-types';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 // prettier-ignore
 export type TranslatableRelationsKeys<T> = {
@@ -36,11 +36,11 @@ export type DeepTranslatableRelations<T> = Array<TranslatableRelationsKeys<T> | 
  * Converts a Translatable entity into the public-facing entity by unwrapping
  * the translated strings from the matching Translation entity.
  */
-export function translateEntity<T extends Translatable & VendureEntity>(
+export function translateEntity<T extends Translatable & DeenruvEntity>(
     translatable: T,
     languageCode: LanguageCode | [LanguageCode, ...LanguageCode[]],
 ): Translated<T> {
-    let translation: Translation<VendureEntity> | undefined;
+    let translation: Translation<DeenruvEntity> | undefined;
     if (translatable.translations) {
         if (Array.isArray(languageCode)) {
             for (const lc of languageCode) {
@@ -89,7 +89,7 @@ export function translateEntity<T extends Translatable & VendureEntity>(
 /**
  * Translates an entity and its deeply-nested translatable properties. Supports up to 2 levels of nesting.
  */
-export function translateDeep<T extends Translatable & VendureEntity>(
+export function translateDeep<T extends Translatable & DeenruvEntity>(
     translatable: T,
     languageCode: LanguageCode | [LanguageCode, ...LanguageCode[]],
     translatableRelations: DeepTranslatableRelations<T> = [],
@@ -151,7 +151,7 @@ function translateLeaf(
     }
 }
 
-export type TreeNode = { children: TreeNode[] } & Translatable & VendureEntity;
+export type TreeNode = { children: TreeNode[] } & Translatable & DeenruvEntity;
 
 /**
  * Translates a tree structure of Translatable entities

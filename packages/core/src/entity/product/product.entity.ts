@@ -5,7 +5,7 @@ import { ChannelAware, SoftDeletable } from '../../common/types/common-types';
 import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { Asset } from '../asset/asset.entity';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomProductFields } from '../custom-entity-fields';
 import { FacetValue } from '../facet-value/facet-value.entity';
@@ -24,7 +24,7 @@ import { ProductTranslation } from './product-translation.entity';
  */
 @Entity()
 export class Product
-    extends VendureEntity
+    extends DeenruvEntity
     implements Translatable, HasCustomFields, ChannelAware, SoftDeletable
 {
     constructor(input?: DeepPartial<Product>) {

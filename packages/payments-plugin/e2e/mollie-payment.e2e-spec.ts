@@ -62,7 +62,7 @@ import {
 } from './payment-helpers';
 
 const mockData = {
-    host: 'https://my-vendure.io',
+    host: 'https://my-deenruv.io',
     redirectUrl: 'https://fallback-redirect/order',
     apiKey: 'myApiKey',
     methodCode: `mollie-payment-${E2E_DEFAULT_CHANNEL_TOKEN}`,
@@ -179,7 +179,7 @@ const SURCHARGE_AMOUNT = -20000;
 describe('Mollie payments', () => {
     beforeAll(async () => {
         const devConfig = mergeConfig(testConfig(), {
-            plugins: [MolliePlugin.init({ vendureHost: mockData.host })],
+            plugins: [MolliePlugin.init({ deenruvHost: mockData.host })],
         });
         const env = createTestEnvironment(devConfig);
         serverPort = devConfig.apiOptions.port;

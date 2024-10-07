@@ -11,13 +11,13 @@
         "assets/**/*"
     ],
     "scripts": {
-        "dev": "ts-node src/create-vendure-app.ts",
+        "dev": "ts-node src/create-deenruv-app.ts",
         "copy-assets": "rimraf assets && ts-node ./build.ts",
         "build": "npm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json",
         "watch": "npm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json -w",
         "lint": "eslint --fix ."
     },
-    "homepage": "https://www.vendure.io/",
+    "homepage": "https://www.deenruv.io/",
     "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"

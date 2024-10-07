@@ -9,7 +9,7 @@ import {
     VariableDeclaration,
 } from 'ts-morph';
 
-export class VendureConfigRef {
+export class DeenruvConfigRef {
     readonly sourceFile: SourceFile;
     readonly configObject: ObjectLiteralExpression;
 
@@ -19,42 +19,42 @@ export class VendureConfigRef {
     ) {
         const checkFileName = options.checkFileName ?? true;
 
-        const getVendureConfigSourceFile = (sourceFiles: SourceFile[]) => {
+        const getDeenruvConfigSourceFile = (sourceFiles: SourceFile[]) => {
             return sourceFiles.find(sf => {
                 return (
-                    (checkFileName ? sf.getFilePath().endsWith('vendure-config.ts') : true) &&
-                    sf.getVariableDeclarations().find(v => this.isVendureConfigVariableDeclaration(v))
+                    (checkFileName ? sf.getFilePath().endsWith('deenruv-config.ts') : true) &&
+                    sf.getVariableDeclarations().find(v => this.isDeenruvConfigVariableDeclaration(v))
                 );
             });
         };
 
-        const findAndAddVendureConfigToProject = () => {
-            // If the project does not contain a vendure-config.ts file, we'll look for a vendure-config.ts file
+        const findAndAddDeenruvConfigToProject = () => {
+            // If the project does not contain a deenruv-config.ts file, we'll look for a deenruv-config.ts file
             // in the src directory.
             const srcDir = project.getDirectory('src');
             if (srcDir) {
                 const srcDirPath = srcDir.getPath();
                 const srcFiles = fs.readdirSync(srcDirPath);
 
-                const filePath = srcFiles.find(file => file.includes('vendure-config.ts'));
+                const filePath = srcFiles.find(file => file.includes('deenruv-config.ts'));
                 if (filePath) {
                     project.addSourceFileAtPath(path.join(srcDirPath, filePath));
                 }
             }
         };
 
-        let vendureConfigFile = getVendureConfigSourceFile(project.getSourceFiles());
-        if (!vendureConfigFile) {
-            findAndAddVendureConfigToProject();
-            vendureConfigFile = getVendureConfigSourceFile(project.getSourceFiles());
+        let deenruvConfigFile = getDeenruvConfigSourceFile(project.getSourceFiles());
+        if (!deenruvConfigFile) {
+            findAndAddDeenruvConfigToProject();
+            deenruvConfigFile = getDeenruvConfigSourceFile(project.getSourceFiles());
         }
-        if (!vendureConfigFile) {
-            throw new Error('Could not find the VendureConfig declaration in your project.');
+        if (!deenruvConfigFile) {
+            throw new Error('Could not find the DeenruvConfig declaration in your project.');
         }
-        this.sourceFile = vendureConfigFile;
-        this.configObject = vendureConfigFile
+        this.sourceFile = deenruvConfigFile;
+        this.configObject = deenruvConfigFile
             ?.getVariableDeclarations()
-            .find(v => this.isVendureConfigVariableDeclaration(v))
+            .find(v => this.isDeenruvConfigVariableDeclaration(v))
             ?.getChildren()
             .find(Node.isObjectLiteralExpression) as ObjectLiteralExpression;
     }
@@ -69,7 +69,7 @@ export class VendureConfigRef {
     getConfigObjectVariableName() {
         return this.sourceFile
             ?.getVariableDeclarations()
-            .find(v => this.isVendureConfigVariableDeclaration(v))
+            .find(v => this.isDeenruvConfigVariableDeclaration(v))
             ?.getName();
     }
 
@@ -83,7 +83,7 @@ export class VendureConfigRef {
         this.getPluginsArray()?.addElement(text).formatText();
     }
 
-    private isVendureConfigVariableDeclaration(v: VariableDeclaration) {
-        return v.getType().getText(v) === 'VendureConfig';
+    private isDeenruvConfigVariableDeclaration(v: VariableDeclaration) {
+        return v.getType().getText(v) === 'DeenruvConfig';
     }
 }

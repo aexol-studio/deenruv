@@ -16,7 +16,7 @@ import {
     Translation,
     TranslationInput,
     TranslatorService,
-    VendureEntity,
+    DeenruvEntity,
     patchEntity,
 } from '@deenruv/core';
 
@@ -33,7 +33,7 @@ interface UpdateEntityInput {
     translations: Array<TranslationInput<TemplateEntity>>;
 }
 
-class TemplateEntity extends VendureEntity implements Translatable, HasCustomFields {
+class TemplateEntity extends DeenruvEntity implements Translatable, HasCustomFields {
     constructor() {
         super();
     }
@@ -43,7 +43,7 @@ class TemplateEntity extends VendureEntity implements Translatable, HasCustomFie
     translations: Array<Translation<TemplateEntity>>;
 }
 
-class TemplateEntityTranslation extends VendureEntity implements Translation<TemplateEntity> {
+class TemplateEntityTranslation extends DeenruvEntity implements Translation<TemplateEntity> {
     constructor() {
         super();
     }

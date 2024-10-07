@@ -56,17 +56,13 @@ interface ParsedOptionGroup {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{
-         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;
-         name: string;
-         values: string[];
-     }&#62;`}   />
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         name: string;         values: string[];     }&#62;`}   />
 
 
 
 
 </div>
-@deenruv/
+
 
 ## ParsedFacet
 
@@ -89,13 +85,9 @@ interface ParsedFacet {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{
-         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;
-         facet: string;
-         value: string;
-     }&#62;`}   />
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         facet: string;         value: string;     }&#62;`}   />
 
-@deenruv/
+
 
 
 </div>
@@ -166,13 +158,7 @@ interface ParsedProductVariant {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{
-         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;
-         optionValues: string[];@deenruv/
-         customFields: {
-             [name: string]: string;
-         };
-     }&#62;`}   />
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         optionValues: string[];         customFields: {             [name: string]: string;         };     }&#62;`}   />
 
 
 
@@ -219,19 +205,11 @@ interface ParsedProduct {
 ### facets
 
 <MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedfacet'>ParsedFacet</a>[]`}   />
-@deenruv/
+
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{
-         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;
-         name: string;
-         slug: string;
-         description: string;
-         customFields: {
-             [name: string]: string;
-         };
-     }&#62;`}   />
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         name: string;         slug: string;         description: string;         customFields: {             [name: string]: string;         };     }&#62;`}   />
 
 
 
@@ -250,7 +228,7 @@ The data structure into which an import CSV file is parsed by the
 interface ParsedProductWithVariants {
     product: ParsedProduct;
     variants: ParsedProductVariant[];
-}@deenruv/
+}
 ```
 
 <div className="members-wrapper">

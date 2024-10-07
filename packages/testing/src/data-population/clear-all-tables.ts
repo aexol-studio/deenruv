@@ -1,4 +1,4 @@
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { preBootstrapConfig } from '@deenruv/core/dist/bootstrap';
 import { createConnection } from 'typeorm';
 
@@ -7,7 +7,7 @@ import { createConnection } from 'typeorm';
 /**
  * Clears all tables in the database specified by the connectionOptions
  */
-export async function clearAllTables(config: VendureConfig, logging = true) {
+export async function clearAllTables(config: DeenruvConfig, logging = true) {
     if (logging) {
         console.log('Clearing all tables...');
     }

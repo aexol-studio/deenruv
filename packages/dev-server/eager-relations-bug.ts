@@ -12,14 +12,14 @@ import {
     RequestContext,
     Transaction,
     TransactionalConnection,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
-import { VendureEntity, EntityId, ID, OrderLine } from '@deenruv/core';
+import { DeenruvEntity, EntityId, ID, OrderLine } from '@deenruv/core';
 import gql from 'graphql-tag';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-export class CutCode extends VendureEntity {
+export class CutCode extends DeenruvEntity {
     constructor(input?: DeepPartial<CutCode>) {
         super(input);
     }
@@ -29,7 +29,7 @@ export class CutCode extends VendureEntity {
 }
 
 @Entity()
-class Cut extends VendureEntity {
+class Cut extends DeenruvEntity {
     constructor(input?: DeepPartial<Cut>) {
         super(input);
     }

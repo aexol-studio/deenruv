@@ -3,7 +3,7 @@ import { Type } from '@deenruv/common/lib/shared-types';
 import { Job } from '../../job-queue/job';
 import { BackoffStrategy } from '../../job-queue/polling-job-queue-strategy';
 import { PluginCommonModule } from '../plugin-common.module';
-import { VendurePlugin } from '../vendure-plugin';
+import { DeenruvPlugin } from '../deenruv-plugin';
 
 import { JobRecordBuffer } from './job-record-buffer.entity';
 import { JobRecord } from './job-record.entity';
@@ -92,15 +92,15 @@ export interface DefaultJobQueueOptions {
 
 /**
  * @description
- * A plugin which configures Vendure to use the SQL database to persist the JobQueue jobs using the {@link SqlJobQueueStrategy}. If you add this
- * plugin to an existing Vendure installation, you'll need to run a [database migration](/guides/developer-guide/migrations), since this
+ * A plugin which configures Deenruv to use the SQL database to persist the JobQueue jobs using the {@link SqlJobQueueStrategy}. If you add this
+ * plugin to an existing Deenruv installation, you'll need to run a [database migration](/guides/developer-guide/migrations), since this
  * plugin will add a new "job_record" table to the database.
  *
  * @example
  * ```ts
- * import { DefaultJobQueuePlugin, VendureConfig } from '\@deenruv/core';
+ * import { DefaultJobQueuePlugin, DeenruvConfig } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     DefaultJobQueuePlugin,
@@ -120,7 +120,7 @@ export interface DefaultJobQueueOptions {
  *
  * @example
  * ```ts
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   plugins: [
  *     DefaultJobQueuePlugin.init({
  *       pollInterval: queueName => {
@@ -149,7 +149,7 @@ export interface DefaultJobQueueOptions {
  *
  * @example
  * ```ts
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   plugins: [
  *     DefaultJobQueuePlugin.init({
  *       pollInterval: 5000,

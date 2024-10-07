@@ -1,9 +1,9 @@
-import { VendureLogger } from './vendure-logger';
+import { DeenruvLogger } from './deenruv-logger';
 
 /**
  * A logger that does not log.
  */
-export class NoopLogger implements VendureLogger {
+export class NoopLogger implements DeenruvLogger {
     debug(message: string, context?: string): void {
         // noop!
     }

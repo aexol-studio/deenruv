@@ -6,13 +6,13 @@ import { HealthIndicatorFunction } from '@nestjs/terminus';
  * health check. Health checks can be used by automated services such as Kubernetes
  * to determine the state of applications it is running. They are also useful for
  * administrators to get an overview of the health of all the parts of the
- * Vendure stack.
+ * Deenruv stack.
  *
  * It wraps the [Nestjs Terminus module](https://docs.nestjs.com/recipes/terminus),
  * so see those docs for information on creating custom health checks.
  *
  * Plugins which rely on external services (web services, databases etc.) can make use of this
- * service to add a check for that dependency to the Vendure health check.
+ * service to add a check for that dependency to the Deenruv health check.
  *
  *
  * Since v1.6.0, the preferred way to implement a custom health check is by creating a new {@link HealthCheckStrategy}
@@ -24,7 +24,7 @@ import { HealthIndicatorFunction } from '@nestjs/terminus';
  *
  * @example
  * ```ts
- * import { HealthCheckRegistryService, PluginCommonModule, VendurePlugin } from '\@deenruv/core';
+ * import { HealthCheckRegistryService, PluginCommonModule, DeenruvPlugin } from '\@deenruv/core';
  * import { TerminusModule } from '\@nestjs/terminus';
  *
  * \@DeenruvPlugin({
@@ -36,7 +36,7 @@ import { HealthIndicatorFunction } from '@nestjs/terminus';
  *     private httpIndicator: HttpHealthIndicator
  *   ) {
  *     registry.registerIndicatorFunction(
- *       () => this.httpIndicator.pingCheck('vendure-docs', 'https://www.vendure.io/docs/'),
+ *       () => this.httpIndicator.pingCheck('deenruv-docs', 'https://www.deenruv.io/docs/'),
  *     )
  *   }
  * }

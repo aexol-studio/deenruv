@@ -178,7 +178,7 @@ export interface AdminUiExtension
      * a common NgModule is shared across different plugins, each defined in its own package. An example can be found
      * below - note that the main `tsconfig.json` also maps the target module but using a path relative to the project's
      * root folder. The UI module is not part of the main TypeScript build task as explained in
-     * [Extending the Admin UI](https://www.vendure.io/docs/plugins/extending-the-admin-ui/) but having `paths`
+     * [Extending the Admin UI](https://www.deenruv.io/docs/plugins/extending-the-admin-ui/) but having `paths`
      * properly configured helps with usual IDE code editing features such as code completion and quick navigation, as
      * well as linting.
      *

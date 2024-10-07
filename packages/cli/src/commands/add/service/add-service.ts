@@ -8,7 +8,7 @@ import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { EntityRef } from '../../../shared/entity-ref';
 import { ServiceRef } from '../../../shared/service-ref';
 import { analyzeProject, selectEntity, selectPlugin } from '../../../shared/shared-prompts';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import {
     addImportsToFile,
     createFile,
@@ -20,7 +20,7 @@ import { addEntityCommand } from '../entity/add-entity';
 const cancelledMessage = 'Add service cancelled';
 
 interface AddServiceOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
     type: 'basic' | 'entity';
     serviceName: string;
     entityRef?: EntityRef;
@@ -36,9 +36,9 @@ export const addServiceCommand = new CliCommand({
 async function addService(
     providedOptions?: Partial<AddServiceOptions>,
 ): Promise<CliCommandReturnVal<{ serviceRef: ServiceRef }>> {
-    const providedVendurePlugin = providedOptions?.plugin;
-    const { project } = await analyzeProject({ providedVendurePlugin, cancelledMessage });
-    const vendurePlugin = providedVendurePlugin ?? (await selectPlugin(project, cancelledMessage));
+    const providedDeenruvPlugin = providedOptions?.plugin;
+    const { project } = await analyzeProject({ providedDeenruvPlugin, cancelledMessage });
+    const deenruvPlugin = providedDeenruvPlugin ?? (await selectPlugin(project, cancelledMessage));
     const modifiedSourceFiles: SourceFile[] = [];
     const type =
         providedOptions?.type ??
@@ -61,11 +61,11 @@ async function addService(
     if (type === 'entity') {
         let entityRef: EntityRef;
         try {
-            entityRef = await selectEntity(vendurePlugin);
+            entityRef = await selectEntity(deenruvPlugin);
         } catch (e: any) {
             if (e.message === Messages.NoEntitiesFound) {
-                log.info(`No entities found in plugin ${vendurePlugin.name}. Let's create one first.`);
-                const result = await addEntityCommand.run({ plugin: vendurePlugin });
+                log.info(`No entities found in plugin ${deenruvPlugin.name}. Let's create one first.`);
+                const result = await addEntityCommand.run({ plugin: deenruvPlugin });
                 entityRef = result.entityRef;
                 modifiedSourceFiles.push(...result.modifiedSourceFiles);
             } else {
@@ -101,7 +101,7 @@ async function addService(
 
         options.serviceName = name;
         serviceSpinner.start(`Creating ${options.serviceName}...`);
-        const serviceSourceFilePath = getServiceFilePath(vendurePlugin, options.serviceName);
+        const serviceSourceFilePath = getServiceFilePath(deenruvPlugin, options.serviceName);
         await pauseForPromptDisplay();
         serviceSourceFile = createFile(
             project,
@@ -115,7 +115,7 @@ async function addService(
     } else {
         serviceSpinner.start(`Creating ${options.serviceName}...`);
         await pauseForPromptDisplay();
-        const serviceSourceFilePath = getServiceFilePath(vendurePlugin, options.serviceName);
+        const serviceSourceFilePath = getServiceFilePath(deenruvPlugin, options.serviceName);
         serviceSourceFile = createFile(
             project,
             path.join(__dirname, 'templates/entity-service.template.ts'),
@@ -160,7 +160,7 @@ async function addService(
         customizeUpdateMethod(serviceClassDeclaration, entityRef);
         removedUnusedConstructorArgs(serviceClassDeclaration, entityRef);
     }
-    const pluginOptions = vendurePlugin.getPluginOptions();
+    const pluginOptions = deenruvPlugin.getPluginOptions();
     if (pluginOptions) {
         addImportsToFile(serviceSourceFile, {
             moduleSpecifier: pluginOptions.constantDeclaration.getSourceFile(),
@@ -188,8 +188,8 @@ async function addService(
 
     serviceSpinner.message(`Registering service with plugin...`);
 
-    vendurePlugin.addProvider(options.serviceName);
-    addImportsToFile(vendurePlugin.classDeclaration.getSourceFile(), {
+    deenruvPlugin.addProvider(options.serviceName);
+    addImportsToFile(deenruvPlugin.classDeclaration.getSourceFile(), {
         moduleSpecifier: serviceSourceFile,
         namedImports: [options.serviceName],
     });
@@ -205,7 +205,7 @@ async function addService(
     };
 }
 
-function getServiceFilePath(plugin: VendurePluginRef, serviceName: string) {
+function getServiceFilePath(plugin: DeenruvPluginRef, serviceName: string) {
     const serviceFileName = paramCase(serviceName).replace(/-service$/, '.service');
     return path.join(plugin.getPluginDir().getPath(), 'services', `${serviceFileName}.ts`);
 }

@@ -86,7 +86,7 @@ export class ExternalAuthenticationService {
      * @description
      * If a customer has been successfully authenticated by an external authentication provider, yet cannot
      * be found using `findCustomerUser`, then we need to create a new User and
-     * Customer record in Vendure for that user. This method encapsulates that logic as well as additional
+     * Customer record in Deenruv for that user. This method encapsulates that logic as well as additional
      * housekeeping such as adding a record to the Customer's history.
      */
     async createCustomerAndUser(
@@ -167,7 +167,7 @@ export class ExternalAuthenticationService {
      * @description
      * If an administrator has been successfully authenticated by an external authentication provider, yet cannot
      * be found using `findAdministratorUser`, then we need to create a new User and
-     * Administrator record in Vendure for that user.
+     * Administrator record in Deenruv for that user.
      */
     async createAdministratorAndUser(
         ctx: RequestContext,

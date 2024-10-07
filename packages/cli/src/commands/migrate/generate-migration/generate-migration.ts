@@ -1,13 +1,13 @@
 import { cancel, isCancel, log, multiselect, select, spinner, text } from '@clack/prompts';
 import { unique } from '@deenruv/common/lib/unique';
-import { generateMigration, VendureConfig } from '@deenruv/core';
+import { generateMigration, DeenruvConfig } from '@deenruv/core';
 import * as fs from 'fs-extra';
 import path from 'path';
 
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { analyzeProject } from '../../../shared/shared-prompts';
-import { VendureConfigRef } from '../../../shared/vendure-config-ref';
-import { loadVendureConfigFile } from '../load-vendure-config-file';
+import { DeenruvConfigRef } from '../../../shared/deenruv-config-ref';
+import { loadDeenruvConfigFile } from '../load-deenruv-config-file';
 
 const cancelledMessage = 'Generate migration cancelled';
 
@@ -20,8 +20,8 @@ export const generateMigrationCommand = new CliCommand({
 
 async function runGenerateMigration(): Promise<CliCommandReturnVal> {
     const { project, tsConfigPath } = await analyzeProject({ cancelledMessage });
-    const vendureConfig = new VendureConfigRef(project);
-    log.info('Using VendureConfig from ' + vendureConfig.getPathRelativeToProjectRoot());
+    const deenruvConfig = new DeenruvConfigRef(project);
+    log.info('Using DeenruvConfig from ' + deenruvConfig.getPathRelativeToProjectRoot());
 
     const name = await text({
         message: 'Enter a meaningful name for the migration',
@@ -37,9 +37,9 @@ async function runGenerateMigration(): Promise<CliCommandReturnVal> {
         cancel(cancelledMessage);
         process.exit(0);
     }
-    const config = await loadVendureConfigFile(vendureConfig, tsConfigPath);
+    const config = await loadDeenruvConfigFile(deenruvConfig, tsConfigPath);
 
-    const migrationsDirs = getMigrationsDir(vendureConfig, config);
+    const migrationsDirs = getMigrationsDir(deenruvConfig, config);
     let migrationDir = migrationsDirs[0];
 
     if (migrationsDirs.length > 1) {
@@ -89,7 +89,7 @@ async function runGenerateMigration(): Promise<CliCommandReturnVal> {
     };
 }
 
-function getMigrationsDir(vendureConfigRef: VendureConfigRef, config: VendureConfig): string[] {
+function getMigrationsDir(deenruvConfigRef: DeenruvConfigRef, config: DeenruvConfig): string[] {
     const options: string[] = [];
     if (
         Array.isArray(config.dbConnectionOptions.migrations) &&
@@ -100,7 +100,7 @@ function getMigrationsDir(vendureConfigRef: VendureConfigRef, config: VendureCon
             options.push(path.dirname(firstEntry));
         }
     }
-    const migrationFile = vendureConfigRef.sourceFile
+    const migrationFile = deenruvConfigRef.sourceFile
         .getProject()
         .getSourceFiles()
         .find(sf => {
@@ -111,6 +111,6 @@ function getMigrationsDir(vendureConfigRef: VendureConfigRef, config: VendureCon
     if (migrationFile) {
         options.push(migrationFile.getDirectory().getPath());
     }
-    options.push(path.join(vendureConfigRef.sourceFile.getDirectory().getPath(), '../migrations'));
+    options.push(path.join(deenruvConfigRef.sourceFile.getDirectory().getPath(), '../migrations'));
     return unique(options.map(p => path.normalize(p)));
 }

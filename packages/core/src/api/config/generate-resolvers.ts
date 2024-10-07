@@ -13,7 +13,7 @@ import { shopErrorOperationTypeResolvers } from '../../common/error/generated-gr
 import { Translatable } from '../../common/types/locale-types';
 import { ConfigService } from '../../config/config.service';
 import { CustomFieldConfig, RelationCustomFieldConfig } from '../../config/custom-field/custom-field-types';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { Region } from '../../entity/region/region.entity';
 import { getPluginAPIExtensions } from '../../plugin/plugin-metadata';
 import { CustomFieldRelationResolverService } from '../common/custom-field-relation-resolver.service';
@@ -262,7 +262,7 @@ function generateCustomFieldRelationResolvers(
             // customFields field is `JSON`. This type will simply return the full object, which
             // will cause a leak of private data unless we force a `null` return value in the case
             // that there are no public fields.
-            // See https://github.com/vendure-ecommerce/vendure/issues/3049
+            // See https://github.com/deenruv-ecommerce/deenruv/issues/3049
             shopResolvers[entityName] = { customFields: () => null };
         }
     }

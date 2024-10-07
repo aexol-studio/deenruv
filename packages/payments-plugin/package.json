@@ -18,7 +18,7 @@
         "dev-server:mollie": "npm run build && DB=sqlite node -r ts-node/register e2e/mollie-dev-server.ts",
         "dev-server:stripe": "npm run build && DB=sqlite node -r ts-node/register e2e/stripe-dev-server.ts"
     },
-    "homepage": "https://www.vendure.io/",
+    "homepage": "https://www.deenruv.io/",
     "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"

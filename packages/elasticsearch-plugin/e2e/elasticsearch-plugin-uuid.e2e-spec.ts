@@ -19,7 +19,7 @@ import { GetCollectionListQuery } from './graphql/generated-e2e-elasticsearch-pl
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { elasticsearchHost, elasticsearchPort } = require('./constants');
 
-// https://github.com/vendure-ecommerce/vendure/issues/494
+// https://github.com/deenruv-ecommerce/deenruv/issues/494
 describe('Elasticsearch plugin with UuidIdStrategy', () => {
     const { server, adminClient, shopClient } = createTestEnvironment(
         mergeConfig(testConfig(), {

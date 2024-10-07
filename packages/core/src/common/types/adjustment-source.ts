@@ -1,11 +1,11 @@
 import { Adjustment, AdjustmentType } from '@deenruv/common/lib/generated-types';
 import { ID } from '@deenruv/common/lib/shared-types';
 
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 export type TestResult = boolean | object;
 
-export abstract class AdjustmentSource extends VendureEntity {
+export abstract class AdjustmentSource extends DeenruvEntity {
     type: AdjustmentType;
 
     getSourceId(): string {

@@ -19,7 +19,7 @@ import { Channel, Order, Zone } from '../../entity';
  * :::info
  *
  * This is configured via the `taxOptions.taxZoneStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

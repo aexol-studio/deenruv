@@ -112,7 +112,7 @@ export class CoreModule {
     }
 
     private initUiTitle() {
-        const title = getAppConfig().brand || 'Vendure';
+        const title = getAppConfig().brand || 'Deenruv';
 
         this.titleService.setTitle(title);
     }

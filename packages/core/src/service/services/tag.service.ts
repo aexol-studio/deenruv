@@ -11,7 +11,7 @@ import { unique } from '@deenruv/common/lib/unique';
 import { RequestContext } from '../../api/common/request-context';
 import { ListQueryOptions, Taggable } from '../../common/types/common-types';
 import { TransactionalConnection } from '../../connection/transactional-connection';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 import { Tag } from '../../entity/tag/tag.entity';
 import { ListQueryBuilder } from '../helpers/list-query-builder/list-query-builder';
 
@@ -74,7 +74,7 @@ export class TagService {
         return tags;
     }
 
-    getTagsForEntity(ctx: RequestContext, entity: Type<VendureEntity & Taggable>, id: ID): Promise<Tag[]> {
+    getTagsForEntity(ctx: RequestContext, entity: Type<DeenruvEntity & Taggable>, id: ID): Promise<Tag[]> {
         return this.connection
             .getRepository(ctx, entity)
             .createQueryBuilder()

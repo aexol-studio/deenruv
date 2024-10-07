@@ -40,7 +40,7 @@ export class GlobalSettingsService {
                 throw new Error('No global settings');
             }
             if (1 < result.length) {
-                // Strange edge case, see https://github.com/vendure-ecommerce/vendure/issues/987
+                // Strange edge case, see https://github.com/deenruv-ecommerce/deenruv/issues/987
                 const toDelete = result.slice(1);
                 await this.connection.rawConnection.getRepository(GlobalSettings).remove(toDelete);
             }

@@ -26,7 +26,7 @@ import { InjectableStrategy } from './types/injectable-strategy';
 /**
  * @description
  * An array of string values in a given {@link LanguageCode}, used to define human-readable string values.
- * The `ui` property can be used in conjunction with the Vendure Admin UI to specify a custom form input
+ * The `ui` property can be used in conjunction with the Deenruv Admin UI to specify a custom form input
  * component.
  *
  * @example
@@ -257,7 +257,7 @@ export interface ConfigurableOperationDefOptions<T extends ConfigArgs> extends I
 
 /**
  * @description
- * A ConfigurableOperationDef is a special type of object used extensively by Vendure to define
+ * A ConfigurableOperationDef is a special type of object used extensively by Deenruv to define
  * code blocks which have arguments which are configurable at run-time by the administrator.
  *
  * This is the mechanism used by:
@@ -289,7 +289,7 @@ export interface ConfigurableOperationDefOptions<T extends ConfigArgs> extends I
  *
  * ## Dependency Injection
  * If your business logic relies on injectable providers, such as the `TransactionalConnection` object, or any of the
- * internal Vendure services or those defined in a plugin, you can inject them by using the config object's
+ * internal Deenruv services or those defined in a plugin, you can inject them by using the config object's
  * `init()` method, which exposes the {@link Injector}.
  *
  * Here's an example of a ShippingCalculator that injects a service which has been defined in a plugin:

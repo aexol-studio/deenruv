@@ -5,15 +5,15 @@ import path from 'path';
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { PackageJson } from '../../../shared/package-json-ref';
 import { analyzeProject, selectPlugin } from '../../../shared/shared-prompts';
-import { VendureConfigRef } from '../../../shared/vendure-config-ref';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvConfigRef } from '../../../shared/deenruv-config-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import { createFile, getRelativeImportPath } from '../../../utilities/ast-utils';
 
 import { addUiExtensionStaticProp } from './codemods/add-ui-extension-static-prop/add-ui-extension-static-prop';
 import { updateAdminUiPluginInit } from './codemods/update-admin-ui-plugin-init/update-admin-ui-plugin-init';
 
 export interface AddUiExtensionsOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
 }
 
 export const addUiExtensionsCommand = new CliCommand<AddUiExtensionsOptions>({
@@ -24,31 +24,31 @@ export const addUiExtensionsCommand = new CliCommand<AddUiExtensionsOptions>({
 });
 
 async function addUiExtensions(options?: AddUiExtensionsOptions): Promise<CliCommandReturnVal> {
-    const providedVendurePlugin = options?.plugin;
-    const { project } = await analyzeProject({ providedVendurePlugin });
-    const vendurePlugin =
-        providedVendurePlugin ?? (await selectPlugin(project, 'Add UI extensions cancelled'));
+    const providedDeenruvPlugin = options?.plugin;
+    const { project } = await analyzeProject({ providedDeenruvPlugin });
+    const deenruvPlugin =
+        providedDeenruvPlugin ?? (await selectPlugin(project, 'Add UI extensions cancelled'));
     const packageJson = new PackageJson(project);
 
-    if (vendurePlugin.hasUiExtensions()) {
+    if (deenruvPlugin.hasUiExtensions()) {
         outro('This plugin already has UI extensions configured');
         return { project, modifiedSourceFiles: [] };
     }
-    addUiExtensionStaticProp(vendurePlugin);
+    addUiExtensionStaticProp(deenruvPlugin);
 
     log.success('Updated the plugin class');
     const installSpinner = spinner();
     const packageManager = packageJson.determinePackageManager();
-    const packageJsonFile = packageJson.locatePackageJsonWithVendureDependency();
+    const packageJsonFile = packageJson.locatePackageJsonWithDeenruvDependency();
     log.info(`Detected package manager: ${packageManager}`);
     if (!packageJsonFile) {
-        cancel(`Could not locate package.json file with a dependency on Vendure.`);
+        cancel(`Could not locate package.json file with a dependency on Deenruv.`);
         process.exit(1);
     }
     log.info(`Detected package.json: ${packageJsonFile}`);
     installSpinner.start(`Installing dependencies using ${packageManager}...`);
     try {
-        const version = packageJson.determineVendureVersion();
+        const version = packageJson.determineDeenruvVersion();
         await packageJson.installPackages([
             {
                 pkg: '@deenruv/ui-devkit',
@@ -65,7 +65,7 @@ async function addUiExtensions(options?: AddUiExtensionsOptions): Promise<CliCom
     }
     installSpinner.stop('Dependencies installed');
 
-    const pluginDir = vendurePlugin.getPluginDir().getPath();
+    const pluginDir = deenruvPlugin.getPluginDir().getPath();
 
     const providersFileDest = path.join(pluginDir, 'ui', 'providers.ts');
     if (!fs.existsSync(providersFileDest)) {
@@ -78,20 +78,20 @@ async function addUiExtensions(options?: AddUiExtensionsOptions): Promise<CliCom
 
     log.success('Created UI extension scaffold');
 
-    const vendureConfig = new VendureConfigRef(project);
-    if (!vendureConfig) {
+    const deenruvConfig = new DeenruvConfigRef(project);
+    if (!deenruvConfig) {
         log.warning(
-            `Could not find the VendureConfig declaration in your project. You will need to manually set up the compileUiExtensions function.`,
+            `Could not find the DeenruvConfig declaration in your project. You will need to manually set up the compileUiExtensions function.`,
         );
     } else {
-        const pluginClassName = vendurePlugin.name;
+        const pluginClassName = deenruvPlugin.name;
         const pluginPath = getRelativeImportPath({
-            to: vendurePlugin.classDeclaration.getSourceFile(),
-            from: vendureConfig.sourceFile,
+            to: deenruvPlugin.classDeclaration.getSourceFile(),
+            from: deenruvConfig.sourceFile,
         });
-        const updated = updateAdminUiPluginInit(vendureConfig, { pluginClassName, pluginPath });
+        const updated = updateAdminUiPluginInit(deenruvConfig, { pluginClassName, pluginPath });
         if (updated) {
-            log.success('Updated VendureConfig file');
+            log.success('Updated DeenruvConfig file');
         } else {
             log.warning(`Could not update \`AdminUiPlugin.init()\` options.`);
             note(
@@ -103,5 +103,5 @@ async function addUiExtensions(options?: AddUiExtensionsOptions): Promise<CliCom
     }
 
     await project.save();
-    return { project, modifiedSourceFiles: [vendurePlugin.classDeclaration.getSourceFile()] };
+    return { project, modifiedSourceFiles: [deenruvPlugin.classDeclaration.getSourceFile()] };
 }

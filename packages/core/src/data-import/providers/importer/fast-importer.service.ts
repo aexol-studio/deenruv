@@ -72,7 +72,7 @@ export class FastImporterService {
 
     async createProduct(input: CreateProductInput): Promise<ID> {
         this.ensureInitialized();
-        // https://github.com/vendure-ecommerce/vendure/issues/2053
+        // https://github.com/deenruv-ecommerce/deenruv/issues/2053
         // normalizes slug without validation for faster performance
         input.translations.map(translation => {
             translation.slug = normalizeString(translation.slug as string, '-');

@@ -6,35 +6,35 @@ import { pick } from '@deenruv/common/lib/pick';
 import { Type } from '@deenruv/common/lib/shared-types';
 import { DocumentNode, GraphQLScalarType } from 'graphql';
 
-import { RuntimeVendureConfig } from '../config/vendure-config';
+import { RuntimeDeenruvConfig } from '../config/deenruv-config';
 
 import { PLUGIN_METADATA } from './plugin-metadata';
 
 /**
  * @description
- * Defines the metadata of a Vendure plugin. This interface is an superset of the [Nestjs ModuleMetadata](https://docs.nestjs.com/modules)
+ * Defines the metadata of a Deenruv plugin. This interface is an superset of the [Nestjs ModuleMetadata](https://docs.nestjs.com/modules)
  * (which allows the definition of `imports`, `exports`, `providers` and `controllers`), which means
- * that any Nestjs Module is a valid Vendure plugin. In addition, the VendurePluginMetadata allows the definition of
- * extra properties specific to Vendure.
+ * that any Nestjs Module is a valid Deenruv plugin. In addition, the DeenruvPluginMetadata allows the definition of
+ * extra properties specific to Deenruv.
  *
  * @docsCategory plugin
- * @docsPage VendurePluginMetadata
+ * @docsPage DeenruvPluginMetadata
  */
-export interface VendurePluginMetadata extends ModuleMetadata {
+export interface DeenruvPluginMetadata extends ModuleMetadata {
     /**
      * @description
-     * A function which can modify the {@link VendureConfig} object before the server bootstraps.
+     * A function which can modify the {@link DeenruvConfig} object before the server bootstraps.
      */
     configuration?: PluginConfigurationFn;
     /**
      * @description
-     * The plugin may extend the default Vendure GraphQL shop api by providing extended
+     * The plugin may extend the default Deenruv GraphQL shop api by providing extended
      * schema definitions and any required resolvers.
      */
     shopApiExtensions?: APIExtensionDefinition;
     /**
      * @description
-     * The plugin may extend the default Vendure GraphQL admin api by providing extended
+     * The plugin may extend the default Deenruv GraphQL admin api by providing extended
      * schema definitions and any required resolvers.
      */
     adminApiExtensions?: APIExtensionDefinition;
@@ -46,11 +46,11 @@ export interface VendurePluginMetadata extends ModuleMetadata {
     /**
      * @description
      * The plugin should define a valid [semver version string](https://www.npmjs.com/package/semver) to indicate which versions of
-     * Vendure core it is compatible with. Attempting to use a plugin with an incompatible
-     * version of Vendure will result in an error and the server will be unable to bootstrap.
+     * Deenruv core it is compatible with. Attempting to use a plugin with an incompatible
+     * version of Deenruv will result in an error and the server will be unable to bootstrap.
      *
      * If a plugin does not define this property, a message will be logged on bootstrap that the plugin is not
-     * guaranteed to be compatible with the current version of Vendure.
+     * guaranteed to be compatible with the current version of Deenruv.
      *
      * To effectively disable this check for a plugin, you can use an overly-permissive string such as `>0.0.0`.
      *
@@ -65,10 +65,10 @@ export interface VendurePluginMetadata extends ModuleMetadata {
 }
 /**
  * @description
- * An object which allows a plugin to extend the Vendure GraphQL API.
+ * An object which allows a plugin to extend the Deenruv GraphQL API.
  *
  * @docsCategory plugin
- * @docsPage VendurePluginMetadata
+ * @docsPage DeenruvPluginMetadata
  * */
 
 export interface APIExtensionDefinition {
@@ -104,18 +104,18 @@ export interface APIExtensionDefinition {
 
 /**
  * @description
- * This method is called before the app bootstraps and should be used to perform any needed modifications to the {@link VendureConfig}.
+ * This method is called before the app bootstraps and should be used to perform any needed modifications to the {@link DeenruvConfig}.
  *
  * @docsCategory plugin
- * @docsPage VendurePluginMetadata
+ * @docsPage DeenruvPluginMetadata
  */
 export type PluginConfigurationFn = (
-    config: RuntimeVendureConfig,
-) => RuntimeVendureConfig | Promise<RuntimeVendureConfig>;
+    config: RuntimeDeenruvConfig,
+) => RuntimeDeenruvConfig | Promise<RuntimeDeenruvConfig>;
 
 /**
  * @description
- * The VendurePlugin decorator is a means of configuring and/or extending the functionality of the Vendure server. A Vendure plugin is
+ * The DeenruvPlugin decorator is a means of configuring and/or extending the functionality of the Deenruv server. A Deenruv plugin is
  * a [Nestjs Module](https://docs.nestjs.com/modules), with optional additional metadata defining things like extensions to the GraphQL API, custom
  * configuration or new database entities.
  *
@@ -125,7 +125,7 @@ export type PluginConfigurationFn = (
  * @example
  * ```ts
  * import { Controller, Get } from '\@nestjs/common';
- * import { Ctx, PluginCommonModule, ProductService, RequestContext, VendurePlugin } from '\@deenruv/core';
+ * import { Ctx, PluginCommonModule, ProductService, RequestContext, DeenruvPlugin } from '\@deenruv/core';
  *
  * \@Controller('products')
  * export class ProductsController {
@@ -148,11 +148,11 @@ export type PluginConfigurationFn = (
  *
  * @docsCategory plugin
  */
-export function VendurePlugin(pluginMetadata: VendurePluginMetadata): ClassDecorator {
+export function DeenruvPlugin(pluginMetadata: DeenruvPluginMetadata): ClassDecorator {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return (target: Function) => {
         for (const metadataProperty of Object.values(PLUGIN_METADATA)) {
-            const property = metadataProperty as keyof VendurePluginMetadata;
+            const property = metadataProperty as keyof DeenruvPluginMetadata;
             if (pluginMetadata[property] != null) {
                 Reflect.defineMetadata(property, pluginMetadata[property], target);
             }
@@ -163,7 +163,7 @@ export function VendurePlugin(pluginMetadata: VendurePluginMetadata): ClassDecor
         // created a new Module in the ApiModule, and if those resolvers depend on any providers,
         // the must be exported. See the function {@link createDynamicGraphQlModulesForPlugins}
         // for the implementation.
-        // However, we must omit any global providers (https://github.com/vendure-ecommerce/vendure/issues/837)
+        // However, we must omit any global providers (https://github.com/deenruv-ecommerce/deenruv/issues/837)
         const nestGlobalProviderTokens = [APP_INTERCEPTOR, APP_FILTER, APP_GUARD, APP_PIPE];
         const exportedProviders = (nestModuleMetadata.providers || []).filter(provider => {
             if (isNamedProvider(provider)) {

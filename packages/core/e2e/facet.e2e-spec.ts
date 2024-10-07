@@ -759,7 +759,7 @@ describe('Facet resolver', () => {
         });
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/715
+    // https://github.com/deenruv-ecommerce/deenruv/issues/715
     describe('code conflicts', () => {
         function createFacetWithCode(code: string) {
             return adminClient.query<Codegen.CreateFacetMutation, Codegen.CreateFacetMutationVariables>(
@@ -775,7 +775,7 @@ describe('Facet resolver', () => {
             );
         }
 
-        // https://github.com/vendure-ecommerce/vendure/issues/831
+        // https://github.com/deenruv-ecommerce/deenruv/issues/831
         it('updateFacet with unchanged code', async () => {
             const { createFacet } = await createFacetWithCode('some-new-facet');
             const result = await adminClient.query<

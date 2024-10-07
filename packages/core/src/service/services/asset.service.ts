@@ -33,11 +33,11 @@ import { MimeTypeError } from '../../common/error/generated-graphql-admin-errors
 import { ChannelAware } from '../../common/types/common-types';
 import { getAssetType, idsAreEqual } from '../../common/utils';
 import { ConfigService } from '../../config/config.service';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../connection/transactional-connection';
 import { Asset } from '../../entity/asset/asset.entity';
 import { OrderableAsset } from '../../entity/asset/orderable-asset.entity';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 import { Collection } from '../../entity/collection/collection.entity';
 import { Product } from '../../entity/product/product.entity';
 import { ProductVariant } from '../../entity/product-variant/product-variant.entity';
@@ -63,7 +63,7 @@ const sizeOf = require('image-size');
  * @docsCategory services
  * @docsPage AssetService
  */
-export interface EntityWithAssets extends VendureEntity {
+export interface EntityWithAssets extends DeenruvEntity {
     featuredAsset: Asset | null;
     assets: OrderableAsset[];
 }

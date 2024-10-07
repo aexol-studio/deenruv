@@ -3,7 +3,7 @@ import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
 
 import { ChannelAware } from '../../common/types/common-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 
 /**
@@ -14,7 +14,7 @@ import { Channel } from '../channel/channel.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Role extends VendureEntity implements ChannelAware {
+export class Role extends DeenruvEntity implements ChannelAware {
     constructor(input?: DeepPartial<Role>) {
         super(input);
     }

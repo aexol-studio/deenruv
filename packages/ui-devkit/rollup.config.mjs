@@ -10,12 +10,20 @@ export default commandLineArgs => {
         output: {
             dir: 'client',
             format: 'umd',
-            name: 'VendureUiClient',
+            name: 'DeenruvUiClient',
         },
-        plugins: [resolve(), typescript(), ...(isProd ? [terser({
-            output: {
-                comments: false,
-            }
-        })] : [])],
+        plugins: [
+            resolve(),
+            typescript(),
+            ...(isProd
+                ? [
+                      terser({
+                          output: {
+                              comments: false,
+                          },
+                      }),
+                  ]
+                : []),
+        ],
     };
 };

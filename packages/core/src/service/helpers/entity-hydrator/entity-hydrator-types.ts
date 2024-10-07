@@ -1,5 +1,5 @@
 import { EntityRelationPaths } from '../../../common/types/entity-relation-paths';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 /**
  * @description
@@ -9,7 +9,7 @@ import { VendureEntity } from '../../../entity/base/base.entity';
  * @since 1.3.0
  * @docsCategory data-access
  */
-export interface HydrateOptions<Entity extends VendureEntity> {
+export interface HydrateOptions<Entity extends DeenruvEntity> {
     /**
      * @description
      * Defines the relations to hydrate, using strings with dot notation to indicate

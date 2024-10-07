@@ -292,7 +292,7 @@ function copyAdminUiSource(outputPath: string, modulePathMapping: Record<string,
 export async function setBaseHref(outputPath: string, baseHref: string) {
     const angularJsonFilePath = path.join(outputPath, '/angular.json');
     const angularJson = await fs.readJSON(angularJsonFilePath, 'utf-8');
-    angularJson.projects['vendure-admin'].architect.build.options.baseHref = baseHref;
+    angularJson.projects['deenruv-admin'].architect.build.options.baseHref = baseHref;
     await fs.writeJSON(angularJsonFilePath, angularJson, { spaces: 2 });
 }
 

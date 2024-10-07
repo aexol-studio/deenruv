@@ -1,9 +1,9 @@
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-import { DefaultJobQueuePlugin, dummyPaymentHandler, VendureConfig } from '@deenruv/core';
+import { DefaultJobQueuePlugin, dummyPaymentHandler, DeenruvConfig } from '@deenruv/core';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     apiOptions: {
         port: 3000,
         adminApiPath: 'admin-api',
@@ -18,7 +18,7 @@ export const config: VendureConfig = {
         port: 3306,
         username: 'root',
         password: '',
-        database: 'vendure-dev',
+        database: 'deenruv-dev',
     },
     paymentOptions: {
         paymentMethodHandlers: [dummyPaymentHandler],

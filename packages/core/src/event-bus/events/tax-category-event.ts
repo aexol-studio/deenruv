@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { TaxCategory } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type TaxCategoryInputTypes = CreateTaxCategoryInput | UpdateTaxCategoryInput | ID;
 
@@ -15,7 +15,7 @@ type TaxCategoryInputTypes = CreateTaxCategoryInput | UpdateTaxCategoryInput | I
  * @docsCategory events
  * @docsPage Event Types
  */
-export class TaxCategoryEvent extends VendureEntityEvent<TaxCategory, TaxCategoryInputTypes> {
+export class TaxCategoryEvent extends DeenruvEntityEvent<TaxCategory, TaxCategoryInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: TaxCategory,

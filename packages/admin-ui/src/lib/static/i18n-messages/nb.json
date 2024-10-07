@@ -485,7 +485,7 @@
   },
   "error": {
     "403-forbidden": "Du har for øyeblikket ikke autorisasjon til å få tilgang til \"{ path }\". Enten mangler du tillatelser, eller økten din har utløpt.",
-    "could-not-connect-to-server": "Kunne ikke koble til Vendure-serveren på { url }",
+    "could-not-connect-to-server": "Kunne ikke koble til Deenruv-serveren på { url }",
     "health-check-failed": "Systemhelsesjekk mislyktes",
     "no-default-shipping-zone-set": "Denne kanalen har ingen standard fraktsone. Dette kan føre til feil ved beregning av fraktkostnader for bestillinger.",
     "no-default-tax-zone-set": "Denne kanalen har ingen standard skattesone, noe som vil føre til feil ved beregning av priser. Vennligst opprett eller velg en sone."

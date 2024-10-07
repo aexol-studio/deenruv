@@ -10,7 +10,7 @@ import {
     dummyPaymentHandler,
     LanguageCode,
     LogLevel,
-    VendureConfig,
+    DeenruvConfig,
 } from '@deenruv/core';
 import { ElasticsearchPlugin } from '@deenruv/elasticsearch-plugin';
 import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
@@ -25,7 +25,7 @@ import { MultivendorPlugin } from './example-plugins/multivendor-plugin/multiven
 /**
  * Config settings used during development
  */
-export const devConfig: VendureConfig = {
+export const devConfig: DeenruvConfig = {
     apiOptions: {
         port: API_PORT,
         adminApiPath: ADMIN_API_PATH,
@@ -136,7 +136,7 @@ function getDbConfig(): DataSourceOptions {
                 port: Number(process.env.DB_PORT) || 5432,
                 username: process.env.DB_USERNAME || 'postgres',
                 password: process.env.DB_PASSWORD || 'postgres',
-                database: process.env.DB_NAME || 'vendure',
+                database: process.env.DB_NAME || 'deenruv',
                 schema: process.env.DB_SCHEMA || 'public',
             };
         case 'sqlite':
@@ -144,7 +144,7 @@ function getDbConfig(): DataSourceOptions {
             return {
                 synchronize: false,
                 type: 'better-sqlite3',
-                database: path.join(__dirname, 'vendure.sqlite'),
+                database: path.join(__dirname, 'deenruv.sqlite'),
             };
         case 'sqljs':
             console.log('Using sql.js connection');
@@ -152,7 +152,7 @@ function getDbConfig(): DataSourceOptions {
                 type: 'sqljs',
                 autoSave: true,
                 database: new Uint8Array([]),
-                location: path.join(__dirname, 'vendure.sqlite'),
+                location: path.join(__dirname, 'deenruv.sqlite'),
             };
         case 'mysql':
         default:
@@ -164,7 +164,7 @@ function getDbConfig(): DataSourceOptions {
                 port: 3306,
                 username: 'root',
                 password: '',
-                database: 'vendure-dev',
+                database: 'deenruv-dev',
             };
     }
 }

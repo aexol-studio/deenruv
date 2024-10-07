@@ -4,14 +4,14 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomProductOptionFieldsTranslation } from '../custom-entity-fields';
 
 import { ProductOption } from './product-option.entity';
 
 @Entity()
 export class ProductOptionTranslation
-    extends VendureEntity
+    extends DeenruvEntity
     implements Translation<ProductOption>, HasCustomFields
 {
     constructor(input?: DeepPartial<Translation<ProductOption>>) {

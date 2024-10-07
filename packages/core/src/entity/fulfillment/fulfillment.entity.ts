@@ -3,7 +3,7 @@ import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { FulfillmentState } from '../../service/helpers/fulfillment-state-machine/fulfillment-state';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomFulfillmentFields } from '../custom-entity-fields';
 import { Order } from '../order/order.entity';
 import { FulfillmentLine } from '../order-line-reference/fulfillment-line.entity';
@@ -16,7 +16,7 @@ import { FulfillmentLine } from '../order-line-reference/fulfillment-line.entity
  * @docsCategory entities
  */
 @Entity()
-export class Fulfillment extends VendureEntity implements HasCustomFields {
+export class Fulfillment extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<Fulfillment>) {
         super(input);
     }

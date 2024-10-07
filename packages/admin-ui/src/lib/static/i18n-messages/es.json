@@ -487,7 +487,7 @@
   },
   "error": {
     "403-forbidden": "Actualmente no está autorizado para acceder a \"{ path }\". O bien carece de permisos, o su sesión ha expirado.",
-    "could-not-connect-to-server": "No se ha podido conectar con el servidor de vendure en { url }",
+    "could-not-connect-to-server": "No se ha podido conectar con el servidor de deenruv en { url }",
     "health-check-failed": "El sistema de control de integridad falló",
     "no-default-shipping-zone-set": "Este canal no tiene una zona de envío por defecto. Esto puede causar errores al calcular los gastos de envío del pedido.",
     "no-default-tax-zone-set": "Este canal no tiene una zona fiscal por defecto, lo que provocará errores al calcular los precios. Por favor, cree o seleccione una zona."

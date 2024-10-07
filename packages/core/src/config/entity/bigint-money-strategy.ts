@@ -1,6 +1,6 @@
 import { ColumnOptions } from 'typeorm';
 
-import { Logger } from '../logger/vendure-logger';
+import { Logger } from '../logger/deenruv-logger';
 
 import { MoneyStrategy } from './money-strategy';
 

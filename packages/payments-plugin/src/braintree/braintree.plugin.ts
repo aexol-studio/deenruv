@@ -1,4 +1,4 @@
-import { LanguageCode, PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
+import { LanguageCode, PluginCommonModule, Type, DeenruvPlugin } from '@deenruv/core';
 import { gql } from 'graphql-tag';
 
 import { braintreePaymentMethodHandler } from './braintree.handler';
@@ -26,7 +26,7 @@ import { BraintreePluginOptions } from './types';
  *
  * ## Setup
  *
- * 1. Add the plugin to your VendureConfig `plugins` array:
+ * 1. Add the plugin to your DeenruvConfig `plugins` array:
  *     ```ts
  *     import { BraintreePlugin } from '\@deenruv/payments-plugin/package/braintree';
  *     import { Environment } from 'braintree';

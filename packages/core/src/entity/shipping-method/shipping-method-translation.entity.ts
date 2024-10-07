@@ -4,7 +4,7 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomShippingMethodFieldsTranslation } from '../custom-entity-fields';
 import { Product } from '../product/product.entity';
 
@@ -12,7 +12,7 @@ import { ShippingMethod } from './shipping-method.entity';
 
 @Entity()
 export class ShippingMethodTranslation
-    extends VendureEntity
+    extends DeenruvEntity
     implements Translation<ShippingMethod>, HasCustomFields
 {
     constructor(input?: DeepPartial<Translation<Product>>) {

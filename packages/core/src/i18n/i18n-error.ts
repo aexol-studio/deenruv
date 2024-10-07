@@ -1,10 +1,10 @@
 import { GraphQLError } from 'graphql';
 
-import { LogLevel } from '../config/logger/vendure-logger';
+import { LogLevel } from '../config/logger/deenruv-logger';
 
 /**
  * @description
- * All errors thrown in the Vendure server must use or extend this error class. This allows the
+ * All errors thrown in the Deenruv server must use or extend this error class. This allows the
  * error message to be translated before being served to the client.
  *
  * The error messages should be provided in the form of a string key which corresponds to

@@ -2,8 +2,8 @@ import { ID, Type } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { ChannelAware } from '../../common';
-import { VendureEntity } from '../../entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEntity } from '../../entity';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -14,7 +14,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsPage Event Types
  * @since 1.4
  */
-export class ChangeChannelEvent<T extends ChannelAware & VendureEntity> extends VendureEvent {
+export class ChangeChannelEvent<T extends ChannelAware & DeenruvEntity> extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public entity: T,

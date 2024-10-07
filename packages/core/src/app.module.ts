@@ -5,7 +5,7 @@ import { ApiModule } from './api/api.module';
 import { Middleware, MiddlewareHandler } from './common';
 import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
-import { Logger } from './config/logger/vendure-logger';
+import { Logger } from './config/logger/deenruv-logger';
 import { ConnectionModule } from './connection/connection.module';
 import { HealthCheckModule } from './health-check/health-check.module';
 import { I18nModule } from './i18n/i18n.module';

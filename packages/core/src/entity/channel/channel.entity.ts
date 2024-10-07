@@ -3,7 +3,7 @@ import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, ManyToMany, ManyToOne } from 'typeorm';
 
 import { Customer, PaymentMethod, Promotion, Role, ShippingMethod, StockLocation } from '..';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Collection } from '../collection/collection.entity';
 import { CustomChannelFields } from '../custom-entity-fields';
 import { EntityId } from '../entity-id.decorator';
@@ -25,7 +25,7 @@ import { Zone } from '../zone/zone.entity';
  * * Assign only specific StockLocations, Assets, Facets, Collections, Promotions, ShippingMethods & PaymentMethods to the Channel
  * * Have Orders and Customers associated with specific Channels.
  *
- * In Vendure, Channels have a number of different uses, such as:
+ * In Deenruv, Channels have a number of different uses, such as:
  *
  * * Multi-region stores, where there is a distinct website for each territory with its own available inventory, pricing, tax and shipping rules.
  * * Creating distinct rules and inventory for different sales channels such as Amazon.
@@ -35,7 +35,7 @@ import { Zone } from '../zone/zone.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Channel extends VendureEntity {
+export class Channel extends DeenruvEntity {
     constructor(input?: DeepPartial<Channel>) {
         super(input);
         if (!input || !input.token) {
@@ -52,7 +52,7 @@ export class Channel extends VendureEntity {
 
     /**
      * @description
-     * A unique token (string) used to identify the Channel in the `vendure-token` header of the
+     * A unique token (string) used to identify the Channel in the `deenruv-token` header of the
      * GraphQL API requests.
      */
     @Column({ unique: true })

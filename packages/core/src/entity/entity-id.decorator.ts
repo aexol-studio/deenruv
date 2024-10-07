@@ -18,7 +18,7 @@ let primaryGeneratedColumn: { entity: any; name: string } | undefined;
 
 /**
  * Decorates a property which should be marked as a generated primary key.
- * Designed to be applied to the VendureEntity id property.
+ * Designed to be applied to the DeenruvEntity id property.
  */
 export function PrimaryGeneratedId() {
     return (entity: any, propertyName: string) => {
@@ -68,7 +68,7 @@ export function getIdColumnsFor(entityType: Type<any>): IdColumnConfig[] {
 export function getPrimaryGeneratedIdColumn(): { entity: any; name: string } {
     if (!primaryGeneratedColumn) {
         throw new Error(
-            'primaryGeneratedColumn is undefined. The base VendureEntity must have the @PrimaryGeneratedId() decorator set on its id property.',
+            'primaryGeneratedColumn is undefined. The base DeenruvEntity must have the @PrimaryGeneratedId() decorator set on its id property.',
         );
     }
     return primaryGeneratedColumn;

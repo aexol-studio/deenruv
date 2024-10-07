@@ -13,7 +13,7 @@ import {
     RelationCustomFieldConfig,
 } from '../../../config/custom-field/custom-field-types';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 @Injectable()
 export class CustomFieldRelationService {
@@ -28,7 +28,7 @@ export class CustomFieldRelationService {
      * method will get the values from the input object and persist those relations in the
      * database.
      */
-    async updateRelations<T extends HasCustomFields & VendureEntity>(
+    async updateRelations<T extends HasCustomFields & DeenruvEntity>(
         ctx: RequestContext,
         entityType: Type<T>,
         input: { customFields?: { [key: string]: any } },
@@ -43,7 +43,7 @@ export class CustomFieldRelationService {
                 const inputIdName = getGraphQlInputName(field);
                 const idOrIds = input.customFields[inputIdName];
                 if (idOrIds !== undefined) {
-                    let relations: VendureEntity | VendureEntity[] | undefined | null;
+                    let relations: DeenruvEntity | DeenruvEntity[] | undefined | null;
                     if (idOrIds === null) {
                         // an explicitly `null` value means remove the relation
                         relations = null;

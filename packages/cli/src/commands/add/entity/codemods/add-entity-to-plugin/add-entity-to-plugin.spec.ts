@@ -4,7 +4,7 @@ import { Project } from 'ts-morph';
 import { describe, expect, it } from 'vitest';
 
 import { defaultManipulationSettings } from '../../../../../constants';
-import { VendurePluginRef } from '../../../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../../../shared/deenruv-plugin-ref';
 import { createFile, getPluginClasses } from '../../../../../utilities/ast-utils';
 import { expectSourceFileContentToMatch } from '../../../../../utilities/testing-utils';
 
@@ -25,7 +25,7 @@ describe('addEntityToPlugin', () => {
             path.join(__dirname, 'fixtures', 'entity.ts'),
         );
         const entityClass = entityFile.getClass('ScaffoldEntity');
-        addEntityToPlugin(new VendurePluginRef(pluginClasses[0]), entityClass!);
+        addEntityToPlugin(new DeenruvPluginRef(pluginClasses[0]), entityClass!);
 
         expectSourceFileContentToMatch(
             pluginClasses[0].getSourceFile(),

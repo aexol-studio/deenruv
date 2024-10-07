@@ -12,7 +12,7 @@ import { ProductVariant } from '../../entity/product-variant/product-variant.ent
  * :::info
  *
  * This is configured via the `orderOptions.orderItemPriceCalculationStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

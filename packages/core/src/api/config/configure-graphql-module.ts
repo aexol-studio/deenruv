@@ -104,7 +104,7 @@ async function createGraphQLOptions(
         fieldResolverEnhancers: ['guards'],
         resolvers,
         // We no longer rely on the upload facility bundled with Apollo Server, and instead
-        // manually configure the graphql-upload package. See https://github.com/vendure-ecommerce/vendure/issues/396
+        // manually configure the graphql-upload package. See https://github.com/deenruv-ecommerce/deenruv/issues/396
         uploads: false,
         playground: options.playground,
         csrfPrevention: false,

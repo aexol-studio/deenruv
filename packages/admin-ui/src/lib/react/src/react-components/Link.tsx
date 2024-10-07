@@ -5,7 +5,7 @@ import { useInjector } from '../react-hooks/use-injector';
 /**
  * @description
  * A React component which renders an anchor tag and navigates to the specified route when clicked.
- * This is useful when you want to use a React component in a Vendure UI plugin which navigates to
+ * This is useful when you want to use a React component in a Deenruv UI plugin which navigates to
  * a route in the admin-ui.
  *
  * @example

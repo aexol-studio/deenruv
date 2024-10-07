@@ -15,7 +15,7 @@ import { InternalServerError } from '../../common/error/errors';
 import { ChannelAware } from '../../common/types/common-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { OrderState } from '../../service/helpers/order-state-machine/order-state';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomOrderFields } from '../custom-entity-fields';
 import { Customer } from '../customer/customer.entity';
@@ -41,7 +41,7 @@ import { Surcharge } from '../surcharge/surcharge.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Order extends VendureEntity implements ChannelAware, HasCustomFields {
+export class Order extends DeenruvEntity implements ChannelAware, HasCustomFields {
     constructor(input?: DeepPartial<Order>) {
         super(input);
     }

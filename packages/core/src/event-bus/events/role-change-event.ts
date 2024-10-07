@@ -2,7 +2,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Administrator, Role } from '../../entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -13,7 +13,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsPage Event Types
  * @since 1.4
  */
-export class RoleChangeEvent extends VendureEvent {
+export class RoleChangeEvent extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public admin: Administrator,

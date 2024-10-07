@@ -12,7 +12,7 @@ import { Job } from '../../job-queue/job';
  * :::info
  *
  * This is configured via the `systemOptions.errorHandlers` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

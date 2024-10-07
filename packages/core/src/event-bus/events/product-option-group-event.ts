@@ -6,7 +6,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { ProductOptionGroup } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type ProductOptionGroupInputTypes =
     | Omit<CreateProductOptionGroupInput, 'options'>
@@ -21,7 +21,7 @@ type ProductOptionGroupInputTypes =
  * @docsPage Event Types
  * @since 1.4
  */
-export class ProductOptionGroupEvent extends VendureEntityEvent<
+export class ProductOptionGroupEvent extends DeenruvEntityEvent<
     ProductOptionGroup,
     ProductOptionGroupInputTypes
 > {

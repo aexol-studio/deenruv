@@ -12,7 +12,7 @@ import { Zone } from '../../entity/zone/zone.entity';
  * :::info
  *
  * This is configured via the `catalogOptions.productVariantPriceCalculationStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

@@ -1,9 +1,9 @@
 import { ClassDeclaration } from 'ts-morph';
 
-import { VendurePluginRef } from '../../../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../../../shared/deenruv-plugin-ref';
 import { addImportsToFile } from '../../../../../utilities/ast-utils';
 
-export function addEntityToPlugin(plugin: VendurePluginRef, entityClass: ClassDeclaration) {
+export function addEntityToPlugin(plugin: DeenruvPluginRef, entityClass: ClassDeclaration) {
     if (!entityClass) {
         throw new Error('Could not find entity class');
     }

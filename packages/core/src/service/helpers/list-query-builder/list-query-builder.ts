@@ -23,7 +23,7 @@ import {
 } from '../../../common';
 import { ConfigService, CustomFields, Logger } from '../../../config';
 import { TransactionalConnection } from '../../../connection';
-import { VendureEntity } from '../../../entity';
+import { DeenruvEntity } from '../../../entity';
 import { joinTreeRelationsDynamically } from '../utils/tree-relations-qb-joiner';
 
 import { getColumnMetadata, getEntityAlias } from './connection-utils';
@@ -38,7 +38,7 @@ import { parseSortParams } from './parse-sort-params';
  * @docsCategory data-access
  * @docsPage ListQueryBuilder
  */
-export type ExtendedListQueryOptions<T extends VendureEntity> = {
+export type ExtendedListQueryOptions<T extends DeenruvEntity> = {
     relations?: string[];
     channelId?: ID;
     where?: FindOptionsWhere<T>;
@@ -146,14 +146,14 @@ export type ExtendedListQueryOptions<T extends VendureEntity> = {
  *   totalItems: Int!
  * }
  *
- * # Generated at run-time by Vendure
+ * # Generated at run-time by Deenruv
  * input BlogPostListOptions
  *
  * extend type Query {
  *    blogPosts(options: BlogPostListOptions): BlogPostList!
  * }
  * ```
- * When Vendure bootstraps, it will find the `BlogPostListOptions` input and, because it is used in a query
+ * When Deenruv bootstraps, it will find the `BlogPostListOptions` input and, because it is used in a query
  * returning a `PaginatedList` type, it knows that it should dynamically generate this input. This means
  * all primitive field of the `BlogPost` type (namely, "published", "title" and "body") will have `filter` and
  * `sort` inputs created for them, as well a `skip` and `take` fields for pagination.
@@ -220,7 +220,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
      * filter object contains that property, which then means we would need
      * to join that relation.
      */
-    filterObjectHasProperty<FP extends FilterParameter<VendureEntity>>(
+    filterObjectHasProperty<FP extends FilterParameter<DeenruvEntity>>(
         filterObject: FP | NullOptionals<FP> | null | undefined,
         property: keyof FP,
     ): boolean {
@@ -250,7 +250,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
      * @description
      * Creates and configures a SelectQueryBuilder for queries that return paginated lists of entities.
      */
-    build<T extends VendureEntity>(
+    build<T extends DeenruvEntity>(
         entity: Type<T>,
         options: ListQueryOptions<T> = {},
         extendedOptions: ExtendedListQueryOptions<T> = {},
@@ -391,7 +391,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
      * get the base list query. Other relations are then joined individually in the patched `getManyAndCount()`
      * method.
      */
-    private getMinimumRequiredRelations<T extends VendureEntity>(
+    private getMinimumRequiredRelations<T extends DeenruvEntity>(
         repository: Repository<T>,
         options: ListQueryOptions<T>,
         extendedOptions: ExtendedListQueryOptions<T>,
@@ -448,7 +448,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
      *
      * This method mutates the customPropertyMap object.
      */
-    private normalizeCustomPropertyMap<T extends VendureEntity>(
+    private normalizeCustomPropertyMap<T extends DeenruvEntity>(
         customPropertyMap: { [name: string]: string },
         options: ListQueryOptions<any>,
         qb: SelectQueryBuilder<any>,
@@ -499,7 +499,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
      * Some calculated columns (those with the `@Calculated()` decorator) require extra joins in order
      * to derive the data needed for their expressions.
      */
-    private joinCalculatedColumnRelations<T extends VendureEntity>(
+    private joinCalculatedColumnRelations<T extends DeenruvEntity>(
         qb: SelectQueryBuilder<T>,
         entity: Type<T>,
         options: ListQueryOptions<T>,
@@ -540,7 +540,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
      * then we need to apply appropriate WHERE clauses to limit
      * the joined translation relations.
      */
-    private applyTranslationConditions<T extends VendureEntity>(
+    private applyTranslationConditions<T extends DeenruvEntity>(
         qb: SelectQueryBuilder<any>,
         entity: Type<T>,
         sortParams: NullOptionals<SortParameter<T>> & FindOneOptions<T>['order'],
@@ -643,7 +643,7 @@ export class ListQueryBuilder implements OnApplicationBootstrap {
         }
     }
 
-    private isRelationAlreadyJoined<T extends VendureEntity>(
+    private isRelationAlreadyJoined<T extends DeenruvEntity>(
         qb: SelectQueryBuilder<T>,
         alias: string,
     ): boolean {

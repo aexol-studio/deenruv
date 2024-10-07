@@ -2,7 +2,7 @@ import {
     dummyPaymentHandler,
     DefaultJobQueuePlugin,
     DefaultSearchPlugin,
-    VendureConfig,
+    DeenruvConfig,
 } from '@deenruv/core';
 import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
 import { AssetServerPlugin } from '@deenruv/asset-server-plugin';
@@ -12,7 +12,7 @@ import path from 'path';
 
 const IS_DEV = process.env.APP_ENV === 'dev';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     apiOptions: {
         port: 3000,
         adminApiPath: 'admin-api',
@@ -48,7 +48,7 @@ export const config: VendureConfig = {
         synchronize: false,
         migrations: [path.join(__dirname, './migrations/*.+(js|ts)')],
         logging: false,
-        database: {{#if isSQLjs}}new Uint8Array([]){{else if isSQLite}}path.join(__dirname, '../vendure.sqlite'){{else}}process.env.DB_NAME{{/if}},
+        database: {{#if isSQLjs}}new Uint8Array([]){{else if isSQLite}}path.join(__dirname, '../deenruv.sqlite'){{else}}process.env.DB_NAME{{/if}},
         {{#if dbSchema}}
         schema: process.env.DB_SCHEMA,
         {{/if}}
@@ -56,7 +56,7 @@ export const config: VendureConfig = {
         ssl: true,
         {{/if}}
         {{#if isSQLjs}}
-        location: path.join(__dirname, 'vendure.sqlite'),
+        location: path.join(__dirname, 'deenruv.sqlite'),
         autoSave: true,
         {{/if}}
         {{#if requiresConnection}}

@@ -13,7 +13,7 @@ import {
     StockLevel,
     StockLocation,
     TransactionalConnection,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 
 declare module '@deenruv/core/dist/entity/custom-entity-fields' {

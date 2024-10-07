@@ -8,8 +8,8 @@ import { CurrencyCode, Order } from '@deenruv/core';
  * > For zero-decimal currencies, still provide amounts as an integer but without multiplying by 100.
  * > For example, to charge ¥500, provide an amount value of 500.
  *
- * Therefore, for a fractionless currency like JPY, we need to divide the amount by 100 (since Vendure always
- * stores money amounts multiplied by 100). See https://github.com/vendure-ecommerce/vendure/issues/1630
+ * Therefore, for a fractionless currency like JPY, we need to divide the amount by 100 (since Deenruv always
+ * stores money amounts multiplied by 100). See https://github.com/deenruv-ecommerce/deenruv/issues/1630
  */
 export function getAmountInStripeMinorUnits(order: Order): number {
     return currencyHasFractionPart(order.currencyCode)
@@ -20,7 +20,7 @@ export function getAmountInStripeMinorUnits(order: Order): number {
 /**
  * @description
  * Performs the reverse of `getAmountInStripeMinorUnits` - converting the Stripe minor units into the format
- * used by Vendure.
+ * used by Deenruv.
  */
 export function getAmountFromStripeMinorUnits(order: Order, stripeAmount: number): number {
     return currencyHasFractionPart(order.currencyCode) ? stripeAmount : stripeAmount * 100;

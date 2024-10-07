@@ -1,5 +1,5 @@
 import type { Translation } from '@deenruv/core';
-import { DeepPartial, LanguageCode, VendureEntity } from '@deenruv/core';
+import { DeepPartial, LanguageCode, DeenruvEntity } from '@deenruv/core';
 import { Column, Entity, Relation, ManyToOne } from 'typeorm';
 
 import { Campaign } from './campaign.entity';
@@ -10,7 +10,7 @@ import { Campaign } from './campaign.entity';
  * @docsCategory entities
  */
 @Entity('campaign_translation')
-export class CampaignTranslation extends VendureEntity implements Translation<Campaign> {
+export class CampaignTranslation extends DeenruvEntity implements Translation<Campaign> {
     constructor(input?: DeepPartial<Translation<Campaign>>) {
         super(input);
     }

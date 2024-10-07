@@ -1,6 +1,6 @@
 import { RequestContext } from '../../api/common/request-context';
 import { User } from '../../entity/user/user.entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -10,7 +10,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsPage Event Types
  * @since 1.4
  */
-export class PasswordResetVerifiedEvent extends VendureEvent {
+export class PasswordResetVerifiedEvent extends DeenruvEvent {
     constructor(public ctx: RequestContext, public user: User) {
         super();
     }

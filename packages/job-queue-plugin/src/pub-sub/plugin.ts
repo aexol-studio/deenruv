@@ -1,5 +1,5 @@
 import { PubSub } from '@google-cloud/pubsub';
-import { PluginCommonModule, Type, VendurePlugin } from '@deenruv/core';
+import { PluginCommonModule, Type, DeenruvPlugin } from '@deenruv/core';
 
 import { PUB_SUB_OPTIONS } from './constants';
 import { PubSubOptions } from './options';

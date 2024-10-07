@@ -17,8 +17,8 @@ import { EmbeddedMetadataArgs } from 'typeorm/metadata-args/EmbeddedMetadataArgs
 import { DateUtils } from 'typeorm/util/DateUtils';
 
 import { CustomFieldConfig, CustomFields } from '../config/custom-field/custom-field-types';
-import { Logger } from '../config/logger/vendure-logger';
-import { VendureConfig } from '../config/vendure-config';
+import { Logger } from '../config/logger/deenruv-logger';
+import { DeenruvConfig } from '../config/deenruv-config';
 
 /**
  * The maximum length of the "length" argument of a MySQL varchar column.
@@ -29,7 +29,7 @@ const MAX_STRING_LENGTH = 65535;
  * Dynamically add columns to the custom field entity based on the CustomFields config.
  */
 function registerCustomFieldsForEntity(
-    config: VendureConfig,
+    config: DeenruvConfig,
     entityName: keyof CustomFields,
     // eslint-disable-next-line @typescript-eslint/prefer-function-type
     ctor: { new (): any },
@@ -217,7 +217,7 @@ function getDefault(customField: CustomFieldConfig, dbEngine: DataSourceOptions[
     return type === 'datetime' ? formatDefaultDatetime(dbEngine, defaultValue) : defaultValue;
 }
 
-function assertLocaleFieldsNotSpecified(config: VendureConfig, entityName: keyof CustomFields) {
+function assertLocaleFieldsNotSpecified(config: DeenruvConfig, entityName: keyof CustomFields) {
     const customFields = config.customFields && config.customFields[entityName];
     if (customFields) {
         for (const customField of customFields) {
@@ -235,7 +235,7 @@ function assertLocaleFieldsNotSpecified(config: VendureConfig, entityName: keyof
  * Dynamically registers any custom fields with TypeORM. This function should be run at the bootstrap
  * stage of the app lifecycle, before the AppModule is initialized.
  */
-export function registerCustomEntityFields(config: VendureConfig) {
+export function registerCustomEntityFields(config: DeenruvConfig) {
     // In order to determine the classes used for the custom field embedded types, we need
     // to introspect the metadata args storage.
     const metadataArgsStorage = getMetadataArgsStorage();

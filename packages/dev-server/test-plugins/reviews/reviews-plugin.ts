@@ -1,4 +1,4 @@
-import { LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { LanguageCode, PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 
 import { ProductReview } from './entities/product-review.entity';
 import { adminApiExtensions, shopApiExtensions } from './api/api-extensions';

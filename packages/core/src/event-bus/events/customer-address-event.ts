@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Address } from '../../entity/address/address.entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 /**
  * Possible input types for Address mutations
@@ -19,7 +19,7 @@ type CustomerAddressInputTypes = CreateAddressInput | UpdateAddressInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class CustomerAddressEvent extends VendureEntityEvent<Address, CustomerAddressInputTypes> {
+export class CustomerAddressEvent extends DeenruvEntityEvent<Address, CustomerAddressInputTypes> {
     constructor(
         public ctx: RequestContext,
         public entity: Address,

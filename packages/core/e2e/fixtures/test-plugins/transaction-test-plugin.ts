@@ -12,14 +12,14 @@ import {
     Transaction,
     TransactionalConnection,
     User,
-    VendureEvent,
-    VendurePlugin,
+    DeenruvEvent,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { vi } from 'vitest';
 
-export class TestEvent extends VendureEvent {
+export class TestEvent extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public administrator: Administrator,

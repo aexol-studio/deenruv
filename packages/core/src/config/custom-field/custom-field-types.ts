@@ -22,7 +22,7 @@ import {
 
 import { RequestContext } from '../../api/common/request-context';
 import { Injector } from '../../common/injector';
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 // prettier-ignore
 export type DefaultValueType<T extends CustomFieldType> =
@@ -109,7 +109,7 @@ export type RelationCustomFieldConfig = TypedCustomFieldConfig<
     'relation',
     Omit<GraphQLRelationCustomFieldConfig, 'entity' | 'scalarFields'>
 > & {
-    entity: Type<VendureEntity>;
+    entity: Type<DeenruvEntity>;
     graphQLType?: string;
     eager?: boolean;
     inverseSide?: string | ((object: any) => any);

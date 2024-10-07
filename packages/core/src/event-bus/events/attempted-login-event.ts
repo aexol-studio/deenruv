@@ -1,6 +1,6 @@
 import { RequestContext } from '../../api/common/request-context';
 import { User } from '../../entity/user/user.entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -11,7 +11,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class AttemptedLoginEvent extends VendureEvent {
+export class AttemptedLoginEvent extends DeenruvEvent {
     constructor(public ctx: RequestContext, public strategy: string, public identifier?: string) {
         super();
     }

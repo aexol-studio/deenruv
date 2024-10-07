@@ -27,7 +27,7 @@ import { Order } from '../../entity/order/order.entity';
  * :::info
  *
  * This is configured via the `orderOptions.orderByCodeAccessStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *
@@ -45,7 +45,7 @@ export interface OrderByCodeAccessStrategy extends InjectableStrategy {
 
 /**
  * @description
- * The default OrderByCodeAccessStrategy used by Vendure. It permitts permanent access to
+ * The default OrderByCodeAccessStrategy used by Deenruv. It permitts permanent access to
  * the Customer owning the Order and anyone within a given time period after placing the Order
  * (defaults to 2h).
  *

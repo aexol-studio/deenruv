@@ -30,8 +30,8 @@ let projectName: string | undefined;
 
 // Set the environment variable which can then be used to
 // conditionally modify behaviour of core or plugins.
-const createEnvVar: import('@deenruv/common/lib/shared-constants').CREATING_VENDURE_APP =
-    'CREATING_VENDURE_APP';
+const createEnvVar: import('@deenruv/common/lib/shared-constants').CREATING_DEENRUV_APP =
+    'CREATING_DEENRUV_APP';
 process.env[createEnvVar] = 'true';
 
 program
@@ -52,9 +52,9 @@ program
     .parse(process.argv);
 
 const options = program.opts();
-void createVendureApp(projectName, options.useNpm, options.logLevel || 'silent', options.ci);
+void createDeenruvApp(projectName, options.useNpm, options.logLevel || 'silent', options.ci);
 
-export async function createVendureApp(
+export async function createDeenruvApp(
     name: string | undefined,
     useNpm: boolean,
     logLevel: CliLogLevel,
@@ -69,7 +69,7 @@ export async function createVendureApp(
     }
 
     intro(
-        `Let's create a ${pc.blue(pc.bold('Vendure App'))} ✨ ${pc.dim(`v${packageJson.version as string}`)}`,
+        `Let's create a ${pc.blue(pc.bold('Deenruv App'))} ✨ ${pc.dim(`v${packageJson.version as string}`)}`,
     );
 
     const root = path.resolve(name);
@@ -93,7 +93,7 @@ export async function createVendureApp(
     if (scaffoldExists) {
         console.log(
             pc.yellow(
-                'It appears that a new Vendure project scaffold already exists. Re-using the existing files...',
+                'It appears that a new Deenruv project scaffold already exists. Re-using the existing files...',
             ),
         );
         console.log();
@@ -135,7 +135,7 @@ export async function createVendureApp(
 
     const setupSpinner = spinner();
     setupSpinner.start(
-        `Setting up your new Vendure project in ${pc.green(root)}\nThis may take a few minutes...`,
+        `Setting up your new Deenruv project in ${pc.green(root)}\nThis may take a few minutes...`,
     );
 
     const rootPathScript = (fileName: string): string => path.join(root, `${fileName}.ts`);
@@ -173,7 +173,7 @@ export async function createVendureApp(
     scaffoldSpinner.start(`Generating app scaffold`);
     fs.ensureDirSync(path.join(root, 'src'));
     const assetPath = (fileName: string) => path.join(__dirname, '../assets', fileName);
-    const configFile = srcPathScript('vendure-config');
+    const configFile = srcPathScript('deenruv-config');
 
     try {
         await fs
@@ -197,7 +197,7 @@ export async function createVendureApp(
     scaffoldSpinner.stop(`Generated app scaffold`);
 
     const populateSpinner = spinner();
-    populateSpinner.start(`Initializing your new Vendure server`);
+    populateSpinner.start(`Initializing your new Deenruv server`);
     // register ts-node so that the config file can be loaded
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require(path.join(root, 'node_modules/ts-node')).register();
@@ -212,7 +212,7 @@ export async function createVendureApp(
 
         const initialDataPath = path.join(assetsDir, 'initial-data.json');
         const port = await detectPort(3000);
-        const vendureLogLevel =
+        const deenruvLogLevel =
             logLevel === 'silent'
                 ? LogLevel.Error
                 : logLevel === 'verbose'
@@ -232,7 +232,7 @@ export async function createVendureApp(
                     ...config.dbConnectionOptions,
                     synchronize: true,
                 },
-                logger: new DefaultLogger({ level: vendureLogLevel }),
+                logger: new DefaultLogger({ level: deenruvLogLevel }),
                 importExportOptions: {
                     importAssetsDir: path.join(assetsDir, 'images'),
                 },
@@ -266,7 +266,7 @@ export async function createVendureApp(
 
     const startCommand = packageManager === 'yarn' ? 'yarn dev' : 'npm run dev';
     const nextSteps = [
-        `${pc.green('Success!')} Created a new Vendure server at:`,
+        `${pc.green('Success!')} Created a new Deenruv server at:`,
         `\n`,
         pc.italic(root),
         `\n`,
@@ -282,7 +282,7 @@ export async function createVendureApp(
 
 /**
  * Run some initial checks to ensure that it is okay to proceed with creating
- * a new Vendure project in the given location.
+ * a new Deenruv project in the given location.
  */
 function runPreChecks(name: string | undefined, useNpm: boolean): name is string {
     if (typeof name === 'undefined') {
@@ -290,7 +290,7 @@ function runPreChecks(name: string | undefined, useNpm: boolean): name is string
         console.log(`  ${pc.cyan(program.name())} ${pc.green('<project-directory>')}`);
         console.log();
         console.log('For example:');
-        console.log(`  ${pc.cyan(program.name())} ${pc.green('my-vendure-app')}`);
+        console.log(`  ${pc.cyan(program.name())} ${pc.green('my-deenruv-app')}`);
         process.exit(1);
         return false;
     }
@@ -304,7 +304,7 @@ function runPreChecks(name: string | undefined, useNpm: boolean): name is string
 }
 
 /**
- * Generate the default directory structure for a new Vendure project
+ * Generate the default directory structure for a new Deenruv project
  */
 async function createDirectoryStructure(root: string) {
     await fs.ensureDir(path.join(root, 'static', 'email', 'test-emails'));

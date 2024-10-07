@@ -1,7 +1,7 @@
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity } from 'typeorm';
 
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 
 /**
  * @description
@@ -11,7 +11,7 @@ import { VendureEntity } from '../base/base.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Tag extends VendureEntity {
+export class Tag extends DeenruvEntity {
     constructor(input?: DeepPartial<Tag>) {
         super(input);
     }

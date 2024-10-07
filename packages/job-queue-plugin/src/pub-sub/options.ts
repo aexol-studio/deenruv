@@ -6,7 +6,7 @@ export interface PubSubOptions {
     concurrency?: number;
     /**
      * @description
-     * This is the mapping of Vendure queue names to PubSub Topics and Subscriptions
+     * This is the mapping of Deenruv queue names to PubSub Topics and Subscriptions
      * For each queue a topic and subscription is required to exist.
      */
     queueNamePubSubPair?: Map<string, [string, string]>;

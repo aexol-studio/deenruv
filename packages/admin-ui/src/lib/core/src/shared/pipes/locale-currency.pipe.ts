@@ -7,7 +7,7 @@ import { LocaleBasePipe } from './locale-base.pipe';
 
 /**
  * @description
- * Formats a Vendure monetary value (in cents) into the correct format for the configured currency and display
+ * Formats a Deenruv monetary value (in cents) into the correct format for the configured currency and display
  * locale.
  *
  * @example

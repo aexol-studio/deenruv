@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Role } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type RoleInputTypes = CreateRoleInput | UpdateRoleInput | ID;
 
@@ -15,7 +15,7 @@ type RoleInputTypes = CreateRoleInput | UpdateRoleInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class RoleEvent extends VendureEntityEvent<Role, RoleInputTypes> {
+export class RoleEvent extends DeenruvEntityEvent<Role, RoleInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Role,

@@ -8,7 +8,7 @@ import {
 import { RequestContext } from '../../../api/common/request-context';
 import { DuplicateEntityError } from '../../../common/error/generated-graphql-admin-errors';
 import { ConfigService } from '../../../config/config.service';
-import { Logger } from '../../../config/logger/vendure-logger';
+import { Logger } from '../../../config/logger/deenruv-logger';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
 import { ConfigArgService } from '../config-arg/config-arg.service';
 

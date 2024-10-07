@@ -10,7 +10,7 @@ const version = require('../package.json').version;
 
 program
     .version(version)
-    .usage(`vendure <command>`)
+    .usage(`deenruv <command>`)
     .description(
         pc.blue(`
                                 888                          
@@ -26,7 +26,7 @@ Y88  88P 88888888 888  888 888  888 888  888 888    88888888
 
 program
     .command('add')
-    .description('Add a feature to your Vendure project')
+    .description('Add a feature to your Deenruv project')
     .action(async () => {
         const { addCommand } = await import('./commands/add/add');
         await addCommand();

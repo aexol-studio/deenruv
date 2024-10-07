@@ -45,7 +45,7 @@ export class QueryComplexityPlugin implements ApolloServerPlugin {
                     query,
                     variables: request.variables,
                     estimators: this.options.queryComplexityEstimators ?? [
-                        defaultVendureComplexityEstimator(
+                        defaultDeenruvComplexityEstimator(
                             this.options.customComplexityFactors ?? {},
                             this.options.logComplexityScore ?? false,
                         ),
@@ -91,7 +91,7 @@ function isAdminApi(schema: GraphQLSchema): boolean {
  *
  * @docsCategory core plugins/HardenPlugin
  */
-export function defaultVendureComplexityEstimator(
+export function defaultDeenruvComplexityEstimator(
     customComplexityFactors: { [path: string]: number },
     logFieldScores: boolean,
 ) {

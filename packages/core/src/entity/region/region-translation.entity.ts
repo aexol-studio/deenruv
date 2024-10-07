@@ -4,13 +4,13 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomRegionFieldsTranslation } from '../custom-entity-fields';
 
 import { Region } from './region.entity';
 
 @Entity()
-export class RegionTranslation extends VendureEntity implements Translation<Region>, HasCustomFields {
+export class RegionTranslation extends DeenruvEntity implements Translation<Region>, HasCustomFields {
     constructor(input?: DeepPartial<Translation<RegionTranslation>>) {
         super(input);
     }

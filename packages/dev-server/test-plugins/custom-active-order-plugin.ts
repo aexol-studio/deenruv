@@ -6,7 +6,7 @@ import {
     OrderService,
     RequestContext,
     TransactionalConnection,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { CustomOrderFields } from '@deenruv/core/dist/entity/custom-entity-fields';
 import gql from 'graphql-tag';

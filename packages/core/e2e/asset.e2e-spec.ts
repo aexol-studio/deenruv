@@ -128,7 +128,7 @@ describe('Asset resolver', () => {
     });
 
     /**
-     * https://github.com/vendure-ecommerce/vendure/issues/459
+     * https://github.com/deenruv-ecommerce/deenruv/issues/459
      */
     it('transforms URL when fragment defined before query (GH issue #459)', async () => {
         const { asset } = await adminClient.query<
@@ -215,7 +215,7 @@ describe('Asset resolver', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/727
+        // https://github.com/deenruv-ecommerce/deenruv/issues/727
         it('file extension with shared type', async () => {
             const filesToUpload = [path.join(__dirname, 'fixtures/assets/dummy.zip')];
             const { createAssets }: Codegen.CreateAssetsMutation = await adminClient.fileUploadMutation({
@@ -331,7 +331,7 @@ describe('Asset resolver', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/990
+        // https://github.com/deenruv-ecommerce/deenruv/issues/990
         it('errors if the filesize is too large', async () => {
             /**
              * Based on https://stackoverflow.com/a/49433633/772859

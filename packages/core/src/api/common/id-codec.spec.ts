@@ -430,7 +430,7 @@ describe('IdCodecService', () => {
             });
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/1596
+        // https://github.com/deenruv-ecommerce/deenruv/issues/1596
         it('works with heterogeneous array', () => {
             const input1 = { value: [null, 'foo'] };
             const input2 = { value: [false, 'foo'] };

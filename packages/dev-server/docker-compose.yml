@@ -62,7 +62,7 @@ services:
     image: postgres:12.3
     container_name: postgres
     environment:
-      POSTGRES_DB: vendure
+      POSTGRES_DB: deenruv
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data

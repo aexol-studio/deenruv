@@ -9,7 +9,7 @@ import { URL } from 'url';
 
 import { Injector } from '../../common/injector';
 import { ConfigService } from '../config.service';
-import { Logger } from '../logger/vendure-logger';
+import { Logger } from '../logger/deenruv-logger';
 
 import { AssetImportStrategy } from './asset-import-strategy';
 

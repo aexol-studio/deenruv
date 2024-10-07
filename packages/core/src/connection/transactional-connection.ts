@@ -18,7 +18,7 @@ import { TransactionIsolationLevel } from '../api/decorators/transaction.decorat
 import { TRANSACTION_MANAGER_KEY } from '../common/constants';
 import { EntityNotFoundError } from '../common/error/errors';
 import { ChannelAware, SoftDeletable } from '../common/types/common-types';
-import { VendureEntity } from '../entity/base/base.entity';
+import { DeenruvEntity } from '../entity/base/base.entity';
 import { joinTreeRelationsDynamically } from '../service/helpers/utils/tree-relations-qb-joiner';
 
 import { findOptionsObjectToArray } from './find-options-object-to-array';
@@ -107,7 +107,7 @@ export class TransactionalConnection {
      * inconsistent state.
      *
      * Such situations include function processed by the JobQueue or stand-alone scripts which make use
-     * of Vendure internal services.
+     * of Deenruv internal services.
      *
      * If there is already a {@link RequestContext} object available, you should pass it in as the first
      * argument in order to create transactional context as the copy. If not, omit the first argument and an empty
@@ -198,7 +198,7 @@ export class TransactionalConnection {
      * Finds an entity of the given type by ID, or throws an `EntityNotFoundError` if none
      * is found.
      */
-    async getEntityOrThrow<T extends VendureEntity>(
+    async getEntityOrThrow<T extends DeenruvEntity>(
         ctx: RequestContext,
         entityType: Type<T>,
         id: ID,
@@ -226,7 +226,7 @@ export class TransactionalConnection {
         }
     }
 
-    private async getEntityOrThrowInternal<T extends VendureEntity>(
+    private async getEntityOrThrowInternal<T extends DeenruvEntity>(
         ctx: RequestContext,
         entityType: Type<T>,
         id: ID,
@@ -270,7 +270,7 @@ export class TransactionalConnection {
      * Like the TypeOrm `Repository.findOne()` method, but limits the results to
      * the given Channel.
      */
-    findOneInChannel<T extends ChannelAware & VendureEntity>(
+    findOneInChannel<T extends ChannelAware & DeenruvEntity>(
         ctx: RequestContext,
         entity: Type<T>,
         id: ID,
@@ -306,7 +306,7 @@ export class TransactionalConnection {
      * Like the TypeOrm `Repository.findByIds()` method, but limits the results to
      * the given Channel.
      */
-    findByIdsInChannel<T extends ChannelAware | VendureEntity>(
+    findByIdsInChannel<T extends ChannelAware | DeenruvEntity>(
         ctx: RequestContext,
         entity: Type<T>,
         ids: ID[],
@@ -323,7 +323,7 @@ export class TransactionalConnection {
 
         if (Array.isArray(options.relations) && options.relations.length > 0) {
             const joinedRelations = joinTreeRelationsDynamically(
-                qb as SelectQueryBuilder<VendureEntity>,
+                qb as SelectQueryBuilder<DeenruvEntity>,
                 entity,
                 options.relations,
             );

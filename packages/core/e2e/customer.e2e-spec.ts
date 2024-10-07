@@ -7,7 +7,7 @@ import {
     EventBus,
     EventBusModule,
     mergeConfig,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { createErrorResultGuard, createTestEnvironment, ErrorResultGuard } from '@deenruv/testing';
 import gql from 'graphql-tag';
@@ -575,7 +575,7 @@ describe('Customer resolver', () => {
             expect(updateCustomer.emailAddress).toBe('unique-email@test.com');
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/1071
+        // https://github.com/deenruv-ecommerce/deenruv/issues/1071
         it('updates the associated User email address', async () => {
             await shopClient.asUserWithCredentials('unique-email@test.com', 'test');
             const { me } = await shopClient.query<Codegen.MeQuery>(ME);
@@ -583,7 +583,7 @@ describe('Customer resolver', () => {
             expect(me?.identifier).toBe('unique-email@test.com');
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/2449
+        // https://github.com/deenruv-ecommerce/deenruv/issues/2449
         it('normalizes email address on update', async () => {
             const { updateCustomer } = await adminClient.query<
                 Codegen.UpdateCustomerMutation,
@@ -688,7 +688,7 @@ describe('Customer resolver', () => {
             expect(createCustomer.user?.identifier).toBe(thirdCustomer.emailAddress);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/1960
+        // https://github.com/deenruv-ecommerce/deenruv/issues/1960
         it('delete a guest Customer', async () => {
             const orderErrorGuard: ErrorResultGuard<ActiveOrderCustomerFragment> = createErrorResultGuard(
                 input => !!input.lines,

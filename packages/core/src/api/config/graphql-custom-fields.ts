@@ -10,7 +10,7 @@ import {
 } from 'graphql';
 
 import { CustomFieldConfig, CustomFields } from '../../config/custom-field/custom-field-types';
-import { Logger } from '../../config/logger/vendure-logger';
+import { Logger } from '../../config/logger/deenruv-logger';
 
 import { getCustomFieldsConfigWithoutInterfaces } from './get-custom-fields-config-without-interfaces';
 

@@ -17,7 +17,7 @@ export interface DefaultSearchPluginInitOptions {
      * @description
      * If set to `true`, the stock status of a ProductVariant (inStock: Boolean) will
      * be exposed in the `search` query results. Enabling this option on an existing
-     * Vendure installation will require a DB migration/synchronization.
+     * Deenruv installation will require a DB migration/synchronization.
      *
      * @default false.
      */

@@ -1,7 +1,7 @@
 import { ID } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
 
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { EntityId } from '../entity-id.decorator';
 import { OrderLine } from '../order-line/order-line.entity';
 
@@ -14,7 +14,7 @@ import { OrderLine } from '../order-line/order-line.entity';
  */
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'discriminator' } })
-export abstract class OrderLineReference extends VendureEntity {
+export abstract class OrderLineReference extends DeenruvEntity {
     @Column()
     quantity: number;
 

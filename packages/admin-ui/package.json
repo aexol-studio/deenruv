@@ -5,15 +5,15 @@
     "scripts": {
         "ng": "ng",
         "start": "node scripts/set-version.js && ng serve",
-        "build:app": "ng build vendure-admin --configuration production",
-        "build": "node scripts/copy-package-json.js && node scripts/set-version.js && node scripts/build-public-api.js && ng build vendure-admin-lib --configuration production && node scripts/compile-styles.js",
+        "build:app": "ng build deenruv-admin --configuration production",
+        "build": "node scripts/copy-package-json.js && node scripts/set-version.js && node scripts/build-public-api.js && ng build deenruv-admin-lib --configuration production && node scripts/compile-styles.js",
         "watch": "ng build --watch=true",
         "test": "ng test --watch=false --browsers=ChromeHeadlessCI --progress=false",
         "lint": "ng lint --fix",
         "extract-translations": "node scripts/extract-translations.js",
         "ngcc": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
     },
-    "homepage": "https://www.vendure.io/",
+    "homepage": "https://www.deenruv.io/",
     "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public",
@@ -23,9 +23,9 @@
     "exports": {
         ".": {
             "types": "./package/index.d.ts",
-            "esm2022": "./package/esm2022/vendure-admin-ui.mjs",
-            "esm": "./package/esm2022/vendure-admin-ui.mjs",
-            "default": "./package/fesm2022/vendure-admin-ui.mjs"
+            "esm2022": "./package/esm2022/deenruv-admin-ui.mjs",
+            "esm": "./package/esm2022/deenruv-admin-ui.mjs",
+            "default": "./package/fesm2022/deenruv-admin-ui.mjs"
         }
     },
     "dependencies": {

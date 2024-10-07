@@ -7,7 +7,7 @@ import { pascalCaseRegex } from '../../../constants';
 import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
 import { EntityRef } from '../../../shared/entity-ref';
 import { analyzeProject, selectPlugin } from '../../../shared/shared-prompts';
-import { VendurePluginRef } from '../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
 import { createFile } from '../../../utilities/ast-utils';
 import { pauseForPromptDisplay } from '../../../utilities/utils';
 
@@ -16,7 +16,7 @@ import { addEntityToPlugin } from './codemods/add-entity-to-plugin/add-entity-to
 const cancelledMessage = 'Add entity cancelled';
 
 export interface AddEntityOptions {
-    plugin?: VendurePluginRef;
+    plugin?: DeenruvPluginRef;
     className: string;
     fileName: string;
     translationFileName: string;
@@ -36,9 +36,9 @@ export const addEntityCommand = new CliCommand({
 async function addEntity(
     options?: Partial<AddEntityOptions>,
 ): Promise<CliCommandReturnVal<{ entityRef: EntityRef }>> {
-    const providedVendurePlugin = options?.plugin;
-    const { project } = await analyzeProject({ providedVendurePlugin, cancelledMessage });
-    const vendurePlugin = providedVendurePlugin ?? (await selectPlugin(project, cancelledMessage));
+    const providedDeenruvPlugin = options?.plugin;
+    const { project } = await analyzeProject({ providedDeenruvPlugin, cancelledMessage });
+    const deenruvPlugin = providedDeenruvPlugin ?? (await selectPlugin(project, cancelledMessage));
     const modifiedSourceFiles: SourceFile[] = [];
 
     const customEntityName = options?.className ?? (await getCustomEntityName(cancelledMessage));
@@ -54,11 +54,11 @@ async function addEntity(
     entitySpinner.start('Creating entity...');
     await pauseForPromptDisplay();
 
-    const { entityClass, translationClass } = createEntity(vendurePlugin, context);
-    addEntityToPlugin(vendurePlugin, entityClass);
+    const { entityClass, translationClass } = createEntity(deenruvPlugin, context);
+    addEntityToPlugin(deenruvPlugin, entityClass);
     modifiedSourceFiles.push(entityClass.getSourceFile());
     if (context.features.translatable) {
-        addEntityToPlugin(vendurePlugin, translationClass);
+        addEntityToPlugin(deenruvPlugin, translationClass);
         modifiedSourceFiles.push(translationClass.getSourceFile());
     }
 
@@ -104,7 +104,7 @@ async function getFeatures(options?: Partial<AddEntityOptions>): Promise<AddEnti
     };
 }
 
-function createEntity(plugin: VendurePluginRef, options: AddEntityOptions) {
+function createEntity(plugin: DeenruvPluginRef, options: AddEntityOptions) {
     const entitiesDir = path.join(plugin.getPluginDir().getPath(), 'entities');
     const entityFile = createFile(
         plugin.getSourceFile().getProject(),

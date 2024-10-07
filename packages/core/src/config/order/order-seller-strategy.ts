@@ -31,7 +31,7 @@ export interface SplitOrderContents {
  * :::info
  *
  * This is configured via the `orderOptions.orderSellerStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

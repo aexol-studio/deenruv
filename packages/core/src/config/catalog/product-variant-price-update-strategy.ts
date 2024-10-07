@@ -46,7 +46,7 @@ export interface UpdatedProductVariantPrice {
  * :::info
  *
  * This is configured via the `catalogOptions.productVariantPriceUpdateStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

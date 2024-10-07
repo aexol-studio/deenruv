@@ -6,7 +6,7 @@ import { I18nError } from '../../i18n/i18n-error';
 import { parseContext } from '../common/parse-context';
 
 /**
- * Logs thrown I18nErrors via the configured VendureLogger.
+ * Logs thrown I18nErrors via the configured DeenruvLogger.
  */
 @Catch()
 export class ExceptionLoggerFilter implements ExceptionFilter {

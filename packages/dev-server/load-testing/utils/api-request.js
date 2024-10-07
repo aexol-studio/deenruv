@@ -2,7 +2,7 @@
 import http from 'k6/http';
 import { check, fail } from 'k6';
 
-const AUTH_TOKEN_HEADER = 'Vendure-Auth-Token';
+const AUTH_TOKEN_HEADER = 'Deenruv-Auth-Token';
 
 export class ApiRequest {
     constructor(apiUrl, fileName) {

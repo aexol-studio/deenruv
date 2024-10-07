@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api';
 import { Country } from '../../entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type CountryInputTypes = CreateCountryInput | UpdateCountryInput | ID;
 
@@ -15,7 +15,7 @@ type CountryInputTypes = CreateCountryInput | UpdateCountryInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class CountryEvent extends VendureEntityEvent<Country, CountryInputTypes> {
+export class CountryEvent extends DeenruvEntityEvent<Country, CountryInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Country,

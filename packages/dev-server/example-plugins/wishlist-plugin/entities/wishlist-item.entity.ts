@@ -1,8 +1,8 @@
-import { DeepPartial, ID, ProductVariant, VendureEntity } from '@deenruv/core';
+import { DeepPartial, ID, ProductVariant, DeenruvEntity } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-export class WishlistItem extends VendureEntity {
+export class WishlistItem extends DeenruvEntity {
     constructor(input?: DeepPartial<WishlistItem>) {
         super(input);
     }

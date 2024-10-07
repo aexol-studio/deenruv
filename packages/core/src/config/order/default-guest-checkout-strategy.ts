@@ -43,9 +43,9 @@ export interface DefaultGuestCheckoutStrategyOptions {
  *
  * @example
  * ```ts
- * import { DefaultGuestCheckoutStrategy, VendureConfig } from '\@deenruv/core';
+ * import { DefaultGuestCheckoutStrategy, DeenruvConfig } from '\@deenruv/core';
  *
- * export const config: VendureConfig = {
+ * export const config: DeenruvConfig = {
  *   orderOptions: {
  *     guestCheckoutStrategy: new DefaultGuestCheckoutStrategy({
  *       allowGuestCheckouts: false,

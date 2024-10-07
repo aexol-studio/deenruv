@@ -3,7 +3,7 @@ import { Column, Index, ManyToOne } from 'typeorm';
 
 import { Orderable } from '../../common/types/common-types';
 import { Asset } from '../asset/asset.entity';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 
 /**
  * @description
@@ -15,7 +15,7 @@ import { VendureEntity } from '../base/base.entity';
  *
  * @docsCategory entities
  */
-export abstract class OrderableAsset extends VendureEntity implements Orderable {
+export abstract class OrderableAsset extends DeenruvEntity implements Orderable {
     protected constructor(input?: DeepPartial<OrderableAsset>) {
         super(input);
     }

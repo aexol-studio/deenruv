@@ -12,7 +12,7 @@ import { ProductVariant } from '../../entity/product-variant/product-variant.ent
  * :::info
  *
  * This is configured via the `catalogOptions.stockDisplayStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

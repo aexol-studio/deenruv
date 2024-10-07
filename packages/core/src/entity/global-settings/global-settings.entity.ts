@@ -2,7 +2,7 @@ import { LanguageCode } from '@deenruv/common/lib/generated-types';
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity } from 'typeorm';
 
-import { VendureEntity } from '..';
+import { DeenruvEntity } from '..';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { CustomGlobalSettingsFields } from '../custom-entity-fields';
 
@@ -12,7 +12,7 @@ import { CustomGlobalSettingsFields } from '../custom-entity-fields';
  * @docsCategory entities
  */
 @Entity()
-export class GlobalSettings extends VendureEntity implements HasCustomFields {
+export class GlobalSettings extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<GlobalSettings>) {
         super(input);
     }

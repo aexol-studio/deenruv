@@ -9,7 +9,7 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  * :::info
  *
  * This is configured via the `authOptions.passwordValidationStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

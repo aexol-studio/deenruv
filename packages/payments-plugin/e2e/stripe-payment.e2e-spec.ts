@@ -178,7 +178,7 @@ describe('Stripe payments', () => {
         expect(createStripePaymentIntent).toEqual('test-client-secret');
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/1935
+    // https://github.com/deenruv-ecommerce/deenruv/issues/1935
     it('should attach metadata to stripe payment intent', async () => {
         StripePlugin.options.metadata = async (injector, ctx, currentOrder) => {
             const hydrator = injector.get(EntityHydrator);
@@ -212,7 +212,7 @@ describe('Stripe payments', () => {
         StripePlugin.options.metadata = undefined;
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/2412
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2412
     it('should attach additional params to payment intent using paymentIntentCreateParams', async () => {
         StripePlugin.options.paymentIntentCreateParams = async (injector, ctx, currentOrder) => {
             const hydrator = injector.get(EntityHydrator);
@@ -246,7 +246,7 @@ describe('Stripe payments', () => {
         StripePlugin.options.paymentIntentCreateParams = undefined;
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/2412
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2412
     it('should attach additional params to customer using customerCreateParams', async () => {
         StripePlugin.options.customerCreateParams = async (injector, ctx, currentOrder) => {
             const hydrator = injector.get(EntityHydrator);
@@ -295,7 +295,7 @@ describe('Stripe payments', () => {
         });
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/2450
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2450
     it('Should not crash on signature validation failure', async () => {
         const MOCKED_WEBHOOK_PAYLOAD = {
             id: 'evt_0',
@@ -330,7 +330,7 @@ describe('Stripe payments', () => {
     });
 
     // TODO: Contribution welcome: test webhook handling and order settlement
-    // https://github.com/vendure-ecommerce/vendure/issues/2450
+    // https://github.com/deenruv-ecommerce/deenruv/issues/2450
     it("Should validate the webhook's signature properly", async () => {
         await shopClient.asUserWithCredentials(customers[0].emailAddress, 'test');
 
@@ -390,7 +390,7 @@ describe('Stripe payments', () => {
         expect(result.status).toEqual(200);
     });
 
-    // https://github.com/vendure-ecommerce/vendure/issues/1630
+    // https://github.com/deenruv-ecommerce/deenruv/issues/1630
     describe('currencies with no fractional units', () => {
         let japanProductId: string;
         beforeAll(async () => {

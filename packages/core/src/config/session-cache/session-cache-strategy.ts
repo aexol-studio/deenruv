@@ -50,7 +50,7 @@ export type CachedSession = {
  * SQL query each time. Therefore, we cache the session data only perform the SQL query once and upon
  * invalidation of the cache.
  *
- * The Vendure default is to use a the {@link InMemorySessionCacheStrategy}, which is fast and suitable for
+ * The Deenruv default is to use a the {@link InMemorySessionCacheStrategy}, which is fast and suitable for
  * single-instance deployments. However, for multi-instance deployments (horizontally scaled, serverless etc.),
  * you will need to define a custom strategy that stores the session cache in a shared data store, such as in the
  * DB or in Redis.
@@ -58,7 +58,7 @@ export type CachedSession = {
  * :::info
  *
  * This is configured via the `authOptions.sessionCacheStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *
@@ -67,7 +67,7 @@ export type CachedSession = {
  *
  * @example
  * ```ts
- * import { CachedSession, Logger, SessionCacheStrategy, VendurePlugin } from '\@deenruv/core';
+ * import { CachedSession, Logger, SessionCacheStrategy, DeenruvPlugin } from '\@deenruv/core';
  * import { Redis, RedisOptions } from 'ioredis';
  *
  * export interface RedisSessionCachePluginOptions {
@@ -75,7 +75,7 @@ export type CachedSession = {
  *   redisOptions?: RedisOptions;
  * }
  * const loggerCtx = 'RedisSessionCacheStrategy';
- * const DEFAULT_NAMESPACE = 'vendure-session-cache';
+ * const DEFAULT_NAMESPACE = 'deenruv-session-cache';
  * const DEFAULT_TTL = 86400;
  *
  * export class RedisSessionCacheStrategy implements SessionCacheStrategy {

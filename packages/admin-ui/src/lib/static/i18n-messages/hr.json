@@ -487,7 +487,7 @@
   },
   "error": {
     "403-forbidden": "Trenutno nemate ovlaštenje za pristup \"{ path }\". Ili vam nedostaju ovlasti ili je vaša sesija istekla.",
-    "could-not-connect-to-server": "Nije moguće povezati se s Vendure serverom na { url }",
+    "could-not-connect-to-server": "Nije moguće povezati se s Deenruv serverom na { url }",
     "health-check-failed": "Provjera zdravlja sustava nije uspjela",
     "no-default-shipping-zone-set": "Ovaj kanal nema zadaniu zonu dostave. To može uzrokovati pogreške pri izračunavanju troškova dostave narudžbe.",
     "no-default-tax-zone-set": "Ovaj kanal nema zadaniu poreznu zonu, što će uzrokovati pogreške pri izračunavanju cijena. Molimo kreirajte ili odaberite zonu."

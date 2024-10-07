@@ -1,4 +1,4 @@
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 export type GraphQLErrorResult = {
     errorCode: string;
@@ -35,13 +35,13 @@ export type JustErrorResults<T extends GraphQLErrorResult | U, U = any> = Exclud
  * @example
  * ```ts
  * type UpdateOrderItemsResult = Order | OrderModificationError | OrderLimitError | NegativeQuantityError;
- * type T1 = ErrorResultUnion<UpdateOrderItemsResult, VendureEntityOrder>;
- * // T1 = VendureEntityOrder | OrderModificationError | OrderLimitError | NegativeQuantityError;
+ * type T1 = ErrorResultUnion<UpdateOrderItemsResult, DeenruvEntityOrder>;
+ * // T1 = DeenruvEntityOrder | OrderModificationError | OrderLimitError | NegativeQuantityError;
  * ```
  *
  * @docsCategory errors
  */
-export type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends VendureEntity, U = any> =
+export type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends DeenruvEntity, U = any> =
     | JustErrorResults<T>
     | E;
 
@@ -71,7 +71,7 @@ export type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends Vendure
 export function isGraphQlErrorResult<T extends GraphQLErrorResult | U, U = any>(
     input: T,
 ): input is JustErrorResults<T>;
-export function isGraphQlErrorResult<T, E extends VendureEntity>(
+export function isGraphQlErrorResult<T, E extends DeenruvEntity>(
     input: ErrorResultUnion<T, E>,
 ): input is JustErrorResults<ErrorResultUnion<T, E>> {
     return (

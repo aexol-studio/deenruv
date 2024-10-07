@@ -1,8 +1,8 @@
-import { VendureLogger } from '@deenruv/core';
+import { DeenruvLogger } from '@deenruv/core';
 import fs from 'fs';
 
 // A simple custom logger which writes all logs to a file.
-export class SimpleFileLogger implements VendureLogger {
+export class SimpleFileLogger implements DeenruvLogger {
     private logfile: fs.WriteStream;
 
     constructor(logfileLocation: string) {

@@ -6,7 +6,7 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import { Calculated } from '../../common/calculated-decorator';
 import { roundMoney } from '../../common/round-money';
 import { grossPriceOf, netPriceOf } from '../../common/tax-utils';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Money } from '../money.decorator';
 import { Order } from '../order/order.entity';
 import { OrderModification } from '../order-modification/order-modification.entity';
@@ -19,7 +19,7 @@ import { OrderModification } from '../order-modification/order-modification.enti
  * @docsCategory entities
  */
 @Entity()
-export class Surcharge extends VendureEntity {
+export class Surcharge extends DeenruvEntity {
     constructor(input?: DeepPartial<Surcharge>) {
         super(input);
     }

@@ -487,7 +487,7 @@
   },
   "error": {
     "403-forbidden": "No momento, você não está autorizado a aceder \"{ path }\". Você não tem permissão ou a sua sessão expirou.",
-    "could-not-connect-to-server": "Não foi possível conectar-se ao servidor Vendure",
+    "could-not-connect-to-server": "Não foi possível conectar-se ao servidor Deenruv",
     "health-check-failed": "Falha na verificação de integridade do sistema",
     "no-default-shipping-zone-set": "O canal não possui regiões de entrega padrão. Poderá ocorrer erros ao calcular as despesas de envio da encomenda.",
     "no-default-tax-zone-set": "O canal não possui regiões de imposto padrão, o que causará erros no cálculo dos preços. Por favor, crie ou seleccione uma região."

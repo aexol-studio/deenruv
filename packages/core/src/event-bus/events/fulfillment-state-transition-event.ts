@@ -1,7 +1,7 @@
 import { RequestContext } from '../../api/common/request-context';
 import { Fulfillment } from '../../entity/fulfillment/fulfillment.entity';
 import { FulfillmentState } from '../../service/helpers/fulfillment-state-machine/fulfillment-state';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -10,7 +10,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class FulfillmentStateTransitionEvent extends VendureEvent {
+export class FulfillmentStateTransitionEvent extends DeenruvEvent {
     constructor(
         public fromState: FulfillmentState,
         public toState: FulfillmentState,

@@ -13,7 +13,7 @@ import {
     ShippingCalculator,
 } from '../../config/shipping-method/shipping-calculator';
 import { ShippingEligibilityChecker } from '../../config/shipping-method/shipping-eligibility-checker';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomShippingMethodFields } from '../custom-entity-fields';
 import { Order } from '../order/order.entity';
@@ -32,7 +32,7 @@ import { ShippingMethodTranslation } from './shipping-method-translation.entity'
  */
 @Entity()
 export class ShippingMethod
-    extends VendureEntity
+    extends DeenruvEntity
     implements ChannelAware, SoftDeletable, HasCustomFields, Translatable
 {
     private readonly allCheckers: { [code: string]: ShippingEligibilityChecker } = {};

@@ -2,7 +2,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Collection } from '../../entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -15,7 +15,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class CollectionModificationEvent extends VendureEvent {
+export class CollectionModificationEvent extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public collection: Collection,

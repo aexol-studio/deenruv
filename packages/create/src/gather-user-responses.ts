@@ -23,7 +23,7 @@ interface PromptAnswers {
 /* eslint-disable no-console */
 
 /**
- * Prompts the user to determine how the new Vendure app should be configured.
+ * Prompts the user to determine how the new Deenruv app should be configured.
  */
 export async function gatherUserResponses(
     root: string,
@@ -61,7 +61,7 @@ export async function gatherUserResponses(
     const dbName = hasConnection
         ? await text({
               message: "What's the name of the database?",
-              initialValue: 'vendure',
+              initialValue: 'deenruv',
           })
         : '';
     checkCancel(dbName);
@@ -153,7 +153,7 @@ export async function gatherCiUserResponses(
         dbType: 'sqlite' as const,
         dbHost: '',
         dbPort: '',
-        dbName: 'vendure',
+        dbName: 'deenruv',
         dbUserName: '',
         dbPassword: '',
         populateProducts: true,
@@ -216,7 +216,7 @@ async function generateSources(
     return {
         indexSource: await createSourceFile('index.hbs'),
         indexWorkerSource: await createSourceFile('index-worker.hbs'),
-        configSource: await createSourceFile('vendure-config.hbs', true),
+        configSource: await createSourceFile('deenruv-config.hbs', true),
         envSource: await createSourceFile('.env.hbs', true),
         envDtsSource: await createSourceFile('environment.d.hbs', true),
         readmeSource: await createSourceFile('readme.hbs'),

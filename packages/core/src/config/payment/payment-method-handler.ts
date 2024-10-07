@@ -274,7 +274,7 @@ export interface PaymentMethodConfigOptions<T extends ConfigArgs> extends Config
      * made to the `cancelPayment` mutation in the Admin API. Cancelling a payment can apply
      * if, for example, you have created a "payment intent" with the payment provider but not yet
      * completed the payment. It allows the incomplete payment to be cleaned up on the provider's end
-     * if it gets cancelled via Vendure.
+     * if it gets cancelled via Deenruv.
      *
      * @since 1.7.0
      */

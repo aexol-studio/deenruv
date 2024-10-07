@@ -23,7 +23,7 @@ import { Order } from '../../entity/order/order.entity';
  * :::info
  *
  * This is configured via the `orderOptions.guestCheckoutStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

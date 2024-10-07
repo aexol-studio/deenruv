@@ -7,7 +7,7 @@ import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { RequestContext } from '../../../api/common/request-context';
 import { Translatable, TranslatedInput, Translation } from '../../../common/types/locale-types';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 import { ProductOptionGroup } from '../../../entity/product-option-group/product-option-group.entity';
 import { patchEntity } from '../utils/patch-entity';
 
@@ -63,7 +63,7 @@ export class TranslatableSaver {
      * Create a translatable entity, including creating any translation entities according
      * to the `translations` array.
      */
-    async create<T extends Translatable & VendureEntity>(options: CreateTranslatableOptions<T>): Promise<T> {
+    async create<T extends Translatable & DeenruvEntity>(options: CreateTranslatableOptions<T>): Promise<T> {
         const { ctx, entityType, translationType, input, beforeSave, typeOrmSubscriberData } = options;
 
         const entity = new entityType(input);
@@ -91,7 +91,7 @@ export class TranslatableSaver {
      * Update a translatable entity. Performs a diff of the `translations` array in order to
      * perform the correct operation on the translations.
      */
-    async update<T extends Translatable & VendureEntity>(options: UpdateTranslatableOptions<T>): Promise<T> {
+    async update<T extends Translatable & DeenruvEntity>(options: UpdateTranslatableOptions<T>): Promise<T> {
         const { ctx, entityType, translationType, input, beforeSave, typeOrmSubscriberData } = options;
         const existingTranslations = await this.connection.getRepository(ctx, translationType).find({
             relationLoadStrategy: 'query',

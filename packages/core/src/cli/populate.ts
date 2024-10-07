@@ -8,7 +8,7 @@ const loggerCtx = 'Populate';
 /* eslint-disable no-console */
 /**
  * @description
- * Populates the Vendure server with some initial data and (optionally) product data from
+ * Populates the Deenruv server with some initial data and (optionally) product data from
  * a supplied CSV file. The format of the CSV file is described in the section
  * [Importing Product Data](/guides/developer-guide/importing-data/).
  *
@@ -26,7 +26,7 @@ const loggerCtx = 'Populate';
  * ```ts
  * import { bootstrap } from '\@deenruv/core';
  * import { populate } from '\@deenruv/core/cli';
- * import { config } from './vendure-config.ts'
+ * import { config } from './deenruv-config.ts'
  * import { initialData } from './my-initial-data.ts';
  *
  * const productsCsvFile = path.join(__dirname, 'path/to/products.csv')
@@ -56,7 +56,7 @@ export async function populate<T extends INestApplicationContext>(
 ): Promise<T> {
     const app = await bootstrapFn();
     if (!app) {
-        throw new Error('Could not bootstrap the Vendure app');
+        throw new Error('Could not bootstrap the Deenruv app');
     }
     let channel: import('@deenruv/core').Channel | undefined;
     const { ChannelService, Channel, Logger } = await import('@deenruv/core');
@@ -86,7 +86,7 @@ export async function populate<T extends INestApplicationContext>(
             channel,
         );
         if (importResult.errors && importResult.errors.length) {
-            const errorFile = path.join(process.cwd(), 'vendure-import-error.log');
+            const errorFile = path.join(process.cwd(), 'deenruv-import-error.log');
             Logger.error(
                 `${importResult.errors.length} errors encountered when importing product data. See: ${errorFile}`,
                 loggerCtx,

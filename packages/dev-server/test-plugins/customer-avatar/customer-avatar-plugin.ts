@@ -1,4 +1,4 @@
-import { Asset, PluginCommonModule, VendurePlugin } from '@deenruv/core';
+import { Asset, PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 
 import { shopApiExtensions } from './api-extensions';
 import { CustomerAvatarResolver } from './customer-avatar.resolver';

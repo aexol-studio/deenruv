@@ -1,14 +1,14 @@
 import { paramCase } from 'change-case';
 
 import { AdminUiExtensionTypeName } from '../../../../../constants';
-import { VendurePluginRef } from '../../../../../shared/vendure-plugin-ref';
+import { DeenruvPluginRef } from '../../../../../shared/deenruv-plugin-ref';
 import { addImportsToFile } from '../../../../../utilities/ast-utils';
 
 /**
  * @description
  * Adds the static `ui` property to the plugin class, and adds the required imports.
  */
-export function addUiExtensionStaticProp(plugin: VendurePluginRef) {
+export function addUiExtensionStaticProp(plugin: DeenruvPluginRef) {
     const pluginClass = plugin.classDeclaration;
     const adminUiExtensionType = AdminUiExtensionTypeName;
     const extensionId = paramCase(pluginClass.getName() as string).replace(/-plugin$/, '');

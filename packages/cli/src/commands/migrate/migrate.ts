@@ -15,7 +15,7 @@ const cancelledMessage = 'Migrate cancelled.';
 export async function migrateCommand() {
     // eslint-disable-next-line no-console
     console.log(`\n`);
-    intro(pc.blue('🛠️️ Vendure migrations'));
+    intro(pc.blue('🛠️️ Deenruv migrations'));
     const action = await select({
         message: 'What would you like to do?',
         options: [
@@ -29,7 +29,7 @@ export async function migrateCommand() {
         process.exit(0);
     }
     try {
-        process.env.VENDURE_RUNNING_IN_CLI = 'true';
+        process.env.DEENRUV_RUNNING_IN_CLI = 'true';
         if (action === 'generate') {
             await generateMigrationCommand.run();
         }
@@ -40,7 +40,7 @@ export async function migrateCommand() {
             await revertMigrationCommand.run();
         }
         outro('✅ Done!');
-        process.env.VENDURE_RUNNING_IN_CLI = undefined;
+        process.env.DEENRUV_RUNNING_IN_CLI = undefined;
     } catch (e: any) {
         log.error(e.message as string);
         if (e.stack) {

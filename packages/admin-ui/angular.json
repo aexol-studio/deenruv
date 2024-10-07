@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "vendure-admin": {
+    "deenruv-admin": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -94,24 +94,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "vendure-admin:build"
+            "buildTarget": "deenruv-admin:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "vendure-admin:build:production"
+              "buildTarget": "deenruv-admin:build:production"
             },
             "plugin": {
-              "buildTarget": "vendure-admin:build:plugin-watch"
+              "buildTarget": "deenruv-admin:build:plugin-watch"
             },
             "plugin-dev": {
-              "buildTarget": "vendure-admin:build:plugin-dev-watch"
+              "buildTarget": "deenruv-admin:build:plugin-dev-watch"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "vendure-admin:build"
+            "buildTarget": "deenruv-admin:build"
           }
         },
         "test": {
@@ -148,7 +148,7 @@
         }
       }
     },
-    "vendure-admin-lib": {
+    "deenruv-admin-lib": {
       "projectType": "library",
       "root": "",
       "sourceRoot": "src",
@@ -173,7 +173,7 @@
     "@schematics/angular:component": {
       "skipTests": true,
       "changeDetection": "OnPush",
-      "project": "vendure-admin-lib"
+      "project": "deenruv-admin-lib"
     }
   },
   "cli": {

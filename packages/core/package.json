@@ -4,16 +4,16 @@
     "description": "A modern, headless ecommerce framework",
     "repository": {
         "type": "git",
-        "url": "https://github.com/vendure-ecommerce/vendure/"
+        "url": "https://github.com/deenruv-ecommerce/deenruv/"
     },
     "keywords": [
-        "vendure",
+        "deenruv",
         "ecommerce",
         "headless",
         "graphql",
         "typescript"
     ],
-    "homepage": "https://www.vendure.io/",
+    "homepage": "https://www.deenruv.io/",
     "funding": "https://github.com/sponsors/michaelbromley",
     "private": false,
     "license": "MIT",

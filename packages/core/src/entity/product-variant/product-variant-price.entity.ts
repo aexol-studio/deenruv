@@ -3,7 +3,7 @@ import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomProductVariantPriceFields } from '../custom-entity-fields';
 import { EntityId } from '../entity-id.decorator';
 import { Money } from '../money.decorator';
@@ -18,7 +18,7 @@ import { ProductVariant } from './product-variant.entity';
  * @docsCategory entities
  */
 @Entity()
-export class ProductVariantPrice extends VendureEntity implements HasCustomFields {
+export class ProductVariantPrice extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<ProductVariantPrice>) {
         super(input);
     }

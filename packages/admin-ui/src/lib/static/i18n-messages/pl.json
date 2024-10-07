@@ -487,7 +487,7 @@
   },
   "error": {
     "403-forbidden": "Brak autoryzacji dla \"{ path }\". Brak uprawnień lub wygasła sesja.",
-    "could-not-connect-to-server": "Nie można połączyć z serverem Vendure na { url }",
+    "could-not-connect-to-server": "Nie można połączyć z serverem Deenruv na { url }",
     "health-check-failed": "",
     "no-default-shipping-zone-set": "",
     "no-default-tax-zone-set": ""

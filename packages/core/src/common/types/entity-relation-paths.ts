@@ -1,4 +1,4 @@
-import { VendureEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from '../../entity/base/base.entity';
 
 /**
  * @description
@@ -20,38 +20,38 @@ import { VendureEntity } from '../../entity/base/base.entity';
  *
  * @docsCategory Common
  */
-export type EntityRelationPaths<T extends VendureEntity> =
+export type EntityRelationPaths<T extends DeenruvEntity> =
     | `customFields.${string}`
     | PathsToStringProps1<T>
     | Join<PathsToStringProps2<T>, '.'>
     | TripleDotPath;
 
-export type EntityRelationKeys<T extends VendureEntity> = {
-    [K in Extract<keyof T, string>]: Required<T>[K] extends VendureEntity | null
+export type EntityRelationKeys<T extends DeenruvEntity> = {
+    [K in Extract<keyof T, string>]: Required<T>[K] extends DeenruvEntity | null
         ? K
-        : Required<T>[K] extends VendureEntity[]
-        ? K
-        : never;
+        : Required<T>[K] extends DeenruvEntity[]
+          ? K
+          : never;
 }[Extract<keyof T, string>];
 
-export type EntityRelations<T extends VendureEntity> = {
+export type EntityRelations<T extends DeenruvEntity> = {
     [K in EntityRelationKeys<T>]: T[K];
 };
 
-export type PathsToStringProps1<T extends VendureEntity> = T extends string
+export type PathsToStringProps1<T extends DeenruvEntity> = T extends string
     ? []
     : {
           [K in EntityRelationKeys<T>]: K;
       }[Extract<EntityRelationKeys<T>, string>];
 
-export type PathsToStringProps2<T extends VendureEntity> = T extends string
+export type PathsToStringProps2<T extends DeenruvEntity> = T extends string
     ? never
     : {
-          [K in EntityRelationKeys<T>]: T[K] extends VendureEntity[]
+          [K in EntityRelationKeys<T>]: T[K] extends DeenruvEntity[]
               ? [K, PathsToStringProps1<T[K][number]>]
-              : T[K] extends VendureEntity | undefined
-              ? [K, PathsToStringProps1<NonNullable<T[K]>>]
-              : never;
+              : T[K] extends DeenruvEntity | undefined
+                ? [K, PathsToStringProps1<NonNullable<T[K]>>]
+                : never;
       }[Extract<EntityRelationKeys<T>, string>];
 
 export type TripleDotPath = `${string}.${string}.${string}`;
@@ -60,10 +60,10 @@ export type TripleDotPath = `${string}.${string}.${string}`;
 export type Join<T extends Array<string | any>, D extends string> = T extends []
     ? never
     : T extends [infer F]
-    ? F
-    : // eslint-disable-next-line no-shadow,@typescript-eslint/no-shadow
-    T extends [infer F, ...infer R]
-    ? F extends string
-        ? `${F}${D}${Join<Extract<R, string[]>, D>}`
-        : never
-    : string;
+      ? F
+      : // eslint-disable-next-line no-shadow,@typescript-eslint/no-shadow
+        T extends [infer F, ...infer R]
+        ? F extends string
+            ? `${F}${D}${Join<Extract<R, string[]>, D>}`
+            : never
+        : string;

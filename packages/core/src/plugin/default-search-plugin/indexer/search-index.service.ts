@@ -4,7 +4,7 @@ import { assertNever } from '@deenruv/common/lib/shared-utils';
 import { Observable } from 'rxjs';
 
 import { RequestContext } from '../../../api/common/request-context';
-import { Logger } from '../../../config/logger/vendure-logger';
+import { Logger } from '../../../config/logger/deenruv-logger';
 import { Asset } from '../../../entity/asset/asset.entity';
 import { Product } from '../../../entity/product/product.entity';
 import { ProductVariant } from '../../../entity/product-variant/product-variant.entity';

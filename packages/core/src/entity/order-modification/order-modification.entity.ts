@@ -3,7 +3,7 @@ import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { Calculated } from '../../common/calculated-decorator';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Money } from '../money.decorator';
 import { Order } from '../order/order.entity';
 import { OrderModificationLine } from '../order-line-reference/order-modification-line.entity';
@@ -19,7 +19,7 @@ import { Surcharge } from '../surcharge/surcharge.entity';
  * @docsCategory entities
  */
 @Entity()
-export class OrderModification extends VendureEntity {
+export class OrderModification extends DeenruvEntity {
     constructor(input?: DeepPartial<OrderModification>) {
         super(input);
     }

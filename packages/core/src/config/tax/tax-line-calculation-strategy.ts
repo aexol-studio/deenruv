@@ -18,7 +18,7 @@ import { TaxRate } from '../../entity/tax-rate/tax-rate.entity';
  * :::info
  *
  * This is configured via the `taxOptions.taxLineCalculationStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

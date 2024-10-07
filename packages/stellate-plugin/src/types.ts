@@ -21,7 +21,7 @@ export interface StellatePluginOptions {
     /**
      * @description
      * An array of {@link PurgeRule} instances which are used to define how the plugin will
-     * respond to Vendure events in order to trigger calls to the Stellate Purging API.
+     * respond to Deenruv events in order to trigger calls to the Stellate Purging API.
      */
     purgeRules: PurgeRule[];
     /**

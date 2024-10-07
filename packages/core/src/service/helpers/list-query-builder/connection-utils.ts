@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 import { Translation } from '../../../common/types/locale-types';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 
 /**
  * @description
@@ -17,7 +17,7 @@ export function getColumnMetadata<T>(connection: DataSource, entity: Type<T>) {
 
     const translationRelation = relations.find(r => r.propertyName === 'translations');
     if (translationRelation) {
-        const commonFields: Array<keyof (Translation<T> & VendureEntity)> = [
+        const commonFields: Array<keyof (Translation<T> & DeenruvEntity)> = [
             'id',
             'createdAt',
             'updatedAt',

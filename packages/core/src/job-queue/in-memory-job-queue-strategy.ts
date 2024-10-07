@@ -12,7 +12,7 @@ import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
 
 import { Injector } from '../common';
 import { InspectableJobQueueStrategy } from '../config/job-queue/inspectable-job-queue-strategy';
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 import { ProcessContext } from '../process-context/process-context';
 
 import { Job } from './job';

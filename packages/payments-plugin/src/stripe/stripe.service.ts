@@ -16,7 +16,7 @@ import Stripe from 'stripe';
 
 import { loggerCtx, STRIPE_PLUGIN_OPTIONS } from './constants';
 import { sanitizeMetadata } from './metadata-sanitize';
-import { VendureStripeClient } from './stripe-client';
+import { DeenruvStripeClient } from './stripe-client';
 import { getAmountInStripeMinorUnits } from './stripe-utils';
 import { stripePaymentMethodHandler } from './stripe.handler';
 import { StripePluginOptions } from './types';
@@ -110,7 +110,7 @@ export class StripeService {
     /**
      * Get Stripe client based on eligible payment methods for order
      */
-    async getStripeClient(ctx: RequestContext, order: Order): Promise<VendureStripeClient> {
+    async getStripeClient(ctx: RequestContext, order: Order): Promise<DeenruvStripeClient> {
         const [eligiblePaymentMethods, paymentMethods] = await Promise.all([
             this.paymentMethodService.getEligiblePaymentMethods(ctx, order),
             this.paymentMethodService.findAll(ctx, {
@@ -131,7 +131,7 @@ export class StripeService {
         }
         const apiKey = this.findOrThrowArgValue(stripePaymentMethod.handler.args, 'apiKey');
         const webhookSecret = this.findOrThrowArgValue(stripePaymentMethod.handler.args, 'webhookSecret');
-        return new VendureStripeClient(apiKey, webhookSecret);
+        return new DeenruvStripeClient(apiKey, webhookSecret);
     }
 
     private findOrThrowArgValue(args: ConfigArg[], name: string): string {

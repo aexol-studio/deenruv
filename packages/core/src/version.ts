@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @description
- * A constant which holds the current version of the Vendure core. You can use
- * this when your code needs to know the version of Vendure which is running.
+ * A constant which holds the current version of the Deenruv core. You can use
+ * this when your code needs to know the version of Deenruv which is running.
  *
  * @example
  * ```ts
- * import { VENDURE_VERSION } from '\@deenruv/core';
+ * import { DEENRUV_VERSION } from '\@deenruv/core';
  *
- * console.log('Vendure version:', VENDURE_VERSION);
+ * console.log('Deenruv version:', DEENRUV_VERSION);
  * ```
  *
  * @docsCategory common
  * @since 2.0.0
  */
-export const VENDURE_VERSION: string = require('../package.json').version;
+export const DEENRUV_VERSION: string = require('../package.json').version;

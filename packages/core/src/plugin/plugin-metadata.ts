@@ -3,7 +3,7 @@ import { MODULE_METADATA } from '@nestjs/common/constants';
 import { Type } from '@deenruv/common/lib/shared-types';
 import { notNullOrUndefined } from '@deenruv/common/lib/shared-utils';
 
-import { APIExtensionDefinition, PluginConfigurationFn } from './vendure-plugin';
+import { APIExtensionDefinition, PluginConfigurationFn } from './deenruv-plugin';
 
 export const PLUGIN_METADATA = {
     CONFIGURATION: 'configuration',

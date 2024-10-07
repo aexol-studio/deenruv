@@ -14,7 +14,7 @@ import {
     OrderStateTransitionEvent,
     PluginCommonModule,
     RequestContext,
-    VendureEvent,
+    DeenruvEvent,
 } from '@deenruv/core';
 import { ensureConfigLoaded } from '@deenruv/core/dist/config/config-helpers';
 import { TestingLogger } from '@deenruv/testing';
@@ -209,7 +209,7 @@ describe('EmailPlugin', () => {
         /**
          * Intended to test the ability for Handlebars to interpolate
          * getters on the Order entity prototype.
-         * See https://github.com/vendure-ecommerce/vendure/issues/259
+         * See https://github.com/deenruv-ecommerce/deenruv/issues/259
          */
         it('interpolates body with property from entity', async () => {
             const handler = new EmailEventListener('test')
@@ -289,7 +289,7 @@ describe('EmailPlugin', () => {
             expect(onSend.mock.calls[0][0].from).toBe('"test from baz" <noreply@test.com>');
         });
 
-        // Test fix for https://github.com/vendure-ecommerce/vendure/issues/363
+        // Test fix for https://github.com/deenruv-ecommerce/deenruv/issues/363
         it('does not escape HTML chars when interpolating "from"', async () => {
             const handler = new EmailEventListener('test')
                 .on(MockEvent)
@@ -1002,7 +1002,7 @@ class FakeCustomSender implements EmailSender {
 
 const pause = () => new Promise(resolve => setTimeout(resolve, 100));
 
-class MockEvent extends VendureEvent {
+class MockEvent extends DeenruvEvent {
     constructor(
         public ctx: RequestContext,
         public shouldSend: boolean,

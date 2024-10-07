@@ -25,7 +25,7 @@ import { EmailDetails, EmailTransportOptions } from '../types';
  *   }
  * }
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   logger: new DefaultLogger({ level: LogLevel.Debug })
  *   // ...
  *   plugins: [

@@ -3,7 +3,7 @@ import { QueryRunner } from 'typeorm';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { EventBus } from './event-bus';
-import { VendureEvent } from './vendure-event';
+import { DeenruvEvent } from './deenruv-event';
 
 class MockTransactionSubscriber {
     awaitRelease(queryRunner: QueryRunner): Promise<QueryRunner> {
@@ -130,7 +130,7 @@ describe('EventBus', () => {
         it('single handler is called once', async () => {
             const handler = vi.fn();
             const event = new TestEvent('foo');
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler);
 
             await eventBus.publish(event);
             await new Promise(resolve => setImmediate(resolve));
@@ -144,7 +144,7 @@ describe('EventBus', () => {
             const event1 = new TestEvent('foo');
             const event2 = new TestEvent('bar');
             const event3 = new TestEvent('baz');
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler);
 
             await eventBus.publish(event1);
             await eventBus.publish(event2);
@@ -162,9 +162,9 @@ describe('EventBus', () => {
             const handler2 = vi.fn();
             const handler3 = vi.fn();
             const event = new TestEvent('foo');
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler1);
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler2);
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler3);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler1);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler2);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler3);
 
             await eventBus.publish(event);
             await new Promise(resolve => setImmediate(resolve));
@@ -177,7 +177,7 @@ describe('EventBus', () => {
         it('handler is not called for other events', async () => {
             const handler = vi.fn();
             const event = new OtherTestEvent('foo');
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler);
 
             await eventBus.publish(event);
             await new Promise(resolve => setImmediate(resolve));
@@ -188,7 +188,7 @@ describe('EventBus', () => {
         it('handler is called for instance of child classes', async () => {
             const handler = vi.fn();
             const event = new ChildTestEvent('bar', 'foo');
-            eventBus.filter(vendureEvent => vendureEvent instanceof TestEvent).subscribe(handler);
+            eventBus.filter(deenruvEvent => deenruvEvent instanceof TestEvent).subscribe(handler);
 
             await eventBus.publish(event);
             await new Promise(resolve => setImmediate(resolve));
@@ -200,7 +200,7 @@ describe('EventBus', () => {
             const handler = vi.fn();
             const event = new TestEvent('foo');
             const subscription = eventBus
-                .filter(vendureEvent => vendureEvent instanceof TestEvent)
+                .filter(deenruvEvent => deenruvEvent instanceof TestEvent)
                 .subscribe(handler);
 
             await eventBus.publish(event);
@@ -222,10 +222,10 @@ describe('EventBus', () => {
             const handler2 = vi.fn();
             const event = new TestEvent('foo');
             const subscription1 = eventBus
-                .filter(vendureEvent => vendureEvent instanceof TestEvent)
+                .filter(deenruvEvent => deenruvEvent instanceof TestEvent)
                 .subscribe(handler1);
             const subscription2 = eventBus
-                .filter(vendureEvent => vendureEvent instanceof TestEvent)
+                .filter(deenruvEvent => deenruvEvent instanceof TestEvent)
                 .subscribe(handler2);
 
             await eventBus.publish(event);
@@ -248,7 +248,7 @@ describe('EventBus', () => {
     describe('blocking event handlers', () => {
         it('calls the handler function', async () => {
             const event = new TestEvent('foo');
-            const spy = vi.fn((e: VendureEvent) => undefined);
+            const spy = vi.fn((e: DeenruvEvent) => undefined);
             eventBus.registerBlockingEventHandler({
                 handler: e => spy(e),
                 id: 'test-handler',
@@ -280,8 +280,8 @@ describe('EventBus', () => {
 
         it('calls multiple handler functions', async () => {
             const event = new TestEvent('foo');
-            const spy1 = vi.fn((e: VendureEvent) => undefined);
-            const spy2 = vi.fn((e: VendureEvent) => undefined);
+            const spy1 = vi.fn((e: DeenruvEvent) => undefined);
+            const spy2 = vi.fn((e: DeenruvEvent) => undefined);
             eventBus.registerBlockingEventHandler({
                 handler: e => spy1(e),
                 id: 'test-handler1',
@@ -304,7 +304,7 @@ describe('EventBus', () => {
         it('handles multiple events', async () => {
             const event1 = new TestEvent('foo');
             const event2 = new OtherTestEvent('bar');
-            const spy = vi.fn((e: VendureEvent) => undefined);
+            const spy = vi.fn((e: DeenruvEvent) => undefined);
             eventBus.registerBlockingEventHandler({
                 handler: e => spy(e),
                 id: 'test-handler',
@@ -446,7 +446,7 @@ describe('EventBus', () => {
     });
 });
 
-class TestEvent extends VendureEvent {
+class TestEvent extends DeenruvEvent {
     constructor(public payload: string) {
         super();
     }
@@ -461,7 +461,7 @@ class ChildTestEvent extends TestEvent {
     }
 }
 
-class OtherTestEvent extends VendureEvent {
+class OtherTestEvent extends DeenruvEvent {
     constructor(public payload: string) {
         super();
     }

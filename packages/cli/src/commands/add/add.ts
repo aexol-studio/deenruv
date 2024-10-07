@@ -18,7 +18,7 @@ const cancelledMessage = 'Add feature cancelled.';
 export async function addCommand() {
     // eslint-disable-next-line no-console
     console.log(`\n`);
-    intro(pc.blue("✨ Let's add a new feature to your Vendure project!"));
+    intro(pc.blue("✨ Let's add a new feature to your Deenruv project!"));
     const addCommands: Array<CliCommand<any>> = [
         createNewPluginCommand,
         addEntityCommand,

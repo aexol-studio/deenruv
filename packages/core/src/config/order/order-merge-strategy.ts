@@ -37,7 +37,7 @@ export function toMergedOrderLine(line: OrderLine): MergedOrderLine {
  * :::info
  *
  * This is configured via the `orderOptions.mergeStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

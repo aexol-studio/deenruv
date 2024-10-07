@@ -4,7 +4,7 @@ import { Column, Entity, Index, ManyToMany, ManyToOne, OneToMany } from 'typeorm
 import { SoftDeletable } from '../../common/types/common-types';
 import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomProductOptionFields } from '../custom-entity-fields';
 import { EntityId } from '../entity-id.decorator';
 import { ProductOptionGroup } from '../product-option-group/product-option-group.entity';
@@ -19,7 +19,7 @@ import { ProductOptionTranslation } from './product-option-translation.entity';
  * @docsCategory entities
  */
 @Entity()
-export class ProductOption extends VendureEntity implements Translatable, HasCustomFields, SoftDeletable {
+export class ProductOption extends DeenruvEntity implements Translatable, HasCustomFields, SoftDeletable {
     constructor(input?: DeepPartial<ProductOption>) {
         super(input);
     }

@@ -3,7 +3,7 @@ import { Column, Entity, Index, JoinColumn, JoinTable, ManyToOne, OneToMany } fr
 
 import { PaymentMetadata } from '../../common/types/common-types';
 import { RefundState } from '../../service/helpers/refund-state-machine/refund-state';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { EntityId } from '../entity-id.decorator';
 import { Money } from '../money.decorator';
 import { RefundLine } from '../order-line-reference/refund-line.entity';
@@ -15,7 +15,7 @@ import { Payment } from '../payment/payment.entity';
  * @docsCategory entities
  */
 @Entity()
-export class Refund extends VendureEntity {
+export class Refund extends DeenruvEntity {
     constructor(input?: DeepPartial<Refund>) {
         super(input);
     }

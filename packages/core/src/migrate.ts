@@ -8,7 +8,7 @@ import { camelCase } from 'typeorm/util/StringUtils';
 
 import { preBootstrapConfig } from './bootstrap';
 import { resetConfig } from './config/config-helpers';
-import { VendureConfig } from './config/vendure-config';
+import { DeenruvConfig } from './config/deenruv-config';
 
 /**
  * @description
@@ -37,7 +37,7 @@ export interface MigrationOptions {
  *
  * @docsCategory migration
  */
-export async function runMigrations(userConfig: Partial<VendureConfig>): Promise<string[]> {
+export async function runMigrations(userConfig: Partial<DeenruvConfig>): Promise<string[]> {
     const config = await preBootstrapConfig(userConfig);
     const connection = await createConnection(createConnectionOptions(config));
     const migrationsRan: string[] = [];
@@ -52,7 +52,7 @@ export async function runMigrations(userConfig: Partial<VendureConfig>): Promise
     } catch (e: any) {
         log(pc.red('An error occurred when running migrations:'));
         log(e.message);
-        if (isRunningFromVendureCli()) {
+        if (isRunningFromDeenruvCli()) {
             throw e;
         } else {
             process.exitCode = 1;
@@ -86,7 +86,7 @@ async function checkMigrationStatus(connection: Connection) {
  *
  * @docsCategory migration
  */
-export async function revertLastMigration(userConfig: Partial<VendureConfig>) {
+export async function revertLastMigration(userConfig: Partial<DeenruvConfig>) {
     const config = await preBootstrapConfig(userConfig);
     const connection = await createConnection(createConnectionOptions(config));
     try {
@@ -96,7 +96,7 @@ export async function revertLastMigration(userConfig: Partial<VendureConfig>) {
     } catch (e: any) {
         log(pc.red('An error occurred when reverting migration:'));
         log(e.message);
-        if (isRunningFromVendureCli()) {
+        if (isRunningFromDeenruvCli()) {
             throw e;
         } else {
             process.exitCode = 1;
@@ -116,7 +116,7 @@ export async function revertLastMigration(userConfig: Partial<VendureConfig>) {
  * @docsCategory migration
  */
 export async function generateMigration(
-    userConfig: Partial<VendureConfig>,
+    userConfig: Partial<DeenruvConfig>,
     options: MigrationOptions,
 ): Promise<string | undefined> {
     const config = await preBootstrapConfig(userConfig);
@@ -194,7 +194,7 @@ export async function generateMigration(
     return migrationName;
 }
 
-function createConnectionOptions(userConfig: Partial<VendureConfig>): DataSourceOptions {
+function createConnectionOptions(userConfig: Partial<DeenruvConfig>): DataSourceOptions {
     return Object.assign({ logging: ['query', 'error', 'schema'] }, userConfig.dbConnectionOptions, {
         subscribers: [],
         synchronize: false,
@@ -244,14 +244,14 @@ ${downSqls.join(`
 }
 
 function log(message: string) {
-    // If running from within the Vendure CLI, we allow the CLI app
+    // If running from within the Deenruv CLI, we allow the CLI app
     // to handle the logging.
-    if (isRunningFromVendureCli()) {
+    if (isRunningFromDeenruvCli()) {
         return;
     }
     console.log(message);
 }
 
-function isRunningFromVendureCli(): boolean {
-    return process.env.VENDURE_RUNNING_IN_CLI != null;
+function isRunningFromDeenruvCli(): boolean {
+    return process.env.DEENRUV_RUNNING_IN_CLI != null;
 }

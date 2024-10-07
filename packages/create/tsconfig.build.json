@@ -1,9 +1,7 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./lib"
-  },
-  "files": [
-    "./src/create-vendure-app.ts"
-  ]
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./lib"
+    },
+    "files": ["./src/create-deenruv-app.ts"]
 }

@@ -488,7 +488,7 @@
   },
   "error": {
     "403-forbidden": "Du har för närvarande inte behörighet att komma åt \"{ path }\". Antingen saknar du behörighet eller så har din session gått ut.",
-    "could-not-connect-to-server": "Kunde inte ansluta till Vendure-servern på { url }",
+    "could-not-connect-to-server": "Kunde inte ansluta till Deenruv-servern på { url }",
     "facet-value-form-values-do-not-match": "",
     "health-check-failed": "Systemets hälsokontroll misslyckades",
     "no-default-shipping-zone-set": "Den här kanalen har ingen förvald leveransadress. Detta kan orsaka fel vid beräkning av fraktkostnader för ordrar.",

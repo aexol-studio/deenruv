@@ -16,7 +16,7 @@ import {
     PluginCommonModule,
     ProcessContext,
     registerPluginStartupMessage,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import express from 'express';
 import fs from 'fs-extra';
@@ -53,7 +53,7 @@ export interface AdminUiPluginOptions {
     /**
      * @description
      * The port on which the server will listen. This port will be proxied by the AdminUiPlugin to the same port that
-     * the Vendure server is running on.
+     * the Deenruv server is running on.
      */
     port: number;
     /**
@@ -72,15 +72,15 @@ export interface AdminUiPluginOptions {
     app?: AdminUiAppConfig | AdminUiAppDevModeConfig;
     /**
      * @description
-     * Allows the contents of the `vendure-ui-config.json` file to be set, e.g.
-     * for specifying the Vendure GraphQL API host, available UI languages, etc.
+     * Allows the contents of the `deenruv-ui-config.json` file to be set, e.g.
+     * for specifying the Deenruv GraphQL API host, available UI languages, etc.
      */
     adminUiConfig?: Partial<AdminUiConfig>;
 }
 
 /**
  * @description
- * This plugin starts a static server for the Admin UI app, and proxies it via the `/admin/` path of the main Vendure server.
+ * This plugin starts a static server for the Admin UI app, and proxies it via the `/admin/` path of the main Deenruv server.
  *
  * The Admin UI allows you to administer all aspects of your store, from inventory management to order tracking. It is the tool used by
  * store administrators on a day-to-day basis for the management of the store.
@@ -97,7 +97,7 @@ export interface AdminUiPluginOptions {
  * ```ts
  * import { AdminUiPlugin } from '\@deenruv/admin-ui-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     AdminUiPlugin.init({ port: 3002 }),
@@ -116,7 +116,7 @@ export interface AdminUiPluginOptions {
  * ```ts
  * import { AdminUiPlugin } from '\@deenruv/admin-ui-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   plugins: [
  *     AdminUiPlugin, // <-- no call to .init()
  *   ],
@@ -167,7 +167,7 @@ export class AdminUiPlugin implements NestModule {
         const adminUiAppPath = AdminUiPlugin.isDevModeApp(app)
             ? path.join(app.sourcePath, 'src')
             : (app && app.path) || DEFAULT_APP_PATH;
-        const adminUiConfigPath = path.join(adminUiAppPath, 'vendure-ui-config.json');
+        const adminUiConfigPath = path.join(adminUiAppPath, 'deenruv-ui-config.json');
         const indexHtmlPath = path.join(adminUiAppPath, 'index.html');
 
         const overwriteConfig = async () => {
@@ -298,9 +298,9 @@ export class AdminUiPlugin implements NestModule {
             availableLocales: propOrDefault('availableLocales', defaultAvailableLocales, true),
             loginUrl: options.adminUiConfig?.loginUrl,
             brand: options.adminUiConfig?.brand,
-            hideVendureBranding: propOrDefault(
-                'hideVendureBranding',
-                options.adminUiConfig?.hideVendureBranding || false,
+            hideDeenruvBranding: propOrDefault(
+                'hideDeenruvBranding',
+                options.adminUiConfig?.hideDeenruvBranding || false,
             ),
             hideVersion: propOrDefault('hideVersion', options.adminUiConfig?.hideVersion || false),
             loginImageUrl: options.adminUiConfig?.loginImageUrl,
@@ -309,7 +309,7 @@ export class AdminUiPlugin implements NestModule {
     }
 
     /**
-     * Overwrites the parts of the admin-ui app's `vendure-ui-config.json` file relating to connecting to
+     * Overwrites the parts of the admin-ui app's `deenruv-ui-config.json` file relating to connecting to
      * the server admin API.
      */
     private async overwriteAdminUiConfig(adminUiConfigPath: string, config: AdminUiConfig) {
@@ -323,14 +323,14 @@ export class AdminUiPlugin implements NestModule {
             await fs.writeFile(adminUiConfigPath, JSON.stringify(config, null, 2));
         } catch (e: any) {
             throw new Error(
-                '[AdminUiPlugin] Could not write vendure-ui-config.json file:\n' + JSON.stringify(e.message),
+                '[AdminUiPlugin] Could not write deenruv-ui-config.json file:\n' + JSON.stringify(e.message),
             );
         }
-        Logger.verbose('Applied configuration to vendure-ui-config.json file', loggerCtx);
+        Logger.verbose('Applied configuration to deenruv-ui-config.json file', loggerCtx);
     }
 
     /**
-     * Overwrites the parts of the admin-ui app's `vendure-ui-config.json` file relating to connecting to
+     * Overwrites the parts of the admin-ui app's `deenruv-ui-config.json` file relating to connecting to
      * the server admin API.
      */
     private async overwriteBaseHref(indexHtmlPath: string, baseHref: string) {

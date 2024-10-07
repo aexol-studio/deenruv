@@ -2,7 +2,7 @@ import { LanguageCode } from '@deenruv/common/lib/generated-types';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { Translatable, Translation } from '../../../common/types/locale-types';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 import { CollectionTranslation } from '../../../entity/collection/collection-translation.entity';
 import { Collection } from '../../../entity/collection/collection.entity';
 import { ProductTranslation } from '../../../entity/product/product-translation.entity';
@@ -135,12 +135,12 @@ describe('translateEntity()', () => {
 });
 
 describe('translateDeep()', () => {
-    interface TestProduct extends VendureEntity {
+    interface TestProduct extends DeenruvEntity {
         singleTestVariant: TestVariant;
         singleRealVariant: ProductVariant;
     }
 
-    class TestProductEntity extends VendureEntity implements Translatable {
+    class TestProductEntity extends DeenruvEntity implements Translatable {
         constructor() {
             super();
         }
@@ -150,11 +150,11 @@ describe('translateDeep()', () => {
         translations: Array<Translation<TestProduct>>;
     }
 
-    interface TestVariant extends VendureEntity {
+    interface TestVariant extends DeenruvEntity {
         singleOption: ProductOption;
     }
 
-    class TestVariantEntity extends VendureEntity implements Translatable {
+    class TestVariantEntity extends DeenruvEntity implements Translatable {
         constructor() {
             super();
         }

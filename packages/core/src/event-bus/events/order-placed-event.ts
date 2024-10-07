@@ -1,7 +1,7 @@
 import { RequestContext } from '../../api/common/request-context';
 import { Order } from '../../entity/order/order.entity';
 import { OrderState } from '../../service/helpers/order-state-machine/order-state';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -14,7 +14,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsCategory events
  * @docsPage Event Types
  */
-export class OrderPlacedEvent extends VendureEvent {
+export class OrderPlacedEvent extends DeenruvEvent {
     constructor(
         public fromState: OrderState,
         public toState: OrderState,

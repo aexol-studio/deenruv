@@ -8,7 +8,7 @@ import { ChannelAware, SoftDeletable } from '../../common/types/common-types';
 import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { Asset } from '../asset/asset.entity';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { Collection } from '../collection/collection.entity';
 import { CustomProductVariantFields } from '../custom-entity-fields';
@@ -37,7 +37,7 @@ import { ProductVariantTranslation } from './product-variant-translation.entity'
  */
 @Entity()
 export class ProductVariant
-    extends VendureEntity
+    extends DeenruvEntity
     implements Translatable, HasCustomFields, SoftDeletable, ChannelAware
 {
     constructor(input?: DeepPartial<ProductVariant>) {

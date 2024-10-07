@@ -1,7 +1,7 @@
 import { Logger as TypeOrmLoggerInterface, QueryRunner } from 'typeorm';
 import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
 
-import { Logger } from './vendure-logger';
+import { Logger } from './deenruv-logger';
 
 const context = 'TypeORM';
 
@@ -10,7 +10,7 @@ type typeOrmLogLevel = Exclude<LoggerOptions, 'all' | boolean>[number];
 const defaultLoggerOptions: LoggerOptions = ['error', 'warn', 'schema', 'migration'];
 
 /**
- * A custom logger for TypeORM which delegates to the Vendure Logger service.
+ * A custom logger for TypeORM which delegates to the Deenruv Logger service.
  */
 export class TypeOrmLogger implements TypeOrmLoggerInterface {
     constructor(private options: LoggerOptions = defaultLoggerOptions) {}

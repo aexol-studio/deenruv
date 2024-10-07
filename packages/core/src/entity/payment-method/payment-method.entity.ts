@@ -5,7 +5,7 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { ChannelAware } from '../../common/types/common-types';
 import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomPaymentMethodFields } from '../custom-entity-fields';
 
@@ -19,7 +19,7 @@ import { PaymentMethodTranslation } from './payment-method-translation.entity';
  * @docsCategory entities
  */
 @Entity()
-export class PaymentMethod extends VendureEntity implements Translatable, ChannelAware, HasCustomFields {
+export class PaymentMethod extends DeenruvEntity implements Translatable, ChannelAware, HasCustomFields {
     constructor(input?: DeepPartial<PaymentMethod>) {
         super(input);
     }

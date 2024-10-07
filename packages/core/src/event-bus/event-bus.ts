@@ -7,10 +7,10 @@ import { EntityManager } from 'typeorm';
 
 import { RequestContext } from '../api/common/request-context';
 import { TRANSACTION_MANAGER_KEY } from '../common/constants';
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 import { TransactionSubscriber, TransactionSubscriberError } from '../connection/transaction-subscriber';
 
-import { VendureEvent } from './vendure-event';
+import { DeenruvEvent } from './deenruv-event';
 
 /**
  * @description
@@ -19,7 +19,7 @@ import { VendureEvent } from './vendure-event';
  * @since 2.2.0
  * @docsCategory events
  */
-export type BlockingEventHandlerOptions<T extends VendureEvent> = {
+export type BlockingEventHandlerOptions<T extends DeenruvEvent> = {
     /**
      * @description
      * The event type to which the handler should listen.
@@ -55,7 +55,7 @@ export type BlockingEventHandlerOptions<T extends VendureEvent> = {
  * @description
  * The EventBus is used to globally publish events which can then be subscribed to.
  *
- * Events are published whenever certain actions take place within the Vendure server, for example:
+ * Events are published whenever certain actions take place within the Deenruv server, for example:
  *
  * * when a Product is updated ({@link ProductEvent})
  * * when an Order transitions state ({@link OrderStateTransitionEvent})
@@ -68,7 +68,7 @@ export type BlockingEventHandlerOptions<T extends VendureEvent> = {
  * @example
  * ```ts
  * import { OnApplicationBootstrap } from '\@nestjs/common';
- * import { EventBus, PluginCommonModule, VendurePlugin } from '\@deenruv/core';
+ * import { EventBus, PluginCommonModule, DeenruvPlugin } from '\@deenruv/core';
  * import { filter } from 'rxjs/operators';
  *
  * \@DeenruvPlugin({
@@ -96,9 +96,9 @@ export type BlockingEventHandlerOptions<T extends VendureEvent> = {
  * */
 @Injectable()
 export class EventBus implements OnModuleDestroy {
-    private eventStream = new Subject<VendureEvent>();
+    private eventStream = new Subject<DeenruvEvent>();
     private destroy$ = new Subject<void>();
-    private blockingEventHandlers = new Map<Type<VendureEvent>, Array<BlockingEventHandlerOptions<any>>>();
+    private blockingEventHandlers = new Map<Type<DeenruvEvent>, Array<BlockingEventHandlerOptions<any>>>();
 
     constructor(private transactionSubscriber: TransactionSubscriber) {}
 
@@ -111,7 +111,7 @@ export class EventBus implements OnModuleDestroy {
      * await eventBus.publish(new SomeEvent());
      * ```
      */
-    async publish<T extends VendureEvent>(event: T): Promise<void> {
+    async publish<T extends DeenruvEvent>(event: T): Promise<void> {
         this.eventStream.next(event);
         await this.executeBlockingEventHandlers(event);
     }
@@ -125,7 +125,7 @@ export class EventBus implements OnModuleDestroy {
      * This means that the subscriber function can safely access all updated
      * data related to the event.
      */
-    ofType<T extends VendureEvent>(type: Type<T>): Observable<T> {
+    ofType<T extends DeenruvEvent>(type: Type<T>): Observable<T> {
         return this.eventStream.asObservable().pipe(
             takeUntil(this.destroy$),
             filter(e => e.constructor === type),
@@ -143,7 +143,7 @@ export class EventBus implements OnModuleDestroy {
      * This means that the subscriber function can safely access all updated
      * data related to the event.
      */
-    filter<T extends VendureEvent>(predicate: (event: VendureEvent) => boolean): Observable<T> {
+    filter<T extends DeenruvEvent>(predicate: (event: DeenruvEvent) => boolean): Observable<T> {
         return this.eventStream.asObservable().pipe(
             takeUntil(this.destroy$),
             filter(e => predicate(e)),
@@ -183,7 +183,7 @@ export class EventBus implements OnModuleDestroy {
      *
      * @since 2.2.0
      */
-    registerBlockingEventHandler<T extends VendureEvent>(handlerOptions: BlockingEventHandlerOptions<T>) {
+    registerBlockingEventHandler<T extends DeenruvEvent>(handlerOptions: BlockingEventHandlerOptions<T>) {
         const events = Array.isArray(handlerOptions.event) ? handlerOptions.event : [handlerOptions.event];
 
         for (const event of events) {
@@ -210,7 +210,7 @@ export class EventBus implements OnModuleDestroy {
         this.destroy$.next();
     }
 
-    private async executeBlockingEventHandlers<T extends VendureEvent>(event: T): Promise<void> {
+    private async executeBlockingEventHandlers<T extends DeenruvEvent>(event: T): Promise<void> {
         const blockingHandlers = this.blockingEventHandlers.get(event.constructor as Type<T>);
         for (const options of blockingHandlers || []) {
             const timeStart = new Date().getTime();
@@ -229,7 +229,7 @@ export class EventBus implements OnModuleDestroy {
         }
     }
 
-    private orderEventHandlers<T extends VendureEvent>(
+    private orderEventHandlers<T extends DeenruvEvent>(
         handlers: Array<BlockingEventHandlerOptions<T>>,
     ): Array<BlockingEventHandlerOptions<T>> {
         let orderedHandlers: Array<BlockingEventHandlerOptions<T>> = [];
@@ -303,10 +303,10 @@ export class EventBus implements OnModuleDestroy {
      *
      * For more context on these two issues, see:
      *
-     * * https://github.com/vendure-ecommerce/vendure/issues/520
-     * * https://github.com/vendure-ecommerce/vendure/issues/1107
+     * * https://github.com/deenruv-ecommerce/deenruv/issues/520
+     * * https://github.com/deenruv-ecommerce/deenruv/issues/1107
      */
-    private async awaitActiveTransactions<T extends VendureEvent>(event: T): Promise<T | undefined> {
+    private async awaitActiveTransactions<T extends DeenruvEvent>(event: T): Promise<T | undefined> {
         const entry = Object.entries(event).find(([_, value]) => value instanceof RequestContext);
 
         if (!entry) {

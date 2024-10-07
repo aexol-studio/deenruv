@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
         if (isDevMode()) {
             // eslint-disable-next-line no-console
             console.log(
-                `%cVendure Admin UI: Press "ctrl/cmd + u" to view UI extension points`,
+                `%cDeenruv Admin UI: Press "ctrl/cmd + u" to view UI extension points`,
                 `color: #17C1FF; font-weight: bold;`,
             );
         }

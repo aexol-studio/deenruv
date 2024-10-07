@@ -9,7 +9,7 @@ import { ProductVariantPrice } from '../../entity/product-variant/product-varian
  * :::info
  *
  * This is configured via the `catalogOptions.productVariantPriceSelectionStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *

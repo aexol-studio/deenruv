@@ -1,8 +1,8 @@
-import { CachedSession, Logger, SessionCacheStrategy, VendurePlugin } from '@deenruv/core';
+import { CachedSession, Logger, SessionCacheStrategy, DeenruvPlugin } from '@deenruv/core';
 import { Redis, RedisOptions } from 'ioredis';
 
 const loggerCtx = 'RedisSessionCacheStrategy';
-const DEFAULT_NAMESPACE = 'vendure-session-cache';
+const DEFAULT_NAMESPACE = 'deenruv-session-cache';
 
 export class RedisSessionCacheStrategy implements SessionCacheStrategy {
     private client: Redis;

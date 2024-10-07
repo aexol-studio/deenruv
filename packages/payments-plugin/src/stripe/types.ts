@@ -42,10 +42,10 @@ export interface StripePluginOptions {
      *
      * @example
      * ```ts
-     * import { EntityHydrator, VendureConfig } from '\@deenruv/core';
+     * import { EntityHydrator, DeenruvConfig } from '\@deenruv/core';
      * import { StripePlugin } from '\@deenruv/payments-plugin/package/stripe';
      *
-     * export const config: VendureConfig = {
+     * export const config: DeenruvConfig = {
      *   // ...
      *   plugins: [
      *     StripePlugin.init({
@@ -81,10 +81,10 @@ export interface StripePluginOptions {
      *
      * @example
      * ```ts
-     * import { VendureConfig } from '\@deenruv/core';
+     * import { DeenruvConfig } from '\@deenruv/core';
      * import { StripePlugin } from '\@deenruv/payments-plugin/package/stripe';
      *
-     * export const config: VendureConfig = {
+     * export const config: DeenruvConfig = {
      *   // ...
      *   plugins: [
      *     StripePlugin.init({
@@ -116,10 +116,10 @@ export interface StripePluginOptions {
      *
      * @example
      * ```ts
-     * import { EntityHydrator, VendureConfig } from '\@deenruv/core';
+     * import { EntityHydrator, DeenruvConfig } from '\@deenruv/core';
      * import { StripePlugin } from '\@deenruv/payments-plugin/package/stripe';
      *
-     * export const config: VendureConfig = {
+     * export const config: DeenruvConfig = {
      *   // ...
      *   plugins: [
      *     StripePlugin.init({

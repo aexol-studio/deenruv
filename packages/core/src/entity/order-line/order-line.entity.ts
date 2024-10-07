@@ -8,7 +8,7 @@ import { roundMoney } from '../../common/round-money';
 import { grossPriceOf, netPriceOf } from '../../common/tax-utils';
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
 import { Asset } from '../asset/asset.entity';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { Channel } from '../channel/channel.entity';
 import { CustomOrderLineFields } from '../custom-entity-fields';
 import { EntityId } from '../entity-id.decorator';
@@ -30,7 +30,7 @@ import { TaxCategory } from '../tax-category/tax-category.entity';
  * @docsCategory entities
  */
 @Entity()
-export class OrderLine extends VendureEntity implements HasCustomFields {
+export class OrderLine extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<OrderLine>) {
         super(input);
     }

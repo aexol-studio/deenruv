@@ -109,7 +109,7 @@ export class RoleService {
 
     /**
      * @description
-     * Returns the special SuperAdmin Role, which always exists in Vendure.
+     * Returns the special SuperAdmin Role, which always exists in Deenruv.
      */
     getSuperAdminRole(ctx?: RequestContext): Promise<Role> {
         return this.getRoleByCode(ctx, SUPER_ADMIN_ROLE_CODE).then(role => {
@@ -122,7 +122,7 @@ export class RoleService {
 
     /**
      * @description
-     * Returns the special Customer Role, which always exists in Vendure.
+     * Returns the special Customer Role, which always exists in Deenruv.
      */
     getCustomerRole(ctx?: RequestContext): Promise<Role> {
         return this.getRoleByCode(ctx, CUSTOMER_ROLE_CODE).then(role => {

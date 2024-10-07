@@ -18,7 +18,7 @@ if (require.main === module) {
 
     const scriptsToRun = getScriptToRun() || ALL_SCRIPTS;
 
-    console.log(`\n============= Vendure Load Test: ${count} products ============\n`);
+    console.log(`\n============= Deenruv Load Test: ${count} products ============\n`);
 
     // Runs the init script to generate test data and populate the test database
     const init = spawn('node', ['-r', 'ts-node/register', './init-load-test.ts', count.toString()], {
@@ -28,7 +28,7 @@ if (require.main === module) {
 
     init.on('exit', async code => {
         if (code === 0) {
-            const databaseName = `vendure-load-testing-${count}`;
+            const databaseName = `deenruv-load-testing-${count}`;
             return bootstrap(getLoadTestConfig('cookie', databaseName))
                 .then(async app => {
                     // await app.get(JobQueueService).start();

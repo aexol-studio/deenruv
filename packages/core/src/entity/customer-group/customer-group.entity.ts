@@ -2,7 +2,7 @@ import { DeepPartial } from '@deenruv/common/lib/shared-types';
 import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 
 import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 import { CustomCustomerGroupFields } from '../custom-entity-fields';
 import { Customer } from '../customer/customer.entity';
 import { TaxRate } from '../tax-rate/tax-rate.entity';
@@ -15,7 +15,7 @@ import { TaxRate } from '../tax-rate/tax-rate.entity';
  * @docsCategory entities
  */
 @Entity()
-export class CustomerGroup extends VendureEntity implements HasCustomFields {
+export class CustomerGroup extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<CustomerGroup>) {
         super(input);
     }

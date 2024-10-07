@@ -1,6 +1,6 @@
 import { RequestContext } from '../../api/common/request-context';
 import { TaxRate } from '../../entity';
-import { VendureEvent } from '../vendure-event';
+import { DeenruvEvent } from '../deenruv-event';
 
 /**
  * @description
@@ -10,7 +10,7 @@ import { VendureEvent } from '../vendure-event';
  * @docsPage Event Types
  * @deprecated Use TaxRateEvent instead
  */
-export class TaxRateModificationEvent extends VendureEvent {
+export class TaxRateModificationEvent extends DeenruvEvent {
     constructor(public ctx: RequestContext, public taxRate: TaxRate) {
         super();
     }

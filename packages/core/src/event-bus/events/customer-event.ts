@@ -3,7 +3,7 @@ import { ID } from '@deenruv/common/lib/shared-types';
 
 import { RequestContext } from '../../api/common/request-context';
 import { Customer } from '../../entity/customer/customer.entity';
-import { VendureEntityEvent } from '../vendure-entity-event';
+import { DeenruvEntityEvent } from '../deenruv-entity-event';
 
 type CustomerInputTypes =
     | CreateCustomerInput
@@ -19,7 +19,7 @@ type CustomerInputTypes =
  * @docsCategory events
  * @docsPage Event Types
  */
-export class CustomerEvent extends VendureEntityEvent<Customer, CustomerInputTypes> {
+export class CustomerEvent extends DeenruvEntityEvent<Customer, CustomerInputTypes> {
     constructor(
         ctx: RequestContext,
         entity: Customer,

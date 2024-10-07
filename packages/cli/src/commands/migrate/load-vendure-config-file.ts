@@ -1,15 +1,15 @@
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import path from 'node:path';
 import { register } from 'ts-node';
 
-import { VendureConfigRef } from '../../shared/vendure-config-ref';
+import { DeenruvConfigRef } from '../../shared/deenruv-config-ref';
 import { selectTsConfigFile } from '../../utilities/ast-utils';
 import { isRunningInTsNode } from '../../utilities/utils';
 
-export async function loadVendureConfigFile(
-    vendureConfig: VendureConfigRef,
+export async function loadDeenruvConfigFile(
+    deenruvConfig: DeenruvConfigRef,
     providedTsConfigPath?: string,
-): Promise<VendureConfig> {
+): Promise<DeenruvConfig> {
     await import('dotenv/config');
     if (!isRunningInTsNode()) {
         let tsConfigPath: string;
@@ -34,11 +34,11 @@ export async function loadVendureConfigFile(
             });
         }
     }
-    const exportedVarName = vendureConfig.getConfigObjectVariableName();
+    const exportedVarName = deenruvConfig.getConfigObjectVariableName();
     if (!exportedVarName) {
-        throw new Error('Could not find the exported variable name in the VendureConfig file');
+        throw new Error('Could not find the exported variable name in the DeenruvConfig file');
     }
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const config = require(vendureConfig.sourceFile.getFilePath())[exportedVarName];
+    const config = require(deenruvConfig.sourceFile.getFilePath())[exportedVarName];
     return config;
 }

@@ -24,7 +24,7 @@ export class BcryptPasswordHashingStrategy implements PasswordHashingStrategy {
 
     private getBcrypt() {
         if (!this.bcrypt) {
-            // The bcrypt lib is lazily loaded so that if we want to run Vendure
+            // The bcrypt lib is lazily loaded so that if we want to run Deenruv
             // in an environment that does not support native Node modules
             // (such as an online sandbox like Stackblitz) the bcrypt dependency
             // does not get loaded when linking the source files on startup.

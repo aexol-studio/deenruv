@@ -106,7 +106,7 @@ describe('Collection resolver', () => {
     });
 
     /**
-     * Test case for https://github.com/vendure-ecommerce/vendure/issues/97
+     * Test case for https://github.com/deenruv-ecommerce/deenruv/issues/97
      */
     it('collection breadcrumbs works after bootstrap', async () => {
         const result = await adminClient.query<Codegen.GetCollectionBreadcrumbsQuery>(
@@ -516,7 +516,7 @@ describe('Collection resolver', () => {
             expect(result.collection.id).toBe(computersCollection.id);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/538
+        // https://github.com/deenruv-ecommerce/deenruv/issues/538
         it('falls back to default language slug', async () => {
             const result = await adminClient.query<
                 Codegen.GetCollectionQuery,
@@ -572,7 +572,7 @@ describe('Collection resolver', () => {
             expect(result.collection.parent!.name).toBe('Electronics');
         });
 
-        // Tests fix for https://github.com/vendure-ecommerce/vendure/issues/361
+        // Tests fix for https://github.com/deenruv-ecommerce/deenruv/issues/361
         it('parent field resolved by CollectionEntityResolver', async () => {
             const { product } = await adminClient.query<
                 Codegen.GetProductCollectionsWithParentQuery,
@@ -634,7 +634,7 @@ describe('Collection resolver', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/981
+        // https://github.com/deenruv-ecommerce/deenruv/issues/981
         it('nested parent field in shop API', async () => {
             const { collections } = await shopClient.query<Codegen.GetCollectionNestedParentsQuery>(
                 GET_COLLECTION_NESTED_PARENTS,
@@ -717,7 +717,7 @@ describe('Collection resolver', () => {
             expect(collections.items[0].assets).toBeDefined();
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/642
+        // https://github.com/deenruv-ecommerce/deenruv/issues/642
         it('sorting on Collection.productVariants.price', async () => {
             const { collection } = await adminClient.query<
                 Codegen.GetCollectionQuery,
@@ -921,7 +921,7 @@ describe('Collection resolver', () => {
             ),
         );
 
-        // https://github.com/vendure-ecommerce/vendure/issues/1595
+        // https://github.com/deenruv-ecommerce/deenruv/issues/1595
         it('children correctly ordered', async () => {
             await adminClient.query<Codegen.MoveCollectionMutation, Codegen.MoveCollectionMutationVariables>(
                 MOVE_COLLECTION,
@@ -1489,7 +1489,7 @@ describe('Collection resolver', () => {
                 ]);
             });
 
-            // https://github.com/vendure-ecommerce/vendure/issues/927
+            // https://github.com/deenruv-ecommerce/deenruv/issues/927
             it('nested variantName filter', async () => {
                 const parent = await createVariantNameFilteredCollection('contains', 'lap');
 
@@ -2131,7 +2131,7 @@ describe('Collection resolver', () => {
             ]);
         });
 
-        // https://github.com/vendure-ecommerce/vendure/issues/1213
+        // https://github.com/deenruv-ecommerce/deenruv/issues/1213
         it('does not list deleted variants', async () => {
             await adminClient.query<
                 Codegen.DeleteProductVariantMutation,

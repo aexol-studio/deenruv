@@ -1,7 +1,7 @@
 import { JobState } from '@deenruv/common/lib/generated-types';
 import { isClassInstance, isObject } from '@deenruv/common/lib/shared-utils';
 
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 
 import { JobConfig, JobData } from './types';
 

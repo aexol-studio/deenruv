@@ -6,7 +6,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import { RequestContext } from '../../../api/common/request-context';
 import { InternalServerError } from '../../../common/error/errors';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 import { ProductVariant } from '../../../entity/product-variant/product-variant.entity';
 import { ProductPriceApplicator } from '../product-price-applicator/product-price-applicator';
 import { TranslatorService } from '../translator/translator.service';
@@ -101,7 +101,7 @@ export class EntityHydrator {
      *
      * @since 1.3.0
      */
-    async hydrate<Entity extends VendureEntity>(
+    async hydrate<Entity extends DeenruvEntity>(
         ctx: RequestContext,
         target: Entity,
         options: HydrateOptions<Entity>,
@@ -176,7 +176,7 @@ export class EntityHydrator {
         return target;
     }
 
-    private assignSettableProperties<Entity extends VendureEntity>(target: Entity, source: Entity) {
+    private assignSettableProperties<Entity extends DeenruvEntity>(target: Entity, source: Entity) {
         for (const [key, descriptor] of Object.entries(Object.getOwnPropertyDescriptors(target))) {
             if (typeof descriptor.get === 'function' && typeof descriptor.set !== 'function') {
                 // If the entity property has a getter only, we will skip it otherwise
@@ -193,7 +193,7 @@ export class EntityHydrator {
      * Compares the requested relations against the actual existing relations on the target entity,
      * and returns an array of all missing relation paths that would need to be fetched.
      */
-    private getMissingRelations<Entity extends VendureEntity>(
+    private getMissingRelations<Entity extends DeenruvEntity>(
         target: Entity,
         options: HydrateOptions<Entity>,
     ) {
@@ -224,7 +224,7 @@ export class EntityHydrator {
         return unique(missingRelations.filter(relation => !relation.endsWith('.customFields')));
     }
 
-    private getRequiredProductVariantRelations<Entity extends VendureEntity>(
+    private getRequiredProductVariantRelations<Entity extends DeenruvEntity>(
         target: Entity,
         missingRelations: string[],
     ): string[] {
@@ -244,11 +244,11 @@ export class EntityHydrator {
      * will return an Asset instance.
      */
     private getRelationEntityAtPath(
-        entity: VendureEntity,
+        entity: DeenruvEntity,
         path: string[],
-    ): VendureEntity | VendureEntity[] | undefined {
+    ): DeenruvEntity | DeenruvEntity[] | undefined {
         let isArrayResult = false;
-        const result: VendureEntity[] = [];
+        const result: DeenruvEntity[] = [];
 
         function visit(parent: any, parts: string[]): any {
             if (parts.length === 0) {
@@ -279,7 +279,7 @@ export class EntityHydrator {
         return isArrayResult ? result : result[0];
     }
 
-    private getRelationEntityTypeAtPath(entity: VendureEntity, path: string): Type<VendureEntity> {
+    private getRelationEntityTypeAtPath(entity: DeenruvEntity, path: string): Type<DeenruvEntity> {
         const { entityMetadatas } = this.connection.rawConnection;
         const targetMetadata = entityMetadatas.find(m => m.target === entity.constructor);
         if (!targetMetadata) {
@@ -298,10 +298,10 @@ export class EntityHydrator {
                 );
             }
         }
-        return currentMetadata.target as Type<VendureEntity>;
+        return currentMetadata.target as Type<DeenruvEntity>;
     }
 
-    private isTranslatable<T extends VendureEntity>(input: T | T[] | undefined): boolean {
+    private isTranslatable<T extends DeenruvEntity>(input: T | T[] | undefined): boolean {
         return Array.isArray(input)
             ? (input[0]?.hasOwnProperty('translations') ?? false)
             : (input?.hasOwnProperty('translations') ?? false);

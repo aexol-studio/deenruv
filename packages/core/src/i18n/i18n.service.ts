@@ -21,7 +21,7 @@ import { I18nError } from './i18n-error';
  * @docsCategory common
  * @docsPage I18nService
  */
-export interface VendureTranslationResources {
+export interface DeenruvTranslationResources {
     error: any;
     errorResult: any;
     message: any;
@@ -102,7 +102,7 @@ export class I18nService implements OnModuleInit {
      * @param langKey language key of the I18n translation file
      * @param resources key-value translations
      */
-    addTranslation(langKey: string, resources: VendureTranslationResources | any): void {
+    addTranslation(langKey: string, resources: DeenruvTranslationResources | any): void {
         i18next.addResourceBundle(langKey, 'translation', resources, true, true);
     }
 

@@ -60,7 +60,6 @@ type ConfigurableOperationDefinition {
     description: String!
 }
 
-
 type DeletionResponse {
     result: DeletionResult!
     message: String
@@ -202,7 +201,7 @@ input CreateCustomerInput {
 Input used to create an Address.
 
 The countryCode must correspond to a `code` property of a Country that has been defined in the
-Vendure server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
+Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
 If an invalid code is passed, the mutation will fail.
 """
 input CreateAddressInput {
@@ -223,7 +222,7 @@ input CreateAddressInput {
 Input used to update an Address.
 
 The countryCode must correspond to a `code` property of a Country that has been defined in the
-Vendure server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
+Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
 If an invalid code is passed, the mutation will fail.
 """
 input UpdateAddressInput {
@@ -269,16 +268,15 @@ type PaymentMethodQuote {
 }
 
 union UpdateOrderItemsResult =
-      Order
+    | Order
     | OrderModificationError
     | OrderLimitError
     | NegativeQuantityError
     | InsufficientStockError
 union RemoveOrderItemsResult = Order | OrderModificationError
 union SetOrderShippingMethodResult =
-      Order
+    | Order
     | OrderModificationError
     | IneligibleShippingMethodError
     | NoActiveOrderError
 union ApplyCouponCodeResult = Order | CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError
-

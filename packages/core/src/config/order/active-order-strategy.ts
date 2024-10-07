@@ -112,7 +112,7 @@ export const ACTIVE_ORDER_INPUT_FIELD_NAME = 'activeOrderInput';
  *   }
  * }
  *
- * // in vendure-config.ts
+ * // in deenruv-config.ts
  * export const config = {
  *   // ...
  *   orderOptions: {

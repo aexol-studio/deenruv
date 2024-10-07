@@ -25,7 +25,7 @@
                 <button class="btn btn-sm btn-secondary hidden" id="logout">Log out of intranet</button>
             </p>
             <div class="text-center mt-4">
-                <button id="login" class="btn btn-primary">Log In To Vendure</button>
+                <button id="login" class="btn btn-primary">Log In To Deenruv</button>
             </div>
         </div>
         <script>
@@ -37,10 +37,10 @@
                 realm: 'myrealm',
                 'auth-server-url': 'http://localhost:9000/auth/',
                 'ssl-required': 'external',
-                resource: 'vendure',
+                resource: 'deenruv',
                 'public-client': true,
                 'confidential-port': 0,
-                clientId: 'vendure',
+                clientId: 'deenruv',
                 flow: 'standard',
             });
 
@@ -52,7 +52,7 @@
                     console.log('authenticated', authenticated);
                     authStatus.innerHTML = authenticated ? `logged in` : `not logged in`;
                     if (authenticated) {
-                        if (-1 < window.location.search.indexOf('loginToVendure')) {
+                        if (-1 < window.location.search.indexOf('loginToDeenruv')) {
                             loginToAdminUi();
                         }
                         logoutButton.classList.remove('hidden');
@@ -69,7 +69,7 @@
                             loginToAdminUi();
                         } else {
                             keycloak.login({
-                                redirectUri: window.location.href + '?loginToVendure=true',
+                                redirectUri: window.location.href + '?loginToDeenruv=true',
                             });
                         }
                     });

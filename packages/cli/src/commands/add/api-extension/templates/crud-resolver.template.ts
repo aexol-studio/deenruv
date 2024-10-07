@@ -8,14 +8,14 @@ import {
     RequestContext,
     Transaction,
     Relations,
-    VendureEntity,
+    DeenruvEntity,
     ID,
     TranslationInput,
     ListQueryOptions,
     RelationPaths,
 } from '@deenruv/core';
 
-class TemplateEntity extends VendureEntity {
+class TemplateEntity extends DeenruvEntity {
     constructor() {
         super();
     }

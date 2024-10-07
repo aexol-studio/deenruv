@@ -3,7 +3,7 @@ import { Subject, Subscription } from 'rxjs';
 import { throttleTime } from 'rxjs/operators';
 
 import { JobQueueStrategy } from '../config';
-import { Logger } from '../config/logger/vendure-logger';
+import { Logger } from '../config/logger/deenruv-logger';
 
 import { Job } from './job';
 import { JobBufferService } from './job-buffer/job-buffer.service';

@@ -1,4 +1,4 @@
-import { Logger, VendurePlugin } from '@deenruv/core';
+import { Logger, DeenruvPlugin } from '@deenruv/core';
 
 import { HARDEN_PLUGIN_OPTIONS, loggerCtx } from './constants';
 import { HideValidationErrorsPlugin } from './middleware/hide-validation-errors-plugin';
@@ -30,7 +30,7 @@ import { HardenPluginOptions } from './types';
  * ```ts
  * import { HardenPlugin } from '\@deenruv/harden-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *      HardenPlugin.init({
@@ -48,7 +48,7 @@ import { HardenPluginOptions } from './types';
  * be required to resolve that query.
  *
  * The goal of this setting is to prevent attacks in which a malicious actor crafts a very complex query in order to overwhelm your
- * server resources. Here's an example of a request which would likely overwhelm a Vendure server:
+ * server resources. Here's an example of a request which would likely overwhelm a Deenruv server:
  *
  * ```GraphQL
  * query EvilQuery {
@@ -81,7 +81,7 @@ import { HardenPluginOptions } from './types';
  * This evil query has a complexity score of 2,443,203 - much greater than the default of 1,000!
  *
  * The complexity score is calculated by the [graphql-query-complexity library](https://www.npmjs.com/package/graphql-query-complexity),
- * and by default uses the {@link defaultVendureComplexityEstimator}, which is tuned specifically to the Vendure Shop API.
+ * and by default uses the {@link defaultDeenruvComplexityEstimator}, which is tuned specifically to the Deenruv Shop API.
  *
  * :::caution
  * Note: By default, if the "take" argument is omitted from a list query (e.g. the `products` or `collections` query), a default factor of 1000 is applied.
@@ -101,7 +101,7 @@ import { HardenPluginOptions } from './types';
  * ```ts
  * import { HardenPlugin } from '\@deenruv/harden-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // A detailed summary is logged at the "debug" level
  *   logger: new DefaultLogger({ level: LogLevel.Debug }),
  *   plugins: [

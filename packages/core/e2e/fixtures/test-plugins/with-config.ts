@@ -1,5 +1,5 @@
 import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { ConfigModule, VendurePlugin } from '@deenruv/core';
+import { ConfigModule, DeenruvPlugin } from '@deenruv/core';
 
 @DeenruvPlugin({
     imports: [ConfigModule],

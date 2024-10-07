@@ -13,7 +13,7 @@ import {
     Transaction,
     TransactionalConnection,
     UserInputError,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 

@@ -55,7 +55,7 @@ export class GlobalSettingsResolver {
     }
 
     /**
-     * Exposes a subset of the VendureConfig which may be of use to clients.
+     * Exposes a subset of the DeenruvConfig which may be of use to clients.
      */
     @ResolveField()
     serverConfig(@Info() info: GraphQLResolveInfo): ServerConfig {
@@ -106,7 +106,7 @@ export class GlobalSettingsResolver {
                 ?.filter(c => !c.internal)
                 .map(c => ({ ...c, list: !!c.list as any }))
                 .map((c: any) => {
-                    // In the VendureConfig, the relation entity is specified
+                    // In the DeenruvConfig, the relation entity is specified
                     // as the class, but the GraphQL API exposes it as a string.
                     if (c.type === 'relation') {
                         c.entity = c.entity.name;
@@ -139,7 +139,7 @@ export class GlobalSettingsResolver {
                         return c;
                     })
                     .map(c => {
-                        // In the VendureConfig, the relation entity is specified
+                        // In the DeenruvConfig, the relation entity is specified
                         // as the class, but the GraphQL API exposes it as a string.
                         const customFieldConfig: GraphQLCustomFieldConfig = { ...c } as any;
                         if (this.isRelationGraphQLType(customFieldConfig) && this.isRelationConfigType(c)) {

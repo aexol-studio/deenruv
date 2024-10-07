@@ -6,7 +6,7 @@ import { ID, Type } from '@deenruv/common/lib/shared-types';
 import { RequestContext } from '../../../api/common/request-context';
 import { TransactionalConnection } from '../../../connection/transactional-connection';
 import { Collection, Product } from '../../../entity';
-import { VendureEntity } from '../../../entity/base/base.entity';
+import { DeenruvEntity } from '../../../entity/base/base.entity';
 import { ProductOptionGroup } from '../../../entity/product-option-group/product-option-group.entity';
 
 /**
@@ -26,7 +26,7 @@ export type InputWithSlug = {
  * @docsCategory service-helpers
  * @docsPage SlugValidator
  */
-export type TranslationEntity = VendureEntity & {
+export type TranslationEntity = DeenruvEntity & {
     id: ID;
     languageCode: LanguageCode;
     slug: string;

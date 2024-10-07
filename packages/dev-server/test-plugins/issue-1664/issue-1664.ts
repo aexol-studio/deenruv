@@ -12,7 +12,7 @@ import {
     RequestContext,
     TransactionalConnection,
     User,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import gql from 'graphql-tag';
 
@@ -39,7 +39,7 @@ const schema = gql`
 `;
 
 /**
- * Test plugin for https://github.com/vendure-ecommerce/vendure/issues/1664
+ * Test plugin for https://github.com/deenruv-ecommerce/deenruv/issues/1664
  *
  * Test query:
  * ```graphql

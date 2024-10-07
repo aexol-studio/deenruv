@@ -143,7 +143,7 @@ export class ElasticsearchService implements OnModuleInit, OnModuleDestroy {
                 }
                 if (!equal(tempIndexSettings, existingIndexSettings))
                     Logger.warn(
-                        `Index "${index}" settings differs from index setting in vendure config! Consider re-indexing the data.`,
+                        `Index "${index}" settings differs from index setting in deenruv config! Consider re-indexing the data.`,
                         loggerCtx,
                     );
                 else {
@@ -159,7 +159,7 @@ export class ElasticsearchService implements OnModuleInit, OnModuleDestroy {
                     if (!equal(tempIndexMappings, existingIndexMappings))
                         // eslint-disable-next-line max-len
                         Logger.warn(
-                            `Index "${index}" mapping differs from index mapping in vendure config! Consider re-indexing the data.`,
+                            `Index "${index}" mapping differs from index mapping in deenruv config! Consider re-indexing the data.`,
                             loggerCtx,
                         );
                 }

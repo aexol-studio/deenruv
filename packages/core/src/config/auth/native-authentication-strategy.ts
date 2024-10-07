@@ -20,7 +20,7 @@ export const NATIVE_AUTH_STRATEGY_NAME = 'native';
 /**
  * @description
  * This strategy implements a username/password credential-based authentication, with the credentials
- * being stored in the Vendure database. This is the default method of authentication, and it is advised
+ * being stored in the Deenruv database. This is the default method of authentication, and it is advised
  * to keep it configured unless there is a specific reason not to.
  *
  * @docsCategory auth

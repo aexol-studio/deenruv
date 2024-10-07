@@ -14,7 +14,7 @@ let targetOrigin = 'http://localhost:3000';
 /**
  * @description
  * Set the [window.postMessage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
- * `targetOrigin`. The Vendure ui-devkit uses the postMessage API to
+ * `targetOrigin`. The Deenruv ui-devkit uses the postMessage API to
  * enable cross-frame and cross-origin communication between the ui extension code and the Admin UI
  * app. The `targetOrigin` is a security feature intended to provide control over where messages are sent.
  *

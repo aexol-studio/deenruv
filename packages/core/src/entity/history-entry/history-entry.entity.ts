@@ -2,7 +2,7 @@ import { HistoryEntryType } from '@deenruv/common/lib/generated-types';
 import { Column, Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
 
 import { Administrator } from '../administrator/administrator.entity';
-import { VendureEntity } from '../base/base.entity';
+import { DeenruvEntity } from '../base/base.entity';
 
 /**
  * @description
@@ -13,7 +13,7 @@ import { VendureEntity } from '../base/base.entity';
  */
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'discriminator' } })
-export abstract class HistoryEntry extends VendureEntity {
+export abstract class HistoryEntry extends DeenruvEntity {
     @Index()
     @ManyToOne(type => Administrator)
     administrator?: Administrator;

@@ -119,12 +119,12 @@ import {
  * import { defaultEmailHandlers, EmailPlugin } from '\@deenruv/email-plugin';
  * import { quoteRequestedHandler } from './plugins/quote-plugin';
  *
- * const config: VendureConfig = {
+ * const config: DeenruvConfig = {
  *   // Add an instance of the plugin to the plugins array
  *   plugins: [
  *     EmailPlugin.init({
  *       handler: [...defaultEmailHandlers, quoteRequestedHandler],
- *       templatePath: path.join(__dirname, 'vendure/email/templates'),
+ *       templatePath: path.join(__dirname, 'deenruv/email/templates'),
  *       // ... etc
  *     }),
  *   ],

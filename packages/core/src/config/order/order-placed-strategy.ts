@@ -15,7 +15,7 @@ import { OrderState } from '../../service/helpers/order-state-machine/order-stat
  * :::info
  *
  * This is configured via the `orderOptions.orderPlacedStrategy` property of
- * your VendureConfig.
+ * your DeenruvConfig.
  *
  * :::
  *
