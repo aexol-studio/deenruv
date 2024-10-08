@@ -1,13 +1,14 @@
 ---
-title: "CheckShippingEligibilityCheckerFn"
+title: 'CheckShippingEligibilityCheckerFn'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CheckShippingEligibilityCheckerFn
 
@@ -27,5 +28,5 @@ type CheckShippingEligibilityCheckerFn<T extends ConfigArgs> = (
     order: Order,
     args: ConfigArgValues<T>,
     method: ShippingMethod,
-) => boolean | Promise<boolean>
+) => boolean | Promise<boolean>;
 ```

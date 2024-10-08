@@ -6,29 +6,29 @@ sidebar_position: 6
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The heart of Vendure is its plugin system. Plugins not only allow you to instantly add new functionality to your
-Vendure server via third-part npm packages, they are also the means by which you build out the custom business
+The heart of Deenruv is its plugin system. Plugins not only allow you to instantly add new functionality to your
+Deenruv server via third-part npm packages, they are also the means by which you build out the custom business
 logic of your application.
 
-Plugins in Vendure allow one to:
+Plugins in Deenruv allow one to:
 
-- Modify the VendureConfig object, such as defining custom fields on existing entities.
-- Extend the GraphQL APIs, including modifying existing types and adding completely new queries and mutations.
-- Define new database entities and interact directly with the database.
-- Interact with external systems that you need to integrate with.
-- Respond to events such as new orders being placed.
-- Trigger background tasks to run on the worker process.
+-   Modify the DeenruvConfig object, such as defining custom fields on existing entities.
+-   Extend the GraphQL APIs, including modifying existing types and adding completely new queries and mutations.
+-   Define new database entities and interact directly with the database.
+-   Interact with external systems that you need to integrate with.
+-   Respond to events such as new orders being placed.
+-   Trigger background tasks to run on the worker process.
 
 … and more!
 
-In a typical Vendure application, custom logic and functionality is implemented as a set of plugins
+In a typical Deenruv application, custom logic and functionality is implemented as a set of plugins
 which are usually independent of one another. For example, there could be a plugin for each of the following:
 wishlists, product reviews, loyalty points, gift cards, etc.
 This allows for a clean separation of concerns and makes it easy to add or remove functionality as needed.
 
 ## Core Plugins
 
-Vendure provides a set of core plugins covering common functionality such as assets handling,
+Deenruv provides a set of core plugins covering common functionality such as assets handling,
 email sending, and search. For documentation on these, see the [Core Plugins reference](/reference/core-plugins/).
 
 ## Plugin basics
@@ -55,42 +55,42 @@ export class AvatarPlugin {}
 
 This plugin does one thing only: it adds a new custom field to the `Customer` entity.
 
-The plugin is then imported into the `VendureConfig`:
+The plugin is then imported into the `DeenruvConfig`:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AvatarPlugin } from './plugins/avatar-plugin/avatar.plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     // highlight-next-line
     plugins: [AvatarPlugin],
 };
 ```
 
-The key feature is the `@DeenruvPlugin()` decorator, which marks the class as a Vendure plugin and accepts a configuration
-object on the type [`VendurePluginMetadata`](/reference/typescript-api/plugin/vendure-plugin-metadata/).
+The key feature is the `@DeenruvPlugin()` decorator, which marks the class as a Deenruv plugin and accepts a configuration
+object on the type [`VendurePluginMetadata`](/reference/typescript-api/plugin/deenruv-plugin-metadata/).
 
 A VendurePlugin is actually an enhanced version of a [NestJS Module](https://docs.nestjs.com/modules), and supports
 all the metadata properties that NestJS modules support:
 
-- `imports`: Allows importing other NestJS modules in order to make use of their exported providers.
-- `providers`: The providers (services) that will be instantiated by the Nest injector and that may
+-   `imports`: Allows importing other NestJS modules in order to make use of their exported providers.
+-   `providers`: The providers (services) that will be instantiated by the Nest injector and that may
     be shared across this plugin.
-- `controllers`: Controllers allow the plugin to define REST-style endpoints.
-- `exports`: The providers which will be exported from this plugin and made available to other plugins.
+-   `controllers`: Controllers allow the plugin to define REST-style endpoints.
+-   `exports`: The providers which will be exported from this plugin and made available to other plugins.
 
-Additionally, the `VendurePlugin` decorator adds the following Vendure-specific properties:
+Additionally, the `VendurePlugin` decorator adds the following Deenruv-specific properties:
 
-- `configuration`: A function which can modify the `VendureConfig` object before the server bootstraps.
-- `shopApiExtensions`: Allows the plugin to extend the GraphQL Shop API with new queries, mutations, resolvers & scalars.
-- `adminApiExtensions`: Allows the plugin to extend the GraphQL Admin API with new queries, mutations, resolvers & scalars.
-- `entities`: Allows the plugin to define new database entities.
-- `compatibility`: Allows the plugin to declare which versions of Vendure it is compatible with.
+-   `configuration`: A function which can modify the `DeenruvConfig` object before the server bootstraps.
+-   `shopApiExtensions`: Allows the plugin to extend the GraphQL Shop API with new queries, mutations, resolvers & scalars.
+-   `adminApiExtensions`: Allows the plugin to extend the GraphQL Admin API with new queries, mutations, resolvers & scalars.
+-   `entities`: Allows the plugin to define new database entities.
+-   `compatibility`: Allows the plugin to declare which versions of Deenruv it is compatible with.
 
 :::info
-Since a Vendure plugin is a superset of a NestJS module, this means that many NestJS modules are actually
-valid Vendure plugins!
+Since a Deenruv plugin is a superset of a NestJS module, this means that many NestJS modules are actually
+valid Deenruv plugins!
 :::
 
 ## Plugin lifecycle
@@ -98,11 +98,11 @@ valid Vendure plugins!
 Since a VendurePlugin is built on top of the NestJS module system, any plugin (as well as any providers it defines)
 can make use of any of the [NestJS lifecycle hooks](https://docs.nestjs.com/fundamentals/lifecycle-events):
 
-- onModuleInit
-- onApplicationBootstrap
-- onModuleDestroy
-- beforeApplicationShutdown
-- onApplicationShutdown
+-   onModuleInit
+-   onApplicationBootstrap
+-   onModuleDestroy
+-   beforeApplicationShutdown
+-   onApplicationShutdown
 
 :::caution
 Note that lifecycle hooks are run in both the server and worker contexts.
@@ -122,22 +122,19 @@ import { EventBus, PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { MyMiddleware } from './api/my-middleware';
 
 @DeenruvPlugin({
-    imports: [PluginCommonModule]
+    imports: [PluginCommonModule],
 })
 export class MyPlugin implements NestModule {
-
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(MyMiddleware)
-      .forRoutes('my-custom-route');
-  }
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(MyMiddleware).forRoutes('my-custom-route');
+    }
 }
 ```
 
 ## Create a Plugin via CLI
 
 :::cli
-Run the `npx vendure add` command, and select "Create a new Vendure plugin".
+Run the `npx deenruv add` command, and select "Create a new Deenruv plugin".
 
 This will guide you through the creation of a new plugin and automate all aspects of the process.
 
@@ -146,17 +143,17 @@ This is the recommended way of creating a new plugin.
 
 ## Writing a plugin from scratch
 
-Although the [Vendure CLI](/guides/developer-guide/cli/) is the recommended way to create a new plugin, it can be useful to understand the process of creating
+Although the [Deenruv CLI](/guides/developer-guide/cli/) is the recommended way to create a new plugin, it can be useful to understand the process of creating
 a plugin manually.
 
-In Vendure **plugins** are used to extend the core functionality of the server. Plugins can be pre-made functionality that you can install via npm, or they can be custom plugins that you write yourself.
+In Deenruv **plugins** are used to extend the core functionality of the server. Plugins can be pre-made functionality that you can install via npm, or they can be custom plugins that you write yourself.
 
-For any unit of functionality that you need to add to your project, you'll be creating a Vendure plugin. By convention, plugins are stored in the `plugins` directory of your project. However, this is not a requirement, and you are free to arrange your plugin files in any way you like.
+For any unit of functionality that you need to add to your project, you'll be creating a Deenruv plugin. By convention, plugins are stored in the `plugins` directory of your project. However, this is not a requirement, and you are free to arrange your plugin files in any way you like.
 
 ```txt
 ├──src
     ├── index.ts
-    ├── vendure-config.ts
+    ├── deenruv-config.ts
     ├── plugins
         ├── reviews-plugin
         ├── cms-plugin
@@ -165,11 +162,11 @@ For any unit of functionality that you need to add to your project, you'll be cr
 ```
 
 :::info
-For a complete working example of a Vendure plugin, see the [real-world-vendure Reviews plugin](https://github.com/vendure-ecommerce/real-world-vendure/tree/master/src/plugins/reviews)
+For a complete working example of a Deenruv plugin, see the [real-world-deenruv Reviews plugin](https://github.com/deenruv-ecommerce/real-world-deenruv/tree/master/src/plugins/reviews)
 
-You can also use the [Vendure CLI](/guides/developer-guide/cli) to quickly scaffold a new plugin.
+You can also use the [Deenruv CLI](/guides/developer-guide/cli) to quickly scaffold a new plugin.
 
-If you intend to write a shared plugin to be distributed as an npm package, see the [vendure plugin-template repo](https://github.com/vendure-ecommerce/plugin-template)
+If you intend to write a shared plugin to be distributed as an npm package, see the [deenruv plugin-template repo](https://github.com/deenruv-ecommerce/plugin-template)
 :::
 
 In this guide, we will implement a simple but fully-functional **wishlist plugin** step-by-step. The goal of this plugin is to allow signed-in customers to add products to a wishlist, and to view and manage their wishlist.
@@ -181,7 +178,7 @@ We'll start by creating a new directory to house our plugin, add create the main
 ```txt
 ├──src
     ├── index.ts
-    ├── vendure-config.ts
+    ├── deenruv-config.ts
     ├── plugins
         // highlight-next-line
         ├── wishlist-plugin
@@ -198,11 +195,11 @@ import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 export class WishlistPlugin {}
 ```
 
-The `PluginCommonModule` will be required in all plugins that you create. It contains the common services that are exposed by Vendure Core, allowing you to inject them into your plugin's services and resolvers.
+The `PluginCommonModule` will be required in all plugins that you create. It contains the common services that are exposed by Deenruv Core, allowing you to inject them into your plugin's services and resolvers.
 
 ### Step 2: Define an entity
 
-Next we will define a new database entity to store the wishlist items. Vendure uses [TypeORM](https://typeorm.io/) to manage the database schema, and an Entity corresponds to a database table.
+Next we will define a new database entity to store the wishlist items. Deenruv uses [TypeORM](https://typeorm.io/) to manage the database schema, and an Entity corresponds to a database table.
 
 First let's create the file to house the entity:
 
@@ -236,7 +233,7 @@ export class WishlistItem extends VendureEntity {
 
 Let's break down what's happening here:
 
--   The `WishlistItem` entity extends the [`VendureEntity` class](/reference/typescript-api/entities/vendure-entity/). This is a base class which provides the `id`, `createdAt` and `updatedAt` fields, and all custom entities should extend it.
+-   The `WishlistItem` entity extends the [`VendureEntity` class](/reference/typescript-api/entities/deenruv-entity/). This is a base class which provides the `id`, `createdAt` and `updatedAt` fields, and all custom entities should extend it.
 -   The `@Entity()` decorator marks this class as a TypeORM entity.
 -   The `@ManyToOne()` decorator defines a many-to-one relationship with the `ProductVariant` entity. This means that each `WishlistItem` will be associated with a single `ProductVariant`.
 -   The `productVariantId` column is not strictly necessary, but it allows us to always have access to the ID of the related `ProductVariant` without having to load the entire `ProductVariant` entity from the database.
@@ -259,7 +256,7 @@ export class WishlistPlugin {}
 
 We'll now define a new custom field on the Customer entity which will store a list of WishlistItems. This will allow us to easily query for all wishlist items associated with a particular customer.
 
-Custom fields are defined in the VendureConfig object, and in a plugin we use the `configuration` function to modify the config object:
+Custom fields are defined in the DeenruvConfig object, and in a plugin we use the `configuration` function to modify the config object:
 
 ```ts title="src/plugins/wishlist-plugin/wishlist.plugin.ts"
 import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
@@ -297,9 +294,9 @@ In order to make use of this custom field in a type-safe way, we can tell TypeSc
 import { WishlistItem } from './entities/wishlist-item.entity';
 
 declare module '@deenruv/core/dist/entity/custom-entity-fields' {
-  interface CustomCustomerFields {
-    wishlistItems: WishlistItem[];
-  }
+    interface CustomCustomerFields {
+        wishlistItems: WishlistItem[];
+    }
 }
 ```
 
@@ -421,9 +418,9 @@ export class WishlistService {
 
 Let's break down what's happening here:
 
-- The `WishlistService` class is decorated with the `@Injectable()` decorator. This is a standard NestJS decorator which tells the NestJS dependency injection (DI) system that this class can be injected into other classes. All your services should be decorated with this decorator.
-- The arguments passed to the constructor will be injected by the NestJS DI system. The `connection` argument is a [TransactionalConnection](/reference/typescript-api/data-access/transactional-connection/) instance, which is used to access and manipulate data in the database. The [`ProductVariantService`](/reference/typescript-api/services/product-variant-service/) argument is a built-in Vendure service which contains methods relating to ProductVariants.
-- The [`RequestContext`](/reference/typescript-api/request/request-context/) object is usually the first argument to any service method, and contains information and context about the current request as well as any open database transactions. It should always be passed to the methods of the `TransactionalConnection`.
+-   The `WishlistService` class is decorated with the `@Injectable()` decorator. This is a standard NestJS decorator which tells the NestJS dependency injection (DI) system that this class can be injected into other classes. All your services should be decorated with this decorator.
+-   The arguments passed to the constructor will be injected by the NestJS DI system. The `connection` argument is a [TransactionalConnection](/reference/typescript-api/data-access/transactional-connection/) instance, which is used to access and manipulate data in the database. The [`ProductVariantService`](/reference/typescript-api/services/product-variant-service/) argument is a built-in Deenruv service which contains methods relating to ProductVariants.
+-   The [`RequestContext`](/reference/typescript-api/request/request-context/) object is usually the first argument to any service method, and contains information and context about the current request as well as any open database transactions. It should always be passed to the methods of the `TransactionalConnection`.
 
 The service is then registered with the plugin metadata as a provider:
 
@@ -482,7 +479,7 @@ export const shopApiExtensions = gql`
 
 :::note
 
-The `graphql-tag` package is a dependency of the Vendure core package. Depending on the package manager you are using, you may need to install it separately with `yarn add graphql-tag` or `npm install graphql-tag`.
+The `graphql-tag` package is a dependency of the Deenruv core package. Depending on the package manager you are using, you may need to install it separately with `yarn add graphql-tag` or `npm install graphql-tag`.
 
 :::
 
@@ -553,13 +550,13 @@ export class WishlistShopResolver {
 }
 ```
 
-Resolvers are usually "thin" functions that delegate the actual work to a service. Vendure, like NestJS itself, makes heavy use of decorators at the API layer to define various aspects of the resolver. Let's break down what's happening here:
+Resolvers are usually "thin" functions that delegate the actual work to a service. Deenruv, like NestJS itself, makes heavy use of decorators at the API layer to define various aspects of the resolver. Let's break down what's happening here:
 
-- The `@Resolver()` decorator tells the NestJS DI system that this class is a resolver. Since a Resolver is part of the NestJS DI system, we can also inject dependencies into its constructor. In this case we are injecting the `WishlistService` which we created in the previous step.
-- The `@Mutation()` decorator tells Vendure that this is a mutation resolver. Similarly, `@Query()` decorator defines a query resolver. The name of the method is the name of the query or mutation in the schema.
-- The `@Transaction()` decorator tells Vendure that this resolver method should be wrapped in a database transaction. This is important because we are performing multiple database operations in this method, and we want them to be atomic.
-- The `@Allow()` decorator tells Vendure that this mutation is only allowed for users with the `Owner` permission. The `Owner` permission is a special permission which indicates that the active user should be the owner of this operation.
-- The `@Ctx()` decorator tells Vendure that this method requires access to the `RequestContext` object. Every resolver should have this as the first argument, as it is required throughout the Vendure request lifecycle.
+-   The `@Resolver()` decorator tells the NestJS DI system that this class is a resolver. Since a Resolver is part of the NestJS DI system, we can also inject dependencies into its constructor. In this case we are injecting the `WishlistService` which we created in the previous step.
+-   The `@Mutation()` decorator tells Deenruv that this is a mutation resolver. Similarly, `@Query()` decorator defines a query resolver. The name of the method is the name of the query or mutation in the schema.
+-   The `@Transaction()` decorator tells Deenruv that this resolver method should be wrapped in a database transaction. This is important because we are performing multiple database operations in this method, and we want them to be atomic.
+-   The `@Allow()` decorator tells Deenruv that this mutation is only allowed for users with the `Owner` permission. The `Owner` permission is a special permission which indicates that the active user should be the owner of this operation.
+-   The `@Ctx()` decorator tells Deenruv that this method requires access to the `RequestContext` object. Every resolver should have this as the first argument, as it is required throughout the Deenruv request lifecycle.
 
 This resolver is then registered with the plugin metadata:
 
@@ -590,7 +587,7 @@ More information about resolvers can be found in the [NestJS docs](https://docs.
 
 ### Step 7: Specify compatibility
 
-Since Vendure v2.0.0, it is possible for a plugin to specify which versions of Vendure core it is compatible with. This is especially important if the plugin is intended to be made publicly available via npm or another package registry.
+Since Deenruv v2.0.0, it is possible for a plugin to specify which versions of Deenruv core it is compatible with. This is especially important if the plugin is intended to be made publicly available via npm or another package registry.
 
 The compatibility is specified via the `compatibility` property in the plugin metadata:
 
@@ -603,17 +600,17 @@ The compatibility is specified via the `compatibility` property in the plugin me
 export class WishlistPlugin {}
 ```
 
-The value of this property is a [semver range](https://docs.npmjs.com/about-semantic-versioning) which specifies the range of compatible versions. In this case, we are saying that this plugin is compatible with any version of Vendure core which is `>= 2.0.0 < 3.0.0`.
+The value of this property is a [semver range](https://docs.npmjs.com/about-semantic-versioning) which specifies the range of compatible versions. In this case, we are saying that this plugin is compatible with any version of Deenruv core which is `>= 2.0.0 < 3.0.0`.
 
-### Step 8: Add the plugin to the VendureConfig
+### Step 8: Add the plugin to the DeenruvConfig
 
-The final step is to add the plugin to the `VendureConfig` object. This is done in the `vendure-config.ts` file:
+The final step is to add the plugin to the `DeenruvConfig` object. This is done in the `deenruv-config.ts` file:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { WishlistPlugin } from './plugins/wishlist-plugin/wishlist.plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         // ...
@@ -662,18 +659,17 @@ mutation Login {
 
 ```json
 {
-  "data": {
-    "login": {
-      "id": "9",
-      "identifier": "alec.breitenberg@gmail.com"
+    "data": {
+        "login": {
+            "id": "9",
+            "identifier": "alec.breitenberg@gmail.com"
+        }
     }
-  }
 }
 ```
 
   </TabItem>
 </Tabs>
-
 
 <Tabs>
 <TabItem value="AddToWishlist mutation" label="AddToWishlist mutation" default>
@@ -695,17 +691,17 @@ mutation AddToWishlist {
 
 ```json
 {
-  "data": {
-    "addToWishlist": [
-      {
-        "id": "4",
-        "productVariant": {
-          "id": "7",
-          "name": "Wireless Optical Mouse"
-        }
-      }
-    ]
-  }
+    "data": {
+        "addToWishlist": [
+            {
+                "id": "4",
+                "productVariant": {
+                    "id": "7",
+                    "name": "Wireless Optical Mouse"
+                }
+            }
+        ]
+    }
 }
 ```
 
@@ -713,7 +709,6 @@ mutation AddToWishlist {
 </Tabs>
 
 We can then query the wishlist items:
-
 
 <Tabs>
 <TabItem value="GetWishlist mutation" label="GetWishlist mutation" default>
@@ -735,17 +730,17 @@ query GetWishlist {
 
 ```json
 {
-  "data": {
-    "activeCustomerWishlist": [
-      {
-        "id": "4",
-        "productVariant": {
-          "id": "7",
-          "name": "Wireless Optical Mouse"
-        }
-      }
-    ]
-  }
+    "data": {
+        "activeCustomerWishlist": [
+            {
+                "id": "4",
+                "productVariant": {
+                    "id": "7",
+                    "name": "Wireless Optical Mouse"
+                }
+            }
+        ]
+    }
 }
 ```
 
@@ -773,12 +768,11 @@ mutation RemoveFromWishlist {
 
 ```json
 {
-  "data": {
-    "removeFromWishlist": []
-  }
+    "data": {
+        "removeFromWishlist": []
+    }
 }
 ```
 
   </TabItem>
 </Tabs>
-

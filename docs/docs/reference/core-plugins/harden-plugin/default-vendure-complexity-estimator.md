@@ -1,13 +1,14 @@
 ---
-title: "DefaultVendureComplexityEstimator"
+title: 'DefaultVendureComplexityEstimator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## defaultVendureComplexityEstimator
 
@@ -20,8 +21,12 @@ When selecting PaginatedList types, the "take" argument is used to estimate a co
 factor. If the "take" argument is omitted, a default factor of 1000 is applied.
 
 ```ts title="Signature"
-function defaultVendureComplexityEstimator(customComplexityFactors: { [path: string]: number }, logFieldScores: boolean): void
+function defaultVendureComplexityEstimator(
+    customComplexityFactors: { [path: string]: number },
+    logFieldScores: boolean,
+): void;
 ```
+
 Parameters
 
 ### customComplexityFactors
@@ -31,4 +36,3 @@ Parameters
 ### logFieldScores
 
 <MemberInfo kind="parameter" type={`boolean`} />
-

@@ -1,13 +1,14 @@
 ---
-title: "EntityHydrator"
+title: 'EntityHydrator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EntityHydrator
 
@@ -17,7 +18,7 @@ This is a helper class which is used to "hydrate" entity instances, which means 
 with the specified relations. This is useful when writing plugin code which receives an entity,
 and you need to ensure that one or more relations are present.
 
-*Example*
+_Example_
 
 ```ts
 import { Injectable } from '@nestjs/common';
@@ -25,27 +26,24 @@ import { ID, RequestContext, EntityHydrator, ProductVariantService } from '@deen
 
 @Injectable()
 export class MyService {
+    constructor(
+        // highlight-next-line
+        private entityHydrator: EntityHydrator,
+        private productVariantService: ProductVariantService,
+    ) {}
 
-  constructor(
-     // highlight-next-line
-     private entityHydrator: EntityHydrator,
-     private productVariantService: ProductVariantService,
-  ) {}
+    myMethod(ctx: RequestContext, variantId: ID) {
+        const product = await this.productVariantService.getProductForVariant(ctx, variantId);
 
-  myMethod(ctx: RequestContext, variantId: ID) {
-    const product = await this.productVariantService
-      .getProductForVariant(ctx, variantId);
+        // at this stage, we don't know which of the Product relations
+        // will be joined at runtime.
 
-    // at this stage, we don't know which of the Product relations
-    // will be joined at runtime.
+        // highlight-start
+        await this.entityHydrator.hydrate(ctx, product, { relations: ['facetValues.facet'] });
 
-    // highlight-start
-    await this.entityHydrator
-      .hydrate(ctx, product, { relations: ['facetValues.facet' ]});
-
-    // You can be sure now that the `facetValues` & `facetValues.facet` relations are populated
-    // highlight-end
-  }
+        // You can be sure now that the `facetValues` & `facetValues.facet` relations are populated
+        // highlight-end
+    }
 }
 ```
 
@@ -59,14 +57,12 @@ Channel-specific prices applied to them.
 
 Custom field relations may also be hydrated:
 
-*Example*
+_Example_
 
 ```ts
-const customer = await this.customerService
-  .findOne(ctx, id);
+const customer = await this.customerService.findOne(ctx, id);
 
-await this.entityHydrator
-  .hydrate(ctx, customer, { relations: ['customFields.avatar' ]});
+await this.entityHydrator.hydrate(ctx, customer, { relations: ['customFields.avatar'] });
 ```
 
 ```ts title="Signature"
@@ -80,17 +76,16 @@ class EntityHydrator {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>, productPriceApplicator: <a href='/reference/typescript-api/service-helpers/product-price-applicator#productpriceapplicator'>ProductPriceApplicator</a>, translator: <a href='/reference/typescript-api/service-helpers/translator-service#translatorservice'>TranslatorService</a>) => EntityHydrator`}   />
-
+<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>, productPriceApplicator: <a href='/reference/typescript-api/service-helpers/product-price-applicator#productpriceapplicator'>ProductPriceApplicator</a>, translator: <a href='/reference/typescript-api/service-helpers/translator-service#translatorservice'>TranslatorService</a>) => EntityHydrator`} />
 
 ### hydrate
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, target: Entity, options: <a href='/reference/typescript-api/data-access/hydrate-options#hydrateoptions'>HydrateOptions</a>&#60;Entity&#62;) => Promise&#60;Entity&#62;`}  since="1.3.0"  />
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, target: Entity, options: <a href='/reference/typescript-api/data-access/hydrate-options#hydrateoptions'>HydrateOptions</a>&#60;Entity&#62;) => Promise&#60;Entity&#62;`} since="1.3.0" />
 
 Hydrates (joins) the specified relations to the target entity instance. This method
 mutates the `target` entity.
 
-*Example*
+_Example_
 
 ```ts
 await this.entityHydrator.hydrate(ctx, product, {
@@ -102,6 +97,5 @@ await this.entityHydrator.hydrate(ctx, product, {
   applyProductVariantPrices: true,
 });
 ```
-
 
 </div>

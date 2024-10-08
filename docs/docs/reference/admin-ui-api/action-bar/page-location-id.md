@@ -1,13 +1,14 @@
 ---
-title: "PageLocationId"
+title: 'PageLocationId'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PageLocationId
 
@@ -16,7 +17,8 @@ import MemberDescription from '@site/src/components/MemberDescription';
 The valid locationIds for registering action bar items or tabs.
 
 ```ts title="Signature"
-type PageLocationId = | 'administrator-detail'
+type PageLocationId =
+    | 'administrator-detail'
     | 'administrator-list'
     | 'asset-detail'
     | 'asset-list'
@@ -60,5 +62,5 @@ type PageLocationId = | 'administrator-detail'
     | 'tax-rate-detail'
     | 'tax-rate-list'
     | 'zone-detail'
-    | 'zone-list'
+    | 'zone-list';
 ```

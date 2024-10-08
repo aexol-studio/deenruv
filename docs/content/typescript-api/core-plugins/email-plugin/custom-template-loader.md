@@ -1,15 +1,16 @@
 ---
-title: "Custom Template Loader"
+title: 'Custom Template Loader'
 weight: 10
 date: 2023-07-14T16:57:50.756Z
 showtoc: true
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
 
 # Custom Template Loader
-<div class="symbol">
 
+<div class="symbol">
 
 # TemplateLoader
 
@@ -18,7 +19,7 @@ generated: true
 Load an email template based on the given request context, type and template name
 and return the template as a string.
 
-*Example*
+_Example_
 
 ```TypeScript
 import { EmailPlugin, TemplateLoader } from '@deenruv/email-plugin';
@@ -29,7 +30,7 @@ class MyTemplateLoader implements TemplateLoader {
      }
 }
 
-// In vendure-config.ts:
+// In deenruv-config.ts:
 ...
 EmailPlugin.init({
     templateLoader: new MyTemplateLoader()
@@ -45,6 +46,7 @@ interface TemplateLoader {
   loadPartials?(): Promise<Partial[]>;
 }
 ```
+
 ## Members
 
 ### loadTemplate
@@ -58,6 +60,5 @@ interface TemplateLoader {
 {{< member-info kind="method" type="() => Promise&#60;Partial[]&#62;"  >}}
 
 {{< member-description >}}{{< /member-description >}}
-
 
 </div>

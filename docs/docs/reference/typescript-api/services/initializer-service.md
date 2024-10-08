@@ -1,13 +1,14 @@
 ---
-title: "InitializerService"
+title: 'InitializerService'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## InitializerService
 
@@ -27,14 +28,10 @@ class InitializerService {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>, zoneService: <a href='/reference/typescript-api/services/zone-service#zoneservice'>ZoneService</a>, channelService: <a href='/reference/typescript-api/services/channel-service#channelservice'>ChannelService</a>, roleService: <a href='/reference/typescript-api/services/role-service#roleservice'>RoleService</a>, administratorService: <a href='/reference/typescript-api/services/administrator-service#administratorservice'>AdministratorService</a>, shippingMethodService: <a href='/reference/typescript-api/services/shipping-method-service#shippingmethodservice'>ShippingMethodService</a>, globalSettingsService: <a href='/reference/typescript-api/services/global-settings-service#globalsettingsservice'>GlobalSettingsService</a>, taxRateService: <a href='/reference/typescript-api/services/tax-rate-service#taxrateservice'>TaxRateService</a>, sellerService: <a href='/reference/typescript-api/services/seller-service#sellerservice'>SellerService</a>, eventBus: <a href='/reference/typescript-api/events/event-bus#eventbus'>EventBus</a>, stockLocationService: StockLocationService) => InitializerService`}   />
-
+<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>, zoneService: <a href='/reference/typescript-api/services/zone-service#zoneservice'>ZoneService</a>, channelService: <a href='/reference/typescript-api/services/channel-service#channelservice'>ChannelService</a>, roleService: <a href='/reference/typescript-api/services/role-service#roleservice'>RoleService</a>, administratorService: <a href='/reference/typescript-api/services/administrator-service#administratorservice'>AdministratorService</a>, shippingMethodService: <a href='/reference/typescript-api/services/shipping-method-service#shippingmethodservice'>ShippingMethodService</a>, globalSettingsService: <a href='/reference/typescript-api/services/global-settings-service#globalsettingsservice'>GlobalSettingsService</a>, taxRateService: <a href='/reference/typescript-api/services/tax-rate-service#taxrateservice'>TaxRateService</a>, sellerService: <a href='/reference/typescript-api/services/seller-service#sellerservice'>SellerService</a>, eventBus: <a href='/reference/typescript-api/events/event-bus#eventbus'>EventBus</a>, stockLocationService: StockLocationService) => InitializerService`} />
 
 ### onModuleInit
 
-<MemberInfo kind="method" type={`() => `}   />
-
-
-
+<MemberInfo kind="method" type={`() => `} />
 
 </div>

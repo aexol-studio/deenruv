@@ -1,38 +1,37 @@
 ---
-title: "Translations"
+title: 'Translations'
 showtoc: true
 ---
 
-The following items in Vendure can be translated:
+The following items in Deenruv can be translated:
 
-- Entities which implement the [`Translatable`](/reference/typescript-api/entities/interfaces/#translatable) interface.
-- Admin UI text labels and messages
-- Server error message
+-   Entities which implement the [`Translatable`](/reference/typescript-api/entities/interfaces/#translatable) interface.
+-   Admin UI text labels and messages
+-   Server error message
 
 ## Translatable entities
 
 The following entities implement the `Translatable` interface:
 
-- [Collection](/reference/typescript-api/entities/collection/)
-- [Country](/reference/typescript-api/entities/country/)
-- [Facet](/reference/typescript-api/entities/facet/)
-- [FacetValue](/reference/typescript-api/entities/facet-value/)
-- [PaymentMethod](/reference/typescript-api/entities/payment-method/)
-- [Product](/reference/typescript-api/entities/product/)
-- [ProductOption](/reference/typescript-api/entities/product-option/)
-- [ProductOptionGroup](/reference/typescript-api/entities/product-option-group/)
-- [ProductVariant](/reference/typescript-api/entities/product-variant/)
-- [Promotion](/reference/typescript-api/entities/promotion/)
-- [Province](/reference/typescript-api/entities/province/)
-- [Region](/reference/typescript-api/entities/region/)
-- [ShippingMethod](/reference/typescript-api/entities/shipping-method/)
+-   [Collection](/reference/typescript-api/entities/collection/)
+-   [Country](/reference/typescript-api/entities/country/)
+-   [Facet](/reference/typescript-api/entities/facet/)
+-   [FacetValue](/reference/typescript-api/entities/facet-value/)
+-   [PaymentMethod](/reference/typescript-api/entities/payment-method/)
+-   [Product](/reference/typescript-api/entities/product/)
+-   [ProductOption](/reference/typescript-api/entities/product-option/)
+-   [ProductOptionGroup](/reference/typescript-api/entities/product-option-group/)
+-   [ProductVariant](/reference/typescript-api/entities/product-variant/)
+-   [Promotion](/reference/typescript-api/entities/promotion/)
+-   [Province](/reference/typescript-api/entities/province/)
+-   [Region](/reference/typescript-api/entities/region/)
+-   [ShippingMethod](/reference/typescript-api/entities/shipping-method/)
 
 To understand how translatable entities are implemented, let's take a look at a simplified version of the `Facet` entity:
 
 ```ts
 @Entity()
 export class Facet extends VendureEntity implements Translatable {
-    
     // highlight-next-line
     name: LocaleString;
 
@@ -51,7 +50,6 @@ All translatable entities have a `translations` field which is a relation to the
 ```ts
 @Entity()
 export class FacetTranslation extends VendureEntity implements Translation<Facet> {
-
     @Column('varchar') languageCode: LanguageCode;
 
     // highlight-next-line
@@ -63,7 +61,7 @@ export class FacetTranslation extends VendureEntity implements Translation<Facet
 }
 ```
 
-Thus there is a one-to-many relation between `Facet` and `FacetTranslation`, which allows Vendure to handle multiple translations of the same entity. The `FacetTranslation` entity also implements the `Translation` interface, which requires the `languageCode` field and a reference to the base entity.
+Thus there is a one-to-many relation between `Facet` and `FacetTranslation`, which allows Deenruv to handle multiple translations of the same entity. The `FacetTranslation` entity also implements the `Translation` interface, which requires the `languageCode` field and a reference to the base entity.
 
 ### Loading translatable entities
 
@@ -77,8 +75,10 @@ import { LanguageCode, RequestContext, TranslatorService, TransactionalConnectio
 
 @Injectable()
 export class MyService {
-    
-    constructor(private connection: TransactionalConnection, private translator: TranslatorService) {}
+    constructor(
+        private connection: TransactionalConnection,
+        private translator: TranslatorService,
+    ) {}
 
     async getFacet(ctx: RequestContext, id: ID): Promise<Facet | undefined> {
         const facet = await this.connection.getRepository(ctx, Facet).findOne(id);
@@ -87,7 +87,7 @@ export class MyService {
             return this.translatorService.translate(facet, ctx);
         }
     }
-    
+
     async getFacets(ctx: RequestContext): Promise<Facet[]> {
         // highlight-next-line
         const facets = await this.connection.getRepository(ctx, Facet).find();
@@ -96,6 +96,7 @@ export class MyService {
     }
 }
 ```
+
 ## Admin UI translations
 
 See the [Adding Admin UI Translations guide](/guides/extending-the-admin-ui/adding-ui-translations/).
@@ -106,10 +107,12 @@ Let's say you've implemented some custom server-side functionality as part of a 
 provide these messages in multiple languages.
 
 Using [`addTranslation`](/reference/typescript-api/common/i18n-service/#addtranslation) inside the `onApplicationBootstrap` ([Nestjs lifecycle hooks](https://docs.nestjs.com/fundamentals/lifecycle-events)) of a Plugin is the easiest way to add new translations.
-While Vendure is only using `error`, `errorResult` and `message` resource keys you are free to use your own.
+While Deenruv is only using `error`, `errorResult` and `message` resource keys you are free to use your own.
 
 ### Translatable Error
+
 This example shows how to create a custom translatable error
+
 ```ts
 /**
  * Custom error class
@@ -126,10 +129,7 @@ class CustomError extends ErrorResult {
     // ...
 })
 export class TranslationTestPlugin implements OnApplicationBootstrap {
-
-    constructor(private i18nService: I18nService) {
-
-    }
+    constructor(private i18nService: I18nService) {}
 
     onApplicationBootstrap(): any {
         this.i18nService.addTranslation('en', {
@@ -137,8 +137,8 @@ export class TranslationTestPlugin implements OnApplicationBootstrap {
                 CUSTOM_ERROR: 'A custom error message',
             },
             anything: {
-                foo: 'bar'
-            }
+                foo: 'bar',
+            },
         });
 
         this.i18nService.addTranslation('de', {
@@ -146,10 +146,9 @@ export class TranslationTestPlugin implements OnApplicationBootstrap {
                 CUSTOM_ERROR: 'Eine eigene Fehlermeldung',
             },
             anything: {
-                foo: 'bar'
-            }
+                foo: 'bar',
+            },
         });
-
     }
 }
 ```
@@ -159,7 +158,7 @@ To receive an error in a specific language you need to use the `languageCode` qu
 
 ### Use translations
 
-Vendure uses the internationalization-framework [i18next](https://www.i18next.com/).
+Deenruv uses the internationalization-framework [i18next](https://www.i18next.com/).
 
 Therefore you are free to use the i18next translate function to [access keys](https://www.i18next.com/translation-function/essentials#accessing-keys) \
 `i18next.t('error.any-message');`

@@ -1,13 +1,14 @@
 ---
-title: "NavMenuItem"
+title: 'NavMenuItem'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## NavMenuItem
 
@@ -32,39 +33,30 @@ interface NavMenuItem {
 
 ### id
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### label
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### routerLink
 
-<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/action-bar/router-link-definition#routerlinkdefinition'>RouterLinkDefinition</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/action-bar/router-link-definition#routerlinkdefinition'>RouterLinkDefinition</a>`} />
 
 ### onClick
 
-<MemberInfo kind="property" type={`(event: MouseEvent) =&#62; void`}   />
-
+<MemberInfo kind="property" type={`(event: MouseEvent) =&#62; void`} />
 
 ### icon
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### requiresPermission
 
-<MemberInfo kind="property" type={`string | ((userPermissions: string[]) =&#62; boolean)`}   />
-
+<MemberInfo kind="property" type={`string | ((userPermissions: string[]) =&#62; boolean)`} />
 
 ### statusBadge
 
-<MemberInfo kind="property" type={`Observable&#60;<a href='/reference/admin-ui-api/nav-menu/navigation-types#navmenubadge'>NavMenuBadge</a>&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`Observable&#60;<a href='/reference/admin-ui-api/nav-menu/navigation-types#navmenubadge'>NavMenuBadge</a>&#62;`} />
 
 </div>

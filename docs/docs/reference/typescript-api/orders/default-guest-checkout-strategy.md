@@ -1,13 +1,14 @@
 ---
-title: "DefaultGuestCheckoutStrategy"
+title: 'DefaultGuestCheckoutStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultGuestCheckoutStrategy
 
@@ -16,19 +17,19 @@ import MemberDescription from '@site/src/components/MemberDescription';
 The default implementation of the <a href='/reference/typescript-api/orders/guest-checkout-strategy#guestcheckoutstrategy'>GuestCheckoutStrategy</a>. This strategy allows
 guest checkouts by default, but can be configured to disallow them.
 
-*Example*
+_Example_
 
 ```ts
-import { DefaultGuestCheckoutStrategy, VendureConfig } from '@deenruv/core';
+import { DefaultGuestCheckoutStrategy, DeenruvConfig } from '@deenruv/core';
 
-export const config: VendureConfig = {
-  orderOptions: {
-    guestCheckoutStrategy: new DefaultGuestCheckoutStrategy({
-      allowGuestCheckouts: false,
-      allowGuestCheckoutForRegisteredCustomers: false,
-    }),
-  },
-  // ...
+export const config: DeenruvConfig = {
+    orderOptions: {
+        guestCheckoutStrategy: new DefaultGuestCheckoutStrategy({
+            allowGuestCheckouts: false,
+            allowGuestCheckoutForRegisteredCustomers: false,
+        }),
+    },
+    // ...
 };
 ```
 
@@ -39,31 +40,24 @@ class DefaultGuestCheckoutStrategy implements GuestCheckoutStrategy {
     setCustomerForOrder(ctx: RequestContext, order: Order, input: CreateCustomerInput) => Promise<ErrorResultUnion<SetCustomerForOrderResult, Customer>>;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/orders/guest-checkout-strategy#guestcheckoutstrategy'>GuestCheckoutStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/orders/guest-checkout-strategy#guestcheckoutstrategy'>GuestCheckoutStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### init
 
-<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `}   />
-
+<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(options?: <a href='/reference/typescript-api/orders/default-guest-checkout-strategy#defaultguestcheckoutstrategyoptions'>DefaultGuestCheckoutStrategyOptions</a>) => DefaultGuestCheckoutStrategy`}   />
-
+<MemberInfo kind="method" type={`(options?: <a href='/reference/typescript-api/orders/default-guest-checkout-strategy#defaultguestcheckoutstrategyoptions'>DefaultGuestCheckoutStrategyOptions</a>) => DefaultGuestCheckoutStrategy`} />
 
 ### setCustomerForOrder
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, order: <a href='/reference/typescript-api/entities/order#order'>Order</a>, input: CreateCustomerInput) => Promise&#60;<a href='/reference/typescript-api/errors/error-result-union#errorresultunion'>ErrorResultUnion</a>&#60;SetCustomerForOrderResult, <a href='/reference/typescript-api/entities/customer#customer'>Customer</a>&#62;&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, order: <a href='/reference/typescript-api/entities/order#order'>Order</a>, input: CreateCustomerInput) => Promise&#60;<a href='/reference/typescript-api/errors/error-result-union#errorresultunion'>ErrorResultUnion</a>&#60;SetCustomerForOrderResult, <a href='/reference/typescript-api/entities/customer#customer'>Customer</a>&#62;&#62;`} />
 
 </div>
-
 
 ## DefaultGuestCheckoutStrategyOptions
 
@@ -82,16 +76,16 @@ interface DefaultGuestCheckoutStrategyOptions {
 
 ### allowGuestCheckouts
 
-<MemberInfo kind="property" type={`boolean`} default={`true`}   />
+<MemberInfo kind="property" type={`boolean`} default={`true`} />
 
 Whether to allow guest checkouts.
+
 ### allowGuestCheckoutForRegisteredCustomers
 
-<MemberInfo kind="property" type={`boolean`} default={`false`}   />
+<MemberInfo kind="property" type={`boolean`} default={`false`} />
 
 Whether to allow guest checkouts for customers who already have an account.
 Note that when this is enabled, the details provided in the `CreateCustomerInput`
 will overwrite the existing customer details of the registered customer.
-
 
 </div>

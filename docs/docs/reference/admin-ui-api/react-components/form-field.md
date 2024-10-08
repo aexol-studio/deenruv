@@ -1,13 +1,14 @@
 ---
-title: "FormField"
+title: 'FormField'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FormField
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A wrapper around form fields which provides a label, tooltip and error message.
 
-*Example*
+_Example_
 
 ```ts
 import { FormField } from '@deenruv/admin-ui/react';
@@ -30,17 +31,19 @@ export function MyReactComponent() {
 ```
 
 ```ts title="Signature"
-function FormField(props: PropsWithChildren<{
+function FormField(
+    props: PropsWithChildren<{
         for?: string;
         label?: string;
         tooltip?: string;
         invalid?: boolean;
         errorMessage?: string;
-    }>): void
+    }>,
+): void;
 ```
+
 Parameters
 
 ### props
 
 <MemberInfo kind="parameter" type={`PropsWithChildren&#60;{         for?: string;         label?: string;         tooltip?: string;         invalid?: boolean;         errorMessage?: string;     }&#62;`} />
-

@@ -1,13 +1,14 @@
 ---
-title: "TaxLineCalculationStrategy"
+title: 'TaxLineCalculationStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TaxLineCalculationStrategy
 
@@ -23,7 +24,7 @@ For example, a third-party tax API or a lookup of a custom tax table may be used
 :::info
 
 This is configured via the `taxOptions.taxLineCalculationStrategy` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
@@ -32,15 +33,14 @@ interface TaxLineCalculationStrategy extends InjectableStrategy {
     calculate(args: CalculateTaxLinesArgs): TaxLine[] | Promise<TaxLine[]>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### calculate
 
-<MemberInfo kind="method" type={`(args: <a href='/reference/typescript-api/tax/tax-line-calculation-strategy#calculatetaxlinesargs'>CalculateTaxLinesArgs</a>) => TaxLine[] | Promise&#60;TaxLine[]&#62;`}   />
+<MemberInfo kind="method" type={`(args: <a href='/reference/typescript-api/tax/tax-line-calculation-strategy#calculatetaxlinesargs'>CalculateTaxLinesArgs</a>) => TaxLine[] | Promise&#60;TaxLine[]&#62;`} />
 
 This method is called when calculating the Order prices. Since it will be called
 whenever an Order is modified in some way (adding/removing items, applying promotions,
@@ -48,15 +48,11 @@ setting ShippingMethod etc), care should be taken so that calling the function d
 not adversely impact overall performance. For example, by using caching and only
 calling external APIs when absolutely necessary.
 
-
 </div>
-
 
 ## CalculateTaxLinesArgs
 
 <GenerationInfo sourceFile="packages/core/src/config/tax/tax-line-calculation-strategy.ts" sourceLine="47" packageName="@deenruv/core" />
-
-
 
 ```ts title="Signature"
 interface CalculateTaxLinesArgs {
@@ -71,24 +67,18 @@ interface CalculateTaxLinesArgs {
 
 ### ctx
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>`} />
 
 ### order
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order#order'>Order</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order#order'>Order</a>`} />
 
 ### orderLine
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`} />
 
 ### applicableTaxRate
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>`} />
 
 </div>

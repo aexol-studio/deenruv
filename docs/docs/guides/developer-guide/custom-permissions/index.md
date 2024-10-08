@@ -1,9 +1,9 @@
 ---
-title: "Define custom permissions"
+title: 'Define custom permissions'
 showtoc: true
 ---
 
-Vendure uses a fine-grained access control system based on roles & permissions. This is described in detail in the [Auth guide](/guides/core-concepts/auth/). The built-in [`Permission` enum](/reference/typescript-api/common/permission/) includes a range of permissions to control create, read, update, and delete access to the built-in entities.
+Deenruv uses a fine-grained access control system based on roles & permissions. This is described in detail in the [Auth guide](/guides/core-concepts/auth/). The built-in [`Permission` enum](/reference/typescript-api/common/permission/) includes a range of permissions to control create, read, update, and delete access to the built-in entities.
 
 When building plugins, you may need to define new permissions to control access to new functionality. This guide explains how to do so.
 
@@ -16,7 +16,7 @@ import { PermissionDefinition } from '@deenruv/core';
 
 export const sync = new PermissionDefinition({
     name: 'SyncInventory',
-    description: 'Allows syncing stock levels via Admin API'
+    description: 'Allows syncing stock levels via Admin API',
 });
 ```
 
@@ -29,7 +29,6 @@ import { sync } from '../constants';
 
 @Resolver()
 export class InventorySyncResolver {
-
     // highlight-next-line
     @Allow(sync.Permission)
     @Mutation()
@@ -39,13 +38,13 @@ export class InventorySyncResolver {
 }
 ```
 
-Finally, the `sync` PermissionDefinition must be passed into the VendureConfig so that Vendure knows about this new custom permission:
+Finally, the `sync` PermissionDefinition must be passed into the DeenruvConfig so that Deenruv knows about this new custom permission:
 
 ```ts title="src/plugins/inventory-sync/inventory-sync.plugin.ts"
 import gql from 'graphql-tag';
 import { VendurePlugin } from '@deenruv/core';
 
-import { InventorySyncResolver } from './api/inventory-sync.resolver'
+import { InventorySyncResolver } from './api/inventory-sync.resolver';
 import { sync } from './constants';
 
 @DeenruvPlugin({
@@ -59,7 +58,7 @@ import { sync } from './constants';
               syncInventory(input: InventoryDataInput!): Boolean!
             }
         `,
-        resolvers: [InventorySyncResolver]
+        resolvers: [InventorySyncResolver],
     },
     configuration: config => {
         // highlight-next-line
@@ -70,11 +69,11 @@ import { sync } from './constants';
 export class InventorySyncPlugin {}
 ```
 
-On starting the Vendure server, this custom permission will now be visible in the Role detail view of the Admin UI, and can be assigned to Roles.
+On starting the Deenruv server, this custom permission will now be visible in the Role detail view of the Admin UI, and can be assigned to Roles.
 
 ## Custom CRUD permissions
 
-Quite often your plugin will define a new entity on which you must perform create, read, update and delete (CRUD) operations. In this case, you can use the [CrudPermissionDefinition](/reference/typescript-api/auth/permission-definition/#crudpermissiondefinition) which simplifies the creation of the set of 4 CRUD permissions. 
+Quite often your plugin will define a new entity on which you must perform create, read, update and delete (CRUD) operations. In this case, you can use the [CrudPermissionDefinition](/reference/typescript-api/auth/permission-definition/#crudpermissiondefinition) which simplifies the creation of the set of 4 CRUD permissions.
 
 For example, let's imagine we are creating a plugin which adds a new entity called `ProductReview`. We can define the CRUD permissions like so:
 
@@ -93,14 +92,13 @@ import { productReviewPermission } from '../constants';
 
 @Resolver()
 export class ProductReviewResolver {
-
     // highlight-next-line
     @Allow(productReviewPermission.Read)
     @Query()
     productReviews(/* ... */) {
         // ...
     }
-    
+
     // highlight-next-line
     @Allow(productReviewPermission.Create)
     @Mutation()
@@ -108,7 +106,7 @@ export class ProductReviewResolver {
     createProductReview(/* ... */) {
         // ...
     }
-    
+
     // highlight-next-line
     @Allow(productReviewPermission.Update)
     @Mutation()
@@ -116,7 +114,7 @@ export class ProductReviewResolver {
     updateProductReview(/* ... */) {
         // ...
     }
-    
+
     // highlight-next-line
     @Allow(productReviewPermission.Delete)
     @Mutation()
@@ -127,13 +125,13 @@ export class ProductReviewResolver {
 }
 ```
 
-Finally, the `productReview` CrudPermissionDefinition must be passed into the VendureConfig so that Vendure knows about this new custom permission:
+Finally, the `productReview` CrudPermissionDefinition must be passed into the DeenruvConfig so that Deenruv knows about this new custom permission:
 
 ```ts title="src/plugins/product-review/product-review.plugin.ts"
 import gql from 'graphql-tag';
 import { VendurePlugin } from '@deenruv/core';
 
-import { ProductReviewResolver } from './api/product-review.resolver'
+import { ProductReviewResolver } from './api/product-review.resolver';
 import { productReviewPermission } from './constants';
 
 @DeenruvPlugin({
@@ -141,7 +139,7 @@ import { productReviewPermission } from './constants';
         schema: gql`
             # omitted for brevity
         `,
-        resolvers: [ProductReviewResolver]
+        resolvers: [ProductReviewResolver],
     },
     configuration: config => {
         // highlight-next-line
@@ -154,9 +152,9 @@ export class ProductReviewPlugin {}
 
 ## Custom permissions for custom fields
 
-Since Vendure v2.2.0, it is possible to define custom permissions for custom fields. This is useful when you want to 
+Since Deenruv v2.2.0, it is possible to define custom permissions for custom fields. This is useful when you want to
 control access to specific custom fields on an entity. For example, imagine a "product reviews" plugin which adds a
-`rating` custom field to the `Product` entity. 
+`rating` custom field to the `Product` entity.
 
 You may want to restrict access to this custom field to only those roles which have permissions on the product review
 plugin.
@@ -168,15 +166,12 @@ import { productReviewPermission } from './constants';
 @DeenruvPlugin({
     configuration: config => {
         config.authOptions.customPermissions.push(productReviewPermission);
-        
+
         config.customFields.Product.push({
             name: 'rating',
             type: 'int',
             // highlight-start
-            requiresPermission: [
-                productReviewPermission.Read, 
-                productReviewPermission.Update,
-            ],
+            requiresPermission: [productReviewPermission.Read, productReviewPermission.Update],
             // highlight-end
         });
         return config;

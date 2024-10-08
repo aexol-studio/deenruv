@@ -1,13 +1,14 @@
 ---
-title: "Refund"
+title: 'Refund'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Refund
 
@@ -17,7 +18,7 @@ A refund the belongs to an order
 
 ```ts title="Signature"
 class Refund extends VendureEntity {
-    constructor(input?: DeepPartial<Refund>)
+    constructor(input?: DeepPartial<Refund>);
     @Money() items: number;
     @Money() shipping: number;
     @Money() adjustment: number;
@@ -38,77 +39,61 @@ class Refund extends VendureEntity {
     @Column('simple-json') metadata: PaymentMetadata;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/refund#refund'>Refund</a>&#62;) => Refund`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/refund#refund'>Refund</a>&#62;) => Refund`} />
 
 ### items
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### shipping
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### adjustment
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### total
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### method
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### reason
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### state
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a>`} />
 
 ### transactionId
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### lines
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line-reference#refundline'>RefundLine</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line-reference#refundline'>RefundLine</a>[]`} />
 
 ### payment
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/payment#payment'>Payment</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/payment#payment'>Payment</a>`} />
 
 ### paymentId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>

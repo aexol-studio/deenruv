@@ -1,13 +1,14 @@
 ---
-title: "Ctx Decorator"
+title: 'Ctx Decorator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Ctx
 
@@ -16,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Resolver param decorator which extracts the <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a> from the incoming
 request object.
 
-*Example*
+_Example_
 
 ```ts
  @Query()
@@ -24,4 +25,3 @@ request object.
      // ...
  }
 ```
-

@@ -1,13 +1,14 @@
 ---
-title: "PriceCalculationResult"
+title: 'PriceCalculationResult'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PriceCalculationResult
 
@@ -20,21 +21,17 @@ The result of the price calculation from the <a href='/reference/typescript-api/
 type PriceCalculationResult = {
     price: number;
     priceIncludesTax: boolean;
-}
+};
 ```
 
 <div className="members-wrapper">
 
 ### price
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### priceIncludesTax
 
-<MemberInfo kind="property" type={`boolean`}   />
-
-
-
+<MemberInfo kind="property" type={`boolean`} />
 
 </div>

@@ -1,13 +1,14 @@
 ---
-title: "AssetPreviewPipe"
+title: 'AssetPreviewPipe'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## AssetPreviewPipe
 
@@ -17,7 +18,7 @@ Given an Asset object (an object with `preview` and optionally `focalPoint` prop
 returns a string with query parameters designed to work with the image resize capabilities of the
 AssetServerPlugin.
 
-*Example*
+_Example_
 
 ```HTML
 <img [src]="asset | assetPreview:'tiny'" />
@@ -29,17 +30,13 @@ class AssetPreviewPipe implements PipeTransform {
     transform(asset?: AssetFragment, preset: string | number = 'thumb') => string;
 }
 ```
-* Implements: <code>PipeTransform</code>
 
-
+-   Implements: <code>PipeTransform</code>
 
 <div className="members-wrapper">
 
 ### transform
 
-<MemberInfo kind="method" type={`(asset?: AssetFragment, preset: string | number = 'thumb') => string`}   />
-
-
-
+<MemberInfo kind="method" type={`(asset?: AssetFragment, preset: string | number = 'thumb') => string`} />
 
 </div>

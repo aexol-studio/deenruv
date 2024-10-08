@@ -1,13 +1,14 @@
 ---
-title: "AdminUiExtension"
+title: 'AdminUiExtension'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## AdminUiExtension
 
@@ -21,7 +22,8 @@ See [Extending the Admin UI](/guides/extending-the-admin-ui/getting-started/) fo
 detailed instructions.
 
 ```ts title="Signature"
-interface AdminUiExtension extends Partial<TranslationExtension>,
+interface AdminUiExtension
+    extends Partial<TranslationExtension>,
         Partial<StaticAssetExtension>,
         Partial<GlobalStylesExtension> {
     id?: string;
@@ -33,45 +35,49 @@ interface AdminUiExtension extends Partial<TranslationExtension>,
     exclude?: string[];
 }
 ```
-* Extends: <code>Partial&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#translationextension'>TranslationExtension</a>&#62;</code>, <code>Partial&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#staticassetextension'>StaticAssetExtension</a>&#62;</code>, <code>Partial&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#globalstylesextension'>GlobalStylesExtension</a>&#62;</code>
 
-
+-   Extends: <code>Partial&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#translationextension'>TranslationExtension</a>&#62;</code>, <code>Partial&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#staticassetextension'>StaticAssetExtension</a>&#62;</code>, <code>Partial&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#globalstylesextension'>GlobalStylesExtension</a>&#62;</code>
 
 <div className="members-wrapper">
 
 ### id
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 An optional ID for the extension module. Only used internally for generating
 import paths to your module. If not specified, a unique hash will be used as the id.
+
 ### extensionPath
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The path to the directory containing the extension module(s). The entire contents of this directory
 will be copied into the Admin UI app, including all TypeScript source files, html templates,
 scss style sheets etc.
+
 ### ngModules
 
-<MemberInfo kind="property" type={`Array&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#adminuiextensionsharedmodule'>AdminUiExtensionSharedModule</a> | <a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#adminuiextensionlazymodule'>AdminUiExtensionLazyModule</a>&#62;`}   />
+<MemberInfo kind="property" type={`Array&#60;<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#adminuiextensionsharedmodule'>AdminUiExtensionSharedModule</a> | <a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#adminuiextensionlazymodule'>AdminUiExtensionLazyModule</a>&#62;`} />
 
 One or more Angular modules which extend the default Admin UI.
+
 ### providers
 
-<MemberInfo kind="property" type={`string[]`}   />
+<MemberInfo kind="property" type={`string[]`} />
 
 Defines the paths to a file that exports an array of shared providers such as nav menu items, custom form inputs,
 custom detail components, action bar items, custom history entry components.
+
 ### routes
 
-<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#uiextensionroutedefinition'>UiExtensionRouteDefinition</a>[]`}   />
+<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#uiextensionroutedefinition'>UiExtensionRouteDefinition</a>[]`} />
 
 Defines routes that will be lazy-loaded at the `/extensions/` route. The filePath should point to a file
 relative to the `extensionPath` which exports an array of Angular route definitions.
+
 ### pathAlias
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 An optional alias for the module so it can be referenced by other UI extension modules.
 
@@ -80,11 +86,11 @@ defined by the `extensionPath`. A scenario in which that can be useful though is
 a common NgModule is shared across different plugins, each defined in its own package. An example can be found
 below - note that the main `tsconfig.json` also maps the target module but using a path relative to the project's
 root folder. The UI module is not part of the main TypeScript build task as explained in
-[Extending the Admin UI](https://www.vendure.io/docs/plugins/extending-the-admin-ui/) but having `paths`
+[Extending the Admin UI](https://www.deenruv.io/docs/plugins/extending-the-admin-ui/) but having `paths`
 properly configured helps with usual IDE code editing features such as code completion and quick navigation, as
 well as linting.
 
-*Example*
+_Example_
 
 ```ts title="packages/common-ui-module/src/ui/ui-shared.module.ts"
 import { NgModule } from '@angular/core';
@@ -94,9 +100,9 @@ import { CommonUiComponent } from './components/common-ui/common-ui.component';
 export { CommonUiComponent };
 
 @NgModule({
- imports: [SharedModule],
- exports: [CommonUiComponent],
- declarations: [CommonUiComponent],
+    imports: [SharedModule],
+    exports: [CommonUiComponent],
+    declarations: [CommonUiComponent],
 })
 export class CommonSharedUiModule {}
 ```
@@ -107,28 +113,28 @@ import path from 'path';
 import { AdminUiExtension } from '@deenruv/ui-devkit/compiler';
 
 export const uiExtensions: AdminUiExtension = {
-  // highlight-next-line
-  pathAlias: '@common-ui-module',     // this is the important part
-  extensionPath: path.join(__dirname, 'ui'),
-  ngModules: [
-    {
-      type: 'shared' as const,
-      ngModuleFileName: 'ui-shared.module.ts',
-      ngModuleName: 'CommonSharedUiModule',
-    },
-  ],
+    // highlight-next-line
+    pathAlias: '@common-ui-module', // this is the important part
+    extensionPath: path.join(__dirname, 'ui'),
+    ngModules: [
+        {
+            type: 'shared' as const,
+            ngModuleFileName: 'ui-shared.module.ts',
+            ngModuleName: 'CommonSharedUiModule',
+        },
+    ],
 };
 ```
 
 ```json title="tsconfig.json"
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      // highlight-next-line
-      "@common-ui-module/*": ["packages/common-ui-module/src/ui/*"]
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            // highlight-next-line
+            "@common-ui-module/*": ["packages/common-ui-module/src/ui/*"]
+        }
     }
-  }
 }
 ```
 
@@ -142,36 +148,35 @@ import { CommonSharedUiModule, CommonUiComponent } from '@common-ui-module/ui-sh
 // highlight-end
 
 @NgModule({
-  imports: [
-    SharedModule,
-    CommonSharedUiModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        pathMatch: 'full',
-        component: CommonUiComponent,
-      },
-    ]),
-  ],
+    imports: [
+        SharedModule,
+        CommonSharedUiModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                pathMatch: 'full',
+                component: CommonUiComponent,
+            },
+        ]),
+    ],
 })
 export class SampleUiExtensionModule {}
 ```
+
 ### exclude
 
-<MemberInfo kind="property" type={`string[]`}   />
+<MemberInfo kind="property" type={`string[]`} />
 
 Optional array specifying filenames or [glob](https://github.com/isaacs/node-glob) patterns that should
 be skipped when copying the directory defined by `extensionPath`.
 
-*Example*
+_Example_
 
 ```ts
-exclude: ['**/*.spec.ts']
+exclude: ['**/*.spec.ts'];
 ```
 
-
 </div>
-
 
 ## TranslationExtension
 
@@ -190,14 +195,14 @@ interface TranslationExtension {
 
 ### translations
 
-<MemberInfo kind="property" type={`{ [languageCode in <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>]?: string }`}   />
+<MemberInfo kind="property" type={`{ [languageCode in <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>]?: string }`} />
 
 Optional object defining any translation files for the Admin UI. The value should be an object with
 the key as a 2-character [ISO 639-1 language code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes),
 and the value being a [glob](https://github.com/isaacs/node-glob) for any relevant
 translation files in JSON format.
 
-*Example*
+_Example_
 
 ```ts
 translations: {
@@ -206,9 +211,7 @@ translations: {
 }
 ```
 
-
 </div>
-
 
 ## StaticAssetExtension
 
@@ -226,14 +229,12 @@ interface StaticAssetExtension {
 
 ### staticAssets
 
-<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#staticassetdefinition'>StaticAssetDefinition</a>[]`}   />
+<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/ui-devkit/admin-ui-extension#staticassetdefinition'>StaticAssetDefinition</a>[]`} />
 
 Optional array of paths to static assets which will be copied over to the Admin UI app's `/static`
 directory.
 
-
 </div>
-
 
 ## GlobalStylesExtension
 
@@ -251,14 +252,12 @@ interface GlobalStylesExtension {
 
 ### globalStyles
 
-<MemberInfo kind="property" type={`string[] | string`}   />
+<MemberInfo kind="property" type={`string[] | string`} />
 
 Specifies a path (or array of paths) to global style files (css or Sass) which will be
 incorporated into the Admin UI app global stylesheet.
 
-
 </div>
-
 
 ## SassVariableOverridesExtension
 
@@ -276,14 +275,12 @@ interface SassVariableOverridesExtension {
 
 ### sassVariableOverrides
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 Specifies a path to a Sass style file containing variable declarations, which will take precedence over
 default values defined in Clarity.
 
-
 </div>
-
 
 ## UiExtensionRouteDefinition
 
@@ -303,17 +300,19 @@ interface UiExtensionRouteDefinition {
 
 ### route
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the route. This will be used as the path in the URL.
+
 ### filePath
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The path to the file which exports an array of Angular route definitions.
+
 ### prefix
 
-<MemberInfo kind="property" type={`string`}  since="2.2.0"  />
+<MemberInfo kind="property" type={`string`} since="2.2.0" />
 
 All extensions will be mounted under the `/extensions/` route. This option allows you to specify a
 custom prefix rather than `/extensions/`. For example, setting this to `custom` would cause the extension
@@ -322,9 +321,7 @@ to be mounted at `/custom/<route>` instead.
 A common use case for this is to mount the extension at the root of the Admin UI, by setting this to an empty string.
 This is useful when the extension is intended to replace the default Admin UI, rather than extend it.
 
-
 </div>
-
 
 ## StaticAssetDefinition
 
@@ -334,9 +331,8 @@ A static asset can be provided as a path to the asset, or as an object containin
 name, which will cause the compiler to copy and then rename the asset.
 
 ```ts title="Signature"
-type StaticAssetDefinition = string | { path: string; rename: string }
+type StaticAssetDefinition = string | { path: string; rename: string };
 ```
-
 
 ## AdminUiExtensionSharedModule
 
@@ -356,25 +352,25 @@ interface AdminUiExtensionSharedModule {
 
 ### type
 
-<MemberInfo kind="property" type={`'shared'`}   />
+<MemberInfo kind="property" type={`'shared'`} />
 
 Shared modules are directly imported into the main AppModule of the Admin UI
 and should be used to declare custom form components and define custom
 navigation items.
+
 ### ngModuleFileName
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the file containing the extension module class.
+
 ### ngModuleName
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the extension module class.
 
-
 </div>
-
 
 ## AdminUiExtensionLazyModule
 
@@ -395,27 +391,29 @@ interface AdminUiExtensionLazyModule {
 
 ### type
 
-<MemberInfo kind="property" type={`'lazy'`}   />
+<MemberInfo kind="property" type={`'lazy'`} />
 
 Lazy modules are lazy-loaded at the `/extensions/` route and should be used for
 modules which define new views for the Admin UI.
+
 ### route
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The route specifies the route at which the module will be lazy-loaded. E.g. a value
 of `'foo'` will cause the module to lazy-load when the `/extensions/foo` route
 is activated.
+
 ### ngModuleFileName
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the file containing the extension module class.
+
 ### ngModuleName
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the extension module class.
-
 
 </div>

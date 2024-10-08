@@ -1,22 +1,23 @@
 # Example multi-vendor marketplace plugin
 
-This is an example plugin which demonstrates how to build a multi-vendor marketplace with Vendure. It uses new APIs and features introduced in Vendure v2.0.
+This is an example plugin which demonstrates how to build a multi-vendor marketplace with Deenruv. It uses new APIs and features introduced in Deenruv v2.0.
 
-The parts of the plugin are documented with explanations, and the overall guide can be found in the [Multi-vendor marketplace](https://docs.vendure.io/developer-guide/multi-vendor-marketplaces/) section of the Vendure docs.
+<!-- The parts of the plugin are documented with explanations, and the overall guide can be found in the [Multi-vendor marketplace](https://docs.deenruv.io/developer-guide/multi-vendor-marketplaces/) section of the Deenruv docs. -->
 
 ## Setup
 
-Add this plugin to your VendureConfig:
+Add this plugin to your DeenruvConfig:
+
 ```ts
 import { MultivendorPlugin } from './plugins/multivendor-plugin/multivendor.plugin';
 
- plugins: [
-   MultivendorPlugin.init({
-       platformFeePercent: 10,
-       platformFeeSKU: 'FEE',
-   }),
-   // ...
- ]
+plugins: [
+    MultivendorPlugin.init({
+        platformFeePercent: 10,
+        platformFeeSKU: 'FEE',
+    }),
+    // ...
+];
 ```
 
 ## Create a Seller
@@ -25,29 +26,31 @@ Now you can create new sellers with the following mutation in the Shop API:
 
 ```graphql
 mutation RegisterSeller {
-  registerNewSeller(input: {
-    shopName: "Bob's Parts",
-    seller: {
-      firstName: "Bob"
-      lastName: "Dobalina"
-      emailAddress: "bob@bobs-parts.com"
-      password: "test",
+    registerNewSeller(
+        input: {
+            shopName: "Bob's Parts"
+            seller: {
+                firstName: "Bob"
+                lastName: "Dobalina"
+                emailAddress: "bob@bobs-parts.com"
+                password: "test"
+            }
+        }
+    ) {
+        id
+        code
+        token
     }
-  }) {
-    id
-    code
-    token
-  }
 }
 ```
 
 This mutation will:
 
-- Create a new Seller representing the shop "Bob's Parts"
-- Create a new Channel and associate it with the new Seller
-- Create a Role & Administrator for Bob to access his shop admin account
-- Create a ShippingMethod for Bob's shop
-- Create a StockLocation for Bob's shop
+-   Create a new Seller representing the shop "Bob's Parts"
+-   Create a new Channel and associate it with the new Seller
+-   Create a Role & Administrator for Bob to access his shop admin account
+-   Create a ShippingMethod for Bob's shop
+-   Create a StockLocation for Bob's shop
 
 Bob can then go and sign in to the Admin UI using the provided emailAddress & password credentials, and start
 creating some products.
@@ -69,11 +72,11 @@ You should now select the IDs of all the Seller-specific ShippingMethods:
 
 ```graphql
 mutation {
-  setOrderShippingMethod(shippingMethodId: ["3", "4"]) {
-    ... on Order {
-      id
+    setOrderShippingMethod(shippingMethodId: ["3", "4"]) {
+        ... on Order {
+            id
+        }
     }
-  }
 }
 ```
 
@@ -84,16 +87,18 @@ of something like Stripe Connect.
 
 ```graphql
 mutation {
-  addPaymentToOrder(input: { method: "connected-payment-method", metadata: {} }) {
-    ... on Order { id }
-    ... on ErrorResult {
-      errorCode
-      message
+    addPaymentToOrder(input: { method: "connected-payment-method", metadata: {} }) {
+        ... on Order {
+            id
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+        ... on PaymentFailedError {
+            paymentErrorMessage
+        }
     }
-    ... on PaymentFailedError {
-      paymentErrorMessage
-    }
-  }
 }
 ```
 

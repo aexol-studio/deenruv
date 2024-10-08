@@ -1,13 +1,14 @@
 ---
-title: "ChipComponent"
+title: 'ChipComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ChipComponent
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A chip component for displaying a label with an optional action icon.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-chip [colorFrom]="item.value"
@@ -38,30 +39,29 @@ class ChipComponent {
 
 ### icon
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The icon should be the name of one of the available Clarity icons: https://clarity.design/foundation/icons/shapes/
+
 ### invert
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### colorFrom
 
-<MemberInfo kind="property" type={``}   />
+<MemberInfo kind="property" type={``} />
 
 If set, the chip will have an auto-generated background
 color based on the string value passed in.
+
 ### colorType
 
-<MemberInfo kind="property" type={`'error' | 'success' | 'warning'`}   />
+<MemberInfo kind="property" type={`'error' | 'success' | 'warning'`} />
 
 The color of the chip can also be one of the standard status colors.
+
 ### iconClick
 
-<MemberInfo kind="property" type={``}   />
-
-
-
+<MemberInfo kind="property" type={``} />
 
 </div>

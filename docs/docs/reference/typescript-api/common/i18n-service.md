@@ -1,19 +1,18 @@
 ---
-title: "I18nService"
+title: 'I18nService'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
 
-
 ## I18nService
 
 <GenerationInfo sourceFile="packages/core/src/i18n/i18n.service.ts" sourceLine="44" packageName="@deenruv/core" />
-
-
 
 ```ts title="Signature"
 class I18nService implements OnModuleInit {
@@ -21,26 +20,24 @@ class I18nService implements OnModuleInit {
     addTranslation(langKey: string, resources: VendureTranslationResources | any) => void;
 }
 ```
-* Implements: <code>OnModuleInit</code>
 
-
+-   Implements: <code>OnModuleInit</code>
 
 <div className="members-wrapper">
 
 ### addTranslationFile
 
-<MemberInfo kind="method" type={`(langKey: string, filePath: string) => void`}   />
+<MemberInfo kind="method" type={`(langKey: string, filePath: string) => void`} />
 
 Add a I18n translation by json file
+
 ### addTranslation
 
-<MemberInfo kind="method" type={`(langKey: string, resources: <a href='/reference/typescript-api/common/i18n-service#venduretranslationresources'>VendureTranslationResources</a> | any) => void`}   />
+<MemberInfo kind="method" type={`(langKey: string, resources: <a href='/reference/typescript-api/common/i18n-service#venduretranslationresources'>VendureTranslationResources</a> | any) => void`} />
 
 Add a I18n translation (key-value) resource
 
-
 </div>
-
 
 ## VendureTranslationResources
 
@@ -60,19 +57,14 @@ interface VendureTranslationResources {
 
 ### error
 
-<MemberInfo kind="property" type={`any`}   />
-
+<MemberInfo kind="property" type={`any`} />
 
 ### errorResult
 
-<MemberInfo kind="property" type={`any`}   />
-
+<MemberInfo kind="property" type={`any`} />
 
 ### message
 
-<MemberInfo kind="property" type={`any`}   />
-
-
-
+<MemberInfo kind="property" type={`any`} />
 
 </div>

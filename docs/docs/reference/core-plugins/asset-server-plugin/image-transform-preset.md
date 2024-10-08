@@ -1,13 +1,14 @@
 ---
-title: "ImageTransformPreset"
+title: 'ImageTransformPreset'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ImageTransformPreset
 
@@ -38,24 +39,18 @@ interface ImageTransformPreset {
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### width
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### height
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### mode
 
-<MemberInfo kind="property" type={`<a href='/reference/core-plugins/asset-server-plugin/image-transform-mode#imagetransformmode'>ImageTransformMode</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/core-plugins/asset-server-plugin/image-transform-mode#imagetransformmode'>ImageTransformMode</a>`} />
 
 </div>

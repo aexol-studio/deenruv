@@ -1,13 +1,14 @@
 ---
-title: "DefaultPasswordValidationStrategy"
+title: 'DefaultPasswordValidationStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultPasswordValidationStrategy
 
@@ -27,22 +28,17 @@ class DefaultPasswordValidationStrategy implements PasswordValidationStrategy {
     validate(ctx: RequestContext, password: string) => boolean | string;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/auth/password-validation-strategy#passwordvalidationstrategy'>PasswordValidationStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/auth/password-validation-strategy#passwordvalidationstrategy'>PasswordValidationStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(options: { minLength?: number; regexp?: RegExp }) => DefaultPasswordValidationStrategy`}   />
-
+<MemberInfo kind="method" type={`(options: { minLength?: number; regexp?: RegExp }) => DefaultPasswordValidationStrategy`} />
 
 ### validate
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, password: string) => boolean | string`}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, password: string) => boolean | string`} />
 
 </div>

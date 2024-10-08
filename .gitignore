@@ -8,7 +8,6 @@
 .idea/**/tasks.xml
 .idea/dictionaries
 .env
-lerna-debug.log
 dist
 e2e/__data__/*
 docs/resources/_gen/*

@@ -1,13 +1,14 @@
 ---
-title: "OrderMergeStrategy"
+title: 'OrderMergeStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## OrderMergeStrategy
 
@@ -22,7 +23,7 @@ of OrderLines. The OrderMergeStrategy defines the rules governing this reconcili
 :::info
 
 This is configured via the `orderOptions.mergeStrategy` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
@@ -31,22 +32,19 @@ interface OrderMergeStrategy extends InjectableStrategy {
     merge(ctx: RequestContext, guestOrder: Order, existingOrder: Order): MergedOrderLine[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### merge
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, guestOrder: <a href='/reference/typescript-api/entities/order#order'>Order</a>, existingOrder: <a href='/reference/typescript-api/entities/order#order'>Order</a>) => <a href='/reference/typescript-api/orders/order-merge-strategy#mergedorderline'>MergedOrderLine</a>[]`}   />
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, guestOrder: <a href='/reference/typescript-api/entities/order#order'>Order</a>, existingOrder: <a href='/reference/typescript-api/entities/order#order'>Order</a>) => <a href='/reference/typescript-api/orders/order-merge-strategy#mergedorderline'>MergedOrderLine</a>[]`} />
 
 Merges the lines of the guest Order with those of the existing Order which is associated
 with the active customer.
 
-
 </div>
-
 
 ## MergedOrderLine
 
@@ -66,19 +64,14 @@ interface MergedOrderLine {
 
 ### orderLineId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### quantity
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`any`}   />
-
-
-
+<MemberInfo kind="property" type={`any`} />
 
 </div>

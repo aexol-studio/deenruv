@@ -1,26 +1,26 @@
 ---
-title: "Orders"
+title: 'Orders'
 weight: 3
 ---
 
 # Orders
 
-An Order is created whenever someone adds an item to their cart in the storefront. In Vendure, there is no distinction between a "cart" and an "order". Thus a "cart" is just an Order which has not yet passed through the checkout process.
+An Order is created whenever someone adds an item to their cart in the storefront. In Deenruv, there is no distinction between a "cart" and an "order". Thus a "cart" is just an Order which has not yet passed through the checkout process.
 
 ## The Order Workflow
 
-The exact set of stages that an Order goes through can be customized in Vendure to suit your particular business needs, but we can look at the default steps to get a good idea of the typical workflow:
+The exact set of stages that an Order goes through can be customized in Deenruv to suit your particular business needs, but we can look at the default steps to get a good idea of the typical workflow:
 
 ![./order-state-diagram-for-admin.png](./order-state-diagram-for-admin.png)
 
 When a new Order arrives, you would:
 
 1. **Settle the payment** if not already done (this may or may not be needed depending on the way your payment provider is configured).
-    ![./screen-settle-payment.webp](./screen-settle-payment.webp)
+   ![./screen-settle-payment.webp](./screen-settle-payment.webp)
 1. **Create a Fulfillment** by clicking the "Fulfill Order" button in the top-right of the order detail page. A Fulfillment represents the physical package which will be sent to the customer. You may split up your order into multiple Fulfillments, if that makes sense from a logistical point of view.
-    ![./screen-fulfillment.webp](./screen-fulfillment.webp)
-1. **Mark the Fulfillment as "shipped"** once the physical package leaves your warehouse. 
-1. **Mark the Fulfillment as "delivered"** once you have notice of the package arriving with the customer. 
+   ![./screen-fulfillment.webp](./screen-fulfillment.webp)
+1. **Mark the Fulfillment as "shipped"** once the physical package leaves your warehouse.
+1. **Mark the Fulfillment as "delivered"** once you have notice of the package arriving with the customer.
    ![./screen-fulfillment-shipped.webp](./screen-fulfillment-shipped.webp)
 
 ## Refunds
@@ -41,17 +41,17 @@ Cancellations and refunds are often done together, but do not have to be. For ex
 
 ## Modifying an Order
 
-An Order can be modified after checkout is completed. 
+An Order can be modified after checkout is completed.
 
 ![./screen-modify-button.webp](./screen-modify-button.webp)
 
 Modification allows you to:
 
-* Alter the quantities of any items in the order
-* Remove items from the order  
-* Add new items to the order
-* Add arbitrary surcharges or discounts
-* Alter the shipping & billing address
+-   Alter the quantities of any items in the order
+-   Remove items from the order
+-   Add new items to the order
+-   Add arbitrary surcharges or discounts
+-   Alter the shipping & billing address
 
 ![./screen-modification.webp](./screen-modification.webp)
 
@@ -60,6 +60,3 @@ Once you have made the desired modifications, you preview the changes including 
 If the modifications have resulted in an increased price (as in the above example), the Order will then be set into the "Arranging additional payment" state. This allows you to process another payment from the customer to make up the price difference.
 
 On the other hand, if the new price is less than what was originally paid (e.g. if the quantity is decreased), then a Refund will be generated against the payment method used.
-
-
-

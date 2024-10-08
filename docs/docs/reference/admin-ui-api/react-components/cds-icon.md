@@ -1,13 +1,14 @@
 ---
-title: "CdsIcon"
+title: 'CdsIcon'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CdsIcon
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A React wrapper for the Clarity UI icon component.
 
-*Example*
+_Example_
 
 ```ts
 import { userIcon } from '@cds/core/icon';
@@ -28,11 +29,11 @@ export function MyComponent() {
 ```
 
 ```ts title="Signature"
-function CdsIcon(props: { icon: IconShapeTuple; className?: string } & Partial<CdsIconProps>): void
+function CdsIcon(props: { icon: IconShapeTuple; className?: string } & Partial<CdsIconProps>): void;
 ```
+
 Parameters
 
 ### props
 
 <MemberInfo kind="parameter" type={`{ icon: IconShapeTuple; className?: string } &#38; Partial&#60;CdsIconProps&#62;`} />
-

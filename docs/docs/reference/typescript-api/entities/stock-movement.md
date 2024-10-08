@@ -1,13 +1,14 @@
 ---
-title: "StockMovement"
+title: 'StockMovement'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## StockMovement
 
@@ -32,41 +33,32 @@ class StockMovement extends VendureEntity {
     quantity: number;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={`StockMovementType`}   />
-
+<MemberInfo kind="property" type={`StockMovementType`} />
 
 ### productVariant
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>`} />
 
 ### stockLocation
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/stock-location#stocklocation'>StockLocation</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/stock-location#stocklocation'>StockLocation</a>`} />
 
 ### stockLocationId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### quantity
 
-<MemberInfo kind="property" type={`number`}   />
-
-
-
+<MemberInfo kind="property" type={`number`} />
 
 </div>
-
 
 ## Allocation
 
@@ -78,37 +70,30 @@ An Allocation is created for each ProductVariant in an Order when the checkout i
 ```ts title="Signature"
 class Allocation extends StockMovement {
     readonly type = StockMovementType.ALLOCATION;
-    constructor(input: DeepPartial<Allocation>)
+    constructor(input: DeepPartial<Allocation>);
     @Index()
     @ManyToOne(type => OrderLine, orderLine => orderLine.allocations)
     orderLine: OrderLine;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#allocation'>Allocation</a>&#62;) => Allocation`}   />
-
+<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#allocation'>Allocation</a>&#62;) => Allocation`} />
 
 ### orderLine
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`} />
 
 </div>
-
 
 ## Cancellation
 
@@ -119,36 +104,29 @@ A Cancellation is created when OrderItems from a fulfilled Order are cancelled.
 ```ts title="Signature"
 class Cancellation extends StockMovement {
     readonly type = StockMovementType.CANCELLATION;
-    constructor(input: DeepPartial<Cancellation>)
+    constructor(input: DeepPartial<Cancellation>);
     @ManyToOne(type => OrderLine, orderLine => orderLine.cancellations)
     orderLine: OrderLine;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#cancellation'>Cancellation</a>&#62;) => Cancellation`}   />
-
+<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#cancellation'>Cancellation</a>&#62;) => Cancellation`} />
 
 ### orderLine
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`} />
 
 </div>
-
 
 ## Release
 
@@ -160,36 +138,29 @@ are cancelled.
 ```ts title="Signature"
 class Release extends StockMovement {
     readonly type = StockMovementType.RELEASE;
-    constructor(input: DeepPartial<Release>)
+    constructor(input: DeepPartial<Release>);
     @ManyToOne(type => OrderLine)
     orderLine: OrderLine;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#release'>Release</a>&#62;) => Release`}   />
-
+<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#release'>Release</a>&#62;) => Release`} />
 
 ### orderLine
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`} />
 
 </div>
-
 
 ## Sale
 
@@ -200,36 +171,29 @@ A Sale is created when OrderItems are fulfilled.
 ```ts title="Signature"
 class Sale extends StockMovement {
     readonly type = StockMovementType.SALE;
-    constructor(input: DeepPartial<Sale>)
+    constructor(input: DeepPartial<Sale>);
     @ManyToOne(type => OrderLine, line => line.sales)
     orderLine: OrderLine;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#sale'>Sale</a>&#62;) => Sale`}   />
-
+<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#sale'>Sale</a>&#62;) => Sale`} />
 
 ### orderLine
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`} />
 
 </div>
-
 
 ## StockAdjustment
 
@@ -240,25 +204,20 @@ A StockAdjustment is created when the `stockOnHand` level of a ProductVariant is
 ```ts title="Signature"
 class StockAdjustment extends StockMovement {
     readonly type = StockMovementType.ADJUSTMENT;
-    constructor(input: DeepPartial<StockAdjustment>)
+    constructor(input: DeepPartial<StockAdjustment>);
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a></code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#stockadjustment'>StockAdjustment</a>&#62;) => StockAdjustment`}   />
-
-
-
+<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-movement#stockadjustment'>StockAdjustment</a>&#62;) => StockAdjustment`} />
 
 </div>

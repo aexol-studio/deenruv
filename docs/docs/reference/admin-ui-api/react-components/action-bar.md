@@ -1,13 +1,14 @@
 ---
-title: "ActionBar"
+title: 'ActionBar'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ActionBar
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A container for the primary actions on a list or detail page
 
-*Example*
+_Example_
 
 ```ts
 import { ActionBar } from '@deenruv/admin-ui/react';
@@ -30,11 +31,11 @@ export function MyComponent() {
 ```
 
 ```ts title="Signature"
-function ActionBar(props: PropsWithChildren<{ leftContent?: ReactNode }>): void
+function ActionBar(props: PropsWithChildren<{ leftContent?: ReactNode }>): void;
 ```
+
 Parameters
 
 ### props
 
 <MemberInfo kind="parameter" type={`PropsWithChildren&#60;{ leftContent?: ReactNode }&#62;`} />
-

@@ -14,7 +14,7 @@ Services are classes which, in NestJS terms, are [providers](https://docs.nestjs
 follow all the rules of NestJS providers, including dependency injection, scoping, etc.
 :::
 
-Services are generally scoped to a specific domain or entity. For instance, in the Vendure core, there is a [`Product` entity](/reference/typescript-api/entities/product),
+Services are generally scoped to a specific domain or entity. For instance, in the Deenruv core, there is a [`Product` entity](/reference/typescript-api/entities/product),
 and a corresponding [`ProductService`](/reference/typescript-api/services/product-service) which contains all the methods for interacting with products.
 
 Here's a simplified example of a `ProductService`, including an implementation of the `findOne()` method that was
@@ -27,9 +27,10 @@ import { ID, Product, RequestContext, TransactionalConnection, TranslatorService
 
 @Injectable()
 export class ProductService {
-
-    constructor(private connection: TransactionalConnection,
-                private translator: TranslatorService){}
+    constructor(
+        private connection: TransactionalConnection,
+        private translator: TranslatorService,
+    ) {}
 
     /**
      * @description
@@ -54,15 +55,15 @@ export class ProductService {
 }
 ```
 
-- The `@Injectable()` decorator is a [NestJS](https://docs.nestjs.com/providers#services) decorator which allows the service
+-   The `@Injectable()` decorator is a [NestJS](https://docs.nestjs.com/providers#services) decorator which allows the service
     to be injected into other services or resolvers.
-- The `constructor()` method is where the dependencies of the service are injected. In this case, the `TransactionalConnection`
+-   The `constructor()` method is where the dependencies of the service are injected. In this case, the `TransactionalConnection`
     is used to access the database, and the `TranslatorService` is used to translate the Product entity into the current
     language.
 
 ## Using core services
 
-All the internal Vendure services can be used in your own plugins and scripts. They are listed in the [Services API reference](/reference/typescript-api/services/) and
+All the internal Deenruv services can be used in your own plugins and scripts. They are listed in the [Services API reference](/reference/typescript-api/services/) and
 can be imported from the `@deenruv/core` package.
 
 To make use of a core service in your own plugin, you need to ensure your plugin is importing the `PluginCommonModule` and
@@ -87,7 +88,6 @@ import { ProductService } from '@deenruv/core';
 
 @Injectable()
 export class MyService {
-
     // highlight-next-line
     constructor(private productService: ProductService) {}
 
@@ -127,7 +127,6 @@ import { Item } from '../entities/item.entity';
 
 @Injectable()
 export class ItemService {
-
     constructor(private connection: TransactionalConnection) {}
 
     findById(ctx: RequestContext, itemId: ID): Promise<Item | null> {
@@ -197,25 +196,29 @@ import { Item } from '../entities/item.entity';
 
 @Injectable()
 export class ItemService {
-
     constructor(private connection: TransactionalConnection) {}
 
     findById(ctx: RequestContext, itemId: ID): Promise<Item | null> {
         // This is simple enough that you should prefer the Find API,
         // but here is how it would be done with the QueryBuilder API:
-        return this.connection.getRepository(ctx, Item).createQueryBuilder('item')
+        return this.connection
+            .getRepository(ctx, Item)
+            .createQueryBuilder('item')
             .where('item.id = :id', { id: itemId })
             .getOne();
     }
 
     findManyWithSubquery(ctx: RequestContext, name: string) {
         // Here's a more complex query that would not be possible using the Find API:
-        return this.connection.getRepository(ctx, Item).createQueryBuilder('item')
+        return this.connection
+            .getRepository(ctx, Item)
+            .createQueryBuilder('item')
             .where('item.name = :name', { name })
             .andWhere(
                 new Brackets(qb1 => {
-                    qb1.where('item.state = :state1', { state1: 'PENDING' })
-                       .orWhere('item.state = :state2', { state2: 'RETRYING' });
+                    qb1.where('item.state = :state1', { state1: 'PENDING' }).orWhere('item.state = :state2', {
+                        state2: 'RETRYING',
+                    });
                 }),
             )
             .orderBy('item.createdAt', 'ASC')
@@ -257,10 +260,13 @@ const product = await this.connection.getRepository(ctx, Product).findOne({
     relations: { featuredAsset: true },
 });
 ```
+
 or in the case of the QueryBuilder API, we can use the `leftJoinAndSelect()` method:
 
 ```ts
-const product = await this.connection.getRepository(ctx, Product).createQueryBuilder('product')
+const product = await this.connection
+    .getRepository(ctx, Product)
+    .createQueryBuilder('product')
     // highlight-next-line
     .leftJoinAndSelect('product.featuredAsset', 'featuredAsset')
     .where('product.id = :id', { id: productId })
@@ -270,7 +276,7 @@ const product = await this.connection.getRepository(ctx, Product).createQueryBui
 ### Using the EntityHydrator
 
 But what about when we do not control the code which fetches the entity from the database? For instance, we might be implementing
-a function which gets an entity passed to it by Vendure. In this case, we can use the [`EntityHydrator`](/reference/typescript-api/data-access/entity-hydrator/)
+a function which gets an entity passed to it by Deenruv. In this case, we can use the [`EntityHydrator`](/reference/typescript-api/data-access/entity-hydrator/)
 to ensure that a given relation is "hydrated" (i.e. joined) before we use it:
 
 ```ts
@@ -284,16 +290,16 @@ const myShippingCalculator = new ShippingCalculator({
         entityHydrator = injector.get(EntityHydrator);
     },
     calculate: (ctx, order, args) => {
-      // highlight-start
-      // ensure that the customer and customer.groups relations are joined
-      await entityHydrator.hydrate(ctx, order, { relations: ['customer.groups' ]});
-      // highlight-end
+        // highlight-start
+        // ensure that the customer and customer.groups relations are joined
+        await entityHydrator.hydrate(ctx, order, { relations: ['customer.groups'] });
+        // highlight-end
 
-      if (order.customer?.groups?.some(g => g.name === 'VIP')) {
-        // ... do something special for VIP customers
-      } else {
-        // ... do something else
-      }
+        if (order.customer?.groups?.some(g => g.name === 'VIP')) {
+            // ... do something special for VIP customers
+        } else {
+            // ... do something else
+        }
     },
 });
 ```
@@ -305,7 +311,5 @@ This allows you to specify which relations should be joined when the query is ex
 there is a `findOne()` method which allows you to specify which relations should be joined:
 
 ```ts
-const productWithAssets = await this.productService
-    .findOne(ctx, productId, ['featuredAsset', 'assets']);
+const productWithAssets = await this.productService.findOne(ctx, productId, ['featuredAsset', 'assets']);
 ```
-

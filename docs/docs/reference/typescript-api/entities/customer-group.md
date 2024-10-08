@@ -1,13 +1,14 @@
 ---
-title: "CustomerGroup"
+title: 'CustomerGroup'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CustomerGroup
 
@@ -18,7 +19,7 @@ or tax rules.
 
 ```ts title="Signature"
 class CustomerGroup extends VendureEntity implements HasCustomFields {
-    constructor(input?: DeepPartial<CustomerGroup>)
+    constructor(input?: DeepPartial<CustomerGroup>);
     @Column() name: string;
     @ManyToMany(type => Customer, customer => customer.groups)
     customers: Customer[];
@@ -28,40 +29,31 @@ class CustomerGroup extends VendureEntity implements HasCustomFields {
     taxRates: TaxRate[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code>HasCustomFields</code>
-
-
+-   Implements: <code>HasCustomFields</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>&#62;) => CustomerGroup`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>&#62;) => CustomerGroup`} />
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### customers
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/customer#customer'>Customer</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/customer#customer'>Customer</a>[]`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomCustomerGroupFields`}   />
-
+<MemberInfo kind="property" type={`CustomCustomerGroupFields`} />
 
 ### taxRates
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>[]`} />
 
 </div>

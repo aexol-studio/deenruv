@@ -1,13 +1,14 @@
 ---
-title: "PluginCommonModule"
+title: 'PluginCommonModule'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PluginCommonModule
 
@@ -19,14 +20,12 @@ repeat the same boilerplate for each individual plugin.
 
 The PluginCommonModule exports:
 
-* `EventBusModule`, allowing the injection of the <a href='/reference/typescript-api/events/event-bus#eventbus'>EventBus</a> service.
-* `ServiceModule` allowing the injection of any of the various entity services such as ProductService, OrderService etc.
-* `ConfigModule`, allowing the injection of the ConfigService.
-* `JobQueueModule`, allowing the injection of the <a href='/reference/typescript-api/job-queue/job-queue-service#jobqueueservice'>JobQueueService</a>.
-* `HealthCheckModule`, allowing the injection of the <a href='/reference/typescript-api/health-check/health-check-registry-service#healthcheckregistryservice'>HealthCheckRegistryService</a>.
+-   `EventBusModule`, allowing the injection of the <a href='/reference/typescript-api/events/event-bus#eventbus'>EventBus</a> service.
+-   `ServiceModule` allowing the injection of any of the various entity services such as ProductService, OrderService etc.
+-   `ConfigModule`, allowing the injection of the ConfigService.
+-   `JobQueueModule`, allowing the injection of the <a href='/reference/typescript-api/job-queue/job-queue-service#jobqueueservice'>JobQueueService</a>.
+-   `HealthCheckModule`, allowing the injection of the <a href='/reference/typescript-api/health-check/health-check-registry-service#healthcheckregistryservice'>HealthCheckRegistryService</a>.
 
 ```ts title="Signature"
-class PluginCommonModule {
-
-}
+class PluginCommonModule {}
 ```

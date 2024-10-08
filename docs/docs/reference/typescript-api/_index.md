@@ -1,13 +1,13 @@
 ---
-title: "TypeScript API"
+title: 'TypeScript API'
 weight: 9
 showtoc: false
 ---
 
-# Vendure TypeScript API Docs
+# Deenruv TypeScript API Docs
 
-The Vendure TypeScript API is used when configuring the server (via the [`VendureConfig`](/reference/typescript-api/configuration/vendure-config/#vendureconfig) object) and when writing plugins that extend the functionality of Vendure core.
+The Deenruv TypeScript API is used when configuring the server (via the [`DeenruvConfig`](/reference/typescript-api/configuration/deenruv-config/#vendureconfig) object) and when writing plugins that extend the functionality of Deenruv core.
 
 :::note
-All documentation in this section is auto-generated from the TypeScript source of the Vendure server.
+All documentation in this section is auto-generated from the TypeScript source of the Deenruv server.
 :::

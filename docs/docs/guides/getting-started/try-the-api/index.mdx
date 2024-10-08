@@ -1,21 +1,21 @@
 ---
-title: "Try the API"
+title: 'Try the API'
 ---
 
 import Playground from '@site/src/components/Playground';
 
-Once you have successfully installed Vendure locally following the [installation guide](/guides/getting-started/installation),
+Once you have successfully installed Deenruv locally following the [installation guide](/guides/getting-started/installation),
 it's time to try out the API!
 
 :::note
-This guide assumes you chose to populate sample data when installing Vendure.
+This guide assumes you chose to populate sample data when installing Deenruv.
 
-You can also follow along with these example using the public demo playground at [demo.vendure.io/shop-api](https://demo.vendure.io/shop-api)
+You can also follow along with these example using the public demo playground at [demo.deenruv.io/shop-api](https://demo.deenruv.io/shop-api)
 :::
 
 ## GraphQL Playground
 
-The Vendure server comes with a GraphQL Playground which allows you to explore the API and run queries and mutations. It is
+The Deenruv server comes with a GraphQL Playground which allows you to explore the API and run queries and mutations. It is
 a great way to explore the API and to get a feel for how it works.
 
 In this guide, we'll be using the GraphQL Playground to run queries and mutations against the Shop and Admin APIs. At each
@@ -43,7 +43,9 @@ Open the GraphQL Playground at [http://localhost:3000/shop-api](http://localhost
 
 Let's start with a **query**. Queries are used to fetch data. We will make a query to get a list of products.
 
-<Playground api="shop" document={`
+<Playground
+    api="shop"
+    document={`
 query {
   products {
     totalItems
@@ -53,15 +55,17 @@ query {
     }
   }
 }
-`} />
-
+`}
+/>
 
 Note that the response only includes the properties we asked for in our query (id and name). This is one of the key benefits
 of GraphQL - the client can specify exactly which data it needs, and the server will only return that data!
 
 Let's add a few more properties to the query:
 
-<Playground api="shop" document={`
+<Playground
+    api="shop"
+    document={`
 query {
   products {
     totalItems
@@ -77,7 +81,8 @@ query {
     }
   }
 }
-`} />
+`}
+/>
 
 You should see that the response now includes the `slug`, `description` and `featuredAsset` properties. Note that the
 `featuredAsset` property is itself an object, and we can specify which properties of that object we want to include in the
@@ -87,7 +92,9 @@ want to include.
 Now let's add some arguments to the query. Some queries (and most mutations) can accept argument, which you put in parentheses
 after the query name. For example, let's fetch the first 5 products:
 
-<Playground api="shop" document={`
+<Playground
+    api="shop"
+    document={`
 query {
   products(options: { take: 5 }) {
     totalItems
@@ -97,14 +104,17 @@ query {
     }
   }
 }
-`} />
+`}
+/>
 
 On running this query, you should see just the first 5 results being returned.
 
 Let's add a more complex argument: this time we'll filter for only those products which contain the string "shoe" in the
 name:
 
-<Playground api="shop" document={`
+<Playground
+    api="shop"
+    document={`
 query {
   products(options: {
     filter: { name: { contains: "shoe" } }
@@ -116,7 +126,8 @@ query {
     }
   }
 }
-`} />
+`}
+/>
 
 ### Add a product to an order
 
@@ -124,7 +135,9 @@ Next, let's look at a **mutation**. Mutations are used to modify data on the ser
 
 Here's a mutation which adds a product to an order:
 
-<Playground api="shop" document={`
+<Playground
+    api="shop"
+    document={`
 mutation {
   addItemToOrder(productVariantId: 42, quantity: 1) {
     ...on Order {
@@ -146,7 +159,8 @@ mutation {
     }
   }
 }
-`} />
+`}
+/>
 
 This mutation adds a product variant with ID `42` to the order. The response will either be an `Order` object, or an `ErrorResult`.
 We use a special syntax called a **fragment** to specify which properties we want to include in the response. In this case,
@@ -157,7 +171,7 @@ Running this mutation a second time should show that the quantity of the product
 then the session is not being persisted correctly (see the note earlier in this guide about the `request.credentials` setting).
 
 :::info
-For more information about `ErrorResult` and the handling of errors in Vendure, see the [Error Handling guide](/guides/developer-guide/error-handling).
+For more information about `ErrorResult` and the handling of errors in Deenruv, see the [Error Handling guide](/guides/developer-guide/error-handling).
 :::
 
 ## Admin API
@@ -178,16 +192,16 @@ Most Admin API operations are restricted to authenticated users. So first of all
 
 ```graphql title="Admin API"
 mutation {
-  login(username: "superadmin", password: "superadmin") {
-    ...on CurrentUser {
-      id
-      identifier
+    login(username: "superadmin", password: "superadmin") {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ...on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Navigation Menu"
+title: 'Navigation Menu'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,23 +11,22 @@ A navigation menu allows your customers to navigate your store and find the prod
 Typically, navigation is based on a hierarchy of [collections](/guides/core-concepts/collections/). We can get the top-level
 collections using the `collections` query with the `topLevelOnly` filter:
 
-
 <Tabs>
 <TabItem value="Query" label="Query" default>
 
 ```graphql
 query GetTopLevelCollections {
-  collections(options: { topLevelOnly: true }) {
-    items {
-      id
-      slug
-      name
-      featuredAsset {
-        id
-        preview
-      }
+    collections(options: { topLevelOnly: true }) {
+        items {
+            id
+            slug
+            name
+            featuredAsset {
+                id
+                preview
+            }
+        }
     }
-  }
 }
 ```
 
@@ -36,39 +35,39 @@ query GetTopLevelCollections {
 
 ```json
 {
-  "data": {
-    "collections": {
-      "items": [
-        {
-          "id": "2",
-          "slug": "electronics",
-          "name": "Electronics",
-          "featuredAsset": {
-            "id": "16",
-            "preview": "https://demo.vendure.io/assets/preview/5b/jakob-owens-274337-unsplash__preview.jpg"
-          }
-        },
-        {
-          "id": "5",
-          "slug": "home-garden",
-          "name": "Home & Garden",
-          "featuredAsset": {
-            "id": "47",
-            "preview": "https://demo.vendure.io/assets/preview/3e/paul-weaver-1120584-unsplash__preview.jpg"
-          }
-        },
-        {
-          "id": "8",
-          "slug": "sports-outdoor",
-          "name": "Sports & Outdoor",
-          "featuredAsset": {
-            "id": "24",
-            "preview": "https://demo.vendure.io/assets/preview/96/michael-guite-571169-unsplash__preview.jpg"
-          }
+    "data": {
+        "collections": {
+            "items": [
+                {
+                    "id": "2",
+                    "slug": "electronics",
+                    "name": "Electronics",
+                    "featuredAsset": {
+                        "id": "16",
+                        "preview": "https://demo.deenruv.io/assets/preview/5b/jakob-owens-274337-unsplash__preview.jpg"
+                    }
+                },
+                {
+                    "id": "5",
+                    "slug": "home-garden",
+                    "name": "Home & Garden",
+                    "featuredAsset": {
+                        "id": "47",
+                        "preview": "https://demo.deenruv.io/assets/preview/3e/paul-weaver-1120584-unsplash__preview.jpg"
+                    }
+                },
+                {
+                    "id": "8",
+                    "slug": "sports-outdoor",
+                    "name": "Sports & Outdoor",
+                    "featuredAsset": {
+                        "id": "24",
+                        "preview": "https://demo.deenruv.io/assets/preview/96/michael-guite-571169-unsplash__preview.jpg"
+                    }
+                }
+            ]
         }
-      ]
     }
-  }
 }
 ```
 
@@ -125,7 +124,7 @@ export function arrayToTree<T extends HasParent>(nodes: T[]): RootNode<T> {
         mappedArr[node.id] = { ...(node as any), children: [] };
     }
 
-    for (const id of nodes.map((n) => n.id)) {
+    for (const id of nodes.map(n => n.id)) {
         if (mappedArr.hasOwnProperty(id)) {
             const mappedElem = mappedArr[id];
             const parentId = mappedElem.parentId;
@@ -154,4 +153,4 @@ export function arrayToTree<T extends HasParent>(nodes: T[]): RootNode<T> {
 
 Here's a live demo of the above code in action:
 
-<Stackblitz id='vendure-docs-collection-tree' />
+<Stackblitz id="deenruv-docs-collection-tree" />

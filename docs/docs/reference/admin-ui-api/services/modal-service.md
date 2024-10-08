@@ -1,13 +1,14 @@
 ---
-title: "ModalService"
+title: 'ModalService'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ModalService
 
@@ -28,62 +29,54 @@ class ModalService {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(overlayHostService: OverlayHostService) => ModalService`}   />
-
+<MemberInfo kind="method" type={`(overlayHostService: OverlayHostService) => ModalService`} />
 
 ### fromComponent
 
-<MemberInfo kind="method" type={`(component: Type&#60;T&#62; &#38; Type&#60;<a href='/reference/admin-ui-api/services/modal-service#dialog'>Dialog</a>&#60;R&#62;&#62;, options?: <a href='/reference/admin-ui-api/services/modal-service#modaloptions'>ModalOptions</a>&#60;T&#62;) => Observable&#60;R | undefined&#62;`}   />
+<MemberInfo kind="method" type={`(component: Type&#60;T&#62; &#38; Type&#60;<a href='/reference/admin-ui-api/services/modal-service#dialog'>Dialog</a>&#60;R&#62;&#62;, options?: <a href='/reference/admin-ui-api/services/modal-service#modaloptions'>ModalOptions</a>&#60;T&#62;) => Observable&#60;R | undefined&#62;`} />
 
 Create a modal from a component. The component must implement the <a href='/reference/admin-ui-api/services/modal-service#dialog'>Dialog</a> interface.
 Additionally, the component should include templates for the title and the buttons to be
 displayed in the modal dialog. See example:
 
-*Example*
+_Example_
 
 ```ts
 class MyDialog implements Dialog {
- resolveWith: (result?: any) => void;
+    resolveWith: (result?: any) => void;
 
- okay() {
-   doSomeWork().subscribe(result => {
-     this.resolveWith(result);
-   })
- }
+    okay() {
+        doSomeWork().subscribe(result => {
+            this.resolveWith(result);
+        });
+    }
 
- cancel() {
-   this.resolveWith(false);
- }
+    cancel() {
+        this.resolveWith(false);
+    }
 }
 ```
 
-*Example*
+_Example_
 
 ```html
 <ng-template vdrDialogTitle>Title of the modal</ng-template>
 
-<p>
-  My Content
-</p>
+<p>My Content</p>
 
 <ng-template vdrDialogButtons>
-  <button type="button"
-          class="btn"
-          (click)="cancel()">Cancel</button>
-  <button type="button"
-          class="btn btn-primary"
-          (click)="okay()">Okay</button>
+    <button type="button" class="btn" (click)="cancel()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="okay()">Okay</button>
 </ng-template>
 ```
+
 ### dialog
 
-<MemberInfo kind="method" type={`(config: <a href='/reference/admin-ui-api/services/modal-service#dialogconfig'>DialogConfig</a>&#60;T&#62;) => Observable&#60;T | undefined&#62;`}   />
+<MemberInfo kind="method" type={`(config: <a href='/reference/admin-ui-api/services/modal-service#dialogconfig'>DialogConfig</a>&#60;T&#62;) => Observable&#60;T | undefined&#62;`} />
 
 Displays a modal dialog with the provided title, body and buttons.
 
-
 </div>
-
 
 ## Dialog
 
@@ -102,15 +95,13 @@ interface Dialog<R = any> {
 
 ### resolveWith
 
-<MemberInfo kind="property" type={`(result?: R) =&#62; void`}   />
+<MemberInfo kind="property" type={`(result?: R) =&#62; void`} />
 
 Function to be invoked in order to close the dialog when the action is complete.
 The Observable returned from the .fromComponent() method will emit the value passed
 to this method and then complete.
 
-
 </div>
-
 
 ## DialogConfig
 
@@ -132,33 +123,25 @@ interface DialogConfig<T> {
 
 ### title
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### body
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### translationVars
 
-<MemberInfo kind="property" type={`{ [key: string]: string | number }`}   />
-
+<MemberInfo kind="property" type={`{ [key: string]: string | number }`} />
 
 ### buttons
 
-<MemberInfo kind="property" type={`Array&#60;DialogButtonConfig&#60;T&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`Array&#60;DialogButtonConfig&#60;T&#62;&#62;`} />
 
 ### size
 
-<MemberInfo kind="property" type={`'sm' | 'md' | 'lg' | 'xl'`}   />
-
-
-
+<MemberInfo kind="property" type={`'sm' | 'md' | 'lg' | 'xl'`} />
 
 </div>
-
 
 ## ModalOptions
 
@@ -179,25 +162,27 @@ interface ModalOptions<T> {
 
 ### size
 
-<MemberInfo kind="property" type={`'sm' | 'md' | 'lg' | 'xl'`}   />
+<MemberInfo kind="property" type={`'sm' | 'md' | 'lg' | 'xl'`} />
 
 Sets the width of the dialog
+
 ### verticalAlign
 
-<MemberInfo kind="property" type={`'top' | 'center' | 'bottom'`}   />
+<MemberInfo kind="property" type={`'top' | 'center' | 'bottom'`} />
 
 Sets the vertical alignment of the dialog
+
 ### closable
 
-<MemberInfo kind="property" type={`boolean`}   />
+<MemberInfo kind="property" type={`boolean`} />
 
 When true, the "x" icon is shown
 and clicking it or the mask will close the dialog
+
 ### locals
 
-<MemberInfo kind="property" type={`Partial&#60;T&#62;`}   />
+<MemberInfo kind="property" type={`Partial&#60;T&#62;`} />
 
 Values to be passed directly to the component being instantiated inside the dialog.
-
 
 </div>

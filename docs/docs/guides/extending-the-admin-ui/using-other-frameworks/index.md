@@ -3,12 +3,12 @@ title: 'Using Other Frameworks'
 weight: 1
 ---
 
-From version 2.1.0, Admin UI extensions can be written in either Angular or React. Prior to v2.1.0, only Angular was natively supported. 
+From version 2.1.0, Admin UI extensions can be written in either Angular or React. Prior to v2.1.0, only Angular was natively supported.
 
 It is, however, possible to extend the Admin UI using other frameworks such as Vue, Svelte, Solid etc. Note that the extension experience is much more limited than with Angular or React, but depending on your needs it may be sufficient.
 
 :::info
-For working examples of a UI extensions built with **Vue**, see the [real-world-vendure ui extensions](https://github.com/vendure-ecommerce/real-world-vendure/tree/master/src/ui-extensions)
+For working examples of a UI extensions built with **Vue**, see the [real-world-deenruv ui extensions](https://github.com/deenruv-ecommerce/real-world-deenruv/tree/master/src/ui-extensions)
 :::
 
 There is still a small amount of Angular "glue code" needed to let the compiler know how to integrate your extension, so let's take a look at how this is done.
@@ -62,21 +62,21 @@ export default [
         // The next step will explain the "assets/react-app" path.
         extensionUrl: './assets/vue-app/index.html',
         openInNewTab: false,
-    })
+    }),
 ];
 ```
 
 ## 4. Define the AdminUiExtension config
 
-Next we will define an [AdminUiExtension](/reference/admin-ui-api/ui-devkit/admin-ui-extension/) object which is passed to the `compileUiExtensions()` function in your Vendure config:
+Next we will define an [AdminUiExtension](/reference/admin-ui-api/ui-devkit/admin-ui-extension/) object which is passed to the `compileUiExtensions()` function in your Deenruv config:
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import path from 'path';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -84,22 +84,27 @@ export const config: VendureConfig = {
             port: 3002,
             app: compileUiExtensions({
                 outputPath: path.join(__dirname, '../admin-ui'),
-                extensions: [{
-                    // Points to the path containing our Angular "glue code" module
-                    extensionPath: path.join(__dirname, 'plugins/my-plugin/ui'),
-                    routes: [{ route: 'vue-ui', filePath: 'routes.ts' }],
-                    staticAssets: [
-                        // This is where we tell the compiler to copy the compiled Vue app
-                        // artifacts over to the Admin UI's `/static` directory. In this case we
-                        // also rename "build" to "vue-app". This is why the `extensionUrl`
-                        // in the module config points to './assets/vue-app/index.html'.
-                        {path: path.join(__dirname, 'plugins/my-plugin/ui/vue-app/dist'), rename: 'vue-app'},
-                    ],
-                }],
+                extensions: [
+                    {
+                        // Points to the path containing our Angular "glue code" module
+                        extensionPath: path.join(__dirname, 'plugins/my-plugin/ui'),
+                        routes: [{ route: 'vue-ui', filePath: 'routes.ts' }],
+                        staticAssets: [
+                            // This is where we tell the compiler to copy the compiled Vue app
+                            // artifacts over to the Admin UI's `/static` directory. In this case we
+                            // also rename "build" to "vue-app". This is why the `extensionUrl`
+                            // in the module config points to './assets/vue-app/index.html'.
+                            {
+                                path: path.join(__dirname, 'plugins/my-plugin/ui/vue-app/dist'),
+                                rename: 'vue-app',
+                            },
+                        ],
+                    },
+                ],
                 devMode: true,
             }),
         }),
-    ]
+    ],
 };
 ```
 
@@ -107,7 +112,7 @@ export const config: VendureConfig = {
 
 To ensure things are working we can now build our Vue app by running `yarn build` in the `vue-app` directory. This will build and output the app artifacts to the `vue-app/build` directory - the one we pointed to in the `staticAssets` array above.
 
-Once build, we can start the Vendure server.
+Once build, we can start the Deenruv server.
 
 The `compileUiExtensions()` function returns a `compile()` function which will be invoked by the AdminUiPlugin upon server bootstrap. During this compilation process, a new directory will be generated at `/admin-ui` (as specified by the `outputPath` option) which will contains the un-compiled sources of your new Admin UI app.
 
@@ -118,6 +123,7 @@ Now go to the Admin UI app in your browser and log in. You should now be able to
 ## Integrate with the Admin UI
 
 ### Styling
+
 The `@deenruv/admin-ui` package (which will be installed alongside the ui-devkit) provides a stylesheet to allow your extension to fit visually with the rest of the Admin UI.
 
 If you have a build step, you can import it into your app like this:
@@ -139,8 +145,8 @@ If your extension does not have a build step, you can still include the theme st
 
 The `@deenruv/ui-devkit` package provides a number of helper methods which allow your extension to seamlessly interact with the underlying Admin UI infrastructure, collectively known as the [UiDevkitClient](/reference/admin-ui-api/ui-devkit/ui-devkit-client/). The client allows your extension to:
 
-* Make GraphQL queries & mutations, without the need for your own HTTP or GraphQL client, with full integration with the Admin UI client-side GraphQL cache.
-* Display toast notifications.
+-   Make GraphQL queries & mutations, without the need for your own HTTP or GraphQL client, with full integration with the Admin UI client-side GraphQL cache.
+-   Display toast notifications.
 
 #### setTargetOrigin
 
@@ -150,7 +156,6 @@ The UiDevkitClient uses the browser's [postMessage API](https://developer.mozill
 import { setTargetOrigin } from '@deenruv/ui-devkit';
 
 setTargetOrigin('http://my-domain.com');
-
 ```
 
 If this is mis-configured you will see an error along the lines of "Failed to execute 'postMessage' on 'DOMWindow'".
@@ -162,18 +167,21 @@ import { graphQlMutation, notify } from '@deenruv/ui-devkit';
 
 // somewhere in your component
 const disableProduct = (id: string) => {
-  graphQlMutation(`
+    graphQlMutation(
+        `
     mutation DisableProduct($id: ID!) {
       updateProduct(input: { id: $id, enabled: false }) {
         id
         enabled
       }
-    }`, { id }).then(result => {
-     notify({
-       message: 'Updated Product',
-     });
-  })
-}
+    }`,
+        { id },
+    ).then(result => {
+        notify({
+            message: 'Updated Product',
+        });
+    });
+};
 ```
 
 If your extension does not have a build step, you can still include the UiDevkitClient as a local resource, which will expose a `VendureUiClient` global object:
@@ -181,22 +189,25 @@ If your extension does not have a build step, you can still include the UiDevkit
 ```html
 <!-- src/ui-extension/plain-js-app/index.html -->
 <head>
-  <script src="../devkit/ui-devkit.js"></script>
+    <script src="../devkit/ui-devkit.js"></script>
 </head>
 <script>
-  const disableProduct = id => {
-    VendureUiClient.graphQlMutation(`
+    const disableProduct = id => {
+        VendureUiClient.graphQlMutation(
+            `
       mutation DisableProduct($id: ID!) {
         updateProduct(input: { id: $id, enabled: false }) {
           id
           enabled
         }
-      }`, { id }).then(result => {
-       VendureUiClient.notify({
-         message: 'Updated Product',
-       });
-    })
-  }
+      }`,
+            { id },
+        ).then(result => {
+            VendureUiClient.notify({
+                message: 'Updated Product',
+            });
+        });
+    };
 </script>
 ```
 

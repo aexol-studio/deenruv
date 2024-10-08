@@ -1,13 +1,14 @@
 ---
-title: "RegisterRouteComponent"
+title: 'RegisterRouteComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerRouteComponent
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Registers an Angular standalone component to be rendered in a route.
 
-*Example*
+_Example_
 
 ```ts title="routes.ts"
 import { registerRouteComponent } from '@deenruv/admin-ui/core';
@@ -51,11 +52,17 @@ export default [
 ```
 
 ```ts title="Signature"
-function registerRouteComponent<Component extends any | BaseDetailComponent<Entity>, Entity extends { id: string; updatedAt?: string }, T extends DocumentNode | TypedDocumentNode<any, { id: string }>, Field extends keyof ResultOf<T>, R extends Field>(options: RegisterRouteComponentOptions<Component, Entity, T, Field, R>): void
+function registerRouteComponent<
+    Component extends any | BaseDetailComponent<Entity>,
+    Entity extends { id: string; updatedAt?: string },
+    T extends DocumentNode | TypedDocumentNode<any, { id: string }>,
+    Field extends keyof ResultOf<T>,
+    R extends Field,
+>(options: RegisterRouteComponentOptions<Component, Entity, T, Field, R>): void;
 ```
+
 Parameters
 
 ### options
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/routes/register-route-component-options#registerroutecomponentoptions'>RegisterRouteComponentOptions</a>&#60;Component, Entity, T, Field, R&#62;`} />
-

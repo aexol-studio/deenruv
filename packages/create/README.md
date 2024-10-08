@@ -1,10 +1,10 @@
-# Vendure Create
+# Deenruv Create
 
-A CLI tool for rapidly scaffolding a new Vendure server application. Heavily inspired by [create-react-app](https://github.com/facebook/create-react-app).
+A CLI tool for rapidly scaffolding a new Deenruv server application. Heavily inspired by [create-react-app](https://github.com/facebook/create-react-app).
 
 ## Usage
 
-Vendure Create requires [Node.js](https://nodejs.org/en/) v8.9.0+ to be installed.
+Deenruv Create requires [Node.js](https://nodejs.org/en/) v8.9.0+ to be installed.
 
 To create a new project, you may choose one of the following methods:
 
@@ -14,7 +14,7 @@ To create a new project, you may choose one of the following methods:
 npx @deenruv/create my-app
 ```
 
-*[npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher.*
+_[npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher._
 
 ### npm
 
@@ -22,7 +22,7 @@ npx @deenruv/create my-app
 npm init @deenruv my-app
 ```
 
-*`npm init <initializer>` is available in npm 6+*
+_`npm init <initializer>` is available in npm 6+_
 
 ### Yarn
 
@@ -30,8 +30,7 @@ npm init @deenruv my-app
 yarn create @deenruv my-app
 ```
 
-*`yarn create` is available in Yarn 0.25+*
-
+_`yarn create` is available in Yarn 0.25+_
 
 It will create a directory called `my-app` inside the current folder.
 
@@ -39,7 +38,7 @@ It will create a directory called `my-app` inside the current folder.
 
 ### `--use-npm`
 
-By default, Vendure Create will detect whether a compatible version of Yarn is installed, and if so will display a prompt to select the preferred package manager.
+By default, Deenruv Create will detect whether a compatible version of Yarn is installed, and if so will display a prompt to select the preferred package manager.
 You can override this and force it to use npm with the `--use-npm` flag.
 
 ### `--log-level`
@@ -48,7 +47,6 @@ You can control how much output is generated during the installation and setup w
 
 Example:
 
-```sh 
+```sh
 npx @deenruv/create my-app --log-level verbose
 ```
-

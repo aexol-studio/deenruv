@@ -1,13 +1,14 @@
 ---
-title: "TypeORMHealthCheckStrategy"
+title: 'TypeORMHealthCheckStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TypeORMHealthCheckStrategy
 
@@ -17,22 +18,22 @@ A <a href='/reference/typescript-api/health-check/health-check-strategy#healthch
 check is included by default, but can be customized by explicitly adding it to the
 `systemOptions.healthChecks` array:
 
-*Example*
+_Example_
 
 ```ts
 import { TypeORMHealthCheckStrategy } from '@deenruv/core';
 
 export const config = {
-  // ...
-  systemOptions: {
-    healthChecks:[
-        // The default key is "database" and the default timeout is 1000ms
-        // Sometimes this is too short and leads to false negatives in the
-        // /health endpoint.
-        new TypeORMHealthCheckStrategy({ key: 'postgres-db', timeout: 5000 }),
-    ]
-  }
-}
+    // ...
+    systemOptions: {
+        healthChecks: [
+            // The default key is "database" and the default timeout is 1000ms
+            // Sometimes this is too short and leads to false negatives in the
+            // /health endpoint.
+            new TypeORMHealthCheckStrategy({ key: 'postgres-db', timeout: 5000 }),
+        ],
+    },
+};
 ```
 
 ```ts title="Signature"
@@ -42,27 +43,21 @@ class TypeORMHealthCheckStrategy implements HealthCheckStrategy {
     getHealthIndicator() => HealthIndicatorFunction;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/health-check/health-check-strategy#healthcheckstrategy'>HealthCheckStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/health-check/health-check-strategy#healthcheckstrategy'>HealthCheckStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(options?: TypeORMHealthCheckOptions) => TypeORMHealthCheckStrategy`}   />
-
+<MemberInfo kind="method" type={`(options?: TypeORMHealthCheckOptions) => TypeORMHealthCheckStrategy`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `}   />
-
+<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `} />
 
 ### getHealthIndicator
 
-<MemberInfo kind="method" type={`() => HealthIndicatorFunction`}   />
-
-
-
+<MemberInfo kind="method" type={`() => HealthIndicatorFunction`} />
 
 </div>

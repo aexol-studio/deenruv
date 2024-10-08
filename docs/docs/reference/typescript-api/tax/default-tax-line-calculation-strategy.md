@@ -1,13 +1,14 @@
 ---
-title: "DefaultTaxLineCalculationStrategy"
+title: 'DefaultTaxLineCalculationStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultTaxLineCalculationStrategy
 
@@ -21,17 +22,13 @@ class DefaultTaxLineCalculationStrategy implements TaxLineCalculationStrategy {
     calculate(args: CalculateTaxLinesArgs) => TaxLine[];
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/tax/tax-line-calculation-strategy#taxlinecalculationstrategy'>TaxLineCalculationStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/tax/tax-line-calculation-strategy#taxlinecalculationstrategy'>TaxLineCalculationStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### calculate
 
-<MemberInfo kind="method" type={`(args: <a href='/reference/typescript-api/tax/tax-line-calculation-strategy#calculatetaxlinesargs'>CalculateTaxLinesArgs</a>) => TaxLine[]`}   />
-
-
-
+<MemberInfo kind="method" type={`(args: <a href='/reference/typescript-api/tax/tax-line-calculation-strategy#calculatetaxlinesargs'>CalculateTaxLinesArgs</a>) => TaxLine[]`} />
 
 </div>

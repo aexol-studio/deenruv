@@ -1,13 +1,14 @@
 ---
-title: "FormInputComponent"
+title: 'FormInputComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FormInputComponent
 
@@ -29,20 +30,22 @@ interface FormInputComponent<C = InputComponentConfig> {
 
 ### isListInput
 
-<MemberInfo kind="property" type={`boolean`}   />
+<MemberInfo kind="property" type={`boolean`} />
 
 Should be set to `true` if this component is designed to handle lists.
 If `true` then the formControl value will be an array of all the
 values in the list.
+
 ### readonly
 
-<MemberInfo kind="property" type={`boolean`}   />
+<MemberInfo kind="property" type={`boolean`} />
 
 This is set by the Admin UI when consuming this component, indicating that the
 component should be rendered in a read-only state.
+
 ### formControl
 
-<MemberInfo kind="property" type={`FormControl`}   />
+<MemberInfo kind="property" type={`FormControl`} />
 
 This controls the actual value of the form item. The current value is available
 as `this.formControl.value`, and an Observable stream of value changes is available
@@ -50,11 +53,11 @@ as `this.formControl.valueChanges`. To update the value, use `.setValue(val)` an
 `.markAsDirty()`.
 
 Full documentation can be found in the [Angular docs](https://angular.io/api/forms/FormControl).
+
 ### config
 
-<MemberInfo kind="property" type={`C`}   />
+<MemberInfo kind="property" type={`C`} />
 
 The `config` property contains the full configuration object of the custom field or configurable argument.
-
 
 </div>

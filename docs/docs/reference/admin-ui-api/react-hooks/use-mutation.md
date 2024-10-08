@@ -1,13 +1,14 @@
 ---
-title: "UseMutation"
+title: 'UseMutation'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## useMutation
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A React hook which allows you to execute a GraphQL mutation.
 
-*Example*
+_Example_
 
 ```ts
 import { useMutation } from '@deenruv/admin-ui/react';
@@ -56,11 +57,13 @@ export const MyComponent = () => {
 ```
 
 ```ts title="Signature"
-function useMutation<T, V extends Record<string, any> = Record<string, any>>(mutation: DocumentNode | TypedDocumentNode<T, V>): void
+function useMutation<T, V extends Record<string, any> = Record<string, any>>(
+    mutation: DocumentNode | TypedDocumentNode<T, V>,
+): void;
 ```
+
 Parameters
 
 ### mutation
 
 <MemberInfo kind="parameter" type={`DocumentNode | TypedDocumentNode&#60;T, V&#62;`} />
-

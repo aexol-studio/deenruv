@@ -1,1 +1,1 @@
-# Vendure Paypal integration
+# Deenruv Paypal integration

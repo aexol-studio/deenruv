@@ -1,13 +1,14 @@
 ---
-title: "AddNavMenuSection"
+title: 'AddNavMenuSection'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## addNavMenuSection
 
@@ -19,26 +20,31 @@ omitted (or if the id is not found) the section will be appended to the
 existing set of sections.
 This should be used in the NgModule `providers` array of your ui extension module.
 
-*Example*
+_Example_
 
 ```ts title="providers.ts"
 import { addNavMenuSection } from '@deenruv/admin-ui/core';
 
 export default [
-    addNavMenuSection({
-        id: 'reports',
-        label: 'Reports',
-        items: [{
-            // ...
-        }],
-    },
-    'settings'),
+    addNavMenuSection(
+        {
+            id: 'reports',
+            label: 'Reports',
+            items: [
+                {
+                    // ...
+                },
+            ],
+        },
+        'settings',
+    ),
 ];
 ```
 
 ```ts title="Signature"
-function addNavMenuSection(config: NavMenuSection, before?: string): Provider
+function addNavMenuSection(config: NavMenuSection, before?: string): Provider;
 ```
+
 Parameters
 
 ### config
@@ -48,4 +54,3 @@ Parameters
 ### before
 
 <MemberInfo kind="parameter" type={`string`} />
-

@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 The `ActionBar` is the horizontal area at the top of each list or detail page, which contains the main buttons for that page.
 This guide explains how to add new buttons and dropdown menu items to the ActionBar.
 
-For example, consider an "order invoice" extension that allows you to print invoices for orders. You can add a "print invoice" 
+For example, consider an "order invoice" extension that allows you to print invoices for orders. You can add a "print invoice"
 button to the ActionBar of the order detail page, either as a button or as a dropdown menu item.
 
 ## ActionBar button example
@@ -42,7 +42,7 @@ You can also press `ctrl + u` when in development mode to see the location of al
 
 ## ActionBar dropdown menu example
 
-Vendure v2.2.0 introduced the ability to add dropdown menu items to the ActionBar. If you want to add an action which is
+Deenruv v2.2.0 introduced the ability to add dropdown menu items to the ActionBar. If you want to add an action which is
 less commonly used, or want to take up less space in the action bar, then a dropdown menu item is a good choice.
 This is done using the [`addActionBarDropdownMenuItem`](/reference/admin-ui-api/action-bar/add-action-bar-dropdown-menu-item/) function.
 
@@ -196,7 +196,7 @@ export default [
 ```
 
 :::note
-The `context.entity$` property was introduced in Vendure v2.2. If you are using v2.1, you can achieve equivalent functionality
+The `context.entity$` property was introduced in Deenruv v2.2. If you are using v2.1, you can achieve equivalent functionality
 with this code:
 
 ```ts
@@ -208,7 +208,7 @@ buttonState: context => {
             visible: true,
         })),
     );
-}
+};
 ```
 
 :::

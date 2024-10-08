@@ -1,13 +1,14 @@
 ---
-title: "ListQueryBuilder"
+title: 'ListQueryBuilder'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ListQueryBuilder
 
@@ -32,14 +33,15 @@ type BlogPostList implements PaginatedList {
   totalItems: Int!
 }
 
-# Generated at run-time by Vendure
+# Generated at run-time by Deenruv
 input BlogPostListOptions
 
 extend type Query {
    blogPosts(options: BlogPostListOptions): BlogPostList!
 }
 ```
-When Vendure bootstraps, it will find the `BlogPostListOptions` input and, because it is used in a query
+
+When Deenruv bootstraps, it will find the `BlogPostListOptions` input and, because it is used in a query
 returning a `PaginatedList` type, it knows that it should dynamically generate this input. This means
 all primitive field of the `BlogPost` type (namely, "published", "title" and "body") will have `filter` and
 `sort` inputs created for them, as well a `skip` and `take` fields for pagination.
@@ -66,16 +68,16 @@ and the corresponding service will use the ListQueryBuilder:
 ```ts
 @Injectable()
 export class BlogPostService {
-  constructor(private listQueryBuilder: ListQueryBuilder) {}
+    constructor(private listQueryBuilder: ListQueryBuilder) {}
 
-  findAll(ctx: RequestContext, options?: ListQueryOptions<BlogPost>) {
-    return this.listQueryBuilder
-      .build(BlogPost, options)
-      .getManyAndCount()
-      .then(async ([items, totalItems]) => {
-        return { items, totalItems };
-      });
-  }
+    findAll(ctx: RequestContext, options?: ListQueryOptions<BlogPost>) {
+        return this.listQueryBuilder
+            .build(BlogPost, options)
+            .getManyAndCount()
+            .then(async ([items, totalItems]) => {
+                return { items, totalItems };
+            });
+    }
 }
 ```
 
@@ -86,20 +88,18 @@ class ListQueryBuilder implements OnApplicationBootstrap {
     build(entity: Type<T>, options: ListQueryOptions<T> = {}, extendedOptions: ExtendedListQueryOptions<T> = {}) => SelectQueryBuilder<T>;
 }
 ```
-* Implements: <code>OnApplicationBootstrap</code>
 
-
+-   Implements: <code>OnApplicationBootstrap</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>, configService: ConfigService) => ListQueryBuilder`}   />
-
+<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>, configService: ConfigService) => ListQueryBuilder`} />
 
 ### filterObjectHasProperty
 
-<MemberInfo kind="method" type={`(filterObject: FP | NullOptionals&#60;FP&#62; | null | undefined, property: keyof FP) => boolean`}   />
+<MemberInfo kind="method" type={`(filterObject: FP | NullOptionals&#60;FP&#62; | null | undefined, property: keyof FP) => boolean`} />
 
 Used to determine whether a list query `filter` object contains the
 given property, either at the top level or nested inside a boolean
@@ -109,15 +109,12 @@ This is useful when a custom property map is used to map a filter
 field to a related entity, and we need to determine whether the
 filter object contains that property, which then means we would need
 to join that relation.
+
 ### build
 
-<MemberInfo kind="method" type={`(entity: Type&#60;T&#62;, options: ListQueryOptions&#60;T&#62; = {}, extendedOptions: <a href='/reference/typescript-api/data-access/list-query-builder#extendedlistqueryoptions'>ExtendedListQueryOptions</a>&#60;T&#62; = {}) => SelectQueryBuilder&#60;T&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(entity: Type&#60;T&#62;, options: ListQueryOptions&#60;T&#62; = {}, extendedOptions: <a href='/reference/typescript-api/data-access/list-query-builder#extendedlistqueryoptions'>ExtendedListQueryOptions</a>&#60;T&#62; = {}) => SelectQueryBuilder&#60;T&#62;`} />
 
 </div>
-
 
 ## ExtendedListQueryOptions
 
@@ -135,46 +132,44 @@ type ExtendedListQueryOptions<T extends VendureEntity> = {
     ctx?: RequestContext;
     customPropertyMap?: { [name: string]: string };
     ignoreQueryLimits?: boolean;
-}
+};
 ```
 
 <div className="members-wrapper">
 
 ### relations
 
-<MemberInfo kind="property" type={`string[]`}   />
-
+<MemberInfo kind="property" type={`string[]`} />
 
 ### channelId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### where
 
-<MemberInfo kind="property" type={`FindOptionsWhere&#60;T&#62;`}   />
-
+<MemberInfo kind="property" type={`FindOptionsWhere&#60;T&#62;`} />
 
 ### orderBy
 
-<MemberInfo kind="property" type={`FindOneOptions&#60;T&#62;['order']`}   />
-
+<MemberInfo kind="property" type={`FindOneOptions&#60;T&#62;['order']`} />
 
 ### entityAlias
 
-<MemberInfo kind="property" type={`string`}  since="1.6.0"  />
+<MemberInfo kind="property" type={`string`} since="1.6.0" />
 
 Allows you to specify the alias used for the entity `T` in the generated SQL query.
 Defaults to the entity class name lower-cased, i.e. `ProductVariant` -> `'productvariant'`.
+
 ### ctx
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>`} />
 
 When a RequestContext is passed, then the query will be
 executed as part of any outer transaction.
+
 ### customPropertyMap
 
-<MemberInfo kind="property" type={`{ [name: string]: string }`}   />
+<MemberInfo kind="property" type={`{ [name: string]: string }`} />
 
 One of the main tasks of the ListQueryBuilder is to auto-generate filter and sort queries based on the
 available columns of a given entity. However, it may also be sometimes desirable to allow filter/sort
@@ -186,7 +181,7 @@ Example: we want to allow sort/filter by and Order's `customerLastName`. The act
 not a column in the Order table, it exists on the Customer entity, and Order has a relation to Customer via
 `Order.customer`. Therefore, we can define a customPropertyMap like this:
 
-*Example*
+_Example_
 
 ```GraphQL
 """
@@ -202,7 +197,7 @@ input OrderSortParameter {
 }
 ```
 
-*Example*
+_Example_
 
 ```ts
 const qb = this.listQueryBuilder.build(Order, options, {
@@ -215,10 +210,11 @@ const qb = this.listQueryBuilder.build(Order, options, {
   },
 };
 ```
+
 We can now use the `customerLastName` property to filter or sort
 on the list query:
 
-*Example*
+_Example_
 
 ```GraphQL
 query {
@@ -231,13 +227,13 @@ query {
   }
 }
 ```
+
 ### ignoreQueryLimits
 
-<MemberInfo kind="property" type={`boolean`} default={`false`}  since="2.0.2"  />
+<MemberInfo kind="property" type={`boolean`} default={`false`} since="2.0.2" />
 
 When set to `true`, the configured `shopListQueryLimit` and `adminListQueryLimit` values will be ignored,
 allowing unlimited results to be returned. Use caution when exposing an unlimited list query to the public,
 as it could become a vector for a denial of service attack if an attacker requests a very large list.
-
 
 </div>

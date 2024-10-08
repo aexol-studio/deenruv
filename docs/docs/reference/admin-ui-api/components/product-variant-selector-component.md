@@ -1,13 +1,14 @@
 ---
-title: "ProductVariantSelectorComponent"
+title: 'ProductVariantSelectorComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ProductVariantSelectorComponent
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A component for selecting product variants via an autocomplete-style select input.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-product-variant-selector
@@ -33,47 +34,37 @@ class ProductVariantSelectorComponent implements OnInit {
     selectResult(product?: ProductSelectorSearchQuery['search']['items'][number]) => ;
 }
 ```
-* Implements: <code>OnInit</code>
 
-
+-   Implements: <code>OnInit</code>
 
 <div className="members-wrapper">
 
 ### searchInput$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### searchLoading
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### searchResults$
 
-<MemberInfo kind="property" type={`Observable&#60;ProductSelectorSearchQuery['search']['items']&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;ProductSelectorSearchQuery['search']['items']&#62;`} />
 
 ### productSelected
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>) => ProductVariantSelectorComponent`}   />
-
+<MemberInfo kind="method" type={`(dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>) => ProductVariantSelectorComponent`} />
 
 ### ngOnInit
 
-<MemberInfo kind="method" type={`() => void`}   />
-
+<MemberInfo kind="method" type={`() => void`} />
 
 ### selectResult
 
-<MemberInfo kind="method" type={`(product?: ProductSelectorSearchQuery['search']['items'][number]) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(product?: ProductSelectorSearchQuery['search']['items'][number]) => `} />
 
 </div>

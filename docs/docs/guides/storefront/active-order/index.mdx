@@ -1,5 +1,5 @@
 ---
-title: "Managing the Active Order"
+title: 'Managing the Active Order'
 ---
 
 import Stackblitz from '@site/src/components/Stackblitz';
@@ -8,11 +8,11 @@ The "active order" is what is also known as the "cart" - it is the order that is
 
 An order remains active until it is completed, and during this time it can be modified by the customer in various ways:
 
-- Adding an item
-- Removing an item
-- Changing the quantity of items
-- Applying a coupon
-- Removing a coupon
+-   Adding an item
+-   Removing an item
+-   Changing the quantity of items
+-   Applying a coupon
+-   Removing a coupon
 
 This guide will cover how to manage the active order.
 
@@ -22,7 +22,7 @@ Since all the mutations that we will be using in this guide require an `Order` o
 reuse in all of our mutations.
 
 ```ts title="src/fragments.ts"
-const ACTIVE_ORDER_FRAGMENT = /*GraphQL*/`
+const ACTIVE_ORDER_FRAGMENT = /*GraphQL*/ `
 fragment ActiveOrder on Order {
   __typename
   id
@@ -59,7 +59,7 @@ fragment ActiveOrder on Order {
     }
     priceWithTax
   }
-}`
+}`;
 ```
 
 :::note
@@ -74,7 +74,7 @@ You can then embed the fragment in the query or mutation by using the `${ACTIVE_
 ```ts title="src/queries.ts"
 import { ACTIVE_ORDER_FRAGMENT } from './fragments';
 
-export const GET_ACTIVE_ORDER = /*GraphQL*/`
+export const GET_ACTIVE_ORDER = /*GraphQL*/ `
   query GetActiveOrder {
     activeOrder {
       // highlight-next-line
@@ -94,9 +94,9 @@ This fragment can then be used in subsequent queries and mutations. Let's start 
 
 ```graphql
 query GetActiveOrder {
-  activeOrder {
-    ...ActiveOrder
-  }
+    activeOrder {
+        ...ActiveOrder
+    }
 }
 ```
 
@@ -106,19 +106,19 @@ To add an item to the active order, we use the [`addItemToOrder` mutation](/refe
 
 ```graphql
 mutation AddItemToOrder($productVariantId: ID!, $quantity: Int!) {
-  addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {
-    ...ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
-    }
-    ... on InsufficientStockError {
-      quantityAvailable
-      order {
+    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {
         ...ActiveOrder
-      }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+        ... on InsufficientStockError {
+            quantityAvailable
+            order {
+                ...ActiveOrder
+            }
+        }
     }
-  }
 }
 ```
 
@@ -134,13 +134,13 @@ and pass the `id` of the `OrderLine` to remove.
 
 ```graphql
 mutation RemoveItemFromOrder($orderLineId: ID!) {
-  removeOrderLine(orderLineId: $orderLineId) {
-    ...ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+    removeOrderLine(orderLineId: $orderLineId) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -150,13 +150,13 @@ To change the quantity of an item in the active order, we use the [`adjustOrderL
 
 ```graphql
 mutation AdjustOrderLine($orderLineId: ID!, $quantity: Int!) {
-  adjustOrderLine(orderLineId: $orderLineId, quantity: $quantity) {
-    ...ActiveOrder
-    ... on ErrorResult {
-        errorCode
-        message
+    adjustOrderLine(orderLineId: $orderLineId, quantity: $quantity) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -172,13 +172,13 @@ using the [`applyCouponCode` mutation](/reference/graphql-api/shop/mutations/#ap
 
 ```graphql
 mutation ApplyCouponCode($couponCode: String!) {
-  applyCouponCode(couponCode: $couponCode) {
-    ...ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+    applyCouponCode(couponCode: $couponCode) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -188,13 +188,13 @@ To remove a coupon code from the active order, we use the [`removeCouponCode` mu
 
 ```graphql
 mutation RemoveCouponCode($couponCode: String!) {
-  removeCouponCode(couponCode: $couponCode) {
-    ...ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+    removeCouponCode(couponCode: $couponCode) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -202,4 +202,4 @@ mutation RemoveCouponCode($couponCode: String!) {
 
 Here is a live example which demonstrates adding, updating and removing items from the active order:
 
-<Stackblitz id='vendure-docs-active-order' />
+<Stackblitz id="deenruv-docs-active-order" />

@@ -1,13 +1,14 @@
 ---
-title: "ZoneSelectorComponent"
+title: 'ZoneSelectorComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ZoneSelectorComponent
 
@@ -37,92 +38,73 @@ class ZoneSelectorComponent implements ControlValueAccessor {
     writeValue(obj: string | Zone | null) => void;
 }
 ```
-* Implements: <code>ControlValueAccessor</code>
 
-
+-   Implements: <code>ControlValueAccessor</code>
 
 <div className="members-wrapper">
 
 ### selectedValuesChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### readonly
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### transformControlValueAccessorValue
 
-<MemberInfo kind="property" type={`(value: <a href='/reference/typescript-api/entities/zone#zone'>Zone</a> | undefined) =&#62; any`}   />
-
+<MemberInfo kind="property" type={`(value: <a href='/reference/typescript-api/entities/zone#zone'>Zone</a> | undefined) =&#62; any`} />
 
 ### selectedId$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### onChangeFn
 
-<MemberInfo kind="property" type={`(val: any) =&#62; void`}   />
-
+<MemberInfo kind="property" type={`(val: any) =&#62; void`} />
 
 ### onTouchFn
 
-<MemberInfo kind="property" type={`() =&#62; void`}   />
-
+<MemberInfo kind="property" type={`() =&#62; void`} />
 
 ### disabled
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### value
 
-<MemberInfo kind="property" type={`string | <a href='/reference/typescript-api/entities/zone#zone'>Zone</a>`}   />
-
+<MemberInfo kind="property" type={`string | <a href='/reference/typescript-api/entities/zone#zone'>Zone</a>`} />
 
 ### zones$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef: ChangeDetectorRef) => ZoneSelectorComponent`}   />
-
+<MemberInfo kind="method" type={`(dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef: ChangeDetectorRef) => ZoneSelectorComponent`} />
 
 ### onChange
 
-<MemberInfo kind="method" type={`(selected: <a href='/reference/typescript-api/entities/zone#zone'>Zone</a>) => `}   />
-
+<MemberInfo kind="method" type={`(selected: <a href='/reference/typescript-api/entities/zone#zone'>Zone</a>) => `} />
 
 ### registerOnChange
 
-<MemberInfo kind="method" type={`(fn: any) => `}   />
-
+<MemberInfo kind="method" type={`(fn: any) => `} />
 
 ### registerOnTouched
 
-<MemberInfo kind="method" type={`(fn: any) => `}   />
-
+<MemberInfo kind="method" type={`(fn: any) => `} />
 
 ### setDisabledState
 
-<MemberInfo kind="method" type={`(isDisabled: boolean) => void`}   />
-
+<MemberInfo kind="method" type={`(isDisabled: boolean) => void`} />
 
 ### focus
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### writeValue
 
-<MemberInfo kind="method" type={`(obj: string | <a href='/reference/typescript-api/entities/zone#zone'>Zone</a> | null) => void`}   />
-
-
-
+<MemberInfo kind="method" type={`(obj: string | <a href='/reference/typescript-api/entities/zone#zone'>Zone</a> | null) => void`} />
 
 </div>

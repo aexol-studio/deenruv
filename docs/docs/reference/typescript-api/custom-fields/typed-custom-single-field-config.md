@@ -1,13 +1,14 @@
 ---
-title: "TypedCustomSingleFieldConfig"
+title: 'TypedCustomSingleFieldConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TypedCustomSingleFieldConfig
 
@@ -16,7 +17,10 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Configures a custom field on an entity in the <a href='/reference/typescript-api/custom-fields/#customfields'>CustomFields</a> config object.
 
 ```ts title="Signature"
-type TypedCustomSingleFieldConfig<T extends CustomFieldType, C extends CustomField> = BaseTypedCustomFieldConfig<T, C> & {
+type TypedCustomSingleFieldConfig<
+    T extends CustomFieldType,
+    C extends CustomField,
+> = BaseTypedCustomFieldConfig<T, C> & {
     list?: false;
     defaultValue?: DefaultValueType<T>;
     validate?: (
@@ -24,5 +28,5 @@ type TypedCustomSingleFieldConfig<T extends CustomFieldType, C extends CustomFie
         injector: Injector,
         ctx: RequestContext,
     ) => string | LocalizedString[] | void | Promise<string | LocalizedString[] | void>;
-}
+};
 ```

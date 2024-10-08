@@ -1,5 +1,5 @@
 ---
-title: "Collections"
+title: 'Collections'
 weight: 2
 ---
 
@@ -9,12 +9,12 @@ Collections allow you to group ProductVariants together by various criteria. A t
 
 ## Populating Collections
 
-Collections are _dynamic_, which means that you define a set of rules, and Vendure will automatically populate the Collection with ProductVariants according to those rules.
+Collections are _dynamic_, which means that you define a set of rules, and Deenruv will automatically populate the Collection with ProductVariants according to those rules.
 
 The rules are defined by **filters**. A Collection can define multiple filters, for example:
 
-* Include all ProductVariants with a certain FacetValue
-* Include all ProductVariants whose name includes the word "sale"
+-   Include all ProductVariants with a certain FacetValue
+-   Include all ProductVariants whose name includes the word "sale"
 
 ## Nesting Collections
 

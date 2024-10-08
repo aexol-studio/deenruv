@@ -1,22 +1,22 @@
 # Reviews Plugin
 
-The reviews plugin add product reviews to Vendure.
+The reviews plugin add product reviews to Deenruv.
 
 ![Screenshot of the Admin UI product details page with reviews](../../../product-reviews-screenshot.webp)
 
-This plugin demonstrates many capabilities of the Vendure plugin system:
+This plugin demonstrates many capabilities of the Deenruv plugin system:
 
-* Creation of new database entities (see [./entities](./entities))
-* Extension of the GraphQL APIs with new types, extensions of existing types, new queries and new mutations (see [./api/api-extensions.ts](api/api-extensions.ts))
-* Implementation of custom resolvers for those GraphQL extensions (e.g. [./api/product-entity.resolver.ts](api/product-entity.resolver.ts))
-* Modifying the VendureConfig to add CustomFields (see [./reviews-plugin.ts](./reviews-plugin.ts))
-* Extending the Admin UI with custom UI components for those CustomFields as well as list and details views for managing reviews.
-* Adding a custom widget to the Admin UI dashboard  
-* End-to-end testing of the GraphQL extensions & business logic with Vitest & the `@deenruv/testing` package.
+-   Creation of new database entities (see [./entities](./entities))
+-   Extension of the GraphQL APIs with new types, extensions of existing types, new queries and new mutations (see [./api/api-extensions.ts](api/api-extensions.ts))
+-   Implementation of custom resolvers for those GraphQL extensions (e.g. [./api/product-entity.resolver.ts](api/product-entity.resolver.ts))
+-   Modifying the DeenruvConfig to add CustomFields (see [./reviews-plugin.ts](./reviews-plugin.ts))
+-   Extending the Admin UI with custom UI components for those CustomFields as well as list and details views for managing reviews.
+-   Adding a custom widget to the Admin UI dashboard
+-   End-to-end testing of the GraphQL extensions & business logic with Vitest & the `@deenruv/testing` package.
 
 ## Usage
 
-Start the Vendure server and then in the Shop API (http://localhost:3000/shop-api) try the following mutation:
+Start the Deenruv server and then in the Shop API (http://localhost:3000/shop-api) try the following mutation:
 
 ```SDL
 mutation {

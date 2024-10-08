@@ -25,8 +25,7 @@ export default [
         // whether the alert should be displayed.
         check: ({ injector }) => {
             const manualOrderReviewService = injector.get(ManualOrderReviewService);
-            return manualOrderReviewService.getOrdersRequiringApproval()
-                .then(orders => orders.length);
+            return manualOrderReviewService.getOrdersRequiringApproval().then(orders => orders.length);
         },
         // This function is responsible for determining whether and how often the
         // `check` function should be called. In this case, we will check every 60 seconds.
@@ -40,7 +39,7 @@ export default [
             injector.get(Router).navigate(['/extensions/manual-order-review']);
         },
         // This function is called to determine the label of the alert.
-        label: (orderCount) => ({
+        label: orderCount => ({
             text: `${orderCount} ${orderCount === 1 ? 'order' : 'orders'} require approval`,
         }),
     }),
@@ -48,8 +47,8 @@ export default [
 ```
 
 With this example, a check will be performed every 60 seconds to see if there are any orders requiring approval. The actual
-implementation of the check is left to the `ManualOrderReviewService` which in this case would make a request to the 
-Vendure server to fetch the required data.
+implementation of the check is left to the `ManualOrderReviewService` which in this case would make a request to the
+Deenruv server to fetch the required data.
 
 If there are orders requiring approval, the alert will appear in the Admin UI like this:
 

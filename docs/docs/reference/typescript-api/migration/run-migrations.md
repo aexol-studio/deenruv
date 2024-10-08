@@ -1,13 +1,14 @@
 ---
-title: "RunMigrations"
+title: 'RunMigrations'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## runMigrations
 
@@ -17,11 +18,11 @@ Runs any pending database migrations. See [TypeORM migration docs](https://typeo
 for more information about the underlying migration mechanism.
 
 ```ts title="Signature"
-function runMigrations(userConfig: Partial<VendureConfig>): Promise<string[]>
+function runMigrations(userConfig: Partial<DeenruvConfig>): Promise<string[]>;
 ```
+
 Parameters
 
 ### userConfig
 
-<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/vendure-config#vendureconfig'>VendureConfig</a>&#62;`} />
-
+<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;`} />

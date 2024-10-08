@@ -1,13 +1,14 @@
 ---
-title: "BigIntMoneyStrategy"
+title: 'BigIntMoneyStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## BigIntMoneyStrategy
 
@@ -46,27 +47,21 @@ class BigIntMoneyStrategy implements MoneyStrategy {
     round(value: number, quantity:  = 1) => number;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/money/money-strategy#moneystrategy'>MoneyStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/money/money-strategy#moneystrategy'>MoneyStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### moneyColumnOptions
 
-<MemberInfo kind="property" type={`ColumnOptions`}   />
-
+<MemberInfo kind="property" type={`ColumnOptions`} />
 
 ### precision
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### round
 
-<MemberInfo kind="method" type={`(value: number, quantity:  = 1) => number`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: number, quantity:  = 1) => number`} />
 
 </div>

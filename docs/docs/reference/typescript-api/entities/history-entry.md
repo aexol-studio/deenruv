@@ -1,13 +1,14 @@
 ---
-title: "HistoryEntry"
+title: 'HistoryEntry'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## HistoryEntry
 
@@ -29,32 +30,25 @@ class HistoryEntry extends VendureEntity {
     data: any;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
 <div className="members-wrapper">
 
 ### administrator
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/administrator#administrator'>Administrator</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/administrator#administrator'>Administrator</a>`} />
 
 ### type
 
-<MemberInfo kind="property" type={`HistoryEntryType`}   />
-
+<MemberInfo kind="property" type={`HistoryEntryType`} />
 
 ### isPublic
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### data
 
-<MemberInfo kind="property" type={`any`}   />
-
-
-
+<MemberInfo kind="property" type={`any`} />
 
 </div>

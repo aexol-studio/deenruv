@@ -1,13 +1,14 @@
 ---
-title: "Email Plugin Types"
+title: 'Email Plugin Types'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EventWithContext
 
@@ -18,9 +19,8 @@ A VendureEvent which also includes a `ctx` property containing the current
 to use when generating the email.
 
 ```ts title="Signature"
-type EventWithContext = VendureEvent & { ctx: RequestContext }
+type EventWithContext = VendureEvent & { ctx: RequestContext };
 ```
-
 
 ## EventWithAsyncData
 
@@ -30,9 +30,8 @@ A VendureEvent with a <a href='/reference/typescript-api/request/request-context
 value resolved from the <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>`.loadData()` callback.
 
 ```ts title="Signature"
-type EventWithAsyncData<Event extends EventWithContext, R> = Event & { data: R }
+type EventWithAsyncData<Event extends EventWithContext, R> = Event & { data: R };
 ```
-
 
 ## EmailDetails
 
@@ -57,48 +56,37 @@ interface EmailDetails<Type extends 'serialized' | 'unserialized' = 'unserialize
 
 ### from
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### recipient
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### subject
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### body
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### attachments
 
-<MemberInfo kind="property" type={`Array&#60;Type extends 'serialized' ? SerializedAttachment : Attachment&#62;`}   />
-
+<MemberInfo kind="property" type={`Array&#60;Type extends 'serialized' ? SerializedAttachment : Attachment&#62;`} />
 
 ### cc
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### bcc
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### replyTo
 
-<MemberInfo kind="property" type={`string`}   />
-
-
-
+<MemberInfo kind="property" type={`string`} />
 
 </div>
-
 
 ## LoadDataFn
 
@@ -110,9 +98,8 @@ A function used to load async data for use by an <a href='/reference/core-plugin
 type LoadDataFn<Event extends EventWithContext, R> = (context: {
     event: Event;
     injector: Injector;
-}) => Promise<R>
+}) => Promise<R>;
 ```
-
 
 ## EmailAttachment
 
@@ -124,9 +111,8 @@ only uses the `path` property to define a filesystem path or a URL pointing to
 the attachment file.
 
 ```ts title="Signature"
-type EmailAttachment = Omit<Attachment, 'raw'> & { path?: string }
+type EmailAttachment = Omit<Attachment, 'raw'> & { path?: string };
 ```
-
 
 ## SetTemplateVarsFn
 
@@ -136,12 +122,8 @@ A function used to define template variables available to email templates.
 See <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>.setTemplateVars().
 
 ```ts title="Signature"
-type SetTemplateVarsFn<Event> = (
-    event: Event,
-    globals: { [key: string]: any },
-) => { [key: string]: any }
+type SetTemplateVarsFn<Event> = (event: Event, globals: { [key: string]: any }) => { [key: string]: any };
 ```
-
 
 ## SetAttachmentsFn
 
@@ -152,9 +134,8 @@ See https://nodemailer.com/message/attachments/ for more information about
 how attachments work in Nodemailer.
 
 ```ts title="Signature"
-type SetAttachmentsFn<Event> = (event: Event) => EmailAttachment[] | Promise<EmailAttachment[]>
+type SetAttachmentsFn<Event> = (event: Event) => EmailAttachment[] | Promise<EmailAttachment[]>;
 ```
-
 
 ## SetSubjectFn
 
@@ -167,9 +148,8 @@ type SetSubjectFn<Event> = (
     event: Event,
     ctx: RequestContext,
     injector: Injector,
-) => string | Promise<string>
+) => string | Promise<string>;
 ```
-
 
 ## OptionalAddressFields
 
@@ -189,23 +169,23 @@ interface OptionalAddressFields {
 
 ### cc
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 Comma separated list of recipients email addresses that will appear on the _Cc:_ field
+
 ### bcc
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 Comma separated list of recipients email addresses that will appear on the _Bcc:_ field
+
 ### replyTo
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 An email address that will appear on the _Reply-To:_ field
 
-
 </div>
-
 
 ## SetOptionalAddressFieldsFn
 
@@ -216,5 +196,5 @@ A function used to set the <a href='/reference/core-plugins/email-plugin/email-p
 ```ts title="Signature"
 type SetOptionalAddressFieldsFn<Event> = (
     event: Event,
-) => OptionalAddressFields | Promise<OptionalAddressFields>
+) => OptionalAddressFields | Promise<OptionalAddressFields>;
 ```

@@ -1,13 +1,14 @@
 ---
-title: "DropdownComponent"
+title: 'DropdownComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DropdownComponent
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Used for building dropdown menus.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-dropdown>
@@ -52,39 +53,30 @@ class DropdownComponent {
 
 ### isOpen
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### trigger
 
-<MemberInfo kind="property" type={`ElementRef`}   />
-
+<MemberInfo kind="property" type={`ElementRef`} />
 
 ### manualToggle
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### onClick
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### toggleOpen
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### onOpenChange
 
-<MemberInfo kind="method" type={`(callback: (isOpen: boolean) =&#62; void) => `}   />
-
+<MemberInfo kind="method" type={`(callback: (isOpen: boolean) =&#62; void) => `} />
 
 ### setTriggerElement
 
-<MemberInfo kind="method" type={`(elementRef: ElementRef) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(elementRef: ElementRef) => `} />
 
 </div>

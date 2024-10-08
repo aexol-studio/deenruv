@@ -4,10 +4,10 @@ title: 'Creating List Views'
 
 The two most common type of components you'll be creating in your UI extensions are list components and detail components.
 
-In Vendure, we have standardized the way you write these components so that your ui extensions can be made to fit seamlessly into the rest of the app.
+In Deenruv, we have standardized the way you write these components so that your ui extensions can be made to fit seamlessly into the rest of the app.
 
 :::note
-The specific pattern described here is for Angular-based components. It is also possible to create list views using React components, but 
+The specific pattern described here is for Angular-based components. It is also possible to create list views using React components, but
 in that case you won't be able to use the built-in data table & other Angular-specific components.
 :::
 
@@ -21,20 +21,20 @@ To use the standardized list component, you need to make sure your plugin expose
 
 ```graphql
 type ProductReview implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  title: String!
-  rating: Int!
-  text: String!
-  authorName: String!
-  product: Product!
-  productId: ID!  
+    id: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    title: String!
+    rating: Int!
+    text: String!
+    authorName: String!
+    product: Product!
+    productId: ID!
 }
 
 type ProductReviewList implements PaginatedList {
-  items: [ProductReview!]!
-  totalItems: Int!
+    items: [ProductReview!]!
+    totalItems: Int!
 }
 ```
 
@@ -55,21 +55,21 @@ import { TypedBaseListComponent, SharedModule } from '@deenruv/admin-ui/core';
 import { graphql } from '../../gql';
 
 const getReviewListDocument = graphql(`
-  query GetReviewList($options: ReviewListOptions) {
-    reviews(options: $options) {
-      items {
-        id
-        createdAt
-        updatedAt
-        title
-        rating
-        text
-        authorName
-        productId
-      }
-      totalItems
+    query GetReviewList($options: ReviewListOptions) {
+        reviews(options: $options) {
+            items {
+                id
+                createdAt
+                updatedAt
+                title
+                rating
+                text
+                authorName
+                productId
+            }
+            totalItems
+        }
     }
-  }
 `);
 
 @Component({
@@ -81,7 +81,6 @@ const getReviewListDocument = graphql(`
     imports: [SharedModule],
 })
 export class ReviewListComponent extends TypedBaseListComponent<typeof getReviewListDocument, 'reviews'> {
-
     // Here we set up the filters that will be available
     // to use in the data table
     readonly filters = this.createFilterCollection()
@@ -89,19 +88,19 @@ export class ReviewListComponent extends TypedBaseListComponent<typeof getReview
         .addDateFilters()
         .addFilter({
             name: 'title',
-            type: {kind: 'text'},
+            type: { kind: 'text' },
             label: 'Title',
             filterField: 'title',
         })
         .addFilter({
             name: 'rating',
-            type: {kind: 'number'},
+            type: { kind: 'number' },
             label: 'Rating',
             filterField: 'rating',
         })
         .addFilter({
             name: 'authorName',
-            type: {kind: 'text'},
+            type: { kind: 'text' },
             label: 'Author',
             filterField: 'authorName',
         })
@@ -111,11 +110,11 @@ export class ReviewListComponent extends TypedBaseListComponent<typeof getReview
     // to use in the data table
     readonly sorts = this.createSortCollection()
         .defaultSort('createdAt', 'DESC')
-        .addSort({name: 'createdAt'})
-        .addSort({name: 'updatedAt'})
-        .addSort({name: 'title'})
-        .addSort({name: 'rating'})
-        .addSort({name: 'authorName'})
+        .addSort({ name: 'createdAt' })
+        .addSort({ name: 'updatedAt' })
+        .addSort({ name: 'title' })
+        .addSort({ name: 'rating' })
+        .addSort({ name: 'authorName' })
         .connectToRoute(this.route);
 
     constructor() {
@@ -162,64 +161,55 @@ This is the standard layout for any list view. The main functionality is provide
 
 <!-- The data table -->
 <vdr-data-table-2
-        id="review-list"
-        [items]="items$ | async"
-        [itemsPerPage]="itemsPerPage$ | async"
-        [totalItems]="totalItems$ | async"
-        [currentPage]="currentPage$ | async"
-        [filters]="filters"
-        (pageChange)="setPageNumber($event)"
-        (itemsPerPageChange)="setItemsPerPage($event)"
+    id="review-list"
+    [items]="items$ | async"
+    [itemsPerPage]="itemsPerPage$ | async"
+    [totalItems]="totalItems$ | async"
+    [currentPage]="currentPage$ | async"
+    [filters]="filters"
+    (pageChange)="setPageNumber($event)"
+    (itemsPerPageChange)="setItemsPerPage($event)"
 >
     <!-- optional if you want to support bulk actions -->
     <vdr-bulk-action-menu
-            locationId="review-list"
-            [hostComponent]="this"
-            [selectionManager]="selectionManager"
+        locationId="review-list"
+        [hostComponent]="this"
+        [selectionManager]="selectionManager"
     />
-    
+
     <!-- Adds a search bar -->
-    <vdr-dt2-search
-            [searchTermControl]="searchTermControl"
-            searchTermPlaceholder="Filter by title"
-    />
-    
+    <vdr-dt2-search [searchTermControl]="searchTermControl" searchTermPlaceholder="Filter by title" />
+
     <!-- Here we define all the available columns -->
     <vdr-dt2-column id="id" [heading]="'common.id' | translate" [hiddenByDefault]="true">
-        <ng-template let-review="item">
-            {{ review.id }}
-        </ng-template>
+        <ng-template let-review="item"> {{ review.id }} </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column
-            id="created-at"
-            [heading]="'common.created-at' | translate"
-            [hiddenByDefault]="true"
-            [sort]="sorts.get('createdAt')"
+        id="created-at"
+        [heading]="'common.created-at' | translate"
+        [hiddenByDefault]="true"
+        [sort]="sorts.get('createdAt')"
     >
-        <ng-template let-review="item">
-            {{ review.createdAt | localeDate : 'short' }}
-        </ng-template>
+        <ng-template let-review="item"> {{ review.createdAt | localeDate : 'short' }} </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column
-            id="updated-at"
-            [heading]="'common.updated-at' | translate"
-            [hiddenByDefault]="true"
-            [sort]="sorts.get('updatedAt')"
+        id="updated-at"
+        [heading]="'common.updated-at' | translate"
+        [hiddenByDefault]="true"
+        [sort]="sorts.get('updatedAt')"
     >
-        <ng-template let-review="item">
-            {{ review.updatedAt | localeDate : 'short' }}
-        </ng-template>
+        <ng-template let-review="item"> {{ review.updatedAt | localeDate : 'short' }} </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column id="title" heading="Title" [optional]="false" [sort]="sorts.get('title')">
         <ng-template let-review="item">
             <a class="button-ghost" [routerLink]="['./', review.id]"
-            ><span>{{ review.title }}</span>
+                ><span>{{ review.title }}</span>
                 <clr-icon shape="arrow right"></clr-icon>
             </a>
         </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column id="rating" heading="Rating" [sort]="sorts.get('rating')">
-        <ng-template let-review="item"><my-star-rating-component [rating]="review.rating"    /></ng-template>
+        <ng-template let-review="item"><my-star-rating-component [rating]="review.rating" /></ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column id="author" heading="Author" [sort]="sorts.get('authorName')">
         <ng-template let-review="item">{{ review.authorName }}</ng-template>
@@ -242,12 +232,12 @@ export default [
         breadcrumb: 'Product reviews',
     }),
     // highlight-end
-]
+];
 ```
 
 ## Supporting custom fields
 
-From Vendure v2.2, it is possible for your [custom entities to support custom fields](/guides/developer-guide/database-entity/#supporting-custom-fields).
+From Deenruv v2.2, it is possible for your [custom entities to support custom fields](/guides/developer-guide/database-entity/#supporting-custom-fields).
 
 If you have set up your entity to support custom fields, and you want custom fields to be available in the Admin UI list view,
 you need to add the following to your list component:
@@ -262,7 +252,6 @@ you need to add the following to your list component:
     imports: [SharedModule],
 })
 export class ReviewListComponent extends TypedBaseListComponent<typeof getReviewListDocument, 'reviews'> {
-
     // highlight-next-line
     customFields = this.getCustomFieldConfig('ProductReview');
 
@@ -271,19 +260,19 @@ export class ReviewListComponent extends TypedBaseListComponent<typeof getReview
         .addDateFilters()
         .addFilter({
             name: 'title',
-            type: {kind: 'text'},
+            type: { kind: 'text' },
             label: 'Title',
             filterField: 'title',
         })
         .addFilter({
             name: 'rating',
-            type: {kind: 'number'},
+            type: { kind: 'number' },
             label: 'Rating',
             filterField: 'rating',
         })
         .addFilter({
             name: 'authorName',
-            type: {kind: 'text'},
+            type: { kind: 'text' },
             label: 'Author',
             filterField: 'authorName',
         })
@@ -293,15 +282,15 @@ export class ReviewListComponent extends TypedBaseListComponent<typeof getReview
 
     readonly sorts = this.createSortCollection()
         .defaultSort('createdAt', 'DESC')
-        .addSort({name: 'createdAt'})
-        .addSort({name: 'updatedAt'})
-        .addSort({name: 'title'})
-        .addSort({name: 'rating'})
-        .addSort({name: 'authorName'})
+        .addSort({ name: 'createdAt' })
+        .addSort({ name: 'updatedAt' })
+        .addSort({ name: 'title' })
+        .addSort({ name: 'rating' })
+        .addSort({ name: 'authorName' })
         // highlight-next-line
         .addCustomFieldSorts(this.customFields)
         .connectToRoute(this.route);
-    
+
     // rest of class omitted for brevity
 }
 ```
@@ -322,9 +311,9 @@ and then add the `vdr-dt2-custom-field-column` component to your data table:
     <!-- rest of data table omitted for brevity -->
     // highlight-start
     <vdr-dt2-custom-field-column
-            *ngFor="let customField of customFields"
-            [customField]="customField"
-            [sorts]="sorts"
+        *ngFor="let customField of customFields"
+        [customField]="customField"
+        [sorts]="sorts"
     />
     // highlight-end
 </vdr-data-table-2>

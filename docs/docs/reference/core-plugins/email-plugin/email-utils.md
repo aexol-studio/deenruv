@@ -1,13 +1,14 @@
 ---
-title: "Email Utils"
+title: 'Email Utils'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## transformOrderLineAssetUrls
 
@@ -22,8 +23,9 @@ applicable in this context. So we need to do it manually.
 **Note: Mutates the Order object**
 
 ```ts title="Signature"
-function transformOrderLineAssetUrls(ctx: RequestContext, order: Order, injector: Injector): Order
+function transformOrderLineAssetUrls(ctx: RequestContext, order: Order, injector: Injector): Order;
 ```
+
 Parameters
 
 ### ctx
@@ -37,8 +39,6 @@ Parameters
 ### injector
 
 <MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/common/injector#injector'>Injector</a>`} />
-
-
 
 ## hydrateShippingLines
 
@@ -48,8 +48,9 @@ Ensures that the ShippingLines are hydrated so that we can use the
 `shippingMethod.name` property in the email template.
 
 ```ts title="Signature"
-function hydrateShippingLines(ctx: RequestContext, order: Order, injector: Injector): Promise<ShippingLine[]>
+function hydrateShippingLines(ctx: RequestContext, order: Order, injector: Injector): Promise<ShippingLine[]>;
 ```
+
 Parameters
 
 ### ctx
@@ -63,4 +64,3 @@ Parameters
 ### injector
 
 <MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/common/injector#injector'>Injector</a>`} />
-

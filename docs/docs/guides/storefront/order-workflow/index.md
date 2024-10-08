@@ -1,5 +1,5 @@
 ---
-title: "Order Workflow"
+title: 'Order Workflow'
 showtoc: true
 ---
 
@@ -19,7 +19,7 @@ Note that this default workflow can be modified to better fit your business proc
 
 ## Structure of an Order
 
-In Vendure an [Order](/reference/typescript-api/entities/order) consists of one or more [OrderLines](/reference/typescript-api/entities/order-line) (representing a given quantity of a particular SKU).
+In Deenruv an [Order](/reference/typescript-api/entities/order) consists of one or more [OrderLines](/reference/typescript-api/entities/order-line) (representing a given quantity of a particular SKU).
 
 Here is a simplified diagram illustrating this relationship:
 
@@ -37,69 +37,69 @@ First, let's define a fragment for our Order that we can re-use in subsequent op
 
 ```graphql
 fragment ActiveOrder on Order {
-  id
-  code
-  state
-  couponCodes
-  subTotalWithTax
-  shippingWithTax
-  totalWithTax
-  totalQuantity
-  lines {
     id
-    productVariant {
-      id
-      name
+    code
+    state
+    couponCodes
+    subTotalWithTax
+    shippingWithTax
+    totalWithTax
+    totalQuantity
+    lines {
+        id
+        productVariant {
+            id
+            name
+        }
+        featuredAsset {
+            id
+            preview
+        }
+        quantity
+        linePriceWithTax
     }
-    featuredAsset {
-      id
-      preview
-    }
-    quantity
-    linePriceWithTax
-  }
 }
 ```
 
 Then we can add an item to the Order:
 
 ```graphql
-mutation AddItemToOrder($productVariantId: ID! $quantity: Int!){
-  addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation AddItemToOrder($productVariantId: ID!, $quantity: Int!) {
+    addItemToOrder(productVariantId: $productVariantId, quantity: $quantity) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
 To remove an item from the order
 
 ```graphql
-mutation RemoveItemFromOrder($orderLineId: ID!){
-  removeOrderLine(orderLineId: $orderLineId) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation RemoveItemFromOrder($orderLineId: ID!) {
+    removeOrderLine(orderLineId: $orderLineId) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
 To alter the quantity of an existing OrderLine
 
 ```graphql
-mutation AdjustOrderLine($orderLineId: ID! $quantity: Int!){
-  adjustOrderLine(orderLineId: $orderLineId, quantity: $quantity) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation AdjustOrderLine($orderLineId: ID!, $quantity: Int!) {
+    adjustOrderLine(orderLineId: $orderLineId, quantity: $quantity) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -107,110 +107,110 @@ At any time we can query the contents of the active Order:
 
 ```graphql
 query ActiveOrder {
-  activeOrder {
-    ... ActiveOrder
-  }  
+    activeOrder {
+        ...ActiveOrder
+    }
 }
 ```
 
 ### Checking out
 
-During the checkout process, we'll need to make sure a Customer is assigned to the Order. If the Customer is already signed in, then this can be skipped since Vendure will have already assigned them. If not, then you'd execute:
+During the checkout process, we'll need to make sure a Customer is assigned to the Order. If the Customer is already signed in, then this can be skipped since Deenruv will have already assigned them. If not, then you'd execute:
 
 ```graphql
-mutation SetCustomerForOrder($input: CreateCustomerInput!){
-  setCustomerForOrder(input: $input) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation SetCustomerForOrder($input: CreateCustomerInput!) {
+    setCustomerForOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
 Then we need to set the shipping address:
 
 ```graphql
-mutation SetShippingAddress($input: CreateAddressInput!){
-  setOrderShippingAddress(input: $input) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation SetShippingAddress($input: CreateAddressInput!) {
+    setOrderShippingAddress(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
 Once the shipping address is set, we can find out which ShippingMethods can be used on this Order:
 
 ```graphql
-query GetShippingMethods{
-  eligibleShippingMethods {
-    id
-    name
-    code
-    description
-    priceWithTax
-  }
+query GetShippingMethods {
+    eligibleShippingMethods {
+        id
+        name
+        code
+        description
+        priceWithTax
+    }
 }
 ```
 
 The Customer can then choose one of the available ShippingMethods, and we then set it on the Order:
 
 ```graphql
-mutation SetShippingMethod($shippingMethodId: ID!){
-  setOrderShippingMethod(shippingMethodId: $shippingMethodId) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation SetShippingMethod($shippingMethodId: ID!) {
+    setOrderShippingMethod(shippingMethodId: $shippingMethodId) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
 We can now do the same for PaymentMethods:
 
 ```graphql
-query GetPaymentMethods{
-  eligiblePaymentMethods {
-    id
-    name
-    code
-    description
-    isEligible
-    eligibilityMessage
-  }
+query GetPaymentMethods {
+    eligiblePaymentMethods {
+        id
+        name
+        code
+        description
+        isEligible
+        eligibilityMessage
+    }
 }
 ```
 
 Once the customer is ready to pay, we need to transition the Order to the `ArrangingPayment` state. In this state, no further modifications are permitted. If you _do_ need to modify the Order contents, you can always transition back to the `AddingItems` state:
 
 ```graphql
-mutation TransitionOrder($state: String!){
-  transitionOrderToState(state: $state) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation TransitionOrder($state: String!) {
+    transitionOrderToState(state: $state) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
 Finally, add a Payment to the Order:
 
 ```graphql
-mutation AddPayment($input: PaymentInput!){
-  addPaymentToOrder(input: $input) {
-    ... ActiveOrder
-    ... on ErrorResult {
-      errorCode
-      message
+mutation AddPayment($input: PaymentInput!) {
+    addPaymentToOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -218,9 +218,9 @@ If the Payment is successful, the Order will now be complete. You can forward th
 
 ```graphql
 query OrderByCode($code: String!) {
-  orderByCode(code: $code) {
-    ...ActiveOrder
-  }
+    orderByCode(code: $code) {
+        ...ActiveOrder
+    }
 }
 ```
 

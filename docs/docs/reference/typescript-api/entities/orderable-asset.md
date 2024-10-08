@@ -1,13 +1,14 @@
 ---
-title: "OrderableAsset"
+title: 'OrderableAsset'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## OrderableAsset
 
@@ -21,7 +22,7 @@ See https://typeorm.io/#/many-to-many-relations/many-to-many-relations-with-cust
 
 ```ts title="Signature"
 class OrderableAsset extends VendureEntity implements Orderable {
-    constructor(input?: DeepPartial<OrderableAsset>)
+    constructor(input?: DeepPartial<OrderableAsset>);
     @Column()
     assetId: ID;
     @Index()
@@ -31,35 +32,27 @@ class OrderableAsset extends VendureEntity implements Orderable {
     position: number;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code><a href='/reference/typescript-api/entities/interfaces#orderable'>Orderable</a></code>
-
-
+-   Implements: <code><a href='/reference/typescript-api/entities/interfaces#orderable'>Orderable</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/orderable-asset#orderableasset'>OrderableAsset</a>&#62;) => OrderableAsset`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/orderable-asset#orderableasset'>OrderableAsset</a>&#62;) => OrderableAsset`} />
 
 ### assetId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### asset
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>`} />
 
 ### position
 
-<MemberInfo kind="property" type={`number`}   />
-
-
-
+<MemberInfo kind="property" type={`number`} />
 
 </div>

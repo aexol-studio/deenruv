@@ -1,13 +1,14 @@
 ---
-title: "PaymentState"
+title: 'PaymentState'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PaymentState
 
@@ -16,9 +17,5 @@ import MemberDescription from '@site/src/components/MemberDescription';
 These are the default states of the payment process.
 
 ```ts title="Signature"
-type PaymentState = | 'Created'
-    | 'Error'
-    | 'Cancelled'
-    | keyof CustomPaymentStates
-    | keyof PaymentStates
+type PaymentState = 'Created' | 'Error' | 'Cancelled' | keyof CustomPaymentStates | keyof PaymentStates;
 ```

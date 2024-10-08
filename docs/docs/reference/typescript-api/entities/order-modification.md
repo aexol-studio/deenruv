@@ -1,13 +1,14 @@
 ---
-title: "OrderModification"
+title: 'OrderModification'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## OrderModification
 
@@ -18,7 +19,7 @@ then modified afterwards by an administrator.
 
 ```ts title="Signature"
 class OrderModification extends VendureEntity {
-    constructor(input?: DeepPartial<OrderModification>)
+    constructor(input?: DeepPartial<OrderModification>);
     @Column()
     note: string;
     @Index()
@@ -38,70 +39,56 @@ class OrderModification extends VendureEntity {
     refund?: Refund;
     @Column('simple-json', { nullable: true }) shippingAddressChange: OrderAddress;
     @Column('simple-json', { nullable: true }) billingAddressChange: OrderAddress;
-    isSettled: boolean
+    isSettled: boolean;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-modification#ordermodification'>OrderModification</a>&#62;) => OrderModification`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-modification#ordermodification'>OrderModification</a>&#62;) => OrderModification`} />
 
 ### note
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### order
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order#order'>Order</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order#order'>Order</a>`} />
 
 ### lines
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line-reference#ordermodificationline'>OrderModificationLine</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line-reference#ordermodificationline'>OrderModificationLine</a>[]`} />
 
 ### surcharges
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/surcharge#surcharge'>Surcharge</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/surcharge#surcharge'>Surcharge</a>[]`} />
 
 ### priceChange
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### payment
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/payment#payment'>Payment</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/payment#payment'>Payment</a>`} />
 
 ### refund
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/refund#refund'>Refund</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/refund#refund'>Refund</a>`} />
 
 ### shippingAddressChange
 
-<MemberInfo kind="property" type={`OrderAddress`}   />
-
+<MemberInfo kind="property" type={`OrderAddress`} />
 
 ### billingAddressChange
 
-<MemberInfo kind="property" type={`OrderAddress`}   />
-
+<MemberInfo kind="property" type={`OrderAddress`} />
 
 ### isSettled
 
-<MemberInfo kind="property" type={`boolean`}   />
-
-
-
+<MemberInfo kind="property" type={`boolean`} />
 
 </div>

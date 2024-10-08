@@ -1,13 +1,14 @@
 ---
-title: "HardenPlugin"
+title: 'HardenPlugin'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## HardenPlugin
 
@@ -15,10 +16,10 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 The HardenPlugin hardens the Shop and Admin GraphQL APIs against attacks and abuse.
 
-- It analyzes the complexity on incoming graphql queries and rejects queries that are too complex and
-  could be used to overload the resources of the server.
-- It disables dev-mode API features such as introspection and the GraphQL playground app.
-- It removes field name suggestions to prevent trial-and-error schema sniffing.
+-   It analyzes the complexity on incoming graphql queries and rejects queries that are too complex and
+    could be used to overload the resources of the server.
+-   It disables dev-mode API features such as introspection and the GraphQL playground app.
+-   It removes field name suggestions to prevent trial-and-error schema sniffing.
 
 It is a recommended plugin for all production configurations.
 
@@ -32,19 +33,19 @@ or
 
 Then add the `HardenPlugin`, calling the `.init()` method with <a href='/reference/core-plugins/harden-plugin/harden-plugin-options#hardenpluginoptions'>HardenPluginOptions</a>:
 
-*Example*
+_Example_
 
 ```ts
 import { HardenPlugin } from '@deenruv/harden-plugin';
 
-const config: VendureConfig = {
-  // Add an instance of the plugin to the plugins array
-  plugins: [
-     HardenPlugin.init({
-       maxQueryComplexity: 650,
-       apiMode: process.env.APP_ENV === 'dev' ? 'dev' : 'prod',
-     }),
-  ],
+const config: DeenruvConfig = {
+    // Add an instance of the plugin to the plugins array
+    plugins: [
+        HardenPlugin.init({
+            maxQueryComplexity: 650,
+            apiMode: process.env.APP_ENV === 'dev' ? 'dev' : 'prod',
+        }),
+    ],
 };
 ```
 
@@ -55,7 +56,7 @@ deeply-nested are the fields being selected, and is intended to roughly correspo
 be required to resolve that query.
 
 The goal of this setting is to prevent attacks in which a malicious actor crafts a very complex query in order to overwhelm your
-server resources. Here's an example of a request which would likely overwhelm a Vendure server:
+server resources. Here's an example of a request which would likely overwhelm a Deenruv server:
 
 ```GraphQL
 query EvilQuery {
@@ -88,7 +89,7 @@ query EvilQuery {
 This evil query has a complexity score of 2,443,203 - much greater than the default of 1,000!
 
 The complexity score is calculated by the [graphql-query-complexity library](https://www.npmjs.com/package/graphql-query-complexity),
-and by default uses the <a href='/reference/core-plugins/harden-plugin/default-vendure-complexity-estimator#defaultvendurecomplexityestimator'>defaultVendureComplexityEstimator</a>, which is tuned specifically to the Vendure Shop API.
+and by default uses the <a href='/reference/core-plugins/harden-plugin/default-deenruv-complexity-estimator#defaultvendurecomplexityestimator'>defaultVendureComplexityEstimator</a>, which is tuned specifically to the Deenruv Shop API.
 
 :::caution
 Note: By default, if the "take" argument is omitted from a list query (e.g. the `products` or `collections` query), a default factor of 1000 is applied.
@@ -96,28 +97,28 @@ Note: By default, if the "take" argument is omitted from a list query (e.g. the 
 
 The optimal max complexity score will vary depending on:
 
-- The requirements of your storefront and other clients using the Shop API
-- The resources available to your server
+-   The requirements of your storefront and other clients using the Shop API
+-   The resources available to your server
 
 You should aim to set the maximum as low as possible while still being able to service all the requests required.
 This will take some manual tuning.
 While tuning the max, you can turn on the `logComplexityScore` to get a detailed breakdown of the complexity of each query, as well as how
 that total score is derived from its child fields:
 
-*Example*
+_Example_
 
 ```ts
 import { HardenPlugin } from '@deenruv/harden-plugin';
 
-const config: VendureConfig = {
-  // A detailed summary is logged at the "debug" level
-  logger: new DefaultLogger({ level: LogLevel.Debug }),
-  plugins: [
-     HardenPlugin.init({
-       maxQueryComplexity: 650,
-       logComplexityScore: true,
-     }),
-  ],
+const config: DeenruvConfig = {
+    // A detailed summary is logged at the "debug" level
+    logger: new DefaultLogger({ level: LogLevel.Debug }),
+    plugins: [
+        HardenPlugin.init({
+            maxQueryComplexity: 650,
+            logComplexityScore: true,
+        }),
+    ],
 };
 ```
 
@@ -136,6 +137,7 @@ query ProductList {
   }
 }
 ```
+
 will log the following breakdown:
 
 ```sh
@@ -160,14 +162,10 @@ class HardenPlugin {
 
 ### options
 
-<MemberInfo kind="property" type={`<a href='/reference/core-plugins/harden-plugin/harden-plugin-options#hardenpluginoptions'>HardenPluginOptions</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/core-plugins/harden-plugin/harden-plugin-options#hardenpluginoptions'>HardenPluginOptions</a>`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/harden-plugin/harden-plugin-options#hardenpluginoptions'>HardenPluginOptions</a>) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/harden-plugin/harden-plugin-options#hardenpluginoptions'>HardenPluginOptions</a>) => `} />
 
 </div>

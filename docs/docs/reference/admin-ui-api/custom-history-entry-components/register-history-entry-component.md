@@ -1,13 +1,14 @@
 ---
-title: "RegisterHistoryEntryComponent"
+title: 'RegisterHistoryEntryComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerHistoryEntryComponent
 
@@ -16,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Registers a <a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a> for displaying history entries in the Order/Customer
 history timeline.
 
-*Example*
+_Example_
 
 ```ts
 import { Component } from '@angular/core';
@@ -33,10 +34,10 @@ import {
     selector: 'tax-id-verification-component',
     template: `
         <div *ngIf="entry.data.valid">
-          Tax ID <strong>{{ entry.data.taxId }}</strong> was verified
-          <vdr-history-entry-detail *ngIf="entry.data">
-            <vdr-object-tree [value]="entry.data"></vdr-object-tree>
-          </vdr-history-entry-detail>
+            Tax ID <strong>{{ entry.data.taxId }}</strong> was verified
+            <vdr-history-entry-detail *ngIf="entry.data">
+                <vdr-object-tree [value]="entry.data"></vdr-object-tree>
+            </vdr-history-entry-detail>
         </div>
         <div *ngIf="entry.data.valid">Tax ID {{ entry.data.taxId }} could not be verified</div>
     `,
@@ -73,11 +74,11 @@ export default [
 ```
 
 ```ts title="Signature"
-function registerHistoryEntryComponent(config: HistoryEntryConfig): Provider
+function registerHistoryEntryComponent(config: HistoryEntryConfig): Provider;
 ```
+
 Parameters
 
 ### config
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-config#historyentryconfig'>HistoryEntryConfig</a>`} />
-

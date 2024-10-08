@@ -1,13 +1,14 @@
 ---
-title: "TestEnvironment"
+title: 'TestEnvironment'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TestEnvironment
 
@@ -28,19 +29,20 @@ interface TestEnvironment {
 
 ### server
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/testing/test-server#testserver'>TestServer</a>`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/testing/test-server#testserver'>TestServer</a>`} />
 
-A Vendure server instance against which GraphQL requests can be made.
+A Deenruv server instance against which GraphQL requests can be made.
+
 ### adminClient
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/testing/simple-graph-qlclient#simplegraphqlclient'>SimpleGraphQLClient</a>`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/testing/simple-graph-qlclient#simplegraphqlclient'>SimpleGraphQLClient</a>`} />
 
 A GraphQL client configured for the Admin API.
+
 ### shopClient
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/testing/simple-graph-qlclient#simplegraphqlclient'>SimpleGraphQLClient</a>`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/testing/simple-graph-qlclient#simplegraphqlclient'>SimpleGraphQLClient</a>`} />
 
 A GraphQL client configured for the Shop API.
-
 
 </div>

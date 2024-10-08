@@ -1,15 +1,15 @@
 ---
-title: "Taxes"
+title: 'Taxes'
 showtoc: true
 ---
 
-E-commerce applications need to correctly handle taxes such as sales tax or value added tax (VAT). In Vendure, tax handling consists of:
+E-commerce applications need to correctly handle taxes such as sales tax or value added tax (VAT). In Deenruv, tax handling consists of:
 
-* **Tax categories** Each ProductVariant is assigned to a specific TaxCategory. In some tax systems, the tax rate differs depending on the type of good. For example, VAT in the UK has 3 rates, "standard" (most goods), "reduced" (e.g. child car seats) and "zero" (e.g. books).
-* **Tax rates** This is the tax rate applied to a specific tax category for a specific [Zone](/reference/typescript-api/entities/zone/). E.g., the tax rate for "standard" goods in the UK Zone is 20%.
-* **Channel tax settings** Each Channel can specify whether the prices of product variants are inclusive of tax or not, and also specify the default Zone to use for tax calculations.
-* **TaxZoneStrategy** Determines the active tax Zone used when calculating what TaxRate to apply. By default, it uses the default tax Zone from the Channel settings.
-* **TaxLineCalculationStrategy** This determines the taxes applied when adding an item to an Order. If you want to integrate a 3rd-party tax API or other async lookup, this is where it would be done.
+-   **Tax categories** Each ProductVariant is assigned to a specific TaxCategory. In some tax systems, the tax rate differs depending on the type of good. For example, VAT in the UK has 3 rates, "standard" (most goods), "reduced" (e.g. child car seats) and "zero" (e.g. books).
+-   **Tax rates** This is the tax rate applied to a specific tax category for a specific [Zone](/reference/typescript-api/entities/zone/). E.g., the tax rate for "standard" goods in the UK Zone is 20%.
+-   **Channel tax settings** Each Channel can specify whether the prices of product variants are inclusive of tax or not, and also specify the default Zone to use for tax calculations.
+-   **TaxZoneStrategy** Determines the active tax Zone used when calculating what TaxRate to apply. By default, it uses the default tax Zone from the Channel settings.
+-   **TaxLineCalculationStrategy** This determines the taxes applied when adding an item to an Order. If you want to integrate a 3rd-party tax API or other async lookup, this is where it would be done.
 
 ## API conventions
 
@@ -17,20 +17,20 @@ In the GraphQL API, any type which has a taxable price will split that price int
 
 ```graphql
 query {
-  activeOrder {
-    ...on Order {
-      lines {
-        linePrice
-        linePriceWithTax
-      }
-      subTotal
-      subTotalWithTax
-      shipping
-      shippingWithTax
-      total
-      totalWithTax
+    activeOrder {
+        ... on Order {
+            lines {
+                linePrice
+                linePriceWithTax
+            }
+            subTotal
+            subTotalWithTax
+            shipping
+            shippingWithTax
+            total
+            totalWithTax
+        }
     }
-  }
 }
 ```
 
@@ -54,22 +54,21 @@ The taxes on shipping is calculated by the [ShippingCalculator](/reference/types
 
 This example shows the default configuration for taxes (you don't need to specify this in your own config, as these are the defaults):
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import {
     DefaultTaxLineCalculationStrategy,
     DefaultTaxZoneStrategy,
     DefaultOrderItemPriceCalculationStrategy,
-    VendureConfig
+    DeenruvConfig,
 } from '@deenruv/core';
 
-export const config: VendureConfig = {
-  taxOptions: {
-    taxZoneStrategy: new DefaultTaxZoneStrategy(),
-    taxLineCalculationStrategy: new DefaultTaxLineCalculationStrategy(),
-  },
-  orderOptions: {
-    orderItemPriceCalculationStrategy: new DefaultOrderItemPriceCalculationStrategy()
-  }
-}
-
+export const config: DeenruvConfig = {
+    taxOptions: {
+        taxZoneStrategy: new DefaultTaxZoneStrategy(),
+        taxLineCalculationStrategy: new DefaultTaxLineCalculationStrategy(),
+    },
+    orderOptions: {
+        orderItemPriceCalculationStrategy: new DefaultOrderItemPriceCalculationStrategy(),
+    },
+};
 ```

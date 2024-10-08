@@ -1,13 +1,14 @@
 ---
-title: "AssetServerPlugin"
+title: 'AssetServerPlugin'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## AssetServerPlugin
 
@@ -25,19 +26,19 @@ or
 
 `npm install @deenruv/asset-server-plugin`
 
-*Example*
+_Example_
 
 ```ts
 import { AssetServerPlugin } from '@deenruv/asset-server-plugin';
 
-const config: VendureConfig = {
-  // Add an instance of the plugin to the plugins array
-  plugins: [
-    AssetServerPlugin.init({
-      route: 'assets',
-      assetUploadDir: path.join(__dirname, 'assets'),
-    }),
-  ],
+const config: DeenruvConfig = {
+    // Add an instance of the plugin to the plugins array
+    plugins: [
+        AssetServerPlugin.init({
+            route: 'assets',
+            assetUploadDir: path.join(__dirname, 'assets'),
+        }),
+    ],
 };
 ```
 
@@ -57,7 +58,7 @@ The `mode` parameter can be either `crop` or `resize`. See the [ImageTransformMo
 
 ### Focal point
 
-When cropping an image (`mode=crop`), Vendure will attempt to keep the most "interesting" area of the image in the cropped frame. It does this
+When cropping an image (`mode=crop`), Deenruv will attempt to keep the most "interesting" area of the image in the cropped frame. It does this
 by finding the area of the image with highest entropy (the busiest area of the image). However, sometimes this does not yield a satisfactory
 result - part or all of the main subject may still be cropped out.
 
@@ -78,10 +79,10 @@ Since v1.7.0, the image format can be specified by adding the `format` query par
 This means that, no matter the format of your original asset files, you can use more modern formats in your storefront if the browser
 supports them. Supported values for `format` are:
 
-* `jpeg` or `jpg`
-* `png`
-* `webp`
-* `avif`
+-   `jpeg` or `jpg`
+-   `png`
+-   `webp`
+-   `avif`
 
 The `format` parameter can also be combined with presets (see below).
 
@@ -121,15 +122,16 @@ is equivalent to:
 
 The AssetServerPlugin comes pre-configured with the following presets:
 
-name | width | height | mode
------|-------|--------|-----
-tiny | 50px | 50px | crop
-thumb | 150px | 150px | crop
-small | 300px | 300px | resize
-medium | 500px | 500px | resize
-large | 800px | 800px | resize
+| name   | width | height | mode   |
+| ------ | ----- | ------ | ------ |
+| tiny   | 50px  | 50px   | crop   |
+| thumb  | 150px | 150px  | crop   |
+| small  | 300px | 300px  | resize |
+| medium | 500px | 500px  | resize |
+| large  | 800px | 800px  | resize |
 
 ### Caching
+
 By default, the AssetServerPlugin will cache every transformed image, so that the transformation only needs to be performed a single time for
 a given configuration. Caching can be disabled per-request by setting the `?cache=false` query parameter.
 
@@ -140,27 +142,23 @@ class AssetServerPlugin implements NestModule, OnApplicationBootstrap {
     configure(consumer: MiddlewareConsumer) => ;
 }
 ```
-* Implements: <code>NestModule</code>, <code>OnApplicationBootstrap</code>
 
-
+-   Implements: <code>NestModule</code>, <code>OnApplicationBootstrap</code>
 
 <div className="members-wrapper">
 
 ### init
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/asset-server-plugin/asset-server-options#assetserveroptions'>AssetServerOptions</a>) => Type&#60;<a href='/reference/core-plugins/asset-server-plugin/#assetserverplugin'>AssetServerPlugin</a>&#62;`}   />
+<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/asset-server-plugin/asset-server-options#assetserveroptions'>AssetServerOptions</a>) => Type&#60;<a href='/reference/core-plugins/asset-server-plugin/#assetserverplugin'>AssetServerPlugin</a>&#62;`} />
 
 Set the plugin options.
+
 ### constructor
 
-<MemberInfo kind="method" type={`(processContext: <a href='/reference/typescript-api/common/process-context#processcontext'>ProcessContext</a>) => AssetServerPlugin`}   />
-
+<MemberInfo kind="method" type={`(processContext: <a href='/reference/typescript-api/common/process-context#processcontext'>ProcessContext</a>) => AssetServerPlugin`} />
 
 ### configure
 
-<MemberInfo kind="method" type={`(consumer: MiddlewareConsumer) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(consumer: MiddlewareConsumer) => `} />
 
 </div>

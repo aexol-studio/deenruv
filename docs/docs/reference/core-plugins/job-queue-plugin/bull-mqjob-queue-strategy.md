@@ -1,13 +1,14 @@
 ---
-title: "BullMQJobQueueStrategy"
+title: 'BullMQJobQueueStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## BullMQJobQueueStrategy
 
@@ -30,62 +31,49 @@ class BullMQJobQueueStrategy implements InspectableJobQueueStrategy {
     stop(queueName: string, process: (job: Job<Data>) => Promise<any>) => Promise<void>;
 }
 ```
-* Implements: <code>InspectableJobQueueStrategy</code>
 
-
+-   Implements: <code>InspectableJobQueueStrategy</code>
 
 <div className="members-wrapper">
 
 ### init
 
-<MemberInfo kind="method" type={`(injector: Injector) => Promise&#60;void&#62;`}   />
-
+<MemberInfo kind="method" type={`(injector: Injector) => Promise&#60;void&#62;`} />
 
 ### destroy
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### add
 
-<MemberInfo kind="method" type={`(job: Job&#60;Data&#62;) => Promise&#60;Job&#60;Data&#62;&#62;`}   />
-
+<MemberInfo kind="method" type={`(job: Job&#60;Data&#62;) => Promise&#60;Job&#60;Data&#62;&#62;`} />
 
 ### cancelJob
 
-<MemberInfo kind="method" type={`(jobId: string) => Promise&#60;Job | undefined&#62;`}   />
-
+<MemberInfo kind="method" type={`(jobId: string) => Promise&#60;Job | undefined&#62;`} />
 
 ### findMany
 
-<MemberInfo kind="method" type={`(options?: JobListOptions) => Promise&#60;PaginatedList&#60;Job&#62;&#62;`}   />
-
+<MemberInfo kind="method" type={`(options?: JobListOptions) => Promise&#60;PaginatedList&#60;Job&#62;&#62;`} />
 
 ### findManyById
 
-<MemberInfo kind="method" type={`(ids: ID[]) => Promise&#60;Job[]&#62;`}   />
-
+<MemberInfo kind="method" type={`(ids: ID[]) => Promise&#60;Job[]&#62;`} />
 
 ### findOne
 
-<MemberInfo kind="method" type={`(id: ID) => Promise&#60;Job | undefined&#62;`}   />
-
+<MemberInfo kind="method" type={`(id: ID) => Promise&#60;Job | undefined&#62;`} />
 
 ### removeSettledJobs
 
-<MemberInfo kind="method" type={`(queueNames?: string[], olderThan?: Date) => Promise&#60;number&#62;`}   />
-
+<MemberInfo kind="method" type={`(queueNames?: string[], olderThan?: Date) => Promise&#60;number&#62;`} />
 
 ### start
 
-<MemberInfo kind="method" type={`(queueName: string, process: (job: Job&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`}   />
-
+<MemberInfo kind="method" type={`(queueName: string, process: (job: Job&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`} />
 
 ### stop
 
-<MemberInfo kind="method" type={`(queueName: string, process: (job: Job&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(queueName: string, process: (job: Job&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`} />
 
 </div>

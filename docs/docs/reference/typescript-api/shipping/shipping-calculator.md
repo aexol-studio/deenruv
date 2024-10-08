@@ -1,13 +1,14 @@
 ---
-title: "ShippingCalculator"
+title: 'ShippingCalculator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ShippingCalculator
 
@@ -15,52 +16,47 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 The ShippingCalculator is used by a <a href='/reference/typescript-api/entities/shipping-method#shippingmethod'>ShippingMethod</a> to calculate the price of shipping on a given <a href='/reference/typescript-api/entities/order#order'>Order</a>.
 
-*Example*
+_Example_
 
 ```ts
 const flatRateCalculator = new ShippingCalculator({
-  code: 'flat-rate-calculator',
-  description: [{ languageCode: LanguageCode.en, value: 'Default Flat-Rate Shipping Calculator' }],
-  args: {
-    rate: {
-      type: 'int',
-      ui: { component: 'currency-form-input' },
+    code: 'flat-rate-calculator',
+    description: [{ languageCode: LanguageCode.en, value: 'Default Flat-Rate Shipping Calculator' }],
+    args: {
+        rate: {
+            type: 'int',
+            ui: { component: 'currency-form-input' },
+        },
+        taxRate: {
+            type: 'int',
+            ui: { component: 'number-form-input', suffix: '%' },
+        },
     },
-    taxRate: {
-      type: 'int',
-      ui: { component: 'number-form-input', suffix: '%' },
+    calculate: (ctx, order, args) => {
+        return {
+            price: args.rate,
+            taxRate: args.taxRate,
+            priceIncludesTax: ctx.channel.pricesIncludeTax,
+        };
     },
-  },
-  calculate: (ctx, order, args) => {
-    return {
-      price: args.rate,
-      taxRate: args.taxRate,
-      priceIncludesTax: ctx.channel.pricesIncludeTax,
-    };
-  },
 });
 ```
 
 ```ts title="Signature"
 class ShippingCalculator<T extends ConfigArgs = ConfigArgs> extends ConfigurableOperationDef<T> {
-    constructor(config: ShippingCalculatorConfig<T>)
+    constructor(config: ShippingCalculatorConfig<T>);
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(config: ShippingCalculatorConfig&#60;T&#62;) => ShippingCalculator`}   />
-
-
-
+<MemberInfo kind="method" type={`(config: ShippingCalculatorConfig&#60;T&#62;) => ShippingCalculator`} />
 
 </div>
-
 
 ## ShippingCalculationResult
 
@@ -81,30 +77,31 @@ interface ShippingCalculationResult {
 
 ### price
 
-<MemberInfo kind="property" type={`number`}   />
+<MemberInfo kind="property" type={`number`} />
 
 The shipping price without any taxes.
+
 ### priceIncludesTax
 
-<MemberInfo kind="property" type={`boolean`}   />
+<MemberInfo kind="property" type={`boolean`} />
 
 Whether or not the given price already includes taxes.
+
 ### taxRate
 
-<MemberInfo kind="property" type={`number`}   />
+<MemberInfo kind="property" type={`number`} />
 
 The tax rate applied to the shipping price.
+
 ### metadata
 
-<MemberInfo kind="property" type={`Record&#60;string, any&#62;`}   />
+<MemberInfo kind="property" type={`Record&#60;string, any&#62;`} />
 
 Arbitrary metadata may be returned from the calculation function. This can be used
 e.g. to return data on estimated delivery times or any other data which may be
 needed in the storefront application when listing eligible shipping methods.
 
-
 </div>
-
 
 ## CalculateShippingFn
 
@@ -121,5 +118,5 @@ type CalculateShippingFn<T extends ConfigArgs> = (
     order: Order,
     args: ConfigArgValues<T>,
     method: ShippingMethod,
-) => CalculateShippingFnResult
+) => CalculateShippingFnResult;
 ```

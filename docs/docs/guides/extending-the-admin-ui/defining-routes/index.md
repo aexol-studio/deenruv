@@ -20,17 +20,15 @@ First we need to create the component which will be mounted at the route. This c
 <Tabs groupId="framework">
 <TabItem value="Angular" label="Angular" default>
 
-
 ```ts title="src/plugins/greeter/ui/components/greeter/greeter.component.ts"
 import { SharedModule } from '@deenruv/admin-ui/core';
 import { Component } from '@angular/core';
 
 @Component({
     selector: 'greeter',
-    template: `
-        <vdr-page-block>
-            <h2>{{ greeting }}</h2>
-        </vdr-page-block>`,
+    template: ` <vdr-page-block>
+        <h2>{{ greeting }}</h2>
+    </vdr-page-block>`,
     standalone: true,
     imports: [SharedModule],
 })
@@ -61,7 +59,6 @@ export function Greeter() {
 :::note
 The `<vdr-page-block>` (Angular) and `<div className="page-block">` (React) is a wrapper that sets the layout and max width of your component to match the rest of the Admin UI. You should usually wrap your component in this element.
 :::
-
 
 ### 2. Define the route
 
@@ -114,13 +111,13 @@ The `path: ''` is actually optional, since `''` is the default value. But this i
 
 Now we need to add this routes file to our extension definition:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import * as path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -146,8 +143,8 @@ Note that by specifying `route: 'greet'`, we are "mounting" the routes at the `/
 
 :::info
 
-The `/extensions/` prefix is used to avoid conflicts with built-in routes. From Vendure v2.2.0 it is possible to customize
-this prefix using the `prefix` property. See the section on [overriding built-in routes](#overriding-built-in-routes) for 
+The `/extensions/` prefix is used to avoid conflicts with built-in routes. From Deenruv v2.2.0 it is possible to customize
+this prefix using the `prefix` property. See the section on [overriding built-in routes](#overriding-built-in-routes) for
 more information.
 
 :::
@@ -158,19 +155,15 @@ Now go to the Admin UI app in your browser and log in. You should now be able to
 
 ![./ui-extensions-greeter.webp](./ui-extensions-greeter.webp)
 
-
 ## Links
 
 To link to other routes, you must use the `routerLink` directive for Angular, or the `Link` component for React:
-
 
 <Tabs groupId="framework">
 <TabItem value="Angular" label="Angular" default>
 
 ```html
-<a class="button-ghost" [routerLink]="['/extensions/my-plugin/my-custom-route']">
-    John Smith
-</a>
+<a class="button-ghost" [routerLink]="['/extensions/my-plugin/my-custom-route']"> John Smith </a>
 ```
 
 </TabItem>
@@ -247,11 +240,10 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'test',
-    template: `
-        <vdr-page-block>
-            // highlight-next-line
-            <p>id: {{ id }}</p>
-        </vdr-page-block>`,
+    template: ` <vdr-page-block>
+        // highlight-next-line
+        <p>id: {{ id }}</p>
+    </vdr-page-block>`,
     standalone: true,
     imports: [SharedModule],
 })
@@ -295,7 +287,6 @@ It is possible to inject services into your components. This includes both the [
 
 Here's an example of injecting the built-in `NotificationService` into a component to display a toast notification:
 
-
 <Tabs groupId="framework">
 <TabItem value="Angular" label="Angular" default>
 
@@ -307,17 +298,16 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'test',
-    template: `
-        <vdr-page-block>
-            <button class="button primary" (click)="showNotification()">Click me</button>
-        </vdr-page-block>`,
+    template: ` <vdr-page-block>
+        <button class="button primary" (click)="showNotification()">Click me</button>
+    </vdr-page-block>`,
     standalone: true,
     imports: [SharedModule],
 })
 export class TestComponent {
     // highlight-next-line
     constructor(private notificationService: NotificationService) {}
-    
+
     showNotification() {
         // highlight-next-line
         this.notificationService.success('Hello!');
@@ -339,14 +329,16 @@ import React from 'react';
 export function Test() {
     // highlight-next-line
     const notificationService = useInjector(NotificationService);
-    
+
     function showNotification() {
         // highlight-next-line
         notificationService.success('Hello!');
     }
     return (
         <div className="page-block">
-            <button className="button primary" onClick={showNotification}>Click me</button>
+            <button className="button primary" onClick={showNotification}>
+                Click me
+            </button>
         </div>
     );
 }
@@ -413,13 +405,12 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'test',
-    template: `
-        <vdr-page-block>
-            <vdr-card>
-                // highlight-next-line
-                <button class="button primary" (click)="handleClick()">Update title</button>
-            </vdr-card>
-        </vdr-page-block>`,
+    template: ` <vdr-page-block>
+        <vdr-card>
+            // highlight-next-line
+            <button class="button primary" (click)="handleClick()">Update title</button>
+        </vdr-card>
+    </vdr-page-block>`,
     standalone: true,
     imports: [SharedModule],
 })
@@ -469,7 +460,6 @@ export function Test() {
 ### In the route definition
 
 The page breadcumbs can be set in the route definition in a couple of ways. The simplest is to specify the `breadcumb` property:
-
 
 <Tabs groupId="framework">
 <TabItem value="Angular" label="Angular" default>
@@ -553,13 +543,12 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'test',
-    template: `
-        <vdr-page-block>
-            <vdr-card>
-                // highlight-next-line
-                <button class="button primary" (click)="handleClick()">Update breadcrumb</button>
-            </vdr-card>
-        </vdr-page-block>`,
+    template: ` <vdr-page-block>
+        <vdr-card>
+            // highlight-next-line
+            <button class="button primary" (click)="handleClick()">Update breadcrumb</button>
+        </vdr-card>
+    </vdr-page-block>`,
     standalone: true,
     imports: [SharedModule],
 })
@@ -606,11 +595,11 @@ export function Test() {
 
 ## Overriding built-in routes
 
-From Vendure v2.2.0, it is possible to override any of the built-in Admin UI routes. This is useful if you want to completely
+From Deenruv v2.2.0, it is possible to override any of the built-in Admin UI routes. This is useful if you want to completely
 replace a built-in route with your own custom component.
 
 To do so, you'll need to specify the route `prefix` to be `''`, and then specify a `route` property which matches
-a built-in route. 
+a built-in route.
 
 For example, let's say we want to override the product detail page. The full path of that route is:
 
@@ -618,13 +607,13 @@ For example, let's say we want to override the product detail page. The full pat
 /catalog/products/:id
 ```
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import * as path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -640,7 +629,7 @@ export const config: VendureConfig = {
                                 // Setting the prefix to '' means that we won't add the
                                 // default `/extensions/` prefix to the route
                                 prefix: '',
-                                // This part matches the built-in route path for the 
+                                // This part matches the built-in route path for the
                                 // "catalog" module
                                 route: 'catalog',
                                 filePath: 'routes.ts',
@@ -730,9 +719,11 @@ export default [
         // highlight-start
         routeConfig: {
             pathMatch: 'full',
-            canActivate: [(route: ActivatedRouteSnapshot) => {
-                return inject(PermissionsService).canActivate(route.params.id);
-            }],
+            canActivate: [
+                (route: ActivatedRouteSnapshot) => {
+                    return inject(PermissionsService).canActivate(route.params.id);
+                },
+            ],
         },
         // highlight-end
     }),
@@ -741,7 +732,7 @@ export default [
 
 This allows you to leverage advanced features such as:
 
-- [Route guards](https://angular.io/api/router/CanActivateFn)
-- [Data resolvers](https://angular.io/api/router/ResolveFn)
-- [Nested routes](https://angular.io/guide/router#nesting-routes)
-- [Redirects](https://angular.io/guide/router#setting-up-redirects)
+-   [Route guards](https://angular.io/api/router/CanActivateFn)
+-   [Data resolvers](https://angular.io/api/router/ResolveFn)
+-   [Nested routes](https://angular.io/guide/router#nesting-routes)
+-   [Redirects](https://angular.io/guide/router#setting-up-redirects)

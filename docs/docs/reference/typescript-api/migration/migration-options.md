@@ -1,13 +1,14 @@
 ---
-title: "MigrationOptions"
+title: 'MigrationOptions'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## MigrationOptions
 
@@ -26,15 +27,15 @@ interface MigrationOptions {
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the migration. The resulting migration script will be named
 `{TIMESTAMP}-{name}.ts`.
+
 ### outputDir
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The output directory of the generated migration scripts.
-
 
 </div>

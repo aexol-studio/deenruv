@@ -1,13 +1,14 @@
 ---
-title: "FacetValueSelectorComponent"
+title: 'FacetValueSelectorComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FacetValueSelectorComponent
 
@@ -15,13 +16,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A form control for selecting facet values.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-facet-value-selector
   (selectedValuesChange)="selectedValues = $event"
 ></vdr-facet-value-selector>
 ```
+
 The `selectedValuesChange` event will emit an array of `FacetValue` objects.
 
 ```ts title="Signature"
@@ -48,112 +50,89 @@ class FacetValueSelectorComponent implements OnInit, OnDestroy, ControlValueAcce
     writeValue(obj: string | FacetValueFragment[] | Array<string | number> | null) => void;
 }
 ```
-* Implements: <code>OnInit</code>, <code>OnDestroy</code>, <code>ControlValueAccessor</code>
 
-
+-   Implements: <code>OnInit</code>, <code>OnDestroy</code>, <code>ControlValueAccessor</code>
 
 <div className="members-wrapper">
 
 ### selectedValuesChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### readonly
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### transformControlValueAccessorValue
 
-<MemberInfo kind="property" type={`(value: FacetValueFragment[]) =&#62; any[]`}   />
-
+<MemberInfo kind="property" type={`(value: FacetValueFragment[]) =&#62; any[]`} />
 
 ### searchInput$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### searchLoading
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### searchResults$
 
-<MemberInfo kind="property" type={`Observable&#60;FacetValueFragment[]&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;FacetValueFragment[]&#62;`} />
 
 ### selectedIds$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### onChangeFn
 
-<MemberInfo kind="property" type={`(val: any) =&#62; void`}   />
-
+<MemberInfo kind="property" type={`(val: any) =&#62; void`} />
 
 ### onTouchFn
 
-<MemberInfo kind="property" type={`() =&#62; void`}   />
-
+<MemberInfo kind="property" type={`() =&#62; void`} />
 
 ### disabled
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### value
 
-<MemberInfo kind="property" type={`Array&#60;string | FacetValueFragment&#62;`}   />
-
+<MemberInfo kind="property" type={`Array&#60;string | FacetValueFragment&#62;`} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef: ChangeDetectorRef) => FacetValueSelectorComponent`}   />
-
+<MemberInfo kind="method" type={`(dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef: ChangeDetectorRef) => FacetValueSelectorComponent`} />
 
 ### ngOnInit
 
-<MemberInfo kind="method" type={`() => void`}   />
-
+<MemberInfo kind="method" type={`() => void`} />
 
 ### ngOnDestroy
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### onChange
 
-<MemberInfo kind="method" type={`(selected: FacetValueFragment[]) => `}   />
-
+<MemberInfo kind="method" type={`(selected: FacetValueFragment[]) => `} />
 
 ### registerOnChange
 
-<MemberInfo kind="method" type={`(fn: any) => `}   />
-
+<MemberInfo kind="method" type={`(fn: any) => `} />
 
 ### registerOnTouched
 
-<MemberInfo kind="method" type={`(fn: any) => `}   />
-
+<MemberInfo kind="method" type={`(fn: any) => `} />
 
 ### setDisabledState
 
-<MemberInfo kind="method" type={`(isDisabled: boolean) => void`}   />
-
+<MemberInfo kind="method" type={`(isDisabled: boolean) => void`} />
 
 ### focus
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### writeValue
 
-<MemberInfo kind="method" type={`(obj: string | FacetValueFragment[] | Array&#60;string | number&#62; | null) => void`}   />
-
-
-
+<MemberInfo kind="method" type={`(obj: string | FacetValueFragment[] | Array&#60;string | number&#62; | null) => void`} />
 
 </div>

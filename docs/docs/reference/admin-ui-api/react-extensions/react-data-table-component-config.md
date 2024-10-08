@@ -1,13 +1,14 @@
 ---
-title: "ReactDataTableComponentConfig"
+title: 'ReactDataTableComponentConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ReactDataTableComponentConfig
 
@@ -28,25 +29,27 @@ interface ReactDataTableComponentConfig {
 
 ### tableId
 
-<MemberInfo kind="property" type={`DataTableLocationId`}   />
+<MemberInfo kind="property" type={`DataTableLocationId`} />
 
 The location in the UI where the custom component should be placed.
+
 ### columnId
 
-<MemberInfo kind="property" type={`DataTableColumnId`}   />
+<MemberInfo kind="property" type={`DataTableColumnId`} />
 
 The column in the table where the custom component should be placed.
+
 ### component
 
-<MemberInfo kind="property" type={`ElementType`}   />
+<MemberInfo kind="property" type={`ElementType`} />
 
 The component to render in the table cell. This component will receive the `rowItem` prop
 which is the data object for the row, e.g. the `Product` object if used in the `product-list` table.
+
 ### props
 
-<MemberInfo kind="property" type={`Record&#60;string, any&#62;`}   />
+<MemberInfo kind="property" type={`Record&#60;string, any&#62;`} />
 
 Optional props to pass to the React component.
-
 
 </div>

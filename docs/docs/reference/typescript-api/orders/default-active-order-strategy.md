@@ -1,13 +1,14 @@
 ---
-title: "DefaultActiveOrderStrategy"
+title: 'DefaultActiveOrderStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultActiveOrderStrategy
 
@@ -25,32 +26,25 @@ class DefaultActiveOrderStrategy implements ActiveOrderStrategy {
     determineActiveOrder(ctx: RequestContext) => ;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/orders/active-order-strategy#activeorderstrategy'>ActiveOrderStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/orders/active-order-strategy#activeorderstrategy'>ActiveOrderStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### name
 
-<MemberInfo kind="property" type={`'default-active-order-strategy'`}   />
-
+<MemberInfo kind="property" type={`'default-active-order-strategy'`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `}   />
-
+<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `} />
 
 ### createActiveOrder
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => `}   />
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => `} />
 
 ### determineActiveOrder
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => `} />
 
 </div>

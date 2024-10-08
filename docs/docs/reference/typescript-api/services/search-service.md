@@ -1,13 +1,14 @@
 ---
-title: "SearchService"
+title: 'SearchService'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## SearchService
 
@@ -27,15 +28,13 @@ class SearchService {
 
 ### adopt
 
-<MemberInfo kind="method" type={`(override: Pick&#60;<a href='/reference/typescript-api/services/search-service#searchservice'>SearchService</a>, 'reindex'&#62;) => `}   />
+<MemberInfo kind="method" type={`(override: Pick&#60;<a href='/reference/typescript-api/services/search-service#searchservice'>SearchService</a>, 'reindex'&#62;) => `} />
 
 Adopt a concrete search service implementation to pass through the
 calls to.
+
 ### reindex
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => Promise&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => Promise&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#62;`} />
 
 </div>

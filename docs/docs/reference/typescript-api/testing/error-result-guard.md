@@ -1,13 +1,14 @@
 ---
-title: "ErrorResultGuard"
+title: 'ErrorResultGuard'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ErrorResultGuard
 
@@ -16,10 +17,11 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A utility class which is used to assert the success of an operation
 which returns a union type of `SuccessType | ErrorResponse [ | ErrorResponse ]`.
 The methods of this class are used to:
+
 1. assert that the result is a success or error case
 2. narrow the type so that TypeScript can correctly infer the properties of the result.
 
-*Example*
+_Example_
 
 ```ts
 const orderResultGuard: ErrorResultGuard<AddItemToOrderResult>
@@ -52,26 +54,26 @@ class ErrorResultGuard<T> {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(testFn: (input: T) =&#62; boolean) => ErrorResultGuard`}   />
-
+<MemberInfo kind="method" type={`(testFn: (input: T) =&#62; boolean) => ErrorResultGuard`} />
 
 ### isSuccess
 
-<MemberInfo kind="method" type={`(input: T | any) => input is T`}   />
+<MemberInfo kind="method" type={`(input: T | any) => input is T`} />
 
 A type guard which returns `true` if the input passes the `testFn` predicate.
+
 ### assertSuccess
 
-<MemberInfo kind="method" type={`(input: T | R) => asserts input is T`}   />
+<MemberInfo kind="method" type={`(input: T | R) => asserts input is T`} />
 
 Asserts (using the testing library's `fail()` function) that the input is
 successful, i.e. it passes the `testFn`.
+
 ### assertErrorResult
 
-<MemberInfo kind="method" type={`(input: T | R) => asserts input is R`}   />
+<MemberInfo kind="method" type={`(input: T | R) => asserts input is R`} />
 
 Asserts (using the testing library's `fail()` function) that the input is
 not successful, i.e. it does not pass the `testFn`.
-
 
 </div>

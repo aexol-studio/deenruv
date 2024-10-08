@@ -1,13 +1,14 @@
 ---
-title: "DefaultFormComponentId"
+title: 'DefaultFormComponentId'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultFormComponentId
 
@@ -17,7 +18,8 @@ The ids of the default form input components that ship with the
 Admin UI.
 
 ```ts title="Signature"
-type DefaultFormComponentId = | 'boolean-form-input'
+type DefaultFormComponentId =
+    | 'boolean-form-input'
     | 'currency-form-input'
     | 'customer-group-form-input'
     | 'date-form-input'
@@ -33,5 +35,5 @@ type DefaultFormComponentId = | 'boolean-form-input'
     | 'text-form-input'
     | 'textarea-form-input'
     | 'product-multi-form-input'
-    | 'combination-mode-form-input'
+    | 'combination-mode-form-input';
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Add a REST endpoint"
+title: 'Add a REST endpoint'
 showtoc: true
 ---
 
@@ -22,8 +22,7 @@ import { Ctx, ProductService, RequestContext } from '@deenruv/core';
 
 @Controller('products')
 export class ProductsController {
-    constructor(private productService: ProductService) {
-    }
+    constructor(private productService: ProductService) {}
 
     @Get()
     findAll(@Ctx() ctx: RequestContext) {
@@ -34,9 +33,9 @@ export class ProductsController {
 
 The key points to note here are:
 
-- The `@Controller()` decorator defines the base path for all endpoints defined in this controller. In this case, all endpoints will be prefixed with `/products`.
-- The `@Get()` decorator defines a GET endpoint at the base path. The method name `findAll` is arbitrary.
-- The `@Ctx()` decorator injects the [RequestContext](/reference/typescript-api/request/request-context/) which is required for all service methods.
+-   The `@Controller()` decorator defines the base path for all endpoints defined in this controller. In this case, all endpoints will be prefixed with `/products`.
+-   The `@Get()` decorator defines a GET endpoint at the base path. The method name `findAll` is arbitrary.
+-   The `@Ctx()` decorator injects the [RequestContext](/reference/typescript-api/request/request-context/) which is required for all service methods.
 
 ## Register the controller with the plugin
 
@@ -45,23 +44,23 @@ import { PluginCommonModule, VendurePlugin } from '@deenruv/core';
 import { ProductsController } from './api/products.controller';
 
 @DeenruvPlugin({
-  imports: [PluginCommonModule],
-  controllers: [ProductsController],
+    imports: [PluginCommonModule],
+    controllers: [ProductsController],
 })
 export class RestPlugin {}
 ```
 
 :::info
-**Note:** [The `PluginCommonModule`](/reference/typescript-api/plugin/plugin-common-module/) should be imported to gain access to Vendure core providers - in this case it is required in order to be able to inject `ProductService` into our controller.
+**Note:** [The `PluginCommonModule`](/reference/typescript-api/plugin/plugin-common-module/) should be imported to gain access to Deenruv core providers - in this case it is required in order to be able to inject `ProductService` into our controller.
 :::
 
-The plugin can then be added to the `VendureConfig`:
+The plugin can then be added to the `DeenruvConfig`:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { RestPlugin } from './plugins/rest-plugin/rest.plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         // ...
@@ -93,7 +92,7 @@ export class ProductsController {
 ```
 
 :::tip
-The following Vendure [API decorators](/guides/developer-guide/the-api-layer/#api-decorators) can also be used with NestJS controllers: `@Allow()`, `@Transaction()`, `@Ctx()`.
+The following Deenruv [API decorators](/guides/developer-guide/the-api-layer/#api-decorators) can also be used with NestJS controllers: `@Allow()`, `@Transaction()`, `@Ctx()`.
 
 Additionally, NestJS supports a number of other REST decorators detailed in the [NestJS controllers guide](https://docs.nestjs.com/controllers#request-object)
 :::

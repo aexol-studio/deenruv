@@ -1,13 +1,14 @@
 ---
-title: "UseLazyQuery"
+title: 'UseLazyQuery'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## useLazyQuery
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A React hook which allows you to execute a GraphQL query lazily.
 
-*Example*
+_Example_
 
 ```ts
 import { useLazyQuery } from '@deenruv/admin-ui/react';
@@ -64,8 +65,12 @@ export const MyComponent = () => {
 ```
 
 ```ts title="Signature"
-function useLazyQuery<T, V extends Record<string, any> = Record<string, any>>(query: DocumentNode | TypedDocumentNode<T, V>, options: { refetchOnChannelChange: boolean } = { refetchOnChannelChange: false }): void
+function useLazyQuery<T, V extends Record<string, any> = Record<string, any>>(
+    query: DocumentNode | TypedDocumentNode<T, V>,
+    options: { refetchOnChannelChange: boolean } = { refetchOnChannelChange: false },
+): void;
 ```
+
 Parameters
 
 ### query
@@ -75,4 +80,3 @@ Parameters
 ### options
 
 <MemberInfo kind="parameter" type={`{ refetchOnChannelChange: boolean }`} />
-

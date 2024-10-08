@@ -17,7 +17,6 @@ Let's imagine that your project has an external content management system (CMS) 
 
 ### 1. Create a component
 
-
 <Tabs groupId="framework">
 <TabItem value="Angular" label="Angular" default>
 
@@ -29,30 +28,26 @@ import { DataService, CustomDetailComponent, SharedModule } from '@deenruv/admin
 import { CmsDataService } from '../../providers/cms-data.service';
 
 @Component({
-    template: `
-        <vdr-card title="CMS Info">
-            <pre>{{ extraInfo$ | async | json }}</pre>
-        </vdr-card>`,
+    template: ` <vdr-card title="CMS Info">
+        <pre>{{ extraInfo$ | async | json }}</pre>
+    </vdr-card>`,
     standalone: true,
     providers: [CmsDataService],
     imports: [SharedModule],
 })
 export class ProductInfoComponent implements CustomDetailComponent, OnInit {
-    // These two properties are provided by Vendure and will vary
+    // These two properties are provided by Deenruv and will vary
     // depending on the particular detail page you are embedding this
     // component into. In this case, it will be a "product" entity.
-    entity$: Observable<any>
+    entity$: Observable<any>;
     detailForm: FormGroup;
 
     extraInfo$: Observable<any>;
 
-    constructor(private cmsDataService: CmsDataService) {
-    }
+    constructor(private cmsDataService: CmsDataService) {}
 
     ngOnInit() {
-        this.extraInfo$ = this.entity$.pipe(
-            switchMap(entity => this.cmsDataService.getDataFor(entity.id))
-        );
+        this.extraInfo$ = this.entity$.pipe(switchMap(entity => this.cmsDataService.getDataFor(entity.id)));
     }
 }
 ```
@@ -73,7 +68,7 @@ export function ProductInfo() {
     const { entity, detailForm } = useDetailComponentData();
     const cmsDataService = useInjector(CmsDataService);
     const [extraInfo, setExtraInfo] = useState<any>();
-    
+
     useEffect(() => {
         if (!entity?.id) {
             return;
@@ -83,7 +78,7 @@ export function ProductInfo() {
         });
         return () => subscription.unsubscribe();
     }, [entity?.id]);
-    
+
     return (
         <Card title="CMS Info">
             <pre>{JSON.stringify(extraInfo, null, 2)}</pre>
@@ -153,16 +148,16 @@ import { CustomDetailComponent } from '@deenruv/admin-ui/core';
     standalone: true,
 })
 export class ProductInfoComponent implements CustomDetailComponent, OnInit {
-    entity$: Observable<any>
+    entity$: Observable<any>;
     detailForm: FormGroup;
-    
+
     // highlight-start
     updateDescription() {
         const descriptionControl = this.detailForm.get('description');
         if (descriptionControl) {
             descriptionControl.setValue('New description');
             descriptionControl.markAsDirty();
-        }        
+        }
     }
     // highlight-end
 }
@@ -189,7 +184,9 @@ export function ProductInfo() {
     // highlight-end
 
     return (
-        <button className="button secondary" onClick={updateDescription}>Update description</button>
+        <button className="button secondary" onClick={updateDescription}>
+            Update description
+        </button>
     );
 }
 ```

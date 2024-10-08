@@ -1,13 +1,14 @@
 ---
-title: "OrderHistoryEntryComponent"
+title: 'OrderHistoryEntryComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## OrderHistoryEntryComponent
 
@@ -20,17 +21,13 @@ interface OrderHistoryEntryComponent extends HistoryEntryComponent {
     order: OrderDetailFragment;
 }
 ```
-* Extends: <code><a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a></code>
 
-
+-   Extends: <code><a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a></code>
 
 <div className="members-wrapper">
 
 ### order
 
-<MemberInfo kind="property" type={`OrderDetailFragment`}   />
-
-
-
+<MemberInfo kind="property" type={`OrderDetailFragment`} />
 
 </div>

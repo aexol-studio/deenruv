@@ -1,13 +1,14 @@
 ---
-title: "FSM"
+title: 'FSM'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FSM
 
@@ -32,39 +33,30 @@ class FSM<T extends string, Data = any> {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/state-machine/state-machine-config#statemachineconfig'>StateMachineConfig</a>&#60;T, Data&#62;, initialState: T) => FSM`}   />
-
+<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/state-machine/state-machine-config#statemachineconfig'>StateMachineConfig</a>&#60;T, Data&#62;, initialState: T) => FSM`} />
 
 ### initialState
 
-<MemberInfo kind="property" type={`T`}   />
-
+<MemberInfo kind="property" type={`T`} />
 
 ### currentState
 
-<MemberInfo kind="property" type={`T`}   />
-
+<MemberInfo kind="property" type={`T`} />
 
 ### transitionTo
 
-<MemberInfo kind="method" type={`(state: T, data: Data) => Promise&#60;{ finalize: () =&#62; Promise&#60;any&#62; }&#62;`}   />
-
+<MemberInfo kind="method" type={`(state: T, data: Data) => Promise&#60;{ finalize: () =&#62; Promise&#60;any&#62; }&#62;`} />
 
 ### jumpTo
 
-<MemberInfo kind="method" type={`(state: T) => `}   />
-
+<MemberInfo kind="method" type={`(state: T) => `} />
 
 ### getNextStates
 
-<MemberInfo kind="method" type={`() => readonly T[]`}   />
-
+<MemberInfo kind="method" type={`() => readonly T[]`} />
 
 ### canTransitionTo
 
-<MemberInfo kind="method" type={`(state: T) => boolean`}   />
-
-
-
+<MemberInfo kind="method" type={`(state: T) => boolean`} />
 
 </div>

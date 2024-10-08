@@ -1,13 +1,14 @@
 ---
-title: "StockLocation"
+title: 'StockLocation'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## StockLocation
 
@@ -22,7 +23,7 @@ a given operation.
 
 ```ts title="Signature"
 class StockLocation extends VendureEntity implements HasCustomFields, ChannelAware {
-    constructor(input: DeepPartial<StockLocation>)
+    constructor(input: DeepPartial<StockLocation>);
     @Column()
     name: string;
     @Column()
@@ -36,45 +37,35 @@ class StockLocation extends VendureEntity implements HasCustomFields, ChannelAwa
     stockMovements: StockMovement[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>
-
-
+-   Implements: <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-location#stocklocation'>StockLocation</a>&#62;) => StockLocation`}   />
-
+<MemberInfo kind="method" type={`(input: DeepPartial&#60;<a href='/reference/typescript-api/entities/stock-location#stocklocation'>StockLocation</a>&#62;) => StockLocation`} />
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### description
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomStockLocationFields`}   />
-
+<MemberInfo kind="property" type={`CustomStockLocationFields`} />
 
 ### channels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 ### stockMovements
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/stock-movement#stockmovement'>StockMovement</a>[]`} />
 
 </div>

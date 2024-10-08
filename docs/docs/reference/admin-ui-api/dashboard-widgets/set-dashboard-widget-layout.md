@@ -1,13 +1,14 @@
 ---
-title: "SetDashboardWidgetLayout"
+title: 'SetDashboardWidgetLayout'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## setDashboardWidgetLayout
 
@@ -16,11 +17,11 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Sets the default widget layout for the Admin UI dashboard.
 
 ```ts title="Signature"
-function setDashboardWidgetLayout(layoutDef: WidgetLayoutDefinition): FactoryProvider
+function setDashboardWidgetLayout(layoutDef: WidgetLayoutDefinition): FactoryProvider;
 ```
+
 Parameters
 
 ### layoutDef
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/dashboard-widgets/widget-layout-definition#widgetlayoutdefinition'>WidgetLayoutDefinition</a>`} />
-

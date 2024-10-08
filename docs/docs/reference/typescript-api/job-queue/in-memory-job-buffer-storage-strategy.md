@@ -1,13 +1,14 @@
 ---
-title: "InMemoryJobBufferStorageStrategy"
+title: 'InMemoryJobBufferStorageStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## InMemoryJobBufferStorageStrategy
 
@@ -28,32 +29,25 @@ class InMemoryJobBufferStorageStrategy implements JobBufferStorageStrategy {
     flush(bufferIds?: string[]) => Promise<{ [bufferId: string]: Job[] }>;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/job-queue/job-buffer-storage-strategy#jobbufferstoragestrategy'>JobBufferStorageStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/job-queue/job-buffer-storage-strategy#jobbufferstoragestrategy'>JobBufferStorageStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### bufferStorage
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### add
 
-<MemberInfo kind="method" type={`(bufferId: string, job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>) => Promise&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#62;`}   />
-
+<MemberInfo kind="method" type={`(bufferId: string, job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>) => Promise&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#62;`} />
 
 ### bufferSize
 
-<MemberInfo kind="method" type={`(bufferIds?: string[]) => Promise&#60;{ [bufferId: string]: number }&#62;`}   />
-
+<MemberInfo kind="method" type={`(bufferIds?: string[]) => Promise&#60;{ [bufferId: string]: number }&#62;`} />
 
 ### flush
 
-<MemberInfo kind="method" type={`(bufferIds?: string[]) => Promise&#60;{ [bufferId: string]: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>[] }&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(bufferIds?: string[]) => Promise&#60;{ [bufferId: string]: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>[] }&#62;`} />
 
 </div>

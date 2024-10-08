@@ -1,13 +1,14 @@
 ---
-title: "SentryPluginOptions"
+title: 'SentryPluginOptions'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## SentryPluginOptions
 
@@ -22,27 +23,23 @@ interface SentryPluginOptions extends NodeOptions {
     includeErrorTestMutation?: boolean;
 }
 ```
-* Extends: <code>NodeOptions</code>
 
-
+-   Extends: <code>NodeOptions</code>
 
 <div className="members-wrapper">
 
 ### dsn
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The [Data Source Name](https://docs.sentry.io/product/sentry-basics/concepts/dsn-explainer/) for your Sentry instance.
+
 ### enableTracing
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### includeErrorTestMutation
 
-<MemberInfo kind="property" type={`boolean`}   />
-
-
-
+<MemberInfo kind="property" type={`boolean`} />
 
 </div>

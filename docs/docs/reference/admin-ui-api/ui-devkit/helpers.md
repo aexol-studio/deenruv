@@ -1,13 +1,14 @@
 ---
-title: "Helpers"
+title: 'Helpers'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## setBranding
 
@@ -15,29 +16,29 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A helper function to simplify the process of setting custom branding images.
 
-*Example*
+_Example_
 
 ```ts
 compileUiExtensions({
-  outputPath: path.join(__dirname, '../admin-ui'),
-  extensions: [
-    setBranding({
-      // This is used as the branding in the top-left above the navigation
-      smallLogoPath: path.join(__dirname, 'images/my-logo-sm.png'),
-      // This is used on the login page
-      largeLogoPath: path.join(__dirname, 'images/my-logo-lg.png'),
-      faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
-    }),
-  ],
+    outputPath: path.join(__dirname, '../admin-ui'),
+    extensions: [
+        setBranding({
+            // This is used as the branding in the top-left above the navigation
+            smallLogoPath: path.join(__dirname, 'images/my-logo-sm.png'),
+            // This is used on the login page
+            largeLogoPath: path.join(__dirname, 'images/my-logo-lg.png'),
+            faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
+        }),
+    ],
 });
 ```
 
 ```ts title="Signature"
-function setBranding(options: BrandingOptions): StaticAssetExtension
+function setBranding(options: BrandingOptions): StaticAssetExtension;
 ```
+
 Parameters
 
 ### options
 
 <MemberInfo kind="parameter" type={`BrandingOptions`} />
-

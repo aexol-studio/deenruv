@@ -1,21 +1,20 @@
 ---
-title: "Input Objects"
+title: 'Input Objects'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
-
 
 ## AuthenticationInput
 
 <div class="graphql-code-block">
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">AuthenticationInput</span> &#123;</div>
 <div class="graphql-code-line ">native: <a href="/reference/graphql-api/shop/input-types#nativeauthinput">NativeAuthInput</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -28,7 +27,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line top-level comment">"""</div>
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">BooleanListOperators</span> &#123;</div>
 <div class="graphql-code-line ">inList: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -43,7 +41,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">eq: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a></div>
 
 <div class="graphql-code-line ">isNull: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -73,7 +70,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">_and: [<a href="/reference/graphql-api/shop/input-types#collectionfilterparameter">CollectionFilterParameter</a>!]</div>
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#collectionfilterparameter">CollectionFilterParameter</a>!]</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -109,7 +105,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -133,7 +128,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">parentId: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -148,7 +142,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">value: <a href="/reference/graphql-api/shop/object-types#string">String</a>!</div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -159,7 +152,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">code: <a href="/reference/graphql-api/shop/object-types#string">String</a>!</div>
 
 <div class="graphql-code-line ">arguments: [<a href="/reference/graphql-api/shop/input-types#configarginput">ConfigArgInput</a>!]!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -174,7 +166,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line top-level comment">The countryCode must correspond to a <code>code</code> property of a Country that has been defined in the</div>
 
-<div class="graphql-code-line top-level comment">Vendure server. The <code>code</code> property is typically a 2-character ISO code such as "GB", "US", "DE" etc.</div>
+<div class="graphql-code-line top-level comment">Deenruv server. The <code>code</code> property is typically a 2-character ISO code such as "GB", "US", "DE" etc.</div>
 
 <div class="graphql-code-line top-level comment">If an invalid code is passed, the mutation will fail.</div>
 <div class="graphql-code-line top-level comment">"""</div>
@@ -203,7 +195,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">customFields: <a href="/reference/graphql-api/shop/object-types#json">JSON</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -222,7 +213,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">emailAddress: <a href="/reference/graphql-api/shop/object-types#string">String</a>!</div>
 
 <div class="graphql-code-line ">customFields: <a href="/reference/graphql-api/shop/object-types#json">JSON</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -250,7 +240,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">_and: [<a href="/reference/graphql-api/shop/input-types#customerfilterparameter">CustomerFilterParameter</a>!]</div>
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#customerfilterparameter">CustomerFilterParameter</a>!]</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -284,7 +273,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -308,7 +296,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">emailAddress: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -320,7 +307,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line top-level comment">"""</div>
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">DateListOperators</span> &#123;</div>
 <div class="graphql-code-line ">inList: <a href="/reference/graphql-api/shop/object-types#datetime">DateTime</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -342,7 +328,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">isNull: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -353,7 +338,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">start: <a href="/reference/graphql-api/shop/object-types#datetime">DateTime</a>!</div>
 
 <div class="graphql-code-line ">end: <a href="/reference/graphql-api/shop/object-types#datetime">DateTime</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -377,7 +361,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">_and: [<a href="/reference/graphql-api/shop/input-types#facetfilterparameter">FacetFilterParameter</a>!]</div>
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#facetfilterparameter">FacetFilterParameter</a>!]</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -411,7 +394,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -428,7 +410,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">name: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
 <div class="graphql-code-line ">code: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -454,7 +435,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">or: [<a href="/reference/graphql-api/shop/object-types#id">ID</a>!]</div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -479,7 +459,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">_and: [<a href="/reference/graphql-api/shop/input-types#facetvaluefilterparameter">FacetValueFilterParameter</a>!]</div>
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#facetvaluefilterparameter">FacetValueFilterParameter</a>!]</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -513,7 +492,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -533,7 +511,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">code: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -552,7 +529,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">_and: [<a href="/reference/graphql-api/shop/input-types#historyentryfilterparameter">HistoryEntryFilterParameter</a>!]</div>
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#historyentryfilterparameter">HistoryEntryFilterParameter</a>!]</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -586,7 +562,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -600,7 +575,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">updatedAt: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -612,7 +586,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line top-level comment">"""</div>
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">IDListOperators</span> &#123;</div>
 <div class="graphql-code-line ">inList: <a href="/reference/graphql-api/shop/object-types#id">ID</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -634,7 +607,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">isNull: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -645,7 +617,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">username: <a href="/reference/graphql-api/shop/object-types#string">String</a>!</div>
 
 <div class="graphql-code-line ">password: <a href="/reference/graphql-api/shop/object-types#string">String</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -658,7 +629,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line top-level comment">"""</div>
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">NumberListOperators</span> &#123;</div>
 <div class="graphql-code-line ">inList: <a href="/reference/graphql-api/shop/object-types#float">Float</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -684,7 +654,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">isNull: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -695,7 +664,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">start: <a href="/reference/graphql-api/shop/object-types#float">Float</a>!</div>
 
 <div class="graphql-code-line ">end: <a href="/reference/graphql-api/shop/object-types#float">Float</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -740,7 +708,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#orderfilterparameter">OrderFilterParameter</a>!]</div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -772,7 +739,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND.</div>
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -807,7 +773,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">totalWithTax: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -831,7 +796,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">data generated by the payment provider.</div>
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">metadata: <a href="/reference/graphql-api/shop/object-types#json">JSON</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -859,7 +823,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">_and: [<a href="/reference/graphql-api/shop/input-types#productfilterparameter">ProductFilterParameter</a>!]</div>
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#productfilterparameter">ProductFilterParameter</a>!]</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -893,7 +856,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -912,7 +874,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">slug: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
 <div class="graphql-code-line ">description: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -947,7 +908,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">_or: [<a href="/reference/graphql-api/shop/input-types#productvariantfilterparameter">ProductVariantFilterParameter</a>!]</div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -980,7 +940,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line comment">"""</div>
 <div class="graphql-code-line ">filterOperator: <a href="/reference/graphql-api/shop/enums#logicaloperator">LogicalOperator</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -1006,7 +965,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">stockLevel: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -1025,7 +983,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">phoneNumber: <a href="/reference/graphql-api/shop/object-types#string">String</a></div>
 
 <div class="graphql-code-line ">password: <a href="/reference/graphql-api/shop/object-types#string">String</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -1054,7 +1011,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">sort: <a href="/reference/graphql-api/shop/input-types#searchresultsortparameter">SearchResultSortParameter</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -1065,7 +1021,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line ">name: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
 
 <div class="graphql-code-line ">price: <a href="/reference/graphql-api/shop/enums#sortorder">SortOrder</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -1078,7 +1033,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line top-level comment">"""</div>
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">StringListOperators</span> &#123;</div>
 <div class="graphql-code-line ">inList: <a href="/reference/graphql-api/shop/object-types#string">String</a>!</div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
@@ -1106,7 +1060,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">isNull: <a href="/reference/graphql-api/shop/object-types#boolean">Boolean</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -1120,7 +1073,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line top-level comment">The countryCode must correspond to a <code>code</code> property of a Country that has been defined in the</div>
 
-<div class="graphql-code-line top-level comment">Vendure server. The <code>code</code> property is typically a 2-character ISO code such as "GB", "US", "DE" etc.</div>
+<div class="graphql-code-line top-level comment">Deenruv server. The <code>code</code> property is typically a 2-character ISO code such as "GB", "US", "DE" etc.</div>
 
 <div class="graphql-code-line top-level comment">If an invalid code is passed, the mutation will fail.</div>
 <div class="graphql-code-line top-level comment">"""</div>
@@ -1151,7 +1104,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">customFields: <a href="/reference/graphql-api/shop/object-types#json">JSON</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -1169,7 +1121,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line ">customFields: <a href="/reference/graphql-api/shop/object-types#json">JSON</a></div>
 
-
 <div class="graphql-code-line top-level">&#125;</div>
 </div>
 
@@ -1178,7 +1129,6 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-block">
 <div class="graphql-code-line top-level">input <span class="graphql-code-identifier">UpdateOrderInput</span> &#123;</div>
 <div class="graphql-code-line ">customFields: <a href="/reference/graphql-api/shop/object-types#json">JSON</a></div>
-
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>

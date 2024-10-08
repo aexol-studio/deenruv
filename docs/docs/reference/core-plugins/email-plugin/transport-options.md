@@ -1,13 +1,14 @@
 ---
-title: "Transport Options"
+title: 'Transport Options'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EmailTransportOptions
 
@@ -16,14 +17,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A union of all the possible transport options for sending emails.
 
 ```ts title="Signature"
-type EmailTransportOptions = | SMTPTransportOptions
+type EmailTransportOptions =
+    | SMTPTransportOptions
     | SendmailTransportOptions
     | FileTransportOptions
     | NoopTransportOptions
     | SESTransportOptions
-    | TestingTransportOptions
+    | TestingTransportOptions;
 ```
-
 
 ## SMTPTransportOptions
 
@@ -37,27 +38,23 @@ interface SMTPTransportOptions extends SMTPTransport.Options {
     logging?: boolean;
 }
 ```
-* Extends: <code>SMTPTransport.Options</code>
 
-
+-   Extends: <code>SMTPTransport.Options</code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={`'smtp'`}   />
-
+<MemberInfo kind="property" type={`'smtp'`} />
 
 ### logging
 
-<MemberInfo kind="property" type={`boolean`} default={`false`}   />
+<MemberInfo kind="property" type={`boolean`} default={`false`} />
 
-If true, uses the configured <a href='/reference/typescript-api/logger/vendure-logger#vendurelogger'>VendureLogger</a> to log messages from Nodemailer as it interacts with
+If true, uses the configured <a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a> to log messages from Nodemailer as it interacts with
 the SMTP server.
 
-
 </div>
-
 
 ## SESTransportOptions
 
@@ -67,56 +64,51 @@ The SES transport options of [Nodemailer](https://nodemailer.com/transports/ses/
 
 See [Nodemailers's SES docs](https://nodemailer.com/transports/ses/) for more details
 
-*Example*
+_Example_
 
 ```ts
- import { SES, SendRawEmailCommand } from '@aws-sdk/client-ses'
+import { SES, SendRawEmailCommand } from '@aws-sdk/client-ses';
 
- const ses = new SES({
+const ses = new SES({
     apiVersion: '2010-12-01',
     region: 'eu-central-1',
     credentials: {
         accessKeyId: process.env.SES_ACCESS_KEY || '',
         secretAccessKey: process.env.SES_SECRET_KEY || '',
     },
- })
+});
 
- const config: VendureConfig = {
-  // Add an instance of the plugin to the plugins array
-  plugins: [
-    EmailPlugin.init({
-      handler: defaultEmailHandlers,
-      templatePath: path.join(__dirname, 'static/email/templates'),
-      transport: {
-        type: 'ses',
-        SES: { ses, aws: { SendRawEmailCommand } },
-        sendingRate: 10, // optional messages per second sending rate
-      },
-    }),
-  ],
+const config: DeenruvConfig = {
+    // Add an instance of the plugin to the plugins array
+    plugins: [
+        EmailPlugin.init({
+            handler: defaultEmailHandlers,
+            templatePath: path.join(__dirname, 'static/email/templates'),
+            transport: {
+                type: 'ses',
+                SES: { ses, aws: { SendRawEmailCommand } },
+                sendingRate: 10, // optional messages per second sending rate
+            },
+        }),
+    ],
 };
- ```
+```
 
 ```ts title="Signature"
 interface SESTransportOptions extends SESTransport.Options {
     type: 'ses';
 }
 ```
-* Extends: <code>SESTransport.Options</code>
 
-
+-   Extends: <code>SESTransport.Options</code>
 
 <div className="members-wrapper">
 
 ### type
 
-<MemberInfo kind="property" type={`'ses'`}   />
-
-
-
+<MemberInfo kind="property" type={`'ses'`} />
 
 </div>
-
 
 ## SendmailTransportOptions
 
@@ -136,23 +128,17 @@ interface SendmailTransportOptions {
 
 ### type
 
-<MemberInfo kind="property" type={`'sendmail'`}   />
-
+<MemberInfo kind="property" type={`'sendmail'`} />
 
 ### path
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### newline
 
-<MemberInfo kind="property" type={`string`}   />
-
-
-
+<MemberInfo kind="property" type={`string`} />
 
 </div>
-
 
 ## FileTransportOptions
 
@@ -172,23 +158,17 @@ interface FileTransportOptions {
 
 ### type
 
-<MemberInfo kind="property" type={`'file'`}   />
-
+<MemberInfo kind="property" type={`'file'`} />
 
 ### outputPath
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### raw
 
-<MemberInfo kind="property" type={`boolean`}   />
-
-
-
+<MemberInfo kind="property" type={`boolean`} />
 
 </div>
-
 
 ## NoopTransportOptions
 
@@ -207,13 +187,9 @@ interface NoopTransportOptions {
 
 ### type
 
-<MemberInfo kind="property" type={`'none'`}   />
-
-
-
+<MemberInfo kind="property" type={`'none'`} />
 
 </div>
-
 
 ## TestingTransportOptions
 
@@ -232,14 +208,12 @@ interface TestingTransportOptions {
 
 ### type
 
-<MemberInfo kind="property" type={`'testing'`}   />
-
+<MemberInfo kind="property" type={`'testing'`} />
 
 ### onSend
 
-<MemberInfo kind="property" type={`(details: <a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>) =&#62; void`}   />
+<MemberInfo kind="property" type={`(details: <a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>) =&#62; void`} />
 
 Callback to be invoked when an email would be sent.
-
 
 </div>

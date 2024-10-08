@@ -1,13 +1,14 @@
 ---
-title: "UsePageMetadata"
+title: 'UsePageMetadata'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## usePageMetadata
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Provides functions for setting the current page title and breadcrumb.
 
-*Example*
+_Example_
 
 ```ts
 import { usePageMetadata } from '@deenruv/admin-ui/react';
@@ -36,5 +37,5 @@ export const MyComponent = () => {
 ```
 
 ```ts title="Signature"
-function usePageMetadata(): void
+function usePageMetadata(): void;
 ```

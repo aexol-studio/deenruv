@@ -11,17 +11,15 @@ You can define custom Angular or React components which can be used to render [C
 
 Let's say you define a custom "intensity" field on the Product entity:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     customFields: {
-        Product: [
-            { name: 'intensity', type: 'int', min: 0, max: 100, defaultValue: 0 },
-        ],
+        Product: [{ name: 'intensity', type: 'int', min: 0, max: 100, defaultValue: 0 }],
     },
-}
+};
 ```
 
 By default, the "intensity" field will be displayed as a number input:
@@ -46,13 +44,9 @@ import { IntCustomFieldConfig, SharedModule, FormInputComponent } from '@deenruv
 
 @Component({
     template: `
-      <input
-          type="range"
-          [min]="config.min || 0"
-          [max]="config.max || 100"
-          [formControl]="formControl" />
-      {{ formControl.value }}
-  `,
+        <input type="range" [min]="config.min || 0" [max]="config.max || 100" [formControl]="formControl" />
+        {{ formControl.value }}
+    `,
     standalone: true,
     imports: [SharedModule],
 })
@@ -66,8 +60,8 @@ export class SliderControlComponent implements FormInputComponent<IntCustomField
 </TabItem>
 <TabItem value="React" label="React">
 
-React components can use the [`useFormControl`](/reference/admin-ui-api/react-hooks/use-form-control) hook to access the form control and set its value. The 
-component will also receive `config` and `readonly` data as props. 
+React components can use the [`useFormControl`](/reference/admin-ui-api/react-hooks/use-form-control) hook to access the form control and set its value. The
+component will also receive `config` and `readonly` data as props.
 
 ```tsx title="src/plugins/common/ui/components/SliderFormInput.tsx"
 import React from 'react';
@@ -92,7 +86,7 @@ export function SliderFormInput({ readonly, config }: ReactFormInputOptions) {
             {value}
         </>
     );
-};
+}
 ```
 
 </TabItem>
@@ -109,9 +103,7 @@ Next we will register this component in our `providers.ts` file and give it a un
 import { registerFormInputComponent } from '@deenruv/admin-ui/core';
 import { SliderControlComponent } from './components/slider-form-input/slider-form-input.component';
 
-export default [
-    registerFormInputComponent('slider-form-input', SliderControlComponent),
-];
+export default [registerFormInputComponent('slider-form-input', SliderControlComponent)];
 ```
 
 </TabItem>
@@ -121,9 +113,7 @@ export default [
 import { registerReactFormInputComponent } from '@deenruv/admin-ui/react';
 import { SliderControl } from './components/SliderFormInput';
 
-export default [
-    registerReactFormInputComponent('slider-form-input', SliderFormInput),
-];
+export default [registerReactFormInputComponent('slider-form-input', SliderFormInput)];
 ```
 
 </TabItem>
@@ -133,26 +123,28 @@ export default [
 
 The `providers.ts` is then passed to the `compileUiExtensions()` function as described in the [UI Extensions Getting Started guide](/guides/extending-the-admin-ui/getting-started/):
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import * as path from 'path';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
             port: 3302,
             app: compileUiExtensions({
                 outputPath: path.join(__dirname, '../admin-ui'),
-                extensions: [{
-                    id: 'common',
-                    // highlight-start
-                    extensionPath: path.join(__dirname, 'plugins/common/ui'),
-                    providers: ['providers.ts'],
-                    // highlight-end
-                }],
+                extensions: [
+                    {
+                        id: 'common',
+                        // highlight-start
+                        extensionPath: path.join(__dirname, 'plugins/common/ui'),
+                        providers: ['providers.ts'],
+                        // highlight-end
+                    },
+                ],
             }),
         }),
     ],
@@ -163,7 +155,7 @@ export const config: VendureConfig = {
 
 Once registered, this new slider input can be used in our custom field config:
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 customFields: {
     Product: [
         {
@@ -181,7 +173,6 @@ The component id _'slider-form-input'_ **must match** the string passed as the f
 :::info
 If we want, we can also pass any other arbitrary data in the `ui` object, which will then be available in our component as `this.config.ui.myField`. Note that only JSON-compatible data types are permitted, so no functions or class instances.
 :::
-
 
 Re-compiling the Admin UI will result in our SliderControl now being used for the "intensity" custom field:
 
@@ -235,7 +226,10 @@ export class RelationReviewInputComponent implements OnInit, FormInputComponent<
 
     reviews$: Observable<any[]>;
 
-    constructor(private dataService: DataService, private route: ActivatedRoute) {}
+    constructor(
+        private dataService: DataService,
+        private route: ActivatedRoute,
+    ) {}
 
     ngOnInit() {
         this.reviews$ = this.route.data.pipe(
@@ -258,7 +252,7 @@ export class RelationReviewInputComponent implements OnInit, FormInputComponent<
 
 [ConfigArgs](/reference/typescript-api/configurable-operation-def/config-args/) are used by classes which extend [Configurable Operations](/guides/developer-guide/strategies-configurable-operations/#configurable-operations) (such as ShippingCalculator or PaymentMethodHandler). These ConfigArgs allow user-input values to be passed to the operation's business logic.
 
-They are configured in a very similar way to custom fields, and likewise can use custom form inputs by specifying the `ui` property. 
+They are configured in a very similar way to custom fields, and likewise can use custom form inputs by specifying the `ui` property.
 
 Here's an example:
 
@@ -278,8 +272,6 @@ export const orderFixedDiscount = new PromotionOrderAction({
     execute(ctx, order, args) {
         return -args.discount;
     },
-    description: [{languageCode: LanguageCode.en, value: 'Discount order by fixed amount'}],
+    description: [{ languageCode: LanguageCode.en, value: 'Discount order by fixed amount' }],
 });
 ```
-
-

@@ -2,11 +2,11 @@
 title: 'Adding UI Translations'
 ---
 
-The Vendure Admin UI is fully localizable, allowing you to:
+The Deenruv Admin UI is fully localizable, allowing you to:
 
-* create custom translations for your UI extensions
-* override existing translations
-* add complete translations for whole new languages
+-   create custom translations for your UI extensions
+-   override existing translations
+-   add complete translations for whole new languages
 
 ![The UI language is set from the User menu](./ui-translations-01.webp)
 
@@ -30,7 +30,7 @@ Here is an excerpt from the `en.json` file that ships with the Admin UI:
 }
 ```
 
-The translation tokens are grouped into a single-level deep nested structure. In the Angular code, these are referenced like this: 
+The translation tokens are grouped into a single-level deep nested structure. In the Angular code, these are referenced like this:
 
 ```HTML
 <label>{{ 'asset.assets-selected-count' | translate:{ count } }}</label>
@@ -44,46 +44,50 @@ The Admin UI ships with built-in support for many languages, but allows you to a
 
 1. **Create your translation file**
 
-     Start by copying the contents of the [English language file](https://github.com/vendure-ecommerce/vendure/blob/master/packages/admin-ui/src/lib/static/i18n-messages/en.json) into a new file, `<languageCode>.json`, where `languageCode` is the 2-character [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the language. Replace the strings with the translation for the new language.
+    Start by copying the contents of the [English language file](https://github.com/aexol-studio/deenruv/blob/master/packages/admin-ui/src/lib/static/i18n-messages/en.json) into a new file, `<languageCode>.json`, where `languageCode` is the 2-character [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the language. Replace the strings with the translation for the new language.
+
 2. **Install `@deenruv/ui-devkit`**
 
     If not already installed, install the `@deenruv/ui-devkit` package, which allows you to create custom builds of the Admin UI.
+
 3. **Register the translation file**
-  
+
     Here's a minimal directory structure and sample code to add your new translation:
-    
+
     ```text
     /src
-    ├─ vendure-config.ts
+    ├─ deenruv-config.ts
     └─ translations/
         └─ ms.json
     ```
-    
+
     And the config code to register the translation file:
-    
-    ```ts title="src.vendure-config.ts"
+
+    ```ts title="src.deenruv-config.ts"
     import path from 'path';
-    import { VendureConfig } from '@deenruv/core';
+    import { DeenruvConfig } from '@deenruv/core';
     import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
     import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
-    
-    export const config: VendureConfig = {
+
+    export const config: DeenruvConfig = {
         // ...
         plugins: [
             AdminUiPlugin.init({
                 port: 3002,
                 app: compileUiExtensions({
                     outputPath: path.join(__dirname, '../admin-ui'),
-                    extensions: [{
-                        translations: {
-                            ms: path.join(__dirname, 'translations/ms.json'),
-                        }
-                    }],
+                    extensions: [
+                        {
+                            translations: {
+                                ms: path.join(__dirname, 'translations/ms.json'),
+                            },
+                        },
+                    ],
                 }),
-                adminUiConfig:{
+                adminUiConfig: {
                     defaultLanguage: LanguageCode.ms,
                     availableLanguages: [LanguageCode.ms, LanguageCode.en],
-                }
+                },
             }),
         ],
     };

@@ -1,13 +1,14 @@
 ---
-title: "Relations Decorator"
+title: 'Relations Decorator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Relations
 
@@ -26,7 +27,7 @@ So if, for example, the query only selects the `id` field of an Order, then no o
 be joined in the resulting SQL query. This can massively speed up execution time for queries which do
 not include many deep nested relations.
 
-*Example*
+_Example_
 
 ```ts
 @Query()
@@ -42,7 +43,7 @@ orders(
 
 In the above example, given the following query:
 
-*Example*
+_Example_
 
 ```GraphQL
 {
@@ -60,11 +61,13 @@ In the above example, given the following query:
   }
 }
 ```
+
 then the value of `relations` will be
 
 ```
 ['customer', 'lines'']
 ```
+
 The `'customer'` comes from the fact that the query is nesting the "customer" object, and the `'lines'` is taken
 from the `Order` entity's `totalQuantity` property, which uses <a href='/reference/typescript-api/data-access/calculated#calculated'>Calculated</a> decorator and defines those relations as dependencies
 for deriving the calculated value.
@@ -74,7 +77,7 @@ for deriving the calculated value.
 By default, when inspecting the GraphQL query, the Relations decorator will look 3 levels deep in any nested fields. So, e.g. if
 the above `orders` query were changed to:
 
-*Example*
+_Example_
 
 ```GraphQL
 {
@@ -94,11 +97,12 @@ the above `orders` query were changed to:
   }
 }
 ```
+
 then the `relations` array would include `'lines'`, `'lines.productVariant'`, & `'lines.productVariant.product'` - 3 levels deep - but it would
 _not_ include `'lines.productVariant.product.featuredAsset'` since that exceeds the default depth. To specify a custom depth, you would
 use the decorator like this:
 
-*Example*
+_Example_
 
 ```ts
 @Relations({ entity: Order, depth: 2 }) relations: RelationPaths<Order>,
@@ -112,9 +116,8 @@ When a GraphQL query comes in for a Collection and also requests its `productVar
 join that relation, because we will throw that data away anyway when the `productVariants` field resolver executes, since it returns a
 PaginatedList query rather than a simple array.
 
-*Example*
+_Example_
 
 ```ts
 @Relations({ entity: Collection, omit: ['productVariant'] }) relations: RelationPaths<Collection>,
 ```
-

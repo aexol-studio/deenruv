@@ -1,13 +1,14 @@
 ---
-title: "ActionBarItem"
+title: 'ActionBarItem'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ActionBarItem
 
@@ -35,61 +36,63 @@ interface ActionBarItem {
 
 ### id
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 A unique identifier for the item.
+
 ### label
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The label to display for the item. This can also be a translation token,
 e.g. `invoice-plugin.print-invoice`.
+
 ### locationId
 
-<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/action-bar/action-bar-location-id#actionbarlocationid'>ActionBarLocationId</a>`}   />
+<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/action-bar/action-bar-location-id#actionbarlocationid'>ActionBarLocationId</a>`} />
 
 The location in the UI where this button should be displayed.
+
 ### disabled
 
-<MemberInfo kind="property" type={`Observable&#60;boolean&#62;`}   />
+<MemberInfo kind="property" type={`Observable&#60;boolean&#62;`} />
 
 Deprecated since v2.1.0 - use `buttonState` instead.
+
 ### buttonState
 
-<MemberInfo kind="property" type={`(context: <a href='/reference/admin-ui-api/action-bar/action-bar-context#actionbarcontext'>ActionBarContext</a>) =&#62; Observable&#60;ActionBarButtonState&#62;`}  since="2.1.0"  />
+<MemberInfo kind="property" type={`(context: <a href='/reference/admin-ui-api/action-bar/action-bar-context#actionbarcontext'>ActionBarContext</a>) =&#62; Observable&#60;ActionBarButtonState&#62;`} since="2.1.0" />
 
 A function which returns an observable of the button state, allowing you to
 dynamically enable/disable or show/hide the button.
+
 ### onClick
 
-<MemberInfo kind="property" type={`(event: MouseEvent, context: <a href='/reference/admin-ui-api/action-bar/action-bar-context#actionbarcontext'>ActionBarContext</a>) =&#62; void`}   />
-
+<MemberInfo kind="property" type={`(event: MouseEvent, context: <a href='/reference/admin-ui-api/action-bar/action-bar-context#actionbarcontext'>ActionBarContext</a>) =&#62; void`} />
 
 ### routerLink
 
-<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/action-bar/router-link-definition#routerlinkdefinition'>RouterLinkDefinition</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/action-bar/router-link-definition#routerlinkdefinition'>RouterLinkDefinition</a>`} />
 
 ### buttonColor
 
-<MemberInfo kind="property" type={`'primary' | 'success' | 'warning'`}   />
-
+<MemberInfo kind="property" type={`'primary' | 'success' | 'warning'`} />
 
 ### buttonStyle
 
-<MemberInfo kind="property" type={`'solid' | 'outline' | 'link'`}   />
-
+<MemberInfo kind="property" type={`'solid' | 'outline' | 'link'`} />
 
 ### icon
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 An optional icon to display in the button. The icon
 should be a valid shape name from the [Clarity Icons](https://core.clarity.design/foundation/icons/shapes/)
 set.
+
 ### requiresPermission
 
-<MemberInfo kind="property" type={`string | string[]`}   />
+<MemberInfo kind="property" type={`string | string[]`} />
 
 Control the display of this item based on the user permissions. Note: if you attempt to pass a
 <a href='/reference/typescript-api/auth/permission-definition#permissiondefinition'>PermissionDefinition</a> object, you will get a compilation error. Instead, pass the plain
@@ -101,10 +104,9 @@ export const MyPermission = new PermissionDefinition('ProductReview');
 
 then the generated permission strings will be:
 
-- `CreateProductReview`
-- `ReadProductReview`
-- `UpdateProductReview`
-- `DeleteProductReview`
-
+-   `CreateProductReview`
+-   `ReadProductReview`
+-   `UpdateProductReview`
+-   `DeleteProductReview`
 
 </div>

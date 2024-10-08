@@ -1,13 +1,14 @@
 ---
-title: "LocaleDatePipe"
+title: 'LocaleDatePipe'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## LocaleDatePipe
 
@@ -16,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A replacement of the Angular DatePipe which makes use of the Intl API
 to format dates according to the selected UI language.
 
-*Example*
+_Example_
 
 ```HTML
 {{ order.orderPlacedAt | localeDate }}
@@ -28,25 +29,19 @@ class LocaleDatePipe extends LocaleBasePipe implements PipeTransform {
     transform(value: unknown, args: unknown[]) => unknown;
 }
 ```
-* Extends: <code>LocaleBasePipe</code>
 
+-   Extends: <code>LocaleBasePipe</code>
 
-* Implements: <code>PipeTransform</code>
-
-
+-   Implements: <code>PipeTransform</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(dataService?: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef?: ChangeDetectorRef) => LocaleDatePipe`}   />
-
+<MemberInfo kind="method" type={`(dataService?: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef?: ChangeDetectorRef) => LocaleDatePipe`} />
 
 ### transform
 
-<MemberInfo kind="method" type={`(value: unknown, args: unknown[]) => unknown`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: unknown, args: unknown[]) => unknown`} />
 
 </div>

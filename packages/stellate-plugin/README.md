@@ -1,7 +1,7 @@
-# Vendure Stellate Plugin
+# Deenruv Stellate Plugin
 
-Integrates your Vendure server with the [Stellate](TaxRateEvent) GraphQL API cache.
+Integrates your Deenruv server with the [Stellate](TaxRateEvent) GraphQL API cache.
 
 `npm install @deenruv/stellate-plugin`
 
-For documentation, see [docs.vendure.io/reference/core-plugins/stellate-plugin/](https://docs.vendure.io/reference/core-plugins/stellate-plugin/)
+For documentation, see [docs.deenruv.io/reference/core-plugins/stellate-plugin/](https://docs.deenruv.io/reference/core-plugins/stellate-plugin/)

@@ -1,23 +1,24 @@
 ---
-title: "Link"
+title: 'Link'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Link
 
 <GenerationInfo sourceFile="packages/admin-ui/src/lib/react/src/react-components/Link.tsx" sourceLine="22" packageName="@deenruv/admin-ui" />
 
 A React component which renders an anchor tag and navigates to the specified route when clicked.
-This is useful when you want to use a React component in a Vendure UI plugin which navigates to
+This is useful when you want to use a React component in a Deenruv UI plugin which navigates to
 a route in the admin-ui.
 
-*Example*
+_Example_
 
 ```ts
 import { Link } from '@deenruv/admin-ui/react';
@@ -28,11 +29,11 @@ export const MyReactComponent = () => {
 ```
 
 ```ts title="Signature"
-function Link(props: PropsWithChildren<{ href: string; [props: string]: any }>): void
+function Link(props: PropsWithChildren<{ href: string; [props: string]: any }>): void;
 ```
+
 Parameters
 
 ### props
 
 <MemberInfo kind="parameter" type={`PropsWithChildren&#60;{ href: string; [props: string]: any }&#62;`} />
-

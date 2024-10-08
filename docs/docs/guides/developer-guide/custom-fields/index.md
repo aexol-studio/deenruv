@@ -7,19 +7,19 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CustomFieldProperty from '@site/src/components/CustomFieldProperty';
 
-Custom fields allow you to add your own custom data properties to almost every Vendure entity. The entities which may have custom fields defined are listed in the [CustomFields interface documentation](/reference/typescript-api/custom-fields/).
+Custom fields allow you to add your own custom data properties to almost every Deenruv entity. The entities which may have custom fields defined are listed in the [CustomFields interface documentation](/reference/typescript-api/custom-fields/).
 
 Some use-cases for custom fields include:
 
-* Storing the weight, dimensions or other product-specific data on the `ProductVariant` entity.
-* Storing additional product codes on the `ProductVariant` entity such as ISBN or GTIN.
-* Adding a `downloadable` flag to the `Product` entity to indicate whether the product is a digital download.
-* Storing an external identifier (e.g. from a payment provider) on the `Customer` entity.
-* Adding a longitude and latitude to the `StockLocation` for use in selecting the closest location to a customer.
+-   Storing the weight, dimensions or other product-specific data on the `ProductVariant` entity.
+-   Storing additional product codes on the `ProductVariant` entity such as ISBN or GTIN.
+-   Adding a `downloadable` flag to the `Product` entity to indicate whether the product is a digital download.
+-   Storing an external identifier (e.g. from a payment provider) on the `Customer` entity.
+-   Adding a longitude and latitude to the `StockLocation` for use in selecting the closest location to a customer.
 
 ## Defining custom fields
 
-Custom fields are specified in the VendureConfig:
+Custom fields are specified in the DeenruvConfig:
 
 ```ts
 const config = {
@@ -30,9 +30,7 @@ const config = {
             { name: 'downloadable', type: 'boolean' },
             { name: 'shortName', type: 'localeString' },
         ],
-        User: [
-            { name: 'socialLoginToken', type: 'string', unique: true },
-        ],
+        User: [{ name: 'socialLoginToken', type: 'string', unique: true }],
     },
 };
 ```
@@ -46,7 +44,6 @@ With the example config above, the following will occur:
 ![custom-fields-data-table.webp](custom-fields-data-table.webp)
 
 The values of the custom fields can then be set and queried via the GraphQL APIs:
-
 
 <Tabs>
 <TabItem value="Request" label="Request" default>
@@ -84,17 +81,17 @@ mutation {
 
 ```json
 {
-  "data": {
-    "product": {
-      "id": "1",
-      "name": "Laptop",
-      "customFields": {
-          "infoUrl": "https://some-url.com",
-          "downloadable": true,
-          "shortName": "foo"
-      }
+    "data": {
+        "product": {
+            "id": "1",
+            "name": "Laptop",
+            "customFields": {
+                "infoUrl": "https://some-url.com",
+                "downloadable": true,
+                "shortName": "foo"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -131,13 +128,12 @@ query {
 }
 ```
 
-
 ## Available custom field types
 
 The following types are available for custom fields:
 
 | Type           | Description                  | Example                                                  |
-|----------------|------------------------------|----------------------------------------------------------|
+| -------------- | ---------------------------- | -------------------------------------------------------- |
 | `string`       | Short string data            | url, label                                               |
 | `localeString` | Localized short strings      | localized url                                            |
 | `text`         | Long text data               | extended product info, json config object                |
@@ -175,12 +171,7 @@ In this example, we set up a many-to-one relationship from Customer to Asset, al
 
 ```graphql
 mutation {
-    updateCustomer(input: {
-        id: 1
-        customFields: {
-            avatarId: 42,
-        }
-    }) {
+    updateCustomer(input: { id: 1, customFields: { avatarId: 42 } }) {
         id
         customFields {
             avatar {
@@ -199,10 +190,10 @@ As well as exposing custom fields via the GraphQL APIs, you can also access them
 
 Given the following custom field configuration:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 
-const config: VendureConfig = {
+const config: DeenruvConfig = {
     // ...
     customFields: {
         Customer: [
@@ -231,8 +222,8 @@ const customer = await this.connection.getRepository(ctx, Customer).findOne({
     relations: {
         customFields: {
             avatar: true,
-        }
-    }
+        },
+    },
 });
 console.log(customer.avatar);
 ```
@@ -240,7 +231,9 @@ console.log(customer.avatar);
 or if using the QueryBuilder API:
 
 ```ts
-const customer = await this.connection.getRepository(ctx, Customer).createQueryBuilder('customer')
+const customer = await this.connection
+    .getRepository(ctx, Customer)
+    .createQueryBuilder('customer')
     .leftJoinAndSelect('customer.customFields.avatar', 'avatar')
     .where('customer.id = :id', { id: 1 })
     .getOne();
@@ -261,19 +254,19 @@ console.log(customer.avatar);
 
 All custom fields share some common properties:
 
-- [`name`](#name)
-- [`type`](#type)
-- [`list`](#list)
-- [`label`](#label)
-- [`description`](#description)
-- [`public`](#public)
-- [`readonly`](#readonly)
-- [`internal`](#internal)
-- [`defaultValue`](#defaultvalue)
-- [`nullable`](#nullable)
-- [`unique`](#unique)
-- [`validate`](#validate)
-- [`requiresPermission`](#requirespermission)
+-   [`name`](#name)
+-   [`type`](#type)
+-   [`list`](#list)
+-   [`label`](#label)
+-   [`description`](#description)
+-   [`public`](#public)
+-   [`readonly`](#readonly)
+-   [`internal`](#internal)
+-   [`defaultValue`](#defaultvalue)
+-   [`nullable`](#nullable)
+-   [`unique`](#unique)
+-   [`validate`](#validate)
+-   [`requiresPermission`](#requirespermission)
 
 #### name
 
@@ -281,7 +274,7 @@ All custom fields share some common properties:
 
 The name of the field. This is used as the column name in the database, and as the GraphQL field name. The name should not contain spaces and by convention should be camelCased.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -289,10 +282,10 @@ const config = {
             {
                 // highlight-next-line
                 name: 'infoUrl',
-                type: 'string'
+                type: 'string',
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -308,7 +301,7 @@ The type of data that will be stored in the field.
 
 If set to `true`, then the field will be an array of the specified type. Defaults to `false`.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -319,16 +312,16 @@ const config = {
                 // highlight-next-line
                 list: true,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
 Setting a custom field to be a list has the following effects:
 
-* The GraphQL type will be an array of the specified type.
-* The Admin UI will display a list of inputs for the field.
-* For lists of primitive types (anything except `relation`), the database type will be set to `simple-json` which serializes the data into a JSON string. For lists of `relation` types, a separate many-to-many table will be created.
+-   The GraphQL type will be an array of the specified type.
+-   The Admin UI will display a list of inputs for the field.
+-   For lists of primitive types (anything except `relation`), the database type will be set to `simple-json` which serializes the data into a JSON string. For lists of `relation` types, a separate many-to-many table will be created.
 
 #### label
 
@@ -336,7 +329,7 @@ Setting a custom field to be a list has the following effects:
 
 An array of localized labels for the field. These are used in the Admin UI to label the field.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { LanguageCode } from '@deenruv/core';
 
 const config = {
@@ -348,14 +341,14 @@ const config = {
                 type: 'string',
                 // highlight-start
                 label: [
-                    {languageCode: LanguageCode.en, value: 'Info URL'},
-                    {languageCode: LanguageCode.de, value: 'Info-URL'},
-                    {languageCode: LanguageCode.es, value: 'URL de información'},
+                    { languageCode: LanguageCode.en, value: 'Info URL' },
+                    { languageCode: LanguageCode.de, value: 'Info-URL' },
+                    { languageCode: LanguageCode.es, value: 'URL de información' },
                 ],
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -365,7 +358,7 @@ const config = {
 
 An array of localized descriptions for the field. These are used in the Admin UI to describe the field.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { LanguageCode } from '@deenruv/core';
 
 const config = {
@@ -377,14 +370,17 @@ const config = {
                 type: 'string',
                 // highlight-start
                 description: [
-                    {languageCode: LanguageCode.en, value: 'A URL to more information about the product'},
-                    {languageCode: LanguageCode.de, value: 'Eine URL zu weiteren Informationen über das Produkt'},
-                    {languageCode: LanguageCode.es, value: 'Una URL con más información sobre el producto'},
+                    { languageCode: LanguageCode.en, value: 'A URL to more information about the product' },
+                    {
+                        languageCode: LanguageCode.de,
+                        value: 'Eine URL zu weiteren Informationen über das Produkt',
+                    },
+                    { languageCode: LanguageCode.es, value: 'Una URL con más información sobre el producto' },
                 ],
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -394,7 +390,7 @@ const config = {
 
 Whether the custom field is available via the Shop API. Defaults to `true`.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -405,8 +401,8 @@ const config = {
                 // highlight-next-line
                 public: false,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -417,7 +413,7 @@ const config = {
 Whether the custom field can be updated via the GraphQL APIs. Defaults to `false`. If set to `true`, then the field
 can only be updated via direct manipulation via TypeScript code in a plugin.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -428,8 +424,8 @@ const config = {
                 // highlight-next-line
                 readonly: true,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -441,7 +437,7 @@ Whether the custom field is exposed at all via the GraphQL APIs. Defaults to `fa
 via the GraphQL API, but can still be used in TypeScript code in a plugin. Internal fields are useful for storing data which is not intended
 to be exposed to the outside world, but which can be used in plugin logic.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -452,8 +448,8 @@ const config = {
                 // highlight-next-line
                 internal: true,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -464,7 +460,7 @@ const config = {
 The default value when an Entity is created with this field. If not provided, then the default value will be `null`. Note that if you set `nullable: false`, then
 you should also provide a `defaultValue` to avoid database errors when creating new entities.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -475,8 +471,8 @@ const config = {
                 // highlight-next-line
                 defaultValue: 0,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -486,7 +482,7 @@ const config = {
 
 Whether the field is nullable in the database. If set to `false`, then a `defaultValue` should be provided.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -499,8 +495,8 @@ const config = {
                 defaultValue: 0,
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -511,7 +507,7 @@ const config = {
 Whether the value of the field should be unique. When set to `true`, a UNIQUE constraint is added to the column. Defaults
 to `false`.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -522,8 +518,8 @@ const config = {
                 // highlight-next-line
                 unique: true,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -535,7 +531,7 @@ A custom validation function. If the value is valid, then the function should no
 
 Note that string, number and date fields also have some built-in validation options such as `min`, `max`, `pattern` which you can read about in the following sections.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { LanguageCode } from '@deenruv/core';
 
 const config = {
@@ -553,22 +549,22 @@ const config = {
 
                         // If a localized error message is required, return an array of LocalizedString objects.
                         return [
-                            {languageCode: LanguageCode.en, value: 'The URL must start with "http"'},
-                            {languageCode: LanguageCode.de, value: 'Die URL muss mit "http" beginnen'},
-                            {languageCode: LanguageCode.es, value: 'La URL debe comenzar con "http"'},
+                            { languageCode: LanguageCode.en, value: 'The URL must start with "http"' },
+                            { languageCode: LanguageCode.de, value: 'Die URL muss mit "http" beginnen' },
+                            { languageCode: LanguageCode.es, value: 'La URL debe comenzar con "http"' },
                         ];
                     }
                 },
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
 This function can even be asynchronous and may use the [Injector](/reference/typescript-api/common/injector/) to access providers.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -586,8 +582,8 @@ const config = {
                 },
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -601,11 +597,11 @@ to view or update the field.
 
 In the Admin UI, the custom field will not be displayed if the current administrator lacks the required permission.
 
-In the GraphQL API, if the current user does not have the required permission, then the field will always return `null`. 
+In the GraphQL API, if the current user does not have the required permission, then the field will always return `null`.
 Attempting to set the value of a field for which the user does not have the required permission will cause the mutation to fail
 with an error.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { Permission } from '@deenruv/core';
 
 const config = {
@@ -623,17 +619,14 @@ const config = {
                 name: 'shippingType',
                 type: 'string',
                 // highlight-start
-                // You can also use an array of permissions, 
+                // You can also use an array of permissions,
                 // and the user must have at least one of the permissions
                 // to access the field.
-                requiresPermission: [
-                    Permission.SuperAdmin, 
-                    Permission.ReadShippingMethod,
-                ],
+                requiresPermission: [Permission.SuperAdmin, Permission.ReadShippingMethod],
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -651,9 +644,9 @@ the entity's custom field value if the current customer meets the requirements.
 
 In addition to the common properties, the `string` custom fields have some type-specific properties:
 
-- [`pattern`](#pattern)
-- [`options`](#options)
-- [`length`](#length)
+-   [`pattern`](#pattern)
+-   [`options`](#options)
+-   [`length`](#length)
 
 #### pattern
 
@@ -661,7 +654,7 @@ In addition to the common properties, the `string` custom fields have some type-
 
 A regex pattern which the field value must match. If the value does not match the pattern, then the validation will fail.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -670,10 +663,10 @@ const config = {
                 name: 'gtin',
                 type: 'string',
                 // highlight-next-line
-                pattern: '^\d{8}(?:\d{4,6})?$',
+                pattern: '^d{8}(?:d{4,6})?$',
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -683,7 +676,7 @@ const config = {
 
 An array of pre-defined options for the field. This is useful for fields which should only have a limited set of values. The `value` property is the value which will be stored in the database, and the `label` property is an optional array of localized strings which will be displayed in the admin UI.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { LanguageCode } from '@deenruv/core';
 
 const config = {
@@ -695,13 +688,13 @@ const config = {
                 type: 'string',
                 // highlight-start
                 options: [
-                    {value: 'new', label: [{languageCode: LanguageCode.en, value: 'New'}]},
-                    {value: 'used', label: [{languageCode: LanguageCode.en, value: 'Used'}]},
+                    { value: 'new', label: [{ languageCode: LanguageCode.en, value: 'New' }] },
+                    { value: 'used', label: [{ languageCode: LanguageCode.en, value: 'Used' }] },
                 ],
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -713,7 +706,7 @@ Attempting to set the value of the field to a value which is not in the `options
 
 The max length of the varchar created in the database. Defaults to 255. Maximum is 65,535.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -724,8 +717,8 @@ const config = {
                 // highlight-next-line
                 length: 20,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -733,8 +726,8 @@ const config = {
 
 In addition to the common properties, the `localeString` custom fields have some type-specific properties:
 
-- [`pattern`](#pattern-1)
-- [`length`](#length-1)
+-   [`pattern`](#pattern-1)
+-   [`length`](#length-1)
 
 #### pattern
 
@@ -752,9 +745,9 @@ Same as the `length` property for `string` fields.
 
 In addition to the common properties, the `int` & `float` custom fields have some type-specific properties:
 
-- [`min`](#min)
-- [`max`](#max)
-- [`step`](#step)
+-   [`min`](#min)
+-   [`max`](#max)
+-   [`step`](#step)
 
 #### min
 
@@ -762,7 +755,7 @@ In addition to the common properties, the `int` & `float` custom fields have som
 
 The minimum permitted value. If the value is less than this, then the validation will fail.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -773,8 +766,8 @@ const config = {
                 // highlight-next-line
                 min: 0,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -784,7 +777,7 @@ const config = {
 
 The maximum permitted value. If the value is greater than this, then the validation will fail.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -795,8 +788,8 @@ const config = {
                 // highlight-next-line
                 max: 5,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -806,7 +799,7 @@ const config = {
 
 The step value. This is used in the Admin UI to determine the increment/decrement value of the input field.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -817,8 +810,8 @@ const config = {
                 // highlight-next-line
                 step: 0.5,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -828,9 +821,9 @@ In addition to the common properties, the `datetime` custom fields have some typ
 The min, max & step properties for datetime fields are intended to be used as described in
 [the MDN datetime-local docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local#Additional_attributes)
 
-- [`min`](#min-1)
-- [`max`](#max-1)
-- [`step`](#step-1)
+-   [`min`](#min-1)
+-   [`max`](#max-1)
+-   [`step`](#step-1)
 
 #### min
 
@@ -838,7 +831,7 @@ The min, max & step properties for datetime fields are intended to be used as de
 
 The earliest permitted date. If the value is earlier than this, then the validation will fail.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -849,8 +842,8 @@ const config = {
                 // highlight-next-line
                 min: '2019-01-01T00:00:00.000Z',
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -860,7 +853,7 @@ const config = {
 
 The latest permitted date. If the value is later than this, then the validation will fail.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -871,8 +864,8 @@ const config = {
                 // highlight-next-line
                 max: '2019-12-31T23:59:59.999Z',
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -886,20 +879,19 @@ The step value. See [the MDN datetime-local docs](https://developer.mozilla.org/
 
 In addition to the common properties, the `relation` custom fields have some type-specific properties:
 
-- [`entity`](#entity)
-- [`eager`](#eager)
-- [`graphQLType`](#graphqltype)
-- [`inverseSide`](#inverseside)
+-   [`entity`](#entity)
+-   [`eager`](#eager)
+-   [`graphQLType`](#graphqltype)
+-   [`inverseSide`](#inverseside)
 
 #### entity
 
-<CustomFieldProperty required={true} type="VendureEntity" typeLink="/reference/typescript-api/entities/vendure-entity" />
-
+<CustomFieldProperty required={true} type="VendureEntity" typeLink="/reference/typescript-api/entities/deenruv-entity" />
 
 The entity which this custom field is referencing. This can be one of the built-in entities, or a custom entity. If the entity is a custom entity, it must extend the `VendureEntity` class.
 
-```ts title="src/vendure-config.ts"
-import { Product } from '\@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { Product } from '@deenruv/core';
 
 const config = {
     // ...
@@ -913,8 +905,8 @@ const config = {
                 // highlight-next-line
                 entity: Product,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -924,8 +916,8 @@ const config = {
 
 Whether to [eagerly load](https://typeorm.io/#/eager-and-lazy-relations) the relation. Defaults to false. Note that eager loading has performance implications, so should only be used when necessary.
 
-```ts title="src/vendure-config.ts"
-import { Product } from '\@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { Product } from '@deenruv/core';
 
 const config = {
     // ...
@@ -939,8 +931,8 @@ const config = {
                 // highlight-next-line
                 eager: true,
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -950,7 +942,7 @@ const config = {
 
 The name of the GraphQL type that corresponds to the entity. Can be omitted if the GraphQL type name is the same as the entity name, which is the case for all of the built-in entities.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { CmsArticle } from './entities/cms-article.entity';
 
 const config = {
@@ -965,12 +957,12 @@ const config = {
                 // highlight-next-line
                 graphQLType: 'BlogPost',
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
-In the above example, the `CmsArticle` entity is being used as a related entity. However, the GraphQL type name is `BlogPost`, so we must specify this in the `graphQLType` property, otherwise Vendure will try to extend the GraphQL schema with reference to a non-existent "CmsArticle" type.
+In the above example, the `CmsArticle` entity is being used as a related entity. However, the GraphQL type name is `BlogPost`, so we must specify this in the `graphQLType` property, otherwise Deenruv will try to extend the GraphQL schema with reference to a non-existent "CmsArticle" type.
 
 #### inverseSide
 
@@ -979,8 +971,8 @@ In the above example, the `CmsArticle` entity is being used as a related entity.
 Allows you to specify the [inverse side of the relation](https://typeorm.io/#inverse-side-of-the-relationship). Let's say you are adding a relation from `Product`
 to a custom entity which refers back to the product. You can specify this inverse relation like so:
 
-```ts title="src/vendure-config.ts"
-import { Product } from '\@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { Product } from '@deenruv/core';
 import { ProductReview } from './entities/product-review.entity';
 
 const config = {
@@ -996,8 +988,8 @@ const config = {
                 inverseSide: (review: ProductReview) => review.product,
                 // highlight-end
             },
-        ]
-    }
+        ],
+    },
 };
 ```
 
@@ -1014,29 +1006,29 @@ const { productReviews } = await this.connection.getRepository(ProductReview).fi
 
 In the Admin UI, an appropriate default form input component is used for each custom field type. The Admin UI comes with a set of ready-made form input components, but it is also possible to create custom form input components. The ready-made components are:
 
-- `text-form-input`: A single-line text input
-- `password-form-input`: A single-line password input
-- `select-form-input`: A select input
-- `textarea-form-input`: A multi-line textarea input
-- `rich-text-form-input`: A rich text editor input that saves the content as HTML
-- `json-editor-form-input`: A simple JSON editor input
-- `html-editor-form-input`: A simple HTML text editor input
-- `number-form-input`: A number input
-- `currency-form-input`: A number input with currency formatting
-- `boolean-form-input`: A checkbox input
-- `date-form-input`: A date input
-- `relation-form-input`: A generic entity relation input which allows an ID to be manually specified
-- `customer-group-form-input`: A select input for selecting a CustomerGroup
-- `facet-value-form-input`: A select input for selecting a FacetValue
-- `product-selector-form-input`: A select input for selecting a Product from an autocomplete list
-- `product-multi-form-input`: A modal dialog for selecting multiple Products or ProductVariants
+-   `text-form-input`: A single-line text input
+-   `password-form-input`: A single-line password input
+-   `select-form-input`: A select input
+-   `textarea-form-input`: A multi-line textarea input
+-   `rich-text-form-input`: A rich text editor input that saves the content as HTML
+-   `json-editor-form-input`: A simple JSON editor input
+-   `html-editor-form-input`: A simple HTML text editor input
+-   `number-form-input`: A number input
+-   `currency-form-input`: A number input with currency formatting
+-   `boolean-form-input`: A checkbox input
+-   `date-form-input`: A date input
+-   `relation-form-input`: A generic entity relation input which allows an ID to be manually specified
+-   `customer-group-form-input`: A select input for selecting a CustomerGroup
+-   `facet-value-form-input`: A select input for selecting a FacetValue
+-   `product-selector-form-input`: A select input for selecting a Product from an autocomplete list
+-   `product-multi-form-input`: A modal dialog for selecting multiple Products or ProductVariants
 
 #### Default form inputs
 
 This table shows the default form input component used for each custom field type:
 
 | Type                     | Form input component                                                                         |
-|--------------------------|----------------------------------------------------------------------------------------------|
+| ------------------------ | -------------------------------------------------------------------------------------------- |
 | `string`, `localeString` | `text-form-input` or, if options are defined, `select-form-input`                            |
 | `text`, `localeText`     | `textarea-form-input`                                                                        |
 | `int`, `float`           | `number-form-input`                                                                          |
@@ -1056,7 +1048,7 @@ If the generic selector is not suitable, or is you wish to replace one of the bu
 
 The defaults listed above can be overridden by using the `ui` property of the custom field config object. For example, if we want a number to be displayed as a currency input:
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
@@ -1067,35 +1059,35 @@ const config = {
                 // highlight-next-line
                 ui: { component: 'currency-form-input' },
             },
-        ]
-    }
-}
+        ],
+    },
+};
 ```
 
 Here's an example config demonstrating several ways to customize the UI controls for custom fields:
 
 ```ts
-import { LanguageCode, VendureConfig } from '@deenruv/core';
+import { LanguageCode, DeenruvConfig } from '@deenruv/core';
 
-const config: VendureConfig = {
+const config: DeenruvConfig = {
     // ...
     customFields: {
         Product: [
             // Rich text editor
-            {name: 'additionalInfo', type: 'text', ui: {component: 'rich-text-form-input'}},
+            { name: 'additionalInfo', type: 'text', ui: { component: 'rich-text-form-input' } },
             // JSON editor
-            {name: 'specs', type: 'text', ui: {component: 'json-editor-form-input'}},
+            { name: 'specs', type: 'text', ui: { component: 'json-editor-form-input' } },
             // Numeric with suffix
             {
                 name: 'weight',
                 type: 'int',
-                ui: {component: 'number-form-input', suffix: 'g'},
+                ui: { component: 'number-form-input', suffix: 'g' },
             },
             // Currency input
             {
                 name: 'RRP',
                 type: 'int',
-                ui: {component: 'currency-form-input'},
+                ui: { component: 'currency-form-input' },
             },
             // Select with options
             {
@@ -1104,8 +1096,8 @@ const config: VendureConfig = {
                 ui: {
                     component: 'select-form-input',
                     options: [
-                        {value: 'static', label: [{languageCode: LanguageCode.en, value: 'Static'}]},
-                        {value: 'dynamic', label: [{languageCode: LanguageCode.en, value: 'Dynamic'}]},
+                        { value: 'static', label: [{ languageCode: LanguageCode.en, value: 'Static' }] },
+                        { value: 'dynamic', label: [{ languageCode: LanguageCode.en, value: 'Dynamic' }] },
                     ],
                 },
             },
@@ -1129,7 +1121,7 @@ and the resulting UI:
 
 :::info
 
-The various configuration options for each of the built-in form input  (e.g. `suffix`) is documented in the [`DefaultFormConfigHash` object](/reference/typescript-api/configurable-operation-def/default-form-config-hash/).
+The various configuration options for each of the built-in form input (e.g. `suffix`) is documented in the [`DefaultFormConfigHash` object](/reference/typescript-api/configurable-operation-def/default-form-config-hash/).
 
 :::
 
@@ -1137,10 +1129,9 @@ The various configuration options for each of the built-in form input  (e.g. `su
 
 If none of the built-in form input components are suitable, you can create your own. This is a more advanced topic which is covered in detail in the [Custom Form Input Components](/guides/extending-the-admin-ui/custom-form-inputs/) guide.
 
-
 ## Tabbed custom fields
 
-With a large, complex project, it's common for lots of custom fields to be required. This can get visually noisy in the UI, so Vendure supports tabbed custom fields. Just specify the tab name in the `ui` object, and those fields with the same tab name will be grouped in the UI! The tab name can also be a translation token if you need to support multiple languages.
+With a large, complex project, it's common for lots of custom fields to be required. This can get visually noisy in the UI, so Deenruv supports tabbed custom fields. Just specify the tab name in the `ui` object, and those fields with the same tab name will be grouped in the UI! The tab name can also be a translation token if you need to support multiple languages.
 
 :::note
 
@@ -1148,28 +1139,26 @@ Tabs will only be displayed if there is more than one tab name used in the custo
 
 :::
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 const config = {
     // ...
     customFields: {
         Product: [
-            { name: 'additionalInfo', type: 'text', ui: {component: 'rich-text-form-input'} },
-            { name: 'specs', type: 'text', ui: {component: 'json-editor-form-input'} },
-            { name: 'width', type: 'int', ui: {tab: 'Shipping'} },
-            { name: 'height', type: 'int', ui: {tab: 'Shipping'} },
-            { name: 'depth', type: 'int', ui: {tab: 'Shipping'} },
-            { name: 'weight', type: 'int', ui: {tab: 'Shipping'} },
+            { name: 'additionalInfo', type: 'text', ui: { component: 'rich-text-form-input' } },
+            { name: 'specs', type: 'text', ui: { component: 'json-editor-form-input' } },
+            { name: 'width', type: 'int', ui: { tab: 'Shipping' } },
+            { name: 'height', type: 'int', ui: { tab: 'Shipping' } },
+            { name: 'depth', type: 'int', ui: { tab: 'Shipping' } },
+            { name: 'weight', type: 'int', ui: { tab: 'Shipping' } },
         ],
     },
-}
+};
 ```
-
-
 
 ## TypeScript Typings
 
 Because custom fields are generated at run-time, TypeScript has no way of knowing about them based on your
-VendureConfig. Consider the example above - let's say we have a [plugin](/guides/developer-guide/plugins/) which needs to
+DeenruvConfig. Consider the example above - let's say we have a [plugin](/guides/developer-guide/plugins/) which needs to
 access the custom field values on a Product entity.
 
 Attempting to access the custom field will result in a TS compiler error:
@@ -1178,17 +1167,14 @@ Attempting to access the custom field will result in a TS compiler error:
 import { RequestContext, TransactionalConnection, ID, Product } from '@deenruv/core';
 
 export class MyService {
-    constructor(private connection: TransactionalConnection) {
-    }
+    constructor(private connection: TransactionalConnection) {}
 
     async getInfoUrl(ctx: RequestContext, productId: ID) {
-        const product = await this.connection
-            .getRepository(ctx, Product)
-            .findOne(productId);
+        const product = await this.connection.getRepository(ctx, Product).findOne(productId);
 
         return product.customFields.infoUrl;
-    }                           // ^ TS2339: Property 'infoUrl'
-}                             // does not exist on type 'CustomProductFields'.
+    } // ^ TS2339: Property 'infoUrl'
+} // does not exist on type 'CustomProductFields'.
 ```
 
 The "easy" way to solve this is to assert the `customFields` object as `any`:
@@ -1230,6 +1216,5 @@ One way to ensure that your custom field typings always get imported first is to
 :::
 
 :::tip
-For a working example of this setup, see the [real-world-vendure repo](https://github.com/vendure-ecommerce/real-world-vendure/blob/master/src/plugins/reviews/types.ts)
+For a working example of this setup, see the [real-world-deenruv repo](https://github.com/deenruv-ecommerce/real-world-deenruv/blob/master/src/plugins/reviews/types.ts)
 :::
-

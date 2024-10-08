@@ -1,13 +1,14 @@
 ---
-title: "PaymentStates"
+title: 'PaymentStates'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PaymentStates
 
@@ -16,7 +17,5 @@ import MemberDescription from '@site/src/components/MemberDescription';
 An interface to extend standard <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>.
 
 ```ts title="Signature"
-interface PaymentStates {
-
-}
+interface PaymentStates {}
 ```

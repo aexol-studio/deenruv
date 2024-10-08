@@ -3,7 +3,7 @@ title: 'Worker & Job Queue'
 sidebar_position: 5
 ---
 
-The Vendure Worker is a Node.js process responsible for running computationally intensive
+The Deenruv Worker is a Node.js process responsible for running computationally intensive
 or otherwise long-running tasks in the background. For example, updating a
 search index or sending emails. Running such tasks in the background allows
 the server to stay responsive, since a response can be returned immediately
@@ -16,12 +16,12 @@ Put another way, the Worker executes **jobs** which have been placed in the **jo
 ## The worker
 
 The worker is started by calling the [`bootstrapWorker()`](/reference/typescript-api/worker/bootstrap-worker/) function with the same
-configuration as is passed to the main server `bootstrap()`. In a standard Vendure installation, this is found
+configuration as is passed to the main server `bootstrap()`. In a standard Deenruv installation, this is found
 in the `index-worker.ts` file:
 
 ```ts title="src/index-worker.ts"
 import { bootstrapWorker } from '@deenruv/core';
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 bootstrapWorker(config)
     .then(worker => worker.startJobQueue())
@@ -47,19 +47,19 @@ you might want to set up a dedicated worker just for that task:
 
 ```ts title="src/transcoder-worker.ts"
 import { bootstrapWorker, mergeConfig } from '@deenruv/core';
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 const transcoderConfig = mergeConfig(config, {
     jobQueueOptions: {
-      activeQueues: ['transcode-video'],
-    }
+        activeQueues: ['transcode-video'],
+    },
 });
 
 bootstrapWorker(transcoderConfig)
-  .then(worker => worker.startJobQueue())
-  .catch(err => {
-    console.log(err);
-  });
+    .then(worker => worker.startJobQueue())
+    .catch(err => {
+        console.log(err);
+    });
 ```
 
 ### Running jobs on the main process
@@ -70,7 +70,7 @@ running long tasks off of the main process. To do so, you need to manually start
 
 ```ts title="src/index.ts"
 import { bootstrap, JobQueueService } from '@deenruv/core';
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 bootstrap(config)
     .then(app => app.get(JobQueueService).start())
@@ -104,7 +104,7 @@ export class MyService implements OnApplicationBootstrap {
 
 ## The job queue
 
-Vendure uses a [job queue](https://en.wikipedia.org/wiki/Job_queue) to handle the processing of certain tasks which are typically too slow to run in the
+Deenruv uses a [job queue](https://en.wikipedia.org/wiki/Job_queue) to handle the processing of certain tasks which are typically too slow to run in the
 normal request-response cycle. A normal request-response looks like this:
 
 ![Regular request response](./Vendure_docs-job-queue.webp)
@@ -118,14 +118,14 @@ until that processing has completed. That’s where a job queue comes in:
 
 ![Request response with job queue](./Vendure_docs-job-queue-2.webp)
 
-### What does Vendure use the job queue for?
+### What does Deenruv use the job queue for?
 
-By default, Vendure uses the job queue for the following tasks:
+By default, Deenruv uses the job queue for the following tasks:
 
-- Re-building the search index
-- Updating the search index when changes are made to Products, ProductVariants, Assets etc.
-- Updating the contents of Collections
-- Sending transactional emails
+-   Re-building the search index
+-   Updating the search index when changes are made to Products, ProductVariants, Assets etc.
+-   Updating the contents of Collections
+-   Sending transactional emails
 
 ### How does the Job Queue work?
 
@@ -141,15 +141,15 @@ of a single worker).
 
 The actual queue part is defined by the configured [`JobQueueStrategy`](/reference/typescript-api/job-queue/job-queue-strategy/).
 
-If no strategy is defined, Vendure uses an [in-memory store](/reference/typescript-api/job-queue/in-memory-job-queue-strategy/)
+If no strategy is defined, Deenruv uses an [in-memory store](/reference/typescript-api/job-queue/in-memory-job-queue-strategy/)
 of the contents of each queue. While this has the advantage
 of requiring no external dependencies, it is not suitable for production because when the server is stopped, the entire
 queue will be lost and any pending jobs will never be processed. Moreover, it cannot be used when running the worker
 as a separate process.
 
 A better alternative is to use the [DefaultJobQueuePlugin](/reference/typescript-api/job-queue/default-job-queue-plugin/)
-(which will be used in a standard `@deenruv/create` installation), which configures Vendure to use the [SqlJobQueueStrategy](/reference/typescript-api/job-queue/sql-job-queue-strategy).
-This strategy uses the database as a queue, and means that even if the Vendure server stops, pending jobs will be persisted and upon re-start, they will be processed.
+(which will be used in a standard `@deenruv/create` installation), which configures Deenruv to use the [SqlJobQueueStrategy](/reference/typescript-api/job-queue/sql-job-queue-strategy).
+This strategy uses the database as a queue, and means that even if the Deenruv server stops, pending jobs will be persisted and upon re-start, they will be processed.
 
 It is also possible to implement your own JobQueueStrategy to take advantage of other technologies.
 Examples include RabbitMQ, Google Cloud Pub Sub & Amazon SQS. It may make sense to implement a custom strategy based on
@@ -157,7 +157,7 @@ one of these if the default database-based approach does not meet your performan
 
 ### Job Queue Performance
 
-It is common for larger Vendure projects to define multiple custom job queues, When using the [DefaultJobQueuePlugin](/reference/typescript-api/job-queue/default-job-queue-plugin/)
+It is common for larger Deenruv projects to define multiple custom job queues, When using the [DefaultJobQueuePlugin](/reference/typescript-api/job-queue/default-job-queue-plugin/)
 with many queues, performance may be impacted. This is because the `SqlJobQueueStrategy` uses polling to check for
 new jobs in the database. Each queue will (by default) query the database every 200ms. So if there are 10 queues,
 this will result in a constant 50 queries/second.
@@ -170,7 +170,7 @@ which uses an efficient push-based strategy built on Redis.
 If your plugin involves long-running tasks, you can also make use of the job queue.
 
 :::info
-A real example of this can be seen in the [EmailPlugin source](https://github.com/vendure-ecommerce/vendure/blob/master/packages/email-plugin/src/plugin.ts)
+A real example of this can be seen in the [EmailPlugin source](https://github.com/aexol-studio/deenruv/blob/master/packages/email-plugin/src/plugin.ts)
 :::
 
 Let's say you are building a plugin which allows a video URL to be specified, and then that video gets transcoded into a format suitable for streaming on the storefront. This is a long-running task which should not block the main thread, so we will use the job queue to run the task on the worker.
@@ -181,41 +181,37 @@ First we'll add a new mutation to the Admin API schema:
 import gql from 'graphql-tag';
 
 export const adminApiExtensions = gql`
-  extend type Mutation {
-    addVideoToProduct(productId: ID! videoUrl: String!): Job!
-  }
+    extend type Mutation {
+        addVideoToProduct(productId: ID!, videoUrl: String!): Job!
+    }
 `;
 ```
 
 The resolver looks like this:
 
-
 ```ts title="src/plugins/product-video/api/product-video.resolver.ts"
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Allow, Ctx, RequestContext, Permission, RequestContext } from '@deenruv/core'
+import { Allow, Ctx, RequestContext, Permission, RequestContext } from '@deenruv/core';
 import { ProductVideoService } from '../services/product-video.service';
 
 @Resolver()
 export class ProductVideoResolver {
-
     constructor(private productVideoService: ProductVideoService) {}
 
     @Mutation()
     @Allow(Permission.UpdateProduct)
-    addVideoToProduct(@Ctx() ctx: RequestContext, @Args() args: { productId: ID; videoUrl: string; }) {
-        return this.productVideoService.transcodeForProduct(
-            args.productId,
-            args.videoUrl,
-        );
+    addVideoToProduct(@Ctx() ctx: RequestContext, @Args() args: { productId: ID; videoUrl: string }) {
+        return this.productVideoService.transcodeForProduct(args.productId, args.videoUrl);
     }
 }
 ```
+
 The resolver just defines how to handle the new `addVideoToProduct` mutation, delegating the actual work to the `ProductVideoService`.
 
 ### Creating a job queue
 
 :::cli
-Use `npx vendure add` to easily add a job queue to a service.
+Use `npx deenruv add` to easily add a job queue to a service.
 :::
 
 The [`JobQueueService`](/reference/typescript-api/job-queue/job-queue-service/) creates and manages job queues. The queue is created when the
@@ -228,12 +224,12 @@ import { transcode } from 'third-party-video-sdk';
 
 @Injectable()
 class ProductVideoService implements OnModuleInit {
+    private jobQueue: JobQueue<{ productId: ID; videoUrl: string }>;
 
-    private jobQueue: JobQueue<{ productId: ID; videoUrl: string; }>;
-
-    constructor(private jobQueueService: JobQueueService,
-                private connection: TransactionalConnection) {
-    }
+    constructor(
+        private jobQueueService: JobQueueService,
+        private connection: TransactionalConnection,
+    ) {}
 
     async onModuleInit() {
         this.jobQueue = await this.jobQueueService.createQueue({
@@ -264,7 +260,7 @@ class ProductVideoService implements OnModuleInit {
     transcodeForProduct(productId: ID, videoUrl: string) {
         // Add a new job to the queue and immediately return the
         // job itself.
-        return this.jobQueue.add({productId, videoUrl}, {retries: 2});
+        return this.jobQueue.add({ productId, videoUrl }, { retries: 2 });
     }
 }
 ```
@@ -272,7 +268,7 @@ class ProductVideoService implements OnModuleInit {
 Notice the generic type parameter of the `JobQueue`:
 
 ```ts
-JobQueue<{ productId: ID; videoUrl: string; }>
+JobQueue<{ productId: ID; videoUrl: string }>;
 ```
 
 This means that when we call `jobQueue.add()` we must pass in an object of this type. This data will then be available in the `process` function as the `job.data` property.
@@ -309,7 +305,7 @@ import { adminApiExtensions } from './api/api-extensions';
     providers: [ProductVideoService],
     adminApiExtensions: {
         schema: adminApiExtensions,
-        resolvers: [ProductVideoResolver]
+        resolvers: [ProductVideoResolver],
     },
     configuration: config => {
         config.customFields.Product.push({
@@ -317,32 +313,38 @@ import { adminApiExtensions } from './api/api-extensions';
             type: 'string',
         });
         return config;
-    }
+    },
 })
 export class ProductVideoPlugin {}
 ```
 
 ### Passing the RequestContext
 
-It is common to need to pass the [RequestContext object](/reference/typescript-api/request/request-context) to the `process` function of a job, since `ctx` is required by many Vendure
+It is common to need to pass the [RequestContext object](/reference/typescript-api/request/request-context) to the `process` function of a job, since `ctx` is required by many Deenruv
 service methods that you may be using inside your `process` function. However, the `RequestContext` object itself is not serializable,
 so it cannot be passed directly to the `JobQueue.add()` method. Instead, you can serialize the `RequestContext` using the [`RequestContext.serialize()`
 method](/reference/typescript-api/request/request-context/#serialize), and then deserialize it in the `process` function using the static `deserialize` method:
 
 ```ts
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { JobQueue, JobQueueService, Product, TransactionalConnection,
-    SerializedRequestContext, RequestContext } from '@deenruv/core';
+import {
+    JobQueue,
+    JobQueueService,
+    Product,
+    TransactionalConnection,
+    SerializedRequestContext,
+    RequestContext,
+} from '@deenruv/core';
 
 @Injectable()
 class ProductExportService implements OnModuleInit {
-
     // highlight-next-line
-    private jobQueue: JobQueue<{ ctx: SerializedRequestContext; }>;
+    private jobQueue: JobQueue<{ ctx: SerializedRequestContext }>;
 
-    constructor(private jobQueueService: JobQueueService,
-                private connection: TransactionalConnection) {
-    }
+    constructor(
+        private jobQueueService: JobQueueService,
+        private connection: TransactionalConnection,
+    ) {}
 
     async onModuleInit() {
         this.jobQueue = await this.jobQueueService.createQueue({
@@ -375,18 +377,26 @@ by early cancellation:
 
 ```ts
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { JobQueue, JobQueueService, Product, TransactionalConnection,
-    SerializedRequestContext, RequestContext, Job, JobState } from '@deenruv/core';
+import {
+    JobQueue,
+    JobQueueService,
+    Product,
+    TransactionalConnection,
+    SerializedRequestContext,
+    RequestContext,
+    Job,
+    JobState,
+} from '@deenruv/core';
 import { IsNull } from 'typeorm';
 
 @Injectable()
 class ProductExportService implements OnModuleInit {
+    private jobQueue: JobQueue<{ ctx: SerializedRequestContext }>;
 
-    private jobQueue: JobQueue<{ ctx: SerializedRequestContext; }>;
-
-    constructor(private jobQueueService: JobQueueService,
-                private connection: TransactionalConnection) {
-    }
+    constructor(
+        private jobQueueService: JobQueueService,
+        private connection: TransactionalConnection,
+    ) {}
 
     async onModuleInit() {
         this.jobQueue = await this.jobQueueService.createQueue({
@@ -394,7 +404,7 @@ class ProductExportService implements OnModuleInit {
             process: async job => {
                 const ctx = RequestContext.deserialize(job.data.ctx);
                 const allProducts = await this.connection.getRepository(ctx, Product).find({
-                    where: { deletedAt: IsNull() }
+                    where: { deletedAt: IsNull() },
                 });
                 let successfulExportCount = 0;
                 for (const product of allProducts) {
@@ -420,7 +430,6 @@ class ProductExportService implements OnModuleInit {
 }
 ```
 
-
 ### Subscribing to job updates
 
 When creating a new job via `JobQueue.add()`, it is possible to subscribe to updates to that Job (progress and status changes). This allows you, for example, to create resolvers which are able to return the results of a given Job.
@@ -438,7 +447,7 @@ class ProductVideoService implements OnModuleInit {
     // ... omitted (see above)
 
     transcodeForProduct(productId: ID, videoUrl: string) {
-        const job = await this.jobQueue.add({productId, videoUrl}, {retries: 2});
+        const job = await this.jobQueue.add({ productId, videoUrl }, { retries: 2 });
 
         return job.updates().pipe(
             map(update => {
@@ -461,7 +470,5 @@ If you prefer to work with Promises rather than Rxjs Observables, you can also c
 ```ts
 const job = await this.jobQueue.add({ productId, videoUrl }, { retries: 2 });
 
-return job.updates().toPromise()
-  .then(/* ... */)
-  .catch(/* ... */);
+return job.updates().toPromise().then(/* ... */).catch(/* ... */);
 ```

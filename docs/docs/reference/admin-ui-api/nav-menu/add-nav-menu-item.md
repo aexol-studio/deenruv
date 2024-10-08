@@ -1,13 +1,14 @@
 ---
-title: "AddNavMenuItem"
+title: 'AddNavMenuItem'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## addNavMenuItem
 
@@ -21,25 +22,28 @@ end of the section.
 
 This should be used in the NgModule `providers` array of your ui extension module.
 
-*Example*
+_Example_
 
 ```ts title="providers.ts"
 import { addNavMenuItem } from '@deenruv/admin-ui/core';
 
 export default [
-    addNavMenuItem({
-        id: 'reviews',
-        label: 'Product Reviews',
-        routerLink: ['/extensions/reviews'],
-        icon: 'star',
-    },
-    'marketing'),
+    addNavMenuItem(
+        {
+            id: 'reviews',
+            label: 'Product Reviews',
+            routerLink: ['/extensions/reviews'],
+            icon: 'star',
+        },
+        'marketing',
+    ),
 ];
 ```
 
 ```ts title="Signature"
-function addNavMenuItem(config: NavMenuItem, sectionId: string, before?: string): Provider
+function addNavMenuItem(config: NavMenuItem, sectionId: string, before?: string): Provider;
 ```
+
 Parameters
 
 ### config
@@ -53,4 +57,3 @@ Parameters
 ### before
 
 <MemberInfo kind="parameter" type={`string`} />
-

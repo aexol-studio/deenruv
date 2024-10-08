@@ -1,13 +1,14 @@
 ---
-title: "InMemorySessionCacheStrategy"
+title: 'InMemorySessionCacheStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## InMemorySessionCacheStrategy
 
@@ -31,37 +32,29 @@ class InMemorySessionCacheStrategy implements SessionCacheStrategy {
     clear() => ;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/auth/session-cache-strategy#sessioncachestrategy'>SessionCacheStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/auth/session-cache-strategy#sessioncachestrategy'>SessionCacheStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(cacheSize?: number) => InMemorySessionCacheStrategy`}   />
-
+<MemberInfo kind="method" type={`(cacheSize?: number) => InMemorySessionCacheStrategy`} />
 
 ### delete
 
-<MemberInfo kind="method" type={`(sessionToken: string) => `}   />
-
+<MemberInfo kind="method" type={`(sessionToken: string) => `} />
 
 ### get
 
-<MemberInfo kind="method" type={`(sessionToken: string) => `}   />
-
+<MemberInfo kind="method" type={`(sessionToken: string) => `} />
 
 ### set
 
-<MemberInfo kind="method" type={`(session: <a href='/reference/typescript-api/auth/session-cache-strategy#cachedsession'>CachedSession</a>) => `}   />
-
+<MemberInfo kind="method" type={`(session: <a href='/reference/typescript-api/auth/session-cache-strategy#cachedsession'>CachedSession</a>) => `} />
 
 ### clear
 
-<MemberInfo kind="method" type={`() => `}   />
-
-
-
+<MemberInfo kind="method" type={`() => `} />
 
 </div>

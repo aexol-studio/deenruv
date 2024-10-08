@@ -1,13 +1,14 @@
 ---
-title: "Error Types"
+title: 'Error Types'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## InternalServerError
 
@@ -17,24 +18,19 @@ This error should be thrown when some unexpected and exceptional case is encount
 
 ```ts title="Signature"
 class InternalServerError extends I18nError {
-    constructor(message: string, variables: { [key: string]: string | number } = {})
+    constructor(message: string, variables: { [key: string]: string | number } = {});
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(message: string, variables: { [key: string]: string | number } = {}) => InternalServerError`}   />
-
-
-
+<MemberInfo kind="method" type={`(message: string, variables: { [key: string]: string | number } = {}) => InternalServerError`} />
 
 </div>
-
 
 ## UserInputError
 
@@ -44,24 +40,19 @@ This error should be thrown when user input is not as expected.
 
 ```ts title="Signature"
 class UserInputError extends I18nError {
-    constructor(message: string, variables: { [key: string]: string | number } = {})
+    constructor(message: string, variables: { [key: string]: string | number } = {});
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(message: string, variables: { [key: string]: string | number } = {}) => UserInputError`}   />
-
-
-
+<MemberInfo kind="method" type={`(message: string, variables: { [key: string]: string | number } = {}) => UserInputError`} />
 
 </div>
-
 
 ## IllegalOperationError
 
@@ -71,24 +62,19 @@ This error should be thrown when an operation is attempted which is not allowed.
 
 ```ts title="Signature"
 class IllegalOperationError extends I18nError {
-    constructor(message: string, variables: { [key: string]: string | number } = {})
+    constructor(message: string, variables: { [key: string]: string | number } = {});
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(message: string, variables: { [key: string]: string | number } = {}) => IllegalOperationError`}   />
-
-
-
+<MemberInfo kind="method" type={`(message: string, variables: { [key: string]: string | number } = {}) => IllegalOperationError`} />
 
 </div>
-
 
 ## UnauthorizedError
 
@@ -98,24 +84,19 @@ This error should be thrown when the user's authentication credentials do not ma
 
 ```ts title="Signature"
 class UnauthorizedError extends I18nError {
-    constructor()
+    constructor();
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`() => UnauthorizedError`}   />
-
-
-
+<MemberInfo kind="method" type={`() => UnauthorizedError`} />
 
 </div>
-
 
 ## ForbiddenError
 
@@ -126,24 +107,19 @@ his or her privileges.
 
 ```ts title="Signature"
 class ForbiddenError extends I18nError {
-    constructor(logLevel: LogLevel = LogLevel.Warn)
+    constructor(logLevel: LogLevel = LogLevel.Warn);
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(logLevel: <a href='/reference/typescript-api/logger/log-level#loglevel'>LogLevel</a> = LogLevel.Warn) => ForbiddenError`}   />
-
-
-
+<MemberInfo kind="method" type={`(logLevel: <a href='/reference/typescript-api/logger/log-level#loglevel'>LogLevel</a> = LogLevel.Warn) => ForbiddenError`} />
 
 </div>
-
 
 ## ChannelNotFoundError
 
@@ -154,24 +130,19 @@ channel token.
 
 ```ts title="Signature"
 class ChannelNotFoundError extends I18nError {
-    constructor(token: string)
+    constructor(token: string);
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(token: string) => ChannelNotFoundError`}   />
-
-
-
+<MemberInfo kind="method" type={`(token: string) => ChannelNotFoundError`} />
 
 </div>
-
 
 ## EntityNotFoundError
 
@@ -182,20 +153,16 @@ the given entityName (Product, User etc.) exists with the provided id.
 
 ```ts title="Signature"
 class EntityNotFoundError extends I18nError {
-    constructor(entityName: keyof typeof coreEntitiesMap | string, id: ID)
+    constructor(entityName: keyof typeof coreEntitiesMap | string, id: ID);
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/errors/i18n-error#i18nerror'>I18nError</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(entityName: keyof typeof coreEntitiesMap | string, id: <a href='/reference/typescript-api/common/id#id'>ID</a>) => EntityNotFoundError`}   />
-
-
-
+<MemberInfo kind="method" type={`(entityName: keyof typeof coreEntitiesMap | string, id: <a href='/reference/typescript-api/common/id#id'>ID</a>) => EntityNotFoundError`} />
 
 </div>

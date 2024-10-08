@@ -1,13 +1,14 @@
 ---
-title: "RevertLastMigration"
+title: 'RevertLastMigration'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## revertLastMigration
 
@@ -17,11 +18,11 @@ Reverts the last applied database migration. See [TypeORM migration docs](https:
 for more information about the underlying migration mechanism.
 
 ```ts title="Signature"
-function revertLastMigration(userConfig: Partial<VendureConfig>): void
+function revertLastMigration(userConfig: Partial<DeenruvConfig>): void;
 ```
+
 Parameters
 
 ### userConfig
 
-<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/vendure-config#vendureconfig'>VendureConfig</a>&#62;`} />
-
+<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;`} />

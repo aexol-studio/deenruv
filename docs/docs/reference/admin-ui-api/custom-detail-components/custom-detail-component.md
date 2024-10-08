@@ -1,13 +1,14 @@
 ---
-title: "CustomDetailComponent"
+title: 'CustomDetailComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CustomDetailComponent
 
@@ -27,14 +28,10 @@ interface CustomDetailComponent {
 
 ### entity$
 
-<MemberInfo kind="property" type={`Observable&#60;any&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;any&#62;`} />
 
 ### detailForm
 
-<MemberInfo kind="property" type={`UntypedFormGroup`}   />
-
-
-
+<MemberInfo kind="property" type={`UntypedFormGroup`} />
 
 </div>

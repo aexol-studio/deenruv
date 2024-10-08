@@ -1,13 +1,14 @@
 ---
-title: "Product"
+title: 'Product'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Product
 
@@ -18,7 +19,7 @@ providing an overall name, description etc.
 
 ```ts title="Signature"
 class Product extends VendureEntity implements Translatable, HasCustomFields, ChannelAware, SoftDeletable {
-    constructor(input?: DeepPartial<Product>)
+    constructor(input?: DeepPartial<Product>);
     @Column({ type: Date, nullable: true })
     deletedAt: Date | null;
     name: LocaleString;
@@ -47,85 +48,67 @@ class Product extends VendureEntity implements Translatable, HasCustomFields, Ch
     customFields: CustomProductFields;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code><a href='/reference/typescript-api/entities/interfaces#translatable'>Translatable</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code><a href='/reference/typescript-api/entities/interfaces#softdeletable'>SoftDeletable</a></code>
-
-
+-   Implements: <code><a href='/reference/typescript-api/entities/interfaces#translatable'>Translatable</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code><a href='/reference/typescript-api/entities/interfaces#softdeletable'>SoftDeletable</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/product#product'>Product</a>&#62;) => Product`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/product#product'>Product</a>&#62;) => Product`} />
 
 ### deletedAt
 
-<MemberInfo kind="property" type={`Date | null`}   />
-
+<MemberInfo kind="property" type={`Date | null`} />
 
 ### name
 
-<MemberInfo kind="property" type={`LocaleString`}   />
-
+<MemberInfo kind="property" type={`LocaleString`} />
 
 ### slug
 
-<MemberInfo kind="property" type={`LocaleString`}   />
-
+<MemberInfo kind="property" type={`LocaleString`} />
 
 ### description
 
-<MemberInfo kind="property" type={`LocaleString`}   />
-
+<MemberInfo kind="property" type={`LocaleString`} />
 
 ### enabled
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### featuredAsset
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>`} />
 
 ### assets
 
-<MemberInfo kind="property" type={`ProductAsset[]`}   />
-
+<MemberInfo kind="property" type={`ProductAsset[]`} />
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;Translation&#60;<a href='/reference/typescript-api/entities/product#product'>Product</a>&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`Array&#60;Translation&#60;<a href='/reference/typescript-api/entities/product#product'>Product</a>&#62;&#62;`} />
 
 ### variants
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`} />
 
 ### optionGroups
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a>[]`} />
 
 ### facetValues
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/facet-value#facetvalue'>FacetValue</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/facet-value#facetvalue'>FacetValue</a>[]`} />
 
 ### channels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomProductFields`}   />
-
-
-
+<MemberInfo kind="property" type={`CustomProductFields`} />
 
 </div>

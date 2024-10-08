@@ -1,13 +1,14 @@
 ---
-title: "AssetImportStrategy"
+title: 'AssetImportStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## AssetImportStrategy
 
@@ -24,7 +25,7 @@ A custom strategy could be created which could e.g. get the asset file from an S
 :::info
 
 This is configured via the `importExportOptions.assetImportStrategy` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
@@ -33,18 +34,16 @@ interface AssetImportStrategy extends InjectableStrategy {
     getStreamFromPath(assetPath: string): Readable | Promise<Readable>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### getStreamFromPath
 
-<MemberInfo kind="method" type={`(assetPath: string) => Readable | Promise&#60;Readable&#62;`}   />
+<MemberInfo kind="method" type={`(assetPath: string) => Readable | Promise&#60;Readable&#62;`} />
 
 Given an asset path, this method should return a Stream of file data. This could
 e.g. be read from a file system or fetch from a remote location.
-
 
 </div>

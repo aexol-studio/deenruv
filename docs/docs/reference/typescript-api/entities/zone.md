@@ -1,13 +1,14 @@
 ---
-title: "Zone"
+title: 'Zone'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Zone
 
@@ -18,7 +19,7 @@ calculating applicable shipping and taxes.
 
 ```ts title="Signature"
 class Zone extends VendureEntity implements HasCustomFields {
-    constructor(input?: DeepPartial<Zone>)
+    constructor(input?: DeepPartial<Zone>);
     @Column() name: string;
     @ManyToMany(type => Region)
     @JoinTable()
@@ -33,50 +34,39 @@ class Zone extends VendureEntity implements HasCustomFields {
     taxRates: TaxRate[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code>HasCustomFields</code>
-
-
+-   Implements: <code>HasCustomFields</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/zone#zone'>Zone</a>&#62;) => Zone`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/zone#zone'>Zone</a>&#62;) => Zone`} />
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### members
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/region#region'>Region</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/region#region'>Region</a>[]`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomZoneFields`}   />
-
+<MemberInfo kind="property" type={`CustomZoneFields`} />
 
 ### defaultShippingZoneChannels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 ### defaultTaxZoneChannels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 ### taxRates
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>[]`} />
 
 </div>

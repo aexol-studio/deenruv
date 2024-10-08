@@ -1,13 +1,14 @@
 ---
-title: "GetSuperadminContext"
+title: 'GetSuperadminContext'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## getSuperadminContext
 
@@ -17,11 +18,11 @@ Creates a <a href='/reference/typescript-api/request/request-context#requestcont
 as the superadmin user. Useful for populating data.
 
 ```ts title="Signature"
-function getSuperadminContext(app: INestApplicationContext): Promise<RequestContext>
+function getSuperadminContext(app: INestApplicationContext): Promise<RequestContext>;
 ```
+
 Parameters
 
 ### app
 
 <MemberInfo kind="parameter" type={`INestApplicationContext`} />
-

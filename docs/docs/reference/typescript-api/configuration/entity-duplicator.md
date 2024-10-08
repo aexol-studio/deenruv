@@ -1,13 +1,14 @@
 ---
-title: "EntityDuplicator"
+title: 'EntityDuplicator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EntityDuplicator
 
@@ -16,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 An EntityDuplicator is used to define the logic for duplicating entities when the `duplicateEntity` mutation is called.
 This allows you to add support for duplication of both core and custom entities.
 
-*Example*
+_Example_
 
 ```ts title=src/config/custom-collection-duplicator.ts
 import { Collection, LanguageCode, Permission
@@ -82,20 +83,17 @@ const customCollectionDuplicator = new EntityDuplicator({
 });
 ```
 
-The duplicator then gets passed to your VendureConfig object:
+The duplicator then gets passed to your DeenruvConfig object:
 
-```ts title=src/vendure-config.ts
-import { VendureConfig, defaultEntityDuplicators } from '@deenruv/core';
+```ts title=src/deenruv-config.ts
+import { DeenruvConfig, defaultEntityDuplicators } from '@deenruv/core';
 import { customCollectionDuplicator } from './config/custom-collection-duplicator';
 
-export const config: VendureConfig = {
-   // ...
-   entityOptions: {
-     entityDuplicators: [
-         ...defaultEntityDuplicators,
-         customCollectionDuplicator,
-     ],
-   },
+export const config: DeenruvConfig = {
+    // ...
+    entityOptions: {
+        entityDuplicators: [...defaultEntityDuplicators, customCollectionDuplicator],
+    },
 };
 ```
 
@@ -110,26 +108,20 @@ class EntityDuplicator<T extends ConfigArgs = ConfigArgs> extends ConfigurableOp
     }) => Promise<VendureEntity>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/configuration/entity-duplicator#entityduplicatorconfig'>EntityDuplicatorConfig</a>&#60;T&#62;) => EntityDuplicator`}   />
-
+<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/configuration/entity-duplicator#entityduplicatorconfig'>EntityDuplicatorConfig</a>&#60;T&#62;) => EntityDuplicator`} />
 
 ### duplicate
 
-<MemberInfo kind="method" type={`(input: {         ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>;         entityName: string;         id: <a href='/reference/typescript-api/common/id#id'>ID</a>;         args: ConfigArg[];     }) => Promise&#60;<a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a>&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(input: {         ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>;         entityName: string;         id: <a href='/reference/typescript-api/common/id#id'>ID</a>;         args: ConfigArg[];     }) => Promise&#60;<a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a>&#62;`} />
 
 </div>
-
 
 ## DuplicateEntityFn
 
@@ -143,9 +135,8 @@ type DuplicateEntityFn<T extends ConfigArgs> = (input: {
     entityName: string;
     id: ID;
     args: ConfigArgValues<T>;
-}) => Promise<VendureEntity>
+}) => Promise<VendureEntity>;
 ```
-
 
 ## EntityDuplicatorConfig
 
@@ -160,40 +151,40 @@ interface EntityDuplicatorConfig<T extends ConfigArgs> extends ConfigurableOpera
     duplicate: DuplicateEntityFn<T>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### requiresPermission
 
-<MemberInfo kind="property" type={`Array&#60;<a href='/reference/typescript-api/common/permission#permission'>Permission</a> | string&#62; | <a href='/reference/typescript-api/common/permission#permission'>Permission</a> | string`}   />
+<MemberInfo kind="property" type={`Array&#60;<a href='/reference/typescript-api/common/permission#permission'>Permission</a> | string&#62; | <a href='/reference/typescript-api/common/permission#permission'>Permission</a> | string`} />
 
 The permissions required in order to execute this duplicator. If an array is passed,
 then the administrator must have at least one of the permissions in the array.
+
 ### forEntities
 
-<MemberInfo kind="property" type={`string[]`}   />
+<MemberInfo kind="property" type={`string[]`} />
 
 The entities for which this duplicator is able to duplicate.
+
 ### duplicate
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/configuration/entity-duplicator#duplicateentityfn'>DuplicateEntityFn</a>&#60;T&#62;`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/configuration/entity-duplicator#duplicateentityfn'>DuplicateEntityFn</a>&#60;T&#62;`} />
 
 The function which performs the duplication.
 
-*Example*
+_Example_
 
 ```ts
 duplicate: async input => {
-  const { ctx, id, args } = input;
+    const { ctx, id, args } = input;
 
-  // perform the duplication logic here
+    // perform the duplication logic here
 
-  return newEntity;
-}
+    return newEntity;
+};
 ```
-
 
 </div>

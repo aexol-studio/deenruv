@@ -1,5 +1,5 @@
 ---
-title: "Getting data into production"
+title: 'Getting data into production'
 showtoc: true
 weight: 4
 ---
@@ -20,10 +20,10 @@ The main tasks will be:
 The first item - creation of the schema - can be automatically handled by TypeORM's `synchronize` feature. Switching it on for the initial
 run will automatically create the schema. This can be done by using an environment variable:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     dbConnectionOptions: {
         type: 'postgres',
@@ -43,8 +43,8 @@ Set the `DB_SYNCHRONIZE` variable to `true` on first start, and then after the s
 
 ## Importing initial & catalog data
 
-Importing initial and catalog data can be handled by Vendure `populate()` helper function - see the [Importing Product Data guide](/guides/developer-guide/importing-data/).
+Importing initial and catalog data can be handled by Deenruv `populate()` helper function - see the [Importing Product Data guide](/guides/developer-guide/importing-data/).
 
 ## Importing other data
 
-Any kinds of data not covered by the `populate()` function can be imported using a custom script, which can use any Vendure service or service defined by your custom plugins to populate data in any way you like. See the [Stand-alone scripts guide](/guides/developer-guide/stand-alone-scripts/).
+Any kinds of data not covered by the `populate()` function can be imported using a custom script, which can use any Deenruv service or service defined by your custom plugins to populate data in any way you like. See the [Stand-alone scripts guide](/guides/developer-guide/stand-alone-scripts/).

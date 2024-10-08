@@ -1,13 +1,14 @@
 ---
-title: "RegisterBulkAction"
+title: 'RegisterBulkAction'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerBulkAction
 
@@ -23,7 +24,7 @@ In this example, imagine we have an integration with a 3rd-party text translatio
 bulk action allows us to select multiple products from the product list view, and send them for
 translation via a custom service which integrates with the translation service's API.
 
-*Example*
+_Example_
 
 ```ts title="providers.ts"
 import { ModalService, registerBulkAction, SharedModule } from '@deenruv/admin-ui/core';
@@ -57,11 +58,11 @@ export default [
 ```
 
 ```ts title="Signature"
-function registerBulkAction(bulkAction: BulkAction): FactoryProvider
+function registerBulkAction(bulkAction: BulkAction): FactoryProvider;
 ```
+
 Parameters
 
 ### bulkAction
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/bulk-actions/bulk-action#bulkaction'>BulkAction</a>`} />
-

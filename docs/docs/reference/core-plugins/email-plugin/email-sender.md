@@ -1,13 +1,14 @@
 ---
-title: "EmailSender"
+title: 'EmailSender'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EmailSender
 
@@ -17,7 +18,7 @@ An EmailSender is responsible for sending the email, e.g. via an SMTP connection
 or using some other mail-sending API. By default, the EmailPlugin uses the
 <a href='/reference/core-plugins/email-plugin/email-sender#nodemaileremailsender'>NodemailerEmailSender</a>, but it is also possible to supply a custom implementation:
 
-*Example*
+_Example_
 
 ```ts
 const sgMail = require('@sendgrid/mail');
@@ -35,7 +36,7 @@ class SendgridEmailSender implements EmailSender {
   }
 }
 
-const config: VendureConfig = {
+const config: DeenruvConfig = {
   logger: new DefaultLogger({ level: LogLevel.Debug })
   // ...
   plugins: [
@@ -53,21 +54,16 @@ interface EmailSender extends InjectableStrategy {
     send: (email: EmailDetails, options: EmailTransportOptions) => void | Promise<void>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### send
 
-<MemberInfo kind="property" type={`(email: <a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>, options: <a href='/reference/core-plugins/email-plugin/transport-options#emailtransportoptions'>EmailTransportOptions</a>) =&#62; void | Promise&#60;void&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`(email: <a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>, options: <a href='/reference/core-plugins/email-plugin/transport-options#emailtransportoptions'>EmailTransportOptions</a>) =&#62; void | Promise&#60;void&#62;`} />
 
 </div>
-
 
 ## NodemailerEmailSender
 
@@ -80,17 +76,13 @@ class NodemailerEmailSender implements EmailSender {
     send(email: EmailDetails, options: EmailTransportOptions) => ;
 }
 ```
-* Implements: <code><a href='/reference/core-plugins/email-plugin/email-sender#emailsender'>EmailSender</a></code>
 
-
+-   Implements: <code><a href='/reference/core-plugins/email-plugin/email-sender#emailsender'>EmailSender</a></code>
 
 <div className="members-wrapper">
 
 ### send
 
-<MemberInfo kind="method" type={`(email: <a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>, options: <a href='/reference/core-plugins/email-plugin/transport-options#emailtransportoptions'>EmailTransportOptions</a>) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(email: <a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>, options: <a href='/reference/core-plugins/email-plugin/transport-options#emailtransportoptions'>EmailTransportOptions</a>) => `} />
 
 </div>

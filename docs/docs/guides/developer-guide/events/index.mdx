@@ -2,7 +2,7 @@
 title: 'Events'
 ---
 
-Vendure emits events which can be subscribed to by plugins. These events are published by the [EventBus](/reference/typescript-api/events/event-bus/) and
+Deenruv emits events which can be subscribed to by plugins. These events are published by the [EventBus](/reference/typescript-api/events/event-bus/) and
 likewise the `EventBus` is used to subscribe to events.
 
 An event exists for virtually all significant actions which occur in the system, such as:
@@ -195,7 +195,7 @@ export class MyPluginService {
 
 ## Creating custom events
 
-You can create your own custom events by extending the [`VendureEvent`](/reference/typescript-api/events/vendure-event) class. For example, to create a custom event which is triggered when a customer submits a review, you could do this:
+You can create your own custom events by extending the [`VendureEvent`](/reference/typescript-api/events/deenruv-event) class. For example, to create a custom event which is triggered when a customer submits a review, you could do this:
 
 ```ts title="src/plugins/reviews/events/review-submitted.event.ts"
 import { ID, RequestContext, VendureEvent } from '@deenruv/core';
@@ -242,7 +242,7 @@ export class ProductReviewService {
 
 ### Entity events
 
-There is a special event class [`VendureEntityEvent`](/reference/typescript-api/events/vendure-entity-event) for events relating to the creation, update or deletion of entities. Let's say you have a custom entity (see [defining a database entity](/guides/developer-guide/database-entity)) `BlogPost` and you want to trigger an event whenever a new `BlogPost` is created, updated or deleted:
+There is a special event class [`VendureEntityEvent`](/reference/typescript-api/events/deenruv-entity-event) for events relating to the creation, update or deletion of entities. Let's say you have a custom entity (see [defining a database entity](/guides/developer-guide/database-entity)) `BlogPost` and you want to trigger an event whenever a new `BlogPost` is created, updated or deleted:
 
 ```ts title="src/plugins/blog/events/blog-post-event.ts"
 import { ID, RequestContext, VendureEntityEvent } from '@deenruv/core';
@@ -302,7 +302,7 @@ export class BlogPlugin implements OnModuleInit {
 :::note
 The following section is an advanced topic.
 
-The API described in this section was added in Vendure v2.2.0.
+The API described in this section was added in Deenruv v2.2.0.
 :::
 
 When using the `.ofType().subscribe()` pattern, the event handler is non-blocking. This means that the code that publishes
@@ -359,13 +359,12 @@ export class MyPluginPlugin implements OnModuleInit {
 
 Key differences between event subscribers and blocking event handlers:
 
-
-Aspect | Event subscribers | Blocking event handlers |
-|---|---|---|
-| **Execution** | Executed _after_ publishing code completes | Execute _during_ the publishing code |
-| **Error handling** | Errors do not affect publishing code | Errors propagated to publishing code |
-| **Transactions** | Guaranteed to execute only after the publishing code transaction has completed | Executed within the transaction of the publishing code |
-| **Performance** | Non-blocking: subscriber function performance has no effect on publishing code | Blocking: handler function will block execution of publishing code. Handler must be fast. |
+| Aspect             | Event subscribers                                                              | Blocking event handlers                                                                   |
+| ------------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **Execution**      | Executed _after_ publishing code completes                                     | Execute _during_ the publishing code                                                      |
+| **Error handling** | Errors do not affect publishing code                                           | Errors propagated to publishing code                                                      |
+| **Transactions**   | Guaranteed to execute only after the publishing code transaction has completed | Executed within the transaction of the publishing code                                    |
+| **Performance**    | Non-blocking: subscriber function performance has no effect on publishing code | Blocking: handler function will block execution of publishing code. Handler must be fast. |
 
 ### Performance considerations
 
@@ -391,7 +390,6 @@ this.eventBus.registerBlockingEventHandler({
         // ...
     },
 });
-
 
 // In another part of your code base
 this.eventBus.registerBlockingEventHandler({

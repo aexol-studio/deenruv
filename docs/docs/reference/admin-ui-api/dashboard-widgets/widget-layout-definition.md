@@ -1,13 +1,14 @@
 ---
-title: "WidgetLayoutDefinition"
+title: 'WidgetLayoutDefinition'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## WidgetLayoutDefinition
 
@@ -16,5 +17,5 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A configuration object for the default dashboard widget layout.
 
 ```ts title="Signature"
-type WidgetLayoutDefinition = Array<{ id: string; width: DashboardWidgetWidth }>
+type WidgetLayoutDefinition = Array<{ id: string; width: DashboardWidgetWidth }>;
 ```

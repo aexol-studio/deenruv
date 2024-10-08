@@ -1,13 +1,14 @@
 ---
-title: "EntityId Decorator"
+title: 'EntityId Decorator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EntityId
 
@@ -18,11 +19,11 @@ because we do not know the data type of the ID column until runtime, when we hav
 to the configured EntityIdStrategy.
 
 ```ts title="Signature"
-function EntityId(options?: IdColumnOptions): void
+function EntityId(options?: IdColumnOptions): void;
 ```
+
 Parameters
 
 ### options
 
 <MemberInfo kind="parameter" type={`IdColumnOptions`} />
-

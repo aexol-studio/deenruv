@@ -1,11 +1,11 @@
 ---
-title: "Uploading Files"
+title: 'Uploading Files'
 showtoc: true
 ---
 
-# Uploading Files 
+# Uploading Files
 
-Vendure handles file uploads with the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec). Internally, we use the [graphql-upload package](https://github.com/jaydenseric/graphql-upload). Once uploaded, a file is known as an [Asset](/guides/core-concepts/images-assets/). Assets are typically used for images, but can represent any kind of binary data such as PDF files or videos.
+Deenruv handles file uploads with the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec). Internally, we use the [graphql-upload package](https://github.com/jaydenseric/graphql-upload). Once uploaded, a file is known as an [Asset](/guides/core-concepts/images-assets/). Assets are typically used for images, but can represent any kind of binary data such as PDF files or videos.
 
 ## Upload clients
 
@@ -15,7 +15,7 @@ For testing, it is even possible to use a [plain curl request](https://github.co
 
 ## The `createAssets` mutation
 
-The [createAssets mutation](/reference/graphql-api/admin/mutations/#createassets) in the Admin API is the only means of uploading files by default. 
+The [createAssets mutation](/reference/graphql-api/admin/mutations/#createassets) in the Admin API is the only means of uploading files by default.
 
 Here's an example of how a file upload would look using the `apollo-upload-client` package:
 
@@ -73,7 +73,7 @@ import { Asset, LanguageCode, PluginCommonModule, VendurePlugin } from '@deenruv
         config.customFields.Customer.push({
             name: 'avatar',
             type: 'relation',
-            label: [{languageCode: LanguageCode.en, value: 'Customer avatar'}],
+            label: [{ languageCode: LanguageCode.en, value: 'Customer avatar' }],
             entity: Asset,
             nullable: true,
         });
@@ -92,9 +92,10 @@ Next, we will define the schema for the mutation:
 import gql from 'graphql-tag';
 
 export const shopApiExtensions = gql`
-extend type Mutation {
-  setCustomerAvatar(file: Upload!): Asset
-}`
+    extend type Mutation {
+        setCustomerAvatar(file: Upload!): Asset
+    }
+`;
 ```
 
 ### Resolver
@@ -105,13 +106,22 @@ The resolver will make use of the built-in [AssetService](/reference/typescript-
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { Asset } from '@deenruv/common/lib/generated-types';
 import {
-    Allow, AssetService, Ctx, CustomerService, isGraphQlErrorResult,
-    Permission, RequestContext, Transaction
+    Allow,
+    AssetService,
+    Ctx,
+    CustomerService,
+    isGraphQlErrorResult,
+    Permission,
+    RequestContext,
+    Transaction,
 } from '@deenruv/core';
 
 @Resolver()
 export class CustomerAvatarResolver {
-    constructor(private assetService: AssetService, private customerService: CustomerService) {}
+    constructor(
+        private assetService: AssetService,
+        private customerService: CustomerService,
+    ) {}
 
     @Transaction()
     @Mutation()
@@ -173,15 +183,14 @@ import { CustomerAvatarResolver } from './api/customer-avatar.resolver';
         config.customFields.Customer.push({
             name: 'avatar',
             type: 'relation',
-            label: [{languageCode: LanguageCode.en, value: 'Customer avatar'}],
+            label: [{ languageCode: LanguageCode.en, value: 'Customer avatar' }],
             entity: Asset,
             nullable: true,
         });
         return config;
     },
 })
-export class CustomerAvatarPlugin {
-}
+export class CustomerAvatarPlugin {}
 ```
 
 ### Uploading a Customer Avatar
@@ -189,32 +198,32 @@ export class CustomerAvatarPlugin {
 In our storefront, we would then upload a Customer's avatar like this:
 
 ```tsx
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from '@apollo/client';
 
 const MUTATION = gql`
-  mutation SetCustomerAvatar($file: Upload!) {
-    setCustomerAvatar(file: $file) {
-      id
-      name
-      fileSize
+    mutation SetCustomerAvatar($file: Upload!) {
+        setCustomerAvatar(file: $file) {
+            id
+            name
+            fileSize
+        }
     }
-  }
 `;
 
 function UploadAvatar() {
-  const [mutate] = useMutation(MUTATION);
+    const [mutate] = useMutation(MUTATION);
 
-  function onChange(event) {
-    const { target } = event;  
-    if (target.validity.valid && target.files.length === 1) {
-      mutate({ 
-        variables: {
-          file: target.files[0],
-        }  
-      });
+    function onChange(event) {
+        const { target } = event;
+        if (target.validity.valid && target.files.length === 1) {
+            mutate({
+                variables: {
+                    file: target.files[0],
+                },
+            });
+        }
     }
-  }
 
-  return <input type="file" required onChange={onChange} />;
+    return <input type="file" required onChange={onChange} />;
 }
 ```

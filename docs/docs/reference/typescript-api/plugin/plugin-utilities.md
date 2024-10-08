@@ -1,13 +1,14 @@
 ---
-title: "Plugin Utilities"
+title: 'Plugin Utilities'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## createProxyHandler
 
@@ -15,41 +16,40 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Creates a proxy middleware which proxies the given route to the given port.
 Useful for plugins which start their own servers but should be accessible
-via the main Vendure url.
+via the main Deenruv url.
 
-*Example*
+_Example_
 
 ```ts
 // Example usage in the `configuration` method of a VendurePlugin.
 // Imagine that we have started a Node server on port 5678
 // running some service which we want to access via the `/my-plugin/`
-// route of the main Vendure server.
+// route of the main Deenruv server.
 @DeenruvPlugin({
-  configuration: (config: Required<VendureConfig>) => {
-      config.apiOptions.middleware.push({
-          handler: createProxyHandler({
-              label: 'Admin UI',
-              route: 'my-plugin',
-              port: 5678,
-          }),
-          route: 'my-plugin',
-      });
-      return config;
-  }
+    configuration: (config: Required<DeenruvConfig>) => {
+        config.apiOptions.middleware.push({
+            handler: createProxyHandler({
+                label: 'Admin UI',
+                route: 'my-plugin',
+                port: 5678,
+            }),
+            route: 'my-plugin',
+        });
+        return config;
+    },
 })
 export class MyPlugin {}
 ```
 
 ```ts title="Signature"
-function createProxyHandler(options: ProxyOptions): RequestHandler
+function createProxyHandler(options: ProxyOptions): RequestHandler;
 ```
+
 Parameters
 
 ### options
 
 <MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/plugin/plugin-utilities#proxyoptions'>ProxyOptions</a>`} />
-
-
 
 ## ProxyOptions
 
@@ -71,30 +71,33 @@ interface ProxyOptions {
 
 ### label
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 A human-readable label for the service which is being proxied. Used to
 generate more informative logs.
+
 ### route
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
-The route of the Vendure server which will act as the proxy url.
+The route of the Deenruv server which will act as the proxy url.
+
 ### port
 
-<MemberInfo kind="property" type={`number`}   />
+<MemberInfo kind="property" type={`number`} />
 
 The port on which the service being proxied is running.
+
 ### hostname
 
-<MemberInfo kind="property" type={`string`} default={`'localhost'`}   />
+<MemberInfo kind="property" type={`string`} default={`'localhost'`} />
 
 The hostname of the server on which the service being proxied is running.
+
 ### basePath
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 An optional base path on the proxied server.
-
 
 </div>

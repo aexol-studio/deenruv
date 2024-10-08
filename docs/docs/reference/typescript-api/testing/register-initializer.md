@@ -1,13 +1,14 @@
 ---
-title: "RegisterInitializer"
+title: 'RegisterInitializer'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerInitializer
 
@@ -17,8 +18,9 @@ Registers a <a href='/reference/typescript-api/testing/test-db-initializer#testd
 <a href='/reference/typescript-api/testing/create-test-environment#createtestenvironment'>createTestEnvironment</a>.
 
 ```ts title="Signature"
-function registerInitializer(type: DataSourceOptions['type'], initializer: TestDbInitializer<any>): void
+function registerInitializer(type: DataSourceOptions['type'], initializer: TestDbInitializer<any>): void;
 ```
+
 Parameters
 
 ### type
@@ -28,4 +30,3 @@ Parameters
 ### initializer
 
 <MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/testing/test-db-initializer#testdbinitializer'>TestDbInitializer</a>&#60;any&#62;`} />
-

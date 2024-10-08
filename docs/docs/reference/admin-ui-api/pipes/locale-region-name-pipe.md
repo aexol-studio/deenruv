@@ -1,13 +1,14 @@
 ---
-title: "LocaleRegionNamePipe"
+title: 'LocaleRegionNamePipe'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## LocaleRegionNamePipe
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Displays a human-readable name for a given region.
 
-*Example*
+_Example_
 
 ```HTML
 {{ 'GB' | localeRegionName }}
@@ -27,25 +28,19 @@ class LocaleRegionNamePipe extends LocaleBasePipe implements PipeTransform {
     transform(value: any, locale?: unknown) => string;
 }
 ```
-* Extends: <code>LocaleBasePipe</code>
 
+-   Extends: <code>LocaleBasePipe</code>
 
-* Implements: <code>PipeTransform</code>
-
-
+-   Implements: <code>PipeTransform</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(dataService?: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef?: ChangeDetectorRef) => LocaleRegionNamePipe`}   />
-
+<MemberInfo kind="method" type={`(dataService?: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>, changeDetectorRef?: ChangeDetectorRef) => LocaleRegionNamePipe`} />
 
 ### transform
 
-<MemberInfo kind="method" type={`(value: any, locale?: unknown) => string`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: any, locale?: unknown) => string`} />
 
 </div>

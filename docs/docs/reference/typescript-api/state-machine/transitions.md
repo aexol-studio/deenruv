@@ -1,13 +1,14 @@
 ---
-title: "Transitions"
+title: 'Transitions'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Transitions
 
@@ -16,21 +17,21 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A type which is used to define valid states and transitions for a state machine based
 on <a href='/reference/typescript-api/state-machine/fsm#fsm'>FSM</a>.
 
-*Example*
+_Example_
 
 ```ts
 type LightColor = 'Green' | 'Amber' | 'Red';
 
 const trafficLightTransitions: Transitions<LightColor> = {
-  Green: {
-    to: ['Amber'],
-  },
-  Amber: {
-    to: ['Red'],
-  },
-  Red: {
-    to: ['Green'],
-  },
+    Green: {
+        to: ['Amber'],
+    },
+    Amber: {
+        to: ['Red'],
+    },
+    Red: {
+        to: ['Green'],
+    },
 };
 ```
 
@@ -43,5 +44,5 @@ type Transitions<State extends string, Target extends string = State> = {
         to: Readonly<Target[]>;
         mergeStrategy?: 'merge' | 'replace';
     };
-}
+};
 ```

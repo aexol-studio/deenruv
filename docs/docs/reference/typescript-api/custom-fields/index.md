@@ -1,13 +1,14 @@
 ---
-title: "CustomFields"
+title: 'CustomFields'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CustomFields
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Most entities can have additional fields added to them by defining an array of <a href='/reference/typescript-api/custom-fields/custom-field-config#customfieldconfig'>CustomFieldConfig</a>objects on against the corresponding key.
 
-*Example*
+_Example_
 
 ```ts
 bootstrap({
@@ -26,11 +27,9 @@ bootstrap({
             { name: 'downloadable', type: 'boolean', defaultValue: false },
             { name: 'shortName', type: 'localeString' },
         ],
-        User: [
-            { name: 'socialLoginToken', type: 'string', public: false },
-        ],
+        User: [{ name: 'socialLoginToken', type: 'string', public: false }],
     },
-})
+});
 ```
 
 ```ts title="Signature"
@@ -63,5 +62,5 @@ type CustomFields = {
     TaxRate?: CustomFieldConfig[];
     User?: CustomFieldConfig[];
     Zone?: CustomFieldConfig[];
-} & { [entity: string]: CustomFieldConfig[] }
+} & { [entity: string]: CustomFieldConfig[] };
 ```

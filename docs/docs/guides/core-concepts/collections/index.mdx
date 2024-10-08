@@ -14,20 +14,20 @@ create a hierarchy of categories, which is typically used to create a menu struc
 Collections are not _only_ used as the basis of storefront navigation. They are a general-purpose organization tool which can be used
 for many purposes, such as:
 
-- Creating a collection of "new arrivals" which is used on the homepage.
-- Creating a collection of "best sellers" which is used to display a list of popular products.
-- Creating a collection of "sale items" which is used to apply a discount to all products in the collection, via a promotion.
+-   Creating a collection of "new arrivals" which is used on the homepage.
+-   Creating a collection of "best sellers" which is used to display a list of popular products.
+-   Creating a collection of "sale items" which is used to apply a discount to all products in the collection, via a promotion.
 
 ## Collection filters
 
 The specific product variants that belong to a collection are determined by the collection's [`CollectionFilters`](/reference/typescript-api/configuration/collection-filter/).
-A collection filter is a piece of logic which is used to determine whether a product variant should be included in the collection. By default, Vendure
+A collection filter is a piece of logic which is used to determine whether a product variant should be included in the collection. By default, Deenruv
 includes a number of collection filters:
 
-- **Filter by facet values**: Include all product variants which have a specific set of facet values.
-- **Filter by product variant name**: Include all product variants whose name matches a specific string.
-- **Manually select product variants**: Allows manual selection of individual product variants.
-- **Manually select products**: Allows manual selection of entire products, and then includes all variants of those products.
+-   **Filter by facet values**: Include all product variants which have a specific set of facet values.
+-   **Filter by product variant name**: Include all product variants whose name matches a specific string.
+-   **Manually select product variants**: Allows manual selection of individual product variants.
+-   **Manually select products**: Allows manual selection of entire products, and then includes all variants of those products.
 
 ![Collection filters](./collection-filters.webp)
 
@@ -93,7 +93,7 @@ export const skuCollectionFilter = new CollectionFilter({
         const LIKE = qb.connection.options.type === 'postgres' ? 'ILIKE' : 'LIKE';
 
         return qb.andWhere(`productVariant.sku ${LIKE} :sku`, {
-            sku: `%${args.sku}%`
+            sku: `%${args.sku}%`,
         });
     },
 });
@@ -103,17 +103,17 @@ In the `apply()` method, the product variant entity is aliased as `'productVaria
 
 This custom filter is then added to the defaults in your config:
 
-```ts title="src/vendure-config.ts"
-import { defaultCollectionFilters, VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { defaultCollectionFilters, DeenruvConfig } from '@deenruv/core';
 import { skuCollectionFilter } from './config/sku-collection-filter';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     catalogOptions: {
         collectionFilters: [
             ...defaultCollectionFilters,
             // highlight-next-line
-            skuCollectionFilter
+            skuCollectionFilter,
         ],
     },
 };
@@ -121,5 +121,5 @@ export const config: VendureConfig = {
 
 :::info
 To see some more advanced collection filter examples, you can look at the source code of the
-[default collection filters](https://github.com/vendure-ecommerce/vendure/blob/master/packages/core/src/config/catalog/default-collection-filters.ts).
+[default collection filters](https://github.com/aexol-studio/deenruv/blob/master/packages/core/src/config/catalog/default-collection-filters.ts).
 :::

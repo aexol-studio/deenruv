@@ -1,13 +1,14 @@
 ---
-title: "JobQueueStrategy"
+title: 'JobQueueStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## JobQueueStrategy
 
@@ -20,7 +21,7 @@ services such as Redis.
 :::info
 
 This is configured via the `jobQueueOptions.jobQueueStrategy` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
@@ -40,27 +41,27 @@ interface JobQueueStrategy extends InjectableStrategy {
     ): Promise<void>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### add
 
-<MemberInfo kind="method" type={`(job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;, jobOptions?: JobQueueStrategyJobOptions&#60;Data&#62;) => Promise&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62;`}   />
+<MemberInfo kind="method" type={`(job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;, jobOptions?: JobQueueStrategyJobOptions&#60;Data&#62;) => Promise&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62;`} />
 
 Add a new job to the queue.
+
 ### start
 
-<MemberInfo kind="method" type={`(queueName: string, process: (job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`(queueName: string, process: (job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`} />
 
 Start the job queue
+
 ### stop
 
-<MemberInfo kind="method" type={`(queueName: string, process: (job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`(queueName: string, process: (job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;) =&#62; Promise&#60;any&#62;) => Promise&#60;void&#62;`} />
 
 Stops a queue from running. Its not guaranteed to stop immediately.
-
 
 </div>

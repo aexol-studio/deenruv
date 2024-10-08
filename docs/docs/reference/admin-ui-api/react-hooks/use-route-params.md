@@ -1,13 +1,14 @@
 ---
-title: "UseRouteParams"
+title: 'UseRouteParams'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## useRouteParams
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Provides access to the current route params and query params.
 
-*Example*
+_Example_
 
 ```ts
 import { useRouteParams } from '@deenruv/admin-ui/react';
@@ -29,5 +30,5 @@ export function MyComponent() {
 ```
 
 ```ts title="Signature"
-function useRouteParams(): void
+function useRouteParams(): void;
 ```

@@ -1,13 +1,14 @@
 ---
-title: "TestDbInitializer"
+title: 'TestDbInitializer'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TestDbInitializer
 
@@ -19,7 +20,7 @@ The `@deenruv/testing` package ships with initializers for sql.js, MySQL & Postg
 Custom initializers can be created by implementing this interface and registering
 it with the <a href='/reference/typescript-api/testing/register-initializer#registerinitializer'>registerInitializer</a> function:
 
-*Example*
+_Example_
 
 ```ts
 export class CockroachDbInitializer implements TestDbInitializer<CockroachConnectionOptions> {
@@ -41,24 +42,25 @@ interface TestDbInitializer<T extends BaseConnectionOptions> {
 
 ### init
 
-<MemberInfo kind="method" type={`(testFileName: string, connectionOptions: T) => Promise&#60;T&#62;`}   />
+<MemberInfo kind="method" type={`(testFileName: string, connectionOptions: T) => Promise&#60;T&#62;`} />
 
 Responsible for creating a database for the current test suite.
 Typically, this method will:
 
-* use the testFileName parameter to derive a database name
-* create the database
-* mutate the `connetionOptions` object to point to that new database
+-   use the testFileName parameter to derive a database name
+-   create the database
+-   mutate the `connetionOptions` object to point to that new database
+
 ### populate
 
-<MemberInfo kind="method" type={`(populateFn: () =&#62; Promise&#60;void&#62;) => Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`(populateFn: () =&#62; Promise&#60;void&#62;) => Promise&#60;void&#62;`} />
 
 Execute the populateFn to populate your database.
+
 ### destroy
 
-<MemberInfo kind="method" type={`() => void | Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`() => void | Promise&#60;void&#62;`} />
 
 Clean up any resources used during the init() phase (i.e. close open DB connections)
-
 
 </div>

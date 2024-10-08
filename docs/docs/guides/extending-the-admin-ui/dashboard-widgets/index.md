@@ -46,23 +46,28 @@ export class ReviewsWidgetComponent implements OnInit {
     constructor(private dataService: DataService) {}
 
     ngOnInit() {
-        this.pendingReviews$ = this.dataService.query(gql`
-            query GetAllReviews($options: ProductReviewListOptions) {
-                productReviews(options: $options) {
-                    items {
-                        id
-                        createdAt
-                        authorName
-                        summary
-                        rating
+        this.pendingReviews$ = this.dataService
+            .query(
+                gql`
+                    query GetAllReviews($options: ProductReviewListOptions) {
+                        productReviews(options: $options) {
+                            items {
+                                id
+                                createdAt
+                                authorName
+                                summary
+                                rating
+                            }
+                        }
                     }
-                }
-            }`, {
-                options: {
-                    filter: { state: { eq: 'new' } },
-                    take: 10,
+                `,
+                {
+                    options: {
+                        filter: { state: { eq: 'new' } },
+                        take: 10,
+                    },
                 },
-            })
+            )
             .mapStream(data => data.productReviews.items);
     }
 }
@@ -86,18 +91,16 @@ export default [
         supportedWidths: [4, 6, 8, 12],
         requiresPermissions: ['ReadReview'],
         loadComponent: () =>
-            import('./reviews-widget/reviews-widget.component').then(
-                m => m.ReviewsWidgetComponent,
-            ),
+            import('./reviews-widget/reviews-widget.component').then(m => m.ReviewsWidgetComponent),
     }),
     // highlight-end
 ];
 ```
 
-* **`title`** This is the title of the widget that will be displayed in the widget header.
-* **`supportedWidths`** This indicated which widths are supported by the widget. The number indicates columns in a Bootstrap-style 12-column grid. So `12` would be full-width, `6` half-width, etc. In the UI, the administrator will be able to re-size the widget to one of the supported widths. If not provided, all widths will be allowed.
-* **`requiresPermissions`** This allows an array of Permissions to be specified which limit the display of the widget to administrators who possess all of those permissions. If not provided, all administrators will be able to use the widget.
-* **`loadComponent`** This function defines how to load the component. Using the dynamic `import()` syntax will enable the Angular compiler to intelligently generate a lazy-loaded JavaScript bundle just for that component. This means that your widget can, for example, include 3rd-party dependencies (such as a charting library) without increasing the bundle size (and therefore load-times) of the main Admin UI app. The widget-specific code will _only_ be loaded when the widget is rendered on the dashboard.
+-   **`title`** This is the title of the widget that will be displayed in the widget header.
+-   **`supportedWidths`** This indicated which widths are supported by the widget. The number indicates columns in a Bootstrap-style 12-column grid. So `12` would be full-width, `6` half-width, etc. In the UI, the administrator will be able to re-size the widget to one of the supported widths. If not provided, all widths will be allowed.
+-   **`requiresPermissions`** This allows an array of Permissions to be specified which limit the display of the widget to administrators who possess all of those permissions. If not provided, all administrators will be able to use the widget.
+-   **`loadComponent`** This function defines how to load the component. Using the dynamic `import()` syntax will enable the Angular compiler to intelligently generate a lazy-loaded JavaScript bundle just for that component. This means that your widget can, for example, include 3rd-party dependencies (such as a charting library) without increasing the bundle size (and therefore load-times) of the main Admin UI app. The widget-specific code will _only_ be loaded when the widget is rendered on the dashboard.
 
 Once registered, the reviews widget will be available to select by administrators with the appropriate permissions.
 
@@ -127,7 +130,7 @@ This defines the order of widgets with their default widths. The actual layout i
 
 ## Overriding default widgets
 
-The Admin UI comes with a set of default widgets, such as the order summary and latest orders widgets (they can be found in [the default-widgets.ts file](https://github.com/vendure-ecommerce/vendure/blob/master/packages/admin-ui/src/lib/dashboard/src/default-widgets.ts)).
+The Admin UI comes with a set of default widgets, such as the order summary and latest orders widgets (they can be found in [the default-widgets.ts file](https://github.com/aexol-studio/deenruv/blob/master/packages/admin-ui/src/lib/dashboard/src/default-widgets.ts)).
 
 Sometimes you may wish to alter the permissions settings of the default widgets to better control which of your Administrators is able to access it.
 

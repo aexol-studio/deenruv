@@ -1,13 +1,14 @@
 ---
-title: "JobBuffer"
+title: 'JobBuffer'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## JobBuffer
 
@@ -26,44 +27,43 @@ that were collected into the buffer will be removed from the buffer and passed t
 This method is able to perform additional logic to e.g. aggregate many jobs into a single job in order to de-duplicate
 work.
 
-*Example*
+_Example_
 
 ```ts
 // This is a buffer which will collect all the
 // 'apply-collection-filters' jobs and buffer them.
 export class CollectionJobBuffer implements JobBuffer<ApplyCollectionFiltersJobData> {
-  readonly id = 'apply-collection-filters-buffer';
+    readonly id = 'apply-collection-filters-buffer';
 
-  collect(job: Job): boolean {
-    return job.queueName === 'apply-collection-filters';
-  }
+    collect(job: Job): boolean {
+        return job.queueName === 'apply-collection-filters';
+    }
 
+    // When the buffer gets flushed, this function will be passed all the collected jobs
+    // and will reduce them down to a single job that has aggregated all of the collectionIds.
+    reduce(collectedJobs: Array<Job<ApplyCollectionFiltersJobData>>): Array<Job<any>> {
+        // Concatenate all the collectionIds from all the events that were buffered
+        const collectionIdsToUpdate = collectedJobs.reduce((result, job) => {
+            return [...result, ...job.data.collectionIds];
+        }, [] as ID[]);
 
-  // When the buffer gets flushed, this function will be passed all the collected jobs
-  // and will reduce them down to a single job that has aggregated all of the collectionIds.
-  reduce(collectedJobs: Array<Job<ApplyCollectionFiltersJobData>>): Array<Job<any>> {
-    // Concatenate all the collectionIds from all the events that were buffered
-    const collectionIdsToUpdate = collectedJobs.reduce((result, job) => {
-      return [...result, ...job.data.collectionIds];
-    }, [] as ID[]);
+        const referenceJob = collectedJobs[0];
 
-    const referenceJob = collectedJobs[0];
+        // Create a new Job containing all the concatenated collectionIds,
+        // de-duplicated to include each collectionId only once.
+        const batchedCollectionJob = new Job<ApplyCollectionFiltersJobData>({
+            ...referenceJob,
+            id: undefined,
+            data: {
+                collectionIds: unique(collectionIdsToUpdate),
+                ctx: referenceJob.data.ctx,
+                applyToChangedVariantsOnly: referenceJob.data.applyToChangedVariantsOnly,
+            },
+        });
 
-    // Create a new Job containing all the concatenated collectionIds,
-    // de-duplicated to include each collectionId only once.
-    const batchedCollectionJob = new Job<ApplyCollectionFiltersJobData>({
-      ...referenceJob,
-      id: undefined,
-      data: {
-        collectionIds: unique(collectionIdsToUpdate),
-        ctx: referenceJob.data.ctx,
-        applyToChangedVariantsOnly: referenceJob.data.applyToChangedVariantsOnly,
-      },
-    });
-
-    // Only this single job will get added to the job queue
-    return [batchedCollectionJob];
-  }
+        // Only this single job will get added to the job queue
+        return [batchedCollectionJob];
+    }
 }
 ```
 
@@ -73,7 +73,7 @@ and start collecting jobs.
 At some later point, the buffer can be flushed, causing the buffered jobs to be passed through the
 `reduce()` method and sent to the job queue.
 
-*Example*
+_Example_
 
 ```ts
 const collectionBuffer = new CollectionJobBuffer();
@@ -101,23 +101,22 @@ interface JobBuffer<Data extends JobData<Data> = object> {
 
 ### id
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### collect
 
-<MemberInfo kind="method" type={`(job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;) => boolean | Promise&#60;boolean&#62;`}   />
+<MemberInfo kind="method" type={`(job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;) => boolean | Promise&#60;boolean&#62;`} />
 
 This method is called whenever a job is added to the job queue. If it returns `true`, then
 the job will be _buffered_ and _not_ added to the job queue. If it returns `false`, the job
 will be added to the job queue as normal.
+
 ### reduce
 
-<MemberInfo kind="method" type={`(collectedJobs: Array&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62;) => Array&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62; | Promise&#60;Array&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62;&#62;`}   />
+<MemberInfo kind="method" type={`(collectedJobs: Array&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62;) => Array&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62; | Promise&#60;Array&#60;<a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;Data&#62;&#62;&#62;`} />
 
 This method is called whenever the buffer gets flushed via a call to `JobQueueService.flush()`.
 It allows logic to be run on the buffered jobs which enables optimizations such as
 aggregating and de-duplicating the work of many jobs into one job.
-
 
 </div>

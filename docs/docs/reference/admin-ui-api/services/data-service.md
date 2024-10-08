@@ -1,13 +1,14 @@
 ---
-title: "DataService"
+title: 'DataService'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DataService
 
@@ -29,12 +30,12 @@ class DataService {
 
 ### query
 
-<MemberInfo kind="method" type={`(query: DocumentNode | TypedDocumentNode&#60;T, V&#62;, variables?: V, fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network') => <a href='/reference/admin-ui-api/services/data-service#queryresult'>QueryResult</a>&#60;T, V&#62;`}   />
+<MemberInfo kind="method" type={`(query: DocumentNode | TypedDocumentNode&#60;T, V&#62;, variables?: V, fetchPolicy: WatchQueryFetchPolicy = 'cache-and-network') => <a href='/reference/admin-ui-api/services/data-service#queryresult'>QueryResult</a>&#60;T, V&#62;`} />
 
 Perform a GraphQL query. Returns a <a href='/reference/admin-ui-api/services/data-service#queryresult'>QueryResult</a> which allows further control over
 they type of result returned, e.g. stream of values, single value etc.
 
-*Example*
+_Example_
 
 ```ts
 const result$ = this.dataService.query(gql`
@@ -48,13 +49,14 @@ const result$ = this.dataService.query(gql`
   { id: 123 },
 ).mapSingle(data => data.product);
 ```
+
 ### mutate
 
-<MemberInfo kind="method" type={`(mutation: DocumentNode | TypedDocumentNode&#60;T, V&#62;, variables?: V, update?: MutationUpdaterFn&#60;T&#62;) => Observable&#60;T&#62;`}   />
+<MemberInfo kind="method" type={`(mutation: DocumentNode | TypedDocumentNode&#60;T, V&#62;, variables?: V, update?: MutationUpdaterFn&#60;T&#62;) => Observable&#60;T&#62;`} />
 
 Perform a GraphQL mutation.
 
-*Example*
+_Example_
 
 ```ts
 const result$ = this.dataService.mutate(gql`
@@ -68,9 +70,7 @@ const result$ = this.dataService.mutate(gql`
 );
 ```
 
-
 </div>
-
 
 ## QueryResult
 
@@ -96,44 +96,44 @@ class QueryResult<T, V extends Record<string, any> = Record<string, any>> {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(queryRef: QueryRef&#60;T, V&#62;, apollo: Apollo) => QueryResult`}   />
-
+<MemberInfo kind="method" type={`(queryRef: QueryRef&#60;T, V&#62;, apollo: Apollo) => QueryResult`} />
 
 ### completed$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### refetchOnChannelChange
 
-<MemberInfo kind="method" type={`() => <a href='/reference/admin-ui-api/services/data-service#queryresult'>QueryResult</a>&#60;T, V&#62;`}   />
+<MemberInfo kind="method" type={`() => <a href='/reference/admin-ui-api/services/data-service#queryresult'>QueryResult</a>&#60;T, V&#62;`} />
 
 Re-fetch this query whenever the active Channel changes.
+
 ### single$
 
-<MemberInfo kind="property" type={`Observable&#60;T&#62;`}   />
+<MemberInfo kind="property" type={`Observable&#60;T&#62;`} />
 
 Returns an Observable which emits a single result and then completes.
+
 ### stream$
 
-<MemberInfo kind="property" type={`Observable&#60;T&#62;`}   />
+<MemberInfo kind="property" type={`Observable&#60;T&#62;`} />
 
 Returns an Observable which emits until unsubscribed.
+
 ### ref
 
-<MemberInfo kind="property" type={`QueryRef&#60;T, V&#62;`}   />
-
+<MemberInfo kind="property" type={`QueryRef&#60;T, V&#62;`} />
 
 ### mapSingle
 
-<MemberInfo kind="method" type={`(mapFn: (item: T) =&#62; R) => Observable&#60;R&#62;`}   />
+<MemberInfo kind="method" type={`(mapFn: (item: T) =&#62; R) => Observable&#60;R&#62;`} />
 
 Returns a single-result Observable after applying the map function.
+
 ### mapStream
 
-<MemberInfo kind="method" type={`(mapFn: (item: T) =&#62; R) => Observable&#60;R&#62;`}   />
+<MemberInfo kind="method" type={`(mapFn: (item: T) =&#62; R) => Observable&#60;R&#62;`} />
 
 Returns a multiple-result Observable after applying the map function.
-
 
 </div>

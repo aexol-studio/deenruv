@@ -1,13 +1,14 @@
 ---
-title: "Types"
+title: 'Types'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## BackoffStrategy
 
@@ -17,9 +18,8 @@ Defines the backoff strategy used when retrying failed jobs. Returns the delay i
 ms that should pass before the failed job is retried.
 
 ```ts title="Signature"
-type BackoffStrategy = (queueName: string, attemptsMade: number, job: Job) => number
+type BackoffStrategy = (queueName: string, attemptsMade: number, job: Job) => number;
 ```
-
 
 ## JobUpdate
 
@@ -31,9 +31,8 @@ Job update status as returned from the <a href='/reference/typescript-api/job-qu
 type JobUpdate<T extends JobData<T>> = Pick<
     Job<T>,
     'id' | 'state' | 'progress' | 'result' | 'error' | 'data'
->
+>;
 ```
-
 
 ## JobUpdateOptions
 
@@ -46,30 +45,24 @@ type JobUpdateOptions = {
     pollInterval?: number;
     timeoutMs?: number;
     errorOnFail?: boolean;
-}
+};
 ```
 
 <div className="members-wrapper">
 
 ### pollInterval
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### timeoutMs
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### errorOnFail
 
-<MemberInfo kind="property" type={`boolean`}   />
-
-
-
+<MemberInfo kind="property" type={`boolean`} />
 
 </div>
-
 
 ## CreateQueueOptions
 
@@ -88,19 +81,18 @@ interface CreateQueueOptions<T extends JobData<T>> {
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The name of the queue, e.g. "image processing", "re-indexing" etc.
+
 ### process
 
-<MemberInfo kind="property" type={`(job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;T&#62;) =&#62; Promise&#60;any&#62;`}   />
+<MemberInfo kind="property" type={`(job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a>&#60;T&#62;) =&#62; Promise&#60;any&#62;`} />
 
 Defines the work to be done for each job in the queue. The returned promise
 should resolve when the job is complete, or be rejected in case of an error.
 
-
 </div>
-
 
 ## JobData
 
@@ -109,9 +101,8 @@ should resolve when the job is complete, or be rejected in case of an error.
 A JSON-serializable data type which provides a <a href='/reference/typescript-api/job-queue/job#job'>Job</a>with the data it needs to be processed.
 
 ```ts title="Signature"
-type JobData<T> = JsonCompatible<T>
+type JobData<T> = JsonCompatible<T>;
 ```
-
 
 ## JobConfig
 
@@ -140,64 +131,50 @@ interface JobConfig<T extends JobData<T>> {
 
 ### queueName
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### data
 
-<MemberInfo kind="property" type={`T`}   />
-
+<MemberInfo kind="property" type={`T`} />
 
 ### retries
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### attempts
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### id
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### state
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/job-state#jobstate'>JobState</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/job-state#jobstate'>JobState</a>`} />
 
 ### progress
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### result
 
-<MemberInfo kind="property" type={`any`}   />
-
+<MemberInfo kind="property" type={`any`} />
 
 ### error
 
-<MemberInfo kind="property" type={`any`}   />
-
+<MemberInfo kind="property" type={`any`} />
 
 ### createdAt
 
-<MemberInfo kind="property" type={`Date`}   />
-
+<MemberInfo kind="property" type={`Date`} />
 
 ### startedAt
 
-<MemberInfo kind="property" type={`Date`}   />
-
+<MemberInfo kind="property" type={`Date`} />
 
 ### settledAt
 
-<MemberInfo kind="property" type={`Date`}   />
-
-
-
+<MemberInfo kind="property" type={`Date`} />
 
 </div>

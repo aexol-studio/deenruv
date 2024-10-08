@@ -1,13 +1,14 @@
 ---
-title: "RegisterFormInputComponent"
+title: 'RegisterFormInputComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerFormInputComponent
 
@@ -17,7 +18,7 @@ Registers a custom FormInputComponent which can be used to control the argument 
 of a <a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a> (e.g. CollectionFilter, ShippingMethod etc.) or for
 a custom field.
 
-*Example*
+_Example_
 
 ```ts title="providers.ts"
 import { registerFormInputComponent } from '@deenruv/admin-ui/core';
@@ -30,29 +31,29 @@ export default [
 
 This input component can then be used in a custom field:
 
-*Example*
+_Example_
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 
-const config: VendureConfig = {
-  // ...
-  customFields: {
-    ProductVariant: [
-      {
-        name: 'rrp',
-        type: 'int',
-        // highlight-next-line
-        ui: { component: 'my-custom-input' },
-      },
-    ]
-  }
-}
+const config: DeenruvConfig = {
+    // ...
+    customFields: {
+        ProductVariant: [
+            {
+                name: 'rrp',
+                type: 'int',
+                // highlight-next-line
+                ui: { component: 'my-custom-input' },
+            },
+        ],
+    },
+};
 ```
 
 or with an argument of a <a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>:
 
-*Example*
+_Example_
 
 ```ts
 args: {
@@ -61,8 +62,9 @@ args: {
 ```
 
 ```ts title="Signature"
-function registerFormInputComponent(id: string, component: Type<FormInputComponent>): FactoryProvider
+function registerFormInputComponent(id: string, component: Type<FormInputComponent>): FactoryProvider;
 ```
+
 Parameters
 
 ### id
@@ -72,4 +74,3 @@ Parameters
 ### component
 
 <MemberInfo kind="parameter" type={`Type&#60;<a href='/reference/admin-ui-api/custom-input-components/form-input-component#forminputcomponent'>FormInputComponent</a>&#62;`} />
-

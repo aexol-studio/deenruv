@@ -1,13 +1,14 @@
 ---
-title: "BaseListComponent"
+title: 'BaseListComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## BaseListComponent
 
@@ -44,102 +45,91 @@ class BaseListComponent<ResultType, ItemType, VariableType extends Record<string
     setQueryParam(keyOrHash: string | { [key: string]: any }, valueOrOptions?: any, maybeOptions?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => ;
 }
 ```
-* Implements: <code>OnInit</code>, <code>OnDestroy</code>
 
-
+-   Implements: <code>OnInit</code>, <code>OnDestroy</code>
 
 <div className="members-wrapper">
 
 ### searchTermControl
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### selectionManager
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### result$
 
-<MemberInfo kind="property" type={`Observable&#60;ResultType&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;ResultType&#62;`} />
 
 ### items$
 
-<MemberInfo kind="property" type={`Observable&#60;ItemType[]&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;ItemType[]&#62;`} />
 
 ### totalItems$
 
-<MemberInfo kind="property" type={`Observable&#60;number&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;number&#62;`} />
 
 ### itemsPerPage$
 
-<MemberInfo kind="property" type={`Observable&#60;number&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;number&#62;`} />
 
 ### currentPage$
 
-<MemberInfo kind="property" type={`Observable&#60;number&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;number&#62;`} />
 
 ### destroy$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### refresh$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(router: Router, route: ActivatedRoute) => BaseListComponent`}   />
-
+<MemberInfo kind="method" type={`(router: Router, route: ActivatedRoute) => BaseListComponent`} />
 
 ### setQueryFn
 
-<MemberInfo kind="method" type={`(listQueryFn: ListQueryFn&#60;ResultType&#62;, mappingFn: MappingFn&#60;ItemType, ResultType&#62;, onPageChangeFn?: OnPageChangeFn&#60;VariableType&#62;, defaults?: { take: number; skip: number }) => `}   />
+<MemberInfo kind="method" type={`(listQueryFn: ListQueryFn&#60;ResultType&#62;, mappingFn: MappingFn&#60;ItemType, ResultType&#62;, onPageChangeFn?: OnPageChangeFn&#60;VariableType&#62;, defaults?: { take: number; skip: number }) => `} />
 
 Sets the fetch function for the list being implemented.
+
 ### refreshListOnChanges
 
-<MemberInfo kind="method" type={`(streams: Array&#60;Observable&#60;any&#62;&#62;) => `}   />
+<MemberInfo kind="method" type={`(streams: Array&#60;Observable&#60;any&#62;&#62;) => `} />
 
 Accepts a list of Observables which will trigger a refresh of the list when any of them emit.
+
 ### setPageNumber
 
-<MemberInfo kind="method" type={`(page: number) => `}   />
+<MemberInfo kind="method" type={`(page: number) => `} />
 
 Sets the current page number in the url.
+
 ### setItemsPerPage
 
-<MemberInfo kind="method" type={`(perPage: number) => `}   />
+<MemberInfo kind="method" type={`(perPage: number) => `} />
 
 Sets the number of items per page in the url.
+
 ### refresh
 
-<MemberInfo kind="method" type={`() => `}   />
+<MemberInfo kind="method" type={`() => `} />
 
 Re-fetch the current page of results.
-### setQueryParam
-
-<MemberInfo kind="method" type={`(hash: { [key: string]: any }, options?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => `}   />
-
 
 ### setQueryParam
 
-<MemberInfo kind="method" type={`(key: string, value: any, options?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => `}   />
-
+<MemberInfo kind="method" type={`(hash: { [key: string]: any }, options?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => `} />
 
 ### setQueryParam
 
-<MemberInfo kind="method" type={`(keyOrHash: string | { [key: string]: any }, valueOrOptions?: any, maybeOptions?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => `}   />
+<MemberInfo kind="method" type={`(key: string, value: any, options?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => `} />
 
+### setQueryParam
 
-
+<MemberInfo kind="method" type={`(keyOrHash: string | { [key: string]: any }, valueOrOptions?: any, maybeOptions?: { replaceUrl?: boolean; queryParamsHandling?: QueryParamsHandling }) => `} />
 
 </div>

@@ -1,5 +1,5 @@
 ---
-title: "Storefront GraphQL Code Generation"
+title: 'Storefront GraphQL Code Generation'
 ---
 
 Code generation means the automatic generation of TypeScript types based on your GraphQL schema and your GraphQL operations.
@@ -9,7 +9,7 @@ write any types for your API calls.
 To do this, we will use [Graphql Code Generator](https://the-guild.dev/graphql/codegen).
 
 :::note
-This guide is for adding codegen to your storefront. For a guide on adding codegen to your backend Vendure plugins or UI extensions, see the [Plugin Codegen](/guides/how-to/codegen/) guide.
+This guide is for adding codegen to your storefront. For a guide on adding codegen to your backend Deenruv plugins or UI extensions, see the [Plugin Codegen](/guides/how-to/codegen/) guide.
 :::
 
 ## Installation
@@ -29,40 +29,39 @@ npm install
 
 During the `init` step, you'll be prompted to select various options about how to configure the code generation.
 
-- Where is your schema?: Use `http://localhost:3000/shop-api` (unless you have configured a different GraphQL API URL)
-- Where are your operations and fragments?: Use the appropriate glob pattern for you project. For example, `src/**/*.{ts,tsx}`.
-- Select `codegen.ts` as the name of the config file.
+-   Where is your schema?: Use `http://localhost:3000/shop-api` (unless you have configured a different GraphQL API URL)
+-   Where are your operations and fragments?: Use the appropriate glob pattern for you project. For example, `src/**/*.{ts,tsx}`.
+-   Select `codegen.ts` as the name of the config file.
 
 ## Configuration
 
 The `init` step above will create a `codegen.ts` file in your project root. Add the highlighted lines:
 
 ```ts title="codegen.ts"
-
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  overwrite: true,
-  schema: 'http://localhost:3000/shop-api',
-  documents: 'src/**/*.graphql.ts',
-  generates: {
-    'src/gql/': {
-      preset: 'client',
-      plugins: [],
-      // highlight-start
-      config: {
-        scalars: {
-            // This tells codegen that the `Money` scalar is a number
-            Money: 'number',
+    overwrite: true,
+    schema: 'http://localhost:3000/shop-api',
+    documents: 'src/**/*.graphql.ts',
+    generates: {
+        'src/gql/': {
+            preset: 'client',
+            plugins: [],
+            // highlight-start
+            config: {
+                scalars: {
+                    // This tells codegen that the `Money` scalar is a number
+                    Money: 'number',
+                },
+                namingConvention: {
+                    // This ensures generated enums do not conflict with the built-in types.
+                    enumValues: 'keep',
+                },
+            },
+            // highlight-end
         },
-        namingConvention: {
-            // This ensures generated enums do not conflict with the built-in types.
-            enumValues: 'keep',
-        },
-      }
-      // highlight-end
     },
-  }
 };
 
 export default config;
@@ -74,7 +73,7 @@ During the `init` step, you will have installed a `codegen` script in your `pack
 generate the TypeScript types for your GraphQL operations.
 
 :::note
-Ensure you have the Vendure server running before running the codegen script.
+Ensure you have the Deenruv server running before running the codegen script.
 :::
 
 ```bash

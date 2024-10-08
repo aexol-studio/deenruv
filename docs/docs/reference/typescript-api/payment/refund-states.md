@@ -1,13 +1,14 @@
 ---
-title: "RefundStates"
+title: 'RefundStates'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## RefundStates
 
@@ -16,7 +17,5 @@ import MemberDescription from '@site/src/components/MemberDescription';
 An interface to extend standard <a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a>.
 
 ```ts title="Signature"
-interface RefundStates {
-
-}
+interface RefundStates {}
 ```

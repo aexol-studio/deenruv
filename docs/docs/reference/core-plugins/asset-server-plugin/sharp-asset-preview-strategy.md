@@ -1,13 +1,14 @@
 ---
-title: "SharpAssetPreviewStrategy"
+title: 'SharpAssetPreviewStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## SharpAssetPreviewStrategy
 
@@ -39,26 +40,20 @@ class SharpAssetPreviewStrategy implements AssetPreviewStrategy {
     generatePreviewImage(ctx: RequestContext, mimeType: string, data: Buffer) => Promise<Buffer>;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/assets/asset-preview-strategy#assetpreviewstrategy'>AssetPreviewStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/assets/asset-preview-strategy#assetpreviewstrategy'>AssetPreviewStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(config?: <a href='/reference/core-plugins/asset-server-plugin/sharp-asset-preview-strategy#sharpassetpreviewconfig'>SharpAssetPreviewConfig</a>) => SharpAssetPreviewStrategy`}   />
-
+<MemberInfo kind="method" type={`(config?: <a href='/reference/core-plugins/asset-server-plugin/sharp-asset-preview-strategy#sharpassetpreviewconfig'>SharpAssetPreviewConfig</a>) => SharpAssetPreviewStrategy`} />
 
 ### generatePreviewImage
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, mimeType: string, data: Buffer) => Promise&#60;Buffer&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, mimeType: string, data: Buffer) => Promise&#60;Buffer&#62;`} />
 
 </div>
-
 
 ## SharpAssetPreviewConfig
 
@@ -84,39 +79,44 @@ interface SharpAssetPreviewConfig {
 
 ### maxHeight
 
-<MemberInfo kind="property" type={`number`} default={`1600`}   />
+<MemberInfo kind="property" type={`number`} default={`1600`} />
 
 The max height in pixels of a generated preview image.
+
 ### maxWidth
 
-<MemberInfo kind="property" type={`number`} default={`1600`}   />
+<MemberInfo kind="property" type={`number`} default={`1600`} />
 
 The max width in pixels of a generated preview image.
+
 ### jpegOptions
 
-<MemberInfo kind="property" type={`sharp.JpegOptions`}  since="1.7.0"  />
+<MemberInfo kind="property" type={`sharp.JpegOptions`} since="1.7.0" />
 
 Set Sharp's options for encoding jpeg files: https://sharp.pixelplumbing.com/api-output#jpeg
+
 ### pngOptions
 
-<MemberInfo kind="property" type={`sharp.PngOptions`}  since="1.7.0"  />
+<MemberInfo kind="property" type={`sharp.PngOptions`} since="1.7.0" />
 
 Set Sharp's options for encoding png files: https://sharp.pixelplumbing.com/api-output#png
+
 ### webpOptions
 
-<MemberInfo kind="property" type={`sharp.WebpOptions`}  since="1.7.0"  />
+<MemberInfo kind="property" type={`sharp.WebpOptions`} since="1.7.0" />
 
 Set Sharp's options for encoding webp files: https://sharp.pixelplumbing.com/api-output#webp
+
 ### gifOptions
 
-<MemberInfo kind="property" type={`sharp.GifOptions`}  since="1.7.0"  />
+<MemberInfo kind="property" type={`sharp.GifOptions`} since="1.7.0" />
 
 Set Sharp's options for encoding gif files: https://sharp.pixelplumbing.com/api-output#gif
+
 ### avifOptions
 
-<MemberInfo kind="property" type={`sharp.AvifOptions`}  since="1.7.0"  />
+<MemberInfo kind="property" type={`sharp.AvifOptions`} since="1.7.0" />
 
 Set Sharp's options for encoding avif files: https://sharp.pixelplumbing.com/api-output#avif
-
 
 </div>

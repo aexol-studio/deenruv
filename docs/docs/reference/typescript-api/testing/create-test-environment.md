@@ -1,13 +1,14 @@
 ---
-title: "CreateTestEnvironment"
+title: 'CreateTestEnvironment'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## createTestEnvironment
 
@@ -16,36 +17,35 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Configures a <a href='/reference/typescript-api/testing/test-server#testserver'>TestServer</a> and a <a href='/reference/typescript-api/testing/simple-graph-qlclient#simplegraphqlclient'>SimpleGraphQLClient</a> for each of the GraphQL APIs
 for use in end-to-end tests. Returns a <a href='/reference/typescript-api/testing/test-environment#testenvironment'>TestEnvironment</a> object.
 
-*Example*
+_Example_
 
 ```ts
 import { createTestEnvironment, testConfig } from '@deenruv/testing';
 
 describe('some feature to test', () => {
+    const { server, adminClient, shopClient } = createTestEnvironment(testConfig);
 
-  const { server, adminClient, shopClient } = createTestEnvironment(testConfig);
-
-  beforeAll(async () => {
-    await server.init({
-        // ... server options
+    beforeAll(async () => {
+        await server.init({
+            // ... server options
+        });
+        await adminClient.asSuperAdmin();
     });
-    await adminClient.asSuperAdmin();
-  });
 
-  afterAll(async () => {
-      await server.destroy();
-  });
+    afterAll(async () => {
+        await server.destroy();
+    });
 
-  // ... end-to-end tests here
+    // ... end-to-end tests here
 });
 ```
 
 ```ts title="Signature"
-function createTestEnvironment(config: Required<VendureConfig>): TestEnvironment
+function createTestEnvironment(config: Required<DeenruvConfig>): TestEnvironment;
 ```
+
 Parameters
 
 ### config
 
-<MemberInfo kind="parameter" type={`Required&#60;<a href='/reference/typescript-api/configuration/vendure-config#vendureconfig'>VendureConfig</a>&#62;`} />
-
+<MemberInfo kind="parameter" type={`Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;`} />

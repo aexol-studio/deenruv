@@ -1,5 +1,5 @@
 ---
-title: "Listing Products"
+title: 'Listing Products'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -8,10 +8,10 @@ import Stackblitz from '@site/src/components/Stackblitz';
 
 Products are listed when:
 
-- Displaying the contents of a collection
-- Displaying search results
+-   Displaying the contents of a collection
+-   Displaying search results
 
-In Vendure, we usually use the `search` query for both of these. The reason is that the `search` query is optimized
+In Deenruv, we usually use the `search` query for both of these. The reason is that the `search` query is optimized
 for high performance, because it is backed by a dedicated search index. Other queries such as `products` or `Collection.productVariants` _can_ also
 be used to fetch a list of products, but they need to perform much more complex database queries, and are therefore slower.
 
@@ -28,16 +28,16 @@ details of this collection:
 
 ```graphql
 query GetCollection($slug: String!) {
-  collection(slug: $slug) {
-    id
-    name
-    slug
-    description
-    featuredAsset {
-      id
-      preview
+    collection(slug: $slug) {
+        id
+        name
+        slug
+        description
+        featuredAsset {
+            id
+            preview
+        }
     }
-  }
 }
 ```
 
@@ -46,7 +46,7 @@ query GetCollection($slug: String!) {
 
 ```json
 {
-  "slug": "electronics"
+    "slug": "electronics"
 }
 ```
 
@@ -55,18 +55,18 @@ query GetCollection($slug: String!) {
 
 ```json
 {
-  "data": {
-    "collection": {
-      "id": "2",
-      "name": "Electronics",
-      "slug": "electronics",
-      "description": "",
-      "featuredAsset": {
-        "id": "16",
-        "preview": "https://demo.vendure.io/assets/preview/5b/jakob-owens-274337-unsplash__preview.jpg"
-      }
+    "data": {
+        "collection": {
+            "id": "2",
+            "name": "Electronics",
+            "slug": "electronics",
+            "description": "",
+            "featuredAsset": {
+                "id": "16",
+                "preview": "https://demo.deenruv.io/assets/preview/5b/jakob-owens-274337-unsplash__preview.jpg"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -76,7 +76,6 @@ query GetCollection($slug: String!) {
 The collection data can be used to render the page header.
 
 Next, we can use the `search` query to fetch the products in the collection:
-
 
 <Tabs>
 <TabItem value="Query" label="Query" default>
@@ -119,9 +118,9 @@ query GetCollectionProducts($slug: String!, $skip: Int, $take: Int) {
 
 ```json
 {
-  "slug": "electronics",
-  "skip": 0,
-  "take": 10
+    "slug": "electronics",
+    "skip": 0,
+    "take": 10
 }
 ```
 
@@ -132,42 +131,41 @@ query GetCollectionProducts($slug: String!, $skip: Int, $take: Int) {
 
 ```json
 {
-  "data": {
-    "search": {
-      "totalItems": 20,
-      "items": [
-        {
-          "productName": "Laptop",
-          "slug": "laptop",
-          "productAsset": {
-            "id": "1",
-            "preview": "https://demo.vendure.io/assets/preview/71/derick-david-409858-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 155880,
-            "max": 275880
-          },
-          "currencyCode": "USD"
-        },
-        {
-          "productName": "Tablet",
-          "slug": "tablet",
-          "productAsset": {
-            "id": "2",
-            "preview": "https://demo.vendure.io/assets/preview/b8/kelly-sikkema-685291-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 39480,
-            "max": 53400
-          },
-          "currencyCode": "USD"
-        },
-      ],
-    },
-  },
+    "data": {
+        "search": {
+            "totalItems": 20,
+            "items": [
+                {
+                    "productName": "Laptop",
+                    "slug": "laptop",
+                    "productAsset": {
+                        "id": "1",
+                        "preview": "https://demo.deenruv.io/assets/preview/71/derick-david-409858-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 155880,
+                        "max": 275880
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Tablet",
+                    "slug": "tablet",
+                    "productAsset": {
+                        "id": "2",
+                        "preview": "https://demo.deenruv.io/assets/preview/b8/kelly-sikkema-685291-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 39480,
+                        "max": 53400
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
+        }
+    }
 }
 ```
-
 
 </TabItem>
 </Tabs>
@@ -179,7 +177,7 @@ that the results all belong to the selected collection.
 
 Here's a live demo of the above code in action:
 
-<Stackblitz id='vendure-docs-listing-collection-products' />
+<Stackblitz id="deenruv-docs-listing-collection-products" />
 
 ## Product search
 
@@ -227,9 +225,9 @@ query SearchProducts($term: String!, $skip: Int, $take: Int) {
 
 ```json
 {
-  "term": "camera",
-  "skip": 0,
-  "take": 10
+    "term": "camera",
+    "skip": 0,
+    "take": 10
 }
 ```
 
@@ -240,39 +238,39 @@ query SearchProducts($term: String!, $skip: Int, $take: Int) {
 
 ```json
 {
-  "data": {
-    "search": {
-      "totalItems": 8,
-      "items": [
-        {
-          "productName": "Instant Camera",
-          "slug": "instant-camera",
-          "productAsset": {
-            "id": "12",
-            "preview": "https://demo.vendure.io/assets/preview/b5/eniko-kis-663725-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 20999,
-            "max": 20999
-          },
-          "currencyCode": "USD"
-        },
-        {
-          "productName": "Camera Lens",
-          "slug": "camera-lens",
-          "productAsset": {
-            "id": "13",
-            "preview": "https://demo.vendure.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 12480,
-            "max": 12480
-          },
-          "currencyCode": "USD"
+    "data": {
+        "search": {
+            "totalItems": 8,
+            "items": [
+                {
+                    "productName": "Instant Camera",
+                    "slug": "instant-camera",
+                    "productAsset": {
+                        "id": "12",
+                        "preview": "https://demo.deenruv.io/assets/preview/b5/eniko-kis-663725-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 20999,
+                        "max": 20999
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Camera Lens",
+                    "slug": "camera-lens",
+                    "productAsset": {
+                        "id": "13",
+                        "preview": "https://demo.deenruv.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 12480,
+                        "max": 12480
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
         }
-      ]
     }
-  }
 }
 ```
 
@@ -346,9 +344,9 @@ query SearchProducts($term: String!, $skip: Int, $take: Int) {
 
 ```json
 {
-  "term": "camera",
-  "skip": 0,
-  "take": 10
+    "term": "camera",
+    "skip": 0,
+    "take": 10
 }
 ```
 
@@ -359,144 +357,144 @@ query SearchProducts($term: String!, $skip: Int, $take: Int) {
 
 ```json
 {
-  "data": {
-    "search": {
-      "totalItems": 8,
-      // highlight-start
-      "facetValues": [
-        {
-          "facetValue": {
-            "id": "1",
-            "name": "Electronics",
-            "facet": {
-              "id": "1",
-              "name": "category"
-            }
-          },
-          "count": 8
-        },
-        {
-          "facetValue": {
-            "id": "9",
-            "name": "Photo",
-            "facet": {
-              "id": "1",
-              "name": "category"
-            }
-          },
-          "count": 8
-        },
-        {
-          "facetValue": {
-            "id": "10",
-            "name": "Polaroid",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 1
-        },
-        {
-          "facetValue": {
-            "id": "11",
-            "name": "Nikkon",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 2
-        },
-        {
-          "facetValue": {
-            "id": "12",
-            "name": "Agfa",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 1
-        },
-        {
-          "facetValue": {
-            "id": "14",
-            "name": "Kodak",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 1
-        },
-        {
-          "facetValue": {
-            "id": "15",
-            "name": "Sony",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 1
-        },
-        {
-          "facetValue": {
-            "id": "16",
-            "name": "Rolleiflex",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 1
+    "data": {
+        "search": {
+            "totalItems": 8,
+            // highlight-start
+            "facetValues": [
+                {
+                    "facetValue": {
+                        "id": "1",
+                        "name": "Electronics",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 8
+                },
+                {
+                    "facetValue": {
+                        "id": "9",
+                        "name": "Photo",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 8
+                },
+                {
+                    "facetValue": {
+                        "id": "10",
+                        "name": "Polaroid",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 1
+                },
+                {
+                    "facetValue": {
+                        "id": "11",
+                        "name": "Nikkon",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 2
+                },
+                {
+                    "facetValue": {
+                        "id": "12",
+                        "name": "Agfa",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 1
+                },
+                {
+                    "facetValue": {
+                        "id": "14",
+                        "name": "Kodak",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 1
+                },
+                {
+                    "facetValue": {
+                        "id": "15",
+                        "name": "Sony",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 1
+                },
+                {
+                    "facetValue": {
+                        "id": "16",
+                        "name": "Rolleiflex",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 1
+                }
+            ],
+            // highlight-end
+            "items": [
+                {
+                    "productName": "Instant Camera",
+                    "slug": "instant-camera",
+                    "productAsset": {
+                        "id": "12",
+                        "preview": "https://demo.deenruv.io/assets/preview/b5/eniko-kis-663725-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 20999,
+                        "max": 20999
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Camera Lens",
+                    "slug": "camera-lens",
+                    "productAsset": {
+                        "id": "13",
+                        "preview": "https://demo.deenruv.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 12480,
+                        "max": 12480
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Vintage Folding Camera",
+                    "slug": "vintage-folding-camera",
+                    "productAsset": {
+                        "id": "14",
+                        "preview": "https://demo.deenruv.io/assets/preview/3c/jonathan-talbert-697262-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "min": 642000,
+                        "max": 642000
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
         }
-      ],
-      // highlight-end
-      "items": [
-        {
-          "productName": "Instant Camera",
-          "slug": "instant-camera",
-          "productAsset": {
-            "id": "12",
-            "preview": "https://demo.vendure.io/assets/preview/b5/eniko-kis-663725-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 20999,
-            "max": 20999
-          },
-          "currencyCode": "USD"
-        },
-        {
-          "productName": "Camera Lens",
-          "slug": "camera-lens",
-          "productAsset": {
-            "id": "13",
-            "preview": "https://demo.vendure.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 12480,
-            "max": 12480
-          },
-          "currencyCode": "USD"
-        },
-        {
-          "productName": "Vintage Folding Camera",
-          "slug": "vintage-folding-camera",
-          "productAsset": {
-            "id": "14",
-            "preview": "https://demo.vendure.io/assets/preview/3c/jonathan-talbert-697262-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "min": 642000,
-            "max": 642000
-          },
-          "currencyCode": "USD"
-        }
-      ]
     }
-  }
 }
 ```
 
@@ -510,17 +508,17 @@ request we know that there should be 2 such products, and that the `facetValue.i
 
 ```json
 {
-  "facetValue": {
+    "facetValue": {
+        // highlight-next-line
+        "id": "11",
+        "name": "Nikkon",
+        "facet": {
+            "id": "2",
+            "name": "brand"
+        }
+    },
     // highlight-next-line
-    "id": "11",
-    "name": "Nikkon",
-    "facet": {
-      "id": "2",
-      "name": "brand"
-    }
-  },
-  // highlight-next-line
-  "count": 2
+    "count": 2
 }
 ```
 
@@ -532,7 +530,6 @@ we are passing the entire `SearchInput` object as a variable. This allows us mor
 we use the query, as we can easily add or remove properties from the input object without having to
 change the query itself.
 :::
-
 
 <Tabs>
 <TabItem value="Query" label="Query">
@@ -580,17 +577,15 @@ query SearchProducts($input: SearchInput!) {
 
 ```json
 {
-  "input": {
-    "term": "camera",
-    "skip": 0,
-    "take": 10,
-    "groupByProduct": true,
-    // highlight-start
-    "facetValueFilters": [
-      { "and": "11" }
-    ]
-    // highlight-end
-  }
+    "input": {
+        "term": "camera",
+        "skip": 0,
+        "take": 10,
+        "groupByProduct": true,
+        // highlight-start
+        "facetValueFilters": [{ "and": "11" }]
+        // highlight-end
+    }
 }
 ```
 
@@ -599,72 +594,72 @@ query SearchProducts($input: SearchInput!) {
 
 ```json
 {
-  "data": {
-    "search": {
-      "totalItems": 2,
-      "facetValues": [
-        {
-          "facetValue": {
-            "id": "1",
-            "name": "Electronics",
-            "facet": {
-              "id": "1",
-              "name": "category"
-            }
-          },
-          "count": 2
-        },
-        {
-          "facetValue": {
-            "id": "9",
-            "name": "Photo",
-            "facet": {
-              "id": "1",
-              "name": "category"
-            }
-          },
-          "count": 2
-        },
-        {
-          "facetValue": {
-            "id": "11",
-            "name": "Nikkon",
-            "facet": {
-              "id": "2",
-              "name": "brand"
-            }
-          },
-          "count": 2
+    "data": {
+        "search": {
+            "totalItems": 2,
+            "facetValues": [
+                {
+                    "facetValue": {
+                        "id": "1",
+                        "name": "Electronics",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 2
+                },
+                {
+                    "facetValue": {
+                        "id": "9",
+                        "name": "Photo",
+                        "facet": {
+                            "id": "1",
+                            "name": "category"
+                        }
+                    },
+                    "count": 2
+                },
+                {
+                    "facetValue": {
+                        "id": "11",
+                        "name": "Nikkon",
+                        "facet": {
+                            "id": "2",
+                            "name": "brand"
+                        }
+                    },
+                    "count": 2
+                }
+            ],
+            "items": [
+                {
+                    "productName": "Camera Lens",
+                    "slug": "camera-lens",
+                    "productAsset": {
+                        "id": "13",
+                        "preview": "https://demo.deenruv.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "value": 12480
+                    },
+                    "currencyCode": "USD"
+                },
+                {
+                    "productName": "Nikkormat SLR Camera",
+                    "slug": "nikkormat-slr-camera",
+                    "productAsset": {
+                        "id": "18",
+                        "preview": "https://demo.deenruv.io/assets/preview/95/chuttersnap-324234-unsplash__preview.jpg"
+                    },
+                    "priceWithTax": {
+                        "value": 73800
+                    },
+                    "currencyCode": "USD"
+                }
+            ]
         }
-      ],
-      "items": [
-        {
-          "productName": "Camera Lens",
-          "slug": "camera-lens",
-          "productAsset": {
-            "id": "13",
-            "preview": "https://demo.vendure.io/assets/preview/9b/brandi-redd-104140-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "value": 12480
-          },
-          "currencyCode": "USD"
-        },
-        {
-          "productName": "Nikkormat SLR Camera",
-          "slug": "nikkormat-slr-camera",
-          "productAsset": {
-            "id": "18",
-            "preview": "https://demo.vendure.io/assets/preview/95/chuttersnap-324234-unsplash__preview.jpg"
-          },
-          "priceWithTax": {
-            "value": 73800
-          },
-          "currencyCode": "USD"
-        }
-      ]
     }
-  }
 }
 ```
 
@@ -678,10 +673,7 @@ For example, to filter by both the "Camera" **and** "Nikkon" facet values, we wo
 
 ```json
 {
-  "facetValueFilters": [
-    { "and": "9" },
-    { "and": "11" }
-  ]
+    "facetValueFilters": [{ "and": "9" }, { "and": "11" }]
 }
 ```
 
@@ -689,16 +681,15 @@ To filter by "Nikkon" **or** "Sony", we would use:
 
 ```json
 {
-  "facetValueFilters": [
-    { "or": ["11", "15"] }
-  ]
+    "facetValueFilters": [{ "or": ["11", "15"] }]
 }
 ```
+
 :::
 
 Here's a live example of faceted search. Try searching for terms like "shoe", "plant" or "ball".
 
-<Stackblitz id="vendure-docs-faceted-search"></Stackblitz>
+<Stackblitz id="deenruv-docs-faceted-search"></Stackblitz>
 
 ## Listing custom product data
 
@@ -708,4 +699,4 @@ not possible, as this plugin is designed to be a minimal and simple search imple
 
 Instead, you can use the [`ElasticsearchPlugin`](/reference/core-plugins/elasticsearch-plugin/) which
 provides advanced features which allow you to index custom data. The Elasticsearch plugin is designed as a drop-in
-replacement for the `DefaultSearchPlugin`, so you can simply swap out the plugins in your `vendure-config.ts` file.
+replacement for the `DefaultSearchPlugin`, so you can simply swap out the plugins in your `deenruv-config.ts` file.

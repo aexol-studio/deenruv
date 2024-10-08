@@ -1,13 +1,14 @@
 ---
-title: "UseRichTextEditor"
+title: 'UseRichTextEditor'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## useRichTextEditor
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Provides access to the ProseMirror (rich text editor) instance.
 
-*Example*
+_Example_
 
 ```ts
 import { useRichTextEditor } from '@deenruv/admin-ui/react';
@@ -31,4 +32,3 @@ export function Component() {
     return <div className="w-full" ref={ref} />
 }
 ```
-

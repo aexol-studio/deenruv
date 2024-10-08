@@ -1,13 +1,14 @@
 ---
-title: "GenerateMigration"
+title: 'GenerateMigration'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## generateMigration
 
@@ -18,15 +19,18 @@ See [TypeORM migration docs](https://typeorm.io/#/migrations) for more informati
 underlying migration mechanism.
 
 ```ts title="Signature"
-function generateMigration(userConfig: Partial<VendureConfig>, options: MigrationOptions): Promise<string | undefined>
+function generateMigration(
+    userConfig: Partial<DeenruvConfig>,
+    options: MigrationOptions,
+): Promise<string | undefined>;
 ```
+
 Parameters
 
 ### userConfig
 
-<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/vendure-config#vendureconfig'>VendureConfig</a>&#62;`} />
+<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;`} />
 
 ### options
 
 <MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/migration/migration-options#migrationoptions'>MigrationOptions</a>`} />
-

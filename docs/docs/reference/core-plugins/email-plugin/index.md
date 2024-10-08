@@ -1,30 +1,33 @@
 ---
-title: "EmailPlugin"
+title: 'EmailPlugin'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EmailPlugin
 
 <GenerationInfo sourceFile="packages/email-plugin/src/plugin.ts" sourceLine="304" packageName="@deenruv/email-plugin" />
 
-The EmailPlugin creates and sends transactional emails based on Vendure events. By default, it uses an [MJML](https://mjml.io/)-based
+The EmailPlugin creates and sends transactional emails based on Deenruv events. By default, it uses an [MJML](https://mjml.io/)-based
 email generator to generate the email body and [Nodemailer](https://nodemailer.com/about/) to send the emails.
 
 ## High-level description
-Vendure has an internal events system (see <a href='/reference/typescript-api/events/event-bus#eventbus'>EventBus</a>) that allows plugins to subscribe to events. The EmailPlugin is configured with <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>s
+
+Deenruv has an internal events system (see <a href='/reference/typescript-api/events/event-bus#eventbus'>EventBus</a>) that allows plugins to subscribe to events. The EmailPlugin is configured with <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>s
 that listen for a specific event and when it is published, the handler defines which template to use to generate the resulting email.
 
 The plugin comes with a set of default handler for the following events:
-- Order confirmation
-- New customer email address verification
-- Password reset request
-- Email address change request
+
+-   Order confirmation
+-   New customer email address verification
+-   Password reset request
+-   Email address change request
 
 You can also create your own handler and register them with the plugin - see the <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a> docs for more details.
 
@@ -36,28 +39,28 @@ or
 
 `npm install @deenruv/email-plugin`
 
-*Example*
+_Example_
 
 ```ts
 import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
 
-const config: VendureConfig = {
-  // Add an instance of the plugin to the plugins array
-  plugins: [
-    EmailPlugin.init({
-      handler: defaultEmailHandlers,
-      templatePath: path.join(__dirname, 'static/email/templates'),
-      transport: {
-        type: 'smtp',
-        host: 'smtp.example.com',
-        port: 587,
-        auth: {
-          user: 'username',
-          pass: 'password',
-        }
-      },
-    }),
-  ],
+const config: DeenruvConfig = {
+    // Add an instance of the plugin to the plugins array
+    plugins: [
+        EmailPlugin.init({
+            handler: defaultEmailHandlers,
+            templatePath: path.join(__dirname, 'static/email/templates'),
+            transport: {
+                type: 'smtp',
+                host: 'smtp.example.com',
+                port: 587,
+                auth: {
+                    user: 'username',
+                    pass: 'password',
+                },
+            },
+        }),
+    ],
 };
 ```
 
@@ -71,19 +74,21 @@ If you are installing the EmailPlugin separately, then you'll need to copy the t
 `node_modules/@deenruv/email-plugin/templates` to a location of your choice, and then point the `templatePath` config
 property at that directory.
 
-* ### Dynamic Email Templates
-Instead of passing a static value to `templatePath`, use `templateLoader` to define a template path.
+-   ### Dynamic Email Templates
+    Instead of passing a static value to `templatePath`, use `templateLoader` to define a template path.
+
 ```ts
   EmailPlugin.init({
    ...,
    templateLoader: new FileBasedTemplateLoader(my/order-confirmation/templates)
   })
 ```
+
 ## Customizing templates
 
 Emails are generated from templates which use [MJML](https://mjml.io/) syntax. MJML is an open-source HTML-like markup
 language which makes the task of creating responsive email markup simple. By default, the templates are installed to
-`<project root>/vendure/email/templates` and can be freely edited.
+`<project root>/deenruv/email/templates` and can be freely edited.
 
 Dynamic data such as the recipient's name or order items are specified using [Handlebars syntax](https://handlebarsjs.com/):
 
@@ -93,13 +98,13 @@ Dynamic data such as the recipient's name or order items are specified using [Ha
 <p>Thank you for your order!</p>
 
 <mj-table cellpadding="6px">
-  {{#each order.lines }}
+    {{#each order.lines }}
     <tr class="order-row">
-      <td>{{ quantity }} x {{ productVariant.name }}</td>
-      <td>{{ productVariant.quantity }}</td>
-      <td>{{ formatMoney totalPrice }}</td>
+        <td>{{ quantity }} x {{ productVariant.name }}</td>
+        <td>{{ productVariant.quantity }}</td>
+        <td>{{ formatMoney totalPrice }}</td>
     </tr>
-  {{/each}}
+    {{/each}}
 </mj-table>
 ```
 
@@ -109,39 +114,41 @@ Dynamic data such as the recipient's name or order items are specified using [Ha
 You can also pass an async function that will be called with the `RequestContext` and the `Injector` so you can access services
 and e.g. load channel specific theme configurations.
 
-*Example*
+_Example_
 
 ```ts
 EmailPlugin.init({
-   globalTemplateVars: {
-     primaryColor: '#FF0000',
-     fromAddress: 'no-reply@ourstore.com'
-   }
-})
+    globalTemplateVars: {
+        primaryColor: '#FF0000',
+        fromAddress: 'no-reply@ourstore.com',
+    },
+});
 ```
+
 or
+
 ```ts
 EmailPlugin.init({
-   globalTemplateVars: async (ctx, injector) => {
-     const myAsyncService = injector.get(MyAsyncService);
-     const asyncValue = await myAsyncService.get(ctx);
-     const channel = ctx.channel;
-     const { primaryColor } = channel.customFields.theme;
-     const theme = {
-        primaryColor,
-        asyncValue,
-     };
-     return theme;
-   }
-})
+    globalTemplateVars: async (ctx, injector) => {
+        const myAsyncService = injector.get(MyAsyncService);
+        const asyncValue = await myAsyncService.get(ctx);
+        const channel = ctx.channel;
+        const { primaryColor } = channel.customFields.theme;
+        const theme = {
+            primaryColor,
+            asyncValue,
+        };
+        return theme;
+    },
+});
 ```
 
 ### Handlebars helpers
 
 The following helper functions are available for use in email templates:
 
-* `formatMoney`: Formats an amount of money (which are always stored as integers in Vendure) as a decimal, e.g. `123` => `1.23`
-* `formatDate`: Formats a Date value with the [dateformat](https://www.npmjs.com/package/dateformat) package.
+-   `formatMoney`: Formats an amount of money (which are always stored as integers in Deenruv) as a decimal, e.g. `123` => `1.23`
+-   `formatDate`: Formats a Date value with the [dateformat](https://www.npmjs.com/package/dateformat) package.
 
 ## Extending the default email handler
 
@@ -150,7 +157,7 @@ etc. These defaults can be extended by adding custom templates for languages oth
 which respond to any of the available [VendureEvents](/reference/typescript-api/events/).
 
 A good way to learn how to create your own email handler is to take a look at the
-[source code of the default handler](https://github.com/vendure-ecommerce/vendure/blob/master/packages/email-plugin/src/handler/default-email-handlers.ts).
+[source code of the default handler](https://github.com/aexol-studio/deenruv/blob/master/packages/email-plugin/src/handler/default-email-handlers.ts).
 New handler are defined in exactly the same way.
 
 It is also possible to modify the default handler:
@@ -204,46 +211,46 @@ For all available methods of extending a handler, see the <a href='/reference/co
 Instead of defining static transport settings, you can also provide a function that dynamically resolves
 channel aware transport settings.
 
-*Example*
+_Example_
 
 ```ts
 import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
 import { MyTransportService } from './transport.services.ts';
-const config: VendureConfig = {
-  plugins: [
-    EmailPlugin.init({
-      handler: defaultEmailHandlers,
-      templatePath: path.join(__dirname, 'static/email/templates'),
-      transport: (injector, ctx) => {
-        if (ctx) {
-          return injector.get(MyTransportService).getSettings(ctx);
-        } else {
-          return {
-            type: 'smtp',
-            host: 'smtp.example.com',
-            // ... etc.
-          }
-        }
-      }
-    }),
-  ],
+const config: DeenruvConfig = {
+    plugins: [
+        EmailPlugin.init({
+            handler: defaultEmailHandlers,
+            templatePath: path.join(__dirname, 'static/email/templates'),
+            transport: (injector, ctx) => {
+                if (ctx) {
+                    return injector.get(MyTransportService).getSettings(ctx);
+                } else {
+                    return {
+                        type: 'smtp',
+                        host: 'smtp.example.com',
+                        // ... etc.
+                    };
+                }
+            },
+        }),
+    ],
 };
 ```
 
 ## Dev mode
 
-For development, the `transport` option can be replaced by `devMode: true`. Doing so configures Vendure to use the
+For development, the `transport` option can be replaced by `devMode: true`. Doing so configures Deenruv to use the
 file transport (See <a href='/reference/core-plugins/email-plugin/transport-options#filetransportoptions'>FileTransportOptions</a>) and outputs emails as rendered HTML files in the directory specified by the
 `outputPath` property.
 
 ```ts
 EmailPlugin.init({
-  devMode: true,
-  route: 'mailbox',
-  handler: defaultEmailHandlers,
-  templatePath: path.join(__dirname, 'vendure/email/templates'),
-  outputPath: path.join(__dirname, 'test-emails'),
-})
+    devMode: true,
+    route: 'mailbox',
+    handler: defaultEmailHandlers,
+    templatePath: path.join(__dirname, 'deenruv/email/templates'),
+    outputPath: path.join(__dirname, 'test-emails'),
+});
 ```
 
 ### Dev mailbox
@@ -258,7 +265,7 @@ send detailed information from the SMTP transporter to the configured logger (de
 this with a detail log level in the configured VendureLogger:
 
 ```ts
-const config: VendureConfig = {
+const config: DeenruvConfig = {
   logger: new DefaultLogger({ level: LogLevel.Debug })
   // ...
   plugins: [
@@ -287,27 +294,21 @@ class EmailPlugin implements OnApplicationBootstrap, OnApplicationShutdown, Nest
     configure(consumer: MiddlewareConsumer) => ;
 }
 ```
-* Implements: <code>OnApplicationBootstrap</code>, <code>OnApplicationShutdown</code>, <code>NestModule</code>
 
-
+-   Implements: <code>OnApplicationBootstrap</code>, <code>OnApplicationShutdown</code>, <code>NestModule</code>
 
 <div className="members-wrapper">
 
 ### init
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/email-plugin/email-plugin-options#emailpluginoptions'>EmailPluginOptions</a> | <a href='/reference/core-plugins/email-plugin/email-plugin-options#emailplugindevmodeoptions'>EmailPluginDevModeOptions</a>) => Type&#60;<a href='/reference/core-plugins/email-plugin/#emailplugin'>EmailPlugin</a>&#62;`}   />
-
+<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/email-plugin/email-plugin-options#emailpluginoptions'>EmailPluginOptions</a> | <a href='/reference/core-plugins/email-plugin/email-plugin-options#emailplugindevmodeoptions'>EmailPluginDevModeOptions</a>) => Type&#60;<a href='/reference/core-plugins/email-plugin/#emailplugin'>EmailPlugin</a>&#62;`} />
 
 ### onApplicationShutdown
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### configure
 
-<MemberInfo kind="method" type={`(consumer: MiddlewareConsumer) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(consumer: MiddlewareConsumer) => `} />
 
 </div>

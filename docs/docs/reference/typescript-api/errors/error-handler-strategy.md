@@ -1,13 +1,14 @@
 ---
-title: "ErrorHandlerStrategy"
+title: 'ErrorHandlerStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ErrorHandlerStrategy
 
@@ -20,11 +21,11 @@ reports to external services.
 :::info
 
 This is configured via the `systemOptions.errorHandlers` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
-*Example*
+_Example_
 
 ```ts
 import { ArgumentsHost, ExecutionContext } from '@nestjs/common';
@@ -41,16 +42,16 @@ export class CustomErrorHandlerStrategy implements ErrorHandlerStrategy {
     }
 
     handleServerError(error: Error, { host }: { host: ArgumentsHost }) {
-         const errorContext: any = {};
-         if (host?.getType<GqlContextType>() === 'graphql') {
-             const gqlContext = GqlExecutionContext.create(host as ExecutionContext);
-             const info = gqlContext.getInfo();
-             errorContext.graphQlInfo = {
-                 fieldName: info.fieldName,
-                 path: info.path,
-             };
-         }
-         this.monitoringService.captureException(error, errorContext);
+        const errorContext: any = {};
+        if (host?.getType<GqlContextType>() === 'graphql') {
+            const gqlContext = GqlExecutionContext.create(host as ExecutionContext);
+            const info = gqlContext.getInfo();
+            errorContext.graphQlInfo = {
+                fieldName: info.fieldName,
+                path: info.path,
+            };
+        }
+        this.monitoringService.captureException(error, errorContext);
     }
 
     handleWorkerError(error: Error, { job }: { job: Job }) {
@@ -69,24 +70,23 @@ interface ErrorHandlerStrategy extends InjectableStrategy {
     handleWorkerError(exception: Error, context: { job: Job }): void | Promise<void>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### handleServerError
 
-<MemberInfo kind="method" type={`(exception: Error, context: { host: ArgumentsHost }) => void | Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`(exception: Error, context: { host: ArgumentsHost }) => void | Promise&#60;void&#62;`} />
 
 This method will be invoked for any error thrown during the execution of the
 server.
+
 ### handleWorkerError
 
-<MemberInfo kind="method" type={`(exception: Error, context: { job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a> }) => void | Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`(exception: Error, context: { job: <a href='/reference/typescript-api/job-queue/job#job'>Job</a> }) => void | Promise&#60;void&#62;`} />
 
 This method will be invoked for any error thrown during the execution of a
 job on the worker.
-
 
 </div>

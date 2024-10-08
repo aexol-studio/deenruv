@@ -1,13 +1,14 @@
 ---
-title: "TimeAgoPipe"
+title: 'TimeAgoPipe'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TimeAgoPipe
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Converts a date into the format "3 minutes ago", "5 hours ago" etc.
 
-*Example*
+_Example_
 
 ```HTML
 {{ order.orderPlacedAt | timeAgo }}
@@ -27,22 +28,17 @@ class TimeAgoPipe implements PipeTransform {
     transform(value: string | Date, nowVal?: string | Date) => string;
 }
 ```
-* Implements: <code>PipeTransform</code>
 
-
+-   Implements: <code>PipeTransform</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(i18nService: <a href='/reference/typescript-api/common/i18n-service#i18nservice'>I18nService</a>) => TimeAgoPipe`}   />
-
+<MemberInfo kind="method" type={`(i18nService: <a href='/reference/typescript-api/common/i18n-service#i18nservice'>I18nService</a>) => TimeAgoPipe`} />
 
 ### transform
 
-<MemberInfo kind="method" type={`(value: string | Date, nowVal?: string | Date) => string`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: string | Date, nowVal?: string | Date) => string`} />
 
 </div>

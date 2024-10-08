@@ -1,13 +1,14 @@
 ---
-title: "OrderLineReference"
+title: 'OrderLineReference'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FulfillmentLine
 
@@ -17,7 +18,7 @@ This entity represents a line from an <a href='/reference/typescript-api/entitie
 
 ```ts title="Signature"
 class FulfillmentLine extends OrderLineReference {
-    constructor(input?: DeepPartial<FulfillmentLine>)
+    constructor(input?: DeepPartial<FulfillmentLine>);
     @Index()
     @ManyToOne(type => Fulfillment, fulfillment => fulfillment.lines)
     fulfillment: Fulfillment;
@@ -25,31 +26,24 @@ class FulfillmentLine extends OrderLineReference {
     fulfillmentId: ID;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/order-line-reference#orderlinereference'>OrderLineReference</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/order-line-reference#orderlinereference'>OrderLineReference</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-line-reference#fulfillmentline'>FulfillmentLine</a>&#62;) => FulfillmentLine`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-line-reference#fulfillmentline'>FulfillmentLine</a>&#62;) => FulfillmentLine`} />
 
 ### fulfillment
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/fulfillment#fulfillment'>Fulfillment</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/fulfillment#fulfillment'>Fulfillment</a>`} />
 
 ### fulfillmentId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 </div>
-
 
 ## OrderLineReference
 
@@ -68,31 +62,24 @@ class OrderLineReference extends VendureEntity {
     orderLineId: ID;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
 <div className="members-wrapper">
 
 ### quantity
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### orderLine
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>`} />
 
 ### orderLineId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 </div>
-
 
 ## OrderModificationLine
 
@@ -102,7 +89,7 @@ This entity represents a line from an <a href='/reference/typescript-api/entitie
 
 ```ts title="Signature"
 class OrderModificationLine extends OrderLineReference {
-    constructor(input?: DeepPartial<OrderModificationLine>)
+    constructor(input?: DeepPartial<OrderModificationLine>);
     @Index()
     @ManyToOne(type => OrderModification, modification => modification.lines)
     modification: OrderModification;
@@ -110,31 +97,24 @@ class OrderModificationLine extends OrderLineReference {
     modificationId: ID;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/order-line-reference#orderlinereference'>OrderLineReference</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/order-line-reference#orderlinereference'>OrderLineReference</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-line-reference#ordermodificationline'>OrderModificationLine</a>&#62;) => OrderModificationLine`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-line-reference#ordermodificationline'>OrderModificationLine</a>&#62;) => OrderModificationLine`} />
 
 ### modification
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-modification#ordermodification'>OrderModification</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order-modification#ordermodification'>OrderModification</a>`} />
 
 ### modificationId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 </div>
-
 
 ## RefundLine
 
@@ -144,7 +124,7 @@ This entity represents a line from an <a href='/reference/typescript-api/entitie
 
 ```ts title="Signature"
 class RefundLine extends OrderLineReference {
-    constructor(input?: DeepPartial<RefundLine>)
+    constructor(input?: DeepPartial<RefundLine>);
     @Index()
     @ManyToOne(type => Refund, refund => refund.lines)
     refund: Refund;
@@ -152,27 +132,21 @@ class RefundLine extends OrderLineReference {
     refundId: ID;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/order-line-reference#orderlinereference'>OrderLineReference</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/entities/order-line-reference#orderlinereference'>OrderLineReference</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-line-reference#refundline'>RefundLine</a>&#62;) => RefundLine`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/order-line-reference#refundline'>RefundLine</a>&#62;) => RefundLine`} />
 
 ### refund
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/refund#refund'>Refund</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/refund#refund'>Refund</a>`} />
 
 ### refundId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 </div>

@@ -1,13 +1,14 @@
 ---
-title: "Navigation Types"
+title: 'Navigation Types'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## NavMenuBadge
 
@@ -27,16 +28,14 @@ interface NavMenuBadge {
 
 ### type
 
-<MemberInfo kind="property" type={`NavMenuBadgeType`}   />
-
+<MemberInfo kind="property" type={`NavMenuBadgeType`} />
 
 ### propagateToSection
 
-<MemberInfo kind="property" type={`boolean`}   />
+<MemberInfo kind="property" type={`boolean`} />
 
 If true, the badge will propagate to the NavMenuItem's
 parent section, displaying a notification badge next
 to the section name.
-
 
 </div>

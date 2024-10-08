@@ -1,13 +1,14 @@
 ---
-title: "CustomFieldConfig"
+title: 'CustomFieldConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CustomFieldConfig
 
@@ -16,7 +17,8 @@ import MemberDescription from '@site/src/components/MemberDescription';
 An object used to configure a custom field.
 
 ```ts title="Signature"
-type CustomFieldConfig = | StringCustomFieldConfig
+type CustomFieldConfig =
+    | StringCustomFieldConfig
     | LocaleStringCustomFieldConfig
     | TextCustomFieldConfig
     | LocaleTextCustomFieldConfig
@@ -24,5 +26,5 @@ type CustomFieldConfig = | StringCustomFieldConfig
     | FloatCustomFieldConfig
     | BooleanCustomFieldConfig
     | DateTimeCustomFieldConfig
-    | RelationCustomFieldConfig
+    | RelationCustomFieldConfig;
 ```

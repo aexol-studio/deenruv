@@ -1,13 +1,14 @@
 ---
-title: "DurationPipe"
+title: 'DurationPipe'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DurationPipe
 
@@ -16,10 +17,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Displays a number of milliseconds in a more human-readable format,
 e.g. "12ms", "33s", "2:03m"
 
-*Example*
+_Example_
 
 ```ts
-{{ timeInMs | duration }}
+{
+    {
+        timeInMs | duration;
+    }
+}
 ```
 
 ```ts title="Signature"
@@ -28,22 +33,17 @@ class DurationPipe implements PipeTransform {
     transform(value: number) => string;
 }
 ```
-* Implements: <code>PipeTransform</code>
 
-
+-   Implements: <code>PipeTransform</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(i18nService: <a href='/reference/typescript-api/common/i18n-service#i18nservice'>I18nService</a>) => DurationPipe`}   />
-
+<MemberInfo kind="method" type={`(i18nService: <a href='/reference/typescript-api/common/i18n-service#i18nservice'>I18nService</a>) => DurationPipe`} />
 
 ### transform
 
-<MemberInfo kind="method" type={`(value: number) => string`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: number) => string`} />
 
 </div>

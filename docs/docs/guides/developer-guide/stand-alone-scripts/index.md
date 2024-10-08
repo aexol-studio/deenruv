@@ -1,5 +1,5 @@
 ---
-title: "Stand-alone CLI Scripts"
+title: 'Stand-alone CLI Scripts'
 ---
 
 # Stand-alone CLI Scripts
@@ -8,12 +8,12 @@ It is possible to create stand-alone scripts that can be run from the command-li
 
 ## Minimal example
 
-Here's a minimal example of a script which will bootstrap the Vendure Worker and then log the number of products in the database:
+Here's a minimal example of a script which will bootstrap the Deenruv Worker and then log the number of products in the database:
 
 ```ts title="src/get-product-count.ts"
 import { bootstrapWorker, Logger, ProductService, RequestContextService } from '@deenruv/core';
 
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 if (require.main === module) {
     getProductCount()
@@ -25,13 +25,13 @@ if (require.main === module) {
 }
 
 async function getProductCount() {
-    // This will bootstrap an instance of the Vendure Worker, providing
-    // us access to all of the services defined in the Vendure core.
+    // This will bootstrap an instance of the Deenruv Worker, providing
+    // us access to all of the services defined in the Deenruv core.
     // (but without the unnecessary overhead of the API layer).
     const { app } = await bootstrapWorker(config);
 
     // Using `app.get()` we can grab an instance of _any_ provider defined in the
-    // Vendure core as well as by our plugins.
+    // Deenruv core as well as by our plugins.
     const productService = app.get(ProductService);
 
     // For most service methods, we'll need to pass a RequestContext object.
@@ -42,7 +42,7 @@ async function getProductCount() {
 
     // We use the `findAll()` method to get the total count. Since we aren't
     // interested in the actual product objects, we can set the `take` option to 0.
-    const { totalItems } = await productService.findAll(ctx, {take: 0});
+    const { totalItems } = await productService.findAll(ctx, { take: 0 });
 
     Logger.info(
         [
@@ -50,9 +50,9 @@ async function getProductCount() {
             `There are ${totalItems} products`,
             '------------------------------',
         ].join('\n'),
-    )
+    );
 }
-``` 
+```
 
 This script can then be run from the command-line:
 
@@ -67,9 +67,9 @@ yarn ts-node src/get-product-count.ts
 resulting in the following output:
 
 ```shell
-info 01/08/23, 11:50 - [Vendure Worker] Bootstrapping Vendure Worker (pid: 4428)...
-info 01/08/23, 11:50 - [Vendure Worker] Vendure Worker is ready
-info 01/08/23, 11:50 - [Vendure Worker]
+info 01/08/23, 11:50 - [Deenruv Worker] Bootstrapping Deenruv Worker (pid: 4428)...
+info 01/08/23, 11:50 - [Deenruv Worker] Deenruv Worker is ready
+info 01/08/23, 11:50 - [Deenruv Worker]
 -----------------------------------------
 There are 56 products in the database
 -----------------------------------------
@@ -77,17 +77,17 @@ There are 56 products in the database
 
 ## The `app` object
 
-The `app` object returned by the `bootstrapWorker()` function is an instance of the [NestJS Application Context](https://docs.nestjs.com/standalone-applications). It has full access to the NestJS dependency injection container, which means that you can use the `app.get()` method to retrieve any of the services defined in the Vendure core or by any plugins.
+The `app` object returned by the `bootstrapWorker()` function is an instance of the [NestJS Application Context](https://docs.nestjs.com/standalone-applications). It has full access to the NestJS dependency injection container, which means that you can use the `app.get()` method to retrieve any of the services defined in the Deenruv core or by any plugins.
 
 ```ts title="src/import-customer-data.ts"
 import { bootstrapWorker, CustomerService } from '@deenruv/core';
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 // ...
 
 async function importCustomerData() {
     const { app } = await bootstrapWorker(config);
-    
+
     // highlight-start
     const customerService = app.get(CustomerService);
     // highlight-end
@@ -96,7 +96,7 @@ async function importCustomerData() {
 
 ## Creating a RequestContext
 
-Almost all the methods exposed by Vendure's core services take a `RequestContext` object as the first argument. Usually, this object is created in the [API Layer](/guides/developer-guide/the-api-layer/#resolvers) by the `@Ctx()` decorator, and contains information related to the current API request.
+Almost all the methods exposed by Deenruv's core services take a `RequestContext` object as the first argument. Usually, this object is created in the [API Layer](/guides/developer-guide/the-api-layer/#resolvers) by the `@Ctx()` decorator, and contains information related to the current API request.
 
 When running a stand-alone script, we aren't making any API requests, so we need to create a `RequestContext` object manually. This can be done using the [`RequestContextService`](/reference/typescript-api/request/request-context-service/):
 
@@ -107,13 +107,13 @@ import { RequestContextService } from '@deenruv/core';
 async function getProductCount() {
     const { app } = await bootstrapWorker(config);
     const productService = app.get(ProductService);
-    
+
     // highlight-start
     const ctx = await app.get(RequestContextService).create({
         apiType: 'admin',
     });
     // highlight-end
-    
-    const { totalItems } = await productService.findAll(ctx, {take: 0});
+
+    const { totalItems } = await productService.findAll(ctx, { take: 0 });
 }
 ```

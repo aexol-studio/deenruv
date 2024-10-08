@@ -1,5 +1,5 @@
 ---
-title: "GraphQL Code Generation"
+title: 'GraphQL Code Generation'
 ---
 
 Code generation means the automatic generation of TypeScript types based on your GraphQL schema and your GraphQL operations.
@@ -9,16 +9,16 @@ write any types for your API calls.
 To do this, we will use [Graphql Code Generator](https://the-guild.dev/graphql/codegen).
 
 :::cli
-Use `npx vendure add` and select "Set up GraphQL code generation" to quickly set up code generation.
+Use `npx deenruv add` and select "Set up GraphQL code generation" to quickly set up code generation.
 :::
 
 :::note
-This guide is for adding codegen to your Vendure plugins & Admin UI extensions. For a guide on adding codegen to your storefront, see the [Storefront Codegen](/guides/storefront/codegen/) guide.
+This guide is for adding codegen to your Deenruv plugins & Admin UI extensions. For a guide on adding codegen to your storefront, see the [Storefront Codegen](/guides/storefront/codegen/) guide.
 :::
 
 ## Installation
 
-It is recommended to use the `vendure add` CLI command as detailed above to set up codegen. 
+It is recommended to use the `deenruv add` CLI command as detailed above to set up codegen.
 If you prefer to set it up manually, follow the steps below.
 
 First, install the required dependencies:
@@ -32,7 +32,7 @@ npm install -D @graphql-codegen/cli @graphql-codegen/typescript
 Add a `codegen.ts` file to your project root with the following contents:
 
 ```ts title="codegen.ts"
-import type {CodegenConfig} from '@graphql-codegen/cli';
+import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
     overwrite: true,
@@ -65,9 +65,9 @@ You can now add a script to your package.json to run codegen:
 
 ```json title="package.json"
 {
-  "scripts": {
-    "codegen": "graphql-codegen --config codegen.ts"
-  }
+    "scripts": {
+        "codegen": "graphql-codegen --config codegen.ts"
+    }
 }
 ```
 
@@ -103,7 +103,7 @@ export class AdminResolver {
     organization(@Ctx() ctx: RequestContext, @Args() args: QueryOrganizationArgs): Promise<Organization> {
         return this.organizationService.findOne(ctx, args.id);
     }
-    
+
     @Transaction()
     @Mutation()
     @Allow(organizationPermission.Create)
@@ -127,7 +127,7 @@ import { RequestContext, TransactionalConnection } from '@deenruv/core';
 
 import { Organization } from '../entities/organization.entity';
 // highlight-next-line
-import { CreateOrganizationInput, UpdateOrganizationInput } from "../gql/generated";
+import { CreateOrganizationInput, UpdateOrganizationInput } from '../gql/generated';
 
 @Injectable()
 export class OrganizationService {
@@ -141,7 +141,7 @@ export class OrganizationService {
     // highlight-next-line
     async update(ctx: RequestContext, input: UpdateOrganizationInput): Promise<Organization> {
         const example = await this.connection.getEntityOrThrow(ctx, Organization, input.id);
-        const updated = {...example, ...input};
+        const updated = { ...example, ...input };
         return this.connection.getRepository(ctx, Organization).save(updated);
     }
 }
@@ -234,9 +234,8 @@ export class OrganizationListComponent extends TypedBaseListComponent<
     'organizations'
     // highlight-end
 > {
-    
     // Sort & filter definitions omitted for brevity.
-    // For a complete ListComponent example, see the 
+    // For a complete ListComponent example, see the
     // "Creating List Views" guide.
 
     constructor() {
@@ -244,7 +243,7 @@ export class OrganizationListComponent extends TypedBaseListComponent<
         super.configure({
             // highlight-next-line
             document: getOrganizationListDocument,
-            getItems: (data) => data.organizations,
+            getItems: data => data.organizations,
             setVariables: (skip, take) => ({
                 options: {
                     skip,

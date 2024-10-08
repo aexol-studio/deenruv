@@ -1,13 +1,14 @@
 ---
-title: "ObjectTreeComponent"
+title: 'ObjectTreeComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ObjectTreeComponent
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 This component displays a plain JavaScript object as an expandable tree.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-object-tree [value]="payment.metadata"></vdr-object-tree>
@@ -34,57 +35,45 @@ class ObjectTreeComponent implements OnChanges {
     isObject(value: any) => boolean;
 }
 ```
-* Implements: <code>OnChanges</code>
 
-
+-   Implements: <code>OnChanges</code>
 
 <div className="members-wrapper">
 
 ### value
 
-<MemberInfo kind="property" type={`{ [key: string]: any } | string`}   />
-
+<MemberInfo kind="property" type={`{ [key: string]: any } | string`} />
 
 ### isArrayItem
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### depth
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### expanded
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### valueIsArray
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### entries
 
-<MemberInfo kind="property" type={`Array&#60;{ key: string; value: any }&#62;`}   />
-
+<MemberInfo kind="property" type={`Array&#60;{ key: string; value: any }&#62;`} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(parent: <a href='/reference/admin-ui-api/components/object-tree-component#objecttreecomponent'>ObjectTreeComponent</a>) => ObjectTreeComponent`}   />
-
+<MemberInfo kind="method" type={`(parent: <a href='/reference/admin-ui-api/components/object-tree-component#objecttreecomponent'>ObjectTreeComponent</a>) => ObjectTreeComponent`} />
 
 ### ngOnChanges
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### isObject
 
-<MemberInfo kind="method" type={`(value: any) => boolean`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: any) => boolean`} />
 
 </div>

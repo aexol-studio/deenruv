@@ -1,13 +1,14 @@
 ---
-title: "DataTable2Component"
+title: 'DataTable2Component'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DataTable2Component
 
@@ -16,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A table for displaying PaginatedList results. It is designed to be used inside components which
 extend the <a href='/reference/admin-ui-api/list-detail-views/base-list-component#baselistcomponent'>BaseListComponent</a> or <a href='/reference/admin-ui-api/list-detail-views/typed-base-list-component#typedbaselistcomponent'>TypedBaseListComponent</a> class.
 
-*Example*
+_Example_
 
 ```html
 <vdr-data-table-2
@@ -34,32 +35,23 @@ extend the <a href='/reference/admin-ui-api/list-detail-views/base-list-componen
         [hostComponent]="this"
         [selectionManager]="selectionManager"
     />
-    <vdr-dt2-search
-        [searchTermControl]="searchTermControl"
-        searchTermPlaceholder="Filter by title"
-    />
+    <vdr-dt2-search [searchTermControl]="searchTermControl" searchTermPlaceholder="Filter by title" />
     <vdr-dt2-column [heading]="'common.id' | translate" [hiddenByDefault]="true">
-        <ng-template let-review="item">
-            {{ review.id }}
-        </ng-template>
+        <ng-template let-review="item"> {{ review.id }} </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column
         [heading]="'common.created-at' | translate"
         [hiddenByDefault]="true"
         [sort]="sorts.get('createdAt')"
     >
-        <ng-template let-review="item">
-            {{ review.createdAt | localeDate : 'short' }}
-        </ng-template>
+        <ng-template let-review="item"> {{ review.createdAt | localeDate : 'short' }} </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column
         [heading]="'common.updated-at' | translate"
         [hiddenByDefault]="true"
         [sort]="sorts.get('updatedAt')"
     >
-        <ng-template let-review="item">
-            {{ review.updatedAt | localeDate : 'short' }}
-        </ng-template>
+        <ng-template let-review="item"> {{ review.updatedAt | localeDate : 'short' }} </ng-template>
     </vdr-dt2-column>
     <vdr-dt2-column [heading]="'common.name' | translate" [optional]="false" [sort]="sorts.get('name')">
         <ng-template let-review="item">
@@ -120,227 +112,181 @@ class DataTable2Component<T> implements AfterContentInit, OnChanges, OnDestroy {
     getDataTableConfig() => DataTableConfig;
 }
 ```
-* Implements: <code>AfterContentInit</code>, <code>OnChanges</code>, <code>OnDestroy</code>
 
-
+-   Implements: <code>AfterContentInit</code>, <code>OnChanges</code>, <code>OnDestroy</code>
 
 <div className="members-wrapper">
 
 ### id
 
-<MemberInfo kind="property" type={`DataTableLocationId`}   />
-
+<MemberInfo kind="property" type={`DataTableLocationId`} />
 
 ### items
 
-<MemberInfo kind="property" type={`T[]`}   />
-
+<MemberInfo kind="property" type={`T[]`} />
 
 ### itemsPerPage
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### currentPage
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### totalItems
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### emptyStateLabel
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### filters
 
-<MemberInfo kind="property" type={`DataTableFilterCollection`}   />
-
+<MemberInfo kind="property" type={`DataTableFilterCollection`} />
 
 ### activeIndex
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### pageChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### itemsPerPageChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### columns
 
-<MemberInfo kind="property" type={`QueryList&#60;DataTable2ColumnComponent&#60;T&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`QueryList&#60;DataTable2ColumnComponent&#60;T&#62;&#62;`} />
 
 ### customFieldColumns
 
-<MemberInfo kind="property" type={`QueryList&#60;DataTableCustomFieldColumnComponent&#60;T&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`QueryList&#60;DataTableCustomFieldColumnComponent&#60;T&#62;&#62;`} />
 
 ### searchComponent
 
-<MemberInfo kind="property" type={`DataTable2SearchComponent`}   />
-
+<MemberInfo kind="property" type={`DataTable2SearchComponent`} />
 
 ### bulkActionMenuComponent
 
-<MemberInfo kind="property" type={`BulkActionMenuComponent`}   />
-
+<MemberInfo kind="property" type={`BulkActionMenuComponent`} />
 
 ### customSearchTemplate
 
-<MemberInfo kind="property" type={`TemplateRef&#60;any&#62;`}   />
-
+<MemberInfo kind="property" type={`TemplateRef&#60;any&#62;`} />
 
 ### templateRefs
 
-<MemberInfo kind="property" type={`QueryList&#60;TemplateRef&#60;any&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`QueryList&#60;TemplateRef&#60;any&#62;&#62;`} />
 
 ### injector
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### route
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### filterPresetService
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### dataTableCustomComponentService
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### customComponents
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### rowTemplate
 
-<MemberInfo kind="property" type={`TemplateRef&#60;any&#62;`}   />
-
+<MemberInfo kind="property" type={`TemplateRef&#60;any&#62;`} />
 
 ### currentStart
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### currentEnd
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### disableSelect
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### showSearchFilterRow
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### uiLanguage$
 
-<MemberInfo kind="property" type={`Observable&#60;<a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;<a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>&#62;`} />
 
 ### destroy$
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(changeDetectorRef: ChangeDetectorRef, localStorageService: LocalStorageService, dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>) => DataTable2Component`}   />
-
+<MemberInfo kind="method" type={`(changeDetectorRef: ChangeDetectorRef, localStorageService: LocalStorageService, dataService: <a href='/reference/admin-ui-api/services/data-service#dataservice'>DataService</a>) => DataTable2Component`} />
 
 ### selectionManager
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### allColumns
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### visibleSortedColumns
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### sortedColumns
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### ngOnChanges
 
-<MemberInfo kind="method" type={`(changes: SimpleChanges) => `}   />
-
+<MemberInfo kind="method" type={`(changes: SimpleChanges) => `} />
 
 ### ngOnDestroy
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### ngAfterContentInit
 
-<MemberInfo kind="method" type={`() => void`}   />
-
+<MemberInfo kind="method" type={`() => void`} />
 
 ### onColumnReorder
 
-<MemberInfo kind="method" type={`(event: { column: DataTable2ColumnComponent&#60;any&#62;; newIndex: number }) => `}   />
-
+<MemberInfo kind="method" type={`(event: { column: DataTable2ColumnComponent&#60;any&#62;; newIndex: number }) => `} />
 
 ### onColumnsReset
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### toggleSearchFilterRow
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### trackByFn
 
-<MemberInfo kind="method" type={`(index: number, item: any) => `}   />
-
+<MemberInfo kind="method" type={`(index: number, item: any) => `} />
 
 ### onToggleAllClick
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### onRowClick
 
-<MemberInfo kind="method" type={`(item: T, event: MouseEvent) => `}   />
-
+<MemberInfo kind="method" type={`(item: T, event: MouseEvent) => `} />
 
 ### getDataTableConfig
 
-<MemberInfo kind="method" type={`() => DataTableConfig`}   />
-
-
-
+<MemberInfo kind="method" type={`() => DataTableConfig`} />
 
 </div>

@@ -1,28 +1,28 @@
 ---
-title: "Multi-vendor Marketplaces"
+title: 'Multi-vendor Marketplaces'
 ---
 
 # Multi-vendor Marketplaces
 
-Vendure v2.0 introduced a number of changes and new APIs to enable developers to build multi-vendor marketplace apps.
+Deenruv v2.0 introduced a number of changes and new APIs to enable developers to build multi-vendor marketplace apps.
 
 This is a type of application in which multiple sellers are able to list products, and then customers can create orders containing products from one or more of these sellers. Well-known examples include Amazon, Ebay, Etsy and Airbnb.
 
-This guide introduces the major concepts & APIs you will need to understand in order to implement your own multi-vendor marketplace application. 
+This guide introduces the major concepts & APIs you will need to understand in order to implement your own multi-vendor marketplace application.
 
 ## Multi-vendor plugin
 
-All the concepts presented here have been implemented in our [example multi-vendor plugin](https://github.com/vendure-ecommerce/vendure/tree/master/packages/dev-server/example-plugins/multivendor-plugin). The guides here will refer to specific parts of this plugin which you should consult to get a full understanding of how an implementation would look.
+All the concepts presented here have been implemented in our [example multi-vendor plugin](https://github.com/aexol-studio/deenruv/tree/master/packages/dev-server/example-plugins/multivendor-plugin). The guides here will refer to specific parts of this plugin which you should consult to get a full understanding of how an implementation would look.
 
 :::caution
-**Note:** the [example multi-vendor plugin](https://github.com/vendure-ecommerce/vendure/tree/master/packages/dev-server/example-plugins/multivendor-plugin) is for educational purposes only, and for the sake of clarity leaves out several parts that would be required in a production-ready solution, such as email verification and setup of a real payment solution.
+**Note:** the [example multi-vendor plugin](https://github.com/aexol-studio/deenruv/tree/master/packages/dev-server/example-plugins/multivendor-plugin) is for educational purposes only, and for the sake of clarity leaves out several parts that would be required in a production-ready solution, such as email verification and setup of a real payment solution.
 :::
 
 ![The Admin UI Aggregate Order screen](./aggregate-order.webp)
 
 ## Sellers, Channels & Roles
 
-The core of Vendure's multi-vendor support is Channels. Read the [Channels guide](/guides/core-concepts/channels/) to get a more detailed understanding of how they work.
+The core of Deenruv's multi-vendor support is Channels. Read the [Channels guide](/guides/core-concepts/channels/) to get a more detailed understanding of how they work.
 
 Each Channel is assigned to a [Seller](/reference/typescript-api/entities/seller/), which is another term for the vendor who is selling things in our marketplace.
 
@@ -32,40 +32,42 @@ In the multi-vendor plugin, we have defined a new mutation in the Shop API which
 
 ```graphql title="Shop API"
 mutation RegisterSeller {
-  registerNewSeller(input: {
-    shopName: "Bob's Parts",
-    seller: {
-      firstName: "Bob"
-      lastName: "Dobalina"
-      emailAddress: "bob@bobs-parts.com"
-      password: "test",
+    registerNewSeller(
+        input: {
+            shopName: "Bob's Parts"
+            seller: {
+                firstName: "Bob"
+                lastName: "Dobalina"
+                emailAddress: "bob@bobs-parts.com"
+                password: "test"
+            }
+        }
+    ) {
+        id
+        code
+        token
     }
-  }) {
-    id
-    code
-    token
-  }
 }
 ```
 
 Executing the `registerNewSeller` mutation does the following:
 
-- Create a new [Seller](/reference/typescript-api/entities/seller/) representing the shop "Bob's Parts"
-- Create a new [Channel](/reference/typescript-api/entities/channel) and associate it with the new Seller
-- Create a [Role](/reference/typescript-api/entities/role) & [Administrator](/reference/typescript-api/entities/administrator) for Bob to access his shop admin account
-- Create a [ShippingMethod](/reference/typescript-api/entities/shipping-method) for Bob's shop
-- Create a [StockLocation](/reference/typescript-api/entities/stock-location) for Bob's shop
+-   Create a new [Seller](/reference/typescript-api/entities/seller/) representing the shop "Bob's Parts"
+-   Create a new [Channel](/reference/typescript-api/entities/channel) and associate it with the new Seller
+-   Create a [Role](/reference/typescript-api/entities/role) & [Administrator](/reference/typescript-api/entities/administrator) for Bob to access his shop admin account
+-   Create a [ShippingMethod](/reference/typescript-api/entities/shipping-method) for Bob's shop
+-   Create a [StockLocation](/reference/typescript-api/entities/stock-location) for Bob's shop
 
 Bob can now log in to the Admin UI using the provided credentials and begin creating products to sell!
 
 ### Keeping prices synchronized
 
 In some marketplaces, the same product may be sold by multiple sellers. When this is the case, the product and its variants
-will be assigned not only to the default channel, but to multiple other channels as well - see the 
+will be assigned not only to the default channel, but to multiple other channels as well - see the
 [Channels, Currencies & Prices section](/guides/core-concepts/channels/#channels-currencies--prices) for a visual explanation of how this works.
 
-This means that there will be multiple ProductVariantPrice entities per variant, one for each channel. 
- 
+This means that there will be multiple ProductVariantPrice entities per variant, one for each channel.
+
 In order
 to keep prices synchronized across all channels, the example multi-vendor plugin sets the `syncPricesAcrossChannels` property
 of the [DefaultProductVariantPriceUpdateStrategy](/reference/typescript-api/configuration/product-variant-price-update-strategy#defaultproductvariantpriceupdatestrategy)
@@ -80,23 +82,23 @@ The following logic will run any time the `addItemToOrder` mutation is executed 
 
 ```ts
 export class MultivendorSellerStrategy implements OrderSellerStrategy {
-  // other properties omitted for brevity   
-    
-  async setOrderLineSellerChannel(ctx: RequestContext, orderLine: OrderLine) {
-    await this.entityHydrator.hydrate(ctx, orderLine.productVariant, { relations: ['channels'] });
-    const defaultChannel = await this.channelService.getDefaultChannel();
-  
-    // If a ProductVariant is assigned to exactly 2 Channels, then one is the default Channel
-    // and the other is the seller's Channel.
-    if (orderLine.productVariant.channels.length === 2) {
-      const sellerChannel = orderLine.productVariant.channels.find(
-        c => !idsAreEqual(c.id, defaultChannel.id),
-      );
-      if (sellerChannel) {
-        return sellerChannel;
-      }
+    // other properties omitted for brevity
+
+    async setOrderLineSellerChannel(ctx: RequestContext, orderLine: OrderLine) {
+        await this.entityHydrator.hydrate(ctx, orderLine.productVariant, { relations: ['channels'] });
+        const defaultChannel = await this.channelService.getDefaultChannel();
+
+        // If a ProductVariant is assigned to exactly 2 Channels, then one is the default Channel
+        // and the other is the seller's Channel.
+        if (orderLine.productVariant.channels.length === 2) {
+            const sellerChannel = orderLine.productVariant.channels.find(
+                c => !idsAreEqual(c.id, defaultChannel.id),
+            );
+            if (sellerChannel) {
+                return sellerChannel;
+            }
+        }
     }
-  }
 }
 ```
 
@@ -110,22 +112,22 @@ Here's how we do it in the example plugin:
 
 ```ts
 export const multivendorShippingEligibilityChecker = new ShippingEligibilityChecker({
-  // other properties omitted for brevity   
-    
-  check: async (ctx, order, args, method) => {
-    await entityHydrator.hydrate(ctx, method, { relations: ['channels'] });
-    await entityHydrator.hydrate(ctx, order, { relations: ['lines.sellerChannel'] });
-    const sellerChannel = method.channels.find(c => c.code !== DEFAULT_CHANNEL_CODE);
-    if (!sellerChannel) {
-      return false;
-    }
-    for (const line of order.lines) {
-      if (idsAreEqual(line.sellerChannelId, sellerChannel.id)) {
-        return true;
-      }
-    }
-    return false;
-  },
+    // other properties omitted for brevity
+
+    check: async (ctx, order, args, method) => {
+        await entityHydrator.hydrate(ctx, method, { relations: ['channels'] });
+        await entityHydrator.hydrate(ctx, order, { relations: ['lines.sellerChannel'] });
+        const sellerChannel = method.channels.find(c => c.code !== DEFAULT_CHANNEL_CODE);
+        if (!sellerChannel) {
+            return false;
+        }
+        for (const line of order.lines) {
+            if (idsAreEqual(line.sellerChannelId, sellerChannel.id)) {
+                return true;
+            }
+        }
+        return false;
+    },
 });
 ```
 
@@ -134,17 +136,17 @@ every OrderLine is covered by a valid ShippingMethod. We pass the ids of the eli
 
 ```graphql
 mutation SetShippingMethod($ids: [ID!]!) {
-  setOrderShippingMethod(shippingMethodId: $ids) {
-    ... on Order {
-      id
-      state
-      # ...etc
+    setOrderShippingMethod(shippingMethodId: $ids) {
+        ... on Order {
+            id
+            state
+            # ...etc
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ... on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -154,28 +156,28 @@ We will again be relying on the `sellerChannelId` property of the OrderLines to 
 
 ```ts
 export class MultivendorShippingLineAssignmentStrategy implements ShippingLineAssignmentStrategy {
-  // other properties omitted for brevity   
-    
-  async assignShippingLineToOrderLines(ctx: RequestContext, shippingLine: ShippingLine, order: Order) {
-    // First we need to ensure the required relations are available
-    // to work with.
-    const defaultChannel = await this.channelService.getDefaultChannel();
-    await this.entityHydrator.hydrate(ctx, shippingLine, { relations: ['shippingMethod.channels'] });
-    const { channels } = shippingLine.shippingMethod;
-  
-    // We assume that, if a ShippingMethod is assigned to exactly 2 Channels,
-    // then one is the default Channel and the other is the seller's Channel.
-    if (channels.length === 2) {
-      const sellerChannel = channels.find(c => !idsAreEqual(c.id, defaultChannel.id));
-      if (sellerChannel) {
-        // Once we have established the seller's Channel, we can filter the OrderLines
-        // that belong to that Channel. The `sellerChannelId` was previously established
-        // in the `OrderSellerStrategy.setOrderLineSellerChannel()` method.
-        return order.lines.filter(line => idsAreEqual(line.sellerChannelId, sellerChannel.id));
-      }
+    // other properties omitted for brevity
+
+    async assignShippingLineToOrderLines(ctx: RequestContext, shippingLine: ShippingLine, order: Order) {
+        // First we need to ensure the required relations are available
+        // to work with.
+        const defaultChannel = await this.channelService.getDefaultChannel();
+        await this.entityHydrator.hydrate(ctx, shippingLine, { relations: ['shippingMethod.channels'] });
+        const { channels } = shippingLine.shippingMethod;
+
+        // We assume that, if a ShippingMethod is assigned to exactly 2 Channels,
+        // then one is the default Channel and the other is the seller's Channel.
+        if (channels.length === 2) {
+            const sellerChannel = channels.find(c => !idsAreEqual(c.id, defaultChannel.id));
+            if (sellerChannel) {
+                // Once we have established the seller's Channel, we can filter the OrderLines
+                // that belong to that Channel. The `sellerChannelId` was previously established
+                // in the `OrderSellerStrategy.setOrderLineSellerChannel()` method.
+                return order.lines.filter(line => idsAreEqual(line.sellerChannelId, sellerChannel.id));
+            }
+        }
+        return order.lines;
     }
-    return order.lines;
-  }
 }
 ```
 
@@ -187,8 +189,8 @@ In the example plugin, we have implemented a simplified version of a service lik
 
 The [OrderSellerStrategy](/reference/typescript-api/orders/order-seller-strategy/) API contains two methods which are used to first split the Order from a single order into one _Aggregate Order_ and multiple _Seller Orders_, and then to calculate the platform fee for each of the Seller Orders:
 
-- `OrderSellerStrategy.splitOrder`: Splits the OrderLines and ShippingLines of the Order into multiple groups, one for each Seller.
-- `OrderSellerStrategy.afterSellerOrdersCreated`: This method is run on every Seller Order created after the split, and we can use this to assign the platform fees to the Seller Order.
+-   `OrderSellerStrategy.splitOrder`: Splits the OrderLines and ShippingLines of the Order into multiple groups, one for each Seller.
+-   `OrderSellerStrategy.afterSellerOrdersCreated`: This method is run on every Seller Order created after the split, and we can use this to assign the platform fees to the Seller Order.
 
 ## Custom OrderProcess
 

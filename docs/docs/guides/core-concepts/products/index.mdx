@@ -1,5 +1,5 @@
 ---
-title: "Products"
+title: 'Products'
 ---
 
 Your catalog is composed of [`Products`](/reference/typescript-api/entities/product/) and [`ProductVariants`](/reference/typescript-api/entities/product-variant/).
@@ -17,12 +17,12 @@ the product. These option groups then define the available [`ProductOptions`](/r
 If we were to add a new option group to the example above for "Color", with 2 options, "Black" and "White", then in total
 we would be able to define up to 6 variants:
 
-- Hoodie Small Black
-- Hoodie Small White
-- Hoodie Medium Black
-- Hoodie Medium White
-- Hoodie Large Black
-- Hoodie Large White
+-   Hoodie Small Black
+-   Hoodie Small White
+-   Hoodie Medium Black
+-   Hoodie Medium White
+-   Hoodie Large Black
+-   Hoodie Large White
 
 :::info
 When a customer adds a product to their cart, they are adding a specific `ProductVariant` to their cart, not the `Product` itself.
@@ -49,11 +49,11 @@ also use facets to add other metadata to products and variants such as "New", "S
 
 ![Facets and FacetValues](./facets.webp)
 
-These are the typical uses of facets in Vendure:
+These are the typical uses of facets in Deenruv:
 
-- As the **basis of [Collections](/guides/core-concepts/collections)**, in order to categorize your catalog.
-- To **filter products** in the storefront, also known as "faceted search". For example, a customer is on the "hoodies" collection
-page and wants to filter to only show Nike hoodies.
-- For **internal logic**, such as a promotion that applies to all variants with the "Summer Sale" facet value, or a shipping calculation
-that applies a surcharge to all products with the "Fragile" facet value. Such facets can be set to be private so that they
-are not exposed to the storefront.
+-   As the **basis of [Collections](/guides/core-concepts/collections)**, in order to categorize your catalog.
+-   To **filter products** in the storefront, also known as "faceted search". For example, a customer is on the "hoodies" collection
+    page and wants to filter to only show Nike hoodies.
+-   For **internal logic**, such as a promotion that applies to all variants with the "Summer Sale" facet value, or a shipping calculation
+    that applies a surcharge to all products with the "Fragile" facet value. Such facets can be set to be private so that they
+    are not exposed to the storefront.

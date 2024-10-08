@@ -1,13 +1,14 @@
 ---
-title: "RegisterRouteComponentOptions"
+title: 'RegisterRouteComponentOptions'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## RegisterRouteComponentOptions
 
@@ -16,7 +17,13 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Configuration for a route component.
 
 ```ts title="Signature"
-type RegisterRouteComponentOptions<Component extends any | BaseDetailComponent<Entity>, Entity extends { id: string; updatedAt?: string }, T extends DocumentNode | TypedDocumentNode<any, { id: string }>, Field extends keyof ResultOf<T>, R extends Field> = {
+type RegisterRouteComponentOptions<
+    Component extends any | BaseDetailComponent<Entity>,
+    Entity extends { id: string; updatedAt?: string },
+    T extends DocumentNode | TypedDocumentNode<any, { id: string }>,
+    Field extends keyof ResultOf<T>,
+    R extends Field,
+> = {
     component: Type<Component> | Component;
     title?: string;
     locationId?: string;
@@ -28,5 +35,5 @@ type RegisterRouteComponentOptions<Component extends any | BaseDetailComponent<E
     entityKey?: Component extends BaseDetailComponent<any> ? R : string;
     variables?: T extends TypedDocumentNode<any, infer V> ? Omit<V, 'id'> : never;
     routeConfig?: Route;
-} & (Component extends BaseDetailComponent<any> ? { entityKey: R } : unknown)
+} & (Component extends BaseDetailComponent<any> ? { entityKey: R } : unknown);
 ```

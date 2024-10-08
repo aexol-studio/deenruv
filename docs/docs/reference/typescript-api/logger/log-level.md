@@ -1,17 +1,18 @@
 ---
-title: "LogLevel"
+title: 'LogLevel'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
 
-
 ## LogLevel
 
-<GenerationInfo sourceFile="packages/core/src/config/logger/vendure-logger.ts" sourceLine="9" packageName="@deenruv/core" />
+<GenerationInfo sourceFile="packages/core/src/config/logger/deenruv-logger.ts" sourceLine="9" packageName="@deenruv/core" />
 
 An enum of valid logging levels.
 

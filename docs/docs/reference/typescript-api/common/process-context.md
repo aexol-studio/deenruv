@@ -1,22 +1,23 @@
 ---
-title: "ProcessContext"
+title: 'ProcessContext'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ProcessContext
 
 <GenerationInfo sourceFile="packages/core/src/process-context/process-context.ts" sourceLine="31" packageName="@deenruv/core" />
 
 The ProcessContext can be injected into your providers & modules in order to know whether it
-is being executed in the context of the main Vendure server or the worker.
+is being executed in the context of the main Deenruv server or the worker.
 
-*Example*
+_Example_
 
 ```ts
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
@@ -24,21 +25,21 @@ import { ProcessContext } from '@deenruv/core';
 
 @Injectable()
 export class MyService implements OnApplicationBootstrap {
-  constructor(private processContext: ProcessContext) {}
+    constructor(private processContext: ProcessContext) {}
 
-  onApplicationBootstrap() {
-    if (this.processContext.isServer) {
-      // code which will only execute when running in
-      // the server process
+    onApplicationBootstrap() {
+        if (this.processContext.isServer) {
+            // code which will only execute when running in
+            // the server process
+        }
     }
-  }
 }
 ```
 
 ```ts title="Signature"
 class ProcessContext {
-    isServer: boolean
-    isWorker: boolean
+    isServer: boolean;
+    isWorker: boolean;
 }
 ```
 
@@ -46,14 +47,10 @@ class ProcessContext {
 
 ### isServer
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### isWorker
 
-<MemberInfo kind="property" type={`boolean`}   />
-
-
-
+<MemberInfo kind="property" type={`boolean`} />
 
 </div>

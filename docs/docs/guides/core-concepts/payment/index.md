@@ -5,10 +5,10 @@ title: 'Payment'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Vendure can support many kinds of payment workflows, such as authorizing and capturing payment in a single step upon checkout or authorizing on checkout and then capturing on fulfillment.
+Deenruv can support many kinds of payment workflows, such as authorizing and capturing payment in a single step upon checkout or authorizing on checkout and then capturing on fulfillment.
 
 :::info
-For complete working examples of real payment integrations, see the [payments-plugins](https://github.com/vendure-ecommerce/vendure/tree/master/packages/payments-plugin/src)
+For complete working examples of real payment integrations, see the [payments-plugins](https://github.com/aexol-studio/deenruv/tree/master/packages/payments-plugin/src)
 :::
 
 ## Authorization & Settlement
@@ -24,33 +24,35 @@ This two-step workflow can also be applied to other non-card forms of payment: e
 
 ## Creating an integration
 
-Payment integrations are created by defining a new [PaymentMethodHandler](/reference/typescript-api/payment/payment-method-handler/) and passing that handler into the [`paymentOptions.paymentMethodHandlers`](/reference/typescript-api/payment/payment-options#paymentmethodhandlers) array in the VendureConfig.
+Payment integrations are created by defining a new [PaymentMethodHandler](/reference/typescript-api/payment/payment-method-handler/) and passing that handler into the [`paymentOptions.paymentMethodHandlers`](/reference/typescript-api/payment/payment-options#paymentmethodhandlers) array in the DeenruvConfig.
 
 ```ts title="src/plugins/payment-plugin/my-payment-handler.ts"
 import {
     CancelPaymentResult,
     CancelPaymentErrorResult,
     PaymentMethodHandler,
-    VendureConfig,
+    DeenruvConfig,
     CreatePaymentResult,
     SettlePaymentResult,
-    SettlePaymentErrorResult
+    SettlePaymentErrorResult,
 } from '@deenruv/core';
 import { sdk } from 'payment-provider-sdk';
 
 /**
- * This is a handler which integrates Vendure with an imaginary
+ * This is a handler which integrates Deenruv with an imaginary
  * payment provider, who provide a Node SDK which we use to
  * interact with their APIs.
  */
 const myPaymentHandler = new PaymentMethodHandler({
     code: 'my-payment-method',
-    description: [{
-        languageCode: LanguageCode.en,
-        value: 'My Payment Provider',
-    }],
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'My Payment Provider',
+        },
+    ],
     args: {
-        apiKey: {type: 'string'},
+        apiKey: { type: 'string' },
     },
 
     /** This is called when the `addPaymentToOrder` mutation is executed */
@@ -73,7 +75,7 @@ const myPaymentHandler = new PaymentMethodHandler({
                     // only available in the Admin API.
                     public: {
                         referenceCode: result.publicId,
-                    }
+                    },
                 },
             };
         } catch (err) {
@@ -88,34 +90,44 @@ const myPaymentHandler = new PaymentMethodHandler({
     },
 
     /** This is called when the `settlePayment` mutation is executed */
-    settlePayment: async (ctx, order, payment, args): Promise<SettlePaymentResult | SettlePaymentErrorResult> => {
+    settlePayment: async (
+        ctx,
+        order,
+        payment,
+        args,
+    ): Promise<SettlePaymentResult | SettlePaymentErrorResult> => {
         try {
             const result = await sdk.charges.capture({
                 apiKey: args.apiKey,
                 id: payment.transactionId,
             });
-            return {success: true};
+            return { success: true };
         } catch (err) {
             return {
                 success: false,
                 errorMessage: err.message,
-            }
+            };
         }
     },
 
     /** This is called when a payment is cancelled. */
-    cancelPayment: async (ctx, order, payment, args): Promise<CancelPaymentResult | CancelPaymentErrorResult> => {
+    cancelPayment: async (
+        ctx,
+        order,
+        payment,
+        args,
+    ): Promise<CancelPaymentResult | CancelPaymentErrorResult> => {
         try {
             const result = await sdk.charges.cancel({
                 apiKey: args.apiKey,
                 id: payment.transactionId,
             });
-            return {success: true};
+            return { success: true };
         } catch (err) {
             return {
                 success: false,
                 errorMessage: err.message,
-            }
+            };
         }
     },
 });
@@ -123,11 +135,11 @@ const myPaymentHandler = new PaymentMethodHandler({
 
 We can now add this handler to our configuration:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { myPaymentHandler } from './plugins/payment-plugin/my-payment-handler';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     paymentOptions: {
         paymentMethodHandlers: [myPaymentHandler],
@@ -174,27 +186,25 @@ query GetEligiblePaymentMethods {
 
 ```json
 {
-  "data": {
-    "eligiblePaymentMethods": [
-      {
-        "code": "my-payment-method",
-        "name": "My Payment Method",
-        "isEligible": true,
-        "eligibilityMessage": null
-      }
-    ]
-  }
+    "data": {
+        "eligiblePaymentMethods": [
+            {
+                "code": "my-payment-method",
+                "name": "My Payment Method",
+                "isEligible": true,
+                "eligibilityMessage": null
+            }
+        ]
+    }
 }
 ```
 
 </TabItem>
 </Tabs>
 
-
 ### Add payment to order
 
 One or more Payments are created by executing the [`addPaymentToOrder` mutation](/reference/graphql-api/shop/mutations#addpaymenttoorder). This mutation has a required `method` input field, which _must_ match the `code` of an eligible `PaymentMethod`. In the case above, this would be set to `"my-payment-method"`.
- 
 
 <Tabs>
 <TabItem value="Request" label="Request" default>
@@ -202,10 +212,7 @@ One or more Payments are created by executing the [`addPaymentToOrder` mutation]
 ```graphql title="Shop API"
 mutation {
     addPaymentToOrder(
-        input: {
-            method: "my-payment-method"
-            metadata: { token: "<some token from the payment provider>" }
-        }
+        input: { method: "my-payment-method", metadata: { token: "<some token from the payment provider>" } }
     ) {
         ... on Order {
             id
@@ -217,18 +224,17 @@ mutation {
             errorCode
             message
         }
-        ...on PaymentFailedError {
+        ... on PaymentFailedError {
             paymentErrorMessage
         }
-        ...on PaymentDeclinedError {
+        ... on PaymentDeclinedError {
             paymentErrorMessage
         }
-        ...on IneligiblePaymentMethodError {
+        ... on IneligiblePaymentMethodError {
             eligibilityCheckerMessage
         }
     }
 }
-
 ```
 
 </TabItem>
@@ -236,13 +242,13 @@ mutation {
 
 ```json
 {
-  "data": {
-    "addPaymentToOrder": {
-      "id": "12345",
-      "code": "J9AC5PY13BQGRKTF",
-      "state": "PaymentAuthorized"
+    "data": {
+        "addPaymentToOrder": {
+            "id": "12345",
+            "code": "J9AC5PY13BQGRKTF",
+            "state": "PaymentAuthorized"
+        }
     }
-  }
 }
 ```
 
@@ -341,7 +347,7 @@ import { LanguageCode, PaymentMethodHandler } from '@deenruv/core';
  */
 const myPaymentHandler = new PaymentMethodHandler({
     code: 'my-payment-handler',
-    description: [{languageCode: LanguageCode.en, value: 'My payment handler'}],
+    description: [{ languageCode: LanguageCode.en, value: 'My payment handler' }],
     args: {},
     createPayment: (ctx, order, amount, args, metadata) => {
         // payment provider logic omitted
@@ -363,25 +369,29 @@ const myPaymentHandler = new PaymentMethodHandler({
 import { OrderPlacedStrategy, OrderState, RequestContext } from '@deenruv/core';
 
 /**
- * This OrderPlacedStrategy tells Vendure to set the Order as "placed"
+ * This OrderPlacedStrategy tells Deenruv to set the Order as "placed"
  * when it transitions to the custom "ValidatingPayment" state.
  */
 class MyOrderPlacedStrategy implements OrderPlacedStrategy {
-    shouldSetAsPlaced(ctx: RequestContext, fromState: OrderState, toState: OrderState): boolean | Promise<boolean> {
+    shouldSetAsPlaced(
+        ctx: RequestContext,
+        fromState: OrderState,
+        toState: OrderState,
+    ): boolean | Promise<boolean> {
         return fromState === 'ArrangingPayment' && toState === ('ValidatingPayment' as any);
     }
 }
 ```
 
-```ts title="src/vendure-config.ts"
-import { defaultOrderProcess, defaultPaymentProcess, VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { defaultOrderProcess, defaultPaymentProcess, DeenruvConfig } from '@deenruv/core';
 import { customOrderProcess } from './plugins/my-payment-plugin/order-process';
 import { customPaymentProcess } from './plugins/my-payment-plugin/payment-process';
 import { myPaymentHandler } from './plugins/my-payment-plugin/payment-method-handler';
 import { MyOrderPlacedStrategy } from './plugins/my-payment-plugin/order-placed-strategy';
 
-// Combine the above in the VendureConfig
-export const config: VendureConfig = {
+// Combine the above in the DeenruvConfig
+export const config: DeenruvConfig = {
     // ...
     orderOptions: {
         process: [defaultOrderProcess, customOrderProcess],
@@ -400,11 +410,11 @@ A hosted payment page is a system that works similar to [Stripe checkout](https:
 
 The checkout flow works as follows:
 
-1. The user makes a POST to the card processor's URL via a Vendure served page
+1. The user makes a POST to the card processor's URL via a Deenruv served page
 2. The card processor accepts card information from the user and authorizes a payment
-3. The card processor redirects the user back to Vendure via a POST which contains details about the processed payment
+3. The card processor redirects the user back to Deenruv via a POST which contains details about the processed payment
 4. There is a pre-shared secret between the merchant and processor used to sign cross-site POST requests
 
 When integrating with a system like this, you would need to create a Controller to accept POST redirects from the payment processor (usually a success and a failure URL), as well as serve a POST form on your store frontend.
 
-With a hosted payment form the payment is already authorized by the time the card processor makes the POST request to Vendure, possibly settled even, so the payment handler won't do anything in particular - just return the data it has been passed. The validation of the POST request is done in the controller or service and the payment amount and payment reference are just passed to the payment handler which passes them on.
+With a hosted payment form the payment is already authorized by the time the card processor makes the POST request to Deenruv, possibly settled even, so the payment handler won't do anything in particular - just return the data it has been passed. The validation of the POST request is done in the controller or service and the payment amount and payment reference are just passed to the payment handler which passes them on.

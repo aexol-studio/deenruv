@@ -1,33 +1,33 @@
 ---
-title: "UiDevkitClient"
+title: 'UiDevkitClient'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## setTargetOrigin
 
 <GenerationInfo sourceFile="packages/ui-devkit/src/client/devkit-client-api.ts" sourceLine="24" packageName="@deenruv/ui-devkit" />
 
 Set the [window.postMessage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
-`targetOrigin`. The Vendure ui-devkit uses the postMessage API to
+`targetOrigin`. The Deenruv ui-devkit uses the postMessage API to
 enable cross-frame and cross-origin communication between the ui extension code and the Admin UI
 app. The `targetOrigin` is a security feature intended to provide control over where messages are sent.
 
 ```ts title="Signature"
-function setTargetOrigin(value: string): void
+function setTargetOrigin(value: string): void;
 ```
+
 Parameters
 
 ### value
 
 <MemberInfo kind="parameter" type={`string`} />
-
-
 
 ## getActivatedRoute
 
@@ -36,7 +36,7 @@ Parameters
 Retrieves information about the current route of the host application, since it is not possible
 to otherwise get this information from within the child iframe.
 
-*Example*
+_Example_
 
 ```ts
 import { getActivatedRoute } from '@deenruv/ui-devkit';
@@ -46,9 +46,8 @@ const slug = route.params.slug;
 ```
 
 ```ts title="Signature"
-function getActivatedRoute(): Promise<ActiveRouteData>
+function getActivatedRoute(): Promise<ActiveRouteData>;
 ```
-
 
 ## graphQlQuery
 
@@ -56,29 +55,37 @@ function getActivatedRoute(): Promise<ActiveRouteData>
 
 Perform a GraphQL query and returns either an Observable or a Promise of the result.
 
-*Example*
+_Example_
 
 ```ts
 import { graphQlQuery } from '@deenruv/ui-devkit';
 
-const productList = await graphQlQuery(`
+const productList = await graphQlQuery(
+    `
   query GetProducts($skip: Int, $take: Int) {
       products(options: { skip: $skip, take: $take }) {
           items { id, name, enabled },
           totalItems
       }
-  }`, {
-    skip: 0,
-    take: 10,
-  }).then(data => data.products);
+  }`,
+    {
+        skip: 0,
+        take: 10,
+    },
+).then(data => data.products);
 ```
 
 ```ts title="Signature"
-function graphQlQuery<T, V extends { [key: string]: any }>(document: string, variables?: { [key: string]: any }, fetchPolicy?: WatchQueryFetchPolicy): {
+function graphQlQuery<T, V extends { [key: string]: any }>(
+    document: string,
+    variables?: { [key: string]: any },
+    fetchPolicy?: WatchQueryFetchPolicy,
+): {
     then: Promise<T>['then'];
     stream: Observable<T>;
-}
+};
 ```
+
 Parameters
 
 ### document
@@ -93,37 +100,41 @@ Parameters
 
 <MemberInfo kind="parameter" type={`WatchQueryFetchPolicy`} />
 
-
-
 ## graphQlMutation
 
 <GenerationInfo sourceFile="packages/ui-devkit/src/client/devkit-client-api.ts" sourceLine="112" packageName="@deenruv/ui-devkit" />
 
 Perform a GraphQL mutation and returns either an Observable or a Promise of the result.
 
-*Example*
+_Example_
 
 ```ts
 import { graphQlMutation } from '@deenruv/ui-devkit';
 
 const disableProduct = (id: string) => {
-  return graphQlMutation(`
+    return graphQlMutation(
+        `
     mutation DisableProduct($id: ID!) {
       updateProduct(input: { id: $id, enabled: false }) {
         id
         enabled
       }
-    }`, { id })
-    .then(data => data.updateProduct)
-}
+    }`,
+        { id },
+    ).then(data => data.updateProduct);
+};
 ```
 
 ```ts title="Signature"
-function graphQlMutation<T, V extends { [key: string]: any }>(document: string, variables?: { [key: string]: any }): {
+function graphQlMutation<T, V extends { [key: string]: any }>(
+    document: string,
+    variables?: { [key: string]: any },
+): {
     then: Promise<T>['then'];
     stream: Observable<T>;
-}
+};
 ```
+
 Parameters
 
 ### document
@@ -134,31 +145,29 @@ Parameters
 
 <MemberInfo kind="parameter" type={`{ [key: string]: any }`} />
 
-
-
 ## notify
 
 <GenerationInfo sourceFile="packages/ui-devkit/src/client/devkit-client-api.ts" sourceLine="147" packageName="@deenruv/ui-devkit" />
 
 Display a toast notification.
 
-*Example*
+_Example_
 
 ```ts
 import { notify } from '@deenruv/ui-devkit';
 
 notify({
-  message: 'Updated Product',
-  type: 'success'
+    message: 'Updated Product',
+    type: 'success',
 });
 ```
 
 ```ts title="Signature"
-function notify(options: NotificationMessage['data']): void
+function notify(options: NotificationMessage['data']): void;
 ```
+
 Parameters
 
 ### options
 
 <MemberInfo kind="parameter" type={`NotificationMessage['data']`} />
-

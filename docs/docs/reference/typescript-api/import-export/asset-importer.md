@@ -1,13 +1,14 @@
 ---
-title: "AssetImporter"
+title: 'AssetImporter'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## AssetImporter
 
@@ -27,10 +28,9 @@ class AssetImporter {
 
 ### getAssets
 
-<MemberInfo kind="method" type={`(assetPaths: string[], ctx?: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => Promise&#60;{ assets: <a href='/reference/typescript-api/entities/asset#asset'>Asset</a>[]; errors: string[] }&#62;`}   />
+<MemberInfo kind="method" type={`(assetPaths: string[], ctx?: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => Promise&#60;{ assets: <a href='/reference/typescript-api/entities/asset#asset'>Asset</a>[]; errors: string[] }&#62;`} />
 
 Creates Asset entities for the given paths, using the assetMap cache to prevent the
 creation of duplicates.
-
 
 </div>

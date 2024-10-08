@@ -1,13 +1,14 @@
 ---
-title: "Allow Decorator"
+title: 'Allow Decorator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Allow
 
@@ -21,7 +22,8 @@ In a GraphQL context, it can be applied to top-level queries and mutations as we
 For REST controllers, it can be applied to route handler.
 
 ## Allow and Sessions
-The `@Allow()` decorator is closely linked to the way Vendure manages sessions. For any operation or route that is decorated
+
+The `@Allow()` decorator is closely linked to the way Deenruv manages sessions. For any operation or route that is decorated
 with `@Allow()`, there must be an authenticated session in progress, which would have been created during a prior authentication
 step.
 
@@ -31,7 +33,7 @@ will always have an anonymous session created if no session is currently in prog
 
 For more information see [Understanding Permission.Owner](/reference/typescript-api/common/permission/#understanding-permissionowner).
 
-*Example*
+_Example_
 
 ```ts
  @Allow(Permission.SuperAdmin)
@@ -40,4 +42,3 @@ For more information see [Understanding Permission.Owner](/reference/typescript-
      // ...
  }
 ```
-

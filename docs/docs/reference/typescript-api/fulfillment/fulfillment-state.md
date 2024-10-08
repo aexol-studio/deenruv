@@ -1,13 +1,14 @@
 ---
-title: "FulfillmentState"
+title: 'FulfillmentState'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FulfillmentState
 
@@ -17,9 +18,10 @@ These are the default states of the fulfillment process. By default, they will b
 by the <a href='/reference/typescript-api/fulfillment/fulfillment-process#defaultfulfillmentprocess'>defaultFulfillmentProcess</a> to also include `Shipped` and `Delivered`.
 
 ```ts title="Signature"
-type FulfillmentState = | 'Created'
+type FulfillmentState =
+    | 'Created'
     | 'Pending'
     | 'Cancelled'
     | keyof CustomFulfillmentStates
-    | keyof FulfillmentStates
+    | keyof FulfillmentStates;
 ```

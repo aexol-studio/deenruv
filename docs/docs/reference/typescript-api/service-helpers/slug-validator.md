@@ -1,13 +1,14 @@
 ---
-title: "SlugValidator"
+title: 'SlugValidator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## SlugValidator
 
@@ -27,24 +28,17 @@ class SlugValidator {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>) => SlugValidator`}   />
-
+<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>) => SlugValidator`} />
 
 ### validateSlugs
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, input: T, translationEntity: Type&#60;E&#62;) => Promise&#60;T&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, input: T, translationEntity: Type&#60;E&#62;) => Promise&#60;T&#62;`} />
 
 </div>
-
 
 ## InputWithSlug
 
 <GenerationInfo sourceFile="packages/core/src/service/helpers/slug-validator/slug-validator.ts" sourceLine="16" packageName="@deenruv/core" />
-
-
 
 ```ts title="Signature"
 type InputWithSlug = {
@@ -54,31 +48,24 @@ type InputWithSlug = {
         languageCode: LanguageCode;
         slug?: string | null;
     }> | null;
-}
+};
 ```
 
 <div className="members-wrapper">
 
 ### id
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a> | null`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a> | null`} />
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{         id?: <a href='/reference/typescript-api/common/id#id'>ID</a> | null;         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         slug?: string | null;     }&#62; | null`}   />
-
-
-
+<MemberInfo kind="property" type={`Array&#60;{         id?: <a href='/reference/typescript-api/common/id#id'>ID</a> | null;         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         slug?: string | null;     }&#62; | null`} />
 
 </div>
-
 
 ## TranslationEntity
 
 <GenerationInfo sourceFile="packages/core/src/service/helpers/slug-validator/slug-validator.ts" sourceLine="29" packageName="@deenruv/core" />
-
-
 
 ```ts title="Signature"
 type TranslationEntity = VendureEntity & {
@@ -86,5 +73,5 @@ type TranslationEntity = VendureEntity & {
     languageCode: LanguageCode;
     slug: string;
     base: any;
-}
+};
 ```

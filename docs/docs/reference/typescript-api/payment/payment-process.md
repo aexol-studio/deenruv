@@ -1,13 +1,14 @@
 ---
-title: "PaymentProcess"
+title: 'PaymentProcess'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PaymentProcess
 
@@ -23,7 +24,7 @@ For detailed description of the interface members, see the <a href='/reference/t
 :::info
 
 This is configured via the `paymentOptions.process` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
@@ -35,32 +36,25 @@ interface PaymentProcess<State extends keyof CustomPaymentStates | string> exten
     onTransitionError?: OnTransitionErrorFn<State | PaymentState>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### transitions
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/transitions#transitions'>Transitions</a>&#60;State, State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>&#62; &#38; Partial&#60;<a href='/reference/typescript-api/state-machine/transitions#transitions'>Transitions</a>&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a> | State&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/transitions#transitions'>Transitions</a>&#60;State, State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>&#62; &#38; Partial&#60;<a href='/reference/typescript-api/state-machine/transitions#transitions'>Transitions</a>&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a> | State&#62;&#62;`} />
 
 ### onTransitionStart
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionstartfn'>OnTransitionStartFn</a>&#60;State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, <a href='/reference/typescript-api/payment/payment-transition-data#paymenttransitiondata'>PaymentTransitionData</a>&#62;`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionstartfn'>OnTransitionStartFn</a>&#60;State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, <a href='/reference/typescript-api/payment/payment-transition-data#paymenttransitiondata'>PaymentTransitionData</a>&#62;`} />
 
 ### onTransitionEnd
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionendfn'>OnTransitionEndFn</a>&#60;State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, <a href='/reference/typescript-api/payment/payment-transition-data#paymenttransitiondata'>PaymentTransitionData</a>&#62;`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionendfn'>OnTransitionEndFn</a>&#60;State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, <a href='/reference/typescript-api/payment/payment-transition-data#paymenttransitiondata'>PaymentTransitionData</a>&#62;`} />
 
 ### onTransitionError
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionerrorfn'>OnTransitionErrorFn</a>&#60;State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionerrorfn'>OnTransitionErrorFn</a>&#60;State | <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>&#62;`} />
 
 </div>

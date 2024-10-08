@@ -1,7 +1,7 @@
-# Vendure Harden Plugin
+# Deenruv Harden Plugin
 
-Hardens your Vendure GraphQL APIs against attacks.
+Hardens your Deenruv GraphQL APIs against attacks.
 
 `npm install @deenruv/harden-plugin`
 
-For documentation, see [docs.vendure.io/reference/core-plugins/harden-plugin/](https://docs.vendure.io/reference/core-plugins/harden-plugin/)
+For documentation, see [docs.deenruv.io/reference/core-plugins/harden-plugin/](https://docs.deenruv.io/reference/core-plugins/harden-plugin/)

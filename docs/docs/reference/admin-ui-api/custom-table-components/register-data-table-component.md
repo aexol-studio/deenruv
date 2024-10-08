@@ -1,13 +1,14 @@
 ---
-title: "RegisterDataTableComponent"
+title: 'RegisterDataTableComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerDataTableComponent
 
@@ -17,7 +18,7 @@ Allows you to override the default component used to render the data of a partic
 The component should implement the <a href='/reference/admin-ui-api/custom-table-components/custom-column-component#customcolumncomponent'>CustomColumnComponent</a> interface. The tableId and columnId can
 be determined by pressing `ctrl + u` when running the Admin UI in dev mode.
 
-*Example*
+_Example_
 
 ```ts title="components/custom-table.component.ts"
 import { Component, Input } from '@angular/core';
@@ -49,11 +50,11 @@ export default [
 ```
 
 ```ts title="Signature"
-function registerDataTableComponent(config: DataTableComponentConfig): void
+function registerDataTableComponent(config: DataTableComponentConfig): void;
 ```
+
 Parameters
 
 ### config
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/custom-table-components/data-table-component-config#datatablecomponentconfig'>DataTableComponentConfig</a>`} />
-

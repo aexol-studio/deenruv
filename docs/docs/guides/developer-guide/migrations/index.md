@@ -1,5 +1,5 @@
 ---
-title: "Migrations"
+title: 'Migrations'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,32 +7,32 @@ import TabItem from '@theme/TabItem';
 
 Database migrations are needed whenever the database schema changes. This can be caused by:
 
-* changes to the [custom fields](/guides/developer-guide/custom-fields/) configuration
-* new [database entities defined by plugins](/guides/developer-guide/database-entity/)
-* occasional changes to the core Vendure database schema when updating to newer versions
+-   changes to the [custom fields](/guides/developer-guide/custom-fields/) configuration
+-   new [database entities defined by plugins](/guides/developer-guide/database-entity/)
+-   occasional changes to the core Deenruv database schema when updating to newer versions
 
 ## Synchronize vs migrate
 
-TypeORM (which Vendure uses to interact with the database) has a `synchronize` option which, when set to `true`, will automatically update your database schema to reflect the current Vendure configuration. This is equivalent to automatically generating and running a migration _every time_ the server starts up.
+TypeORM (which Deenruv uses to interact with the database) has a `synchronize` option which, when set to `true`, will automatically update your database schema to reflect the current Deenruv configuration. This is equivalent to automatically generating and running a migration _every time_ the server starts up.
 
 This is convenient while developing, but **should not be used in production**, since a misconfiguration could potentially delete production data. In this case, migrations should be used.
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     dbConnectionOptions: {
         // ...
         // highlight-next-line
         synchronize: false,
-    }
+    },
 };
 ```
 
 ## Migration workflow
 
-This section assumes a standard Vendure installation based on `@deenruv/create`. 
+This section assumes a standard Deenruv installation based on `@deenruv/create`.
 
 Let's assume you have defined a new "keywords" custom field on the Product entity. The next time you start your server you'll see a message like this:
 
@@ -46,7 +46,7 @@ Since we have `synchronize` set to `false`, we need to generate a migration to a
 ### 1. Generate a migration
 
 :::cli
-Run `npx vendure migrate` and select "Generate a new migration"
+Run `npx deenruv migrate` and select "Generate a new migration"
 :::
 
 ### 2. Check the migration file
@@ -54,18 +54,19 @@ Run `npx vendure migrate` and select "Generate a new migration"
 This will have created a new migration file in the `src/migrations` directory. Open this file and check that it looks correct. It should look something like this:
 
 ```ts title="src/migrations/1690558104092-add-keywords-field.ts"
-import {MigrationInterface, QueryRunner} from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class addKeywordsField1690558104092 implements MigrationInterface {
+    public async up(queryRunner: QueryRunner): Promise<any> {
+        await queryRunner.query(
+            `ALTER TABLE "product" ADD "customFieldsKeywords" character varying(255)`,
+            undefined,
+        );
+    }
 
-   public async up(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.query(`ALTER TABLE "product" ADD "customFieldsKeywords" character varying(255)`, undefined);
-   }
-
-   public async down(queryRunner: QueryRunner): Promise<any> {
+    public async down(queryRunner: QueryRunner): Promise<any> {
         await queryRunner.query(`ALTER TABLE "product" DROP COLUMN "customFieldsKeywords"`, undefined);
-   }
-
+    }
 }
 ```
 
@@ -82,7 +83,7 @@ be run automatically. This is because the `runMigrations` function is called in 
 
 ```ts title="src/index.ts"
 import { bootstrap, runMigrations } from '@deenruv/core';
-import { config } from './vendure-config';
+import { config } from './deenruv-config';
 
 // highlight-next-line
 runMigrations(config)
@@ -95,7 +96,7 @@ runMigrations(config)
 It is also possible to run the migration manually without starting the server:
 
 :::cli
-Run `npx vendure migrate` and select "Run pending migrations"
+Run `npx deenruv migrate` and select "Run pending migrations"
 :::
 
 :::caution
@@ -110,18 +111,18 @@ You can read more about this issue in [typeorm/issues/7054](https://github.com/t
 
 Now we'll dive into what's going on under the hood.
 
-Vendure exposes a some helper function which wrap around the underlying [TypeORM migration functionality](https://typeorm.io/migrations). The 
-reason for using these helper functions rather than using the TypeORM CLI directly is that Vendure generates additional 
+Deenruv exposes a some helper function which wrap around the underlying [TypeORM migration functionality](https://typeorm.io/migrations). The
+reason for using these helper functions rather than using the TypeORM CLI directly is that Deenruv generates additional
 schema information based on custom fields and plugin configurations which are not available to the TypeORM CLI.
 
-In a standard Vendure installation prior to v2.2.0, you'll see the following migration script in your project root directory.
-Running the `vendure migrate` command also uses a very similar script internally.
+In a standard Deenruv installation prior to v2.2.0, you'll see the following migration script in your project root directory.
+Running the `deenruv migrate` command also uses a very similar script internally.
 
 ```ts title="migration.ts"
 import { generateMigration, revertLastMigration, runMigrations } from '@deenruv/core';
 import program from 'commander';
 
-import { config } from './src/vendure-config';
+import { config } from './src/deenruv-config';
 
 program
     .command('generate <name>')
@@ -151,28 +152,28 @@ and a set of scripts in your `package.json` file:
 
 ```json
 {
-  // ...
-  "scripts": {
-    "migration:generate": "ts-node migration.ts generate",
-    "migration:run": "ts-node migration.ts run",
-    "migration:revert": "ts-node migration.ts revert"
-  }
+    // ...
+    "scripts": {
+        "migration:generate": "ts-node migration.ts generate",
+        "migration:run": "ts-node migration.ts run",
+        "migration:revert": "ts-node migration.ts revert"
+    }
 }
 ```
 
-When running and reverting migrations, Vendure is looking for migration files in the directory specified by the `dbConnectionOptions.migrations` option is set in your VendureConfig:
+When running and reverting migrations, Deenruv is looking for migration files in the directory specified by the `dbConnectionOptions.migrations` option is set in your DeenruvConfig:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     dbConnectionOptions: {
         // ...
         // highlight-next-line
         migrations: [path.join(__dirname, './migrations/*.+(js|ts)')],
-    }
+    },
 };
 ```
 
@@ -182,14 +183,13 @@ TypeORM to know which migration to revert when the `revertLastMigration` functio
 
 ![Migrations table](./migration.webp)
 
-These are the underlying function exposed by Vendure which are used to generate, run and revert migrations:
+These are the underlying function exposed by Deenruv which are used to generate, run and revert migrations:
 
-- [`generateMigration` function](/reference/typescript-api/migration/generate-migration/)
-- [`runMigrations` function](/reference/typescript-api/migration/run-migrations/)
-- [`revertLastMigration` function](/reference/typescript-api/migration/revert-last-migration/)
+-   [`generateMigration` function](/reference/typescript-api/migration/generate-migration/)
+-   [`runMigrations` function](/reference/typescript-api/migration/run-migrations/)
+-   [`revertLastMigration` function](/reference/typescript-api/migration/revert-last-migration/)
 
 ### Reverting a migration
 
 The `revertLastMigration` function will revert the last applied migration by applying the `down()` method. If run again it will then revert the one before that, and so on.
 In doing so, it will also remove the corresponding row from the `migrations` table.
-

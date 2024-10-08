@@ -1,13 +1,14 @@
 ---
-title: "EmailEventListener"
+title: 'EmailEventListener'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EmailEventListener
 
@@ -28,19 +29,16 @@ class EmailEventListener<T extends string> {
 
 ### type
 
-<MemberInfo kind="property" type={`T`}   />
-
+<MemberInfo kind="property" type={`T`} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(type: T) => EmailEventListener`}   />
-
+<MemberInfo kind="method" type={`(type: T) => EmailEventListener`} />
 
 ### on
 
-<MemberInfo kind="method" type={`(event: Type&#60;Event&#62;) => <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>&#60;T, Event&#62;`}   />
+<MemberInfo kind="method" type={`(event: Type&#60;Event&#62;) => <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>&#60;T, Event&#62;`} />
 
 Defines the event to listen for.
-
 
 </div>

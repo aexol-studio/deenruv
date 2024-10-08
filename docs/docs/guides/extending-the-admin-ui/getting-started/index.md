@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 When creating a plugin, you may wish to extend the Admin UI in order to expose a graphical interface to the plugin's functionality, or to add new functionality to the Admin UI itself. The UI can be extended with custom components written in [Angular](https://angular.io/) or [React](https://react.dev/).
 
 :::note
-The APIs described in this section were introduced in Vendure v2.1.0. For the legacy APIs, see the [Legacy API section](#legacy-api--v210).
+The APIs described in this section were introduced in Deenruv v2.1.0. For the legacy APIs, see the [Legacy API section](#legacy-api--v210).
 :::
 
 UI extensions fall into two categories:
@@ -19,15 +19,15 @@ UI extensions fall into two categories:
 ## Setup
 
 :::cli
-Use `npx vendure add` and select "Set up Admin UI extensions".
+Use `npx deenruv add` and select "Set up Admin UI extensions".
 
-Then follow the prompts, which will guide you through the process of 
+Then follow the prompts, which will guide you through the process of
 setting up the necessary files and folders for your UI extensions.
 :::
 
 ### Manual setup
 
-It is recommended to use the `vendure add` command as described above, but if you prefer to set up the 
+It is recommended to use the `deenruv add` command as described above, but if you prefer to set up the
 Admin UI extensions manually, follow these steps:
 
 First, install the [`@deenruv/ui-devkit` package](https://www.npmjs.com/package/@deenruv/ui-devkit) as a dev dependency:
@@ -52,7 +52,6 @@ yarn add --dev @deenruv/ui-devkit
 :::info
 If you plan to use React components in your UI extensions, you should also install the `@types/react` package:
 
-
 <Tabs>
 <TabItem value="npm" label="npm" default>
 
@@ -72,12 +71,11 @@ yarn add --dev @types/react
 
 :::
 
-
 You can then create the following folder structure to hold your UI extensions:
 
 ```
 src
-├── vendure-config.ts
+├── deenruv-config.ts
 └── plugins
     └── my-plugin
         └── ui
@@ -101,14 +99,14 @@ export default [
 
 You can then use the [`compileUiExtensions` function](/reference/admin-ui-api/ui-devkit/compile-ui-extensions/) to compile your UI extensions and add them to the Admin UI app bundle.
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 // highlight-next-line
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import * as path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -178,7 +176,7 @@ With providers you can:
 -   Define custom form input components for custom fields and configurable operation arguments using [`registerFormInputComponent`](/reference/admin-ui-api/custom-input-components/register-form-input-component) or [`registerReactFormInputComponent`](/reference/admin-ui-api/react-extensions/register-react-form-input-component)
 -   Define custom components to render customer/order history timeline entries using [`registerHistoryEntryComponent`](/reference/admin-ui-api/custom-history-entry-components/register-history-entry-component)
 
-### Providers format 
+### Providers format
 
 A providers file should have a **default export** which is an array of providers:
 
@@ -198,7 +196,7 @@ export default [
 
 When defining UI extensions in the `compileUiExtensions()` function, you must specify at least one providers file. This is done by passing an array of file paths, where each file path is relative to the directory specified by the `extensionPath` option.
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import * as path from 'path';
 
@@ -235,9 +233,11 @@ import { addActionBarItem } from '@deenruv/admin-ui/core';
 // highlight-start
 @Injectable()
 class MyService {
-    greet() { return 'Hello!'; }
+    greet() {
+        return 'Hello!';
+    }
 }
-// highlight-end 
+// highlight-end
 
 export default [
     MyService,
@@ -256,7 +256,6 @@ export default [
 ];
 ```
 
-
 ## Routes
 
 Routes allow you to define completely custom views in the Admin UI.
@@ -267,18 +266,17 @@ Your `routes.ts` file exports an array of objects which define new routes in the
 
 For a detailed instructions, see the [Defining Routes guide](/guides/extending-the-admin-ui/defining-routes/).
 
-
 ## Dev vs Prod mode
 
 When you are developing your Admin UI extension, you can set the `devMode` option to `true` which will compile the Admin UI app in development mode, and recompile and auto-refresh the browser on any changes to your extension source files.
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import * as path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -336,14 +334,14 @@ yarn ts-node compile-admin-ui.ts
 </TabItem>
 </Tabs>
 
-Once complete, the production-ready app bundle will be output to `admin-ui/dist`. This method is suitable for a production setup, so that the Admin UI can be compiled ahead-of-time as part of your deployment process. This ensures that your Vendure server starts up as quickly as possible. In this case, you can pass the path of the compiled app to the AdminUiPlugin:
+Once complete, the production-ready app bundle will be output to `admin-ui/dist`. This method is suitable for a production setup, so that the Admin UI can be compiled ahead-of-time as part of your deployment process. This ensures that your Deenruv server starts up as quickly as possible. In this case, you can pass the path of the compiled app to the AdminUiPlugin:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import * as path from 'path';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -357,7 +355,7 @@ export const config: VendureConfig = {
 ```
 
 :::info
-To compile the angular app ahead of time (for production) and copy the dist folder to Vendure's output dist folder, include the following commands in your packages.json scripts:
+To compile the angular app ahead of time (for production) and copy the dist folder to Deenruv's output dist folder, include the following commands in your packages.json scripts:
 
 ```json
 {
@@ -429,12 +427,12 @@ add an empty `tsconfig.json` file to the `/src/plugins/<my-plugin>/ui` directory
 {}
 ```
 
-This works around the fact that your main `tsconfig.json` file excludes the `src/plugins/**/ui` directory, 
+This works around the fact that your main `tsconfig.json` file excludes the `src/plugins/**/ui` directory,
 which would otherwise prevent the Angular Language Service from working correctly.
 
 ## Legacy API < v2.1.0
 
-Prior to Vendure v2.1.0, the API for extending the Admin UI was more verbose and less flexible (React components were not supported at all, for instance). This API is still supported, but from v2.1 is marked as deprecated and will be removed in a future major version. 
+Prior to Deenruv v2.1.0, the API for extending the Admin UI was more verbose and less flexible (React components were not supported at all, for instance). This API is still supported, but from v2.1 is marked as deprecated and will be removed in a future major version.
 
 This section describes the legacy API.
 
@@ -460,7 +458,9 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'greeter',
-    template: `<vdr-page-block><h1>{{ greeting }}</h1></vdr-page-block>`,
+    template: `<vdr-page-block
+        ><h1>{{ greeting }}</h1></vdr-page-block
+    >`,
 })
 export class GreeterComponent {
     greeting = 'Hello!';
@@ -478,12 +478,14 @@ import { GreeterComponent } from './greeter.component';
 @NgModule({
     imports: [
         SharedModule,
-        RouterModule.forChild([{
-            path: '',
-            pathMatch: 'full',
-            component: GreeterComponent,
-            data: { breadcrumb: 'Greeter' },
-        }]),
+        RouterModule.forChild([
+            {
+                path: '',
+                pathMatch: 'full',
+                component: GreeterComponent,
+                data: { breadcrumb: 'Greeter' },
+            },
+        ]),
     ],
     declarations: [GreeterComponent],
 })
@@ -497,30 +499,34 @@ directives and other common functionality that any extension would require.
 
 Now we need to tell the `compileUiExtensions` function where to find the extension, and which file contains the NgModule itself (since a non-trivial UI extension will likely contain multiple files).
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import path from 'path';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
             port: 3002,
             app: compileUiExtensions({
                 outputPath: path.join(__dirname, '../admin-ui'),
-                extensions: [{
-                    extensionPath: path.join(__dirname, 'plugins/greeter/ui'),
-                    // highlight-start
-                    ngModules: [{
-                        type: 'lazy',
-                        route: 'greet',
-                        ngModuleFileName: 'greeter.module.ts',
-                        ngModuleName: 'GreeterModule',
-                    }],
-                    // highlight-end
-                }],
+                extensions: [
+                    {
+                        extensionPath: path.join(__dirname, 'plugins/greeter/ui'),
+                        // highlight-start
+                        ngModules: [
+                            {
+                                type: 'lazy',
+                                route: 'greet',
+                                ngModuleFileName: 'greeter.module.ts',
+                                ngModuleName: 'GreeterModule',
+                            },
+                        ],
+                        // highlight-end
+                    },
+                ],
             }),
         }),
     ],
@@ -553,29 +559,33 @@ import { SharedModule, addActionBarItem } from '@deenruv/admin-ui/core';
 export class InvoiceSharedModule {}
 ```
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import path from 'path';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
             port: 3002,
             app: compileUiExtensions({
                 outputPath: path.join(__dirname, '../admin-ui'),
-                extensions: [{
-                    extensionPath: path.join(__dirname, 'plugins/invoices/ui'),
-                    // highlight-start
-                    ngModules: [{
-                        type: 'shared',
-                        ngModuleFileName: 'invoice-shared.module.ts',
-                        ngModuleName: 'InvoiceSharedModule',
-                    }],
-                    // highlight-end
-                }],
+                extensions: [
+                    {
+                        extensionPath: path.join(__dirname, 'plugins/invoices/ui'),
+                        // highlight-start
+                        ngModules: [
+                            {
+                                type: 'shared',
+                                ngModuleFileName: 'invoice-shared.module.ts',
+                                ngModuleName: 'InvoiceSharedModule',
+                            },
+                        ],
+                        // highlight-end
+                    },
+                ],
             }),
         }),
     ],
@@ -587,35 +597,38 @@ export const config: VendureConfig = {
 If you have existing UI extensions written using the legacy API, you can migrate them to the new API as follows:
 
 1. Convert all components to be [standalone components](https://angular.io/guide/standalone-components). Standalone components were introduced in recent versions of Angular and allow components to be defined without the need for a module. To convert an existing component, you need to set `standalone: true` and add an `imports` array containing any components, directives or pipes you are using in that component. Typically, you can import `SharedModule` to get access to all the common Angular directives and pipes, as well as the shared Admin UI components.
-  ```ts
-  import { Component } from '@angular/core';
-  // highlight-next-line
-  import { SharedModule } from '@deenruv/admin-ui/core';
-  
-  @Component({
-      selector: 'greeter',
-      template: `<vdr-page-block><h1>{{ greeting }}</h1></vdr-page-block>`,
-      // highlight-start
-      standalone: true,
-      imports: [SharedModule],
-      // highlight-end
-  })
-  export class GreeterComponent {
-      greeting = 'Hello!';
-  }
-  ```
-2. In templates for page components, remove the `<vdr-page-header>` and `<vdr-page-body>` components, as they are included by default now when using
-the `registeRouteComponent()` function:
-   ```html
-   // highlight-start
-   <vdr-page-header>
-       <vdr-page-title></vdr-page-title>
-   </vdr-page-header>
-   <vdr-page-body>
-   // highlight-end
-       <vdr-page-block>This content should remain</vdr-page-block>
-   // highlight-next-line
-   </vdr-page-body>
-   ```
-3. Remove any `NgModule` files, and replace lazy modules with `routes.ts`, and shared modules with `providers.ts` (see above).
 
+```ts
+import { Component } from '@angular/core';
+// highlight-next-line
+import { SharedModule } from '@deenruv/admin-ui/core';
+
+@Component({
+    selector: 'greeter',
+    template: `<vdr-page-block
+        ><h1>{{ greeting }}</h1></vdr-page-block
+    >`,
+    // highlight-start
+    standalone: true,
+    imports: [SharedModule],
+    // highlight-end
+})
+export class GreeterComponent {
+    greeting = 'Hello!';
+}
+```
+
+2. In templates for page components, remove the `<vdr-page-header>` and `<vdr-page-body>` components, as they are included by default now when using
+   the `registeRouteComponent()` function:
+    ```html
+    // highlight-start
+    <vdr-page-header>
+        <vdr-page-title></vdr-page-title>
+    </vdr-page-header>
+    <vdr-page-body>
+        // highlight-end
+        <vdr-page-block>This content should remain</vdr-page-block>
+        // highlight-next-line
+    </vdr-page-body>
+    ```
+3. Remove any `NgModule` files, and replace lazy modules with `routes.ts`, and shared modules with `providers.ts` (see above).

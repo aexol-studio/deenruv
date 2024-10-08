@@ -1,13 +1,14 @@
 ---
-title: "BullMQPluginOptions"
+title: 'BullMQPluginOptions'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## BullMQPluginOptions
 
@@ -29,71 +30,73 @@ interface BullMQPluginOptions {
 
 ### connection
 
-<MemberInfo kind="property" type={`ConnectionOptions`}   />
+<MemberInfo kind="property" type={`ConnectionOptions`} />
 
 Connection options which will be passed directly to BullMQ when
 creating a new Queue, Worker and Scheduler instance.
 
 If omitted, it will attempt to connect to Redis at `127.0.0.1:6379`.
+
 ### queueOptions
 
-<MemberInfo kind="property" type={`Omit&#60;QueueOptions, 'connection'&#62;`}   />
+<MemberInfo kind="property" type={`Omit&#60;QueueOptions, 'connection'&#62;`} />
 
 Additional options used when instantiating the BullMQ
 Queue instance.
 See the [BullMQ QueueOptions docs](https://github.com/taskforcesh/bullmq/blob/master/docs/gitbook/api/bullmq.queueoptions.md)
+
 ### workerOptions
 
-<MemberInfo kind="property" type={`Omit&#60;WorkerOptions, 'connection'&#62;`}   />
+<MemberInfo kind="property" type={`Omit&#60;WorkerOptions, 'connection'&#62;`} />
 
 Additional options used when instantiating the BullMQ
 Worker instance.
 See the [BullMQ WorkerOptions docs](https://github.com/taskforcesh/bullmq/blob/master/docs/gitbook/api/bullmq.workeroptions.md)
+
 ### setRetries
 
-<MemberInfo kind="property" type={`(queueName: string, job: Job) =&#62; number`}  since="1.3.0"  />
+<MemberInfo kind="property" type={`(queueName: string, job: Job) =&#62; number`} since="1.3.0" />
 
 When a job is added to the JobQueue using `JobQueue.add()`, the calling
 code may specify the number of retries in case of failure. This option allows
 you to override that number and specify your own number of retries based on
 the job being added.
 
-*Example*
+_Example_
 
 ```ts
 setRetries: (queueName, job) => {
-  if (queueName === 'send-email') {
-    // Override the default number of retries
-    // for the 'send-email' job because we have
-    // a very unreliable email service.
-    return 10;
-  }
-  return job.retries;
-}
- ```
+    if (queueName === 'send-email') {
+        // Override the default number of retries
+        // for the 'send-email' job because we have
+        // a very unreliable email service.
+        return 10;
+    }
+    return job.retries;
+};
+```
+
 ### setBackoff
 
-<MemberInfo kind="property" type={`(queueName: string, job: Job) =&#62; <a href='/reference/core-plugins/job-queue-plugin/bull-mqplugin-options#backoffoptions'>BackoffOptions</a> | undefined`} default={`'exponential', 1000`}  since="1.3.0"  />
+<MemberInfo kind="property" type={`(queueName: string, job: Job) =&#62; <a href='/reference/core-plugins/job-queue-plugin/bull-mqplugin-options#backoffoptions'>BackoffOptions</a> | undefined`} default={`'exponential', 1000`} since="1.3.0" />
 
 This allows you to specify the backoff settings when a failed job gets retried.
 In other words, this determines how much time should pass before attempting to
 process the failed job again. If the function returns `undefined`, the default
 value of exponential/1000ms will be used.
 
-*Example*
+_Example_
 
 ```ts
 setBackoff: (queueName, job) => {
-  return {
-    type: 'exponential', // or 'fixed'
-    delay: 10000 // first retry after 10s, second retry after 20s, 40s,...
-  };
-}
+    return {
+        type: 'exponential', // or 'fixed'
+        delay: 10000, // first retry after 10s, second retry after 20s, 40s,...
+    };
+};
 ```
 
-
 </div>
-
 
 ## BackoffOptions
 
@@ -112,14 +115,10 @@ interface BackoffOptions {
 
 ### type
 
-<MemberInfo kind="property" type={`'exponential' | 'fixed'`}   />
-
+<MemberInfo kind="property" type={`'exponential' | 'fixed'`} />
 
 ### delay
 
-<MemberInfo kind="property" type={`number`}   />
-
-
-
+<MemberInfo kind="property" type={`number`} />
 
 </div>

@@ -1,13 +1,14 @@
 ---
-title: "ShippingEligibilityCheckerConfig"
+title: 'ShippingEligibilityCheckerConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ShippingEligibilityCheckerConfig
 
@@ -22,22 +23,17 @@ interface ShippingEligibilityCheckerConfig<T extends ConfigArgs> extends Configu
     shouldRunCheck?: ShouldRunCheckFn<T>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### check
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/shipping/check-shipping-eligibility-checker-fn#checkshippingeligibilitycheckerfn'>CheckShippingEligibilityCheckerFn</a>&#60;T&#62;`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/shipping/check-shipping-eligibility-checker-fn#checkshippingeligibilitycheckerfn'>CheckShippingEligibilityCheckerFn</a>&#60;T&#62;`} />
 
 ### shouldRunCheck
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/shipping/should-run-check-fn#shouldruncheckfn'>ShouldRunCheckFn</a>&#60;T&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/shipping/should-run-check-fn#shouldruncheckfn'>ShouldRunCheckFn</a>&#60;T&#62;`} />
 
 </div>

@@ -1,41 +1,42 @@
 ---
-title: "Logger"
+title: 'Logger'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
 
-
 ## Logger
 
-<GenerationInfo sourceFile="packages/core/src/config/logger/vendure-logger.ts" sourceLine="136" packageName="@deenruv/core" />
+<GenerationInfo sourceFile="packages/core/src/config/logger/deenruv-logger.ts" sourceLine="136" packageName="@deenruv/core" />
 
-The Logger is responsible for all logging in a Vendure application.
+The Logger is responsible for all logging in a Deenruv application.
 
 It is intended to be used as a static class:
 
-*Example*
+_Example_
 
 ```ts
 import { Logger } from '@deenruv/core';
 
-Logger.info(`Some log message`, 'My Vendure Plugin');
+Logger.info(`Some log message`, 'My Deenruv Plugin');
 ```
 
-The actual implementation - where the logs are written to - is defined by the <a href='/reference/typescript-api/logger/vendure-logger#vendurelogger'>VendureLogger</a>
-instance configured in the <a href='/reference/typescript-api/configuration/vendure-config#vendureconfig'>VendureConfig</a>. By default, the <a href='/reference/typescript-api/logger/default-logger#defaultlogger'>DefaultLogger</a> is used, which
+The actual implementation - where the logs are written to - is defined by the <a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a>
+instance configured in the <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>. By default, the <a href='/reference/typescript-api/logger/default-logger#defaultlogger'>DefaultLogger</a> is used, which
 logs to the console.
 
 ## Implementing a custom logger
 
 A custom logger can be passed to the `logger` config option by creating a class which implements the
-<a href='/reference/typescript-api/logger/vendure-logger#vendurelogger'>VendureLogger</a> interface. For example, here is how you might go about implementing a logger which
+<a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a> interface. For example, here is how you might go about implementing a logger which
 logs to a file:
 
-*Example*
+_Example_
 
 ```ts
 import { VendureLogger } from '@deenruv/core';
@@ -66,11 +67,11 @@ export class SimpleFileLogger implements VendureLogger {
     }
 }
 
-// in the VendureConfig
+// in the DeenruvConfig
 export const config = {
     // ...
     logger: new SimpleFileLogger('server.log'),
-}
+};
 ```
 
 ```ts title="Signature"
@@ -83,42 +84,33 @@ class Logger implements LoggerService {
     debug(message: string, context?: string) => void;
 }
 ```
-* Implements: <code>LoggerService</code>
 
-
+-   Implements: <code>LoggerService</code>
 
 <div className="members-wrapper">
 
 ### logger
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/logger/vendure-logger#vendurelogger'>VendureLogger</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a>`} />
 
 ### error
 
-<MemberInfo kind="method" type={`(message: string, context?: string, trace?: string) => void`}   />
-
+<MemberInfo kind="method" type={`(message: string, context?: string, trace?: string) => void`} />
 
 ### warn
 
-<MemberInfo kind="method" type={`(message: string, context?: string) => void`}   />
-
+<MemberInfo kind="method" type={`(message: string, context?: string) => void`} />
 
 ### info
 
-<MemberInfo kind="method" type={`(message: string, context?: string) => void`}   />
-
+<MemberInfo kind="method" type={`(message: string, context?: string) => void`} />
 
 ### verbose
 
-<MemberInfo kind="method" type={`(message: string, context?: string) => void`}   />
-
+<MemberInfo kind="method" type={`(message: string, context?: string) => void`} />
 
 ### debug
 
-<MemberInfo kind="method" type={`(message: string, context?: string) => void`}   />
-
-
-
+<MemberInfo kind="method" type={`(message: string, context?: string) => void`} />
 
 </div>

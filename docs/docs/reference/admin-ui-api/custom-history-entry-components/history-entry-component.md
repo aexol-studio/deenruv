@@ -1,13 +1,14 @@
 ---
-title: "HistoryEntryComponent"
+title: 'HistoryEntryComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## HistoryEntryComponent
 
@@ -31,31 +32,34 @@ interface HistoryEntryComponent {
 
 ### entry
 
-<MemberInfo kind="property" type={`TimelineHistoryEntry`}   />
+<MemberInfo kind="property" type={`TimelineHistoryEntry`} />
 
 The HistoryEntry data.
+
 ### getDisplayType
 
-<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; TimelineDisplayType`}   />
+<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; TimelineDisplayType`} />
 
 Defines whether this entry is highlighted with a "success", "error" etc. color.
+
 ### isFeatured
 
-<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; boolean`}   />
+<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; boolean`} />
 
 Featured entries are always expanded. Non-featured entries start of collapsed and can be clicked
 to expand.
+
 ### getName
 
-<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; string | undefined`}   />
+<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; string | undefined`} />
 
 Returns the name of the person who did this action. For example, it could be the Customer's name
 or "Administrator".
+
 ### getIconShape
 
-<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; string | string[] | undefined`}   />
+<MemberInfo kind="property" type={`(entry: TimelineHistoryEntry) =&#62; string | string[] | undefined`} />
 
 Optional Clarity icon shape to display with the entry. Examples: `'note'`, `['success-standard', 'is-solid']`
-
 
 </div>

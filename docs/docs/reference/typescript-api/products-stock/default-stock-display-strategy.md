@@ -1,13 +1,14 @@
 ---
-title: "DefaultStockDisplayStrategy"
+title: 'DefaultStockDisplayStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultStockDisplayStrategy
 
@@ -23,22 +24,17 @@ class DefaultStockDisplayStrategy implements StockDisplayStrategy {
     getStockLevel(ctx: RequestContext, productVariant: ProductVariant, saleableStockLevel: number) => string;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/products-stock/stock-display-strategy#stockdisplaystrategy'>StockDisplayStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/products-stock/stock-display-strategy#stockdisplaystrategy'>StockDisplayStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(lowStockLevel: number = 2) => DefaultStockDisplayStrategy`}   />
-
+<MemberInfo kind="method" type={`(lowStockLevel: number = 2) => DefaultStockDisplayStrategy`} />
 
 ### getStockLevel
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, productVariant: <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>, saleableStockLevel: number) => string`}   />
-
-
-
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, productVariant: <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>, saleableStockLevel: number) => string`} />
 
 </div>

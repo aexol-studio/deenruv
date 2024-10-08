@@ -1,13 +1,14 @@
 ---
-title: "FulfillmentHandler"
+title: 'FulfillmentHandler'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FulfillmentHandler
 
@@ -21,92 +22,84 @@ a tracking code. This data can then be returned and will be incorporated into th
 If the `args` property is defined, this means that arguments passed to the `addFulfillmentToOrder` mutation
 will be passed through to the `createFulfillment` method as the last argument.
 
-*Example*
+_Example_
 
 ```ts
 let shipomatic;
 
 export const shipomaticFulfillmentHandler = new FulfillmentHandler({
-  code: 'ship-o-matic',
-  description: [{
-    languageCode: LanguageCode.en,
-    value: 'Generate tracking codes via the Ship-o-matic API'
-  }],
+    code: 'ship-o-matic',
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'Generate tracking codes via the Ship-o-matic API',
+        },
+    ],
 
-  args: {
-    preferredService: {
-      type: 'string',
-      ui: {
-        component: 'select-form-input',
-        options: [
-          { value: 'first_class' },
-          { value: 'priority'},
-          { value: 'standard' },
-        ],
-      },
-    }
-  },
+    args: {
+        preferredService: {
+            type: 'string',
+            ui: {
+                component: 'select-form-input',
+                options: [{ value: 'first_class' }, { value: 'priority' }, { value: 'standard' }],
+            },
+        },
+    },
 
-  init: () => {
-    // some imaginary shipping service
-    shipomatic = new ShipomaticClient(API_KEY);
-  },
+    init: () => {
+        // some imaginary shipping service
+        shipomatic = new ShipomaticClient(API_KEY);
+    },
 
-  createFulfillment: async (ctx, orders, lines, args) => {
+    createFulfillment: async (ctx, orders, lines, args) => {
+        const shipment = getShipmentFromOrders(orders, lines);
 
-     const shipment = getShipmentFromOrders(orders, lines);
+        try {
+            const transaction = await shipomatic.transaction.create({
+                shipment,
+                service_level: args.preferredService,
+                label_file_type: 'png',
+            });
 
-     try {
-       const transaction = await shipomatic.transaction.create({
-         shipment,
-         service_level: args.preferredService,
-         label_file_type: 'png',
-       })
+            return {
+                method: `Ship-o-matic ${args.preferredService}`,
+                trackingCode: transaction.tracking_code,
+                customFields: {
+                    shippingTransactionId: transaction.id,
+                },
+            };
+        } catch (e: any) {
+            // Errors thrown from within this function will
+            // result in a CreateFulfillmentError being returned
+            throw e;
+        }
+    },
 
-       return {
-         method: `Ship-o-matic ${args.preferredService}`,
-         trackingCode: transaction.tracking_code,
-         customFields: {
-           shippingTransactionId: transaction.id,
-         }
-       };
-     } catch (e: any) {
-       // Errors thrown from within this function will
-       // result in a CreateFulfillmentError being returned
-       throw e;
-     }
-  },
-
-  onFulfillmentTransition: async (fromState, toState, { fulfillment }) => {
-    if (toState === 'Cancelled') {
-      await shipomatic.transaction.cancel({
-        transaction_id: fulfillment.customFields.shippingTransactionId,
-      });
-    }
-  }
+    onFulfillmentTransition: async (fromState, toState, { fulfillment }) => {
+        if (toState === 'Cancelled') {
+            await shipomatic.transaction.cancel({
+                transaction_id: fulfillment.customFields.shippingTransactionId,
+            });
+        }
+    },
 });
 ```
 
 ```ts title="Signature"
 class FulfillmentHandler<T extends ConfigArgs = ConfigArgs> extends ConfigurableOperationDef<T> {
-    constructor(config: FulfillmentHandlerConfig<T>)
+    constructor(config: FulfillmentHandlerConfig<T>);
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/fulfillment/fulfillment-handler#fulfillmenthandlerconfig'>FulfillmentHandlerConfig</a>&#60;T&#62;) => FulfillmentHandler`}   />
-
-
-
+<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/fulfillment/fulfillment-handler#fulfillmenthandlerconfig'>FulfillmentHandlerConfig</a>&#60;T&#62;) => FulfillmentHandler`} />
 
 </div>
-
 
 ## FulfillmentHandlerConfig
 
@@ -120,23 +113,23 @@ interface FulfillmentHandlerConfig<T extends ConfigArgs> extends ConfigurableOpe
     onFulfillmentTransition?: OnTransitionStartFn<FulfillmentState, FulfillmentTransitionData>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### createFulfillment
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/fulfillment/fulfillment-handler#createfulfillmentfn'>CreateFulfillmentFn</a>&#60;T&#62;`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/fulfillment/fulfillment-handler#createfulfillmentfn'>CreateFulfillmentFn</a>&#60;T&#62;`} />
 
 Invoked when the `addFulfillmentToOrder` mutation is executed with this handler selected.
 
 If an Error is thrown from within this function, no Fulfillment is created and the `CreateFulfillmentError`
 result will be returned.
+
 ### onFulfillmentTransition
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionstartfn'>OnTransitionStartFn</a>&#60;<a href='/reference/typescript-api/fulfillment/fulfillment-state#fulfillmentstate'>FulfillmentState</a>, <a href='/reference/typescript-api/fulfillment/fulfillment-transition-data#fulfillmenttransitiondata'>FulfillmentTransitionData</a>&#62;`}   />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/state-machine/state-machine-config#ontransitionstartfn'>OnTransitionStartFn</a>&#60;<a href='/reference/typescript-api/fulfillment/fulfillment-state#fulfillmentstate'>FulfillmentState</a>, <a href='/reference/typescript-api/fulfillment/fulfillment-transition-data#fulfillmenttransitiondata'>FulfillmentTransitionData</a>&#62;`} />
 
 This allows the handler to intercept state transitions of the created Fulfillment. This works much in the
 same way as the <a href='/reference/typescript-api/fulfillment/fulfillment-process#fulfillmentprocess'>FulfillmentProcess</a> `onTransitionStart` method (i.e. returning `false` or
@@ -146,9 +139,7 @@ on Fulfillments which were created with this particular FulfillmentHandler.
 It can be useful e.g. to intercept Fulfillment cancellations and relay that information to a 3rd-party
 shipping API.
 
-
 </div>
-
 
 ## CreateFulfillmentFn
 
@@ -162,16 +153,13 @@ type CreateFulfillmentFn<T extends ConfigArgs> = (
     orders: Order[],
     lines: OrderLineInput[],
     args: ConfigArgValues<T>,
-) => CreateFulfillmentResult | Promise<CreateFulfillmentResult>
+) => CreateFulfillmentResult | Promise<CreateFulfillmentResult>;
 ```
-
 
 ## CreateFulfillmentResult
 
 <GenerationInfo sourceFile="packages/core/src/config/fulfillment/fulfillment-handler.ts" sourceLine="23" packageName="@deenruv/core" />
 
-
-
 ```ts title="Signature"
-type CreateFulfillmentResult = Partial<Pick<Fulfillment, 'trackingCode' | 'method' | 'customFields'>>
+type CreateFulfillmentResult = Partial<Pick<Fulfillment, 'trackingCode' | 'method' | 'customFields'>>;
 ```

@@ -1,13 +1,14 @@
 ---
-title: "TaxCategory"
+title: 'TaxCategory'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TaxCategory
 
@@ -17,7 +18,7 @@ A TaxCategory defines what type of taxes to apply to a <a href='/reference/types
 
 ```ts title="Signature"
 class TaxCategory extends VendureEntity implements HasCustomFields {
-    constructor(input?: DeepPartial<TaxCategory>)
+    constructor(input?: DeepPartial<TaxCategory>);
     @Column() name: string;
     @Column({ default: false }) isDefault: boolean;
     @Column(type => CustomTaxCategoryFields)
@@ -28,45 +29,35 @@ class TaxCategory extends VendureEntity implements HasCustomFields {
     taxRates: TaxRate[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code>HasCustomFields</code>
-
-
+-   Implements: <code>HasCustomFields</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/tax-category#taxcategory'>TaxCategory</a>&#62;) => TaxCategory`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/tax-category#taxcategory'>TaxCategory</a>&#62;) => TaxCategory`} />
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### isDefault
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomTaxCategoryFields`}   />
-
+<MemberInfo kind="property" type={`CustomTaxCategoryFields`} />
 
 ### productVariants
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`} />
 
 ### taxRates
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>[]`} />
 
 </div>

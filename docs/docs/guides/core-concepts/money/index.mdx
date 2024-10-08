@@ -1,33 +1,31 @@
 ---
-title: "Money & Currency"
+title: 'Money & Currency'
 ---
 
-In Vendure, monetary values are stored as **integers** using the **minor unit** of the selected currency.
+In Deenruv, monetary values are stored as **integers** using the **minor unit** of the selected currency.
 For example, if the currency is set to USD, then the integer value `100` would represent $1.00.
 This is a common practice in financial applications, as it avoids the rounding errors that can occur when using floating-point numbers.
 
 For example, here's the response from a query for a product's variant prices:
 
-
-
 ```json
 {
-  "data": {
-    "product": {
-      "id": "42",
-      "variants": [
-        {
-          "id": "74",
-          "name": "Bonsai Tree",
-          "currencyCode": "USD",
-          // highlight-start
-          "price": 1999,
-          "priceWithTax": 2399,
-          // highlight-end
+    "data": {
+        "product": {
+            "id": "42",
+            "variants": [
+                {
+                    "id": "74",
+                    "name": "Bonsai Tree",
+                    "currencyCode": "USD",
+                    // highlight-start
+                    "price": 1999,
+                    "priceWithTax": 2399
+                    // highlight-end
+                }
+            ]
         }
-      ]
     }
-  }
 }
 ```
 
@@ -36,8 +34,8 @@ In this example, the tax-inclusive price of the variant is `$23.99`.
 :::info
 To illustrate the problem with storing money as decimals, imagine that we want to add the price of two items:
 
-- Product A: `$1.21`
-- Product B: `$1.22`
+-   Product A: `$1.21`
+-   Product B: `$1.22`
 
 We should expect the sum of these two amounts to equal `$2.43`. However, if we perform this addition in JavaScript (and the same
 holds true for most common programming languages), we will instead get `$2.4299999999999997`!
@@ -74,14 +72,12 @@ export function formatCurrency(value: number, currencyCode: string, locale?: str
 If you are building an Admin UI extension, you can use the built-in [`LocaleCurrencyPipe`](/reference/admin-ui-api/pipes/locale-currency-pipe/):
 
 ```html title="src/plugins/my-plugin/ui/components/my-component/my.component.html"
-<div>
-    Variant price: {{ variant.price | localeCurrency : variant.currencyCode }}
-</div>
+<div>Variant price: {{ variant.price | localeCurrency : variant.currencyCode }}</div>
 ```
 
 ## Support for multiple currencies
 
-Vendure supports multiple currencies out-of-the-box. The available currencies must first be set at the Channel level
+Deenruv supports multiple currencies out-of-the-box. The available currencies must first be set at the Channel level
 (see the [Channels, Currencies & Prices section](/guides/core-concepts/channels/#channels-currencies--prices)), and then
 a price may be set on a `ProductVariant` in each of the available currencies.
 
@@ -96,9 +92,9 @@ In the GraphQL APIs, we use a custom [`Money` scalar type](/reference/graphql-ap
 all monetary values. We do this for two reasons:
 
 1. The built-in `Int` type is that the GraphQL spec imposes an upper limit of
-`2147483647`, which in some cases (especially currencies with very large amounts) is not enough.
+   `2147483647`, which in some cases (especially currencies with very large amounts) is not enough.
 2. Very advanced use-cases might demand more precision than is possible with an integer type. Using our own custom
-scalar gives us the possibility of supporting more precision.
+   scalar gives us the possibility of supporting more precision.
 
 Here's how the `Money` scalar is used in the `ShippingLine` type:
 
@@ -119,13 +115,12 @@ type ShippingLine {
 If you are defining custom GraphQL types, or adding fields to existing types (see the [Extending the GraphQL API doc](/guides/developer-guide/extend-graphql-api/)),
 then you should also use the `Money` scalar for any monetary values.
 
-
 ## The `@Money()` decorator
 
 When [defining new database entities](/guides/developer-guide/database-entity), if you need to store a monetary value, then rather than using the TypeORM `@Column()`
-decorator, you should use Vendure's [`@Money()` decorator](/reference/typescript-api/money/money-decorator).
+decorator, you should use Deenruv's [`@Money()` decorator](/reference/typescript-api/money/money-decorator).
 
-Using this decorator allows Vendure to correctly store the value in the database according to the configured `MoneyStrategy` (see below).
+Using this decorator allows Deenruv to correctly store the value in the database according to the configured `MoneyStrategy` (see below).
 
 ```ts title="src/plugins/quote/entities/quote.entity.ts"
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
@@ -166,30 +161,30 @@ class Quote extends VendureEntity {
 
 ## Advanced configuration: MoneyStrategy
 
-For advanced use-cases, it is possible to configure aspects of how Vendure handles monetary values internally by defining
+For advanced use-cases, it is possible to configure aspects of how Deenruv handles monetary values internally by defining
 a custom [`MoneyStrategy`](/reference/typescript-api/money/money-strategy/).
 
 The `MoneyStrategy` allows you to define:
 
-- How the value is stored and retrieved from the database
-- How rounding is applied internally
-- The precision represented by the monetary value (since v2.2.0)
+-   How the value is stored and retrieved from the database
+-   How rounding is applied internally
+-   The precision represented by the monetary value (since v2.2.0)
 
-For example, in addition to the [`DefaultMoneyStrategy`](/reference/typescript-api/money/default-money-strategy), Vendure
+For example, in addition to the [`DefaultMoneyStrategy`](/reference/typescript-api/money/default-money-strategy), Deenruv
 also provides the [`BigIntMoneyStrategy`](/reference/typescript-api/money/big-int-money-strategy) which stores monetary values
 using the `bigint` data type, allowing much larger amounts to be stored.
 
 Here's how you would configure your server to use this strategy:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig, BigIntMoneyStrategy } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig, BigIntMoneyStrategy } from '@deenruv/core';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     entityOptions: {
         moneyStrategy: new BigIntMoneyStrategy(),
-    }
-}
+    },
+};
 ```
 
 ### Example: supporting three decimal places
@@ -200,23 +195,23 @@ For example, you want to be able to sell a product for `$1.234` per unit. To do 
 1. Configure the `MoneyStrategy` to use three decimal places
 
 ```ts
-import { DefaultMoneyStrategy, VendureConfig } from '@deenruv/core';
+import { DefaultMoneyStrategy, DeenruvConfig } from '@deenruv/core';
 
 export class ThreeDecimalPlacesMoneyStrategy extends DefaultMoneyStrategy {
     // highlight-next-line
     readonly precision = 3;
 }
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     entityOptions: {
         moneyStrategy: new ThreeDecimalPlacesMoneyStrategy(),
-    }
+    },
 };
 ```
 
 2. Set up your storefront to correctly convert the integer value to a decimal value with three decimal places. Using the
-`formatCurrency` example above, we can modify it to divide by 1000 instead of 100:
+   `formatCurrency` example above, we can modify it to divide by 1000 instead of 100:
 
 ```ts title="src/utils/format-currency.ts"
 export function formatCurrency(value: number, currencyCode: string, locale?: string) {
@@ -232,7 +227,7 @@ export function formatCurrency(value: number, currencyCode: string, locale?: str
             // highlight-end
         }).format(majorUnits);
     } catch (e: any) {
-         // highlight-next-line
+        // highlight-next-line
         return majorUnits.toFixed(3);
     }
 }

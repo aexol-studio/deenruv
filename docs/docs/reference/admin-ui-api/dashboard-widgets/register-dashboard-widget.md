@@ -1,13 +1,14 @@
 ---
-title: "RegisterDashboardWidget"
+title: 'RegisterDashboardWidget'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerDashboardWidget
 
@@ -17,8 +18,9 @@ Registers a dashboard widget. Once registered, the widget can be set as part of 
 (using <a href='/reference/admin-ui-api/dashboard-widgets/set-dashboard-widget-layout#setdashboardwidgetlayout'>setDashboardWidgetLayout</a>).
 
 ```ts title="Signature"
-function registerDashboardWidget(id: string, config: DashboardWidgetConfig): FactoryProvider
+function registerDashboardWidget(id: string, config: DashboardWidgetConfig): FactoryProvider;
 ```
+
 Parameters
 
 ### id
@@ -28,4 +30,3 @@ Parameters
 ### config
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/dashboard-widgets/dashboard-widget-config#dashboardwidgetconfig'>DashboardWidgetConfig</a>`} />
-

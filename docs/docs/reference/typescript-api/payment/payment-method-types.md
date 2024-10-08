@@ -1,13 +1,14 @@
 ---
-title: "Payment Method Types"
+title: 'Payment Method Types'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CreatePaymentResult
 
@@ -29,14 +30,15 @@ interface CreatePaymentResult {
 
 ### amount
 
-<MemberInfo kind="property" type={`number`}   />
+<MemberInfo kind="property" type={`number`} />
 
 The amount (as an integer - i.e. $10 = `1000`) that this payment is for.
 Typically this should equal the Order total, unless multiple payment methods
 are being used for the order.
+
 ### state
 
-<MemberInfo kind="property" type={`Exclude&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, 'Error'&#62;`}   />
+<MemberInfo kind="property" type={`Exclude&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, 'Error'&#62;`} />
 
 The <a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a> of the resulting Payment.
 
@@ -45,22 +47,25 @@ In a two-step flow, this should be set to `'Authorized'`.
 
 If using a <a href='/reference/typescript-api/payment/payment-process#paymentprocess'>PaymentProcess</a>, may be something else
 entirely according to your business logic.
+
 ### transactionId
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The unique payment reference code typically assigned by
 the payment provider.
+
 ### errorMessage
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 If the payment is declined or fails for ome other reason, pass the
 relevant error message here, and it gets returned with the
 ErrorResponse of the `addPaymentToOrder` mutation.
+
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 This field can be used to store other relevant data which is often
 provided by the payment provider, such as security data related to
@@ -71,9 +76,7 @@ via the Shop API. This is useful for certain checkout flows such as
 external gateways, where the payment provider returns a unique
 url which must then be passed to the storefront app.
 
-
 </div>
-
 
 ## CreatePaymentErrorResult
 
@@ -95,33 +98,25 @@ interface CreatePaymentErrorResult {
 
 ### amount
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### state
 
-<MemberInfo kind="property" type={`'Error'`}   />
-
+<MemberInfo kind="property" type={`'Error'`} />
 
 ### transactionId
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### errorMessage
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>
-
 
 ## CreateRefundResult
 
@@ -141,23 +136,17 @@ interface CreateRefundResult {
 
 ### state
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a>`} />
 
 ### transactionId
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>
-
 
 ## SettlePaymentResult
 
@@ -177,18 +166,13 @@ interface SettlePaymentResult {
 
 ### success
 
-<MemberInfo kind="property" type={`true`}   />
-
+<MemberInfo kind="property" type={`true`} />
 
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>
-
 
 ## SettlePaymentErrorResult
 
@@ -210,33 +194,30 @@ interface SettlePaymentErrorResult {
 
 ### success
 
-<MemberInfo kind="property" type={`false`}   />
-
+<MemberInfo kind="property" type={`false`} />
 
 ### state
 
-<MemberInfo kind="property" type={`Exclude&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, 'Settled'&#62;`}   />
+<MemberInfo kind="property" type={`Exclude&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, 'Settled'&#62;`} />
 
 The state to transition this Payment to upon unsuccessful settlement.
 Defaults to `Error`. Note that if using a different state, it must be
 legal to transition to that state from the `Authorized` state according
 to the PaymentState config (which can be customized using the
 <a href='/reference/typescript-api/payment/payment-process#paymentprocess'>PaymentProcess</a>).
+
 ### errorMessage
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The message that will be returned when attempting to settle the payment, and will
 also be persisted as `Payment.errorMessage`.
+
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>
-
 
 ## CancelPaymentResult
 
@@ -256,18 +237,13 @@ interface CancelPaymentResult {
 
 ### success
 
-<MemberInfo kind="property" type={`true`}   />
-
+<MemberInfo kind="property" type={`true`} />
 
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>
-
 
 ## CancelPaymentErrorResult
 
@@ -289,33 +265,30 @@ interface CancelPaymentErrorResult {
 
 ### success
 
-<MemberInfo kind="property" type={`false`}   />
-
+<MemberInfo kind="property" type={`false`} />
 
 ### state
 
-<MemberInfo kind="property" type={`Exclude&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, 'Cancelled'&#62;`}   />
+<MemberInfo kind="property" type={`Exclude&#60;<a href='/reference/typescript-api/payment/payment-state#paymentstate'>PaymentState</a>, 'Cancelled'&#62;`} />
 
 The state to transition this Payment to upon unsuccessful cancellation.
 Defaults to `Error`. Note that if using a different state, it must be
 legal to transition to that state from the `Authorized` state according
 to the PaymentState config (which can be customized using the
 <a href='/reference/typescript-api/payment/payment-process#paymentprocess'>PaymentProcess</a>).
+
 ### errorMessage
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The message that will be returned when attempting to cancel the payment, and will
 also be persisted as `Payment.errorMessage`.
+
 ### metadata
 
-<MemberInfo kind="property" type={`PaymentMetadata`}   />
-
-
-
+<MemberInfo kind="property" type={`PaymentMetadata`} />
 
 </div>
-
 
 ## CreatePaymentFn
 
@@ -333,9 +306,8 @@ type CreatePaymentFn<T extends ConfigArgs> = (
     args: ConfigArgValues<T>,
     metadata: PaymentMetadata,
     method: PaymentMethod,
-) => CreatePaymentResult | CreatePaymentErrorResult | Promise<CreatePaymentResult | CreatePaymentErrorResult>
+) => CreatePaymentResult | CreatePaymentErrorResult | Promise<CreatePaymentResult | CreatePaymentErrorResult>;
 ```
-
 
 ## SettlePaymentFn
 
@@ -350,9 +322,8 @@ type SettlePaymentFn<T extends ConfigArgs> = (
     payment: Payment,
     args: ConfigArgValues<T>,
     method: PaymentMethod,
-) => SettlePaymentResult | SettlePaymentErrorResult | Promise<SettlePaymentResult | SettlePaymentErrorResult>
+) => SettlePaymentResult | SettlePaymentErrorResult | Promise<SettlePaymentResult | SettlePaymentErrorResult>;
 ```
-
 
 ## CancelPaymentFn
 
@@ -367,9 +338,8 @@ type CancelPaymentFn<T extends ConfigArgs> = (
     payment: Payment,
     args: ConfigArgValues<T>,
     method: PaymentMethod,
-) => CancelPaymentResult | CancelPaymentErrorResult | Promise<CancelPaymentResult | CancelPaymentErrorResult>
+) => CancelPaymentResult | CancelPaymentErrorResult | Promise<CancelPaymentResult | CancelPaymentErrorResult>;
 ```
-
 
 ## CreateRefundFn
 
@@ -386,5 +356,5 @@ type CreateRefundFn<T extends ConfigArgs> = (
     payment: Payment,
     args: ConfigArgValues<T>,
     method: PaymentMethod,
-) => CreateRefundResult | Promise<CreateRefundResult>
+) => CreateRefundResult | Promise<CreateRefundResult>;
 ```

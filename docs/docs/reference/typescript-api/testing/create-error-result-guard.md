@@ -1,13 +1,14 @@
 ---
-title: "CreateErrorResultGuard"
+title: 'CreateErrorResultGuard'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## createErrorResultGuard
 
@@ -19,19 +20,20 @@ tests whether the input is considered successful (true) or an error result (fals
 Note that the resulting variable must _still_ be type annotated in order for the TypeScript
 type inference to work as expected:
 
-*Example*
+_Example_
 
 ```ts
-const orderResultGuard: ErrorResultGuard<AddItemToOrderResult>
-  = createErrorResultGuard(order => !!order.lines);
+const orderResultGuard: ErrorResultGuard<AddItemToOrderResult> = createErrorResultGuard(
+    order => !!order.lines,
+);
 ```
 
 ```ts title="Signature"
-function createErrorResultGuard<T>(testFn: (input: T) => boolean): ErrorResultGuard<T>
+function createErrorResultGuard<T>(testFn: (input: T) => boolean): ErrorResultGuard<T>;
 ```
+
 Parameters
 
 ### testFn
 
 <MemberInfo kind="parameter" type={`(input: T) =&#62; boolean`} />
-

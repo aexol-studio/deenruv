@@ -1,13 +1,14 @@
 ---
-title: "Transaction Decorator"
+title: 'Transaction Decorator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Transaction
 
@@ -22,7 +23,7 @@ Essentially, the entire resolver function is wrapped in a try-catch block which 
 transaction on successful completion of the method, or rolls back the transaction in an unhandled
 error is thrown.
 
-*Example*
+_Example_
 
 ```ts
 // in a GraphQL resolver file
@@ -38,8 +39,6 @@ async myMutation(@Ctx() ctx: RequestContext) {
 }
 ```
 
-
-
 ## TransactionMode
 
 <GenerationInfo sourceFile="packages/core/src/api/decorators/transaction.decorator.ts" sourceLine="32" packageName="@deenruv/core" />
@@ -48,7 +47,7 @@ The Transaction decorator can handle transactions automatically (which is the de
 "manual" mode, where the <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a> `.startTransaction()` and `.commitOpenTransaction()`
 methods must them be used.
 
-*Example*
+_Example_
 
 ```ts
 // in a GraphQL resolver file
@@ -62,13 +61,13 @@ async myMutation(@Ctx() ctx: RequestContext) {
   return thing;
 }
 ```
+
 Note that even in manual mode, a rollback will be automatically performed in
 the case that an uncaught error is thrown within the resolver.
 
 ```ts title="Signature"
-type TransactionMode = 'auto' | 'manual'
+type TransactionMode = 'auto' | 'manual';
 ```
-
 
 ## TransactionIsolationLevel
 
@@ -79,8 +78,5 @@ falls back to the default of your database. See the documentation of your databa
 information on available isolation levels.
 
 ```ts title="Signature"
-type TransactionIsolationLevel = | 'READ UNCOMMITTED'
-    | 'READ COMMITTED'
-    | 'REPEATABLE READ'
-    | 'SERIALIZABLE'
+type TransactionIsolationLevel = 'READ UNCOMMITTED' | 'READ COMMITTED' | 'REPEATABLE READ' | 'SERIALIZABLE';
 ```

@@ -1,13 +1,14 @@
 ---
-title: "ReactCustomDetailComponentConfig"
+title: 'ReactCustomDetailComponentConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ReactCustomDetailComponentConfig
 
@@ -27,19 +28,20 @@ interface ReactCustomDetailComponentConfig {
 
 ### locationId
 
-<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/custom-detail-components/custom-detail-component-location-id#customdetailcomponentlocationid'>CustomDetailComponentLocationId</a>`}   />
+<MemberInfo kind="property" type={`<a href='/reference/admin-ui-api/custom-detail-components/custom-detail-component-location-id#customdetailcomponentlocationid'>CustomDetailComponentLocationId</a>`} />
 
 The id of the detail page location in which to place the component.
+
 ### component
 
-<MemberInfo kind="property" type={`ElementType`}   />
+<MemberInfo kind="property" type={`ElementType`} />
 
 The React component to render.
+
 ### props
 
-<MemberInfo kind="property" type={`Record&#60;string, any&#62;`}   />
+<MemberInfo kind="property" type={`Record&#60;string, any&#62;`} />
 
 Optional props to pass to the React component.
-
 
 </div>

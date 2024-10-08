@@ -1,13 +1,14 @@
 ---
-title: "Promotion Condition"
+title: 'Promotion Condition'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## PromotionCondition
 
@@ -25,39 +26,35 @@ class PromotionCondition<T extends ConfigArgs = ConfigArgs, C extends string = s
     check(ctx: RequestContext, order: Order, args: ConfigArg[], promotion: Promotion) => Promise<R>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/#configurableoperationdef'>ConfigurableOperationDef</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### priorityValue
 
-<MemberInfo kind="property" type={`number`} default={`0`}   />
+<MemberInfo kind="property" type={`number`} default={`0`} />
 
 Used to determine the order of application of multiple Promotions
 on the same Order. See the <a href='/reference/typescript-api/entities/promotion#promotion'>Promotion</a> `priorityScore` field for
 more information.
+
 ### code
 
-<MemberInfo kind="property" type={`C`}   />
-
+<MemberInfo kind="property" type={`C`} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/promotions/promotion-condition#promotionconditionconfig'>PromotionConditionConfig</a>&#60;T, C, R&#62;) => PromotionCondition`}   />
-
+<MemberInfo kind="method" type={`(config: <a href='/reference/typescript-api/promotions/promotion-condition#promotionconditionconfig'>PromotionConditionConfig</a>&#60;T, C, R&#62;) => PromotionCondition`} />
 
 ### check
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, order: <a href='/reference/typescript-api/entities/order#order'>Order</a>, args: ConfigArg[], promotion: <a href='/reference/typescript-api/entities/promotion#promotion'>Promotion</a>) => Promise&#60;R&#62;`}   />
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, order: <a href='/reference/typescript-api/entities/order#order'>Order</a>, args: ConfigArg[], promotion: <a href='/reference/typescript-api/entities/promotion#promotion'>Promotion</a>) => Promise&#60;R&#62;`} />
 
 This is the function which contains the conditional logic to decide whether
 a Promotion should apply to an Order. See <a href='/reference/typescript-api/promotions/promotion-condition#checkpromotionconditionfn'>CheckPromotionConditionFn</a>.
 
-
 </div>
-
 
 ## PromotionConditionConfig
 
@@ -66,37 +63,34 @@ a Promotion should apply to an Order. See <a href='/reference/typescript-api/pro
 This object is used to configure a PromotionCondition.
 
 ```ts title="Signature"
-interface PromotionConditionConfig<T extends ConfigArgs, C extends string, R extends CheckPromotionConditionResult> extends ConfigurableOperationDefOptions<T> {
+interface PromotionConditionConfig<
+    T extends ConfigArgs,
+    C extends string,
+    R extends CheckPromotionConditionResult,
+> extends ConfigurableOperationDefOptions<T> {
     code: C;
     check: CheckPromotionConditionFn<T, R>;
     priorityValue?: number;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/configurable-operation-def/configurable-operation-def-options#configurableoperationdefoptions'>ConfigurableOperationDefOptions</a>&#60;T&#62;</code>
 
 <div className="members-wrapper">
 
 ### code
 
-<MemberInfo kind="property" type={`C`}   />
-
+<MemberInfo kind="property" type={`C`} />
 
 ### check
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/promotions/promotion-condition#checkpromotionconditionfn'>CheckPromotionConditionFn</a>&#60;T, R&#62;`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/promotions/promotion-condition#checkpromotionconditionfn'>CheckPromotionConditionFn</a>&#60;T, R&#62;`} />
 
 ### priorityValue
 
-<MemberInfo kind="property" type={`number`}   />
-
-
-
+<MemberInfo kind="property" type={`number`} />
 
 </div>
-
 
 ## CheckPromotionConditionFn
 
@@ -106,10 +100,10 @@ A function which checks whether or not a given <a href='/reference/typescript-ap
 
 The function should return either a `boolean` or and plain object type:
 
-* `false`: The condition is not satisfied - do not apply PromotionActions
-* `true`: The condition is satisfied, apply PromotionActions
-* `{ [key: string]: any; }`: The condition is satisfied, apply PromotionActions
-_and_ pass this object into the PromotionAction's `state` argument.
+-   `false`: The condition is not satisfied - do not apply PromotionActions
+-   `true`: The condition is satisfied, apply PromotionActions
+-   `{ [key: string]: any; }`: The condition is satisfied, apply PromotionActions
+    _and_ pass this object into the PromotionAction's `state` argument.
 
 ```ts title="Signature"
 type CheckPromotionConditionFn<T extends ConfigArgs, R extends CheckPromotionConditionResult> = (
@@ -117,5 +111,5 @@ type CheckPromotionConditionFn<T extends ConfigArgs, R extends CheckPromotionCon
     order: Order,
     args: ConfigArgValues<T>,
     promotion: Promotion,
-) => R | Promise<R>
+) => R | Promise<R>;
 ```

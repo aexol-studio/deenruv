@@ -8,7 +8,7 @@ title: 'Auth'
 
 The term **auth** is shorthand for _both_ authentication and authorization.
 
-Auth in Vendure applies to both **administrators** and **customers**. Authentication is controlled by the configured `AuthenticationStrategies`, and authorization is controlled by the configured `Roles` and `Permissions`.
+Auth in Deenruv applies to both **administrators** and **customers**. Authentication is controlled by the configured `AuthenticationStrategies`, and authorization is controlled by the configured `Roles` and `Permissions`.
 
 ## Administrator auth
 
@@ -22,7 +22,7 @@ Roles can be created to allow fine-grained control over what a particular admini
 
 ## Customer auth
 
-Customer only need to authenticate if they want to access a restricted operation related to their account, such as 
+Customer only need to authenticate if they want to access a restricted operation related to their account, such as
 viewing past orders or updating an address.
 
 Here are the parts that make up Customer authentication:
@@ -31,18 +31,16 @@ Here are the parts that make up Customer authentication:
 
 ### Guest customers
 
-Vendure also supports **guest customers**, meaning that a customer can place an order without needing to register an account, and thus not getting an
+Deenruv also supports **guest customers**, meaning that a customer can place an order without needing to register an account, and thus not getting an
 associated user or role. A guest customer, having no roles and thus no permissions, is then unable to view past orders or access any other restricted API
 operations.
 
 However, a guest customer can at a later point register an account using the same email address, at which point they will get a user with the "Customer" role,
 and be able to view their past orders.
 
-
 ## Roles & Permissions
 
 Both the `Customer` and `Administrator` entities relate to a single [`User`](/reference/typescript-api/entities/user/) entity which in turn has one or more [`Roles`](/reference/typescript-api/entities/role/) for controlling permissions.
-
 
 ![Administrators & Roles](./admin-role.webp)
 
@@ -52,36 +50,33 @@ administrator. In this way, you can have fine-grained control over which adminis
 
 There are 2 special roles which are created by default and cannot be changed:
 
-- **SuperAdmin**: This role has all permissions, and cannot be edited or deleted. It is assigned to the first administrator
-  created when the server is started.
-- **Customer**: This role is assigned to all registered customers.
-
+-   **SuperAdmin**: This role has all permissions, and cannot be edited or deleted. It is assigned to the first administrator
+    created when the server is started.
+-   **Customer**: This role is assigned to all registered customers.
 
 All other roles can be user-defined. Here's an example of an "Inventory Manager" role being defined in the Admin UI:
 
 ![Inventory Manager role](./roles.webp)
 
-
-
 ## Native authentication
 
-By default, Vendure uses a username/email address and password to authenticate users, which is implemented by the [`NativeAuthenticationStrategy`](/reference/typescript-api/auth/native-authentication-strategy/).
+By default, Deenruv uses a username/email address and password to authenticate users, which is implemented by the [`NativeAuthenticationStrategy`](/reference/typescript-api/auth/native-authentication-strategy/).
 
 There is a `login` mutation available in both the Shop API and Admin API which allows a customer or administrator to authenticate using
 native authentication:
 
 ```graphql title="Admin API"
 mutation {
-  login(username: "superadmin", password: "superadmin") {
-    ...on CurrentUser {
-      id
-      identifier
+    login(username: "superadmin", password: "superadmin") {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ...on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -91,37 +86,37 @@ See the [Managing Sessions guide](/guides/storefront/connect-api/#managing-sessi
 
 ## External authentication
 
-In addition to the built-in `NativeAuthenticationStrategy`, it is possible to define a custom [`AuthenticationStrategy`](/reference/typescript-api/auth/authentication-strategy) which allows your Vendure server to support other authentication methods such as:
+In addition to the built-in `NativeAuthenticationStrategy`, it is possible to define a custom [`AuthenticationStrategy`](/reference/typescript-api/auth/authentication-strategy) which allows your Deenruv server to support other authentication methods such as:
 
-- Social logins (Facebook, Google, GitHub, etc.)
-- Single Sign-On (SSO) providers such as Keycloak, Auth0, etc.
-- Alternative factors such as SMS, TOTP, etc.
+-   Social logins (Facebook, Google, GitHub, etc.)
+-   Single Sign-On (SSO) providers such as Keycloak, Auth0, etc.
+-   Alternative factors such as SMS, TOTP, etc.
 
-Custom authentication strategies are set via the [`VendureConfig.authOptions` object](/reference/typescript-api/auth/auth-options/#shopauthenticationstrategy):
+Custom authentication strategies are set via the [`DeenruvConfig.authOptions` object](/reference/typescript-api/auth/auth-options/#shopauthenticationstrategy):
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig, NativeAuthenticationStrategy } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig, NativeAuthenticationStrategy } from '@deenruv/core';
 
 import { FacebookAuthenticationStrategy } from './plugins/authentication/facebook-authentication-strategy';
 import { GoogleAuthenticationStrategy } from './plugins/authentication/google-authentication-strategy';
 import { KeycloakAuthenticationStrategy } from './plugins/authentication/keycloak-authentication-strategy';
 
-export const config: VendureConfig = {
-  authOptions: {
-      shopAuthenticationStrategy: [
-        new NativeAuthenticationStrategy(),
-        new FacebookAuthenticationStrategy(),
-        new GoogleAuthenticationStrategy(),
-      ],
-      adminAuthenticationStrategy: [
-        new NativeAuthenticationStrategy(),
-        new KeycloakAuthenticationStrategy(),
-      ],
-  }
-}
+export const config: DeenruvConfig = {
+    authOptions: {
+        shopAuthenticationStrategy: [
+            new NativeAuthenticationStrategy(),
+            new FacebookAuthenticationStrategy(),
+            new GoogleAuthenticationStrategy(),
+        ],
+        adminAuthenticationStrategy: [
+            new NativeAuthenticationStrategy(),
+            new KeycloakAuthenticationStrategy(),
+        ],
+    },
+};
 ```
 
-In the above example, we define the strategies available for authenticating in the Shop API and the Admin API. The `NativeAuthenticationStrategy` is the only one actually provided by Vendure out-of-the-box, and this is the default username/email + password strategy.
+In the above example, we define the strategies available for authenticating in the Shop API and the Admin API. The `NativeAuthenticationStrategy` is the only one actually provided by Deenruv out-of-the-box, and this is the default username/email + password strategy.
 
 The other strategies would be custom-built (or provided by future npm packages) by creating classes that implement the [`AuthenticationStrategy` interface](/reference/typescript-api/auth/authentication-strategy).
 
@@ -139,8 +134,8 @@ In your storefront, you need to integrate the Google sign-in button as described
 
 ```ts
 function onSignIn(googleUser) {
-  graphQlQuery(
-    `mutation Authenticate($token: String!) {
+    graphQlQuery(
+        `mutation Authenticate($token: String!) {
         authenticate(input: {
           google: { token: $token }
         }) {
@@ -150,10 +145,10 @@ function onSignIn(googleUser) {
         }
       }
     }`,
-    { token: googleUser.getAuthResponse().id_token }
-  ).then(() => {
-    // redirect to account page
-  });
+        { token: googleUser.getAuthResponse().id_token },
+    ).then(() => {
+        // redirect to account page
+    });
 }
 ```
 
@@ -203,10 +198,10 @@ export class GoogleAuthenticationStrategy implements AuthenticationStrategy<Goog
         // Here we define the expected input object expected by the `authenticate` mutation
         // under the "google" key.
         return gql`
-        input GoogleAuthInput {
-            token: String!
-        }
-    `;
+            input GoogleAuthInput {
+                token: String!
+            }
+        `;
     }
 
     async authenticate(ctx: RequestContext, data: GoogleAuthData): Promise<User | false> {
@@ -222,8 +217,8 @@ export class GoogleAuthenticationStrategy implements AuthenticationStrategy<Goog
         }
 
         // First we check to see if this user has already authenticated in our
-        // Vendure server using this Google account. If so, we return that
-        // User object, and they will be now authenticated in Vendure.
+        // Deenruv server using this Google account. If so, we return that
+        // User object, and they will be now authenticated in Deenruv.
         const user = await this.externalAuthenticationService.findCustomerUser(ctx, this.name, payload.sub);
         if (user) {
             return user;
@@ -266,7 +261,7 @@ export const FBLoginButton = () => {
     const [socialLoginMutation] = useMutation(AuthenticateDocument);
 
     useEffect(() => {
-        (window as any)[fnName] = function() {
+        (window as any)[fnName] = function () {
             FB.getLoginStatus(login);
         };
         return () => {
@@ -279,9 +274,9 @@ export const FBLoginButton = () => {
     }, []);
 
     const login = async (response: any) => {
-        const {status, authResponse} = response;
+        const { status, authResponse } = response;
         if (status === 'connected') {
-            const result = await socialLoginMutation({variables: {token: authResponse.accessToken}});
+            const result = await socialLoginMutation({ variables: { token: authResponse.accessToken } });
             if (result.data?.authenticate.__typename === 'CurrentUser') {
                 // The user has logged in, refresh the browser
                 trackLogin('facebook');
@@ -308,7 +303,7 @@ export const FBLoginButton = () => {
             />
             {error && <div className="text-sm text-red-500">{error}</div>}
         </div>
-  );
+    );
 };
 ```
 
@@ -344,8 +339,7 @@ export class FacebookAuthenticationStrategy implements AuthenticationStrategy<Fa
     private externalAuthenticationService: ExternalAuthenticationService;
     private userService: UserService;
 
-    constructor(private config: FacebookAuthConfig) {
-    }
+    constructor(private config: FacebookAuthConfig) {}
 
     init(injector: Injector) {
         // The ExternalAuthenticationService is a helper service which encapsulates much
@@ -359,10 +353,10 @@ export class FacebookAuthenticationStrategy implements AuthenticationStrategy<Fa
         // Here we define the expected input object expected by the `authenticate` mutation
         // under the "google" key.
         return gql`
-      input FacebookAuthInput {
-        token: String!
-      }
-    `;
+            input FacebookAuthInput {
+                token: String!
+            }
+        `;
     }
 
     private async getAppAccessToken() {
@@ -373,8 +367,8 @@ export class FacebookAuthenticationStrategy implements AuthenticationStrategy<Fa
     }
 
     async authenticate(ctx: RequestContext, data: FacebookAuthData): Promise<User | false> {
-        const {token} = data;
-        const {access_token} = await this.getAppAccessToken();
+        const { token } = data;
+        const { access_token } = await this.getAppAccessToken();
         const resp = await fetch(
             `https://graph.facebook.com/debug_token?input_token=${token}&access_token=${access_token}`,
         );
@@ -384,14 +378,25 @@ export class FacebookAuthenticationStrategy implements AuthenticationStrategy<Fa
             return false;
         }
 
-        const uresp = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=email,first_name,last_name`);
-        const uresult = (await uresp.json()) as { id?: string; email: string; first_name: string; last_name: string };
+        const uresp = await fetch(
+            `https://graph.facebook.com/me?access_token=${token}&fields=email,first_name,last_name`,
+        );
+        const uresult = (await uresp.json()) as {
+            id?: string;
+            email: string;
+            first_name: string;
+            last_name: string;
+        };
 
         if (!uresult.id) {
             return false;
         }
 
-        const existingUser = await this.externalAuthenticationService.findCustomerUser(ctx, this.name, uresult.id);
+        const existingUser = await this.externalAuthenticationService.findCustomerUser(
+            ctx,
+            this.name,
+            uresult.id,
+        );
 
         if (existingUser) {
             // This will select all the auth methods
@@ -416,19 +421,20 @@ export class FacebookAuthenticationStrategy implements AuthenticationStrategy<Fa
 
 ### Keycloak authentication
 
-Here's an example of an AuthenticationStrategy intended to be used on the Admin API. The use-case is when the company has an existing identity server for employees, and you'd like your Vendure shop admins to be able to authenticate with their existing accounts.
+Here's an example of an AuthenticationStrategy intended to be used on the Admin API. The use-case is when the company has an existing identity server for employees, and you'd like your Deenruv shop admins to be able to authenticate with their existing accounts.
 
 This example uses [Keycloak](https://www.keycloak.org/), a popular open-source identity management server. To get your own Keycloak server up and running in minutes, follow the [Keycloak on Docker](https://www.keycloak.org/getting-started/getting-started-docker) guide.
 
 #### Configure a login page & Admin UI
 
-In this example, we'll assume the login page is hosted at `http://intranet/login`. We'll also assume that a "login to Vendure" button has been added to that page and that the page is using the [Keycloak JavaScript adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter), which can be used to get the current user's authorization token:
+In this example, we'll assume the login page is hosted at `http://intranet/login`. We'll also assume that a "login to Deenruv" button has been added to that page and that the page is using the [Keycloak JavaScript adapter](https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter), which can be used to get the current user's authorization token:
 
 ```js title="/login/index.html"
-const vendureLoginButton = document.querySelector('#vendure-login-button');
+const deenruvLoginButton = document.querySelector('#deenruv-login-button');
 
-vendureLoginButton.addEventListener('click', () => {
-  return graphQlQuery(`
+deenruvLoginButton.addEventListener('click', () => {
+    return graphQlQuery(
+        `
     mutation Authenticate($token: String!) {
       authenticate(input: {
         keycloak: {
@@ -438,24 +444,23 @@ vendureLoginButton.addEventListener('click', () => {
         ...on CurrentUser { id }
       }
     }`,
-    { token: keycloak.token },
-  )
-  .then((result) => {
-      if (result.data?.authenticate.user) {
-          // successfully authenticated - redirect to Vendure Admin UI
-          window.location.replace('http://localhost:3000/admin');
-      }
-  });
+        { token: keycloak.token },
+    ).then(result => {
+        if (result.data?.authenticate.user) {
+            // successfully authenticated - redirect to Deenruv Admin UI
+            window.location.replace('http://localhost:3000/admin');
+        }
+    });
 });
 ```
 
 We also need to tell the Admin UI application about the custom login URL, since we have no need for the default "username/password" login form. This can be done by setting the [`loginUrl` property](/reference/typescript-api/common/admin-ui/admin-ui-config#loginurl) in the AdminUiConfig:
 
-```ts title="/src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="/src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -510,24 +515,30 @@ export class KeycloakAuthenticationStrategy implements AuthenticationStrategy<Ke
 
     defineInputType(): DocumentNode {
         return gql`
-      input KeycloakAuthInput {
-        token: String!
-      }
-    `;
+            input KeycloakAuthInput {
+                token: String!
+            }
+        `;
     }
 
     async authenticate(ctx: RequestContext, data: KeycloakAuthData): Promise<User | false> {
         const { data: userInfo } = await fetch(
-            'http://localhost:9000/auth/realms/myrealm/protocol/openid-connect/userinfo', {
+            'http://localhost:9000/auth/realms/myrealm/protocol/openid-connect/userinfo',
+            {
                 headers: {
                     Authorization: `Bearer ${data.token}`,
                 },
-            }).then(res => res.json());
+            },
+        ).then(res => res.json());
 
         if (!userInfo) {
             return false;
         }
-        const user = await this.externalAuthenticationService.findAdministratorUser(ctx, this.name, userInfo.sub);
+        const user = await this.externalAuthenticationService.findAdministratorUser(
+            ctx,
+            this.name,
+            userInfo.sub,
+        );
         if (user) {
             return user;
         }
@@ -537,7 +548,7 @@ export class KeycloakAuthenticationStrategy implements AuthenticationStrategy<Ke
         // new Administrators. In a real implementation, you can have more complex
         // logic to map an external user to a given role.
         const roles = await this.roleService.findAll();
-        const merchantRole = roles.items.find((r) => r.code === 'merchant');
+        const merchantRole = roles.items.find(r => r.code === 'merchant');
         if (!merchantRole) {
             Logger.error(`Could not find "merchant" role`);
             return false;

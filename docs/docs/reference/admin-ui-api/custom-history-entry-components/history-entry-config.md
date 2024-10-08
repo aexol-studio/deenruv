@@ -1,13 +1,14 @@
 ---
-title: "HistoryEntryConfig"
+title: 'HistoryEntryConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## HistoryEntryConfig
 
@@ -26,14 +27,14 @@ interface HistoryEntryConfig {
 
 ### type
 
-<MemberInfo kind="property" type={`string`}   />
+<MemberInfo kind="property" type={`string`} />
 
 The type should correspond to the custom HistoryEntryType string.
+
 ### component
 
-<MemberInfo kind="property" type={`Type&#60;<a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a>&#62;`}   />
+<MemberInfo kind="property" type={`Type&#60;<a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a>&#62;`} />
 
 The component to be rendered for this history entry type.
-
 
 </div>

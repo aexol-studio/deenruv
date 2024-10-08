@@ -1,11 +1,11 @@
 ---
-title: "Paginated lists"
+title: 'Paginated lists'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Vendure's list queries follow a set pattern which allows for pagination, filtering & sorting. This guide will demonstrate how
+Deenruv's list queries follow a set pattern which allows for pagination, filtering & sorting. This guide will demonstrate how
 to implement your own paginated list queries.
 
 ## API definition
@@ -18,37 +18,37 @@ would look:
 import gql from 'graphql-tag';
 
 export const adminApiExtensions = gql`
-type ProductReview implements Node {
-  id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  product: Product!
-  productId: ID!
-  text: String!
-  rating: Float!
-}
+    type ProductReview implements Node {
+        id: ID!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        product: Product!
+        productId: ID!
+        text: String!
+        rating: Float!
+    }
 
-type ProductReviewList implements PaginatedList {
-  items: [ProductReview!]!
-  totalItems: Int!
-}
+    type ProductReviewList implements PaginatedList {
+        items: [ProductReview!]!
+        totalItems: Int!
+    }
 
-# Generated at run-time by Vendure
-input ProductReviewListOptions
+    # Generated at run-time by Deenruv
+    input ProductReviewListOptions
 
-extend type Query {
-   productReviews(options: ProductReviewListOptions): ProductReviewList!
-}
+    extend type Query {
+        productReviews(options: ProductReviewListOptions): ProductReviewList!
+    }
 `;
 ```
 
 Note that we need to follow these conventions:
 
-- The type must implement the `Node` interface, i.e. it must have an `id: ID!` field.
-- The list type must be named `<EntityName>List` and must implement the `PaginatedList` interface.
-- The list options input type must be named `<EntityName>ListOptions`.
+-   The type must implement the `Node` interface, i.e. it must have an `id: ID!` field.
+-   The list type must be named `<EntityName>List` and must implement the `PaginatedList` interface.
+-   The list options input type must be named `<EntityName>ListOptions`.
 
-Given this schema, at runtime Vendure will automatically generate the `ProductReviewListOptions` input type, including all the
+Given this schema, at runtime Deenruv will automatically generate the `ProductReviewListOptions` input type, including all the
 filtering & sorting fields. This means that we don't need to define the input type ourselves.
 
 ## Resolver
@@ -91,11 +91,12 @@ import { ProductReview } from '../entities/product-review.entity';
 
 @Injectable()
 export class ProductReviewService {
-    constructor(
-        private listQueryBuilder: ListQueryBuilder,
-    ) {}
+    constructor(private listQueryBuilder: ListQueryBuilder) {}
 
-    findAll(ctx: RequestContext, options?: ListQueryOptions<ProductReview>): Promise<PaginatedList<ProductReview>> {
+    findAll(
+        ctx: RequestContext,
+        options?: ListQueryOptions<ProductReview>,
+    ): Promise<PaginatedList<ProductReview>> {
         return this.listQueryBuilder
             .build(ProductReview, options, { relations: ['product'], ctx })
             .getManyAndCount()
@@ -107,7 +108,6 @@ export class ProductReviewService {
 ## Usage
 
 Given the above parts of the plugin, we can now query the list of reviews in the Admin API:
-
 
 <Tabs>
 <TabItem value="Query" label="Query" default>
@@ -148,40 +148,40 @@ query {
 
 ```json
 {
-  "data": {
-    "productReviews": {
-      "totalItems": 3,
-      "items": [
-        {
-          "id": "12",
-          "createdAt": "2023-08-23T12:00:00Z",
-          "product": {
-            "name": "Smartphone X"
-          },
-          "text": "The best phone I've ever had!",
-          "rating": 5
-        },
-        {
-          "id": "42",
-          "createdAt": "2023-08-22T15:30:00Z",
-          "product": {
-            "name": "Laptop Y"
-          },
-          "text": "Impressive performance and build quality.",
-          "rating": 4
-        },
-        {
-          "id": "33",
-          "createdAt": "2023-08-21T09:45:00Z",
-          "product": {
-            "name": "Headphones Z"
-          },
-          "text": "Decent sound quality but uncomfortable.",
-          "rating": 3
+    "data": {
+        "productReviews": {
+            "totalItems": 3,
+            "items": [
+                {
+                    "id": "12",
+                    "createdAt": "2023-08-23T12:00:00Z",
+                    "product": {
+                        "name": "Smartphone X"
+                    },
+                    "text": "The best phone I've ever had!",
+                    "rating": 5
+                },
+                {
+                    "id": "42",
+                    "createdAt": "2023-08-22T15:30:00Z",
+                    "product": {
+                        "name": "Laptop Y"
+                    },
+                    "text": "Impressive performance and build quality.",
+                    "rating": 4
+                },
+                {
+                    "id": "33",
+                    "createdAt": "2023-08-21T09:45:00Z",
+                    "product": {
+                        "name": "Headphones Z"
+                    },
+                    "text": "Decent sound quality but uncomfortable.",
+                    "rating": 3
+                }
+            ]
         }
-      ]
     }
-  }
 }
 ```
 
@@ -193,7 +193,7 @@ include reviews with a rating between 3 and 5.
 
 ## Advanced filtering
 
-Vendure v2.2.0 introduced the ability to construct complex nested filters on any PaginatedList query. For example, we could
+Deenruv v2.2.0 introduced the ability to construct complex nested filters on any PaginatedList query. For example, we could
 filter the above query to only include reviews for products with a name starting with "Smartphone":
 
 <Tabs>
@@ -238,31 +238,31 @@ query {
 
 ```json
 {
-  "data": {
-    "productReviews": {
-      "totalItems": 3,
-      "items": [
-        {
-          "id": "12",
-          "createdAt": "2023-08-23T12:00:00Z",
-          "product": {
-            "name": "Smartphone X"
-          },
-          "text": "The best phone I've ever had!",
-          "rating": 5
-        },
-        {
-          "id": "42",
-          "createdAt": "2023-08-22T15:30:00Z",
-          "product": {
-            "name": "Smartphone Y"
-          },
-          "text": "Not a very good phone at all.",
-          "rating": 0
+    "data": {
+        "productReviews": {
+            "totalItems": 3,
+            "items": [
+                {
+                    "id": "12",
+                    "createdAt": "2023-08-23T12:00:00Z",
+                    "product": {
+                        "name": "Smartphone X"
+                    },
+                    "text": "The best phone I've ever had!",
+                    "rating": 5
+                },
+                {
+                    "id": "42",
+                    "createdAt": "2023-08-22T15:30:00Z",
+                    "product": {
+                        "name": "Smartphone Y"
+                    },
+                    "text": "Not a very good phone at all.",
+                    "rating": 0
+                }
+            ]
         }
-      ]
     }
-  }
 }
 ```
 
@@ -307,11 +307,12 @@ import { ProductReview } from '../entities/product-review.entity';
 
 @Injectable()
 export class ProductReviewService {
-    constructor(
-        private listQueryBuilder: ListQueryBuilder,
-    ) {}
+    constructor(private listQueryBuilder: ListQueryBuilder) {}
 
-    findAll(ctx: RequestContext, options?: ListQueryOptions<ProductReview>): Promise<PaginatedList<ProductReview>> {
+    findAll(
+        ctx: RequestContext,
+        options?: ListQueryOptions<ProductReview>,
+    ): Promise<PaginatedList<ProductReview>> {
         return this.listQueryBuilder
             .build(ProductReview, options, {
                 // highlight-next-line
@@ -320,7 +321,7 @@ export class ProductReviewService {
                 // highlight-start
                 customPropertyMap: {
                     productName: 'product.name',
-                }
+                },
                 // highlight-end
             })
             .getManyAndCount()

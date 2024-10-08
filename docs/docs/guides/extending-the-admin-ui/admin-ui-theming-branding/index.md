@@ -2,26 +2,26 @@
 title: 'Admin UI Theming & Branding'
 ---
 
-The Vendure Admin UI can be themed to your company's style and branding.
-    
+The Deenruv Admin UI can be themed to your company's style and branding.
+
 ## AdminUiPlugin branding settings
 
-The `AdminUiPlugin` allows you to specify your "brand" name, and allows you to control whether to display the Vendure name and version in the UI. Specifying a brand name will also set it as the title of the Admin UI in the browser.
+The `AdminUiPlugin` allows you to specify your "brand" name, and allows you to control whether to display the Deenruv name and version in the UI. Specifying a brand name will also set it as the title of the Admin UI in the browser.
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
             // ...
-            adminUiConfig:{
+            adminUiConfig: {
                 brand: 'My Store',
                 hideVendureBranding: false,
                 hideVersion: false,
-            }
+            },
         }),
     ],
 };
@@ -33,17 +33,18 @@ For the simple level of branding shown above, the `@deenruv/ui-devkit` package i
 
 ## Specifying custom logos
 
-You can replace the Vendure logos and favicon with your own brand logo:
+You can replace the Deenruv logos and favicon with your own brand logo:
 
 1. Install `@deenruv/ui-devkit`
 2. Configure the AdminUiPlugin to compile a custom build featuring your logos:
-    ```ts title="src/vendure-config.ts"
+
+    ```ts title="src/deenruv-config.ts"
     import path from 'path';
     import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-    import { VendureConfig } from '@deenruv/core';
+    import { DeenruvConfig } from '@deenruv/core';
     import { compileUiExtensions, setBranding } from '@deenruv/ui-devkit/compiler';
-    
-    export const config: VendureConfig = {
+
+    export const config: DeenruvConfig = {
         // ...
         plugins: [
             AdminUiPlugin.init({
@@ -51,9 +52,9 @@ You can replace the Vendure logos and favicon with your own brand logo:
                     outputPath: path.join(__dirname, '../admin-ui'),
                     extensions: [
                         setBranding({
-                            // The small logo appears in the top left of the screen  
+                            // The small logo appears in the top left of the screen
                             smallLogoPath: path.join(__dirname, 'images/my-logo-sm.png'),
-                            // The large logo is used on the login page  
+                            // The large logo is used on the login page
                             largeLogoPath: path.join(__dirname, 'images/my-logo-lg.png'),
                             faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
                         }),
@@ -61,7 +62,7 @@ You can replace the Vendure logos and favicon with your own brand logo:
                 }),
             }),
         ],
-    }
+    };
     ```
 
 ## Theming
@@ -72,33 +73,36 @@ Much of the visual styling of the Admin UI can be customized by providing your o
 2. Create a custom stylesheet which overrides one or more of the CSS custom properties used in the Admin UI:
     ```css title="my-theme.scss"
     :root {
-      --clr-link-active-color: hsl(110, 65%, 57%);
-      --clr-link-color: hsl(110, 65%, 57%);
-      --clr-link-hover-color: hsl(110, 65%, 57%);
-      --clr-link-visited-color: hsl(110, 55%, 75%);
+        --clr-link-active-color: hsl(110, 65%, 57%);
+        --clr-link-color: hsl(110, 65%, 57%);
+        --clr-link-hover-color: hsl(110, 65%, 57%);
+        --clr-link-visited-color: hsl(110, 55%, 75%);
     }
     ```
-   To get an idea of which custom properties are available for theming, take a look at the source of the [Default theme](https://github.com/vendure-ecommerce/vendure/tree/master/packages/admin-ui/src/lib/static/styles/theme/default.scss) and the [Dark theme](https://github.com/vendure-ecommerce/vendure/tree/master/packages/admin-ui/src/lib/static/styles/theme/dark.scss)
-3. Set this as a globalStyles extension:   
-    ```ts title="src/vendure-config.ts"
+    To get an idea of which custom properties are available for theming, take a look at the source of the [Default theme](https://github.com/aexol-studio/deenruv/tree/master/packages/admin-ui/src/lib/static/styles/theme/default.scss) and the [Dark theme](https://github.com/aexol-studio/deenruv/tree/master/packages/admin-ui/src/lib/static/styles/theme/dark.scss)
+3. Set this as a globalStyles extension:
+
+    ```ts title="src/deenruv-config.ts"
     import path from 'path';
     import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-    import { VendureConfig } from '@deenruv/core';
+    import { DeenruvConfig } from '@deenruv/core';
     import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
-    
-    export const config: VendureConfig = {
+
+    export const config: DeenruvConfig = {
         // ...
         plugins: [
             AdminUiPlugin.init({
                 app: compileUiExtensions({
                     outputPath: path.join(__dirname, '../admin-ui'),
-                    extensions: [{
-                        globalStyles: path.join(__dirname, 'my-theme.scss')
-                    }],
+                    extensions: [
+                        {
+                            globalStyles: path.join(__dirname, 'my-theme.scss'),
+                        },
+                    ],
                 }),
             }),
         ],
-    }
+    };
     ```
 
 Some customizable styles in [Clarity](https://clarity.design/), the Admin UI's underlying UI framework, are controlled by Sass variables, which can be found on the [project's GitHub page](https://github.com/vmware-clarity/ng-clarity/blob/689a572344149aea90df1676eae04479795754f3/projects/angular/src/utils/_variables.clarity.scss). Similar to above, you can also provide your own values, which will override defaults set by the framework. Here's an example which changes the [height of the main header](https://github.com/vmware-clarity/ng-clarity/blob/689a572344149aea90df1676eae04479795754f3/projects/angular/src/layout/main-container/_variables.header.scss#L10):
@@ -109,25 +113,28 @@ Some customizable styles in [Clarity](https://clarity.design/), the Admin UI's u
     $clr-header-height: 4rem;
     ```
 3. Set this as a `sassVariableOverrides` extension:
-    ```ts title="src/vendure-config.ts"
+
+    ```ts title="src/deenruv-config.ts"
     import path from 'path';
     import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-    import { VendureConfig } from '@deenruv/core';
+    import { DeenruvConfig } from '@deenruv/core';
     import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 
-    export const config: VendureConfig = {
+    export const config: DeenruvConfig = {
         // ...
         plugins: [
             AdminUiPlugin.init({
                 app: compileUiExtensions({
                     outputPath: path.join(__dirname, 'admin-ui'),
-                    extensions: [{
-                        sassVariableOverrides: path.join(__dirname, 'my-variables.scss')
-                    }],
+                    extensions: [
+                        {
+                            sassVariableOverrides: path.join(__dirname, 'my-variables.scss'),
+                        },
+                    ],
                 }),
             }),
         ],
-    }
+    };
     ```
 
 `globalStyles` and `sassVariableOverrides` extensions can be used in conjunction or separately.

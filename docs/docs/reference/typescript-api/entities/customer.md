@@ -1,13 +1,14 @@
 ---
-title: "Customer"
+title: 'Customer'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Customer
 
@@ -19,7 +20,7 @@ have an associated User entity.
 
 ```ts title="Signature"
 class Customer extends VendureEntity implements ChannelAware, HasCustomFields, SoftDeletable {
-    constructor(input?: DeepPartial<Customer>)
+    constructor(input?: DeepPartial<Customer>);
     @Column({ type: Date, nullable: true })
     deletedAt: Date | null;
     @Column({ nullable: true })
@@ -47,80 +48,63 @@ class Customer extends VendureEntity implements ChannelAware, HasCustomFields, S
     channels: Channel[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#softdeletable'>SoftDeletable</a></code>
-
-
+-   Implements: <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#softdeletable'>SoftDeletable</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/customer#customer'>Customer</a>&#62;) => Customer`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/customer#customer'>Customer</a>&#62;) => Customer`} />
 
 ### deletedAt
 
-<MemberInfo kind="property" type={`Date | null`}   />
-
+<MemberInfo kind="property" type={`Date | null`} />
 
 ### title
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### firstName
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### lastName
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### phoneNumber
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### emailAddress
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### groups
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>[]`} />
 
 ### addresses
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/address#address'>Address</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/address#address'>Address</a>[]`} />
 
 ### orders
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order#order'>Order</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/order#order'>Order</a>[]`} />
 
 ### user
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/user#user'>User</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/user#user'>User</a>`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomCustomerFields`}   />
-
+<MemberInfo kind="property" type={`CustomCustomerFields`} />
 
 ### channels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 </div>

@@ -1,13 +1,14 @@
 ---
-title: "RoundMoney"
+title: 'RoundMoney'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## roundMoney
 
@@ -18,6 +19,7 @@ Rounds a monetary value according to the configured <a href='/reference/typescri
 ```ts title="Signature"
 function roundMoney(value: number, quantity:  = 1): number
 ```
+
 Parameters
 
 ### value
@@ -27,4 +29,3 @@ Parameters
 ### quantity
 
 <MemberInfo kind="parameter" type={``} />
-

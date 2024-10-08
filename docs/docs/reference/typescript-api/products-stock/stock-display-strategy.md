@@ -1,13 +1,14 @@
 ---
-title: "StockDisplayStrategy"
+title: 'StockDisplayStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## StockDisplayStrategy
 
@@ -21,7 +22,7 @@ of whether a given ProductVariant is in stock.
 :::info
 
 This is configured via the `catalogOptions.stockDisplayStrategy` property of
-your VendureConfig.
+your DeenruvConfig.
 
 :::
 
@@ -34,18 +35,16 @@ interface StockDisplayStrategy extends InjectableStrategy {
     ): string | Promise<string>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### getStockLevel
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, productVariant: <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>, saleableStockLevel: number) => string | Promise&#60;string&#62;`}   />
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, productVariant: <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>, saleableStockLevel: number) => string | Promise&#60;string&#62;`} />
 
 Returns a string representing the stock level, which will be used directly
 in the GraphQL `ProductVariant.stockLevel` field.
-
 
 </div>

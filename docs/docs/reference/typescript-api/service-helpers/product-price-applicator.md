@@ -1,13 +1,14 @@
 ---
-title: "ProductPriceApplicator"
+title: 'ProductPriceApplicator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ProductPriceApplicator
 
@@ -18,23 +19,24 @@ including active Channel, any current Order, etc. If you use the <a href='/refer
 directly query ProductVariants, you will find that the `price` and `priceWithTax` properties will
 always be `0` until you use the `applyChannelPriceAndTax()` method:
 
-*Example*
+_Example_
 
 ```ts
 export class MyCustomService {
-  constructor(private connection: TransactionalConnection,
-              private productPriceApplicator: ProductPriceApplicator) {}
+    constructor(
+        private connection: TransactionalConnection,
+        private productPriceApplicator: ProductPriceApplicator,
+    ) {}
 
-  getVariant(ctx: RequestContext, id: ID) {
-    const productVariant = await this.connection
-      .getRepository(ctx, ProductVariant)
-      .findOne(id, { relations: ['taxCategory'] });
+    getVariant(ctx: RequestContext, id: ID) {
+        const productVariant = await this.connection
+            .getRepository(ctx, ProductVariant)
+            .findOne(id, { relations: ['taxCategory'] });
 
-    await this.productPriceApplicator
-      .applyChannelPriceAndTax(productVariant, ctx);
+        await this.productPriceApplicator.applyChannelPriceAndTax(productVariant, ctx);
 
-    return productVariant;
-  }
+        return productVariant;
+    }
 }
 ```
 
@@ -49,18 +51,16 @@ class ProductPriceApplicator {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(configService: ConfigService, taxRateService: <a href='/reference/typescript-api/services/tax-rate-service#taxrateservice'>TaxRateService</a>, zoneService: <a href='/reference/typescript-api/services/zone-service#zoneservice'>ZoneService</a>, requestCache: RequestContextCacheService) => ProductPriceApplicator`}   />
-
+<MemberInfo kind="method" type={`(configService: ConfigService, taxRateService: <a href='/reference/typescript-api/services/tax-rate-service#taxrateservice'>TaxRateService</a>, zoneService: <a href='/reference/typescript-api/services/zone-service#zoneservice'>ZoneService</a>, requestCache: RequestContextCacheService) => ProductPriceApplicator`} />
 
 ### applyChannelPriceAndTax
 
-<MemberInfo kind="method" type={`(variant: <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>, ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, order?: <a href='/reference/typescript-api/entities/order#order'>Order</a>, throwIfNoPriceFound:  = false) => Promise&#60;<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>&#62;`}   />
+<MemberInfo kind="method" type={`(variant: <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>, ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, order?: <a href='/reference/typescript-api/entities/order#order'>Order</a>, throwIfNoPriceFound:  = false) => Promise&#60;<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>&#62;`} />
 
 Populates the `price` field with the price for the specified channel. Make sure that
 the ProductVariant being passed in has its `taxCategory` relation joined.
 
 If the `throwIfNoPriceFound` option is set to `true`, then an error will be thrown if no
 price is found for the given Channel.
-
 
 </div>

@@ -1,13 +1,14 @@
 ---
-title: "ImportParser"
+title: 'ImportParser'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ImportParser
 
@@ -26,14 +27,12 @@ class ImportParser {
 
 ### parseProducts
 
-<MemberInfo kind="method" type={`(input: string | Stream, mainLanguage: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a> = this.configService.defaultLanguageCode) => Promise&#60;<a href='/reference/typescript-api/import-export/import-parser#parseresult'>ParseResult</a>&#60;<a href='/reference/typescript-api/import-export/import-parser#parsedproductwithvariants'>ParsedProductWithVariants</a>&#62;&#62;`}   />
+<MemberInfo kind="method" type={`(input: string | Stream, mainLanguage: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a> = this.configService.defaultLanguageCode) => Promise&#60;<a href='/reference/typescript-api/import-export/import-parser#parseresult'>ParseResult</a>&#60;<a href='/reference/typescript-api/import-export/import-parser#parsedproductwithvariants'>ParsedProductWithVariants</a>&#62;&#62;`} />
 
 Parses the contents of the [product import CSV file](/guides/developer-guide/importing-data/#product-import-format) and
-returns a data structure which can then be used to populate Vendure using the <a href='/reference/typescript-api/import-export/fast-importer-service#fastimporterservice'>FastImporterService</a>.
-
+returns a data structure which can then be used to populate Deenruv using the <a href='/reference/typescript-api/import-export/fast-importer-service#fastimporterservice'>FastImporterService</a>.
 
 </div>
-
 
 ## ParsedOptionGroup
 
@@ -56,13 +55,9 @@ interface ParsedOptionGroup {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         name: string;         values: string[];     }&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         name: string;         values: string[];     }&#62;`} />
 
 </div>
-
 
 ## ParsedFacet
 
@@ -85,13 +80,9 @@ interface ParsedFacet {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         facet: string;         value: string;     }&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         facet: string;         value: string;     }&#62;`} />
 
 </div>
-
 
 ## ParsedProductVariant
 
@@ -123,48 +114,37 @@ interface ParsedProductVariant {
 
 ### sku
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### price
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### taxCategory
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### stockOnHand
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### trackInventory
 
-<MemberInfo kind="property" type={`GlobalFlag`}   />
-
+<MemberInfo kind="property" type={`GlobalFlag`} />
 
 ### assetPaths
 
-<MemberInfo kind="property" type={`string[]`}   />
-
+<MemberInfo kind="property" type={`string[]`} />
 
 ### facets
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedfacet'>ParsedFacet</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedfacet'>ParsedFacet</a>[]`} />
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         optionValues: string[];         customFields: {             [name: string]: string;         };     }&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         optionValues: string[];         customFields: {             [name: string]: string;         };     }&#62;`} />
 
 </div>
-
 
 ## ParsedProduct
 
@@ -194,28 +174,21 @@ interface ParsedProduct {
 
 ### assetPaths
 
-<MemberInfo kind="property" type={`string[]`}   />
-
+<MemberInfo kind="property" type={`string[]`} />
 
 ### optionGroups
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedoptiongroup'>ParsedOptionGroup</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedoptiongroup'>ParsedOptionGroup</a>[]`} />
 
 ### facets
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedfacet'>ParsedFacet</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedfacet'>ParsedFacet</a>[]`} />
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         name: string;         slug: string;         description: string;         customFields: {             [name: string]: string;         };     }&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`Array&#60;{         languageCode: <a href='/reference/typescript-api/common/language-code#languagecode'>LanguageCode</a>;         name: string;         slug: string;         description: string;         customFields: {             [name: string]: string;         };     }&#62;`} />
 
 </div>
-
 
 ## ParsedProductWithVariants
 
@@ -235,18 +208,13 @@ interface ParsedProductWithVariants {
 
 ### product
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedproduct'>ParsedProduct</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedproduct'>ParsedProduct</a>`} />
 
 ### variants
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedproductvariant'>ParsedProductVariant</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/import-export/import-parser#parsedproductvariant'>ParsedProductVariant</a>[]`} />
 
 </div>
-
 
 ## ParseResult
 
@@ -266,19 +234,14 @@ interface ParseResult<T> {
 
 ### results
 
-<MemberInfo kind="property" type={`T[]`}   />
-
+<MemberInfo kind="property" type={`T[]`} />
 
 ### errors
 
-<MemberInfo kind="property" type={`string[]`}   />
-
+<MemberInfo kind="property" type={`string[]`} />
 
 ### processed
 
-<MemberInfo kind="property" type={`number`}   />
-
-
-
+<MemberInfo kind="property" type={`number`} />
 
 </div>

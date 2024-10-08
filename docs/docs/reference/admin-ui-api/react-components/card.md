@@ -1,13 +1,14 @@
 ---
-title: "Card"
+title: 'Card'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Card
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 A card component which can be used to group related content.
 
-*Example*
+_Example_
 
 ```ts
 import { Card } from '@deenruv/admin-ui/react';
@@ -30,11 +31,11 @@ export function MyComponent() {
 ```
 
 ```ts title="Signature"
-function Card(props: PropsWithChildren<{ title?: string; paddingX?: boolean }>): void
+function Card(props: PropsWithChildren<{ title?: string; paddingX?: boolean }>): void;
 ```
+
 Parameters
 
 ### props
 
 <MemberInfo kind="parameter" type={`PropsWithChildren&#60;{ title?: string; paddingX?: boolean }&#62;`} />
-

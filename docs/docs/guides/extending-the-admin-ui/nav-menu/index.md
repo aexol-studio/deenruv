@@ -16,31 +16,35 @@ Let's add a new section to the Admin UI main nav bar containing a link to the "g
 import { addNavMenuSection } from '@deenruv/admin-ui/core';
 
 export default [
-    addNavMenuSection({
-        id: 'greeter',
-        label: 'My Extensions',
-        items: [{
+    addNavMenuSection(
+        {
             id: 'greeter',
-            label: 'Greeter',
-            routerLink: ['/extensions/greet'],
-            // Icon can be any of https://core.clarity.design/foundation/icons/shapes/
-            icon: 'cursor-hand-open',
-        }],
-    },
-    // Add this section before the "settings" section
-    'settings'),
+            label: 'My Extensions',
+            items: [
+                {
+                    id: 'greeter',
+                    label: 'Greeter',
+                    routerLink: ['/extensions/greet'],
+                    // Icon can be any of https://core.clarity.design/foundation/icons/shapes/
+                    icon: 'cursor-hand-open',
+                },
+            ],
+        },
+        // Add this section before the "settings" section
+        'settings',
+    ),
 ];
 ```
 
 Now we must also register these providers with the compiler:
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import path from 'path';
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -53,7 +57,7 @@ export const config: VendureConfig = {
                         extensionPath: path.join(__dirname, 'plugins/greeter/ui'),
                         routes: [{ route: 'greet', filePath: 'routes.ts' }],
                         // highlight-start
-                        providers: ['providers.ts']
+                        providers: ['providers.ts'],
                         // highlight-end
                     },
                 ],
@@ -80,18 +84,20 @@ This is done by setting the `id` property to that of an existing nav menu sectio
 If you would like to remove an existing nav item, you can do so by overriding it and setting the `requiresPermission` property to an invalid value:
 
 ```ts title="src/plugins/greeter/ui/providers.ts"
-import { SharedModule, addNavMenuItem} from '@deenruv/admin-ui/core';
+import { SharedModule, addNavMenuItem } from '@deenruv/admin-ui/core';
 
 export default [
-    addNavMenuItem({
-        id: 'collections',  // <-- we will override the "collections" menu item
-        label: 'Collections',
-        routerLink: ['/catalog', 'collections'],
-        // highlight-start
-        // we use an invalid permission which ensures it is hidden from all users
-        requiresPermission: '__disable__'
-        // highlight-end
-    },
-    'catalog'),
+    addNavMenuItem(
+        {
+            id: 'collections', // <-- we will override the "collections" menu item
+            label: 'Collections',
+            routerLink: ['/catalog', 'collections'],
+            // highlight-start
+            // we use an invalid permission which ensures it is hidden from all users
+            requiresPermission: '__disable__',
+            // highlight-end
+        },
+        'catalog',
+    ),
 ];
 ```

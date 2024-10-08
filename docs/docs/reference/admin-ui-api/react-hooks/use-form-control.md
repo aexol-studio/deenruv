@@ -1,13 +1,14 @@
 ---
-title: "UseFormControl"
+title: 'UseFormControl'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## useFormControl
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Provides access to the current FormControl value and a method to update the value.
 
-*Example*
+_Example_
 
 ```ts
 import { useFormControl, ReactFormInputProps } from '@deenruv/admin-ui/react';
@@ -36,5 +37,5 @@ export function ReactNumberInput({ readonly }: ReactFormInputProps) {
 ```
 
 ```ts title="Signature"
-function useFormControl(): void
+function useFormControl(): void;
 ```

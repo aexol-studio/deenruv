@@ -1,13 +1,14 @@
 ---
-title: "DefaultSearchPluginInitOptions"
+title: 'DefaultSearchPluginInitOptions'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultSearchPluginInitOptions
 
@@ -27,14 +28,15 @@ interface DefaultSearchPluginInitOptions {
 
 ### indexStockStatus
 
-<MemberInfo kind="property" type={`boolean`} default={`false.`}   />
+<MemberInfo kind="property" type={`boolean`} default={`false.`} />
 
 If set to `true`, the stock status of a ProductVariant (inStock: Boolean) will
 be exposed in the `search` query results. Enabling this option on an existing
-Vendure installation will require a DB migration/synchronization.
+Deenruv installation will require a DB migration/synchronization.
+
 ### bufferUpdates
 
-<MemberInfo kind="property" type={`boolean`} default={`false`}  since="1.3.0"  />
+<MemberInfo kind="property" type={`boolean`} default={`false`} since="1.3.0" />
 
 If set to `true`, updates to Products, ProductVariants and Collections will not immediately
 trigger an update to the search index. Instead, all these changes will be buffered and will
@@ -44,14 +46,15 @@ This is very useful for installations with a large number of ProductVariants and
 Collections, as the buffering allows better control over when these expensive jobs are run,
 and also performs optimizations to minimize the amount of work that needs to be performed by
 the worker.
+
 ### searchStrategy
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/default-search-plugin/search-strategy#searchstrategy'>SearchStrategy</a>`} default={`undefined`}  since="1.6.0"  />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/default-search-plugin/search-strategy#searchstrategy'>SearchStrategy</a>`} default={`undefined`} since="1.6.0" />
 
 Set a custom search strategy that implements <a href='/reference/typescript-api/default-search-plugin/search-strategy#searchstrategy'>SearchStrategy</a> or extends an existing search strategy
 such as <a href='/reference/typescript-api/default-search-plugin/mysql-search-strategy#mysqlsearchstrategy'>MysqlSearchStrategy</a>, <a href='/reference/typescript-api/default-search-plugin/postgres-search-strategy#postgressearchstrategy'>PostgresSearchStrategy</a> or <a href='/reference/typescript-api/default-search-plugin/sqlite-search-strategy#sqlitesearchstrategy'>SqliteSearchStrategy</a>.
 
-*Example*
+_Example_
 
 ```ts
 export class MySearchStrategy implements SearchStrategy {
@@ -125,6 +128,5 @@ export class MySearchStrategy implements SearchStrategy {
     }
 }
 ```
-
 
 </div>

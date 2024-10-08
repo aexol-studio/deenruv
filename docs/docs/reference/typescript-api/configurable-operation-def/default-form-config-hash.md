@@ -1,13 +1,14 @@
 ---
-title: "DefaultFormConfigHash"
+title: 'DefaultFormConfigHash'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultFormConfigHash
 
@@ -40,96 +41,77 @@ type DefaultFormConfigHash = {
         selectionMode?: 'product' | 'variant';
     };
     'combination-mode-form-input': Record<string, never>;
-}
+};
 ```
 
 <div className="members-wrapper">
 
 ### 'boolean-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'currency-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'customer-group-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'date-form-input'
 
-<MemberInfo kind="property" type={`{ min?: string; max?: string; yearRange?: number }`}   />
-
+<MemberInfo kind="property" type={`{ min?: string; max?: string; yearRange?: number }`} />
 
 ### 'facet-value-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'json-editor-form-input'
 
-<MemberInfo kind="property" type={`{ height?: string }`}   />
-
+<MemberInfo kind="property" type={`{ height?: string }`} />
 
 ### 'html-editor-form-input'
 
-<MemberInfo kind="property" type={`{ height?: string }`}   />
-
+<MemberInfo kind="property" type={`{ height?: string }`} />
 
 ### 'number-form-input'
 
-<MemberInfo kind="property" type={`{ min?: number; max?: number; step?: number; prefix?: string; suffix?: string }`}   />
-
+<MemberInfo kind="property" type={`{ min?: number; max?: number; step?: number; prefix?: string; suffix?: string }`} />
 
 ### 'password-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'product-selector-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'relation-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'rich-text-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 ### 'select-form-input'
 
-<MemberInfo kind="property" type={`{         options?: Array&#60;{ value: string; label?: Array&#60;Omit&#60;LocalizedString, '__typename'&#62;&#62; }&#62;;     }`}   />
-
+<MemberInfo kind="property" type={`{         options?: Array&#60;{ value: string; label?: Array&#60;Omit&#60;LocalizedString, '__typename'&#62;&#62; }&#62;;     }`} />
 
 ### 'text-form-input'
 
-<MemberInfo kind="property" type={`{ prefix?: string; suffix?: string }`}   />
-
+<MemberInfo kind="property" type={`{ prefix?: string; suffix?: string }`} />
 
 ### 'textarea-form-input'
 
-<MemberInfo kind="property" type={`{         spellcheck?: boolean;     }`}   />
-
+<MemberInfo kind="property" type={`{         spellcheck?: boolean;     }`} />
 
 ### 'product-multi-form-input'
 
-<MemberInfo kind="property" type={`{         selectionMode?: 'product' | 'variant';     }`}   />
-
+<MemberInfo kind="property" type={`{         selectionMode?: 'product' | 'variant';     }`} />
 
 ### 'combination-mode-form-input'
 
-<MemberInfo kind="property" type={`Record&#60;string, never&#62;`}   />
-
-
-
+<MemberInfo kind="property" type={`Record&#60;string, never&#62;`} />
 
 </div>

@@ -1,13 +1,14 @@
 ---
-title: "OrderStateLabelComponent"
+title: 'OrderStateLabelComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## OrderStateLabelComponent
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Displays the state of an order in a colored chip.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-order-state-label [state]="order.state"></vdr-order-state-label>
@@ -24,7 +25,7 @@ Displays the state of an order in a colored chip.
 ```ts title="Signature"
 class OrderStateLabelComponent {
     @Input() state: string;
-    chipColorType: void
+    chipColorType: void;
 }
 ```
 
@@ -32,14 +33,10 @@ class OrderStateLabelComponent {
 
 ### state
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### chipColorType
 
-<MemberInfo kind="property" type={``}   />
-
-
-
+<MemberInfo kind="property" type={``} />
 
 </div>

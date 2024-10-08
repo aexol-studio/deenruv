@@ -1,13 +1,14 @@
 ---
-title: "FacetValueChecker"
+title: 'FacetValueChecker'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FacetValueChecker
 
@@ -16,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 The FacetValueChecker is a helper class used to determine whether a given OrderLine consists
 of ProductVariants containing the given FacetValues.
 
-*Example*
+_Example_
 
 ```ts
 import { FacetValueChecker, LanguageCode, PromotionCondition, TransactionalConnection } from '@deenruv/core';
@@ -24,26 +25,26 @@ import { FacetValueChecker, LanguageCode, PromotionCondition, TransactionalConne
 let facetValueChecker: FacetValueChecker;
 
 export const hasFacetValues = new PromotionCondition({
-  code: 'at_least_n_with_facets',
-  description: [
-    { languageCode: LanguageCode.en, value: 'Buy at least { minimum } products with the given facets' },
-  ],
-  args: {
-    minimum: { type: 'int' },
-    facets: { type: 'ID', list: true, ui: { component: 'facet-value-form-input' } },
-  },
-  init(injector) {
-    facetValueChecker = new FacetValueChecker(injector.get(TransactionalConnection));
-  },
-  async check(ctx, order, args) {
-    let matches = 0;
-    for (const line of order.lines) {
-      if (await facetValueChecker.hasFacetValues(line, args.facets)) {
-          matches += line.quantity;
-      }
-    }
-    return args.minimum <= matches;
-  },
+    code: 'at_least_n_with_facets',
+    description: [
+        { languageCode: LanguageCode.en, value: 'Buy at least { minimum } products with the given facets' },
+    ],
+    args: {
+        minimum: { type: 'int' },
+        facets: { type: 'ID', list: true, ui: { component: 'facet-value-form-input' } },
+    },
+    init(injector) {
+        facetValueChecker = new FacetValueChecker(injector.get(TransactionalConnection));
+    },
+    async check(ctx, order, args) {
+        let matches = 0;
+        for (const line of order.lines) {
+            if (await facetValueChecker.hasFacetValues(line, args.facets)) {
+                matches += line.quantity;
+            }
+        }
+        return args.minimum <= matches;
+    },
 });
 ```
 
@@ -58,16 +59,14 @@ class FacetValueChecker {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>) => FacetValueChecker`}   />
-
+<MemberInfo kind="method" type={`(connection: <a href='/reference/typescript-api/data-access/transactional-connection#transactionalconnection'>TransactionalConnection</a>) => FacetValueChecker`} />
 
 ### hasFacetValues
 
-<MemberInfo kind="method" type={`(orderLine: <a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>, facetValueIds: <a href='/reference/typescript-api/common/id#id'>ID</a>[], ctx?: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => Promise&#60;boolean&#62;`}   />
+<MemberInfo kind="method" type={`(orderLine: <a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a>, facetValueIds: <a href='/reference/typescript-api/common/id#id'>ID</a>[], ctx?: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>) => Promise&#60;boolean&#62;`} />
 
 Checks a given <a href='/reference/typescript-api/entities/order-line#orderline'>OrderLine</a> against the facetValueIds and returns
 `true` if the associated <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a> & <a href='/reference/typescript-api/entities/product#product'>Product</a> together
-have *all* the specified <a href='/reference/typescript-api/entities/facet-value#facetvalue'>FacetValue</a>s.
-
+have _all_ the specified <a href='/reference/typescript-api/entities/facet-value#facetvalue'>FacetValue</a>s.
 
 </div>

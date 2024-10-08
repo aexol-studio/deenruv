@@ -1,13 +1,14 @@
 ---
-title: "Permission"
+title: 'Permission'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Permission
 
@@ -18,13 +19,13 @@ GraphQL resolvers via the <a href='/reference/typescript-api/request/allow-decor
 
 ## Understanding Permission.Owner
 
-`Permission.Owner` is a special permission which is used in some Vendure resolvers to indicate that that resolver should only
+`Permission.Owner` is a special permission which is used in some Deenruv resolvers to indicate that that resolver should only
 be accessible to the "owner" of that resource.
 
 For example, the Shop API `activeCustomer` query resolver should only return the Customer object for the "owner" of that Customer, i.e.
 based on the activeUserId of the current session. As a result, the resolver code looks like this:
 
-*Example*
+_Example_
 
 ```TypeScript
 @Query()

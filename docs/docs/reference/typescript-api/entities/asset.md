@@ -1,13 +1,14 @@
 ---
-title: "Asset"
+title: 'Asset'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Asset
 
@@ -18,7 +19,7 @@ such as Products.
 
 ```ts title="Signature"
 class Asset extends VendureEntity implements Taggable, ChannelAware, HasCustomFields {
-    constructor(input?: DeepPartial<Asset>)
+    constructor(input?: DeepPartial<Asset>);
     @Column() name: string;
     @Column('varchar') type: AssetType;
     @Column() mimeType: string;
@@ -45,95 +46,75 @@ class Asset extends VendureEntity implements Taggable, ChannelAware, HasCustomFi
     customFields: CustomAssetFields;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code><a href='/reference/typescript-api/entities/interfaces#taggable'>Taggable</a></code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code>HasCustomFields</code>
-
-
+-   Implements: <code><a href='/reference/typescript-api/entities/interfaces#taggable'>Taggable</a></code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code>HasCustomFields</code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>&#62;) => Asset`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>&#62;) => Asset`} />
 
 ### name
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### type
 
-<MemberInfo kind="property" type={`AssetType`}   />
-
+<MemberInfo kind="property" type={`AssetType`} />
 
 ### mimeType
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### width
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### height
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### fileSize
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### source
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### preview
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### focalPoint
 
-<MemberInfo kind="property" type={`{ x: number; y: number }`}   />
-
+<MemberInfo kind="property" type={`{ x: number; y: number }`} />
 
 ### tags
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tag#tag'>Tag</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/tag#tag'>Tag</a>[]`} />
 
 ### channels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 ### featuredInCollections
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>[]`} />
 
 ### featuredInVariants
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`} />
 
 ### featuredInProducts
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product#product'>Product</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product#product'>Product</a>[]`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomAssetFields`}   />
-
-
-
+<MemberInfo kind="property" type={`CustomAssetFields`} />
 
 </div>

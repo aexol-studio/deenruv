@@ -1,13 +1,14 @@
 ---
-title: "RegisterPageTab"
+title: 'RegisterPageTab'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerPageTab
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Add a tab to an existing list or detail page.
 
-*Example*
+_Example_
 
 ```ts title="providers.ts"
 import { registerPageTab } from '@deenruv/admin-ui/core';
@@ -32,11 +33,11 @@ export default [
 ```
 
 ```ts title="Signature"
-function registerPageTab(config: PageTabConfig): Provider
+function registerPageTab(config: PageTabConfig): Provider;
 ```
+
 Parameters
 
 ### config
 
 <MemberInfo kind="parameter" type={`<a href='/reference/admin-ui-api/tabs/page-tab-config#pagetabconfig'>PageTabConfig</a>`} />
-

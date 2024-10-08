@@ -1,13 +1,14 @@
 ---
-title: "ErrorResultUnion"
+title: 'ErrorResultUnion'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ErrorResultUnion
 
@@ -20,7 +21,7 @@ types.
 Since the TypeScript entities do not correspond 1-to-1 with their GraphQL type counterparts,
 we use this type to substitute them.
 
-*Example*
+_Example_
 
 ```ts
 type UpdateOrderItemsResult = Order | OrderModificationError | OrderLimitError | NegativeQuantityError;
@@ -29,6 +30,7 @@ type T1 = ErrorResultUnion<UpdateOrderItemsResult, VendureEntityOrder>;
 ```
 
 ```ts title="Signature"
-type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends VendureEntity, U = any> = | JustErrorResults<T>
-    | E
+type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends VendureEntity, U = any> =
+    | JustErrorResults<T>
+    | E;
 ```

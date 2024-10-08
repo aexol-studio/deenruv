@@ -1,13 +1,14 @@
 ---
-title: "UseInjector"
+title: 'UseInjector'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## useInjector
 
@@ -15,7 +16,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Exposes the Angular injector which allows the injection of services into React components.
 
-*Example*
+_Example_
 
 ```ts
 import { useInjector } from '@deenruv/admin-ui/react';
@@ -33,11 +34,11 @@ export const MyComponent = () => {
 ```
 
 ```ts title="Signature"
-function useInjector<T = any>(token: ProviderToken<T>): T
+function useInjector<T = any>(token: ProviderToken<T>): T;
 ```
+
 Parameters
 
 ### token
 
 <MemberInfo kind="parameter" type={`ProviderToken&#60;T&#62;`} />
-

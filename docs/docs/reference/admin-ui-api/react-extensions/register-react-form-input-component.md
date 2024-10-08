@@ -1,13 +1,14 @@
 ---
-title: "RegisterReactFormInputComponent"
+title: 'RegisterReactFormInputComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## registerReactFormInputComponent
 
@@ -16,8 +17,9 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Registers a React component to be used as a <a href='/reference/admin-ui-api/custom-input-components/form-input-component#forminputcomponent'>FormInputComponent</a>.
 
 ```ts title="Signature"
-function registerReactFormInputComponent(id: string, component: ElementType): FactoryProvider
+function registerReactFormInputComponent(id: string, component: ElementType): FactoryProvider;
 ```
+
 Parameters
 
 ### id
@@ -27,4 +29,3 @@ Parameters
 ### component
 
 <MemberInfo kind="parameter" type={`ElementType`} />
-

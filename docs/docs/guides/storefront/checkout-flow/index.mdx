@@ -1,5 +1,5 @@
 ---
-title: "Checkout Flow"
+title: 'Checkout Flow'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -29,13 +29,13 @@ If the customer is already logged in, then this step is skipped.
 
 ```graphql
 mutation SetCustomerForOrder($input: CreateCustomerInput!) {
-  setCustomerForOrder(input: $input) {
-    ...ActiveOrder
-    ...on ErrorResult {
-      errorCode
-      message
+    setCustomerForOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -44,13 +44,13 @@ mutation SetCustomerForOrder($input: CreateCustomerInput!) {
 
 ```json
 {
-  "input": {
-    "title": "Mr.",
-    "firstName": "Bob",
-    "lastName": "Dobalina",
-    "phoneNumber": "1234556",
-    "emailAddress": "b.dobalina@email.com",
-  }
+    "input": {
+        "title": "Mr.",
+        "firstName": "Bob",
+        "lastName": "Dobalina",
+        "phoneNumber": "1234556",
+        "emailAddress": "b.dobalina@email.com"
+    }
 }
 ```
 
@@ -61,19 +61,18 @@ mutation SetCustomerForOrder($input: CreateCustomerInput!) {
 
 The [`setOrderShippingAddress`](/reference/graphql-api/shop/mutations/#setordershippingaddress) mutation must be called to set the shipping address for the order.
 
-
 <Tabs>
 <TabItem value="Mutation" label="Mutation" default>
 
 ```graphql
 mutation SetOrderShippingAddress($input: CreateAddressInput!) {
-  setOrderShippingAddress(input: $input) {
-    ...ActiveOrder
-    ...on ErrorResult {
-      errorCode
-      message
+    setOrderShippingAddress(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -82,19 +81,19 @@ mutation SetOrderShippingAddress($input: CreateAddressInput!) {
 
 ```json
 {
-  "input": {
-    "fullName": "John Doe",
-    "company": "ABC Inc.",
-    "streetLine1": "123 Main St",
-    "streetLine2": "Apt 4B",
-    "city": "New York",
-    "province": "NY",
-    "postalCode": "10001",
-    "countryCode": "US",
-    "phoneNumber": "123-456-7890",
-    "defaultShippingAddress": true,
-    "defaultBillingAddress": false
-  }
+    "input": {
+        "fullName": "John Doe",
+        "company": "ABC Inc.",
+        "streetLine1": "123 Main St",
+        "streetLine2": "Apt 4B",
+        "city": "New York",
+        "province": "NY",
+        "postalCode": "10001",
+        "countryCode": "US",
+        "phoneNumber": "123-456-7890",
+        "defaultShippingAddress": true,
+        "defaultBillingAddress": false
+    }
 }
 ```
 
@@ -103,32 +102,31 @@ mutation SetOrderShippingAddress($input: CreateAddressInput!) {
 
 If the customer is logged in, you can check their existing addresses and pre-populate an address form if an existing address is found.
 
-
 <Tabs>
 <TabItem value="Query" label="Query" default>
 
 ```graphql
 query GetCustomerAddresses {
-  activeCustomer {
-    id
-    addresses {
-      id
-      fullName
-      company
-      streetLine1
-      streetLine2
-      city
-      province
-      postalCode
-      country {
-        code
-        name
-      }
-      phoneNumber
-      defaultShippingAddress
-      defaultBillingAddress
+    activeCustomer {
+        id
+        addresses {
+            id
+            fullName
+            company
+            streetLine1
+            streetLine2
+            city
+            province
+            postalCode
+            country {
+                code
+                name
+            }
+            phoneNumber
+            defaultShippingAddress
+            defaultBillingAddress
+        }
     }
-  }
 }
 ```
 
@@ -137,47 +135,47 @@ query GetCustomerAddresses {
 
 ```json
 {
-  "data": {
-    "activeCustomer": {
-      "id": "123456",
-      "addresses": [
-        {
-          "id": "123",
-          "fullName": "John Doe",
-          "company": "",
-          "streetLine1": "123 Main St",
-          "streetLine2": "Apt 4B",
-          "city": "New York",
-          "province": "NY",
-          "postalCode": "10001",
-          "country": {
-            "code": "US",
-            "name": "United States"
-          },
-          "phoneNumber": "123-456-7890",
-          "defaultShippingAddress": true,
-          "defaultBillingAddress": false
-        },
-        {
-          "id": "124",
-          "fullName": "John Doe",
-          "company": "",
-          "streetLine1": "456 Elm St",
-          "streetLine2": "",
-          "city": "Los Angeles",
-          "province": "CA",
-          "postalCode": "90001",
-          "country": {
-            "code": "US",
-            "name": "United States"
-          },
-          "phoneNumber": "987-654-3210",
-          "defaultShippingAddress": false,
-          "defaultBillingAddress": true
+    "data": {
+        "activeCustomer": {
+            "id": "123456",
+            "addresses": [
+                {
+                    "id": "123",
+                    "fullName": "John Doe",
+                    "company": "",
+                    "streetLine1": "123 Main St",
+                    "streetLine2": "Apt 4B",
+                    "city": "New York",
+                    "province": "NY",
+                    "postalCode": "10001",
+                    "country": {
+                        "code": "US",
+                        "name": "United States"
+                    },
+                    "phoneNumber": "123-456-7890",
+                    "defaultShippingAddress": true,
+                    "defaultBillingAddress": false
+                },
+                {
+                    "id": "124",
+                    "fullName": "John Doe",
+                    "company": "",
+                    "streetLine1": "456 Elm St",
+                    "streetLine2": "",
+                    "city": "Los Angeles",
+                    "province": "CA",
+                    "postalCode": "90001",
+                    "country": {
+                        "code": "US",
+                        "name": "United States"
+                    },
+                    "phoneNumber": "987-654-3210",
+                    "defaultShippingAddress": false,
+                    "defaultBillingAddress": true
+                }
+            ]
         }
-      ]
     }
-  }
 }
 ```
 
@@ -193,11 +191,11 @@ Now that we know the shipping address, we can check which shipping methods are a
 
 ```graphql
 query GetShippingMethods {
-  eligibleShippingMethods {
-    id
-    price
-    description
-  }
+    eligibleShippingMethods {
+        id
+        price
+        description
+    }
 }
 ```
 
@@ -206,25 +204,25 @@ query GetShippingMethods {
 
 ```json
 {
-  "data": {
-    "eligibleShippingMethods": [
-      {
-        "id": "1",
-        "price": 545,
-        "description": "Standard Shipping"
-      },
-      {
-        "id": "2",
-        "price": 1250,
-        "description": "Expedited Shipping"
-      },
-      {
-        "id": "3",
-        "price": 1695,
-        "description": "Overnight Shipping"
-      }
-    ]
-  }
+    "data": {
+        "eligibleShippingMethods": [
+            {
+                "id": "1",
+                "price": 545,
+                "description": "Standard Shipping"
+            },
+            {
+                "id": "2",
+                "price": 1250,
+                "description": "Expedited Shipping"
+            },
+            {
+                "id": "3",
+                "price": 1695,
+                "description": "Overnight Shipping"
+            }
+        ]
+    }
 }
 ```
 
@@ -240,7 +238,7 @@ The desired shipping method's id is the passed to the [`setOrderShippingMethod`]
 mutation SetShippingMethod($id: [ID!]!) {
     setOrderShippingMethod(shippingMethodId: $id) {
         ...ActiveOrder
-        ...on ErrorResult {
+        ... on ErrorResult {
             errorCode
             message
         }
@@ -253,18 +251,17 @@ mutation SetShippingMethod($id: [ID!]!) {
 The [`eligiblePaymentMethods`](/reference/graphql-api/shop/queries/#eligiblepaymentmethods) query can be used to get a list of available payment methods.
 This list can then be displayed to the customer, so they can choose the desired payment method.
 
-
 <Tabs>
 <TabItem value="Query" label="Query" default>
 
 ```graphql
 query GetPaymentMethods {
-  eligiblePaymentMethods {
-    id
-    name
-    code
-    isEligible
-  }
+    eligiblePaymentMethods {
+        id
+        name
+        code
+        isEligible
+    }
 }
 ```
 
@@ -309,16 +306,16 @@ while the payment is being arranged. The [`transitionOrderToState`](/reference/g
 
 ```graphql
 mutation TransitionToState($state: String!) {
-  transitionOrderToState(state: $state) {
-    ...ActiveOrder
-    ...on OrderStateTransitionError {
-      errorCode
-      message
-      transitionError
-      fromState
-      toState
+    transitionOrderToState(state: $state) {
+        ...ActiveOrder
+        ... on OrderStateTransitionError {
+            errorCode
+            message
+            transitionError
+            fromState
+            toState
+        }
     }
-  }
 }
 ```
 
@@ -327,7 +324,7 @@ mutation TransitionToState($state: String!) {
 
 ```json
 {
-  "state": "ArrangingPayment"
+    "state": "ArrangingPayment"
 }
 ```
 
@@ -340,21 +337,20 @@ the exact sequence of API calls will depend on the payment integration.
 The [`addPaymentToOrder`](/reference/graphql-api/shop/mutations/#addpaymenttoorder) mutation is the general-purpose mutation for adding a payment to an order.
 It accepts a `method` argument which must corresponde to the `code` of the selected payment method, and a `metadata` argument which is a JSON object containing any additional information required by that particular integration.
 
-For example, the demo data populated in a new Vendure installation includes a "Standard Payment" method, which uses the [`dummyPaymentHandler`](/reference/typescript-api/payment/dummy-payment-handler) to simulate a payment provider. Here's how you would add a payment using this method:
-
+For example, the demo data populated in a new Deenruv installation includes a "Standard Payment" method, which uses the [`dummyPaymentHandler`](/reference/typescript-api/payment/dummy-payment-handler) to simulate a payment provider. Here's how you would add a payment using this method:
 
 <Tabs>
 <TabItem value="Mutation" label="Mutation" default>
 
 ```graphql
 mutation AddPaymentToOrder($input: PaymentInput!) {
-  addPaymentToOrder(input: $input) {
-    ...ActiveOrder
-    ...on ErrorResult {
-      errorCode
-      message
+    addPaymentToOrder(input: $input) {
+        ...ActiveOrder
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-  }
 }
 ```
 
@@ -363,12 +359,12 @@ mutation AddPaymentToOrder($input: PaymentInput!) {
 
 ```json
 {
-  "method": "standard-payment",
-  "metadata": {
-    "shouldDecline": false,
-    "shouldError": false,
-    "shouldErrorOnSettle": false,
-  }
+    "method": "standard-payment",
+    "metadata": {
+        "shouldDecline": false,
+        "shouldError": false,
+        "shouldErrorOnSettle": false
+    }
 }
 ```
 
@@ -402,9 +398,9 @@ Once the checkout has completed, the order will no longer be considered "active"
 
 ```graphql
 query GetOrderByCode($code: String!) {
-  orderByCode(code: $code) {
-    ...Order
-  }
+    orderByCode(code: $code) {
+        ...Order
+    }
 }
 ```
 
@@ -413,7 +409,7 @@ query GetOrderByCode($code: String!) {
 
 ```json
 {
-  "code": "PJGY46GCB1EDU9YH"
+    "code": "PJGY46GCB1EDU9YH"
 }
 ```
 
@@ -421,8 +417,6 @@ query GetOrderByCode($code: String!) {
 </Tabs>
 
 :::info
-By default Vendure will only allow access to the order by code for the first 2 hours after the order is placed if the customer is not logged in.
+By default Deenruv will only allow access to the order by code for the first 2 hours after the order is placed if the customer is not logged in.
 This is to prevent a malicious user from guessing order codes and viewing other customers' orders. This can be configured via the [`OrderByCodeAccessStrategy`](/reference/typescript-api/orders/order-by-code-access-strategy/).
 :::
-
-

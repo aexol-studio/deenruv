@@ -1,13 +1,14 @@
 ---
-title: "ConfigArgType"
+title: 'ConfigArgType'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ConfigArgType
 
@@ -22,5 +23,5 @@ The data type influences:
 2. The JavaScript type into which the value is coerced before being passed to the business logic.
 
 ```ts title="Signature"
-type ConfigArgType = 'string' | 'int' | 'float' | 'boolean' | 'datetime' | 'ID'
+type ConfigArgType = 'string' | 'int' | 'float' | 'boolean' | 'datetime' | 'ID';
 ```

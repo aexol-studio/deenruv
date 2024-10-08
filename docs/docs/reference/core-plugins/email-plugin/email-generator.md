@@ -1,13 +1,14 @@
 ---
-title: "EmailGenerator"
+title: 'EmailGenerator'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## EmailGenerator
 
@@ -26,27 +27,25 @@ interface EmailGenerator<T extends string = any, E extends VendureEvent = any> e
     ): Pick<EmailDetails, 'from' | 'subject' | 'body'>;
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
-
+-   Extends: <code><a href='/reference/typescript-api/common/injectable-strategy#injectablestrategy'>InjectableStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### onInit
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/email-plugin/email-plugin-options#emailpluginoptions'>EmailPluginOptions</a>) => void | Promise&#60;void&#62;`}   />
+<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/email-plugin/email-plugin-options#emailpluginoptions'>EmailPluginOptions</a>) => void | Promise&#60;void&#62;`} />
 
 Any necessary setup can be performed here.
+
 ### generate
 
-<MemberInfo kind="method" type={`(from: string, subject: string, body: string, templateVars: { [key: string]: any }) => Pick&#60;<a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>, 'from' | 'subject' | 'body'&#62;`}   />
+<MemberInfo kind="method" type={`(from: string, subject: string, body: string, templateVars: { [key: string]: any }) => Pick&#60;<a href='/reference/core-plugins/email-plugin/email-plugin-types#emaildetails'>EmailDetails</a>, 'from' | 'subject' | 'body'&#62;`} />
 
 Given a subject and body from an email template, this method generates the final
 interpolated email text.
 
-
 </div>
-
 
 ## HandlebarsMjmlGenerator
 
@@ -61,22 +60,17 @@ class HandlebarsMjmlGenerator implements EmailGenerator {
     generate(from: string, subject: string, template: string, templateVars: any) => ;
 }
 ```
-* Implements: <code><a href='/reference/core-plugins/email-plugin/email-generator#emailgenerator'>EmailGenerator</a></code>
 
-
+-   Implements: <code><a href='/reference/core-plugins/email-plugin/email-generator#emailgenerator'>EmailGenerator</a></code>
 
 <div className="members-wrapper">
 
 ### onInit
 
-<MemberInfo kind="method" type={`(options: InitializedEmailPluginOptions) => `}   />
-
+<MemberInfo kind="method" type={`(options: InitializedEmailPluginOptions) => `} />
 
 ### generate
 
-<MemberInfo kind="method" type={`(from: string, subject: string, template: string, templateVars: any) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(from: string, subject: string, template: string, templateVars: any) => `} />
 
 </div>

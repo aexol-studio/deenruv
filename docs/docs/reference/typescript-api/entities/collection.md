@@ -1,13 +1,14 @@
 ---
-title: "Collection"
+title: 'Collection'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## Collection
 
@@ -17,7 +18,7 @@ A Collection is a grouping of <a href='/reference/typescript-api/entities/produc
 
 ```ts title="Signature"
 class Collection extends VendureEntity implements Translatable, HasCustomFields, ChannelAware, Orderable {
-    constructor(input?: DeepPartial<Collection>)
+    constructor(input?: DeepPartial<Collection>);
     @Column({ default: false })
     isRoot: boolean;
     @Column()
@@ -52,105 +53,83 @@ class Collection extends VendureEntity implements Translatable, HasCustomFields,
     channels: Channel[];
 }
 ```
-* Extends: <code><a href='/reference/typescript-api/entities/vendure-entity#vendureentity'>VendureEntity</a></code>
 
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
 
-* Implements: <code><a href='/reference/typescript-api/entities/interfaces#translatable'>Translatable</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code><a href='/reference/typescript-api/entities/interfaces#orderable'>Orderable</a></code>
-
-
+-   Implements: <code><a href='/reference/typescript-api/entities/interfaces#translatable'>Translatable</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>, <code><a href='/reference/typescript-api/entities/interfaces#orderable'>Orderable</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>&#62;) => Collection`}   />
-
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>&#62;) => Collection`} />
 
 ### isRoot
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### position
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### isPrivate
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### name
 
-<MemberInfo kind="property" type={`LocaleString`}   />
-
+<MemberInfo kind="property" type={`LocaleString`} />
 
 ### description
 
-<MemberInfo kind="property" type={`LocaleString`}   />
-
+<MemberInfo kind="property" type={`LocaleString`} />
 
 ### slug
 
-<MemberInfo kind="property" type={`LocaleString`}   />
-
+<MemberInfo kind="property" type={`LocaleString`} />
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;Translation&#60;<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`Array&#60;Translation&#60;<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>&#62;&#62;`} />
 
 ### featuredAsset
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>`} />
 
 ### assets
 
-<MemberInfo kind="property" type={`CollectionAsset[]`}   />
-
+<MemberInfo kind="property" type={`CollectionAsset[]`} />
 
 ### filters
 
-<MemberInfo kind="property" type={`ConfigurableOperation[]`}   />
-
+<MemberInfo kind="property" type={`ConfigurableOperation[]`} />
 
 ### inheritFilters
 
-<MemberInfo kind="property" type={`boolean`}  since="2.0.0"  />
-
+<MemberInfo kind="property" type={`boolean`} since="2.0.0" />
 
 ### productVariants
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[]`} />
 
 ### customFields
 
-<MemberInfo kind="property" type={`CustomCollectionFields`}   />
-
+<MemberInfo kind="property" type={`CustomCollectionFields`} />
 
 ### children
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>[]`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>[]`} />
 
 ### parent
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>`} />
 
 ### parentId
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/common/id#id'>ID</a>`} />
 
 ### channels
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`}   />
-
-
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>[]`} />
 
 </div>

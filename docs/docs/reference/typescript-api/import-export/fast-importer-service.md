@@ -1,13 +1,14 @@
 ---
-title: "FastImporterService"
+title: 'FastImporterService'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FastImporterService
 
@@ -34,38 +35,32 @@ class FastImporterService {
 
 ### initialize
 
-<MemberInfo kind="method" type={`(channel?: <a href='/reference/typescript-api/entities/channel#channel'>Channel</a>) => `}   />
+<MemberInfo kind="method" type={`(channel?: <a href='/reference/typescript-api/entities/channel#channel'>Channel</a>) => `} />
 
 This should be called prior to any of the import methods, as it establishes the
 default Channel as well as the context in which the new entities will be created.
 
 Passing a `channel` argument means that Products and ProductVariants will be assigned
 to that Channel.
+
 ### createProduct
 
-<MemberInfo kind="method" type={`(input: CreateProductInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`}   />
-
+<MemberInfo kind="method" type={`(input: CreateProductInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`} />
 
 ### createProductOptionGroup
 
-<MemberInfo kind="method" type={`(input: CreateProductOptionGroupInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`}   />
-
+<MemberInfo kind="method" type={`(input: CreateProductOptionGroupInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`} />
 
 ### createProductOption
 
-<MemberInfo kind="method" type={`(input: CreateProductOptionInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`}   />
-
+<MemberInfo kind="method" type={`(input: CreateProductOptionInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`} />
 
 ### addOptionGroupToProduct
 
-<MemberInfo kind="method" type={`(productId: <a href='/reference/typescript-api/common/id#id'>ID</a>, optionGroupId: <a href='/reference/typescript-api/common/id#id'>ID</a>) => `}   />
-
+<MemberInfo kind="method" type={`(productId: <a href='/reference/typescript-api/common/id#id'>ID</a>, optionGroupId: <a href='/reference/typescript-api/common/id#id'>ID</a>) => `} />
 
 ### createProductVariant
 
-<MemberInfo kind="method" type={`(input: CreateProductVariantInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(input: CreateProductVariantInput) => Promise&#60;<a href='/reference/typescript-api/common/id#id'>ID</a>&#62;`} />
 
 </div>

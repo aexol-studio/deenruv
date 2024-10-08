@@ -1,13 +1,14 @@
 ---
-title: "DataTableComponent"
+title: 'DataTableComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DataTableComponent
 
@@ -18,7 +19,7 @@ extend the <a href='/reference/admin-ui-api/list-detail-views/base-list-componen
 
 **Deprecated** This component is deprecated. Use the <a href='/reference/admin-ui-api/components/data-table2component#datatable2component'>DataTable2Component</a> instead.
 
-*Example*
+_Example_
 
 ```HTML
 <vdr-data-table
@@ -101,142 +102,113 @@ class DataTableComponent<T> implements AfterContentInit, OnChanges, OnInit, OnDe
     onRowClick(item: T, event: MouseEvent) => ;
 }
 ```
-* Implements: <code>AfterContentInit</code>, <code>OnChanges</code>, <code>OnInit</code>, <code>OnDestroy</code>
 
-
+-   Implements: <code>AfterContentInit</code>, <code>OnChanges</code>, <code>OnInit</code>, <code>OnDestroy</code>
 
 <div className="members-wrapper">
 
 ### items
 
-<MemberInfo kind="property" type={`T[]`}   />
-
+<MemberInfo kind="property" type={`T[]`} />
 
 ### itemsPerPage
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### currentPage
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### totalItems
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### emptyStateLabel
 
-<MemberInfo kind="property" type={`string`}   />
-
+<MemberInfo kind="property" type={`string`} />
 
 ### selectionManager
 
-<MemberInfo kind="property" type={`SelectionManager&#60;T&#62;`}   />
-
+<MemberInfo kind="property" type={`SelectionManager&#60;T&#62;`} />
 
 ### pageChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### itemsPerPageChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### allSelected
 
-<MemberInfo kind="property" type={`boolean`}   />
-
+<MemberInfo kind="property" type={`boolean`} />
 
 ### isRowSelectedFn
 
-<MemberInfo kind="property" type={`((item: T) =&#62; boolean) | undefined`}   />
-
+<MemberInfo kind="property" type={`((item: T) =&#62; boolean) | undefined`} />
 
 ### allSelectChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### rowSelectChange
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### columns
 
-<MemberInfo kind="property" type={`QueryList&#60;DataTableColumnComponent&#62;`}   />
-
+<MemberInfo kind="property" type={`QueryList&#60;DataTableColumnComponent&#62;`} />
 
 ### templateRefs
 
-<MemberInfo kind="property" type={`QueryList&#60;TemplateRef&#60;any&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`QueryList&#60;TemplateRef&#60;any&#62;&#62;`} />
 
 ### rowTemplate
 
-<MemberInfo kind="property" type={`TemplateRef&#60;any&#62;`}   />
-
+<MemberInfo kind="property" type={`TemplateRef&#60;any&#62;`} />
 
 ### currentStart
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### currentEnd
 
-<MemberInfo kind="property" type={`number`}   />
-
+<MemberInfo kind="property" type={`number`} />
 
 ### disableSelect
 
-<MemberInfo kind="property" type={``}   />
-
+<MemberInfo kind="property" type={``} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`(changeDetectorRef: ChangeDetectorRef) => DataTableComponent`}   />
-
+<MemberInfo kind="method" type={`(changeDetectorRef: ChangeDetectorRef) => DataTableComponent`} />
 
 ### ngOnInit
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### ngOnChanges
 
-<MemberInfo kind="method" type={`(changes: SimpleChanges) => `}   />
-
+<MemberInfo kind="method" type={`(changes: SimpleChanges) => `} />
 
 ### ngOnDestroy
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### ngAfterContentInit
 
-<MemberInfo kind="method" type={`() => void`}   />
-
+<MemberInfo kind="method" type={`() => void`} />
 
 ### trackByFn
 
-<MemberInfo kind="method" type={`(index: number, item: any) => `}   />
-
+<MemberInfo kind="method" type={`(index: number, item: any) => `} />
 
 ### onToggleAllClick
 
-<MemberInfo kind="method" type={`() => `}   />
-
+<MemberInfo kind="method" type={`() => `} />
 
 ### onRowClick
 
-<MemberInfo kind="method" type={`(item: T, event: MouseEvent) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(item: T, event: MouseEvent) => `} />
 
 </div>

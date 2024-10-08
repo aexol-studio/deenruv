@@ -1,5 +1,5 @@
 ---
-title: "Email & Notifications"
+title: 'Email & Notifications'
 ---
 
 A typical ecommerce application needs to notify customers of certain events, such as when they place an order or
@@ -7,7 +7,7 @@ when their order has been shipped. This is usually done via email, but can also 
 
 ## Email
 
-Email is the most common way to notify customers of events, so a default Vendure installation includes our [EmailPlugin](/reference/core-plugins/email-plugin).
+Email is the most common way to notify customers of events, so a default Deenruv installation includes our [EmailPlugin](/reference/core-plugins/email-plugin).
 
 The EmailPlugin by default uses [Nodemailer](https://nodemailer.com/about/) to send emails via a variety of
 different transports, including SMTP, SendGrid, Mailgun, and more.
@@ -24,7 +24,7 @@ Here's an illustration of the flow of an email being sent:
 ![Email plugin flow](./email-plugin-flow.webp)
 
 All emails are triggered by a particular [Event](/guides/developer-guide/events/) - in this case when the state of an
-Order changes. The EmailPlugin ships with a set of [default email handlers](https://github.com/vendure-ecommerce/vendure/blob/master/packages/email-plugin/src/default-email-handlers.ts),
+Order changes. The EmailPlugin ships with a set of [default email handlers](https://github.com/aexol-studio/deenruv/blob/master/packages/email-plugin/src/default-email-handlers.ts),
 one of which is responsible for sending "order confirmation" emails.
 
 ### EmailEventHandlers
@@ -41,11 +41,7 @@ export const orderConfirmationHandler = new EmailEventListener('order-confirmati
     .on(OrderStateTransitionEvent)
     // Only send the email when the Order is transitioning to the
     // "PaymentSettled" state and the Order has a customer associated with it.
-    .filter(
-        event =>
-            event.toState === 'PaymentSettled'
-            && !!event.order.customer,
-    )
+    .filter(event => event.toState === 'PaymentSettled' && !!event.order.customer)
     // We commonly need to load some additional data to be able to render the email
     // template. This is done via the `loadData()` method. In this method we are
     // mutating the Order object to ensure that product images are correctly
@@ -66,14 +62,14 @@ export const orderConfirmationHandler = new EmailEventListener('order-confirmati
     .setSubject('Order confirmation for #{{ order.code }}')
     // The object returned here defines the variables which are
     // available to the email template.
-    .setTemplateVars(event => ({ order: event.order, shippingLines: event.data.shippingLines }))
+    .setTemplateVars(event => ({ order: event.order, shippingLines: event.data.shippingLines }));
 ```
 
 To recap:
 
-- The handler listens for a specific event
-- It optionally filters those events to determine whether an email should be sent
-- It specifies the details of the email to be sent, including the recipient, subject, template variables, etc.
+-   The handler listens for a specific event
+-   It optionally filters those events to determine whether an email should be sent
+-   It specifies the details of the email to be sent, including the recipient, subject, template variables, etc.
 
 The full range of methods available when setting up an EmailEventHandler can be found in the [EmailEventHandler API docs](/reference/core-plugins/email-plugin/email-event-handler).
 
@@ -83,11 +79,11 @@ In the example above, we used the `setTemplateVars()` method to define the varia
 Additionally, there are global variables which are made available to _all_ email templates & EmailEventHandlers. These are
 defined in the `globalTemplateVars` property of the EmailPlugin config:
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { EmailPlugin } from '@deenruv/email-plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         EmailPlugin.init({
@@ -97,7 +93,7 @@ export const config: VendureConfig = {
                 fromAddress: '"MyShop" <noreply@myshop.com>',
                 verifyEmailAddressUrl: 'https://www.myshop.com/verify',
                 passwordResetUrl: 'https://www.myshop.com/password-reset',
-                changeEmailAddressUrl: 'https://www.myshop.com/verify-email-address-change'
+                changeEmailAddressUrl: 'https://www.myshop.com/verify-email-address-change',
             },
             // highlight-end
         }),
@@ -111,8 +107,8 @@ The EmailPlugin is designed to be flexible enough to work with many different em
 configuration uses Nodemailer to send emails via SMTP, but you can easily configure it to use a different
 transport. For instance:
 
-- [AWS SES](https://www.vendure.io/marketplace/aws-ses)
-- [SendGrid](https://www.vendure.io/marketplace/sendgrid)
+-   [AWS SES](https://www.deenruv.io/marketplace/aws-ses)
+-   [SendGrid](https://www.deenruv.io/marketplace/sendgrid)
 
 ## Other notification methods
 

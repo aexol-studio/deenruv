@@ -1,13 +1,14 @@
 ---
-title: "DefaultSearchPlugin"
+title: 'DefaultSearchPlugin'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## DefaultSearchPlugin
 
@@ -25,19 +26,19 @@ Note that the quality of the fulltext search capabilities varies depending on th
 the MySQL & Postgres implementations will typically yield better results than the SQLite implementation.
 :::
 
-*Example*
+_Example_
 
 ```ts
-import { DefaultSearchPlugin, VendureConfig } from '@deenruv/core';
+import { DefaultSearchPlugin, DeenruvConfig } from '@deenruv/core';
 
-export const config: VendureConfig = {
-  // Add an instance of the plugin to the plugins array
-  plugins: [
-    DefaultSearchPlugin.init({
-      indexStockStatus: true,
-      bufferUpdates: true,
-    }),
-  ],
+export const config: DeenruvConfig = {
+    // Add an instance of the plugin to the plugins array
+    plugins: [
+        DefaultSearchPlugin.init({
+            indexStockStatus: true,
+            bufferUpdates: true,
+        }),
+    ],
 };
 ```
 
@@ -47,22 +48,17 @@ class DefaultSearchPlugin implements OnApplicationBootstrap, OnApplicationShutdo
     init(options: DefaultSearchPluginInitOptions) => Type<DefaultSearchPlugin>;
 }
 ```
-* Implements: <code>OnApplicationBootstrap</code>, <code>OnApplicationShutdown</code>
 
-
+-   Implements: <code>OnApplicationBootstrap</code>, <code>OnApplicationShutdown</code>
 
 <div className="members-wrapper">
 
 ### options
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/default-search-plugin/default-search-plugin-init-options#defaultsearchplugininitoptions'>DefaultSearchPluginInitOptions</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/default-search-plugin/default-search-plugin-init-options#defaultsearchplugininitoptions'>DefaultSearchPluginInitOptions</a>`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/typescript-api/default-search-plugin/default-search-plugin-init-options#defaultsearchplugininitoptions'>DefaultSearchPluginInitOptions</a>) => Type&#60;<a href='/reference/typescript-api/default-search-plugin/#defaultsearchplugin'>DefaultSearchPlugin</a>&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(options: <a href='/reference/typescript-api/default-search-plugin/default-search-plugin-init-options#defaultsearchplugininitoptions'>DefaultSearchPluginInitOptions</a>) => Type&#60;<a href='/reference/typescript-api/default-search-plugin/#defaultsearchplugin'>DefaultSearchPlugin</a>&#62;`} />
 
 </div>

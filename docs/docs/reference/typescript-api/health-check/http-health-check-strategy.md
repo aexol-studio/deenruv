@@ -1,13 +1,14 @@
 ---
-title: "HttpHealthCheckStrategy"
+title: 'HttpHealthCheckStrategy'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## HttpHealthCheckStrategy
 
@@ -16,19 +17,19 @@ import MemberDescription from '@site/src/components/MemberDescription';
 A <a href='/reference/typescript-api/health-check/health-check-strategy#healthcheckstrategy'>HealthCheckStrategy</a> used to check health by pinging a url. Internally it uses
 the [NestJS HttpHealthIndicator](https://docs.nestjs.com/recipes/terminus#http-healthcheck).
 
-*Example*
+_Example_
 
 ```ts
 import { HttpHealthCheckStrategy, TypeORMHealthCheckStrategy } from '@deenruv/core';
 
 export const config = {
-  // ...
-  systemOptions: {
-    healthChecks: [
-      new TypeORMHealthCheckStrategy(),
-      new HttpHealthCheckStrategy({ key: 'my-service', url: 'https://my-service.com' }),
-    ]
-  },
+    // ...
+    systemOptions: {
+        healthChecks: [
+            new TypeORMHealthCheckStrategy(),
+            new HttpHealthCheckStrategy({ key: 'my-service', url: 'https://my-service.com' }),
+        ],
+    },
 };
 ```
 
@@ -39,27 +40,21 @@ class HttpHealthCheckStrategy implements HealthCheckStrategy {
     getHealthIndicator() => HealthIndicatorFunction;
 }
 ```
-* Implements: <code><a href='/reference/typescript-api/health-check/health-check-strategy#healthcheckstrategy'>HealthCheckStrategy</a></code>
 
-
+-   Implements: <code><a href='/reference/typescript-api/health-check/health-check-strategy#healthcheckstrategy'>HealthCheckStrategy</a></code>
 
 <div className="members-wrapper">
 
 ### constructor
 
-<MemberInfo kind="method" type={`(options: HttpHealthCheckOptions) => HttpHealthCheckStrategy`}   />
-
+<MemberInfo kind="method" type={`(options: HttpHealthCheckOptions) => HttpHealthCheckStrategy`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `}   />
-
+<MemberInfo kind="method" type={`(injector: <a href='/reference/typescript-api/common/injector#injector'>Injector</a>) => `} />
 
 ### getHealthIndicator
 
-<MemberInfo kind="method" type={`() => HealthIndicatorFunction`}   />
-
-
-
+<MemberInfo kind="method" type={`() => HealthIndicatorFunction`} />
 
 </div>

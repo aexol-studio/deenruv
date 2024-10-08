@@ -1,22 +1,21 @@
 ---
-title: "Deploying the Admin UI"
+title: 'Deploying the Admin UI'
 showtoc: true
 ---
-
 
 If you have customized the Admin UI with extensions, you should [compile your extensions ahead of time as part of the deployment process](/guides/extending-the-admin-ui/getting-started/#compiling-as-a-deployment-step).
 
 ## Setting the API host & port
 
 When running in development mode, the Admin UI app will "guess" the API host and port based on the current URL in the browser. Typically, this will
-be `http://localhost:3000`. For production deployments where the Admin UI app is served from a different host or port than the Vendure server, you'll need to
+be `http://localhost:3000`. For production deployments where the Admin UI app is served from a different host or port than the Deenruv server, you'll need to
 configure the Admin UI app to point to the correct API host and port.
 
-```ts title="src/vendure-config.ts"
-import { VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { DeenruvConfig } from '@deenruv/core';
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 
-const config: VendureConfig = {
+const config: DeenruvConfig = {
     // ...
     plugins: [
         AdminUiPlugin.init({
@@ -33,16 +32,16 @@ const config: VendureConfig = {
 
 ## Deploying a stand-alone Admin UI
 
-Usually, the Admin UI is served from the Vendure server via the AdminUiPlugin. However, you may wish to deploy the Admin UI app elsewhere. Since it is just a static Angular app, it can be deployed to any static hosting service such as Vercel or Netlify.
+Usually, the Admin UI is served from the Deenruv server via the AdminUiPlugin. However, you may wish to deploy the Admin UI app elsewhere. Since it is just a static Angular app, it can be deployed to any static hosting service such as Vercel or Netlify.
 
 #### Metrics
 
 The AdminUiPlugin not only serves the Admin UI app, but also provides a `metricSummary` query which is used to display the order metrics on the dashboard. If you wish to deploy the Admin UI app stand-alone (not served by the AdminUiPlugin), but still want to display the metrics on the dashboard, you'll need to include the AdminUiPlugin in your server's plugins array, but do not call `init()`:
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 
-const config: VendureConfig = {
+const config: DeenruvConfig = {
     plugins: [
         AdminUiPlugin, // <== include the plugin, but don't call init()
     ],
@@ -56,23 +55,23 @@ Here's an example script that can be run as part of your host's `build` command,
 
 This example is for Vercel, and assumes:
 
-* A `BASE_HREF` environment variable to be set to `/`
-* A public (output) directory set to `build/dist`
-* A build command set to `npm run build` or `yarn build`
-* A package.json like this:
+-   A `BASE_HREF` environment variable to be set to `/`
+-   A public (output) directory set to `build/dist`
+-   A build command set to `npm run build` or `yarn build`
+-   A package.json like this:
     ```json title="package.json"
     {
-      "name": "standalone-admin-ui",
-      "version": "0.1.0",
-      "private": true,
-      "scripts": {
-        "build": "ts-node compile.ts"
-      },
-      "devDependencies": {
-        "@deenruv/ui-devkit": "^1.4.5",
-        "ts-node": "^10.2.1",
-        "typescript": "~4.3.5"
-      }
+        "name": "standalone-admin-ui",
+        "version": "0.1.0",
+        "private": true,
+        "scripts": {
+            "build": "ts-node compile.ts"
+        },
+        "devDependencies": {
+            "@deenruv/ui-devkit": "^1.4.5",
+            "ts-node": "^10.2.1",
+            "typescript": "~4.3.5"
+        }
     }
     ```
 
@@ -95,12 +94,12 @@ compileUiExtensions({
 })
     .compile?.()
     .then(() => {
-        // If building for Vercel deployment, replace the config to make 
+        // If building for Vercel deployment, replace the config to make
         // api calls to api.example.com instead of localhost.
         if (process.env.VERCEL) {
-            console.log('Overwriting the vendure-ui-config.json for Vercel deployment.');
+            console.log('Overwriting the deenruv-ui-config.json for Vercel deployment.');
             return fs.writeFile(
-                path.join(__dirname, 'build', 'dist', 'vendure-ui-config.json'),
+                path.join(__dirname, 'build', 'dist', 'deenruv-ui-config.json'),
                 JSON.stringify({
                     apiHost: 'https://api.example.com',
                     apiPort: '443',

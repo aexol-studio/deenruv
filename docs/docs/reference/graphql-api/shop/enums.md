@@ -1,14 +1,14 @@
 ---
-title: "Enums"
+title: 'Enums'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
-
 
 ## AdjustmentType
 
@@ -825,7 +825,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <div class="graphql-code-line comment"></div>
 
-<div class="graphql-code-line comment">`Permission.Owner` is a special permission which is used in some Vendure resolvers to indicate that that resolver should only</div>
+<div class="graphql-code-line comment">`Permission.Owner` is a special permission which is used in some Deenruv resolvers to indicate that that resolver should only</div>
 
 <div class="graphql-code-line comment">be accessible to the "owner" of that resource.</div>
 

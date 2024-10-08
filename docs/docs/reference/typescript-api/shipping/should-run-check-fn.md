@@ -1,13 +1,14 @@
 ---
-title: "ShouldRunCheckFn"
+title: 'ShouldRunCheckFn'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## ShouldRunCheckFn
 
@@ -20,21 +21,21 @@ If the value is the same, then the `check()` function is not called.
 Use of this function is an optimization technique which can be useful when
 the `check()` function is expensive and should be kept to an absolute minimum.
 
-*Example*
+_Example_
 
 ```ts
 const optimizedChecker = new ShippingEligibilityChecker({
-  code: 'example',
-  description: [],
-  args: {},
-  check: async (ctx, order) => {
-    // some slow, expensive function here
-  },
-  shouldRunCheck: (ctx, order) => {
-    // Will only run the `check()` function any time
-    // the shippingAddress object has changed.
-    return order.shippingAddress;
-  },
+    code: 'example',
+    description: [],
+    args: {},
+    check: async (ctx, order) => {
+        // some slow, expensive function here
+    },
+    shouldRunCheck: (ctx, order) => {
+        // Will only run the `check()` function any time
+        // the shippingAddress object has changed.
+        return order.shippingAddress;
+    },
 });
 ```
 
@@ -44,5 +45,5 @@ type ShouldRunCheckFn<T extends ConfigArgs> = (
     order: Order,
     args: ConfigArgValues<T>,
     method: ShippingMethod,
-) => Json | Promise<Json>
+) => Json | Promise<Json>;
 ```

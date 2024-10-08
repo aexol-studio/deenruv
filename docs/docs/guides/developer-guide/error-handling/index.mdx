@@ -1,5 +1,5 @@
 ---
-title: "Error Handling"
+title: 'Error Handling'
 showtoc: true
 ---
 
@@ -7,16 +7,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Stackblitz from '@site/src/components/Stackblitz';
 
-Errors in Vendure can be divided into two categories:
+Errors in Deenruv can be divided into two categories:
 
-* Unexpected errors
-* Expected errors
+-   Unexpected errors
+-   Expected errors
 
 These two types have different meanings and are handled differently from one another.
 
 ## Unexpected Errors
 
-This type of error occurs when something goes unexpectedly wrong during the processing of a request. Examples include internal server errors, database connectivity issues, lacking permissions for a resource, etc. In short, these are errors that are *not supposed to happen*.
+This type of error occurs when something goes unexpectedly wrong during the processing of a request. Examples include internal server errors, database connectivity issues, lacking permissions for a resource, etc. In short, these are errors that are _not supposed to happen_.
 
 Internally, these situations are handled by throwing an Error:
 
@@ -33,28 +33,27 @@ In the GraphQL APIs, these errors are returned in the standard `errors` array:
 
 ```json
 {
-  "errors": [
-    {
-      "message": "You are not currently authorized to perform this action",
-      "locations": [
+    "errors": [
         {
-          "line": 2,
-          "column": 2
+            "message": "You are not currently authorized to perform this action",
+            "locations": [
+                {
+                    "line": 2,
+                    "column": 2
+                }
+            ],
+            "path": ["me"],
+            "extensions": {
+                "code": "FORBIDDEN"
+            }
         }
-      ],
-      "path": [
-        "me"
-      ],
-      "extensions": {
-        "code": "FORBIDDEN"
-      }
+    ],
+    "data": {
+        "me": null
     }
-  ],
-  "data": {
-    "me": null
-  }
 }
 ```
+
 So your client applications need a generic way of detecting and handling this kind of error. For example, many http client libraries support "response interceptors" which can be used to intercept all API responses and check the `errors` array.
 
 :::note
@@ -74,24 +73,24 @@ export function query(document: string, variables: Record<string, any> = {}) {
             variables,
         }),
     })
-        .then(async (res) => {
+        .then(async res => {
             if (!res.ok) {
                 const body = await res.json();
                 throw new Error(body);
             }
-            const newAuthToken = res.headers.get('vendure-auth-token');
+            const newAuthToken = res.headers.get('deenruv-auth-token');
             if (newAuthToken) {
                 localStorage.setItem(AUTH_TOKEN_KEY, newAuthToken);
             }
             return res.json();
         })
-        .catch((err) => {
+        .catch(err => {
             // This catches non-200 responses, such as malformed queries or
             // network errors. Handle this with your own error handling logic.
             // For this demo we just show an alert.
             window.alert(err.message);
         })
-        .then((result) => {
+        .then(result => {
             // highlight-start
             // We check for any GraphQL errors which would be in the
             // `errors` array of the response body:
@@ -106,7 +105,7 @@ export function query(document: string, variables: Record<string, any> = {}) {
                 //   user to a login page.
 
                 // In this example we just display an alert:
-                const errorMessage = result.errors.map((e) => e.message).join('\n');
+                const errorMessage = result.errors.map(e => e.message).join('\n');
                 window.alert(`Unexpected error caught:\n\n${errorMessage}`);
             }
             // highlight-end
@@ -117,14 +116,14 @@ export function query(document: string, variables: Record<string, any> = {}) {
 
 ## Expected errors (ErrorResults)
 
-This type of error represents a well-defined result of (typically) a GraphQL mutation which is not considered "successful". For example, when using the `applyCouponCode` mutation, the code may be invalid, or it may have expired. These are examples of "expected" errors and are named in Vendure "ErrorResults". These ErrorResults are encoded into the GraphQL schema itself.
+This type of error represents a well-defined result of (typically) a GraphQL mutation which is not considered "successful". For example, when using the `applyCouponCode` mutation, the code may be invalid, or it may have expired. These are examples of "expected" errors and are named in Deenruv "ErrorResults". These ErrorResults are encoded into the GraphQL schema itself.
 
 ErrorResults all implement the `ErrorResult` interface:
 
 ```graphql
 interface ErrorResult {
-  errorCode: ErrorCode!
-  message: String!
+    errorCode: ErrorCode!
+    message: String!
 }
 ```
 
@@ -133,11 +132,11 @@ Some ErrorResults add other relevant fields to the type:
 ```graphql
 "Returned if there is an error in transitioning the Order state"
 type OrderStateTransitionError implements ErrorResult {
-  errorCode: ErrorCode!
-  message: String!
-  transitionError: String!
-  fromState: String!
-  toState: String!
+    errorCode: ErrorCode!
+    message: String!
+    transitionError: String!
+    fromState: String!
+    toState: String!
 }
 ```
 
@@ -145,14 +144,11 @@ Operations that may return ErrorResults use a GraphQL `union` as their return ty
 
 ```graphql
 type Mutation {
-  "Applies the given coupon code to the active Order"
-  applyCouponCode(couponCode: String!): ApplyCouponCodeResult!
+    "Applies the given coupon code to the active Order"
+    applyCouponCode(couponCode: String!): ApplyCouponCodeResult!
 }
 
-union ApplyCouponCodeResult = Order
-  | CouponCodeExpiredError
-  | CouponCodeInvalidError
-  | CouponCodeLimitError
+union ApplyCouponCodeResult = Order | CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError
 ```
 
 ### Querying an ErrorResult union
@@ -161,26 +157,26 @@ When performing an operation of a query or mutation which returns a union, you w
 
 ```graphql
 mutation ApplyCoupon($code: String!) {
-  applyCouponCode(couponCode: $code) {
-    __typename
-    ...on Order {
-      id
-      couponCodes
-      totalWithTax
+    applyCouponCode(couponCode: $code) {
+        __typename
+        ... on Order {
+            id
+            couponCodes
+            totalWithTax
+        }
+        # querying the ErrorResult fields
+        # "catches" all possible errors
+        ... on ErrorResult {
+            errorCode
+            message
+        }
+        # you can also specify particular fields
+        # if your client app needs that specific data
+        # as part of handling the error.
+        ... on CouponCodeLimitError {
+            limit
+        }
     }
-    # querying the ErrorResult fields
-    # "catches" all possible errors
-    ...on ErrorResult {
-      errorCode
-      message
-    }
-    # you can also specify particular fields
-    # if your client app needs that specific data
-    # as part of handling the error.
-    ...on CouponCodeLimitError {
-      limit
-    }
-  }
 }
 ```
 
@@ -198,15 +194,15 @@ Here's how a response would look in both the success and error result cases:
 
 ```json
 {
-  "data": {
-    "applyCouponCode": {
-      // highlight-next-line
-      "__typename": "Order",
-      "id": "123",
-      "couponCodes": ["VALID-CODE"],
-      "totalWithTax": 12599,
+    "data": {
+        "applyCouponCode": {
+            // highlight-next-line
+            "__typename": "Order",
+            "id": "123",
+            "couponCodes": ["VALID-CODE"],
+            "totalWithTax": 12599
+        }
     }
-  }
 }
 ```
 
@@ -215,16 +211,16 @@ Here's how a response would look in both the success and error result cases:
 
 ```json
 {
-  "data": {
-    "applyCouponCode": {
-      // highlight-next-line
-      "__typename": "CouponCodeLimitError",
-      "errorCode": "COUPON_CODE_LIMIT_ERROR",
-      "message": "Coupon code cannot be used more than once per customer",
-      // highlight-next-line
-      "limit": 1
+    "data": {
+        "applyCouponCode": {
+            // highlight-next-line
+            "__typename": "CouponCodeLimitError",
+            "errorCode": "COUPON_CODE_LIMIT_ERROR",
+            "message": "Coupon code cannot be used more than once per customer",
+            // highlight-next-line
+            "limit": 1
+        }
     }
-  }
 }
 ```
 
@@ -233,16 +229,15 @@ Here's how a response would look in both the success and error result cases:
 
 ### Handling ErrorResults in plugin code
 
-If you are writing a plugin which deals with internal Vendure service methods that may return ErrorResults,
+If you are writing a plugin which deals with internal Deenruv service methods that may return ErrorResults,
 then you can use the `isGraphQlErrorResult()` function to check whether the result is an ErrorResult:
 
 ```ts
-import { Injectable} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { isGraphQlErrorResult, Order, OrderService, OrderState, RequestContext } from '@deenruv/core';
 
 @Injectable()
 export class MyService {
-
     constructor(private orderService: OrderService) {}
 
     async myMethod(ctx: RequestContext, order: Order, newState: OrderState) {
@@ -281,7 +276,7 @@ switch (result.applyCouponCode.__typename) {
         // handle limit error
         break;
     default:
-        // any other ErrorResult can be handled with a generic error message
+    // any other ErrorResult can be handled with a generic error message
 }
 ```
 
@@ -313,7 +308,7 @@ switch (result.applyCouponCode.__typename) {
         // ErrorResults which we have not handled in the switch cases
         // above.
         const _exhaustiveCheck: never = result.applyCouponCode;
-        // highlight-end
+    // highlight-end
 }
 ```
 
@@ -321,4 +316,4 @@ switch (result.applyCouponCode.__typename) {
 
 Here is a live example which the handling of unexpected errors as well as ErrorResults:
 
-<Stackblitz id='vendure-docs-error-handling' />
+<Stackblitz id="deenruv-docs-error-handling" />

@@ -1,20 +1,21 @@
 ---
-title: "SentryPlugin"
+title: 'SentryPlugin'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## SentryPlugin
 
 <GenerationInfo sourceFile="packages/sentry-plugin/src/sentry-plugin.ts" sourceLine="108" packageName="@deenruv/sentry-plugin" />
 
 This plugin integrates the [Sentry](https://sentry.io) error tracking & performance monitoring
-service with your Vendure server. In addition to capturing errors, it also provides built-in
+service with your Deenruv server. In addition to capturing errors, it also provides built-in
 support for [tracing](https://docs.sentry.io/product/sentry-basics/concepts/tracing/) as well as
 enriching your Sentry events with additional context about the request.
 
@@ -41,10 +42,10 @@ npm install --save @deenruv/sentry-plugin @sentry/node
 Before using the plugin, you must configure it with the DSN provided by Sentry:
 
 ```ts
-import { VendureConfig } from '@deenruv/core';
+import { DeenruvConfig } from '@deenruv/core';
 import { SentryPlugin } from '@deenruv/sentry-plugin';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     plugins: [
         // ...
@@ -105,27 +106,21 @@ class SentryPlugin implements NestModule {
     init(options: SentryPluginOptions) => ;
 }
 ```
-* Implements: <code>NestModule</code>
 
-
+-   Implements: <code>NestModule</code>
 
 <div className="members-wrapper">
 
 ### options
 
-<MemberInfo kind="property" type={`<a href='/reference/core-plugins/sentry-plugin/sentry-plugin-options#sentrypluginoptions'>SentryPluginOptions</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/core-plugins/sentry-plugin/sentry-plugin-options#sentrypluginoptions'>SentryPluginOptions</a>`} />
 
 ### configure
 
-<MemberInfo kind="method" type={`(consumer: MiddlewareConsumer) => any`}   />
-
+<MemberInfo kind="method" type={`(consumer: MiddlewareConsumer) => any`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/sentry-plugin/sentry-plugin-options#sentrypluginoptions'>SentryPluginOptions</a>) => `}   />
-
-
-
+<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/sentry-plugin/sentry-plugin-options#sentrypluginoptions'>SentryPluginOptions</a>) => `} />
 
 </div>

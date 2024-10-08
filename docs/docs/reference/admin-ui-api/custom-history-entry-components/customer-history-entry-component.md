@@ -1,13 +1,14 @@
 ---
-title: "CustomerHistoryEntryComponent"
+title: 'CustomerHistoryEntryComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## CustomerHistoryEntryComponent
 
@@ -20,17 +21,13 @@ interface CustomerHistoryEntryComponent extends HistoryEntryComponent {
     customer: CustomerFragment;
 }
 ```
-* Extends: <code><a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a></code>
 
-
+-   Extends: <code><a href='/reference/admin-ui-api/custom-history-entry-components/history-entry-component#historyentrycomponent'>HistoryEntryComponent</a></code>
 
 <div className="members-wrapper">
 
 ### customer
 
-<MemberInfo kind="property" type={`CustomerFragment`}   />
-
-
-
+<MemberInfo kind="property" type={`CustomerFragment`} />
 
 </div>

@@ -1,12 +1,12 @@
 ---
-title: "Migrating from v1"
+title: 'Migrating from v1'
 weight: 2
 sidebar_position: 1
 ---
 
-# Migrating from Vendure 1 to 2
+# Migrating from Deenruv 1 to 2
 
-This section contains guides for migrating from Vendure v1 to v2.
+This section contains guides for migrating from Deenruv v1 to v2.
 
 There are a number of breaking changes between the two versions, which are due to a few major factors:
 
@@ -18,24 +18,24 @@ There are a number of breaking changes between the two versions, which are due t
 
 Migration will consist of these main steps:
 
-1. **Update your Vendure dependencies** to the latest versions
-   ```diff
-   {
-     // ...
-     "dependencies": {
-   -    "@deenruv/common": "1.9.7",
-   -    "@deenruv/core": "1.9.7",
-   +    "@deenruv/common": "2.0.0",
-   +    "@deenruv/core": "2.0.0",
-        // etc.
-     },
-     "devDependencies": {
-   -    "typescript": "4.3.5",
-   +    "typescript": "4.9.5",
-        // etc.
-     }
-   }
-   ```
+1. **Update your Deenruv dependencies** to the latest versions
+    ```diff
+    {
+      // ...
+      "dependencies": {
+    -    "@deenruv/common": "1.9.7",
+    -    "@deenruv/core": "1.9.7",
+    +    "@deenruv/common": "2.0.0",
+    +    "@deenruv/core": "2.0.0",
+         // etc.
+      },
+      "devDependencies": {
+    -    "typescript": "4.3.5",
+    +    "typescript": "4.9.5",
+         // etc.
+      }
+    }
+    ```
 2. **Migrate your database**. This is covered in detail in the [database migration section](/guides/developer-guide/migrating-from-v1/database-migration).
 3. **Update your custom code** (configuration, plugins, admin ui extensions) to handle the breaking changes. Details of these changes are covered in the [breaking API changes section](/guides/developer-guide/migrating-from-v1/breaking-api-changes).
 4. **Update your storefront** to handle some small breaking changes in the Shop GraphQL API. See the [storefront migration section](/guides/developer-guide/migrating-from-v1/storefront-migration) for details.

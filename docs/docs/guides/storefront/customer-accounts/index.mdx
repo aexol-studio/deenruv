@@ -1,5 +1,5 @@
 ---
-title: "Customer Accounts"
+title: 'Customer Accounts'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -7,29 +7,28 @@ import TabItem from '@theme/TabItem';
 
 Customers can register accounts and thereby gain the ability to:
 
-- View past orders
-- Store multiple addresses
-- Maintain an active order across devices
-- Take advantage of plugins that expose functionality to registered customers only, such as wishlists & loyalty points.
+-   View past orders
+-   Store multiple addresses
+-   Maintain an active order across devices
+-   Take advantage of plugins that expose functionality to registered customers only, such as wishlists & loyalty points.
 
 ## Querying the active customer
 
 The [`activeCustomer` query](/reference/graphql-api/shop/queries/#activecustomer) will return a [`Customer`](/reference/graphql-api/shop/object-types#customer) object if the customer is registered and logged in, otherwise it will return `null`. This can be used in the storefront header for example to
 determine whether to display a "sign in" or "my account" link.
 
-
 <Tabs>
 <TabItem value="Query" label="Query" default>
 
 ```graphql
 query GetCustomerAddresses {
-  activeCustomer {
-    id
-    title
-    firstName
-    lastName
-    emailAddress
-  }
+    activeCustomer {
+        id
+        title
+        firstName
+        lastName
+        emailAddress
+    }
 }
 ```
 
@@ -38,15 +37,15 @@ query GetCustomerAddresses {
 
 ```json
 {
-  "data": {
-    "activeCustomer": {
-      "id": "12345",
-      "title": "Mr.",
-      "firstName": "John",
-      "lastName": "Doe",
-      "emailAddress": "john.doe@email.com"
+    "data": {
+        "activeCustomer": {
+            "id": "12345",
+            "title": "Mr.",
+            "firstName": "John",
+            "lastName": "Doe",
+            "emailAddress": "john.doe@email.com"
+        }
     }
-  }
 }
 ```
 
@@ -58,23 +57,21 @@ query GetCustomerAddresses {
 The [`login` mutation](/reference/graphql-api/shop/mutations#login) is used to attempt to log in using email address and password.
 Given correct credentials, a new authenticated session will begin for that customer.
 
-
-
 <Tabs>
 <TabItem value="Query" label="Query" default>
 
 ```graphql
 mutation LogIn($emailAddress: String!, $password: String!, $rememberMe: Boolean!) {
-  login(username: $emailAddress, password: $password, rememberMe: $rememberMe) {
-    ... on  CurrentUser {
-      id
-      identifier
+    login(username: $emailAddress, password: $password, rememberMe: $rememberMe) {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ... on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -83,9 +80,9 @@ mutation LogIn($emailAddress: String!, $password: String!, $rememberMe: Boolean!
 
 ```json
 {
-  "emailAddress": "john.doe@email.com",
-  "password": "**********",
-  "rememberMe": true,
+    "emailAddress": "john.doe@email.com",
+    "password": "**********",
+    "rememberMe": true
 }
 ```
 
@@ -94,12 +91,12 @@ mutation LogIn($emailAddress: String!, $password: String!, $rememberMe: Boolean!
 
 ```json
 {
-  "data": {
-    "login": {
-      "id": "12345",
-      "identifier": "john.doe@email.com"
+    "data": {
+        "login": {
+            "id": "12345",
+            "identifier": "john.doe@email.com"
+        }
     }
-  }
 }
 ```
 
@@ -108,15 +105,14 @@ mutation LogIn($emailAddress: String!, $password: String!, $rememberMe: Boolean!
 
 The [`logout` mutation](/reference/graphql-api/shop/mutations#logout) will end an authenticated customer session.
 
-
 <Tabs>
 <TabItem value="Query" label="Query" default>
 
 ```graphql
 mutation LogOut {
-  logout {
-    success
-  }
+    logout {
+        success
+    }
 }
 ```
 
@@ -125,11 +121,11 @@ mutation LogOut {
 
 ```json
 {
-  "data": {
-    "logout": {
-      "success": true,
+    "data": {
+        "logout": {
+            "success": true
+        }
     }
-  }
 }
 ```
 
@@ -151,11 +147,11 @@ There are three possible registration flows:
 If [`authOptions.requireVerification`](/reference/typescript-api/auth/auth-options/#requireverification) is set to `true` (the default):
 
 1. **The Customer is registered _with_ a password**. A verificationToken will be created (and typically emailed to the Customer). That
-verificationToken would then be passed to the verifyCustomerAccount mutation _without_ a password. The Customer is then
-verified and authenticated in one step.
+   verificationToken would then be passed to the verifyCustomerAccount mutation _without_ a password. The Customer is then
+   verified and authenticated in one step.
 2. **The Customer is registered _without_ a password**. A verificationToken will be created (and typically emailed to the Customer). That
-verificationToken would then be passed to the verifyCustomerAccount mutation _with_ the chosen password of the Customer. The Customer is then
-verified and authenticated in one step.
+   verificationToken would then be passed to the verifyCustomerAccount mutation _with_ the chosen password of the Customer. The Customer is then
+   verified and authenticated in one step.
 
 If `authOptions.requireVerification` is set to `false`:
 
@@ -167,21 +163,20 @@ Here's a diagram of the second scenario, where the password is supplied during t
 
 Here's how the mutations would look for the above flow:
 
-
 <Tabs>
 <TabItem value="Mutation" label="Mutation" default>
 
 ```graphql
 mutation Register($input: RegisterCustomerInput!) {
-  registerCustomerAccount(input: $input) {
-    ... on Success {
-      success
+    registerCustomerAccount(input: $input) {
+        ... on Success {
+            success
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ...on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -205,11 +200,11 @@ mutation Register($input: RegisterCustomerInput!) {
 
 ```json
 {
-  "data": {
-    "registerCustomerAccount": {
-      "success": true,
+    "data": {
+        "registerCustomerAccount": {
+            "success": true
+        }
     }
-  }
 }
 ```
 
@@ -221,20 +216,20 @@ If a password _does_ get passed at this step, then it won't be needed at the ver
 you can make based on the desired user experience of your storefront.
 
 Upon registration, the [EmailPlugin](/reference/core-plugins/email-plugin/) will generate an email to the
-customer containing a link to the verification page. In a default Vendure installation this is set in the vendure config file:
+customer containing a link to the verification page. In a default Deenruv installation this is set in the deenruv config file:
 
-```ts title="src/vendure-config.ts"
+```ts title="src/deenruv-config.ts"
 EmailPlugin.init({
     route: 'mailbox',
     handlers: defaultEmailHandlers,
     templatePath: path.join(__dirname, '../static/email/templates'),
     outputPath: path.join(__dirname, '../static/email/output'),
     globalTemplateVars: {
-        fromAddress: '"Vendure Demo Store" <noreply@deenruv.io>',
+        fromAddress: '"Deenruv Demo Store" <noreply@deenruv.io>',
         // highlight-next-line
-        verifyEmailAddressUrl: 'https://demo.vendure.io/storefront/account/verify',
-        passwordResetUrl: 'https://demo.vendure.io/storefront/account/reset-password',
-        changeEmailAddressUrl: 'https://demo.vendure.io/storefront/account/change-email-address'
+        verifyEmailAddressUrl: 'https://demo.deenruv.io/storefront/account/verify',
+        passwordResetUrl: 'https://demo.deenruv.io/storefront/account/reset-password',
+        changeEmailAddressUrl: 'https://demo.deenruv.io/storefront/account/change-email-address'
     },
     devMode: true,
 }),
@@ -242,22 +237,21 @@ EmailPlugin.init({
 
 The verification page needs to get the token from the query string, and pass it to the [`verifyCustomerAccount` mutation](/reference/graphql-api/shop/mutations/#verifycustomeraccount):
 
-
 <Tabs>
 <TabItem value="Mutation" label="Mutation" default>
 
 ```graphql
 mutation Verify($password: String!, $token: String!) {
-  verifyCustomerAccount(password: $password, token: $token) {
-    ...on CurrentUser {
-      id
-      identifier
+    verifyCustomerAccount(password: $password, token: $token) {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ...on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -266,8 +260,8 @@ mutation Verify($password: String!, $token: String!) {
 
 ```json
 {
-  "password": "*********",
-  "token": "MjAxOS0xMC0wMlQxNToxOTo1NC45NDVa_1DYEWYAB7S3S82JT"
+    "password": "*********",
+    "token": "MjAxOS0xMC0wMlQxNToxOTo1NC45NDVa_1DYEWYAB7S3S82JT"
 }
 ```
 
@@ -276,12 +270,12 @@ mutation Verify($password: String!, $token: String!) {
 
 ```json
 {
-  "data": {
-    "verifyCustomerAccount": {
-      "id": "123",
-      "identifier": "nicky@example.com"
+    "data": {
+        "verifyCustomerAccount": {
+            "id": "123",
+            "identifier": "nicky@example.com"
+        }
     }
-  }
 }
 ```
 
@@ -301,15 +295,15 @@ A password reset is triggered by the [`requestPasswordReset` mutation](/referenc
 
 ```graphql
 mutation RequestPasswordReset($emailAddress: String!) {
-  requestPasswordReset(emailAddress: $emailAddress) {
-    ... on Success {
-      success
+    requestPasswordReset(emailAddress: $emailAddress) {
+        ... on Success {
+            success
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ... on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -318,7 +312,7 @@ mutation RequestPasswordReset($emailAddress: String!) {
 
 ```json
 {
-  "emailAddress": "nicky@example.com",
+    "emailAddress": "nicky@example.com"
 }
 ```
 
@@ -327,11 +321,11 @@ mutation RequestPasswordReset($emailAddress: String!) {
 
 ```json
 {
-  "data": {
-    "requestPasswordReset": {
-      "success": true,
+    "data": {
+        "requestPasswordReset": {
+            "success": true
+        }
     }
-  }
 }
 ```
 
@@ -342,22 +336,21 @@ Again, this mutation will trigger an event which the EmailPlugin's default email
 an email to the customer. The password reset page then needs to get the token from the url and pass it to the
 [`resetPassword` mutation](/reference/graphql-api/shop/mutations/#resetpassword):
 
-
 <Tabs>
 <TabItem value="Mutation" label="Mutation" default>
 
 ```graphql
-mutation ResetPassword($token: String! $password: String!) {
-  resetPassword(token: $token password: $password) {
-    ...on CurrentUser {
-      id
-      identifier
+mutation ResetPassword($token: String!, $password: String!) {
+    resetPassword(token: $token, password: $password) {
+        ... on CurrentUser {
+            id
+            identifier
+        }
+        ... on ErrorResult {
+            errorCode
+            message
+        }
     }
-    ... on ErrorResult {
-      errorCode
-      message
-    }
-  }
 }
 ```
 
@@ -366,8 +359,8 @@ mutation ResetPassword($token: String! $password: String!) {
 
 ```json
 {
-  "token": "MjAxOS0xMC0wMlQxNToxOTo1NC45NDVa_1DYEWYAB7S3S82JT",
-  "password": "************"
+    "token": "MjAxOS0xMC0wMlQxNToxOTo1NC45NDVa_1DYEWYAB7S3S82JT",
+    "password": "************"
 }
 ```
 
@@ -376,12 +369,12 @@ mutation ResetPassword($token: String! $password: String!) {
 
 ```json
 {
-  "data": {
-    "resetPassword": {
-      "id": "123",
-      "identifier": "nicky@example.com"
+    "data": {
+        "resetPassword": {
+            "id": "123",
+            "identifier": "nicky@example.com"
+        }
     }
-  }
 }
 ```
 

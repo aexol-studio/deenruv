@@ -1,13 +1,14 @@
 ---
-title: "TypedBaseDetailComponent"
+title: 'TypedBaseDetailComponent'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## TypedBaseDetailComponent
 
@@ -24,32 +25,25 @@ class TypedBaseDetailComponent<T extends TypedDocumentNode<any, any>, Field exte
     init() => ;
 }
 ```
-* Extends: <code><a href='/reference/admin-ui-api/list-detail-views/base-detail-component#basedetailcomponent'>BaseDetailComponent</a>&#60;NonNullable&#60;ResultOf&#60;T&#62;[Field]&#62;&#62;</code>
 
-
+-   Extends: <code><a href='/reference/admin-ui-api/list-detail-views/base-detail-component#basedetailcomponent'>BaseDetailComponent</a>&#60;NonNullable&#60;ResultOf&#60;T&#62;[Field]&#62;&#62;</code>
 
 <div className="members-wrapper">
 
 ### result$
 
-<MemberInfo kind="property" type={`Observable&#60;ResultOf&#60;T&#62;&#62;`}   />
-
+<MemberInfo kind="property" type={`Observable&#60;ResultOf&#60;T&#62;&#62;`} />
 
 ### entity
 
-<MemberInfo kind="property" type={`ResultOf&#60;T&#62;[Field]`}   />
-
+<MemberInfo kind="property" type={`ResultOf&#60;T&#62;[Field]`} />
 
 ### constructor
 
-<MemberInfo kind="method" type={`() => TypedBaseDetailComponent`}   />
-
+<MemberInfo kind="method" type={`() => TypedBaseDetailComponent`} />
 
 ### init
 
-<MemberInfo kind="method" type={`() => `}   />
-
-
-
+<MemberInfo kind="method" type={`() => `} />
 
 </div>

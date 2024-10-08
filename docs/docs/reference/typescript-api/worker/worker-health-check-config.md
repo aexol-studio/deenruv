@@ -1,13 +1,14 @@
 ---
-title: "WorkerHealthCheckConfig"
+title: 'WorkerHealthCheckConfig'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## WorkerHealthCheckConfig
 
@@ -27,19 +28,20 @@ interface WorkerHealthCheckConfig {
 
 ### port
 
-<MemberInfo kind="property" type={`number`}   />
+<MemberInfo kind="property" type={`number`} />
 
 The port on which the worker will listen
+
 ### hostname
 
-<MemberInfo kind="property" type={`string`} default={`'localhost'`}   />
+<MemberInfo kind="property" type={`string`} default={`'localhost'`} />
 
 The hostname
+
 ### route
 
-<MemberInfo kind="property" type={`string`} default={`'/health'`}   />
+<MemberInfo kind="property" type={`string`} default={`'/health'`} />
 
 The route at which the health check is available.
-
 
 </div>

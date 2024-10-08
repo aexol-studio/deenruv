@@ -1,13 +1,14 @@
 ---
-title: "FileSizePipe"
+title: 'FileSizePipe'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## FileSizePipe
 
@@ -15,10 +16,14 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 Formats a number into a human-readable file size string.
 
-*Example*
+_Example_
 
 ```ts
-{{ fileSizeInBytes | filesize }}
+{
+    {
+        fileSizeInBytes | filesize;
+    }
+}
 ```
 
 ```ts title="Signature"
@@ -26,17 +31,13 @@ class FileSizePipe implements PipeTransform {
     transform(value: number, useSiUnits:  = true) => any;
 }
 ```
-* Implements: <code>PipeTransform</code>
 
-
+-   Implements: <code>PipeTransform</code>
 
 <div className="members-wrapper">
 
 ### transform
 
-<MemberInfo kind="method" type={`(value: number, useSiUnits:  = true) => any`}   />
-
-
-
+<MemberInfo kind="method" type={`(value: number, useSiUnits:  = true) => any`} />
 
 </div>

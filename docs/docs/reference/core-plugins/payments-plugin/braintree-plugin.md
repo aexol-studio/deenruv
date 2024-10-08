@@ -1,13 +1,14 @@
 ---
-title: "BraintreePlugin"
+title: 'BraintreePlugin'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## BraintreePlugin
 
@@ -31,7 +32,8 @@ This plugin enables payments to be processed by [Braintree](https://www.braintre
 
 ## Setup
 
-1. Add the plugin to your VendureConfig `plugins` array:
+1. Add the plugin to your DeenruvConfig `plugins` array:
+
     ```ts
     import { BraintreePlugin } from '@deenruv/payments-plugin/package/braintree';
     import { Environment } from 'braintree';
@@ -39,17 +41,18 @@ This plugin enables payments to be processed by [Braintree](https://www.braintre
     // ...
 
     plugins: [
-      BraintreePlugin.init({
-        environment: Environment.Sandbox,
-        // This allows saving customer payment
-        // methods with Braintree (see "vaulting"
-        // section below for details)
-        storeCustomersInBraintree: true,
-      }),
-    ]
+        BraintreePlugin.init({
+            environment: Environment.Sandbox,
+            // This allows saving customer payment
+            // methods with Braintree (see "vaulting"
+            // section below for details)
+            storeCustomersInBraintree: true,
+        }),
+    ];
     ```
+
 2. Create a new PaymentMethod in the Admin UI, and select "Braintree payments" as the handler.
-2. Fill in the `Merchant ID`, `Public Key` & `Private Key` from your Braintree sandbox account.
+3. Fill in the `Merchant ID`, `Public Key` & `Private Key` from your Braintree sandbox account.
 
 ## Storefront usage
 
@@ -64,6 +67,7 @@ npm install braintree-web-drop-in
 ```
 
 The high-level workflow is:
+
 1. Generate a "client token" on the server by executing the `generateBraintreeClientToken` mutation which is exposed by this plugin.
 2. Use this client token to instantiate the Braintree Dropin UI.
 3. Listen for the `"paymentMethodRequestable"` event which emitted by the Dropin.
@@ -251,18 +255,13 @@ class BraintreePlugin {
 
 ### options
 
-<MemberInfo kind="property" type={`<a href='/reference/core-plugins/payments-plugin/braintree-plugin#braintreepluginoptions'>BraintreePluginOptions</a>`}   />
-
+<MemberInfo kind="property" type={`<a href='/reference/core-plugins/payments-plugin/braintree-plugin#braintreepluginoptions'>BraintreePluginOptions</a>`} />
 
 ### init
 
-<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/payments-plugin/braintree-plugin#braintreepluginoptions'>BraintreePluginOptions</a>) => Type&#60;<a href='/reference/core-plugins/payments-plugin/braintree-plugin#braintreeplugin'>BraintreePlugin</a>&#62;`}   />
-
-
-
+<MemberInfo kind="method" type={`(options: <a href='/reference/core-plugins/payments-plugin/braintree-plugin#braintreepluginoptions'>BraintreePluginOptions</a>) => Type&#60;<a href='/reference/core-plugins/payments-plugin/braintree-plugin#braintreeplugin'>BraintreePlugin</a>&#62;`} />
 
 </div>
-
 
 ## BraintreePluginOptions
 
@@ -282,12 +281,13 @@ interface BraintreePluginOptions {
 
 ### environment
 
-<MemberInfo kind="property" type={`Environment`} default={`Environment.Sandbox`}   />
+<MemberInfo kind="property" type={`Environment`} default={`Environment.Sandbox`} />
 
 The Braintree environment being targeted, e.g. sandbox or production.
+
 ### storeCustomersInBraintree
 
-<MemberInfo kind="property" type={`boolean`} default={`false`}   />
+<MemberInfo kind="property" type={`boolean`} default={`false`} />
 
 If set to `true`, a [Customer](https://developer.paypal.com/braintree/docs/guides/customers) object
 will be created in Braintree, which allows the secure storage ("vaulting") of previously-used payment methods.
@@ -296,9 +296,10 @@ so switching this on will require a database migration / synchronization.
 
 Since v1.8, it is possible to override vaulting on a per-payment basis by passing `includeCustomerId: false` to the
 `generateBraintreeClientToken` mutation.
+
 ### extractMetadata
 
-<MemberInfo kind="property" type={`(transaction: <a href='/reference/typescript-api/request/transaction-decorator#transaction'>Transaction</a>) =&#62; PaymentMetadata`}  since="1.7.0"  />
+<MemberInfo kind="property" type={`(transaction: <a href='/reference/typescript-api/request/transaction-decorator#transaction'>Transaction</a>) =&#62; PaymentMetadata`} since="1.7.0" />
 
 Allows you to configure exactly what information from the Braintree
 [Transaction object](https://developer.paypal.com/braintree/docs/reference/response/transaction#result-object) (which is returned by the
@@ -306,7 +307,7 @@ Allows you to configure exactly what information from the Braintree
 
 By default, the built-in extraction function will return a metadata object that looks like this:
 
-*Example*
+_Example_
 
 ```ts
 const metadata = {
@@ -349,6 +350,5 @@ const metadata = {
   }
 }
 ```
-
 
 </div>

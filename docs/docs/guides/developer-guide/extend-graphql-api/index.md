@@ -1,5 +1,5 @@
 ---
-title: "Extend the GraphQL API"
+title: 'Extend the GraphQL API'
 showtoc: true
 ---
 
@@ -16,31 +16,30 @@ import gql from 'graphql-tag';
 import { TopSellersResolver } from './api/top-products.resolver';
 
 const schemaExtension = gql`
-  extend type Query {
-    topProducts: [Product!]!
-  }
-`
+    extend type Query {
+        topProducts: [Product!]!
+    }
+`;
 
 @DeenruvPlugin({
     imports: [PluginCommonModule],
     // highlight-start
     // We pass our schema extension and any related resolvers
-    // to our plugin metadata  
+    // to our plugin metadata
     shopApiExtensions: {
         schema: schemaExtension,
         resolvers: [TopProductsResolver],
     },
     // Likewise, if you want to extend the Admin API,
     // you would use `adminApiExtensions` in exactly the
-    // same way.  
+    // same way.
     // adminApiExtensions: {
     //     schema: someSchemaExtension
     //     resolvers: [SomeResolver],
     // },
     // highlight-end
 })
-export class TopProductsPlugin {
-}
+export class TopProductsPlugin {}
 ```
 
 There are a number of ways the GraphQL APIs can be modified by a plugin.
@@ -62,7 +61,7 @@ export const shopApiExtensions = gql`
 `;
 ```
 
-This defines a new query called `activeBanner` which takes a `locationId` string argument and returns a string. 
+This defines a new query called `activeBanner` which takes a `locationId` string argument and returns a string.
 
 :::tip
 `!` = non-nullable
@@ -83,7 +82,7 @@ class BannerShopResolver {
 
     // highlight-start
     @Query()
-    activeBanner(@Ctx() ctx: RequestContext, @Args() args: { locationId: string; }) {
+    activeBanner(@Ctx() ctx: RequestContext, @Args() args: { locationId: string }) {
         return this.bannerService.getBanner(ctx, args.locationId);
     }
     // highlight-end
@@ -147,7 +146,7 @@ class BannerAdminResolver {
     @Allow(Permission.UpdateSettings)
     @Transaction()
     @Mutation()
-    setBannerText(@Ctx() ctx: RequestContext, @Args() args: { locationId: string; text: string; }) {
+    setBannerText(@Ctx() ctx: RequestContext, @Args() args: { locationId: string; text: string }) {
         return this.bannerService.setBannerText(ctx, args.locationId, args.text);
     }
     // highlight-end
@@ -186,7 +185,6 @@ import { shopApiExtensions, adminApiExtensions } from './api/api-extensions';
 export class BannerPlugin {}
 ```
 
-
 ## Defining a new type
 
 If you have defined a new database entity, it is likely that you'll want to expose this entity in your GraphQL API. To do so, you'll need to define a corresponding GraphQL type.
@@ -208,7 +206,7 @@ class ProductReview extends VendureEntity {
 
     @ManyToOne(type => Product)
     product: Product;
-    
+
     @EntityId()
     productId: ID;
 
@@ -219,6 +217,7 @@ class ProductReview extends VendureEntity {
     rating: number;
 }
 ```
+
 Let's define a new GraphQL type which corresponds to this entity:
 
 ```ts title="src/plugins/reviews/api/api-extensions.ts"
@@ -267,7 +266,7 @@ export class ReviewsPlugin {}
 
 ## Add fields to existing types
 
-Let's say you want to add a new field to the `ProductVariant` type to allow the storefront to display some indication of how long a particular product variant would take to deliver, based on data from some external service. 
+Let's say you want to add a new field to the `ProductVariant` type to allow the storefront to display some indication of how long a particular product variant would take to deliver, based on data from some external service.
 
 First we extend the `ProductVariant` GraphQL type:
 
@@ -301,7 +300,7 @@ import { DeliveryEstimateService } from '../services/delivery-estimate.service';
 // highlight-next-line
 @Resolver('ProductVariant')
 export class ProductVariantEntityResolver {
-    constructor(private deliveryEstimateService: DeliveryEstimateService) { }
+    constructor(private deliveryEstimateService: DeliveryEstimateService) {}
 
     // highlight-start
     @ResolveField()
@@ -325,24 +324,23 @@ import { shopApiExtensions } from './api/api-extensions';
     shopApiExtensions: {
         // highlight-start
         schema: shopApiExtensions,
-        resolvers: [ProductVariantEntityResolver]
+        resolvers: [ProductVariantEntityResolver],
         // highlight-end
-    }
+    },
 })
 export class DeliveryTimePlugin {}
 ```
 
 ## Override built-in resolvers
 
-It is also possible to override an existing built-in resolver function with one of your own. To do so, you need to define a resolver with the same name as the query or mutation you wish to override. When that query or mutation is then executed, your code, rather than the default Vendure resolver, will handle it.
+It is also possible to override an existing built-in resolver function with one of your own. To do so, you need to define a resolver with the same name as the query or mutation you wish to override. When that query or mutation is then executed, your code, rather than the default Deenruv resolver, will handle it.
 
 ```ts
 import { Args, Query, Mutation, Resolver } from '@nestjs/graphql';
-import { Ctx, RequestContext } from '@deenruv/core'
+import { Ctx, RequestContext } from '@deenruv/core';
 
 @Resolver()
 class OverrideExampleResolver {
-
     @Query()
     products(@Ctx() ctx: RequestContext, @Args() args: any) {
         // when the `products` query is executed, this resolver function will
@@ -355,7 +353,6 @@ class OverrideExampleResolver {
         // when the `addItemToOrder` mutation is executed, this resolver function will
         // now handle it.
     }
-
 }
 ```
 
@@ -367,7 +364,6 @@ import { Ctx, RequestContext, Product } from '@deenruv/core';
 
 @Resolver('Product')
 export class FieldOverrideExampleResolver {
-
     @ResolveField()
     description(@Ctx() ctx: RequestContext, @Parent() product: Product) {
         return this.wrapInFormatting(ctx, product.id);
@@ -384,28 +380,28 @@ export class FieldOverrideExampleResolver {
 
 When dealing with operations that return a GraphQL union type, there is an extra step needed.
 
-Union types are commonly returned from mutations in the Vendure APIs. For more detail on this see the section on [ErrorResults](/guides/developer-guide/error-handling#expected-errors-errorresults). For example: 
+Union types are commonly returned from mutations in the Deenruv APIs. For more detail on this see the section on [ErrorResults](/guides/developer-guide/error-handling#expected-errors-errorresults). For example:
 
 ```graphql
 type MyCustomErrorResult implements ErrorResult {
-  errorCode: ErrorCode!
-  message: String!
+    errorCode: ErrorCode!
+    message: String!
 }
 
 union MyCustomMutationResult = Order | MyCustomErrorResult
 
 extend type Mutation {
-  myCustomMutation(orderId: ID!): MyCustomMutationResult!
+    myCustomMutation(orderId: ID!): MyCustomMutationResult!
 }
 ```
 
-In this example, the resolver which handles the `myCustomMutation` operation will be returning either an `Order` object or a `MyCustomErrorResult` object. The problem here is that the GraphQL server has no way of knowing which one it is at run-time. Luckily Apollo Server (on which Vendure is built) has a means to solve this:
+In this example, the resolver which handles the `myCustomMutation` operation will be returning either an `Order` object or a `MyCustomErrorResult` object. The problem here is that the GraphQL server has no way of knowing which one it is at run-time. Luckily Apollo Server (on which Deenruv is built) has a means to solve this:
 
 > To fully resolve a union, Apollo Server needs to specify which of the union's types is being returned. To achieve this, you define a `__resolveType` function for the union in your resolver map.
-> 
+>
 > The `__resolveType` function is responsible for determining an object's corresponding GraphQL type and returning the name of that type as a string.
-> 
--- <cite>Source: [Apollo Server docs](https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/#resolving-a-union)</cite>
+>
+> -- <cite>Source: [Apollo Server docs](https://www.apollographql.com/docs/apollo-server/schema/unions-interfaces/#resolving-a-union)</cite>
 
 In order to implement a `__resolveType` function as part of your plugin, you need to create a dedicated Resolver class with a single field resolver method which will look like this:
 
@@ -415,12 +411,11 @@ import { Ctx, RequestContext, ProductVariant } from '@deenruv/core';
 
 @Resolver('MyCustomMutationResult')
 export class MyCustomMutationResultResolver {
-  
-  @ResolveField()
-  __resolveType(value: any): string {
-    // If it has an "id" property we can assume it is an Order.  
-    return value.hasOwnProperty('id') ? 'Order' : 'MyCustomErrorResult';
-  }
+    @ResolveField()
+    __resolveType(value: any): string {
+        // If it has an "id" property we can assume it is an Order.
+        return value.hasOwnProperty('id') ? 'Order' : 'MyCustomErrorResult';
+    }
 }
 ```
 
@@ -428,51 +423,51 @@ This resolver is then passed in to your plugin metadata like any other resolver:
 
 ```ts
 @DeenruvPlugin({
-  imports: [PluginCommonModule],
-  shopApiExtensions: {
-    schema: apiExtensions,
-    resolvers: [/* ... */, MyCustomMutationResultResolver]
-  }
+    imports: [PluginCommonModule],
+    shopApiExtensions: {
+        schema: apiExtensions,
+        resolvers: [, /* ... */ MyCustomMutationResultResolver],
+    },
 })
 export class MyPlugin {}
 ```
 
 ## Defining custom scalars
 
-By default, Vendure bundles `DateTime` and a `JSON` custom scalars (from the [graphql-scalars library](https://github.com/Urigo/graphql-scalars)). From v1.7.0, you can also define your own custom scalars for use in your schema extensions:
+By default, Deenruv bundles `DateTime` and a `JSON` custom scalars (from the [graphql-scalars library](https://github.com/Urigo/graphql-scalars)). From v1.7.0, you can also define your own custom scalars for use in your schema extensions:
 
 ```ts
-import { GraphQLScalarType} from 'graphql';
+import { GraphQLScalarType } from 'graphql';
 import { GraphQLEmailAddress } from 'graphql-scalars';
 
 // Scalars can be custom-built as like this one,
 // or imported from a pre-made scalar library like
 // the GraphQLEmailAddress example.
 const FooScalar = new GraphQLScalarType({
-  name: 'Foo',
-  description: 'A test scalar',
-  serialize(value) {
-    // ...
-  },
-  parseValue(value) {
-    // ...
-  },
+    name: 'Foo',
+    description: 'A test scalar',
+    serialize(value) {
+        // ...
+    },
+    parseValue(value) {
+        // ...
+    },
 });
 
 @DeenruvPlugin({
-  imports: [PluginCommonModule],
-  shopApiExtensions: {
-    schema: gql`
-      scalar Foo
-      scalar EmailAddress
-    `,
-    scalars: { 
-      // The key must match the scalar name
-      // given in the schema  
-      Foo: FooScalar,
-      EmailAddress: GraphQLEmailAddress,
+    imports: [PluginCommonModule],
+    shopApiExtensions: {
+        schema: gql`
+            scalar Foo
+            scalar EmailAddress
+        `,
+        scalars: {
+            // The key must match the scalar name
+            // given in the schema
+            Foo: FooScalar,
+            EmailAddress: GraphQLEmailAddress,
+        },
     },
-  },
 })
 export class CustomScalarsPlugin {}
 ```

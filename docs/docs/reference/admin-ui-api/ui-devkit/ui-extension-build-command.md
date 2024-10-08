@@ -1,13 +1,14 @@
 ---
-title: "UiExtensionBuildCommand"
+title: 'UiExtensionBuildCommand'
 isDefaultIndex: false
 generated: true
 ---
-<!-- This file was generated from the Vendure source. Do not modify. Instead, re-run the "docs:build" script -->
+
+<!-- This file was generated from the Deenruv source. Do not modify. Instead, re-run the "docs:build" script -->
+
 import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
-
 
 ## UiExtensionBuildCommand
 
@@ -16,5 +17,5 @@ import MemberDescription from '@site/src/components/MemberDescription';
 The package manager to use when invoking the Angular CLI to build UI extensions.
 
 ```ts title="Signature"
-type UiExtensionBuildCommand = 'npm' | 'yarn' | 'pnpm'
+type UiExtensionBuildCommand = 'npm' | 'yarn' | 'pnpm';
 ```

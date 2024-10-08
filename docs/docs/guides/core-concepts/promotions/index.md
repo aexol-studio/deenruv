@@ -4,8 +4,8 @@ title: 'Promotions'
 
 Promotions are a means of offering discounts on an order based on various criteria. A Promotion consists of _conditions_ and _actions_.
 
-- **conditions** are the rules which determine whether the Promotion should be applied to the order.
-- **actions** specify exactly how this Promotion should modify the order.
+-   **conditions** are the rules which determine whether the Promotion should be applied to the order.
+-   **actions** specify exactly how this Promotion should modify the order.
 
 ## Parts of a Promotion
 
@@ -13,21 +13,21 @@ Promotions are a means of offering discounts on an order based on various criter
 
 All Promotions can have the following constraints applied to them:
 
-- **Date range** Using the "starts at" and "ends at" fields, the Promotion can be scheduled to only be active during the given date range.
-- **Coupon code** A Promotion can require a coupon code first be activated using the [`applyCouponCode` mutation](/reference/graphql-api/shop/mutations/#applycouponcode) in the Shop API.
-- **Per-customer limit** A Promotion coupon may be limited to a given number of uses per Customer.
+-   **Date range** Using the "starts at" and "ends at" fields, the Promotion can be scheduled to only be active during the given date range.
+-   **Coupon code** A Promotion can require a coupon code first be activated using the [`applyCouponCode` mutation](/reference/graphql-api/shop/mutations/#applycouponcode) in the Shop API.
+-   **Per-customer limit** A Promotion coupon may be limited to a given number of uses per Customer.
 
 ### Conditions
 
 A Promotion may be additionally constrained by one or more conditions. When evaluating whether a Promotion should be applied, each of the defined conditions is checked in turn. If all the conditions evaluate to `true`, then any defined actions are applied to the order.
 
-Vendure comes with some built-in conditions, but you can also create your own conditions (see section below).
+Deenruv comes with some built-in conditions, but you can also create your own conditions (see section below).
 
 ### Actions
 
 A promotion action defines exactly how the order discount should be calculated. **At least one** action must be specified for a valid Promotion.
 
-Vendure comes with some built-in actions, but you can also create your own actions (see section below).
+Deenruv comes with some built-in actions, but you can also create your own actions (see section below).
 
 ## Creating custom conditions
 
@@ -46,9 +46,7 @@ export const minimumOrderAmount = new PromotionCondition({
      * A human-readable description. Values defined in the
      * `args` object can be interpolated using the curly-braces syntax.
      */
-    description: [
-        {languageCode: LanguageCode.en, value: 'If order total is greater than { amount }'},
-    ],
+    description: [{ languageCode: LanguageCode.en, value: 'If order total is greater than { amount }' }],
 
     /**
      * Arguments which can be specified when configuring the condition
@@ -60,9 +58,9 @@ export const minimumOrderAmount = new PromotionCondition({
             type: 'int',
             // The optional `ui` object allows you to customize
             // how this arg is rendered in the Admin UI.
-            ui: {component: 'currency-form-input'},
+            ui: { component: 'currency-form-input' },
         },
-        taxInclusive: {type: 'boolean'},
+        taxInclusive: { type: 'boolean' },
     },
 
     /**
@@ -80,30 +78,27 @@ export const minimumOrderAmount = new PromotionCondition({
 });
 ```
 
-Custom promotion conditions are then passed into the VendureConfig [PromotionOptions](/reference/typescript-api/promotions/promotion-options/) to make them available when setting up Promotions:
+Custom promotion conditions are then passed into the DeenruvConfig [PromotionOptions](/reference/typescript-api/promotions/promotion-options/) to make them available when setting up Promotions:
 
-```ts title="src/vendure-config.ts"
-import { defaultPromotionConditions, VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { defaultPromotionConditions, DeenruvConfig } from '@deenruv/core';
 import { minimumOrderAmount } from './minimum-order-amount';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     promotionOptions: {
-        promotionConditions: [
-            ...defaultPromotionConditions,
-            minimumOrderAmount,
-        ],
-    }
-}
+        promotionConditions: [...defaultPromotionConditions, minimumOrderAmount],
+    },
+};
 ```
 
 ## Creating custom actions
 
 There are three kinds of PromotionAction:
 
-- [`PromotionItemAction`](/reference/typescript-api/promotions/promotion-action#promotionitemaction) applies a discount on the `OrderLine` level, i.e. it would be used for a promotion like "50% off USB cables".
-- [`PromotionOrderAction`](/reference/typescript-api/promotions/promotion-action#promotionorderaction) applies a discount on the `Order` level, i.e. it would be used for a promotion like "5% off the order total".
-- [`PromotionShippingAction`](/reference/typescript-api/promotions/promotion-action#promotionshippingaction) applies a discount on the shipping, i.e. it would be used for a promotion like "free shipping".
+-   [`PromotionItemAction`](/reference/typescript-api/promotions/promotion-action#promotionitemaction) applies a discount on the `OrderLine` level, i.e. it would be used for a promotion like "50% off USB cables".
+-   [`PromotionOrderAction`](/reference/typescript-api/promotions/promotion-action#promotionorderaction) applies a discount on the `Order` level, i.e. it would be used for a promotion like "5% off the order total".
+-   [`PromotionShippingAction`](/reference/typescript-api/promotions/promotion-action#promotionshippingaction) applies a discount on the shipping, i.e. it would be used for a promotion like "free shipping".
 
 The implementations of each type is similar, with the difference being the arguments passed to the `execute()`.
 
@@ -116,7 +111,7 @@ export const orderPercentageDiscount = new PromotionOrderAction({
     // See the custom condition example above for explanations
     // of code, description & args fields.
     code: 'order_percentage_discount',
-    description: [{languageCode: LanguageCode.en, value: 'Discount order by { discount }%'}],
+    description: [{ languageCode: LanguageCode.en, value: 'Discount order by { discount }%' }],
     args: {
         discount: {
             type: 'int',
@@ -139,120 +134,124 @@ export const orderPercentageDiscount = new PromotionOrderAction({
 });
 ```
 
-Custom PromotionActions are then passed into the VendureConfig [PromotionOptions](/reference/typescript-api/promotions/promotion-options) to make them available when setting up Promotions:
+Custom PromotionActions are then passed into the DeenruvConfig [PromotionOptions](/reference/typescript-api/promotions/promotion-options) to make them available when setting up Promotions:
 
-```ts title="src/vendure-config.ts"
-import { defaultPromotionActions, VendureConfig } from '@deenruv/core';
+```ts title="src/deenruv-config.ts"
+import { defaultPromotionActions, DeenruvConfig } from '@deenruv/core';
 import { orderPercentageDiscount } from './order-percentage-discount';
 
-export const config: VendureConfig = {
+export const config: DeenruvConfig = {
     // ...
     promotionOptions: {
-        promotionActions: [
-            ...defaultPromotionActions,
-            orderPercentageDiscount,
-        ],
-    }
+        promotionActions: [...defaultPromotionActions, orderPercentageDiscount],
+    },
 };
 ```
 
 ## Free gift promotions
 
-Vendure v1.8 introduced a new **side effect API** to PromotionActions, which allow you to define some additional action to be performed when a Promotion becomes active or inactive.
+Deenruv v1.8 introduced a new **side effect API** to PromotionActions, which allow you to define some additional action to be performed when a Promotion becomes active or inactive.
 
 A primary use-case of this API is to add a free gift to the Order. Here's an example of a plugin which implements a "free gift" action:
 
 ```ts title="src/plugins/free-gift/free-gift.plugin.ts"
 import {
-	ID, idsAreEqual, isGraphQlErrorResult, LanguageCode, Logger,
-	OrderLine, OrderService, PromotionItemAction, VendurePlugin,
-} from "@deenruv/core";
-import { createHash } from "crypto";
+    ID,
+    idsAreEqual,
+    isGraphQlErrorResult,
+    LanguageCode,
+    Logger,
+    OrderLine,
+    OrderService,
+    PromotionItemAction,
+    VendurePlugin,
+} from '@deenruv/core';
+import { createHash } from 'crypto';
 
 let orderService: OrderService;
 export const freeGiftAction = new PromotionItemAction({
-	code: "free_gift",
-	description: [{ languageCode: LanguageCode.en, value: "Add free gifts to the order" }],
-	args: {
-		productVariantIds: {
-			type: "ID",
-			list: true,
-			ui: { component: "product-selector-form-input" },
-			label: [{ languageCode: LanguageCode.en, value: "Gift product variants" }],
-		},
-	},
-	init(injector) {
-		orderService = injector.get(OrderService);
-	},
-	execute(ctx, orderLine, args) {
-		// This part is responsible for ensuring the variants marked as
-		// "free gifts" have their price reduced to zero
-		if (lineContainsIds(args.productVariantIds, orderLine)) {
-			const unitPrice = orderLine.productVariant.listPriceIncludesTax
-				? orderLine.unitPriceWithTax
-				: orderLine.unitPrice;
-			return -unitPrice;
-		}
-		return 0;
-	},
-	// The onActivate function is part of the side effect API, and
-	// allows us to perform some action whenever a Promotion becomes active
-	// due to it's conditions & constraints being satisfied.
-	async onActivate(ctx, order, args, promotion) {
-		for (const id of args.productVariantIds) {
-			if (
-				!order.lines.find(
-					(line) =>
-						idsAreEqual(line.productVariant.id, id) &&
-						line.customFields.freeGiftPromotionId == null
-				)
-			) {
-				// The order does not yet contain this free gift, so add it
-				const result = await orderService.addItemToOrder(ctx, order.id, id, 1, {
-					freeGiftPromotionId: promotion.id.toString(),
-				});
-				if (isGraphQlErrorResult(result)) {
-					Logger.error(`Free gift action error for variantId "${id}": ${result.message}`);
-				}
-			}
-		}
-	},
-	// The onDeactivate function is the other part of the side effect API and is called
-	// when an active Promotion becomes no longer active. It should reverse any
-	// side effect performed by the onActivate function.
-	async onDeactivate(ctx, order, args, promotion) {
-		const linesWithFreeGift = order.lines.filter(
-			(line) => line.customFields.freeGiftPromotionId === promotion.id.toString()
-		);
-		for (const line of linesWithFreeGift) {
-			await orderService.removeItemFromOrder(ctx, order.id, line.id);
-		}
-	},
+    code: 'free_gift',
+    description: [{ languageCode: LanguageCode.en, value: 'Add free gifts to the order' }],
+    args: {
+        productVariantIds: {
+            type: 'ID',
+            list: true,
+            ui: { component: 'product-selector-form-input' },
+            label: [{ languageCode: LanguageCode.en, value: 'Gift product variants' }],
+        },
+    },
+    init(injector) {
+        orderService = injector.get(OrderService);
+    },
+    execute(ctx, orderLine, args) {
+        // This part is responsible for ensuring the variants marked as
+        // "free gifts" have their price reduced to zero
+        if (lineContainsIds(args.productVariantIds, orderLine)) {
+            const unitPrice = orderLine.productVariant.listPriceIncludesTax
+                ? orderLine.unitPriceWithTax
+                : orderLine.unitPrice;
+            return -unitPrice;
+        }
+        return 0;
+    },
+    // The onActivate function is part of the side effect API, and
+    // allows us to perform some action whenever a Promotion becomes active
+    // due to it's conditions & constraints being satisfied.
+    async onActivate(ctx, order, args, promotion) {
+        for (const id of args.productVariantIds) {
+            if (
+                !order.lines.find(
+                    line =>
+                        idsAreEqual(line.productVariant.id, id) &&
+                        line.customFields.freeGiftPromotionId == null,
+                )
+            ) {
+                // The order does not yet contain this free gift, so add it
+                const result = await orderService.addItemToOrder(ctx, order.id, id, 1, {
+                    freeGiftPromotionId: promotion.id.toString(),
+                });
+                if (isGraphQlErrorResult(result)) {
+                    Logger.error(`Free gift action error for variantId "${id}": ${result.message}`);
+                }
+            }
+        }
+    },
+    // The onDeactivate function is the other part of the side effect API and is called
+    // when an active Promotion becomes no longer active. It should reverse any
+    // side effect performed by the onActivate function.
+    async onDeactivate(ctx, order, args, promotion) {
+        const linesWithFreeGift = order.lines.filter(
+            line => line.customFields.freeGiftPromotionId === promotion.id.toString(),
+        );
+        for (const line of linesWithFreeGift) {
+            await orderService.removeItemFromOrder(ctx, order.id, line.id);
+        }
+    },
 });
 
 function lineContainsIds(ids: ID[], line: OrderLine): boolean {
-	return !!ids.find((id) => idsAreEqual(id, line.productVariant.id));
+    return !!ids.find(id => idsAreEqual(id, line.productVariant.id));
 }
 
 @DeenruvPlugin({
-	configuration: (config) => {
-		config.customFields.OrderLine.push({
-			name: "freeGiftPromotionId",
-			type: "string",
-			public: true,
-			readonly: true,
-			nullable: true,
-		});
-		config.customFields.OrderLine.push({
-			name: "freeGiftDescription",
-			type: "string",
-			public: true,
-			readonly: true,
-			nullable: true,
-		});
-		config.promotionOptions.promotionActions.push(freeGiftAction);
-		return config;
-	},
+    configuration: config => {
+        config.customFields.OrderLine.push({
+            name: 'freeGiftPromotionId',
+            type: 'string',
+            public: true,
+            readonly: true,
+            nullable: true,
+        });
+        config.customFields.OrderLine.push({
+            name: 'freeGiftDescription',
+            type: 'string',
+            public: true,
+            readonly: true,
+            nullable: true,
+        });
+        config.promotionOptions.promotionActions.push(freeGiftAction);
+        return config;
+    },
 })
 export class FreeGiftPromotionPlugin {}
 ```
@@ -273,10 +272,12 @@ Instead, we can say that the PromotionAction _depends_ on the PromotionCondition
 ```ts
 export const buy1Get1FreeAction = new PromotionItemAction({
     code: 'buy_1_get_1_free',
-    description: [{
-        languageCode: LanguageCode.en,
-        value: 'Buy 1, get 1 free',
-    }],
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'Buy 1, get 1 free',
+        },
+    ],
     args: {},
     // highlight-next-line
     conditions: [buyXGetYFreeCondition],
@@ -299,10 +300,12 @@ In turn, the `buyXGetYFreeCondition` can return a _state object_ with the type `
 ```ts
 export const buyXGetYFreeCondition = new PromotionCondition({
     code: 'buy_x_get_y_free',
-    description: [{
-        languageCode: LanguageCode.en,
-        value: 'Buy { amountX } of { variantIdsX } products, get { amountY } of { variantIdsY } products free',
-    }],
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'Buy { amountX } of { variantIdsX } products, get { amountY } of { variantIdsY } products free',
+        },
+    ],
     args: {
         // omitted for brevity
     },
@@ -312,7 +315,7 @@ export const buyXGetYFreeCondition = new PromotionCondition({
             return false;
         }
         // highlight-next-line
-        return {freeItemIds};
+        return { freeItemIds };
     },
 });
 ```
