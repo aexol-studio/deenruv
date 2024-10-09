@@ -14,7 +14,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <GenerationInfo sourceFile="packages/testing/src/config/test-config.ts" sourceLine="42" packageName="@deenruv/testing" />
 
-A <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a> object used for e2e tests. This configuration uses sqljs as the database
+A <a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a> object used for e2e tests. This configuration uses sqljs as the database
 and configures some special settings which are optimized for e2e tests:
 
 -   `entityIdStrategy: new TestingEntityIdStrategy()` This ID strategy uses auto-increment IDs but encodes all IDs

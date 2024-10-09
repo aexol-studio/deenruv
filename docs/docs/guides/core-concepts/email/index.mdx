@@ -122,7 +122,7 @@ This is just a simplified example to illustrate the pattern.
 
 ```ts title="src/plugins/sms-plugin/sms-plugin.ts"
 import { OnModuleInit } from '@nestjs/common';
-import { PluginCommonModule, VendurePlugin, EventBus } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin, EventBus } from '@deenruv/core';
 import { OrderStateTransitionEvent } from '@deenruv/core';
 
 // A custom service which sends SMS messages

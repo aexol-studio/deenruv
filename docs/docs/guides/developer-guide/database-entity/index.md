@@ -16,11 +16,11 @@ This example shows how new [TypeORM database entities](https://typeorm.io/entiti
 
 ```ts title="src/plugins/reviews/entities/product-review.entity.ts"
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { VendureEntity, Product, EntityId, ID } from '@deenruv/core';
+import { DeenruvEntity, Product, EntityId, ID } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-class ProductReview extends VendureEntity {
+class ProductReview extends DeenruvEntity {
     constructor(input?: DeepPartial<ProductReview>) {
         super(input);
     }
@@ -40,7 +40,7 @@ class ProductReview extends VendureEntity {
 ```
 
 :::note
-Any custom entities _must_ extend the [`VendureEntity`](/reference/typescript-api/entities/deenruv-entity/) class.
+Any custom entities _must_ extend the [`DeenruvEntity`](/reference/typescript-api/entities/deenruv-entity/) class.
 :::
 
 In this example, we are making use of the following TypeORM decorators:
@@ -55,10 +55,10 @@ There is an additional Deenruv-specific decorator:
 
 ## Register the entity
 
-The new entity is then passed to the `entities` array of the VendurePlugin metadata:
+The new entity is then passed to the `entities` array of the DeenruvPlugin metadata:
 
 ```ts title="src/plugins/reviews/reviews-plugin.ts"
-import { VendurePlugin } from '@deenruv/core';
+import { DeenruvPlugin } from '@deenruv/core';
 import { ProductReview } from './entities/product-review.entity';
 
 @DeenruvPlugin({
@@ -132,7 +132,7 @@ First you need to update your entity class to implement the `HasCustomFields` in
 which will be used to store the custom field values:
 
 ```ts title="src/plugins/reviews/entities/product-review.entity.ts"
-import { DeepPartial, HasCustomFields, Product, VendureEntity } from '@deenruv/core';
+import { DeepPartial, HasCustomFields, Product, DeenruvEntity } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 // highlight-next-line
@@ -140,7 +140,7 @@ export class CustomProductReviewFields {}
 
 @Entity()
 // highlight-next-line
-export class ProductReview extends VendureEntity implements HasCustomFields {
+export class ProductReview extends DeenruvEntity implements HasCustomFields {
     constructor(input?: DeepPartial<ProductReview>) {
         super(input);
     }

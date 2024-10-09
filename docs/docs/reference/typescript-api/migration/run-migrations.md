@@ -25,4 +25,4 @@ Parameters
 
 ### userConfig
 
-<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;`} />
+<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>&#62;`} />

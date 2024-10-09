@@ -26,14 +26,14 @@ import { Logger } from '@deenruv/core';
 Logger.info(`Some log message`, 'My Deenruv Plugin');
 ```
 
-The actual implementation - where the logs are written to - is defined by the <a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a>
-instance configured in the <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>. By default, the <a href='/reference/typescript-api/logger/default-logger#defaultlogger'>DefaultLogger</a> is used, which
+The actual implementation - where the logs are written to - is defined by the <a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a>
+instance configured in the <a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>. By default, the <a href='/reference/typescript-api/logger/default-logger#defaultlogger'>DefaultLogger</a> is used, which
 logs to the console.
 
 ## Implementing a custom logger
 
 A custom logger can be passed to the `logger` config option by creating a class which implements the
-<a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a> interface. For example, here is how you might go about implementing a logger which
+<a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a> interface. For example, here is how you might go about implementing a logger which
 logs to a file:
 
 _Example_
@@ -91,7 +91,7 @@ class Logger implements LoggerService {
 
 ### logger
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a>`} />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a>`} />
 
 ### error
 

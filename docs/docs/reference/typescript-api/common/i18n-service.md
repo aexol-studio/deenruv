@@ -33,7 +33,7 @@ Add a I18n translation by json file
 
 ### addTranslation
 
-<MemberInfo kind="method" type={`(langKey: string, resources: <a href='/reference/typescript-api/common/i18n-service#venduretranslationresources'>VendureTranslationResources</a> | any) => void`} />
+<MemberInfo kind="method" type={`(langKey: string, resources: <a href='/reference/typescript-api/common/i18n-service#deenruvtranslationresources'>DeenruvTranslationResources</a> | any) => void`} />
 
 Add a I18n translation (key-value) resource
 

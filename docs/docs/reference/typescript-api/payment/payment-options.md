@@ -14,7 +14,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <GenerationInfo sourceFile="packages/core/src/config/deenruv-config.ts" sourceLine="826" packageName="@deenruv/core" />
 
-Defines payment-related options in the <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>.
+Defines payment-related options in the <a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>.
 
 ```ts title="Signature"
 interface PaymentOptions {

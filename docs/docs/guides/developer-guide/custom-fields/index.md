@@ -886,9 +886,9 @@ In addition to the common properties, the `relation` custom fields have some typ
 
 #### entity
 
-<CustomFieldProperty required={true} type="VendureEntity" typeLink="/reference/typescript-api/entities/deenruv-entity" />
+<CustomFieldProperty required={true} type="DeenruvEntity" typeLink="/reference/typescript-api/entities/deenruv-entity" />
 
-The entity which this custom field is referencing. This can be one of the built-in entities, or a custom entity. If the entity is a custom entity, it must extend the `VendureEntity` class.
+The entity which this custom field is referencing. This can be one of the built-in entities, or a custom entity. If the entity is a custom entity, it must extend the `DeenruvEntity` class.
 
 ```ts title="src/deenruv-config.ts"
 import { Product } from '@deenruv/core';
@@ -966,7 +966,7 @@ In the above example, the `CmsArticle` entity is being used as a related entity.
 
 #### inverseSide
 
-<CustomFieldProperty required={false} type="string | ((object: VendureEntity) => any)" />
+<CustomFieldProperty required={false} type="string | ((object: DeenruvEntity) => any)" />
 
 Allows you to specify the [inverse side of the relation](https://typeorm.io/#inverse-side-of-the-relationship). Let's say you are adding a relation from `Product`
 to a custom entity which refers back to the product. You can specify this inverse relation like so:

@@ -19,12 +19,12 @@ the `success` property will be `true`, and if not, the `error` property will con
 which occurred.
 
 ```ts title="Signature"
-class EmailSendEvent extends VendureEvent {
+class EmailSendEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, details: EmailDetails, success: boolean, error?: Error);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 

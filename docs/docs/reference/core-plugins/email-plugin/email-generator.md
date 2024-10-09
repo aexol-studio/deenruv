@@ -17,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 An EmailGenerator generates the subject and body details of an email.
 
 ```ts title="Signature"
-interface EmailGenerator<T extends string = any, E extends VendureEvent = any> extends InjectableStrategy {
+interface EmailGenerator<T extends string = any, E extends DeenruvEvent = any> extends InjectableStrategy {
     onInit?(options: EmailPluginOptions): void | Promise<void>;
     generate(
         from: string,

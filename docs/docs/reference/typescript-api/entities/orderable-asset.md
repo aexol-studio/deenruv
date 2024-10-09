@@ -33,7 +33,7 @@ class OrderableAsset extends VendureEntity implements Orderable {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a></code>
 
 -   Implements: <code><a href='/reference/typescript-api/entities/interfaces#orderable'>Orderable</a></code>
 

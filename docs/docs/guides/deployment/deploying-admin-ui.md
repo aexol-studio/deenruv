@@ -107,7 +107,7 @@ compileUiExtensions({
                     tokenMethod: 'cookie',
                     defaultLanguage: 'en',
                     availableLanguages: ['en', 'de'],
-                    hideVendureBranding: false,
+                    hideDeenruvBranding: false,
                     hideVersion: false,
                 }),
             );

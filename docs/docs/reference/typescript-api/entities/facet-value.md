@@ -40,7 +40,7 @@ class FacetValue extends VendureEntity implements Translatable, HasCustomFields,
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a></code>
 
 -   Implements: <code><a href='/reference/typescript-api/entities/interfaces#translatable'>Translatable</a></code>, <code>HasCustomFields</code>, <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>
 

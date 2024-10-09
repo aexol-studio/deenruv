@@ -37,7 +37,7 @@ This plugin uses the Order API from Mollie, not the Payments API.
 
     // ...
 
-    plugins: [MolliePlugin.init({ vendureHost: 'https://yourhost.io/' })];
+    plugins: [MolliePlugin.init({ deenruvHost: 'https://yourhost.io/' })];
     ```
 
 2. Run a database migration to add the `mollieOrderId` custom field to the order entity.
@@ -151,7 +151,7 @@ Configuration options for the Mollie payments plugin.
 
 ```ts title="Signature"
 interface MolliePluginOptions {
-    vendureHost: string;
+    deenruvHost: string;
     enabledPaymentMethodsParams?: (
         injector: Injector,
         ctx: RequestContext,
@@ -162,7 +162,7 @@ interface MolliePluginOptions {
 
 <div className="members-wrapper">
 
-### vendureHost
+### deenruvHost
 
 <MemberInfo kind="property" type={`string`} />
 

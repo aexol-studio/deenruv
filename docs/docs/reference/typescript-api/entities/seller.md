@@ -30,7 +30,7 @@ class Seller extends VendureEntity implements SoftDeletable, HasCustomFields {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a></code>
 
 -   Implements: <code><a href='/reference/typescript-api/entities/interfaces#softdeletable'>SoftDeletable</a></code>, <code>HasCustomFields</code>
 

@@ -14,12 +14,12 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <GenerationInfo sourceFile="packages/stellate-plugin/src/purge-rule.ts" sourceLine="49" packageName="@deenruv/stellate-plugin" />
 
-Defines a rule that listens for a particular VendureEvent and uses that to
+Defines a rule that listens for a particular DeenruvEvent and uses that to
 make calls to the [Stellate Purging API](https://docs.stellate.co/docs/purging-api) via
 the provided <a href='/reference/core-plugins/stellate-plugin/stellate-service#stellateservice'>StellateService</a> instance.
 
 ```ts title="Signature"
-class PurgeRule<Event extends VendureEvent = VendureEvent> {
+class PurgeRule<Event extends DeenruvEvent = DeenruvEvent> {
     eventType: Type<Event>
     bufferTimeMs: number | undefined
     handle(handlerArgs: { events: Event[]; stellateService: StellateService; injector: Injector }) => ;
@@ -54,7 +54,7 @@ class PurgeRule<Event extends VendureEvent = VendureEvent> {
 Configures a <a href='/reference/core-plugins/stellate-plugin/purge-rule#purgerule'>PurgeRule</a>.
 
 ```ts title="Signature"
-interface PurgeRuleConfig<Event extends VendureEvent> {
+interface PurgeRuleConfig<Event extends DeenruvEvent> {
     eventType: Type<Event>;
     bufferTime?: number;
     handler: (handlerArgs: {
@@ -71,7 +71,7 @@ interface PurgeRuleConfig<Event extends VendureEvent> {
 
 <MemberInfo kind="property" type={`Type&#60;Event&#62;`} />
 
-Specifies which VendureEvent will trigger this purge rule.
+Specifies which DeenruvEvent will trigger this purge rule.
 
 ### bufferTime
 

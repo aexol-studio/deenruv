@@ -106,6 +106,6 @@ interface Translatable {
 
 ### translations
 
-<MemberInfo kind="property" type={`Array&#60;Translation&#60;<a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a>&#62;&#62;`} />
+<MemberInfo kind="property" type={`Array&#60;Translation&#60;<a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a>&#62;&#62;`} />
 
 </div>

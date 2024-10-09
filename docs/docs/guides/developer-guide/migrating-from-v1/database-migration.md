@@ -36,7 +36,7 @@ Deenruv v2 introduces a number of breaking changes to the database schema, some 
     - [postgres](https://github.com/deenruv-ecommerce/v2-migration-tool/blob/master/src/migrations/1686649098749-v201-postgres.ts)
     - [mysql](https://github.com/deenruv-ecommerce/v2-migration-tool/blob/master/src/migrations/1686655918823-v201-mysql.ts)
 
-    In your migrations files, you'll import the `vendureV2Migrations` from `@deenruv/migrate-v2`.
+    In your migrations files, you'll import the `deenruvV2Migrations` from `@deenruv/migrate-v2`.
 
 6. Run the migration with `npm run migration:run`.
 7. Upon successful migration, remove the `MigrationV2Plugin` from your plugins array, and generate _another_ migration. This one will add back the missing "NOT NULL" constraints now that all your data has been successfully migrated.

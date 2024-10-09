@@ -46,7 +46,7 @@ A query which exceeds the maximum score will result in an error.
 <MemberInfo kind="property" type={`ComplexityEstimator[]`} />
 
 An array of custom estimator functions for calculating the complexity of a query. By default,
-the plugin will use the <a href='/reference/core-plugins/harden-plugin/default-deenruv-complexity-estimator#defaultvendurecomplexityestimator'>defaultVendureComplexityEstimator</a> which is specifically
+the plugin will use the <a href='/reference/core-plugins/harden-plugin/default-deenruv-complexity-estimator#defaultdeenruvcomplexityestimator'>defaultDeenruvComplexityEstimator</a> which is specifically
 tuned to accurately estimate Deenruv queries.
 
 ### logComplexityScore

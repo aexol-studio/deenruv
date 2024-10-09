@@ -1,5 +1,5 @@
 ---
-title: 'VendureEvent'
+title: 'DeenruvEvent'
 isDefaultIndex: false
 generated: true
 ---
@@ -10,14 +10,14 @@ import MemberInfo from '@site/src/components/MemberInfo';
 import GenerationInfo from '@site/src/components/GenerationInfo';
 import MemberDescription from '@site/src/components/MemberDescription';
 
-## VendureEvent
+## DeenruvEvent
 
 <GenerationInfo sourceFile="packages/core/src/event-bus/deenruv-event.ts" sourceLine="7" packageName="@deenruv/core" />
 
 The base class for all events used by the EventBus system.
 
 ```ts title="Signature"
-class VendureEvent {
+class DeenruvEvent {
     public readonly createdAt: Date;
     constructor();
 }
@@ -31,6 +31,6 @@ class VendureEvent {
 
 ### constructor
 
-<MemberInfo kind="method" type={`() => VendureEvent`} />
+<MemberInfo kind="method" type={`() => DeenruvEvent`} />
 
 </div>

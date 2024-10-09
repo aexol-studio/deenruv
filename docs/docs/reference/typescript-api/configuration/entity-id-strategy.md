@@ -117,7 +117,7 @@ back to the raw ID value.
 An id strategy which uses string uuids as primary keys
 for all entities. This strategy can be configured with the
 `entityIdStrategy` property of the `entityOptions` property
-of <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>.
+of <a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>.
 
 _Example_
 

@@ -41,7 +41,7 @@ class DefaultLogger implements VendureLogger {
 }
 ```
 
--   Implements: <code><a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a></code>
+-   Implements: <code><a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a></code>
 
 <div className="members-wrapper">
 

@@ -18,12 +18,12 @@ This event is fired when a new user registers an account, either as a stand-alon
 placing an order.
 
 ```ts title="Signature"
-class AccountRegistrationEvent extends VendureEvent {
+class AccountRegistrationEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, user: User);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -41,12 +41,12 @@ This event is fired when a users email address successfully gets verified after
 the `verifyCustomerAccount` mutation was executed.
 
 ```ts title="Signature"
-class AccountVerifiedEvent extends VendureEvent {
+class AccountVerifiedEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, customer: Customer);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -73,7 +73,7 @@ class AdministratorEvent extends VendureEntityEvent<Administrator, Administrator
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/administrator#administrator'>Administrator</a>, AdministratorInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/administrator#administrator'>Administrator</a>, AdministratorInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -91,12 +91,12 @@ This event is fired whenever an <a href='/reference/typescript-api/entities/asse
 From a channel.
 
 ```ts title="Signature"
-class AssetChannelEvent extends VendureEvent {
+class AssetChannelEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, asset: Asset, channelId: ID, type: 'assigned' | 'removed');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -124,7 +124,7 @@ class AssetEvent extends VendureEntityEvent<Asset, AssetInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>, AssetInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/asset#asset'>Asset</a>, AssetInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -147,12 +147,12 @@ The `strategy` represents the name of the AuthenticationStrategy used in the log
 If the "native" strategy is used, the additional `identifier` property will be available.
 
 ```ts title="Signature"
-class AttemptedLoginEvent extends VendureEvent {
+class AttemptedLoginEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, strategy: string, identifier?: string);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -170,7 +170,7 @@ This event is fired whenever an <a href='/reference/typescript-api/entities/inte
 from a channel. The entity property contains the value before updating the channels.
 
 ```ts title="Signature"
-class ChangeChannelEvent<T extends ChannelAware & VendureEntity> extends VendureEvent {
+class ChangeChannelEvent<T extends ChannelAware & VendureEntity> extends DeenruvEvent {
     constructor(
         ctx: RequestContext,
         entity: T,
@@ -181,7 +181,7 @@ class ChangeChannelEvent<T extends ChannelAware & VendureEntity> extends Vendure
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -208,7 +208,7 @@ class ChannelEvent extends VendureEntityEvent<Channel, ChannelInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>, ChannelInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/channel#channel'>Channel</a>, ChannelInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -235,7 +235,7 @@ class CollectionEvent extends VendureEntityEvent<Collection, CollectionInputType
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>, CollectionInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/collection#collection'>Collection</a>, CollectionInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -256,12 +256,12 @@ argument is an array of ids of all ProductVariants which:
 2. are now part of this collection after modification but were not before
 
 ```ts title="Signature"
-class CollectionModificationEvent extends VendureEvent {
+class CollectionModificationEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, collection: Collection, productVariantIds: ID[]);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -288,7 +288,7 @@ class CountryEvent extends VendureEntityEvent<Country, CountryInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/country#country'>Country</a>, CountryInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/country#country'>Country</a>, CountryInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -306,12 +306,12 @@ This event is fired whenever an coupon code of an active <a href='/reference/typ
 is assigned or removed to an <a href='/reference/typescript-api/entities/order#order'>Order</a>.
 
 ```ts title="Signature"
-class CouponCodeEvent extends VendureEvent {
+class CouponCodeEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, couponCode: string, orderId: ID, type: 'assigned' | 'removed');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -340,7 +340,7 @@ class CustomerAddressEvent extends VendureEntityEvent<Address, CustomerAddressIn
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/address#address'>Address</a>, CustomerAddressInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/address#address'>Address</a>, CustomerAddressInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -373,7 +373,7 @@ class CustomerEvent extends VendureEntityEvent<Customer, CustomerInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/customer#customer'>Customer</a>, CustomerInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/customer#customer'>Customer</a>, CustomerInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -395,7 +395,7 @@ This event is fired whenever one or more <a href='/reference/typescript-api/enti
 <a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>.
 
 ```ts title="Signature"
-class CustomerGroupChangeEvent extends VendureEvent {
+class CustomerGroupChangeEvent extends DeenruvEvent {
     constructor(
         ctx: RequestContext,
         customers: Customer[],
@@ -405,7 +405,7 @@ class CustomerGroupChangeEvent extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -432,7 +432,7 @@ class CustomerGroupEvent extends VendureEntityEvent<CustomerGroup, CustomerGroup
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>, CustomerGroupInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/customer-group#customergroup'>CustomerGroup</a>, CustomerGroupInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -459,7 +459,7 @@ class FacetEvent extends VendureEntityEvent<Facet, FacetInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/facet#facet'>Facet</a>, FacetInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/facet#facet'>Facet</a>, FacetInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -486,7 +486,7 @@ class FacetValueEvent extends VendureEntityEvent<FacetValue, FacetValueInputType
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/facet-value#facetvalue'>FacetValue</a>, FacetValueInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/facet-value#facetvalue'>FacetValue</a>, FacetValueInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -508,7 +508,7 @@ class FulfillmentEvent extends VendureEntityEvent<Fulfillment, CreateFulfillment
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/fulfillment#fulfillment'>Fulfillment</a>, CreateFulfillmentInput&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/fulfillment#fulfillment'>Fulfillment</a>, CreateFulfillmentInput&#62;</code>
 
 <div className="members-wrapper">
 
@@ -525,7 +525,7 @@ class FulfillmentEvent extends VendureEntityEvent<Fulfillment, CreateFulfillment
 This event is fired whenever an <a href='/reference/typescript-api/entities/fulfillment#fulfillment'>Fulfillment</a> transitions from one <a href='/reference/typescript-api/fulfillment/fulfillment-state#fulfillmentstate'>FulfillmentState</a> to another.
 
 ```ts title="Signature"
-class FulfillmentStateTransitionEvent extends VendureEvent {
+class FulfillmentStateTransitionEvent extends DeenruvEvent {
     constructor(
         fromState: FulfillmentState,
         toState: FulfillmentState,
@@ -535,7 +535,7 @@ class FulfillmentStateTransitionEvent extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -558,7 +558,7 @@ class GlobalSettingsEvent extends VendureEntityEvent<GlobalSettings, UpdateGloba
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/global-settings#globalsettings'>GlobalSettings</a>, UpdateGlobalSettingsInput&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/global-settings#globalsettings'>GlobalSettings</a>, UpdateGlobalSettingsInput&#62;</code>
 
 <div className="members-wrapper">
 
@@ -587,7 +587,7 @@ class HistoryEntryEvent extends VendureEntityEvent<HistoryEntry, HistoryInput> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/history-entry#historyentry'>HistoryEntry</a>, HistoryInput&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/history-entry#historyentry'>HistoryEntry</a>, HistoryInput&#62;</code>
 
 <div className="members-wrapper">
 
@@ -609,12 +609,12 @@ This event is fired when a registered user successfully changes the identifier (
 associated with their account.
 
 ```ts title="Signature"
-class IdentifierChangeEvent extends VendureEvent {
+class IdentifierChangeEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, user: User, oldIdentifier: string);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -632,12 +632,12 @@ This event is fired when a registered user requests to update the identifier (ie
 associated with the account.
 
 ```ts title="Signature"
-class IdentifierChangeRequestEvent extends VendureEvent {
+class IdentifierChangeRequestEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, user: User);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -654,12 +654,12 @@ class IdentifierChangeRequestEvent extends VendureEvent {
 This event is fired when deenruv finished initializing its services inside the <a href='/reference/typescript-api/services/initializer-service#initializerservice'>InitializerService</a>
 
 ```ts title="Signature"
-class InitializerEvent extends VendureEvent {
+class InitializerEvent extends DeenruvEvent {
     constructor();
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -676,12 +676,12 @@ class InitializerEvent extends VendureEvent {
 This event is fired when a user successfully logs in via the shop or admin API `login` mutation.
 
 ```ts title="Signature"
-class LoginEvent extends VendureEvent {
+class LoginEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, user: User);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -698,12 +698,12 @@ class LoginEvent extends VendureEvent {
 This event is fired when a user logs out via the shop or admin API `logout` mutation.
 
 ```ts title="Signature"
-class LogoutEvent extends VendureEvent {
+class LogoutEvent extends DeenruvEvent {
     constructor(ctx: RequestContext);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -721,12 +721,12 @@ This event is fired whenever an <a href='/reference/typescript-api/entities/orde
 or deleted.
 
 ```ts title="Signature"
-class OrderEvent extends VendureEvent {
+class OrderEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, order: Order, type: 'created' | 'updated' | 'deleted');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -744,7 +744,7 @@ This event is fired whenever an <a href='/reference/typescript-api/entities/orde
 or deleted.
 
 ```ts title="Signature"
-class OrderLineEvent extends VendureEvent {
+class OrderLineEvent extends DeenruvEvent {
     constructor(
         ctx: RequestContext,
         order: Order,
@@ -754,7 +754,7 @@ class OrderLineEvent extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -775,12 +775,12 @@ Note that the exact point that it is set as "placed" can be configured according
 <a href='/reference/typescript-api/orders/order-placed-strategy#orderplacedstrategy'>OrderPlacedStrategy</a>.
 
 ```ts title="Signature"
-class OrderPlacedEvent extends VendureEvent {
+class OrderPlacedEvent extends DeenruvEvent {
     constructor(fromState: OrderState, toState: OrderState, ctx: RequestContext, order: Order);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -797,12 +797,12 @@ class OrderPlacedEvent extends VendureEvent {
 This event is fired whenever an <a href='/reference/typescript-api/entities/order#order'>Order</a> transitions from one <a href='/reference/typescript-api/orders/order-process#orderstate'>OrderState</a> to another.
 
 ```ts title="Signature"
-class OrderStateTransitionEvent extends VendureEvent {
+class OrderStateTransitionEvent extends DeenruvEvent {
     constructor(fromState: OrderState, toState: OrderState, ctx: RequestContext, order: Order);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -819,12 +819,12 @@ class OrderStateTransitionEvent extends VendureEvent {
 This event is fired when a Customer requests a password reset email.
 
 ```ts title="Signature"
-class PasswordResetEvent extends VendureEvent {
+class PasswordResetEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, user: User);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -841,12 +841,12 @@ class PasswordResetEvent extends VendureEvent {
 This event is fired when a password reset is executed with a verified token.
 
 ```ts title="Signature"
-class PasswordResetVerifiedEvent extends VendureEvent {
+class PasswordResetVerifiedEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, user: User);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -874,7 +874,7 @@ class PaymentMethodEvent extends VendureEntityEvent<PaymentMethod, PaymentMethod
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/payment-method#paymentmethod'>PaymentMethod</a>, PaymentMethodInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/payment-method#paymentmethod'>PaymentMethod</a>, PaymentMethodInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -892,7 +892,7 @@ This event is fired whenever a <a href='/reference/typescript-api/entities/payme
 a Payment is authorized by the payment provider.
 
 ```ts title="Signature"
-class PaymentStateTransitionEvent extends VendureEvent {
+class PaymentStateTransitionEvent extends DeenruvEvent {
     constructor(
         fromState: PaymentState,
         toState: PaymentState,
@@ -903,7 +903,7 @@ class PaymentStateTransitionEvent extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -921,12 +921,12 @@ This event is fired whenever a <a href='/reference/typescript-api/entities/produ
 or deleted.
 
 ```ts title="Signature"
-class ProductChannelEvent extends VendureEvent {
+class ProductChannelEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, product: Product, channelId: ID, type: 'assigned' | 'removed');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -955,7 +955,7 @@ class ProductEvent extends VendureEntityEvent<Product, ProductInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/product#product'>Product</a>, ProductInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/product#product'>Product</a>, ProductInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -986,7 +986,7 @@ class ProductOptionEvent extends VendureEntityEvent<ProductOption, ProductOption
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/product-option#productoption'>ProductOption</a>, ProductOptionInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/product-option#productoption'>ProductOption</a>, ProductOptionInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1003,12 +1003,12 @@ class ProductOptionEvent extends VendureEntityEvent<ProductOption, ProductOption
 This event is fired whenever a <a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a> is assigned or removed from a <a href='/reference/typescript-api/entities/product#product'>Product</a>.
 
 ```ts title="Signature"
-class ProductOptionGroupChangeEvent extends VendureEvent {
+class ProductOptionGroupChangeEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, product: Product, optionGroupId: ID, type: 'assigned' | 'removed');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1035,7 +1035,7 @@ class ProductOptionGroupEvent extends VendureEntityEvent<ProductOptionGroup, Pro
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60; <a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a>, ProductOptionGroupInputTypes &#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60; <a href='/reference/typescript-api/entities/product-option-group#productoptiongroup'>ProductOptionGroup</a>, ProductOptionGroupInputTypes &#62;</code>
 
 <div className="members-wrapper">
 
@@ -1052,7 +1052,7 @@ class ProductOptionGroupEvent extends VendureEntityEvent<ProductOptionGroup, Pro
 This event is fired whenever a <a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a> is assigned or removed from a <a href='/reference/typescript-api/entities/channel#channel'>Channel</a>.
 
 ```ts title="Signature"
-class ProductVariantChannelEvent extends VendureEvent {
+class ProductVariantChannelEvent extends DeenruvEvent {
     constructor(
         ctx: RequestContext,
         productVariant: ProductVariant,
@@ -1062,7 +1062,7 @@ class ProductVariantChannelEvent extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1091,7 +1091,7 @@ class ProductVariantEvent extends VendureEntityEvent<ProductVariant[], ProductVa
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[], ProductVariantInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/product-variant#productvariant'>ProductVariant</a>[], ProductVariantInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1122,7 +1122,7 @@ class ProductVariantPriceEvent extends VendureEntityEvent<ProductVariantPrice[],
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60; <a href='/reference/typescript-api/entities/product-variant-price#productvariantprice'>ProductVariantPrice</a>[], ProductVariantInputTypes &#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60; <a href='/reference/typescript-api/entities/product-variant-price#productvariantprice'>ProductVariantPrice</a>[], ProductVariantInputTypes &#62;</code>
 
 <div className="members-wrapper">
 
@@ -1150,7 +1150,7 @@ class PromotionEvent extends VendureEntityEvent<Promotion, PromotionInputTypes> 
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/promotion#promotion'>Promotion</a>, PromotionInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/promotion#promotion'>Promotion</a>, PromotionInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1177,7 +1177,7 @@ class ProvinceEvent extends VendureEntityEvent<Province, ProvinceInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/province#province'>Province</a>, ProvinceInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/province#province'>Province</a>, ProvinceInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1194,12 +1194,12 @@ class ProvinceEvent extends VendureEntityEvent<Province, ProvinceInputTypes> {
 This event is fired whenever a <a href='/reference/typescript-api/entities/refund#refund'>Refund</a> is created
 
 ```ts title="Signature"
-class RefundEvent extends VendureEvent {
+class RefundEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, order: Order, refund: Refund, type: 'created');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1216,7 +1216,7 @@ class RefundEvent extends VendureEvent {
 This event is fired whenever a <a href='/reference/typescript-api/entities/refund#refund'>Refund</a> transitions from one <a href='/reference/typescript-api/payment/refund-state#refundstate'>RefundState</a> to another.
 
 ```ts title="Signature"
-class RefundStateTransitionEvent extends VendureEvent {
+class RefundStateTransitionEvent extends DeenruvEvent {
     constructor(
         fromState: RefundState,
         toState: RefundState,
@@ -1227,7 +1227,7 @@ class RefundStateTransitionEvent extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1245,12 +1245,12 @@ This event is fired whenever one <a href='/reference/typescript-api/entities/rol
 The property `roleIds` only contains the removed or assigned role ids.
 
 ```ts title="Signature"
-class RoleChangeEvent extends VendureEvent {
+class RoleChangeEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, admin: Administrator, roleIds: ID[], type: 'assigned' | 'removed');
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1277,7 +1277,7 @@ class RoleEvent extends VendureEntityEvent<Role, RoleInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/role#role'>Role</a>, RoleInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/role#role'>Role</a>, RoleInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1294,12 +1294,12 @@ class RoleEvent extends VendureEntityEvent<Role, RoleInputTypes> {
 This event is fired whenever a search query is executed.
 
 ```ts title="Signature"
-class SearchEvent extends VendureEvent {
+class SearchEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, input: ExtendedSearchInput);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1326,7 +1326,7 @@ class SellerEvent extends VendureEntityEvent<Seller, SellerInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/seller#seller'>Seller</a>, SellerInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/seller#seller'>Seller</a>, SellerInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1354,7 +1354,7 @@ class ShippingMethodEvent extends VendureEntityEvent<ShippingMethod, ShippingMet
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/shipping-method#shippingmethod'>ShippingMethod</a>, ShippingMethodInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/shipping-method#shippingmethod'>ShippingMethod</a>, ShippingMethodInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1372,13 +1372,13 @@ This event is fired whenever a <a href='/reference/typescript-api/entities/stock
 stock level of a ProductVariant is altered due to things like sales, manual adjustments, and cancellations.
 
 ```ts title="Signature"
-class StockMovementEvent extends VendureEvent {
+class StockMovementEvent extends DeenruvEvent {
     public readonly type: StockMovementType;
     constructor(ctx: RequestContext, stockMovements: StockMovement[]);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1410,7 +1410,7 @@ class TaxCategoryEvent extends VendureEntityEvent<TaxCategory, TaxCategoryInputT
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/tax-category#taxcategory'>TaxCategory</a>, TaxCategoryInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/tax-category#taxcategory'>TaxCategory</a>, TaxCategoryInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1438,7 +1438,7 @@ class TaxRateEvent extends VendureEntityEvent<TaxRate, TaxRateInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>, TaxRateInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/tax-rate#taxrate'>TaxRate</a>, TaxRateInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1455,12 +1455,12 @@ class TaxRateEvent extends VendureEntityEvent<TaxRate, TaxRateInputTypes> {
 This event is fired whenever a TaxRate is changed
 
 ```ts title="Signature"
-class TaxRateModificationEvent extends VendureEvent {
+class TaxRateModificationEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, taxRate: TaxRate);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 
@@ -1488,7 +1488,7 @@ class ZoneEvent extends VendureEntityEvent<Zone, ZoneInputTypes> {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#vendureentityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/zone#zone'>Zone</a>, ZoneInputTypes&#62;</code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-entity-event#deenruventityevent'>VendureEntityEvent</a>&#60;<a href='/reference/typescript-api/entities/zone#zone'>Zone</a>, ZoneInputTypes&#62;</code>
 
 <div className="members-wrapper">
 
@@ -1506,12 +1506,12 @@ This event is fired whenever a <a href='/reference/typescript-api/entities/zone#
 The `entity` property contains the zone with the already updated member field.
 
 ```ts title="Signature"
-class ZoneMembersEvent extends VendureEvent {
+class ZoneMembersEvent extends DeenruvEvent {
     constructor(ctx: RequestContext, entity: Zone, type: 'assigned' | 'removed', memberIds: ID[]);
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 

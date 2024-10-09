@@ -31,7 +31,7 @@ class VendureEntity {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a>&#62;) => VendureEntity`} />
+<MemberInfo kind="method" type={`(input?: DeepPartial&#60;<a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a>&#62;) => VendureEntity`} />
 
 ### id
 

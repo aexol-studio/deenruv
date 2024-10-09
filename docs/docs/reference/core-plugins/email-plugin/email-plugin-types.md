@@ -14,19 +14,19 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="22" packageName="@deenruv/email-plugin" />
 
-A VendureEvent which also includes a `ctx` property containing the current
+A DeenruvEvent which also includes a `ctx` property containing the current
 <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, which is used to determine the channel and language
 to use when generating the email.
 
 ```ts title="Signature"
-type EventWithContext = VendureEvent & { ctx: RequestContext };
+type EventWithContext = DeenruvEvent & { ctx: RequestContext };
 ```
 
 ## EventWithAsyncData
 
 <GenerationInfo sourceFile="packages/email-plugin/src/types.ts" sourceLine="32" packageName="@deenruv/email-plugin" />
 
-A VendureEvent with a <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a> and a `data` property which contains the
+A DeenruvEvent with a <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a> and a `data` property which contains the
 value resolved from the <a href='/reference/core-plugins/email-plugin/email-event-handler#emaileventhandler'>EmailEventHandler</a>`.loadData()` callback.
 
 ```ts title="Signature"

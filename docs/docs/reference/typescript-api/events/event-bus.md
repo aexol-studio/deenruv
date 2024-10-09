@@ -55,7 +55,7 @@ class EventBus implements OnModuleDestroy {
     constructor(transactionSubscriber: TransactionSubscriber)
     publish(event: T) => Promise<void>;
     ofType(type: Type<T>) => Observable<T>;
-    filter(predicate: (event: VendureEvent) => boolean) => Observable<T>;
+    filter(predicate: (event: DeenruvEvent) => boolean) => Observable<T>;
     registerBlockingEventHandler(handlerOptions: BlockingEventHandlerOptions<T>) => ;
 }
 ```
@@ -93,7 +93,7 @@ data related to the event.
 
 ### filter
 
-<MemberInfo kind="method" type={`(predicate: (event: <a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a>) =&#62; boolean) => Observable&#60;T&#62;`} />
+<MemberInfo kind="method" type={`(predicate: (event: <a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a>) =&#62; boolean) => Observable&#60;T&#62;`} />
 
 Returns an RxJS Observable stream of events filtered by a custom predicate.
 If the event contains a <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a> object, the subscriber

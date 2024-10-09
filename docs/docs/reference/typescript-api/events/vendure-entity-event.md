@@ -19,7 +19,7 @@ The base class for all entity events used by the EventBus system.
 -   For event type `'deleted'` the input will most likely be an `id: ID`
 
 ```ts title="Signature"
-class VendureEntityEvent<Entity, Input = any> extends VendureEvent {
+class VendureEntityEvent<Entity, Input = any> extends DeenruvEvent {
     public readonly entity: Entity;
     public readonly type: 'created' | 'updated' | 'deleted';
     public readonly ctx: RequestContext;
@@ -28,7 +28,7 @@ class VendureEntityEvent<Entity, Input = any> extends VendureEvent {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#vendureevent'>VendureEvent</a></code>
+-   Extends: <code><a href='/reference/typescript-api/events/deenruv-event#deenruvevent'>DeenruvEvent</a></code>
 
 <div className="members-wrapper">
 

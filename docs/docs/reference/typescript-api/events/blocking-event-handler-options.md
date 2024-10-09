@@ -17,7 +17,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 Options for registering a blocking event handler.
 
 ```ts title="Signature"
-type BlockingEventHandlerOptions<T extends VendureEvent> = {
+type BlockingEventHandlerOptions<T extends DeenruvEvent> = {
     event: Type<T> | Array<Type<T>>;
     handler: (event: T) => void | Promise<void>;
     id: string;

@@ -357,7 +357,7 @@ in the publishing of the `@deenruv/admin-ui@2.2.1` package.
 #### Fixes
 
 -   **admin-ui** Fix display of asset detail focal point buttons ([1b58aa7](https://github.com/aexol-studio/deenruv/commit/1b58aa7))
--   **core** Export VendureEntityEvent abstract class from index (#2556) ([c46cf74](https://github.com/aexol-studio/deenruv/commit/c46cf74)), closes [#2556](https://github.com/aexol-studio/deenruv/issues/2556)
+-   **core** Export DeenruvEntityEvent abstract class from index (#2556) ([c46cf74](https://github.com/aexol-studio/deenruv/commit/c46cf74)), closes [#2556](https://github.com/aexol-studio/deenruv/issues/2556)
 -   **core** Fix bug when instantiating entity from object with getter ([d09452e](https://github.com/aexol-studio/deenruv/commit/d09452e)), closes [#2574](https://github.com/aexol-studio/deenruv/issues/2574)
 -   **core** Fix loading multiple customField relations (#2566) ([99e04d1](https://github.com/aexol-studio/deenruv/commit/99e04d1)), closes [#2566](https://github.com/aexol-studio/deenruv/issues/2566) [#2555](https://github.com/aexol-studio/deenruv/issues/2555)
 -   **core** OrderLineEvent includes ID of deleted OrderLine ([ee04032](https://github.com/aexol-studio/deenruv/commit/ee04032)), closes [#2574](https://github.com/aexol-studio/deenruv/issues/2574)
@@ -780,9 +780,9 @@ so if you use these languages you will encounter layout issues.
 -   **core** Extract hard-coded fulfillment state & process ([cdb2b75](https://github.com/aexol-studio/deenruv/commit/cdb2b75))
 -   **core** Extract hard-coded order state & process ([cff3b91](https://github.com/aexol-studio/deenruv/commit/cff3b91))
 -   **core** Extract hard-coded payment state & process ([4c5c946](https://github.com/aexol-studio/deenruv/commit/4c5c946))
--   **core** Add `compatibility` check to VendurePlugin metadata ([d18d350](https://github.com/aexol-studio/deenruv/commit/d18d350)), closes [#1471](https://github.com/aexol-studio/deenruv/issues/1471)
+-   **core** Add `compatibility` check to DeenruvPlugin metadata ([d18d350](https://github.com/aexol-studio/deenruv/commit/d18d350)), closes [#1471](https://github.com/aexol-studio/deenruv/issues/1471)
 -   **core** Add quantity arg to OrderItemPriceCalculationStrategy ([02a0864](https://github.com/aexol-studio/deenruv/commit/02a0864)), closes [#1920](https://github.com/aexol-studio/deenruv/issues/1920)
--   **core** Export VENDURE_VERSION constant ([b2a910a](https://github.com/aexol-studio/deenruv/commit/b2a910a)), closes [#1471](https://github.com/aexol-studio/deenruv/issues/1471)
+-   **core** Export DEENRUV_VERSION constant ([b2a910a](https://github.com/aexol-studio/deenruv/commit/b2a910a)), closes [#1471](https://github.com/aexol-studio/deenruv/issues/1471)
 -   **core** Implement Regions & support for Provinces ([7b8f5bf](https://github.com/aexol-studio/deenruv/commit/7b8f5bf)), closes [#76](https://github.com/aexol-studio/deenruv/issues/76)
 -   **core** Allow specifying transaction isolation level (#2116) ([bf2b1f5](https://github.com/aexol-studio/deenruv/commit/bf2b1f5)), closes [#2116](https://github.com/aexol-studio/deenruv/issues/2116)
 -   **core** Add `topLevelOnly` filter to collection list query ([66b8c75](https://github.com/aexol-studio/deenruv/commit/66b8c75))
