@@ -1,0 +1,4 @@
+include:
+  - project: "ci/templates/node"
+    file: ["pnpm-publish.yml"]
+
