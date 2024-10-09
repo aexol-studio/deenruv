@@ -96,7 +96,7 @@ export const devConfig: DeenruvConfig = {
             devMode: true,
             route: 'mailbox',
             handlers: defaultEmailHandlers,
-            templatePath: path.join(__dirname, '../email-plugin/templates'),
+            templatePath: path.join(__dirname, '../../packages/email-plugin/templates'),
             outputPath: path.join(__dirname, 'test-emails'),
             globalTemplateVars: {
                 verifyEmailAddressUrl: 'http://localhost:4201/verify',
