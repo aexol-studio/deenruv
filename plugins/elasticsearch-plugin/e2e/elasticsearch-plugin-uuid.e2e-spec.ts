@@ -9,9 +9,9 @@ import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-conf
 import {
     SearchProductsShopQuery,
     SearchProductsShopQueryVariables,
-} from '../../core/e2e/graphql/generated-e2e-shop-types';
-import { SEARCH_PRODUCTS_SHOP } from '../../core/e2e/graphql/shop-definitions';
-import { awaitRunningJobs } from '../../core/e2e/utils/await-running-jobs';
+} from '../../../packages/core/e2e/graphql/generated-e2e-shop-types';
+import { SEARCH_PRODUCTS_SHOP } from '../../../packages/core/e2e/graphql/shop-definitions';
+import { awaitRunningJobs } from '../../../packages/core/e2e/utils/await-running-jobs';
 import { ElasticsearchPlugin } from '../src/plugin';
 
 import { GetCollectionListQuery } from './graphql/generated-e2e-elasticsearch-plugin-types';

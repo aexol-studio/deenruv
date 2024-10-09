@@ -1,6 +1,6 @@
 {
-    "name": "@deenruv/harden-plugin",
-    "version": "2.3.1",
+    "name": "@deenruv/stellate-plugin",
+    "version": "0.0.1",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -12,18 +12,23 @@
         "build": "rimraf lib && tsc -p ./tsconfig.build.json",
         "lint": "eslint --fix ."
     },
-    "homepage": "https://www.deenruv.io/",
+    "homepage": "https://www.deenruv.io",
     "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"
     },
     "dependencies": {
-        "@apollo/server": "^4.10.4",
-        "graphql-query-complexity": "^0.12.0"
+        "@nestjs/common": "~10.3.10",
+        "@nestjs/core": "~10.3.10",
+        "@nestjs/graphql": "~12.2.0",
+        "graphql-tag": "^2.12.6",
+        "node-fetch": "^2.7.0",
+        "rxjs": "^7.8.1"
     },
     "devDependencies": {
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
+        "@types/node-fetch": "^2.6.11",
         "rimraf": "^5.0.5"
     }
 }

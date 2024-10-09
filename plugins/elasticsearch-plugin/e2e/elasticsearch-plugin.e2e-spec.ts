@@ -18,11 +18,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
 import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
-import * as Codegen from '../../core/e2e/graphql/generated-e2e-admin-types';
+import * as Codegen from '../../../packages/core/e2e/graphql/generated-e2e-admin-types';
 import {
     SearchProductsShopQuery,
     SearchProductsShopQueryVariables,
-} from '../../core/e2e/graphql/generated-e2e-shop-types';
+} from '../../../packages/core/e2e/graphql/generated-e2e-shop-types';
 import {
     ASSIGN_PRODUCTVARIANT_TO_CHANNEL,
     ASSIGN_PRODUCT_TO_CHANNEL,
@@ -41,9 +41,9 @@ import {
     UPDATE_PRODUCT,
     UPDATE_PRODUCT_VARIANTS,
     UPDATE_TAX_RATE,
-} from '../../core/e2e/graphql/shared-definitions';
-import { SEARCH_PRODUCTS_SHOP } from '../../core/e2e/graphql/shop-definitions';
-import { awaitRunningJobs } from '../../core/e2e/utils/await-running-jobs';
+} from '../../../packages/core/e2e/graphql/shared-definitions';
+import { SEARCH_PRODUCTS_SHOP } from '../../../packages/core/e2e/graphql/shop-definitions';
+import { awaitRunningJobs } from '../../../packages/core/e2e/utils/await-running-jobs';
 import { ElasticsearchPlugin } from '../src/plugin';
 
 import {
