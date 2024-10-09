@@ -405,7 +405,7 @@ importers:
     dependencies:
       '@deenruv/admin-ui-plugin':
         specifier: workspace:*
-        version: link:../../plugins/admin-ui-plugin
+        version: link:../../packages/admin-ui-plugin
       '@deenruv/asset-server-plugin':
         specifier: workspace:*
         version: link:../../packages/asset-server-plugin
@@ -718,6 +718,52 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
     publishDirectory: package
+
+  packages/admin-ui-plugin:
+    dependencies:
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.0(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      fs-extra:
+        specifier: ^11.2.0
+        version: 11.2.0
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+    devDependencies:
+      '@deenruv/admin-ui':
+        specifier: workspace:*
+        version: link:../admin-ui/package
+      '@deenruv/common':
+        specifier: workspace:*
+        version: link:../common
+      '@deenruv/core':
+        specifier: workspace:*
+        version: link:../core
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
+      express:
+        specifier: ^4.18.3
+        version: 4.21.0
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
+      typescript:
+        specifier: 5.4.2
+        version: 5.4.2
 
   packages/asset-server-plugin:
     dependencies:
@@ -1501,86 +1547,6 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.7.0
-      typescript:
-        specifier: 5.3.3
-        version: 5.3.3
-
-  plugins/admin-ui-plugin:
-    dependencies:
-      '@nestjs/common':
-        specifier: ~10.3.10
-        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/graphql':
-        specifier: ~12.2.0
-        version: 12.2.0(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
-      date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
-      fs-extra:
-        specifier: ^11.2.0
-        version: 11.2.0
-      graphql:
-        specifier: ~16.9.0
-        version: 16.9.0
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.9.0)
-    devDependencies:
-      '@deenruv/admin-ui':
-        specifier: workspace:*
-        version: link:../../packages/admin-ui/package
-      '@deenruv/common':
-        specifier: workspace:*
-        version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/fs-extra':
-        specifier: ^11.0.4
-        version: 11.0.4
-      express:
-        specifier: ^4.18.3
-        version: 4.21.0
-      rimraf:
-        specifier: ^5.0.5
-        version: 5.0.10
-      typescript:
-        specifier: 5.4.2
-        version: 5.4.2
-
-  plugins/first-deenruv-plugin:
-    dependencies:
-      '@nestjs/common':
-        specifier: ~10.3.10
-        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/terminus':
-        specifier: ~10.2.3
-        version: 10.2.3(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.13)(@nestjs/axios@3.0.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.7.7)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.11)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.0)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.7.26)(@types/node@20.16.11)(typescript@5.3.3)))
-      rxjs:
-        specifier: ^7.8.1
-        version: 7.8.1
-    devDependencies:
-      '@deenruv/common':
-        specifier: workspace:*
-        version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@google-cloud/pubsub':
-        specifier: ^2.8.0
-        version: 2.19.4(encoding@0.1.13)
-      bullmq:
-        specifier: ^5.4.2
-        version: 5.17.1
-      ioredis:
-        specifier: ^5.3.2
-        version: 5.4.1
-      rimraf:
-        specifier: ^5.0.5
-        version: 5.0.10
       typescript:
         specifier: 5.3.3
         version: 5.3.3
