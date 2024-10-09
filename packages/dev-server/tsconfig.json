@@ -5,8 +5,12 @@
         "sourceMap": true,
         "jsx": "react",
         "paths": {
-            "@deenruv/admin-ui/*": ["../admin-ui/package/*"]
+            "@deenruv/admin-ui/*": [
+                "../admin-ui/package/*"
+            ]
         }
     },
-    "exclude": ["node_modules"]
+    "exclude": [
+        "node_modules"
+    ]
 }

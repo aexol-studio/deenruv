@@ -37,7 +37,7 @@ interface VendurePluginMetadata extends ModuleMetadata {
 
 <MemberInfo kind="property" type={`<a href='/reference/typescript-api/plugin/deenruv-plugin-metadata#pluginconfigurationfn'>PluginConfigurationFn</a>`} />
 
-A function which can modify the <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a> object before the server bootstraps.
+A function which can modify the <a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a> object before the server bootstraps.
 
 ### shopApiExtensions
 
@@ -134,7 +134,7 @@ Read more about defining custom scalars in the
 
 <GenerationInfo sourceFile="packages/core/src/plugin/deenruv-plugin.ts" sourceLine="112" packageName="@deenruv/core" />
 
-This method is called before the app bootstraps and should be used to perform any needed modifications to the <a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>.
+This method is called before the app bootstraps and should be used to perform any needed modifications to the <a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>.
 
 ```ts title="Signature"
 type PluginConfigurationFn = (

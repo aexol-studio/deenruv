@@ -124,11 +124,11 @@ Using this decorator allows Deenruv to correctly store the value in the database
 
 ```ts title="src/plugins/quote/entities/quote.entity.ts"
 import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { VendureEntity, Order, EntityId, Money, CurrencyCode, ID } from '@deenruv/core';
+import { DeenruvEntity, Order, EntityId, Money, CurrencyCode, ID } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-class Quote extends VendureEntity {
+class Quote extends DeenruvEntity {
     constructor(input?: DeepPartial<Quote>) {
         super(input);
     }

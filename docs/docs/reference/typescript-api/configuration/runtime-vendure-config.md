@@ -35,7 +35,7 @@ interface RuntimeVendureConfig extends Required<DeenruvConfig> {
 }
 ```
 
--   Extends: <code>Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;</code>
+-   Extends: <code>Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>&#62;</code>
 
 <div className="members-wrapper">
 

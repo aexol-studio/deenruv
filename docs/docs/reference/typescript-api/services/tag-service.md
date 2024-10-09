@@ -61,6 +61,6 @@ class TagService {
 
 ### getTagsForEntity
 
-<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, entity: Type&#60;<a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a> &#38; <a href='/reference/typescript-api/entities/interfaces#taggable'>Taggable</a>&#62;, id: <a href='/reference/typescript-api/common/id#id'>ID</a>) => Promise&#60;<a href='/reference/typescript-api/entities/tag#tag'>Tag</a>[]&#62;`} />
+<MemberInfo kind="method" type={`(ctx: <a href='/reference/typescript-api/request/request-context#requestcontext'>RequestContext</a>, entity: Type&#60;<a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a> &#38; <a href='/reference/typescript-api/entities/interfaces#taggable'>Taggable</a>&#62;, id: <a href='/reference/typescript-api/common/id#id'>ID</a>) => Promise&#60;<a href='/reference/typescript-api/entities/tag#tag'>Tag</a>[]&#62;`} />
 
 </div>

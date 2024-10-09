@@ -29,7 +29,7 @@ class Role extends VendureEntity implements ChannelAware {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a></code>
 
 -   Implements: <code><a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a></code>
 

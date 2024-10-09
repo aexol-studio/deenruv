@@ -154,7 +154,7 @@ The following helper functions are available for use in email templates:
 
 The `defaultEmailHandlers` array defines the default handler such as for handling new account registration, order confirmation, password reset
 etc. These defaults can be extended by adding custom templates for languages other than the default, or even completely new types of emails
-which respond to any of the available [VendureEvents](/reference/typescript-api/events/).
+which respond to any of the available [DeenruvEvents](/reference/typescript-api/events/).
 
 A good way to learn how to create your own email handler is to take a look at the
 [source code of the default handler](https://github.com/aexol-studio/deenruv/blob/master/packages/email-plugin/src/handler/default-email-handlers.ts).

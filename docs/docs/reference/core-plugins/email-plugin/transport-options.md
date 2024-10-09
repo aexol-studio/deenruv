@@ -51,7 +51,7 @@ interface SMTPTransportOptions extends SMTPTransport.Options {
 
 <MemberInfo kind="property" type={`boolean`} default={`false`} />
 
-If true, uses the configured <a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a> to log messages from Nodemailer as it interacts with
+If true, uses the configured <a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a> to log messages from Nodemailer as it interacts with
 the SMTP server.
 
 </div>

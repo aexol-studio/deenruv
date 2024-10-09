@@ -55,7 +55,7 @@ import {
     Product,
     TransactionalConnection,
     DeenruvConfig,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { Injectable } from '@nestjs/common';
 import { EntitySubscriberInterface, EventSubscriber, UpdateEvent } from 'typeorm';

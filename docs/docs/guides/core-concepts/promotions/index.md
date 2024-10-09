@@ -164,7 +164,7 @@ import {
     OrderLine,
     OrderService,
     PromotionItemAction,
-    VendurePlugin,
+    DeenruvPlugin,
 } from '@deenruv/core';
 import { createHash } from 'crypto';
 

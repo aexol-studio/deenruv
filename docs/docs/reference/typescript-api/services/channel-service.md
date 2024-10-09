@@ -103,7 +103,7 @@ Returns the default Channel.
 
 ### isChannelAware
 
-<MemberInfo kind="method" type={`(entity: <a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a>) => entity is <a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a> &#38; <a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a>`} />
+<MemberInfo kind="method" type={`(entity: <a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a>) => entity is <a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a> &#38; <a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a>`} />
 
 Type guard method which returns true if the given entity is an
 instance of a class which implements the <a href='/reference/typescript-api/entities/interfaces#channelaware'>ChannelAware</a> interface.

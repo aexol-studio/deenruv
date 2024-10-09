@@ -18,7 +18,7 @@ A minimalistic GraphQL client for populating and querying test data.
 
 ```ts title="Signature"
 class SimpleGraphQLClient {
-    constructor(vendureConfig: Required<DeenruvConfig>, apiUrl: string = '')
+    constructor(deeruvConfig: Required<DeenruvConfig>, apiUrl: string = '')
     setAuthToken(token: string) => ;
     setChannelToken(token: string | null) => ;
     getAuthToken() => string;
@@ -40,7 +40,7 @@ class SimpleGraphQLClient {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(vendureConfig: Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;, apiUrl: string = '') => SimpleGraphQLClient`} />
+<MemberInfo kind="method" type={`(deeruvConfig: Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>&#62;, apiUrl: string = '') => SimpleGraphQLClient`} />
 
 ### setAuthToken
 

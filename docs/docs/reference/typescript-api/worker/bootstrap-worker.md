@@ -14,7 +14,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 
 <GenerationInfo sourceFile="packages/core/src/bootstrap.ts" sourceLine="170" packageName="@deenruv/core" />
 
-Bootstraps a Deenruv worker. Resolves to a <a href='/reference/typescript-api/worker/deenruv-worker#vendureworker'>VendureWorker</a> object containing a reference to the underlying
+Bootstraps a Deenruv worker. Resolves to a <a href='/reference/typescript-api/worker/deenruv-worker#deenruvworker'>DeenruvWorker</a> object containing a reference to the underlying
 NestJs [standalone application](https://docs.nestjs.com/standalone-applications) as well as convenience
 methods for starting the job queue and health check server.
 
@@ -46,7 +46,7 @@ Parameters
 
 ### userConfig
 
-<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;`} />
+<MemberInfo kind="parameter" type={`Partial&#60;<a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>&#62;`} />
 
 ### options
 

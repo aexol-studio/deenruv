@@ -42,7 +42,7 @@ Finally, the `sync` PermissionDefinition must be passed into the DeenruvConfig s
 
 ```ts title="src/plugins/inventory-sync/inventory-sync.plugin.ts"
 import gql from 'graphql-tag';
-import { VendurePlugin } from '@deenruv/core';
+import { DeenruvPlugin } from '@deenruv/core';
 
 import { InventorySyncResolver } from './api/inventory-sync.resolver';
 import { sync } from './constants';
@@ -129,7 +129,7 @@ Finally, the `productReview` CrudPermissionDefinition must be passed into the De
 
 ```ts title="src/plugins/product-review/product-review.plugin.ts"
 import gql from 'graphql-tag';
-import { VendurePlugin } from '@deenruv/core';
+import { DeenruvPlugin } from '@deenruv/core';
 
 import { ProductReviewResolver } from './api/product-review.resolver';
 import { productReviewPermission } from './constants';
@@ -160,7 +160,7 @@ You may want to restrict access to this custom field to only those roles which h
 plugin.
 
 ```ts title="src/plugins/product-review.plugin.ts"
-import { VendurePlugin } from '@deenruv/core';
+import { DeenruvPlugin } from '@deenruv/core';
 import { productReviewPermission } from './constants';
 
 @DeenruvPlugin({

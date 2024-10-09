@@ -53,4 +53,4 @@ Parameters
 
 ### pluginMetadata
 
-<MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/plugin/deenruv-plugin-metadata#vendurepluginmetadata'>VendurePluginMetadata</a>`} />
+<MemberInfo kind="parameter" type={`<a href='/reference/typescript-api/plugin/deenruv-plugin-metadata#deenruvpluginmetadata'>DeenruvPluginMetadata</a>`} />

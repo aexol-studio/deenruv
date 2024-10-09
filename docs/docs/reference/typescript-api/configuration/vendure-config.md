@@ -147,9 +147,9 @@ Configures the available checkers and calculators for ShippingMethods.
 
 ### logger
 
-<MemberInfo kind="property" type={`<a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a>`} default={`<a href='/reference/typescript-api/logger/default-logger#defaultlogger'>DefaultLogger</a>`} />
+<MemberInfo kind="property" type={`<a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a>`} default={`<a href='/reference/typescript-api/logger/default-logger#defaultlogger'>DefaultLogger</a>`} />
 
-Provide a logging service which implements the <a href='/reference/typescript-api/logger/deenruv-logger#vendurelogger'>VendureLogger</a> interface.
+Provide a logging service which implements the <a href='/reference/typescript-api/logger/deenruv-logger#deenruvlogger'>VendureLogger</a> interface.
 Note that the logging of SQL queries is controlled separately by the
 `dbConnectionOptions.logging` property.
 

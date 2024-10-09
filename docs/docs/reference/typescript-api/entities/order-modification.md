@@ -43,7 +43,7 @@ class OrderModification extends VendureEntity {
 }
 ```
 
--   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#vendureentity'>VendureEntity</a></code>
+-   Extends: <code><a href='/reference/typescript-api/entities/deenruv-entity#deenruventity'>VendureEntity</a></code>
 
 <div className="members-wrapper">
 

@@ -19,7 +19,7 @@ A real Deenruv server against which the e2e tests should be run.
 ```ts title="Signature"
 class TestServer {
     public app: INestApplication;
-    constructor(vendureConfig: Required<DeenruvConfig>)
+    constructor(deeruvConfig: Required<DeenruvConfig>)
     init(options: TestServerOptions) => Promise<void>;
     bootstrap() => ;
     destroy() => ;
@@ -34,7 +34,7 @@ class TestServer {
 
 ### constructor
 
-<MemberInfo kind="method" type={`(vendureConfig: Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#vendureconfig'>DeenruvConfig</a>&#62;) => TestServer`} />
+<MemberInfo kind="method" type={`(deeruvConfig: Required&#60;<a href='/reference/typescript-api/configuration/deenruv-config#deenruvconfig'>DeenruvConfig</a>&#62;) => TestServer`} />
 
 ### init
 
