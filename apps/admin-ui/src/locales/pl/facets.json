@@ -1,0 +1,78 @@
+{
+    "createFacet": "Utwórz aspekt",
+    "baseInfoCode": "Kod: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "requiredError": "Ta wartość jest wymagana",
+    "table": {
+        "id": "Id",
+        "name": "Nazwa",
+        "createdAt": "Utworzono na stronie",
+        "updatedAt": "Zaktualizowano na stronie",
+        "code": "Kod",
+        "isPrivate": "Prywatny",
+        "public": "Publiczny",
+        "languageCode": "Kod języka",
+        "usedForColors": "Używany dla kolorów",
+        "colorsCollection": "Kolekcja kolorów",
+        "usedForProductCreations": "Używany do tworzenia produktów",
+        "values": "Wartości",
+        "openMenu": "Otwórz menu",
+        "copyId": "Kopiuj identyfikator",
+        "viewFacet": "Zobacz aspekt",
+        "columns": "Kolumny",
+        "color": "Kolor",
+        "new": "Nowy",
+        "image": "Obraz"
+    },
+    "toasts": {
+        "facetLoadingError": "Nie udało się załadować aspektu o id {{value}}",
+        "facetUpdateSuccess": "Facet został pomyślnie zaktualizowany",
+        "facetUpdateError": "Wystąpił błąd: ",
+        "facetCreatedSuccess": "Facet został utworzony pomyślnie"
+    },
+    "visibility": {
+        "public": "Publiczny",
+        "private": "Prywatny"
+    },
+    "deleteFacet": {
+        "title": "Usuń aspekt",
+        "description": "Czy na pewno chcesz usunąć ten aspekt?",
+        "successMessage": "Facet został usunięty.",
+        "deleteOrCancel": "Usuń/Anuluj wybrane",
+        "confirm": "Usuń",
+        "cancel": "Anuluj"
+    },
+    "selectedValue": "{{from}} wierszy {{to}} wybranych wierszy",
+    "details": {
+        "basicInfo": "Dane podstawowe",
+        "customFields": "Pola niestandardowe",
+        "facetValues": "Wartość aspektu",
+        "usedForColorsDesc": "Użyj tego atrybutu dla facetów, którzy mają kolory",
+        "colorsCollectionDesc": "Użyj tej opcji dla ścieżek produktu w KOLORZE (BLAT/CORPUS)",
+        "usedForProductCreationsDesc": "Użyj tego atrybutu podczas tworzenia kolekcji kolorów",
+        "valueDeleteSuccess": "Wartość aktywów została pomyślnie usunięta",
+        "valueDeleteFail": "Wystąpił błąd: "
+    },
+    "addValueModal": {
+        "button": "Dodaj wartość",
+        "editButton": "Zaktualizuj wartość",
+        "title": "Dodaj wartość aspektu",
+        "editTitle": "Edytuj wartość aspektu",
+        "nameLabel": "Nazwa wartości aspektu",
+        "codeLabel": "Kod wartości aspektu",
+        "isNew": "Nowy",
+        "hidden": "Ukryty",
+        "color": "Kolor",
+        "success": "Skuteczna wartość dodana aspektu",
+        "editSuccess": "Wartość aspektu została pomyślnie zaktualizowana",
+        "error": "Wystąpił błąd",
+        "options": "Opcje",
+        "image": "Obraz"
+    },
+    "buttons": {
+        "deleteValue": "Usuń wartość",
+        "editValue": "Edytuj wartość"
+    }
+}

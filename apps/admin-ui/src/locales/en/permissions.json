@@ -1,0 +1,94 @@
+{
+  "GlobalSettings": {
+    "title": "Global settings",
+    "description": "Grants permissions on GlobalSettings"
+  },
+  "Catalog": {
+    "title": "Catalog",
+    "description": "Grants permissions on Products, Facets, Assets, Collections"
+  },
+  "Settings": {
+    "title": "Settings",
+    "description": "Grants permissions on PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings"
+  },
+  "Administrator": {
+    "title": "Administrator",
+    "description": "Grants permissions on Administrator"
+  },
+  "Asset": {
+    "title": "Asset",
+    "description": "Grants permissions on Asset"
+  },
+  "Channel": {
+    "title": "Channel",
+    "description": "Grants permissions on Channel"
+  },
+  "Collection": {
+    "title": "Collection",
+    "description": "Grants permissions on Collection"
+  },
+  "Country": {
+    "title": "Country",
+    "description": "Grants permissions on Country"
+  },
+  "Customer": {
+    "title": "Customer",
+    "description": "Grants permissions on Customer"
+  },
+  "CustomerGroup": {
+    "title": "CustomerGroup",
+    "description": "Grants permissions on CustomerGroup"
+  },
+  "Facet": {
+    "title": "Facet",
+    "description": "Grants permissions on Facet"
+  },
+  "Order": {
+    "title": "Order",
+    "description": "Grants permissions on Order"
+  },
+  "PaymentMethod": {
+    "title": "PaymentMethod",
+    "description": "Grants permissions on PaymentMethod"
+  },
+  "Product": {
+    "title": "Product",
+    "description": "Grants permissions on Product"
+  },
+  "Promotion": {
+    "title": "Promotion",
+    "description": "Grants permissions on Promotion"
+  },
+  "ShippingMethod": {
+    "title": "ShippingMethod",
+    "description": "Grants permissions on ShippingMethod"
+  },
+  "Tag": {
+    "title": "Tag",
+    "description": "Grants permissions on Tag"
+  },
+  "TaxCategory": {
+    "title": "TaxCategory",
+    "description": "Grants permissions on TaxCategory"
+  },
+  "TaxRate": {
+    "title": "TaxRate",
+    "description": "Grants permissions on TaxRate"
+  },
+  "Seller": {
+    "title": "Seller",
+    "description": "Grants permissions on Seller"
+  },
+  "StockLocation": {
+    "title": "StockLocation",
+    "description": "Grants permissions on StockLocation"
+  },
+  "System": {
+    "title": "System",
+    "description": "Grants permissions on System"
+  },
+  "Zone": {
+    "title": "Zone",
+    "description": "Grants permissions on Zone"
+  }
+}

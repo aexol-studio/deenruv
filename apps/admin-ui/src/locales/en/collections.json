@@ -1,0 +1,141 @@
+{
+  "create": "Create collection",
+  "edit": "Edit collection",
+  "baseInfoCode": "Code: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Created: {{value}}",
+  "baseInfoUpdated": "Updated: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Name",
+    "isPrivate": "Private",
+    "subCollections": "Collections",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "columns": "Columns",
+    "featuredAsset": "Image",
+    "breadcrumb": "Breadcrumb",
+    "slug": "Slug",
+    "children": "# of childrens",
+    "collections": "In collections",
+    "actions": "Actions",
+    "copyId": "Copy product ID",
+    "products": "# of products",
+    "delete": "Delete collection"
+  },
+  "details": {
+    "basic": {
+      "title": "Basic info",
+      "name": "Name",
+      "slug": "Slug",
+      "isPrivate": "Is private",
+      "description": "Description"
+    },
+    "filters": {
+      "title": "Filters",
+      "inherit": "Inherit filters",
+      "condition": "Condition",
+      "addCondition": "Add condition",
+      "addFacets": "Add facet values"
+    },
+    "contents": {
+      "title": "Contents"
+    }
+  },
+  "visibility": {
+    "public": "Public",
+    "private": "Private"
+  },
+  "toasts": {
+    "collectionLoadingError": "Failed to load collection with id {{value}}",
+    "collectionUpdateSuccess": "Collection updated successfully",
+    "collectionUpdateError": "Error occurred: ",
+    "collectionCreatedSuccess": "Collection has been created successfully",
+    "collectionCreatedError": "Failed to create collection",
+    "collectionDeleteSuccess": "Collection deleted successfully",
+    "collectionDeleteError": "Failed to delete collection",
+    "deletionCollectionErrorToast": "Failed to delete collection",
+    "deletionCollectionSuccessToast": "Collections deleted successfully",
+    "noCollectionChildrens": "{{collection}} collection don't have any childrens"
+  },
+  "deleteCollection": {
+    "title": "Delete collection",
+    "description": "Are you sure you want to delete this collection?",
+    "successMessage": "Collection has been deleted.",
+    "deleteOrCancel": "Delete/Cancel selected"
+  },
+  "editCollection": "Edit collection",
+  "withSelected": "With {{collections}} selected",
+  "columns": "Columns",
+  "rowsSelected": "{{selected}} of {{all}} rows(s) selected",
+  "duplicateCollection": "You definitely want to duplicate these collections?",
+  "collectionActions": {
+    "move": "Move",
+    "copy": "Duplicate",
+    "assign": "Assign to channel",
+    "deleteFromChannel": "Remove from current channel"
+  },
+  "drawer": {
+    "close": "Close",
+    "title": "{{collectionName}} collection",
+    "count": "{{count}} products",
+    "product": "Product",
+    "variant": "Variant",
+    "sku": "SKU",
+    "filter": {
+      "title": "Filter..",
+      "name": "By variant name",
+      "sku": "By SKU",
+      "id": "By Id",
+      "labels": {
+        "name": "Variant name",
+        "sku": "SKU",
+        "id": "Id"
+      }
+    }
+  },
+  "deleteCollectionDialog": {
+    "button": "Delete collection",
+    "title": "Are you sure?",
+    "description": "The collection will be deleted permanently.",
+    "confirm": "Delete Collection",
+    "cancel": "Cancel"
+  },
+  "deleteCollectionsFromChannel": {
+    "areYouSure": "Are you sure to delete these collections from {{ channel }} ?",
+    "removeCollection": "Remove collection",
+    "cancel": "Cancel",
+    "removeSuccess": "Collections removed",
+    "removeError": "Couldn't remove collections from channel"
+  },
+  "moveCollectionsToChannels": {
+    "moveCollections": "Move collections",
+    "move": "Move",
+    "selected": "Selected",
+    "availableChannels": "Available channles",
+    "searchByCode": "Search by code..",
+    "searchByToken": "Search by token..",
+    "table": {
+      "token": "Token",
+      "code": "Code",
+      "active": "Active"
+    },
+    "movedAllCollections": "Moved all collections",
+    "movedPartOfCollections": "Moved part of collections",
+    "moveError": "Couldn't move collections"
+  },
+  "moveCollectionsToCollections": {
+    "targetCollection": "Target collection",
+    "searchByName": "Search by name..",
+    "move": "Move",
+    "selected": "Selected",
+    "moveCollections": "Move collections",
+    "movedAllCollections": "Moved all collections",
+    "movedPartOfCollections": "Moved part of collections",
+    "moveError": "Couldn't move collections"
+  },
+  "errors": {
+    "generic": "Something wen't wrong",
+    "couldntMoveCollection": "Coudld't move collections"
+  }
+}

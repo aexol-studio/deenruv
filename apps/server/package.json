@@ -11,6 +11,9 @@
         "start": "concurrently npm:run*",
         "docker-up": "docker compose up -d",
         "docker-down": "docker compose down -v",
+        "migration:generate": "ts-node migration.ts generate",
+        "migration:run": "ts-node migration.ts run",
+        "migration:revert": "ts-node migration.ts revert",
         "load-test:1k": "node -r ts-node/register load-testing/run-load-test.ts 1000",
         "load-test:10k": "node -r ts-node/register load-testing/run-load-test.ts 10000",
         "load-test:100k": "node -r ts-node/register load-testing/run-load-test.ts 100000"
@@ -23,6 +26,7 @@
         "@deenruv/core": "workspace:*",
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",
+        "@deenruv/job-queue-plugin": "workspace:*",
         "typeorm": "0.3.20",
         "typescript": "5.3.3"
     },

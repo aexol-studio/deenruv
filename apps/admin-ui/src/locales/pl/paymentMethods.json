@@ -1,0 +1,52 @@
+{
+  "create": "Utwórz metodę płatności",
+  "edit": "Edytuj metodę płatności",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Nazwa",
+    "code": "Kod",
+    "enabled": "Włączony",
+    "modalTitle": "Tytuł modalny",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "name": "Nazwa",
+      "description": "Opis",
+      "code": "Kod",
+      "enabled": "Włączony"
+    },
+    "modal": {
+      "title": "Modalny",
+      "name": "Tytuł modalny",
+      "description": "Opis modalny",
+      "additionalDescription": "Modalny opis dodatkowy"
+    },
+    "options": {
+      "title": "Opcje",
+      "handler": "Obsługa płatności",
+      "checker": "Narzędzie do sprawdzania kwalifikowalności płatności"
+    }
+  },
+  "toasts": {
+    "paymentMethodLoadingError": "Nie udało się załadować metody płatności o id {{value}}.",
+    "paymentMethodUpdateSuccess": "Metoda płatności została pomyślnie zaktualizowana",
+    "paymentMethodUpdateError": "Wystąpił błąd: ",
+    "paymentMethodCreatedSuccess": "Metoda płatności została pomyślnie utworzona",
+    "paymentMethodCreatedError": "Nie udało się utworzyć metody płatności",
+    "paymentMethodDeleteSuccess": "Metoda płatności została pomyślnie usunięta",
+    "paymentMethodDeleteError": "Nie udało się usunąć metody płatności"
+  },
+  "deletePaymentMethod": {
+    "title": "Usuń metodę płatności",
+    "description": "Czy na pewno chcesz usunąć tę metodę płatności?",
+    "successMessage": "Metoda płatności została usunięta."
+  }
+}

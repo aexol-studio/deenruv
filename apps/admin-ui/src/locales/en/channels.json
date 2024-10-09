@@ -1,0 +1,56 @@
+{
+  "create": "Create channel",
+  "edit": "Edit channel",
+  "baseInfoCode": "Code: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Created: {{value}}",
+  "baseInfoUpdated": "Updated: {{value}}",
+  "defaultChannel": "Default Channel",
+  "table": {
+    "id": "Id",
+    "code": "Code",
+    "token": "Token",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "openMenu": "Open menu",
+    "copyId": "Copy id",
+    "viewChannel": "View channel",
+    "columns": "Columns"
+  },
+  "details": {
+    "basic": {
+      "title": "Basic info",
+      "code": "Code",
+      "token": "Token",
+      "seller": "Seller",
+      "languages": "Available languages",
+      "languagePlaceholder": "Add language",
+      "currencies": "Available currencies",
+      "currencyPlaceholder": "Add currency"
+    },
+    "defaults": {
+      "title": "Defaults",
+      "defaultLanguage": "Default language",
+      "defaultCurrency": "Default currency",
+      "defaultTaxZone": "Default tax zone",
+      "defaultShippingZone": "Default shipping zone",
+      "includeTax": "Prices include tax for the default Zone"
+    }
+  },
+  "toasts": {
+    "channelLoadingError": "Failed to load channel with id {{value}}",
+    "channelUpdateSuccess": "Channel updated successfully",
+    "channelUpdateError": "Error occurred: ",
+    "channelCreatedSuccess": "Channel has been created successfully",
+    "channelCreatedError": "Failed to create channel",
+    "channelDeleteSuccess": "Channel deleted successfully",
+    "channelDeleteError": "Failed to delete channel"
+  },
+  "deleteChannel": {
+    "title": "Delete channel",
+    "description": "Are you sure you want to delete this channel?",
+    "successMessage": "Channel has been deleted.",
+    "deleteOrCancel": "Delete/Cancel selected"
+  },
+  "selectedValue": "{{from}} of {{to}} row(s) selected"
+}

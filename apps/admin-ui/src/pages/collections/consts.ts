@@ -1,0 +1,6 @@
+export enum CollectionAction {
+  MOVE = 'MOVE',
+  COPY = 'COPY',
+  ASSING_TO_CHANNGEL = 'ASSING_TO_CHANNGEL',
+  DELETE_FROM_CHANNEL = 'DELETE_FROM_CHANNEL',
+}

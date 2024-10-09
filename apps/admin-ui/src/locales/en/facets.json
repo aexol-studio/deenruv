@@ -1,0 +1,76 @@
+{
+  "createFacet": "Create facet",
+  "baseInfoCode": "Code: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Created: {{value}}",
+  "baseInfoUpdated": "Updated: {{value}}",
+  "requiredError": "This value is required",
+  "table": {
+    "id": "Id",
+    "name": "Name",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "code": "Code",
+    "isPrivate": "Private",
+    "public": "Public",
+    "languageCode": "Language code",
+    "usedForColors": "Used for colors",
+    "colorsCollection": "Colors collection",
+    "usedForProductCreations": "Used for product creations",
+    "values": "Values",
+    "openMenu": "Open menu",
+    "copyId": "Copy id",
+    "viewFacet": "View facet",
+    "columns": "Columns",
+    "color": "Color",
+    "new": "New",
+    "image": "Image"
+  },
+  "toasts": {
+    "facetLoadingError": "Failed to load facet with id {{value}}",
+    "facetUpdateSuccess": "Facet updated successfully",
+    "facetUpdateError": "Error occurred: ",
+    "facetCreatedSuccess": "Facet has been created successfully"
+  },
+  "visibility": {
+    "public": "Public",
+    "private": "Private"
+  },
+  "deleteFacet": {
+    "title": "Delete facet",
+    "description": "Are you sure you want to delete this facet?",
+    "successMessage": "Facet has been deleted.",
+    "deleteOrCancel": "Delete/Cancel selected"
+  },
+  "selectedValue": "{{from}} of {{to}} row(s) selected",
+  "details": {
+    "basicInfo": "Dane podstawowe",
+    "customFields": "Custom fields",
+    "facetValues": "Facet value",
+    "usedForColorsDesc": "Use this attribute for guys that are colours",
+    "colorsCollectionDesc": "Use this for the product paths in COLOUR (BLATH/CORPUS)",
+    "usedForProductCreationsDesc": "Use this attribute when creating a colour collection",
+    "valueDeleteSuccess": "Asset value has been deleted successfully",
+    "valueDeleteFail": "There was an error: "
+  },
+  "addValueModal": {
+    "button": "Add value",
+    "editButton": "Update value",
+    "title": "Add facet value",
+    "editTitle": "Edit facet value",
+    "nameLabel": "Facet value name",
+    "codeLabel": "Facet value code",
+    "isNew": "New",
+    "hidden": "Hidden",
+    "color": "Color",
+    "success": "Facet value added successfully",
+    "editSuccess": "Facet value updated successfully",
+    "error": "There was an error",
+    "options": "Options",
+    "image": "Image"
+  },
+  "buttons": {
+    "deleteValue": "Delete value",
+    "editValue": "Edit value"
+  }
+}

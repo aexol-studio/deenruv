@@ -14,7 +14,7 @@ import {
 } from '@deenruv/core';
 import { ElasticsearchPlugin } from '@deenruv/elasticsearch-plugin';
 import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
-// import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
+import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
 import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import path from 'path';
@@ -84,8 +84,9 @@ export const devConfig: DeenruvConfig = {
         }),
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
         // Enable if you need to debug the job queue
-        // BullMQJobQueuePlugin.init({}),
-        DefaultJobQueuePlugin.init({}),
+        BullMQJobQueuePlugin.init({}),
+        // DefaultJobQueuePlugin.init({}),
+
         // JobQueueTestPlugin.init({ queueCount: 10 }),
         // ElasticsearchPlugin.init({
         //     host: 'http://localhost',

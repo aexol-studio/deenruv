@@ -1,0 +1,210 @@
+import { FromSelectorWithScalars } from '@/graphql/scalars';
+import { Selector } from '@/zeus';
+
+export const paymentSelector = Selector('Payment')({
+  id: true,
+  method: true,
+  amount: true,
+  state: true,
+  errorMessage: true,
+  createdAt: true,
+  metadata: true,
+  transactionId: true,
+});
+
+export type PaymentType = FromSelectorWithScalars<typeof paymentSelector, 'Payment'>;
+
+export const discountsSelector = Selector('Discount')({
+  type: true,
+  description: true,
+  amountWithTax: true,
+  adjustmentSource: true,
+});
+
+export type DiscountsType = FromSelectorWithScalars<typeof discountsSelector, 'Discount'>;
+
+export const shippingLineSelector = Selector('ShippingLine')({
+  shippingMethod: {
+    id: true,
+    name: true,
+    description: true,
+  },
+  priceWithTax: true,
+});
+export type ShippingLineType = FromSelectorWithScalars<typeof shippingLineSelector, 'ShippingLine'>;
+
+export const ShippingMethodsSelector = Selector('ShippingMethodQuote')({
+  id: true,
+  name: true,
+  price: true,
+  description: true,
+});
+
+export type ShippingMethodType = FromSelectorWithScalars<typeof ShippingMethodsSelector, 'ShippingMethodQuote'>;
+
+export const ActiveOrderSelector = Selector('Order')({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  totalQuantity: true,
+  couponCodes: true,
+  code: true,
+  customer: { id: true, emailAddress: true, firstName: true, lastName: true, phoneNumber: true },
+
+  shippingWithTax: true,
+  totalWithTax: true,
+  subTotalWithTax: true,
+  discounts: discountsSelector,
+  state: true,
+  active: true,
+  payments: paymentSelector,
+  currencyCode: true,
+  shippingLines: shippingLineSelector,
+
+  lines: {
+    id: true,
+    quantity: true,
+    linePriceWithTax: true,
+    unitPriceWithTax: true,
+    discountedLinePriceWithTax: true,
+    featuredAsset: {
+      id: true,
+      preview: true,
+    },
+    productVariant: {
+      name: true,
+      id: true,
+      sku: true,
+      price: true,
+      featuredAsset: {
+        id: true,
+        source: true,
+      },
+      stockLevel: true,
+      product: {
+        name: true,
+        slug: true,
+      },
+    },
+  },
+});
+export const LatestOrderSelector = Selector('Order')({
+  totalWithTax: true,
+  state: true,
+  createdAt: true,
+  code: true,
+  id: true,
+  currencyCode: true,
+  getRealization: {
+    finalPlannedAt: true,
+  },
+  payments: {
+    method: true,
+    id: true,
+  },
+});
+export type LatestOrderListType = FromSelectorWithScalars<typeof LatestOrderSelector, 'Order'>;
+
+export const SummaryOrdersSelector = Selector('Order')({
+  total: true,
+  totalWithTax: true,
+  currencyCode: true,
+});
+
+// export const SearchResultSelector = Selector('SearchResult')({
+//   sku: true,
+//   productId: true,
+//   productName: true,
+//   productVariantId: true,
+//   productVariantName: true,
+//   slug: true,
+//   currencyCode: true,
+//   productAsset: { id: true, preview: true },
+//   price: {
+//     '...on PriceRange': {
+//       max: true,
+//       min: true,
+//     },
+//     '...on SinglePrice': {
+//       value: true,
+//     },
+//   },
+//   priceWithTax: {
+//     '...on PriceRange': {
+//       max: true,
+//       min: true,
+//     },
+//     '...on SinglePrice': {
+//       value: true,
+//     },
+//   },
+// });
+
+// export type SearchResultType = FromSelectorWithScalars<typeof SearchResultSelector, 'SearchResult'>;
+
+export type ActiveOrderType = FromSelectorWithScalars<typeof ActiveOrderSelector, 'Order'>;
+export const OrderListSelector = Selector('Order')({
+  type: true,
+  totalWithTax: true,
+  state: true,
+  active: true,
+  currencyCode: true,
+  createdAt: true,
+  updatedAt: true,
+  shipping: true,
+  totalQuantity: true,
+  orderPlacedAt: true,
+  code: true,
+  id: true,
+  payments: {
+    method: true,
+  },
+  shippingAddress: {
+    fullName: true,
+  },
+  customer: {
+    id: true,
+    emailAddress: true,
+    firstName: true,
+    lastName: true,
+    phoneNumber: true,
+  },
+});
+export type OrderListType = FromSelectorWithScalars<typeof OrderListSelector, 'Order'>;
+export const OrderSelector = Selector('Order')({
+  type: true,
+  shippingWithTax: true,
+  totalWithTax: true,
+  subTotalWithTax: true,
+  discounts: discountsSelector,
+  state: true,
+  active: true,
+  payments: paymentSelector,
+  currencyCode: true,
+  shippingLines: shippingLineSelector,
+  id: true,
+  lines: {
+    id: true,
+    quantity: true,
+    linePriceWithTax: true,
+    unitPriceWithTax: true,
+    discountedLinePriceWithTax: true,
+    featuredAsset: {
+      id: true,
+      preview: true,
+    },
+    productVariant: {
+      name: true,
+      currencyCode: true,
+      featuredAsset: {
+        id: true,
+        source: true,
+      },
+      product: {
+        slug: true,
+        name: true,
+      },
+    },
+  },
+});
+export type OrderType = FromSelectorWithScalars<typeof OrderSelector, 'Order'>;

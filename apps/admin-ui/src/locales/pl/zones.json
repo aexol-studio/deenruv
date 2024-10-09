@@ -1,0 +1,44 @@
+{
+  "create": "Utwórz strefę",
+  "edit": "Edytuj strefę",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Nazwa",
+    "members": "Członkowie",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "openMenu": "Otwórz menu",
+    "copyId": "Kopiuj identyfikator",
+    "viewZone": "Wyświetl strefę",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "name": "Nazwa",
+      "members": "Członkowie",
+      "memberPlaceholder": "Dodaj członka"
+    }
+  },
+  "toasts": {
+    "zoneLoadingError": "Nie udało się załadować strefy o id {{value}}.",
+    "zoneUpdateSuccess": "Strefa została pomyślnie zaktualizowana",
+    "zoneUpdateError": "Wystąpił błąd: ",
+    "zoneCreatedSuccess": "Strefa została utworzona pomyślnie",
+    "zoneCreatedError": "Nie udało się utworzyć strefy",
+    "zoneDeleteSuccess": "Strefa usunięta pomyślnie",
+    "zoneDeleteError": "Nie udało się usunąć strefy"
+  },
+  "deleteZone": {
+    "title": "Usuń strefę",
+    "description": "Czy na pewno chcesz usunąć tę strefę?",
+    "successMessage": "Strefa została usunięta.",
+    "deleteOrCancel": "Usuń/Anuluj wybrane",
+    "confirm": "Usuń",
+    "cancel": "Anuluj"
+  }
+}

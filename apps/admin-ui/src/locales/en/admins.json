@@ -1,0 +1,49 @@
+{
+  "create": "Create administrator",
+  "edit": "Edit administrator",
+  "baseInfoCode": "Code: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Created: {{value}}",
+  "baseInfoUpdated": "Updated: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Name",
+    "emailAddress": "Email",
+    "role": "Role",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "openMenu": "Open menu",
+    "copyId": "Copy id",
+    "viewAdmin": "View administrator",
+    "columns": "Columns"
+  },
+  "details": {
+    "basic": {
+      "title": "Basic info",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "emailAddress": "Email address",
+      "password": "Password"
+    },
+    "roles": {
+      "title": "Roles",
+      "placeholder": "Add roles to user"
+    }
+  },
+  "toasts": {
+    "adminLoadingError": "Failed to load administrator with id {{value}}",
+    "adminUpdateSuccess": "Administrator updated successfully",
+    "adminUpdateError": "Error occurred: ",
+    "adminCreatedSuccess": "Administrator has been created successfully",
+    "adminCreatedError": "Failed to create Administrator",
+    "adminDeleteSuccess": "Administrator deleted successfully",
+    "adminDeleteError": "Failed to delete Administrator"
+  },
+  "deleteAdmin": {
+    "title": "Delete administrator",
+    "description": "Are you sure you want to delete this administrator?",
+    "successMessage": "Administrator has been deleted.",
+    "deleteOrCancel": "Delete/Cancel selected"
+  },
+  "selectedValue": "{{from}} of {{to}} row(s) selected"
+}

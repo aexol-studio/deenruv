@@ -1,0 +1,53 @@
+{
+  "create": "Utwórz rolę",
+  "edit": "Edytuj rolę",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "defaultChannel": "Domyślny kanał",
+  "table": {
+    "id": "Id",
+    "name": "Nazwa",
+    "description": "Opis",
+    "code": "Kod",
+    "permissions": "Uprawnienia",
+    "channels": "Kanały",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "openMenu": "Otwórz menu",
+    "copyId": "Kopiuj identyfikator",
+    "viewRole": "Zobacz rolę",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "description": "Nazwa",
+      "code": "Kod",
+      "channels": "Kanały",
+      "channelsPlaceholder": "Dodaj kanał"
+    },
+    "roles": {
+      "title": "Uprawnienia"
+    }
+  },
+  "toasts": {
+    "roleLoadingError": "Nie udało się załadować roli o id {{value}}.",
+    "roleUpdateSuccess": "Rola została pomyślnie zaktualizowana",
+    "roleUpdateError": "Wystąpił błąd: ",
+    "roleCreatedSuccess": "Rola została utworzona pomyślnie",
+    "roleCreatedError": "Nie udało się utworzyć roli",
+    "roleDeleteSuccess": "Rola usunięta pomyślnie",
+    "roleDeleteError": "Nie udało się usunąć roli"
+  },
+  "deleteRole": {
+    "title": "Usuń rolę",
+    "description": "Czy na pewno chcesz usunąć tę rolę?",
+    "successMessage": "Rola została usunięta.",
+    "deleteOrCancel": "Usuń/Anuluj wybrane",
+    "confirm": "Usuń",
+    "cancel": "Anuluj"
+  },
+  "selectedValue": "{{from}} z {{to}} wybranych wierszy"
+}

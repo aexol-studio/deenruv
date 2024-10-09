@@ -1,0 +1,46 @@
+{
+  "create": "Utwórz kategorię podatkową",
+  "edit": "Edytuj kategorię podatkową",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Nazwa",
+    "isDefault": "Jest domyślny",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "openMenu": "Otwórz menu",
+    "copyId": "Kopiuj identyfikator",
+    "viewTaxCategory": "Wyświetl kategorię podatkową",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "name": "Nazwa",
+      "enabled": "Włączony",
+      "taxCategory": "Kategoria podatkowa",
+      "zone": "Strefa",
+      "value": "Wartość"
+    }
+  },
+  "toasts": {
+    "taxCategoryLoadingError": "Nie udało się załadować kategorii podatkowej o id {{value}}.",
+    "taxCategoryUpdateSuccess": "Kategoria podatkowa została pomyślnie zaktualizowana",
+    "taxCategoryUpdateError": "Wystąpił błąd: ",
+    "taxCategoryCreatedSuccess": "Kategoria podatkowa została pomyślnie utworzona",
+    "taxCategoryCreatedError": "Nie udało się utworzyć kategorii podatkowej",
+    "taxCategoryDeleteSuccess": "Kategoria podatkowa została pomyślnie usunięta",
+    "taxCategoryDeleteError": "Nie udało się usunąć kategorii podatkowej"
+  },
+  "deleteTaxCategory": {
+    "title": "Usuń kategorię podatkową",
+    "description": "Czy na pewno chcesz usunąć tę kategorię podatkową?",
+    "successMessage": "Kategoria podatkowa została usunięta.",
+    "deleteOrCancel": "Usuń/Anuluj wybrane",
+    "confirm": "Usuń",
+    "cancel": "Anuluj"
+  }
+}

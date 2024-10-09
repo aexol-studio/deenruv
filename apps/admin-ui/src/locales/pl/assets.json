@@ -1,0 +1,24 @@
+{
+  "assetDetails": "Szczegóły zasobu",
+  "close": "Zakmnij",
+  "delete": "Usuń",
+  "edit": "Edytuj",
+  "deleteSuccess": "Zasób został usunięty",
+  "deleteFail": "Zasób nie został usunięty",
+  "editSuccess": "Zasób został zmieniony",
+  "editFail": "Zasób nie został zmieniony",
+  "createFailed": "Błąd przy tworzeniu zasobu",
+  "createSuccess": "Utworzono zasób ",
+  "dropzone": "Przeciągnij tutaj plik",
+  "filesSelected": " wybranych plików",
+  "noFilesSelected": "Brak zaznaczonych plików",
+  "invalidFileTypes": "Nieprawidłowe typy plików",
+  "detailsTable": {
+    "id": "Id",
+    "name": "Nazwa",
+    "fileSize": "Rozmiar pliku",
+    "createdAt": "Utworzono",
+    "size": "Rozmiar",
+    "source": "Ścieżka"
+  }
+}

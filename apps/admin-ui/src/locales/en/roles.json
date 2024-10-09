@@ -1,0 +1,51 @@
+{
+  "create": "Create role",
+  "edit": "Edit role",
+  "baseInfoCode": "Code: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Created: {{value}}",
+  "baseInfoUpdated": "Updated: {{value}}",
+  "defaultChannel": "Default Channel",
+  "table": {
+    "id": "Id",
+    "name": "Name",
+    "description": "Description",
+    "code": "Code",
+    "permissions": "Permissions",
+    "channels": "Channels",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "openMenu": "Open menu",
+    "copyId": "Copy id",
+    "viewRole": "View role",
+    "columns": "Columns"
+  },
+  "details": {
+    "basic": {
+      "title": "Basic info",
+      "description": "Name",
+      "code": "Code",
+      "channels": "Channels",
+      "channelsPlaceholder": "Add channel"
+    },
+    "permissions": {
+      "title": "Permissions"
+    }
+  },
+  "toasts": {
+    "roleLoadingError": "Failed to load role with id {{value}}",
+    "roleUpdateSuccess": "Role updated successfully",
+    "roleUpdateError": "Error occurred: ",
+    "roleCreatedSuccess": "Role has been created successfully",
+    "roleCreatedError": "Failed to create role",
+    "roleDeleteSuccess": "Role deleted successfully",
+    "roleDeleteError": "Failed to delete role"
+  },
+  "deleteRole": {
+    "title": "Delete role",
+    "description": "Are you sure you want to delete this role?",
+    "successMessage": "Role has been deleted.",
+    "deleteOrCancel": "Delete/Cancel selected"
+  },
+  "selectedValue": "{{from}} of {{to}} row(s) selected"
+}

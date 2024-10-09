@@ -1,0 +1,73 @@
+{
+  "create": "Utwórz metodę wysyłki",
+  "edit": "Edytuj metodę wysyłki",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Nazwa",
+    "code": "Kod",
+    "modalTitle": "Tytuł modalny",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "name": "Nazwa",
+      "description": "Opis",
+      "code": "Kod",
+      "enabled": "Włączony"
+    },
+    "modal": {
+      "title": "Modalny",
+      "name": "Tytuł modalny",
+      "description": "Opis modalny",
+      "additionalDescription": "Modalny opis dodatkowy"
+    },
+    "options": {
+      "title": "Opcje",
+      "handler": "Obsługa wysyłki",
+      "checker": "Narzędzie do sprawdzania kwalifikowalności wysyłki"
+    },
+    "calculator": {
+      "title": "Kalkulator wysyłki",
+      "type": "Typ kalkulatora"
+    },
+    "test": {
+      "title": "Przetestuj metodę wysyłki",
+      "city": "Miasto",
+      "province": "Prowincja",
+      "postalCode": "Kod pocztowy",
+      "country": "Kraj",
+      "button": "Test",
+      "eligible": "Kwalifikujący się",
+      "notEligible": "Nie kwalifikuje się"
+    },
+    "lines": {
+      "placeholder": "Wyszukaj produkty",
+      "product": "Produkt",
+      "price": "Cena",
+      "quantity": "Ilość",
+      "total": "Łącznie",
+      "noItems": "Dodaj produkty"
+    }
+  },
+  "toasts": {
+    "shippingMethodLoadingError": "Nie udało się załadować metody wysyłki o id {{value}}.",
+    "shippingMethodUpdateSuccess": "Metoda wysyłki została pomyślnie zaktualizowana",
+    "shippingMethodUpdateError": "Wystąpił błąd: ",
+    "shippingMethodCreatedSuccess": "Metoda wysyłki została pomyślnie utworzona",
+    "shippingMethodCreatedError": "Nie udało się utworzyć metody wysyłki",
+    "shippingMethodDeleteSuccess": "Metoda wysyłki została pomyślnie usunięta",
+    "shippingMethodDeleteError": "Nie udało się usunąć metody wysyłki"
+  },
+  "deleteShippingMethod": {
+    "title": "Usuń metodę wysyłki",
+    "description": "Czy na pewno chcesz usunąć tę metodę wysyłki?",
+    "successMessage": "Metoda wysyłki została usunięta."
+  }
+}

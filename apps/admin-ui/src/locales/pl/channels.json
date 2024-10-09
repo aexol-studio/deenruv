@@ -1,0 +1,58 @@
+{
+  "create": "Utwórz kanał",
+  "edit": "Edytuj kanał",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "defaultChannel": "Domyślny kanał",
+  "table": {
+    "id": "Id",
+    "code": "Kod",
+    "token": "Token",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "openMenu": "Otwórz menu",
+    "copyId": "Kopiuj identyfikator",
+    "viewChannel": "Wyświetl kanał",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "code": "Kod",
+      "token": "Token",
+      "seller": "Sprzedawca",
+      "languages": "Dostępne języki",
+      "languagePlaceholder": "Dodaj język",
+      "currencies": "Dostępne waluty",
+      "currencyPlaceholder": "Dodaj walutę"
+    },
+    "defaults": {
+      "title": "Wartości domyślne",
+      "defaultLanguage": "Domyślny język",
+      "defaultCurrency": "Domyślna waluta",
+      "defaultTaxZone": "Domyślna strefa podatkowa",
+      "defaultShippingZone": "Domyślna strefa wysyłki",
+      "includeTax": "Ceny zawierają podatek dla strefy domyślnej"
+    }
+  },
+  "toasts": {
+    "channelLoadingError": "Nie udało się załadować kanału o id {{value}}.",
+    "channelUpdateSuccess": "Kanał został pomyślnie zaktualizowany",
+    "channelUpdateError": "Wystąpił błąd: ",
+    "channelCreatedSuccess": "Kanał został utworzony pomyślnie",
+    "channelCreatedError": "Nie udało się utworzyć kanału",
+    "channelDeleteSuccess": "Kanał został pomyślnie usunięty",
+    "channelDeleteError": "Nie udało się usunąć kanału"
+  },
+  "deleteChannel": {
+    "title": "Usuń kanał",
+    "description": "Czy na pewno chcesz usunąć ten kanał?",
+    "successMessage": "Kanał został usunięty.",
+    "deleteOrCancel": "Usuń/Anuluj wybrane",
+    "confirm": "Usuń",
+    "cancel": "Anuluj"
+  },
+  "selectedValue": "{{from}} z {{to}} wybranych wierszy"
+}

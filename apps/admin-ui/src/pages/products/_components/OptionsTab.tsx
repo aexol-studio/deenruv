@@ -1,0 +1,197 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button, Stack } from '@/components';
+import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import { Trash } from 'lucide-react';
+import { apiCall } from '@/graphql/client';
+import { useParams } from 'react-router-dom';
+import { LanguageCode } from '@/zeus';
+import { toast } from 'sonner';
+import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
+import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
+
+interface OptionsTabProps {
+  currentTranslationLng: LanguageCode;
+}
+
+export const OptionsTab: React.FC<OptionsTabProps> = ({ currentTranslationLng }) => {
+  const { id: productId } = useParams();
+  const { t } = useTranslation('products');
+  const [optionGroups, setOptionGroups] = useState<OptionGroupType[]>();
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const fetchOptionGroups = useCallback(async () => {
+    if (productId) {
+      const response = await apiCall()('query')({
+        product: [
+          {
+            id: productId,
+          },
+          {
+            optionGroups: OptionGroupSelector,
+          },
+        ],
+      });
+
+      setOptionGroups(response.product?.optionGroups);
+      setLoading(false);
+
+      if (!response.product) {
+        toast.error(t('toasts.fetchProductErrorToast'));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId]);
+
+  useEffect(() => {
+    fetchOptionGroups();
+  }, [fetchOptionGroups]);
+
+  const removeGroup = useCallback(
+    (optionGroupId: string) => {
+      if (!productId) return;
+      apiCall()('mutation')({
+        removeOptionGroupFromProduct: [
+          { optionGroupId, productId },
+          {
+            '...on Product': {
+              id: true,
+            },
+            '...on ProductOptionInUseError': { message: true },
+          },
+        ],
+      })
+        .then(() => {
+          toast(t('toasts.deletionOptionSuccessToast'));
+          fetchOptionGroups();
+        })
+        .catch(() => {
+          toast.error(t('toasts.deletionOptionErrorToast'));
+        });
+    },
+    [productId, fetchOptionGroups, t],
+  );
+
+  const addOption = useCallback(
+    (option: Option, optionGroupId: string) => {
+      if (!productId) return;
+      apiCall()('mutation')({
+        createProductOption: [
+          {
+            input: {
+              code: option.label.replace(/\s/g, ''),
+              productOptionGroupId: optionGroupId,
+              translations: [
+                {
+                  languageCode: currentTranslationLng,
+                  name: option.label,
+                },
+              ],
+            },
+          },
+          { id: true },
+        ],
+      })
+        .then(() => {
+          toast(t('toasts.createOptionSuccessToast'));
+        })
+        .catch(() => {
+          toast(t('toasts.createOptionErrorToast'));
+        });
+    },
+    [productId, currentTranslationLng, t],
+  );
+
+  const handleChange = useCallback(
+    (currentOptions: Option[], optionGroupId: string) => {
+      const correspondingGroup = optionGroups?.find((g) => g.id === optionGroupId);
+
+      if (correspondingGroup && correspondingGroup?.options.length < currentOptions.length) {
+        const newOption = currentOptions[currentOptions.length - 1];
+        addOption(newOption, optionGroupId);
+      }
+    },
+    [optionGroups, addOption],
+  );
+
+  return (
+    <Stack column className="items-end">
+      <Stack className="-mt-16 mb-4 w-fit">
+        <AddOptionGroupDialog
+          currentTranslationLng={currentTranslationLng}
+          onSuccess={fetchOptionGroups}
+          productId={productId}
+        />
+      </Stack>
+      {loading ? (
+        <div className="flex min-h-[30vh] w-full items-center justify-center">
+          <div className="customSpinner" />
+        </div>
+      ) : (
+        <Stack className="w-full gap-3" column>
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle className="flex flex-row justify-between text-base">{t('optionGroups')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('optionsTab.groupName')}</TableHead>
+                    <TableHead>{t('optionsTab.values')}</TableHead>
+                    <TableHead></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {optionGroups?.map((group) => (
+                    <TableRow key={group.id}>
+                      <TableCell className="font-medium">{group.name}</TableCell>
+                      <TableCell>
+                        <MultipleSelector
+                          className="h-20"
+                          value={group.options.map((o) => ({ label: o.name, value: o.id, fixed: true }))}
+                          placeholder={t('optionsTab.placeholder')}
+                          onChange={(e) => handleChange(e, group.id)}
+                          hideClearAllButton
+                          creatable
+                        />
+                      </TableCell>
+                      <TableCell className="w-12">
+                        <Button
+                          size={'icon'}
+                          variant={'outline'}
+                          className="h-8 w-8"
+                          onClick={() => removeGroup(group.id)}
+                        >
+                          <Trash size={20} className="text-red-600" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+          {optionGroups?.map((oG) => (
+            <Stack column className="gap-2" key={oG.id}>
+              <h4 className="ml-6 text-sm font-semibold text-gray-500">{`${t('group')}: ${oG.name}`}</h4>
+              <Stack column className="gap-3">
+                {oG.options.map((o) => (
+                  <OptionValueCard
+                    key={o.id}
+                    currentTranslationLng={currentTranslationLng}
+                    productOption={o}
+                    onEdited={fetchOptionGroups}
+                  />
+                ))}
+              </Stack>
+            </Stack>
+          ))}
+        </Stack>
+      )}
+    </Stack>
+  );
+};

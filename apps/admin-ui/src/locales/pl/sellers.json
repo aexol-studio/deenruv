@@ -1,0 +1,39 @@
+{
+  "create": "Utwórz sprzedawcę",
+  "edit": "Edytuj sprzedawcę",
+  "baseInfoCode": "Kod: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Stworzony: {{value}}",
+  "baseInfoUpdated": "Aktualizacja: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Nazwa",
+    "createdAt": "Utworzono na stronie",
+    "updatedAt": "Zaktualizowano na stronie",
+    "openMenu": "Otwórz menu",
+    "copyId": "Kopiuj identyfikator",
+    "viewSeller": "Zobacz sprzedawcę",
+    "columns": "Kolumny"
+  },
+  "details": {
+    "basic": {
+      "title": "Podstawowe informacje",
+      "name": "Nazwa",
+      "memberPlaceholder": "Dodaj członka"
+    }
+  },
+  "toasts": {
+    "sellerLoadingError": "Nie udało się załadować sprzedawcy o id {{value}}.",
+    "sellerUpdateSuccess": "Sprzedawca dokonał pomyślnej aktualizacji",
+    "sellerUpdateError": "Wystąpił błąd: ",
+    "sellerCreatedSuccess": "Sprzedawca został pomyślnie utworzony",
+    "sellerCreatedError": "Nie udało się utworzyć sprzedawcy",
+    "sellerDeleteSuccess": "Sprzedawca został pomyślnie usunięty",
+    "sellerDeleteError": "Nie udało się usunąć sprzedawcy"
+  },
+  "deleteSeller": {
+    "title": "Usuń sprzedawcę",
+    "description": "Czy na pewno chcesz usunąć tego sprzedawcę?",
+    "successMessage": "Sprzedawca został usunięty."
+  }
+}

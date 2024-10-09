@@ -1,0 +1,41 @@
+{
+  "create": "Create tax category",
+  "edit": "Edit tax category",
+  "baseInfoCode": "Code: {{value}}",
+  "baseInfoId": "Id: {{value}}",
+  "baseInfoCreated": "Created: {{value}}",
+  "baseInfoUpdated": "Updated: {{value}}",
+  "table": {
+    "id": "Id",
+    "name": "Name",
+    "isDefault": "Is default",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at",
+    "openMenu": "Open menu",
+    "copyId": "Copy id",
+    "viewTaxCategory": "View tax category",
+    "columns": "Columns"
+  },
+  "details": {
+    "basic": {
+      "title": "Basic info",
+      "name": "Name",
+      "isDefault": "Default"
+    }
+  },
+  "toasts": {
+    "taxCategoryLoadingError": "Failed to load tax category with id {{value}}",
+    "taxCategoryUpdateSuccess": "Tax category updated successfully",
+    "taxCategoryUpdateError": "Error occurred: ",
+    "taxCategoryCreatedSuccess": "Tax category has been created successfully",
+    "taxCategoryCreatedError": "Failed to create tax category",
+    "taxCategoryDeleteSuccess": "Tax category deleted successfully",
+    "taxCategoryDeleteError": "Failed to delete tax category"
+  },
+  "deleteTaxCategory": {
+    "title": "Delete tax category",
+    "description": "Are you sure you want to delete this tax category?",
+    "successMessage": "Tax category has been deleted.",
+    "deleteOrCancel": "Delete/Cancel selected"
+  }
+}
