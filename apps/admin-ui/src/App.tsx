@@ -45,7 +45,10 @@ import { ShippingMethodsListPage } from '@/pages/shipping-methods/List.tsx';
 import { ShippingMethodDetailsPage } from '@/pages/shipping-methods/Details.tsx';
 import { CollectionDetailsPage } from '@/pages/collections/Details.tsx';
 import { PluginProvider, PluginStore } from '@deenruv/react-ui-devkit';
-import { UIPlugin } from '@deenruv/deenruv-first-plugin';
+import { UIPlugin } from '@deenruv/deenruv-first-plugin/plugin-ui';
+
+const store = new PluginStore();
+store.installPlugins([UIPlugin]);
 
 const rootPaths = [
   {
@@ -230,9 +233,6 @@ const rootPaths = [
   },
   { path: Routes.countries, element: <CountriesPage /> },
 ];
-
-const store = new PluginStore();
-store.installPlugins([UIPlugin]);
 
 const Custom404 = () => {
   return (

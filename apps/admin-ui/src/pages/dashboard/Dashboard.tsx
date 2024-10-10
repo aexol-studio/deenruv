@@ -151,7 +151,7 @@ export const Dashboard = () => {
 
   return (
     <Stack className="gap-4" column>
-      <PlacementMarker position="dashboard" />
+      <PlacementMarker position="testing" />
       <OrdersSummary />
       <Card className="p-6">
         <Stack className="mb-3 justify-between gap-4" column>

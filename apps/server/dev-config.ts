@@ -20,8 +20,7 @@ import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import path from 'path';
 import { DataSourceOptions } from 'typeorm';
 
-import { MultivendorPlugin } from './example-plugins/multivendor-plugin/multivendor.plugin';
-
+import { DeenruvFirstPlugin } from '@deenruv/deenruv-first-plugin/plugin-server';
 /**
  * Config settings used during development
  */
@@ -105,6 +104,7 @@ export const devConfig: DeenruvConfig = {
         //         changeEmailAddressUrl: 'http://localhost:4201/change-email-address',
         //     },
         // }),
+        DeenruvFirstPlugin,
         AdminUiPlugin.init({
             route: 'admin',
             port: 5001,

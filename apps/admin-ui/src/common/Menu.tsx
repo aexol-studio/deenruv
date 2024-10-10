@@ -22,8 +22,6 @@ import {
 } from '@/components';
 
 import {
-  BarChart,
-  Barcode,
   Bell,
   Check,
   GripVertical,
@@ -32,23 +30,8 @@ import {
   MenuIcon,
   Moon,
   Slash,
-  Store,
   Sun,
   Trash2Icon,
-  ShoppingCart,
-  Images,
-  Folder,
-  Globe2,
-  Tag,
-  UserCog,
-  Users,
-  MapPin,
-  Flag,
-  Coins,
-  Globe,
-  Percent,
-  CreditCard,
-  Truck,
   SunMoon,
 } from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
@@ -106,6 +89,8 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const { activeAdministrator } = useServer();
 
+  // Property 'getNavigation' does not exist on type 'PluginStore | {} | null'.
+
   const matches = useMatches();
 
   const crumbs = useMemo(
@@ -157,49 +142,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     <MinkoLogo isCollapsed={isCollapsed} />
                   </div>
                 </div>
-                <Nav
-                  isCollapsed={isCollapsed}
-                  links={[
-                    { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link.dashboard', icon: BarChart },
-                    { title: t('menu.products'), href: Routes.products, id: 'link.products', icon: Barcode },
-                    { title: t('menu.collections'), href: Routes.collections, id: 'link.collections', icon: Folder },
-                    { title: t('menu.facets'), href: Routes.facets, id: 'link.facets', icon: Tag },
-                    { title: t('menu.orders'), href: Routes.orders, id: 'link.orders', icon: ShoppingCart },
-                    { title: t('menu.assets'), href: Routes.assets, id: 'link.assets', icon: Images },
-                  ]}
-                  globalSettings={[
-                    { title: t('menu.channels'), href: Routes.channels, id: 'link.channels', icon: Globe2 },
-                    { title: t('menu.zones'), href: Routes.zones, id: 'link.zones', icon: Globe },
-                    { title: t('menu.countries'), href: Routes.countries, id: 'link.countries', icon: Flag },
-                    {
-                      title: t('menu.taxCategories'),
-                      href: Routes.taxCategories,
-                      id: 'link.taxCategories',
-                      icon: Coins,
-                    },
-                    { title: t('menu.taxRates'), href: Routes.taxRates, id: 'link.taxRates', icon: Percent },
-                  ]}
-                  users={[
-                    { title: t('menu.admins'), href: Routes.admins, id: 'link.admins', icon: UserCog },
-                    { title: t('menu.roles'), href: Routes.roles, id: 'link.roles', icon: Users },
-                    { title: t('menu.sellers'), href: Routes.sellers, id: 'link.sellers', icon: Store },
-                  ]}
-                  shipping={[
-                    {
-                      title: t('menu.paymentMethods'),
-                      href: Routes.paymentMethods,
-                      id: 'link.paymentMethods',
-                      icon: CreditCard,
-                    },
-                    {
-                      title: t('menu.shippingMethods'),
-                      href: Routes.shippingMethods,
-                      id: 'link.shippingMethods',
-                      icon: Truck,
-                    },
-                    { title: t('menu.stock'), href: Routes.stockLocations, id: 'link.stock', icon: MapPin },
-                  ]}
-                />
+                <Nav isCollapsed={isCollapsed} />
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel>

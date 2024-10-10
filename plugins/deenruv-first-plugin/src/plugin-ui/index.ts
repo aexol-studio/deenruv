@@ -1,7 +1,7 @@
 import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 
 import { routes } from './routes';
-import { Test } from './Test';
+import { Test } from './metrics';
 
 export const UIPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
@@ -11,7 +11,7 @@ export const UIPlugin = createDeenruvUIPlugin({
         {
             name: 'test',
             route: 'test',
-            location: { id: 'link.stock', group: 'shipping-group', where: 'below' },
+            location: { id: 'link.shippingMethods', groupId: 'shipping-group', where: 'below' },
         },
     ],
     routes,

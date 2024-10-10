@@ -6,30 +6,37 @@
     "publishConfig": {
         "access": "public"
     },
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "exports": {
+        "./plugin-server": "./dist/plugin-server/index.js",
+        "./plugin-ui": "./dist/plugin-ui/index.js"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
     },
     "scripts": {
-        "build": "tsc --build",
+        "build": "rimraf dist && tsc --build",
         "watch": "tsc --watch",
-        "lint": "eslint --fix ."
+        "lint": "eslint --fix .",
+        "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
     },
     "bugs": {
         "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
     },
     "dependencies": {
-        "@deenruv/react-ui-devkit": "workspace:*"
+        "@deenruv/common": "workspace:*",
+        "@deenruv/core": "workspace:*",
+        "@deenruv/react-ui-devkit": "workspace:*",
+        "@nestjs/common": "~10.3.10",
+        "@nestjs/graphql": "~12.2.0",
+        "date-fns": "^4.1.0",
+        "graphql": "~16.9.0",
+        "graphql-tag": "^2.12.6",
+        "graphql-zeus": "^5.4.2"
     },
     "devDependencies": {
         "@types/react": "^18.3.11",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "rimraf": "^5.0.5",
-        "rollup": "^4.13.0",
-        "rollup-plugin-typescript2": "^0.36.0",
+        "rimraf": "^5.0.10",
         "tslib": "^2.6.2",
         "typescript": "5.3.3"
     }

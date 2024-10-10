@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { usePluginStore } from './plugin-context';
-import { Renderer } from './renderer';
+import { usePluginStore } from '@/context/plugin-context';
+import { Renderer } from '@/components/core';
 
 export const PlacementMarker = ({ position }: { position: string }) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();

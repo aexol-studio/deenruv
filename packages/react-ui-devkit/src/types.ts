@@ -23,11 +23,9 @@ type Location = {
     where?: 'above' | 'below';
 };
 
-type NavigationGroup = 'shop-group' | 'settings-group' | 'users-group' | 'shipping-group';
-
-type NavigationItem<PATHS extends string = string> = {
+export type NavigationItem<PATHS extends string = string> = {
     name: string;
     route: PATHS;
     icon?: string;
-    location: Location & { group: NavigationGroup };
+    location: Location & { groupId: string };
 };

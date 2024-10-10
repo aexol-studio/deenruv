@@ -39,6 +39,6 @@ export default defineConfig({
     htmlPlugin(),
     tsconfigPaths(),
     react(),
-    i18nextLoader({ paths: ['./src/locales'], logLevel: 'info', namespaceResolution: 'basename' }),
+    i18nextLoader({ paths: ['./src/locales'], namespaceResolution: 'basename' }),
   ],
 });

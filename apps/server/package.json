@@ -5,28 +5,29 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "populate": "node -r ts-node/register -r dotenv/config populate-dev-server.ts",
-        "run:server": "node -r ts-node/register -r dotenv/config index.ts",
-        "run:worker": "node -r ts-node/register -r dotenv/config index-worker.ts",
+        "populate": "tsx populate-dev-server.ts",
+        "run:server": "tsx index.ts",
+        "run:worker": "tsx index-worker.ts",
         "start": "concurrently npm:run*",
         "docker-up": "docker compose up -d",
         "docker-down": "docker compose down -v",
-        "migration:generate": "ts-node migration.ts generate",
-        "migration:run": "ts-node migration.ts run",
-        "migration:revert": "ts-node migration.ts revert",
-        "load-test:1k": "node -r ts-node/register load-testing/run-load-test.ts 1000",
-        "load-test:10k": "node -r ts-node/register load-testing/run-load-test.ts 10000",
-        "load-test:100k": "node -r ts-node/register load-testing/run-load-test.ts 100000"
+        "migration:generate": "tsx migration.ts generate",
+        "migration:run": "tsx migration.ts run",
+        "migration:revert": "tsx migration.ts revert",
+        "load-test:1k": "tsx load-testing/run-load-test.ts 1000",
+        "load-test:10k": "tsx load-testing/run-load-test.ts 10000",
+        "load-test:100k": "tsx load-testing/run-load-test.ts 100000"
     },
     "dependencies": {
-        "@nestjs/axios": "^3.0.2",
         "@deenruv/admin-ui-plugin": "workspace:*",
         "@deenruv/asset-server-plugin": "workspace:*",
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
+        "@deenruv/deenruv-first-plugin": "workspace:*",
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",
         "@deenruv/job-queue-plugin": "workspace:*",
+        "@nestjs/axios": "^3.0.2",
         "typeorm": "0.3.20",
         "typescript": "5.3.3"
     },
@@ -37,6 +38,7 @@
         "concurrently": "^8.2.2",
         "csv-stringify": "^6.4.6",
         "dayjs": "^1.11.10",
-        "progress": "^2.0.3"
+        "progress": "^2.0.3",
+        "tsx": "^4.19.1"
     }
 }

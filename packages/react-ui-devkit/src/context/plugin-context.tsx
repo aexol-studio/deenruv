@@ -1,23 +1,37 @@
 import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { PluginStore } from './plugin-store';
+import { NavigationItem } from '@/types';
+import { Chain } from '@/zeus';
 
 const PluginStoreContext = createContext<{
-    store: PluginStore | null;
     viewMarkers: boolean;
     setViewMarkers: (view: boolean) => void;
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
+    getComponents: (position: string) => React.ComponentType<{}>[];
+    navigation: NavigationItem[];
 }>({
-    store: null,
     viewMarkers: false,
     setViewMarkers: () => undefined,
     openDropdown: false,
     setOpenDropdown: () => undefined,
+    getComponents: () => [],
+    navigation: [],
 });
+
 export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ children, store }) => {
     const [viewMarkers, setViewMarkers] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(false);
+
+    const [channel, setChannel] = useState<string | null>(null);
+    const headers = {
+        'x-channel': channel || '',
+    };
+
+    const getComponents = (position: string) => {
+        return store.getComponents(position) || [];
+    };
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -33,7 +47,14 @@ export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ 
 
     return (
         <PluginStoreContext.Provider
-            value={{ store, viewMarkers, setViewMarkers, openDropdown, setOpenDropdown }}
+            value={{
+                viewMarkers,
+                setViewMarkers,
+                openDropdown,
+                setOpenDropdown,
+                getComponents,
+                navigation: store.getNavigation,
+            }}
         >
             {children}
         </PluginStoreContext.Provider>
