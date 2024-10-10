@@ -1,11 +1,10 @@
 {
     "compilerOptions": {
-        "baseUrl": "./",
         "jsx": "react",
         "allowSyntheticDefaultImports": true,
         "importHelpers": true,
         "removeComments": false,
-        "outDir": "./lib",
+        "outDir": "./dist",
         "sourceMap": true,
         "declaration": true,
         "moduleResolution": "node",
