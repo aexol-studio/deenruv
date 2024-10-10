@@ -1,8 +1,7 @@
-import React from 'react';
+import { cn } from '@/lib/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 import { Check, Circle, X } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
+import React from 'react';
 
 const timelineVariants = cva('flex flex-col items-stretch', {
   variants: {

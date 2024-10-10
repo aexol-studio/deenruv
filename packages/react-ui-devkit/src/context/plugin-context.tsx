@@ -1,4 +1,4 @@
-import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { PluginStore } from './plugin-store';
 

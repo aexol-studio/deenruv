@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { usePluginStore } from './plugin-context';
 import { Renderer } from './renderer';
 
