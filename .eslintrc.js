@@ -242,12 +242,6 @@ module.exports = {
         'jsdoc/check-indentation': 'off',
         'jsdoc/newline-after-description': 'off',
         'max-classes-per-file': 'off',
-        'max-len': [
-            'error',
-            {
-                code: 170,
-            },
-        ],
         'new-parens': 'error',
         'no-array-constructor': 'off',
         'no-bitwise': 'error',

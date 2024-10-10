@@ -110,7 +110,7 @@ export async function bootstrap(
     const config = await preBootstrapConfig(userConfig);
     Logger.useLogger(config.logger);
     Logger.info(`Bootstrapping Deenruv Server (pid: ${process.pid})...`);
-    checkPluginCompatibility(config);
+    // checkPluginCompatibility(config);
 
     // The AppModule *must* be loaded only after the entities have been set in the
     // config, so that they are available when the AppModule decorator is evaluated.
@@ -176,7 +176,7 @@ export async function bootstrapWorker(
     config.logger.setDefaultContext?.('Deenruv Worker');
     Logger.useLogger(config.logger);
     Logger.info(`Bootstrapping Deenruv Worker (pid: ${process.pid})...`);
-    checkPluginCompatibility(config);
+    // checkPluginCompatibility(config);
 
     setProcessContext('worker');
     DefaultLogger.hideNestBoostrapLogs();

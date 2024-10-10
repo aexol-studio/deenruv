@@ -10,32 +10,20 @@ import { Separator } from '@/components/ui/separator';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
+type Link = {
+  title: string;
+  id: string;
+  label?: string;
+  href: string;
+  icon: LucideIcon;
+};
+
 interface NavProps {
   isCollapsed: boolean;
-  links: {
-    title: string;
-    label?: string;
-    href: string;
-    icon: LucideIcon;
-  }[];
-  globalSettings: {
-    title: string;
-    label?: string;
-    href: string;
-    icon: LucideIcon;
-  }[];
-  users: {
-    title: string;
-    label?: string;
-    href: string;
-    icon: LucideIcon;
-  }[];
-  shipping: {
-    title: string;
-    label?: string;
-    href: string;
-    icon: LucideIcon;
-  }[];
+  links: Link[];
+  globalSettings: Link[];
+  users: Link[];
+  shipping: Link[];
 }
 
 export function Nav({ links, globalSettings, users, shipping, isCollapsed }: NavProps) {
@@ -45,18 +33,22 @@ export function Nav({ links, globalSettings, users, shipping, isCollapsed }: Nav
   const groups = useMemo(
     () => [
       {
+        id: 'shop-group',
         label: t('menuGroups.shop'),
         links: links,
       },
       {
+        id: 'settings-group',
         label: t('menuGroups.settings'),
         links: globalSettings,
       },
       {
+        id: 'users-group',
         label: t('menuGroups.users'),
         links: users,
       },
       {
+        id: 'shipping-group',
         label: t('menuGroups.shipping'),
         links: shipping,
       },
@@ -73,7 +65,10 @@ export function Nav({ links, globalSettings, users, shipping, isCollapsed }: Nav
         {groups.map((group) => (
           <>
             {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase text-gray-400">{group.label}</h4>}
-            <nav className="grid gap-1 px-2 text-zinc-500 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+            <nav
+              id={group.id}
+              className="grid gap-1 px-2 text-zinc-500 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+            >
               {group.links.map((link, index) =>
                 isCollapsed ? (
                   <Tooltip key={index} delayDuration={0}>

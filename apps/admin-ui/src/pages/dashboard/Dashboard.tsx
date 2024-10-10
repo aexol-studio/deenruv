@@ -15,6 +15,7 @@ import {
 } from './_components';
 import { Card, CardTitle, Stack } from '@/components';
 import { Chart } from '@/pages/dashboard/_components/Chart';
+import { PlacementMarker } from '@deenruv/react-ui-devkit';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 type BetterMetricsChartDataType = {
@@ -150,6 +151,7 @@ export const Dashboard = () => {
 
   return (
     <Stack className="gap-4" column>
+      <PlacementMarker position="dashboard" />
       <OrdersSummary />
       <Card className="p-6">
         <Stack className="mb-3 justify-between gap-4" column>

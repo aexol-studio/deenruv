@@ -44,6 +44,195 @@ import { PaymentMethodDetailsPage } from '@/pages/payment-methods/Details.tsx';
 import { ShippingMethodsListPage } from '@/pages/shipping-methods/List.tsx';
 import { ShippingMethodDetailsPage } from '@/pages/shipping-methods/Details.tsx';
 import { CollectionDetailsPage } from '@/pages/collections/Details.tsx';
+import { PluginProvider, PluginStore } from '@deenruv/react-ui-devkit';
+import { UIPlugin } from '@deenruv/deenruv-first-plugin';
+
+const rootPaths = [
+  {
+    path: Routes.dashboard,
+    element: <Dashboard />,
+  },
+  {
+    path: Routes.products,
+    element: <ProductListPage />,
+  },
+  {
+    path: Routes.product.route,
+    element: <ProductDetailPage />,
+  },
+  {
+    path: Routes.productNew,
+    element: <ProductDetailPage />,
+  },
+  {
+    path: Routes.collections,
+    element: <CollectionsListPage />,
+  },
+  {
+    path: Routes.collection.route,
+    element: <CollectionDetailsPage />,
+  },
+  {
+    path: Routes.collectionNew,
+    element: <CollectionDetailsPage />,
+  },
+  {
+    path: Routes.facets,
+    element: <FacetsListPage />,
+  },
+  {
+    path: Routes.facet.route,
+    element: <FacetPage />,
+  },
+  {
+    path: Routes.facetNew,
+    element: <FacetPage />,
+  },
+  {
+    path: Routes.orders,
+    element: <OrderListPage />,
+  },
+  {
+    path: Routes.order.route,
+    element: <OrderPage />,
+  },
+  {
+    path: Routes.customers,
+    element: <CustomersListPage />,
+  },
+  {
+    path: Routes.customer.route,
+    element: <CustomerDetailsPage />,
+  },
+  {
+    path: Routes.channels,
+    element: <ChannelsListPage />,
+  },
+  {
+    path: Routes.channelNew,
+    element: <ChannelDetailsPage />,
+  },
+  {
+    path: Routes.channel.route,
+    element: <ChannelDetailsPage />,
+  },
+  {
+    path: Routes.assets,
+    element: <AssetsListPage />,
+  },
+  {
+    path: Routes.roles,
+    element: <RolesListPage />,
+  },
+  {
+    path: Routes.roleNew,
+    element: <RoleDetailsPage />,
+  },
+  {
+    path: Routes.role.route,
+    element: <RoleDetailsPage />,
+  },
+  {
+    path: Routes.admins,
+    element: <AdminsListPage />,
+  },
+  {
+    path: Routes.adminNew,
+    element: <AdminDetailsPage />,
+  },
+  {
+    path: Routes.admin.route,
+    element: <AdminDetailsPage />,
+  },
+  {
+    path: Routes.paymentMethods,
+    element: <PaymentMethodsListPage />,
+  },
+  {
+    path: Routes.paymentMethodNew,
+    element: <PaymentMethodDetailsPage />,
+  },
+  {
+    path: Routes.paymentMethod.route,
+    element: <PaymentMethodDetailsPage />,
+  },
+  {
+    path: Routes.sellers,
+    element: <SellersListPage />,
+  },
+  {
+    path: Routes.sellerNew,
+    element: <SellersDetailsPage />,
+  },
+  {
+    path: Routes.seller.route,
+    element: <SellersDetailsPage />,
+  },
+  {
+    path: Routes.shippingMethods,
+    element: <ShippingMethodsListPage />,
+  },
+  {
+    path: Routes.shippingMethodNew,
+    element: <ShippingMethodDetailsPage />,
+  },
+  {
+    path: Routes.shippingMethod.route,
+    element: <ShippingMethodDetailsPage />,
+  },
+  {
+    path: Routes.stockLocations,
+    element: <StockLocationsListPage />,
+  },
+  {
+    path: Routes.stockLocationNew,
+    element: <StockLocationDetailsPage />,
+  },
+  {
+    path: Routes.stockLocation.route,
+    element: <StockLocationDetailsPage />,
+  },
+  {
+    path: Routes.taxCategories,
+    element: <TaxCategoriesListPage />,
+  },
+  {
+    path: Routes.taxCategoryNew,
+    element: <TaxCategoryDetailsPage />,
+  },
+  {
+    path: Routes.taxCategory.route,
+    element: <TaxCategoryDetailsPage />,
+  },
+  {
+    path: Routes.taxRates,
+    element: <TaxRatesListPage />,
+  },
+  {
+    path: Routes.taxRateNew,
+    element: <TaxRateDetailsPage />,
+  },
+  {
+    path: Routes.taxRate.route,
+    element: <TaxRateDetailsPage />,
+  },
+  {
+    path: Routes.zones,
+    element: <ZonesListPage />,
+  },
+  {
+    path: Routes.zoneNew,
+    element: <ZoneDetailsPage />,
+  },
+  {
+    path: Routes.zone.route,
+    element: <ZoneDetailsPage />,
+  },
+  { path: Routes.countries, element: <CountriesPage /> },
+];
+
+const store = new PluginStore();
+store.installPlugins([UIPlugin]);
 
 const Custom404 = () => {
   return (
@@ -62,196 +251,14 @@ const router = createBrowserRouter([
   {
     element: <Root />,
     errorElement: <Custom404 />,
-    children: [
-      {
-        path: Routes.dashboard,
-        element: <Dashboard />,
-      },
-      {
-        path: Routes.products,
-        element: <ProductListPage />,
-      },
-      {
-        path: Routes.product.route,
-        element: <ProductDetailPage />,
-      },
-      {
-        path: Routes.productNew,
-        element: <ProductDetailPage />,
-      },
-      {
-        path: Routes.collections,
-        element: <CollectionsListPage />,
-      },
-      {
-        path: Routes.collection.route,
-        element: <CollectionDetailsPage />,
-      },
-      {
-        path: Routes.collectionNew,
-        element: <CollectionDetailsPage />,
-      },
-      {
-        path: Routes.facets,
-        element: <FacetsListPage />,
-      },
-      {
-        path: Routes.facet.route,
-        element: <FacetPage />,
-      },
-      {
-        path: Routes.facetNew,
-        element: <FacetPage />,
-      },
-      {
-        path: Routes.orders,
-        element: <OrderListPage />,
-      },
-      {
-        path: Routes.order.route,
-        element: <OrderPage />,
-      },
-      {
-        path: Routes.customers,
-        element: <CustomersListPage />,
-      },
-      {
-        path: Routes.customer.route,
-        element: <CustomerDetailsPage />,
-      },
-      {
-        path: Routes.channels,
-        element: <ChannelsListPage />,
-      },
-      {
-        path: Routes.channelNew,
-        element: <ChannelDetailsPage />,
-      },
-      {
-        path: Routes.channel.route,
-        element: <ChannelDetailsPage />,
-      },
-      {
-        path: Routes.assets,
-        element: <AssetsListPage />,
-      },
-      {
-        path: Routes.roles,
-        element: <RolesListPage />,
-      },
-      {
-        path: Routes.roleNew,
-        element: <RoleDetailsPage />,
-      },
-      {
-        path: Routes.role.route,
-        element: <RoleDetailsPage />,
-      },
-      {
-        path: Routes.admins,
-        element: <AdminsListPage />,
-      },
-      {
-        path: Routes.adminNew,
-        element: <AdminDetailsPage />,
-      },
-      {
-        path: Routes.admin.route,
-        element: <AdminDetailsPage />,
-      },
-      {
-        path: Routes.paymentMethods,
-        element: <PaymentMethodsListPage />,
-      },
-      {
-        path: Routes.paymentMethodNew,
-        element: <PaymentMethodDetailsPage />,
-      },
-      {
-        path: Routes.paymentMethod.route,
-        element: <PaymentMethodDetailsPage />,
-      },
-      {
-        path: Routes.sellers,
-        element: <SellersListPage />,
-      },
-      {
-        path: Routes.sellerNew,
-        element: <SellersDetailsPage />,
-      },
-      {
-        path: Routes.seller.route,
-        element: <SellersDetailsPage />,
-      },
-      {
-        path: Routes.shippingMethods,
-        element: <ShippingMethodsListPage />,
-      },
-      {
-        path: Routes.shippingMethodNew,
-        element: <ShippingMethodDetailsPage />,
-      },
-      {
-        path: Routes.shippingMethod.route,
-        element: <ShippingMethodDetailsPage />,
-      },
-      {
-        path: Routes.stockLocations,
-        element: <StockLocationsListPage />,
-      },
-      {
-        path: Routes.stockLocationNew,
-        element: <StockLocationDetailsPage />,
-      },
-      {
-        path: Routes.stockLocation.route,
-        element: <StockLocationDetailsPage />,
-      },
-      {
-        path: Routes.taxCategories,
-        element: <TaxCategoriesListPage />,
-      },
-      {
-        path: Routes.taxCategoryNew,
-        element: <TaxCategoryDetailsPage />,
-      },
-      {
-        path: Routes.taxCategory.route,
-        element: <TaxCategoryDetailsPage />,
-      },
-      {
-        path: Routes.taxRates,
-        element: <TaxRatesListPage />,
-      },
-      {
-        path: Routes.taxRateNew,
-        element: <TaxRateDetailsPage />,
-      },
-      {
-        path: Routes.taxRate.route,
-        element: <TaxRateDetailsPage />,
-      },
-      {
-        path: Routes.zones,
-        element: <ZonesListPage />,
-      },
-      {
-        path: Routes.zoneNew,
-        element: <ZoneDetailsPage />,
-      },
-      {
-        path: Routes.zone.route,
-        element: <ZoneDetailsPage />,
-      },
-      { path: Routes.countries, element: <CountriesPage /> },
-    ],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- we pass here correctly typed routes
+    children: rootPaths.concat(store.routes as any),
   },
 ]);
 
 function App() {
   const isLoggedIn = useSettings((p) => p.isLoggedIn);
   const theme = useSettings((p) => p.theme);
-
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
@@ -265,7 +272,15 @@ function App() {
 
   return (
     <I18nextProvider i18n={i18n} defaultNS={'translation'}>
-      <AnimatePresence>{isLoggedIn ? <RouterProvider router={router} /> : <LoginScreen />}</AnimatePresence>
+      <AnimatePresence>
+        {isLoggedIn ? (
+          <PluginProvider store={store}>
+            <RouterProvider router={router} />
+          </PluginProvider>
+        ) : (
+          <LoginScreen />
+        )}
+      </AnimatePresence>
       <Toaster
         theme={theme}
         richColors

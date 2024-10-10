@@ -160,29 +160,44 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 <Nav
                   isCollapsed={isCollapsed}
                   links={[
-                    { title: t('menu.dashboard'), href: Routes.dashboard, icon: BarChart },
-                    { title: t('menu.products'), href: Routes.products, icon: Barcode },
-                    { title: t('menu.collections'), href: Routes.collections, icon: Folder },
-                    { title: t('menu.facets'), href: Routes.facets, icon: Tag },
-                    { title: t('menu.orders'), href: Routes.orders, icon: ShoppingCart },
-                    { title: t('menu.assets'), href: Routes.assets, icon: Images },
+                    { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link.dashboard', icon: BarChart },
+                    { title: t('menu.products'), href: Routes.products, id: 'link.products', icon: Barcode },
+                    { title: t('menu.collections'), href: Routes.collections, id: 'link.collections', icon: Folder },
+                    { title: t('menu.facets'), href: Routes.facets, id: 'link.facets', icon: Tag },
+                    { title: t('menu.orders'), href: Routes.orders, id: 'link.orders', icon: ShoppingCart },
+                    { title: t('menu.assets'), href: Routes.assets, id: 'link.assets', icon: Images },
                   ]}
                   globalSettings={[
-                    { title: t('menu.channels'), href: Routes.channels, icon: Globe2 },
-                    { title: t('menu.zones'), href: Routes.zones, icon: Globe },
-                    { title: t('menu.countries'), href: Routes.countries, icon: Flag },
-                    { title: t('menu.taxCategories'), href: Routes.taxCategories, icon: Coins },
-                    { title: t('menu.taxRates'), href: Routes.taxRates, icon: Percent },
+                    { title: t('menu.channels'), href: Routes.channels, id: 'link.channels', icon: Globe2 },
+                    { title: t('menu.zones'), href: Routes.zones, id: 'link.zones', icon: Globe },
+                    { title: t('menu.countries'), href: Routes.countries, id: 'link.countries', icon: Flag },
+                    {
+                      title: t('menu.taxCategories'),
+                      href: Routes.taxCategories,
+                      id: 'link.taxCategories',
+                      icon: Coins,
+                    },
+                    { title: t('menu.taxRates'), href: Routes.taxRates, id: 'link.taxRates', icon: Percent },
                   ]}
                   users={[
-                    { title: t('menu.admins'), href: Routes.admins, icon: UserCog },
-                    { title: t('menu.roles'), href: Routes.roles, icon: Users },
-                    { title: t('menu.sellers'), href: Routes.sellers, icon: Store },
+                    { title: t('menu.admins'), href: Routes.admins, id: 'link.admins', icon: UserCog },
+                    { title: t('menu.roles'), href: Routes.roles, id: 'link.roles', icon: Users },
+                    { title: t('menu.sellers'), href: Routes.sellers, id: 'link.sellers', icon: Store },
                   ]}
                   shipping={[
-                    { title: t('menu.paymentMethods'), href: Routes.paymentMethods, icon: CreditCard },
-                    { title: t('menu.shippingMethods'), href: Routes.shippingMethods, icon: Truck },
-                    { title: t('menu.stock'), href: Routes.stockLocations, icon: MapPin },
+                    {
+                      title: t('menu.paymentMethods'),
+                      href: Routes.paymentMethods,
+                      id: 'link.paymentMethods',
+                      icon: CreditCard,
+                    },
+                    {
+                      title: t('menu.shippingMethods'),
+                      href: Routes.shippingMethods,
+                      id: 'link.shippingMethods',
+                      icon: Truck,
+                    },
+                    { title: t('menu.stock'), href: Routes.stockLocations, id: 'link.stock', icon: MapPin },
                   ]}
                 />
               </ResizablePanel>
