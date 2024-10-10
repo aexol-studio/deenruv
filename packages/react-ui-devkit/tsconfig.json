@@ -1,26 +1,22 @@
 {
     "compilerOptions": {
+        "baseUrl": "./src/",
+        "jsx": "react",
+        "target": "es5",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "importHelpers": true,
+        "removeComments": false,
+        "outDir": "dist",
         "sourceMap": true,
-        "jsx": "react-jsx",
-        "target": "ESNext",
-        "module": "CommonJS",
-        "moduleResolution": "Node",
-        "experimentalDecorators": true,
-        "skipLibCheck": true,
         "declaration": true,
-        "incremental": true,
-        "removeComments": true,
-        "noUnusedLocals": true,
-        "strictNullChecks": true,
-        "esModuleInterop": true,
-        "allowJs": true,
         "strict": true,
-        "composite": true,
-        "outDir": "./dist",
-        "lib": ["es6", "es7", "esnext", "dom"],
-        "rootDir": "./src",
+        "noImplicitAny": true,
+        "strictPropertyInitialization": false,
+        "lib": ["es2017", "dom", "esnext.asynciterable"],
         "paths": {
-            "@/*": ["./*"]
+            "@/*": ["./src/*"]
         },
         "plugins": [
             {
@@ -30,8 +26,6 @@
                 "transform": "typescript-transform-paths",
                 "afterDeclarations": true
             }
-        ],
-        "baseUrl": "./src/"
-    },
-    "exclude": ["node_modules", "dist"]
+        ]
+    }
 }
