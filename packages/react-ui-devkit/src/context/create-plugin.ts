@@ -1,5 +1,3 @@
 import { DeenruvUIPlugin } from '../types';
 
-export const createDeenruvUIPlugin = <PATHS extends string>(
-    plugin: DeenruvUIPlugin<PATHS>,
-): DeenruvUIPlugin<PATHS> => plugin;
+export const createDeenruvUIPlugin = (plugin: DeenruvUIPlugin): DeenruvUIPlugin => plugin;

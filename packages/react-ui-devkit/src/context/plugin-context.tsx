@@ -1,7 +1,7 @@
 import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { PluginStore } from './plugin-store';
-import { NavigationItem } from '@/types';
+import { PluginNavigationGroup, PluginNavigationLink } from '@/types';
 import { Chain } from '@/zeus';
 
 const PluginStoreContext = createContext<{
@@ -10,14 +10,20 @@ const PluginStoreContext = createContext<{
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
     getComponents: (position: string) => React.ComponentType<{}>[];
-    navigation: NavigationItem[];
+    navMenuData: {
+        groups: PluginNavigationGroup[];
+        links: PluginNavigationLink[];
+    };
 }>({
     viewMarkers: false,
     setViewMarkers: () => undefined,
     openDropdown: false,
     setOpenDropdown: () => undefined,
     getComponents: () => [],
-    navigation: [],
+    navMenuData: {
+        groups: [],
+        links: [],
+    },
 });
 
 export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ children, store }) => {
@@ -53,7 +59,7 @@ export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ 
                 openDropdown,
                 setOpenDropdown,
                 getComponents,
-                navigation: store.getNavigation,
+                navMenuData: store.navMenuData,
             }}
         >
             {children}

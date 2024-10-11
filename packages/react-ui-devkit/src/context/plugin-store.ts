@@ -2,23 +2,31 @@ import React from 'react';
 
 import { DeenruvUIPlugin } from '../types';
 
+const pagePathPrefix = 'admin-ui/extensions/';
+
+const getExtensionsPath = (path: string) => pagePathPrefix + path;
+
 export class PluginStore {
     private pluginMap: Map<string, DeenruvUIPlugin> = new Map();
-    private routesField: Array<NonNullable<DeenruvUIPlugin['routes']>[number]> = [];
-    private navigation: Array<NonNullable<DeenruvUIPlugin['navigation']>[number]> = [];
+    private pluginPages: Array<NonNullable<DeenruvUIPlugin['pages']>[number]> = [];
+    private pluginsNavigationDataField: {
+        groups: Array<NonNullable<DeenruvUIPlugin['navMenuGroups']>[number]>;
+        links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number]>;
+    } = { groups: [], links: [] };
 
     installPlugins(plugins: DeenruvUIPlugin[]) {
         plugins.forEach(plugin => this.pluginMap.set(plugin.name, plugin));
-        this.routesField = plugins.flatMap(
-            el => el.routes?.map(route => ({ ...route, path: `admin-ui/extensions/${route.path}` })) || [],
+        this.pluginPages = plugins.flatMap(
+            el => el.pages?.map(route => ({ ...route, path: getExtensionsPath(route.path) })) || [],
         );
-        this.navigation = Array.from(this.pluginMap.values()).flatMap(el => {
-            if (!el.navigation) return [];
-            return el.navigation.map(element => ({
-                ...element,
-                route: `admin-ui/extensions/${element.route}`,
+        this.pluginsNavigationDataField.links = plugins.flatMap(el => {
+            if (!el.navMenuLinks) return [];
+            return el.navMenuLinks.map(linkEl => ({
+                ...linkEl,
+                href: getExtensionsPath(linkEl.href),
             }));
         });
+        this.pluginsNavigationDataField.groups = plugins.flatMap(el => el.navMenuGroups || []);
     }
 
     private getUUID() {
@@ -27,16 +35,12 @@ export class PluginStore {
         return `${timestamp}-${randomString}`;
     }
 
-    get getNavigation() {
-        return this.navigation;
-    }
-
     getComponents(location: string) {
         const uniqueMappedComponents = new Map<string, React.ComponentType>();
         this.pluginMap.forEach(plugin => {
-            plugin.components?.forEach(({ component, location: { id } }) => {
+            plugin.components?.forEach(({ component, elementId }) => {
                 const uniqueUUID = [
-                    id,
+                    elementId,
                     plugin.name,
                     this.getUUID(),
                     component.displayName && `-${component.displayName}`,
@@ -44,7 +48,7 @@ export class PluginStore {
                     .filter(Boolean)
                     .join('-');
 
-                if (id === location) {
+                if (elementId === location) {
                     uniqueMappedComponents.set(uniqueUUID, component);
                 }
             });
@@ -52,7 +56,11 @@ export class PluginStore {
         return Array.from(uniqueMappedComponents.values());
     }
 
+    get navMenuData() {
+        return this.pluginsNavigationDataField;
+    }
+
     get routes() {
-        return this.routesField;
+        return this.pluginPages;
     }
 }

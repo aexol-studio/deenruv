@@ -1,31 +1,34 @@
-import React from 'react';
-import { RouteObject } from 'react-router-dom';
+import type { FC, SVGProps } from 'react';
 
-export type Routes<PATHS extends string = string> = Array<{
-    path: PATHS;
-    element: NonNullable<RouteObject['element']>;
-}>;
-export type DeenruvUIPlugin<PATHS extends string = string> = {
+export type PluginPage = {
+    path: string;
+    element: React.ReactNode;
+};
+export type DeenruvUIPlugin = {
     name: string;
     version: string;
-    components?: Component[];
-    navigation?: Array<NavigationItem<PATHS>>;
-    routes?: Routes<PATHS>;
+    components?: PluginComponent[];
+    navMenuGroups?: Array<PluginNavigationGroup>;
+    navMenuLinks?: Array<PluginNavigationLink>;
+    pages?: Array<PluginPage>;
 };
 
-type Component = {
+type PluginComponent = {
     component: React.ComponentType;
-    location: Location;
+    elementId: string;
 };
 
-type Location = {
+export type PluginNavigationGroup = {
     id: string;
-    where?: 'above' | 'below';
+    label: string;
+    placement?: { groupId: string };
 };
 
-export type NavigationItem<PATHS extends string = string> = {
-    name: string;
-    route: PATHS;
-    icon?: string;
-    location: Location & { groupId: string };
+export type PluginNavigationLink = {
+    id: string;
+    label: string;
+    href: string;
+    groupId: string;
+    icon: FC<SVGProps<SVGSVGElement>>;
+    placement?: { linkId: string; where?: 'above' | 'under' };
 };

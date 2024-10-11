@@ -32,7 +32,8 @@
         "date-fns": "^4.1.0",
         "graphql": "~16.9.0",
         "graphql-tag": "^2.12.6",
-        "graphql-zeus": "^5.4.2"
+        "graphql-zeus": "^5.4.2",
+        "lucide-react": "^0.363.0"
     },
     "devDependencies": {
         "@types/react": "^18.3.11",
