@@ -5,12 +5,14 @@ import { Test } from './metrics';
 import { BarChart, Camera } from 'lucide-react';
 
 import { SquareIcon } from './assets';
+import { widgets } from './widgets';
 
 export const UIPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'First Plugin',
     pages,
-    components: [{ elementId: 'testing', component: Test }],
+    widgets,
+    components: [{ id: 'testing', component: Test }],
     navMenuGroups: [
         { id: 'other-settings', label: 'Inne Ustawienia', placement: { groupId: 'settings-group' } },
     ],

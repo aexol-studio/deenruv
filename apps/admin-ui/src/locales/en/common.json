@@ -59,7 +59,8 @@
     "shop": "My shop",
     "settings": "Global settings",
     "users": "Users",
-    "shipping": "Shipping & Payments"
+    "shipping": "Shipping & Payments",
+    "promotions": "Promotions"
   },
   "menu": {
     "dashboard": "dashboard",
@@ -74,6 +75,7 @@
     "sellers": "sellers",
     "assets": "assets",
     "zones": "zones",
+    "promotions": "promotions",
     "countries": "countries",
     "paymentMethods": "payment methods",
     "shippingMethods": "shipping methods",

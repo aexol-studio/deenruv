@@ -1,0 +1,194 @@
+import React, { createContext, PropsWithChildren } from 'react';
+import {
+    Button,
+    Card,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuTrigger,
+} from '@/components/ui';
+import {
+    DndContext,
+    closestCenter,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragEndEvent,
+} from '@dnd-kit/core';
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    rectSortingStrategy,
+} from '@dnd-kit/sortable';
+import { Grip, Menu, Trash } from 'lucide-react';
+import { CSS } from '@dnd-kit/utilities';
+import { restrictToWindowEdges } from '@dnd-kit/modifiers';
+import { Widget } from '@/types';
+import { useWidgetsStore } from './widgets-context';
+
+const WidgetItemContext = createContext<{
+    size: { width: number; height: number };
+    sizes: { width: number; height: number }[];
+    removeWidget: () => void;
+    resizeWidget: (size: { width: number; height: number }) => void;
+}>({
+    size: { width: 0, height: 0 },
+    sizes: [],
+    removeWidget: () => undefined,
+    resizeWidget: () => undefined,
+});
+
+const WidgetItemProvider: React.FC<
+    PropsWithChildren<{
+        widget: Omit<Widget, 'component'>;
+        removeWidget: (id: string | number) => void;
+        resizeWidget: (id: string | number, size: { width: number; height: number }) => void;
+    }>
+> = ({ widget, children, removeWidget: remove, resizeWidget: resize }) => {
+    return (
+        <WidgetItemContext.Provider
+            value={{
+                size: widget.size,
+                sizes: widget.sizes,
+                removeWidget: () => remove(widget.id),
+                resizeWidget: (size: { width: number; height: number }) => resize(widget.id, size),
+            }}
+        >
+            {children}
+        </WidgetItemContext.Provider>
+    );
+};
+
+export const useWidgetItem = () => {
+    const context = React.useContext(WidgetItemContext);
+    if (!context) {
+        throw new Error('useWidgetItem must be used within a WidgetItemProvider');
+    }
+    return context;
+};
+
+const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'> }>> = ({
+    widget,
+    children,
+}) => {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: widget.id,
+        attributes: {
+            role: `widget-${widget.name}`,
+            roleDescription: 'Draggable widget',
+            tabIndex: 0,
+        },
+        transition: { duration: 150, easing: 'cubic-bezier(0.25, 1, 0.5, 1)' },
+    });
+    const { removeWidget, resizeWidget } = useWidgetItem();
+
+    const style = {
+        transform: CSS.Translate.toString(transform),
+        transition,
+        gridColumn: `span ${widget.size.width}`,
+        gridRow: `span ${widget.size.height}`,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style}>
+            <Card className="flex flex-col gap-2 p-4">
+                <div className="flex justify-end">
+                    <div className="flex items-center justify-center gap-4">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="icon">
+                                    <Menu className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56">
+                                <div className="flex justify-between">
+                                    <DropdownMenuLabel>{widget.name}</DropdownMenuLabel>
+                                    <DropdownMenuLabel>
+                                        {widget.size.width} x {widget.size.height}
+                                    </DropdownMenuLabel>
+                                </div>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuGroup>
+                                    {widget.sizes.map(size => (
+                                        <DropdownMenuItem onClick={() => resizeWidget(size)}>
+                                            Size: {size.width} x {size.height}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </DropdownMenuGroup>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={removeWidget}>
+                                    Delete
+                                    <DropdownMenuShortcut>
+                                        <Trash className="h-4 w-4" />
+                                    </DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        <Button variant="outline" size="icon" {...listeners} {...attributes}>
+                            <Grip className="h-4 w-4" />
+                        </Button>
+                    </div>
+                </div>
+                {children}
+            </Card>
+        </div>
+    );
+};
+
+export const DashboardWidgets = () => {
+    const [, setActiveID] = React.useState<string | number | null>(null);
+    const { widgets, reorderWidgets, actions } = useWidgetsStore(state => ({
+        widgets: state.widgets,
+        reorderWidgets: state.reorderWidgets,
+        actions: { removeWidget: state.removeWidget, resizeWidget: state.resizeWidget },
+    }));
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+    );
+    function handleDragEnd(event: DragEndEvent) {
+        const { active, over } = event;
+        if (active.id !== over?.id) {
+            const ids = widgets?.map(widget => widget.id);
+            const oldIndex = ids?.indexOf(active.id);
+            const newIndex = ids?.indexOf(over?.id as string);
+            if (oldIndex !== undefined && newIndex !== undefined) reorderWidgets(oldIndex, newIndex);
+        }
+    }
+
+    if (widgets?.length === 0) {
+        return (
+            <div className="flex h-96 items-center justify-center">
+                <p className="text-lg text-gray-500">No widgets added yet</p>
+            </div>
+        );
+    }
+
+    return (
+        <DndContext
+            sensors={sensors}
+            modifiers={[restrictToWindowEdges]}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            onDragStart={event => setActiveID(event.active.id)}
+        >
+            <SortableContext items={widgets || []} strategy={rectSortingStrategy}>
+                <div className="grid grid-cols-12 gap-2">
+                    {widgets?.map(({ component, ...widget }) =>
+                        widget.visible ? (
+                            <WidgetItemProvider key={widget.id} widget={widget} {...actions}>
+                                <WidgetItem widget={widget}>{component}</WidgetItem>
+                            </WidgetItemProvider>
+                        ) : null,
+                    )}
+                </div>
+            </SortableContext>
+        </DndContext>
+    );
+};

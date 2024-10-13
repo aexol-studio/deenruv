@@ -30,6 +30,12 @@ export const Routes = {
   products: '/admin-ui/products',
   product: { route: '/admin-ui/products/:id', to: (productId: string) => `/admin-ui/products/${productId}` },
   productNew: '/admin-ui/products/new',
+  promotion: {
+    list: '/admin-ui/promotions',
+    new: '/admin-ui/promotions/new',
+    route: '/admin-ui/promotions/:id',
+    to: (promotionId: string) => `/admin-ui/promotions/${promotionId}`,
+  },
   roles: '/admin-ui/roles',
   role: { route: '/admin-ui/roles/:id', to: (roleId: string) => `/admin-ui/roles/${roleId}` },
   roleNew: '/admin-ui/roles/new',

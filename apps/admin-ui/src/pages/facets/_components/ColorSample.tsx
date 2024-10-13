@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
 import { CircleOff } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
-import { CirclePicker, ColorResult } from 'react-color';
-
+import pkg from 'react-color';
+const { CirclePicker } = pkg;
 interface ColorSampleProps {
   color: string | undefined; // hex
   setColor?: (color: string | undefined) => void;
@@ -13,7 +13,7 @@ export const ColorSample: React.FC<ColorSampleProps> = ({ color, setColor, small
   const [openColorPicker, setOpenColorPicker] = useState(false);
 
   const handleColorPicked = useCallback(
-    (e: ColorResult | undefined) => {
+    (e: any | undefined) => {
       if (e) {
         setColor?.(e.hex);
       } else setColor?.(undefined);

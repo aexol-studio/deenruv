@@ -27,7 +27,10 @@
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",
         "@deenruv/job-queue-plugin": "workspace:*",
+        "@deenruv/new-admin-ui": "workspace:*",
         "@nestjs/axios": "^3.0.2",
+        "@nestjs/common": "~10.3.10",
+        "@nestjs/serve-static": "^4.0.2",
         "typeorm": "0.3.20",
         "typescript": "5.3.3"
     },

@@ -38,9 +38,9 @@ export class PluginStore {
     getComponents(location: string) {
         const uniqueMappedComponents = new Map<string, React.ComponentType>();
         this.pluginMap.forEach(plugin => {
-            plugin.components?.forEach(({ component, elementId }) => {
+            plugin.components?.forEach(({ component, id }) => {
                 const uniqueUUID = [
-                    elementId,
+                    id,
                     plugin.name,
                     this.getUUID(),
                     component.displayName && `-${component.displayName}`,
@@ -48,12 +48,22 @@ export class PluginStore {
                     .filter(Boolean)
                     .join('-');
 
-                if (elementId === location) {
+                if (id === location) {
                     uniqueMappedComponents.set(uniqueUUID, component);
                 }
             });
         });
         return Array.from(uniqueMappedComponents.values());
+    }
+
+    get widgets() {
+        const widgets = new Map<string | number, NonNullable<DeenruvUIPlugin['widgets']>[number]>();
+        this.pluginMap.forEach(plugin => {
+            plugin.widgets?.forEach(widget => {
+                widgets.set(widget.id, widget);
+            });
+        });
+        return Array.from(widgets.values());
     }
 
     get navMenuData() {

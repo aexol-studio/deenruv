@@ -1,8 +1,8 @@
 import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { PluginStore } from './plugin-store';
-import { PluginNavigationGroup, PluginNavigationLink } from '@/types';
-import { Chain } from '@/zeus';
+import { PluginNavigationGroup, PluginNavigationLink, Widget } from '@/types';
+import { WidgetsStoreProvider } from '@/widgets/widgets-context';
 
 const PluginStoreContext = createContext<{
     viewMarkers: boolean;
@@ -14,6 +14,7 @@ const PluginStoreContext = createContext<{
         groups: PluginNavigationGroup[];
         links: PluginNavigationLink[];
     };
+    widgets: Widget[];
 }>({
     viewMarkers: false,
     setViewMarkers: () => undefined,
@@ -24,16 +25,12 @@ const PluginStoreContext = createContext<{
         groups: [],
         links: [],
     },
+    widgets: [],
 });
 
 export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ children, store }) => {
     const [viewMarkers, setViewMarkers] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(false);
-
-    const [channel, setChannel] = useState<string | null>(null);
-    const headers = {
-        'x-channel': channel || '',
-    };
 
     const getComponents = (position: string) => {
         return store.getComponents(position) || [];
@@ -60,9 +57,10 @@ export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ 
                 setOpenDropdown,
                 getComponents,
                 navMenuData: store.navMenuData,
+                widgets: store.widgets,
             }}
         >
-            {children}
+            <WidgetsStoreProvider widgets={store.widgets}>{children}</WidgetsStoreProvider>
         </PluginStoreContext.Provider>
     );
 };

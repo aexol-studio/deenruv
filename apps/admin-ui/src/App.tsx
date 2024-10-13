@@ -44,11 +44,10 @@ import { PaymentMethodDetailsPage } from '@/pages/payment-methods/Details.tsx';
 import { ShippingMethodsListPage } from '@/pages/shipping-methods/List.tsx';
 import { ShippingMethodDetailsPage } from '@/pages/shipping-methods/Details.tsx';
 import { CollectionDetailsPage } from '@/pages/collections/Details.tsx';
-import { PluginProvider, PluginStore } from '@deenruv/react-ui-devkit';
-import { UIPlugin } from '@deenruv/deenruv-first-plugin/plugin-ui';
-
-const store = new PluginStore();
-store.installPlugins([UIPlugin]);
+import { PluginProvider } from '@deenruv/react-ui-devkit';
+import { PromotionsListPage } from './pages/promotions/List.tsx';
+import { PromotionsDetailPage } from './pages/promotions/Detail.tsx';
+import { store } from './plugin-store.tsx';
 
 const rootPaths = [
   {
@@ -158,6 +157,14 @@ const rootPaths = [
   {
     path: Routes.paymentMethod.route,
     element: <PaymentMethodDetailsPage />,
+  },
+  {
+    path: Routes.promotion.list,
+    element: <PromotionsListPage />,
+  },
+  {
+    path: Routes.promotion.new,
+    element: <PromotionsDetailPage />,
   },
   {
     path: Routes.sellers,

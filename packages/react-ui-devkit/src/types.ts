@@ -4,18 +4,29 @@ export type PluginPage = {
     path: string;
     element: React.ReactNode;
 };
+
+export type Widget = {
+    id: string | number;
+    name: string;
+    component: JSX.Element;
+    visible: boolean;
+    size: { width: number; height: number };
+    sizes: { width: number; height: number }[];
+};
+
 export type DeenruvUIPlugin = {
     name: string;
     version: string;
     components?: PluginComponent[];
+    widgets?: Widget[];
     navMenuGroups?: Array<PluginNavigationGroup>;
     navMenuLinks?: Array<PluginNavigationLink>;
     pages?: Array<PluginPage>;
 };
 
 type PluginComponent = {
+    id: string;
     component: React.ComponentType;
-    elementId: string;
 };
 
 export type PluginNavigationGroup = {

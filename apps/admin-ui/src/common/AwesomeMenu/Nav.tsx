@@ -89,6 +89,18 @@ export function Nav({ isCollapsed }: NavProps) {
         ],
       },
       {
+        label: t('menuGroups.promotions'),
+        id: 'promotions-group',
+        links: [
+          {
+            title: t('menu.promotions'),
+            href: Routes.promotion.list,
+            id: 'link-promotions',
+            icon: ShoppingCart,
+          },
+        ],
+      },
+      {
         label: t('menuGroups.shipping'),
         id: 'shipping-group',
         links: [

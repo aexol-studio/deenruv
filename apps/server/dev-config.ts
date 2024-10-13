@@ -21,6 +21,7 @@ import path from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 import { DeenruvFirstPlugin } from '@deenruv/deenruv-first-plugin/plugin-server';
+import { RestPlugin } from './test-plugins/rest-plugin';
 /**
  * Config settings used during development
  */
@@ -104,6 +105,7 @@ export const devConfig: DeenruvConfig = {
         //         changeEmailAddressUrl: 'http://localhost:4201/change-email-address',
         //     },
         // }),
+        RestPlugin,
         DeenruvFirstPlugin,
         AdminUiPlugin.init({
             route: 'admin',

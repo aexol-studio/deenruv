@@ -2,22 +2,13 @@ import { Plugin, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import i18nextLoader from 'vite-plugin-i18next-loader';
+import fs from 'fs';
 
 export const AdminUIConfig = {
   title: 'Aexol Shop',
   description: 'Aexol Shop',
   logoPath: '/logo.png',
-  components: [
-    {
-      where: 'order-create',
-      name: 'custom-boolean-form-input',
-    },
-    {
-      where: 'order-create',
-      name: 'attributes-input',
-      componentPath: '../../src/pages/orders/_components/CustomComponent.tsx',
-    },
-  ],
+  plugins: [{ widgets: [] }],
 };
 
 const htmlPlugin = (): Plugin => {
@@ -31,10 +22,19 @@ const htmlPlugin = (): Plugin => {
     },
   };
 };
-// https://vitejs.dev/config/
+
 export default defineConfig({
   base: '/admin-ui',
   server: { port: 3001 },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
+      },
+    },
+  },
   plugins: [
     htmlPlugin(),
     tsconfigPaths(),

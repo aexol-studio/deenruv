@@ -2,10 +2,12 @@ import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
 import { AdminResolver } from './resolvers/admin.resolver';
 import { BetterMetricsService } from './services/metrics.service';
 import gql from 'graphql-tag';
+import { AdminUIController } from './controllers/admin-ui-controller';
 
 @DeenruvPlugin({
     compatibility: '0.0.1',
     imports: [PluginCommonModule],
+    controllers: [AdminUIController],
     providers: [BetterMetricsService],
     adminApiExtensions: {
         schema: gql`
