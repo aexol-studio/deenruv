@@ -258,8 +258,7 @@ const router = createBrowserRouter([
   {
     element: <Root />,
     errorElement: <Custom404 />,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- we pass here correctly typed routes
-    children: rootPaths.concat(store.routes as any),
+    children: [...rootPaths, ...store.routes],
   },
 ]);
 
