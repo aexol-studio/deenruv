@@ -1,0 +1,9 @@
+{
+    "nav": {
+        "group": "Inne Ustawienia",
+        "link": "Test Tłumaczeń"
+    },
+    "heading": "Nagłówek testowy",
+    "text": "To jest przetłumaczony tekst.",
+    "button": "Guzik"
+}

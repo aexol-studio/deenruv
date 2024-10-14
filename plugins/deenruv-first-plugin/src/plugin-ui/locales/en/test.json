@@ -1,0 +1,9 @@
+{
+    "nav": {
+        "group": "Other settings",
+        "link": "Translations Test"
+    },
+    "heading": "Test heading",
+    "text": "This is a translated text.",
+    "button": "Button"
+}

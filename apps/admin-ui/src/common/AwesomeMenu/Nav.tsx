@@ -42,8 +42,17 @@ interface NavProps {
 
 export function Nav({ isCollapsed }: NavProps) {
   const { t } = useTranslation('common');
+  const { t: _pluginT } = useTranslation();
   const location = useLocation();
   const { navMenuData } = usePluginStore();
+
+  const pluginT = (trans: string): string => {
+    const split = trans.split('.');
+    const key = split.slice(1).join('.') || '';
+    const ns = split[0] || '';
+    //@ts-ignore
+    return _pluginT(key, { ns });
+  };
 
   const navigationGroups = useMemo(() => {
     const navData: Array<{
@@ -123,9 +132,10 @@ export function Nav({ isCollapsed }: NavProps) {
 
     const { groups, links } = navMenuData;
 
-    groups.forEach(({ id, label, placement }) => {
+    groups.forEach(({ id, labelId, placement }) => {
       let foundGroupIdx = -1;
-      const newGroup = { id, label, links: [] };
+
+      const newGroup = { id, label: pluginT(labelId), links: [] };
       if (placement?.groupId) {
         foundGroupIdx = navData.findIndex((group) => group.id === placement.groupId);
       }
@@ -137,13 +147,13 @@ export function Nav({ isCollapsed }: NavProps) {
       }
     });
 
-    links.forEach(({ groupId, href, label, id, icon, placement }, idx) => {
+    links.forEach(({ groupId, href, labelId, id, icon, placement }, idx) => {
       let foundGroupIdx = navData.findIndex((group) => group.id === groupId);
 
       if (foundGroupIdx == -1)
         throw new Error(`Navbar menu group with id ${groupId} was not found.\nPlugin navigation href: ${href}`);
 
-      const newElement = { title: label, href: href, id, icon };
+      const newElement = { title: pluginT(labelId), label: pluginT(labelId), href: href, id, icon };
 
       if (!placement) {
         navData[foundGroupIdx].links.push(newElement);
@@ -156,7 +166,7 @@ export function Nav({ isCollapsed }: NavProps) {
     });
 
     return navData;
-  }, [navMenuData.groups, navMenuData.links]);
+  }, [navMenuData.groups, navMenuData.links, t]);
 
   return (
     <div className="relative h-[calc(100vh-70px)] overflow-y-auto lg:h-[calc(100vh-120px)]">

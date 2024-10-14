@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export const SETTINGS_LOCAL_STORAGE_KEY = 'vendure-admin-panel-storage';
+export const SETTINGS_LOCAL_STORAGE_KEY = 'deenruv-admin-panel-storage';
 type ThemeType = 'dark' | 'light' | 'system';
 
 export type LanguageKey =

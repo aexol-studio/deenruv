@@ -1,0 +1,8 @@
+{
+    "nav": {
+        "group": "Product Settings",
+        "link": "Translations Test 2"
+    },
+    "heading": "Product settings test heading",
+    "text": "This is a translated text for product settings."
+}

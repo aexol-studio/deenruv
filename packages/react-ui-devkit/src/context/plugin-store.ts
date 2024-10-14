@@ -14,8 +14,19 @@ export class PluginStore {
         links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number]>;
     } = { groups: [], links: [] };
 
-    installPlugins(plugins: DeenruvUIPlugin[]) {
-        plugins.forEach(plugin => this.pluginMap.set(plugin.name, plugin));
+    installPlugins(
+        plugins: DeenruvUIPlugin[],
+        addTranslation: (lng: string, ns: string, trans: object) => void,
+    ) {
+        plugins.forEach(({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {
+            this.pluginMap.set(plugin.name, plugin);
+
+            if (!translations) return;
+            for (const [lng, locales] of Object.entries(translations.data)) {
+                locales.forEach(trans => addTranslation(lng, translations.ns, trans));
+            }
+        });
+
         this.pluginPages = plugins.flatMap(
             el => el.pages?.map(route => ({ ...route, path: getExtensionsPath(route.path) })) || [],
         );
@@ -23,10 +34,17 @@ export class PluginStore {
             if (!el.navMenuLinks) return [];
             return el.navMenuLinks.map(linkEl => ({
                 ...linkEl,
+                labelId: `${el.translations?.ns}.${linkEl.labelId}`,
                 href: getExtensionsPath(linkEl.href),
             }));
         });
-        this.pluginsNavigationDataField.groups = plugins.flatMap(el => el.navMenuGroups || []);
+        this.pluginsNavigationDataField.groups = plugins.flatMap(
+            el =>
+                el.navMenuGroups?.map(groupEl => ({
+                    ...groupEl,
+                    labelId: `${el.translations?.ns}.${groupEl.labelId}`,
+                })) || [],
+        );
     }
 
     private getUUID() {

@@ -22,6 +22,10 @@ export type DeenruvUIPlugin = {
     navMenuGroups?: Array<PluginNavigationGroup>;
     navMenuLinks?: Array<PluginNavigationLink>;
     pages?: Array<PluginPage>;
+    translations?: {
+        ns: string;
+        data: Record<string, object[]>;
+    };
 };
 
 type PluginComponent = {
@@ -31,13 +35,13 @@ type PluginComponent = {
 
 export type PluginNavigationGroup = {
     id: string;
-    label: string;
+    labelId: string;
     placement?: { groupId: string };
 };
 
 export type PluginNavigationLink = {
     id: string;
-    label: string;
+    labelId: string;
     href: string;
     groupId: string;
     icon: FC<SVGProps<SVGSVGElement>>;

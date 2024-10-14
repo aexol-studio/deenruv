@@ -4,6 +4,8 @@ import { client } from './client';
 import { BetterMetricInterval, BetterMetricType, ResolverInputTypes } from './zeus';
 import { format, startOfWeek, endOfWeek, subWeeks, startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { pl } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
+import { translationNs } from '.';
 
 const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryInput']) => {
     const { betterMetricSummary } = await client('query')({
@@ -34,6 +36,7 @@ type BetterMetricsChartDataType = {
 }[];
 
 export const Test = () => {
+    const { t } = useTranslation(translationNs);
     const [metricLoading, setMetricLoading] = useState(false);
     const [metricSelectValue, setMetricSelectValue] = useState(BetterMetricInterval.Weekly);
 
@@ -156,7 +159,7 @@ export const Test = () => {
                     });
                 }}
             >
-                DUPA
+                {t('button')}
             </Button>
         </div>
     );
