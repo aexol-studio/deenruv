@@ -111,7 +111,7 @@ export class TestServer {
         Logger.useLogger(config.logger);
         const appModule = await import('@deenruv/core/dist/app.module.js');
         try {
-            DefaultLogger.hideNestBoostrapLogs();
+            DefaultLogger.hideNestBootstrapLogs();
             const app = await NestFactory.create(appModule.AppModule, {
                 cors: config.apiOptions.cors,
                 logger: new Logger(),

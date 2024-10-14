@@ -118,7 +118,7 @@ export async function bootstrap(
     const appModule = await import('./app.module.js');
     setProcessContext('server');
     const { hostname, port, cors, middleware } = config.apiOptions;
-    DefaultLogger.hideNestBoostrapLogs();
+    DefaultLogger.hideNestBootstrapLogs();
     const app = await NestFactory.create(appModule.AppModule, {
         cors,
         logger: new Logger(),
@@ -179,7 +179,7 @@ export async function bootstrapWorker(
     // checkPluginCompatibility(config);
 
     setProcessContext('worker');
-    DefaultLogger.hideNestBoostrapLogs();
+    DefaultLogger.hideNestBootstrapLogs();
 
     const WorkerModule = await import('./worker/worker.module.js').then(m => m.WorkerModule);
     const workerApp = await NestFactory.createApplicationContext(WorkerModule, {

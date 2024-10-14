@@ -15,7 +15,7 @@
         "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
     },
     "scripts": {
-        "build": "rimraf dist && tsc --build",
+        "build": "tsc --build",
         "watch": "tsc --watch",
         "lint": "eslint --fix .",
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"

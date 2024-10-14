@@ -49,7 +49,7 @@ export class DefaultLogger implements DeenruvLogger {
      * See https://github.com/nestjs/nest/issues/1838
      * @internal
      */
-    static hideNestBoostrapLogs(): void {
+    static hideNestBootstrapLogs(): void {
         const { logger } = Logger;
         if (logger instanceof DefaultLogger) {
             if (logger.level === LogLevel.Info) {
@@ -61,7 +61,7 @@ export class DefaultLogger implements DeenruvLogger {
 
     /**
      * @description
-     * If the log level was changed by `hideNestBoostrapLogs()`, this method will restore the
+     * If the log level was changed by `hideNestBootstrapLogs()`, this method will restore the
      * original log level. To be run directly after the `NestFactory.create()` call in the
      * `bootstrap()` function.
      *
