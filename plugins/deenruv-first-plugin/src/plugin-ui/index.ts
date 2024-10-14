@@ -1,4 +1,4 @@
-import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
+import { BASE_GROUP_ID, createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 import { pages } from './pages';
 import { Test } from './metrics';
 import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
@@ -26,7 +26,7 @@ export const UIPlugin = createDeenruvUIPlugin({
         {
             id: 'other-settings',
             labelId: `nav.group`,
-            placement: { groupId: 'settings-group' },
+            placement: { groupId: BASE_GROUP_ID.SETTINGS },
         },
     ],
     navMenuLinks: [
@@ -48,7 +48,7 @@ export const UIPlugin = createDeenruvUIPlugin({
             id: 'placement-1',
             href: 'test',
             labelId: `placement-2`,
-            groupId: 'shipping-group',
+            groupId: BASE_GROUP_ID.SHIPPING,
             icon: SquareIcon,
             placement: { linkId: 'link-shipping-methods' },
         },
@@ -56,7 +56,7 @@ export const UIPlugin = createDeenruvUIPlugin({
             id: 'placement-2',
             href: 'test',
             labelId: `placement-1`,
-            groupId: 'shipping-group',
+            groupId: BASE_GROUP_ID.SHIPPING,
             icon: Camera,
             placement: { linkId: 'link-payment-methods', where: 'above' },
         },

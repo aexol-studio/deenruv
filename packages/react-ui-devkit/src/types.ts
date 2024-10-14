@@ -33,17 +33,25 @@ type PluginComponent = {
     component: React.ComponentType;
 };
 
+export enum BASE_GROUP_ID {
+    SHOP = 'shop-group',
+    SETTINGS = 'settings-group',
+    USERS = 'users-group',
+    PROMOTIONS = 'promotions-group',
+    SHIPPING = 'shipping-group',
+}
+
 export type PluginNavigationGroup = {
     id: string;
     labelId: string;
-    placement?: { groupId: string };
+    placement?: { groupId: BASE_GROUP_ID | string };
 };
 
 export type PluginNavigationLink = {
     id: string;
     labelId: string;
     href: string;
-    groupId: string;
+    groupId: BASE_GROUP_ID | string;
     icon: FC<SVGProps<SVGSVGElement>>;
     placement?: { linkId: string; where?: 'above' | 'under' };
 };
