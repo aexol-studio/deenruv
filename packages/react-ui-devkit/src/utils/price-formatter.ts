@@ -4,7 +4,10 @@ import { CurrencyCode } from '@/zeus';
  * @param price - price to format
  * @param currencyCode - currency code e.g. USD
  */
-export function priceFormatter(price: number | { from: number; to: number }, code?: CurrencyCode): string {
+export function priceFormatter<T>(
+    price: number | { from: number; to: number },
+    code?: T extends CurrencyCode ? CurrencyCode : T,
+): string {
     const currencyCode = code || CurrencyCode.PLN;
     //TODO: more universal solution
     const translations: Partial<Record<CurrencyCode, { country: string }>> = {
@@ -21,7 +24,7 @@ export function priceFormatter(price: number | { from: number; to: number }, cod
             country: 'cs-CZ',
         },
     };
-    const converted = translations[currencyCode];
+    const converted = translations[code as CurrencyCode];
     if (!converted) {
         const formatterCode = new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -37,7 +40,7 @@ export function priceFormatter(price: number | { from: number; to: number }, cod
     const formatterCode = new Intl.NumberFormat(converted.country, {
         style: 'currency',
         currencyDisplay: 'narrowSymbol',
-        currency: currencyCode,
+        currency: currencyCode as string,
     });
     if (typeof price === 'number') {
         return formatterCode.format(price / 100);

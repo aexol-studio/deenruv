@@ -1,24 +1,23 @@
 import { getZonedDate } from '@/utils';
-import { BetterMetricType } from '@/zeus';
 import { eachDayOfInterval, format } from 'date-fns';
 import { pl, enGB } from 'date-fns/locale';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 
-interface MetricData {
+interface MetricData<T> {
     name: string;
     value: number;
     additionalData: undefined | AdditionalEntryData[];
-    type: BetterMetricType;
+    type: T;
 }
 
-export const addMissingDays = (
+export const addMissingDays = <T>(
     start: string,
     end: string,
-    type: BetterMetricType,
+    type: T,
     language: string,
     partialData: { label: string; value: number; additionalData?: AdditionalEntryData[] }[] = [],
-): MetricData[] => {
+): MetricData<T>[] => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     const days = eachDayOfInterval({ start: startDate, end: endDate });

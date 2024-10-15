@@ -940,7 +940,6 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
-betterMetricSummary?: [{	input: ValueTypes["BetterMetricSummaryInput"] | Variable<any, string>},ValueTypes["BetterMetricSummary"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -4481,38 +4480,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["BetterMetricSummary"]: AliasType<{
-	interval?:boolean | `@${string}`,
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ValueTypes["BetterMetricSummaryEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricInterval"]:BetterMetricInterval;
-	["BetterMetricType"]:BetterMetricType;
-	["BetterMeticSummaryEntryAdditionalData"]: AliasType<{
-	id?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	quantity?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricSummaryEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-	additionalData?:ValueTypes["BetterMeticSummaryEntryAdditionalData"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricIntervalInput"]: {
-	type: ValueTypes["BetterMetricInterval"] | Variable<any, string>,
-	start?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
-	end?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
-};
-	["BetterMetricSummaryInput"]: {
-	interval: ValueTypes["BetterMetricIntervalInput"] | Variable<any, string>,
-	types: Array<ValueTypes["BetterMetricType"]> | Variable<any, string>,
-	productIDs?: Array<string> | undefined | null | Variable<any, string>,
-	refresh?: boolean | undefined | null | Variable<any, string>
-};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -5083,7 +5050,6 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
-betterMetricSummary?: [{	input: ResolverInputTypes["BetterMetricSummaryInput"]},ResolverInputTypes["BetterMetricSummary"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -8656,38 +8622,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["BetterMetricSummary"]: AliasType<{
-	interval?:boolean | `@${string}`,
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ResolverInputTypes["BetterMetricSummaryEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricInterval"]:BetterMetricInterval;
-	["BetterMetricType"]:BetterMetricType;
-	["BetterMeticSummaryEntryAdditionalData"]: AliasType<{
-	id?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	quantity?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricSummaryEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-	additionalData?:ResolverInputTypes["BetterMeticSummaryEntryAdditionalData"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricIntervalInput"]: {
-	type: ResolverInputTypes["BetterMetricInterval"],
-	start?: ResolverInputTypes["DateTime"] | undefined | null,
-	end?: ResolverInputTypes["DateTime"] | undefined | null
-};
-	["BetterMetricSummaryInput"]: {
-	interval: ResolverInputTypes["BetterMetricIntervalInput"],
-	types: Array<ResolverInputTypes["BetterMetricType"]>,
-	productIDs?: Array<string> | undefined | null,
-	refresh?: boolean | undefined | null
-};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -9272,7 +9206,6 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined,
-	betterMetricSummary: Array<ModelTypes["BetterMetricSummary"]>,
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<ModelTypes["MetricSummary"]>
 };
@@ -12417,35 +12350,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined
 };
-	["BetterMetricSummary"]: {
-		interval: ModelTypes["BetterMetricInterval"],
-	type: ModelTypes["BetterMetricType"],
-	title: string,
-	entries: Array<ModelTypes["BetterMetricSummaryEntry"]>
-};
-	["BetterMetricInterval"]:BetterMetricInterval;
-	["BetterMetricType"]:BetterMetricType;
-	["BetterMeticSummaryEntryAdditionalData"]: {
-		id: string,
-	name: string,
-	quantity: number
-};
-	["BetterMetricSummaryEntry"]: {
-		label: string,
-	value: number,
-	additionalData?: Array<ModelTypes["BetterMeticSummaryEntryAdditionalData"]> | undefined
-};
-	["BetterMetricIntervalInput"]: {
-	type: ModelTypes["BetterMetricInterval"],
-	start?: ModelTypes["DateTime"] | undefined,
-	end?: ModelTypes["DateTime"] | undefined
-};
-	["BetterMetricSummaryInput"]: {
-	interval: ModelTypes["BetterMetricIntervalInput"],
-	types: Array<ModelTypes["BetterMetricType"]>,
-	productIDs?: Array<string> | undefined,
-	refresh?: boolean | undefined
-};
 	["MetricSummary"]: {
 		interval: ModelTypes["MetricInterval"],
 	type: ModelTypes["MetricType"],
@@ -13026,7 +12930,6 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined,
-	betterMetricSummary: Array<GraphQLTypes["BetterMetricSummary"]>,
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<GraphQLTypes["MetricSummary"]>
 };
@@ -16744,38 +16647,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined
 };
-	["BetterMetricSummary"]: {
-	__typename: "BetterMetricSummary",
-	interval: GraphQLTypes["BetterMetricInterval"],
-	type: GraphQLTypes["BetterMetricType"],
-	title: string,
-	entries: Array<GraphQLTypes["BetterMetricSummaryEntry"]>
-};
-	["BetterMetricInterval"]: BetterMetricInterval;
-	["BetterMetricType"]: BetterMetricType;
-	["BetterMeticSummaryEntryAdditionalData"]: {
-	__typename: "BetterMeticSummaryEntryAdditionalData",
-	id: string,
-	name: string,
-	quantity: number
-};
-	["BetterMetricSummaryEntry"]: {
-	__typename: "BetterMetricSummaryEntry",
-	label: string,
-	value: number,
-	additionalData?: Array<GraphQLTypes["BetterMeticSummaryEntryAdditionalData"]> | undefined
-};
-	["BetterMetricIntervalInput"]: {
-		type: GraphQLTypes["BetterMetricInterval"],
-	start?: GraphQLTypes["DateTime"] | undefined,
-	end?: GraphQLTypes["DateTime"] | undefined
-};
-	["BetterMetricSummaryInput"]: {
-		interval: GraphQLTypes["BetterMetricIntervalInput"],
-	types: Array<GraphQLTypes["BetterMetricType"]>,
-	productIDs?: Array<string> | undefined,
-	refresh?: boolean | undefined
-};
 	["MetricSummary"]: {
 	__typename: "MetricSummary",
 	interval: GraphQLTypes["MetricInterval"],
@@ -17851,22 +17722,6 @@ export const enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
-export const enum BetterMetricInterval {
-	Weekly = "Weekly",
-	Monthly = "Monthly",
-	Yearly = "Yearly",
-	Custom = "Custom",
-	ThisWeek = "ThisWeek",
-	LastWeek = "LastWeek",
-	ThisMonth = "ThisMonth",
-	LastMonth = "LastMonth"
-}
-export const enum BetterMetricType {
-	OrderCount = "OrderCount",
-	OrderTotal = "OrderTotal",
-	AverageOrderValue = "AverageOrderValue",
-	OrderTotalProductsCount = "OrderTotalProductsCount"
-}
 export const enum MetricInterval {
 	Daily = "Daily"
 }
@@ -18062,10 +17917,6 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
-	["BetterMetricInterval"]: ValueTypes["BetterMetricInterval"];
-	["BetterMetricType"]: ValueTypes["BetterMetricType"];
-	["BetterMetricIntervalInput"]: ValueTypes["BetterMetricIntervalInput"];
-	["BetterMetricSummaryInput"]: ValueTypes["BetterMetricSummaryInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];
 	["MetricType"]: ValueTypes["MetricType"];
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];

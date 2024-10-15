@@ -8,14 +8,21 @@ import { ChartConfig, ChartContainer, ChartTooltip } from '@deenruv/react-ui-dev
 interface ChartProps {
     data: { name: string; value: number; type: BetterMetricType }[];
     language: string;
+    options?: { colorFrom?: string; colorTo?: string; stroke?: string };
 }
 
 const HEIGHT = 300;
 
-export const OrdersChart: React.FC<ChartProps> = ({ data, language }) => {
+export const OrdersChart: React.FC<ChartProps> = ({ data, language, options: _options }) => {
     const chartConfig = useMemo((): ChartConfig => {
         return { value: { label: camelCaseToSpaces(data[0]?.type) } };
     }, [data]);
+
+    const options = _options || {
+        colorFrom: `#4338ca`,
+        colorTo: `#6366f1`,
+        stroke: `#6366f1`,
+    };
 
     return (
         <ChartContainer config={chartConfig} style={{ height: `${HEIGHT}px`, width: '100%' }}>
@@ -38,16 +45,8 @@ export const OrdersChart: React.FC<ChartProps> = ({ data, language }) => {
                 />
                 <defs>
                     <linearGradient id="fill" x1="0" y1="0" x2="0" y2="1">
-                        <stop
-                            offset="5%"
-                            stopColor={`tailwindConfig.theme.colors.blue['500']`}
-                            stopOpacity={0.9}
-                        />
-                        <stop
-                            offset="95%"
-                            stopColor={`tailwindConfig.theme.colors.indigo['700']`}
-                            stopOpacity={0.2}
-                        />
+                        <stop offset="5%" stopColor={options.colorFrom} stopOpacity={0.9} />
+                        <stop offset="95%" stopColor={options.colorTo} stopOpacity={0.2} />
                     </linearGradient>
                 </defs>
                 <Area
@@ -55,7 +54,7 @@ export const OrdersChart: React.FC<ChartProps> = ({ data, language }) => {
                     type="monotone"
                     fill="url(#fill)"
                     fillOpacity={0.4}
-                    stroke={`tailwindConfig.theme.colors.blue['300']`}
+                    stroke={options.stroke}
                     stackId="a"
                 />
             </AreaChart>

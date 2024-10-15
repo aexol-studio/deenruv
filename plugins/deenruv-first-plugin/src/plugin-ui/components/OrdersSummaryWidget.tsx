@@ -171,7 +171,7 @@ export const OrdersSummaryWidget = () => {
                         <h3 className="text-3xl">
                             {priceFormatter(
                                 grossOrNet === 'gross' ? orders?.totalWithTax || 0 : orders?.total || 0,
-                                orders?.currencyCode || (CurrencyCode.PLN as any),
+                                orders?.currencyCode || CurrencyCode.PLN,
                             )}
                         </h3>
                         <div className="mt-2 gap-2">

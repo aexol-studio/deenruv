@@ -171,9 +171,6 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
-		betterMetricSummary:{
-			input:"BetterMetricSummaryInput"
-		},
 		metricSummary:{
 			input:"MetricSummaryInput"
 		}
@@ -1434,17 +1431,6 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
-	BetterMetricInterval: "enum" as const,
-	BetterMetricType: "enum" as const,
-	BetterMetricIntervalInput:{
-		type:"BetterMetricInterval",
-		start:"DateTime",
-		end:"DateTime"
-	},
-	BetterMetricSummaryInput:{
-		interval:"BetterMetricIntervalInput",
-		types:"BetterMetricType"
-	},
 	MetricInterval: "enum" as const,
 	MetricType: "enum" as const,
 	MetricSummaryInput:{
@@ -1962,7 +1948,6 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
-		betterMetricSummary:"BetterMetricSummary",
 		metricSummary:"MetricSummary"
 	},
 	Mutation:{
@@ -3841,22 +3826,6 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		members:"Region",
 		customFields:"JSON"
-	},
-	BetterMetricSummary:{
-		interval:"BetterMetricInterval",
-		type:"BetterMetricType",
-		title:"String",
-		entries:"BetterMetricSummaryEntry"
-	},
-	BetterMeticSummaryEntryAdditionalData:{
-		id:"String",
-		name:"String",
-		quantity:"Float"
-	},
-	BetterMetricSummaryEntry:{
-		label:"String",
-		value:"Float",
-		additionalData:"BetterMeticSummaryEntryAdditionalData"
 	},
 	MetricSummary:{
 		interval:"MetricInterval",

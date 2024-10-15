@@ -265,6 +265,11 @@ const router = createBrowserRouter([
 function App() {
   const isLoggedIn = useSettings((p) => p.isLoggedIn);
   const theme = useSettings((p) => p.theme);
+  const context = useSettings((p) => ({
+    channel: p.selectedChannel,
+    language: p.language,
+    translationsLanguage: p.translationsLanguage,
+  }));
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
@@ -280,7 +285,7 @@ function App() {
     <I18nextProvider i18n={i18n} defaultNS={'translation'}>
       <AnimatePresence>
         {isLoggedIn ? (
-          <PluginProvider store={store}>
+          <PluginProvider store={store} context={context}>
             <RouterProvider router={router} />
           </PluginProvider>
         ) : (

@@ -10,6 +10,7 @@ import {
     CardContent,
     addMissingDays,
     getZonedDate,
+    usePluginStore,
 } from '@deenruv/react-ui-devkit';
 
 import { MetricsIntervalSelect } from './MetricsIntervalSelect';
@@ -50,7 +51,8 @@ const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryIn
 
 export const OrdersWidget = () => {
     const { t } = useTranslation('dashboard');
-    const language = 'pl';
+    const { language } = usePluginStore();
+    console.log(language);
     const [metricLoading, setMetricLoading] = useState(false);
     const [metricSelectValue, setMetricSelectValue] = useState(BetterMetricInterval.Weekly);
 
@@ -163,7 +165,7 @@ export const OrdersWidget = () => {
                       addMissingDays(
                           betterMetricsSettings.interval.start as string,
                           betterMetricsSettings.interval.end as string,
-                          metric.type as any,
+                          metric.type,
                           language,
                           metric.entries,
                       );
@@ -201,7 +203,7 @@ export const OrdersWidget = () => {
             </CardHeader>
             <div className="mb-6" />
             <CardContent className="pl-0">
-                <OrdersChart data={betterData as any} language={language} />
+                <OrdersChart data={betterData} language={language} />
             </CardContent>
         </Card>
     );

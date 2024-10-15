@@ -4,7 +4,18 @@ import { PluginStore } from './plugin-store';
 import { PluginNavigationGroup, PluginNavigationLink, Widget } from '@/types';
 import { WidgetsStoreProvider } from '@/widgets/widgets-context';
 
+type Channel = {
+    id: string;
+    code: string;
+    currencyCode: string;
+    token: string;
+    defaultLanguageCode: string;
+};
+
 const PluginStoreContext = createContext<{
+    channel?: Channel;
+    language: string;
+    translationsLanguage: string;
     viewMarkers: boolean;
     setViewMarkers: (view: boolean) => void;
     openDropdown: boolean;
@@ -16,6 +27,9 @@ const PluginStoreContext = createContext<{
     };
     widgets: Widget[];
 }>({
+    channel: undefined,
+    language: '',
+    translationsLanguage: '',
     viewMarkers: false,
     setViewMarkers: () => undefined,
     openDropdown: false,
@@ -28,7 +42,12 @@ const PluginStoreContext = createContext<{
     widgets: [],
 });
 
-export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ children, store }) => {
+export const PluginProvider: FC<
+    PropsWithChildren<{
+        store: PluginStore;
+        context: { channel: Channel; language: string; translationsLanguage: string };
+    }>
+> = ({ children, store, context }) => {
     const [viewMarkers, setViewMarkers] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -51,6 +70,7 @@ export const PluginProvider: FC<PropsWithChildren<{ store: PluginStore }>> = ({ 
     return (
         <PluginStoreContext.Provider
             value={{
+                ...context,
                 viewMarkers,
                 setViewMarkers,
                 openDropdown,
