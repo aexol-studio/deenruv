@@ -137,7 +137,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 }}
                 className={cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')}
               >
-                <div className=" flex h-[120px] flex-col items-center justify-center gap-4 border-b px-2 lg:h-[120px]">
+                <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b px-2')}>
                   <div className="cursor-pointer" onClick={() => navigate(Routes.dashboard)}>
                     <MinkoLogo isCollapsed={isCollapsed} />
                   </div>

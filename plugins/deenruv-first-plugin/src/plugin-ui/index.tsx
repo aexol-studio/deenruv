@@ -1,26 +1,20 @@
 import { BASE_GROUP_ID, createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
-import { pages } from './pages';
-import { Test } from './metrics';
 import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
+import { pages } from './pages';
 import { SquareIcon } from './assets';
 import { widgets } from './widgets';
 import pl from './locales/pl';
 import en from './locales/en';
-
-export const translationNs = 'first-plugin';
+import { translationNS } from './translation-ns';
 
 export const UIPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'First Plugin',
     pages,
     widgets,
-    components: [{ id: 'testing', component: Test }],
     translations: {
-        ns: translationNs,
-        data: {
-            en,
-            pl,
-        },
+        ns: translationNS,
+        data: { en, pl },
     },
     navMenuGroups: [
         {

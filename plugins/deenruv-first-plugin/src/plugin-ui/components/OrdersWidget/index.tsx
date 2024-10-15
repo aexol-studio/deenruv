@@ -1,11 +1,32 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button } from '@deenruv/react-ui-devkit';
-import { client } from './client';
-import { BetterMetricInterval, BetterMetricType, ResolverInputTypes } from './zeus';
-import { format, startOfWeek, endOfWeek, subWeeks, startOfMonth, endOfMonth, subMonths } from 'date-fns';
-import { pl } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { translationNs } from '.';
+
+import { endOfMonth, endOfWeek, format, startOfMonth, startOfWeek, subMonths, subWeeks } from 'date-fns';
+import { pl, enGB } from 'date-fns/locale';
+import {
+    Card,
+    CardTitle,
+    CardHeader,
+    CardContent,
+    addMissingDays,
+    getZonedDate,
+} from '@deenruv/react-ui-devkit';
+
+import { MetricsIntervalSelect } from './MetricsIntervalSelect';
+import { MetricsCustomDates } from './MetricCustomDates';
+import { MetricTypeSelect } from './MetricTypeSelect';
+import { OrdersChart } from './OrdersChart';
+
+import { BetterMetricInterval, BetterMetricType, ResolverInputTypes } from '../../zeus';
+import { client } from '../../graphql/client';
+
+type AdditionalEntryData = { id: string; name: string; quantity: number };
+type BetterMetricsChartDataType = {
+    title: string;
+    type: BetterMetricType;
+    interval: BetterMetricInterval;
+    entries: { label: string; value: number; additionalData?: AdditionalEntryData[] }[];
+}[];
 
 const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryInput']) => {
     const { betterMetricSummary } = await client('query')({
@@ -27,16 +48,9 @@ const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryIn
     return betterMetricSummary;
 };
 
-type AdditionalEntryData = { id: string; name: string; quantity: number };
-type BetterMetricsChartDataType = {
-    title: string;
-    type: BetterMetricType;
-    interval: BetterMetricInterval;
-    entries: { label: string; value: number; additionalData?: AdditionalEntryData[] }[];
-}[];
-
-export const Test = () => {
-    const { t } = useTranslation(translationNs);
+export const OrdersWidget = () => {
+    const { t } = useTranslation('dashboard');
+    const language = 'pl';
     const [metricLoading, setMetricLoading] = useState(false);
     const [metricSelectValue, setMetricSelectValue] = useState(BetterMetricInterval.Weekly);
 
@@ -132,42 +146,63 @@ export const Test = () => {
     const betterData = useMemo(() => {
         return betterMetrics
             .map(metric => {
-                return metric.entries.map(entry => ({
-                    name: format(getZonedDate(entry.label), 'PPP', {
-                        locale: pl,
-                    }),
-                    value:
-                        metric.type === BetterMetricType.AverageOrderValue ||
-                        metric.type === BetterMetricType.OrderTotal
-                            ? entry.value / 100
-                            : entry.value,
-                    type: metric.type,
-                    additionalData: entry.additionalData,
-                }));
+                return metric.interval !== BetterMetricInterval.Custom
+                    ? metric.entries.map(entry => ({
+                          name: format(getZonedDate(entry.label), 'PPP', {
+                              locale: language === 'pl' ? pl : enGB,
+                          }),
+                          value:
+                              metric.type === BetterMetricType.AverageOrderValue ||
+                              metric.type === BetterMetricType.OrderTotal
+                                  ? entry.value / 100
+                                  : entry.value,
+                          type: metric.type,
+                          additionalData: entry.additionalData,
+                      }))
+                    : // When interval is custom, Backend returns only entries with values. This adds remaining days.
+                      addMissingDays(
+                          betterMetricsSettings.interval.start as string,
+                          betterMetricsSettings.interval.end as string,
+                          metric.type as any,
+                          language,
+                          metric.entries,
+                      );
             })
             .flat();
-    }, [betterMetrics]);
-
-    console.log(betterData);
+    }, [betterMetrics, betterMetricsSettings.interval.start, betterMetricsSettings.interval.end, language]);
 
     return (
-        <div>
-            <Button
-                onClick={async () => {
-                    const { channels } = await client('query')({
-                        channels: [{ options: { take: 20 } }, { items: { id: true, code: true } }],
-                    });
-                }}
-            >
-                {t('button')}
-            </Button>
-        </div>
+        <Card>
+            <CardHeader>
+                <div className="flex flex-col justify-between gap-4">
+                    <CardTitle className="flex items-center gap-8 text-lg">
+                        <span>{t('metrics')}</span>
+                        <div className="flex gap-3">
+                            <MetricTypeSelect
+                                changeMetricType={changeBetterMetricType}
+                                loading={metricLoading}
+                            />
+                            <div className="flex gap-3">
+                                <MetricsIntervalSelect
+                                    value={metricSelectValue}
+                                    changeMetricInterval={changeMetricsInterval}
+                                    loading={metricLoading}
+                                />
+                                <MetricsCustomDates
+                                    isVisible={metricSelectValue === BetterMetricInterval.Custom}
+                                    endDate={betterMetricsSettings.interval.end as Date | undefined}
+                                    startDate={betterMetricsSettings.interval.start as Date | undefined}
+                                    setDate={changeCustomIntervalDate}
+                                />
+                            </div>
+                        </div>
+                    </CardTitle>
+                </div>
+            </CardHeader>
+            <div className="mb-6" />
+            <CardContent className="pl-0">
+                <OrdersChart data={betterData as any} language={language} />
+            </CardContent>
+        </Card>
     );
-};
-
-const getZonedDate = (date: Date | string): Date => {
-    const _date = new Date(date);
-    const timezoneOffsetInMs = _date.getTimezoneOffset() * 60000;
-
-    return new Date(_date.getTime() + timezoneOffsetInMs);
 };

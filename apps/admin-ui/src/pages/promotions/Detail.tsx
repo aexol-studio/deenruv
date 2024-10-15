@@ -8,13 +8,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
   Input,
   Popover,
   PopoverContent,
@@ -25,17 +18,43 @@ import { apiCall } from '@/graphql/client';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { AddPromotionDialog } from './_components/AddPromotionDialog';
+import { LanguageCode } from '@/zeus';
+import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
+import { SettingsCard } from '../products/_components/SettingsCard';
 
 const FormSchema = z.object({
-  startsAt: z.date({}),
-  endsAt: z.date({}),
+  enabled: z.boolean(),
+  startsAt: z.date().optional(),
+  endsAt: z.date().optional(),
+  couponCode: z.string().optional(),
+  perCustomerUsageLimit: z.number().optional(),
+  usageLimit: z.number().optional(),
+  conditions: z.array(
+    z.object({
+      code: z.string(),
+      arguments: z.array(z.object({ name: z.string(), value: z.string() })),
+    }),
+  ),
+  actions: z.array(
+    z.object({
+      code: z.string(),
+      arguments: z.array(z.object({ name: z.string(), value: z.string() })),
+    }),
+  ),
+  translations: z.array(
+    z.object({
+      id: z.string().optional(),
+      languageCode: z.string(),
+      name: z.string().optional(),
+      description: z.string().optional(),
+      customFields: z.record(z.unknown()).optional(),
+    }),
+  ),
+  customFields: z.record(z.unknown()).optional(),
 });
-
-type FormType = z.infer<typeof FormSchema>;
 
 const getConditionsAndActions = async () => {
   const [{ promotionActions }, { promotionConditions }] = await Promise.all([
@@ -83,138 +102,195 @@ export const PromotionsDetailPage = () => {
     (Data['actions'][number] | Data['conditions'][number]) & { type: 'action' | 'condition' }
   >();
 
-  const form = useForm<FormType>({});
-
+  const { state, setField } = useGFFLP('CreatePromotionInput')({});
+  const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
+  const translations = state?.translations?.value || [];
+  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const setTranslationField = useCallback(
+    (field: string, e: string) => {
+      setField(
+        'translations',
+        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+          [field]: e,
+          languageCode: currentTranslationLng,
+        }),
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentTranslationLng, translations],
+  );
   const [data, setData] = useState<Data>();
   useEffect(() => {
     getConditionsAndActions().then(setData);
   }, []);
 
-  function onSubmit(data: FormType) {}
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      const validation = await FormSchema.safeParseAsync({
+        ...state,
+        translations: [...translations, { ...currentTranslationValue, languageCode: currentTranslationLng }],
+      });
+      if (!validation.success) {
+        throw new Error('Validation failed');
+      }
 
+      const input = {
+        ...validation.data,
+        translations: validation.data.translations.map((translation) => ({
+          ...translation,
+          languageCode: translation.languageCode as LanguageCode,
+        })),
+      };
+
+      const { createPromotion } = await apiCall()('mutation')({
+        createPromotion: [
+          { input },
+          {
+            __typename: true,
+            '...on Promotion': { id: true },
+            '...on MissingConditionsError': { message: true, errorCode: true },
+          },
+        ],
+      });
+
+      if (createPromotion.__typename === 'MissingConditionsError') {
+        throw new Error(createPromotion.errorCode);
+      }
+
+      console.log(createPromotion.id);
+    } catch (e) {
+      console.error(e);
+    }
+  }
   return (
     <div>
-      <AddPromotionDialog
-        addPromotionDialog={addPromotionDialog}
-        closePromotionDialog={() => setAddPromotionDialog(undefined)}
-      />
-      <Form {...form}>
-        <form className="flex flex-col gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <Card className="p-4">
+      {addPromotionDialog && (
+        <AddPromotionDialog
+          addPromotionDialog={addPromotionDialog}
+          closePromotionDialog={() => setAddPromotionDialog(undefined)}
+        />
+      )}
+      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
+        <SettingsCard
+          currentTranslationLng={currentTranslationLng}
+          enabledValue={state.enabled?.value}
+          onEnabledChange={(e) => {
+            setField('enabled', e);
+          }}
+          onCurrentLanguageChange={(e) => {
+            setCurrentTranslationLng(e as LanguageCode);
+          }}
+        />
+        <Card className="p-4">
+          <Input value={currentTranslationValue?.name} onChange={(e) => setTranslationField('name', e.target.value)} />
+          <RichTextEditor
+            content={currentTranslationValue?.description}
+            onContentChanged={(description) => {
+              setTranslationField('description', description);
+            }}
+          />
+          <div className="flex items-center justify-between gap-8">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={'outline'}
+                  className={cn(
+                    'w-[240px] pl-3 text-left font-normal',
+                    !state.startsAt?.value && 'text-muted-foreground',
+                  )}
+                >
+                  {state.startsAt?.value ? format(state.startsAt.value, 'PPP') : <span>Pick a date</span>}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={state.startsAt?.value}
+                  onSelect={(date) => setField('startsAt', date)}
+                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={'outline'}
+                  className={cn(
+                    'w-[240px] pl-3 text-left font-normal',
+                    !state.endsAt?.value && 'text-muted-foreground',
+                  )}
+                >
+                  {state.endsAt?.value ? format(state.endsAt.value, 'PPP') : <span>Pick a date</span>}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={state.endsAt?.value}
+                  onSelect={(date) => setField('endsAt', date)}
+                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="flex items-center gap-4">
             <Input />
-            <RichTextEditor content="" onContentChanged={() => {}} />
-            <div className="flex items-center justify-between gap-8">
-              <FormField
-                control={form.control}
-                name="startsAt"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Starts at</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'w-[240px] pl-3 text-left font-normal',
-                              !field.value && 'text-muted-foreground',
-                            )}
-                          >
-                            {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="endsAt"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>Ends at</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'w-[240px] pl-3 text-left font-normal',
-                              !field.value && 'text-muted-foreground',
-                            )}
-                          >
-                            {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormDescription>Your date of birth is used to calculate your age.</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex items-center gap-4">
-              <Input />
-              <Input />
-              <Input />
-            </div>
-          </Card>
-          <Card className="p-4">
-            <p>Conditions</p>
-            <DropdownMenu>
-              <DropdownMenuTrigger>Add new condition</DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Conditions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {data?.conditions.map((condition) => (
-                  <DropdownMenuItem onClick={() => setAddPromotionDialog({ ...condition, type: 'condition' })}>
-                    {condition.code}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Card>
-          <Card className="p-4">
-            <p>Actions</p>
-            <DropdownMenu>
-              <DropdownMenuTrigger>Add new action</DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {data?.actions.map((condition) => (
-                  <DropdownMenuItem onClick={() => setAddPromotionDialog({ ...condition, type: 'action' })}>
-                    {condition.code}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Card>
-        </form>
-      </Form>
+            <Input />
+            <Input />
+          </div>
+        </Card>
+        <Card className="p-4">
+          <p>Conditions</p>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>Add new condition</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Conditions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {data?.conditions.map((condition) => (
+                <DropdownMenuItem onClick={() => setAddPromotionDialog({ ...condition, type: 'condition' })}>
+                  {condition.code}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {state.conditions?.value.map((condition, index) => (
+            <Card key={index} className="p-4">
+              <p>{condition.code}</p>
+              {condition.arguments.map((argument, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <Input />
+                  <Input />
+                </div>
+              ))}
+            </Card>
+          ))}
+        </Card>
+        <Card className="p-4">
+          <p>Actions</p>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>Add new action</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {data?.actions.map((condition) => (
+                <DropdownMenuItem onClick={() => setAddPromotionDialog({ ...condition, type: 'action' })}>
+                  {condition.code}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Card>
+      </form>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { Plugin, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import i18nextLoader from 'vite-plugin-i18next-loader';
-import fs from 'fs';
 
 export const AdminUIConfig = {
   title: 'Aexol Shop',

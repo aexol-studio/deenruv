@@ -15,7 +15,7 @@ export const ProductTileSelector = Selector('Product')({
   id: true,
   name: true,
   slug: true,
-  customFields: { discountBy: true },
+  // customFields: { discountBy: true }, // TODO: Add this field to the selector
   updatedAt: true,
   enabled: true,
   createdAt: true,

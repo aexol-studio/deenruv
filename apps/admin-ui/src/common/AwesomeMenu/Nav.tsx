@@ -169,7 +169,7 @@ export function Nav({ isCollapsed }: NavProps) {
   }, [navMenuData.groups, navMenuData.links, t]);
 
   return (
-    <div className="relative h-[calc(100vh-70px)] overflow-y-auto lg:h-[calc(100vh-120px)]">
+    <div className="relative h-[calc(100vh-70px)] overflow-y-auto lg:h-[calc(100vh-80px)]">
       <div
         data-collapsed={isCollapsed}
         className="group flex h-[calc(100%-70px)] flex-col gap-4 py-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"

@@ -8,14 +8,12 @@
         "removeComments": false,
         "outDir": "./dist",
         "rootDir": "./src",
-        "sourceMap": true,
         "declaration": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "strict": true,
         "noImplicitAny": true,
         "strictPropertyInitialization": false,
-
         "target": "ESNext",
         "module": "ESNext",
         "lib": ["es2017", "dom", "esnext.asynciterable"]

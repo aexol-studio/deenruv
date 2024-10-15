@@ -15,6 +15,7 @@ export const Dashboard = () => {
     widgets: state.widgets,
     setShowWidget: state.setShowWidget,
   }));
+
   return (
     <div>
       <div className="mb-2 flex justify-end">

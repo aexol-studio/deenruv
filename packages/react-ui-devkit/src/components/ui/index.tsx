@@ -30,3 +30,5 @@ export * from './sonner';
 export * from './alert-dialog';
 export * from './toggle';
 export * from './toggle-group';
+export * from './skeleton';
+export * from './chart';

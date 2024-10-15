@@ -1,4 +1,4 @@
-import { ModelTypes } from '@/zeus';
+import { ModelTypes as DefaultModelTypes } from '@/zeus';
 import { useCallback, useMemo, useState } from 'react';
 
 type FormField<T> = {
@@ -7,8 +7,8 @@ type FormField<T> = {
 } & ({ errors: never; validatedValue: T } | { errors: string[]; validatedValue: never });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const useGFFLP = <T extends keyof ModelTypes, Z extends keyof ModelTypes[T]>(key: T, ...pick: Z[]) =>
-  useFFLP<Pick<ModelTypes[T], Z>>;
+export const useGFFLP = <T extends keyof MT, Z extends keyof MT[T], MT = DefaultModelTypes>(key: T, ...pick: Z[]) =>
+  useFFLP<Pick<MT[T], Z>>;
 
 export const useFFLP = <T>(config: {
   [P in keyof T]?: {

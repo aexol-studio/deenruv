@@ -1,4 +1,4 @@
-import React, { createContext, PropsWithChildren } from 'react';
+import React, { createContext, CSSProperties, PropsWithChildren } from 'react';
 import {
     Button,
     Card,
@@ -7,6 +7,8 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
@@ -88,11 +90,10 @@ const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'>
     });
     const { removeWidget, resizeWidget } = useWidgetItem();
 
-    const style = {
+    const style: CSSProperties = {
         transform: CSS.Translate.toString(transform),
         transition,
         gridColumn: `span ${widget.size.width}`,
-        gridRow: `span ${widget.size.height}`,
     };
 
     return (
@@ -114,13 +115,23 @@ const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'>
                                     </DropdownMenuLabel>
                                 </div>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuGroup>
+                                <DropdownMenuRadioGroup
+                                    value={`${widget.size.width}x${widget.size.height}`}
+                                    onValueChange={value => {
+                                        const [width, height] = value.split('x').map(Number);
+                                        resizeWidget({ width, height });
+                                    }}
+                                >
                                     {widget.sizes.map(size => (
-                                        <DropdownMenuItem onClick={() => resizeWidget(size)}>
+                                        <DropdownMenuRadioItem
+                                            key={`${size.width}x${size.height}`}
+                                            value={`${size.width}x${size.height}`}
+                                        >
                                             Size: {size.width} x {size.height}
-                                        </DropdownMenuItem>
+                                        </DropdownMenuRadioItem>
                                     ))}
-                                </DropdownMenuGroup>
+                                </DropdownMenuRadioGroup>
+                                <DropdownMenuGroup></DropdownMenuGroup>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={removeWidget}>
                                     Delete
@@ -179,7 +190,7 @@ export const DashboardWidgets = () => {
             onDragStart={event => setActiveID(event.active.id)}
         >
             <SortableContext items={widgets || []} strategy={rectSortingStrategy}>
-                <div className="grid grid-cols-12 gap-2">
+                <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(12, minmax(0, 1fr))' }}>
                     {widgets?.map(({ component, ...widget }) =>
                         widget.visible ? (
                             <WidgetItemProvider key={widget.id} widget={widget} {...actions}>

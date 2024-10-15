@@ -1,13 +1,21 @@
 import React from 'react';
-import { OrdersSummaryWidget } from './widgets/OrdersSummaryWidget';
+import { OrdersWidget, OrdersSummaryWidget } from './components';
 
 export const widgets = [
     {
         id: '1',
-        name: 'Test',
+        name: 'Orders Summary Widget',
         component: <OrdersSummaryWidget />,
         visible: true,
-        size: { width: 12, height: 4 },
-        sizes: [{ width: 12, height: 4 }],
+        size: { width: 4, height: 8 },
+        sizes: [{ width: 4, height: 8 }],
+    },
+    {
+        id: '2',
+        name: 'Orders Widget',
+        component: <OrdersWidget />,
+        visible: true,
+        size: { width: 12, height: 8 },
+        sizes: [{ width: 12, height: 8 }],
     },
 ];

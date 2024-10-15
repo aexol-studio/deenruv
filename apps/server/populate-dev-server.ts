@@ -1,11 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../core/typings.d.ts" />
 import { bootstrap, defaultConfig, JobQueueService, Logger, mergeConfig } from '@deenruv/core';
 import { populate } from '@deenruv/core/cli';
 import { clearAllTables, populateCustomers } from '@deenruv/testing';
 import path from 'path';
 
-import { initialData } from '../core/mock-data/data-sources/initial-data';
+import { initialData } from '@deenruv/core/mock-data/data-sources/initial-data';
 
 import { devConfig } from './dev-config';
 
@@ -38,7 +36,7 @@ if (require.main === module) {
                         return app;
                     }),
                 initialData,
-                path.join(__dirname, '../create/assets/products.csv'),
+                path.join(__dirname, '../../packages/create/assets/products.csv'),
             ),
         )
         .then(async app => {

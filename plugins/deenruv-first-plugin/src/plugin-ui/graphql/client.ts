@@ -1,4 +1,4 @@
-import { Chain, ZeusScalars } from './zeus';
+import { Chain, ZeusScalars } from '../zeus';
 
 export const scalars = ZeusScalars({
     Money: {

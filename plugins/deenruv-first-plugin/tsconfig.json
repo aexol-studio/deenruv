@@ -19,6 +19,6 @@
         "module": "ESNext",
         "lib": ["es2017", "dom", "esnext.asynciterable"]
     },
-    "include": ["src/**/*.ts", "src/*.ts"],
+    "include": ["src/**/*.ts", "src/*.ts", "src/plugin-ui/index.tsx"],
     "exclude": ["node_modules", "src/zeus/**/*"]
 }

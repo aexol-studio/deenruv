@@ -1,5 +1,5 @@
-import { Badge, Card, CardTitle } from '@deenruv/react-ui-devkit';
-import { client, scalars } from '../client';
+import { priceFormatter, Badge, Card, CardTitle } from '@deenruv/react-ui-devkit';
+import { client, scalars } from '../graphql/client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     endOfMonth,
@@ -22,6 +22,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@deenruv/react-ui-devkit';
+import { useTranslation } from 'react-i18next';
+import { SummaryOrdersSelector } from '../graphql/selectors';
+import { translationNS } from '../translation-ns';
 
 enum Periods {
     Today = 'today',
@@ -39,6 +42,7 @@ type Period = {
 };
 
 export const OrdersSummaryWidget = () => {
+    const { t } = useTranslation(translationNS);
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
     const [orders, setOrders] = useState<{
@@ -56,36 +60,36 @@ export const OrdersSummaryWidget = () => {
         (): Period[] => [
             {
                 period: Periods.Today,
-                text: 'today',
+                text: t('today'),
                 start: startOfToday(),
                 end: endOfToday(),
             },
             {
                 period: Periods.Yesterday,
-                text: 'yesterday',
+                text: t('yesterday'),
                 start: startOfYesterday(),
                 end: endOfYesterday(),
             },
             {
                 period: Periods.ThisWeek,
-                text: 'thisWeek',
+                text: t('thisWeek'),
                 start: startOfWeek(new Date(), { weekStartsOn: 1 }),
                 end: endOfWeek(new Date(), { weekStartsOn: 1 }),
             },
             {
                 period: Periods.ThisMonth,
-                text: 'thisMonth',
+                text: t('thisMonth'),
                 start: startOfMonth(new Date()),
                 end: endOfMonth(new Date()),
             },
             {
                 period: Periods.ThisYear,
-                text: 'thisYear',
+                text: t('thisYear'),
                 start: startOfYear(new Date()),
                 end: endOfYear(new Date()),
             },
         ],
-        [],
+        [t],
     );
 
     const handlePeriodChange = useCallback(
@@ -105,11 +109,11 @@ export const OrdersSummaryWidget = () => {
     const _grossNet: { type: 'gross' | 'net'; text: string }[] = [
         {
             type: 'gross',
-            text: 'gross',
+            text: t('gross'),
         },
         {
             type: 'net',
-            text: 'net',
+            text: t('net'),
         },
     ];
 
@@ -117,7 +121,7 @@ export const OrdersSummaryWidget = () => {
         const response = await client('query', { scalars })({
             orders: [
                 { options: { filter: { orderPlacedAt: { between: range } } } },
-                { items: { totalWithTax: true, total: true, currencyCode: true }, totalItems: true },
+                { items: SummaryOrdersSelector, totalItems: true },
             ],
         });
 
@@ -137,14 +141,14 @@ export const OrdersSummaryWidget = () => {
         <Card className="relative p-6">
             <div className="items-center justify-between">
                 <div className="gap-12">
-                    <CardTitle className="text-lg">{'ordersSummary'}</CardTitle>
+                    <CardTitle className="text-lg">{t('ordersSummary')}</CardTitle>
                     <Select
                         onValueChange={value => handlePeriodChange(value as Periods)}
                         value={selectedPeriod}
                         defaultValue={_periods[0].period}
                     >
                         <SelectTrigger className="h-[30px] w-[180px] text-[13px]">
-                            <SelectValue placeholder={'selectDataType'} />
+                            <SelectValue placeholder={t('selectDataType')} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
@@ -159,16 +163,16 @@ export const OrdersSummaryWidget = () => {
                 </div>
                 <div className="items-center gap-6 lg:gap-12">
                     <div className="items-center gap-2 lg:gap-4">
-                        <div className="mt-1">{'totalOrdersCount'}</div>
+                        <div className="mt-1">{t('totalOrdersCount')}</div>
                         <h3 className="text-3xl">{orders?.totalCount}</h3>
                     </div>
                     <div className="items-center gap-4 lg:gap-6">
-                        <div className="mt-1">{'totalOrdersValue'}</div>
+                        <div className="mt-1">{t('totalOrdersValue')}</div>
                         <h3 className="text-3xl">
-                            {/* {priceFormatter(
+                            {priceFormatter(
                                 grossOrNet === 'gross' ? orders?.totalWithTax || 0 : orders?.total || 0,
-                                orders?.currencyCode || CurrencyCode.PLN,
-                            )} */}
+                                orders?.currencyCode || (CurrencyCode.PLN as any),
+                            )}
                         </h3>
                         <div className="mt-2 gap-2">
                             {_grossNet.map(e => (

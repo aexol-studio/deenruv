@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { translationNs } from '.';
+import { translationNS } from './translation-ns';
 
 export const LocaleTest = () => {
-    const { t } = useTranslation(translationNs);
+    const { t } = useTranslation(translationNS);
 
     return (
         <div>
