@@ -44,7 +44,7 @@ export const AddPromotionDialog: React.FC<{
     });
   }, []);
   console.log(addPromotionDialog, form);
-  function onSubmit() {}
+  // function onSubmit() {}
 
   return (
     <Dialog open={!!addPromotionDialog} onOpenChange={closePromotionDialog}>
