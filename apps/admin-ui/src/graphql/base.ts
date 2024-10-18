@@ -183,7 +183,7 @@ export const AdminSettingsSelector = Selector('GlobalSettings')({
 
 export const serverConfigSelector = Selector('ServerConfig')({
   // plugins: { name: true, version: true, path: true, active: true, status: true },
-  // entityCustomFields: { customFields: CustomFieldConfigSelector, entityName: true },
+  entityCustomFields: { customFields: CustomFieldConfigSelector, entityName: true },
   // moneyStrategyPrecision: true,
   // customFieldConfig: {
   //   OrderLine: CustomFieldConfigSelector,

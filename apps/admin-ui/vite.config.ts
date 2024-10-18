@@ -7,7 +7,7 @@ export const AdminUIConfig = {
   title: 'Aexol Shop',
   description: 'Aexol Shop',
   logoPath: '/logo.png',
-  plugins: [{ widgets: [] }],
+  components: [{ componentPath: './src/custom_fields/DefaultInputs/DefaultTextInput.tsx' }],
 };
 
 const htmlPlugin = (): Plugin => {

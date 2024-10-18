@@ -105,10 +105,10 @@ export const CollectionDetailsPage = () => {
               name: t.name || '',
               languageCode: t.languageCode,
               slug: t.slug || '',
-              customFields: {
-                seoDescription: t.customFields?.seoDescription || '',
-                seoTitle: t.customFields?.seoTitle || '',
-              },
+              // customFields: {
+              //   seoDescription: t.customFields?.seoDescription || '',
+              //   seoTitle: t.customFields?.seoTitle || '',
+              // },
             })),
           },
         },

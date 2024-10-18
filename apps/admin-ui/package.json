@@ -9,7 +9,6 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "check-types": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "zeus": "zeus https://shop.dev.minko.aexol.work/admin-api  ./src/",
     "zeus:local": "zeus http://localhost:3000/admin-api ./src/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

@@ -1,4 +1,4 @@
-import { apiCall } from '@/graphql/client';
+import { adminApiMutation, apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductDetailSelector, ProductDetailType } from '@/graphql/products';
 import { resetCache } from '@/lists/cache';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { LanguageCode, SortOrder } from '@/zeus';
+import { LanguageCode, Selector, SortOrder, ValueTypes } from '@/zeus';
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -25,6 +25,69 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { Button } from '@/components';
+import { CustomFieldsComponent } from '@/custom_fields';
+import { useServer } from '@/state';
+import { CustomFieldConfigType } from '@/graphql/base';
+
+function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
+  const isObject = (obj: any) => obj && typeof obj === 'object';
+
+  Object.keys(source).forEach((key) => {
+    const targetValue = (target as any)[key];
+    const sourceValue = (source as any)[key];
+
+    if (Array.isArray(sourceValue)) {
+      (target as any)[key] = [...(Array.isArray(targetValue) ? targetValue : []), ...sourceValue];
+    } else if (isObject(sourceValue)) {
+      (target as any)[key] = deepMerge(isObject(targetValue) ? targetValue : {}, sourceValue);
+    } else {
+      (target as any)[key] = sourceValue;
+    }
+  });
+
+  return target as T & U;
+}
+
+function mergeSelectors<T extends object, K extends keyof ValueTypes>(
+  selectorA: T,
+  key: K,
+  customFields?: CustomFieldConfigType[],
+): T {
+  const selectorB = Selector(key)(generateCustomFieldsSelector(customFields || []) as any);
+  return deepMerge(selectorA, selectorB);
+}
+
+const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => {
+  const reduced = customFields.reduce(
+    (acc, field) => {
+      if (field.type === 'relation') {
+        // TODO
+        return acc;
+      }
+      if (field.type === 'localeString' || field.type === 'localeText') {
+        acc.translations = {
+          ...acc.translations,
+          customFields: {
+            ...acc.translations?.customFields,
+            [field.name]: true,
+          },
+        };
+      } else {
+        acc.customFields = {
+          ...acc.customFields,
+          [field.name]: true,
+        };
+      }
+      return acc;
+    },
+    { translations: { customFields: {} }, customFields: {} } as {
+      translations?: { customFields: Record<string, boolean> };
+      customFields: Record<string, boolean>;
+    },
+  );
+  if (!Object.keys(reduced.translations?.customFields || {})) delete reduced.translations;
+  return reduced;
+};
 
 export const ProductDetailPage = () => {
   const { id } = useParams();
@@ -47,39 +110,41 @@ export const ProductDetailPage = () => {
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
+  const entityCustomFields = useServer((p) => p.serverConfig?.entityCustomFields);
+
+  const productCustomFields = useMemo(
+    () => entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields,
+    [entityCustomFields],
+  );
+
   const fetchProduct = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
-        product: [
-          {
-            id,
-          },
-          ProductDetailSelector,
-        ],
-      });
+      const mergedSelector = mergeSelectors(ProductDetailSelector, 'Product', productCustomFields);
+      const response = await apiCall()('query')({ product: [{ id }, mergedSelector] });
 
       if (!response.product) {
         toast.error(t('toasts.fetchProductErrorToast'));
+        return;
       }
+
+      const customFields = 'customFields' in response.product ? response.product.customFields : {};
+      setField('customFields', customFields);
 
       setProduct(response.product);
       setLoading(false);
-      setField('translations', response.product?.translations);
-      setField('customFields', response.product?.customFields);
+      setField('translations', response.product.translations);
       setField(
         'facetValueIds',
-        response.product?.facetValues.map((f) => f.id),
+        response.product.facetValues.map((f) => f.id),
       );
       setField(
         'assetIds',
-        response.product?.assets.map((a) => a.id),
+        response.product.assets.map((a) => a.id),
       );
-      setField('featuredAssetId', response.product?.featuredAsset?.id);
-      setCustomField('facebookImageId', response.product?.customFields?.facebookImage?.id);
-      setCustomField('twitterImageId', response.product?.customFields?.twitterImage?.id);
+      setField('featuredAssetId', response.product.featuredAsset?.id);
     } else setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, productCustomFields]);
 
   const fetchFacetOptions = useCallback(async () => {
     if (id) {
@@ -111,24 +176,27 @@ export const ProductDetailPage = () => {
   const createProduct = useCallback(() => {
     if (!state.translations?.validatedValue) return;
 
+    console.log('ąstate.translations', state.translations);
+
     apiCall()('mutation')({
       createProduct: [
         {
           input: {
             translations: state.translations.validatedValue,
             assetIds: state.assetIds?.validatedValue,
-            customFields: {
-              discountBy:
-                state.customFields?.validatedValue?.discountBy && +state.customFields?.validatedValue?.discountBy,
-              facebookImageId: state.customFields?.validatedValue?.facebookImageId,
-              hoverProductImageId: state.customFields?.validatedValue?.hoverProductImageId,
-              mainProductImageId: state.customFields?.validatedValue?.mainProductImageId,
-              optionsOrder: state.customFields?.validatedValue?.optionsOrder,
-              searchMetricsScore:
-                state.customFields?.validatedValue?.searchMetricsScore &&
-                +state.customFields?.validatedValue?.searchMetricsScore,
-              twitterImageId: state.customFields?.validatedValue?.twitterImageId,
-            },
+            customFields: state.customFields?.validatedValue,
+            // customFields: {
+            //   discountBy:
+            //     state.customFields?.validatedValue?.discountBy && +state.customFields?.validatedValue?.discountBy,
+            //   // facebookImageId: state.customFields?.validatedValue?.facebookImageId,
+            //   hoverProductImageId: state.customFields?.validatedValue?.hoverProductImageId,
+            //   mainProductImageId: state.customFields?.validatedValue?.mainProductImageId,
+            //   optionsOrder: state.customFields?.validatedValue?.optionsOrder,
+            //   // searchMetricsScore:
+            //   //   state.customFields?.validatedValue?.searchMetricsScore &&
+            //   //   +state.customFields?.validatedValue?.searchMetricsScore,
+            //   // twitterImageId: state.customFields?.validatedValue?.twitterImageId,
+            // },
             enabled: state.enabled?.validatedValue,
             facetValueIds: state.facetValueIds?.validatedValue,
             featuredAssetId: state.featuredAssetId?.validatedValue,
@@ -150,7 +218,8 @@ export const ProductDetailPage = () => {
 
   const saveChanges = useCallback(() => {
     if (!product || !state.translations?.validatedValue) return;
-    apiCall()('mutation')({
+
+    adminApiMutation({
       updateProduct: [
         {
           input: {
@@ -160,18 +229,20 @@ export const ProductDetailPage = () => {
             enabled: state.enabled?.validatedValue,
             assetIds: state.assetIds?.validatedValue,
             featuredAssetId: state.featuredAssetId?.validatedValue,
-            customFields: {
-              discountBy:
-                state.customFields?.validatedValue?.discountBy && +state.customFields?.validatedValue?.discountBy,
-              facebookImageId: state.customFields?.validatedValue?.facebookImageId,
-              hoverProductImageId: state.customFields?.validatedValue?.hoverProductImageId,
-              mainProductImageId: state.customFields?.validatedValue?.mainProductImageId,
-              optionsOrder: state.customFields?.validatedValue?.optionsOrder,
-              searchMetricsScore:
-                state.customFields?.validatedValue?.searchMetricsScore &&
-                +state.customFields?.validatedValue?.searchMetricsScore,
-              twitterImageId: state.customFields?.validatedValue?.twitterImageId,
-            },
+            customFields: state.customFields?.validatedValue,
+            // customFields: {
+            //   discountBy:
+            //     state.customFields?.validatedValue?.discountBy && +state.customFields?.validatedValue?.discountBy,
+            //   // facebookImageId: state.customFields?.validatedValue?.facebookImageId,
+            //   hoverProductImageId: state.customFields?.validatedValue?.hoverProductImageId,
+            //   mainProductImageId: state.customFields?.validatedValue?.mainProductImageId,
+            //   optionsOrder: state.customFields?.validatedValue?.optionsOrder,
+
+            //   // searchMetricsScore:
+            //   //   state.customFields?.validatedValue?.searchMetricsScore &&
+            //   //   +state.customFields?.validatedValue?.searchMetricsScore,
+            //   // twitterImageId: state.customFields?.validatedValue?.twitterImageId,
+            // },
           },
         },
         {
@@ -205,18 +276,18 @@ export const ProductDetailPage = () => {
   );
 
   const setTranslationCustomField = useCallback(
-    (translationCustomField: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (translationCustomField: string, data: string | undefined) => {
       setField(
         'translations',
         setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
           customFields: {
             ...translations.find((t) => t.languageCode === currentTranslationLng)?.customFields,
-            [translationCustomField]: e.target.value,
+            [translationCustomField]: data,
           },
           languageCode: currentTranslationLng,
         }),
       );
-      setCustomField(translationCustomField, e.target.value);
+      // setCustomField(translationCustomField, data);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentTranslationLng, translations],
@@ -224,10 +295,7 @@ export const ProductDetailPage = () => {
 
   const setCustomField = useCallback(
     (customField: string, e: string | undefined) => {
-      setField('customFields', {
-        ...state.customFields?.value,
-        [customField]: e,
-      });
+      setField('customFields', { ...state.customFields?.value, [customField]: e });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state.customFields],
@@ -275,7 +343,27 @@ export const ProductDetailPage = () => {
                 onDescChange={(e) => setTranslationField('description', e)}
               />
               <h4 className="ml-6 text-sm font-semibold text-gray-500">{t('details.customFields')}</h4>
-              <Stack className="grid grid-cols-3 gap-4">
+              <CustomFieldsComponent
+                data={{}}
+                getValue={(field, translatable) => {
+                  if (translatable) {
+                    const translation = state.translations?.value?.find(
+                      (t) => t.languageCode === currentTranslationLng,
+                    );
+                    if (!translation) return '';
+                    return translation.customFields?.[field.name];
+                  } else {
+                    return state.customFields?.value?.[field.name] || '';
+                  }
+                }}
+                setValue={(field, data, translatable) => {
+                  if (translatable) setTranslationCustomField(field.name, data as string);
+                  else setCustomField(field.name, data as string);
+                }}
+                customFields={productCustomFields}
+                language={currentTranslationValue?.languageCode || LanguageCode.pl}
+              />
+              {/* <Stack className="grid grid-cols-3 gap-4">
                 <TextCard
                   label={t('customFields.textCards.completionDate')}
                   value={currentTranslationValue?.customFields?.realization}
@@ -306,8 +394,8 @@ export const ProductDetailPage = () => {
                   value={currentTranslationValue?.customFields?.sizes}
                   onChange={(e) => setTranslationCustomField('sizes', e)}
                 />
-              </Stack>
-              <ImagesCard
+              </Stack> */}
+              {/* <ImagesCard
                 customFields={state.customFields?.value}
                 onHoverImageChange={(e) => {
                   setCustomField('hoverProductImageId', e?.id);
@@ -317,7 +405,7 @@ export const ProductDetailPage = () => {
                   setCustomField('mainProductImageId', e?.id);
                   setCustomField('mainProductImage', e as unknown as string);
                 }}
-              />
+              /> */}
               <AssetsCard
                 onAddAsset={() => ''}
                 featuredAssetId={state.featuredAssetId?.value}
@@ -325,7 +413,7 @@ export const ProductDetailPage = () => {
                 onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
                 onAssetsChange={(ids) => setField('assetIds', ids)}
               />
-              <SeoCard
+              {/* <SeoCard
                 currentTranslationValue={currentTranslationValue}
                 facebookImageId={state.customFields?.validatedValue?.facebookImageId}
                 twitterImageId={state.customFields?.validatedValue?.twitterImageId}
@@ -339,7 +427,7 @@ export const ProductDetailPage = () => {
                   setCustomField('twitterImageId', e?.id);
                   setCustomField('twitterImage', e as unknown as string);
                 }}
-              />
+              /> */}
               <FacetsAccordions
                 facetsOptions={facetsOptions}
                 handleFacetCheckboxChange={handleFacetCheckboxChange}
@@ -357,12 +445,12 @@ export const ProductDetailPage = () => {
                   setCurrentTranslationLng(e as LanguageCode);
                 }}
               />
-              <DiscountRatingCard
+              {/* <DiscountRatingCard
                 discountByValue={state.customFields?.value?.discountBy}
                 onDiscountByChange={(e) => setCustomField('discountBy', e.target.value)}
                 searchMetricsScoreValue={state.customFields?.value?.searchMetricsScore}
                 onSearchMetricsScoreChange={(e) => setCustomField('searchMetricsScore', e.target.value)}
-              />
+              /> */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex flex-row justify-between text-base">{t('channels')}</CardTitle>

@@ -68,24 +68,24 @@ export const CollectionDetailsSelector = Selector('Collection')({
     description: true,
     name: true,
     slug: true,
-    customFields: {
-      seoTitle: true,
-      seoDescription: true,
-    },
+    // customFields: {
+    //   seoTitle: true,
+    //   seoDescription: true,
+    // },
     id: true,
     languageCode: true,
   },
   assets: {
     id: true,
   },
-  customFields: {
-    facebookImage: {
-      id: true,
-    },
-    twitterImage: {
-      id: true,
-    },
-  },
+  // customFields: {
+  //   facebookImage: {
+  //     id: true,
+  //   },
+  //   twitterImage: {
+  //     id: true,
+  //   },
+  // },
   filters: {
     code: true,
     args: {

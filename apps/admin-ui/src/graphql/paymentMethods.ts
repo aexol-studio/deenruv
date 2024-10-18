@@ -34,21 +34,21 @@ export const PaymentMethodDetailsSelector = Selector('PaymentMethod')({
       value: true,
     },
   },
-  customFields: {
-    modalTitle: true,
-    modalAdditionalDescription: true,
-    modalDescription: true,
-  },
+  // customFields: {
+  //   modalTitle: true,
+  //   modalAdditionalDescription: true,
+  //   modalDescription: true,
+  // },
   createdAt: true,
   updatedAt: true,
   translations: {
     name: true,
     languageCode: true,
-    customFields: {
-      modalTitle: true,
-      modalDescription: true,
-      modalAdditionalDescription: true,
-    },
+    // customFields: {
+    //   modalTitle: true,
+    //   modalDescription: true,
+    //   modalAdditionalDescription: true,
+    // },
   },
 });
 

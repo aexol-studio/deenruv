@@ -58,7 +58,7 @@ export const SeoCard: React.FC<SeoCardProps> = ({
       </CardHeader>
       <CardContent>
         <Stack column className="gap-6">
-          <Stack className="gap-3">
+          {/* <Stack className="gap-3">
             <Input
               label={t('customFields.seo.title')}
               placeholder={t('customFields.seo.title')}
@@ -71,7 +71,7 @@ export const SeoCard: React.FC<SeoCardProps> = ({
               value={currentTranslationValue?.customFields?.seoDescription}
               onChange={onDescriptionChange}
             />
-          </Stack>
+          </Stack> */}
           <Stack className="justify-between gap-3">
             <div className="w-1/2">
               <Label htmlFor="email">{t('customFields.seo.facebookImage')}</Label>

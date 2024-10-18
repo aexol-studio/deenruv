@@ -84,7 +84,14 @@ const removableCrumbs = ['draft', 'admin-ui'];
 export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
-  const logOut = useSettings((p) => p.logOut);
+  const { logOut, theme, setTheme, language, setLanguage } = useSettings((p) => ({
+    logOut: p.logOut,
+    theme: p.theme,
+    setTheme: p.setTheme,
+    language: p.language,
+    setLanguage: p.setLanguage,
+  }));
+
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const { activeAdministrator } = useServer();
@@ -103,11 +110,6 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
         .filter((crumb) => !removableCrumbs.includes(crumb)),
     [matches],
   );
-
-  const theme = useSettings((p) => p.theme);
-  const setTheme = useSettings((p) => p.setTheme);
-  const language = useSettings((p) => p.language);
-  const setLanguage = useSettings((p) => p.setLanguage);
 
   return (
     <div className="w-full border-r bg-muted/40">

@@ -95,12 +95,12 @@ export const ProductOptionSelector = Selector('ProductOption')({
     languageCode: true,
     name: true,
   },
-  customFields: {
-    hexColor: true,
-    image: { id: true },
-    isHidden: true,
-    isNew: true,
-  },
+  // customFields: {
+  //   hexColor: true,
+  //   image: { id: true },
+  //   isHidden: true,
+  //   isNew: true,
+  // },
 });
 
 export type ProductOptionType = FromSelectorWithScalars<typeof ProductOptionSelector, 'ProductOption'>;
@@ -193,16 +193,16 @@ export const ProductDetailSelector = Selector('Product')({
     slug: true,
     description: true,
     id: true,
-    customFields: {
-      delivery: true,
-      finish: true,
-      materials: true,
-      payment: true,
-      realization: true,
-      seoDescription: true,
-      seoTitle: true,
-      sizes: true,
-    },
+    // customFields: {
+    // delivery: true,
+    // finish: true,
+    // materials: true,
+    // payment: true,
+    // realization: true,
+    // seoDescription: true,
+    // seoTitle: true,
+    // sizes: true,
+    // },
   },
   assets: {
     source: true,
@@ -210,33 +210,33 @@ export const ProductDetailSelector = Selector('Product')({
     id: true,
   },
   collections: { slug: true, name: true, parent: { slug: true } },
-  customFields: {
-    delivery: true,
-    discountBy: true,
-    finish: true,
-    materials: true,
-    payment: true,
-    realization: true,
-    seoTitle: true,
-    seoDescription: true,
-    facebookImage: {
-      source: true,
-      id: true,
-    },
-    twitterImage: {
-      source: true,
-      id: true,
-    },
-    hoverProductImage: {
-      source: true,
-    },
-    mainProductImage: {
-      source: true,
-    },
-    searchMetricsScore: true,
-    sizes: true,
-    optionsOrder: true,
-  },
+  // customFields: {
+  //   delivery: true,
+  //   discountBy: true,
+  //   finish: true,
+  //   materials: true,
+  //   payment: true,
+  //   realization: true,
+  //   // seoTitle: true,
+  //   // seoDescription: true,
+  //   // facebookImage: {
+  //   //   source: true,
+  //   //   id: true,
+  //   // },
+  //   // twitterImage: {
+  //   //   source: true,
+  //   //   id: true,
+  //   // },
+  //   hoverProductImage: {
+  //     source: true,
+  //   },
+  //   mainProductImage: {
+  //     source: true,
+  //   },
+  //   // searchMetricsScore: true,
+  //   sizes: true,
+  //   optionsOrder: true,
+  // },
   featuredAsset: {
     source: true,
     preview: true,
