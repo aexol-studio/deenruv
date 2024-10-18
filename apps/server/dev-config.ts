@@ -3,25 +3,20 @@ import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { AssetServerPlugin } from '@deenruv/asset-server-plugin';
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
-    Asset,
-    DefaultJobQueuePlugin,
     DefaultLogger,
     DefaultSearchPlugin,
     dummyPaymentHandler,
-    LanguageCode,
     LogLevel,
     DeenruvConfig,
 } from '@deenruv/core';
-import { ElasticsearchPlugin } from '@deenruv/elasticsearch-plugin';
-import { defaultEmailHandlers, EmailPlugin } from '@deenruv/email-plugin';
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
-import { compileUiExtensions } from '@deenruv/ui-devkit/compiler';
 import path from 'path';
-import { DataSourceOptions } from 'typeorm';
 
 import { DeenruvFirstPlugin } from '@deenruv/deenruv-first-plugin/plugin-server';
-import { RestPlugin } from './test-plugins/rest-plugin';
+// import { RestPlugin } from './test-plugins/rest-plugin';
+import { MinkoCorePlugin } from '@deenruv/minko-core-plugin/plugin-server';
+import { s3Client } from './client-s3';
 /**
  * Config settings used during development
  */
@@ -53,7 +48,7 @@ export const devConfig: DeenruvConfig = {
         },
     },
     dbConnectionOptions: {
-        synchronize: false,
+        synchronize: true,
         logging: false,
         migrations: [path.join(__dirname, 'migrations/*.ts')],
         type: 'postgres',
@@ -78,15 +73,6 @@ export const devConfig: DeenruvConfig = {
         //     platformFeePercent: 10,
         //     platformFeeSKU: 'FEE',
         // }),
-        AssetServerPlugin.init({
-            route: 'assets',
-            assetUploadDir: path.join(__dirname, 'assets'),
-        }),
-        DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
-        // Enable if you need to debug the job queue
-        BullMQJobQueuePlugin.init({}),
-        // DefaultJobQueuePlugin.init({}),
-
         // JobQueueTestPlugin.init({ queueCount: 10 }),
         // ElasticsearchPlugin.init({
         //     host: 'http://localhost',
@@ -105,8 +91,7 @@ export const devConfig: DeenruvConfig = {
         //         changeEmailAddressUrl: 'http://localhost:4201/change-email-address',
         //     },
         // }),
-        RestPlugin,
-        DeenruvFirstPlugin,
+        // RestPlugin,
         AdminUiPlugin.init({
             route: 'admin',
             port: 5001,
@@ -129,6 +114,18 @@ export const devConfig: DeenruvConfig = {
             //     ],
             //     devMode: true,
             // }),
+        }),
+        AssetServerPlugin.init({
+            route: 'assets',
+            assetUploadDir: path.join(__dirname, 'assets'),
+        }),
+        DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
+        BullMQJobQueuePlugin.init({}),
+        DeenruvFirstPlugin,
+        MinkoCorePlugin.init({
+            s3Client,
+            expiresIn: 60 * 60 * 24 * 3,
+            bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         }),
     ],
 };

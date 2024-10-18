@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "removeComments": false,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "sourceMap": true,
+        "declaration": true,
+        "skipLibCheck": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["es2017", "dom", "esnext.asynciterable"]
+    },
+    "include": ["src/**/*.ts", "src/*.ts"],
+    "exclude": ["node_modules", "*/zeus/**/*"]
+}

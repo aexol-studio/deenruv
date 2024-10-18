@@ -1,0 +1,38 @@
+import { StyleSheet } from "@react-pdf/renderer";
+export const s = StyleSheet.create({
+  logo: { width: 90, height: 20, position: "absolute", top: 35, right: 35 },
+  card: { paddingHorizontal: 15 },
+  page: { fontFamily: "Roboto" },
+  body: { paddingTop: 35, paddingBottom: 65 },
+  price: { fontSize: 16, fontWeight: "bold", textDecoration: "underline" },
+  line: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: "4 2",
+  },
+  smText: { fontSize: 8 },
+  mdText: { fontSize: 12 },
+  lgText: { fontSize: 16 },
+  flex: { display: "flex", flexDirection: "row" },
+  flexCenter: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flexCol: { display: "flex", flexDirection: "column" },
+  rotatedText: { transform: "rotate(-90deg)" },
+  borderT: { borderTopWidth: 1, borderColor: "black", borderStyle: "solid" },
+  borderB: { borderBottomWidth: 1, borderColor: "black", borderStyle: "solid" },
+  borderL: { borderLeftWidth: 1, borderColor: "black", borderStyle: "solid" },
+  emptySpace: { height: 64 },
+  pageNumber: {
+    position: "absolute",
+    fontSize: 12,
+    bottom: 30,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    color: "grey",
+  },
+});

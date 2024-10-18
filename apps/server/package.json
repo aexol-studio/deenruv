@@ -19,11 +19,16 @@
         "load-test:100k": "tsx load-testing/run-load-test.ts 100000"
     },
     "dependencies": {
+        "@aws-sdk/client-s3": "^3.583.0",
+        "@aws-sdk/credential-providers": "^3.583.0",
+        "@aws-sdk/lib-storage": "^3.478.0",
+        "@aws-sdk/s3-request-presigner": "^3.583.0",
         "@deenruv/admin-ui-plugin": "workspace:*",
         "@deenruv/asset-server-plugin": "workspace:*",
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
         "@deenruv/deenruv-first-plugin": "workspace:*",
+        "@deenruv/minko-core-plugin": "workspace:*",
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",
         "@deenruv/job-queue-plugin": "workspace:*",
