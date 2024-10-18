@@ -153,7 +153,7 @@ export function Nav({ isCollapsed }: NavProps) {
       if (foundGroupIdx == -1)
         throw new Error(`Navbar menu group with id ${groupId} was not found.\nPlugin navigation href: ${href}`);
 
-      const newElement = { title: pluginT(labelId), label: pluginT(labelId), href: href, id, icon };
+      const newElement = { title: pluginT(labelId), label: pluginT(labelId), href: `/${href}`, id, icon };
 
       if (!placement) {
         navData[foundGroupIdx].links.push(newElement);
