@@ -27,7 +27,7 @@ export const ChangesRegister: React.FC = () => {
             .filter((change) => !('isNew' in change))
             .map((change) => {
               const exitingLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find(
-                (l) => l.lineID === change.lineID,
+                (l: any) => l.lineID === change.lineID,
               );
               const quantity = order?.lines.find((line) => line.id === change.lineID)?.quantity;
               const modifyLine = modifiedOrder?.lines.find((line) => line.id === change.lineID);
@@ -58,8 +58,8 @@ export const ChangesRegister: React.FC = () => {
               };
             }),
           ...(linePriceChangeInput?.linesToOverride ?? [])
-            .filter((l) => !changes.linesChanges.some((change) => change.lineID === l.lineID))
-            .map((l) => {
+            .filter((l: any) => !changes.linesChanges.some((change) => change.lineID === l.lineID))
+            .map((l: any) => {
               const modifyLine = modifiedOrder?.lines.find((line) => line.id === l.lineID);
               if (!modifyLine) return null;
               const lineTax = modifyLine?.taxRate;
@@ -122,8 +122,8 @@ export const ChangesRegister: React.FC = () => {
                   </TableHeader>
                   <TableBody>
                     {change?.changes
-                      .filter((change) => !change.path.includes('attributes'))
-                      .map((propertyChange, i) => (
+                      .filter((change: any) => !change.path.includes('attributes'))
+                      .map((propertyChange: any, i: number) => (
                         <TableRow key={i}>
                           <TableCell className="font-medium text-muted-foreground">
                             {givePathForTranslation(propertyChange.path)}
@@ -142,7 +142,7 @@ export const ChangesRegister: React.FC = () => {
                       ))}
                   </TableBody>
                 </Table>
-                {change?.changes.filter((change) => change.path.includes('attributes')).length ? (
+                {change?.changes.filter((change: any) => change.path.includes('attributes')).length ? (
                   <>
                     <div className="my-6 h-[1px] w-full bg-muted-foreground" />
                     <h4>{t('changes.attributesChanges')}</h4>
@@ -156,8 +156,8 @@ export const ChangesRegister: React.FC = () => {
                       </TableHeader>
                       <TableBody>
                         {change.changes
-                          .filter((change) => change.path.includes('attributes'))
-                          .map((propertyChange, i) => (
+                          .filter((change: any) => change.path.includes('attributes'))
+                          .map((propertyChange: any, i: number) => (
                             <TableRow
                               className={cn(propertyChange.changed === 'removed' ? 'text-red-700' : 'text-green-700')}
                               key={i}

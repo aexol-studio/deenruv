@@ -15,9 +15,13 @@ const ProductSelector = Selector('Product')({
     id: true,
     code: true,
     name: true,
-    customFields: { hexColor: true, image: { preview: true } },
-
-    facet: { id: true, name: true, code: true, customFields: { usedForProductCreations: true } },
+    // customFields: { hexColor: true, image: { preview: true } },
+    facet: {
+      id: true,
+      name: true,
+      code: true,
+      // customFields: { usedForProductCreations: true }
+    },
   },
 });
 type ProductType = FromSelectorWithScalars<typeof ProductSelector, 'Product'>;
@@ -38,8 +42,8 @@ const match = (facetValues?: ProductType['facetValues']) => {
       code: item.code,
       id: item.id,
       name: item.name,
-      hexColor: item.customFields?.hexColor,
-      imagePreview: item.customFields?.image?.preview,
+      // hexColor: item.customFields?.hexColor,
+      // imagePreview: item.customFields?.image?.preview,
     };
     if (facet) {
       facet.facetValues.push(newItem);
@@ -48,7 +52,8 @@ const match = (facetValues?: ProductType['facetValues']) => {
         id: item.facet.id,
         code: item.facet.code,
         name: item.facet.name,
-        usedForProductCreations: !!item.facet.customFields?.usedForProductCreations,
+        // usedForProductCreations: !!item.facet.customFields?.usedForProductCreations,
+        usedForProductCreations: true,
         facetValues: [newItem],
       });
     }

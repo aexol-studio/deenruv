@@ -78,7 +78,7 @@ const getOrders = async (options: ResolverInputTypes['OrderListOptions']) => {
   return response.orders;
 };
 
-export const OrderListPage = () => {
+export const OrdersListPage = () => {
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
   const [filterState, setFilterState] = useState<ModelTypes[ListType['orders']] | undefined>();
@@ -241,7 +241,7 @@ export const OrderListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.order.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.orders.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center">
             {row.original.id}
             <ArrowRight className="pl-1" size={16} />
@@ -393,11 +393,11 @@ export const OrderListPage = () => {
             </DropdownMenuItem>
             {row.original.customer?.id && (
               <DropdownMenuItem>
-                <Link to={Routes.customer.to(row.original.customer.id)}>{t('table.viewCustomer')}</Link>
+                <Link to={Routes.customers.to(row.original.customer.id)}>{t('table.viewCustomer')}</Link>
               </DropdownMenuItem>
             )}
             <DropdownMenuItem>
-              <Link to={Routes.order.to(row.original.id)} className="text-primary-600">
+              <Link to={Routes.orders.to(row.original.id)} className="text-primary-600">
                 {t('table.viewOrder')}
               </Link>
             </DropdownMenuItem>
@@ -558,7 +558,7 @@ export const OrderListPage = () => {
               onClick={async () => {
                 const id = await createDraftOrder();
                 if (id) {
-                  navigate(Routes.order.to(id));
+                  navigate(Routes.orders.to(id));
                   refetchOrders(filterState);
                 } else console.error('Failed to create order');
               }}

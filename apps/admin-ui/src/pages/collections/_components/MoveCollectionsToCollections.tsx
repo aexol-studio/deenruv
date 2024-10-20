@@ -99,7 +99,7 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
       header: () => t('table.id'),
       meta: { isPlaceholder: true },
       cell: ({ row }) => (
-        <Link to={Routes.collection.to(row.original?.id ?? row.id)} className="text-primary-600">
+        <Link to={Routes.collections.to(row.original?.id ?? row.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center">
             {row.original?.id ?? row.id}
             <ArrowRight className="pl-1" size={16} />

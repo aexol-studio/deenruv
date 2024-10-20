@@ -123,7 +123,7 @@ export const ZonesListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.zone.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.zones.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -166,7 +166,7 @@ export const ZonesListPage = () => {
       cell: ({ row }) => row.original.members.length,
     },
     ActionsColumn({
-      viewRoute: Routes.zone.to,
+      viewRoute: Routes.zones.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setZonesToDelete([row.original]);
@@ -244,7 +244,7 @@ export const ZonesListPage = () => {
           <ListButtons
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
             createLabel={t('create')}
-            createRoute={Routes.zoneNew}
+            createRoute={Routes.zones.new}
             handleClick={() => {
               setZonesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

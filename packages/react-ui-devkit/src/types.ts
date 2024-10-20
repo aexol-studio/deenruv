@@ -17,6 +17,7 @@ export type Widget = {
 export type DeenruvUIPlugin = {
     name: string;
     version: string;
+    inputs?: PluginComponent[];
     components?: PluginComponent[];
     widgets?: Widget[];
     navMenuGroups?: Array<PluginNavigationGroup>;

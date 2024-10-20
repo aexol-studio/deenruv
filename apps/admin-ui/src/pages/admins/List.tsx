@@ -148,7 +148,7 @@ export const AdminsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.admin.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.admins.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.firstName + ' ' + row.original.lastName}
             <ArrowRight className="pl-1" size={16} />
@@ -184,7 +184,7 @@ export const AdminsListPage = () => {
         )),
     },
     ActionsColumn({
-      viewRoute: Routes.admin.to,
+      viewRoute: Routes.admins.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setAdminsToDelete([row.original]);
@@ -261,7 +261,7 @@ export const AdminsListPage = () => {
           />
           <ListButtons
             createLabel={t('create')}
-            createRoute={Routes.adminNew}
+            createRoute={Routes.admins.new}
             handleClick={() => {
               setAdminsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

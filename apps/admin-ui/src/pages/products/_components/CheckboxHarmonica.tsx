@@ -29,12 +29,12 @@ export const CheckboxAccordion: React.FC<CheckboxAccordionProps> = ({
                   onCheckedChange={(e: boolean) => onChange(f.id, e)}
                 />
                 <Label htmlFor={f.code} className="flex items-center gap-2 font-normal">
-                  {f.customFields?.hexColor && f.customFields?.hexColor !== '#' && (
+                  {/* {f.customFields?.hexColor && f.customFields?.hexColor !== '#' && (
                     <div
                       className="border-gray h-4 w-4 rounded-full border border-solid"
                       style={{ backgroundColor: f.customFields?.hexColor }}
                     ></div>
-                  )}
+                  )} */}
                   {f.name}
                 </Label>
               </Stack>

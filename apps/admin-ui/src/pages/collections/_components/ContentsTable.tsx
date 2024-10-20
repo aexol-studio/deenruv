@@ -109,7 +109,7 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
         enableColumnFilter: false,
         header: t('table.id'),
         cell: ({ row }) => (
-          <Link to={Routes.product.to(`${row.original.product.id}?tab=variants`)} className="text-primary-600">
+          <Link to={Routes.products.to(`${row.original.product.id}?tab=variants`)} className="text-primary-600">
             <Badge variant="outline" className="flex w-full items-center justify-center">
               {row.original.id}
               <ArrowRight className="pl-1" size={16} />

@@ -125,7 +125,7 @@ export const ShippingMethodsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.shippingMethod.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.shippingMethods.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -151,18 +151,18 @@ export const ShippingMethodsListPage = () => {
       currSort: optionInfo.sort,
       setSort: () => setSort('updatedAt'),
     }),
-    {
-      accessorKey: 'modalTitle',
-      enableColumnFilter: true,
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="modalTitle" onClick={() => setSort('modalTitle')}>
-          {t('table.modalTitle')}
-        </SortButton>
-      ),
-      cell: ({ row }) => row.original.customFields?.modalTitle,
-    },
+    // {
+    //   accessorKey: 'modalTitle',
+    //   enableColumnFilter: true,
+    //   header: () => (
+    //     <SortButton currSort={optionInfo.sort} sortKey="modalTitle" onClick={() => setSort('modalTitle')}>
+    //       {t('table.modalTitle')}
+    //     </SortButton>
+    //   ),
+    //   cell: ({ row }) => row.original.customFields?.modalTitle,
+    // },
     ActionsColumn({
-      viewRoute: Routes.shippingMethod.to,
+      viewRoute: Routes.shippingMethods.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setMethodsToDelete([row.original]);
@@ -239,7 +239,7 @@ export const ShippingMethodsListPage = () => {
           />
           <ListButtons
             createLabel={t('create')}
-            createRoute={Routes.shippingMethodNew}
+            createRoute={Routes.shippingMethods.new}
             handleClick={() => {
               setMethodsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

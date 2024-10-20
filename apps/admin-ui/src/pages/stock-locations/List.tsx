@@ -124,7 +124,7 @@ export const StockLocationsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.stockLocation.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.stockLocations.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -167,7 +167,7 @@ export const StockLocationsListPage = () => {
       cell: ({ row }) => stripHtmlTags(row.original.description),
     },
     ActionsColumn({
-      viewRoute: Routes.stockLocation.to,
+      viewRoute: Routes.stockLocations.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setStocksToDelete([row.original]);
@@ -244,7 +244,7 @@ export const StockLocationsListPage = () => {
           />
           <ListButtons
             createLabel={t('create')}
-            createRoute={Routes.stockLocationNew}
+            createRoute={Routes.stockLocations.new}
             handleClick={() => {
               setStocksToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

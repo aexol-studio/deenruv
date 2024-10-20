@@ -25,7 +25,7 @@ export const OrderSummary: React.FC = () => {
       <Label className="text-muted-foreground">
         {t('create.baseInfoUpdated', { value: format(new Date(order.updatedAt), 'dd.MM.yyyy hh:mm') })}
       </Label>
-      {order.getRealization && (
+      {/* {order.getRealization && (
         <div className="ml-auto flex flex-row gap-x-4 gap-y-2">
           <Label className="text-muted-foreground text-yellow-600">
             {t('create.realizationPlan', { value: order.getRealization.plannedAt })}
@@ -35,7 +35,7 @@ export const OrderSummary: React.FC = () => {
             {t('create.realizationDate', { value: order.getRealization.finalPlannedAt })}
           </Label>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

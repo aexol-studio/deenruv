@@ -147,7 +147,7 @@ export const ChannelsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.channel.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.channels.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.token}
             <ArrowRight className="pl-1" size={16} />
@@ -166,7 +166,7 @@ export const ChannelsListPage = () => {
       cell: ({ row }) => row.original.code,
     },
     ActionsColumn({
-      viewRoute: Routes.channel.to,
+      viewRoute: Routes.channels.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setChannelsToDelete([row.original]);
@@ -243,7 +243,7 @@ export const ChannelsListPage = () => {
           />
           <ListButtons
             createLabel={t('create')}
-            createRoute={Routes.channelNew}
+            createRoute={Routes.channels.new}
             handleClick={() => {
               setChannelsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

@@ -123,7 +123,7 @@ export const SellersListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.seller.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.sellers.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -156,7 +156,7 @@ export const SellersListPage = () => {
       ),
     },
     ActionsColumn({
-      viewRoute: Routes.seller.to,
+      viewRoute: Routes.sellers.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setSellersToDelete([row.original]);
@@ -233,7 +233,7 @@ export const SellersListPage = () => {
           />
           <ListButtons
             createLabel={t('create')}
-            createRoute={Routes.sellerNew}
+            createRoute={Routes.sellers.new}
             handleClick={() => {
               setSellersToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

@@ -77,7 +77,7 @@ const getProducts = async (options: ResolverInputTypes['ProductListOptions']) =>
   return response.products;
 };
 
-export const ProductListPage = () => {
+export const ProductsListPage = () => {
   const translationsLanguage = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('products');
 
@@ -154,7 +154,7 @@ export const ProductListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.product.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.products.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center">
             {row.original.id}
             <ArrowRight className="pl-1" size={16} />
@@ -255,7 +255,7 @@ export const ProductListPage = () => {
               {t('table.delete')}
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to={Routes.product.to(row.original.id)}>{t('editProduct')}</Link>
+              <Link to={Routes.products.to(row.original.id)}>{t('editProduct')}</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -357,7 +357,7 @@ export const ProductListPage = () => {
           />
           <div className="flex gap-2">
             <Button>
-              <NavLink to={Routes.productNew}>{t('forms.create')}</NavLink>
+              <NavLink to={Routes.products.new}>{t('forms.create')}</NavLink>
             </Button>
           </div>
         </div>

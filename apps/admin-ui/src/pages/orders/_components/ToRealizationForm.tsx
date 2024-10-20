@@ -15,7 +15,7 @@ import {
   AssetsModalInput,
   ImageWithPreview,
 } from '@/components';
-import { apiCall } from '@/graphql/client';
+// import { apiCall } from '@/graphql/client';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 import { useOrder } from '@/state/order';
@@ -51,26 +51,26 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
 
   const addRealization = async () => {
     if (!order || !deadlineDate || !plannedDate) return;
-    const { registerRealization } = await apiCall()('mutation')({
-      registerRealization: [
-        {
-          input: {
-            orderID: order.id,
-            color,
-            finalPlannedAt: format(deadlineDate, 'yyyy-MM-dd'),
-            plannedAt: format(plannedDate, 'yyyy-MM-dd'),
-            assets: selectedAsset,
-            note,
-          },
-        },
-        { url: true },
-      ],
-    });
+    // const { registerRealization } = await apiCall()('mutation')({
+    //   registerRealization: [
+    //     {
+    //       input: {
+    //         orderID: order.id,
+    //         color,
+    //         finalPlannedAt: format(deadlineDate, 'yyyy-MM-dd'),
+    //         plannedAt: format(plannedDate, 'yyyy-MM-dd'),
+    //         assets: selectedAsset,
+    //         note,
+    //       },
+    //     },
+    //     { url: true },
+    //   ],
+    // });
 
-    if (registerRealization?.url) {
-      window.open(registerRealization.url, '_blank');
-      onRealizationFinished();
-    }
+    // if (registerRealization?.url) {
+    //   window.open(registerRealization.url, '_blank');
+    //   onRealizationFinished();
+    // }
   };
 
   return (

@@ -1,13 +1,14 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModelTypes } from '@/zeus';
 import { Input, Label, Stack } from '@/components';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 
 interface ModalCardProps {
-  currentTranslationValue: ModelTypes['PaymentMethodTranslationCustomFields'] | undefined;
-  onValuesChange: (customFields: ModelTypes['PaymentMethodTranslationCustomFields']) => void;
+  currentTranslationValue: any;
+  onValuesChange: (customFields: any) => void;
+  // currentTranslationValue: ModelTypes['PaymentMethodTranslationCustomFields'] | undefined;
+  // onValuesChange: (customFields: ModelTypes['PaymentMethodTranslationCustomFields']) => void;
 }
 
 export const ModalCard: React.FC<ModalCardProps> = ({ currentTranslationValue, onValuesChange }) => {

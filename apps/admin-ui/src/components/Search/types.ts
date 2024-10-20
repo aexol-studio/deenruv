@@ -55,7 +55,7 @@ export const orderFilterFields: readonly {
   type: InputType;
 }[] = [
   { name: 'active', type: 'BooleanOperators' },
-  { name: 'additionalInformation', type: 'StringOperators' },
+  // { name: 'additionalInformation', type: 'StringOperators' },
   { name: 'code', type: 'StringOperators' },
   { name: 'createdAt', type: 'DateOperators' },
   { name: 'currencyCode', type: 'StringOperators' },
@@ -73,7 +73,7 @@ export const orderFilterFields: readonly {
   { name: 'transactionId', type: 'StringOperators' },
   { name: 'type', type: 'StringOperators' },
   { name: 'updatedAt', type: 'DateOperators' },
-  { name: 'registeredOnCheckout', type: 'BooleanOperators' },
+  // { name: 'registeredOnCheckout', type: 'BooleanOperators' },
 ] as const;
 
 export const productFilterFields: readonly {
@@ -113,9 +113,9 @@ export const facetFilterFields: readonly {
   name: keyof Pick<
     ModelTypes['FacetFilterParameter'],
     | 'code'
-    | 'usedForColors'
-    | 'usedForProductCreations'
-    | 'colorsCollection'
+    // | 'usedForColors'
+    // | 'usedForProductCreations'
+    // | 'colorsCollection'
     | 'createdAt'
     | 'name'
     | 'id'
@@ -130,9 +130,9 @@ export const facetFilterFields: readonly {
   { name: 'name', type: 'StringOperators' },
   { name: 'code', type: 'StringOperators' },
   { name: 'isPrivate', type: 'BooleanOperators' },
-  { name: 'usedForProductCreations', type: 'BooleanOperators' },
-  { name: 'usedForColors', type: 'BooleanOperators' },
-  { name: 'colorsCollection', type: 'BooleanOperators' },
+  // { name: 'usedForProductCreations', type: 'BooleanOperators' },
+  // { name: 'usedForColors', type: 'BooleanOperators' },
+  // { name: 'colorsCollection', type: 'BooleanOperators' },
 ] as const;
 
 export const countriesFilterFields: readonly {
@@ -234,7 +234,8 @@ export const sellerFilterFields: readonly {
 export const paymentMethodFilterFields: readonly {
   name: keyof Pick<
     ModelTypes['PaymentMethodFilterParameter'],
-    'createdAt' | 'name' | 'updatedAt' | 'enabled' | 'code' | 'modalTitle'
+    'createdAt' | 'name' | 'updatedAt' | 'enabled' | 'code'
+    // 'modalTitle'
   >;
   type: InputType;
 }[] = [
@@ -243,13 +244,14 @@ export const paymentMethodFilterFields: readonly {
   { name: 'name', type: 'StringOperators' },
   { name: 'code', type: 'StringOperators' },
   { name: 'enabled', type: 'BooleanOperators' },
-  { name: 'modalTitle', type: 'StringOperators' },
+  // { name: 'modalTitle', type: 'StringOperators' },
 ] as const;
 
 export const shippingMethodFilterFields: readonly {
   name: keyof Pick<
     ModelTypes['ShippingMethodFilterParameter'],
-    'createdAt' | 'name' | 'updatedAt' | 'code' | 'modalTitle'
+    'createdAt' | 'name' | 'updatedAt' | 'code'
+    // 'modalTitle'
   >;
   type: InputType;
 }[] = [
@@ -257,5 +259,5 @@ export const shippingMethodFilterFields: readonly {
   { name: 'updatedAt', type: 'DateOperators' },
   { name: 'name', type: 'StringOperators' },
   { name: 'code', type: 'StringOperators' },
-  { name: 'modalTitle', type: 'StringOperators' },
+  // { name: 'modalTitle', type: 'StringOperators' },
 ] as const;

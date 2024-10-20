@@ -95,9 +95,9 @@ export const LatestOrderSelector = Selector('Order')({
   code: true,
   id: true,
   currencyCode: true,
-  getRealization: {
-    finalPlannedAt: true,
-  },
+  // getRealization: {
+  //   finalPlannedAt: true,
+  // },
   payments: {
     method: true,
     id: true,

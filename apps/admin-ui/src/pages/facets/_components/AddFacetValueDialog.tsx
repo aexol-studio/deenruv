@@ -39,7 +39,8 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [image, setImage] = useState<{ id: string; preview: string; source: string } | undefined>(
-    facetValue?.customFields?.image || undefined,
+    // facetValue?.customFields?.image || undefined,
+    undefined,
   );
 
   const { state, setField } = useGFFLP(
@@ -62,8 +63,10 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
     },
     customFields: {
       initialValue: {
-        hexColor: facetValue?.customFields?.hexColor,
-        isNew: facetValue?.customFields?.isNew,
+        // hexColor: facetValue?.customFields?.hexColor,
+        // isNew: facetValue?.customFields?.isNew,
+        hexColor: undefined,
+        isNew: false,
       },
     },
   });

@@ -1,4 +1,4 @@
-import { AssetsModalChangeType, AssetsModalInput, Input, Label, Stack } from '@/components';
+import { AssetsModalChangeType, AssetsModalInput, Label, Stack } from '@/components';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
@@ -31,15 +31,7 @@ export const SeoCard: React.FC<SeoCardProps> = ({
   const [twitterImage, setTwitterImage] = useState<AssetType>();
 
   const getAsset = useCallback(async (id: string) => {
-    const response = await apiCall()('query')({
-      asset: [
-        {
-          id: id,
-        },
-        assetsSelector,
-      ],
-    });
-
+    const response = await apiCall()('query')({ asset: [{ id }, assetsSelector] });
     return response.asset;
   }, []);
 
@@ -59,7 +51,7 @@ export const SeoCard: React.FC<SeoCardProps> = ({
       <CardContent>
         <Stack column className="gap-6">
           <Stack className="gap-3">
-            <Input
+            {/* <Input
               label={t('customFields.seo.title')}
               placeholder={t('customFields.seo.title')}
               value={currentTranslationValue?.customFields?.seoTitle}
@@ -70,7 +62,7 @@ export const SeoCard: React.FC<SeoCardProps> = ({
               placeholder={t('customFields.seo.description')}
               value={currentTranslationValue?.customFields?.seoDescription}
               onChange={onDescriptionChange}
-            />
+            /> */}
           </Stack>
           <Stack className="justify-between gap-3">
             <div className="w-1/2">

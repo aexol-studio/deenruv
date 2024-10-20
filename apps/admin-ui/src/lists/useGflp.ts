@@ -1,7 +1,7 @@
 import { ModelTypes as DefaultModelTypes } from '@/zeus';
 import { useCallback, useMemo, useState } from 'react';
 
-type FormField<T> = {
+export type FormField<T> = {
   initialValue?: T;
   value: T;
 } & ({ errors: never; validatedValue: T } | { errors: string[]; validatedValue: never });

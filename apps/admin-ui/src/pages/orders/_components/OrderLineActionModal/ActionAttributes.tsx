@@ -1,5 +1,5 @@
 import { DraftOrderLineType } from '@/graphql/draft_order';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import { Button, Input } from '@/components';
@@ -26,21 +26,21 @@ export const ActionAttributes: React.FC<ActionAttributesProps> = ({
   const [lineItemAttributes, setLineItemAttributes] = React.useState<
     { id: string; key: string; value: string; isNew: boolean }[]
   >([]);
-  useEffect(() => {
-    if (line?.customFields?.attributes) {
-      const parsedAttributes = JSON.parse(line?.customFields?.attributes);
-      if (typeof parsedAttributes === 'object') {
-        setLineItemAttributes(
-          Object.entries(parsedAttributes).map(([key, value]) => ({
-            id: uuidv4(),
-            key,
-            value: value as string,
-            isNew: false,
-          })),
-        );
-      }
-    }
-  }, [line?.customFields?.attributes]);
+  // useEffect(() => {
+  //   if (line?.customFields?.attributes) {
+  //     const parsedAttributes = JSON.parse(line?.customFields?.attributes);
+  //     if (typeof parsedAttributes === 'object') {
+  //       setLineItemAttributes(
+  //         Object.entries(parsedAttributes).map(([key, value]) => ({
+  //           id: uuidv4(),
+  //           key,
+  //           value: value as string,
+  //           isNew: false,
+  //         })),
+  //       );
+  //     }
+  //   }
+  // }, [line?.customFields?.attributes]);
   const handleNewAttributeAdd = () => {
     const { key, value } = newLineItemAttribute || {};
     if (!key || !value) return;

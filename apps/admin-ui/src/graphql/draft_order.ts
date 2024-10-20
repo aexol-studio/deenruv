@@ -80,12 +80,12 @@ export const draftOrderLineSelector = Selector('OrderLine')({
   linePriceWithTax: true,
 
   taxRate: true,
-  customFields: {
-    modifiedListPrice: true,
-    attributes: true,
-    discountBy: true,
-    selectedImage: { id: true, preview: true },
-  },
+  // customFields: {
+  //   modifiedListPrice: true,
+  //   attributes: true,
+  //   discountBy: true,
+  //   selectedImage: { id: true, preview: true },
+  // },
 });
 
 export type DraftOrderLineType = FromSelectorWithScalars<typeof draftOrderLineSelector, 'OrderLine'>;
@@ -103,10 +103,10 @@ export const draftOrderSelector = Selector('Order')({
   nextStates: true,
   subTotalWithTax: true,
   surcharges: { priceWithTax: true, sku: true },
-  getRealization: {
-    finalPlannedAt: true,
-    plannedAt: true,
-  },
+  // getRealization: {
+  //   finalPlannedAt: true,
+  //   plannedAt: true,
+  // },
   promotions: {
     name: true,
     couponCode: true,

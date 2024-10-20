@@ -6,9 +6,9 @@ export const PaymentMethodListSelector = Selector('PaymentMethod')({
   name: true,
   enabled: true,
   code: true,
-  customFields: {
-    modalTitle: true,
-  },
+  // customFields: {
+  //   modalTitle: true,
+  // },
   createdAt: true,
   updatedAt: true,
 });

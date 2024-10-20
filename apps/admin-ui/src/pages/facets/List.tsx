@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown, MoreHorizontal, ArrowRight, Check, X } from 'lucide-react';
+import { ChevronDown, MoreHorizontal, ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge, DeleteDialog, ListTable, Search, SortButton } from '@/components';
@@ -165,7 +165,7 @@ export const FacetsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.facet.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.facets.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -206,24 +206,24 @@ export const FacetsListPage = () => {
       header: t('table.values'),
       cell: ({ row }) => <Badge variant={'secondary'}>{row.original.values.length}</Badge>,
     },
-    {
-      accessorKey: 'usedForColors',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('usedForColors')}>
-          {t('table.usedForColors')}
-        </SortButton>
-      ),
-      cell: ({ row }) => (row.original.customFields?.usedForColors ? <Check size={16} /> : <X size={16} />),
-    },
-    {
-      accessorKey: 'colorsCollection',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('colorsCollection')}>
-          {t('table.colorsCollection')}
-        </SortButton>
-      ),
-      cell: ({ row }) => (row.original.customFields?.colorsCollection ? <Check size={16} /> : <X size={16} />),
-    },
+    // {
+    //   accessorKey: 'usedForColors',
+    //   header: () => (
+    //     <SortButton currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('usedForColors')}>
+    //       {t('table.usedForColors')}
+    //     </SortButton>
+    //   ),
+    //   cell: ({ row }) => (row.original.customFields?.usedForColors ? <Check size={16} /> : <X size={16} />),
+    // },
+    // {
+    //   accessorKey: 'colorsCollection',
+    //   header: () => (
+    //     <SortButton currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('colorsCollection')}>
+    //       {t('table.colorsCollection')}
+    //     </SortButton>
+    //   ),
+    //   cell: ({ row }) => (row.original.customFields?.colorsCollection ? <Check size={16} /> : <X size={16} />),
+    // },
     {
       id: 'actions',
       enableHiding: false,
@@ -240,7 +240,7 @@ export const FacetsListPage = () => {
               {t('table.copyId')}
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to={Routes.facet.to(row.original.id)} className="text-primary-600">
+              <Link to={Routes.facets.to(row.original.id)} className="text-primary-600">
                 {t('table.viewFacet')}
               </Link>
             </DropdownMenuItem>
@@ -362,7 +362,7 @@ export const FacetsListPage = () => {
               </Button>
             ) : null}
             <Button>
-              <NavLink to={Routes.facetNew}>{t('createFacet')}</NavLink>
+              <NavLink to={Routes.facets.new}>{t('createFacet')}</NavLink>
             </Button>
           </div>
         </div>

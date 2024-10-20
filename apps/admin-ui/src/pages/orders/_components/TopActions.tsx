@@ -118,21 +118,21 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
 
   const createProforma = async (type: 'proforma' | 'receipt') => {
     if (order) {
-      const { sendInvoiceToWFirma } = await apiCall()('mutation')({
-        sendInvoiceToWFirma: [
-          { input: { orderID: order.id, invoiceType: type === 'proforma' ? 'proforma' : 'receipt_fiscal_normal' } },
-          { url: true },
-        ],
-      });
-      if (sendInvoiceToWFirma) {
-        window.open(
-          type === 'proforma' ? 'https://wfirma.pl/invoices/index/proforma' : 'https://wfirma.pl/invoices/index/all',
-          '_blank',
-        );
-        toast.success(t(type === 'proforma' ? 'invoice.createProformaSuccess' : 'invoice.createReceiptSuccess'));
-      } else {
-        toast.error(t(type === 'proforma' ? 'invoice.createProformaError' : 'invoice.createReceiptError'));
-      }
+      // const { sendInvoiceToWFirma } = await apiCall()('mutation')({
+      //   sendInvoiceToWFirma: [
+      //     { input: { orderID: order.id, invoiceType: type === 'proforma' ? 'proforma' : 'receipt_fiscal_normal' } },
+      //     { url: true },
+      //   ],
+      // });
+      // if (sendInvoiceToWFirma) {
+      //   window.open(
+      //     type === 'proforma' ? 'https://wfirma.pl/invoices/index/proforma' : 'https://wfirma.pl/invoices/index/all',
+      //     '_blank',
+      //   );
+      //   toast.success(t(type === 'proforma' ? 'invoice.createProformaSuccess' : 'invoice.createReceiptSuccess'));
+      // } else {
+      //   toast.error(t(type === 'proforma' ? 'invoice.createProformaError' : 'invoice.createReceiptError'));
+      // }
     }
   };
 
@@ -282,9 +282,9 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
           if (order?.state === ORDER_STATE.DRAFT) {
             toast.error(t('create.leaveToastMessage'), {
               position: 'top-center',
-              action: { label: t('create.leaveToastButton'), onClick: () => navigate(Routes.orders) },
+              action: { label: t('create.leaveToastButton'), onClick: () => navigate(Routes.orders.list) },
             });
-          } else navigate(Routes.orders);
+          } else navigate(Routes.orders.list);
         }}
       >
         <ChevronLeft className="h-4 w-4" />
@@ -312,7 +312,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
                   position: 'top-center',
                   action: {
                     label: t('create.leaveToastButton'),
-                    onClick: () => navigate(Routes.orders),
+                    onClick: () => navigate(Routes.orders.list),
                   },
                 });
               }}

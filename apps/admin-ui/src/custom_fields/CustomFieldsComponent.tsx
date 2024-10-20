@@ -2,30 +2,29 @@ import React, { PropsWithChildren, Suspense, useEffect, useState } from 'react';
 import { generateCustomFields } from './logic';
 import { CustomFieldConfigType } from '@/graphql/base';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
-import { ProductVariantType } from '@/graphql/draft_order';
-import type { LanguageCode } from '@/zeus';
+import type { LanguageCode, ModelTypes } from '@/zeus';
+import { FormField } from '@/lists/useGflp';
+import { usePluginStore } from '@deenruv/react-ui-devkit';
 
-declare global {
-  interface Window {
-    __ADMIN_UI_CONFIG__: {
-      components: { where: string; name: string; componentPath?: string }[];
-    };
-  }
-}
-
-export const CustomFieldsComponent: React.FC<{
-  getValue: (field: CustomFieldConfigType, translatable: boolean) => string | number | boolean;
-  setValue: (field: CustomFieldConfigType, data: string | number | boolean, translatable: boolean) => void;
-  language: LanguageCode;
-  customFields?: CustomFieldConfigType[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: Record<string, any>;
-}> = ({ customFields, getValue, setValue, data }) => {
+export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['JSON'] | undefined }>({
+  customFields,
+  value,
+  setValue,
+  translation,
+  data,
+}: {
+  customFields: CustomFieldConfigType[];
+  value: FormField<ModelTypes['JSON']>['value'];
+  setValue: (field: CustomFieldConfigType, data: string | number | boolean) => void;
+  language?: LanguageCode;
+  translation?: K;
+  data?: T;
+}) {
+  const { getInputComponents } = usePluginStore();
   const [rendered, setRendered] = useState<Record<string, { name: string; component: React.ReactElement }[]>>({});
 
   useEffect(() => {
-    if (!customFields) return;
-    generateCustomFields({ customFields }).then((fields) => {
+    generateCustomFields({ customFields, getInputComponents }).then((fields) => {
       const result = fields.reduce(
         (acc, field) => {
           if (!acc[field.tab]) acc[field.tab] = [];
@@ -36,7 +35,7 @@ export const CustomFieldsComponent: React.FC<{
       );
       setRendered(result);
     });
-  }, [customFields]);
+  }, []);
 
   return (
     <div className="text-primary-background my-4 flex h-full w-full flex-col gap-4 rounded-lg bg-primary-foreground p-4">
@@ -55,15 +54,18 @@ export const CustomFieldsComponent: React.FC<{
               {fields.map((field) => {
                 const _field = customFields?.find((f) => f.name === field.name);
                 if (!_field) return null;
-                const translatable = _field.type === 'localeText' || _field.type === 'localeString';
+                let _value = undefined;
+                if (_field.type === 'localeText' || _field.type === 'localeString')
+                  _value = translation?.customFields ? translation.customFields[_field.name] : undefined;
+                else _value = value ? value[_field.name] : undefined;
+
                 return (
                   <CustomFieldsProvider
                     key={field.name}
                     field={_field}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    data={data as any}
-                    value={getValue(_field, translatable) || ''}
-                    setValue={(data) => setValue(_field, data, translatable)}
+                    data={data}
+                    value={_value}
+                    setValue={(data) => setValue(_field, data)}
                   >
                     <Suspense fallback={<span>Loading...</span>}>
                       <div className="w-1/2">{field.component}</div>
@@ -77,28 +79,25 @@ export const CustomFieldsComponent: React.FC<{
       </Tabs>
     </div>
   );
-};
+}
 
-type DynamicContext<DATA> = {
+type DynamicContext<T> = {
   field?: CustomFieldConfigType;
   value?: string | number | boolean;
   setValue: (data: string | number | boolean) => void;
-  data?: DATA;
+  data?: T;
 };
 
-const CustomFieldsContext = React.createContext<DynamicContext<{ variantToAdd: ProductVariantType }>>({
+const CustomFieldsContext = React.createContext<DynamicContext<unknown>>({
   field: undefined,
   value: undefined,
   setValue: () => console.error('setValue not implemented'),
   data: undefined,
 });
-export const CustomFieldsProvider: React.FC<
-  PropsWithChildren<DynamicContext<{ variantToAdd: ProductVariantType }>>
-> = ({ children, ...value }) => {
+export const CustomFieldsProvider: React.FC<PropsWithChildren<DynamicContext<unknown>>> = ({ children, ...value }) => {
   return <CustomFieldsContext.Provider value={value}>{children}</CustomFieldsContext.Provider>;
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useCustomFields = () => {
   if (!React.useContext(CustomFieldsContext)) {
     throw new Error('useCustomFields must be used within a CustomFieldsProvider');

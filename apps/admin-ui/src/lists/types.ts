@@ -176,7 +176,7 @@ export const paymentMethodsSortOptionsArray: readonly PaymentMethodsSortOptions[
   'updatedAt',
   'name',
   'code',
-  'modalTitle',
+  // 'modalTitle',
 ] as const;
 export function isPaymentMethodsSortOptions(value: string): value is PaymentMethodsSortOptions {
   return paymentMethodsSortOptionsArray.some((i) => i === value);
@@ -188,7 +188,7 @@ export const shippingMethodsSortOptionsArray: readonly ShippingMethodsSortOption
   'updatedAt',
   'name',
   'code',
-  'modalTitle',
+  // 'modalTitle',
 ] as const;
 export function isShippingMethodsSortOptions(value: string): value is ShippingMethodsSortOptions {
   return shippingMethodsSortOptionsArray.some((i) => i === value);

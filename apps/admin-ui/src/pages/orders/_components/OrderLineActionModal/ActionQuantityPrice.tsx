@@ -1,6 +1,5 @@
 import { Button, DialogFooter, Input, Label } from '@/components';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { apiCall } from '@/graphql/client';
 import { DraftOrderLineType } from '@/graphql/draft_order';
 
 import { cn } from '@/lib/utils';
@@ -31,7 +30,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
   const priceInputRef = useRef<HTMLInputElement | null>(null);
   const [priceType, setPriceType] = useState<PriceType>('netto');
   const [quantityChange, setQuantityChange] = useState<number | undefined>(undefined);
-  const [initLinePrice, setInitLinePrice] = useState<number | undefined>();
+  const [initLinePrice, _] = useState<number | undefined>();
   const [priceChange, setPriceChange] = useState({ netto: 0, brutto: 0 });
   const TAX_RATE = useMemo(() => (line?.taxRate ? line.taxRate / 100 : 0), [line?.taxRate]);
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,12 +96,12 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
     if (!line?.id) return;
     (async () => {
       try {
-        const { getInitialLinePrice } = await apiCall()('query')({
-          getInitialLinePrice: [{ lineID: line?.id ?? '' }, true],
-        });
-        if (getInitialLinePrice) {
-          setInitLinePrice(getInitialLinePrice);
-        }
+        // const { getInitialLinePrice } = await apiCall()('query')({
+        //   getInitialLinePrice: [{ lineID: line?.id ?? '' }, true],
+        // });
+        // if (getInitialLinePrice) {
+        //   setInitLinePrice(getInitialLinePrice);
+        // }
       } catch (err) {
         console.log(err);
       }

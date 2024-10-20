@@ -65,36 +65,36 @@ export function Nav({ isCollapsed }: NavProps) {
         id: 'shop-group',
         links: [
           { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link-dashboard', icon: BarChart },
-          { title: t('menu.products'), href: Routes.products, id: 'link-products', icon: Barcode },
-          { title: t('menu.collections'), href: Routes.collections, id: 'link-collections', icon: Folder },
-          { title: t('menu.facets'), href: Routes.facets, id: 'link-facets', icon: Tag },
-          { title: t('menu.orders'), href: Routes.orders, id: 'link-orders', icon: ShoppingCart },
-          { title: t('menu.assets'), href: Routes.assets, id: 'link-assets', icon: Images },
+          { title: t('menu.assets'), href: Routes.assets.list, id: 'link-assets', icon: Images },
+          { title: t('menu.products'), href: Routes.products.list, id: 'link-products', icon: Barcode },
+          { title: t('menu.collections'), href: Routes.collections.list, id: 'link-collections', icon: Folder },
+          { title: t('menu.facets'), href: Routes.facets.list, id: 'link-facets', icon: Tag },
+          { title: t('menu.orders'), href: Routes.orders.list, id: 'link-orders', icon: ShoppingCart },
         ],
       },
       {
         label: t('menuGroups.settings'),
         id: 'settings-group',
         links: [
-          { title: t('menu.channels'), href: Routes.channels, id: 'link-channels', icon: Globe2 },
-          { title: t('menu.zones'), href: Routes.zones, id: 'link-zones', icon: Globe },
-          { title: t('menu.countries'), href: Routes.countries, id: 'link-countries', icon: Flag },
+          { title: t('menu.channels'), href: Routes.channels.list, id: 'link-channels', icon: Globe2 },
+          { title: t('menu.zones'), href: Routes.zones.list, id: 'link-zones', icon: Globe },
+          { title: t('menu.countries'), href: Routes.countries.list, id: 'link-countries', icon: Flag },
           {
             title: t('menu.taxCategories'),
-            href: Routes.taxCategories,
+            href: Routes.taxCategories.list,
             id: 'link-tax-categories',
             icon: Coins,
           },
-          { title: t('menu.taxRates'), href: Routes.taxRates, id: 'link-tax-rates', icon: Percent },
+          { title: t('menu.taxRates'), href: Routes.taxRates.list, id: 'link-tax-rates', icon: Percent },
         ],
       },
       {
         label: t('menuGroups.users'),
         id: 'users-group',
         links: [
-          { title: t('menu.admins'), href: Routes.admins, id: 'link-admins', icon: UserCog },
-          { title: t('menu.roles'), href: Routes.roles, id: 'link-roles', icon: Users },
-          { title: t('menu.sellers'), href: Routes.sellers, id: 'link-sellers', icon: Store },
+          { title: t('menu.admins'), href: Routes.admins.list, id: 'link-admins', icon: UserCog },
+          { title: t('menu.roles'), href: Routes.roles.list, id: 'link-roles', icon: Users },
+          { title: t('menu.sellers'), href: Routes.sellers.list, id: 'link-sellers', icon: Store },
         ],
       },
       {
@@ -103,7 +103,7 @@ export function Nav({ isCollapsed }: NavProps) {
         links: [
           {
             title: t('menu.promotions'),
-            href: Routes.promotion.list,
+            href: Routes.promotions.list,
             id: 'link-promotions',
             icon: ShoppingCart,
           },
@@ -115,17 +115,17 @@ export function Nav({ isCollapsed }: NavProps) {
         links: [
           {
             title: t('menu.paymentMethods'),
-            href: Routes.paymentMethods,
+            href: Routes.paymentMethods.list,
             id: 'link-payment-methods',
             icon: CreditCard,
           },
           {
             title: t('menu.shippingMethods'),
-            href: Routes.shippingMethods,
+            href: Routes.shippingMethods.list,
             id: 'link-shipping-methods',
             icon: Truck,
           },
-          { title: t('menu.stock'), href: Routes.stockLocations, id: 'link-stock', icon: MapPin },
+          { title: t('menu.stock'), href: Routes.stockLocations.list, id: 'link-stock', icon: MapPin },
         ],
       },
     ];

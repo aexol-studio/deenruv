@@ -25,17 +25,15 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
         </CardHeader>
         <CardContent>
           <Stack column>
-            {facetsOptions
-              ?.filter((f) => f.customFields?.usedForProductCreations)
-              .map((f) => (
-                <CheckboxAccordion
-                  key={f.id}
-                  title={f.name}
-                  allFacets={f.values}
-                  checkedFacetsIds={checkedFacetsIds}
-                  onChange={handleFacetCheckboxChange}
-                />
-              ))}
+            {facetsOptions?.map((f) => (
+              <CheckboxAccordion
+                key={f.id}
+                title={f.name}
+                allFacets={f.values}
+                checkedFacetsIds={checkedFacetsIds}
+                onChange={handleFacetCheckboxChange}
+              />
+            ))}
           </Stack>
         </CardContent>
       </Card>
@@ -45,17 +43,15 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
         </CardHeader>
         <CardContent>
           <Stack column>
-            {facetsOptions
-              ?.filter((f) => f.customFields?.colorsCollection)
-              .map((f) => (
-                <CheckboxAccordion
-                  key={f.id}
-                  title={f.name}
-                  allFacets={f.values}
-                  checkedFacetsIds={checkedFacetsIds}
-                  onChange={handleFacetCheckboxChange}
-                />
-              ))}
+            {facetsOptions?.map((f) => (
+              <CheckboxAccordion
+                key={f.id}
+                title={f.name}
+                allFacets={f.values}
+                checkedFacetsIds={checkedFacetsIds}
+                onChange={handleFacetCheckboxChange}
+              />
+            ))}
           </Stack>
         </CardContent>
       </Card>
@@ -65,17 +61,15 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
         </CardHeader>
         <CardContent>
           <Stack column>
-            {facetsOptions
-              ?.filter((f) => !f.customFields?.colorsCollection && !f.customFields?.usedForProductCreations)
-              .map((f) => (
-                <CheckboxAccordion
-                  key={f.id}
-                  title={f.name}
-                  allFacets={f.values}
-                  checkedFacetsIds={checkedFacetsIds}
-                  onChange={handleFacetCheckboxChange}
-                />
-              ))}
+            {facetsOptions?.map((f) => (
+              <CheckboxAccordion
+                key={f.id}
+                title={f.name}
+                allFacets={f.values}
+                checkedFacetsIds={checkedFacetsIds}
+                onChange={handleFacetCheckboxChange}
+              />
+            ))}
           </Stack>
         </CardContent>
       </Card>

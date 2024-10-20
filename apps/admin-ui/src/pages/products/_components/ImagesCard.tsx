@@ -1,12 +1,10 @@
-import { AssetsModalChangeType, AssetsModalInput, Label, Stack } from '@/components';
+import { AssetsModalChangeType, Stack } from '@/components';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { ProductDetailType } from '@/graphql/products';
-import { ImageOff } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ImagesCardProps {
-  customFields: ProductDetailType['customFields'];
+  customFields: any;
   onMainImageChange: (e: AssetsModalChangeType | undefined) => void;
   onHoverImageChange: (e: AssetsModalChangeType | undefined) => void;
 }
@@ -21,7 +19,7 @@ export const ImagesCard: React.FC<ImagesCardProps> = ({ customFields, onMainImag
       </CardHeader>
       <CardContent>
         <Stack column className="gap-6">
-          <Stack className="justify-between gap-3">
+          {/* <Stack className="justify-between gap-3">
             <div className="w-1/2">
               <Label>{t('customFields.images.mainImage')}</Label>
               <Stack className="border-grey-500 gap-4 border-t pt-3">
@@ -52,7 +50,7 @@ export const ImagesCard: React.FC<ImagesCardProps> = ({ customFields, onMainImag
                 <AssetsModalInput setValue={onHoverImageChange} />
               </Stack>
             </div>
-          </Stack>
+          </Stack> */}
         </Stack>
       </CardContent>
     </Card>

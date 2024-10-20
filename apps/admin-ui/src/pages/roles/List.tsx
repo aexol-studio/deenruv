@@ -171,7 +171,7 @@ export const RolesListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.role.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.roles.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.description}
             <ArrowRight className="pl-1" size={16} />
@@ -221,7 +221,7 @@ export const RolesListPage = () => {
       ),
     },
     ActionsColumn({
-      viewRoute: Routes.role.to,
+      viewRoute: Routes.roles.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setRolesToDelete([row.original]);
@@ -299,7 +299,7 @@ export const RolesListPage = () => {
           <ListButtons
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
             createLabel={t('create')}
-            createRoute={Routes.roleNew}
+            createRoute={Routes.roles.new}
             handleClick={() => {
               setRolesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

@@ -27,12 +27,12 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({ productOption,
   useEffect(() => {
     setField('code', productOption.code);
     setField('translations', productOption.translations);
-    setField('customFields', {
-      hexColor: productOption.customFields?.hexColor,
-      isHidden: productOption.customFields?.isHidden,
-      isNew: productOption.customFields?.isNew,
-      imageId: productOption.customFields?.image?.id,
-    });
+    // setField('customFields', {
+    //   hexColor: productOption.customFields?.hexColor,
+    //   isHidden: productOption.customFields?.isHidden,
+    //   isNew: productOption.customFields?.isNew,
+    //   imageId: productOption.customFields?.image?.id,
+    // });
   }, [productOption, setField]);
 
   const setCustomField = useCallback(

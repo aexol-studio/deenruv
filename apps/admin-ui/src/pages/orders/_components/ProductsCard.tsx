@@ -13,9 +13,6 @@ import {
   TableCell,
   Label,
   Table,
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
   ImageWithPreview,
   DropdownMenu,
   DropdownMenuTrigger,
@@ -32,14 +29,13 @@ import {
 } from '@/components';
 import {
   DraftOrderLineType,
-  DraftOrderType,
   ProductVariantType,
   removeOrderItemsResultSelector,
   updateOrderItemsSelector,
   updatedDraftOrderSelector,
 } from '@/graphql/draft_order';
 import { LineItem } from '@/pages/orders/_components/LineItem';
-import { EllipsisVertical, Info, InfoIcon, Trash2 } from 'lucide-react';
+import { EllipsisVertical, InfoIcon, Trash2 } from 'lucide-react';
 
 import { useMemo, useState } from 'react';
 
@@ -48,18 +44,17 @@ import { useOrder } from '@/state/order';
 import { CustomComponent } from './CustomComponent';
 import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
-import { ModelTypes } from '@/zeus';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types';
 import { OrderLineActionModal } from './OrderLineActionModal';
 import { cn } from '@/lib/utils';
-import { useServer } from '@/state';
+// import { useServer } from '@/state';
 
-type AddItemCustomFieldsType = ModelTypes['AddItemToDraftOrderInput']['customFields'];
-type ProductVariantCustomFields = DraftOrderType['lines'][number]['customFields'];
+type AddItemCustomFieldsType = any;
+type ProductVariantCustomFields = any;
 
 export const ProductsCard: React.FC = () => {
   const { t } = useTranslation('orders');
-  const activeAdministrator = useServer((p) => p.activeAdministrator);
+  // const activeAdministrator = useServer((p) => p.activeAdministrator);
 
   const {
     mode,
@@ -68,7 +63,7 @@ export const ProductsCard: React.FC = () => {
     setModifiedOrder,
     modifiedOrder,
     linePriceChangeInput,
-    addLinePriceChangeInput,
+    // addLinePriceChangeInput,
     fetchOrder,
   } = useOrder();
   const currentOrder = useMemo(
@@ -149,7 +144,13 @@ export const ProductsCard: React.FC = () => {
 
   const onPriceQuantityChangeApprove = async (input: OnPriceQuantityChangeApproveInput) => {
     if (!order) return;
-    const { lineID, priceChange, pricewithTaxChange, quantityChange, isNettoPrice } = input;
+    const {
+      lineID,
+      priceChange,
+      pricewithTaxChange,
+      quantityChange,
+      // isNettoPrice
+    } = input;
     console.log('QUANTITY CHANGE', quantityChange);
     if (mode === 'update' && modifiedOrder) {
       const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === lineID);
@@ -159,14 +160,14 @@ export const ProductsCard: React.FC = () => {
         quantity,
       };
       if (priceChange && pricewithTaxChange) {
-        addLinePriceChangeInput({
-          activeAdministrator: activeAdministrator?.emailAddress ?? 'Nieznany administrator',
-          newLine: {
-            lineID: lineID,
-            value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-            netto: !!isNettoPrice,
-          },
-        });
+        // addLinePriceChangeInput({
+        //   activeAdministrator: activeAdministrator?.emailAddress ?? 'Nieznany administrator',
+        //   newLine: {
+        //     lineID: lineID,
+        //     value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
+        //     netto: !!isNettoPrice,
+        //   },
+        // });
       }
       setModifiedOrder({
         ...modifiedOrder,
@@ -198,54 +199,53 @@ export const ProductsCard: React.FC = () => {
         //  we are feeding this function with correct input, but it is returning order in prev state,
         // so if you set price to 1000 nothing will change,
         // then if you will set price to 2000, price will be 1000. Need to rewrite this in future
-        const { overrideLinesPrices } = await apiCall()('mutation')({
-          overrideLinesPrices: [
-            {
-              input: {
-                orderID: order.id,
-                linesToOverride: [
-                  {
-                    lineID: lineID,
-                    value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-                    netto: !!isNettoPrice,
-                  },
-                ],
-              },
-            },
-            true,
-          ],
-        });
-
-        if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
-        addLinePriceChangeInput({
-          activeAdministrator: activeAdministrator?.emailAddress ?? 'Nieznany administrator',
-          newLine: {
-            lineID: lineID,
-            value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-            netto: !!isNettoPrice,
-          },
-        });
-        const { overrideLinesPrices: secondOverrideLinesPrices } = await apiCall()('mutation')({
-          overrideLinesPrices: [
-            {
-              input: {
-                orderID: order.id,
-                linesToOverride: [
-                  {
-                    lineID: lineID,
-                    value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-                    netto: !!isNettoPrice,
-                  },
-                ],
-              },
-            },
-            true,
-          ],
-        });
-        if (!secondOverrideLinesPrices) throw new Error('Failed to override lines prices');
-        await apiCall()('mutation')({
-          setPricesAfterModification: [{ orderID: order.id }, true],
-        });
+        // const { overrideLinesPrices } = await apiCall()('mutation')({
+        //   overrideLinesPrices: [
+        //     {
+        //       input: {
+        //         orderID: order.id,
+        //         linesToOverride: [
+        //           {
+        //             lineID: lineID,
+        //             value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
+        //             netto: !!isNettoPrice,
+        //           },
+        //         ],
+        //       },
+        //     },
+        //     true,
+        //   ],
+        // });
+        // if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
+        // addLinePriceChangeInput({
+        //   activeAdministrator: activeAdministrator?.emailAddress ?? 'Nieznany administrator',
+        //   newLine: {
+        //     lineID: lineID,
+        //     value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
+        //     netto: !!isNettoPrice,
+        //   },
+        // });
+        // const { overrideLinesPrices: secondOverrideLinesPrices } = await apiCall()('mutation')({
+        //   overrideLinesPrices: [
+        //     {
+        //       input: {
+        //         orderID: order.id,
+        //         linesToOverride: [
+        //           {
+        //             lineID: lineID,
+        //             value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
+        //             netto: !!isNettoPrice,
+        //           },
+        //         ],
+        //       },
+        //     },
+        //     true,
+        //   ],
+        // });
+        // if (!secondOverrideLinesPrices) throw new Error('Failed to override lines prices');
+        // await apiCall()('mutation')({
+        //   setPricesAfterModification: [{ orderID: order.id }, true],
+        // });
       }
       fetchOrder(order.id);
     }
@@ -291,7 +291,7 @@ export const ProductsCard: React.FC = () => {
       const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === lineId);
       const editedLine = {
         ...modifiedOrder.lines[editedLineIdx],
-        customFields: { ...modifiedOrder.lines[editedLineIdx].customFields, attributes: JSON.stringify(attributes) },
+        // customFields: { ...modifiedOrder.lines[editedLineIdx].customFields, attributes: JSON.stringify(attributes) },
       };
 
       setModifiedOrder({
@@ -330,7 +330,7 @@ export const ProductsCard: React.FC = () => {
   if (!order) return null;
 
   const maybeChangedValueWithTax = (line: DraftOrderLineType, withTax: boolean) => {
-    const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l) => l.lineID === line.id);
+    const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l: any) => l.lineID === line.id);
     if (!thisLinePriceChangeInput)
       return priceFormatter(
         (withTax ? line.discountedLinePriceWithTax : line.discountedLinePrice) / line.quantity,
@@ -352,7 +352,7 @@ export const ProductsCard: React.FC = () => {
     }
   };
   const mabeyChangedOverallLinePrice = (line: DraftOrderLineType) => {
-    const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l) => l.lineID === line.id);
+    const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l: any) => l.lineID === line.id);
     if (!thisLinePriceChangeInput)
       return priceFormatter(line.discountedLinePriceWithTax, line.productVariant.currencyCode);
 
@@ -428,7 +428,7 @@ export const ProductsCard: React.FC = () => {
                     </TableCell>
                     <TableCell className="min-w-[200px]">{line.productVariant.sku}</TableCell>
                     <TableCell>
-                      {line.customFields &&
+                      {/* {line.customFields &&
                       (line.customFields.attributes ||
                         line.customFields.discountBy ||
                         line.customFields.selectedImage) ? (
@@ -462,7 +462,7 @@ export const ProductsCard: React.FC = () => {
                         </HoverCard>
                       ) : (
                         <div>-</div>
-                      )}
+                      )} */}
                     </TableCell>
                     <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, false)}</TableCell>
                     <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, true)}</TableCell>
@@ -592,7 +592,7 @@ export const ProductsCard: React.FC = () => {
                       onVariantAdd={handleNewVariantAdd}
                       productId={variantToAdd.product.id}
                       value={customFields?.attributes || ''}
-                      setValue={(data) => setCustomFields((p) => ({ ...p, attributes: data }))} // data źle sformatowana
+                      setValue={(data) => setCustomFields((p: any) => ({ ...p, attributes: data }))} // data źle sformatowana
                     />
                   </div>
                 </div>

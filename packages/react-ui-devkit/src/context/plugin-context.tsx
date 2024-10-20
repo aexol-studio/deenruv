@@ -21,6 +21,7 @@ const PluginStoreContext = createContext<{
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
     getComponents: (position: string) => React.ComponentType<{}>[];
+    getInputComponents: (id: string) => React.ComponentType<{}>[];
     navMenuData: {
         groups: PluginNavigationGroup[];
         links: PluginNavigationLink[];
@@ -35,6 +36,7 @@ const PluginStoreContext = createContext<{
     openDropdown: false,
     setOpenDropdown: () => undefined,
     getComponents: () => [],
+    getInputComponents: () => [],
     navMenuData: {
         groups: [],
         links: [],
@@ -44,15 +46,19 @@ const PluginStoreContext = createContext<{
 
 export const PluginProvider: FC<
     PropsWithChildren<{
-        store: PluginStore;
-        context: { channel: Channel; language: string; translationsLanguage: string };
+        plugins: PluginStore;
+        context: { channel?: Channel; language: string; translationsLanguage: string };
     }>
-> = ({ children, store, context }) => {
+> = ({ children, plugins, context }) => {
     const [viewMarkers, setViewMarkers] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(false);
 
     const getComponents = (position: string) => {
-        return store.getComponents(position) || [];
+        return plugins.getComponents(position) || [];
+    };
+
+    const getInputComponents = (position: string) => {
+        return plugins.getInputComponents(position) || [];
     };
 
     useEffect(() => {
@@ -76,11 +82,12 @@ export const PluginProvider: FC<
                 openDropdown,
                 setOpenDropdown,
                 getComponents,
-                navMenuData: store.navMenuData,
-                widgets: store.widgets,
+                getInputComponents,
+                navMenuData: plugins.navMenuData,
+                widgets: plugins.widgets,
             }}
         >
-            <WidgetsStoreProvider widgets={store.widgets}>{children}</WidgetsStoreProvider>
+            <WidgetsStoreProvider widgets={plugins.widgets}>{children}</WidgetsStoreProvider>
         </PluginStoreContext.Provider>
     );
 };

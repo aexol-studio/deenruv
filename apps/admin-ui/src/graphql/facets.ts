@@ -4,16 +4,16 @@ import { Selector } from '@/zeus';
 const FacetValueSelector = Selector('FacetValue')({
   name: true,
   code: true,
-  customFields: {
-    hexColor: true,
-    image: {
-      source: true,
-      id: true,
-      preview: true,
-    },
-    isNew: true,
-    isHidden: true,
-  },
+  // customFields: {
+  //   hexColor: true,
+  //   image: {
+  //     source: true,
+  //     id: true,
+  //     preview: true,
+  //   },
+  //   isNew: true,
+  //   isHidden: true,
+  // },
   createdAt: true,
   updatedAt: true,
   id: true,
@@ -23,13 +23,13 @@ const FacetValueOptionsSelector = Selector('FacetValue')({
   id: true,
   name: true,
   code: true,
-  customFields: {
-    hexColor: true,
-    image: {
-      preview: true,
-    },
-    isNew: true,
-  },
+  // customFields: {
+  //   hexColor: true,
+  //   image: {
+  //     preview: true,
+  //   },
+  //   isNew: true,
+  // },
 });
 
 export const FacetListSelector = Selector('Facet')({
@@ -37,10 +37,10 @@ export const FacetListSelector = Selector('Facet')({
   createdAt: true,
   updatedAt: true,
   code: true,
-  customFields: {
-    usedForColors: true,
-    colorsCollection: true,
-  },
+  // customFields: {
+  //   usedForColors: true,
+  //   colorsCollection: true,
+  // },
   isPrivate: true,
   name: true,
   values: {
@@ -53,11 +53,11 @@ export const FacetDetailsSelector = Selector('Facet')({
   createdAt: true,
   updatedAt: true,
   code: true,
-  customFields: {
-    usedForColors: true,
-    colorsCollection: true,
-    usedForProductCreations: true,
-  },
+  // customFields: {
+  //   usedForColors: true,
+  //   colorsCollection: true,
+  //   usedForProductCreations: true,
+  // },
   isPrivate: true,
   languageCode: true,
   name: true,
@@ -72,10 +72,10 @@ export const FacetListOptionsSelector = Selector('FacetList')({
     id: true,
     code: true,
     name: true,
-    customFields: {
-      colorsCollection: true,
-      usedForProductCreations: true,
-    },
+    // customFields: {
+    //   colorsCollection: true,
+    //   usedForProductCreations: true,
+    // },
     values: FacetValueOptionsSelector,
   },
 });

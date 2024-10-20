@@ -10,7 +10,7 @@ import {
 import { paymentSelector } from '@/graphql/orders';
 
 import { giveModificationInfo } from '@/utils/objectCompare';
-import { HistoryEntryType, ModelTypes, ResolverInputTypes, SortOrder } from '@/zeus';
+import { HistoryEntryType, ResolverInputTypes, SortOrder } from '@/zeus';
 import { toast } from 'sonner';
 import { create } from 'zustand';
 
@@ -30,7 +30,8 @@ export interface ModifyOrderChange {
   };
 }
 type LinePriceInputWithAdministrator = {
-  linesToOverride: ModelTypes['OverrideLinesPricesInput']['linesToOverride'];
+  linesToOverride: any;
+  // linesToOverride: ModelTypes['OverrideLinesPricesInput']['linesToOverride'];
   activeAdministrator?: string;
 };
 export interface ModifyOrderChanges {
@@ -75,10 +76,10 @@ interface Actions {
   getObjectsChanges: (object1?: UnknownObject, object2?: UnknownObject) => ModifyOrderChanges;
   addPaymentToOrder: (input: ResolverInputTypes['ManualPaymentInput']) => void;
   settlePayment: (input: { id: string }) => void;
-  addLinePriceChangeInput: (data: {
-    newLine: ModelTypes['OverrideLinesPricesInput']['linesToOverride'][number];
-    activeAdministrator?: string;
-  }) => void;
+  // addLinePriceChangeInput: (data: {
+  //   newLine: ModelTypes['OverrideLinesPricesInput']['linesToOverride'][number];
+  //   activeAdministrator?: string;
+  // }) => void;
   deleteLinePriceChangeInput: (lineID: string) => void;
   resetLinePriceChangeInput: () => void;
 }
@@ -128,24 +129,24 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   resetLinePriceChangeInput: () => {
     set({ linePriceChangeInput: undefined });
   },
-  addLinePriceChangeInput: ({ newLine, activeAdministrator }) => {
-    set((state) => ({
-      linePriceChangeInput: {
-        activeAdministrator,
-        linesToOverride: [
-          ...(state.linePriceChangeInput?.linesToOverride.filter((line) => line.lineID !== newLine.lineID) || []),
-          newLine,
-        ],
-      },
-    }));
-  },
+  // addLinePriceChangeInput: ({ newLine, activeAdministrator }) => {
+  //   set((state) => ({
+  //     linePriceChangeInput: {
+  //       activeAdministrator,
+  //       linesToOverride: [
+  //         ...(state.linePriceChangeInput?.linesToOverride.filter((line) => line.lineID !== newLine.lineID) || []),
+  //         newLine,
+  //       ],
+  //     },
+  //   }));
+  // },
   deleteLinePriceChangeInput: (lineID) => {
-    set((state) => ({
-      linePriceChangeInput: {
-        ...state.linePriceChangeInput,
-        linesToOverride: (state.linePriceChangeInput?.linesToOverride ?? []).filter((l) => l.lineID !== lineID),
-      },
-    }));
+    // set((state) => ({
+    //   linePriceChangeInput: {
+    //     ...state.linePriceChangeInput,
+    //     // linesToOverride: (state.linePriceChangeInput?.linesToOverride ?? []).filter((l) => l.lineID !== lineID),
+    //   },
+    // }));
   },
   setOrder: (order) => {
     const mode = !order
@@ -198,7 +199,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       modifiedOrder,
       modifyOrderInput,
       setModifyOrderInput,
-      linePriceChangeInput,
+      // linePriceChangeInput,
       resetLinePriceChangeInput,
       orderHistory,
     } = get();
@@ -211,16 +212,16 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
 
     if (!latestOrderTransition) throw new Error('No state transition history entry found');
 
-    const orderState = (latestOrderTransition.data.from as ORDER_STATE) || modifiedOrder?.nextStates?.[0];
+    // const orderState = (latestOrderTransition.data.from as ORDER_STATE) || modifiedOrder?.nextStates?.[0];
     try {
-      const modifyOrderTotalPrice = linePriceChangeInput?.linesToOverride.reduce((acc, el) => {
-        const line = modifiedOrder?.lines.find((l) => l.id === el.lineID);
+      // const modifyOrderTotalPrice = linePriceChangeInput?.linessToOverride.reduce((acc, el) => {
+      //   const line = modifiedOrder?.lines.find((l) => l.id === el.lineID);
 
-        if (!line) return acc;
-        acc += line.quantity * (el.netto ? el.value * (1 + line.taxRate) : el.value);
-        return acc;
-      }, 0);
-      const orderTotalPrice = order?.subTotalWithTax;
+      //   if (!line) return acc;
+      //   acc += line.quantity * (el.netto ? el.value * (1 + line.taxRate) : el.value);
+      //   return acc;
+      // }, 0);
+      // const orderTotalPrice = order?.subTotalWithTax;
 
       const { modifyOrder } = await apiCall()('mutation')({
         modifyOrder: [
@@ -233,10 +234,10 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
                 .map((ol) => ({
                   orderLineId: ol.id,
                   quantity: ol.quantity,
-                  customFields: {
-                    attributes: ol.customFields?.attributes,
-                    discountBy: ol.customFields?.discountBy,
-                  },
+                  // customFields: {
+                  //   attributes: ol.customFields?.attributes,
+                  //   discountBy: ol.customFields?.discountBy,
+                  // },
                 })),
               updateBillingAddress: modifiedOrder?.billingAddress,
               updateShippingAddress: modifiedOrder?.shippingAddress,
@@ -245,10 +246,10 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
                 .map((l) => ({
                   productVariantId: l.productVariant.id,
                   quantity: l.quantity,
-                  customFields: {
-                    attributes: l.customFields?.attributes,
-                    discountBy: l.customFields?.discountBy,
-                  },
+                  // customFields: {
+                  //   attributes: l.customFields?.attributes,
+                  //   discountBy: l.customFields?.discountBy,
+                  // },
                 })),
               shippingMethodIds: modifiedOrder?.shippingLines.map((el) => el.shippingMethod?.id),
               ...modifyOrderInput,
@@ -260,169 +261,169 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
 
       if (modifyOrder.__typename !== 'Order') throw new Error(modifyOrder.message);
       // WE ARE NOT FOR SURE IF IT IS WORKING 100% CORRECTLY, THERE COULD BE SOME BUGS dont judge
-      const surcharges = modifyOrder.lines.reduce(
-        (acc, line) => {
-          const activeAdministrator = linePriceChangeInput?.activeAdministrator;
-          const orginalLine = order?.lines.find((l) => l.id === line.id);
-          const linePriceInput = linePriceChangeInput?.linesToOverride.find(
-            (lineInput) => lineInput.lineID === line.id,
-          );
+      // const surcharges = modifyOrder.lines.reduce(
+      //   (acc, line) => {
+      //     const activeAdministrator = linePriceChangeInput?.activeAdministrator;
+      //     const orginalLine = order?.lines.find((l) => l.id === line.id);
+      //     const linePriceInput = linePriceChangeInput?.linesToOverride.find(
+      //       (lineInput) => lineInput.lineID === line.id,
+      //     );
 
-          const addedSurchargesValue = modifyOrder?.surcharges
-            ?.filter((s) => s.sku === line.id)
-            .reduce((acc, s) => acc + s.priceWithTax, 0);
-          const quantityDelta =
-            line.quantity - (orginalLine?.quantity || 0) > 0 ? line.quantity - (orginalLine?.quantity || 0) : 0;
+      //     const addedSurchargesValue = modifyOrder?.surcharges
+      //       ?.filter((s) => s.sku === line.id)
+      //       .reduce((acc, s) => acc + s.priceWithTax, 0);
+      //     const quantityDelta =
+      //       line.quantity - (orginalLine?.quantity || 0) > 0 ? line.quantity - (orginalLine?.quantity || 0) : 0;
 
-          if (linePriceInput && orginalLine) {
-            const priceDelta =
-              line.quantity *
-                (linePriceInput?.netto ? linePriceInput.value * (1 + line.taxRate) : linePriceInput.value) -
-              (line.customFields?.modifiedListPrice
-                ? line.customFields?.modifiedListPrice * orginalLine.quantity
-                : line.linePriceWithTax) -
-              quantityDelta * orginalLine.productVariant.priceWithTax;
+      //     if (linePriceInput && orginalLine) {
+      //       const priceDelta =
+      //         line.quantity *
+      //           (linePriceInput?.netto ? linePriceInput.value * (1 + line.taxRate) : linePriceInput.value) -
+      //         (line.customFields?.modifiedListPrice
+      //           ? line.customFields?.modifiedListPrice * orginalLine.quantity
+      //           : line.linePriceWithTax) -
+      //         quantityDelta * orginalLine.productVariant.priceWithTax;
 
-            if (priceDelta > 0) {
-              acc.push({
-                price: priceDelta,
-                sku: line.id,
-                // for now we assume that price includes tax
-                priceIncludesTax: true,
-                description: `[ MODYFIKACJA CENY ]
-                SKU: ${line.productVariant.sku}
-                Data: ${new Date().toISOString()}
-                Zmiana ceny: ${(priceDelta / 100).toFixed(2)}
-                Zmieniono przez: ${activeAdministrator}`,
-              });
-            }
-          } else if (orginalLine && orginalLine.quantity !== line.quantity) {
-            const priceDelta =
-              (line.customFields?.modifiedListPrice
-                ? line.customFields?.modifiedListPrice * line.quantity
-                : orginalLine.linePriceWithTax) -
-              addedSurchargesValue -
-              line.quantity * orginalLine.productVariant.priceWithTax;
+      //       if (priceDelta > 0) {
+      //         acc.push({
+      //           price: priceDelta,
+      //           sku: line.id,
+      //           // for now we assume that price includes tax
+      //           priceIncludesTax: true,
+      //           description: `[ MODYFIKACJA CENY ]
+      //           SKU: ${line.productVariant.sku}
+      //           Data: ${new Date().toISOString()}
+      //           Zmiana ceny: ${(priceDelta / 100).toFixed(2)}
+      //           Zmieniono przez: ${activeAdministrator}`,
+      //         });
+      //       }
+      //     } else if (orginalLine && orginalLine.quantity !== line.quantity) {
+      //       const priceDelta =
+      //         (line.customFields?.modifiedListPrice
+      //           ? line.customFields?.modifiedListPrice * line.quantity
+      //           : orginalLine.linePriceWithTax) -
+      //         addedSurchargesValue -
+      //         line.quantity * orginalLine.productVariant.priceWithTax;
 
-            if (priceDelta > 0) {
-              acc.push({
-                price: priceDelta,
-                sku: line.id,
-                // for now we assume that price includes tax
-                priceIncludesTax: true,
-                description: `[ MODYFIKACJA CENY ]
-              SKU: ${line.productVariant.sku}
-              Data: ${new Date().toISOString()}
-              Zmiana ceny: ${(priceDelta / 100).toFixed(2)}
-              Zmieniono przez: ${activeAdministrator}`,
-              });
-            }
-          }
-          return acc;
-        },
-        [] as ModelTypes['SurchargeInput'][],
-      );
+      //       if (priceDelta > 0) {
+      //         acc.push({
+      //           price: priceDelta,
+      //           sku: line.id,
+      //           // for now we assume that price includes tax
+      //           priceIncludesTax: true,
+      //           description: `[ MODYFIKACJA CENY ]
+      //         SKU: ${line.productVariant.sku}
+      //         Data: ${new Date().toISOString()}
+      //         Zmiana ceny: ${(priceDelta / 100).toFixed(2)}
+      //         Zmieniono przez: ${activeAdministrator}`,
+      //         });
+      //       }
+      //     }
+      //     return acc;
+      //   },
+      //   [] as ModelTypes['SurchargeInput'][],
+      // );
 
-      if (surcharges?.length) {
-        await apiCall()('mutation')({
-          modifyOrder: [{ input: { dryRun: false, orderId: order.id, surcharges } }, { __typename: true }],
-        });
-      }
+      // if (surcharges?.length) {
+      //   await apiCall()('mutation')({
+      //     modifyOrder: [{ input: { dryRun: false, orderId: order.id, surcharges } }, { __typename: true }],
+      //   });
+      // }
 
-      if (linePriceChangeInput?.linesToOverride.length) {
-        const { overrideLinesPrices } = await apiCall()('mutation')({
-          overrideLinesPrices: [
-            {
-              input: {
-                orderID: order.id,
-                linesToOverride: linePriceChangeInput.linesToOverride,
-              },
-            },
-            true,
-          ],
-        });
-        if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
-      }
-      const linePriceModification = await apiCall()('mutation')({
-        setPricesAfterModification: [{ orderID: order.id }, true],
-      });
-      if (!linePriceModification.setPricesAfterModification) throw new Error('Failed to set prices after modification');
+      // if (linePriceChangeInput?.linesToOverride.length) {
+      //   const { overrideLinesPrices } = await apiCall()('mutation')({
+      //     overrideLinesPrices: [
+      //       {
+      //         input: {
+      //           orderID: order.id,
+      //           linesToOverride: linePriceChangeInput.linesToOverride,
+      //         },
+      //       },
+      //       true,
+      //     ],
+      //   });
+      //   if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
+      // }
+      // const linePriceModification = await apiCall()('mutation')({
+      //   setPricesAfterModification: [{ orderID: order.id }, true],
+      // });
+      // if (!linePriceModification.setPricesAfterModification) throw new Error('Failed to set prices after modification');
 
-      if (orderTotalPrice !== modifyOrderTotalPrice) {
-        const { transitionOrderToState } = await apiCall()('mutation')({
-          transitionOrderToState: [
-            { id: order.id, state: ORDER_STATE.PAYMENT_SETTLED },
-            {
-              __typename: true,
-              '...on Order': draftOrderSelector,
-              '...on OrderStateTransitionError': {
-                errorCode: true,
-                message: true,
-                fromState: true,
-                toState: true,
-                transitionError: true,
-              },
-            },
-          ],
-        });
-        if (transitionOrderToState?.__typename !== 'Order') {
-          const { transitionOrderToState } = await apiCall()('mutation')({
-            transitionOrderToState: [
-              { id: order.id, state: ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT },
-              {
-                __typename: true,
-                '...on Order': draftOrderSelector,
-                '...on OrderStateTransitionError': {
-                  errorCode: true,
-                  message: true,
-                  fromState: true,
-                  toState: true,
-                  transitionError: true,
-                },
-              },
-            ],
-          });
+      // if (orderTotalPrice !== modifyOrderTotalPrice) {
+      //   const { transitionOrderToState } = await apiCall()('mutation')({
+      //     transitionOrderToState: [
+      //       { id: order.id, state: ORDER_STATE.PAYMENT_SETTLED },
+      //       {
+      //         __typename: true,
+      //         '...on Order': draftOrderSelector,
+      //         '...on OrderStateTransitionError': {
+      //           errorCode: true,
+      //           message: true,
+      //           fromState: true,
+      //           toState: true,
+      //           transitionError: true,
+      //         },
+      //       },
+      //     ],
+      //   });
+      //   if (transitionOrderToState?.__typename !== 'Order') {
+      //     const { transitionOrderToState } = await apiCall()('mutation')({
+      //       transitionOrderToState: [
+      //         { id: order.id, state: ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT },
+      //         {
+      //           __typename: true,
+      //           '...on Order': draftOrderSelector,
+      //           '...on OrderStateTransitionError': {
+      //             errorCode: true,
+      //             message: true,
+      //             fromState: true,
+      //             toState: true,
+      //             transitionError: true,
+      //           },
+      //         },
+      //       ],
+      //     });
 
-          if (transitionOrderToState?.__typename !== 'Order') {
-            const { transitionOrderToState } = await apiCall()('mutation')({
-              transitionOrderToState: [
-                { id: order.id, state: ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT },
-                {
-                  __typename: true,
-                  '...on Order': draftOrderSelector,
-                  '...on OrderStateTransitionError': {
-                    errorCode: true,
-                    message: true,
-                    fromState: true,
-                    toState: true,
-                    transitionError: true,
-                  },
-                },
-              ],
-            });
+      //     if (transitionOrderToState?.__typename !== 'Order') {
+      //       const { transitionOrderToState } = await apiCall()('mutation')({
+      //         transitionOrderToState: [
+      //           { id: order.id, state: ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT },
+      //           {
+      //             __typename: true,
+      //             '...on Order': draftOrderSelector,
+      //             '...on OrderStateTransitionError': {
+      //               errorCode: true,
+      //               message: true,
+      //               fromState: true,
+      //               toState: true,
+      //               transitionError: true,
+      //             },
+      //           },
+      //         ],
+      //       });
 
-            if (transitionOrderToState?.__typename !== 'Order') {
-              const { transitionOrderToState } = await apiCall()('mutation')({
-                transitionOrderToState: [
-                  { id: order.id, state: orderState },
-                  {
-                    __typename: true,
-                    '...on Order': draftOrderSelector,
-                    '...on OrderStateTransitionError': {
-                      errorCode: true,
-                      message: true,
-                      fromState: true,
-                      toState: true,
-                      transitionError: true,
-                    },
-                  },
-                ],
-              });
-              if (transitionOrderToState?.__typename !== 'Order') throw new Error(transitionOrderToState?.message);
-            }
-          }
-        }
-      }
+      //       if (transitionOrderToState?.__typename !== 'Order') {
+      //         const { transitionOrderToState } = await apiCall()('mutation')({
+      //           transitionOrderToState: [
+      //             { id: order.id, state: orderState },
+      //             {
+      //               __typename: true,
+      //               '...on Order': draftOrderSelector,
+      //               '...on OrderStateTransitionError': {
+      //                 errorCode: true,
+      //                 message: true,
+      //                 fromState: true,
+      //                 toState: true,
+      //                 transitionError: true,
+      //               },
+      //             },
+      //           ],
+      //         });
+      //         if (transitionOrderToState?.__typename !== 'Order') throw new Error(transitionOrderToState?.message);
+      //       }
+      //     }
+      //   }
+      // }
 
       const { order: modfiedOrderWithOverwrittenPrices } = await apiCall()('query')({
         order: [{ id: order.id }, draftOrderSelector],
@@ -476,23 +477,23 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   },
 
   addPaymentToOrder: async (input) => {
-    const { setOrder, fetchOrderHistory } = get();
-    const { customAddManualPaymentToOrder } = await apiCall()('mutation')({
-      customAddManualPaymentToOrder: [
-        { input },
-        {
-          __typename: true,
-          '...on Order': draftOrderSelector,
-          '...on ManualPaymentStateError': { message: true, errorCode: true },
-        },
-      ],
-    });
-    if (customAddManualPaymentToOrder.__typename !== 'Order') {
-      toast.error(`${customAddManualPaymentToOrder.message}`, { position: 'top-center' });
-      return;
-    }
+    const { fetchOrderHistory } = get();
+    // const { customAddManualPaymentToOrder } = await apiCall()('mutation')({
+    //   customAddManualPaymentToOrder: [
+    //     { input },
+    //     {
+    //       __typename: true,
+    //       '...on Order': draftOrderSelector,
+    //       '...on ManualPaymentStateError': { message: true, errorCode: true },
+    //     },
+    //   ],
+    // });
+    // if (customAddManualPaymentToOrder.__typename !== 'Order') {
+    //   toast.error(`${customAddManualPaymentToOrder.message}`, { position: 'top-center' });
+    //   return;
+    // }
 
-    setOrder(customAddManualPaymentToOrder);
+    // setOrder(customAddManualPaymentToOrder);
     fetchOrderHistory();
   },
   settlePayment: async (input) => {

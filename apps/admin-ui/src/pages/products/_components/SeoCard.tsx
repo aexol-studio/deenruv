@@ -1,4 +1,4 @@
-import { AssetsModalChangeType, AssetsModalInput, Input, Label, Stack } from '@/components';
+import { AssetsModalChangeType, AssetsModalInput, Label, Stack } from '@/components';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
@@ -31,15 +31,7 @@ export const SeoCard: React.FC<SeoCardProps> = ({
   const [twitterImage, setTwitterImage] = useState<AssetType>();
 
   const getAsset = useCallback(async (id: string) => {
-    const response = await apiCall()('query')({
-      asset: [
-        {
-          id: id,
-        },
-        assetsSelector,
-      ],
-    });
-
+    const response = await apiCall()('query')({ asset: [{ id }, assetsSelector] });
     return response.asset;
   }, []);
 

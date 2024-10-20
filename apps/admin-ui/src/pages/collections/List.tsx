@@ -233,7 +233,7 @@ export const CollectionsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.collection.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.collections.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center">
             {row.original.id}
             <ArrowRight className="pl-1" size={16} />
@@ -254,7 +254,7 @@ export const CollectionsListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.collection.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.collections.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -414,7 +414,7 @@ export const CollectionsListPage = () => {
               {t('table.delete')}
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to={Routes.collection.to(row.original.id)}>{t('editCollection')}</Link>
+              <Link to={Routes.collections.to(row.original.id)}>{t('editCollection')}</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

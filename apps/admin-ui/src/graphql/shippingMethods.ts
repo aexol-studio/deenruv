@@ -5,9 +5,9 @@ export const ShippingMethodListSelector = Selector('ShippingMethod')({
   id: true,
   name: true,
   code: true,
-  customFields: {
-    modalTitle: true,
-  },
+  // customFields: {
+  //   modalTitle: true,
+  // },
   createdAt: true,
   updatedAt: true,
 });
@@ -26,11 +26,11 @@ export const ShippingMethodDetailsSelector = Selector('ShippingMethod')({
       value: true,
     },
   },
-  customFields: {
-    modalTitle: true,
-    modalAdditionalDescription: true,
-    modalDescription: true,
-  },
+  // customFields: {
+  //   modalTitle: true,
+  //   modalAdditionalDescription: true,
+  //   modalDescription: true,
+  // },
   calculator: {
     args: {
       name: true,
@@ -45,11 +45,11 @@ export const ShippingMethodDetailsSelector = Selector('ShippingMethod')({
     name: true,
     description: true,
     languageCode: true,
-    customFields: {
-      modalTitle: true,
-      modalDescription: true,
-      modalAdditionalDescription: true,
-    },
+    // customFields: {
+    //   modalTitle: true,
+    //   modalDescription: true,
+    //   modalAdditionalDescription: true,
+    // },
   },
 });
 

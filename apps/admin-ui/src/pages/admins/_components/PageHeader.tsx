@@ -23,7 +23,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ admin, editMode, buttonD
     <>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => navigate(Routes.admins)}>
+          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => navigate(Routes.admins.list)}>
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">

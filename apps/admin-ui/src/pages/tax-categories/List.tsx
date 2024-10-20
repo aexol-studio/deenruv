@@ -123,7 +123,7 @@ export const TaxCategoriesListPage = () => {
         </SortButton>
       ),
       cell: ({ row }) => (
-        <Link to={Routes.taxCategory.to(row.original.id)} className="text-primary-600">
+        <Link to={Routes.taxCategories.to(row.original.id)} className="text-primary-600">
           <Badge variant="outline" className="flex w-full items-center justify-center py-2">
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
@@ -162,7 +162,7 @@ export const TaxCategoriesListPage = () => {
       cell: ({ row }) => (row.original.isDefault ? <Check /> : <X />),
     },
     ActionsColumn({
-      viewRoute: Routes.taxCategory.to,
+      viewRoute: Routes.taxCategories.to,
       onDelete: (row) => {
         setDeleteDialogOpened(true);
         setTaxCategoriesToDelete([row.original]);
@@ -240,7 +240,7 @@ export const TaxCategoriesListPage = () => {
           <ListButtons
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
             createLabel={t('create')}
-            createRoute={Routes.taxCategoryNew}
+            createRoute={Routes.taxCategories.new}
             handleClick={() => {
               setTaxCategoriesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);

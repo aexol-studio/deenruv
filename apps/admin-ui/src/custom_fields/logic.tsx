@@ -12,9 +12,13 @@ import {
   // DefaultListLineWrapper,
 } from './DefaultInputs';
 
-export async function generateCustomFields({ customFields }: { customFields: CustomFieldConfigType[] }) {
-  const { __ADMIN_UI_CONFIG__ } = window;
-  const registeredComponents = __ADMIN_UI_CONFIG__.components;
+export async function generateCustomFields({
+  customFields,
+  getInputComponents,
+}: {
+  customFields: CustomFieldConfigType[];
+  getInputComponents: (id: string) => React.ComponentType<{}>[];
+}) {
   const fields: {
     name: string;
     component: React.ReactElement;
@@ -22,17 +26,11 @@ export async function generateCustomFields({ customFields }: { customFields: Cus
   }[] = [];
   for (const field of customFields) {
     const ui = field.ui as Record<string, unknown>;
-    const registered = ui && 'component' in ui && registeredComponents.find((c) => c.name === ui.component);
+    if (ui && 'component' in ui) {
+      // const extraComponent = getInputComponents(ui.component);
+    }
     const tab = ((ui && 'tab' in ui && ui?.tab) || 'General') as string;
-    if (registered && registered.componentPath) {
-      const Component = await import(registered.componentPath).then((m) => m.CustomComponent).catch(() => null);
-      if (!Component) {
-        console.log('Error loading component', registered.componentPath);
-      } else {
-        const component = <Component />;
-        fields.push({ ...field, component, tab });
-      }
-    } else if (field.list) {
+    if (field.list) {
       //TODO: Implement list fields
       // fields.push({ ...field, component: <DefaultListWrapper {...generateSingleFields({ field })} />, tab });
       // fields.push({ ...field, component: <DefaultListLineWrapper {...generateSingleFields({ field })} />, tab });
