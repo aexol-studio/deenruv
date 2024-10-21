@@ -21,9 +21,9 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { Button } from '@/components';
-import { CustomFieldsComponent } from '@/custom_fields';
 import { useServer } from '@/state';
 import { CustomFieldConfigType } from '@/graphql/base';
+import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 
 function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
   const isObject = (obj: any) => obj && typeof obj === 'object';
@@ -349,8 +349,8 @@ export const ProductsDetailPage = () => {
                   if (translatable) setTranslationCustomField(field.name, data as string);
                   else setCustomField(field.name, data as string);
                 }}
-                customFields={productCustomFields}
-                language={currentTranslationValue?.languageCode || LanguageCode.pl}
+                customFields={productCustomFields as any}
+                language={currentTranslationValue?.languageCode as any}
               />
               {/* <Stack className="grid grid-cols-3 gap-4">
                 <TextCard

@@ -47,8 +47,9 @@ import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLine
 import { OrderLineActionModal } from './OrderLineActionModal';
 import { cn } from '@/lib/utils';
 import { useServer } from '@/state';
-import { CustomFieldsComponent } from '@/custom_fields';
+// import { CustomFieldsComponent } from '@/custom_fields';
 import { CustomComponent } from './CustomComponent';
+import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 // import { useServer } from '@/state';
 
 type AddItemCustomFieldsType = any;
@@ -73,7 +74,7 @@ export const ProductsCard: React.FC = () => {
     [mode, order, modifiedOrder],
   );
   const [open, setOpen] = useState(false);
-  const [variantToAdd, setVariantToAdd] = useState<ProductVariantType | undefined>(undefined);
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariantType | undefined>(undefined);
   const [customFields, setCustomFields] = useState<ProductVariantCustomFields>({});
   const [quantity, setQuantity] = useState<number>(1);
   const [orderLineId, setOrderLineId] = useState<string | undefined>();
@@ -313,7 +314,7 @@ export const ProductsCard: React.FC = () => {
   }) => {
     setOpen(true);
     setOrderLineId(input.orderLineId ? input.orderLineId : undefined);
-    setVariantToAdd(input.variant);
+    setSelectedVariant(input.variant);
     setCustomFields({
       attributes: input.customFields?.attributes,
       discountBy: input.customFields?.discountBy,
@@ -323,7 +324,7 @@ export const ProductsCard: React.FC = () => {
 
   const closeAddVariantDialog = () => {
     setOpen(false);
-    setVariantToAdd(undefined);
+    setSelectedVariant(undefined);
     setOrderLineId(undefined);
   };
   const onOrderLineActionModalOpenChange = (bool: boolean) => {
@@ -373,14 +374,15 @@ export const ProductsCard: React.FC = () => {
         discountBy: customFields?.discountBy ? Math.floor(customFields.discountBy) : undefined,
       });
       return;
-    } else if (variantToAdd) {
-      await addToOrder(variantToAdd, quantity, {
+    } else if (selectedVariant) {
+      await addToOrder(selectedVariant, quantity, {
         attributes,
         discountBy: customFields?.discountBy ? Math.floor(customFields.discountBy) : undefined,
       });
     }
     closeAddVariantDialog();
   };
+
   return (
     <Card>
       <CardHeader>
@@ -586,21 +588,21 @@ export const ProductsCard: React.FC = () => {
           />
           <Dialog open={open} onOpenChange={(e) => (!e ? closeAddVariantDialog() : setOpen(true))}>
             <DialogContent className="max-h-[90vh] min-h-[60vh] max-w-[50vw]">
-              {variantToAdd ? (
+              {selectedVariant ? (
                 <div className="flex h-full w-full flex-col justify-between">
                   <div className="flex h-full flex-col gap-8">
                     <div className="flex w-full flex-col items-center gap-2">
                       <div className="flex w-full flex-col">
-                        <LineItem noBorder noHover variant={{ ...variantToAdd, quantity: 1 }} />
+                        <LineItem noBorder noHover variant={{ ...selectedVariant, quantity: 1 }} />
                         <CustomFieldsComponent
-                          data={{}}
+                          data={{ selectedVariant }}
                           value={undefined}
-                          setValue={() => {}}
-                          customFields={orderLineCustomFields}
+                          setValue={(field, data) => {}}
+                          customFields={orderLineCustomFields as any}
                         />
                         <CustomComponent
                           onVariantAdd={handleNewVariantAdd}
-                          productId={variantToAdd.product.id}
+                          productId={selectedVariant.product.id}
                           value={customFields?.attributes || ''}
                           setValue={(data) => setCustomFields((p: any) => ({ ...p, attributes: data }))} // data źle sformatowana
                         />
