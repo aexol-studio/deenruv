@@ -106,16 +106,13 @@ export const ProductsDetailPage = () => {
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
-  const entityCustomFields = useServer((p) => p.serverConfig?.entityCustomFields);
-
-  const productCustomFields = useMemo(
-    () => entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields,
-    [entityCustomFields],
+  const entityCustomFields = useServer(
+    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields || [],
   );
 
   const fetchProduct = useCallback(async () => {
     if (id) {
-      const mergedSelector = mergeSelectors(ProductDetailSelector, 'Product', productCustomFields);
+      const mergedSelector = mergeSelectors(ProductDetailSelector, 'Product', entityCustomFields);
       const response = await apiCall()('query')({ product: [{ id }, mergedSelector] });
 
       if (!response.product) {
@@ -140,7 +137,7 @@ export const ProductsDetailPage = () => {
       setField('featuredAssetId', response.product.featuredAsset?.id);
     } else setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, productCustomFields]);
+  }, [id, entityCustomFields]);
 
   const fetchFacetOptions = useCallback(async () => {
     if (id) {
@@ -348,7 +345,7 @@ export const ProductsDetailPage = () => {
                   if (translatable) setTranslationCustomField(field.name, data as string);
                   else setCustomField(field.name, data as string);
                 }}
-                customFields={productCustomFields || []}
+                customFields={entityCustomFields}
                 language={currentTranslationValue?.languageCode || LanguageCode.pl}
               />
               {/* <Stack className="grid grid-cols-3 gap-4">

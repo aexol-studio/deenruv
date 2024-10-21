@@ -1,5 +1,4 @@
 export * from './AddressCard';
-export * from './CustomComponent';
 export * from './CustomerSelectCard';
 export * from './FulfillmentModal';
 export * from './LineItem';

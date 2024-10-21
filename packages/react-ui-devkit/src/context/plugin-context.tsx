@@ -21,7 +21,7 @@ const PluginStoreContext = createContext<{
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
     getComponents: (position: string) => React.ComponentType<{}>[];
-    getInputComponents: (id: string) => React.ComponentType<{}>[];
+    getInputComponent: (id: string) => React.ComponentType<{}>;
     navMenuData: {
         groups: PluginNavigationGroup[];
         links: PluginNavigationLink[];
@@ -36,7 +36,7 @@ const PluginStoreContext = createContext<{
     openDropdown: false,
     setOpenDropdown: () => undefined,
     getComponents: () => [],
-    getInputComponents: () => [],
+    getInputComponent: () => () => null,
     navMenuData: {
         groups: [],
         links: [],
@@ -57,8 +57,8 @@ export const PluginProvider: FC<
         return plugins.getComponents(position) || [];
     };
 
-    const getInputComponents = (position: string) => {
-        return plugins.getInputComponents(position) || [];
+    const getInputComponent = (id: string) => {
+        return plugins.getInputComponent(id) || (() => null);
     };
 
     useEffect(() => {
@@ -82,7 +82,7 @@ export const PluginProvider: FC<
                 openDropdown,
                 setOpenDropdown,
                 getComponents,
-                getInputComponents,
+                getInputComponent,
                 navMenuData: plugins.navMenuData,
                 widgets: plugins.widgets,
             }}

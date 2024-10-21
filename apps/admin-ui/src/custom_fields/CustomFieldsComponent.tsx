@@ -20,21 +20,24 @@ export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['
   translation?: K;
   data?: T;
 }) {
-  const { getInputComponents } = usePluginStore();
+  const { getInputComponent } = usePluginStore();
   const [rendered, setRendered] = useState<Record<string, { name: string; component: React.ReactElement }[]>>({});
 
   useEffect(() => {
-    generateCustomFields({ customFields, getInputComponents }).then((fields) => {
-      const result = fields.reduce(
-        (acc, field) => {
-          if (!acc[field.tab]) acc[field.tab] = [];
-          acc[field.tab].push(field);
-          return acc;
-        },
-        {} as Record<string, { name: string; component: React.ReactElement }[]>,
-      );
-      setRendered(result);
-    });
+    const result = generateCustomFields({ customFields }).reduce(
+      (acc, field) => {
+        if (field.customComponent) {
+          const Component = getInputComponent(field.customComponent);
+          console.log('field', Component);
+          field.component = React.cloneElement(<Component />, { key: field.name, data });
+        }
+        if (!acc[field.tab]) acc[field.tab] = [];
+        acc[field.tab].push(field);
+        return acc;
+      },
+      {} as Record<string, { name: string; component: React.ReactElement }[]>,
+    );
+    setRendered(result);
   }, []);
 
   return (

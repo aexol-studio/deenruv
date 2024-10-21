@@ -108,10 +108,12 @@ const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56">
-                                <div className="flex justify-between">
-                                    <DropdownMenuLabel>{widget.name}</DropdownMenuLabel>
+                                <div className="flex items-center justify-between">
+                                    <DropdownMenuLabel className="text-xs">{widget.name}</DropdownMenuLabel>
                                     <DropdownMenuLabel>
-                                        {widget.size.width} x {widget.size.height}
+                                        <span className="text-xs text-gray-500 whitespace-nowrap">
+                                            {widget.size.width} x {widget.size.height}
+                                        </span>
                                     </DropdownMenuLabel>
                                 </div>
                                 <DropdownMenuSeparator />
@@ -133,7 +135,7 @@ const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'>
                                 </DropdownMenuRadioGroup>
                                 <DropdownMenuGroup></DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={removeWidget}>
+                                <DropdownMenuItem className="text-red-500" onClick={removeWidget}>
                                     Delete
                                     <DropdownMenuShortcut>
                                         <Trash className="h-4 w-4" />

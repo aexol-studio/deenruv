@@ -12,17 +12,12 @@ import {
   // DefaultListLineWrapper,
 } from './DefaultInputs';
 
-export async function generateCustomFields({
-  customFields,
-  getInputComponents,
-}: {
-  customFields: CustomFieldConfigType[];
-  getInputComponents: (id: string) => React.ComponentType<{}>[];
-}) {
+export function generateCustomFields({ customFields }: { customFields: CustomFieldConfigType[] }) {
   const fields: {
     name: string;
     component: React.ReactElement;
     tab: string;
+    customComponent?: string;
   }[] = [];
   for (const field of customFields) {
     const ui = field.ui as Record<string, unknown>;
@@ -34,7 +29,13 @@ export async function generateCustomFields({
       //TODO: Implement list fields
       // fields.push({ ...field, component: <DefaultListWrapper {...generateSingleFields({ field })} />, tab });
       // fields.push({ ...field, component: <DefaultListLineWrapper {...generateSingleFields({ field })} />, tab });
-    } else fields.push({ ...generateSingleFields({ field }), tab });
+    } else {
+      fields.push({
+        ...generateSingleFields({ field }),
+        tab,
+        customComponent: ui && 'component' in ui ? (ui.component as string) : undefined,
+      });
+    }
   }
   return fields;
 }

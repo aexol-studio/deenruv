@@ -3,6 +3,7 @@ import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
 import { pages } from './pages';
 import { SquareIcon } from './assets';
 import { widgets } from './widgets';
+import { inputs } from './inputs';
 import pl from './locales/pl';
 import en from './locales/en';
 import { translationNS } from './translation-ns';
@@ -12,6 +13,7 @@ export const UIPlugin = createDeenruvUIPlugin({
     name: 'First Plugin',
     pages,
     widgets,
+    inputs,
     translations: {
         ns: translationNS,
         data: { en, pl },

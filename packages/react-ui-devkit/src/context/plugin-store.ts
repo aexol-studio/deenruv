@@ -32,7 +32,6 @@ export class PluginStore {
                 locales.forEach(trans => this.i18next.addResourceBundle(lng, translations.ns, trans));
             }
         });
-
         this.pluginPages = plugins.flatMap(
             el => el.pages?.map(route => ({ ...route, path: getExtensionsPath(route.path) })) || [],
         );
@@ -59,25 +58,11 @@ export class PluginStore {
         return `${timestamp}-${randomString}`;
     }
 
-    getInputComponents(id: string) {
-        const uniqueMappedComponents = new Map<string, React.ComponentType>();
-        this.pluginMap.forEach(plugin => {
-            plugin.inputs?.forEach(({ component, id }) => {
-                const uniqueUUID = [
-                    id,
-                    plugin.name,
-                    this.getUUID(),
-                    component.displayName && `-${component.displayName}`,
-                ]
-                    .filter(Boolean)
-                    .join('-');
-
-                if (id === id) {
-                    uniqueMappedComponents.set(uniqueUUID, component);
-                }
-            });
-        });
-        return Array.from(uniqueMappedComponents.values());
+    getInputComponent(id: string) {
+        const input = Array.from(this.pluginMap.values())
+            .map(plugin => plugin.inputs?.find(input => input.id === id))
+            .find(Boolean);
+        return input?.component;
     }
 
     getComponents(location: string) {

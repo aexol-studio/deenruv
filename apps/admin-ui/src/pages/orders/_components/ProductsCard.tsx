@@ -41,12 +41,14 @@ import { useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useOrder } from '@/state/order';
-import { CustomComponent } from './CustomComponent';
 import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types';
 import { OrderLineActionModal } from './OrderLineActionModal';
 import { cn } from '@/lib/utils';
+import { useServer } from '@/state';
+import { CustomFieldsComponent } from '@/custom_fields';
+import { CustomComponent } from './CustomComponent';
 // import { useServer } from '@/state';
 
 type AddItemCustomFieldsType = any;
@@ -79,7 +81,9 @@ export const ProductsCard: React.FC = () => {
     { action: OrderLineActions | undefined; line: DraftOrderLineType } | undefined
   >();
   const isLineAddedInModify = (lineId: string) => order?.lines.findIndex((l) => l.id === lineId) === -1;
-
+  const orderLineCustomFields = useServer(
+    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+  );
   const addToOrder = async (
     productVariant: ProductVariantType,
     quantity: number,
@@ -564,11 +568,13 @@ export const ProductsCard: React.FC = () => {
                   </TableRow>
                 ))
               ) : (
-                <TableCell colSpan={8}>
-                  <div className="mt-4 flex items-center justify-center">
-                    <span>{t('create.noItems')}</span>
-                  </div>
-                </TableCell>
+                <TableRow>
+                  <TableCell colSpan={8}>
+                    <div className="mt-4 flex items-center justify-center">
+                      <span>{t('create.noItems')}</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>
@@ -584,16 +590,22 @@ export const ProductsCard: React.FC = () => {
                 <div className="flex h-full w-full flex-col justify-between">
                   <div className="flex h-full flex-col gap-8">
                     <div className="flex w-full flex-col items-center gap-2">
-                      <div className="flex w-full">
+                      <div className="flex w-full flex-col">
                         <LineItem noBorder noHover variant={{ ...variantToAdd, quantity: 1 }} />
+                        <CustomFieldsComponent
+                          data={{}}
+                          value={undefined}
+                          setValue={() => {}}
+                          customFields={orderLineCustomFields}
+                        />
+                        <CustomComponent
+                          onVariantAdd={handleNewVariantAdd}
+                          productId={variantToAdd.product.id}
+                          value={customFields?.attributes || ''}
+                          setValue={(data) => setCustomFields((p: any) => ({ ...p, attributes: data }))} // data źle sformatowana
+                        />
                       </div>
                     </div>
-                    <CustomComponent
-                      onVariantAdd={handleNewVariantAdd}
-                      productId={variantToAdd.product.id}
-                      value={customFields?.attributes || ''}
-                      setValue={(data) => setCustomFields((p: any) => ({ ...p, attributes: data }))} // data źle sformatowana
-                    />
                   </div>
                 </div>
               ) : (
