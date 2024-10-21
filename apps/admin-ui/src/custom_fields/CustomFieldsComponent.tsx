@@ -28,8 +28,7 @@ export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['
       (acc, field) => {
         if (field.customComponent) {
           const Component = getInputComponent(field.customComponent);
-          console.log('field', Component);
-          field.component = React.cloneElement(<Component />, { key: field.name, data });
+          if (Component) field.component = React.cloneElement(<Component />, { key: field.name, data });
         }
         if (!acc[field.tab]) acc[field.tab] = [];
         acc[field.tab].push(field);

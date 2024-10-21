@@ -229,12 +229,12 @@ function getTemplate(name: string, timestamp: number, upSqls: string[], downSqls
 
 export class ${camelCase(name, true)}${timestamp} implements MigrationInterface {
 
-   public async up(queryRunner: QueryRunner): Promise<any> {
+   public async up(queryRunner: QueryRunner): Promise<void> {
 ${upSqls.join(`
 `)}
    }
 
-   public async down(queryRunner: QueryRunner): Promise<any> {
+   public async down(queryRunner: QueryRunner): Promise<void> {
 ${downSqls.join(`
 `)}
    }
