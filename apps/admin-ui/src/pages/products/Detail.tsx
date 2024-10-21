@@ -78,10 +78,11 @@ const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => 
     },
     { translations: { customFields: {} }, customFields: {} } as {
       translations?: { customFields: Record<string, boolean> };
-      customFields: Record<string, boolean>;
+      customFields?: Record<string, boolean>;
     },
   );
-  if (!Object.keys(reduced.translations?.customFields || {})) delete reduced.translations;
+  if (!Object.keys(reduced.translations?.customFields || {}).length) delete reduced.translations;
+  if (!Object.keys(reduced.customFields || {}).length) delete reduced.customFields;
   return reduced;
 };
 
@@ -106,65 +107,68 @@ export const ProductsDetailPage = () => {
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
-  const entityCustomFields = useServer(
-    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields || [],
+  const entityCustomFields = useServer((p) => p.serverConfig?.entityCustomFields);
+
+  const productCustomFields = useMemo(
+    () => entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields || [],
+    [entityCustomFields],
   );
 
   const fetchProduct = useCallback(async () => {
-    if (id) {
-      const mergedSelector = mergeSelectors(ProductDetailSelector, 'Product', entityCustomFields);
-      const response = await apiCall()('query')({ product: [{ id }, mergedSelector] });
+    const mergedSelector = mergeSelectors(ProductDetailSelector, 'Product', productCustomFields);
+    const response = await apiCall()('query')({ product: [{ id }, mergedSelector] });
 
-      if (!response.product) {
-        toast.error(t('toasts.fetchProductErrorToast'));
-        return;
-      }
+    if (!response.product) {
+      toast.error(t('toasts.fetchProductErrorToast'));
+      return;
+    }
 
-      const customFields = 'customFields' in response.product ? response.product.customFields : {};
-      setField('customFields', customFields);
+    const customFields = 'customFields' in response.product ? response.product.customFields : {};
+    setField('customFields', customFields);
 
-      setProduct(response.product);
-      setLoading(false);
-      setField('translations', response.product.translations);
-      setField(
-        'facetValueIds',
-        response.product.facetValues.map((f) => f.id),
-      );
-      setField(
-        'assetIds',
-        response.product.assets.map((a) => a.id),
-      );
-      setField('featuredAssetId', response.product.featuredAsset?.id);
-    } else setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, entityCustomFields]);
+    setProduct(response.product);
+    setLoading(false);
+    setField('translations', response.product.translations);
+    setField(
+      'facetValueIds',
+      response.product.facetValues.map((f) => f.id),
+    );
+    setField(
+      'assetIds',
+      response.product.assets.map((a) => a.id),
+    );
+    setField('featuredAssetId', response.product.featuredAsset?.id);
+  }, [entityCustomFields]);
 
   const fetchFacetOptions = useCallback(async () => {
-    if (id) {
-      const response = await apiCall()('query')({
-        facets: [
-          {
-            options: {
-              sort: {
-                createdAt: SortOrder.ASC,
-                usedForProductCreations: SortOrder.ASC,
-              },
+    const response = await apiCall()('query')({
+      facets: [
+        {
+          options: {
+            sort: {
+              createdAt: SortOrder.ASC,
+              // usedForProductCreations: SortOrder.ASC,
             },
           },
-          FacetListOptionsSelector,
-        ],
-      });
+        },
+        FacetListOptionsSelector,
+      ],
+    });
 
-      setFacetsOptions(response.facets.items);
-    }
-  }, [id]);
+    setFacetsOptions(response.facets.items);
+  }, []);
 
   useEffect(() => {
-    setLoading(true);
-    fetchProduct();
-    fetchFacetOptions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, setLoading, fetchProduct]);
+    if (!id || !entityCustomFields) return;
+
+    try {
+      setLoading(true);
+      fetchProduct();
+      fetchFacetOptions();
+    } finally {
+      setLoading(false);
+    }
+  }, [entityCustomFields]);
 
   const createProduct = useCallback(() => {
     if (!state.translations?.validatedValue) return;
@@ -345,7 +349,7 @@ export const ProductsDetailPage = () => {
                   if (translatable) setTranslationCustomField(field.name, data as string);
                   else setCustomField(field.name, data as string);
                 }}
-                customFields={entityCustomFields}
+                customFields={productCustomFields}
                 language={currentTranslationValue?.languageCode || LanguageCode.pl}
               />
               {/* <Stack className="grid grid-cols-3 gap-4">

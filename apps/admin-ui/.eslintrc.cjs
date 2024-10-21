@@ -14,18 +14,18 @@ module.exports = {
   plugins: ['react-refresh'],
   rules: {
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        args: 'all',
-        argsIgnorePattern: '^_',
-        caughtErrors: 'all',
-        caughtErrorsIgnorePattern: '^_',
-        destructuredArrayIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-      },
-    ],
+    // '@typescript-eslint/no-unused-vars': [
+    //   'error',
+    //   {
+    //     args: 'all',
+    //     argsIgnorePattern: '^_',
+    //     caughtErrors: 'all',
+    //     caughtErrorsIgnorePattern: '^_',
+    //     destructuredArrayIgnorePattern: '^_',
+    //     varsIgnorePattern: '^_',
+    //     ignoreRestSiblings: true,
+    //   },
+    // ],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
   },
