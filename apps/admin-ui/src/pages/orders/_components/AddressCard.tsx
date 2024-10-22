@@ -37,7 +37,7 @@ import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { ResolverInputTypes } from '@/zeus';
+import { ResolverInputTypes } from '@deenruv/admin-types';
 import { useOrder } from '@/state/order';
 
 type DefaultAddress = AddressBaseType & {

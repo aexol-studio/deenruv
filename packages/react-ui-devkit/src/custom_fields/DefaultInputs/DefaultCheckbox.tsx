@@ -1,9 +1,9 @@
-import { Checkbox } from '@/components';
-import { useCustomFields } from '../context';
 import React from 'react';
+import { Checkbox } from '@/components';
+import { useCustomFields } from '@/custom_fields/context';
 
 export const DefaultCheckbox = () => {
-    const { field, value, setValue } = useCustomFields<'BooleanCustomFieldConfig', {}>();
+    const { field, value, setValue } = useCustomFields<'BooleanCustomFieldConfig'>();
     return (
         <div className="flex items-center space-x-2">
             <Checkbox id={field?.name} checked={value as boolean} onCheckedChange={setValue} />

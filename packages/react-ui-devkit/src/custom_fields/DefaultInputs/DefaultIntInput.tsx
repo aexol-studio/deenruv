@@ -1,9 +1,9 @@
 import React from 'react';
-import { useCustomFields } from '../context';
 import { Input } from '@/components';
+import { useCustomFields } from '@/custom_fields/context';
 
 export const DefaultIntInput: React.FC = () => {
-    const { field, value, setValue } = useCustomFields();
+    const { field, value, setValue } = useCustomFields<'IntCustomFieldConfig'>();
     return (
         <div>
             <label

@@ -10,7 +10,7 @@ import { cache } from '@/lists/cache';
 import { Routes } from '@/utils';
 import { PageHeader } from '@/pages/shipping-methods/_components/PageHeader';
 import { ShippingMethodDetailsSelector, ShippingMethodDetailsType } from '@/graphql/shippingMethods';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { Option } from '@/components/ui/multiple-selector';
 import { ModalCard } from '@/pages/shipping-methods/_components/ModalCard';

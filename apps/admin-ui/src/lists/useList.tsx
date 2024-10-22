@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 import { cache } from '@/lists/cache';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/lists/models';
-import { LogicalOperator, ModelTypes, SortOrder } from '@/zeus';
+import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';

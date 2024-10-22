@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ModelTypes } from '@/zeus';
+import { ModelTypes } from '@deenruv/admin-types';
 import { Checkbox, Label, SimpleSelect, Stack } from '@/components';
 import { Option } from '@/components/ui/multiple-selector';
 import { apiCall } from '@/graphql/client';

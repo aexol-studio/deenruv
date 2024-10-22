@@ -1,5 +1,5 @@
 import { FromSelectorWithScalars } from '@/graphql/scalars';
-import { Selector } from '@/zeus';
+import { Selector } from '@deenruv/admin-types';
 
 export const TaxCategoryListSelector = Selector('TaxCategory')({
   id: true,

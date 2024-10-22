@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductDetailSelector, ProductDetailType } from '@/graphql/products';
 import { resetCache } from '@/lists/cache';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { LanguageCode, Selector, SortOrder, ValueTypes } from '@/zeus';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -24,6 +23,7 @@ import { Button } from '@/components';
 import { useServer } from '@/state';
 import { CustomFieldConfigType } from '@/graphql/base';
 import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
+import { LanguageCode, Selector, SortOrder, ValueTypes } from '@deenruv/admin-types';
 
 function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
   const isObject = (obj: any) => obj && typeof obj === 'object';
@@ -349,8 +349,8 @@ export const ProductsDetailPage = () => {
                   if (translatable) setTranslationCustomField(field.name, data as string);
                   else setCustomField(field.name, data as string);
                 }}
-                customFields={productCustomFields as any}
-                language={currentTranslationValue?.languageCode as any}
+                customFields={productCustomFields}
+                language={currentTranslationValue?.languageCode}
               />
               {/* <Stack className="grid grid-cols-3 gap-4">
                 <TextCard
@@ -427,12 +427,8 @@ export const ProductsDetailPage = () => {
               <SettingsCard
                 currentTranslationLng={currentTranslationLng}
                 enabledValue={state.enabled?.value}
-                onEnabledChange={(e) => {
-                  setField('enabled', e);
-                }}
-                onCurrentLanguageChange={(e) => {
-                  setCurrentTranslationLng(e as LanguageCode);
-                }}
+                onEnabledChange={(e) => setField('enabled', e)}
+                onCurrentLanguageChange={setCurrentTranslationLng}
               />
               {/* <DiscountRatingCard
                 discountByValue={state.customFields?.value?.discountBy}

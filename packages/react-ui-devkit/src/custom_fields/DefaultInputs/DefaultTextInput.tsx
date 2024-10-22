@@ -1,9 +1,9 @@
 import React from 'react';
-import { useCustomFields } from '../context';
 import { Input } from '@/components';
+import { useCustomFields } from '@/custom_fields/context';
 
 export function DefaultTextInput() {
-    const { field, value, setValue } = useCustomFields();
+    const { field, value, setValue } = useCustomFields<'TextCustomFieldConfig'>();
     return (
         <div>
             <label

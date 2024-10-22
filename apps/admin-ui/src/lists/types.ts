@@ -1,4 +1,4 @@
-import { ValueTypes } from '@/zeus';
+import { ValueTypes } from '@deenruv/admin-types';
 
 type SortOptions =
   | AdminsSortOptions

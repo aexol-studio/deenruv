@@ -1,7 +1,7 @@
 import { Button, DialogClose, DialogContent, DialogFooter } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { useSettings } from '@/state';
-import { ValueTypes } from '@/zeus';
+import { ValueTypes } from '@deenruv/admin-types';
 import React, { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';

@@ -10,7 +10,7 @@ import { cache } from '@/lists/cache';
 import { Routes } from '@/utils';
 import { PageHeader } from '@/pages/payment-methods/_components/PageHeader';
 import { PaymentMethodDetailsSelector, PaymentMethodDetailsType } from '@/graphql/paymentMethods';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { ModalCard } from '@/pages/payment-methods/_components/ModalCard';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';

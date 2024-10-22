@@ -1,0 +1,26 @@
+{
+    "name": "@deenruv/admin-types",
+    "version": "0.0.1",
+    "homepage": "https://www.deenruv.io/",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "main": "./lib/index.js",
+    "types": "./lib/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
+    },
+    "scripts": {
+        "zeus": "zeus http://localhost:3000/admin-api ./src --n --ts --typedDocumentNode",
+        "build": "tsc --build",
+        "watch": "tsc --watch"
+    },
+    "bugs": {
+        "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
+    },
+    "devDependencies": {
+        "rimraf": "^6.0.1"
+    }
+}

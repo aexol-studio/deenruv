@@ -1,4 +1,4 @@
-import { ModelTypes } from '@/zeus';
+import { ModelTypes } from '@deenruv/admin-types';
 import { type ClassValue, clsx } from 'clsx';
 import { useEffect, useState } from 'react';
 import { SetURLSearchParams, useSearchParams } from 'react-router-dom';

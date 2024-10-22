@@ -1,4 +1,4 @@
-import { Selector } from '@/zeus';
+import { Selector } from '@deenruv/admin-types';
 import { FromSelectorWithScalars } from './scalars';
 import { paymentSelector } from './orders';
 

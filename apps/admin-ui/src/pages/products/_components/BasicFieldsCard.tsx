@@ -1,7 +1,7 @@
 import { Input, Stack } from '@/components';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { LanguageCode, ModelTypes } from '@/zeus';
+import { LanguageCode, ModelTypes } from '@deenruv/admin-types';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 

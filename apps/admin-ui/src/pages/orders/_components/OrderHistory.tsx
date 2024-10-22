@@ -34,7 +34,7 @@ import {
 import { OrderStateBadge } from './OrderStateBadge';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 import { apiCall } from '@/graphql/client';
-import { DeletionResult, HistoryEntryType, ModelTypes } from '@/zeus';
+import { DeletionResult, HistoryEntryType, ModelTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';

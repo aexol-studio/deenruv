@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { apiCall } from '@/graphql/client';
 import { useServer } from '@/state';
 import { useGFFLP } from '@/lists/useGflp';
-import { ModelTypes } from '@/zeus';
+import { ModelTypes } from '@deenruv/admin-types';
 import { Lines } from '@/pages/shipping-methods/_components/Lines';
 import { CircleCheck, CircleX } from 'lucide-react';
 import { priceFormatter } from '@/utils';

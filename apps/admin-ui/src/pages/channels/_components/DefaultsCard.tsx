@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, Label, SimpleSelect, Stack, Switch } from '@/components';
 import { Option } from '@/components/ui/multiple-selector';
 import { apiCall } from '@/graphql/client';
-import { CurrencyCode, LanguageCode } from '@/zeus';
+import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

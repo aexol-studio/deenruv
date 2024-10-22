@@ -4,9 +4,9 @@ import { FacetListOptionsType } from '@/graphql/facets';
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
 import { AddVariantDialog } from '@/pages/products/_components/AddVariantDialog';
 import { Variant } from '@/pages/products/_components/Variant';
-import { LanguageCode } from '@/zeus';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { LanguageCode } from '@deenruv/admin-types';
 
 interface VariantTabProps {
   currentTranslationLng: LanguageCode;

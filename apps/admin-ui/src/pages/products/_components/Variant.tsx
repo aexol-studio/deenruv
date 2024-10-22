@@ -2,7 +2,7 @@ import { Button, ConfirmationDialog, Input, Stack } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';

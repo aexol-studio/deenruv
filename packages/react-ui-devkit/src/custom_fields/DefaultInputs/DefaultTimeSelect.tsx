@@ -4,11 +4,11 @@ import { Button } from '@/components';
 import { CalendarIcon } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { useCustomFields } from '../context';
+import { useCustomFields } from '@/custom_fields/context';
 import React from 'react';
 
 export const DefaultTimeSelect: React.FC = () => {
-    const { value, setValue } = useCustomFields();
+    const { value, setValue } = useCustomFields<'DateTimeCustomFieldConfig'>();
     const date = value ? new Date(value as string) : undefined;
     const setDate = (date: Date | undefined) => {
         if (date) setValue(date.toISOString());

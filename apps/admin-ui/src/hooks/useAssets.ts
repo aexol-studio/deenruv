@@ -1,6 +1,6 @@
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
-import { LogicalOperator, SortOrder } from '@/zeus';
+import { LogicalOperator, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 

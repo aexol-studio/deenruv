@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { Stack } from '@/components';
 import { CircleCheckBig } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Permission } from '@/zeus';
+import { Permission } from '@deenruv/admin-types';
 import permissionsJson from '@/locales/en/permissions.json';
 
 interface PermissionsTableProps {
@@ -37,7 +37,6 @@ export const PermissionsTable: React.FC<PermissionsTableProps> = ({ currentPermi
   }, []);
 
   useEffect(() => {
-    // @ts-expect-error: const enums are not iterable, but I set to true to compilerOptions.preserveConstEnums
     const permissionsArray = Object.values(Permission);
 
     groupPermissions(permissionsArray);

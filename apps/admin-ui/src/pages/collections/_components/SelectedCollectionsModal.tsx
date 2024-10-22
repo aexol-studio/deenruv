@@ -7,7 +7,7 @@ import { CollectionAction } from '../consts';
 import { MoveCollectionsToChannels } from './MoveCollectionsToChannels';
 import { DeleteCollectionsFromChannel } from './DeleteCollectionsFromChannel';
 
-import { ValueTypes } from '@/zeus';
+import { ValueTypes } from '@deenruv/admin-types';
 import { DialogHeader } from '@/components';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import { useTranslation } from 'react-i18next';

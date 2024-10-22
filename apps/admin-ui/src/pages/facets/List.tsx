@@ -2,7 +2,7 @@ import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { Button } from '@/components/ui/button';
 import { useList } from '@/lists/useList';
-import { DeletionResult, ResolverInputTypes, SortOrder } from '@/zeus';
+import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import {
   ColumnDef,

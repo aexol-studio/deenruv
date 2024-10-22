@@ -2,7 +2,7 @@ import { apiCall } from '@/graphql/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { CornerDownRight } from 'lucide-react';
 import { useList } from '@/lists/useList';
-import { DeletionResult, ResolverInputTypes, SortOrder } from '@/zeus';
+import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/state';
 import { useLocalStorage } from '@/hooks';

@@ -1,6 +1,5 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components';
 import { useSettings } from '@/state';
-import { LanguageCode } from '@/zeus';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -11,12 +10,7 @@ export const TranslationSelect = () => {
   const availableLanguages = useSettings((p) => p.availableLanguages);
 
   return (
-    <Select
-      value={translationsLanguage}
-      onValueChange={(e) => {
-        setTranslationsLanguage(e as LanguageCode);
-      }}
-    >
+    <Select value={translationsLanguage} onValueChange={setTranslationsLanguage}>
       <SelectTrigger className="w-auto">
         <div className="mr-2 flex items-center gap-2 ">
           <Globe size={16} />

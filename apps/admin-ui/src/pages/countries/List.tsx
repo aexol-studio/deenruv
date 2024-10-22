@@ -1,7 +1,7 @@
 import { apiCall } from '@/graphql/client';
 
 import { useList } from '@/lists/useList';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash } from 'lucide-react';

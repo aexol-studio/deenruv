@@ -17,7 +17,7 @@ import { useOrder } from '@/state/order';
 import { apiCall } from '@/graphql/client';
 import { draftOrderSelector, eligibleShippingMethodsSelector, updatedDraftOrderSelector } from '@/graphql/draft_order';
 import { toast } from 'sonner';
-import { HistoryEntryType } from '@/zeus';
+import { HistoryEntryType } from '@deenruv/admin-types';
 import { Routes } from '@/utils';
 import { ModifyOrderPage } from './ModifyOrderPage';
 

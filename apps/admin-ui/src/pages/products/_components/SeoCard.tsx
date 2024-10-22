@@ -2,7 +2,7 @@ import { AssetsModalChangeType, AssetsModalInput, Label, Stack } from '@/compone
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
-import { ModelTypes } from '@/zeus';
+import { ModelTypes } from '@deenruv/admin-types';
 import { ImageOff } from 'lucide-react';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

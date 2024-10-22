@@ -1,18 +1,18 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { generateCustomFields } from './logic';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
-import type { GraphQLTypes, LanguageCode, ModelTypes } from '@/zeus';
+import type { LanguageCode, GraphQLTypes, ModelTypes, CustomFieldConfigType } from '@deenruv/admin-types';
 import { usePluginStore } from '@/context';
-import { CustomFieldsProvider } from './context';
+import { CustomFieldsProvider } from '@/custom_fields/context';
+import { generateCustomFields } from '@/custom_fields/logic';
 
-export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['JSON'] | undefined }>({
+export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['JSON'] | undefined }, Z>({
     customFields,
     value,
     setValue,
     translation,
     data,
 }: {
-    customFields: GraphQLTypes['CustomFieldConfig'][];
+    customFields: CustomFieldConfigType[];
     value: any;
     setValue: (field: any, data: string | number | boolean) => void;
     language?: LanguageCode;

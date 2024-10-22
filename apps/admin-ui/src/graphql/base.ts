@@ -1,7 +1,7 @@
 import { CollectionTileProductVariantType, CollectionTileType } from '@/graphql/collections';
 import { productVariantTileSelector } from '@/graphql/products';
 import { FromSelectorWithScalars } from '@/graphql/scalars';
-import { Selector, SortOrder } from '@/zeus';
+import { CustomFieldConfigSelector, Selector, SortOrder } from '@deenruv/admin-types';
 
 export enum ORDER_STATE {
   CREATED = 'Created',
@@ -55,55 +55,6 @@ export const assetsSelector = Selector('Asset')({
 });
 
 export type AssetType = FromSelectorWithScalars<typeof assetsSelector, 'Asset'>;
-
-const samePartOfCustomFieldConfig = {
-  name: true,
-  type: true,
-  ui: true,
-  label: { languageCode: true, value: true },
-  description: { languageCode: true, value: true },
-  internal: true,
-  list: true,
-  nullable: true,
-  readonly: true,
-};
-
-export const CustomFieldConfigSelector = Selector('CustomFieldConfig')({
-  __typename: true,
-  '...on BooleanCustomFieldConfig': samePartOfCustomFieldConfig,
-  '...on DateTimeCustomFieldConfig': samePartOfCustomFieldConfig,
-  '...on FloatCustomFieldConfig': samePartOfCustomFieldConfig,
-  '...on TextCustomFieldConfig': samePartOfCustomFieldConfig,
-  '...on LocaleTextCustomFieldConfig': samePartOfCustomFieldConfig,
-  '...on IntCustomFieldConfig': {
-    ...samePartOfCustomFieldConfig,
-    max: true,
-    min: true,
-    step: true,
-  },
-  '...on LocaleStringCustomFieldConfig': {
-    ...samePartOfCustomFieldConfig,
-    length: true,
-    pattern: true,
-  },
-  '...on RelationCustomFieldConfig': {
-    ...samePartOfCustomFieldConfig,
-    entity: true,
-    scalarFields: true,
-  },
-  '...on StringCustomFieldConfig': {
-    ...samePartOfCustomFieldConfig,
-    length: true,
-    options: {
-      value: true,
-      label: {
-        languageCode: true,
-        value: true,
-      },
-    },
-    pattern: true,
-  },
-});
 
 export type CustomFieldConfigType = FromSelectorWithScalars<typeof CustomFieldConfigSelector, 'CustomFieldConfig'>;
 
@@ -182,12 +133,7 @@ export const AdminSettingsSelector = Selector('GlobalSettings')({
 });
 
 export const serverConfigSelector = Selector('ServerConfig')({
-  // plugins: { name: true, version: true, path: true, active: true, status: true },
   entityCustomFields: { customFields: CustomFieldConfigSelector, entityName: true },
-  // moneyStrategyPrecision: true,
-  // customFieldConfig: {
-  //   OrderLine: CustomFieldConfigSelector,
-  // },
   orderProcess: { name: true, to: true },
   permissions: { assignable: true, description: true, name: true },
   permittedAssetTypes: true,

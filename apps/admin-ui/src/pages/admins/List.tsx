@@ -23,7 +23,7 @@ import { AdminsSortOptions, ParamFilterFieldTuple, adminsSortOptionsArray } from
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
 import { AdminListSelector, AdminListType } from '@/graphql/admins';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ActionsColumn } from '@/components/Columns';
 
 const getAdmins = async (options: ResolverInputTypes['AdministratorListOptions']) => {

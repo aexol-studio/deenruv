@@ -1,6 +1,6 @@
 import { RoleSelector } from '@/graphql/roles';
 import { FromSelectorWithScalars } from '@/graphql/scalars';
-import { Selector } from '@/zeus';
+import { Selector } from '@deenruv/admin-types';
 
 export const AdminListSelector = Selector('Administrator')({
   id: true,

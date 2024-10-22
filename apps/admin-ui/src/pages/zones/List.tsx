@@ -22,7 +22,7 @@ import { toast } from 'sonner';
 import { ParamFilterFieldTuple, ZonesSortOptions, zonesSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ListTable } from '@/components';
 import { ZoneListSelector, ZoneListType } from '@/graphql/zones';
 import { ActionsColumn } from '@/components/Columns';

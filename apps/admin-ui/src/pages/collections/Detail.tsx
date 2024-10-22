@@ -10,7 +10,7 @@ import { cache } from '@/lists/cache';
 import { Routes } from '@/utils';
 import { PageHeader } from '@/pages/collections/_components/PageHeader';
 import { CollectionDetailsSelector, CollectionDetailsType } from '@/graphql/collections';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { SeoCard } from '@/pages/collections/_components/SeoCard';
 import { AssetsCard } from '@/pages/collections/_components/AssetsCard';

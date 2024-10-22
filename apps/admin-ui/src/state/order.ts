@@ -10,7 +10,7 @@ import {
 import { paymentSelector } from '@/graphql/orders';
 
 import { giveModificationInfo } from '@/utils/objectCompare';
-import { HistoryEntryType, ResolverInputTypes, SortOrder } from '@/zeus';
+import { HistoryEntryType, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { create } from 'zustand';
 

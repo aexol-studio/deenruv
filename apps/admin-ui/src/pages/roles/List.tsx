@@ -22,7 +22,7 @@ import { toast } from 'sonner';
 import { ParamFilterFieldTuple, RolesSortOptions, rolesSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { RoleListSelector, RoleListType } from '@/graphql/roles';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { ActionsColumn } from '@/components/Columns';

@@ -1,4 +1,4 @@
-import { LogicalOperator, ModelTypes } from '@/zeus';
+import { LogicalOperator, ModelTypes } from '@deenruv/admin-types';
 
 type FilterProps<T extends keyof ModelTypes> = {
   type: T;

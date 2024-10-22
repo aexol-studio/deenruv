@@ -1,4 +1,4 @@
-import { GraphQLTypes } from '@/zeus';
+import type { CustomFieldConfigType } from '@deenruv/admin-types';
 import {
     DefaultCheckbox,
     DefaultTimeSelect,
@@ -13,7 +13,7 @@ import {
 import React from 'react';
 
 export function generateCustomFields(
-    customFields: Array<GraphQLTypes['CustomFieldConfig']>,
+    customFields: CustomFieldConfigType[],
     getInputComponent: (id: string) => React.ComponentType<{}> | null,
 ) {
     const fields: (any & { tab: string; component: React.ReactElement })[] = [];

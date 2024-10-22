@@ -1,5 +1,5 @@
 import { FromSelectorWithScalars } from '@/graphql/scalars';
-import { Selector } from '@/zeus';
+import { Selector } from '@deenruv/admin-types';
 
 const FacetValueSelector = Selector('FacetValue')({
   name: true,

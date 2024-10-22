@@ -22,7 +22,7 @@ import { toast } from 'sonner';
 import { ChannelsSortOptions, ParamFilterFieldTuple, channelsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ChannelListSelector, ChannelListType } from '@/graphql/channels';
 import { ListTable } from '@/components';
 import { ActionsColumn } from '@/components/Columns';

@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
 } from '@/components';
 import { apiCall } from '@/graphql/client';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';

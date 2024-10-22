@@ -1,7 +1,7 @@
 import { apiCall } from '@/graphql/client';
 import { ProductListType, ProductTileSelector } from '@/graphql/products';
 import { useList } from '@/lists/useList';
-import { DeletionResult, ResolverInputTypes, SortOrder } from '@/zeus';
+import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useSearchParams } from 'react-router-dom';
 import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';

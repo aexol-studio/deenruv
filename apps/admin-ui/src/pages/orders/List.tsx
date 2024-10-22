@@ -3,7 +3,7 @@ import { Stack } from '@/components/Stack';
 import { Button } from '@/components/ui/button';
 import { OrderListSelector, OrderListType } from '@/graphql/orders';
 import { ListType, useList } from '@/lists/useList';
-import { DeletionResult, ModelTypes, ResolverInputTypes, SortOrder } from '@/zeus';
+import { DeletionResult, ModelTypes, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import {
   ColumnDef,

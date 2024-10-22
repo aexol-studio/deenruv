@@ -3,7 +3,7 @@ import { useDebounce } from 'use-debounce';
 import { Input, Label, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { useTranslation } from 'react-i18next';
-import { LogicalOperator } from '@/zeus';
+import { LogicalOperator } from '@deenruv/admin-types';
 import { SearchCustomerType, searchCustomerSelector } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 

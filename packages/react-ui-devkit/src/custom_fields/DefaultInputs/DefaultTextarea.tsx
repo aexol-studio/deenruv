@@ -1,9 +1,9 @@
 import React from 'react';
-import { useCustomFields } from '../context';
 import { Textarea } from '@/components';
+import { useCustomFields } from '@/custom_fields/context';
 
 export function DefaultTextarea() {
-    const { field, value, setValue } = useCustomFields();
+    const { field, value, setValue } = useCustomFields<'StringCustomFieldConfig'>();
     return (
         <div>
             <label

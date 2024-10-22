@@ -6,7 +6,7 @@ import { ProductOptionType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import { ColorSample } from '@/pages/facets/_components/ColorSample';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { ImageOff } from 'lucide-react';

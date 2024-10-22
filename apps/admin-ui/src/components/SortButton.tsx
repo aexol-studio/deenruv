@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import { PaginationInput } from '@/lists/models';
-import { SortOrder } from '@/zeus';
+import { SortOrder } from '@deenruv/admin-types';
 
 export const SortButton: React.FC<
   PropsWithChildren<{ sortKey: string; currSort: PaginationInput['sort']; onClick: () => void }>

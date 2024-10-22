@@ -25,7 +25,7 @@ import {
 import { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem';
 import { useGFFLP } from '@/lists/useGflp';
-import { ResolverInputTypes } from '@/zeus';
+import { ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { useServer } from '@/state/server';
 

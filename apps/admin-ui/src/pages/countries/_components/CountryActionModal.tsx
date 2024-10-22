@@ -16,7 +16,7 @@ import { CountryListType } from '@/graphql/settings';
 import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
 import { useSettings } from '@/state';
-import { DeletionResult, LanguageCode } from '@/zeus';
+import { DeletionResult, LanguageCode } from '@deenruv/admin-types';
 
 import React, { useEffect, useMemo } from 'react';
 import { toast } from 'sonner';

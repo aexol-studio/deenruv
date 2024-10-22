@@ -1,5 +1,5 @@
 import { ChannelType } from '@/graphql/base';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import i18next from 'i18next';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';

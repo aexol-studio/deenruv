@@ -1,6 +1,13 @@
 import { scalars } from '@/graphql/scalars';
 import { useSettings } from '@/state/settings';
-import { GraphQLError, GraphQLResponse, ResolverInputTypes, Thunder, chainOptions, fetchOptions } from '@/zeus';
+import {
+  GraphQLError,
+  GraphQLResponse,
+  ResolverInputTypes,
+  Thunder,
+  chainOptions,
+  fetchOptions,
+} from '@deenruv/admin-types';
 import { toast } from 'sonner';
 
 //use 'http://localhost:3000/shop-api/' in local .env file for localhost development and provide env to use on prod/dev envs

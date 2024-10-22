@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components';
-import { ModelTypes } from '@/zeus';
+import { ModelTypes } from '@deenruv/admin-types';
 import { endOfDay, startOfDay } from 'date-fns';
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';

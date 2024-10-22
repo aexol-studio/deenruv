@@ -14,7 +14,7 @@ import {
 } from '@/components';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
-import { ModelTypes } from '@/zeus';
+import { ModelTypes } from '@deenruv/admin-types';
 
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';

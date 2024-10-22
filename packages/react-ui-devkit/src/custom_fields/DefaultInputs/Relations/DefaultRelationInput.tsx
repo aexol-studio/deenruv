@@ -1,14 +1,12 @@
+import React from 'react';
 import { useCustomFields } from '@/custom_fields';
 import { AssetsRelationInput } from './AssetsRelationInput';
 import { ProductRelationInput } from './ProductRelationInput';
 import { ProductVariantRelationInput } from './ProductVariantRelationInput';
-import React from 'react';
 
 export function DefaultRelationInput() {
     const { field } = useCustomFields();
-    if (!field) {
-        return <div>Could not find the field</div>;
-    }
+    if (!field) return null;
     if ('entity' in field) {
         switch (field.entity) {
             case 'Asset':
@@ -18,8 +16,11 @@ export function DefaultRelationInput() {
             case 'ProductVariant':
                 return <ProductVariantRelationInput />;
             default:
-                console.log(`Entity ${field.entity} in list is not supported yet`);
-                return 'Entity is not supported yet';
+                return (
+                    <p className="text-red-500 text-md font-bold">
+                        Entity '{field.entity}' in list is not supported yet
+                    </p>
+                );
         }
     }
     return null;

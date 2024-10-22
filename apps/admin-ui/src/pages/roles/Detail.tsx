@@ -9,7 +9,7 @@ import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { Routes } from '@/utils';
 import { RoleDetailsSelector, RoleDetailsType } from '@/graphql/roles';
-import { Permission } from '@/zeus';
+import { Permission } from '@deenruv/admin-types';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { PageHeader } from '@/pages/roles/_components/PageHeader';

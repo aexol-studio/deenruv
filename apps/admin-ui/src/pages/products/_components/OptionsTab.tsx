@@ -8,7 +8,7 @@ import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { Trash } from 'lucide-react';
 import { apiCall } from '@/graphql/client';
 import { useParams } from 'react-router-dom';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
 import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';

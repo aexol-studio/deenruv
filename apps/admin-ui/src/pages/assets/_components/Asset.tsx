@@ -15,7 +15,7 @@ import {
 } from '@/components';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
-import { DeletionResult } from '@/zeus';
+import { DeletionResult } from '@deenruv/admin-types';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { TooltipContent, TooltipTrigger } from '@radix-ui/react-tooltip';
 import { format } from 'date-fns';

@@ -11,7 +11,7 @@ import { PageHeader } from '@/pages/channels/_components/PageHeader';
 import { Routes } from '@/utils';
 import { ChannelDetailsSelector, ChannelDetailsType } from '@/graphql/channels';
 import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
-import { CurrencyCode, LanguageCode } from '@/zeus';
+import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { useServer } from '@/state';
 import commonJson from '@/locales/en/common.json';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
@@ -209,7 +209,6 @@ export const ChannelsDetailPage = () => {
   }, [countries, tCommon]);
 
   const currencyOptions = useMemo((): Option[] => {
-    // @ts-expect-error: const enums are not iterable, but I set to true to compilerOptions.preserveConstEnums
     const currencyArray = Object.values(CurrencyCode);
 
     return currencyArray.map((l) => ({ label: l, value: l }));

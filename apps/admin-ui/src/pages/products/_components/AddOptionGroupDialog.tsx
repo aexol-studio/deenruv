@@ -14,7 +14,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { apiCall } from '@/graphql/client';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 
 interface AddOptionGroupDialogProps {

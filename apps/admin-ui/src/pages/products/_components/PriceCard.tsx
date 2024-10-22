@@ -1,7 +1,7 @@
 import { Badge, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Stack } from '@/components';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { apiCall } from '@/graphql/client';
-import { CurrencyCode } from '@/zeus';
+import { CurrencyCode } from '@deenruv/admin-types';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 

@@ -1,4 +1,4 @@
-import { ModelTypes as DefaultModelTypes } from '@/zeus';
+import { ModelTypes as DefaultModelTypes } from '@deenruv/admin-types';
 import { useCallback, useMemo, useState } from 'react';
 
 export type FormField<T> = {

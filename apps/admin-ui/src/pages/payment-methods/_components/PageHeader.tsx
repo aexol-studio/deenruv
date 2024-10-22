@@ -1,7 +1,7 @@
 import { Button, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Stack } from '@/components';
 import { PaymentMethodDetailsType } from '@/graphql/paymentMethods';
 import { Routes } from '@/utils';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import React from 'react';

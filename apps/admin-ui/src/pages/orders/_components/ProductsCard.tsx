@@ -598,7 +598,7 @@ export const ProductsCard: React.FC = () => {
                           data={{ selectedVariant }}
                           value={undefined}
                           setValue={(field, data) => {}}
-                          customFields={orderLineCustomFields as any}
+                          customFields={orderLineCustomFields}
                         />
                         <CustomComponent
                           onVariantAdd={handleNewVariantAdd}

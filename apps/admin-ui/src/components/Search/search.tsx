@@ -12,7 +12,7 @@ import {
   PopoverTrigger,
   Switch,
 } from '@/components';
-import { LogicalOperator, ModelTypes } from '@/zeus';
+import { LogicalOperator, ModelTypes } from '@deenruv/admin-types';
 
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from 'use-debounce';

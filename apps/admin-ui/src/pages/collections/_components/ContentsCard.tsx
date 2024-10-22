@@ -4,7 +4,7 @@ import { ContentsTable } from '@/pages/collections/_components/ContentsTable';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type collections from '../../../locales/en/collections.json';
-import { ValueTypes } from '@/zeus';
+import { ValueTypes } from '@deenruv/admin-types';
 
 interface ContentsCardProps {
   collectionId: string | undefined;

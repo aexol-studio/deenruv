@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { apiCall, uploadApiCall } from '@/graphql/client';
 import { ItemsPerPageType, useList } from '@/lists/useList';
-import { $, ResolverInputTypes } from '@/zeus';
+import { $, ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button, Search, Stack } from '@/components';

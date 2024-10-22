@@ -7,7 +7,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import { ValueTypes } from '@/zeus';
+import { ValueTypes } from '@deenruv/admin-types';
 
 import type collections from '../../../locales/en/collections.json';
 import React, { PropsWithChildren, useMemo, useState } from 'react';

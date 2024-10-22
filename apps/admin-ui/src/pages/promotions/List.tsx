@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 import { ParamFilterFieldTuple, ShippingMethodsSortOptions, shippingMethodsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ListTable } from '@/components';
 import { ShippingMethodListSelector, ShippingMethodListType } from '@/graphql/shippingMethods';
 import { ActionsColumn } from '@/components/Columns';

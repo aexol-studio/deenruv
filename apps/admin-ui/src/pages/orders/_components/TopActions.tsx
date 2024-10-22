@@ -22,7 +22,7 @@ import { OrderStateBadge } from '@/pages/orders/_components/OrderStateBadge';
 import { PossibleOrderStates } from '@/pages/orders/_components/PossibleOrderStates';
 import { useServer } from '@/state';
 import { Routes } from '@/utils';
-import { DeletionResult, ResolverInputTypes } from '@/zeus';
+import { DeletionResult, ResolverInputTypes } from '@deenruv/admin-types';
 
 import { ChevronLeft, EllipsisVerticalIcon, Printer, NotepadText } from 'lucide-react';
 import { useMemo, useState } from 'react';

@@ -1,4 +1,4 @@
-// import { ModelTypes } from '@/zeus';
+// import { ModelTypes } from '@deenruv/admin-types';
 
 export type ParamObjectT = {
   param?: string;

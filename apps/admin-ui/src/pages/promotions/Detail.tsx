@@ -21,7 +21,7 @@ import { CalendarIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import { AddPromotionDialog } from './_components/AddPromotionDialog';
-import { LanguageCode } from '@/zeus';
+import { LanguageCode } from '@deenruv/admin-types';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { SettingsCard } from '../products/_components/SettingsCard';
 

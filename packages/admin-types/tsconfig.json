@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "lib": ["dom.iterable", "DOM"],
+        "jsx": "react",
+        "declaration": true,
+        "sourceMap": true,
+        "declarationMap": true,
+        "outDir": "lib",
+        "rootDir": "./src",
+        "strict": true,
+        "baseUrl": "./src",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "exclude": ["node_modules", "lib"]
+}

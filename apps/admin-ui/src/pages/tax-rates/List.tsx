@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
-import { ResolverInputTypes, SortOrder } from '@/zeus';
+import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ListTable } from '@/components';
 import { ParamFilterFieldTuple, TaxRatesSortOptions, taxCategoriesSortOptionsArray } from '@/lists/types';
 import { TaxRateListSelector, TaxRateListType } from '@/graphql/taxRates';

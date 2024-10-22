@@ -28,7 +28,7 @@ import { Routes } from '@/utils';
 import { ChevronLeft, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog';
-import { DeletionResult, LanguageCode } from '@/zeus';
+import { DeletionResult, LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';

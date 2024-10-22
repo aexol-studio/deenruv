@@ -19,7 +19,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { apiCall } from '@/graphql/client';
 import { StockLevelsType } from '@/graphql/products';
-import { GlobalFlag } from '@/zeus';
+import { GlobalFlag } from '@deenruv/admin-types';
 import { MapPin } from 'lucide-react';
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
