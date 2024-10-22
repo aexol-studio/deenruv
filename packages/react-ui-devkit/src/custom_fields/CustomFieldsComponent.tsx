@@ -49,8 +49,8 @@ export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['
                 </TabsList>
                 {Object.entries(rendered).map(([tab, fields]) => (
                     <TabsContent key={tab} value={tab}>
-                        <div className="grid min-h-[200px] w-full grid-cols-2 gap-4">
-                            {fields.map(field => {
+                        <div className="grid min-h-[200px] w-full grid-cols-2">
+                            {fields.map((field, idx) => {
                                 const _field = customFields?.find(f => 'name' in f && f.name === field.name);
                                 if (!_field) return null;
                                 let _value = undefined;
@@ -77,7 +77,15 @@ export function CustomFieldsComponent<T, K extends { customFields?: ModelTypes['
                                         setValue={data => setValue(_field, data)}
                                     >
                                         <Suspense fallback={<span>Loading...</span>}>
-                                            <div className="w-1/2">{field.component}</div>
+                                            <div
+                                                className={`w-full pb-4
+                                                    ${idx % 2 == 0 && fields.length > 1 && 'pr-4 border-r'}
+                                                    ${idx % 2 != 0 && fields.length > 1 && 'pl-4'}
+                                                    ${idx > 1 && fields.length > 2 && 'border-t pt-4'}
+                                                    `}
+                                            >
+                                                {field.component}
+                                            </div>
                                         </Suspense>
                                     </CustomFieldsProvider>
                                 );

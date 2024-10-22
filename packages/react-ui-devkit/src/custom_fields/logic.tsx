@@ -21,7 +21,6 @@ export function generateCustomFields(
         const ui = 'ui' in field ? (field.ui as unknown as Record<string, unknown>) : undefined;
         const tab = ((ui && 'tab' in ui && ui?.tab) || 'General') as string;
         const Registered = ui && 'component' in ui && getInputComponent(ui.component as string);
-
         if (Registered) {
             fields.push({ ...field, tab, component: <Registered /> });
         } else if ('list' in field && field.list) {

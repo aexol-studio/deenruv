@@ -12,7 +12,7 @@ import {
 import { Button, ScrollArea } from '@/components';
 import { Chain, ResolverInputTypes } from '@/zeus';
 import { cn } from '@/lib/utils';
-import { ImageUp } from 'lucide-react';
+import { ImageOff, ImageUp } from 'lucide-react';
 import { useCustomFields } from '@/custom_fields';
 
 import { useList } from '@/useList';
@@ -69,7 +69,11 @@ export function AssetsRelationInput() {
                     </Button>
                 </DialogTrigger>
                 <div>
-                    {selectedAsset && (
+                    {!selectedAsset ? (
+                        <div className="flex flex-col items-center justify-center gap-2 bg-muted p-3 mt-2">
+                            <ImageOff size={50} />
+                        </div>
+                    ) : (
                         <div>
                             <img
                                 src={selectedAsset.preview}
