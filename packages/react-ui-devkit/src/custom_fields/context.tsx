@@ -1,5 +1,6 @@
 import type { GraphQLTypes } from '@deenruv/admin-types';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type CustomFieldConfigMap = {
     BooleanCustomFieldConfig: {
@@ -20,6 +21,8 @@ export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typena
     value?: string | number | boolean;
     setValue: (data: string | number | boolean) => void;
     data?: K;
+    label?: string;
+    description?: string;
 };
 
 export const CustomFieldsContext = React.createContext<
@@ -32,7 +35,27 @@ export const CustomFieldsContext = React.createContext<
 });
 export const CustomFieldsProvider: React.FC<
     PropsWithChildren<DynamicContext<GraphQLTypes['CustomFieldConfig']['__typename'], unknown>>
-> = ({ children, ...value }) => {
+> = ({ children, ..._value }) => {
+    const {
+        i18n: { language },
+    } = useTranslation();
+
+    const translated = useMemo(
+        () => ({
+            label: _value?.field?.label?.find(el => el.languageCode === language)?.value,
+            description: _value?.field?.description?.find(el => el.languageCode === language)?.value,
+        }),
+        [language, _value?.field?.label, _value?.field?.description],
+    );
+
+    const value = useMemo(
+        () => ({
+            ..._value,
+            ...translated,
+        }),
+        [_value, translated],
+    );
+
     return <CustomFieldsContext.Provider value={value}>{children}</CustomFieldsContext.Provider>;
 };
 

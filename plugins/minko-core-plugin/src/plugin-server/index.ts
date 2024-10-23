@@ -1035,8 +1035,11 @@ export class SearchResultResolver {
                 name: 'sizes',
                 type: 'localeText',
                 defaultValue: '',
-                ui: { tab: 'Wymiary', component: 'additional-description-input' },
-                ...empty,
+                ui: { tab: 'Wymiary' },
+                label: [
+                    { languageCode: LanguageCode.pl, value: 'Wymiary' },
+                    { languageCode: LanguageCode.en, value: 'Sizes' },
+                ],
             },
             {
                 name: 'finish',
@@ -1198,8 +1201,14 @@ export class SearchResultResolver {
                 { languageCode: LanguageCode.pl, value: 'Obniż cenę o' },
             ],
             description: [
-                { languageCode: LanguageCode.en, value: 'Discount by' },
-                { languageCode: LanguageCode.pl, value: 'Obniż cenę o' },
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'This field lets user define discount by given number.',
+                },
+                {
+                    languageCode: LanguageCode.pl,
+                    value: 'Te pole pozwala określić o ile taniej produkt ma kosztować.',
+                },
             ],
         });
         //PRODUCT DISCOUNT

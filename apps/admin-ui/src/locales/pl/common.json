@@ -441,7 +441,8 @@
     "perPageValue": "{{value}} na stronę",
     "confirmButton": "Dodaj zasób",
     "cancel": "Anuluj",
-    "noImages": "Nie ma zasobów dla określonego wyszukiwania"
+    "noImages": "Nie ma zasobów dla określonego wyszukiwania",
+    "description": "Przesyłaj i zarządzaj aktywami które mogą zostać użyte w twojej zawartości"
   },
   "upload": "Prześlij",
   "paymentMethods": {

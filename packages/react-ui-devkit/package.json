@@ -84,7 +84,8 @@
         "tailwindcss-animate": "^1.0.7",
         "typescript-transform-paths": "^3.5.1",
         "vaul": "^0.9.1",
-        "zustand": "^4.5.2"
+        "zustand": "^4.5.2",
+        "react-i18next": "^14.0.5"
     },
     "devDependencies": {
         "@types/lodash": "^4.17.10",

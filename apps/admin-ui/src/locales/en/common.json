@@ -446,7 +446,8 @@
     "perPageValue": "{{value}} per page",
     "confirmButton": "Add asset",
     "cancel": "Cancel",
-    "noImages": "There is no assets for specified search"
+    "noImages": "There is no assets for specified search",
+    "description": "Upload and manage assets that can be used in your content"
   },
   "upload": "Upload",
   "paymentMethods": {

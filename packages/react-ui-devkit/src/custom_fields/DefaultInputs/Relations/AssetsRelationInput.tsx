@@ -9,7 +9,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button, ScrollArea } from '@/components';
+import { Button, Label, ScrollArea } from '@/components';
 import { Chain, ResolverInputTypes } from '@/zeus';
 import { cn } from '@/lib/utils';
 import { ImageOff, ImageUp } from 'lucide-react';
@@ -17,6 +17,7 @@ import { useCustomFields } from '@/custom_fields';
 
 import { useList } from '@/useList';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const client = Chain('/admin-api', { credentials: 'include' });
 
@@ -38,7 +39,8 @@ const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
 };
 
 export function AssetsRelationInput() {
-    const { value, setValue } = useCustomFields();
+    const { value, label, field, setValue } = useCustomFields();
+    const { t } = useTranslation('common');
     const [selectedAsset, setSelectedAsset] = useState<{
         id: string;
         preview: string;
@@ -63,14 +65,10 @@ export function AssetsRelationInput() {
     return (
         <Dialog>
             <div>
-                <DialogTrigger asChild>
-                    <Button variant="secondary" size="sm">
-                        Pick assets
-                    </Button>
-                </DialogTrigger>
+                <Label>{label || field?.name}</Label>
                 <div>
                     {!selectedAsset ? (
-                        <div className="flex flex-col items-center justify-center gap-2 bg-muted p-3 mt-2">
+                        <div className="flex flex-col items-center justify-center gap-2 bg-muted p-3">
                             <ImageOff size={50} />
                         </div>
                     ) : (
@@ -93,13 +91,18 @@ export function AssetsRelationInput() {
                         </div>
                     )}
                 </div>
+                <DialogTrigger asChild>
+                    <div className="mt-2 flex justify-end">
+                        <Button variant="secondary" size="sm">
+                            {t('asset.dialogButton')}
+                        </Button>
+                    </div>
+                </DialogTrigger>
             </div>
             <DialogContent className="max-h-[80vh] max-w-[80vw] overflow-auto">
                 <DialogHeader>
-                    <DialogTitle>Assets</DialogTitle>
-                    <DialogDescription>
-                        Upload and manage assets that can be used in your content.
-                    </DialogDescription>
+                    <DialogTitle>{t('menu.assets')}</DialogTitle>
+                    <DialogDescription>{t('asset.description')}</DialogDescription>
                 </DialogHeader>
                 <ScrollArea className="h-[700px] p-2">
                     <div className="flex flex-wrap">

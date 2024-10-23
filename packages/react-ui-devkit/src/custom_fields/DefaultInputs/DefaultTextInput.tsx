@@ -1,17 +1,13 @@
 import React from 'react';
-import { Input } from '@/components';
+import { CardDescription, Input, Label } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
 
 export function DefaultTextInput() {
-    const { field, value, setValue } = useCustomFields<'TextCustomFieldConfig'>();
+    const { field, value, label, description, setValue } = useCustomFields<'TextCustomFieldConfig'>();
     return (
         <div>
-            <label
-                htmlFor={field?.name}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-                {field?.name}
-            </label>
+            <Label htmlFor={field?.name}>{label || field?.name}</Label>
+            <CardDescription>{description}</CardDescription>
             <Input
                 id={field?.name}
                 type="text"
