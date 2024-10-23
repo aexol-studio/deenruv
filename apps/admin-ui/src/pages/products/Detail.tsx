@@ -21,70 +21,8 @@ import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions'
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { Button } from '@/components';
 import { useServer } from '@/state';
-import { CustomFieldConfigType } from '@/graphql/base';
-import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
-import { LanguageCode, Selector, SortOrder, ValueTypes } from '@deenruv/admin-types';
-
-function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
-  const isObject = (obj: any) => obj && typeof obj === 'object';
-
-  Object.keys(source).forEach((key) => {
-    const targetValue = (target as any)[key];
-    const sourceValue = (source as any)[key];
-
-    if (Array.isArray(sourceValue)) {
-      (target as any)[key] = [...(Array.isArray(targetValue) ? targetValue : []), ...sourceValue];
-    } else if (isObject(sourceValue)) {
-      (target as any)[key] = deepMerge(isObject(targetValue) ? targetValue : {}, sourceValue);
-    } else {
-      (target as any)[key] = sourceValue;
-    }
-  });
-
-  return target as T & U;
-}
-
-function mergeSelectors<T extends object, K extends keyof ValueTypes>(
-  selectorA: T,
-  key: K,
-  customFields?: CustomFieldConfigType[],
-): T {
-  const selectorB = Selector(key)(generateCustomFieldsSelector(customFields || []) as any);
-  return deepMerge(selectorA, selectorB);
-}
-
-const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => {
-  const reduced = customFields.reduce(
-    (acc, field) => {
-      if (field.type === 'relation') {
-        // TODO
-        return acc;
-      }
-      if (field.type === 'localeString' || field.type === 'localeText') {
-        acc.translations = {
-          ...acc.translations,
-          customFields: {
-            ...acc.translations?.customFields,
-            [field.name]: true,
-          },
-        };
-      } else {
-        acc.customFields = {
-          ...acc.customFields,
-          [field.name]: true,
-        };
-      }
-      return acc;
-    },
-    { translations: { customFields: {} }, customFields: {} } as {
-      translations?: { customFields: Record<string, boolean> };
-      customFields?: Record<string, boolean>;
-    },
-  );
-  if (!Object.keys(reduced.translations?.customFields || {}).length) delete reduced.translations;
-  if (!Object.keys(reduced.customFields || {}).length) delete reduced.customFields;
-  return reduced;
-};
+import { CustomFieldsComponent, mergeSelectorWithCustomFields } from '@deenruv/react-ui-devkit';
+import { LanguageCode, SortOrder } from '@deenruv/admin-types';
 
 export const ProductsDetailPage = () => {
   const { id } = useParams();
@@ -115,7 +53,7 @@ export const ProductsDetailPage = () => {
   );
 
   const fetchProduct = useCallback(async () => {
-    const mergedSelector = mergeSelectors(ProductDetailSelector, 'Product', productCustomFields);
+    const mergedSelector = mergeSelectorWithCustomFields(ProductDetailSelector, 'Product', productCustomFields);
     const response = await apiCall()('query')({ product: [{ id }, mergedSelector] });
 
     if (!response.product) {
@@ -339,7 +277,6 @@ export const ProductsDetailPage = () => {
                 onSlugChange={(e) => setTranslationField('slug', e.target.value)}
                 onDescChange={(e) => setTranslationField('description', e)}
               />
-              <h4 className="ml-6 text-sm font-semibold text-gray-500">{t('details.customFields')}</h4>
               <CustomFieldsComponent
                 data={{}}
                 value={state.customFields?.value}
