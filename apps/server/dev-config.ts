@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
-import { AssetServerPlugin } from '@deenruv/asset-server-plugin';
+import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-server-plugin';
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultLogger,
@@ -8,6 +8,7 @@ import {
     dummyPaymentHandler,
     LogLevel,
     DeenruvConfig,
+    DefaultAssetNamingStrategy,
 } from '@deenruv/core';
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
@@ -118,6 +119,21 @@ export const devConfig: DeenruvConfig = {
         AssetServerPlugin.init({
             route: 'assets',
             assetUploadDir: path.join(__dirname, 'assets'),
+            namingStrategy: new DefaultAssetNamingStrategy(),
+            assetUrlPrefix: `http://localhost:3000/assets/`,
+            storageStrategyFactory: configureS3AssetStorage({
+                bucket: 'deenruv-asset-bucket',
+                credentials: {
+                    accessKeyId: 'root',
+                    secretAccessKey: 'password',
+                },
+                nativeS3Configuration: {
+                    signatureVersion: 'v4',
+                    forcePathStyle: true,
+                    region: 'local',
+                    endpoint: 'http://localhost:9000',
+                },
+            }),
         }),
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
         BullMQJobQueuePlugin.init({}),

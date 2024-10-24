@@ -63,9 +63,10 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
     () => allCustomFields?.find((el) => el.entityName.toLowerCase() === entityName)?.customFields || [],
     [allCustomFields, entityName],
   );
+
   const runtimeSelector = useMemo(
     () => mergeSelectorWithCustomFields({}, capitalizedEntityName, entityCustomFields),
-    [entityCustomFields],
+    [entityCustomFields, capitalizedEntityName],
   );
 
   useEffect(() => {

@@ -108,7 +108,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild onClick={() => getAsset()}>
-        <div className="flex cursor-pointer flex-col items-center justify-between border border-solid border-gray-300 text-center dark:border-gray-700">
+        <div className="flex h-fit cursor-pointer flex-col items-center justify-between border border-solid border-gray-300 text-center dark:border-gray-700">
           <div className="relative h-20 w-20">
             <img className="absolute left-0 top-0 h-full w-full" src={asset.preview + '?preset=tiny'} />
           </div>
@@ -116,7 +116,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
             <TooltipTrigger className="w-full whitespace-nowrap bg-gray-100 p-1 text-sm dark:bg-gray-800">
               <div className="truncate">{asset.name}</div>
             </TooltipTrigger>
-            <TooltipContent className="z-50 m-2 border border-solid border-gray-200 bg-gray-50 px-2 py-1">
+            <TooltipContent className="z-50 m-2 border border-solid border-gray-200 bg-gray-50 px-2 py-1 text-black">
               {asset.name}
             </TooltipContent>
           </Tooltip>

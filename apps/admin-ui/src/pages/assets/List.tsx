@@ -77,9 +77,11 @@ export const AssetsListPage = () => {
         },
         { variables: { input } },
       );
+
       if (createAssets.length > 0 && 'id' in createAssets[0]) {
         toast.info(t('assets:createSuccess') + createAssets[0].id);
         setAssetsToUpload([]);
+        refetch();
       } else throw new Error(t('assets:createFailed'));
     } catch (e) {
       console.error(e);

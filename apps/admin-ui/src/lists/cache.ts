@@ -46,6 +46,9 @@ export const cache = <T>(cacheKey: CacheKey) => {
   };
 
   const set = (key: string, value: T) => {
+    // temporarily disabled cache usage
+    return;
+
     const currentCacheable = getCacheable();
     currentCacheable[key] = value;
     window.localStorage.setItem(cacheKey, JSON.stringify(currentCacheable));
