@@ -1231,6 +1231,7 @@ export class SearchResultResolver {
             {
                 name: 'discountBy',
                 type: 'int',
+                defaultValue: 0,
                 label: [
                     { languageCode: LanguageCode.en, value: 'Discount' },
                     { languageCode: LanguageCode.pl, value: 'Znizka' },

@@ -5,3 +5,4 @@ export * from './styles';
 export * from './routes';
 export * from './getZonedDate';
 export * from './camelCaseToSpaces';
+export * from './getGqlError';

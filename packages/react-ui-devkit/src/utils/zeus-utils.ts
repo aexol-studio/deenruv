@@ -1,4 +1,4 @@
-import { CustomFieldConfigType, Selector, ValueTypes } from '@deenruv/admin-types';
+import { CustomFieldConfigType, LanguageCode, Selector, ValueTypes } from '@deenruv/admin-types';
 
 function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
     const isObject = (obj: any) => obj && typeof obj === 'object';
@@ -26,9 +26,10 @@ const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => 
                 // TODO
                 return acc;
             }
-            if (field.type === 'localeString' || field.type === 'localeText') {
+            if (['localeString', 'localeText'].includes(field.type)) {
                 acc.translations = {
                     ...acc.translations,
+                    languageCode: true,
                     customFields: {
                         ...acc.translations?.customFields,
                         [field.name]: true,
@@ -43,7 +44,7 @@ const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => 
             return acc;
         },
         { translations: { customFields: {} }, customFields: {} } as {
-            translations?: { customFields: Record<string, boolean> };
+            translations?: { customFields: Record<string, boolean>; languageCode: true };
             customFields?: Record<string, boolean>;
         },
     );

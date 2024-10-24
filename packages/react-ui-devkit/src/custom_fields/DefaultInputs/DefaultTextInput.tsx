@@ -5,7 +5,7 @@ import { useCustomFields } from '@/custom_fields/context';
 export function DefaultTextInput() {
     const { field, value, label, description, setValue } = useCustomFields<'TextCustomFieldConfig'>();
     return (
-        <div>
+        <div className="flex flex-col gap-1">
             <Label htmlFor={field?.name}>{label || field?.name}</Label>
             <CardDescription>{description}</CardDescription>
             <Input

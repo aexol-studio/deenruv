@@ -6,7 +6,7 @@ export function DefaultTextarea() {
     const { field, value, setValue, label, description } = useCustomFields<'StringCustomFieldConfig'>();
 
     return (
-        <div>
+        <div className="flex flex-col gap-1">
             <Label htmlFor={field?.name}>{label || field?.name}</Label>
             <CardDescription>{description}</CardDescription>
             <Textarea id={field?.name} value={value as string} onChange={e => setValue(e.target.value)} />

@@ -11,10 +11,15 @@ export const scalars = ZeusScalars({
     encode: (e: unknown) => {
       // hax który fixuje buga ze złym parsowaniem obiektu do query (productUpdate -> customFields)
       // bez tego jest przesyłany jako zwykły stringify, czyli klucze dostają "" i request sie crashuje
+
       return JSON.stringify(e).replace(/"(\w+)":/g, '$1:');
     },
     decode: (e: unknown) => {
-      return JSON.parse(e as string);
+      try {
+        return JSON.parse(e as string);
+      } catch {
+        return e;
+      }
     },
   },
 });

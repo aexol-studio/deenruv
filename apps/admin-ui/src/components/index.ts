@@ -17,3 +17,4 @@ export * from './SimpleSelect';
 export * from './DeleteDialog';
 export * from './ListButtons';
 export * from './ListColumnDropdown';
+export * from './EntityCustomFields';

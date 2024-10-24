@@ -466,5 +466,15 @@
     "copyId": "Copy Id",
     "delete": "Delete",
     "view": "View"
+  },
+  "custom-fields": {
+    "title": "Custom fields",
+    "description": "Fields created through server plugins can be found here",
+    "toasts": {
+      "error": {
+        "fetch": "Error while fetching data",
+        "mutation": "Error while updating"
+      }
+    }
   }
 }

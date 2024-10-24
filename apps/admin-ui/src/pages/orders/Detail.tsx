@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 import { HistoryEntryType } from '@deenruv/admin-types';
 import { Routes } from '@/utils';
 import { ModifyOrderPage } from './ModifyOrderPage';
+import { EntityCustomFields } from '@/components';
 
 export const OrdersDetailPage = () => {
   const { id } = useParams();
@@ -221,6 +222,7 @@ export const OrdersDetailPage = () => {
               <ShippingMethod />
             </div>
             <ProductsCard />
+            <EntityCustomFields entityName="order" id={id} />
             <TaxSummary />
             <Payments />
             <OrderHistory />

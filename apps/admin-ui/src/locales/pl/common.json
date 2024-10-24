@@ -461,5 +461,15 @@
     "copyId": "Kopiuj Id",
     "delete": "Usuń",
     "view": "Zobacz"
+  },
+  "custom-fields": {
+    "title": "Pola niestandardowe",
+    "description": "Pola stworzone poprzez pluginy serwerowe zostaną tutaj wyświetlone",
+    "toasts": {
+      "error": {
+        "fetch": "Napotkaliśmy błąd podczas pobierania danych",
+        "mutation": "Napotkaliśmy błąd podczas aktualizacji pól"
+      }
+    }
   }
 }

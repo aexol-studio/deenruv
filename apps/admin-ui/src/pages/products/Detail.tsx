@@ -19,9 +19,9 @@ import { AssetsCard } from '@/pages/products/_components/AssetsCard';
 import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
-import { Button } from '@/components';
+import { Button, EntityCustomFields } from '@/components';
 import { useServer } from '@/state';
-import { CustomFieldsComponent, mergeSelectorWithCustomFields } from '@deenruv/react-ui-devkit';
+import { Spinner } from '@deenruv/react-ui-devkit';
 import { LanguageCode, SortOrder } from '@deenruv/admin-types';
 
 export const ProductsDetailPage = () => {
@@ -37,7 +37,6 @@ export const ProductsDetailPage = () => {
     'translations',
     'featuredAssetId',
     'enabled',
-    'customFields',
     'assetIds',
     'facetValueIds',
   )({});
@@ -47,22 +46,22 @@ export const ProductsDetailPage = () => {
 
   const entityCustomFields = useServer((p) => p.serverConfig?.entityCustomFields);
 
-  const productCustomFields = useMemo(
-    () => entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields || [],
-    [entityCustomFields],
-  );
+  // const productCustomFields = useMemo(
+  //   () => entityCustomFields?.find((el) => el.entityName === 'Product')?.customFields || [],
+  //   [entityCustomFields],
+  // );
 
   const fetchProduct = useCallback(async () => {
-    const mergedSelector = mergeSelectorWithCustomFields(ProductDetailSelector, 'Product', productCustomFields);
-    const response = await apiCall()('query')({ product: [{ id }, mergedSelector] });
+    // const mergedSelector = mergeSelectorWithCustomFields(ProductDetailSelector, 'Product', productCustomFields);
+    const response = await apiCall()('query')({ product: [{ id }, ProductDetailSelector] });
 
     if (!response.product) {
       toast.error(t('toasts.fetchProductErrorToast'));
       return;
     }
 
-    const customFields = 'customFields' in response.product ? response.product.customFields : {};
-    setField('customFields', customFields);
+    // const customFields = 'customFields' in response.product ? response.product.customFields : {};
+    // setField('customFields', customFields);
 
     setProduct(response.product);
     setLoading(false);
@@ -119,7 +118,7 @@ export const ProductsDetailPage = () => {
           input: {
             translations: state.translations.validatedValue,
             assetIds: state.assetIds?.validatedValue,
-            customFields: state.customFields?.validatedValue,
+            // customFields: state.customFields?.validatedValue,
             // customFields: {
             //   discountBy:
             //     state.customFields?.validatedValue?.discountBy && +state.customFields?.validatedValue?.discountBy,
@@ -164,7 +163,7 @@ export const ProductsDetailPage = () => {
             enabled: state.enabled?.validatedValue,
             assetIds: state.assetIds?.validatedValue,
             featuredAssetId: state.featuredAssetId?.validatedValue,
-            customFields: state.customFields?.validatedValue,
+            // customFields: state.customFields?.validatedValue,
             // customFields: {
             //   discountBy:
             //     state.customFields?.validatedValue?.discountBy && +state.customFields?.validatedValue?.discountBy,
@@ -210,32 +209,6 @@ export const ProductsDetailPage = () => {
     [currentTranslationLng, translations],
   );
 
-  const setTranslationCustomField = useCallback(
-    (translationCustomField: string, data: string | undefined) => {
-      setField(
-        'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
-          customFields: {
-            ...translations.find((t) => t.languageCode === currentTranslationLng)?.customFields,
-            [translationCustomField]: data,
-          },
-          languageCode: currentTranslationLng,
-        }),
-      );
-      // setCustomField(translationCustomField, data);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentTranslationLng, translations],
-  );
-
-  const setCustomField = useCallback(
-    (customField: string, e: string | undefined) => {
-      setField('customFields', { ...state.customFields?.value, [customField]: e });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state.customFields],
-  );
-
   const handleFacetCheckboxChange = (itemId: string, checked: boolean) => {
     const current = state.facetValueIds?.value;
     if (checked) {
@@ -248,9 +221,7 @@ export const ProductsDetailPage = () => {
   };
 
   return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
+    <Spinner height={'80vh'} />
   ) : (
     <Stack column className="gap-y-4">
       <PageHeader editMode={editMode} product={product} onCreate={createProduct} />
@@ -277,8 +248,8 @@ export const ProductsDetailPage = () => {
                 onSlugChange={(e) => setTranslationField('slug', e.target.value)}
                 onDescChange={(e) => setTranslationField('description', e)}
               />
-              <CustomFieldsComponent
-                data={{}}
+              <EntityCustomFields entityName="product" id={id} currentLanguage={currentTranslationLng} />
+              {/* <CustomFieldsComponent
                 value={state.customFields?.value}
                 translation={currentTranslationValue}
                 setValue={(field, data) => {
@@ -287,8 +258,8 @@ export const ProductsDetailPage = () => {
                   else setCustomField(field.name, data as string);
                 }}
                 customFields={productCustomFields}
-                language={currentTranslationValue?.languageCode}
-              />
+              /> */}
+
               {/* <Stack className="grid grid-cols-3 gap-4">
                 <TextCard
                   label={t('customFields.textCards.completionDate')}
