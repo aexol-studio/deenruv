@@ -7,6 +7,7 @@ module.exports = {
     './constants/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './node_modules/@deenruv/react-ui-devkit/src/**/*.{ts,tsx}',
   ],
   theme: {
     container: {

@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  EntityCustomFields,
   Input,
   ScrollArea,
   Stack,
@@ -109,7 +110,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild onClick={() => getAsset()}>
         <div className="flex h-fit cursor-pointer flex-col items-center justify-between border border-solid border-gray-300 text-center dark:border-gray-700">
-          <div className="relative h-20 w-20">
+          <div className="relative h-28 w-28">
             <img className="absolute left-0 top-0 h-full w-full" src={asset.preview + '?preset=tiny'} />
           </div>
           <Tooltip>
@@ -122,7 +123,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
           </Tooltip>
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-[60vw]">
+      <DialogContent className="max-w-[70vw]">
         <DialogHeader>
           <DialogTitle>{asset.name}</DialogTitle>
         </DialogHeader>
@@ -131,17 +132,20 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
             <div className="w-1/2 border border-solid border-gray-300 p-2 shadow">
               <img src={assetDetails?.source + '?preset=medium'} />
             </div>
-            <Stack column className="w-1/2 justify-between">
-              <Table containerClassName="pl-8 w-full">
-                <TableBody className="w-full text-base">
-                  {tableData.map((d, i) => (
-                    <TableRow key={i}>
-                      <TableCell className="font-medium">{d.header}</TableCell>
-                      <TableCell className="break-all">{d.render}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+            <Stack column className="w-1/2 gap-4 pl-8 pr-2">
+              <div>
+                <Table containerClassName="w-full">
+                  <TableBody className="w-full text-base">
+                    {tableData.map((d, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="font-medium">{d.header}</TableCell>
+                        <TableCell className="break-all">{d.render}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              <EntityCustomFields entityName="asset" id={asset?.id} />
             </Stack>
           </Stack>
         </ScrollArea>

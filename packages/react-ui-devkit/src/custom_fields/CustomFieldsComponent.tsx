@@ -46,7 +46,7 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
             )}
             {Object.entries(rendered).map(([tab, fields]) => (
                 <TabsContent key={tab} value={tab}>
-                    <div className="grid min-h-[200px] w-full grid-cols-2">
+                    <div className="flex flex-wrap gap-4">
                         {fields.map((field, idx) => {
                             const _field = customFields?.find(f => 'name' in f && f.name === field.name);
                             if (!_field) return null;
@@ -73,13 +73,7 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
                                     setValue={data => setValue(_field, data)}
                                 >
                                     <Suspense fallback={<span>Loading...</span>}>
-                                        <div
-                                            className={`w-full pb-4
-                                                    ${idx % 2 == 0 && fields.length > 1 && 'pr-4 border-r'}
-                                                    ${idx % 2 != 0 && fields.length > 1 && 'pl-4'}
-                                                    ${idx > 1 && fields.length > 2 && 'border-t pt-4'}
-                                                    `}
-                                        >
+                                        <div className={`flex-1 min-w-[250px] basis-1/3`}>
                                             {field.component}
                                         </div>
                                     </Suspense>

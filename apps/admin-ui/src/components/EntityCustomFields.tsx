@@ -18,20 +18,20 @@ import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 
-type ViableEntity = Lowercase<keyof Pick<ModelTypes, 'Product' | 'Order'>>;
+type ViableEntity = Lowercase<keyof Pick<ModelTypes, 'Product' | 'Order' | 'Asset'>>;
 type CustomFields = Record<string, any>;
 
 type Props<T extends ViableEntity> = {
   entityName: T;
-  currentLanguage: LanguageCode;
-  id?: string;
+  id: string;
+  currentLanguage?: LanguageCode;
 };
 
 const entityDictionary: Record<
   ViableEntity,
   {
-    inputName: keyof Pick<ModelTypes, 'UpdateOrderInput' | 'UpdateProductInput'>;
-    mutationName: keyof Pick<ModelTypes['Mutation'], 'setOrderCustomFields' | 'updateProduct'>;
+    inputName: keyof Pick<ModelTypes, 'UpdateOrderInput' | 'UpdateProductInput' | 'UpdateAssetInput'>;
+    mutationName: keyof Pick<ModelTypes['Mutation'], 'setOrderCustomFields' | 'updateProduct' | 'updateAsset'>;
   }
 > = {
   product: {
@@ -41,6 +41,10 @@ const entityDictionary: Record<
   order: {
     inputName: 'UpdateOrderInput',
     mutationName: 'setOrderCustomFields',
+  },
+  asset: {
+    inputName: 'UpdateAssetInput',
+    mutationName: 'updateAsset',
   },
 };
 
@@ -70,7 +74,7 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
   );
 
   useEffect(() => {
-    if (!entityCustomFields.length || !id) return;
+    if (!entityCustomFields.length) return;
 
     try {
       setLoading(true);
@@ -122,7 +126,7 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
     }
   }, [state, entityName]);
 
-  if (!entityCustomFields || !id) return <></>;
+  if (!entityCustomFields?.length) return <></>;
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations?.find((v) => v.languageCode === currentLanguage);
@@ -143,9 +147,7 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
             setValue={(field, data) => {
               const translatable = field.type === 'localeText' || field.type === 'localeString';
 
-              if (!translatable) {
-                setField('customFields', { ...state.customFields?.value, [field.name]: data });
-              } else
+              if (translatable && currentLanguage) {
                 setField(
                   'translations',
                   setInArrayBy(translations, (t) => t.languageCode !== currentLanguage, {
@@ -156,6 +158,13 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
                     languageCode: currentLanguage,
                   }),
                 );
+                return;
+              }
+
+              if (!translatable) {
+                setField('customFields', { ...state.customFields?.value, [field.name]: data });
+                return;
+              }
             }}
             customFields={entityCustomFields}
           />

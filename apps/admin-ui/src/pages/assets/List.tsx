@@ -204,8 +204,8 @@ export const AssetsListPage = () => {
           setFilterLogicalOperator={setFilterLogicalOperator}
         />
       </div>
-      <motion.div className="relative my-6 flex flex-col items-center">
-        <div className="grid h-[50vh] grid-cols-8 gap-2">
+      <motion.div className="relative my-6 flex flex-col">
+        <div className="grid min-h-[50vh] grid-cols-8 gap-2">
           {assets?.map((a) => <Asset key={a.id} asset={a} onAssetChange={refetch} />)}
         </div>
       </motion.div>

@@ -222,7 +222,7 @@ export const OrdersDetailPage = () => {
               <ShippingMethod />
             </div>
             <ProductsCard />
-            <EntityCustomFields entityName="order" id={id} />
+            {id && <EntityCustomFields entityName="order" id={id} />}
             <TaxSummary />
             <Payments />
             <OrderHistory />

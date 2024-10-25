@@ -46,10 +46,10 @@ import { toast } from 'sonner';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types';
 import { OrderLineActionModal } from './OrderLineActionModal';
 import { cn } from '@/lib/utils';
-import { useServer } from '@/state';
+// import { useServer } from '@/state';
 // import { CustomFieldsComponent } from '@/custom_fields';
 import { CustomComponent } from './CustomComponent';
-import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
+// import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 // import { useServer } from '@/state';
 
 type AddItemCustomFieldsType = any;
@@ -82,9 +82,9 @@ export const ProductsCard: React.FC = () => {
     { action: OrderLineActions | undefined; line: DraftOrderLineType } | undefined
   >();
   const isLineAddedInModify = (lineId: string) => order?.lines.findIndex((l) => l.id === lineId) === -1;
-  const orderLineCustomFields = useServer(
-    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
-  );
+  // const orderLineCustomFields = useServer(
+  //   (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+  // );
   const addToOrder = async (
     productVariant: ProductVariantType,
     quantity: number,
@@ -594,12 +594,12 @@ export const ProductsCard: React.FC = () => {
                     <div className="flex w-full flex-col items-center gap-2">
                       <div className="flex w-full flex-col">
                         <LineItem noBorder noHover variant={{ ...selectedVariant, quantity: 1 }} />
-                        <CustomFieldsComponent
+                        {/* <CustomFieldsComponent
                           data={{ selectedVariant }}
                           value={undefined}
                           setValue={(field, data) => {}}
                           customFields={orderLineCustomFields}
-                        />
+                        /> */}
                         <CustomComponent
                           onVariantAdd={handleNewVariantAdd}
                           productId={selectedVariant.product.id}

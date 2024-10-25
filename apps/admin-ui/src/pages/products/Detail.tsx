@@ -248,7 +248,7 @@ export const ProductsDetailPage = () => {
                 onSlugChange={(e) => setTranslationField('slug', e.target.value)}
                 onDescChange={(e) => setTranslationField('description', e)}
               />
-              <EntityCustomFields entityName="product" id={id} currentLanguage={currentTranslationLng} />
+              {id && <EntityCustomFields entityName="product" id={id} currentLanguage={currentTranslationLng} />}
               {/* <CustomFieldsComponent
                 value={state.customFields?.value}
                 translation={currentTranslationValue}
