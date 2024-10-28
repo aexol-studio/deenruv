@@ -10,13 +10,13 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button, ScrollArea } from '@/components';
-import { ResolverInputTypes } from '@/zeus';
 import { cn } from '@/lib/utils';
 import { useCustomFields } from '@/custom_fields';
 import React from 'react';
 
 import { useList } from '@/useList';
-import { client } from '@/client';
+import { client } from '@/zeus-client';
+import type { ResolverInputTypes } from '@deenruv/admin-types';
 
 const getProductsVariants = async (options: ResolverInputTypes['ProductVariantListOptions']) => {
     const response = await client('query')({

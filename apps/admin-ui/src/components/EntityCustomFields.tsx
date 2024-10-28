@@ -56,16 +56,13 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
   const { t } = useTranslation('common');
   const [loading, setLoading] = useState(true);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
-  const allCustomFields = useServer((p) => p.serverConfig?.entityCustomFields);
+  const entityCustomFields = useServer((p) =>
+    p.serverConfig?.entityCustomFields?.find((el) => el.entityName.toLowerCase() === entityName),
+  )?.customFields;
 
   const capitalizedEntityName = useMemo(
     () => (entityName.charAt(0).toUpperCase() + entityName.slice(1)) as Capitalize<T>,
     [entityName],
-  );
-
-  const entityCustomFields = useMemo(
-    () => allCustomFields?.find((el) => el.entityName.toLowerCase() === entityName)?.customFields || [],
-    [allCustomFields, entityName],
   );
 
   const runtimeSelector = useMemo(
@@ -73,8 +70,13 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
     [entityCustomFields, capitalizedEntityName],
   );
 
+  const relationFields = useMemo(
+    () => entityCustomFields?.filter((el) => el.__typename === 'RelationCustomFieldConfig').map((el) => el.name),
+    [entityCustomFields],
+  );
+
   useEffect(() => {
-    if (!entityCustomFields.length) return;
+    if (!entityCustomFields?.length) return;
 
     try {
       setLoading(true);
@@ -108,19 +110,35 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
   const updateEntity = useCallback(async () => {
     const mutationName = entityDictionary[entityName]['mutationName'];
 
+    const preparedCustomFields = Object.entries(
+      (state.customFields?.validatedValue || {}) as Record<string, any>,
+    ).reduce(
+      (acc, [key, val]) => {
+        if (relationFields?.includes(key)) {
+          const newKey = `${key}Id`;
+          acc[newKey] = val?.id || null;
+        } else acc[key] = val;
+
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
+
     try {
       await apiCall()('mutation')({
         [mutationName]: [
           {
             input: {
               id,
-              customFields: state.customFields?.validatedValue,
+              customFields: preparedCustomFields,
               translations: state?.translations?.validatedValue,
             },
           },
           { id: true },
         ],
       } as any);
+
+      toast.success(t('custom-fields.toasts.success'));
     } catch (err) {
       toast.error(getGqlError(err) || t('custom-fields.toasts.error.mutation'));
     }
@@ -169,7 +187,10 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
             customFields={entityCustomFields}
           />
         )}
-        <Button onClick={updateEntity}>Update</Button>
+        <hr className="my-4" />
+        <div className="flex justify-end">
+          <Button onClick={updateEntity}>{t('update')}</Button>
+        </div>
       </CardContent>
     </Card>
   );

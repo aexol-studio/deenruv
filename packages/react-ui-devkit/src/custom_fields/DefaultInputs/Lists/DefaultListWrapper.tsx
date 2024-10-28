@@ -1,6 +1,6 @@
 import { Button, ScrollArea } from '@/components';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { GraphQLTypes } from '@/zeus';
+import type { GraphQLTypes } from '@deenruv/admin-types';
 import React, { PropsWithChildren } from 'react';
 
 export const DefaultListWrapper: React.FC<

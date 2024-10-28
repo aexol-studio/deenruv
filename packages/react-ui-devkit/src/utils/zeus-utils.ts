@@ -1,4 +1,7 @@
-import { CustomFieldConfigType, LanguageCode, Selector, ValueTypes } from '@deenruv/admin-types';
+import { type CustomFieldConfigType, Selector, type ValueTypes } from '@deenruv/admin-types';
+
+type CustomFieldType = boolean | { [key: string]: CustomFieldType };
+type CustomFieldsType = Record<string, CustomFieldType>;
 
 function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
     const isObject = (obj: any) => obj && typeof obj === 'object';
@@ -22,8 +25,19 @@ function deepMerge<T extends object, U extends object>(target: T, source: U): T 
 const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => {
     const reduced = customFields.reduce(
         (acc, field) => {
-            if (field.type === 'relation') {
-                // TODO
+            if (field.__typename === 'RelationCustomFieldConfig') {
+                const relationSelectors = field.scalarFields.reduce(
+                    (acc, val) => ({
+                        ...acc,
+                        [val]: true,
+                    }),
+                    {},
+                );
+                acc.customFields = {
+                    ...acc.customFields,
+                    [field.name]: relationSelectors,
+                };
+
                 return acc;
             }
             if (['localeString', 'localeText'].includes(field.type)) {
@@ -44,8 +58,8 @@ const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => 
             return acc;
         },
         { translations: { customFields: {} }, customFields: {} } as {
-            translations?: { customFields: Record<string, boolean>; languageCode: true };
-            customFields?: Record<string, boolean>;
+            translations?: { customFields: CustomFieldsType; languageCode: true };
+            customFields?: CustomFieldsType;
         },
     );
     if (!Object.keys(reduced.translations?.customFields || {}).length) delete reduced.translations;

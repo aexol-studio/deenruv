@@ -18,8 +18,8 @@ export type CustomFieldConfigMap = {
 
 export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typename'], K> = {
     field?: GraphQLTypes['CustomFieldConfig'][`...on ${T}`];
-    value?: string | number | boolean;
-    setValue: (data: string | number | boolean) => void;
+    value?: any;
+    setValue: (data: any) => void;
     data?: K;
     label?: string;
     description?: string;

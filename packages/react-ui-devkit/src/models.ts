@@ -1,4 +1,4 @@
-import { LogicalOperator, ModelTypes, SortOrder } from '@/zeus';
+import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import React from 'react';
 
 export type PaginationInputSort = { key: string; sortDir: SortOrder };

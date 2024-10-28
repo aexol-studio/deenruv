@@ -1,4 +1,10 @@
 {
+  "update": "Aktualizuj",
+  "save": "Zapisz",
+  "remove": "Usuń",
+  "upload": "Prześlij",
+  "cancel": "Anuluj",
+  "accept": "Akceptuj",
   "back": "Powrót",
   "defaultChannel": "Kanał domyślny",
   "confirmationDialog": {
@@ -444,7 +450,6 @@
     "noImages": "Nie ma zasobów dla określonego wyszukiwania",
     "description": "Przesyłaj i zarządzaj aktywami które mogą zostać użyte w twojej zawartości"
   },
-  "upload": "Prześlij",
   "paymentMethods": {
     "przelewy24": "Przelewy24",
     "standard-payment": "Standardowa płatność",
@@ -466,6 +471,7 @@
     "title": "Pola niestandardowe",
     "description": "Pola stworzone poprzez pluginy serwerowe zostaną tutaj wyświetlone",
     "toasts": {
+      "success": "Zaktualizowano",
       "error": {
         "fetch": "Napotkaliśmy błąd podczas pobierania danych",
         "mutation": "Napotkaliśmy błąd podczas aktualizacji pól"

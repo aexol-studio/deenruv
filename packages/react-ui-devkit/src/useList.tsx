@@ -9,13 +9,13 @@ import {
 } from '@/components/ui/pagination';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { LogicalOperator, ModelTypes, SortOrder } from '@/zeus';
 import React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/models';
 import { cache } from './cache';
+import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 
 type LimitKeys =
     | '10perPage'
@@ -73,10 +73,12 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     route,
     listType,
     customItemsPerPage,
+    options,
 }: {
     route: T;
     listType: K;
     customItemsPerPage?: ItemsPerPageType;
+    options?: { skip?: boolean };
 }): {
     Paginate: JSX.Element;
     objects: GenericReturn<T> | undefined;
@@ -94,6 +96,8 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     removeFilterField: (filterField: keyof ModelTypes[ListType[K]]) => void;
     isFilterOn: boolean;
 } => {
+    const { skip } = options || {};
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [total, setTotal] = useState(0);
     const [objects, setObjects] = useState<GenericReturn<T>>();
@@ -203,6 +207,8 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     }, [searchParamValues]);
 
     useEffect(() => {
+        if (skip) return;
+
         const c = cache<{
             items: GenericReturn<T>;
             totalItems: number;
@@ -221,7 +227,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
             c.set(key, r);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchParamValues]);
+    }, [searchParamValues, skip]);
 
     const totalPages = useMemo(
         () => Math.ceil(total / searchParamValues.perPage),

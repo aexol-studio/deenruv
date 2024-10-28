@@ -1,4 +1,4 @@
-import { CurrencyCode } from '@/zeus';
+import { CurrencyCode } from '@deenruv/admin-types';
 
 /**
  * @param price - price to format

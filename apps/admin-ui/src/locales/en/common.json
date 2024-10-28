@@ -1,4 +1,9 @@
 {
+  "update": "Update",
+  "save": "Save",
+  "remove": "Remove",
+  "upload": "Upload",
+  "cancel": "Cancel",
   "back": "Back",
   "defaultChannel": "Default channel",
   "confirmationDialog": {
@@ -449,7 +454,6 @@
     "noImages": "There is no assets for specified search",
     "description": "Upload and manage assets that can be used in your content"
   },
-  "upload": "Upload",
   "paymentMethods": {
     "przelewy24": "Przelewy24",
     "standard-payment": "Standard payment",
@@ -471,6 +475,7 @@
     "title": "Custom fields",
     "description": "Fields created through server plugins can be found here",
     "toasts": {
+      "success": "Entity updated successfully",
       "error": {
         "fetch": "Error while fetching data",
         "mutation": "Error while updating"

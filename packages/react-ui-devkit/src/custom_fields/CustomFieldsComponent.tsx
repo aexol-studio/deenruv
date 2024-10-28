@@ -47,20 +47,21 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
             {Object.entries(rendered).map(([tab, fields]) => (
                 <TabsContent key={tab} value={tab}>
                     <div className="flex flex-wrap gap-4">
-                        {fields.map((field, idx) => {
+                        {fields.map(field => {
                             const _field = customFields?.find(f => 'name' in f && f.name === field.name);
                             if (!_field) return null;
                             let _value = undefined;
+
                             if (
-                                'name' in _field &&
-                                (('type' in _field && _field.type === 'localeText') ||
-                                    ('type' in _field && _field.type === 'localeString'))
+                                ['LocaleStringCustomFieldConfig', 'LocaleTextCustomFieldConfig'].includes(
+                                    _field.__typename,
+                                )
                             ) {
                                 _value = translation?.customFields
-                                    ? translation.customFields[_field.name as string]
+                                    ? translation.customFields[_field.name]
                                     : undefined;
-                            } else if ('name' in _field) {
-                                _value = value ? value[_field.name as string] : undefined;
+                            } else {
+                                _value = value ? value[_field.name] : undefined;
                             }
 
                             return (
