@@ -1,3 +1,4 @@
+import { ADMIN_API_URL } from '@deenruv/react-ui-devkit';
 import { Chain, ZeusScalars } from '../zeus';
 
 export const scalars = ZeusScalars({
@@ -12,4 +13,4 @@ export const scalars = ZeusScalars({
     },
 });
 
-export const client = Chain('http://localhost:3000/admin-api', { credentials: 'include' });
+export const client = Chain(ADMIN_API_URL, { credentials: 'include' });

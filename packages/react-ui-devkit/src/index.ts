@@ -5,3 +5,4 @@ export * from './widgets';
 export * from './utils';
 export * from './lib';
 export * from './custom_fields';
+export * from './zeus-client';

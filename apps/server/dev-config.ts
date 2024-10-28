@@ -21,6 +21,10 @@ import { s3Client } from './client-s3';
 /**
  * Config settings used during development
  */
+
+export const IS_DEV = process.env.APP_ENV === 'LOCAL';
+export const HOST = process.env.APP_ENV === 'LOCAL' ? 'http://localhost:3000' : '';
+
 export const devConfig: DeenruvConfig = {
     apiOptions: {
         port: API_PORT,
@@ -120,7 +124,7 @@ export const devConfig: DeenruvConfig = {
             route: 'assets',
             assetUploadDir: path.join(__dirname, 'assets'),
             namingStrategy: new DefaultAssetNamingStrategy(),
-            assetUrlPrefix: `http://localhost:3000/assets/`,
+            assetUrlPrefix: `${HOST}/assets/`,
             storageStrategyFactory: configureS3AssetStorage({
                 bucket: 'deenruv-asset-bucket',
                 credentials: {

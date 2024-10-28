@@ -8,9 +8,10 @@ import {
     fetchOptions,
 } from '@deenruv/admin-types';
 
-const GRAPHQL_ENDPOINT = 'http://localhost:3000/admin-api';
+//@ts-ignore
+const ADMIN_API_URL = import.meta.env.DEV ? `http://localhost:3000/admin-api` : '/admin-api';
 
-const client = Chain(GRAPHQL_ENDPOINT, { credentials: 'include' });
+const client = Chain(ADMIN_API_URL, { credentials: 'include' });
 
 const uploadFileApi =
     (options: fetchOptions) =>
@@ -51,7 +52,7 @@ const uploadFileApi =
 
 const VendureUploadChain = (...options: chainOptions) => Thunder(uploadFileApi(options));
 
-const uploadClient = VendureUploadChain(GRAPHQL_ENDPOINT, { credentials: 'include' });
+const uploadClient = VendureUploadChain(ADMIN_API_URL, { credentials: 'include' });
 
 const handleFetchResponse = (response: Response): Promise<GraphQLResponse> => {
     if (!response.ok) {
@@ -71,4 +72,4 @@ const handleFetchResponse = (response: Response): Promise<GraphQLResponse> => {
     return response.json() as Promise<GraphQLResponse>;
 };
 
-export { client, uploadClient, GRAPHQL_ENDPOINT };
+export { client, uploadClient, ADMIN_API_URL };

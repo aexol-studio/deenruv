@@ -10,11 +10,7 @@ import {
 } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 
-//use 'http://localhost:3000/shop-api/' in local .env file for localhost development and provide env to use on prod/dev envs
-
-export const VENDURE_HOST = `http://localhost:3000/admin-api`;
-// export const VENDURE_HOST = `https://shop.qa.minko.aexol.work/admin-api`;
-// export const VENDURE_HOST = `${import.meta.env.VITE_ADMINUI_HOST || 'https://shop.dev.minko.aexol.work'}/admin-api`;
+export const ADMIN_API_URL = import.meta.env.DEV ? `http://localhost:3000/admin-api` : '/admin-api';
 
 const apiFetchVendure =
   (options: fetchOptions) =>
@@ -151,7 +147,7 @@ const buildHeaders = (): Parameters<typeof VendureChain>[1] => {
       };
 };
 const buildURL = (): string => {
-  return `${VENDURE_HOST}?languageCode=${useSettings.getState().translationsLanguage}`;
+  return `${ADMIN_API_URL}?languageCode=${useSettings.getState().translationsLanguage}`;
 };
 
 export const apiCall = () => VendureChain(buildURL(), { ...buildHeaders() });
