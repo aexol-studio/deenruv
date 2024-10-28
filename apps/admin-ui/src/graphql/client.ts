@@ -8,9 +8,8 @@ import {
   chainOptions,
   fetchOptions,
 } from '@deenruv/admin-types';
+import { ADMIN_API_URL } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
-
-export const ADMIN_API_URL = import.meta.env.DEV ? `http://localhost:3000/admin-api` : '/admin-api';
 
 const apiFetchVendure =
   (options: fetchOptions) =>
