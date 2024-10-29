@@ -37,6 +37,40 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             },
         );
 
+        // primivite fields
+        config.customFields.Product.push({
+            name: 'boolTest',
+            type: 'boolean',
+            label: [{ languageCode: LanguageCode.en, value: 'boolean Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'floatTest',
+            type: 'float',
+            label: [{ languageCode: LanguageCode.en, value: 'float Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'intTest',
+            type: 'int',
+            label: [{ languageCode: LanguageCode.en, value: 'int Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'stringTest',
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'string Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'textTest',
+            type: 'text',
+            label: [{ languageCode: LanguageCode.en, value: 'text Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'dateTime',
+            type: 'datetime',
+            label: [{ languageCode: LanguageCode.en, value: 'dateTime Test' }],
+        });
+        // primivite fields
+
+        // primivite LIST fields
         config.customFields.Product.push({
             name: 'listTestString',
             type: 'string',
@@ -65,11 +99,6 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             label: [{ languageCode: LanguageCode.en, value: 'Text list test' }],
         });
         config.customFields.Product.push({
-            name: 'dateTime',
-            type: 'datetime',
-            label: [{ languageCode: LanguageCode.en, value: 'dateTime Test' }],
-        });
-        config.customFields.Product.push({
             name: 'listLocaleString',
             list: true,
             type: 'localeString',
@@ -81,6 +110,7 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             type: 'localeText',
             label: [{ languageCode: LanguageCode.en, value: 'listLocaleText Test' }],
         });
+        // primivite LIST fields
 
         config.customFields.Asset.push(
             {

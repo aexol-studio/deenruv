@@ -28,35 +28,40 @@ export function generateCustomFields(
 }
 
 function generateSingleFields({ field }: { field: any }) {
+    const simpleListable = [
+        'FloatCustomFieldConfig',
+        'IntCustomFieldConfig',
+        'StringCustomFieldConfig',
+        'TextCustomFieldConfig',
+        'LocaleStringCustomFieldConfig',
+        'LocaleTextCustomFieldConfig',
+    ];
+
+    if (simpleListable.includes(field?.__typename) && field.list)
+        return { ...field, component: <DefaultSimpleListInput /> };
+
     switch (field.__typename) {
         case 'BooleanCustomFieldConfig':
             return { ...field, component: <DefaultCheckbox /> };
         case 'DateTimeCustomFieldConfig':
             return { ...field, component: <DefaultTimeSelect /> };
         case 'FloatCustomFieldConfig':
-            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultFloatInput /> };
-        case 'IntCustomFieldConfig': {
-            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
+        case 'IntCustomFieldConfig':
             return { ...field, component: <DefaultIntInput /> };
-        }
         case 'StringCustomFieldConfig':
-            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
-            return { ...field, component: <DefaultTextInput /> };
-        case 'TextCustomFieldConfig': {
-            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
-            return { ...field, component: <DefaultTextarea /> };
-        }
         case 'LocaleStringCustomFieldConfig':
-            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextInput /> };
+        case 'TextCustomFieldConfig':
         case 'LocaleTextCustomFieldConfig':
-            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextarea /> };
         case 'RelationCustomFieldConfig':
             return { ...field, component: <DefaultRelationInput /> };
         default:
             //TODO: Implement other field types
-            return { name: '🏗️', component: <span className="text-sm font-bold">Not implemented yet</span> };
+            return {
+                name: '🏗️',
+                component: <span className="text-sm font-bold">Not implemented yet</span>,
+            };
     }
 }
