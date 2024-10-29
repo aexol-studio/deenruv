@@ -36,6 +36,42 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                 nullable: true,
             },
         );
+        config.customFields.Product.push({
+            name: 'listTestString',
+            type: 'string',
+            list: true,
+            label: [
+                { languageCode: LanguageCode.en, value: 'String list test' },
+                { languageCode: LanguageCode.pl, value: 'test listy String' },
+            ],
+        });
+        config.customFields.Product.push({
+            name: 'listTestInt',
+            type: 'int',
+            list: true,
+            label: [
+                { languageCode: LanguageCode.en, value: 'int list test' },
+                { languageCode: LanguageCode.pl, value: 'test listy int' },
+            ],
+        });
+        config.customFields.Product.push({
+            name: 'listTestFloat',
+            type: 'float',
+            list: true,
+            label: [
+                { languageCode: LanguageCode.en, value: 'float list test' },
+                { languageCode: LanguageCode.pl, value: 'test listy float' },
+            ],
+        });
+        config.customFields.Product.push({
+            name: 'listTestText',
+            type: 'text',
+            list: true,
+            label: [
+                { languageCode: LanguageCode.en, value: 'Text list test' },
+                { languageCode: LanguageCode.pl, value: 'test listy Text' },
+            ],
+        });
 
         config.customFields.Asset.push(
             {

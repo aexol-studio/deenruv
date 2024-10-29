@@ -7,10 +7,9 @@ import {
     DefaultTextInput,
     DefaultTextarea,
     DefaultRelationInput,
-    // DefaultListWrapper,
-    // DefaultListLineWrapper,
 } from './DefaultInputs';
 import React from 'react';
+import { DefaultSimpleListInput } from './DefaultInputs/Lists/DefaultSimpleListInput';
 
 export function generateCustomFields(
     customFields: CustomFieldConfigType[],
@@ -23,13 +22,7 @@ export function generateCustomFields(
         const Registered = ui && 'component' in ui && getInputComponent(ui.component as string);
         if (Registered) {
             fields.push({ ...field, tab, component: <Registered /> });
-        } else if ('list' in field && field.list) {
-            //TODO: Implement list fields
-            // fields.push({ ...field, component: <DefaultListWrapper {...generateSingleFields({ field })} />, tab });
-            // fields.push({ ...field, component: <DefaultListLineWrapper {...generateSingleFields({ field })} />, tab });
-        } else {
-            fields.push({ ...field, ...generateSingleFields({ field }), tab });
-        }
+        } else fields.push({ ...field, ...generateSingleFields({ field }), tab });
     }
     return fields;
 }
@@ -41,15 +34,21 @@ function generateSingleFields({ field }: { field: any }) {
         case 'DateTimeCustomFieldConfig':
             return { ...field, component: <DefaultTimeSelect /> };
         case 'FloatCustomFieldConfig':
+            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultFloatInput /> };
-        case 'IntCustomFieldConfig':
+        case 'IntCustomFieldConfig': {
+            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultIntInput /> };
+        }
         case 'StringCustomFieldConfig':
+            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextInput /> };
         case 'LocaleStringCustomFieldConfig':
             return { ...field, component: <DefaultTextInput /> };
-        case 'TextCustomFieldConfig':
+        case 'TextCustomFieldConfig': {
+            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextarea /> };
+        }
         case 'LocaleTextCustomFieldConfig':
             return { ...field, component: <DefaultTextarea /> };
         case 'RelationCustomFieldConfig':
