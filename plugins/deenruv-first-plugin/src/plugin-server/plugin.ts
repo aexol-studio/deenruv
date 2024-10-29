@@ -1,4 +1,4 @@
-import { PluginCommonModule, DeenruvPlugin, LanguageCode } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset } from '@deenruv/core';
 import { AdminResolver } from './resolvers/admin.resolver';
 import { BetterMetricsService } from './services/metrics.service';
 import gql from 'graphql-tag';
@@ -112,6 +112,42 @@ import { AdminUIController } from './controllers/admin-ui-controller';
         });
         // primivite LIST fields
 
+        // relation fields
+        config.customFields.Product.push({
+            name: 'singleAssetTest',
+            type: 'relation',
+            graphQLType: 'Asset',
+            entity: Asset,
+            public: true,
+            nullable: true,
+            eager: true,
+            label: [{ languageCode: LanguageCode.en, value: 'single asset Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
+        });
+        config.customFields.Product.push({
+            name: 'listAssetTest',
+            type: 'relation',
+            graphQLType: 'Asset',
+            entity: Asset,
+            public: true,
+            nullable: true,
+            eager: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'list asset Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
+        });
+        // relation fields
+
         config.customFields.Asset.push(
             {
                 name: 'attributes',
@@ -122,7 +158,10 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                 ],
                 description: [
                     { languageCode: LanguageCode.en, value: 'Here you can specify order attributes' },
-                    { languageCode: LanguageCode.pl, value: 'Tutaj możesz opisać różne atrybuty zamówienia' },
+                    {
+                        languageCode: LanguageCode.pl,
+                        value: 'Tutaj możesz opisać różne atrybuty zamówienia',
+                    },
                 ],
                 defaultValue: '',
                 nullable: true,

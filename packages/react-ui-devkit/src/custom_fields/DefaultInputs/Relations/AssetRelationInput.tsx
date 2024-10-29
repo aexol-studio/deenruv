@@ -36,7 +36,7 @@ const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
     return response.assets;
 };
 
-export function AssetsRelationInput() {
+export function AssetRelationInput() {
     const { value, label, field, setValue } = useCustomFields<'RelationCustomFieldConfig'>();
     const [modalOpened, setModalOpened] = useState(false);
     const { t } = useTranslation('common');

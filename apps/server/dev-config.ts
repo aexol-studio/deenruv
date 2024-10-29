@@ -142,10 +142,10 @@ export const devConfig: DeenruvConfig = {
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
         BullMQJobQueuePlugin.init({}),
         DeenruvFirstPlugin,
-        MinkoCorePlugin.init({
-            s3Client,
-            expiresIn: 60 * 60 * 24 * 3,
-            bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
-        }),
+        // MinkoCorePlugin.init({
+        //     s3Client,
+        //     expiresIn: 60 * 60 * 24 * 3,
+        //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
+        // }),
     ],
 };

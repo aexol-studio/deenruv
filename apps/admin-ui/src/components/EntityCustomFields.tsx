@@ -117,8 +117,8 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
     ).reduce(
       (acc, [key, val]) => {
         if (relationFields?.includes(key)) {
-          const newKey = `${key}Id`;
-          acc[newKey] = val?.id || null;
+          const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+          acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
         } else acc[key] = val;
 
         return acc;
