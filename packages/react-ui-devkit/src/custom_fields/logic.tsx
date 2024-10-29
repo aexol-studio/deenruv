@@ -43,13 +43,15 @@ function generateSingleFields({ field }: { field: any }) {
         case 'StringCustomFieldConfig':
             if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextInput /> };
-        case 'LocaleStringCustomFieldConfig':
-            return { ...field, component: <DefaultTextInput /> };
         case 'TextCustomFieldConfig': {
             if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextarea /> };
         }
+        case 'LocaleStringCustomFieldConfig':
+            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
+            return { ...field, component: <DefaultTextInput /> };
         case 'LocaleTextCustomFieldConfig':
+            if (field.list) return { ...field, component: <DefaultSimpleListInput /> };
             return { ...field, component: <DefaultTextarea /> };
         case 'RelationCustomFieldConfig':
             return { ...field, component: <DefaultRelationInput /> };

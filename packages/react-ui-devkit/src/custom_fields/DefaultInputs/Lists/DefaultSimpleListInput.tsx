@@ -18,6 +18,9 @@ export function DefaultSimpleListInput() {
     const { field, value, label, description, setValue } = useCustomFields<'TextCustomFieldConfig'>();
     const [inputValue, setInputValue] = useState<string | number>('');
 
+    const isNumber = field?.type === 'int' || field?.type === 'float';
+    const isTextArea = field?.type === 'text' || field?.type === 'localeText';
+
     const badges = useMemo(() => {
         {
             return value?.map((el: string | number) => (
@@ -39,7 +42,7 @@ export function DefaultSimpleListInput() {
             <CardDescription>{description}</CardDescription>
             <div className="flex flex-wrap gap-2">{badges}</div>
             <div className="flex gap-1 align-center">
-                {field?.type === 'text' ? (
+                {isTextArea ? (
                     <Textarea
                         id={field?.name}
                         rows={2}
@@ -54,9 +57,9 @@ export function DefaultSimpleListInput() {
                         onChange={e => {
                             const val = e.target.value;
 
-                            if (field?.type === 'int' || field?.type === 'float') {
+                            if (isNumber) {
                                 const validInput = /^[0-9]*\.?[0-9]*$/;
-                                if (validInput.test(val)) setInputValue(e.target.value);
+                                if (validInput.test(val)) setInputValue(val);
                             } else {
                                 setInputValue(val);
                             }
@@ -67,7 +70,7 @@ export function DefaultSimpleListInput() {
                     variant="action"
                     size="icon"
                     onClick={() => {
-                        setValue([...(value || []), inputValue]);
+                        setValue([...(value || []), isNumber ? Number(inputValue) : inputValue]);
                         setInputValue('');
                     }}
                 >

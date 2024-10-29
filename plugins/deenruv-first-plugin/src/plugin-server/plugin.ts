@@ -36,6 +36,7 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                 nullable: true,
             },
         );
+
         config.customFields.Product.push({
             name: 'listTestString',
             type: 'string',
@@ -49,28 +50,36 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             name: 'listTestInt',
             type: 'int',
             list: true,
-            label: [
-                { languageCode: LanguageCode.en, value: 'int list test' },
-                { languageCode: LanguageCode.pl, value: 'test listy int' },
-            ],
+            label: [{ languageCode: LanguageCode.en, value: 'int list test' }],
         });
         config.customFields.Product.push({
             name: 'listTestFloat',
             type: 'float',
             list: true,
-            label: [
-                { languageCode: LanguageCode.en, value: 'float list test' },
-                { languageCode: LanguageCode.pl, value: 'test listy float' },
-            ],
+            label: [{ languageCode: LanguageCode.en, value: 'float list test' }],
         });
         config.customFields.Product.push({
             name: 'listTestText',
             type: 'text',
             list: true,
-            label: [
-                { languageCode: LanguageCode.en, value: 'Text list test' },
-                { languageCode: LanguageCode.pl, value: 'test listy Text' },
-            ],
+            label: [{ languageCode: LanguageCode.en, value: 'Text list test' }],
+        });
+        config.customFields.Product.push({
+            name: 'dateTime',
+            type: 'datetime',
+            label: [{ languageCode: LanguageCode.en, value: 'dateTime Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'listLocaleString',
+            list: true,
+            type: 'localeString',
+            label: [{ languageCode: LanguageCode.en, value: 'listLocaleString Test' }],
+        });
+        config.customFields.Product.push({
+            name: 'listLocaleText',
+            list: true,
+            type: 'localeText',
+            label: [{ languageCode: LanguageCode.en, value: 'listLocaleText Test' }],
         });
 
         config.customFields.Asset.push(
