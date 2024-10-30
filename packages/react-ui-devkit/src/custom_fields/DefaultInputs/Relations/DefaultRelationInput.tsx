@@ -1,9 +1,9 @@
 import React from 'react';
 import { useCustomFields } from '@/custom_fields';
 import { AssetRelationInput } from './AssetRelationInput';
-import { ProductRelationInput } from './ProductRelationInput';
 import { ProductVariantRelationInput } from './ProductVariantRelationInput';
 import { AssetListRelationInput } from './AssetListRelationInput';
+import { ProductRelationInput } from './ProductRelationInput';
 
 export function DefaultRelationInput() {
     const { field } = useCustomFields();

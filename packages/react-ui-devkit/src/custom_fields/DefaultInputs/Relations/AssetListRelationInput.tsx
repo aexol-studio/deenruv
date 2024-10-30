@@ -8,15 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button, Label, ScrollArea } from '@/components';
+import { Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
 import { cn } from '@/lib/utils';
-import { CircleX, ImageOff, ImageUp, X } from 'lucide-react';
+import { CircleX, ImageUp } from 'lucide-react';
 import { useCustomFields } from '@/custom_fields';
 import { useList } from '@/useList';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { $, type ResolverInputTypes, ModelTypes, GraphQLTypes } from '@deenruv/admin-types';
+import { $, type ResolverInputTypes, GraphQLTypes } from '@deenruv/admin-types';
 import { client, uploadClient } from '@/zeus-client';
+import { AssetSelector, CustomFieldSelectorsType } from '@/selectors';
 
 const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
     const response = await client('query')({
@@ -24,33 +25,24 @@ const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
             { options },
             {
                 totalItems: true,
-                items: {
-                    id: true,
-                    preview: true,
-                    name: true,
-                },
+                items: AssetSelector,
             },
         ],
     });
     return response.assets;
 };
 
-type Props<T = Partial<ModelTypes['Asset']>> = {
-    value: T[];
-    label: string;
-    description: string;
-    field: GraphQLTypes['CustomFieldConfig']['...on RelationCustomFieldConfig'];
-    setValue: (val: T[]) => void;
-};
-
 export function AssetListRelationInput() {
-    const { value, label, field, setValue }: Props = useCustomFields<'RelationCustomFieldConfig'>() as Props;
+    const { value, label, field, setValue } = useCustomFields<
+        'RelationCustomFieldConfig',
+        CustomFieldSelectorsType['Asset'][]
+    >();
     const [modalOpened, setModalOpened] = useState(false);
     const { t } = useTranslation('common');
 
-    const [selected, setSelected] = useState<typeof value>([]);
+    const [selected, setSelected] = useState<NonNullable<typeof value>>([]);
 
-    const selectedIds = useMemo(() => selected.map(el => el.id), [selected]);
+    const selectedIds = useMemo(() => selected?.map(el => el.id), [selected]);
 
     const onOpenChange = (open: boolean) => {
         setSelected(value || []);
@@ -77,9 +69,7 @@ export function AssetListRelationInput() {
             <div className="flex flex-col gap-2">
                 <Label>{label || field?.name}</Label>
                 {!value?.length ? (
-                    <div className="flex flex-col items-center justify-center bg-muted p-3 h-32 w-32">
-                        <ImageOff size={60} />
-                    </div>
+                    <ImagePlaceholder />
                 ) : (
                     <div className="flex flex-wrap gap-3">
                         {value.map(el => (
@@ -94,7 +84,12 @@ export function AssetListRelationInput() {
                         ))}
                     </div>
                 )}
-                <div>
+                <div className="flex gap-2">
+                    {!!value?.length && (
+                        <Button variant="destructive" size="sm" onClick={() => setValue([])}>
+                            {t('clear-txt')}
+                        </Button>
+                    )}
                     <DialogTrigger asChild>
                         <Button variant="secondary" size="sm" onClick={() => setModalOpened(true)}>
                             {t('asset.dialogButton')}
@@ -110,7 +105,7 @@ export function AssetListRelationInput() {
                 <ScrollArea className="h-[50vh] p-2">
                     <div className="flex flex-wrap">
                         {assets?.map(asset => {
-                            const isSelected = selectedIds.includes(asset.id);
+                            const isSelected = selectedIds?.includes(asset.id);
 
                             return (
                                 <div
@@ -121,7 +116,7 @@ export function AssetListRelationInput() {
                                     )}
                                     onClick={() => {
                                         if (isSelected)
-                                            setSelected(prev => prev.filter(el => el.id !== asset.id));
+                                            setSelected(prev => prev?.filter(el => el.id !== asset.id));
                                         else setSelected(prev => [...prev, asset]);
                                     }}
                                 >

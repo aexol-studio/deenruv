@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -9,15 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button, Label, ScrollArea } from '@/components';
+import { Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
 import { cn } from '@/lib/utils';
-import { ImageOff, ImageUp } from 'lucide-react';
+import { ImageUp } from 'lucide-react';
 import { useCustomFields } from '@/custom_fields';
 import { useList } from '@/useList';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { $, type ResolverInputTypes } from '@deenruv/admin-types';
 import { client, uploadClient } from '@/zeus-client';
+import { CustomFieldSelectorsType, customFieldSelectors } from '@/selectors';
 
 const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
     const response = await client('query')({
@@ -25,11 +25,7 @@ const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
             { options },
             {
                 totalItems: true,
-                items: {
-                    id: true,
-                    preview: true,
-                    name: true,
-                },
+                items: customFieldSelectors['Asset'],
             },
         ],
     });
@@ -37,11 +33,14 @@ const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
 };
 
 export function AssetRelationInput() {
-    const { value, label, field, setValue } = useCustomFields<'RelationCustomFieldConfig'>();
+    const { value, label, field, setValue } = useCustomFields<
+        'RelationCustomFieldConfig',
+        CustomFieldSelectorsType['Asset'] | null
+    >();
     const [modalOpened, setModalOpened] = useState(false);
     const { t } = useTranslation('common');
 
-    const [selected, setSelected] = useState<NonNullable<typeof assets>[number] | null>(null);
+    const [selected, setSelected] = useState<typeof value>(null);
 
     const onOpenChange = (open: boolean) => {
         setSelected(null);
@@ -69,9 +68,7 @@ export function AssetRelationInput() {
                 <Label>{label || field?.name}</Label>
                 <div className="w-32 h-32">
                     {!value ? (
-                        <div className="flex flex-col items-center justify-center bg-muted p-3 h-full w-full">
-                            <ImageOff size={60} />
-                        </div>
+                        <ImagePlaceholder />
                     ) : (
                         <img src={value.preview} alt={value.name} className="object-fill h-full w-full" />
                     )}

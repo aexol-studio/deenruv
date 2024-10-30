@@ -16,10 +16,10 @@ export type CustomFieldConfigMap = {
     LocaleTextCustomFieldConfig: {};
 };
 
-export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typename'], K> = {
+export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typename'], K, Z = any> = {
     field?: GraphQLTypes['CustomFieldConfig'][`...on ${T}`];
-    value?: any;
-    setValue: (data: any) => void;
+    value?: Z;
+    setValue: (data: Z) => void;
     data?: K;
     label?: string;
     description?: string;
@@ -59,13 +59,14 @@ export const CustomFieldsProvider: React.FC<
     return <CustomFieldsContext.Provider value={value}>{children}</CustomFieldsContext.Provider>;
 };
 
-export function useCustomFields<Z extends keyof CustomFieldConfigMap>() {
+export function useCustomFields<Z extends keyof CustomFieldConfigMap, T = any>() {
     type FieldType = CustomFieldConfigMap[Z];
     if (!React.useContext(CustomFieldsContext)) {
         throw new Error('useCustomFields must be used within a CustomFieldsProvider');
     }
     return React.useContext(CustomFieldsContext) as DynamicContext<
         GraphQLTypes['CustomFieldConfig']['__typename'],
-        FieldType
+        FieldType,
+        T
     >;
 }

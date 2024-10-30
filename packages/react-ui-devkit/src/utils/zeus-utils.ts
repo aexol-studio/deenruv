@@ -1,3 +1,4 @@
+import { customFieldSelectors } from '@/selectors';
 import { type CustomFieldConfigType, Selector, type ValueTypes } from '@deenruv/admin-types';
 
 type CustomFieldType = boolean | { [key: string]: CustomFieldType };
@@ -26,16 +27,9 @@ const generateCustomFieldsSelector = (customFields: CustomFieldConfigType[]) => 
     const reduced = customFields.reduce(
         (acc, field) => {
             if (field.__typename === 'RelationCustomFieldConfig') {
-                const relationSelectors = field.scalarFields.reduce(
-                    (acc, val) => ({
-                        ...acc,
-                        [val]: true,
-                    }),
-                    {},
-                );
                 acc.customFields = {
                     ...acc.customFields,
-                    [field.name]: relationSelectors,
+                    [field.name]: customFieldSelectors?.[field.entity as keyof typeof customFieldSelectors],
                 };
 
                 return acc;

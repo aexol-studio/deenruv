@@ -450,6 +450,14 @@
     "noImages": "Nie ma zasobów dla określonego wyszukiwania",
     "description": "Przesyłaj i zarządzaj aktywami które mogą zostać użyte w twojej zawartości"
   },
+  "product": {
+    "dialogTitle": "Wybierz produkt",
+    "dialogButton": "Wybierz produkt",
+    "dialogSearchPlaceholder": "Wyszukaj produktu po nazwie",
+    "perPageValue": "{{value}} na stronę",
+    "confirmButton": "Dodaj produkt",
+    "cancel": "Anuluj"
+  },
   "paymentMethods": {
     "przelewy24": "Przelewy24",
     "standard-payment": "Standardowa płatność",

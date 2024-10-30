@@ -454,6 +454,14 @@
     "noImages": "There is no assets for specified search",
     "description": "Upload and manage assets that can be used in your content"
   },
+  "product": {
+    "dialogTitle": "Select product",
+    "dialogButton": "Pick product",
+    "dialogSearchPlaceholder": "Search product by name",
+    "perPageValue": "{{value}} per page",
+    "confirmButton": "Add product",
+    "cancel": "Cancel"
+  },
   "paymentMethods": {
     "przelewy24": "Przelewy24",
     "standard-payment": "Standard payment",

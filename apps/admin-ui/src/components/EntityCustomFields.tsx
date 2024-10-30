@@ -60,8 +60,6 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
     p.serverConfig?.entityCustomFields?.find((el) => el.entityName.toLowerCase() === entityName),
   )?.customFields;
 
-  console.log('ąentityCustomFields', entityCustomFields);
-
   const capitalizedEntityName = useMemo(
     () => (entityName.charAt(0).toUpperCase() + entityName.slice(1)) as Capitalize<T>,
     [entityName],

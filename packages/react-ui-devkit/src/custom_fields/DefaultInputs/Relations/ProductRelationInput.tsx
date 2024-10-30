@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
     Dialog,
-    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -9,92 +8,114 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button, ScrollArea } from '@/components';
+import { Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
 import { cn } from '@/lib/utils';
 import { useCustomFields } from '@/custom_fields';
-import React from 'react';
-
 import { useList } from '@/useList';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { type ResolverInputTypes } from '@deenruv/admin-types';
 import { client } from '@/zeus-client';
-import type { ResolverInputTypes } from '@deenruv/admin-types';
+import { CustomFieldSelectorsType, customFieldSelectors } from '@/selectors';
 
 const getProducts = async (options: ResolverInputTypes['ProductListOptions']) => {
     const response = await client('query')({
-        products: [{ options }, { totalItems: true, items: { id: true, featuredAsset: { preview: true } } }],
+        products: [
+            { options },
+            {
+                totalItems: true,
+                items: customFieldSelectors['Product'],
+            },
+        ],
     });
     return response.products;
 };
 
 export function ProductRelationInput() {
-    const { value, setValue } = useCustomFields();
-    const [selectedProduct, setSelectedProduct] = useState<{
-        id: string;
-        featuredAsset?: { preview: string };
-    } | null>(null);
+    const { value, label, field, setValue } = useCustomFields<
+        'RelationCustomFieldConfig',
+        CustomFieldSelectorsType['Product'] | null
+    >();
+    const [modalOpened, setModalOpened] = useState(false);
+    const { t } = useTranslation('common');
+
+    const [selected, setSelected] = useState<typeof value>(null);
+
+    const onOpenChange = (open: boolean) => {
+        setSelected(null);
+        setModalOpened(open);
+    };
+
     const { objects: products, Paginate } = useList({
         route: async ({ page, perPage }) => {
             const products = await getProducts({ skip: (page - 1) * perPage, take: perPage });
             return { items: products.items, totalItems: products.totalItems };
         },
-        listType: `modal-products-list`,
+        listType: `modal-assets-list`,
+        options: {
+            skip: !modalOpened,
+        },
     });
 
-    useEffect(() => {
-        if (value) {
-            getProducts({ take: 1, filter: { id: { eq: value as string } } }).then(products => {
-                setSelectedProduct(products.items[0] || null);
-            });
-        }
-    }, [value]);
-
     return (
-        <Dialog>
-            <div>
-                <Button variant="secondary" size="sm">
-                    <DialogTrigger>Pick product</DialogTrigger>
-                </Button>
+        <Dialog open={modalOpened} onOpenChange={onOpenChange}>
+            <div className="flex flex-col gap-2">
+                <Label>{label || field?.name}</Label>
+                <div className="flex flex-col gap-2">
+                    {(!value || !value?.featuredAsset?.preview) && <ImagePlaceholder />}
+                    {value?.featuredAsset?.preview && (
+                        <img
+                            src={value.featuredAsset.preview}
+                            alt={value.name}
+                            className="object-fill h-32 w-fit"
+                        />
+                    )}
+                    {value && <span className="text-xs">{value.name}</span>}
+                </div>
                 <div>
-                    {selectedProduct && (
-                        <div>
-                            <span>{selectedProduct.id}</span>
-                            {selectedProduct.featuredAsset && (
-                                <img
-                                    src={selectedProduct.featuredAsset.preview}
-                                    alt={selectedProduct.id}
-                                    className="h-32 w-32 object-fill"
-                                />
-                            )}
-                        </div>
+                    {!value ? (
+                        <DialogTrigger asChild>
+                            <Button variant="secondary" size="sm" onClick={() => setModalOpened(true)}>
+                                {t('product.dialogButton')}
+                            </Button>
+                        </DialogTrigger>
+                    ) : (
+                        <Button variant="destructive" size="sm" onClick={() => setValue(null)}>
+                            {t('remove')}
+                        </Button>
                     )}
                 </div>
             </div>
-            <DialogContent className="max-w-[800px] ">
+            <DialogContent className="max-h-[80vh] max-w-[80vw] overflow-auto">
                 <DialogHeader>
-                    <DialogTitle>Product</DialogTitle>
-                    <DialogDescription>Select a product to this relation</DialogDescription>
+                    <DialogTitle>{t('product.dialogTitle')}</DialogTitle>
+                    {/* <DialogDescription>{t('product.description')}</DialogDescription> */}
                 </DialogHeader>
-                <ScrollArea className="h-[700px] p-2">
+                <ScrollArea className="h-[50vh] p-2">
                     <div className="flex flex-wrap">
                         {products?.map(product => (
                             <div
                                 key={product.id}
                                 className={cn(
                                     'w-1/4 cursor-pointer border-2 p-2',
-                                    selectedProduct?.id === product.id && 'border-blue-500',
+                                    selected?.id === product.id && 'border-blue-500',
                                 )}
                                 onClick={() => {
-                                    setSelectedProduct(product);
-                                    setValue(product.id);
+                                    setSelected(product);
                                 }}
                             >
-                                <span>{product.id}</span>
-                                {product.featuredAsset && (
-                                    <img
-                                        src={product.featuredAsset.preview}
-                                        alt={product.id}
-                                        className="h-32 w-32 object-fill"
-                                    />
-                                )}
+                                <div className="flex justify-center items-center">
+                                    {product.featuredAsset?.preview ? (
+                                        <img
+                                            src={product.featuredAsset?.preview}
+                                            alt={product.name}
+                                            className="h-32 w-full object-contain"
+                                        />
+                                    ) : (
+                                        <ImagePlaceholder />
+                                    )}
+                                </div>
+                                <span>{product.name}</span>
                             </div>
                         ))}
                     </div>
@@ -103,8 +124,16 @@ export function ProductRelationInput() {
                     <div className="flex w-full flex-col gap-2">
                         {Paginate}
                         <div className="flex justify-end gap-2">
-                            <Button variant="secondary" size="lg">
-                                <DialogClose>{selectedProduct ? 'Save' : 'Cancel'}</DialogClose>
+                            <Button
+                                onClick={() => {
+                                    selected && setValue(selected);
+                                    onOpenChange(false);
+                                }}
+                                variant={selected ? 'action' : 'secondary'}
+                                disabled={!selected}
+                                size="lg"
+                            >
+                                {t('save')}
                             </Button>
                         </div>
                     </div>

@@ -1,4 +1,11 @@
-import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset } from '@deenruv/core';
+import {
+    PluginCommonModule,
+    DeenruvPlugin,
+    LanguageCode,
+    Asset,
+    Product,
+    ProductVariant,
+} from '@deenruv/core';
 import { AdminResolver } from './resolvers/admin.resolver';
 import { BetterMetricsService } from './services/metrics.service';
 import gql from 'graphql-tag';
@@ -146,6 +153,28 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                 },
             ],
         });
+        config.customFields.Order.push({
+            name: 'singleProductTest',
+            type: 'relation',
+            graphQLType: 'Product',
+            entity: Product,
+            public: true,
+            nullable: true,
+            eager: true,
+            label: [{ languageCode: LanguageCode.en, value: 'single product test' }],
+        });
+
+        // config.customFields.Order.push({
+        //     name: 'singleProductVariantTest',
+        //     type: 'relation',
+        //     graphQLType: 'ProductVariant',
+        //     entity: ProductVariant,
+        //     public: true,
+        //     nullable: true,
+        //     eager: true,
+        //     label: [{ languageCode: LanguageCode.en, value: 'single product variant test' }],
+        // });
+
         // relation fields
 
         config.customFields.Asset.push(
