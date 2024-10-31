@@ -475,15 +475,35 @@
     "delete": "Usuń",
     "view": "Zobacz"
   },
+  "toasts": {
+    "success": {
+      "update": "Zaktualizowano",
+      "upload": "Wgrano"
+    },
+    "error": {
+      "fetch": "Błąd podczas pobierania danych",
+      "mutation": "Błąd podczas aktualizacji pól",
+      "upload": "Błąd podczas wgrywania zdjęć"
+    }
+  },
   "custom-fields": {
     "title": "Pola niestandardowe",
     "description": "Pola stworzone poprzez pluginy serwerowe zostaną tutaj wyświetlone",
-    "toasts": {
-      "success": "Zaktualizowano",
-      "error": {
-        "fetch": "Napotkaliśmy błąd podczas pobierania danych",
-        "mutation": "Napotkaliśmy błąd podczas aktualizacji pól"
-      }
+    "clear": "Wyczyść",
+    "asset": {
+      "title": "Lista zdjęć",
+      "description": "Wybierz zdjęcia z listy",
+      "pick": "Wybierz zdjęcie"
+    },
+    "product": {
+      "title": "Lista produktów",
+      "description": "Wybierz produkty z listy",
+      "pick": "Wybierz produkt"
+    },
+    "productvariant": {
+      "title": "Lista wariantów produktów",
+      "description": "Wybierz warianty produktów z listy",
+      "pick": "Wybierz wariant produktu"
     }
   }
 }

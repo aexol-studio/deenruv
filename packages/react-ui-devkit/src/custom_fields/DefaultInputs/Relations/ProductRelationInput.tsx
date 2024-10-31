@@ -51,7 +51,7 @@ export function ProductRelationInput() {
             const products = await getProducts({ skip: (page - 1) * perPage, take: perPage });
             return { items: products.items, totalItems: products.totalItems };
         },
-        listType: `modal-assets-list`,
+        listType: `modal-products-list`,
         options: {
             skip: !modalOpened,
         },

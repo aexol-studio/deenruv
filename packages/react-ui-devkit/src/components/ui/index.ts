@@ -33,3 +33,4 @@ export * from './skeleton';
 export * from './chart';
 export * from './spinner';
 export * from './image-placeholder';
+export * from './asset-upload-button';

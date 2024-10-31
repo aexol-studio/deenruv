@@ -479,15 +479,35 @@
     "delete": "Delete",
     "view": "View"
   },
+  "toasts": {
+    "success": {
+      "update": "Updated successfully",
+      "upload": "Asset uploaded successfully"
+    },
+    "error": {
+      "fetch": "Error while fetching data",
+      "mutation": "Error while updating",
+      "upload": "Error while uploading"
+    }
+  },
   "custom-fields": {
     "title": "Custom fields",
     "description": "Fields created through server plugins can be found here",
-    "toasts": {
-      "success": "Entity updated successfully",
-      "error": {
-        "fetch": "Error while fetching data",
-        "mutation": "Error while updating"
-      }
+    "clear": "Clear",
+    "asset": {
+      "title": "List of assets",
+      "description": "Choose assets from the list below",
+      "pick": "Pick asset"
+    },
+    "product": {
+      "title": "List of products",
+      "description": "Choose products from the list below",
+      "pick": "Pick product"
+    },
+    "productvariant": {
+      "title": "List of product variants",
+      "description": "Choose product variants from the list below",
+      "pick": "Pick product variant"
     }
   }
 }

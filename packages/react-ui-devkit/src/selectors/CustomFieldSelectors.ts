@@ -11,6 +11,22 @@ export const ProductSelector = Selector('Product')({
     },
 });
 
+export const ProductVariantSelector = Selector('ProductVariant')({
+    id: true,
+    name: true,
+    sku: true,
+    featuredAsset: {
+        id: true,
+        preview: true,
+    },
+    product: {
+        featuredAsset: {
+            id: true,
+            preview: true,
+        },
+    },
+});
+
 export const AssetSelector = Selector('Asset')({
     id: true,
     name: true,
@@ -20,6 +36,7 @@ export const AssetSelector = Selector('Asset')({
 export const customFieldSelectors = {
     Asset: AssetSelector,
     Product: ProductSelector,
+    ProductVariant: ProductVariantSelector,
 };
 
 export type CustomFieldSelectorsType = {

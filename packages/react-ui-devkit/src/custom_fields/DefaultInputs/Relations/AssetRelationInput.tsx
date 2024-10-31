@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
+import { AssetUploadButton, Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
 import { cn } from '@/lib/utils';
 import { ImageUp } from 'lucide-react';
 import { useCustomFields } from '@/custom_fields';
@@ -119,44 +119,7 @@ export function AssetRelationInput() {
                     <div className="flex w-full flex-col gap-2">
                         {Paginate}
                         <div className="flex justify-end gap-2">
-                            <Button
-                                size="lg"
-                                variant="secondary"
-                                className="flex items-center gap-2"
-                                onClick={() => {
-                                    const fileInput = document.createElement('input');
-                                    fileInput.type = 'file';
-                                    fileInput.accept = 'image/*';
-                                    fileInput.onchange = async e => {
-                                        const file = (e.target as HTMLInputElement).files?.[0];
-                                        if (!file) return;
-
-                                        await uploadClient('mutation')(
-                                            {
-                                                createAssets: [
-                                                    { input: $('input', '[CreateAssetInput!]!') },
-                                                    {
-                                                        __typename: true,
-                                                        '...on Asset': { id: true },
-                                                        '...on MimeTypeError': {
-                                                            fileName: true,
-                                                            mimeType: true,
-                                                            errorCode: true,
-                                                            message: true,
-                                                        },
-                                                    },
-                                                ],
-                                            },
-                                            { variables: { input: [{ file }] } },
-                                        );
-                                        refetch();
-                                    };
-                                    fileInput.click();
-                                }}
-                            >
-                                <ImageUp className="h-4 w-4" />
-                                <span>{t('upload')}</span>
-                            </Button>
+                            <AssetUploadButton refetch={refetch}>{t('upload')}</AssetUploadButton>
                             <Button
                                 onClick={() => {
                                     selected && setValue(selected);

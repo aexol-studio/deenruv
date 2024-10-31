@@ -96,14 +96,14 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
       >;
 
       if (!response) {
-        toast.error(t('custom-fields.toasts.error.fetch'));
+        toast.error(t('toasts.error.fetch'));
         return;
       }
 
       setField('customFields', response?.customFields);
       setField('translations', response?.translations);
     } catch (err) {
-      toast.error(getGqlError(err) || t('custom-fields.toasts.error.fetch'));
+      toast.error(getGqlError(err) || t('toasts.error.fetch'));
     }
   }, [runtimeSelector, entityName]);
 
@@ -138,9 +138,9 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
         ],
       } as any);
 
-      toast.success(t('custom-fields.toasts.success'));
+      toast.success(t('toasts.success.update'));
     } catch (err) {
-      toast.error(getGqlError(err) || t('custom-fields.toasts.error.mutation'));
+      toast.error(getGqlError(err) || t('toasts.error.mutation'));
     }
   }, [state, entityName]);
 

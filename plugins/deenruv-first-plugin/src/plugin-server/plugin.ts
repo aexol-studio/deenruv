@@ -164,16 +164,29 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             label: [{ languageCode: LanguageCode.en, value: 'single product test' }],
         });
 
-        // config.customFields.Order.push({
-        //     name: 'singleProductVariantTest',
-        //     type: 'relation',
-        //     graphQLType: 'ProductVariant',
-        //     entity: ProductVariant,
-        //     public: true,
-        //     nullable: true,
-        //     eager: true,
-        //     label: [{ languageCode: LanguageCode.en, value: 'single product variant test' }],
-        // });
+        config.customFields.Order.push({
+            name: 'listProductTest',
+            type: 'relation',
+            graphQLType: 'Product',
+            entity: Product,
+            public: true,
+            nullable: true,
+            eager: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'list product test' }],
+        });
+
+        config.customFields.Order.push({
+            name: 'listProductVariantTest',
+            type: 'relation',
+            graphQLType: 'ProductVariant',
+            entity: ProductVariant,
+            public: true,
+            nullable: true,
+            eager: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'list product variant test' }],
+        });
 
         // relation fields
 
