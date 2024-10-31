@@ -9,7 +9,7 @@ import {
     DefaultRelationInput,
 } from './DefaultInputs';
 import React from 'react';
-import { DefaultSimpleListInput } from './DefaultInputs/Lists/DefaultSimpleListInput';
+import { DefaultSimpleListInput } from './DefaultInputs/DefaultSimpleListInput';
 
 export function generateCustomFields(
     customFields: CustomFieldConfigType[],
@@ -27,8 +27,8 @@ export function generateCustomFields(
     return fields;
 }
 
-function generateSingleFields({ field }: { field: any }) {
-    const simpleListable = [
+function generateSingleFields({ field }: { field: CustomFieldConfigType }) {
+    const simpleListable: Array<CustomFieldConfigType['__typename']> = [
         'FloatCustomFieldConfig',
         'IntCustomFieldConfig',
         'StringCustomFieldConfig',

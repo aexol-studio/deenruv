@@ -20,7 +20,6 @@ export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typena
     field?: GraphQLTypes['CustomFieldConfig'][`...on ${T}`];
     value?: Z;
     setValue: (data: Z) => void;
-    data?: K;
     label?: string;
     description?: string;
 };
@@ -31,7 +30,6 @@ export const CustomFieldsContext = React.createContext<
     field: undefined,
     value: undefined,
     setValue: () => console.error('setValue not implemented'),
-    data: undefined,
 });
 export const CustomFieldsProvider: React.FC<
     PropsWithChildren<DynamicContext<GraphQLTypes['CustomFieldConfig']['__typename'], unknown>>

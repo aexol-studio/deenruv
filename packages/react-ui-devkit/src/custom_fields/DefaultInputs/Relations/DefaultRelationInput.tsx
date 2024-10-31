@@ -1,25 +1,18 @@
 import React from 'react';
 import { useCustomFields } from '@/custom_fields';
-import { AssetRelationInput } from './AssetRelationInput';
-import { ProductVariantRelationInput } from './ProductVariantRelationInput';
-import { ProductRelationInput } from './ProductRelationInput';
 import { ListRelationInput } from './ListRelationInput';
+import { RelationInput } from './RelationInput';
 
 export function DefaultRelationInput() {
     const { field } = useCustomFields();
     if (!field || !('entity' in field)) return null;
     switch (field.entity) {
-        case 'Asset': {
-            if (field.list) return <ListRelationInput entityName="Asset" />;
-            return <AssetRelationInput />;
-        }
+        case 'Asset':
         case 'Product':
-            if (field.list) return <ListRelationInput entityName="Product" />;
-            return <ProductRelationInput />;
-        case 'ProductVariant':
-            if (field.list) return <ListRelationInput entityName="ProductVariant" />;
-
-            return <ProductVariantRelationInput />;
+        case 'ProductVariant': {
+            if (field.list) return <ListRelationInput entityName={field.entity} />;
+            return <RelationInput entityName={field.entity} />;
+        }
         default:
             return (
                 <p className="text-red-500 text-md font-bold">

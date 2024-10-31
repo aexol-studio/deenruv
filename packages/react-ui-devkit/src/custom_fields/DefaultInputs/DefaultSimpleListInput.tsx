@@ -3,16 +3,16 @@ import { Badge, Button, CardDescription, Input, Label, Textarea } from '@/compon
 import { useCustomFields } from '@/custom_fields/context';
 import { Cross, PlusIcon, X } from 'lucide-react';
 
-function generateRandomDarkBgColor() {
-    // Set hue to any random value (0 to 360) for color variety
-    const hue = Math.floor(Math.random() * 360);
-    // Set saturation to a high level (50-100%) for vibrant colors
-    const saturation = Math.floor(Math.random() * 51) + 50;
-    // Set lightness to a low value (10-30%) to keep the color dark
-    const lightness = Math.floor(Math.random() * 21) + 10;
+// function generateRandomDarkBgColor() {
+//     // Set hue to any random value (0 to 360) for color variety
+//     const hue = Math.floor(Math.random() * 360);
+//     // Set saturation to a high level (50-100%) for vibrant colors
+//     const saturation = Math.floor(Math.random() * 51) + 50;
+//     // Set lightness to a low value (10-30%) to keep the color dark
+//     const lightness = Math.floor(Math.random() * 21) + 10;
 
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-}
+//     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+// }
 
 export function DefaultSimpleListInput() {
     const { field, value, label, description, setValue } = useCustomFields<'TextCustomFieldConfig'>();
@@ -24,7 +24,10 @@ export function DefaultSimpleListInput() {
     const badges = useMemo(() => {
         {
             return value?.map((el: string | number) => (
-                <Badge style={{ color: 'white', backgroundColor: generateRandomDarkBgColor() }}>
+                <Badge
+                    className="text-muted-foreground-600 bg-muted break-all"
+                    // style={{ color: 'white', backgroundColor: generateRandomDarkBgColor() }}
+                >
                     {el}
                     <X
                         className="ml-2 cursor-pointer"
@@ -67,8 +70,8 @@ export function DefaultSimpleListInput() {
                     />
                 )}
                 <Button
-                    variant="action"
                     size="icon"
+                    variant="secondary"
                     onClick={() => {
                         setValue([...(value || []), isNumber ? Number(inputValue) : inputValue]);
                         setInputValue('');
