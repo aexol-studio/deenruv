@@ -134,7 +134,7 @@ const testApiExtensions = gql`
         resolvers: () => (SentryPlugin.options.includeErrorTestMutation ? [SentryAdminTestResolver] : []),
     },
     exports: [SentryService],
-    compatibility: '^2.2.0-next.2',
+    compatibility: '^0.0.0',
 })
 export class SentryPlugin implements NestModule {
     static options: SentryPluginOptions = {} as any;

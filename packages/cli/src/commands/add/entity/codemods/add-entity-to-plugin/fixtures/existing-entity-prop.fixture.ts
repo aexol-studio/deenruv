@@ -5,7 +5,7 @@ type PluginInitOptions = any;
 @DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [Product],
-    compatibility: '^2.0.0',
+    compatibility: '^0.0.0',
 })
 export class TestOnePlugin {
     static options: PluginInitOptions;

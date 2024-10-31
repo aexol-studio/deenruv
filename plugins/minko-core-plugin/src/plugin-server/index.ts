@@ -983,7 +983,7 @@ export class SearchResultResolver {
 }
 
 @DeenruvPlugin({
-    compatibility: '^2.0.0',
+    compatibility: '^0.0.0',
     imports: [PluginCommonModule],
     providers: [
         OrderRegisterService,

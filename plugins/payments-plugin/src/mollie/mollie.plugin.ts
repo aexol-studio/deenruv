@@ -315,7 +315,7 @@ export interface MolliePluginOptions {
         `,
         resolvers: [MollieCommonResolver],
     },
-    compatibility: '^2.2.0',
+    compatibility: '^0.0.0',
 })
 export class MolliePlugin {
     static options: MolliePluginOptions;

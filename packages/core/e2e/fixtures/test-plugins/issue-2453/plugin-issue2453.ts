@@ -15,7 +15,7 @@ import { CampaignService } from './services/campaign.service';
     shopApiExtensions: {
         schema: apiExtensions,
     },
-    compatibility: '>=2.0.0',
+    compatibility: '^0.0.0',
     providers: [CampaignService],
     configuration: config => {
         config.customFields.Collection.push(...collectionCustomFields);
