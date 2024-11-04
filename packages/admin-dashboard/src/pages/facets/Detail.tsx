@@ -13,6 +13,7 @@ import {
   ContextMenu,
   DropdownMenuItem,
   EmptyState,
+  EntityCustomFields,
   Input,
   Label,
   Stack,
@@ -80,7 +81,6 @@ export const FacetsDetailPage = () => {
     setField('code', facet.code);
     // setField('isPrivate', facet.isPrivate);
     // setField('customFields', facet.customFields);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [facet]);
 
   useEffect(() => {
@@ -278,39 +278,7 @@ export const FacetsDetailPage = () => {
               </CardContent>
             </CardHeader>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">
-                {t('facets:details.customFields')}
-              </CardTitle>
-              <CardContent className="flex gap-8 p-0 pt-2">
-                <div className="flex basis-full items-center gap-4 md:basis-1/2 xl:basis-1/2">
-                  <Checkbox
-                    checked={state.customFields?.value?.usedForColors}
-                    onCheckedChange={(e) =>
-                      setField('customFields', { ...state.customFields?.value, usedForColors: e as boolean })
-                    }
-                  />
-                  <div>
-                    <Label>{t('facets:table.usedForColors')}</Label>
-                    <p className="text-sm">{t('facets:details.usedForColorsDesc')}</p>
-                  </div>
-                </div>
-                <div className="flex basis-full items-center gap-4 md:basis-1/2 xl:basis-1/2">
-                  <Checkbox
-                    checked={state.customFields?.value?.colorsCollection}
-                    onCheckedChange={(e) =>
-                      setField('customFields', { ...state.customFields?.value, colorsCollection: e as boolean })
-                    }
-                  />
-                  <div>
-                    <Label>{t('facets:table.colorsCollection')}</Label>
-                    <p className="text-sm">{t('facets:details.colorsCollectionDesc')}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          {id && <EntityCustomFields entityName="facet" id={id} />}
           {facet && editMode && (
             <Card>
               <CardHeader>

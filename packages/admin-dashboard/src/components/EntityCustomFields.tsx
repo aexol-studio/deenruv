@@ -60,8 +60,18 @@ const entityDictionary: Record<
 // because gfflp only accepts zeus modelType input
 const typeWithCommonCustomFields: keyof Pick<ModelTypes, 'UpdateProductOptionInput'> = 'UpdateProductOptionInput';
 
-export function EntityCustomFields<T extends ViableEntity>({ id, entityName, currentLanguage }: Props<T>) {
-  const { t } = useTranslation('common');
+export function EntityCustomFields<T extends ViableEntity>({
+  id,
+  entityName,
+  currentLanguage: _currentLanguage,
+}: Props<T>) {
+  const { t, i18n } = useTranslation('common');
+
+  const currentLanguage = useMemo(
+    () => _currentLanguage || i18n?.language || 'en',
+    [_currentLanguage, t],
+  ) as LanguageCode;
+
   const [loading, setLoading] = useState(true);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
   const entityCustomFields = useServer((p) =>
