@@ -1,24 +1,23 @@
 import { Button, DialogTitle, Dialog, DialogContent, DialogFooter, DialogClose, DialogDescription } from '@/components';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface ConfirmationDialogProps {
+type ConfirmationDialogProps<T extends { id: string; name: string }> = {
   onConfirm: () => void;
   title: string;
   description: string;
   onOpenChange: (e: boolean) => void;
-  deletedNames: string[];
+  deletingItems: T[];
   open: boolean;
-}
+};
 
-export const DeleteDialog: React.FC<ConfirmationDialogProps> = ({
+export function DeleteDialog<T extends { id: string; name: string }>({
   onConfirm,
   title,
   description,
   onOpenChange,
   open,
-  deletedNames,
-}) => {
+  deletingItems,
+}: ConfirmationDialogProps<T>) {
   const { t } = useTranslation('common');
 
   return (
@@ -28,8 +27,8 @@ export const DeleteDialog: React.FC<ConfirmationDialogProps> = ({
         <div className="flex max-h-[50vh] flex-col gap-2">
           <DialogDescription className="text-primary text-lg">{description}</DialogDescription>
           <DialogDescription>
-            {deletedNames.map((n) => (
-              <div key={n}>{n}</div>
+            {deletingItems.map((n) => (
+              <div key={n.id}>{n.name}</div>
             ))}
           </DialogDescription>
         </div>
@@ -45,4 +44,4 @@ export const DeleteDialog: React.FC<ConfirmationDialogProps> = ({
       </DialogContent>
     </Dialog>
   );
-};
+}

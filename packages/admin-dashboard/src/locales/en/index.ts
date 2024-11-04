@@ -16,6 +16,7 @@ import stockLocations from './stockLocations.json';
 import taxCategories from './taxCategories.json';
 import taxRates from './taxRates.json';
 import zones from './zones.json';
+import table from './table.json';
 
 export default {
   admins,
@@ -36,4 +37,5 @@ export default {
   taxCategories,
   taxRates,
   zones,
+  table,
 };
