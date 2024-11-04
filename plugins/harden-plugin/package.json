@@ -13,7 +13,6 @@
         "lint": "eslint --fix ."
     },
     "homepage": "https://www.deenruv.io/",
-    "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"
     },

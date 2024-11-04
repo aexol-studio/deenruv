@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "jsx": "react-jsx",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "removeComments": false,
+    "outDir": "dist",
+    "strict": true,
+    "noImplicitAny": true,
+    "declaration": false,
+    "sourceMap": false,
+    "strictPropertyInitialization": false,
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ]
+  },
+  "exclude": ["node_modules", "dist"]
+}

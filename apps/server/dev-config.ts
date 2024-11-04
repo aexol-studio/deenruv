@@ -13,6 +13,7 @@ import {
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
 import path from 'path';
+import { ContentManagementPlugin } from '@deenruv/content-management-plugin/plugin-server';
 
 import { DeenruvFirstPlugin } from '@deenruv/deenruv-first-plugin/plugin-server';
 // import { RestPlugin } from './test-plugins/rest-plugin';
@@ -142,6 +143,7 @@ export const devConfig: DeenruvConfig = {
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
         BullMQJobQueuePlugin.init({}),
         DeenruvFirstPlugin,
+        ContentManagementPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,
         //     expiresIn: 60 * 60 * 24 * 3,

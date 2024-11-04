@@ -1,0 +1,29 @@
+{
+    "name": "@deenruv/content-management-config",
+    "version": "1.0.0",
+    "main": "./dist/index.js",
+    "scripts": {
+        "watch": "tsc -w",
+        "build": "tsc && npm run copy:css",
+        "copy:css": "copyfiles -u 1 src/**/*.css dist"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "@measured/puck": "^0.16.1",
+        "classnames": "^2.5.1",
+        "copyfiles": "^2.4.1",
+        "lucide-react": "^0.454.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typed-css-modules": "^0.9.1",
+        "typescript-plugin-css-modules": "^5.1.0"
+    },
+    "devDependencies": {
+        "next": "14.2.16",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0"
+    }
+}

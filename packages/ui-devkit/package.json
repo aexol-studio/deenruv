@@ -15,7 +15,6 @@
         "compiler",
         "scaffold"
     ],
-    "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"
     },

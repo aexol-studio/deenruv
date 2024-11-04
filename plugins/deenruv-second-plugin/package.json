@@ -38,7 +38,7 @@
         "react-i18next": "^14.0.5"
     },
     "devDependencies": {
-        "@types/react": "^18.3.11",
+        "@types/react": "^18.2.0",
         "rimraf": "^5.0.10",
         "tslib": "^2.6.2",
         "typescript": "5.3.3"
