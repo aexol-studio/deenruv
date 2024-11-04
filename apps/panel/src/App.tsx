@@ -8,6 +8,7 @@ import { DeenruvLogo } from './DeenruvLogo';
 const plugins: DeenruvUIPlugins = [FirstUIPlugin, SecondUIPlugin, CMSPlugin];
 const settings: DeenruvAdminPanelSettings = {
   branding: { name: 'Deenruv', logo: <DeenruvLogo /> },
+  api: { uri: 'http://localhost:3000' },
 };
 
 function App() {
