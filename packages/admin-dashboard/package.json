@@ -1,6 +1,5 @@
 {
   "name": "@deenruv/admin-dashboard",
-  "private": true,
   "version": "0.0.4",
   "main": "dist/index.js",
   "style": "dist/index.css",
