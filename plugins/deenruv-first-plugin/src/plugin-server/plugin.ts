@@ -1,50 +1,15 @@
-import {
-    PluginCommonModule,
-    DeenruvPlugin,
-    LanguageCode,
-    Asset,
-    Product,
-    ProductVariant,
-} from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset, Product } from '@deenruv/core';
 import { AdminResolver } from './resolvers/admin.resolver';
 import { BetterMetricsService } from './services/metrics.service';
 import gql from 'graphql-tag';
 import { AdminUIController } from './controllers/admin-ui-controller';
-
 @DeenruvPlugin({
     compatibility: '0.0.1',
     imports: [PluginCommonModule],
     controllers: [AdminUIController],
     providers: [BetterMetricsService],
     configuration: config => {
-        config.customFields.Order.push(
-            {
-                name: 'attributes',
-                type: 'text',
-                label: [
-                    { languageCode: LanguageCode.en, value: 'Attributes' },
-                    { languageCode: LanguageCode.pl, value: 'Atrybuty' },
-                ],
-                description: [
-                    { languageCode: LanguageCode.en, value: 'Here you can specify order attributes' },
-                    { languageCode: LanguageCode.pl, value: 'Tutaj możesz opisać różne atrybuty zamówienia' },
-                ],
-                defaultValue: '',
-                nullable: true,
-            },
-            {
-                name: 'additionalInfo',
-                type: 'string',
-                label: [
-                    { languageCode: LanguageCode.en, value: 'Additional info' },
-                    { languageCode: LanguageCode.pl, value: 'Dodatkowe informacje' },
-                ],
-                defaultValue: '',
-                nullable: true,
-            },
-        );
-
-        // primivite fields
+        // PRODUCT
         config.customFields.Product.push({
             name: 'boolTest',
             type: 'boolean',
@@ -75,9 +40,6 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             type: 'datetime',
             label: [{ languageCode: LanguageCode.en, value: 'dateTime Test' }],
         });
-        // primivite fields
-
-        // primivite LIST fields
         config.customFields.Product.push({
             name: 'listTestString',
             type: 'string',
@@ -117,11 +79,8 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             type: 'localeText',
             label: [{ languageCode: LanguageCode.en, value: 'listLocaleText Test' }],
         });
-        // primivite LIST fields
-
-        // relation fields
         config.customFields.Product.push({
-            name: 'singleAssetTest',
+            name: 'singleAssetTestP',
             type: 'relation',
             graphQLType: 'Asset',
             entity: Asset,
@@ -137,6 +96,87 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             ],
         });
         config.customFields.Product.push({
+            name: 'listAssetTestP',
+            type: 'relation',
+            graphQLType: 'Asset',
+            entity: Asset,
+            public: true,
+            nullable: true,
+            eager: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'list asset Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
+        });
+
+        // ORDER
+        config.customFields.Order.push(
+            {
+                name: 'attributes',
+                type: 'text',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'Attributes' },
+                    { languageCode: LanguageCode.pl, value: 'Atrybuty' },
+                ],
+                description: [
+                    { languageCode: LanguageCode.en, value: 'Here you can specify order attributes' },
+                    {
+                        languageCode: LanguageCode.pl,
+                        value: 'Tutaj możesz opisać różne atrybuty zamówienia',
+                    },
+                ],
+                defaultValue: '',
+                nullable: true,
+            },
+            {
+                name: 'additionalInfo',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'Additional info' },
+                    { languageCode: LanguageCode.pl, value: 'Dodatkowe informacje' },
+                ],
+                defaultValue: '',
+                nullable: true,
+            },
+        );
+
+        // COLLECTION
+        config.customFields.Collection.push({
+            name: 'stringTest',
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'string Test' }],
+        });
+        config.customFields.Collection.push({
+            name: 'localestringTest',
+            type: 'localeString',
+            label: [{ languageCode: LanguageCode.en, value: 'localestring Test' }],
+        });
+        config.customFields.Collection.push({
+            name: 'dateTime',
+            type: 'datetime',
+            label: [{ languageCode: LanguageCode.en, value: 'dateTime Test' }],
+        });
+        config.customFields.Collection.push({
+            name: 'singleAssetTestP',
+            type: 'relation',
+            graphQLType: 'Asset',
+            entity: Asset,
+            public: true,
+            nullable: true,
+            eager: true,
+            label: [{ languageCode: LanguageCode.en, value: 'single asset Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
+        });
+        config.customFields.Collection.push({
             name: 'listAssetTest',
             type: 'relation',
             graphQLType: 'Asset',
@@ -153,19 +193,59 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                 },
             ],
         });
-        config.customFields.Order.push({
-            name: 'singleProductTest',
+
+        // FACET
+        config.customFields.Facet.push({
+            name: 'stringTest',
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'string Test' }],
+        });
+        config.customFields.Facet.push({
+            name: 'localestringTest',
+            type: 'localeString',
+            label: [{ languageCode: LanguageCode.en, value: 'localestring Test' }],
+        });
+        config.customFields.Facet.push({
+            name: 'dateTime',
+            type: 'datetime',
+            label: [{ languageCode: LanguageCode.en, value: 'dateTime Test' }],
+        });
+        config.customFields.Facet.push({
+            name: 'singleAssetTestP',
             type: 'relation',
-            graphQLType: 'Product',
-            entity: Product,
+            graphQLType: 'Asset',
+            entity: Asset,
             public: true,
             nullable: true,
             eager: true,
-            label: [{ languageCode: LanguageCode.en, value: 'single product test' }],
+            label: [{ languageCode: LanguageCode.en, value: 'single asset Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
+        });
+        config.customFields.Facet.push({
+            name: 'listAssetTest',
+            type: 'relation',
+            graphQLType: 'Asset',
+            entity: Asset,
+            public: true,
+            nullable: true,
+            eager: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'list asset Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
         });
 
-        config.customFields.Order.push({
-            name: 'listProductTest',
+        config.customFields.Facet.push({
+            name: 'ProductListTest',
             type: 'relation',
             graphQLType: 'Product',
             entity: Product,
@@ -173,23 +253,16 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             nullable: true,
             eager: true,
             list: true,
-            label: [{ languageCode: LanguageCode.en, value: 'list product test' }],
+            label: [{ languageCode: LanguageCode.en, value: 'list Product Test' }],
+            description: [
+                {
+                    languageCode: LanguageCode.en,
+                    value: 'Recommended size: 1200x630px',
+                },
+            ],
         });
 
-        config.customFields.Order.push({
-            name: 'listProductVariantTest',
-            type: 'relation',
-            graphQLType: 'ProductVariant',
-            entity: ProductVariant,
-            public: true,
-            nullable: true,
-            eager: true,
-            list: true,
-            label: [{ languageCode: LanguageCode.en, value: 'list product variant test' }],
-        });
-
-        // relation fields
-
+        // ASSET
         config.customFields.Asset.push(
             {
                 name: 'attributes',
@@ -219,6 +292,43 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                 nullable: true,
             },
         );
+
+        // config.customFields.Collection.push({
+        //     name: 'singleProductTest',
+        //     type: 'relation',
+        //     graphQLType: 'Product',
+        //     entity: Product,
+        //     public: true,
+        //     nullable: true,
+        //     eager: true,
+        //     label: [{ languageCode: LanguageCode.en, value: 'single product test' }],
+        // });
+
+        // config.customFields.Collection.push({
+        //     name: 'listProductTest',
+        //     type: 'relation',
+        //     graphQLType: 'Product',
+        //     entity: Product,
+        //     public: true,
+        //     nullable: true,
+        //     eager: true,
+        //     list: true,
+        //     label: [{ languageCode: LanguageCode.en, value: 'list product test' }],
+        // });
+
+        // config.customFields.Collection.push({
+        //     name: 'listProductVariantTest',
+        //     type: 'relation',
+        //     graphQLType: 'ProductVariant',
+        //     entity: ProductVariant,
+        //     public: true,
+        //     nullable: true,
+        //     eager: true,
+        //     list: true,
+        //     label: [{ languageCode: LanguageCode.en, value: 'list product variant test' }],
+        // });
+
+        // relation fields
 
         return config;
     },

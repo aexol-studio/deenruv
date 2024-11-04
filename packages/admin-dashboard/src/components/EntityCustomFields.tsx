@@ -18,7 +18,7 @@ import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 
-type ViableEntity = Lowercase<keyof Pick<ModelTypes, 'Product' | 'Order' | 'Asset'>>;
+type ViableEntity = Lowercase<keyof Pick<ModelTypes, 'Product' | 'Order' | 'Asset' | 'Collection' | 'Facet'>>;
 type CustomFields = Record<string, any>;
 
 type Props<T extends ViableEntity> = {
@@ -30,8 +30,8 @@ type Props<T extends ViableEntity> = {
 const entityDictionary: Record<
   ViableEntity,
   {
-    inputName: keyof Pick<ModelTypes, 'UpdateOrderInput' | 'UpdateProductInput' | 'UpdateAssetInput'>;
-    mutationName: keyof Pick<ModelTypes['Mutation'], 'setOrderCustomFields' | 'updateProduct' | 'updateAsset'>;
+    inputName: keyof ModelTypes;
+    mutationName: keyof ModelTypes['Mutation'];
   }
 > = {
   product: {
@@ -45,6 +45,14 @@ const entityDictionary: Record<
   asset: {
     inputName: 'UpdateAssetInput',
     mutationName: 'updateAsset',
+  },
+  collection: {
+    inputName: 'UpdateCollectionInput',
+    mutationName: 'updateCollection',
+  },
+  facet: {
+    inputName: 'UpdateFacetInput',
+    mutationName: 'updateFacet',
   },
 };
 
@@ -74,17 +82,6 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
     () => entityCustomFields?.filter((el) => el.__typename === 'RelationCustomFieldConfig').map((el) => el.name),
     [entityCustomFields],
   );
-
-  useEffect(() => {
-    if (!entityCustomFields?.length) return;
-
-    try {
-      setLoading(true);
-      fetchEntity();
-    } finally {
-      setLoading(false);
-    }
-  }, [entityCustomFields, id]);
 
   const fetchEntity = useCallback(async () => {
     try {
@@ -143,6 +140,17 @@ export function EntityCustomFields<T extends ViableEntity>({ id, entityName, cur
       toast.error(getGqlError(err) || t('toasts.error.mutation'));
     }
   }, [state, entityName]);
+
+  useEffect(() => {
+    if (!entityCustomFields?.length) return;
+
+    try {
+      setLoading(true);
+      fetchEntity();
+    } finally {
+      setLoading(false);
+    }
+  }, [entityCustomFields, id]);
 
   if (!entityCustomFields?.length) return <></>;
 

@@ -2,7 +2,17 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, Stack, Switch } from '@/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  EntityCustomFields,
+  Input,
+  Label,
+  Stack,
+  Switch,
+} from '@/components';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -302,6 +312,7 @@ export const CollectionsDetailPage = () => {
             inheritValue={state.inheritFilters?.value}
             onInheritChange={(e) => setField('inheritFilters', e)}
           />
+          {id && <EntityCustomFields entityName="collection" id={id} />}
           <ContentsCard collectionId={id} />
         </Stack>
       </div>

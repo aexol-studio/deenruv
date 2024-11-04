@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Badge, Button, CardDescription, Input, Label, Textarea } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
-import { Cross, PlusIcon, X } from 'lucide-react';
+import { PlusIcon, X } from 'lucide-react';
 
 // function generateRandomDarkBgColor() {
 //     // Set hue to any random value (0 to 360) for color variety
