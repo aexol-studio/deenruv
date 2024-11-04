@@ -12,10 +12,6 @@ type I18Next = {
 
 export class PluginStore {
     private i18next: I18Next;
-    constructor(i18next: I18Next) {
-        this.i18next = i18next;
-    }
-
     private pluginMap: Map<string, DeenruvUIPlugin> = new Map();
     private pluginPages: Array<NonNullable<DeenruvUIPlugin['pages']>[number]> = [];
     private pluginsNavigationDataField: {
@@ -23,13 +19,14 @@ export class PluginStore {
         links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number]>;
     } = { groups: [], links: [] };
 
-    install(plugins: DeenruvUIPlugin[]) {
+    install(plugins: DeenruvUIPlugin[], i18next: I18Next) {
+        this.i18next = i18next;
         plugins.forEach(({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {
             this.pluginMap.set(plugin.name, plugin);
 
             if (!translations) return;
             for (const [lng, locales] of Object.entries(translations.data)) {
-                locales.forEach(trans => this.i18next.addResourceBundle(lng, translations.ns, trans));
+                locales.forEach(trans => i18next.addResourceBundle(lng, translations.ns, trans));
             }
         });
         this.pluginPages = plugins.flatMap(

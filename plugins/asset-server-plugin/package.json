@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/asset-server-plugin",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "files": [
@@ -16,7 +16,6 @@
         "e2e:watch": "cross-env PACKAGE=asset-server-plugin vitest --config ../../e2e-common/vitest.config.mts"
     },
     "homepage": "https://www.deenruv.io/",
-    "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"
     },

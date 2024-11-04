@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/email-plugin",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -16,7 +16,6 @@
         "test": "vitest --config vitest.config.mts --run"
     },
     "homepage": "https://www.deenruv.io/",
-    "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"
     },

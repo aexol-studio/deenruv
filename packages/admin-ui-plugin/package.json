@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/admin-ui-plugin",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "files": [
@@ -14,7 +14,6 @@
         "compile": "tsc -p ./tsconfig.build.json"
     },
     "homepage": "https://www.deenruv.io/",
-    "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public"
     },

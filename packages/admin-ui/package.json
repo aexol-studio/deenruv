@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/admin-ui",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "license": "MIT",
     "scripts": {
         "ng": "ng",
@@ -14,7 +14,6 @@
         "ngcc": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
     },
     "homepage": "https://www.deenruv.io/",
-    "funding": "https://github.com/sponsors/michaelbromley",
     "publishConfig": {
         "access": "public",
         "directory": "package"
@@ -96,7 +95,7 @@
         "@types/jasmine": "~4.3.5",
         "@types/jasminewd2": "~2.0.10",
         "@types/node": "^18.17.9",
-        "@types/react": "^18.2.21",
+        "@types/react": "^18.2.0",
         "@typescript-eslint/eslint-plugin": "^5.59.2",
         "@typescript-eslint/parser": "^5.59.2",
         "cross-spawn": "^7.0.3",

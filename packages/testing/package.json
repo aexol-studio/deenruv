@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/testing",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "End-to-end testing tools for deenruv projects",
     "keywords": [
         "deenruv",
@@ -25,7 +25,6 @@
         "type": "git",
         "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
     },
-    "funding": "https://github.com/sponsors/michaelbromley",
     "scripts": {
         "build": "tsc -p ./tsconfig.build.json",
         "watch": "tsc -p ./tsconfig.build.json -w",
