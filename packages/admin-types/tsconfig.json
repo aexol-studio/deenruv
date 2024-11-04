@@ -9,7 +9,7 @@
         "declaration": true,
         "sourceMap": true,
         "declarationMap": true,
-        "outDir": "lib",
+        "outDir": "dist",
         "rootDir": "./src",
         "strict": true,
         "baseUrl": "./src",
@@ -17,5 +17,5 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "exclude": ["node_modules", "lib"]
+    "exclude": ["node_modules", "dist"]
 }

@@ -1,5 +1,5 @@
 import { Selector } from '@deenruv/admin-types';
-import type { FromSelectorWithScalars } from '@deenruv/admin-types/lib/scalars';
+import type { FromSelectorWithScalars } from '@deenruv/admin-types';
 
 export const ProductSelector = Selector('Product')({
     id: true,
