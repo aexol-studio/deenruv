@@ -14,7 +14,7 @@
     },
     "scripts": {
         "zeus": "zeus http://localhost:3000/admin-api ./src --n --ts --typedDocumentNode",
-        "build": "tsc --build",
+        "build": "rimraf dist && rimraf tsconfig.tsbuildinfo && tsc --build",
         "watch": "tsc --watch"
     },
     "bugs": {
