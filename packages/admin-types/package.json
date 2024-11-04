@@ -1,13 +1,13 @@
 {
     "name": "@deenruv/admin-types",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "homepage": "https://www.deenruv.io/",
     "license": "MIT",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
         "zeus": "zeus http://localhost:3000/admin-api ./src --n --ts --typedDocumentNode",
-        "build": "rimraf dist && tsc --build",
+        "build": "tsc --build",
         "watch": "tsc --watch"
     },
     "devDependencies": {
