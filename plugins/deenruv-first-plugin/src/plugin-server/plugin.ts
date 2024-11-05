@@ -262,6 +262,16 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             ],
         });
 
+        config.customFields.OrderLine.push({
+            name: 'stringTest',
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'string Test' }],
+        });
+        config.customFields.OrderLine.push({
+            name: 'textTest',
+            type: 'text',
+            label: [{ languageCode: LanguageCode.en, value: 'text Test' }],
+        });
         // ASSET
         config.customFields.Asset.push(
             {

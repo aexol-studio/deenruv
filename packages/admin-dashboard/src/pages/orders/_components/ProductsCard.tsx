@@ -26,6 +26,7 @@ import {
   TooltipTrigger,
   TooltipContent,
   Tooltip,
+  EntityCustomFields,
 } from '@/components';
 import {
   DraftOrderLineType,
@@ -49,6 +50,7 @@ import { cn } from '@/lib/utils';
 // import { useServer } from '@/state';
 // import { CustomFieldsComponent } from '@/custom_fields';
 import { CustomComponent } from './CustomComponent.js';
+import { OrderLineCustomFields } from './OrderLineCustomFields.js';
 // import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 // import { useServer } from '@/state';
 
@@ -82,9 +84,7 @@ export const ProductsCard: React.FC = () => {
     { action: OrderLineActions | undefined; line: DraftOrderLineType } | undefined
   >();
   const isLineAddedInModify = (lineId: string) => order?.lines.findIndex((l) => l.id === lineId) === -1;
-  // const orderLineCustomFields = useServer(
-  //   (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
-  // );
+
   const addToOrder = async (
     productVariant: ProductVariantType,
     quantity: number,
@@ -434,41 +434,7 @@ export const ProductsCard: React.FC = () => {
                     </TableCell>
                     <TableCell className="min-w-[200px]">{line.productVariant.sku}</TableCell>
                     <TableCell>
-                      {/* {line.customFields &&
-                      (line.customFields.attributes ||
-                        line.customFields.discountBy ||
-                        line.customFields.selectedImage) ? (
-                        <HoverCard openDelay={100}>
-                          <HoverCardTrigger asChild>
-                            <Info />
-                          </HoverCardTrigger>
-                          <HoverCardContent className="flex w-fit items-center gap-4">
-                            {line.customFields.discountBy ? (
-                              <div>
-                                {t('discountByValue', {
-                                  value: priceFormatter(line.customFields.discountBy, line.productVariant.currencyCode),
-                                })}
-                              </div>
-                            ) : null}
-                            {line.customFields.selectedImage ? (
-                              <ImageWithPreview
-                                alt={line.customFields.selectedImage.id}
-                                src={line.customFields.selectedImage.preview}
-                              />
-                            ) : null}
-                            <div>
-                              {line.customFields.attributes &&
-                                Object.entries(JSON.parse(line.customFields.attributes)).map(([key, value]) => (
-                                  <div key={key}>
-                                    {key}: {value as string}
-                                  </div>
-                                ))}
-                            </div>
-                          </HoverCardContent>
-                        </HoverCard>
-                      ) : (
-                        <div>-</div>
-                      )} */}
+                      <OrderLineCustomFields line={line} order={currentOrder!} />
                     </TableCell>
                     <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, false)}</TableCell>
                     <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, true)}</TableCell>

@@ -5,6 +5,8 @@
   "upload": "Upload",
   "cancel": "Cancel",
   "back": "Back",
+  "accept": "Accept",
+  "show": "Show",
   "defaultChannel": "Default channel",
   "confirmationDialog": {
     "title": "Confirm your action",

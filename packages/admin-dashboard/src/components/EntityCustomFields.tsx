@@ -18,21 +18,33 @@ import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 
-type ViableEntity = Lowercase<keyof Pick<ModelTypes, 'Product' | 'Order' | 'Asset' | 'Collection' | 'Facet'>>;
-type CustomFields = Record<string, any>;
+type ViableEntity = Uncapitalize<
+  keyof Pick<ModelTypes, 'Product' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine'>
+>;
+type CF = Record<string, any>;
+
+type EntityWithCF = {
+  customFields: CF;
+  translations?: { customFields: CF; languageCode: LanguageCode }[];
+};
 
 type Props<T extends ViableEntity> = {
   entityName: T;
   id: string;
   currentLanguage?: LanguageCode;
+  fetch?: (runtimeSelector: any) => Promise<EntityWithCF>;
+  mutation?: (customFields: any, translations?: any) => Promise<void>;
+  disabled?: boolean;
 };
 
-const entityDictionary: Record<
-  ViableEntity,
-  {
-    inputName: keyof ModelTypes;
-    mutationName: keyof ModelTypes['Mutation'];
-  }
+const entityDictionary: Partial<
+  Record<
+    ViableEntity,
+    {
+      inputName: keyof ModelTypes;
+      mutationName: keyof ModelTypes['Mutation'];
+    }
+  >
 > = {
   product: {
     inputName: 'UpdateProductInput',
@@ -64,6 +76,9 @@ export function EntityCustomFields<T extends ViableEntity>({
   id,
   entityName,
   currentLanguage: _currentLanguage,
+  mutation,
+  fetch,
+  disabled,
 }: Props<T>) {
   const { t, i18n } = useTranslation('common');
 
@@ -75,7 +90,9 @@ export function EntityCustomFields<T extends ViableEntity>({
   const [loading, setLoading] = useState(true);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
   const entityCustomFields = useServer((p) =>
-    p.serverConfig?.entityCustomFields?.find((el) => el.entityName.toLowerCase() === entityName),
+    p.serverConfig?.entityCustomFields?.find(
+      (el) => el.entityName.charAt(0).toLowerCase() + el.entityName.slice(1) === entityName,
+    ),
   )?.customFields;
 
   const capitalizedEntityName = useMemo(
@@ -95,12 +112,16 @@ export function EntityCustomFields<T extends ViableEntity>({
 
   const fetchEntity = useCallback(async () => {
     try {
-      const { [entityName]: response } = (await apiCall()('query')({
-        [entityName]: [{ id }, runtimeSelector],
-      } as any)) as Record<
-        T,
-        { customFields: CustomFields; translations: { customFields: CustomFields; languageCode: LanguageCode }[] }
-      >;
+      let response;
+
+      if (fetch) {
+        response = await fetch(runtimeSelector);
+      } else {
+        const { [entityName]: genericResponse } = (await apiCall()('query')({
+          [entityName]: [{ id }, runtimeSelector],
+        } as any)) as Record<T, EntityWithCF>;
+        response = genericResponse;
+      }
 
       if (!response) {
         toast.error(t('toasts.error.fetch'));
@@ -115,8 +136,6 @@ export function EntityCustomFields<T extends ViableEntity>({
   }, [runtimeSelector, entityName]);
 
   const updateEntity = useCallback(async () => {
-    const mutationName = entityDictionary[entityName]['mutationName'];
-
     const preparedCustomFields = Object.entries(
       (state.customFields?.validatedValue || {}) as Record<string, any>,
     ).reduce(
@@ -132,18 +151,25 @@ export function EntityCustomFields<T extends ViableEntity>({
     );
 
     try {
-      await apiCall()('mutation')({
-        [mutationName]: [
-          {
-            input: {
-              id,
-              customFields: preparedCustomFields,
-              translations: state?.translations?.validatedValue,
+      if (mutation) {
+        await mutation(preparedCustomFields, state?.translations?.validatedValue);
+      } else {
+        const mutationName = entityDictionary[entityName]?.['mutationName'];
+        if (!mutationName)
+          throw new Error('no mutationName provided. Add it to entityDictionary or provide custom mutation');
+        await apiCall()('mutation')({
+          [mutationName]: [
+            {
+              input: {
+                id,
+                customFields: preparedCustomFields,
+                translations: state?.translations?.validatedValue,
+              },
             },
-          },
-          { id: true },
-        ],
-      } as any);
+            { id: true },
+          ],
+        } as any);
+      }
 
       toast.success(t('toasts.success.update'));
     } catch (err) {
@@ -207,7 +233,9 @@ export function EntityCustomFields<T extends ViableEntity>({
         )}
         <hr className="my-4" />
         <div className="flex justify-end">
-          <Button onClick={updateEntity}>{t('update')}</Button>
+          <Button disabled={disabled} onClick={updateEntity}>
+            {t('update')}
+          </Button>
         </div>
       </CardContent>
     </Card>
