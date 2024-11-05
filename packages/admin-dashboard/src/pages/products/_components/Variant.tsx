@@ -1,4 +1,4 @@
-import { Button, ConfirmationDialog, Input, Stack } from '@/components';
+import { Button, ConfirmationDialog, EntityCustomFields, Input, Stack } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -69,7 +69,7 @@ export const Variant: React.FC<VariantProps> = ({
       'facetValueIds',
       variant.facetValues.map((f) => f.id),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [variant]);
 
   const updateVariant = useCallback(() => {
@@ -105,7 +105,7 @@ export const Variant: React.FC<VariantProps> = ({
         });
       })
       .catch(() => toast.error(t('toasts.updateProductErrorToast')));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [state, variant]);
 
   const deleteVariant = useCallback(() => {
@@ -127,7 +127,7 @@ export const Variant: React.FC<VariantProps> = ({
         });
       })
       .catch(() => toast.error(t('toasts.deleteProductVariantErrorToast')));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [variant]);
 
   const setTranslationField = useCallback(
@@ -140,7 +140,7 @@ export const Variant: React.FC<VariantProps> = ({
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
     [currentTranslationLng, translations],
   );
 
@@ -174,7 +174,6 @@ export const Variant: React.FC<VariantProps> = ({
           {t('forms.updateVariant')}
         </Button>
       </Stack>
-
       <Stack className="gap-4">
         <Stack className="w-1/2 flex-col gap-4">
           <Card>
@@ -240,6 +239,7 @@ export const Variant: React.FC<VariantProps> = ({
           <OptionsCard optionGroups={variant.options} />
         </Stack>
       </Stack>
+      <EntityCustomFields entityName="productVariant" id={variant.id} />
     </Stack>
   );
 };

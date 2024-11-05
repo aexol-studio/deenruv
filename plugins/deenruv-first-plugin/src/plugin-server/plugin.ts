@@ -262,6 +262,7 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             ],
         });
 
+        //ORDER_LINE
         config.customFields.OrderLine.push({
             name: 'stringTest',
             type: 'string',
@@ -271,6 +272,25 @@ import { AdminUIController } from './controllers/admin-ui-controller';
             name: 'textTest',
             type: 'text',
             label: [{ languageCode: LanguageCode.en, value: 'text Test' }],
+        });
+
+        //PRODUCT_VARIANT
+        config.customFields.ProductVariant.push({
+            name: 'stringTest',
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'string Test' }],
+        });
+        config.customFields.ProductVariant.push({
+            name: 'textTest',
+            type: 'text',
+            label: [{ languageCode: LanguageCode.en, value: 'text Test' }],
+        });
+        config.customFields.ProductVariant.push({
+            name: 'assetTest',
+            type: 'relation',
+            entity: Asset,
+            graphQLType: 'Asset',
+            label: [{ languageCode: LanguageCode.en, value: 'asset Test' }],
         });
         // ASSET
         config.customFields.Asset.push(

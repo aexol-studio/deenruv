@@ -19,7 +19,7 @@ import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 
 type ViableEntity = Uncapitalize<
-  keyof Pick<ModelTypes, 'Product' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine'>
+  keyof Pick<ModelTypes, 'Product' | 'ProductVariant' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine'>
 >;
 type CF = Record<string, any>;
 
@@ -49,6 +49,10 @@ const entityDictionary: Partial<
   product: {
     inputName: 'UpdateProductInput',
     mutationName: 'updateProduct',
+  },
+  productVariant: {
+    inputName: 'UpdateProductVariantInput',
+    mutationName: 'updateProductVariants',
   },
   order: {
     inputName: 'UpdateOrderInput',
@@ -156,7 +160,7 @@ export function EntityCustomFields<T extends ViableEntity>({
       } else {
         const mutationName = entityDictionary[entityName]?.['mutationName'];
         if (!mutationName)
-          throw new Error('no mutationName provided. Add it to entityDictionary or provide custom mutation');
+          throw new Error('no mutationName provided. Add it to entityDictionary or provide custom mutation prop');
         await apiCall()('mutation')({
           [mutationName]: [
             {
