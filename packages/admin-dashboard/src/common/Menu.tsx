@@ -45,7 +45,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { clearAllCache } from '@/lists/cache';
 import { languages, useSettings } from '@/state/settings';
 import { Routes } from '@/utils';
-import { MinkoLogo } from '@/components/MinkoLogo';
 import { useServer } from '@/state';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
@@ -108,6 +107,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
     [matches],
   );
 
+  console.log(window.__DEENRUV_SETTINGS__.branding);
   return (
     <div className="bg-muted/40 w-full border-r">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -138,7 +138,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
               >
                 <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b px-2')}>
                   <div className="cursor-pointer" onClick={() => navigate(Routes.dashboard)}>
-                    <MinkoLogo isCollapsed={isCollapsed} />
+                    {/* <MinkoLogo isCollapsed={isCollapsed} /> */}
                   </div>
                 </div>
                 <Nav isCollapsed={isCollapsed} />

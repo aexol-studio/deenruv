@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/content-management-plugin",
-    "version": "0.0.10",
+    "version": "0.0.14",
     "homepage": "https://www.deenruv.io/",
     "license": "MIT",
     "publishConfig": {

@@ -1,0 +1,102 @@
+{
+  "types": {
+    "filter": "Filter type",
+    "select": "Select type"
+  },
+  "true": "True",
+  "false": "False",
+  "from": "From",
+  "to": "To",
+  "value": "Value",
+  "bulk": {
+    "delete": {
+      "title": "Are you sure you want to delete this records?",
+      "description": "This action cannot be undone."
+    }
+  },
+  "filterLabels": {
+    "active": "Active",
+    "additionalInformation": "Additional information",
+    "code": "Code",
+    "createdAt": "Created at",
+    "currencyCode": "Currency code",
+    "customerLastName": "Customer last name",
+    "id": "Id",
+    "orderPlacedAt": "Order placed at",
+    "shipping": "Shipping",
+    "shippingWithTax": "Shipping with tax",
+    "state": "State",
+    "subTotal": "Sub total",
+    "subTotalWithTax": "Sub total with tax",
+    "token": "Token",
+    "total": "total",
+    "totalQuantity": "Total quantity",
+    "totalWithTax": "Total with tax",
+    "transactionId": "Transaction id",
+    "type": "Type",
+    "updatedAt": "Updated at",
+    "aggregateOrderId": "Aggregate order id",
+    "getProforma": "Get proforma",
+    "registeredOnCheckout": "Registered on checkout",
+    "enabled": "Enabled",
+    "name": "Name",
+    "firstName": "First name",
+    "emailAddress": "Email address",
+    "slug": "Slug",
+    "description": "Description",
+    "isPrivate": "Is private",
+    "inheritFilters": "Inherit filters",
+    "position": "Position",
+    "parentId": "Parent id",
+    "usedForProductCreations": "Is used for product creations",
+    "usedForColors": "Is used for colors",
+    "colorsCollection": "Is colors collection",
+    "zone": "Zone",
+    "value": "Rate",
+    "customerGroup": "Customer group",
+    "category": "Category",
+    "modalTitle": "Modal title",
+    "_and": "and",
+    "_or": "or"
+  },
+  "buttons": {
+    "add": "Add",
+    "apply": "Apply",
+    "create": "Create",
+    "reset": "Reset",
+    "cancel": "Cancel"
+  },
+  "operators": {
+    "eq": "Equals",
+    "in": "In",
+    "notIn": "Not in",
+    "isNull": "Is null",
+    "notEq": "Not equal",
+    "contains": "Contains",
+    "notContains": "Not contains",
+    "before": "Before",
+    "regex": "Matches regex",
+    "after": "After",
+    "between": "Between",
+    "lt": "Lower than",
+    "lte": "Lower than or equal",
+    "gt": "Greater than",
+    "gte": "Greater than or equal"
+  },
+  "placeholders": {
+    "columnsDropdown": "Select columns",
+    "operatorInput": "Input value",
+    "search": "Search for..."
+  },
+  "columns": {
+    "id": "ID",
+    "createdAt": "Created at",
+    "updatedAt": "Updated at"
+  },
+  "actionsMenu": {
+    "open": "Open",
+    "copyId": "Copy ID",
+    "view": "View",
+    "delete": "Delete"
+  }
+}

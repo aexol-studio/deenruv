@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { createStore, useStore } from 'zustand';
 import { createContext, useContext } from 'react';
-import { DeenruvAdminPanelSettings } from '@/type';
+import { DeenruvAdminPanelSettings } from '@/root';
 
 type BrandingStoreProps = DeenruvAdminPanelSettings;
 type BrandingStoreProviderProps = React.PropsWithChildren<BrandingStoreProps>;
@@ -11,6 +11,7 @@ type BrandingStoreType = ReturnType<typeof createBrandingStore>;
 const createBrandingStore = (initProps?: Partial<BrandingStoreProps>) => {
   const DEFAULT_PROPS: BrandingStoreProps = {
     branding: { name: 'Deenruv' },
+    api: { uri: 'http://localhost:3000' },
   };
   return createStore<BrandingStoreProps>()(() => ({
     ...DEFAULT_PROPS,

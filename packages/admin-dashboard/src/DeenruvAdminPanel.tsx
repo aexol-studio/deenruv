@@ -12,8 +12,15 @@ import { Custom404 } from '@/pages/Custom404';
 import * as Pages from '@/pages';
 import { Routes } from '@/utils/routes';
 import { useSettings } from '@/state/settings';
-import { DeenruvAdminPanel as DeenruvAdminPanelType } from './type';
+import { DeenruvAdminPanelSettings, DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
 import { BrandingStoreProvider } from './state/branding.js';
+import * as resources from './locales';
+
+declare global {
+  interface Window {
+    __DEENRUV_SETTINGS__: DeenruvAdminPanelSettings;
+  }
+}
 
 const firstLetterToLowerCase = (str: string) => str.charAt(0).toLowerCase() + str.slice(1);
 const getRoute = (name: string, key: string) => {
@@ -40,9 +47,23 @@ const DeenruvPaths = Object.entries(Pages).flatMap(([key, Component]) => {
   return paths;
 });
 
+const loadTranslations = () => {
+  Object.entries(resources).forEach(([lang, value]) => {
+    Object.entries(value).forEach(([_, translations]) => {
+      Object.entries(translations).forEach(([key, value]) => {
+        i18n.addResourceBundle(lang, key, value);
+      });
+    });
+  });
+};
+
 const pluginsStore = new PluginStore();
 export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
   pluginsStore.install(plugins, i18n);
+  loadTranslations();
+  if (typeof window !== 'undefined') {
+    window.__DEENRUV_SETTINGS__ = settings;
+  }
 
   const router = createBrowserRouter([
     { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },

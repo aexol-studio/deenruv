@@ -146,7 +146,8 @@ const buildHeaders = (): Parameters<typeof VendureChain>[1] => {
       };
 };
 const buildURL = (): string => {
-  return `${ADMIN_API_URL}?languageCode=${useSettings.getState().translationsLanguage}`;
+  const uri = window?.__DEENRUV_SETTINGS__?.api?.uri;
+  return `${uri || ADMIN_API_URL}/shop-api?languageCode=${useSettings.getState().translationsLanguage}`;
 };
 
 export const apiCall = () => VendureChain(buildURL(), { ...buildHeaders() });
