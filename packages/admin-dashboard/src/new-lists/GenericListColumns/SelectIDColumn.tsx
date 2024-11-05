@@ -3,7 +3,7 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export const SelectIDColumn = <T extends { id: string; name: string }>(): ColumnDef<T> => {
   return {
-    id: 'select',
+    id: 'select-id',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}

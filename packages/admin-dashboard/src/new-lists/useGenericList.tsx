@@ -1,3 +1,4 @@
+import { Search } from '@/components';
 import { Stack } from '@/components/Stack';
 import {
   Pagination,
@@ -60,9 +61,11 @@ export type ListType = {
   taxCategories: 'TaxCategoryFilterParameter';
   taxRates: 'TaxRateFilterParameter';
   zones: 'ZoneFilterParameter';
+
+  promotions: 'PromotionFilterParameter';
 };
 
-export const useList = <T extends PromisePaginated, K extends keyof ListType>({
+export const useGenericList = <T extends PromisePaginated, K extends keyof ListType>({
   route,
   listType,
   customItemsPerPage,

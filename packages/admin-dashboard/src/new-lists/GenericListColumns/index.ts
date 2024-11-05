@@ -1,2 +1,2 @@
-export * from './DeleteEntriesDialog';
+export * from './ActionsDropdown';
 export * from './SelectIDColumn';

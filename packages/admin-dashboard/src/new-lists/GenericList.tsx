@@ -1,6 +1,6 @@
 import { Badge, Checkbox, ListButtons, ListTable, Search, SortButton } from '@/components';
 import { PromisePaginated } from './models';
-import { ListType, useList } from './useList';
+import { ListType, useGenericList } from './useGenericList';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -18,10 +18,11 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { GenericListProvider } from './GenericListContext';
-import { SelectIDColumn, DeleteEntriesDialog } from './GenericListColumns';
+import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
 import { DeleteDialog, ListColumnDropdown } from './_components';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
+type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
 
 export function GenericList<T extends PromisePaginated>({
   fetch,
@@ -34,44 +35,51 @@ export function GenericList<T extends PromisePaginated>({
 }: {
   fetch: T;
   route: { list: string; new: string; route: string; to: (id: string) => string };
-  onRemove: (items: Awaited<ReturnType<T>>['items']) => Promise<boolean>;
+  onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
   listType: keyof ListType;
-  searchFields?: Array<keyof Awaited<ReturnType<T>>['items'][number]>;
-  hideColumns?: Array<keyof Awaited<ReturnType<T>>['items'][number]>;
-  customColumns?: ColumnDef<Awaited<ReturnType<T>>['items']>[];
+  searchFields?: Array<keyof AwaitedReturnType<T>['items'][number]>;
+  hideColumns?: Array<keyof AwaitedReturnType<T>['items'][number]>;
+  customColumns?: ColumnDef<AwaitedReturnType<T>['items']>[];
 }) {
-  const [itemsToDelete, setItemsToDelete] = useState<Awaited<ReturnType<T>>['items']>([]);
-
+  const { t } = useTranslation('table');
+  const [itemsToDelete, setItemsToDelete] = useState<AwaitedReturnType<T>['items']>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
-
   const [deleteDialogOpened, setDeleteDialogOpened] = useState(false);
-
   const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
     `${listType}-table-visibility`,
     { id: true, createdAt: true, updatedAt: true },
   );
-  const { t } = useTranslation('table');
   const columnsTranslations = t('columns', { returnObjects: true });
 
   const {
     objects,
-    Paginate,
     setSort,
     optionInfo,
     setFilterField,
     setFilter,
     removeFilterField,
-    isFilterOn,
     setFilterLogicalOperator,
+    isFilterOn,
     refetch,
-  } = useList({ listType, route: fetch });
+    Paginate,
+  } = useGenericList({ listType, route: fetch });
 
   const columns = useMemo(() => {
     const entry = objects?.[0];
     const keys = entry ? Object.keys(entry) : Object.keys(columnsTranslations);
-    const columns: ColumnDef<Awaited<ReturnType<T>>['items']>[] = [];
+    const columns: ColumnDef<AwaitedReturnType<T>['items']>[] = [];
     for (const key of keys) {
+      if (key === 'id') {
+        columns.push(SelectIDColumn());
+        columns.push(
+          ActionsDropdown({
+            redirect: (to) => route.to(to),
+            setDeleteDialogOpened,
+            setItemsToDelete,
+          }),
+        );
+      }
       columns.push({
         accessorKey: key,
         header: () => {
@@ -105,23 +113,8 @@ export function GenericList<T extends PromisePaginated>({
           return row.original[key];
         },
       });
-
-      if (key === 'id') {
-        columns.push(SelectIDColumn());
-        columns.push(
-          DeleteEntriesDialog({
-            redirect: (to) => route.to(to),
-            setDeleteDialogOpened,
-            setItemsToDelete,
-          }),
-        );
-      }
     }
     return columns
-      .filter(
-        (column) =>
-          !hideColumns?.includes('accessorKey' in column ? (column.accessorKey as string) : (column.id as string)),
-      )
       .map((column) => {
         if (customColumns) {
           const key = 'accessorKey' in column ? column.accessorKey : column.id;
@@ -129,6 +122,15 @@ export function GenericList<T extends PromisePaginated>({
           if (custom) return custom;
         }
         return column;
+      })
+      .filter(
+        (column) =>
+          !hideColumns?.includes('accessorKey' in column ? (column.accessorKey as string) : (column.id as string)),
+      )
+      .sort((a, b) => {
+        if (a.id === 'actions') return 1;
+        if (b.id === 'actions') return -1;
+        return 0;
       });
   }, [objects]);
 
@@ -143,7 +145,7 @@ export function GenericList<T extends PromisePaginated>({
       }
       return newVisibility;
     });
-  }, [objects]);
+  }, [objects, columnsVisibilityState]);
 
   const table = useReactTable({
     data: objects || [],
@@ -166,39 +168,38 @@ export function GenericList<T extends PromisePaginated>({
   });
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="page-content-h w-ful flex flex-col">
-        <GenericListProvider
-          context={{
-            deleteDialog: {
-              opened: deleteDialogOpened,
-              setOpened: setDeleteDialogOpened,
-              itemsToDelete,
-              setItemsToDelete,
-            },
-          }}
-        >
-          <div className="flex w-full flex-col items-start gap-2">
-            <div className="flex w-full items-center justify-between gap-4">
-              <div>
-                <ListColumnDropdown
-                  table={table}
-                  placeholder={t('placeholders.columnsDropdown')}
-                  columnsTranslations={columnsTranslations as Record<string, string>}
-                />
-              </div>
-              <ListButtons
-                createLabel={t('buttons.create')}
-                createRoute={route.new}
-                handleClick={() => {
-                  const items = table.getFilteredSelectedRowModel().rows.map((i) => i.original);
-                  setItemsToDelete(items);
-                  setDeleteDialogOpened(true);
-                }}
-                selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+    <div className="page-content-h flex w-full flex-col gap-6">
+      <GenericListProvider
+        context={{
+          deleteDialog: {
+            opened: deleteDialogOpened,
+            setOpened: setDeleteDialogOpened,
+            itemsToDelete,
+            setItemsToDelete,
+          },
+        }}
+      >
+        <div className="flex w-full flex-col items-start gap-2">
+          <div className="flex w-full items-center justify-between gap-4">
+            <div>
+              <ListColumnDropdown
+                table={table}
+                placeholder={t('placeholders.columnsDropdown')}
+                columnsTranslations={columnsTranslations as Record<string, string>}
               />
             </div>
-            {/* <Search
+            <ListButtons
+              createLabel={t('buttons.create')}
+              createRoute={route.new}
+              handleClick={() => {
+                const items = table.getFilteredSelectedRowModel().rows.map((i) => i.original);
+                setItemsToDelete(items);
+                setDeleteDialogOpened(true);
+              }}
+              selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            />
+          </div>
+          {/* <Search
               filter={optionInfo.filter}
               type={listType}
               setFilter={setFilter}
@@ -206,28 +207,27 @@ export function GenericList<T extends PromisePaginated>({
               removeFilterField={removeFilterField}
               searchFields={searchFields}
             /> */}
-          </div>
-          <ListTable {...{ columns, isFilterOn, table, Paginate }} />
-          <DeleteDialog
-            title={t('bulk.delete.title')}
-            description={t('bulk.delete.description')}
-            deletingItems={itemsToDelete}
-            open={deleteDialogOpened}
-            onOpenChange={setDeleteDialogOpened}
-            onConfirm={async () => {
-              try {
-                const result = await onRemove(itemsToDelete);
-                if (!result) return;
-                refetch();
-                setItemsToDelete([]);
-                setDeleteDialogOpened(false);
-              } catch {
-                console.error('Error deleting items');
-              }
-            }}
-          />
-        </GenericListProvider>
-      </div>
+        </div>
+        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <DeleteDialog
+          title={t('bulk.delete.title')}
+          description={t('bulk.delete.description')}
+          deletingItems={itemsToDelete}
+          open={deleteDialogOpened}
+          onOpenChange={setDeleteDialogOpened}
+          onConfirm={async () => {
+            try {
+              const result = await onRemove(itemsToDelete);
+              if (!result) return;
+              refetch();
+              setItemsToDelete([]);
+              setDeleteDialogOpened(false);
+            } catch {
+              console.error('Error deleting items');
+            }
+          }}
+        />
+      </GenericListProvider>
     </div>
   );
 }

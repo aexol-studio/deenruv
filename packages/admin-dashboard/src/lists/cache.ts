@@ -19,7 +19,8 @@ export type PaginatedCacheables =
   | 'stockLocations'
   | 'taxCategories'
   | 'taxRates'
-  | 'zones';
+  | 'zones'
+  | 'promotions';
 export type DetailCacheables = 'productDetail' | 'orderDetail' | 'collectionDetail' | 'facetDetail';
 
 export const clearAllCache = () => {

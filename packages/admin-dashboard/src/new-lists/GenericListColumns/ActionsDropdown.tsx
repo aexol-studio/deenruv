@@ -11,7 +11,7 @@ import { MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-export const DeleteEntriesDialog = <T extends { id: string }>({
+export const ActionsDropdown = <T extends { id: string }>({
   redirect,
   setDeleteDialogOpened,
   setItemsToDelete,
@@ -23,6 +23,10 @@ export const DeleteEntriesDialog = <T extends { id: string }>({
   return {
     id: 'actions',
     enableHiding: false,
+    header: () => {
+      const { t } = useTranslation('table');
+      return <div className="text-right">{t('actionsMenu.title')}</div>;
+    },
     cell: ({ row }) => {
       const { t } = useTranslation('table');
       return (

@@ -94,6 +94,7 @@
     "updatedAt": "Updated at"
   },
   "actionsMenu": {
+    "title": "Actions",
     "open": "Open",
     "copyId": "Copy ID",
     "view": "View",
