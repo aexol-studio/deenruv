@@ -1,4 +1,11 @@
-import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset, Product } from '@deenruv/core';
+import {
+    PluginCommonModule,
+    DeenruvPlugin,
+    LanguageCode,
+    Asset,
+    Product,
+    ProductVariant,
+} from '@deenruv/core';
 import { AdminResolver } from './resolvers/admin.resolver';
 import { BetterMetricsService } from './services/metrics.service';
 import gql from 'graphql-tag';
@@ -260,6 +267,18 @@ import { AdminUIController } from './controllers/admin-ui-controller';
                     value: 'Recommended size: 1200x630px',
                 },
             ],
+        });
+
+        config.customFields.Facet.push({
+            name: 'listProductVariantTest',
+            type: 'relation',
+            graphQLType: 'ProductVariant',
+            entity: ProductVariant,
+            public: true,
+            nullable: true,
+            eager: true,
+            list: true,
+            label: [{ languageCode: LanguageCode.en, value: 'list product variant test' }],
         });
 
         //ORDER_LINE
