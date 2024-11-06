@@ -1,5 +1,4 @@
-import { Button, Label } from '@/components';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button, Label, Popover, PopoverContent, PopoverTrigger } from '@deenruv/react-ui-devkit';
 import { useServer } from '@/state/server';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -44,9 +43,9 @@ export const ActiveAdmins = () => {
                       className="h-2 w-2 rounded-full bg-green-500"
                     />
                   </div>
-                  <span className="text-sm text-muted-foreground">{formatTimeAgo(client.lastActive)}</span>
+                  <span className="text-muted-foreground text-sm">{formatTimeAgo(client.lastActive)}</span>
                   {!client.me && (
-                    <NavLink to={client.location} className="text-sm text-muted-foreground">
+                    <NavLink to={client.location} className="text-muted-foreground text-sm">
                       {client.location.replace(window.location.origin, '')}
                     </NavLink>
                   )}
@@ -55,7 +54,7 @@ export const ActiveAdmins = () => {
             ))
           ) : (
             <div>
-              <span className="text-sm text-muted-foreground">{t('awesomeMenu.noActiveAdministrators')}</span>
+              <span className="text-muted-foreground text-sm">{t('awesomeMenu.noActiveAdministrators')}</span>
             </div>
           )}
         </div>

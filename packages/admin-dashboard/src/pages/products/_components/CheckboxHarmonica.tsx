@@ -1,6 +1,14 @@
 import React from 'react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Checkbox, Label, Stack } from '@/components';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Checkbox,
+  Label,
+} from '@deenruv/react-ui-devkit';
 import { FacetValueOptionsType } from '@/graphql/facets';
+import { Stack } from '@/components';
 interface CheckboxAccordionProps {
   checkedFacetsIds?: string[];
   title: string | undefined;

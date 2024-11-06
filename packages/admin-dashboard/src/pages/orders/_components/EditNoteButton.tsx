@@ -11,7 +11,7 @@ import {
   Checkbox,
   Label,
   Button,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 import { ModelTypes } from '@deenruv/admin-types';

@@ -1,4 +1,4 @@
-import { Button } from '@/components';
+import { Button } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 

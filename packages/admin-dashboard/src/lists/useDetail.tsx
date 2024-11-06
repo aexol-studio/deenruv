@@ -20,7 +20,6 @@ export const useDetail = <T extends PromiseDetail>({ route, cacheKey }: { route:
       c.set(slug, r);
       return;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   return {

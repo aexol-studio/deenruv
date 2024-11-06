@@ -13,8 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
+import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -22,7 +21,7 @@ import { ParamFilterFieldTuple, ShippingMethodsSortOptions, shippingMethodsSortO
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { ListTable } from '@/components';
+import { ListTable, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
 import { ShippingMethodListSelector, ShippingMethodListType } from '@/graphql/shippingMethods';
 import { ActionsColumn } from '@/components/Columns';
 import CreatedAtColumn from '@/components/Columns/CreatedAtColumn';
@@ -79,7 +78,6 @@ export const ShippingMethodsListPage = () => {
 
   useEffect(() => {
     refetchShippingMethods();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteMethodsToDelete = async () => {

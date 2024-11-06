@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, Stack } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input, Label } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -11,6 +11,7 @@ import { PageHeader } from '@/pages/stock-locations/_components/PageHeader';
 import { Routes } from '@/utils';
 import { StockLocationListSelector, StockLocationListType } from '@/graphql/stockLocations';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
+import { Stack } from '@/components';
 
 export const StockLocationsDetailPage = () => {
   const { id } = useParams();
@@ -48,7 +49,6 @@ export const StockLocationsDetailPage = () => {
     if (!stockLocation) return;
     setField('name', stockLocation.name);
     setField('description', stockLocation.description);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stockLocation]);
 
   const createStockLocation = useCallback(() => {

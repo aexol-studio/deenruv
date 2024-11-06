@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import {
   Button,
-  ImageWithPreview,
   Input,
   ScrollArea,
   Table,
@@ -11,7 +10,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { useTranslation } from 'react-i18next';
 import {
@@ -23,6 +22,7 @@ import {
 import { priceFormatter } from '@/utils';
 import { CircleX } from 'lucide-react';
 import { toast } from 'sonner';
+import { ImageWithPreview } from '../ImageWithPreview';
 
 interface Props {
   onSelectItem: (selected: ProductVariantType) => void;
@@ -74,7 +74,7 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
       {focused && (
         <div
           onMouseDown={(e) => e.preventDefault()}
-          className="border-primary-200 dark:border-primary-700 absolute left-0 top-[100%+2px] z-10 min-w-full max-w-full border bg-primary-foreground shadow-lg"
+          className="border-primary-200 dark:border-primary-700 bg-primary-foreground absolute left-0 top-[100%+2px] z-10 min-w-full max-w-full border shadow-lg"
         >
           <ScrollArea className="h-96 overflow-auto">
             <Table>

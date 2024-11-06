@@ -8,16 +8,20 @@ import {
   DialogTrigger,
   Label,
   DialogFooter,
-  Stack,
-} from '@/components';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { apiCall } from '@/graphql/client';
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
+import { Stack } from '@/components';
 
 interface AddVariantDialogProps {
   currentTranslationLng: LanguageCode;
@@ -51,7 +55,6 @@ export const AddVariantDialog: React.FC<AddVariantDialogProps> = ({ currentTrans
         toast.error(t('toasts.fetchProductErrorToast'));
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
   useEffect(() => {

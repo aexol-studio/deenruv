@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Input,
   Label,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { CountryListType } from '@/graphql/settings';
 import { cn } from '@/lib/utils';
@@ -63,7 +63,6 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
       translations: [{ languageCode, name: countryToEdit?.name ?? '' }],
       enabled: countryToEdit.enabled,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [countryToEdit]);
 
   const dialogContent = useMemo(() => {
@@ -158,7 +157,6 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
       setState({ code: '', translations: [{ languageCode, name: '' }], enabled: true });
       clearErrors();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action]);
   return (
     <Dialog open={!!action} onOpenChange={(e) => !e && onClose()}>
@@ -205,7 +203,7 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
                           <span>Nazwa:</span>
                           <span className="font-bold uppercase">{i.name}</span>
                         </div>
-                        <div className="h-full w-[1px] bg-secondary" />
+                        <div className="bg-secondary h-full w-[1px]" />
                         <div className="flex gap-1">
                           <span>Kod:</span>
                           <span className="font-bold uppercase">{i.code}</span>

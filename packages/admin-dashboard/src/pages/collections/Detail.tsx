@@ -2,17 +2,7 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  EntityCustomFields,
-  Input,
-  Label,
-  Stack,
-  Switch,
-} from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input, Label, Switch } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -26,6 +16,7 @@ import { SeoCard } from '@/pages/collections/_components/SeoCard';
 import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
+import { EntityCustomFields, Stack } from '@/components';
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
@@ -95,8 +86,6 @@ export const CollectionsDetailPage = () => {
       'filters',
       collection.filters.map((f) => ({ code: f.code, arguments: f.args })),
     );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collection]);
 
   const createCollection = useCallback(() => {
@@ -199,7 +188,7 @@ export const CollectionsDetailPage = () => {
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [currentTranslationLng, translations],
   );
 
@@ -210,7 +199,7 @@ export const CollectionsDetailPage = () => {
         [customField]: e,
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [state.customFields],
   );
 
@@ -227,7 +216,7 @@ export const CollectionsDetailPage = () => {
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [currentTranslationLng, translations],
   );
 

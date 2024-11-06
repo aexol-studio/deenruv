@@ -1,4 +1,4 @@
-import { Label } from '@/components';
+import { Label } from '@deenruv/react-ui-devkit';
 import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -12,7 +12,7 @@ export const OrderSummary: React.FC = () => {
 
   return (
     <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">
-      <Label className="font-bold text-muted-foreground">
+      <Label className="text-muted-foreground font-bold">
         {t('create.finalAmount', { value: priceFormatter(order.totalWithTax, order.currencyCode) })}
       </Label>
       <Label className="text-muted-foreground">|</Label>

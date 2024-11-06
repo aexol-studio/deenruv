@@ -6,7 +6,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { useSettings } from '@/state';
 import React from 'react';

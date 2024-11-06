@@ -1,5 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, TableCell, TableRow } from './index.js';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  TableCell,
+  TableRow,
+} from '@deenruv/react-ui-devkit';
 import { CircleOff, SearchX } from 'lucide-react';
 import type common from '../locales/en/common.json';
 

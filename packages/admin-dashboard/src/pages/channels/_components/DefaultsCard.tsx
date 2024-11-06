@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle, Label, SimpleSelect, Stack, Switch } from '@/components';
-import { Option } from '@/components/ui/multiple-selector';
+import { Card, CardContent, CardHeader, CardTitle, Label, Switch, type Option } from '@deenruv/react-ui-devkit';
+import { SimpleSelect, Stack } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { useCallback, useEffect, useState } from 'react';

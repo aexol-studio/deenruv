@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './types.js';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@deenruv/react-ui-devkit';
 import { ActionAttributes } from './ActionAttributes.js';
 import { ActionQuantityPrice } from './ActionQuantityPrice.js';
 

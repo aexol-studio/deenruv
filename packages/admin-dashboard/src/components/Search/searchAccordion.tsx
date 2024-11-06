@@ -4,7 +4,8 @@ import { SearchAccordionInput } from './searchAccordionInput.js';
 
 import { cn } from '@/lib/utils';
 import { useSearchParams } from 'react-router-dom';
-import { AccordionContent, AccordionItem, AccordionTrigger, ParamObjectT } from '@/components';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@deenruv/react-ui-devkit';
+import { ParamObjectT } from '@/components';
 
 interface SearchAccordionProps {
   title: string;

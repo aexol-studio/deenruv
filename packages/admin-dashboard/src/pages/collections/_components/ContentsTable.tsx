@@ -1,7 +1,5 @@
 import {
   Badge,
-  EmptyState,
-  ImageWithPreview,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -20,8 +18,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
-import { Skeleton } from '@/components/ui/skeleton';
+  Skeleton,
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
 import { cn } from '@/lib/utils';
@@ -46,6 +44,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDebounce } from 'use-debounce';
+import { EmptyState, ImageWithPreview } from '@/components';
 
 interface ContentsProps {
   collectionId?: string;
@@ -95,7 +94,6 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
   };
   useEffect(() => {
     if (collectionId) getCollectionProductVariants(collectionId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collectionId, pagination, debouncedFilter]);
 
   const arrayRange = (start: number, stop: number) =>
@@ -147,7 +145,7 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
             cell: () => <Skeleton className="h-12 w-full rounded-sm" />,
           }))
         : columns,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [tableLoading],
   );
 
@@ -197,7 +195,7 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
   return (
     <>
       <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
-        <TableHeader className="sticky top-0 bg-primary-foreground">
+        <TableHeader className="bg-primary-foreground sticky top-0">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {

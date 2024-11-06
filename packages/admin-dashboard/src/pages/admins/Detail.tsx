@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Stack } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -11,6 +11,7 @@ import { PageHeader } from '@/pages/admins/_components/PageHeader';
 import { AdminDetailsSelector, AdminDetailsType } from '@/graphql/admins';
 import { Routes } from '@/utils';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
+import { Stack } from '@/components';
 
 export const AdminsDetailPage = () => {
   const { id } = useParams();
@@ -62,7 +63,6 @@ export const AdminsDetailPage = () => {
       'roleIds',
       admin.user.roles.map((r) => r.id),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [admin]);
 
   const createAdmin = useCallback(() => {

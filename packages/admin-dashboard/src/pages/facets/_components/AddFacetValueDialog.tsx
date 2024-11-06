@@ -8,11 +8,9 @@ import {
   DialogTrigger,
   Label,
   DialogFooter,
-  Stack,
   Checkbox,
-  AssetsModalInput,
   DropdownMenuItem,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { LanguageCode } from '@deenruv/admin-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -22,6 +20,7 @@ import { ColorSample } from './ColorSample.js';
 import { ImageOff, Pencil } from 'lucide-react';
 import { FacetValueType } from '@/graphql/facets';
 import { useGFFLP } from '@/lists/useGflp';
+import { Stack, AssetsModalInput } from '@/components';
 
 interface AddFacetValueDialogProps {
   facetId: string;

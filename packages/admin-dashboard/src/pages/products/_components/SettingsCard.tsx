@@ -1,5 +1,16 @@
-import { Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import {
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Switch,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@deenruv/react-ui-devkit';
 import { LanguageCode } from '@deenruv/admin-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

@@ -21,18 +21,14 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-  ImageWithPreview,
-  Search,
-  Stack,
-  TranslationSelect,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-  ListTable,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
+import { ImageWithPreview, Search, Stack, TranslationSelect, ListTable } from '@/components';
 import { useSettings } from '@/state';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useLocalStorage } from '@/hooks';
@@ -315,7 +311,6 @@ export const ProductsListPage = () => {
 
   useEffect(() => {
     refetchProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [translationsLanguage]);
 
   return (

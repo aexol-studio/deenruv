@@ -1,21 +1,20 @@
 import React from 'react';
-import { Button, ScrollArea } from '@/components';
 import {
+  Button,
+  ScrollArea,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import {
   Timeline,
   TimelineItem,
   TimelineLine,
   TimelineDot,
   TimelineContent,
   TimelineHeading,
-} from '@/components/ui/timeline';
+} from '@deenruv/react-ui-devkit';
 import { useServer } from '@/state/server';
 import { useTranslation } from 'react-i18next';
 

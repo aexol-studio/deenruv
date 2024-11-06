@@ -19,15 +19,13 @@ import {
   Label,
   SelectItem,
   ScrollArea,
-} from '@/components';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@deenruv/react-ui-devkit';
 import { AddressBaseType, addressBaseSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
@@ -280,8 +278,6 @@ export const AddressCard: React.FC<{
           ...currentAddress,
         });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentAddress, order, type]);
 
   return (
@@ -351,12 +347,12 @@ export const AddressCard: React.FC<{
                             <CardDescription>{`${address.postalCode} ${address.city} ${address.country?.name || address.country?.code}`}</CardDescription>
                             <CardDescription>{`${t('selectAddress.phoneNumberShort', { value: address.phoneNumber })} ${address.company} `}</CardDescription>
                             {address.defaultBillingAddress && (
-                              <CardDescription className="pt-2 text-primary">
+                              <CardDescription className="text-primary pt-2">
                                 {t('selectAddress.isDefaultBilling')}
                               </CardDescription>
                             )}
                             {address.defaultBillingAddress && (
-                              <CardDescription className="pt-2 text-primary">
+                              <CardDescription className="text-primary pt-2">
                                 {t('selectAddress.isDefaultShipping')}
                               </CardDescription>
                             )}
@@ -389,7 +385,7 @@ export const AddressCard: React.FC<{
                       onChange={(e) => setField('fullName', e.target.value)}
                       required
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.fullName?.errors || []).toString()}
                     </p>
                     <Input
@@ -407,7 +403,7 @@ export const AddressCard: React.FC<{
                       defaultValue={state?.customFields?.value?.companyTaxId}
                       onChange={(e) => setField('customFields', { companyTaxId: e.target.value })}
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.customFields?.errors || []).toString()}
                     </p>
                     <Input
@@ -418,7 +414,7 @@ export const AddressCard: React.FC<{
                       onChange={(e) => setField('streetLine1', e.target.value)}
                       required
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.streetLine1?.errors || []).toString()}
                     </p>
                     <Input
@@ -428,7 +424,7 @@ export const AddressCard: React.FC<{
                       defaultValue={state?.streetLine2?.value}
                       onChange={(e) => setField('streetLine2', e.target.value)}
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.streetLine2?.errors || []).toString()}
                     </p>
                     <Input
@@ -438,7 +434,7 @@ export const AddressCard: React.FC<{
                       onChange={(e) => setField('city', e.target.value)}
                       required
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.city?.errors || []).toString()}
                     </p>
                     <Input
@@ -447,7 +443,7 @@ export const AddressCard: React.FC<{
                       defaultValue={currentAddress?.province}
                       onChange={(e) => setField('province', e.target.value)}
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.province?.errors || []).toString()}
                     </p>
                     <Input
@@ -458,7 +454,7 @@ export const AddressCard: React.FC<{
                       onChange={(e) => setField('postalCode', e.target.value)}
                       required
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.postalCode?.errors || []).toString()}
                     </p>
                     <Input
@@ -469,7 +465,7 @@ export const AddressCard: React.FC<{
                       onChange={(e) => setField('phoneNumber', e.target.value)}
                       required
                     />
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.phoneNumber?.errors || []).toString()}
                     </p>
                     <div className="flex flex-row items-center gap-2">
@@ -498,7 +494,7 @@ export const AddressCard: React.FC<{
                         </SelectContent>
                       </Select>
                     </div>
-                    <p className="mb-2 mt-1  min-h-5 border-orange-800 text-sm font-medium text-destructive">
+                    <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
                       {(state.countryCode?.errors || []).toString()}
                     </p>
 

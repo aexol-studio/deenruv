@@ -1,4 +1,4 @@
-import { Button, Label, Switch } from '@/components';
+import { Button, Label, Switch } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';

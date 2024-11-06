@@ -1,7 +1,7 @@
-import { Input, Stack } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Input, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Stack } from '@/components';
 
 interface DiscountRatingCardProps {
   discountByValue: number | undefined;

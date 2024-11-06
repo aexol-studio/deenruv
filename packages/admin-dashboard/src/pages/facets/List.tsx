@@ -1,6 +1,5 @@
 import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
-import { Button } from '@/components/ui/button';
 import { useList } from '@/lists/useList';
 import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { format } from 'date-fns';
@@ -14,18 +13,21 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+
+import { ChevronDown, MoreHorizontal, ArrowRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
+  Badge,
+  Button,
+  Checkbox,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ChevronDown, MoreHorizontal, ArrowRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge, DeleteDialog, ListTable, Search, SortButton } from '@/components';
+} from '@deenruv/react-ui-devkit';
+import { DeleteDialog, ListTable, Search, SortButton } from '@/components';
 import { Link, NavLink, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';

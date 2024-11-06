@@ -14,8 +14,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
+import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -23,7 +22,7 @@ import { ParamFilterFieldTuple, SellersSortOptions, sellersSortOptionsArray } fr
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { ListTable } from '@/components';
+import { ListTable, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
 import { SellerListSelector, SellerListType } from '@/graphql/sellers';
 import { ActionsColumn } from '@/components/Columns';
 
@@ -77,7 +76,6 @@ export const SellersListPage = () => {
 
   useEffect(() => {
     refetchSellers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteSellersToDelete = async () => {

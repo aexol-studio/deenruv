@@ -1,10 +1,10 @@
-import { Button } from '@/components';
 import {
+  Button,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '@deenruv/react-ui-devkit';
 import { ChevronDown } from 'lucide-react';
 import { Table } from '@tanstack/react-table';
 

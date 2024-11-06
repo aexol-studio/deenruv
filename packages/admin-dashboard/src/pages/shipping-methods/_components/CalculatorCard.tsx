@@ -1,12 +1,21 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModelTypes } from '@deenruv/admin-types';
-import { Button, Checkbox, Input, Label, SimpleSelect, Stack } from '@/components';
-import { Option } from '@/components/ui/multiple-selector';
+import {
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Option,
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
+import { SimpleSelect, Stack } from '@/components';
 
 interface CalculatorCardProps {
   currentCalculatorValue: ModelTypes['ConfigurableOperationInput'] | undefined;

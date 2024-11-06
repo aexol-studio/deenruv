@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { PAYMENT_STATE } from '@/graphql/base';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { useServer } from '@/state';

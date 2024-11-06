@@ -1,13 +1,11 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { NavLink, useLocation } from 'react-router-dom';
 import { buttonVariants } from '@/utils';
-import { Separator } from '@/components/ui/separator';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePluginStore } from '@deenruv/react-ui-devkit';
+import { usePluginStore, Separator, Tooltip, TooltipContent, TooltipTrigger } from '@deenruv/react-ui-devkit';
 import { Routes } from '@/utils';
 import {
   BarChart,
@@ -50,7 +48,7 @@ export function Nav({ isCollapsed }: NavProps) {
     const split = trans.split('.');
     const key = split.slice(1).join('.') || '';
     const ns = split[0] || '';
-    //@ts-ignore
+    //@ts-expect-error 123
     return _pluginT(key, { ns });
   };
 
@@ -148,7 +146,7 @@ export function Nav({ isCollapsed }: NavProps) {
     });
 
     links.forEach(({ groupId, href, labelId, id, icon, placement }, idx) => {
-      let foundGroupIdx = navData.findIndex((group) => group.id === groupId);
+      const foundGroupIdx = navData.findIndex((group) => group.id === groupId);
 
       if (foundGroupIdx == -1)
         throw new Error(`Navbar menu group with id ${groupId} was not found.\nPlugin navigation href: ${href}`);
@@ -193,7 +191,7 @@ export function Nav({ isCollapsed }: NavProps) {
                                 buttonVariants({ variant: 'ghost', size: 'icon' }),
                                 'h-9 w-9',
                                 location.pathname === link.href &&
-                                  'bg-muted text-muted-foreground hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                                  'bg-muted text-muted-foreground hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted dark:text-white dark:hover:text-white',
                               )}
                             >
                               <link.icon className="h-6 w-6" />
@@ -214,7 +212,7 @@ export function Nav({ isCollapsed }: NavProps) {
                         className={cn(
                           buttonVariants({ variant: 'ghost', size: 'sm' }),
                           location.pathname === link.href &&
-                            'bg-muted font-semibold text-black hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
+                            'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold text-black dark:text-white dark:hover:text-white',
                           'justify-start capitalize',
                         )}
                       >

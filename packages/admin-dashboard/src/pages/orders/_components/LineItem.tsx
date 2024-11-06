@@ -1,4 +1,4 @@
-import { TableRow, TableCell, Button } from '@/components';
+import { TableRow, TableCell, Button } from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
 import React, { PropsWithChildren } from 'react';
 

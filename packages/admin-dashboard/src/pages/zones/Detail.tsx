@@ -2,16 +2,25 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, Stack } from '@/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  MultipleSelector,
+  Option,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/zones/_components/PageHeader';
 import { Routes } from '@/utils';
-import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { useServer } from '@/state';
 import { ZoneDetailsSelector, ZoneDetailsType } from '@/graphql/zones';
+import { Stack } from '@/components';
 
 export const ZonesDetailPage = () => {
   const { id } = useParams();
@@ -60,7 +69,6 @@ export const ZonesDetailPage = () => {
       'memberIds',
       zone.members.map((m) => m.id),
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [zone]);
 
   const createZone = useCallback(() => {

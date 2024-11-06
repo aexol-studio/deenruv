@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Switch,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { LogicalOperator, ModelTypes } from '@deenruv/admin-types';
 
 import { useTranslation } from 'react-i18next';
@@ -145,7 +145,6 @@ export const Search: React.FC<SearchProps> = ({
       }
     }
     //isAdvanced should ot be in dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch, type]);
 
   const filtersToAdd = useMemo(() => {
@@ -247,7 +246,7 @@ export const Search: React.FC<SearchProps> = ({
                           <div
                             onClick={() => setOpenedFilter(i.name)}
                             className={cn(
-                              'inline-flex cursor-pointer items-center gap-1 rounded-full border border-primary bg-primary-foreground py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
+                              'border-primary bg-primary-foreground inline-flex cursor-pointer items-center gap-1 rounded-full border py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
                               !Object.keys({ ...filter[i.name] }).length && 'border-red-600',
                             )}
                           >
@@ -255,7 +254,7 @@ export const Search: React.FC<SearchProps> = ({
                             <CircleX size={14} onClick={() => removeFilterField(i.name)} />
                           </div>
                         </PopoverTrigger>
-                        <PopoverContent align="start" className="flex w-auto min-w-60 flex-col gap-2 bg-secondary">
+                        <PopoverContent align="start" className="bg-secondary flex w-auto min-w-60 flex-col gap-2">
                           {i.name === 'state' ? (
                             <InOperator
                               type="OrderState"
@@ -334,7 +333,7 @@ export const Search: React.FC<SearchProps> = ({
                             <div
                               onClick={() => setOpenedFilter(i.name)}
                               className={cn(
-                                'inline-flex cursor-pointer items-center gap-1 rounded-full border border-primary bg-primary-foreground py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
+                                'border-primary bg-primary-foreground inline-flex cursor-pointer items-center gap-1 rounded-full border py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
                                 !Object.keys({ ...filter[i.name] }).length && 'border-red-600',
                               )}
                             >
@@ -342,7 +341,7 @@ export const Search: React.FC<SearchProps> = ({
                               <CircleX size={14} onClick={() => removeFilterField(i.name)} />
                             </div>
                           </PopoverTrigger>
-                          <PopoverContent align="start" className="flex w-auto min-w-60 flex-col gap-2 bg-secondary">
+                          <PopoverContent align="start" className="bg-secondary flex w-auto min-w-60 flex-col gap-2">
                             {i.type === 'StringOperators' ? (
                               <StringOperator
                                 currentValue={filter[i.name] as ModelTypes['StringOperators']}
@@ -402,7 +401,7 @@ export const Search: React.FC<SearchProps> = ({
                               <div
                                 onClick={() => setOpenedFilter(i.name)}
                                 className={cn(
-                                  'inline-flex cursor-pointer items-center gap-1 rounded-full border border-primary bg-primary-foreground py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
+                                  'border-primary bg-primary-foreground inline-flex cursor-pointer items-center gap-1 rounded-full border py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
                                   !Object.keys({ ...filter[i.name] }).length && 'border-red-600',
                                 )}
                               >
@@ -410,7 +409,7 @@ export const Search: React.FC<SearchProps> = ({
                                 <CircleX size={14} onClick={() => removeFilterField(i.name)} />
                               </div>
                             </PopoverTrigger>
-                            <PopoverContent align="start" className="flex w-auto min-w-60 flex-col gap-2 bg-secondary">
+                            <PopoverContent align="start" className="bg-secondary flex w-auto min-w-60 flex-col gap-2">
                               {i.type === 'StringOperators' ? (
                                 <StringOperator
                                   currentValue={filter[i.name] as ModelTypes['StringOperators']}
@@ -470,7 +469,7 @@ export const Search: React.FC<SearchProps> = ({
                                 <div
                                   onClick={() => setOpenedFilter(i.name)}
                                   className={cn(
-                                    'inline-flex cursor-pointer items-center gap-1 rounded-full border border-primary bg-primary-foreground py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
+                                    'border-primary bg-primary-foreground inline-flex cursor-pointer items-center gap-1 rounded-full border py-0.5 pl-2.5 pr-1 text-xs font-semibold hover:brightness-90',
                                     !Object.keys({ ...filter[i.name] }).length && 'border-red-600',
                                   )}
                                 >
@@ -480,7 +479,7 @@ export const Search: React.FC<SearchProps> = ({
                               </PopoverTrigger>
                               <PopoverContent
                                 align="start"
-                                className="flex w-auto min-w-60 flex-col gap-2 bg-secondary"
+                                className="bg-secondary flex w-auto min-w-60 flex-col gap-2"
                               >
                                 {i.type === 'StringOperators' ? (
                                   <StringOperator

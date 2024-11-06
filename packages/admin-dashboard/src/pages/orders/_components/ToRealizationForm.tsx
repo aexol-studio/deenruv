@@ -12,9 +12,7 @@ import {
   SelectGroup,
   SelectItem,
   Textarea,
-  AssetsModalInput,
-  ImageWithPreview,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 // import { apiCall } from '@/graphql/client';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
@@ -24,6 +22,7 @@ import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { AssetsModalInput, ImageWithPreview } from '@/components';
 
 const colors = ['BIAŁA', 'ŻÓŁTA', 'POMARAŃCZOWA', 'RÓŻOWA', 'ZIELONA', 'CZERWONA'];
 
@@ -143,7 +142,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
               value={note}
               onChange={(e) => setNote(e.currentTarget.value)}
             />
-            <Label className="text-xs text-muted-foreground ">
+            <Label className="text-muted-foreground text-xs ">
               {t('changeStatus.charLeft', { value: 64 - note.length })}
             </Label>
           </div>

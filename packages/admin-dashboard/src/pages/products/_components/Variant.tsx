@@ -1,11 +1,12 @@
-import { Button, ConfirmationDialog, EntityCustomFields, Input, Stack } from '@/components';
+import { Button, Input } from '@deenruv/react-ui-devkit';
+import { ConfirmationDialog, EntityCustomFields, Stack } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { resetCache } from '@/lists/cache';
 import { toast } from 'sonner';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard';

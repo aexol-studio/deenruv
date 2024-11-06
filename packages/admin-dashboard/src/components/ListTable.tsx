@@ -1,9 +1,8 @@
 import { ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { EmptyState } from '@/components';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@deenruv/react-ui-devkit';
 import { ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { EmptyState } from '.';
 
 interface ListTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,7 +35,7 @@ export function ListTable<TData, TValue>({ table, columns, isFilterOn, Paginate 
     <>
       <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border`}>
         <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
-          <TableHeader className="sticky top-0 bg-primary-foreground">
+          <TableHeader className="bg-primary-foreground sticky top-0">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -65,7 +64,7 @@ export function ListTable<TData, TValue>({ table, columns, isFilterOn, Paginate 
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {t('selectedValue', {
             from: table.getFilteredSelectedRowModel().rows.length,
             to: table.getFilteredRowModel().rows.length,

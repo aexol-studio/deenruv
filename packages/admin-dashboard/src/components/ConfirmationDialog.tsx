@@ -6,10 +6,10 @@ import {
   DialogContent,
   DialogTrigger,
   DialogFooter,
-  Stack,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import React, { PropsWithChildren, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Stack } from './Stack';
 
 interface ConfirmationDialogProps {
   onConfirm: () => void;

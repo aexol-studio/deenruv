@@ -14,8 +14,8 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
+import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton, ListTable } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -24,7 +24,6 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ChannelListSelector, ChannelListType } from '@/graphql/channels';
-import { ListTable } from '@/components';
 import { ActionsColumn } from '@/components/Columns';
 
 const getChannels = async (options: ResolverInputTypes['ChannelListOptions']) => {
@@ -77,7 +76,6 @@ export const ChannelsListPage = () => {
 
   useEffect(() => {
     refetchChannels();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteChannelsToDelete = async () => {

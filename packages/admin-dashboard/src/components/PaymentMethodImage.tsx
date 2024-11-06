@@ -1,4 +1,4 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@deenruv/react-ui-devkit';
 import { Banknote, CircleDollarSign, CreditCard, Wallet } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import common from '@/locales/en/common.json';

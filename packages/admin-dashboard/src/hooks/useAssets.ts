@@ -58,7 +58,6 @@ export const useAssets = (config?: Config) => {
 
   useEffect(() => {
     !skip && refetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, skip, searchTags, perPage, debouncedSearch]);
 
   useEffect(() => {

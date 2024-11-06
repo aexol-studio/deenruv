@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, Stack, Switch } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input, Label, Switch } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -14,6 +14,7 @@ import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { ModalCard } from '@/pages/payment-methods/_components/ModalCard';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
+import { Stack } from '@/components';
 
 export const PaymentMethodsDetailPage = () => {
   const { id } = useParams();
@@ -77,8 +78,6 @@ export const PaymentMethodsDetailPage = () => {
       arguments: paymentMethod.checker?.args || [],
       code: paymentMethod.checker?.code || '',
     });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethod]);
 
   const createPaymentMethod = useCallback(() => {
@@ -163,7 +162,7 @@ export const PaymentMethodsDetailPage = () => {
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [currentTranslationLng, translations],
   );
 

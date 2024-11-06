@@ -1,5 +1,4 @@
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
 
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +55,6 @@ export const FieldFilter: React.FC<Props> = ({
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedOptionStringValue, currentFieldValueType]);
 
   return (

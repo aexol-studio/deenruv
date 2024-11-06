@@ -11,6 +11,7 @@ export default tseslint.config(eslint.configs.recommended, prettier, ...tseslint
             { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' },
         ],
         '@typescript-eslint/no-explicit-any': 'warn',
+        '@typescript-eslint/no-unused-expressions': 'warn',
         'prettier/prettier': ['off', { endOfLine: 'lf' }],
     },
 });

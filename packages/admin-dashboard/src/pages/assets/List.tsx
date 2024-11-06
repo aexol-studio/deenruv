@@ -4,10 +4,11 @@ import { ItemsPerPageType, useList } from '@/lists/useList';
 import { $, ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Button, Search, Stack } from '@/components';
+import { Button } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { FileUp, ImageOff, XIcon } from 'lucide-react';
-import { Asset } from './_components/Asset.js';
+import { Stack, Search } from '@/components';
+import { Asset } from './_components/Asset';
 
 const ITEMS_PER_PAGE: ItemsPerPageType = [
   { name: '32perPage', value: 32 },
@@ -133,7 +134,7 @@ export const AssetsListPage = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="absolute bottom-0 right-0 flex items-center gap-3 rounded-tl-xl bg-secondary px-5 py-3"
+              className="bg-secondary absolute bottom-0 right-0 flex items-center gap-3 rounded-tl-xl px-5 py-3"
             >
               <span className="mr-3">
                 {assetsToUpload.length} {t('assets:filesSelected')}
@@ -155,7 +156,7 @@ export const AssetsListPage = () => {
         </AnimatePresence>
       </form>
       {!!assetsToUpload.length && (
-        <div className="flex w-full justify-between rounded-b-xl bg-secondary px-4 py-6">
+        <div className="bg-secondary flex w-full justify-between rounded-b-xl px-4 py-6">
           <div className="flex flex-1 gap-3">
             {assetsToUpload.map((f) => {
               let blob = undefined;

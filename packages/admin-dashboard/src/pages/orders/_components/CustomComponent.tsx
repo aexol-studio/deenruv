@@ -3,7 +3,15 @@ import { apiCall } from '@/graphql/client';
 import { Selector } from '@deenruv/admin-types';
 import { FromSelectorWithScalars } from '@/graphql/scalars';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Checkbox, HoverCard, HoverCardContent, HoverCardTrigger, Input, Label } from '@/components';
+import {
+  Button,
+  Checkbox,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Input,
+  Label,
+} from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { InfoIcon, Trash } from 'lucide-react';

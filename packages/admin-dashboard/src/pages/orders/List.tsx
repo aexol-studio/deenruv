@@ -1,6 +1,5 @@
 import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
-import { Button } from '@/components/ui/button';
 import { OrderListSelector, OrderListType } from '@/graphql/orders';
 import { ListType, useList } from '@/lists/useList';
 import { DeletionResult, ModelTypes, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
@@ -16,40 +15,39 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { ChevronDown, MoreHorizontal, ArrowRight, Copy } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import {
+  Button,
+  Badge,
+  Checkbox,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ChevronDown, MoreHorizontal, ArrowRight, Copy } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Badge,
-  EmptyState,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-  PaymentMethodImage,
-  Search,
-  SortButton,
-} from '@/components';
-import { Link, useSearchParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { OrderStateBadge } from './_components/OrderStateBadge.js';
-import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogTitle,
-} from '@/components/ui/dialog';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@deenruv/react-ui-devkit';
+import { PaymentMethodImage, Search, SortButton, EmptyState } from '@/components';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { OrderStateBadge } from './_components/OrderStateBadge.js';
 import { toast } from 'sonner';
 import { OrdersSortOptions, ParamFilterFieldTuple, ordersSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
@@ -137,7 +135,6 @@ export const OrdersListPage = () => {
         timer = undefined;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterState]);
 
   useEffect(() => {
@@ -570,7 +567,7 @@ export const OrdersListPage = () => {
 
         <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border`}>
           <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
-            <TableHeader className="sticky top-0 bg-primary-foreground">
+            <TableHeader className="bg-primary-foreground sticky top-0">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -599,7 +596,7 @@ export const OrdersListPage = () => {
           </Table>
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="flex-1 text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex-1 text-sm">
             {t('selectedValue', {
               from: table.getFilteredSelectedRowModel().rows.length,
               to: table.getFilteredRowModel().rows.length,
@@ -613,7 +610,7 @@ export const OrdersListPage = () => {
             <div className="flex max-h-[50vh] flex-col gap-2">
               {ordersToDelete.filter((i) => i.state === ORDER_STATE.DRAFT).length ? (
                 <div>
-                  <DialogDescription className="text-lg text-primary">
+                  <DialogDescription className="text-primary text-lg">
                     {t('deleteDraft.descriptionDraft')}
                   </DialogDescription>
                   <DialogDescription>
@@ -630,7 +627,7 @@ export const OrdersListPage = () => {
               {ordersToDelete.filter((i) => i.state !== ORDER_STATE.DRAFT && i.state !== ORDER_STATE.CANCELLED)
                 .length ? (
                 <div>
-                  <DialogDescription className="text-lg text-primary">
+                  <DialogDescription className="text-primary text-lg">
                     {t('deleteDraft.descriptionOrder')}
                   </DialogDescription>
                   <DialogDescription>

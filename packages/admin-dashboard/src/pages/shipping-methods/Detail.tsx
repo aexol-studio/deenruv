@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, SimpleSelect, Stack } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input, Label, Option } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -12,11 +12,11 @@ import { PageHeader } from '@/pages/shipping-methods/_components/PageHeader';
 import { ShippingMethodDetailsSelector, ShippingMethodDetailsType } from '@/graphql/shippingMethods';
 import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { Option } from '@/components/ui/multiple-selector';
 import { ModalCard } from '@/pages/shipping-methods/_components/ModalCard';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
 import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
+import { SimpleSelect, Stack } from '@/components';
 
 export const ShippingMethodsDetailPage = () => {
   const { id } = useParams();
@@ -91,8 +91,6 @@ export const ShippingMethodsDetailPage = () => {
       code: shippingMethod.calculator?.code || '',
     });
     setField('fulfillmentHandler', shippingMethod.fulfillmentHandlerCode);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shippingMethod]);
 
   const createShippingMethod = useCallback(() => {
@@ -177,7 +175,6 @@ export const ShippingMethodsDetailPage = () => {
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentTranslationLng, translations],
   );
 

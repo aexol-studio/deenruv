@@ -1,9 +1,9 @@
-import { Input, Stack } from '@/components';
+import { Input, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { LanguageCode, ModelTypes } from '@deenruv/admin-types';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Stack } from '@/components';
 
 interface BasicFieldsCardProps {
   currentTranslationLng: LanguageCode;

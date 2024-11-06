@@ -1,7 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AssetsModalInput, Button, Checkbox, Input, Label, Stack } from '@/components';
+import { Button, Checkbox, Input, Label, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { ProductOptionType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { apiCall } from '@/graphql/client';
@@ -10,6 +9,7 @@ import { LanguageCode } from '@deenruv/admin-types';
 import { ColorSample } from '@/pages/facets/_components/ColorSample';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { ImageOff } from 'lucide-react';
+import { AssetsModalInput, Stack } from '@/components';
 
 interface OptionValueCardProps {
   productOption: ProductOptionType;
@@ -42,7 +42,6 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({ productOption,
         [customField]: e,
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state.customFields],
   );
 

@@ -10,14 +10,14 @@ import {
   Checkbox,
   Input,
   Label,
-  Stack,
   Textarea,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { Stack } from '@/components';
 
 export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> = ({ onNoteModified }) => {
   const { t } = useTranslation('orders');
@@ -40,7 +40,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
     modifyOrder(() => toast.message(t('modifySuccess'))).then(() => onNoteModified && onNoteModified(false));
   return (
     <form className="h-full">
-      <Card className="h-full bg-accent/20">
+      <Card className="bg-accent/20 h-full">
         <CardHeader>
           <CardTitle className="text-base">{t('note')}</CardTitle>
         </CardHeader>

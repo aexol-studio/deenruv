@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, SimpleSelect, Stack, Switch } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input, Label, Switch, Option } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -10,7 +10,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/tax-rates/_components/PageHeader';
 import { Routes } from '@/utils';
 import { TaxRateDetailsSelector, TaxRateDetailsType } from '@/graphql/taxRates';
-import { Option } from '@/components/ui/multiple-selector';
+import { SimpleSelect, Stack } from '@/components';
 
 export const TaxRatesDetailPage = () => {
   const { id } = useParams();
@@ -92,7 +92,6 @@ export const TaxRatesDetailPage = () => {
     setField('customerGroupId', taxRate.customerGroup?.id);
     setField('zoneId', taxRate.zone.id);
     setField('value', taxRate.value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taxRate]);
 
   const createTaxRate = useCallback(() => {

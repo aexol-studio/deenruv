@@ -2,7 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, Stack } from '@/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  MultipleSelector,
+  type Option,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -10,10 +19,10 @@ import { cache } from '@/lists/cache';
 import { Routes } from '@/utils';
 import { RoleDetailsSelector, RoleDetailsType } from '@/graphql/roles';
 import { Permission } from '@deenruv/admin-types';
-import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { PageHeader } from '@/pages/roles/_components/PageHeader';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
+import { Stack } from '@/components';
 
 export const RolesDetailPage = () => {
   const { id } = useParams();
@@ -87,7 +96,6 @@ export const RolesDetailPage = () => {
       role.channels.map((ch) => ch.id),
     );
     setField('permissions', role.permissions);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [role]);
 
   const createRole = useCallback(() => {

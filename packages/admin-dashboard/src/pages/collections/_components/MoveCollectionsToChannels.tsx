@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { Routes } from '@/utils';
 import {
   ColumnDef,
@@ -213,7 +213,7 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
           <h1 className="p-4">{t('moveCollectionsToChannels.selected')}</h1>
 
           <Table>
-            <TableHeader className="sticky top-0 bg-primary-foreground">
+            <TableHeader className="bg-primary-foreground sticky top-0">
               {selectedTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -260,7 +260,7 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
           </div>
 
           <Table>
-            <TableHeader className="sticky top-0 bg-primary-foreground">
+            <TableHeader className="bg-primary-foreground sticky top-0">
               {channelsTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {

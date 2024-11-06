@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
 import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
 import { useServer } from '@/state/server';
 import { useSettings } from '@/state/settings';

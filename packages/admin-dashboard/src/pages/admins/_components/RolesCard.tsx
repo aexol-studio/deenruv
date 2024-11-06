@@ -1,7 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import { Option, MultipleSelector, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { RoleSelector, RoleType } from '@/graphql/roles';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';

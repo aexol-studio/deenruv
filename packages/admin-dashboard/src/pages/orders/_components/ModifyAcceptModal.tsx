@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components';
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@deenruv/react-ui-devkit';
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';

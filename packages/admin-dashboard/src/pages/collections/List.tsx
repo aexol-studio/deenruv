@@ -1,5 +1,4 @@
 import { apiCall } from '@/graphql/client';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { CornerDownRight } from 'lucide-react';
 import { useList } from '@/lists/useList';
 import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
@@ -39,13 +38,16 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-  EmptyState,
-  ImageWithPreview,
-  Search,
-  SortButton,
-  Stack,
-  TranslationSelect,
-} from '@/components';
+  DrawerTrigger,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@deenruv/react-ui-devkit';
+import { EmptyState, ImageWithPreview, Search, SortButton, Stack, TranslationSelect } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Routes } from '@/utils';
 import { ArrowRight, ChevronDown, MoreHorizontal } from 'lucide-react';
@@ -53,8 +55,6 @@ import { format } from 'date-fns';
 import { CollectionsSortOptions, collectionsSortOptionsArray } from '@/lists/types';
 
 import { CollectionProductVariantsDrawer } from './_components/CollectionProductVariantsDrawer.js';
-import { DrawerTrigger } from '@/components/ui/drawer';
-import { Skeleton } from '@/components/ui/skeleton';
 import { SelectedCollectionsModalContent } from './_components/SelectedCollectionsModal.js';
 import { CollectionAction } from './consts.js';
 
@@ -429,7 +429,7 @@ export const CollectionsListPage = () => {
             cell: () => <Skeleton className="h-10 w-full rounded-sm" />,
           }))
         : columns,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [tableLoading],
   );
 
@@ -487,7 +487,6 @@ export const CollectionsListPage = () => {
   }, [searchParams, setFilterField]);
   useEffect(() => {
     refetchCollections();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [translationsLanguage]);
 
   return (
@@ -556,7 +555,7 @@ export const CollectionsListPage = () => {
 
           <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border`}>
             <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
-              <TableHeader className="sticky top-0 bg-primary-foreground">
+              <TableHeader className="bg-primary-foreground sticky top-0">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
@@ -588,7 +587,7 @@ export const CollectionsListPage = () => {
             </Table>
           </div>
           <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="flex-1 text-sm text-muted-foreground">
+            <div className="text-muted-foreground flex-1 text-sm">
               {t('rowsSelected', {
                 selected: table.getFilteredSelectedRowModel().rows.length,
                 all: table.getFilteredRowModel().rows.length,

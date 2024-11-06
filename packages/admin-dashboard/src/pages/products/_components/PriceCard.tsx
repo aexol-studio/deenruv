@@ -1,9 +1,21 @@
-import { Badge, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Stack } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import {
+  Badge,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { CurrencyCode } from '@deenruv/admin-types';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Stack } from '@/components';
 
 interface PriceCardProps {
   priceValue: number | undefined;

@@ -1,4 +1,4 @@
-import { Button, Label } from '@/components';
+import { Button, Label } from '@deenruv/react-ui-devkit';
 import { AdminDetailsType } from '@/graphql/admins';
 import { Routes } from '@/utils';
 import { format } from 'date-fns';

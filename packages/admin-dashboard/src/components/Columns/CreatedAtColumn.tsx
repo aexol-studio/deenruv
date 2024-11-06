@@ -2,8 +2,8 @@ import { useTranslation } from 'react-i18next';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Row } from '@tanstack/react-table';
-import { SortButton } from '@/components';
 import { TimeColumnProps } from '@/lists/models';
+import { SortButton } from '../SortButton';
 
 const CreatedAtColumn = <T extends { createdAt: string }>({ currSort, setSort }: TimeColumnProps): ColumnDef<T> => {
   const { t } = useTranslation('common');

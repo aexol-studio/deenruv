@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { useTranslation } from 'react-i18next';
 import { OrderStateBadge } from '@/pages/orders/_components/OrderStateBadge';

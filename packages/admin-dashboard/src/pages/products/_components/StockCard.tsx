@@ -7,22 +7,25 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Stack,
   Switch,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuTrigger,
   DropdownMenuItem,
-} from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Separator,
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { StockLevelsType } from '@/graphql/products';
 import { GlobalFlag } from '@deenruv/admin-types';
 import { MapPin } from 'lucide-react';
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Stack } from '@/components';
 
 interface StockLevelsValueType {
   stockLocationId: string;

@@ -9,8 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Stack,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
+import { Stack } from '../Stack';
 
 interface ActionsColumnProps<T> {
   viewRoute: (id: string) => string;

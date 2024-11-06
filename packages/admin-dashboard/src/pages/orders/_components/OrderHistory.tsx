@@ -1,11 +1,3 @@
-import {
-  Timeline,
-  TimelineContent,
-  TimelineDot,
-  TimelineHeading,
-  TimelineItem,
-  TimelineLine,
-} from '@/components/ui/timeline';
 import { EllipsisVerticalIcon, Pencil, Trash } from 'lucide-react';
 import { useState } from 'react';
 import {
@@ -30,7 +22,13 @@ import {
   DropdownMenuTrigger,
   Label,
   Textarea,
-} from '@/components';
+  Timeline,
+  TimelineContent,
+  TimelineDot,
+  TimelineHeading,
+  TimelineItem,
+  TimelineLine,
+} from '@deenruv/react-ui-devkit';
 import { OrderStateBadge } from './OrderStateBadge.js';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 import { apiCall } from '@/graphql/client';
@@ -143,7 +141,7 @@ export const OrderHistory: React.FC = () => {
                 <div className="flex w-full items-center justify-between">
                   <div>
                     {history.administrator?.firstName} {history.administrator?.lastName}{' '}
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-muted-foreground text-sm">
                       {t(`history.createdAt`, { value: format(new Date(history.createdAt), 'dd.MM.yyyy hh:mm') })}{' '}
                       {history.createdAt !== history.updatedAt &&
                         t(`history.updatedAt`, { value: format(new Date(history.updatedAt), 'dd.MM.yyyy hh:mm') })}
@@ -213,7 +211,7 @@ export const OrderHistory: React.FC = () => {
                     ) : null}
                   </div>
                   {history.type === HistoryEntryType.ORDER_NOTE && (
-                    <span className="max-h-[250px] overflow-y-auto whitespace-pre border border-red-200 text-muted-foreground">
+                    <span className="text-muted-foreground max-h-[250px] overflow-y-auto whitespace-pre border border-red-200">
                       {history.data?.note as string}
                     </span>
                   )}

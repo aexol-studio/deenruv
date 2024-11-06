@@ -13,15 +13,13 @@ import {
   ScrollArea,
   Table,
   Input,
-} from '@/components';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem.js';
 import { useGFFLP } from '@/lists/useGflp';

@@ -8,14 +8,14 @@ import {
   DialogTrigger,
   Label,
   DialogFooter,
-  Stack,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { apiCall } from '@/graphql/client';
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
+import { Stack } from '@/components';
 
 interface AddOptionGroupDialogProps {
   currentTranslationLng: LanguageCode;

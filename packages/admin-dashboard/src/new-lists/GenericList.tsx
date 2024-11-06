@@ -1,4 +1,4 @@
-import { Badge, Checkbox, ListButtons, ListTable, Search, SortButton } from '@/components';
+import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { PromisePaginated } from './models';
 import { ListType, useGenericList } from './useGenericList';
 import {
@@ -20,6 +20,7 @@ import { ArrowRight } from 'lucide-react';
 import { GenericListProvider } from './GenericListContext';
 import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
 import { DeleteDialog, ListColumnDropdown } from './_components';
+import { ListButtons, ListTable, SortButton } from '@/components';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;

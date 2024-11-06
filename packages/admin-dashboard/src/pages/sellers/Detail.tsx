@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Stack } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -10,6 +10,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/sellers/_components/PageHeader';
 import { Routes } from '@/utils';
 import { SellerListSelector, SellerListType } from '@/graphql/sellers';
+import { Stack } from '@/components';
 
 export const SellersDetailPage = () => {
   const { id } = useParams();
@@ -46,7 +47,6 @@ export const SellersDetailPage = () => {
   useEffect(() => {
     if (!seller) return;
     setField('name', seller.name);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [seller]);
 
   const createSeller = useCallback(() => {

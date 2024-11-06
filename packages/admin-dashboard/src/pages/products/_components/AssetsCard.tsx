@@ -1,20 +1,22 @@
 import {
-  AssetsModalInput,
   DropdownMenuItem,
   Label,
-  Stack,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuTrigger,
-} from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
 import { cn } from '@/lib/utils';
 import { ImageOff } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AssetsModalInput, Stack } from '@/components';
 
 interface AssetsCardProps {
   assetsIds: string[] | undefined;
@@ -59,7 +61,6 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
       const existingAssets = assets.filter((item): item is NonNullable<AssetType> => item !== undefined);
       setAssets(existingAssets);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assetsIds]);
 
   const handleRemoveAsset = useCallback(

@@ -1,8 +1,8 @@
-import { AssetsModalChangeType, AssetsModalInput, Label, Stack } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { AssetsModalChangeType, AssetsModalInput, Stack } from '@/components';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
 import { ModelTypes } from '@deenruv/admin-types';
+import { Label, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { ImageOff } from 'lucide-react';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -1,4 +1,4 @@
-import { Button, DialogClose, DialogContent, DialogFooter } from '@/components';
+import { Button, DialogClose, DialogContent, DialogFooter } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { useSettings } from '@/state';
 import { ValueTypes } from '@deenruv/admin-types';

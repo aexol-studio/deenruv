@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Permission } from '@deenruv/admin-types';

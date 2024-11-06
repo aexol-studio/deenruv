@@ -19,7 +19,11 @@ import {
   DropdownMenuTrigger,
   Label,
   ScrollArea,
-} from '@/components';
+  TooltipProvider,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@deenruv/react-ui-devkit';
 
 import {
   Bell,
@@ -38,10 +42,8 @@ import * as ResizablePrimitive from 'react-resizable-panels';
 
 import { cn } from '@/lib/utils';
 import { Nav } from './AwesomeMenu/Nav.js';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { NavLink, useMatches, useNavigate } from 'react-router-dom';
 import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { clearAllCache } from '@/lists/cache';
 import { languages, useSettings } from '@/state/settings';
 import { Routes } from '@/utils';

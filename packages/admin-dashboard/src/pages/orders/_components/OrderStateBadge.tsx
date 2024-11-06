@@ -1,4 +1,4 @@
-import { Badge } from '@/components';
+import { Badge } from '@deenruv/react-ui-devkit';
 import { ORDER_STATE } from '@/graphql/base';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';

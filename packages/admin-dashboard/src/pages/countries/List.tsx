@@ -11,9 +11,6 @@ import {
   Button,
   Badge,
   Checkbox,
-  Search,
-  Stack,
-  TranslationSelect,
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -21,8 +18,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-  ListTable,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
+import { Search, Stack, TranslationSelect, ListTable } from '@/components';
 import { useSettings } from '@/state';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useLocalStorage } from '@/hooks';
@@ -276,7 +273,6 @@ export const CountriesListPage = () => {
 
   useEffect(() => {
     refetchCountries();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [translationsLanguage]);
 
   const onActionSucess = () => {

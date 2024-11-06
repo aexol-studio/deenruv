@@ -1,7 +1,7 @@
-import { Label, Stack } from '@/components';
-import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import { Label, MultipleSelector, type Option } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import React, { useCallback, useEffect, useState } from 'react';
+import { Stack } from '@/components';
 
 interface VariantsSelectorProps {
   type: 'variant' | 'product' | undefined;

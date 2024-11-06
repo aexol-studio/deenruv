@@ -1,17 +1,8 @@
-import {
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  Table,
-  Label,
-  ProductVariantSearch,
-  ImageWithPreview,
-} from '@/components';
+import { TableHeader, TableRow, TableHead, TableBody, TableCell, Table, Label } from '@deenruv/react-ui-devkit';
 import { ProductVariantType } from '@/graphql/draft_order';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ImageWithPreview, ProductVariantSearch } from '@/components';
 
 interface LinesProps {
   onLinesChange: (lines: { productVariantId: string; quantity: number }[]) => void;

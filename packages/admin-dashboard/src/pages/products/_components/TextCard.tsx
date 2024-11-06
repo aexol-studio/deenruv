@@ -1,5 +1,5 @@
-import { Textarea } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Textarea } from '@deenruv/react-ui-devkit';
+import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import React, { ChangeEvent } from 'react';
 
 interface TextCardProps {

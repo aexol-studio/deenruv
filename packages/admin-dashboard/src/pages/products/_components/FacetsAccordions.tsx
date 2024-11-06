@@ -1,5 +1,5 @@
 import { Stack } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { FacetListOptionsType } from '@/graphql/facets';
 import { CheckboxAccordion } from '@/pages/products/_components/CheckboxHarmonica';
 import { useTranslation } from 'react-i18next';

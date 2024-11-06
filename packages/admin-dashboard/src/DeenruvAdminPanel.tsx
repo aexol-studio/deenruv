@@ -64,6 +64,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   if (typeof window !== 'undefined') {
     window.__DEENRUV_SETTINGS__ = settings;
   }
+  console.log('ąDID ADMIN PANEL RERENDER');
 
   const router = createBrowserRouter([
     { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },

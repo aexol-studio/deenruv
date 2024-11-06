@@ -16,7 +16,7 @@ import {
   // DialogHeader,
   // DialogTitle,
   // DialogTrigger,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 // import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import { SearchCustomerType } from '@/graphql/draft_order';
 import React, { useEffect, useMemo, useState } from 'react';

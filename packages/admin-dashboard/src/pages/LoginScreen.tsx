@@ -1,5 +1,5 @@
 import { apiCall } from '@/graphql/client';
-import { Button, Checkbox, Input, Label } from '@/components';
+import { Button, Checkbox, Input, Label } from '@deenruv/react-ui-devkit';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';

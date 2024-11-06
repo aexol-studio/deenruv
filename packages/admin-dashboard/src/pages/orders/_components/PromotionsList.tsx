@@ -9,7 +9,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import React from 'react';

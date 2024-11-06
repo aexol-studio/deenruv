@@ -1,10 +1,21 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button, Stack } from '@/components';
-import MultipleSelector, { Option } from '@/components/ui/multiple-selector';
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  MultipleSelector,
+  type Option,
+} from '@deenruv/react-ui-devkit';
 import { Trash } from 'lucide-react';
 import { apiCall } from '@/graphql/client';
 import { useParams } from 'react-router-dom';
@@ -12,6 +23,7 @@ import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
 import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
+import { Stack } from '@/components';
 
 interface OptionsTabProps {
   currentTranslationLng: LanguageCode;
@@ -43,7 +55,6 @@ export const OptionsTab: React.FC<OptionsTabProps> = ({ currentTranslationLng })
         toast.error(t('toasts.fetchProductErrorToast'));
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
   useEffect(() => {

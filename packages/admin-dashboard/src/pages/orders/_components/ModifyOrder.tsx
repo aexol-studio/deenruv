@@ -8,17 +8,16 @@ import {
   CardContent,
   Dialog,
   DialogContent,
-  ImageWithPreview,
   Input,
   Label,
-  ProductVariantSearch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
+import { ImageWithPreview, ProductVariantSearch } from '@/components';
 import { DraftOrderType, ProductVariantType } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 // import { CustomComponent } from '@/pages/orders/_components';
@@ -74,7 +73,7 @@ export const ModifyOrder: React.FC<Props> = ({ currentOrder }) => {
       </div>
       <div className={`h-full overflow-auto rounded-md border`}>
         <Table className="w-full">
-          <TableHeader className="sticky top-0 bg-primary-foreground">
+          <TableHeader className="bg-primary-foreground sticky top-0">
             <TableRow>
               <TableHead>{t('modify.productTable.headImage')}</TableHead>
               <TableHead>{t('modify.productTable.headName')}</TableHead>

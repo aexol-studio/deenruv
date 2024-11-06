@@ -1,4 +1,4 @@
-import { Checkbox } from '@/components';
+import { Checkbox } from '@deenruv/react-ui-devkit';
 import { ColumnDef } from '@tanstack/react-table';
 
 export const SelectIDColumn = <T extends { id: string; name: string }>(): ColumnDef<T> => {

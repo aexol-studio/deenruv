@@ -1,4 +1,4 @@
-import { Toggle, ToggleGroupItem, Button } from '@/components';
+import { Toggle, ToggleGroupItem, Button } from '@deenruv/react-ui-devkit';
 import { PropsWithChildren } from 'react';
 
 interface EditorButtonProps {

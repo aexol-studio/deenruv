@@ -9,13 +9,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  ContextMenu,
   DropdownMenuItem,
-  EmptyState,
-  EntityCustomFields,
   Input,
   Label,
-  Stack,
   Switch,
   Table,
   TableBody,
@@ -23,7 +19,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
+import { Stack, EmptyState, EntityCustomFields, ContextMenu } from '@/components';
 import { Routes } from '@/utils';
 import { ChevronLeft, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';

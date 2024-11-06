@@ -1,8 +1,8 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Input, Label, Stack } from '@/components';
+import { Input, Label, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
+import { Stack } from '@/components';
 
 interface ModalCardProps {
   currentTranslationValue: any;

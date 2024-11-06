@@ -1,4 +1,6 @@
 import {
+  DashboardWidgets,
+  useWidgetsStore,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -7,8 +9,7 @@ import {
   DropdownMenuGroup,
   Button,
   DropdownMenuCheckboxItem,
-} from '@/components/ui';
-import { DashboardWidgets, useWidgetsStore } from '@deenruv/react-ui-devkit';
+} from '@deenruv/react-ui-devkit';
 
 export const Dashboard = () => {
   const { widgets, setShowWidget } = useWidgetsStore((state) => ({

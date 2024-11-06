@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './index.js';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
 import { Construction } from 'lucide-react';
 
 interface Props {

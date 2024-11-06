@@ -5,10 +5,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Stack,
-} from '@/components';
-import { Option } from '@/components/ui/multiple-selector';
+  type Option,
+} from '@deenruv/react-ui-devkit';
 import { SelectProps } from '@radix-ui/react-select';
+import { Stack } from './Stack';
 
 interface CustomSelectProps extends SelectProps {
   options: Option[] | undefined;

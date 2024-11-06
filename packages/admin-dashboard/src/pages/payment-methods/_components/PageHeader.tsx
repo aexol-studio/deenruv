@@ -1,4 +1,4 @@
-import { Button, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Stack } from '@/components';
+import { Button, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
 import { PaymentMethodDetailsType } from '@/graphql/paymentMethods';
 import { Routes } from '@/utils';
 import { LanguageCode } from '@deenruv/admin-types';
@@ -7,6 +7,7 @@ import { ChevronLeft } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { Stack } from '@/components';
 
 interface PageHeaderProps {
   paymentMethod: PaymentMethodDetailsType | undefined;

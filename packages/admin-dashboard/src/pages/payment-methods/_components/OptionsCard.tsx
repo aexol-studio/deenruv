@@ -1,11 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModelTypes } from '@deenruv/admin-types';
-import { Checkbox, Label, SimpleSelect, Stack } from '@/components';
-import { Option } from '@/components/ui/multiple-selector';
+import { Checkbox, Label, Card, CardHeader, CardTitle, CardContent, type Option } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
+import { SimpleSelect, Stack } from '@/components';
 
 interface OptionsCardProps {
   currentHandlerValue: ModelTypes['ConfigurableOperationInput'] | undefined;

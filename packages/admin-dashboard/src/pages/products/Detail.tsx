@@ -1,8 +1,5 @@
 import { adminApiMutation, apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductDetailSelector, ProductDetailType } from '@/graphql/products';
 import { resetCache } from '@/lists/cache';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -19,10 +16,22 @@ import { AssetsCard } from '@/pages/products/_components/AssetsCard';
 import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
-import { Button, EntityCustomFields } from '@/components';
 import { useServer } from '@/state';
-import { Spinner } from '@deenruv/react-ui-devkit';
+import {
+  Spinner,
+  Button,
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@deenruv/react-ui-devkit';
 import { LanguageCode, SortOrder } from '@deenruv/admin-types';
+import { EntityCustomFields } from '@/components';
 
 export const ProductsDetailPage = () => {
   const { id } = useParams();
@@ -192,7 +201,6 @@ export const ProductsDetailPage = () => {
         });
       })
       .catch(() => toast.error(t('toasts.updateProductErrorToast')));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, resetCache, fetchProduct, id, t]);
 
   const setTranslationField = useCallback(
@@ -205,7 +213,7 @@ export const ProductsDetailPage = () => {
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     [currentTranslationLng, translations],
   );
 

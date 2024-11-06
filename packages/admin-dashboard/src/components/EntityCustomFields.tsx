@@ -8,12 +8,12 @@ import {
   CustomFieldsComponent,
   Spinner,
   mergeSelectorWithCustomFields,
+  CardContent,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { LanguageCode, ModelTypes } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useServer } from '@/state';
-import { CardContent } from './index.js';
 import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
@@ -21,7 +21,7 @@ import { getGqlError } from '@/utils';
 type ViableEntity = Uncapitalize<
   keyof Pick<ModelTypes, 'Product' | 'ProductVariant' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine'>
 >;
-type CF = Record<string, any>;
+type CF = Record<string, unknown>;
 
 type EntityWithCF = {
   customFields: CF;
@@ -33,7 +33,7 @@ type Props<T extends ViableEntity> = {
   id: string;
   currentLanguage?: LanguageCode;
   fetch?: (runtimeSelector: any) => Promise<EntityWithCF>;
-  mutation?: (customFields: any, translations?: any) => Promise<void>;
+  mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
 };
 
@@ -142,17 +142,14 @@ export function EntityCustomFields<T extends ViableEntity>({
   const updateEntity = useCallback(async () => {
     const preparedCustomFields = Object.entries(
       (state.customFields?.validatedValue || {}) as Record<string, any>,
-    ).reduce(
-      (acc, [key, val]) => {
-        if (relationFields?.includes(key)) {
-          const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
-          acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
-        } else acc[key] = val;
+    ).reduce((acc, [key, val]) => {
+      if (relationFields?.includes(key)) {
+        const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+        acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
+      } else acc[key] = val;
 
-        return acc;
-      },
-      {} as Record<string, any>,
-    );
+      return acc;
+    }, {} as CF);
 
     try {
       if (mutation) {

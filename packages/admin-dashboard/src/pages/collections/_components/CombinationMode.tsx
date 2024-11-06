@@ -1,4 +1,5 @@
-import { Label, Stack, ToggleGroup, ToggleGroupItem } from '@/components';
+import { Stack } from '@/components';
+import { Label, ToggleGroup, ToggleGroupItem } from '@deenruv/react-ui-devkit';
 import React from 'react';
 
 interface CombinationModeProps {

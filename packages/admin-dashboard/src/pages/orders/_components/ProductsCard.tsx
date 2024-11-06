@@ -5,7 +5,6 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  ProductVariantSearch,
   TableHeader,
   TableRow,
   TableHead,
@@ -13,7 +12,6 @@ import {
   TableCell,
   Label,
   Table,
-  ImageWithPreview,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -26,8 +24,7 @@ import {
   TooltipTrigger,
   TooltipContent,
   Tooltip,
-  EntityCustomFields,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import {
   DraftOrderLineType,
   ProductVariantType,
@@ -51,6 +48,7 @@ import { cn } from '@/lib/utils';
 // import { CustomFieldsComponent } from '@/custom_fields';
 import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
+import { ImageWithPreview, ProductVariantSearch } from '@/components';
 // import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 // import { useServer } from '@/state';
 

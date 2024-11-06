@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { Input, Label, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components';
+import { Input, Label, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { useTranslation } from 'react-i18next';
 import { LogicalOperator } from '@deenruv/admin-types';
@@ -57,7 +57,7 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
       />
       {results.length ? (
         <Table className="w-full" containerClassName="h-[calc(80vh-330px)] overflow-y-auto relative">
-          <TableHeader className="sticky top-0 bg-primary-foreground">
+          <TableHeader className="bg-primary-foreground sticky top-0">
             <TableRow>
               <TableHead>{t('create.selectCustomer.id')}</TableHead>
               <TableHead>{t('create.selectCustomer.firstName')}</TableHead>
@@ -87,7 +87,7 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
           </TableBody>
         </Table>
       ) : (
-        <Label className="flex h-[calc(80vh-330px)] items-center justify-center text-muted-foreground">
+        <Label className="text-muted-foreground flex h-[calc(80vh-330px)] items-center justify-center">
           {t('create.selectCustomer.noResults')}
         </Label>
       )}

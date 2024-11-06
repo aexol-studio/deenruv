@@ -1,13 +1,23 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModelTypes } from '@deenruv/admin-types';
-import { Button, Checkbox, Input, Label, SimpleSelect, Stack, Switch } from '@/components';
-import { Option } from '@/components/ui/multiple-selector';
+import {
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  Switch,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Separator,
+  Option,
+} from '@deenruv/react-ui-devkit';
+import { SimpleSelect, Stack } from '@/components';
 import { apiCall } from '@/graphql/client';
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
 import { FacetsSelector } from '@/pages/collections/_components/FacetsSelector';
 import { CombinationMode } from '@/pages/collections/_components/CombinationMode';
 import { VariantsSelector } from '@/pages/collections/_components/VariantsSelector';

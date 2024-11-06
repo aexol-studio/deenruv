@@ -3,8 +3,8 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from './ui/button.js';
+  Button,
+} from '@deenruv/react-ui-devkit';
 import { EllipsisVertical } from 'lucide-react';
 import { PropsWithChildren } from 'react';
 

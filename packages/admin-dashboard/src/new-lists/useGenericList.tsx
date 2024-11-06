@@ -1,4 +1,3 @@
-import { Search } from '@/components';
 import { Stack } from '@/components/Stack';
 import {
   Pagination,
@@ -8,8 +7,12 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@deenruv/react-ui-devkit';
 import { cn } from '@/lib/utils';
 import { cache } from '@/lists/cache';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/lists/models';

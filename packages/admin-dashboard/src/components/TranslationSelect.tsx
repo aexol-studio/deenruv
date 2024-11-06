@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
 import { useSettings } from '@/state';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

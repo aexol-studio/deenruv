@@ -19,7 +19,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -43,7 +43,7 @@ export const Payments: React.FC = () => {
         <DialogContent>
           <DialogTitle>{t('payments.settle.title')}</DialogTitle>
           <div className="flex max-h-[50vh] flex-col gap-2">
-            <DialogDescription className="text-lg text-primary">{t('payments.settle.description')}</DialogDescription>
+            <DialogDescription className="text-primary text-lg">{t('payments.settle.description')}</DialogDescription>
           </div>
 
           <DialogFooter>

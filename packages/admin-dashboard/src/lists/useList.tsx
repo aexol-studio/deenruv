@@ -7,8 +7,12 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@deenruv/react-ui-devkit';
 import { cn } from '@/lib/utils';
 import { cache } from '@/lists/cache';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/lists/models';
@@ -211,7 +215,6 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
       setTotal(r.totalItems);
       c.set(key, r);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParamValues]);
 
   const totalPages = useMemo(() => Math.ceil(total / searchParamValues.perPage), [total, searchParamValues]);

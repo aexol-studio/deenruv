@@ -1,4 +1,4 @@
-import { EmptyState, Stack, Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { FacetListOptionsType } from '@/graphql/facets';
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
@@ -7,6 +7,7 @@ import { Variant } from '@/pages/products/_components/Variant';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { LanguageCode } from '@deenruv/admin-types';
+import { EmptyState, Stack } from '@/components';
 
 interface VariantTabProps {
   currentTranslationLng: LanguageCode;

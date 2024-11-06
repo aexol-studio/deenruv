@@ -1,8 +1,16 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { Button } from '@/components';
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from '@deenruv/react-ui-devkit';
 
 interface OptionsCardProps {
   optionGroups: { name: string; group: { name: string } }[] | undefined;

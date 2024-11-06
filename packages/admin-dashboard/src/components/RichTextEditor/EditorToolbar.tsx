@@ -1,7 +1,5 @@
-import { Stack } from '@/components';
 import { SimpleButton, ToggleButton, ToggleGroupButton } from '@/components/RichTextEditor/Buttons';
-import { Separator } from '@/components/ui/separator';
-import { ToggleGroup } from '@/components/ui/toggle-group';
+import { Separator, ToggleGroup } from '@deenruv/react-ui-devkit';
 import { Editor } from '@tiptap/react';
 import {
   Bold,
@@ -18,6 +16,7 @@ import {
   Redo,
   Undo,
 } from 'lucide-react';
+import { Stack } from '../Stack';
 
 export const EditorToolbar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {

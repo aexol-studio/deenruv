@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useOrder } from '@/state/order';
@@ -125,7 +125,7 @@ export const ChangesRegister: React.FC = () => {
                       .filter((change: any) => !change.path.includes('attributes'))
                       .map((propertyChange: any, i: number) => (
                         <TableRow key={i}>
-                          <TableCell className="font-medium text-muted-foreground">
+                          <TableCell className="text-muted-foreground font-medium">
                             {givePathForTranslation(propertyChange.path)}
                           </TableCell>
                           <TableCell className="text-red-700">
@@ -144,7 +144,7 @@ export const ChangesRegister: React.FC = () => {
                 </Table>
                 {change?.changes.filter((change: any) => change.path.includes('attributes')).length ? (
                   <>
-                    <div className="my-6 h-[1px] w-full bg-muted-foreground" />
+                    <div className="bg-muted-foreground my-6 h-[1px] w-full" />
                     <h4>{t('changes.attributesChanges')}</h4>
                     <Table>
                       <TableHeader>
@@ -199,7 +199,7 @@ export const ChangesRegister: React.FC = () => {
                   {changes.linesChanges.new.map(({ changes }) =>
                     changes.map((propertyChange, i) => (
                       <TableRow key={i}>
-                        <TableCell className="font-medium text-muted-foreground">
+                        <TableCell className="text-muted-foreground font-medium">
                           {(propertyChange.value as Record<string, Record<string, string>>).productVariant.name}
                         </TableCell>
                         <TableCell>

@@ -1,8 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, Button, Input, Separator } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, SimpleSelect, Stack } from '@/components';
-import { Separator } from '@/components/ui/separator';
 import { apiCall } from '@/graphql/client';
 import { useServer } from '@/state';
 import { useGFFLP } from '@/lists/useGflp';
@@ -10,6 +8,7 @@ import { ModelTypes } from '@deenruv/admin-types';
 import { Lines } from '@/pages/shipping-methods/_components/Lines';
 import { CircleCheck, CircleX } from 'lucide-react';
 import { priceFormatter } from '@/utils';
+import { SimpleSelect, Stack } from '@/components';
 
 interface TestCardProps {
   calculator: ModelTypes['ConfigurableOperationInput'] | undefined;
@@ -51,7 +50,6 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
         [addressField]: e,
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state.shippingAddress],
   );
 

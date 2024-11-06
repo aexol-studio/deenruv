@@ -12,7 +12,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { apiCall } from '@/graphql/client';
 import { cn } from '@/lib/utils';
@@ -116,7 +116,6 @@ export const PromotionsDetailPage = () => {
         }),
       );
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentTranslationLng, translations],
   );
   const [data, setData] = useState<Data>();

@@ -2,7 +2,8 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { manageSearchParam } from '@/lib/utils';
 import { useDebouncedCallback } from 'use-debounce';
-import { ParamObjectT, Input, Label } from '@/components';
+import { Input, Label } from '@deenruv/react-ui-devkit';
+import { ParamObjectT } from '@/components';
 
 interface SearchAccordionInputProps {
   mainParam?: string;

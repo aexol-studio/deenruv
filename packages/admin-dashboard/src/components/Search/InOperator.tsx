@@ -1,4 +1,4 @@
-import { Button, Checkbox, Label } from '@/components';
+import { Button, Checkbox, Label } from '@deenruv/react-ui-devkit';
 import { ORDER_STATE, ORDER_TYPE, OrderStateType, OrderType } from '@/graphql/base';
 import { useEffect, useState } from 'react';
 

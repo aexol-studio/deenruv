@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input, Label, Stack, Switch } from '@/components';
+import { Card, CardContent, CardHeader, CardTitle, Input, Label, Switch } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -10,6 +10,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/tax-categories/_components/PageHeader';
 import { Routes } from '@/utils';
 import { TaxCategoryListSelector, TaxCategoryListType } from '@/graphql/taxCategories';
+import { Stack } from '@/components';
 
 export const TaxCategoriesDetailPage = () => {
   const { id } = useParams();
@@ -55,7 +56,6 @@ export const TaxCategoriesDetailPage = () => {
     if (!taxCategory) return;
     setField('name', taxCategory.name);
     setField('isDefault', taxCategory.isDefault);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taxCategory]);
 
   const createTaxCategory = useCallback(() => {

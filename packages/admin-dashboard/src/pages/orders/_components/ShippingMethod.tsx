@@ -10,15 +10,13 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@deenruv/react-ui-devkit';
 import {
   EligibleShippingMethodsType,
   draftOrderSelector,
@@ -122,7 +120,7 @@ export const ShippingMethod: React.FC = () => {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Edit size={20} className={cn('cursor-not-allowed self-center text-muted-foreground')} />
+                        <Edit size={20} className={cn('text-muted-foreground cursor-not-allowed self-center')} />
                       </TooltipTrigger>
                       <TooltipContent align="end" className="bg-red-50">
                         <p className="text-red-400">{t('selectShipmentMethod.noSelectedTip')}</p>
@@ -185,19 +183,19 @@ export const ShippingMethod: React.FC = () => {
 
         <CardDescription>{t('selectShipmentMethod.cardDescription')}</CardDescription>
         {!order?.lines.length ? (
-          <Label className="text-sm text-muted-foreground">
+          <Label className="text-muted-foreground text-sm">
             <p>{t('selectShipmentMethod.noSelectedTip')}</p>
           </Label>
         ) : (
           <div className="flex flex-col">
             {selectedShipping ? (
               <>
-                <Label className="text-sm text-muted-foreground">{selectedShipping.name}</Label>
-                <Label className="text-sm text-muted-foreground">{selectedShipping.code}</Label>
-                <Label className="text-sm text-muted-foreground">{priceFormatter(order?.shipping || 0)}</Label>
+                <Label className="text-muted-foreground text-sm">{selectedShipping.name}</Label>
+                <Label className="text-muted-foreground text-sm">{selectedShipping.code}</Label>
+                <Label className="text-muted-foreground text-sm">{priceFormatter(order?.shipping || 0)}</Label>
               </>
             ) : (
-              <Label className="text-sm text-muted-foreground">{t('selectShipmentMethod.noSelected')}</Label>
+              <Label className="text-muted-foreground text-sm">{t('selectShipmentMethod.noSelected')}</Label>
             )}
           </div>
         )}

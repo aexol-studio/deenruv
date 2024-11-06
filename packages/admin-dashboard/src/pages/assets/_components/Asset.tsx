@@ -4,16 +4,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  EntityCustomFields,
   Input,
   ScrollArea,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableRow,
   Tooltip,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
 import { DeletionResult } from '@deenruv/admin-types';
@@ -23,6 +21,7 @@ import { format } from 'date-fns';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { EntityCustomFields, Stack } from '@/components';
 
 interface AssetProps {
   asset: {

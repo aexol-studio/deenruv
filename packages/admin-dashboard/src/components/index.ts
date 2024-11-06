@@ -1,7 +1,6 @@
 export * from './DataTable.js';
 export * from './Stack.js';
 export * from './Search/index.js';
-export * from './ui/index.js';
 export * from './ImageWithPreview.js';
 export * from './AutoComplete/ProductVariantSearch.js';
 export * from './EmptyState.js';

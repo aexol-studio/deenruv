@@ -1,5 +1,5 @@
-import { Button, DialogFooter, Input, Label } from '@/components';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button, DialogFooter, Input, Label } from '@deenruv/react-ui-devkit';
+import { RadioGroup, RadioGroupItem } from '@deenruv/react-ui-devkit';
 import { DraftOrderLineType } from '@/graphql/draft_order';
 
 import { cn } from '@/lib/utils';
@@ -140,14 +140,14 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
             <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
             <span />
             <span
-              className={cn('text-right text-muted-foreground', {
+              className={cn('text-muted-foreground text-right', {
                 'text-destructive': quantityDelta < 0,
                 'text-green-500': quantityDelta > 0,
               })}
             >
               {quantityDelta > 0 ? `+ ${quantityDelta}` : quantityDelta}
             </span>
-            <span className="col-span-3 h-[1px] bg-secondary"></span>
+            <span className="bg-secondary col-span-3 h-[1px]"></span>
             <span className="min-w-max">{t('orderLineActionModal.quantityAfter')}</span>
             <span />
             <span className="text-right">{(quantityChange ?? 0) > 0 ? quantityChange : line?.quantity}</span>
@@ -196,8 +196,8 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
           </div>
           <div className="grid shrink-0 grid-cols-3 gap-2 gap-x-5">
             <span />
-            <span className="text-right text-xs text-muted-foreground">Netto</span>
-            <span className="text-right text-xs text-muted-foreground">{`Brutto (${TAX_RATE * 100}%)`}</span>
+            <span className="text-muted-foreground text-right text-xs">Netto</span>
+            <span className="text-muted-foreground text-right text-xs">{`Brutto (${TAX_RATE * 100}%)`}</span>
             <span className="min-w-max">{t('orderLineActionModal.actualPrice')}</span>
             <span className="text-right">
               {priceFormatter(line?.linePrice ? line.linePrice / line?.quantity : 0, line?.productVariant.currencyCode)}
@@ -210,7 +210,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
             </span>
             <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
             <span
-              className={cn('text-right text-muted-foreground', {
+              className={cn('text-muted-foreground text-right', {
                 'text-destructive': priceDelta.netto < 0,
                 'text-green-500': priceDelta.netto > 0,
               })}
@@ -220,7 +220,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
                 : priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}
             </span>{' '}
             <span
-              className={cn('text-right text-muted-foreground', {
+              className={cn('text-muted-foreground text-right', {
                 'text-destructive': priceDelta.brutto < 0,
                 'text-green-500': priceDelta.brutto > 0,
               })}
@@ -229,7 +229,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
                 ? `+ ${priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}`
                 : priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}
             </span>
-            <span className="col-span-3 h-[1px] bg-secondary"></span>
+            <span className="bg-secondary col-span-3 h-[1px]"></span>
             <span className="min-w-max">{t('orderLineActionModal.priceAfter')}</span>
             <span className="text-right">{priceFormatter(priceChange.netto, line?.productVariant.currencyCode)}</span>
             <span className="text-right">{priceFormatter(priceChange.brutto, line?.productVariant.currencyCode)}</span>

@@ -1,4 +1,12 @@
-import { Button, DialogTitle, Dialog, DialogContent, DialogFooter, DialogClose, DialogDescription } from '@/components';
+import {
+  Button,
+  DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogClose,
+  DialogDescription,
+} from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
 type ConfirmationDialogProps<T extends { id: string; name: string }> = {

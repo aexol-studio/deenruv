@@ -10,7 +10,7 @@ import {
   TableCell,
   Button,
   Table,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { draftOrderSelector } from '@/graphql/draft_order';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';

@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ButtonProps } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
     <nav
@@ -46,11 +47,9 @@ const PaginationPrevious = ({
     className,
     isActive,
     onClick,
-    text,
     ...props
-}: React.ComponentProps<typeof PaginationLink> & {
-    text: string;
-}) => {
+}: React.ComponentProps<typeof PaginationLink>) => {
+    const { t } = useTranslation('common');
     return (
         <PaginationLink
             aria-label="Go to previous page"
@@ -60,7 +59,7 @@ const PaginationPrevious = ({
             {...props}
         >
             <ChevronLeft className="h-4 w-4" />
-            <span className="capitalize">{text}</span>
+            <span className="capitalize">{t('previous')}</span>
         </PaginationLink>
     );
 };
@@ -70,11 +69,9 @@ const PaginationNext = ({
     className,
     isActive,
     onClick,
-    text,
     ...props
-}: React.ComponentProps<typeof PaginationLink> & {
-    text: string;
-}) => {
+}: React.ComponentProps<typeof PaginationLink>) => {
+    const { t } = useTranslation('common');
     return (
         <PaginationLink
             aria-label="Go to next page"
@@ -83,7 +80,7 @@ const PaginationNext = ({
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
-            <span className="capitalize">{text}</span>
+            <span className="capitalize">{t('next')}</span>
             <ChevronRight className="h-4 w-4" />
         </PaginationLink>
     );

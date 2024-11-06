@@ -14,8 +14,8 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge, DeleteDialog, ListButtons, ListColumnDropdown, ListTable, Search, SortButton } from '@/components';
+import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { DeleteDialog, ListButtons, ListColumnDropdown, ListTable, Search, SortButton } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -77,7 +77,6 @@ export const AdminsListPage = () => {
 
   useEffect(() => {
     refetchAdmins();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteAdminsToDelete = async () => {

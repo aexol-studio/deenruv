@@ -1,10 +1,21 @@
-import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Stack } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import {
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from '@deenruv/react-ui-devkit';
 import { ContentsTable } from '@/pages/collections/_components/ContentsTable';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type collections from '../../../locales/en/collections.json';
 import { ValueTypes } from '@deenruv/admin-types';
+import { Stack } from '@/components';
 
 interface ContentsCardProps {
   collectionId: string | undefined;

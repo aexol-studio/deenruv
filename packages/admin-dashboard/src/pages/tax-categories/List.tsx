@@ -14,15 +14,15 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight, Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
+import { Checkbox } from '@deenruv/react-ui-devkit';
+import { Badge } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { ListTable } from '@/components';
+import { ListTable, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
 import { TaxCategoryListSelector, TaxCategoryListType } from '@/graphql/taxCategories';
 import { ParamFilterFieldTuple, TaxCategoriesSortOptions, taxCategoriesSortOptionsArray } from '@/lists/types';
 import { ActionsColumn } from '@/components/Columns';
@@ -77,7 +77,6 @@ export const TaxCategoriesListPage = () => {
 
   useEffect(() => {
     refetchTaxCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteTaxCategoriesToDelete = async () => {

@@ -226,7 +226,6 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
             setTotal(r.totalItems);
             c.set(key, r);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParamValues, skip]);
 
     const totalPages = useMemo(
@@ -331,7 +330,6 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
                 <Pagination>
                     <PaginationContent>
                         <PaginationPrevious
-                            text="Previous"
                             isActive={searchParamValues.page !== 1}
                             onClick={() => {
                                 searchParams.set(
@@ -365,7 +363,6 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
                             </PaginationItem>
                         ))}
                         <PaginationNext
-                            text="Next"
                             isActive={searchParamValues.page !== totalPages}
                             onClick={() => {
                                 searchParams.set(

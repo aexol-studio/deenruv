@@ -10,7 +10,7 @@ import {
   DialogClose,
   DialogDescription,
   DialogTitle,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 
 export const AddPromotionDialog: React.FC<{

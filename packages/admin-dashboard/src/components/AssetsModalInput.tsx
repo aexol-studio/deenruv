@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@deenruv/react-ui-devkit';
 import {
   Button,
   DropdownMenu,
@@ -9,7 +9,6 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-  ImageWithPreview,
   Input,
   Label,
   Pagination,
@@ -24,13 +23,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components';
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { cn } from '@/lib/utils';
 import { useAssets, ASSETS_PER_PAGE, ASSETS_ITEMS_PER_PAGE } from '@/hooks';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, CircleX } from 'lucide-react';
+import { ImageWithPreview } from './ImageWithPreview';
 
 export interface AssetsModalChangeType {
   id: string;
@@ -101,7 +101,6 @@ export function AssetsModalInput({
 
   useEffect(() => {
     setSkip(!open);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (

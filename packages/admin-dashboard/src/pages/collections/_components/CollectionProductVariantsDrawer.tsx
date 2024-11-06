@@ -1,12 +1,18 @@
-import { Button, Input, SelectContent, SelectTrigger, SelectValue, Select, SelectItem } from '@/components';
 import {
+  Button,
+  Input,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  Select,
+  SelectItem,
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer';
+} from '@deenruv/react-ui-devkit';
 import { ValueTypes } from '@deenruv/admin-types';
 
 import type collections from '../../../locales/en/collections.json';

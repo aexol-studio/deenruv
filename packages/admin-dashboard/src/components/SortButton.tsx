@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@deenruv/react-ui-devkit';
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
 import { PaginationInput } from '@/lists/models';
 import { SortOrder } from '@deenruv/admin-types';
