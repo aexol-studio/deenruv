@@ -10,6 +10,9 @@
         "./plugin-server": "./dist/plugin-server/index.js",
         "./plugin-ui": "./dist/plugin-ui/index.js"
     },
+    "files": [
+        "dist/**/*"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"

@@ -6,6 +6,9 @@
     "publishConfig": {
         "access": "public"
     },
+    "files": [
+        "dist/**/*"
+    ],
     "exports": {
         "./plugin-server": "./dist/plugin-server/index.js",
         "./plugin-ui": "./dist/plugin-ui/index.js"
