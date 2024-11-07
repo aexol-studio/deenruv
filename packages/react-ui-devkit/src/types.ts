@@ -15,6 +15,8 @@ const ListLocations = {
         selector: ProductListSelector,
     },
 };
+type ListLocationType = typeof ListLocations;
+type LocationKeys = keyof ListLocationType;
 
 type ListLocationsType<KEY extends keyof typeof ListLocations> = FromSelectorWithScalars<
     (typeof ListLocations)[KEY]['selector'],
@@ -30,10 +32,10 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     columns?: Array<ColumnDef<ListLocationsType<KEY>>>;
 };
 
-export type DeenruvUIPlugin<KEY extends keyof typeof ListLocations = 'products-list-view'> = {
+export type DeenruvUIPlugin = {
     name: string;
     version: string;
-    tables?: Array<DeenruvUITable<KEY>>;
+    tables?: DeenruvUITable<LocationKeys>[];
     inputs?: PluginComponent[];
     components?: PluginComponent[];
     widgets?: Widget[];
