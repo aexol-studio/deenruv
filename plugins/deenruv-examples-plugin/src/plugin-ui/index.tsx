@@ -15,6 +15,20 @@ export const UIPlugin = createDeenruvUIPlugin({
     pages,
     widgets,
     inputs,
+    tables: [
+        {
+            id: 'products-list-view',
+            bulkActions: [{ label: 'LALALA', onClick: ({ data }) => console.log(data) }],
+            columns: [
+                {
+                    accessorKey: 'lalala',
+                    cell: ({ row }) => {
+                        return row.original.enabled;
+                    },
+                },
+            ],
+        },
+    ],
     components: componentList,
     translations: {
         ns: translationNS,

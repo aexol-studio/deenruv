@@ -1,7 +1,7 @@
 import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { PluginStore } from './plugin-store';
-import { PluginNavigationGroup, PluginNavigationLink, Widget } from '@/types';
+import { ListLocationID, PluginNavigationGroup, PluginNavigationLink, Widget } from '@/types';
 import { WidgetsStoreProvider } from '@/widgets/widgets-context';
 
 type Channel = {
@@ -22,6 +22,11 @@ const PluginStoreContext = createContext<{
     setOpenDropdown: (open: boolean) => void;
     getComponents: (position: string) => React.ComponentType<{}>[];
     getInputComponent: (id: string) => React.ComponentType<{}> | null;
+    getTableExtensions: (location: ListLocationID) => {
+        id: string;
+        bulkActions?: { label: string; onClick: ({ data }: { data: any[] }) => void }[];
+        columns?: any[];
+    }[];
     navMenuData: {
         groups: PluginNavigationGroup[];
         links: PluginNavigationLink[];
@@ -37,6 +42,7 @@ const PluginStoreContext = createContext<{
     setOpenDropdown: () => undefined,
     getComponents: () => [],
     getInputComponent: () => () => null,
+    getTableExtensions: () => [],
     navMenuData: {
         groups: [],
         links: [],
@@ -61,6 +67,10 @@ export const PluginProvider: FC<
         return plugins.getInputComponent(id) || null;
     };
 
+    const getTableExtensions = (location: ListLocationID) => {
+        return plugins.getTableExtensions(location);
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.ctrlKey && e.key === 'x') {
@@ -83,6 +93,7 @@ export const PluginProvider: FC<
                 setOpenDropdown,
                 getComponents,
                 getInputComponent,
+                getTableExtensions,
                 navMenuData: plugins.navMenuData,
                 widgets: plugins.widgets,
             }}

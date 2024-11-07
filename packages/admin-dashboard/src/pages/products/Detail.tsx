@@ -318,7 +318,7 @@ export const ProductsDetailPage = () => {
                 onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
                 onAssetsChange={(ids) => setField('assetIds', ids)}
               />
-              <PlacementMarker position="product-pdp" />
+              <PlacementMarker position="products-detail-view" />
               {/* <SeoCard
                 currentTranslationValue={currentTranslationValue}
                 facebookImageId={state.customFields?.validatedValue?.facebookImageId}

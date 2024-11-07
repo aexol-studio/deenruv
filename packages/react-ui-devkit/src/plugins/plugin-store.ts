@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DeenruvUIPlugin } from '../types';
+import { DeenruvUIPlugin, ListLocationID } from '../types';
 
 const pagePathPrefix = 'admin-ui/extensions/';
 
@@ -81,6 +81,16 @@ export class PluginStore {
             });
         });
         return Array.from(uniqueMappedComponents.values());
+    }
+
+    getTableExtensions(location: ListLocationID) {
+        const tables = new Map<string | number, NonNullable<DeenruvUIPlugin['tables']>[number]>();
+        this.pluginMap.forEach(plugin => {
+            plugin.tables?.forEach(table => {
+                tables.set(table.id, table);
+            });
+        });
+        return Array.from(tables.values()).filter(table => table.id === location);
     }
 
     get widgets() {

@@ -11,7 +11,8 @@
         "test": "ng test --watch=false --browsers=ChromeHeadlessCI --progress=false",
         "lint": "ng lint --fix",
         "extract-translations": "node scripts/extract-translations.js",
-        "ngcc": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points"
+        "ngcc": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
+        "postversion": "node ./scripts/set-version.js"
     },
     "homepage": "https://www.deenruv.io/",
     "publishConfig": {

@@ -48,6 +48,7 @@ import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
 import { languages, useSettings } from '@/state/settings';
 import { useServer } from '@/state';
+import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
@@ -109,7 +110,13 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
     [matches],
   );
 
-  console.log(window.__DEENRUV_SETTINGS__.branding);
+  let Logo = null;
+  const logo = window?.__DEENRUV_SETTINGS__?.branding?.logo;
+  if (typeof logo === 'string') {
+    Logo = <img src={logo} alt="Logo" className={cn('h-10 w-10 object-contain', isCollapsed && 'h-8 w-8')} />;
+  } else if (typeof logo === 'object') {
+    Logo = React.cloneElement(logo, { className: 'h-10 w-10 object-contain', isCollapsed });
+  }
   return (
     <div className="bg-muted/40 w-full border-r">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -140,10 +147,18 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
               >
                 <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b px-2')}>
                   <div className="cursor-pointer" onClick={() => navigate(Routes.dashboard)}>
-                    {/* <MinkoLogo isCollapsed={isCollapsed} /> */}
+                    {Logo}
                   </div>
                 </div>
-                <Nav isCollapsed={isCollapsed} />
+                <div className="flex flex-col">
+                  <Nav isCollapsed={isCollapsed} />
+                  <div className="w-full">
+                    <div className="bg-secondary flex h-[40px] items-center justify-center gap-2 text-xs">
+                      <p className="uppercase">Deenruv</p>
+                      <span>{ADMIN_DASHBOARD_VERSION}</span>
+                    </div>
+                  </div>
+                </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel>

@@ -1,4 +1,4 @@
-import { Badge, PlacementMarker } from '@deenruv/react-ui-devkit';
+import { Badge, PlacementMarker, usePluginStore } from '@deenruv/react-ui-devkit';
 import { PromisePaginated } from './models';
 import { ListType, useGenericList } from './useGenericList';
 import {
@@ -50,11 +50,14 @@ export function GenericList<T extends PromisePaginated>({
   route: { list: string; new: string; route: string; to: (id: string) => string };
   onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
   listType: keyof ListType;
-  searchFields?: Array<keyof AwaitedReturnType<T>['items'][number]>;
-  hideColumns?: Array<keyof AwaitedReturnType<T>['items'][number]>;
+  searchFields?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
+  hideColumns?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
   customColumns?: ColumnDef<AwaitedReturnType<T>['items']>[];
 }) {
   const { t } = useTranslation('table');
+  const { getTableExtensions } = usePluginStore();
+  const tableExtensions = getTableExtensions('products-list-view');
+
   const [itemsToDelete, setItemsToDelete] = useState<AwaitedReturnType<T>['items']>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
@@ -86,7 +89,7 @@ export function GenericList<T extends PromisePaginated>({
     const columns: ColumnDef<AwaitedReturnType<T>['items']>[] = [];
     for (const key of keys) {
       if (key === 'id') {
-        columns.push(SelectIDColumn());
+        columns.push(SelectIDColumn({ bulkActions: tableExtensions.flatMap((table) => table.bulkActions || []) }));
         columns.push(
           ActionsDropdown({
             redirect: (to) => route.to(to),

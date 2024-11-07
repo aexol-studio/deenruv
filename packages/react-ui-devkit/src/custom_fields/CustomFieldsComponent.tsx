@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
 import type { GraphQLTypes, ModelTypes, CustomFieldConfigType } from '@deenruv/admin-types';
-import { usePluginStore } from '@/context';
+import { usePluginStore } from '@/plugins';
 import { CustomFieldsProvider } from '@/custom_fields/context';
 import { generateCustomFields } from '@/custom_fields/logic';
 

@@ -1,5 +1,5 @@
 export * from './types';
-export * from './context';
+export * from './plugins';
 export * from './components';
 export * from './widgets';
 export * from './utils';

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 interface ListColumnProps<TData> {
   table: Table<TData>;
   columnsTranslations: Record<string, string>;
+  bulkActions?: Array<{ label: string; onClick: ({ data }: { data: TData[] }) => void }>;
 }
 
 export function ListColumnDropdown<TData>({ table, columnsTranslations }: ListColumnProps<TData>) {

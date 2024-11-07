@@ -16,10 +16,12 @@ export const ActionsDropdown = <T extends { id: string }>({
   redirect,
   setDeleteDialogOpened,
   setItemsToDelete,
+  bulkActions,
 }: {
   redirect: (to: string) => string;
   setDeleteDialogOpened: (opened: boolean) => void;
   setItemsToDelete: (items: T[]) => void;
+  bulkActions?: Array<{ label: string; onClick: ({ data }: { data: T[] }) => void }>;
 }): ColumnDef<T> => {
   return {
     id: 'actions',
@@ -29,7 +31,11 @@ export const ActionsDropdown = <T extends { id: string }>({
       const columnsTranslations = t('columns', { returnObjects: true });
       return (
         <div className="text-right">
-          <ListColumnDropdown table={table} columnsTranslations={columnsTranslations as Record<string, string>} />
+          <ListColumnDropdown
+            table={table}
+            columnsTranslations={columnsTranslations as Record<string, string>}
+            bulkActions={bulkActions}
+          />
         </div>
       );
     },

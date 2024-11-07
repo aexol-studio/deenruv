@@ -16,7 +16,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "toc": "i18next-resources-for-ts toc -i ./src/locales/en -o ./src/@types/resources.ts",
-    "interface": "i18next-resources-for-ts interface -i ./src/locales/en -o ./src/@types/resources.d.ts"
+    "interface": "i18next-resources-for-ts interface -i ./src/locales/en -o ./src/@types/resources.d.ts",
+    "postversion": "node upgrade_version.js"
   },
   "dependencies": {
     "@aexol-studio/hooks": "^0.2.16",

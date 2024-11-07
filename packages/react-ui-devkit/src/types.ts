@@ -1,26 +1,46 @@
 import type { FC, SVGProps } from 'react';
 import { Routes } from './routes';
 import { ColumnDef } from '@tanstack/react-table';
+import { ProductListSelector } from './selectors';
+import { FromSelectorWithScalars } from '@deenruv/admin-types';
 
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
-type ListLocationID = `${RouteKeys}-list-view`;
-type DetailLocationID = `${RouteKeys}-detail-view`;
+export type ListLocationID = `${RouteKeys}-list-view`;
+export type DetailLocationID = `${RouteKeys}-detail-view`;
 
-export type DeenruvUIPlugin = {
+const ListLocations = {
+    'products-list-view': {
+        type: 'Product' as const,
+        selector: ProductListSelector,
+    },
+};
+
+type ListLocationsType<KEY extends keyof typeof ListLocations> = FromSelectorWithScalars<
+    (typeof ListLocations)[KEY]['selector'],
+    (typeof ListLocations)[KEY]['type']
+>;
+
+type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
+    id: KEY;
+    bulkActions?: Array<{
+        label: string;
+        onClick: ({ data }: { data: Array<ListLocationsType<KEY>> }) => void;
+    }>;
+    columns?: Array<ColumnDef<ListLocationsType<KEY>>>;
+};
+
+export type DeenruvUIPlugin<KEY extends keyof typeof ListLocations = 'products-list-view'> = {
     name: string;
     version: string;
-    tables?: { id: ListLocationID; bulkActions?: []; columns?: ColumnDef<{ id: string }>[] }[];
+    tables?: Array<DeenruvUITable<KEY>>;
     inputs?: PluginComponent[];
     components?: PluginComponent[];
     widgets?: Widget[];
     navMenuGroups?: Array<PluginNavigationGroup>;
     navMenuLinks?: Array<PluginNavigationLink>;
     pages?: Array<PluginPage>;
-    translations?: {
-        ns: string;
-        data: Record<string, object[]>;
-    };
+    translations?: { ns: string; data: Record<string, object[]> };
 };
 
 export type Widget = {

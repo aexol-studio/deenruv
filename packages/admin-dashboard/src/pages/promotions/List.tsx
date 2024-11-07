@@ -1,47 +1,63 @@
 import { apiCall } from '@/graphql/client';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { PromotionsListSelector } from '@/graphql/promotions';
+import { SortOrder, ValueTypes } from '@deenruv/admin-types';
 import { GenericList } from '@/new-lists/GenericList';
 import { PaginationInput } from '@/lists/models';
-import { ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { mergeSelectorWithCustomFields, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { useServer } from '@/state';
+import { useMemo } from 'react';
 
-const PAGE_KEY = 'promotions';
+const PAGE_KEY = 'products';
+const ENTITY_NAME = 'Product';
 
-const getPromotions = async (options: ResolverInputTypes['PromotionListOptions']) => {
+const fetch = async <T extends ValueTypes[K], K extends typeof ENTITY_NAME>({
+  page,
+  perPage,
+  filter,
+  filterOperator,
+  sort,
+  selector,
+}: PaginationInput & {
+  selector: T;
+}) => {
   const response = await apiCall()('query')({
-    promotions: [{ options }, { items: PromotionsListSelector, totalItems: true }],
+    [PAGE_KEY]: [
+      {
+        options: {
+          take: perPage,
+          skip: (page - 1) * perPage,
+          filterOperator: filterOperator,
+          sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+          ...(filter && { filter }),
+        },
+      },
+      { items: selector, totalItems: true },
+    ],
   });
-  return response.promotions;
+  return response[PAGE_KEY];
 };
 
-const getProducts = async (options: ResolverInputTypes['ProductListOptions']) => {
-  const response = await apiCall()('query')({
-    products: [{ options }, { items: ProductListSelector, totalItems: true }],
-  });
-  return response.products;
-};
+export const PromotionsListPage = () => {
+  const entityCustomFields = useServer((p) =>
+    p.serverConfig?.entityCustomFields?.find((el) => el.entityName === ENTITY_NAME),
+  )?.customFields;
 
-const fetch = async ({ page, perPage, filter, filterOperator, sort }: PaginationInput) => {
-  return getProducts({
-    take: perPage,
-    skip: (page - 1) * perPage,
-    filterOperator: filterOperator,
-    sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
-    ...(filter && { filter }),
-  });
-};
+  const selector = useMemo(
+    () => mergeSelectorWithCustomFields(ProductListSelector, ENTITY_NAME, entityCustomFields),
+    [entityCustomFields],
+  );
 
-export const PromotionsListPage = () => (
-  <GenericList
-    listType={PAGE_KEY}
-    route={Routes[PAGE_KEY]}
-    fetch={fetch}
-    onRemove={(items) => {
-      console.log(items);
-      return Promise.resolve(true);
-    }}
-    searchFields={['slug']}
-    hideColumns={['variantList', 'collections']}
-    customColumns={[]}
-  />
-);
+  return (
+    <GenericList
+      listType={PAGE_KEY}
+      route={Routes[PAGE_KEY]}
+      fetch={(params) => fetch({ ...params, selector })}
+      onRemove={(items) => {
+        console.log(items);
+        return Promise.resolve(true);
+      }}
+      searchFields={['slug']}
+      hideColumns={['variantList', 'collections', 'translations', 'customFields']}
+      customColumns={[]}
+    />
+  );
+};

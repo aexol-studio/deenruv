@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
-import { usePluginStore } from '@/context/plugin-context';
+import { usePluginStore } from '@/plugins/plugin-context';
+import { DetailLocationID } from '@/types';
 
-export const Renderer: React.FC<{ position: string }> = ({ position }) => {
+export const Renderer: React.FC<{ position: DetailLocationID }> = ({ position }) => {
     const { getComponents } = usePluginStore();
     const [components, setComponents] = useState<JSX.Element[]>([]);
 
