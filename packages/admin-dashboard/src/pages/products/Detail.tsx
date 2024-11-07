@@ -7,7 +7,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Routes } from '@/utils';
 import { FacetListOptionsSelector, FacetListOptionsType } from '@/graphql/facets';
 import { PageHeader } from '@/pages/products/_components/PageHeader';
 import { SettingsCard } from '@/pages/products/_components/SettingsCard';
@@ -18,6 +17,7 @@ import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions'
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { useServer } from '@/state';
 import {
+  Routes,
   Spinner,
   Button,
   Badge,

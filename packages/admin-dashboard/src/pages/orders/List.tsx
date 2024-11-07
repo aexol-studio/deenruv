@@ -42,6 +42,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { PaymentMethodImage, Search, SortButton, EmptyState } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -51,7 +52,7 @@ import { OrderStateBadge } from './_components/OrderStateBadge.js';
 import { toast } from 'sonner';
 import { OrdersSortOptions, ParamFilterFieldTuple, ordersSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes, priceFormatter } from '@/utils';
+import { priceFormatter } from '@/utils';
 import { ORDER_STATE } from '@/graphql/base';
 import { PaymentMethod } from '@/types';
 

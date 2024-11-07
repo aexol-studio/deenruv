@@ -20,9 +20,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, PaymentMethodsSortOptions, paymentMethodsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { PaymentMethodListSelector, PaymentMethodListType } from '@/graphql/paymentMethods';
 import { ActionsColumn } from '@/components/Columns';
 
@@ -272,7 +271,7 @@ export const PaymentMethodsListPage = () => {
           />
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deletePaymentMethod.title')}
           description={t('deletePaymentMethod.description')}

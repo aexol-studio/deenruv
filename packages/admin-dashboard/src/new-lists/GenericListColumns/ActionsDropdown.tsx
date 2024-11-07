@@ -10,6 +10,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { ListColumnDropdown } from '../_components';
 
 export const ActionsDropdown = <T extends { id: string }>({
   redirect,
@@ -23,9 +24,14 @@ export const ActionsDropdown = <T extends { id: string }>({
   return {
     id: 'actions',
     enableHiding: false,
-    header: () => {
+    header: ({ table }) => {
       const { t } = useTranslation('table');
-      return <div className="text-right">{t('actionsMenu.title')}</div>;
+      const columnsTranslations = t('columns', { returnObjects: true });
+      return (
+        <div className="text-right">
+          <ListColumnDropdown table={table} columnsTranslations={columnsTranslations as Record<string, string>} />
+        </div>
+      );
     },
     cell: ({ row }) => {
       const { t } = useTranslation('table');

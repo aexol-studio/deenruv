@@ -1,6 +1,14 @@
-import { Button, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  Button,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@deenruv/react-ui-devkit';
 import { PaymentMethodDetailsType } from '@/graphql/paymentMethods';
-import { Routes } from '@/utils';
 import { LanguageCode } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';

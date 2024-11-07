@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useSearchParams } from 'react-router-dom';
 import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
 
-import { Routes } from '@/utils';
 import {
   Button,
   Badge,
@@ -27,6 +26,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { ImageWithPreview, Search, Stack, TranslationSelect, ListTable } from '@/components';
 import { useSettings } from '@/state';
@@ -357,7 +357,7 @@ export const ProductsListPage = () => {
           </div>
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <Dialog open={deleteDialogOpened} onOpenChange={setDeleteDialogOpened}>
           <DialogContent>
             <DialogHeader>

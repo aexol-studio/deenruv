@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
-import { Routes } from '@/utils';
 import {
+  Routes,
   Button,
   Badge,
   Checkbox,
@@ -326,7 +326,7 @@ export const CountriesListPage = () => {
           </div>
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <CountryActionModal
           action={countryAction}
           countriesToDelete={countriesToDelete}

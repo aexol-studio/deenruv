@@ -19,12 +19,12 @@ import {
   TableHeader,
   TableRow,
   Skeleton,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
 import { cn } from '@/lib/utils';
 import { ITEMS_PER_PAGE } from '@/lists/useList';
-import { Routes } from '@/utils';
 import { ValueTypes } from '@deenruv/admin-types';
 import {
   ColumnDef,

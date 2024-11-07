@@ -1,6 +1,5 @@
-import { Button, Label } from '@deenruv/react-ui-devkit';
+import { Routes, Button, Label } from '@deenruv/react-ui-devkit';
 import { TaxCategoryListType } from '@/graphql/taxCategories';
-import { Routes } from '@/utils';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import React from 'react';

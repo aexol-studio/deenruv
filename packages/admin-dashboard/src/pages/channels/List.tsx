@@ -14,14 +14,13 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton, ListTable } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ChannelsSortOptions, ParamFilterFieldTuple, channelsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ChannelListSelector, ChannelListType } from '@/graphql/channels';
 import { ActionsColumn } from '@/components/Columns';
@@ -250,7 +249,7 @@ export const ChannelsListPage = () => {
           />
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deleteChannel.title')}
           description={t('deleteChannel.description')}

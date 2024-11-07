@@ -1,4 +1,4 @@
-import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { Badge, PlacementMarker } from '@deenruv/react-ui-devkit';
 import { PromisePaginated } from './models';
 import { ListType, useGenericList } from './useGenericList';
 import {
@@ -16,14 +16,26 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocalStorage } from '@/hooks';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Circle, CircleCheck } from 'lucide-react';
 import { GenericListProvider } from './GenericListContext';
 import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
-import { DeleteDialog, ListColumnDropdown } from './_components';
-import { ListButtons, ListTable, SortButton } from '@/components';
+import { DeleteDialog } from './_components';
+import { ListButtons, ListTable } from '@/components';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
+const COLUMN_PRIORITIES: Record<string, number> = {
+  'select-id': 0,
+  id: 1,
+  featuredAsset: 2,
+  createdAt: 3,
+  updatedAt: 4,
+  actions: 999,
+} as const;
+
+const getPriority = (key: string): number => {
+  return COLUMN_PRIORITIES[key] ?? 500;
+};
 
 export function GenericList<T extends PromisePaginated>({
   fetch,
@@ -55,16 +67,18 @@ export function GenericList<T extends PromisePaginated>({
 
   const {
     objects,
-    setSort,
-    optionInfo,
-    setFilterField,
-    setFilter,
-    removeFilterField,
-    setFilterLogicalOperator,
-    isFilterOn,
+    searchParamValues: { page, perPage, filter },
     refetch,
+    SortButton,
     Paginate,
-  } = useGenericList({ listType, route: fetch });
+    Search,
+    FiltersButton,
+    FiltersResult,
+  } = useGenericList({
+    listType,
+    route: fetch,
+    searchFields,
+  });
 
   const columns = useMemo(() => {
     const entry = objects?.[0];
@@ -85,19 +99,27 @@ export function GenericList<T extends PromisePaginated>({
         accessorKey: key,
         header: () => {
           if (DEFAULT_COLUMNS.includes(key) || key === 'name') {
-            return (
-              <SortButton currSort={optionInfo.sort} sortKey={key} onClick={() => setSort(key)}>
-                {columnsTranslations[key as keyof typeof columnsTranslations] || key}
-              </SortButton>
-            );
+            return SortButton(key, columnsTranslations[key as keyof typeof columnsTranslations] || key);
           } else {
             return <div>{columnsTranslations[key as keyof typeof columnsTranslations] || key}</div>;
           }
         },
         cell: ({ row }) => {
           const value = row.original[key];
-          if (typeof value === 'boolean') return <Checkbox checked={value} className="cursor-default" />;
-          if (typeof value === 'object') return JSON.stringify(value);
+          if (typeof value === 'boolean') {
+            if (value) return <CircleCheck size={20} className="text-primary-600" />;
+            else return <Circle size={20} className="text-gray-400" />;
+          }
+          if (typeof value === 'object') {
+            if ('__typename' in value) {
+              // that means we know this type
+              if (value.__typename === 'Asset') {
+                // this is an asset
+                return <img src={value.preview} alt={row.original.name} className="h-16 w-16 object-cover" />;
+              }
+            }
+            return JSON.stringify(value);
+          }
           if (key === 'createdAt' || key === 'updatedAt') {
             return <div className="text-nowrap">{format(new Date(row.original[key]), 'dd.MM.yyyy hh:mm')}</div>;
           }
@@ -129,9 +151,9 @@ export function GenericList<T extends PromisePaginated>({
           !hideColumns?.includes('accessorKey' in column ? (column.accessorKey as string) : (column.id as string)),
       )
       .sort((a, b) => {
-        if (a.id === 'actions') return 1;
-        if (b.id === 'actions') return -1;
-        return 0;
+        const keyA = ('accessorKey' in a ? a.accessorKey : a.id) as string;
+        const keyB = ('accessorKey' in b ? b.accessorKey : b.id) as string;
+        return getPriority(keyA) - getPriority(keyB);
       });
   }, [objects]);
 
@@ -140,13 +162,15 @@ export function GenericList<T extends PromisePaginated>({
       const keys = objects?.[0] ? Object.keys(objects[0]) : [];
       const newVisibility = { ...prev };
       for (const key of keys) {
-        if (prev[key] === undefined) {
+        if (hideColumns?.includes(key)) {
+          newVisibility[key] = false;
+        } else if (prev[key] === undefined) {
           newVisibility[key] = true;
         }
       }
       return newVisibility;
     });
-  }, [objects, columnsVisibilityState]);
+  }, [objects]);
 
   const table = useReactTable({
     data: objects || [],
@@ -162,14 +186,31 @@ export function GenericList<T extends PromisePaginated>({
     onColumnFiltersChange: setColumnFilters,
     state: {
       columnVisibility: columnsVisibilityState,
-      pagination: { pageIndex: optionInfo.page, pageSize: optionInfo.perPage },
+      pagination: { pageIndex: page, pageSize: perPage },
       rowSelection,
       columnFilters,
     },
   });
 
+  const isFiltered = useMemo(() => {
+    let isFiltered = false;
+    if (filter) {
+      Object.keys(filter).forEach((fieldKey) => {
+        const property = filter[fieldKey as keyof typeof filter];
+        if (property) {
+          Object.keys(property).forEach((filterTypeKey) => {
+            if (property[filterTypeKey as keyof typeof property]) {
+              isFiltered = true;
+            }
+          });
+        }
+      });
+    }
+    return isFiltered;
+  }, [filter]);
+
   return (
-    <div className="page-content-h flex w-full flex-col gap-6">
+    <div className="page-content-h flex w-full flex-col gap-2">
       <GenericListProvider
         context={{
           deleteDialog: {
@@ -180,14 +221,11 @@ export function GenericList<T extends PromisePaginated>({
           },
         }}
       >
-        <div className="flex w-full flex-col items-start gap-2">
+        <div className="flex w-full flex-col items-start gap-4">
           <div className="flex w-full items-center justify-between gap-4">
-            <div>
-              <ListColumnDropdown
-                table={table}
-                placeholder={t('placeholders.columnsDropdown')}
-                columnsTranslations={columnsTranslations as Record<string, string>}
-              />
+            <div className="flex items-center gap-2">
+              {FiltersButton}
+              {Search}
             </div>
             <ListButtons
               createLabel={t('buttons.create')}
@@ -200,16 +238,9 @@ export function GenericList<T extends PromisePaginated>({
               selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
             />
           </div>
-          {/* <Search
-              filter={optionInfo.filter}
-              type={listType}
-              setFilter={setFilter}
-              setFilterField={setFilterField}
-              removeFilterField={removeFilterField}
-              searchFields={searchFields}
-            /> */}
+          <div>{FiltersResult}</div>
         </div>
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered, table, Paginate }} />
         <DeleteDialog
           title={t('bulk.delete.title')}
           description={t('bulk.delete.description')}

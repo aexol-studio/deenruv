@@ -11,8 +11,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Routes,
 } from '@deenruv/react-ui-devkit';
-import { Routes } from '@/utils';
 import {
   ColumnDef,
   ColumnFiltersState,

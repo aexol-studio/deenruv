@@ -22,7 +22,7 @@ if (require.main === module) {
                 requireVerification: false,
             },
             importExportOptions: {
-                importAssetsDir: path.join(__dirname, '../core/mock-data/assets'),
+                importAssetsDir: path.join(__dirname, './node_modules/@deenruv/core/mock-data/assets'),
             },
             customFields: {},
         }),

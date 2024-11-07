@@ -1,10 +1,9 @@
 import { apiCall } from '@/graphql/client';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { PromotionsListSelector, PromotionsListType } from '@/graphql/promotions';
+import { PromotionsListSelector } from '@/graphql/promotions';
 import { GenericList } from '@/new-lists/GenericList';
-import { ProductTileSelector } from '@/graphql/products';
-import { Routes } from '@/utils';
 import { PaginationInput } from '@/lists/models';
+import { ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
 
 const PAGE_KEY = 'promotions';
 
@@ -17,7 +16,7 @@ const getPromotions = async (options: ResolverInputTypes['PromotionListOptions']
 
 const getProducts = async (options: ResolverInputTypes['ProductListOptions']) => {
   const response = await apiCall()('query')({
-    products: [{ options }, { items: ProductTileSelector, totalItems: true }],
+    products: [{ options }, { items: ProductListSelector, totalItems: true }],
   });
   return response.products;
 };

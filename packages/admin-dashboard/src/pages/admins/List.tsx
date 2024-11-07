@@ -14,14 +14,13 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, ListTable, Search, SortButton } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { AdminsSortOptions, ParamFilterFieldTuple, adminsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { AdminListSelector, AdminListType } from '@/graphql/admins';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ActionsColumn } from '@/components/Columns';
@@ -269,7 +268,7 @@ export const AdminsListPage = () => {
           />
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deleteAdmin.title')}
           description={t('deleteAdmin.description')}

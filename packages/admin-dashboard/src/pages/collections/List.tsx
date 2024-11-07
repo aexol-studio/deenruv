@@ -46,10 +46,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { EmptyState, ImageWithPreview, Search, SortButton, Stack, TranslationSelect } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Routes } from '@/utils';
 import { ArrowRight, ChevronDown, MoreHorizontal } from 'lucide-react';
 import { format } from 'date-fns';
 import { CollectionsSortOptions, collectionsSortOptionsArray } from '@/lists/types';

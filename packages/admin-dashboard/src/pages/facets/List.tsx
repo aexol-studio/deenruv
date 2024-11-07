@@ -26,6 +26,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListTable, Search, SortButton } from '@/components';
 import { Link, NavLink, useSearchParams } from 'react-router-dom';
@@ -33,7 +34,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { FacetsSortOptions, ParamFilterFieldTuple, facetsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { FacetListSelector, FacetListType } from '@/graphql/facets';
 import facetsJson from '@/locales/en/facets.json';
 
@@ -369,7 +369,7 @@ export const FacetsListPage = () => {
           </div>
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deleteFacet.title')}
           description={t('deleteFacet.description')}

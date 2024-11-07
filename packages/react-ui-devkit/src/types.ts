@@ -1,8 +1,26 @@
 import type { FC, SVGProps } from 'react';
+import { Routes } from './routes';
+import { ColumnDef } from '@tanstack/react-table';
 
-export type PluginPage = {
-    path: string;
-    element: React.ReactNode;
+type NotAvailablePages = 'dashboard';
+type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
+type ListLocationID = `${RouteKeys}-list-view`;
+type DetailLocationID = `${RouteKeys}-detail-view`;
+
+export type DeenruvUIPlugin = {
+    name: string;
+    version: string;
+    tables?: { id: ListLocationID; bulkActions?: []; columns?: ColumnDef<{ id: string }>[] }[];
+    inputs?: PluginComponent[];
+    components?: PluginComponent[];
+    widgets?: Widget[];
+    navMenuGroups?: Array<PluginNavigationGroup>;
+    navMenuLinks?: Array<PluginNavigationLink>;
+    pages?: Array<PluginPage>;
+    translations?: {
+        ns: string;
+        data: Record<string, object[]>;
+    };
 };
 
 export type Widget = {
@@ -14,19 +32,9 @@ export type Widget = {
     sizes: { width: number; height: number }[];
 };
 
-export type DeenruvUIPlugin = {
-    name: string;
-    version: string;
-    inputs?: PluginComponent[];
-    components?: PluginComponent[];
-    widgets?: Widget[];
-    navMenuGroups?: Array<PluginNavigationGroup>;
-    navMenuLinks?: Array<PluginNavigationLink>;
-    pages?: Array<PluginPage>;
-    translations?: {
-        ns: string;
-        data: Record<string, object[]>;
-    };
+export type PluginPage = {
+    path: string;
+    element: React.ReactNode;
 };
 
 type PluginComponent = {

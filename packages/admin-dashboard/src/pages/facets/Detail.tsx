@@ -19,9 +19,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Routes,
 } from '@deenruv/react-ui-devkit';
-import { Stack, EmptyState, EntityCustomFields, ContextMenu } from '@/components';
-import { Routes } from '@/utils';
+import { EmptyState, EntityCustomFields, ContextMenu } from '@/components';
 import { ChevronLeft, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog.js';
@@ -251,7 +251,7 @@ export const FacetsDetailPage = () => {
             </Label>
           </div>
         )}
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <Card>
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('facets:details.basicInfo')}</CardTitle>
@@ -266,10 +266,10 @@ export const FacetsDetailPage = () => {
                 </div>
                 <div className="basis-full md:basis-1/2 xl:basis-1/3">
                   <Label>{t('facets:table.isPrivate')}</Label>
-                  <Stack className="mt-2 gap-3">
+                  <div className="mt-2 flex gap-3">
                     <Switch checked={state.isPrivate?.value} onCheckedChange={(e) => setField('isPrivate', e)} />
                     <p>{state.isPrivate?.value ? t('facets:table.isPrivate') : t('facets:table.public')}</p>
-                  </Stack>
+                  </div>
                 </div>
               </CardContent>
             </CardHeader>
@@ -346,7 +346,7 @@ export const FacetsDetailPage = () => {
               </CardHeader>
             </Card>
           )}
-        </Stack>
+        </div>
       </div>
     </main>
   );

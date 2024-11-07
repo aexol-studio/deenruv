@@ -2,14 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, Input } from '@deenruv/react-ui-devkit';
+import { Routes, Card, CardContent, CardHeader, CardTitle, Input } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/admins/_components/PageHeader';
 import { AdminDetailsSelector, AdminDetailsType } from '@/graphql/admins';
-import { Routes } from '@/utils';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 import { Stack } from '@/components';
 

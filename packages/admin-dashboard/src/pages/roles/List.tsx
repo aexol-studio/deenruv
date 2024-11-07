@@ -16,13 +16,12 @@ import { ArrowRight } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Checkbox } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, ListTable, Search, SortButton } from '@/components';
-import { Badge } from '@deenruv/react-ui-devkit';
+import { Routes, Badge } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, RolesSortOptions, rolesSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { RoleListSelector, RoleListType } from '@/graphql/roles';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
@@ -307,7 +306,7 @@ export const RolesListPage = () => {
           />
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deleteRole.title')}
           description={t('deleteRole.description')}

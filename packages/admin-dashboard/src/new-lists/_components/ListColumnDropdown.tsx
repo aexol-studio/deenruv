@@ -5,21 +5,23 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@deenruv/react-ui-devkit';
-import { ChevronDown } from 'lucide-react';
+import { PanelsTopLeft } from 'lucide-react';
 import { Table } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 
 interface ListColumnProps<TData> {
   table: Table<TData>;
-  placeholder: string;
   columnsTranslations: Record<string, string>;
 }
 
-export function ListColumnDropdown<TData>({ table, placeholder, columnsTranslations }: ListColumnProps<TData>) {
+export function ListColumnDropdown<TData>({ table, columnsTranslations }: ListColumnProps<TData>) {
+  const { t } = useTranslation('table');
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="ml-auto">
-          {placeholder} <ChevronDown className="ml-2 h-4 w-4" />
+        <Button variant="ghost" size="default">
+          <PanelsTopLeft className="mr-2 h-4 w-4" />
+          {t('actionsMenu.view')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

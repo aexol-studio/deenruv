@@ -14,13 +14,11 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight, Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Checkbox } from '@deenruv/react-ui-devkit';
-import { Badge } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ListTable, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
 import { TaxCategoryListSelector, TaxCategoryListType } from '@/graphql/taxCategories';
@@ -247,7 +245,7 @@ export const TaxCategoriesListPage = () => {
           />
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deleteTaxCategory.title')}
           description={t('deleteTaxCategory.description')}

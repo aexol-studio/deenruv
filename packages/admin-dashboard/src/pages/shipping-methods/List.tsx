@@ -13,13 +13,12 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, ShippingMethodsSortOptions, shippingMethodsSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { Routes } from '@/utils';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ListTable, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
 import { ShippingMethodListSelector, ShippingMethodListType } from '@/graphql/shippingMethods';
@@ -246,7 +245,7 @@ export const ShippingMethodsListPage = () => {
           />
         </div>
 
-        <ListTable {...{ columns, isFilterOn, table, Paginate }} />
+        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
         <DeleteDialog
           title={t('deleteShippingMethod.title')}
           description={t('deleteShippingMethod.description')}

@@ -18,9 +18,9 @@ import { apiCall } from '@/graphql/client';
 import { draftOrderSelector, eligibleShippingMethodsSelector, updatedDraftOrderSelector } from '@/graphql/draft_order';
 import { toast } from 'sonner';
 import { HistoryEntryType } from '@deenruv/admin-types';
-import { Routes } from '@/utils';
 import { ModifyOrderPage } from './ModifyOrderPage.js';
 import { EntityCustomFields } from '@/components';
+import { Routes } from '@deenruv/react-ui-devkit';
 
 export const OrdersDetailPage = () => {
   const { id } = useParams();

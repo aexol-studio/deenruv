@@ -1,12 +1,16 @@
-'use client';
-
-import { cn } from '@/lib/utils';
 import { NavLink, useLocation } from 'react-router-dom';
-import { buttonVariants } from '@/utils';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { usePluginStore, Separator, Tooltip, TooltipContent, TooltipTrigger } from '@deenruv/react-ui-devkit';
-import { Routes } from '@/utils';
+import {
+  cn,
+  buttonVariants,
+  Routes,
+  usePluginStore,
+  Separator,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@deenruv/react-ui-devkit';
 import {
   BarChart,
   Barcode,

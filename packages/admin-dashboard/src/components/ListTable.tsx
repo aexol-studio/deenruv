@@ -6,12 +6,12 @@ import { EmptyState } from '.';
 
 interface ListTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  isFilterOn: boolean;
+  isFiltered: boolean;
   table: ReactTable<TData>;
   Paginate: ReactNode;
 }
 
-export function ListTable<TData, TValue>({ table, columns, isFilterOn, Paginate }: ListTableProps<TData, TValue>) {
+export function ListTable<TData, TValue>({ table, columns, isFiltered, Paginate }: ListTableProps<TData, TValue>) {
   const tableWrapperRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation('common');
 
@@ -58,7 +58,7 @@ export function ListTable<TData, TValue>({ table, columns, isFilterOn, Paginate 
                 </TableRow>
               ))
             ) : (
-              <EmptyState columnsLength={columns.length} filtered={isFilterOn} />
+              <EmptyState columnsLength={columns.length} filtered={isFiltered} />
             )}
           </TableBody>
         </Table>

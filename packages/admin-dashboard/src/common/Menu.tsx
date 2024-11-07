@@ -23,6 +23,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -46,7 +47,6 @@ import { NavLink, useMatches, useNavigate } from 'react-router-dom';
 import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
 import { languages, useSettings } from '@/state/settings';
-import { Routes } from '@/utils';
 import { useServer } from '@/state';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (

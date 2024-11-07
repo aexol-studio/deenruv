@@ -11,12 +11,12 @@ import {
   Label,
   MultipleSelector,
   type Option,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
-import { Routes } from '@/utils';
 import { RoleDetailsSelector, RoleDetailsType } from '@/graphql/roles';
 import { Permission } from '@deenruv/admin-types';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
