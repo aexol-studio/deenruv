@@ -37,7 +37,7 @@ export type PluginPage = {
     element: React.ReactNode;
 };
 
-type PluginComponent = {
+export type PluginComponent = {
     id: string;
     component: React.ComponentType;
 };

@@ -19,7 +19,7 @@
     "@aexol-studio/hooks": "^0.2.16",
     "@deenruv/content-management-plugin": "workspace:*",
     "@deenruv/admin-dashboard": "workspace:*",
-    "@deenruv/deenruv-first-plugin": "workspace:*",
+    "@deenruv/deenruv-examples-plugin": "workspace:*",
     "@deenruv/deenruv-second-plugin": "workspace:*",
     "@deenruv/react-ui-devkit": "workspace:*",
     "@deenruv/admin-types": "workspace:*",

@@ -1195,7 +1195,6 @@ export class SearchResultResolver {
             type: 'int',
             nullable: true,
             defaultValue: 0,
-            ui: { component: 'order-line-custom-field-input' },
             label: [
                 { languageCode: LanguageCode.en, value: 'Discount by' },
                 { languageCode: LanguageCode.pl, value: 'Obniż cenę o' },
@@ -1240,7 +1239,6 @@ export class SearchResultResolver {
                     { languageCode: LanguageCode.en, value: 'Discount amount' },
                     { languageCode: LanguageCode.pl, value: 'Wartość Znizki' },
                 ],
-                ui: { component: 'order-line-custom-field-input' },
                 nullable: true,
             },
             {

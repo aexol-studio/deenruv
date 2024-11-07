@@ -22,7 +22,7 @@
     "@aexol-studio/hooks": "^0.2.16",
     "@deenruv/admin-dashboard": "workspace:*",
     "@deenruv/admin-types": "workspace:*",
-    "@deenruv/deenruv-first-plugin": "workspace:*",
+    "@deenruv/deenruv-examples-plugin": "workspace:*",
     "@deenruv/deenruv-second-plugin": "workspace:*",
     "@deenruv/react-ui-devkit": "workspace:*",
     "@dnd-kit/core": "^6.1.0",

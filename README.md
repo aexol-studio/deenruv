@@ -1,136 +1,200 @@
 # Deenruv
 
-An open-source headless commerce platform built on [Node.js](https://nodejs.org) with [GraphQL](https://graphql.org/), [Nest](https://nestjs.com/) & [TypeScript](http://www.typescriptlang.org/), with a focus on developer productivity and ease of customization.
+Headless commerce platform built on [Node.js](https://nodejs.org) with [GraphQL](https://graphql.org/), [Nest](https://nestjs.com/) & [TypeScript](http://www.typescriptlang.org/), with a focus on developer productivity, ease of customization and highly customizable Admin panel built on [React](https://react.dev/) with [Vite](https://vite.dev/).
 
-[![Build Status](https://github.com/aexol-studio/deenruv/workflows/Build%20&%20Test/badge.svg)](https://github.com/aexol-studio/deenruv/actions)
-[![Publish & Install](https://github.com/aexol-studio/deenruv/workflows/Publish%20&%20Install/badge.svg)](https://github.com/aexol-studio/deenruv/actions/workflows/publish_and_install.yml)
+### [www.deenruv.com](https://www.deenruv.com/)
 
-### [www.deenruv.io](https://www.deenruv.io/)
-
--   [Getting Started](https://docs.deenruv.io/guides/getting-started/installation/): Get Deenruv up and running locally in a matter of minutes with a single command
--   [Live Demo](https://demo.deenruv.io/)
+-   [Getting Started](https://deenruv.com/docs): Get Deenruv up and running locally in a matter of minutes with a single command
+-   [Demo Storefront](https://deenruv.com/storefront)
+-   [Demo Admin-ui](https://deenruv.com/admin-ui)
+-   [Demo Legacy Admin](https://deenruv.com/admin)
 
 ## Branches
 
--   `master` - The latest stable release, currently the 2.x series.
--   `minor` - The next patch release, including new features
--   `major` - The next major release (v3.0)
--   `v1` - The 1.x series, which is no longer actively developed but may still receive critical fixes.
+-   `main` - The latest stable release
+-   `develop` - testing place for finished features/bugfixes before merging to main
 
 ## Structure
 
-This project is a monorepo managed with pnpm. Several npm packages are published from this repo, which can be found in the `packages/` directory.
+This project is a monorepo managed with pnpm. Several npm packages and plugins are published from this repo, which can be found in the `packages/` and `plugins/` directories.
 
 ```
 deenruv/
+├── apps/           # Source for local environment applications
+├── packages/       # Source for packages
+├── plugins/        # Source for plugins
 ├── docs/           # Documentation source
 ├── e2e-common/     # Shared config for package e2e tests
-├── packages/       # Source for the Deenruv server, admin-ui & plugin packages
 ├── scripts/
     ├── changelog/  # Scripts used to generate the changelog based on the git history
     ├── codegen/    # Scripts used to generate TypeScript code from the GraphQL APIs
     ├── docs/       # Scripts used to generate documentation markdown from the source
 ```
 
-## Development
+## Local Environment
 
-The following instructions are for those who want to develop the Deenruv core framework or plugins (e.g. if you intend to make a pull request).
+Running localhost environment is quite simple and straightforward. Make sure You have node (preferably 18+) and docker on Your machine.
 
-<!-- For instructions on how to build a project _using_ Deenruv, please see the [Getting Started guide](https://docs.deenruv.io/guides/getting-started/installation/). -->
+1. `pnmp i` will install all dependencies
+2. `pnpm build` will build all necessary packages
+3. `pnpm server-docker-up` will start necessary docker containers
 
-### 1. Install top-level dependencies
+    - redis (jobQueue)
+    - minio (local s3)
+    - postgres (db)
 
-`npm install`
+4. `pnpm server-populate` will create all tables and populate them with some test data
+5. `pnpm start` will spin up deenruv server along with admin panel
 
-The root directory has a `package.json` which contains build-related dependencies for tasks including:
+admin credentials: **superadmin/superadmin**
 
--   Building & deploying the docs
--   Generating TypeScript types from the GraphQL schema
--   Linting, formatting & testing tasks to run on git commit & push
+New admin panel: `localhost:3001/admin-ui/`
 
-### 2. Build all packages
+Legacy Admin panel: `localhost:3000/admin/`
 
-`npm run build`
+`pnpm watch` might also be useful when developing **react-devkit** or **admin-dashboard** because it will cause new admin panel to reload on change.
 
-Packages must be built (i.e. TypeScript compiled, admin ui app built, certain assets copied etc.) before being used.
+## New Admin Panel
 
-Note that this can take a few minutes.
+New admin panel has been created as a package, that can be installed and extended by the use of UI plugins. In `apps/panel` there is an example how to launch it, inject plugins and customize it with settings.
 
-### 3. Set up the server
+To use it `vite` application with `react` has to be initialized and `@deenruv/admin-dashboard` installed as a dependency. Next step would be importing `DeenruvAdminPanel` component from the package and placing it at the entry point of newly set up vite application.
 
-The server requires an SQL database to be available. The simplest option is to use SQLite, but if you have Docker available you can use the [dev-server docker-compose file](./packages/dev-server/docker-compose.yml) which will start up both MariaDB and Postgres as well as their GUI management tools.
+### Ui Plugins
 
-Deenruv uses [TypeORM](http://typeorm.io), and officially supports **MySQL**, **PostgreSQL** and **SQLite**, though other TypeORM-supported databases may work.
+Admin panel has its own plugin system which extends it in many ways. All of the examples can be found here: `plugins/deenruv-examples-plugin/src/plugin-ui`
 
-1. Configure the [dev config](./packages/dev-server/dev-config.ts), making sure the connection settings in the `getDbConfig()` function are correct for the database type you will be using.
-2. Create the database using your DB admin tool of choice (e.g. phpMyAdmin if you are using the docker image suggested above). Name it according to the `getDbConfig()` settings. If you are using SQLite, you can skip this step.
-3. Populate mock data:
-    ```bash
-     cd packages/dev-server
-     DB=<mysql|postgres|sqlite> npm run populate
-    ```
-    If you do not specify the `DB` variable, it will default to "mysql".
+#### Injection
 
-### 4. Run the dev server
+To add a plugin just pass a created instance of it to **plugins** prop in `<DeenruvAdminPanel plugins={[myUiPlugin]} settings={settings} />`
 
-```
-cd packages/dev-server
-DB=<mysql|postgres|sqlite> npm run start
-```
+#### Creation
 
-Or if you are in the root package
+To create a plugin `@deenruv/react-ui-devkit` package has to be installed which exposes **createDeenruvUIPlugin** function.
 
-```
-DB=<mysql|postgres|sqlite> npm run dev-server:start
-```
+This function creates a Ui plugin instance which then can be passed to `<DeenruvAdminPanel>` component.
 
-If you do not specify the `DB` argument, it will default to "mysql".
+Structure of plugin creation object is strictly defined by `DeenruvUIPlugin` type also exposed by `@deenruv/react-ui-devkit` package.
 
-### Testing admin ui changes locally
+##### Pages prop
 
-If you are making changes to the admin ui, you need to start the admin ui independent from the dev-server:
+Provides an option to add whole page to admin panel system.
 
-1. `cd packages/admin-ui`
-2. `npm run start`
-3. Go to http://localhost:4200 and log in with "superadmin", "superadmin"
-
-This will auto restart when you make changes to the admin ui. You don't need this step when you just use the admin ui just
-to test backend changes.
-
-### Testing your changes locally
-
-This example shows how to test changes to the `payments-plugin` package locally, but it will also work for other packages.
-
-1. Open 2 terminal windows:
-
--   Terminal 1 for watching and compiling the changes of the package you are developing
--   Terminal 2 for running the dev-server
-
-```shell
-# Terminal 1
-cd packages/payments-plugin
-npm run watch
+```javascript
+type PluginPage = {
+    path: string;
+    element: React.ReactNode;
+};
 ```
 
-:warning: If you are developing changes for the `core`package, you also need to watch the `common` package:
+-   `path` property specifies the route name for a new page. For example if **couriers** is written this will be created `/admin-ui/extensions/couriers`
+-   `element` property allows providing any react component
 
-```shell
-# Terminal 1
-# Root of the project
-npm run watch:core-common
+##### Components prop
+
+//TODO needs more clarification about placement.
+
+Provides an option to attach custom react component to a specific place inside admin panel.
+
+-   `id` id of place, that component will be attached to
+-   `component` react component
+
+##### Widgets prop
+
+//TODO
+
+#### Translations prop
+
+This prop allows the usage of `react-i18next` package inside plugin components/pages so the text will be correctly translated in admin panel.
+
+-   `ns` key is i18n namespace for this plugin. We recommend using plugin name for it.
+-   `data` key accepts json translations for different languages. It's a record with keys that are language names (e.g. `en`, `pl`) and their values should be an array of json files.
+
+Usage is simple: install `react-i18next` package, and use `useTranslation` hook within the component with specified **namespace** with the use of provided json translation files.
+
+#### Navigation Props
+
+**Navigation groups** can be added with `navMenuGroups`. This prop accepts array of objects which consists of:
+
+-   `id` group identifier
+-   `labelId` see Translations section
+-   `placement -> groupId` (optional)
+
+Placement defines where new group will be shown according to specified groupId.
+`react-ui-devkit` exposes `BASE_GROUP_ID` enum which consists of base group ids that can be used in `placement.groupId`.
+New group will be rendered below specified group or at the bottom of the navigation if not specified.
+
+**Navigation Links** can be added with `navMenuLinks`. This prop accepts array of objects which consists of:
+
+-   `id` link identifier
+-   `href` this accepts a path which is after **/admin-ui/** so defining `couriers` here will result in _/admin-ui/extensions/couriers_
+-   `labelId` see Translations section
+-   `groupId` id of a group that link will appear in
+-   `icon` icon that will be shown next to text. Any icon can be used but `lucide-react` would be best fit to blend in with existing ones.
+-   `placement` (optional) this accepts an object with **linkId** which should point to an existing link id and **where** prop, which can define where new link will be shown. It has 2 options: **above** and **under**.
+
+#### Inputs prop
+
+Provides an option to register a react component that then can be used as a custom input for custom field system
+
+this component has to use `useCustomFields` hook available in `@deenruv/react-ui-devkit` package. This hook returns `value` and `setValue` which is crucial for setting up a working input. There's also a label and description which was provided during custom field creation.
+
+Admin panel will automatically provide context for this input if it's properly set during custom field creation on the server.
+
+**ID** provided in UI plugin `inputs` prop and server `config.customFields` must match.
+
+```javascript
+config.customFields.Product.push({
+    name: 'custom-field-test-name',
+    type: 'int',
+    ui: {component: 'custom-input-id'}
+    label: [{ languageCode: LanguageCode.en, value: 'custom input label' }],
+});
 ```
 
-2. After the changes in your package are compiled you have to stop and restart the dev-server:
+### Custom fields
 
-```shell
-# Terminal 2
-cd packages/dev-server
-DB=sqlite npm run start
+Custom fields that has been set up on the Deenruv server will be automatically placed on the correct view inside admin panel (e.g. `config.customFields.Product` will show on product detail page) with all CRUD operations. Input generated will be based on the **type** provided on the object passed to **config.customFields** inside server.
+
+```javascript
+config.customFields.Product.push({
+    name: 'string-test',
+    type: 'string',
+    list: false,
+    label: [{ languageCode: LanguageCode.en, value: 'string test label' }],
+});
 ```
 
-3. The dev-server will now have your local changes from the changed package.
+Admin panel custom fields system works with all primitive custom field types, locale types and relation inputs.
 
-### Code generation
+examples:
+
+-   `localeString` will generate text input that can contain text for different languages.
+-   `number` will generate number input.
+-   `type:relation Asset` will render an input that lets user pick an Asset
+
+This system also supports `list:true` which provides possibility to add multiple values for a custom field. This essentially makes a field an Array of specified type.
+
+For working custom field examples refer to `plugins/deenruv-examples-plugin/src/plugin-server/plugin.ts` [link](https://gitlab.aexol.com/deenruv/deenruv/-/blob/main/plugins/deenruv-examples-plugin/src/plugin-server/plugin.ts).
+
+## Release Process
+
+If we want to merge our develop to main and publish packages we have to do the following:
+
+_(For the sake of this example lets say our version is 1.1.15)_
+
+1. `git checkout main`
+2. `git pull origin develop`
+3. `pnpm -r exec pnpm version patch` - this will patch version in every package.json by **1** so in our case we would get **1.1.16**
+4. `git commit -m "v1.1.16"` - we have to specify version that we got after previous command so in this case it will be **1.1.16**
+5. `git push`
+6. `git tag v1.1.16` - specify the tag same as the new version
+7. `git push origin v1.1.16` - will upload tag specified in previous command to remote
+8. `git checkout develop`
+9. `git merge main` - sync develop with main
+10. `git push`
+
+## Code generation for legacy admin panel
 
 [graphql-code-generator](https://github.com/dotansimha/graphql-code-generator) is used to automatically create TypeScript interfaces for all GraphQL server operations and admin ui queries. These generated interfaces are used in both the admin ui and the server.
 
@@ -142,7 +206,7 @@ Running `npm run codegen` will generate the following files:
 -   [`packages/admin-ui/src/lib/core/src/common/introspection-result.ts`](./packages/admin-ui/src/lib/core/src/common/introspection-result.ts): Used by the Apollo Client [`IntrospectionFragmentMatcher`](https://www.apollographql.com/docs/react/data/fragments/#fragments-on-unions-and-interfaces) to correctly handle fragments in the Admin UI.
 -   Also generates types used in e2e tests in those packages which feature e2e tests (core, elasticsearch-plugin, asset-server-plugin etc).
 
-### Testing
+## Testing
 
 #### Server Unit Tests
 
@@ -161,10 +225,6 @@ e2e tests use the `@deenruv/testing` package.
 <!-- For details of how the setup works, see the [Testing docs](https://docs.deenruv.io/guides/developer-guide/testing/). -->
 
 When **debugging e2e tests**, set an environment variable `E2E_DEBUG=true` which will increase the global Jest timeout and allow you to step through the e2e tests without the tests automatically failing due to timeout.
-
-### Release Process
-
-<!-- TODO -->
 
 ## License
 

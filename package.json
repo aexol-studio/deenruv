@@ -22,7 +22,7 @@
         "server-populate": "pnpm -filter=@deenruv/server populate",
         "build": "pnpm -r run build",
         "build:dev": "pnpm -r -filter='!@deenruv/admin-ui' -filter='!@deenruv/admin-ui-plugin' -filter='!@deenruv/panel' run build",
-        "watch:plugin:deenruv-first-plugin": "pnpm -filter=@deenruv/deenruv-first-plugin run watch",
+        "watch:plugin:deenruv-examples-plugin": "pnpm -filter=@deenruv/deenruv-examples-plugin run watch",
         "watch:plugin:deenruv-second-plugin": "pnpm -filter=@deenruv/deenruv-second-plugin run watch",
         "watch:package:react-ui-devkit": "pnpm -filter=@deenruv/react-ui-devkit run watch",
         "watch": "concurrently -n package,admin-panel -c yellow,red \"pnpm -filter=@deenruv/react-ui-devkit run watch\" \"pnpm -filter=@deenruv/admin-dashboard run watch\"",

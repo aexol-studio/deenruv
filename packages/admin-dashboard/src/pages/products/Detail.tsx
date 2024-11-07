@@ -29,6 +29,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  PlacementMarker,
 } from '@deenruv/react-ui-devkit';
 import { LanguageCode, SortOrder } from '@deenruv/admin-types';
 import { EntityCustomFields } from '@/components';
@@ -267,7 +268,6 @@ export const ProductsDetailPage = () => {
                 }}
                 customFields={productCustomFields}
               /> */}
-
               {/* <Stack className="grid grid-cols-3 gap-4">
                 <TextCard
                   label={t('customFields.textCards.completionDate')}
@@ -318,6 +318,7 @@ export const ProductsDetailPage = () => {
                 onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
                 onAssetsChange={(ids) => setField('assetIds', ids)}
               />
+              <PlacementMarker position="product-pdp" />
               {/* <SeoCard
                 currentTranslationValue={currentTranslationValue}
                 facebookImageId={state.customFields?.validatedValue?.facebookImageId}
@@ -333,11 +334,11 @@ export const ProductsDetailPage = () => {
                   setCustomField('twitterImage', e as unknown as string);
                 }}
               /> */}
-              <FacetsAccordions
+              {/* <FacetsAccordions
                 facetsOptions={facetsOptions}
                 handleFacetCheckboxChange={handleFacetCheckboxChange}
                 checkedFacetsIds={state.facetValueIds?.value}
-              />
+              /> */}
             </Stack>
             <Stack className="w-1/4 flex-col gap-4">
               <SettingsCard

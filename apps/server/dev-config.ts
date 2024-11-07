@@ -15,7 +15,7 @@ import 'dotenv/config';
 import path from 'path';
 import { ContentManagementPlugin } from '@deenruv/content-management-plugin/plugin-server';
 
-import { DeenruvFirstPlugin } from '@deenruv/deenruv-first-plugin/plugin-server';
+import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin/plugin-server';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 import { MinkoCorePlugin } from '@deenruv/minko-core-plugin/plugin-server';
 import { s3Client } from './client-s3';
@@ -141,8 +141,21 @@ export const devConfig: DeenruvConfig = {
             }),
         }),
         DefaultSearchPlugin.init({ bufferUpdates: false, indexStockStatus: false }),
-        BullMQJobQueuePlugin.init({}),
-        DeenruvFirstPlugin,
+        BullMQJobQueuePlugin.init({
+            connection: {
+                host: 'localhost',
+                ...(!IS_DEV && { password: process.env.REDIS_PASSWORD }),
+                maxRetriesPerRequest: null,
+                connectTimeout: 5000,
+                port: 6379,
+            },
+            workerOptions: {
+                concurrency: 10,
+                removeOnComplete: { count: 500, age: 1000 * 60 * 60 * 24 * 7 },
+                removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
+            },
+        }),
+        DeenruvExamplesPlugin,
         ContentManagementPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,
