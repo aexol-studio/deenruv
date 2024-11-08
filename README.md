@@ -68,6 +68,14 @@ Admin panel has its own plugin system which extends it in many ways. All of the 
 
 To add a plugin just pass a created instance of it to **plugins** prop in `<DeenruvAdminPanel plugins={[myUiPlugin]} settings={settings} />`
 
+To import tailwind css into project, path to plugin will have to be provided into `tailwind.config.js`
+
+```javascript
+  content: [
+    './node_modules/@deenruv/deenruv-examples-plugin/dist/**/*.js',
+  ],
+```
+
 #### Creation
 
 To create a plugin `@deenruv/react-ui-devkit` package has to be installed which exposes **createDeenruvUIPlugin** function.

@@ -60,13 +60,9 @@ const loadTranslations = () => {
 const pluginsStore = new PluginStore();
 export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
   const isLocalhost = window.location.hostname === 'localhost';
-
-  useLayoutEffect(() => {
-    pluginsStore.install(plugins, i18n);
-    loadTranslations();
-    window.__DEENRUV_SETTINGS__ = settings;
-    console.log('Plugins Loaded.');
-  }, []);
+  pluginsStore.install(plugins, i18n);
+  loadTranslations();
+  window.__DEENRUV_SETTINGS__ = settings;
 
   const router = createBrowserRouter([
     { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },
