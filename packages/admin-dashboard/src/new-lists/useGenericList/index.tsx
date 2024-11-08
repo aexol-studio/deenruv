@@ -75,16 +75,21 @@ export const ListTypeKeys = {
   promotions: 'PromotionFilterParameter' as const,
 };
 
-export const useGenericList = <T extends PromisePaginated, K extends keyof ListType>({
+type FIELD = keyof ModelTypes[ListType[keyof ListType]];
+type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
+
+export const useGenericList = <T extends PromisePaginated, K extends keyof ListType, Z>({
   route,
-  listType,
+  type,
   customItemsPerPage,
   searchFields,
+  customFieldsSelector,
 }: {
   route: T;
-  listType: K;
+  type: K;
   customItemsPerPage?: ItemsPerPageType;
   searchFields?: (keyof Awaited<ReturnType<PromisePaginated>>['items'][number])[];
+  customFieldsSelector?: Z;
 }): {
   Paginate: JSX.Element;
   FiltersResult: JSX.Element;
@@ -99,14 +104,11 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
   const [total, setTotal] = useState(0);
   const [objects, setObjects] = useState<GenericReturn<T>>();
 
-  const setFilterField = (
-    field: keyof ModelTypes[ListType[typeof listType]],
-    value: ModelTypes[ListType[typeof listType]][typeof field],
-  ) => {
+  const setFilterField = (field: FIELD, value: VALUE) => {
     try {
       const filterURL = searchParams.get(SearchParamKey.FILTER);
       if (filterURL) {
-        const filterFromParamsJSON = JSON.parse(filterURL) as ModelTypes[ListType[typeof listType]];
+        const filterFromParamsJSON = JSON.parse(filterURL) as ModelTypes[ListType[typeof type]];
         searchParams.set(SearchParamKey.FILTER, JSON.stringify({ ...filterFromParamsJSON, [field]: value }));
         setSearchParams(searchParams);
       } else {
@@ -118,10 +120,10 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
     }
   };
 
-  const removeFilterField = (field: keyof ModelTypes[ListType[typeof listType]]) => {
+  const removeFilterField = (field: FIELD) => {
     try {
       const filterURL = searchParams.get(SearchParamKey.FILTER);
-      const filterFromParamsJSON = JSON.parse(filterURL || '') as ModelTypes[ListType[typeof listType]];
+      const filterFromParamsJSON = JSON.parse(filterURL || '') as ModelTypes[ListType[typeof type]];
       delete filterFromParamsJSON[field];
       if (Object.keys(filterFromParamsJSON).length === 0) {
         searchParams.delete(SearchParamKey.FILTER);
@@ -172,7 +174,7 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
         page: page ? parseInt(page) : 1,
         perPage: perPage ? parseInt(perPage) : 10,
         sort: sort && sortDir ? { key: sort, sortDir: sortDir as SortOrder } : undefined,
-        filter: filter ? (JSON.parse(filter) as ModelTypes[ListType[typeof listType]]) : undefined,
+        filter: filter ? (JSON.parse(filter) as ModelTypes[ListType[typeof type]]) : undefined,
         filterOperator: filterOperator ? (filterOperator as LogicalOperator) : LogicalOperator.OR,
       };
     } catch (err) {
@@ -185,16 +187,16 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
       const page = searchParams.get(SearchParamKey.PAGE);
       if (page) searchParamValues.page = +page;
       searchParamValues.filter = initialFilterState;
-      route(searchParamValues).then((r) => {
+      route(searchParamValues, customFieldsSelector).then((r) => {
         setObjects(r.items);
         setTotal(r.totalItems);
       });
     },
-    [searchParams, listType, route, searchParamValues],
+    [searchParams, type, route, searchParamValues],
   );
 
   useEffect(() => {
-    route(searchParamValues).then((r) => {
+    route(searchParamValues, customFieldsSelector).then((r) => {
       setObjects(r.items);
       setTotal(r.totalItems);
     });
@@ -203,14 +205,17 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
   const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
   const totalPages = useMemo(() => Math.ceil(total / searchParamValues.perPage), [total, searchParamValues]);
 
+  const filterProperties = {
+    type,
+    filter: searchParamValues.filter,
+    setFilterField,
+    removeFilterField,
+  };
+
   return {
     Search: <Search />,
-    FiltersResult: (
-      <FiltersResult {...{ type: listType, filter: searchParamValues.filter, setFilterField, removeFilterField }} />
-    ),
-    FiltersButton: (
-      <FiltersButton {...{ type: listType, filter: searchParamValues.filter, setFilterField, removeFilterField }} />
-    ),
+    FiltersResult: <FiltersResult {...filterProperties} />,
+    FiltersButton: <FiltersButton {...filterProperties} />,
     Paginate: <Paginate {...{ itemsPerPage, searchParamValues, total, totalPages, searchParams, setSearchParams }} />,
     SortButton: (key, translated) => (
       <SortButton currSort={searchParamValues.sort} sortKey={key as string} onClick={() => setSort(key as string)}>

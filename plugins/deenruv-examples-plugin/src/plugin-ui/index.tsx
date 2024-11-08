@@ -7,7 +7,6 @@ import { inputs } from './inputs';
 import pl from './locales/pl';
 import en from './locales/en';
 import { translationNS } from './translation-ns';
-import { componentList } from './componentList';
 
 export const UIPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
@@ -29,7 +28,6 @@ export const UIPlugin = createDeenruvUIPlugin({
             ],
         },
     ],
-    components: componentList,
     translations: {
         ns: translationNS,
         data: { en, pl },

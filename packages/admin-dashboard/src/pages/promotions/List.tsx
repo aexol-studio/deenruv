@@ -1,24 +1,36 @@
 import { apiCall } from '@/graphql/client';
-import { SortOrder, ValueTypes } from '@deenruv/admin-types';
+import { SortOrder } from '@deenruv/admin-types';
 import { GenericList } from '@/new-lists/GenericList';
 import { PaginationInput } from '@/lists/models';
-import { mergeSelectorWithCustomFields, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
-import { useServer } from '@/state';
-import { useMemo } from 'react';
+import { ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
 
 const PAGE_KEY = 'products';
 const ENTITY_NAME = 'Product';
 
-const fetch = async <T extends ValueTypes[K], K extends typeof ENTITY_NAME>({
-  page,
-  perPage,
-  filter,
-  filterOperator,
-  sort,
-  selector,
-}: PaginationInput & {
-  selector: T;
-}) => {
+function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
+  const isObject = (obj: any) => obj && typeof obj === 'object';
+
+  Object.keys(source).forEach((key) => {
+    const targetValue = (target as any)[key];
+    const sourceValue = (source as any)[key];
+
+    if (Array.isArray(sourceValue)) {
+      (target as any)[key] = [...(Array.isArray(targetValue) ? targetValue : []), ...sourceValue];
+    } else if (isObject(sourceValue)) {
+      (target as any)[key] = deepMerge(isObject(targetValue) ? targetValue : {}, sourceValue);
+    } else {
+      (target as any)[key] = sourceValue;
+    }
+  });
+
+  return target as T & U;
+}
+
+const fetch = async <T,>(
+  { page, perPage, filter, filterOperator, sort }: PaginationInput,
+  customFieldsSelector?: T,
+) => {
+  const items = deepMerge(ProductListSelector, customFieldsSelector ?? {});
   const response = await apiCall()('query')({
     [PAGE_KEY]: [
       {
@@ -30,27 +42,19 @@ const fetch = async <T extends ValueTypes[K], K extends typeof ENTITY_NAME>({
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items, totalItems: true },
     ],
   });
   return response[PAGE_KEY];
 };
 
 export const PromotionsListPage = () => {
-  const entityCustomFields = useServer((p) =>
-    p.serverConfig?.entityCustomFields?.find((el) => el.entityName === ENTITY_NAME),
-  )?.customFields;
-
-  const selector = useMemo(
-    () => mergeSelectorWithCustomFields(ProductListSelector, ENTITY_NAME, entityCustomFields),
-    [entityCustomFields],
-  );
-
   return (
     <GenericList
-      listType={PAGE_KEY}
+      type={PAGE_KEY}
       route={Routes[PAGE_KEY]}
-      fetch={(params) => fetch({ ...params, selector })}
+      ENTITY_NAME={ENTITY_NAME}
+      fetch={fetch}
       onRemove={(items) => {
         console.log(items);
         return Promise.resolve(true);

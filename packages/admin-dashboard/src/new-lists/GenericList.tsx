@@ -1,4 +1,12 @@
-import { Badge, PlacementMarker, usePluginStore } from '@deenruv/react-ui-devkit';
+import {
+  Badge,
+  Button,
+  buttonVariants,
+  cn,
+  mergeSelectorWithCustomFields,
+  PlacementMarker,
+  usePluginStore,
+} from '@deenruv/react-ui-devkit';
 import { PromisePaginated } from './models';
 import { ListType, useGenericList } from './useGenericList';
 import {
@@ -15,12 +23,14 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocalStorage } from '@/hooks';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Circle, CircleCheck } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { GenericListProvider } from './GenericListContext';
 import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
 import { DeleteDialog } from './_components';
-import { ListButtons, ListTable } from '@/components';
+import { ListButtons, ListTable, TranslationSelect } from '@/components';
+import { useServer } from '@/state';
+import { ValueTypes } from '@deenruv/admin-types';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
@@ -41,7 +51,8 @@ export function GenericList<T extends PromisePaginated>({
   fetch,
   route,
   onRemove,
-  listType,
+  type,
+  ENTITY_NAME,
   searchFields,
   hideColumns,
   customColumns,
@@ -49,7 +60,8 @@ export function GenericList<T extends PromisePaginated>({
   fetch: T;
   route: { list: string; new: string; route: string; to: (id: string) => string };
   onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
-  listType: keyof ListType;
+  type: keyof ListType;
+  ENTITY_NAME: keyof ValueTypes;
   searchFields?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
   hideColumns?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
   customColumns?: ColumnDef<AwaitedReturnType<T>['items']>[];
@@ -57,13 +69,20 @@ export function GenericList<T extends PromisePaginated>({
   const { t } = useTranslation('table');
   const { getTableExtensions } = usePluginStore();
   const tableExtensions = getTableExtensions('products-list-view');
+  const entityCustomFields = useServer((p) =>
+    p.serverConfig?.entityCustomFields?.find((el) => el.entityName === ENTITY_NAME),
+  )?.customFields;
+  const customFieldsSelector = useMemo(
+    () => mergeSelectorWithCustomFields({}, ENTITY_NAME, entityCustomFields),
+    [entityCustomFields],
+  );
 
   const [itemsToDelete, setItemsToDelete] = useState<AwaitedReturnType<T>['items']>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [deleteDialogOpened, setDeleteDialogOpened] = useState(false);
   const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
-    `${listType}-table-visibility`,
+    `${type}-table-visibility`,
     { id: true, createdAt: true, updatedAt: true },
   );
   const columnsTranslations = t('columns', { returnObjects: true });
@@ -78,9 +97,10 @@ export function GenericList<T extends PromisePaginated>({
     FiltersButton,
     FiltersResult,
   } = useGenericList({
-    listType,
+    type,
     route: fetch,
     searchFields,
+    customFieldsSelector,
   });
 
   const columns = useMemo(() => {
@@ -116,6 +136,7 @@ export function GenericList<T extends PromisePaginated>({
           if (typeof value === 'object') {
             if ('__typename' in value) {
               // that means we know this type
+              // * GOOD TO REMEMBER: Get __typename from nested objects in selector.
               if (value.__typename === 'Asset') {
                 // this is an asset
                 return <img src={value.preview} alt={row.original.name} className="h-16 w-16 object-cover" />;
@@ -225,21 +246,20 @@ export function GenericList<T extends PromisePaginated>({
         }}
       >
         <div className="flex w-full flex-col items-start gap-4">
-          <div className="flex w-full items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              {FiltersButton}
-              {Search}
+          <div className="flex w-full items-end justify-between gap-4">
+            <div className="flex flex-col items-start gap-2">
+              <TranslationSelect />
+              <div className="flex items-center gap-2">
+                {FiltersButton}
+                {Search}
+              </div>
             </div>
-            <ListButtons
-              createLabel={t('buttons.create')}
-              createRoute={route.new}
-              handleClick={() => {
-                const items = table.getFilteredSelectedRowModel().rows.map((i) => i.original);
-                setItemsToDelete(items);
-                setDeleteDialogOpened(true);
-              }}
-              selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
-            />
+            <div className="flex gap-2">
+              <NavLink to={route.new} className={cn(buttonVariants(), 'flex items-center gap-2')}>
+                <PlusCircleIcon size={16} />
+                {t('create')}
+              </NavLink>
+            </div>
           </div>
           <div>{FiltersResult}</div>
         </div>

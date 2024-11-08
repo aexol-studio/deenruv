@@ -14,6 +14,7 @@ import { useSettings } from '@/state/settings';
 import { DeenruvAdminPanelSettings, DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
 import { BrandingStoreProvider } from './state/branding.js';
 import * as resources from './locales';
+import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
 
 declare global {
   interface Window {
@@ -58,6 +59,7 @@ const loadTranslations = () => {
 
 const pluginsStore = new PluginStore();
 export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
+  const isLocalhost = window.location.hostname === 'localhost';
   pluginsStore.install(plugins, i18n);
   loadTranslations();
   if (typeof window !== 'undefined') {
@@ -93,6 +95,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
           {isLoggedIn ? (
             <PluginProvider plugins={pluginsStore} context={context}>
               <RouterProvider router={router} />
+              {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
             </PluginProvider>
           ) : (
             <LoginScreen />

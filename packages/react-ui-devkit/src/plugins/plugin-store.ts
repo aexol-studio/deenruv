@@ -76,7 +76,7 @@ export class PluginStore {
                     .join('-');
 
                 if (id === location) {
-                    uniqueMappedComponents.set(uniqueUUID, component);
+                    uniqueMappedComponents.set(uniqueUUID, component as any);
                 }
             });
         });

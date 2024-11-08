@@ -23,6 +23,20 @@ type ListLocationsType<KEY extends keyof typeof ListLocations> = FromSelectorWit
     (typeof ListLocations)[KEY]['type']
 >;
 
+const DetailLocations = {
+    'products-detail-view': {
+        type: 'Product' as const,
+        selector: ProductListSelector,
+    },
+};
+type DetailLocationType = typeof DetailLocations;
+type DetailKeys = keyof DetailLocationType;
+
+type DetailLocationsType<KEY extends keyof typeof DetailLocations> = FromSelectorWithScalars<
+    (typeof DetailLocations)[KEY]['selector'],
+    (typeof DetailLocations)[KEY]['type']
+>;
+
 type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     id: KEY;
     bulkActions?: Array<{
@@ -32,16 +46,29 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     columns?: Array<ColumnDef<ListLocationsType<KEY>>>;
 };
 
+type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
+    id: KEY;
+    component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
+};
+
 export type DeenruvUIPlugin = {
     name: string;
     version: string;
+    /** Applied on the selected tables */
     tables?: DeenruvUITable<LocationKeys>[];
+    /** Inputs allow to override the default components from custom fields */
     inputs?: PluginComponent[];
-    components?: PluginComponent[];
+    /** Applied on the detail views (pages) */
+    components?: DeenruvUIDetailComponent<DetailKeys>[];
+    /** Applied on the dashboard */
     widgets?: Widget[];
+    /** Applied on the navigation */
     navMenuGroups?: Array<PluginNavigationGroup>;
+    /** Applied on the navigation */
     navMenuLinks?: Array<PluginNavigationLink>;
+    /** Applied on the app globally */
     pages?: Array<PluginPage>;
+    /** Applied on the app globally */
     translations?: { ns: string; data: Record<string, object[]> };
 };
 

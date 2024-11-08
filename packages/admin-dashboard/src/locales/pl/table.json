@@ -8,6 +8,7 @@
   "from": "From",
   "to": "To",
   "value": "Value",
+  "create": "Create",
   "bulk": {
     "delete": {
       "title": "Are you sure you want to delete this records?",

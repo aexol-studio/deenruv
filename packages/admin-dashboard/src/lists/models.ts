@@ -18,7 +18,10 @@ export type PaginationInput = {
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type PromisePaginated = (props: PaginationInput) => Promise<{
+export type PromisePaginated = (
+  props: PaginationInput,
+  customFieldsConfig?: any,
+) => Promise<{
   totalItems: number;
   items: any;
 }>;
