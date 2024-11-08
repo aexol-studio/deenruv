@@ -14,13 +14,11 @@ import { ListColumnDropdown } from '../_components';
 
 export const ActionsDropdown = <T extends { id: string }>({
   redirect,
-  setDeleteDialogOpened,
-  setItemsToDelete,
+  onRemove,
   bulkActions,
 }: {
   redirect: (to: string) => string;
-  setDeleteDialogOpened: (opened: boolean) => void;
-  setItemsToDelete: (items: T[]) => void;
+  onRemove: (items: T[]) => void;
   bulkActions?: Array<{ label: string; onClick: ({ data }: { data: T[] }) => void }>;
 }): ColumnDef<T> => {
   return {
@@ -60,12 +58,7 @@ export const ActionsDropdown = <T extends { id: string }>({
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  setDeleteDialogOpened(true);
-                  setItemsToDelete([row.original]);
-                }}
-              >
+              <DropdownMenuItem onClick={() => onRemove([row.original])}>
                 <div className="text-red-400 hover:text-red-400 dark:hover:text-red-400">{t('actionsMenu.delete')}</div>
               </DropdownMenuItem>
             </DropdownMenuContent>

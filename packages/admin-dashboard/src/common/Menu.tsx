@@ -152,11 +152,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 </div>
                 <div className="flex flex-col">
                   <Nav isCollapsed={isCollapsed} />
-                  <div className="w-full select-none">
-                    <div className="bg-secondary flex h-[40px] items-center justify-center gap-2 text-xs">
-                      <p className="uppercase">Deenruv</p>
-                      <span>ver. {ADMIN_DASHBOARD_VERSION}</span>
-                    </div>
+                  <div className="bg-secondary flex h-[40px] w-full select-none items-center justify-center gap-2 text-xs shadow-2xl">
+                    <p className="uppercase">Deenruv</p>
+                    <span>ver. {ADMIN_DASHBOARD_VERSION}</span>
                   </div>
                 </div>
               </ResizablePanel>

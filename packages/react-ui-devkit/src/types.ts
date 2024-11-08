@@ -41,7 +41,7 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     id: KEY;
     bulkActions?: Array<{
         label: string;
-        onClick: ({ data }: { data: Array<ListLocationsType<KEY>> }) => void;
+        onClick: (props: { data: Array<ListLocationsType<KEY>>; refetch: () => void; table: any }) => boolean;
     }>;
     columns?: Array<ColumnDef<ListLocationsType<KEY>>>;
 };

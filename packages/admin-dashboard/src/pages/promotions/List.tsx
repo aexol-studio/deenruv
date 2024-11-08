@@ -56,7 +56,7 @@ export const PromotionsListPage = () => {
       ENTITY_NAME={ENTITY_NAME}
       fetch={fetch}
       onRemove={(items) => {
-        console.log(items);
+        console.log('ON REMOVE', items);
         return Promise.resolve(true);
       }}
       searchFields={['slug']}

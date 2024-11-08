@@ -20,11 +20,14 @@ const PluginStoreContext = createContext<{
     setViewMarkers: (view: boolean) => void;
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
-    getComponents: (position: string) => React.ComponentType<{}>[];
-    getInputComponent: (id: string) => React.ComponentType<{}> | null;
+    getComponents: (position: string) => React.ComponentType<any>[];
+    getInputComponent: (id: string) => React.ComponentType<any> | null;
     getTableExtensions: (location: ListLocationID) => {
         id: string;
-        bulkActions?: { label: string; onClick: ({ data }: { data: any[] }) => void }[];
+        bulkActions?: {
+            label: string;
+            onClick: ({ table, refetch, data }: { table: any; refetch: () => void; data: any[] }) => boolean;
+        }[];
         columns?: any[];
     }[];
     navMenuData: {

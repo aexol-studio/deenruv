@@ -1,12 +1,4 @@
-import {
-  Badge,
-  Button,
-  buttonVariants,
-  cn,
-  mergeSelectorWithCustomFields,
-  PlacementMarker,
-  usePluginStore,
-} from '@deenruv/react-ui-devkit';
+import { Badge, buttonVariants, cn, mergeSelectorWithCustomFields, usePluginStore } from '@deenruv/react-ui-devkit';
 import { PromisePaginated } from './models';
 import { ListType, useGenericList } from './useGenericList';
 import {
@@ -28,12 +20,13 @@ import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { GenericListProvider } from './GenericListContext';
 import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
 import { DeleteDialog } from './_components';
-import { ListButtons, ListTable, TranslationSelect } from '@/components';
+import { ListTable, TranslationSelect } from '@/components';
 import { useServer } from '@/state';
 import { ValueTypes } from '@deenruv/admin-types';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
+
 const COLUMN_PRIORITIES: Record<string, number> = {
   'select-id': 0,
   id: 1,
@@ -42,10 +35,7 @@ const COLUMN_PRIORITIES: Record<string, number> = {
   updatedAt: 4,
   actions: 999,
 } as const;
-
-const getPriority = (key: string): number => {
-  return COLUMN_PRIORITIES[key] ?? 500;
-};
+const getPriority = (key: string): number => COLUMN_PRIORITIES[key] ?? 500;
 
 export function GenericList<T extends PromisePaginated>({
   fetch,
@@ -109,12 +99,23 @@ export function GenericList<T extends PromisePaginated>({
     const columns: ColumnDef<AwaitedReturnType<T>['items']>[] = [];
     for (const key of keys) {
       if (key === 'id') {
-        columns.push(SelectIDColumn({ bulkActions: tableExtensions.flatMap((table) => table.bulkActions || []) }));
+        columns.push(
+          SelectIDColumn({
+            bulkActions: tableExtensions.flatMap((table) => table.bulkActions || []),
+            refetch,
+            onRemove: (items) => {
+              setItemsToDelete(items);
+              setDeleteDialogOpened(true);
+            },
+          }),
+        );
         columns.push(
           ActionsDropdown({
             redirect: (to) => route.to(to),
-            setDeleteDialogOpened,
-            setItemsToDelete,
+            onRemove: (items) => {
+              setItemsToDelete(items);
+              setDeleteDialogOpened(true);
+            },
           }),
         );
       }
@@ -233,6 +234,19 @@ export function GenericList<T extends PromisePaginated>({
     return isFiltered;
   }, [filter]);
 
+  const onConfirmDelete = async () => {
+    try {
+      const result = await onRemove(itemsToDelete);
+      if (!result) return;
+      refetch();
+      table.toggleAllRowsSelected(false);
+      setItemsToDelete([]);
+      setDeleteDialogOpened(false);
+    } catch {
+      console.error('Error deleting items');
+    }
+  };
+
   return (
     <div className="page-content-h flex w-full flex-col gap-2">
       <GenericListProvider
@@ -270,17 +284,7 @@ export function GenericList<T extends PromisePaginated>({
           deletingItems={itemsToDelete}
           open={deleteDialogOpened}
           onOpenChange={setDeleteDialogOpened}
-          onConfirm={async () => {
-            try {
-              const result = await onRemove(itemsToDelete);
-              if (!result) return;
-              refetch();
-              setItemsToDelete([]);
-              setDeleteDialogOpened(false);
-            } catch {
-              console.error('Error deleting items');
-            }
-          }}
+          onConfirm={onConfirmDelete}
         />
       </GenericListProvider>
     </div>
