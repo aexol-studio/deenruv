@@ -17,7 +17,15 @@ export const UIPlugin = createDeenruvUIPlugin({
     tables: [
         {
             id: 'products-list-view',
-            bulkActions: [{ label: 'LALALA', onClick: ({ data }) => console.log(data) }],
+            bulkActions: [
+                {
+                    label: 'LALALA',
+                    onClick: ({ data }) => {
+                        console.log(data);
+                        return true;
+                    },
+                },
+            ],
             columns: [
                 {
                     accessorKey: 'lalala',
