@@ -18,7 +18,6 @@ export class PluginStore {
         groups: Array<NonNullable<DeenruvUIPlugin['navMenuGroups']>[number]>;
         links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number]>;
     } = { groups: [], links: [] };
-
     install(plugins: DeenruvUIPlugin[], i18next: I18Next) {
         this.i18next = i18next;
         plugins.forEach(({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {
@@ -40,13 +39,15 @@ export class PluginStore {
                 href: getExtensionsPath(linkEl.href),
             }));
         });
-        this.pluginsNavigationDataField.groups = plugins.flatMap(
-            el =>
-                el.navMenuGroups?.map(groupEl => ({
-                    ...groupEl,
-                    labelId: `${el.translations?.ns}.${groupEl.labelId}`,
-                })) || [],
-        );
+        this.pluginsNavigationDataField.groups = plugins
+            .flatMap(
+                el =>
+                    el.navMenuGroups?.map(groupEl => ({
+                        ...groupEl,
+                        labelId: `${el.translations?.ns}.${groupEl.labelId}`,
+                    })) || [],
+            )
+            .filter((el, idx, arr) => idx === arr.findIndex(obj => obj.id === el.id));
     }
 
     private getUUID() {
