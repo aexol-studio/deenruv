@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';
@@ -60,12 +60,13 @@ const loadTranslations = () => {
 const pluginsStore = new PluginStore();
 export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
   const isLocalhost = window.location.hostname === 'localhost';
-  pluginsStore.install(plugins, i18n);
-  loadTranslations();
-  if (typeof window !== 'undefined') {
+
+  useLayoutEffect(() => {
+    pluginsStore.install(plugins, i18n);
+    loadTranslations();
     window.__DEENRUV_SETTINGS__ = settings;
-  }
-  console.log('ąDID ADMIN PANEL RERENDER');
+    console.log('Plugins Loaded.');
+  }, []);
 
   const router = createBrowserRouter([
     { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },
