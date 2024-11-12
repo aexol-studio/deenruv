@@ -1,9 +1,9 @@
+import { BrandLogo } from '@/components/BrandLogo';
 import { apiCall } from '@/graphql/client';
 import { Button, Checkbox, Input, Label } from '@deenruv/react-ui-devkit';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { MinkoLogo } from '@/components/MinkoLogo';
 
 export const LoginScreen = () => {
   const { t } = useTranslation('common');
@@ -54,7 +54,9 @@ export const LoginScreen = () => {
       <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
-            <MinkoLogo />
+            <div className="flex items-center justify-center">
+              <BrandLogo />
+            </div>
             <form onSubmit={login} className="grid gap-4">
               <div className="grid gap-2">
                 <Label className="select-none" htmlFor="email">

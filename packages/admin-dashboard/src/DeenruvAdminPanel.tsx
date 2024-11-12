@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';

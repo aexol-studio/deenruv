@@ -7,7 +7,13 @@ import { DeenruvLogo } from './DeenruvLogo';
 
 const plugins: DeenruvUIPlugins = [ExamplesUiPlugin, SecondUIPlugin, CMSPlugin];
 const settings: DeenruvAdminPanelSettings = {
-  branding: { name: 'Deenruv', logo: <DeenruvLogo /> },
+  branding: {
+    name: 'Deenruv',
+    logo: {
+      full: <DeenruvLogo isCollapsed={false} />,
+      // collapsed: <DeenruvLogo isCollapsed={true} />,
+    },
+  },
   api: { uri: 'http://localhost:3000' },
 };
 

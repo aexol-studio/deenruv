@@ -49,6 +49,7 @@ import { clearAllCache } from '@/lists/cache';
 import { languages, useSettings } from '@/state/settings';
 import { useServer } from '@/state';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
+import { BrandLogo } from '@/components/BrandLogo.js';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
@@ -110,13 +111,6 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
     [matches],
   );
 
-  let Logo = null;
-  const logo = window?.__DEENRUV_SETTINGS__?.branding?.logo;
-  if (typeof logo === 'string') {
-    Logo = <img src={logo} alt="Logo" className={cn('h-10 w-10 object-contain', isCollapsed && 'h-8 w-8')} />;
-  } else if (typeof logo === 'object') {
-    Logo = React.cloneElement(logo, { className: 'h-10 w-10 object-contain', isCollapsed });
-  }
   return (
     <div className="bg-muted/40 w-full border-r">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -145,9 +139,12 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 }}
                 className={cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')}
               >
-                <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b px-2')}>
-                  <div className="cursor-pointer" onClick={() => navigate(Routes.dashboard)}>
-                    {Logo}
+                <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b')}>
+                  <div
+                    className={`flex h-full ${!isCollapsed && 'w-full'} cursor-pointer`}
+                    onClick={() => navigate(Routes.dashboard)}
+                  >
+                    <BrandLogo isCollapsed={isCollapsed} />
                   </div>
                 </div>
                 <div className="flex flex-col">
