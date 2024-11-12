@@ -27,5 +27,6 @@
                 "afterDeclarations": true
             }
         ]
-    }
+    },
+    "exclude": ["dist", "node_modules"]
 }
