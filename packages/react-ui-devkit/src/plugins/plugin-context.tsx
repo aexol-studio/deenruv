@@ -26,7 +26,11 @@ const PluginStoreContext = createContext<{
         id: string;
         bulkActions?: {
             label: string;
-            onClick: ({ table, refetch, data }: { table: any; refetch: () => void; data: any[] }) => boolean;
+            onClick: (props: {
+                table: any;
+                refetch: () => void;
+                data: any[];
+            }) => { success: string } | { error: string };
         }[];
         columns?: any[];
     }[];

@@ -61,7 +61,6 @@ export const PromotionsListPage = () => {
       }}
       searchFields={['slug']}
       hideColumns={['variantList', 'collections', 'translations', 'customFields']}
-      customColumns={[]}
     />
   );
 };

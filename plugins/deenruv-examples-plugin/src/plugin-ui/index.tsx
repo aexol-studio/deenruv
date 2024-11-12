@@ -4,6 +4,7 @@ import { pages } from './pages';
 import { SquareIcon } from './assets';
 import { widgets } from './widgets';
 import { inputs } from './inputs';
+import { tables } from './tables';
 import pl from './locales/pl';
 import en from './locales/en';
 import { translationNS } from './translation-ns';
@@ -14,28 +15,7 @@ export const UIPlugin = createDeenruvUIPlugin({
     pages,
     widgets,
     inputs,
-    tables: [
-        {
-            id: 'products-list-view',
-            bulkActions: [
-                {
-                    label: 'LALALA',
-                    onClick: ({ data }) => {
-                        console.log(data);
-                        return true;
-                    },
-                },
-            ],
-            columns: [
-                {
-                    accessorKey: 'lalala',
-                    cell: ({ row }) => {
-                        return row.original.enabled;
-                    },
-                },
-            ],
-        },
-    ],
+    tables,
     translations: {
         ns: translationNS,
         data: { en, pl },

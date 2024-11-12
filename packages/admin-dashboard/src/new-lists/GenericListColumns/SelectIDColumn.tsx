@@ -10,6 +10,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { ColumnDef } from '@tanstack/react-table';
 import { Trash } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const SelectIDColumn = <T extends { id: string; name: string }>({
   bulkActions,
@@ -18,7 +19,11 @@ export const SelectIDColumn = <T extends { id: string; name: string }>({
 }: {
   bulkActions?: Array<{
     label: string;
-    onClick: ({ data, refetch, table }: { data: T[]; refetch: () => void; table: any }) => boolean;
+    onClick: (props: {
+      data: T[];
+      refetch: () => void;
+      table: any;
+    }) => Promise<{ success: string } | { error: string }> | { success: string } | { error: string };
   }>;
   refetch: () => void;
   onRemove: (items: T[]) => void;
@@ -34,15 +39,15 @@ export const SelectIDColumn = <T extends { id: string; name: string }>({
           {checked ? (
             <div className="absolute left-full">
               <DropdownMenu>
-                <div className="bg-secondary border-card flex flex-col gap-2 rounded-md border p-2">
+                <div className="bg-card border-secondary flex flex-col gap-2 rounded-md border p-2">
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="bg-primary flex w-full flex-1">
+                    <Button variant="ghost" className="flex w-full flex-1">
                       With {amount} selected
                     </Button>
                   </DropdownMenuTrigger>
                   <Button
                     variant="outline"
-                    className="bg-primary flex w-full flex-1"
+                    className="flex w-full flex-1"
                     onClick={() => table.toggleAllRowsSelected(false)}
                   >
                     Clear selection
@@ -52,10 +57,18 @@ export const SelectIDColumn = <T extends { id: string; name: string }>({
                   <DropdownMenuGroup>
                     {bulkActions?.map((action) => (
                       <DropdownMenuItem
-                        onClick={() => {
+                        onClick={async () => {
                           const data = table.getSelectedRowModel().flatRows.map((row) => row.original);
-                          const result = action.onClick({ data, refetch, table });
-                          if (result) table.toggleAllRowsSelected(false);
+                          const result = await action.onClick({ data, refetch, table });
+                          if ('success' in result) {
+                            //show success message
+                            toast.success(result.success);
+                            table.toggleAllRowsSelected(false);
+                          } else {
+                            // show error message
+                            toast.error(result.error);
+                            table.toggleAllRowsSelected(false);
+                          }
                         }}
                       >
                         {action.label}

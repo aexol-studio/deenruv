@@ -92,7 +92,11 @@
   "columns": {
     "id": "ID",
     "createdAt": "Created at",
-    "updatedAt": "Updated at"
+    "updatedAt": "Updated at",
+    "featuredAsset": "Featured asset",
+    "name": "Name",
+    "slug": "Slug",
+    "enabled": "Enabled"
   },
   "actionsMenu": {
     "title": "Actions",

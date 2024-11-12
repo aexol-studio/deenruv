@@ -1,12 +1,9 @@
 import React from 'react';
 import { Puck } from '@measured/puck';
 import '@measured/puck/puck.css';
-import { config } from '@deenruv/content-management-config';
+import { useMDTX } from './mdtx';
 
 export const CMSPage = () => {
-    return (
-        <div className="cms-editor">
-            <Puck config={config} data={{}} onPublish={data => console.log(data)} />
-        </div>
-    );
+    const { loading, ...mdtx } = useMDTX({ slug: 'post1', model: 'model_jarka' });
+    return <div className="cms-editor">{loading ? <div>Loading...</div> : <Puck {...mdtx} />}</div>;
 };

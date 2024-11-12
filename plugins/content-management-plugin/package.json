@@ -21,19 +21,21 @@
         "build": "rimraf dist && tsc --build",
         "watch": "tsc --watch",
         "lint": "eslint --fix .",
-        "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
+        "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui",
+        "zeus-mdtx": "zeus http://localhost:4200/api/graphql ./src/plugin-ui/mdtx"
     },
     "bugs": {
         "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
     },
     "dependencies": {
-        "@deenruv/content-management-config": "workspace:*",
         "@deenruv/common": "workspace:*",
+        "@deenruv/content-management-config": "workspace:*",
         "@deenruv/core": "workspace:*",
         "@deenruv/react-ui-devkit": "workspace:*",
         "@measured/puck": "^0.16.1",
         "@nestjs/common": "~10.3.10",
         "@nestjs/graphql": "~12.2.0",
+        "classnames": "^2.5.1",
         "date-fns": "^4.1.0",
         "express": "^4.21.1",
         "graphql": "~16.9.0",

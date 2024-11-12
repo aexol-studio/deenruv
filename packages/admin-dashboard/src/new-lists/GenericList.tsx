@@ -45,7 +45,6 @@ export function GenericList<T extends PromisePaginated>({
   ENTITY_NAME,
   searchFields,
   hideColumns,
-  customColumns,
 }: {
   fetch: T;
   route: { list: string; new: string; route: string; to: (id: string) => string };
@@ -54,11 +53,15 @@ export function GenericList<T extends PromisePaginated>({
   ENTITY_NAME: keyof ValueTypes;
   searchFields?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
   hideColumns?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
-  customColumns?: ColumnDef<AwaitedReturnType<T>['items']>[];
 }) {
   const { t } = useTranslation('table');
   const { getTableExtensions } = usePluginStore();
   const tableExtensions = getTableExtensions('products-list-view');
+  const bulkActions = tableExtensions.flatMap((table) => table.bulkActions || []);
+  const customColumns = tableExtensions.flatMap((table) => table.columns || []) as ColumnDef<
+    AwaitedReturnType<T>['items']
+  >[];
+
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find((el) => el.entityName === ENTITY_NAME),
   )?.customFields;
@@ -101,7 +104,7 @@ export function GenericList<T extends PromisePaginated>({
       if (key === 'id') {
         columns.push(
           SelectIDColumn({
-            bulkActions: tableExtensions.flatMap((table) => table.bulkActions || []),
+            bulkActions,
             refetch,
             onRemove: (items) => {
               setItemsToDelete(items);
@@ -162,24 +165,26 @@ export function GenericList<T extends PromisePaginated>({
         },
       });
     }
-    return columns
-      .map((column) => {
-        if (customColumns) {
-          const key = 'accessorKey' in column ? column.accessorKey : column.id;
-          const custom = customColumns.find((c) => c.id === key);
-          if (custom) return custom;
-        }
-        return column;
-      })
-      .filter(
-        (column) =>
-          !hideColumns?.includes('accessorKey' in column ? (column.accessorKey as string) : (column.id as string)),
-      )
+    const getAccessorKey = (column: ColumnDef<AwaitedReturnType<T>['items']>) =>
+      'accessorKey' in column ? column.accessorKey : column.id;
+
+    const mergedAndReplacedColumns = [...columns, ...customColumns].reduce(
+      (acc, column) => {
+        const columnKey = getAccessorKey(column);
+        const existingIndex = acc.findIndex((c) => getAccessorKey(c) === columnKey);
+        if (existingIndex > -1) acc[existingIndex] = column;
+        else acc.push(column);
+        return acc;
+      },
+      [] as ColumnDef<AwaitedReturnType<T>['items']>[],
+    );
+    return mergedAndReplacedColumns
+      .filter((column) => !hideColumns?.includes(getAccessorKey(column) as string))
       .sort((a, b) => {
-        const keyA = ('accessorKey' in a ? a.accessorKey : a.id) as string;
-        const keyB = ('accessorKey' in b ? b.accessorKey : b.id) as string;
+        const keyA = getAccessorKey(a) as string;
+        const keyB = getAccessorKey(b) as string;
         return getPriority(keyA) - getPriority(keyB);
-      });
+      }) as ColumnDef<AwaitedReturnType<T>['items']>[];
   }, [objects]);
 
   useEffect(() => {

@@ -29,7 +29,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  PlacementMarker,
+  DetailViewMaker,
 } from '@deenruv/react-ui-devkit';
 import { LanguageCode, SortOrder } from '@deenruv/admin-types';
 import { EntityCustomFields } from '@/components';
@@ -318,7 +318,7 @@ export const ProductsDetailPage = () => {
                 onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
                 onAssetsChange={(ids) => setField('assetIds', ids)}
               />
-              <PlacementMarker position="products-detail-view" />
+              <DetailViewMaker position="products-detail-view" />
               {/* <SeoCard
                 currentTranslationValue={currentTranslationValue}
                 facebookImageId={state.customFields?.validatedValue?.facebookImageId}

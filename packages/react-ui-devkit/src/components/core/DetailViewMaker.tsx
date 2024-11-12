@@ -4,7 +4,7 @@ import { usePluginStore } from '@/plugins/plugin-context';
 import { Renderer } from '@/components/core';
 import { DetailLocationID } from '@/types';
 
-export const PlacementMarker = ({ position }: { position: DetailLocationID }) => {
+export const DetailViewMaker = ({ position }: { position: DetailLocationID }) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
 
     return (
@@ -23,7 +23,10 @@ export const PlacementMarker = ({ position }: { position: DetailLocationID }) =>
                         {`
                         const DeenruvUIPlugin = createPlugin({
                             ...,
-                            components: {},
+                            components: [{
+                                id: ${position},
+                                component: YourComponent,
+                            }],
                             ...
                         });
                         `}
