@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/content-management-config",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "main": "./dist/index.js",
     "scripts": {
         "watch": "tsc -w",

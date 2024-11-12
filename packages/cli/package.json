@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/cli",
-    "version": "0.0.18",
+    "version": "0.0.19",
     "description": "A modern, headless ecommerce framework",
     "repository": {
         "type": "git",
