@@ -1,3 +1,23 @@
+import { Table } from '@tanstack/react-table';
+
+export type GenericListContextType<T> = {
+  route: { list: string; new: string; route: string; to: (id: string) => string };
+  onRemove: (items: T[]) => void;
+  refetch: () => void;
+  rowActions?: {
+    label: string;
+    onClick: (props: { table: Table<T>; refetch: () => void; data: T }) => { success: string } | { error: string };
+  }[];
+  bulkActions?: Array<{
+    label: string;
+    onClick: (props: {
+      data: T[];
+      refetch: () => void;
+      table: Table<T>;
+    }) => Promise<{ success: string } | { error: string }> | { success: string } | { error: string };
+  }>;
+};
+
 export type LimitKeys =
   | '10perPage'
   | '25perPage'

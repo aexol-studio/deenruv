@@ -3,6 +3,9 @@
     "filter": "Filter type",
     "select": "Select type"
   },
+  "withSelected": "With {{amount}} selected",
+  "clearSelected": "Clear selected",
+  "removeSelected": "Remove selected",
   "true": "True",
   "false": "False",
   "from": "From",
@@ -12,7 +15,9 @@
   "bulk": {
     "delete": {
       "title": "Are you sure you want to delete this records?",
-      "description": "This action cannot be undone."
+      "description": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete {{amount}} records"
     }
   },
   "filterLabels": {
@@ -87,7 +92,7 @@
   "placeholders": {
     "columnsDropdown": "Select columns",
     "operatorInput": "Input value",
-    "search": "Search for..."
+    "search": "Search in {{entity}}s by {{fields}}"
   },
   "columns": {
     "id": "ID",

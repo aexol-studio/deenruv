@@ -30,14 +30,16 @@ export const DeenruvDeveloperIndicator = () => {
               <DrawerTitle>DDP - Deenruv Developer Panel</DrawerTitle>
             </DrawerHeader>
             <div className="p-4 pb-0">
-              <div className="flex items-center space-x-2">
-                <Switch id="markers" checked={viewMarkers} onCheckedChange={setViewMarkers} />
-                <label
-                  htmlFor="markers"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Show markers (ctrl + x)
-                </label>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center space-x-2">
+                  <Switch id="markers" checked={viewMarkers} onCheckedChange={setViewMarkers} />
+                  <label
+                    htmlFor="markers"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Show markers (ctrl + x)
+                  </label>
+                </div>
               </div>
             </div>
             <DrawerFooter>

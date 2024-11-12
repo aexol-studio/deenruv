@@ -2,37 +2,15 @@ import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
 import { GenericList } from '@/new-lists/GenericList';
 import { PaginationInput } from '@/lists/models';
-import { ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
-
-const PAGE_KEY = 'products';
-const ENTITY_NAME = 'Product';
-
-function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
-  const isObject = (obj: any) => obj && typeof obj === 'object';
-
-  Object.keys(source).forEach((key) => {
-    const targetValue = (target as any)[key];
-    const sourceValue = (source as any)[key];
-
-    if (Array.isArray(sourceValue)) {
-      (target as any)[key] = [...(Array.isArray(targetValue) ? targetValue : []), ...sourceValue];
-    } else if (isObject(sourceValue)) {
-      (target as any)[key] = deepMerge(isObject(targetValue) ? targetValue : {}, sourceValue);
-    } else {
-      (target as any)[key] = sourceValue;
-    }
-  });
-
-  return target as T & U;
-}
+import { deepMerge, PromotionListSelector, Routes } from '@deenruv/react-ui-devkit';
 
 const fetch = async <T,>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
   customFieldsSelector?: T,
 ) => {
-  const items = deepMerge(ProductListSelector, customFieldsSelector ?? {});
+  const selector = deepMerge(PromotionListSelector, customFieldsSelector ?? {});
   const response = await apiCall()('query')({
-    [PAGE_KEY]: [
+    ['promotions']: [
       {
         options: {
           take: perPage,
@@ -42,25 +20,33 @@ const fetch = async <T,>(
           ...(filter && { filter }),
         },
       },
-      { items, totalItems: true },
+      { items: selector, totalItems: true },
     ],
   });
-  return response[PAGE_KEY];
+  return response['promotions'];
 };
 
-export const PromotionsListPage = () => {
-  return (
-    <GenericList
-      type={PAGE_KEY}
-      route={Routes[PAGE_KEY]}
-      ENTITY_NAME={ENTITY_NAME}
-      fetch={fetch}
-      onRemove={(items) => {
-        console.log('ON REMOVE', items);
-        return Promise.resolve(true);
-      }}
-      searchFields={['slug']}
-      hideColumns={['variantList', 'collections', 'translations', 'customFields']}
-    />
-  );
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+  try {
+    const ids = items.map((item) => item.id);
+    const { deletePromotions } = await apiCall()('mutation')({
+      deletePromotions: [{ ids }, { message: true, result: true }],
+    });
+    return !!deletePromotions.length;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
+
+export const PromotionsListPage = () => (
+  <GenericList
+    searchFields={['name']}
+    entityName={'Promotion'}
+    type={'promotions'}
+    route={Routes['promotions']}
+    tableId="promotions-list-view"
+    fetch={fetch}
+    onRemove={onRemove}
+  />
+);

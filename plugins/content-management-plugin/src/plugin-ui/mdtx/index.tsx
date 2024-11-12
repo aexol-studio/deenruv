@@ -183,16 +183,19 @@ export const useMDTX = <T extends keyof typeof CMSModelTypes>({
     }, [slug]);
 
     const onPublish = async (data: Data) => {
-        const { content, layout } = convertPuckToMDTX(data);
-        const key = `upsert${model}` as const;
+        const {
+            // content,
+            layout,
+        } = convertPuckToMDTX(data);
+        // const key = `upsert${model}` as const;
         console.log('Layout', layout); // we need to save layout as well
         return;
-        const { admin } = await chain('mutation')({
-            admin: { [key]: [{ slug, [model]: { slug, ...content } }, true] },
-        });
-        const result = admin ? admin[key] : null;
-        if (!result) return;
-        return result;
+        // const { admin } = await chain('mutation')({
+        //     admin: { [key]: [{ slug, [model]: { slug, ...content } }, true] },
+        // });
+        // const result = admin ? admin[key] : null;
+        // if (!result) return;
+        // return result;
     };
 
     return { loading, data, config, onPublish };

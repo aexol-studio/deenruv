@@ -1,4 +1,11 @@
-import { Badge, buttonVariants, cn, mergeSelectorWithCustomFields, usePluginStore } from '@deenruv/react-ui-devkit';
+import {
+  Badge,
+  buttonVariants,
+  cn,
+  ListLocationID,
+  mergeSelectorWithCustomFields,
+  usePluginStore,
+} from '@deenruv/react-ui-devkit';
 import { PromisePaginated } from './models';
 import { ListType, useGenericList } from './useGenericList';
 import {
@@ -17,9 +24,8 @@ import { useLocalStorage } from '@/hooks';
 import { format } from 'date-fns';
 import { Link, NavLink } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
-import { GenericListProvider } from './GenericListContext';
 import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
-import { DeleteDialog } from './_components';
+import { DeleteDialog } from './_components/DeleteDialog';
 import { ListTable, TranslationSelect } from '@/components';
 import { useServer } from '@/state';
 import { ValueTypes } from '@deenruv/admin-types';
@@ -36,13 +42,18 @@ const COLUMN_PRIORITIES: Record<string, number> = {
   actions: 999,
 } as const;
 const getPriority = (key: string): number => COLUMN_PRIORITIES[key] ?? 500;
+type AdditionalColumn<T> = string & { __type?: T };
+type FIELDS<T extends PromisePaginated> = Array<
+  keyof AwaitedReturnType<T>['items'][number] | AdditionalColumn<'CustomColumn'>
+>;
 
 export function GenericList<T extends PromisePaginated>({
   fetch,
   route,
   onRemove,
   type,
-  ENTITY_NAME,
+  tableId,
+  entityName,
   searchFields,
   hideColumns,
 }: {
@@ -50,23 +61,25 @@ export function GenericList<T extends PromisePaginated>({
   route: { list: string; new: string; route: string; to: (id: string) => string };
   onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
   type: keyof ListType;
-  ENTITY_NAME: keyof ValueTypes;
-  searchFields?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
-  hideColumns?: Array<keyof AwaitedReturnType<T>['items'][number] | string>;
+  tableId: ListLocationID;
+  entityName: keyof ValueTypes;
+  searchFields: Exclude<FIELDS<T>[number], 'id'>[];
+  hideColumns?: FIELDS<T>;
 }) {
   const { t } = useTranslation('table');
   const { getTableExtensions } = usePluginStore();
-  const tableExtensions = getTableExtensions('products-list-view');
+  const tableExtensions = getTableExtensions(tableId);
+  const rowActions = tableExtensions.flatMap((table) => table.rowActions || []);
   const bulkActions = tableExtensions.flatMap((table) => table.bulkActions || []);
   const customColumns = tableExtensions.flatMap((table) => table.columns || []) as ColumnDef<
     AwaitedReturnType<T>['items']
   >[];
 
   const entityCustomFields = useServer((p) =>
-    p.serverConfig?.entityCustomFields?.find((el) => el.entityName === ENTITY_NAME),
+    p.serverConfig?.entityCustomFields?.find((el) => el.entityName === entityName),
   )?.customFields;
   const customFieldsSelector = useMemo(
-    () => mergeSelectorWithCustomFields({}, ENTITY_NAME, entityCustomFields),
+    () => mergeSelectorWithCustomFields({}, entityName, entityCustomFields),
     [entityCustomFields],
   );
 
@@ -91,36 +104,19 @@ export function GenericList<T extends PromisePaginated>({
     FiltersResult,
   } = useGenericList({
     type,
-    route: fetch,
+    fetch,
     searchFields,
     customFieldsSelector,
+    entityName,
   });
-
   const columns = useMemo(() => {
     const entry = objects?.[0];
-    const keys = entry ? Object.keys(entry) : Object.keys(columnsTranslations);
+    const keys = entry ? Object.keys(entry) : DEFAULT_COLUMNS;
     const columns: ColumnDef<AwaitedReturnType<T>['items']>[] = [];
     for (const key of keys) {
       if (key === 'id') {
-        columns.push(
-          SelectIDColumn({
-            bulkActions,
-            refetch,
-            onRemove: (items) => {
-              setItemsToDelete(items);
-              setDeleteDialogOpened(true);
-            },
-          }),
-        );
-        columns.push(
-          ActionsDropdown({
-            redirect: (to) => route.to(to),
-            onRemove: (items) => {
-              setItemsToDelete(items);
-              setDeleteDialogOpened(true);
-            },
-          }),
-        );
+        columns.push(SelectIDColumn());
+        columns.push(ActionsDropdown());
       }
       columns.push({
         accessorKey: key,
@@ -214,6 +210,16 @@ export function GenericList<T extends PromisePaginated>({
     onColumnVisibilityChange: setColumnsVisibilityState,
     onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
+    meta: {
+      bulkActions,
+      rowActions,
+      route,
+      refetch,
+      onRemove: (items) => {
+        setItemsToDelete(items);
+        setDeleteDialogOpened(true);
+      },
+    },
     state: {
       columnVisibility: columnsVisibilityState,
       pagination: { pageIndex: page, pageSize: perPage },
@@ -253,45 +259,29 @@ export function GenericList<T extends PromisePaginated>({
   };
 
   return (
-    <div className="page-content-h flex w-full flex-col gap-2">
-      <GenericListProvider
-        context={{
-          deleteDialog: {
-            opened: deleteDialogOpened,
-            setOpened: setDeleteDialogOpened,
-            itemsToDelete,
-            setItemsToDelete,
-          },
-        }}
-      >
+    <>
+      <DeleteDialog {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }} />
+      <div className="page-content-h flex w-full flex-col gap-2">
         <div className="flex w-full flex-col items-start gap-4">
           <div className="flex w-full items-end justify-between gap-4">
-            <div className="flex flex-col items-start gap-2">
+            <div className="flex flex-1 flex-col items-start gap-2">
               <TranslationSelect />
               <div className="flex items-center gap-2">
                 {FiltersButton}
                 {Search}
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex">
               <NavLink to={route.new} className={cn(buttonVariants(), 'flex items-center gap-2')}>
                 <PlusCircleIcon size={16} />
                 {t('create')}
               </NavLink>
             </div>
           </div>
-          <div>{FiltersResult}</div>
+          {FiltersResult}
         </div>
         <ListTable {...{ columns, isFiltered, table, Paginate }} />
-        <DeleteDialog
-          title={t('bulk.delete.title')}
-          description={t('bulk.delete.description')}
-          deletingItems={itemsToDelete}
-          open={deleteDialogOpened}
-          onOpenChange={setDeleteDialogOpened}
-          onConfirm={onConfirmDelete}
-        />
-      </GenericListProvider>
-    </div>
+      </div>
+    </>
   );
 }

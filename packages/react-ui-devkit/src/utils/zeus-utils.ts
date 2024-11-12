@@ -4,7 +4,7 @@ import { type CustomFieldConfigType, Selector, type ValueTypes } from '@deenruv/
 type CustomFieldType = boolean | { [key: string]: CustomFieldType };
 type CustomFieldsType = Record<string, CustomFieldType>;
 
-function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
+export function deepMerge<T extends object, U extends object>(target: T, source: U): T & U {
     const isObject = (obj: any) => obj && typeof obj === 'object';
 
     Object.keys(source).forEach(key => {

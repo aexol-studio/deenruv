@@ -1,26 +1,19 @@
+import { ColumnDef } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   DropdownMenu,
+  DropdownMenuTrigger,
   DropdownMenuContent,
+  DropdownMenuCheckboxItem,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from '@deenruv/react-ui-devkit';
-import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { MoreHorizontal, PanelsTopLeft } from 'lucide-react';
+import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
-import { ListColumnDropdown } from '../_components';
 
-export const ActionsDropdown = <T extends { id: string }>({
-  redirect,
-  onRemove,
-  bulkActions,
-}: {
-  redirect: (to: string) => string;
-  onRemove: (items: T[]) => void;
-  bulkActions?: Array<{ label: string; onClick: ({ data }: { data: T[] }) => void }>;
-}): ColumnDef<T> => {
+export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
   return {
     id: 'actions',
     enableHiding: false,
@@ -29,15 +22,37 @@ export const ActionsDropdown = <T extends { id: string }>({
       const columnsTranslations = t('columns', { returnObjects: true });
       return (
         <div className="text-right">
-          <ListColumnDropdown
-            table={table}
-            columnsTranslations={columnsTranslations as Record<string, string>}
-            bulkActions={bulkActions}
-          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="default">
+                <PanelsTopLeft className="mr-2 h-4 w-4" />
+                {t('actionsMenu.view')}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                    >
+                      {columnsTranslations[column.id as keyof typeof columnsTranslations] ?? column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },
-    cell: ({ row }) => {
+    cell: ({ table, row }) => {
+      if (!table.options.meta) return null;
+      const { route, refetch, onRemove, rowActions } = table.options.meta;
       const { t } = useTranslation('table');
       return (
         <div className="flex justify-end">
@@ -53,10 +68,28 @@ export const ActionsDropdown = <T extends { id: string }>({
                 {t('actionsMenu.copyId')}
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to={redirect(row.original.id)} className="text-primary-600">
+                <Link to={route.to(row.original.id)} className="text-primary-600">
                   {t('actionsMenu.view')}
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              {rowActions?.map((action) => (
+                <DropdownMenuItem
+                  key={action.label}
+                  onClick={async () => {
+                    const result = await action.onClick({ data: row.original, table, refetch });
+                    if ('success' in result) {
+                      //show success message
+                      toast.success(result.success);
+                    } else {
+                      // show error message
+                      toast.error(result.error);
+                    }
+                  }}
+                >
+                  {action.label}
+                </DropdownMenuItem>
+              ))}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => onRemove([row.original])}>
                 <div className="text-red-400 hover:text-red-400 dark:hover:text-red-400">{t('actionsMenu.delete')}</div>

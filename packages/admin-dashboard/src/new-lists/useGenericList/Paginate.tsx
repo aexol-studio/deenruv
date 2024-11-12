@@ -52,6 +52,7 @@ export const Paginate = ({
               ],
     [totalPages, searchParamValues],
   );
+
   return (
     <div className="flex gap-4">
       <div className="m-auto whitespace-nowrap text-center">
@@ -82,8 +83,10 @@ export const Paginate = ({
       <Pagination>
         <PaginationContent>
           <PaginationPrevious
+            className={cn('opacity-100', searchParamValues.page === 1 && 'cursor-not-allowed opacity-50')}
             isActive={searchParamValues.page !== 1}
             onClick={() => {
+              if (searchParamValues.page === 1) return;
               searchParams.set(SearchParamKey.PAGE, (searchParamValues.page - 1).toString());
               setSearchParams(searchParams);
             }}
@@ -109,8 +112,10 @@ export const Paginate = ({
             </PaginationItem>
           ))}
           <PaginationNext
+            className={cn('opacity-100', searchParamValues.page === totalPages && 'cursor-not-allowed opacity-50')}
             isActive={searchParamValues.page !== totalPages}
             onClick={() => {
+              if (searchParamValues.page === totalPages) return;
               searchParams.set(SearchParamKey.PAGE, (searchParamValues.page + 1).toString());
               setSearchParams(searchParams);
             }}

@@ -29,5 +29,5 @@
       }
     ]
   },
-  "exclude": ["node_modules", "dist", "./src/i18next.d.ts"]
+  "exclude": ["node_modules", "dist"]
 }

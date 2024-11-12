@@ -24,6 +24,14 @@ const PluginStoreContext = createContext<{
     getInputComponent: (id: string) => React.ComponentType<any> | null;
     getTableExtensions: (location: ListLocationID) => {
         id: string;
+        rowActions?: {
+            label: string;
+            onClick: (props: {
+                table: any;
+                refetch: () => void;
+                data: any;
+            }) => { success: string } | { error: string };
+        }[];
         bulkActions?: {
             label: string;
             onClick: (props: {

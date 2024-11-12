@@ -78,18 +78,20 @@ export const ListTypeKeys = {
 type FIELD = keyof ModelTypes[ListType[keyof ListType]];
 type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
 
-export const useGenericList = <T extends PromisePaginated, K extends keyof ListType, Z>({
-  route,
+export const useGenericList = <T extends PromisePaginated, K extends keyof ListType, S>({
+  fetch,
   type,
+  entityName,
   customItemsPerPage,
   searchFields,
   customFieldsSelector,
 }: {
-  route: T;
+  fetch: T;
   type: K;
+  entityName: keyof ModelTypes;
   customItemsPerPage?: ItemsPerPageType;
   searchFields?: (keyof Awaited<ReturnType<PromisePaginated>>['items'][number])[];
-  customFieldsSelector?: Z;
+  customFieldsSelector?: S;
 }): {
   Paginate: JSX.Element;
   FiltersResult: JSX.Element;
@@ -104,6 +106,16 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
   const [total, setTotal] = useState(0);
   const [objects, setObjects] = useState<GenericReturn<T>>();
 
+  const setSearchQuery = (query: string | null) => {
+    if (query) {
+      searchParams.set(SearchParamKey.SEARCH, query);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete(SearchParamKey.SEARCH);
+      setSearchParams(searchParams);
+    }
+  };
+
   const setFilterField = (field: FIELD, value: VALUE) => {
     try {
       const filterURL = searchParams.get(SearchParamKey.FILTER);
@@ -116,7 +128,7 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
         setSearchParams(searchParams);
       }
     } catch (err) {
-      throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
+      console.error(`Parsing filter searchParams Key to JSON failed: ${err}`);
     }
   };
 
@@ -132,7 +144,7 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
       }
       setSearchParams(searchParams);
     } catch (err) {
-      throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
+      console.error(`Parsing filter searchParams Key to JSON failed: ${err}`);
     }
   };
 
@@ -162,60 +174,67 @@ export const useGenericList = <T extends PromisePaginated, K extends keyof ListT
   };
 
   const searchParamValues: PaginationInput = useMemo(() => {
+    const search = searchParams.get(SearchParamKey.SEARCH);
     const page = searchParams.get(SearchParamKey.PAGE);
     const perPage = searchParams.get(SearchParamKey.PER_PAGE);
     const sort = searchParams.get(SearchParamKey.SORT);
     const sortDir = searchParams.get(SearchParamKey.SORT_DIR);
     const filter = searchParams.get(SearchParamKey.FILTER);
-    const filterOperator = searchParams.get(SearchParamKey.FILTER_OPERATOR);
 
+    const searchFilter = (searchFields as string[])?.reduce(
+      (acc, field) => {
+        if (search) acc[field] = { contains: search };
+        return acc;
+      },
+      {} as Record<string, { contains: string }>,
+    );
+    const filters = filter ? (JSON.parse(filter) as ModelTypes[ListType[typeof type]]) : undefined;
+    const mergedFilters = { ...filters, ...searchFilter };
     try {
       return {
         page: page ? parseInt(page) : 1,
         perPage: perPage ? parseInt(perPage) : 10,
         sort: sort && sortDir ? { key: sort, sortDir: sortDir as SortOrder } : undefined,
-        filter: filter ? (JSON.parse(filter) as ModelTypes[ListType[typeof type]]) : undefined,
-        filterOperator: filterOperator ? (filterOperator as LogicalOperator) : LogicalOperator.OR,
+        filter: mergedFilters,
+        filterOperator: Object.keys(searchFilter).length ? LogicalOperator.AND : LogicalOperator.OR,
       };
     } catch (err) {
       throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
     }
-  }, [searchParams]);
+  }, [searchParams, searchFields]);
 
   const refetch = useCallback(
     (initialFilterState?: ModelTypes[ListType[K]] | undefined) => {
       const page = searchParams.get(SearchParamKey.PAGE);
       if (page) searchParamValues.page = +page;
       searchParamValues.filter = initialFilterState;
-      route(searchParamValues, customFieldsSelector).then((r) => {
-        setObjects(r.items);
-        setTotal(r.totalItems);
+      fetch(searchParamValues, customFieldsSelector).then(({ items, totalItems }) => {
+        setObjects(items);
+        setTotal(totalItems);
       });
     },
-    [searchParams, type, route, searchParamValues],
+    [searchParams, type, searchParamValues],
   );
 
   useEffect(() => {
-    route(searchParamValues, customFieldsSelector).then((r) => {
-      setObjects(r.items);
-      setTotal(r.totalItems);
+    fetch(searchParamValues, customFieldsSelector).then(({ items, totalItems }) => {
+      setObjects(items);
+      setTotal(totalItems);
     });
   }, [searchParamValues]);
 
   const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
   const totalPages = useMemo(() => Math.ceil(total / searchParamValues.perPage), [total, searchParamValues]);
-
-  const filterProperties = {
-    type,
-    filter: searchParamValues.filter,
-    setFilterField,
-    removeFilterField,
-  };
+  const filterProperties = { type, filter: searchParamValues.filter, setFilterField, removeFilterField };
 
   return {
-    Search: <Search />,
     FiltersResult: <FiltersResult {...filterProperties} />,
     FiltersButton: <FiltersButton {...filterProperties} />,
+    Search: (
+      <Search
+        {...{ initialSearchQuery: searchParams.get(SearchParamKey.SEARCH), setSearchQuery, searchFields, entityName }}
+      />
+    ),
     Paginate: <Paginate {...{ itemsPerPage, searchParamValues, total, totalPages, searchParams, setSearchParams }} />,
     SortButton: (key, translated) => (
       <SortButton currSort={searchParamValues.sort} sortKey={key as string} onClick={() => setSort(key as string)}>
