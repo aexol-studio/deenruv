@@ -30,7 +30,7 @@ type EntityWithCF = {
 
 type Props<T extends ViableEntity> = {
   entityName: T;
-  id: string;
+  id?: string;
   currentLanguage?: LanguageCode;
   fetch?: (runtimeSelector: any) => Promise<EntityWithCF>;
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
@@ -115,6 +115,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   );
 
   const fetchEntity = useCallback(async () => {
+    if (!id) return;
     try {
       let response;
 
@@ -137,7 +138,7 @@ export function EntityCustomFields<T extends ViableEntity>({
     } catch (err) {
       toast.error(getGqlError(err) || t('toasts.error.fetch'));
     }
-  }, [runtimeSelector, entityName]);
+  }, [runtimeSelector, entityName, id]);
 
   const updateEntity = useCallback(async () => {
     const preparedCustomFields = Object.entries(

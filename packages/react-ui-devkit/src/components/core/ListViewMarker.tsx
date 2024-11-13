@@ -5,7 +5,15 @@ import { ListLocationID } from '@/types';
 
 export const ListViewMaker = ({ position }: { position: ListLocationID }) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
-
+    const code = `const DeenruvUIPlugin = createPlugin({
+    ...
+    tables: {
+        id: ${position},
+        bulkActions: [],
+        columns: [],
+    },
+    ...
+    });`;
     return (
         <div>
             {viewMarkers && (
@@ -18,19 +26,7 @@ export const ListViewMaker = ({ position }: { position: ListLocationID }) => {
             {viewMarkers && openDropdown && (
                 <div>
                     <p>Here you can add content to table following this code:</p>
-                    <pre>
-                        {`
-                        const DeenruvUIPlugin = createPlugin({
-                            ...,
-                            tables: {
-                                id: ${position},
-                                bulkActions: [],
-                                columns: [],
-                            },
-                            ...
-                        });
-                        `}
-                    </pre>
+                    <pre>{code}</pre>
                 </div>
             )}
         </div>

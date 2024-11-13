@@ -151,7 +151,6 @@ export const Variant: React.FC<VariantProps> = ({
 
   const handleAddAsset = (id: string | undefined) => {
     if (!id) return;
-
     const newIds = state.assetIds?.value;
     if (newIds?.includes(id)) return;
     newIds?.push(id);

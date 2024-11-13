@@ -62,6 +62,7 @@ export type ListType = {
   orders: 'OrderFilterParameter';
   paymentMethods: 'PaymentMethodFilterParameter';
   products: 'ProductFilterParameter';
+  productVariants: 'ProductVariantFilterParameter';
   promotions: 'PromotionFilterParameter';
   roles: 'RoleFilterParameter';
   sellers: 'SellerFilterParameter';
@@ -85,6 +86,7 @@ export const ListTypeKeys = {
   orders: 'OrderFilterParameter' as const,
   paymentMethods: 'PaymentMethodFilterParameter' as const,
   products: 'ProductFilterParameter' as const,
+  productVariants: 'ProductVariantFilterParameter' as const,
   roles: 'RoleFilterParameter' as const,
   sellers: 'SellerFilterParameter' as const,
   shippingMethods: 'ShippingMethodFilterParameter' as const,

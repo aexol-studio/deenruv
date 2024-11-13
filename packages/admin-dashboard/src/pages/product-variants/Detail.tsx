@@ -32,9 +32,8 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { LanguageCode, SortOrder } from '@deenruv/admin-types';
 import { EntityCustomFields } from '@/components';
-import { DetailView } from '@/detail-views/DetailView';
 
-export const ProductsDetailPage = () => {
+export const ProductVariantsDetailPage = () => {
   const { id } = useParams();
   const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('products');
@@ -179,103 +178,83 @@ export const ProductsDetailPage = () => {
     <Spinner height={'80vh'} />
   ) : (
     <div className="relative flex flex-col gap-y-4">
-      <div>
-        <DetailView
-          locationId="products-detail-view"
-          tabs={[
-            { name: 'product', label: 'Product' },
-            { name: 'options', label: 'Options', disabled: !id },
-            { name: 'variants', label: 'Variants', disabled: !id },
-          ]}
-        >
-          {({ CustomFields, MainContentMarker, SideBarMarker, tab }) => {
-            return (
-              <>
-                <PageHeader editMode={editMode} product={product} onCreate={createProduct} />
-                <>
-                  {tab === 'product' && (
-                    <>
-                      {editMode && (
-                        <div className="mb-4 flex">
-                          <Button variant={'action'} onClick={saveChanges} className="ml-auto justify-self-end">
-                            {t('editProduct')}
-                          </Button>
-                        </div>
-                      )}
-                      <div className="flex w-full gap-4">
-                        <div className="flex w-full flex-col gap-4">
-                          <BasicFieldsCard
-                            currentTranslationLng={currentTranslationLng}
-                            currentTranslationValue={currentTranslationValue}
-                            onNameChange={(e) => setTranslationField('name', e.target.value)}
-                            onSlugChange={(e) => setTranslationField('slug', e.target.value)}
-                            onDescChange={(e) => setTranslationField('description', e)}
-                          />
-                          <EntityCustomFields entityName="product" id={id} currentLanguage={currentTranslationLng} />
-                          <DetailViewMaker position="products-detail-view" />
-                          <AssetsCard
-                            onAddAsset={() => ''}
-                            featuredAssetId={state.featuredAssetId?.value}
-                            assetsIds={state.assetIds?.value}
-                            onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
-                            onAssetsChange={(ids) => setField('assetIds', ids)}
-                          />
-                        </div>
-                        <div className="flex w-1/4 flex-col gap-4">
-                          <SettingsCard
-                            currentTranslationLng={currentTranslationLng}
-                            enabledValue={state.enabled?.value}
-                            onEnabledChange={(e) => setField('enabled', e)}
-                            onCurrentLanguageChange={setCurrentTranslationLng}
-                          />
-                          <Card>
-                            <CardHeader>
-                              <CardTitle className="flex flex-row justify-between text-base">{t('channels')}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <div className="flex flex-wrap gap-2">
-                                {product?.channels.map((p) => <Badge key={p.id}>{p.code}</Badge>)}
-                              </div>
-                            </CardContent>
-                          </Card>
-                          <Card>
-                            <CardHeader>
-                              <CardTitle className="flex flex-row justify-between text-base">
-                                {t('collections')}
-                              </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                              <div className="flex flex-wrap gap-2">
-                                {product?.collections.map((c) => <Badge key={c.slug}>{c.name}</Badge>)}
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  {tab === 'options' && <OptionsTab currentTranslationLng={currentTranslationLng} />}
-                  {tab === 'variants' && (
-                    <VariantsTab
-                      productId={id}
-                      currentTranslationLng={currentTranslationLng}
-                      facetsOptions={facetsOptions}
-                    />
-                  )}
-                </>
-              </>
-            );
-            return (
-              <div>
-                <p>{tab}</p>
-                <div>{CustomFields}</div>
-                <div>{MainContentMarker}</div>
-                <div>{SideBarMarker}</div>
+      <Tabs defaultValue="product">
+        <TabsList className="fixed z-50 h-12 w-full items-center justify-start rounded-none px-4 shadow-xl">
+          <TabsTrigger value="product">{t('product')}</TabsTrigger>
+          <TabsTrigger disabled={!id} value="options">
+            {t('options')}
+          </TabsTrigger>
+          <TabsTrigger disabled={!id} value="variants">
+            {t('variants')}
+          </TabsTrigger>
+        </TabsList>
+        <div className="mt-12 px-4 py-2 md:px-8 md:py-4">
+          <PageHeader editMode={editMode} product={product} onCreate={createProduct} />
+          <TabsContent className="w-full" value="product">
+            {editMode && (
+              <div className="mb-4 flex">
+                <Button variant={'action'} onClick={saveChanges} className="ml-auto justify-self-end">
+                  {t('editProduct')}
+                </Button>
               </div>
-            );
-          }}
-        </DetailView>
-      </div>
+            )}
+            <div className="flex w-full gap-4">
+              <div className="flex w-full flex-col gap-4">
+                <BasicFieldsCard
+                  currentTranslationLng={currentTranslationLng}
+                  currentTranslationValue={currentTranslationValue}
+                  onNameChange={(e) => setTranslationField('name', e.target.value)}
+                  onSlugChange={(e) => setTranslationField('slug', e.target.value)}
+                  onDescChange={(e) => setTranslationField('description', e)}
+                />
+                <EntityCustomFields entityName="product" id={id} currentLanguage={currentTranslationLng} />
+                <DetailViewMaker position="products-detail-view" />
+                <AssetsCard
+                  onAddAsset={() => ''}
+                  featuredAssetId={state.featuredAssetId?.value}
+                  assetsIds={state.assetIds?.value}
+                  onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
+                  onAssetsChange={(ids) => setField('assetIds', ids)}
+                />
+              </div>
+              <div className="flex w-1/4 flex-col gap-4">
+                <SettingsCard
+                  currentTranslationLng={currentTranslationLng}
+                  enabledValue={state.enabled?.value}
+                  onEnabledChange={(e) => setField('enabled', e)}
+                  onCurrentLanguageChange={setCurrentTranslationLng}
+                />
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex flex-row justify-between text-base">{t('channels')}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {product?.channels.map((p) => <Badge key={p.id}>{p.code}</Badge>)}
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex flex-row justify-between text-base">{t('collections')}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {product?.collections.map((c) => <Badge key={c.slug}>{c.name}</Badge>)}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="options">
+            <OptionsTab currentTranslationLng={currentTranslationLng} />
+          </TabsContent>
+          <TabsContent value="variants">
+            <VariantsTab currentTranslationLng={currentTranslationLng} facetsOptions={facetsOptions} productId={id} />
+          </TabsContent>
+        </div>
+      </Tabs>
     </div>
   );
 };

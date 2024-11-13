@@ -31,6 +31,8 @@ import { useServer } from '@/state';
 import { ValueTypes } from '@deenruv/admin-types';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
+type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
+
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
 
 const COLUMN_PRIORITIES: Record<string, number> = {
@@ -63,7 +65,7 @@ export function GenericList<T extends PromisePaginated>({
   type: keyof ListType;
   tableId: ListLocationID;
   entityName: keyof ValueTypes;
-  searchFields: Exclude<FIELDS<T>[number], 'id'>[];
+  searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
   hideColumns?: FIELDS<T>;
 }) {
   const { t } = useTranslation('table');
@@ -124,7 +126,11 @@ export function GenericList<T extends PromisePaginated>({
           if (DEFAULT_COLUMNS.includes(key) || key === 'name') {
             return SortButton(key, columnsTranslations[key as keyof typeof columnsTranslations] || key);
           } else {
-            return <div>{columnsTranslations[key as keyof typeof columnsTranslations] || key}</div>;
+            return (
+              <div className="whitespace-nowrap">
+                {columnsTranslations[key as keyof typeof columnsTranslations] || key}
+              </div>
+            );
           }
         },
         cell: ({ row }) => {
@@ -259,7 +265,7 @@ export function GenericList<T extends PromisePaginated>({
   };
 
   return (
-    <>
+    <div className="px-4 py-2 md:px-8 md:py-4">
       <DeleteDialog {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }} />
       <div className="page-content-h flex w-full flex-col gap-2">
         <div className="flex w-full flex-col items-start gap-4">
@@ -282,6 +288,6 @@ export function GenericList<T extends PromisePaginated>({
         </div>
         <ListTable {...{ columns, isFiltered, table, Paginate }} />
       </div>
-    </>
+    </div>
   );
 }

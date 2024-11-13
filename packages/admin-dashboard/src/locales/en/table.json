@@ -98,7 +98,7 @@
     "id": "ID",
     "createdAt": "Created at",
     "updatedAt": "Updated at",
-    "featuredAsset": "Featured asset",
+    "featuredAsset": "Asset",
     "name": "Name",
     "slug": "Slug",
     "enabled": "Enabled"

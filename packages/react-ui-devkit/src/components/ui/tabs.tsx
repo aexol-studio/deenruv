@@ -11,7 +11,7 @@ const TabsList = React.forwardRef<
     React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
 >(({ className, ...props }, ref) => (
     <ScrollArea>
-        <div className="flex w-max py-0.5">
+        <div className="flex w-full">
             <TabsPrimitive.List
                 ref={ref}
                 className={cn(

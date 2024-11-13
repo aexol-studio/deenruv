@@ -1,4 +1,4 @@
-import { ListType, ListTypeKeys } from '@/new-lists/useGenericList';
+import { ListType, ListTypeKeys } from '@/list-views/useGenericList';
 import { Button, cn, Popover, PopoverContent, PopoverTrigger } from '@deenruv/react-ui-devkit';
 import { CircleX } from 'lucide-react';
 

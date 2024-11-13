@@ -30,7 +30,11 @@ export const StringOperator: React.FC<Props<StringOperator>> = ({ currentValue, 
   const defaultType = currentValue ? (Object.keys(currentValue)[0] as keyof StringOperator) : 'eq';
   const [type, setType] = useState(defaultType);
   const [value, setValue] = useState<string | string[] | boolean | undefined>(() => {
-    if (!currentValue || !Object.keys(Object.values(currentValue)[0]).length) return undefined;
+    if (
+      !currentValue ||
+      (currentValue && Object.keys(currentValue).length && !Object.keys(Object.values(currentValue)[0]).length)
+    )
+      return undefined;
     if (ARRAY_TYPES.includes(type)) return (Object.values(currentValue)[0] as string[]).join(',');
     else return currentValue[defaultType] as string;
   });

@@ -2,15 +2,15 @@ import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
 import { GenericList } from '@/list-views/GenericList';
 import { PaginationInput } from '@/lists/models';
-import { deepMerge, PromotionListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { deepMerge, ProductVariantsListSelector, Routes } from '@deenruv/react-ui-devkit';
 
 const fetch = async <T,>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
   customFieldsSelector?: T,
 ) => {
-  const selector = deepMerge(PromotionListSelector, customFieldsSelector ?? {});
+  const selector = deepMerge(ProductVariantsListSelector, customFieldsSelector ?? {});
   const response = await apiCall()('query')({
-    ['promotions']: [
+    ['productVariants']: [
       {
         options: {
           take: perPage,
@@ -23,29 +23,30 @@ const fetch = async <T,>(
       { items: selector, totalItems: true },
     ],
   });
-  return response['promotions'];
+  return response['productVariants'];
 };
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
     const ids = items.map((item) => item.id);
-    const { deletePromotions } = await apiCall()('mutation')({
-      deletePromotions: [{ ids }, { message: true, result: true }],
+    const { deleteProductVariants } = await apiCall()('mutation')({
+      deleteProductVariants: [{ ids }, { message: true, result: true }],
     });
-    return !!deletePromotions.length;
+    return !!deleteProductVariants.length;
   } catch (error) {
     console.error(error);
     return false;
   }
 };
 
-export const PromotionsListPage = () => (
+export const ProductVariantsListPage = () => (
   <GenericList
     searchFields={['name']}
-    entityName={'Promotion'}
-    type={'promotions'}
-    route={Routes['promotions']}
-    tableId="promotions-list-view"
+    hideColumns={['customFields', 'translations', 'collections', 'variantList']}
+    entityName={'ProductVariant'}
+    type={'productVariants'}
+    route={Routes['productVariants']}
+    tableId="productVariants-list-view"
     fetch={fetch}
     onRemove={onRemove}
   />

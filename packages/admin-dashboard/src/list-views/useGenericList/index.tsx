@@ -35,6 +35,7 @@ export type ListType = {
   channels: 'ChannelFilterParameter';
   collections: 'CollectionFilterParameter';
   'countries-list': 'CountryFilterParameter';
+  productVariants: 'ProductVariantFilterParameter';
   facets: 'FacetFilterParameter';
   'modal-assets-list': 'AssetFilterParameter';
   'modal-product-variants-list': 'ProductVariantFilterParameter';
@@ -58,6 +59,7 @@ export const ListTypeKeys = {
   channels: 'ChannelFilterParameter' as const,
   collections: 'CollectionFilterParameter' as const,
   'countries-list': 'CountryFilterParameter' as const,
+  productVariants: 'ProductVariantFilterParameter' as const,
   facets: 'FacetFilterParameter' as const,
   'modal-assets-list': 'AssetFilterParameter' as const,
   'modal-product-variants-list': 'ProductVariantFilterParameter' as const,
