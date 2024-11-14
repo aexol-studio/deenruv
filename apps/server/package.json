@@ -29,6 +29,7 @@
         "@deenruv/core": "workspace:*",
         "@deenruv/content-management-plugin": "workspace:*",
         "@deenruv/deenruv-examples-plugin": "workspace:*",
+        "@deenruv/seo-plugin": "workspace:*",
         "@deenruv/minko-core-plugin": "workspace:*",
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",

@@ -11,7 +11,6 @@ import { PageHeader } from '@/pages/collections/_components/PageHeader';
 import { CollectionDetailsSelector, CollectionDetailsType } from '@/graphql/collections';
 import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { SeoCard } from '@/pages/collections/_components/SeoCard';
 import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
@@ -191,34 +190,6 @@ export const CollectionsDetailPage = () => {
     [currentTranslationLng, translations],
   );
 
-  const setCustomField = useCallback(
-    (customField: string, e: string | undefined) => {
-      setField('customFields', {
-        ...state.customFields?.value,
-        [customField]: e,
-      });
-    },
-
-    [state.customFields],
-  );
-
-  const setTranslationCustomField = useCallback(
-    (translationCustomField: string, e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setField(
-        'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
-          customFields: {
-            ...translations.find((t) => t.languageCode === currentTranslationLng)?.customFields,
-            [translationCustomField]: e.target.value,
-          },
-          languageCode: currentTranslationLng,
-        }),
-      );
-    },
-
-    [currentTranslationLng, translations],
-  );
-
   return loading ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
       <div className="customSpinner" />
@@ -278,15 +249,6 @@ export const CollectionsDetailPage = () => {
               </CardContent>
             </CardHeader>
           </Card>
-          <SeoCard
-            currentTranslationValue={currentTranslationValue}
-            facebookImageId={state.customFields?.validatedValue?.facebookImageId}
-            twitterImageId={state.customFields?.validatedValue?.twitterImageId}
-            onTitleChange={(e) => setTranslationCustomField('seoTitle', e)}
-            onDescriptionChange={(e) => setTranslationCustomField('seoDescription', e)}
-            onFacebookImageChange={(e) => setCustomField('facebookImageId', e?.id)}
-            onTwitterImageChange={(e) => setCustomField('twitterImageId', e?.id)}
-          />
           <AssetsCard
             onAddAsset={(id) => setField('assetIds', [...(state.assetIds?.value || []), id])}
             featuredAssetId={state.featuredAssetId?.value}

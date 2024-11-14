@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-server-plugin';
+import { SeoPlugin } from '@deenruv/seo-plugin/plugin-server';
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultLogger,
@@ -162,5 +163,6 @@ export const devConfig: DeenruvConfig = {
         //     expiresIn: 60 * 60 * 24 * 3,
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
+        SeoPlugin
     ],
 };
