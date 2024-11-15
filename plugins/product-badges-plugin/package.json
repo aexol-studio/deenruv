@@ -1,5 +1,5 @@
 {
-    "name": "@deenruv/seo-plugin",
+    "name": "@deenruv/product-badges-plugin",
     "version": "1.0.0",
     "homepage": "https://www.deenruv.com/",
     "license": "MIT",
@@ -9,7 +9,8 @@
     "main": "./dist/plugin-server/index.js",
     "exports": {
         ".": "./dist/plugin-server/index.js",
-        "./plugin-server": "./dist/plugin-server/index.js"
+        "./plugin-server": "./dist/plugin-server/index.js",
+        "./plugin-ui": "./dist/plugin-ui/index.js"
     },
     "scripts": {
         "build": "rimraf dist && tsc --build",
@@ -17,11 +18,25 @@
         "lint": "eslint --fix .",
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
     },
+    "dependencies": {
+        "graphql-tag": "^2.12.6",
+        "react": "^18.2.0"
+    },
     "devDependencies": {
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
         "@deenruv/react-ui-devkit": "workspace:*",
+        "react-i18next": "^14.0.5",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "react-router-dom": "^6.22.1",
         "rimraf": "^5.0.10",
-        "typescript": "5.3.3"
+        "typescript": "5.3.3",
+        "graphql-zeus": "^7.0.0",
+        "lucide-react": "^0.363.0",
+        "sonner": "^1.4.41",
+        "@nestjs/common": "~10.3.10",
+        "@nestjs/graphql": "~12.2.0",
+        "typeorm": "0.3.20"
     }
 }

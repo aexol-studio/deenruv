@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-server-plugin';
-import { SeoPlugin } from '@deenruv/seo-plugin/plugin-server';
+import { SeoPlugin } from '@deenruv/seo-plugin';
+import { BadgesServerPlugin } from '@deenruv/product-badges-plugin';
+
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultLogger,
@@ -14,11 +16,11 @@ import {
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
 import path from 'path';
-import { ContentManagementPlugin } from '@deenruv/content-management-plugin/plugin-server';
+// import { ContentManagementPlugin } from '@deenruv/content-management-plugin/plugin-server';
 
-import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin/plugin-server';
+// import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin/plugin-server';
 // import { RestPlugin } from './test-plugins/rest-plugin';
-import { MinkoCorePlugin } from '@deenruv/minko-core-plugin/plugin-server';
+// import { MinkoCorePlugin } from '@deenruv/minko-core-plugin/plugin-server';
 import { s3Client } from './client-s3';
 /**
  * Config settings used during development
@@ -159,13 +161,14 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
-        DeenruvExamplesPlugin,
-        ContentManagementPlugin,
+        // DeenruvExamplesPlugin,
+        // ContentManagementPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,
         //     expiresIn: 60 * 60 * 24 * 3,
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
         SeoPlugin,
+        BadgesServerPlugin,
     ],
 };

@@ -1,0 +1,25 @@
+{
+  "title": "Odznaki",
+  "description": "Odznaki które będą widoczne na zdjęciu produktu",
+  "not-found": "Nie znaleziono odznak",
+  "modal": {
+    "add": {
+      "title": "Dodaj odznakę",
+      "action": "Dodaj",
+      "success": "Dodano pomyślnie"
+    },
+    "edit": {
+      "title": "Edytuj odznakę",
+      "action": "Edytuj",
+      "success": "Edytowano pomyślnie"
+    },
+    "remove": {
+      "title": "Usuń odznakę",
+      "description": "Czy jesteś pewien, że chcesz usunąć tę odznakę?",
+      "action": "Usuń",
+      "success": "Usunięto pomyślnie"
+    },
+    "text-error": "Text field can't be empty",
+    "cancel": "Cancel"
+  }
+}
