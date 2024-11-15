@@ -1,37 +1,74 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@deenruv/react-ui-devkit';
+import {
+  deepMerge,
+  Dialog,
+  DialogContent,
+  ProductVariantsListSelector,
+  Routes,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
-import { FacetListOptionsType } from '@/graphql/facets';
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
 import { AddVariantDialog } from '@/pages/products/_components/AddVariantDialog';
 import { Variant } from '@/pages/products/_components/Variant';
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { LanguageCode } from '@deenruv/admin-types';
-import { EmptyState, Stack } from '@/components';
+import { EmptyState } from '@/components';
+import { useDetailViewStore } from '@/state/detail-view';
+import { SortOrder } from '@deenruv/admin-types';
+import { GenericList } from '@/list-views/GenericList';
+import { PaginationInput } from '@/list-views/models';
 
-interface VariantTabProps {
-  currentTranslationLng: LanguageCode;
-  facetsOptions: FacetListOptionsType['items'] | undefined;
-  productId: string | undefined;
-}
-
-export const VariantsTab: React.FC<VariantTabProps> = ({ currentTranslationLng, facetsOptions, productId }) => {
-  const { id } = useParams();
+export const VariantsTab = () => {
+  const { id, contentLanguage, getMarker } = useDetailViewStore(({ id, contentLanguage, getMarker }) => ({
+    id,
+    contentLanguage,
+    getMarker,
+  }));
   const [variants, setVariants] = useState<ProductVariantType[]>();
   const [loading, setLoading] = useState<boolean>();
 
-  const fetchVariants = useCallback(async () => {
+  const fetch = async <T,>(
+    { page, perPage, filter, filterOperator, sort }: PaginationInput,
+    customFieldsSelector?: T,
+  ) => {
+    const selector = deepMerge(ProductVariantsListSelector, customFieldsSelector ?? {});
+    const response = await apiCall()('query')({
+      ['productVariants']: [
+        {
+          options: {
+            take: perPage,
+            skip: (page - 1) * perPage,
+            filterOperator: filterOperator,
+            sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+            ...(filter && { filter: { ...filter, productId: { eq: id } } }),
+          },
+        },
+        { items: selector, totalItems: true },
+      ],
+    });
+    return response['productVariants'];
+  };
+
+  const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+    try {
+      const ids = items.map((item) => item.id);
+      const { deleteProductVariants } = await apiCall()('mutation')({
+        deleteProductVariants: [{ ids }, { message: true, result: true }],
+      });
+      return !!deleteProductVariants.length;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const fetchData = useCallback(async () => {
     if (id) {
       setLoading(true);
       const response = await apiCall()('query')({
-        productVariants: [
-          {
-            productId: id,
-          },
-          {
-            items: ProductVariantSelector,
-          },
-        ],
+        productVariants: [{ productId: id }, { items: ProductVariantSelector }],
       });
 
       setLoading(false);
@@ -42,51 +79,25 @@ export const VariantsTab: React.FC<VariantTabProps> = ({ currentTranslationLng, 
   }, [id]);
 
   useEffect(() => {
-    fetchVariants();
-  }, [fetchVariants]);
+    fetchData();
+  }, [fetchData]);
 
+  const [variantId, setVariantId] = useState<string>();
   return (
-    <Stack column>
+    <div className="flex flex-col">
+      {/* <AddVariantDialog currentTranslationLng={contentLanguage} productId={id} onSuccess={fetchData} /> */}
+
+      {getMarker()}
       {loading ? (
-        <div className="flex min-h-[80vh] w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center">
           <div className="customSpinner" />
         </div>
       ) : (
-        <Stack column className="items-end gap-4">
-          <Stack className="w-fit">
-            <AddVariantDialog
-              currentTranslationLng={currentTranslationLng}
-              productId={productId}
-              onSuccess={fetchVariants}
-            />
-          </Stack>
-          <Tabs defaultValue={variants?.[0]?.id} className="w-full">
-            <TabsList className="h-auto flex-wrap justify-start">
-              {variants?.map((v) => (
-                <TabsTrigger key={v.id} value={v.id}>
-                  {v.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {variants?.length ? (
-              variants?.map((v) => (
-                <TabsContent value={v.id} key={v.id}>
-                  <Variant
-                    currentTranslationLng={currentTranslationLng}
-                    variant={v}
-                    facetsOptions={facetsOptions}
-                    onActionCompleted={fetchVariants}
-                  />
-                </TabsContent>
-              ))
-            ) : (
-              <Stack className="w-full items-center justify-center">
-                <EmptyState columnsLength={1} />
-              </Stack>
-            )}
-          </Tabs>
-        </Stack>
+        <div className="flex gap-4">
+          <div></div>
+          <div></div>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 };

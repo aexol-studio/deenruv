@@ -6,9 +6,8 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "removeComments": false,
-        "rootDir": "./src",
         "outDir": "./dist",
-        "sourceMap": true,
+        "rootDir": "./src",
         "declaration": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
@@ -17,8 +16,9 @@
         "strictPropertyInitialization": false,
         "target": "ESNext",
         "module": "ESNext",
+        "skipLibCheck": true,
         "lib": ["es2017", "dom", "esnext.asynciterable"]
     },
-    "include": ["src/**/*.ts", "src/*.ts", "src/plugin-ui/index.tsx"],
+    "include": ["src/**/*.ts", "src/*.ts", "src/**/*.tsx", "src/*.tsx"],
     "exclude": ["node_modules", "src/zeus/**/*"]
 }

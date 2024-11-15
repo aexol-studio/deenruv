@@ -1,19 +1,18 @@
 import React, { useRef } from 'react';
 import { createStore, useStore } from 'zustand';
 import { createContext, useContext } from 'react';
-import { DeenruvAdminPanelSettings } from '@/root';
+import { DeenruvAdminPanelSettings } from '@deenruv/react-ui-devkit';
 
-type BrandingStoreProps = DeenruvAdminPanelSettings;
-type BrandingStoreProviderProps = React.PropsWithChildren<BrandingStoreProps>;
+type BrandingStoreProviderProps = React.PropsWithChildren<DeenruvAdminPanelSettings>;
 
 type BrandingStoreType = ReturnType<typeof createBrandingStore>;
 
-const createBrandingStore = (initProps?: Partial<BrandingStoreProps>) => {
-  const DEFAULT_PROPS: BrandingStoreProps = {
+const createBrandingStore = (initProps?: Partial<DeenruvAdminPanelSettings>) => {
+  const DEFAULT_PROPS: DeenruvAdminPanelSettings = {
     branding: { name: 'Deenruv' },
     api: { uri: 'http://localhost:3000' },
   };
-  return createStore<BrandingStoreProps>()(() => ({
+  return createStore<DeenruvAdminPanelSettings>()(() => ({
     ...DEFAULT_PROPS,
     ...initProps,
   }));
@@ -29,7 +28,7 @@ export function BrandingStoreProvider({ children, ...props }: BrandingStoreProvi
   return <BrandingStoreContext.Provider value={storeRef.current}>{children}</BrandingStoreContext.Provider>;
 }
 
-export function useBrandingStore<T>(selector: (state: BrandingStoreProps) => T) {
+export function useBrandingStore<T>(selector: (state: DeenruvAdminPanelSettings) => T) {
   const store = useContext(BrandingStoreContext);
   if (!store) throw new Error('Missing BrandingStoreContext.Provider in the tree');
   return useStore(store, selector);

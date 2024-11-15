@@ -1,7 +1,6 @@
 import {
-  Badge,
-  buttonVariants,
-  cn,
+  Button,
+  deepMerge,
   ListLocationID,
   mergeSelectorWithCustomFields,
   usePluginStore,
@@ -22,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocalStorage } from '@/hooks';
 import { format } from 'date-fns';
-import { Link, NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
@@ -60,7 +59,9 @@ export function GenericList<T extends PromisePaginated>({
   hideColumns,
 }: {
   fetch: T;
-  route: { list: string; new: string; route: string; to: (id: string) => string };
+  route:
+    | { list: string; new: string; route: string; to: (id: string) => string }
+    | { create: () => void; edit: (id: string) => void };
   onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
   type: keyof ListType;
   tableId: ListLocationID;
@@ -69,11 +70,13 @@ export function GenericList<T extends PromisePaginated>({
   hideColumns?: FIELDS<T>;
 }) {
   const { t } = useTranslation('table');
+  const navigate = useNavigate();
   const { getTableExtensions } = usePluginStore();
   const tableExtensions = getTableExtensions(tableId);
-  const rowActions = tableExtensions.flatMap((table) => table.rowActions || []);
-  const bulkActions = tableExtensions.flatMap((table) => table.bulkActions || []);
-  const customColumns = tableExtensions.flatMap((table) => table.columns || []) as ColumnDef<
+  const mergedSelectors = tableExtensions?.reduce((acc, table) => deepMerge(acc, table.externalSelector || {}), {});
+  const rowActions = tableExtensions?.flatMap((table) => table.rowActions || []);
+  const bulkActions = tableExtensions?.flatMap((table) => table.bulkActions || []);
+  const customColumns = tableExtensions?.flatMap((table) => table.columns || []) as ColumnDef<
     AwaitedReturnType<T>['items']
   >[];
 
@@ -106,7 +109,7 @@ export function GenericList<T extends PromisePaginated>({
     FiltersResult,
   } = useGenericList({
     type,
-    fetch,
+    fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
     searchFields,
     customFieldsSelector,
     entityName,
@@ -155,12 +158,20 @@ export function GenericList<T extends PromisePaginated>({
           }
           if (key === 'name') {
             return (
-              <Link to={route.to(row.original.id)} className="text-primary-600">
-                <Badge variant="outline" className="flex w-full items-center justify-center py-2">
-                  {row.original.name}
-                  <ArrowRight className="pl-1" size={16} />
-                </Badge>
-              </Link>
+              <Button
+                variant="outline"
+                size="default"
+                onClick={() => {
+                  if ('edit' in route) {
+                    route.edit(row.original.id);
+                  } else {
+                    navigate(route.to(row.original.id));
+                  }
+                }}
+              >
+                {row.original.name}
+                <ArrowRight className="pl-1" size={16} />
+              </Button>
             );
           }
           return row.original[key];
@@ -217,8 +228,8 @@ export function GenericList<T extends PromisePaginated>({
     onRowSelectionChange: setRowSelection,
     onColumnFiltersChange: setColumnFilters,
     meta: {
-      bulkActions,
-      rowActions,
+      bulkActions: bulkActions as any, //TODO: FIX TYPES
+      rowActions: rowActions as any, //TODO: FIX TYPES
       route,
       refetch,
       onRemove: (items) => {
@@ -278,10 +289,19 @@ export function GenericList<T extends PromisePaginated>({
               </div>
             </div>
             <div className="flex">
-              <NavLink to={route.new} className={cn(buttonVariants(), 'flex items-center gap-2')}>
+              <Button
+                className="flex items-center gap-2"
+                onClick={() => {
+                  if ('create' in route) {
+                    route.create();
+                  } else {
+                    navigate(route.new);
+                  }
+                }}
+              >
                 <PlusCircleIcon size={16} />
                 {t('create')}
-              </NavLink>
+              </Button>
             </div>
           </div>
           {FiltersResult}

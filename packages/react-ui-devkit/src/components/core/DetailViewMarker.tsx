@@ -7,7 +7,7 @@ import { Button } from '@/components';
 import { toast } from 'sonner';
 import { CopyIcon, PlugZap } from 'lucide-react';
 
-export const DetailViewMaker = ({ position }: { position: DetailLocationID }) => {
+export const DetailViewMarker = ({ position }: { position?: DetailLocationID }) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
 
     const code = `const DeenruvUIPlugin = createPlugin({
@@ -31,8 +31,9 @@ export const DetailViewMaker = ({ position }: { position: DetailLocationID }) =>
         }
     };
 
+    if (!position) return null;
     return (
-        <div className="relative">
+        <div className="relative z-50">
             {viewMarkers && (
                 <Button
                     className="rounded-md"

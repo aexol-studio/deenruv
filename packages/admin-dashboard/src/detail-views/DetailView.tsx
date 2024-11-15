@@ -1,52 +1,64 @@
-import React, { useState } from 'react';
-import { DetailLocationID, Tabs, TabsContent, TabsList, TabsTrigger } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import React, { useMemo } from 'react';
+import { DetailLocationID, Tabs, TabsContent, TabsList, TabsTrigger, usePluginStore } from '@deenruv/react-ui-devkit';
+import { DetailViewStoreProvider, useDetailViewStore } from '@/state/detail-view';
+import { useSearchParams } from 'react-router-dom';
 
-interface DetailViewProps<T> {
-  locationId: DetailLocationID;
-  tabs?: { name: T; label: string; disabled?: boolean }[];
-  children: (props: {
-    CustomFields: React.ReactNode;
-    MainContentMarker: React.ReactNode;
-    SideBarMarker: React.ReactNode;
-    tab: T;
-  }) => React.ReactNode;
+interface DetailViewProps<T extends DetailLocationID> {
+  id?: string;
+  locationId: T;
+  defaultTabs: { name: string; component: React.ReactNode; disabled?: boolean }[];
 }
 
-export const DetailView = <T extends string>({ locationId, tabs, children }: DetailViewProps<T>) => {
-  const { t } = useTranslation('products');
-  const id = '1';
-  const _tabs = tabs ? tabs : [{ name: 'General', label: 'General', disabled: false }];
-  const [activeTab, setActiveTab] = useState<T>(_tabs[0].name as T);
-  const CustomFields = <div>Custom Fields Content</div>;
-  const MainContentMarker = <div>Components Content</div>;
-  const SideBarMarker = <div>SideBar Content</div>;
+export const DetailView = <T extends DetailLocationID>({ id, locationId, defaultTabs }: DetailViewProps<T>) => {
+  const [searchParams] = useSearchParams();
+  const { getDetailViewTabs } = usePluginStore();
+  const tabs = useMemo(() => {
+    return (
+      getDetailViewTabs(locationId)?.map(({ label, component }) => ({
+        name: label,
+        component: React.createElement(component),
+      })) || []
+    );
+  }, [locationId]);
 
   return (
-    <div>
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as T)}>
-        <TabsList className="fixed z-50 h-12 w-full items-center justify-start rounded-none px-4 shadow-xl">
-          {_tabs.length === 1
-            ? null
-            : _tabs.map((tab) => (
-                <TabsTrigger disabled={tab.disabled} value={tab.name}>
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-        </TabsList>
-        <div className="mt-12 px-4 py-2 md:px-8 md:py-4">
-          {_tabs.map((tab) => (
-            <TabsContent value={tab.name}>
-              {children({
-                CustomFields,
-                MainContentMarker,
-                SideBarMarker,
-                tab: tab.name as T,
-              })}
-            </TabsContent>
-          ))}
-        </div>
-      </Tabs>
-    </div>
+    <DetailViewStoreProvider
+      id={id}
+      tab={(searchParams.get('tab') as T) || defaultTabs[0].name}
+      tabs={[...defaultTabs, ...tabs]}
+    >
+      <DetailTabs />
+    </DetailViewStoreProvider>
+  );
+};
+
+const DetailTabs = () => {
+  const { tabs, tab, setActiveTab } = useDetailViewStore(({ tabs, tab, setActiveTab }) => ({
+    tabs,
+    tab,
+    setActiveTab,
+  }));
+  const [, setSearchParams] = useSearchParams();
+  return (
+    <Tabs
+      value={tab}
+      onValueChange={(value) => {
+        setActiveTab(value);
+        setSearchParams({ tab: value });
+      }}
+    >
+      <TabsList className="fixed z-50 h-12 w-full items-center justify-start rounded-none px-4 shadow-xl">
+        {tabs.map((tab) => (
+          <TabsTrigger disabled={tab.disabled} value={tab.name}>
+            {tab.name}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <div className="mt-10 px-4 py-2 md:px-8 md:py-4">
+        {tabs.map((tab) => (
+          <TabsContent value={tab.name}>{tab.component}</TabsContent>
+        ))}
+      </div>
+    </Tabs>
   );
 };

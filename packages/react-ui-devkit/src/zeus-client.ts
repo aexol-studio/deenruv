@@ -7,10 +7,14 @@ import {
     chainOptions,
     fetchOptions,
 } from '@deenruv/admin-types';
+import { DeenruvAdminPanelSettings } from './types';
+declare global {
+    interface Window {
+        __DEENRUV_SETTINGS__: DeenruvAdminPanelSettings;
+    }
+}
 
-//@ts-ignore
-const ADMIN_API_URL = import.meta.env.DEV ? `http://localhost:3000/admin-api` : '/admin-api';
-
+const ADMIN_API_URL = '/admin-api';
 const client = Chain(ADMIN_API_URL, { credentials: 'include' });
 
 const uploadFileApi =

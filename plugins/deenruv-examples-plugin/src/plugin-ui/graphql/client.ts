@@ -12,5 +12,6 @@ export const scalars = ZeusScalars({
         decode: e => e as Record<string, unknown>,
     },
 });
+export type ScalarsType = typeof scalars;
 
 export const client = Chain(ADMIN_API_URL, { credentials: 'include' });

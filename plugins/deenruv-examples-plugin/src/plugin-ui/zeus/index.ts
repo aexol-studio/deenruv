@@ -940,8 +940,8 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
-betterMetricSummary?: [{	input: ValueTypes["BetterMetricSummaryInput"] | Variable<any, string>},ValueTypes["BetterMetricSummary"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
+betterMetricSummary?: [{	input: ValueTypes["BetterMetricSummaryInput"] | Variable<any, string>},ValueTypes["BetterMetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -1190,7 +1190,7 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	["CreateAssetInput"]: {
 	file: ValueTypes["Upload"] | Variable<any, string>,
 	tags?: Array<string> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateAssetCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["CoordinateInput"]: {
 	x: number | Variable<any, string>,
@@ -1211,7 +1211,7 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	name?: string | undefined | null | Variable<any, string>,
 	focalPoint?: ValueTypes["CoordinateInput"] | undefined | null | Variable<any, string>,
 	tags?: Array<string> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateAssetCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AssignAssetsToChannelInput"]: {
 	assetIds: Array<string> | Variable<any, string>,
@@ -1312,7 +1312,7 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	filters?:ValueTypes["ConfigurableOperation"],
 	translations?:ValueTypes["CollectionTranslation"],
 productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ProductVariantList"]],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["CollectionCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionListOptions"]: {
@@ -1338,7 +1338,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	name: string | Variable<any, string>,
 	slug: string | Variable<any, string>,
 	description: string | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null | Variable<any, string>
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -1346,7 +1346,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null | Variable<any, string>
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
@@ -1356,7 +1356,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	inheritFilters?: boolean | undefined | null | Variable<any, string>,
 	filters: Array<ValueTypes["ConfigurableOperationInput"]> | Variable<any, string>,
 	translations: Array<ValueTypes["CreateCollectionTranslationInput"]> | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateCollectionCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["PreviewCollectionVariantsInput"]: {
 	parentId?: string | undefined | null | Variable<any, string>,
@@ -1372,7 +1372,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	inheritFilters?: boolean | undefined | null | Variable<any, string>,
 	filters?: Array<ValueTypes["ConfigurableOperationInput"]> | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["UpdateCollectionTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateCollectionCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AssignCollectionsToChannelInput"]: {
 	collectionIds: Array<string> | Variable<any, string>,
@@ -1546,7 +1546,7 @@ orders?: [{	options?: ValueTypes["OrderListOptions"] | undefined | null | Variab
 	values?:ValueTypes["FacetValue"],
 valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FacetValueList"]],
 	translations?:ValueTypes["FacetTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["FacetCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetListOptions"]: {
@@ -1565,21 +1565,21 @@ valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null 
 	id?: string | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["FacetTranslationInputCustomFields"] | undefined | null | Variable<any, string>
 };
 	["CreateFacetInput"]: {
 	code: string | Variable<any, string>,
 	isPrivate: boolean | Variable<any, string>,
 	translations: Array<ValueTypes["FacetTranslationInput"]> | Variable<any, string>,
 	values?: Array<ValueTypes["CreateFacetValueWithFacetInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateFacetCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["UpdateFacetInput"]: {
 	id: string | Variable<any, string>,
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["FacetTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateFacetCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["FacetValueTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -1795,7 +1795,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary?:ValueTypes["OrderTaxSummary"],
 history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null | Variable<any, string>},ValueTypes["HistoryEntryList"]],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["OrderCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Fulfillment"]: AliasType<{
@@ -1867,7 +1867,9 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	total?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	totalWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
+	attributes?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	additionalInfo?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -1885,7 +1887,9 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	shipping?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	shippingWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	total?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	attributes?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	additionalInfo?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -1906,7 +1910,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 };
 	["UpdateOrderInput"]: {
 	id: string | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateOrderCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ValueTypes["OrderLineInput"]> | Variable<any, string>,
@@ -1935,7 +1939,8 @@ version. */
 };
 	["OrderLineInput"]: {
 	orderLineId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>
+	quantity: number | Variable<any, string>,
+	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["SettleRefundInput"]: {
 	id: string | Variable<any, string>,
@@ -1994,11 +1999,13 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ValueTypes["ModifyOrderOptions"] | undefined | null | Variable<any, string>,
 	couponCodes?: Array<string> | undefined | null | Variable<any, string>,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null | Variable<any, string>
+	shippingMethodIds?: Array<string> | undefined | null | Variable<any, string>,
+	customFields?: ValueTypes["UpdateOrderCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AddItemInput"]: {
 	productVariantId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>
+	quantity: number | Variable<any, string>,
+	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["SurchargeInput"]: {
 	description: string | Variable<any, string>,
@@ -2016,11 +2023,13 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 	productVariantId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>
+	quantity: number | Variable<any, string>,
+	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AdjustDraftOrderLineInput"]: {
 	orderLineId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>
+	quantity: number | Variable<any, string>,
+	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: AliasType<{
@@ -2329,7 +2338,7 @@ variantList?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined |
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductTranslation"],
 	collections?:ValueTypes["Collection"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductVariantPrice"]: AliasType<{
@@ -2368,7 +2377,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	options?:ValueTypes["ProductOption"],
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductVariantTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductVariantCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -2381,13 +2390,13 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	code: string | Variable<any, string>,
 	translations: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | Variable<any, string>,
 	options: Array<ValueTypes["CreateGroupOptionInput"]> | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateProductOptionGroupCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductOptionGroupInput"]: {
 	id: string | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateProductOptionGroupCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["ProductOptionTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -2403,13 +2412,13 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	productOptionGroupId: string | Variable<any, string>,
 	code: string | Variable<any, string>,
 	translations: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateProductOptionCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductOptionInput"]: {
 	id: string | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateProductOptionCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["SearchResult"]: AliasType<{
 	enabled?:boolean | `@${string}`,
@@ -2464,7 +2473,22 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	enabled?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>,
+	discountBy?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	boolTest?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	floatTest?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	intTest?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	textTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	dateTime?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	listTestString?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
+	listTestInt?: ValueTypes["NumberListOperators"] | undefined | null | Variable<any, string>,
+	listTestFloat?: ValueTypes["NumberListOperators"] | undefined | null | Variable<any, string>,
+	listTestText?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
+	listLocaleString?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
+	listLocaleText?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
+	seoTitle?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	seoDescription?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -2498,7 +2522,8 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	priceWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	stockLevel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -2506,7 +2531,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["ProductTranslationInputCustomFields"] | undefined | null | Variable<any, string>
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null | Variable<any, string>,
@@ -2514,7 +2539,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	assetIds?: Array<string> | undefined | null | Variable<any, string>,
 	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
 	translations: Array<ValueTypes["ProductTranslationInput"]> | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateProductCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductInput"]: {
 	id: string | Variable<any, string>,
@@ -2523,7 +2548,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	assetIds?: Array<string> | undefined | null | Variable<any, string>,
 	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateProductCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -2562,7 +2587,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined | null | Variable<any, string>,
 	useGlobalOutOfStockThreshold?: boolean | undefined | null | Variable<any, string>,
 	trackInventory?: ValueTypes["GlobalFlag"] | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateProductVariantCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductVariantInput"]: {
 	id: string | Variable<any, string>,
@@ -2583,7 +2608,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined | null | Variable<any, string>,
 	useGlobalOutOfStockThreshold?: boolean | undefined | null | Variable<any, string>,
 	trackInventory?: ValueTypes["GlobalFlag"] | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateProductVariantCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AssignProductsToChannelInput"]: {
 	productIds: Array<string> | Variable<any, string>,
@@ -3112,7 +3137,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview?:boolean | `@${string}`,
 	focalPoint?:ValueTypes["Coordinate"],
 	tags?:ValueTypes["Tag"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["AssetCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Coordinate"]: AliasType<{
@@ -3175,6 +3200,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
+	customFields?:ValueTypes["CollectionTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionList"]: AliasType<{
@@ -3920,6 +3946,7 @@ customers?: [{	options?: ValueTypes["CustomerListOptions"] | undefined | null | 
 	updatedAt?:boolean | `@${string}`,
 	languageCode?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
+	customFields?:ValueTypes["FacetTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetList"]: AliasType<{
@@ -4075,7 +4102,7 @@ and refund calculations. */
 	taxLines?:ValueTypes["TaxLine"],
 	order?:ValueTypes["Order"],
 	fulfillmentLines?:ValueTypes["FulfillmentLine"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["OrderLineCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["RefundLine"]: AliasType<{
@@ -4155,7 +4182,7 @@ and refund calculations. */
 	name?:boolean | `@${string}`,
 	options?:ValueTypes["ProductOption"],
 	translations?:ValueTypes["ProductOptionGroupTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductOptionGroupCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslation"]: AliasType<{
@@ -4176,7 +4203,7 @@ and refund calculations. */
 	groupId?:boolean | `@${string}`,
 	group?:ValueTypes["ProductOptionGroup"],
 	translations?:ValueTypes["ProductOptionTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductOptionCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionTranslation"]: AliasType<{
@@ -4242,6 +4269,7 @@ by the search, and in what quantity. */
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductList"]: AliasType<{
@@ -4481,6 +4509,25 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["MetricSummary"]: AliasType<{
+	interval?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ValueTypes["MetricSummaryEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricInterval"]:MetricInterval;
+	["MetricType"]:MetricType;
+	["MetricSummaryEntry"]: AliasType<{
+	label?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricSummaryInput"]: {
+	interval: ValueTypes["MetricInterval"] | Variable<any, string>,
+	types: Array<ValueTypes["MetricType"]> | Variable<any, string>,
+	refresh?: boolean | undefined | null | Variable<any, string>
+};
 	["BetterMetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -4511,25 +4558,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: ValueTypes["BetterMetricIntervalInput"] | Variable<any, string>,
 	types: Array<ValueTypes["BetterMetricType"]> | Variable<any, string>,
 	productIDs?: Array<string> | undefined | null | Variable<any, string>,
-	refresh?: boolean | undefined | null | Variable<any, string>
-};
-	["MetricSummary"]: AliasType<{
-	interval?:boolean | `@${string}`,
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ValueTypes["MetricSummaryEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricInterval"]:MetricInterval;
-	["MetricType"]:MetricType;
-	["MetricSummaryEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricSummaryInput"]: {
-	interval: ValueTypes["MetricInterval"] | Variable<any, string>,
-	types: Array<ValueTypes["MetricType"]> | Variable<any, string>,
 	refresh?: boolean | undefined | null | Variable<any, string>
 };
 	["AdministratorFilterParameter"]: {
@@ -4563,7 +4591,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	source?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	preview?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["AssetFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["AssetFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["AssetFilterParameter"]> | undefined | null | Variable<any, string>,
+	attributes?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	additionalInfo?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["AssetSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4575,7 +4605,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	width?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	height?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	source?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	preview?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	preview?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	attributes?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	additionalInfo?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["ChannelFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4613,7 +4645,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	parentId?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	localestringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	seoTitle?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	seoDescription?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["CollectionSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4623,7 +4659,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	position?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	parentId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	parentId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	localestringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	seoTitle?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	seoDescription?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	facebookImage?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	twitterImage?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4637,7 +4679,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	price?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	priceWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["CountryFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4694,14 +4737,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	code?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	localestringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["FacetSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	code?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	code?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	localestringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["FacetValueFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4773,7 +4820,19 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	discountBy?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	boolTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	floatTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	intTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	textTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	dateTime?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	singleAssetTestP?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	seoTitle?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	seoDescription?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	facebookImage?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	twitterImage?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["PromotionFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4965,6 +5024,195 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
+	["AssetCustomFields"]: AliasType<{
+	attributes?:boolean | `@${string}`,
+	additionalInfo?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateAssetCustomFieldsInput"]: {
+	attributes?: string | undefined | null | Variable<any, string>,
+	additionalInfo?: string | undefined | null | Variable<any, string>
+};
+	["UpdateAssetCustomFieldsInput"]: {
+	attributes?: string | undefined | null | Variable<any, string>,
+	additionalInfo?: string | undefined | null | Variable<any, string>
+};
+	["CollectionCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+	localestringTest?:boolean | `@${string}`,
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+	facebookImage?:ValueTypes["Asset"],
+	twitterImage?:ValueTypes["Asset"],
+		__typename?: boolean | `@${string}`
+}>;
+	["CollectionTranslationCustomFields"]: AliasType<{
+	localestringTest?:boolean | `@${string}`,
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateCollectionCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>,
+	facebookImageId?: string | undefined | null | Variable<any, string>,
+	twitterImageId?: string | undefined | null | Variable<any, string>
+};
+	["UpdateCollectionCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>,
+	facebookImageId?: string | undefined | null | Variable<any, string>,
+	twitterImageId?: string | undefined | null | Variable<any, string>
+};
+	["CreateCollectionTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined | null | Variable<any, string>,
+	seoTitle?: string | undefined | null | Variable<any, string>,
+	seoDescription?: string | undefined | null | Variable<any, string>
+};
+	["UpdateCollectionTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined | null | Variable<any, string>,
+	seoTitle?: string | undefined | null | Variable<any, string>,
+	seoDescription?: string | undefined | null | Variable<any, string>
+};
+	["FacetCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+	localestringTest?:boolean | `@${string}`,
+	ProductListTest?:ValueTypes["Product"],
+	listProductVariantTest?:ValueTypes["ProductVariant"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FacetTranslationCustomFields"]: AliasType<{
+	localestringTest?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateFacetCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>,
+	ProductListTestIds?: Array<string> | undefined | null | Variable<any, string>,
+	listProductVariantTestIds?: Array<string> | undefined | null | Variable<any, string>
+};
+	["UpdateFacetCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>,
+	ProductListTestIds?: Array<string> | undefined | null | Variable<any, string>,
+	listProductVariantTestIds?: Array<string> | undefined | null | Variable<any, string>
+};
+	["FacetTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined | null | Variable<any, string>
+};
+	["OrderCustomFields"]: AliasType<{
+	attributes?:boolean | `@${string}`,
+	additionalInfo?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateOrderCustomFieldsInput"]: {
+	attributes?: string | undefined | null | Variable<any, string>,
+	additionalInfo?: string | undefined | null | Variable<any, string>
+};
+	["OrderLineCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+	textTest?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductCustomFields"]: AliasType<{
+	discountBy?:boolean | `@${string}`,
+	boolTest?:boolean | `@${string}`,
+	floatTest?:boolean | `@${string}`,
+	intTest?:boolean | `@${string}`,
+	stringTest?:boolean | `@${string}`,
+	textTest?:boolean | `@${string}`,
+	dateTime?:boolean | `@${string}`,
+	listTestString?:boolean | `@${string}`,
+	listTestInt?:boolean | `@${string}`,
+	listTestFloat?:boolean | `@${string}`,
+	listTestText?:boolean | `@${string}`,
+	listLocaleString?:boolean | `@${string}`,
+	listLocaleText?:boolean | `@${string}`,
+	singleAssetTestP?:ValueTypes["Asset"],
+	listAssetTestP?:ValueTypes["Asset"],
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+	facebookImage?:ValueTypes["Asset"],
+	twitterImage?:ValueTypes["Asset"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductTranslationCustomFields"]: AliasType<{
+	listLocaleString?:boolean | `@${string}`,
+	listLocaleText?:boolean | `@${string}`,
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductCustomFieldsInput"]: {
+	discountBy?: string | undefined | null | Variable<any, string>,
+	boolTest?: boolean | undefined | null | Variable<any, string>,
+	floatTest?: number | undefined | null | Variable<any, string>,
+	intTest?: number | undefined | null | Variable<any, string>,
+	stringTest?: string | undefined | null | Variable<any, string>,
+	textTest?: string | undefined | null | Variable<any, string>,
+	dateTime?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	listTestString?: Array<string> | undefined | null | Variable<any, string>,
+	listTestInt?: Array<number> | undefined | null | Variable<any, string>,
+	listTestFloat?: Array<number> | undefined | null | Variable<any, string>,
+	listTestText?: Array<string> | undefined | null | Variable<any, string>,
+	singleAssetTestPId?: string | undefined | null | Variable<any, string>,
+	listAssetTestPIds?: Array<string> | undefined | null | Variable<any, string>,
+	facebookImageId?: string | undefined | null | Variable<any, string>,
+	twitterImageId?: string | undefined | null | Variable<any, string>
+};
+	["UpdateProductCustomFieldsInput"]: {
+	discountBy?: string | undefined | null | Variable<any, string>,
+	boolTest?: boolean | undefined | null | Variable<any, string>,
+	floatTest?: number | undefined | null | Variable<any, string>,
+	intTest?: number | undefined | null | Variable<any, string>,
+	stringTest?: string | undefined | null | Variable<any, string>,
+	textTest?: string | undefined | null | Variable<any, string>,
+	dateTime?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	listTestString?: Array<string> | undefined | null | Variable<any, string>,
+	listTestInt?: Array<number> | undefined | null | Variable<any, string>,
+	listTestFloat?: Array<number> | undefined | null | Variable<any, string>,
+	listTestText?: Array<string> | undefined | null | Variable<any, string>,
+	singleAssetTestPId?: string | undefined | null | Variable<any, string>,
+	listAssetTestPIds?: Array<string> | undefined | null | Variable<any, string>,
+	facebookImageId?: string | undefined | null | Variable<any, string>,
+	twitterImageId?: string | undefined | null | Variable<any, string>
+};
+	["ProductTranslationInputCustomFields"]: {
+	listLocaleString?: Array<string> | undefined | null | Variable<any, string>,
+	listLocaleText?: Array<string> | undefined | null | Variable<any, string>,
+	seoTitle?: string | undefined | null | Variable<any, string>,
+	seoDescription?: string | undefined | null | Variable<any, string>
+};
+	["ProductOptionCustomFields"]: AliasType<{
+	test?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductOptionCustomFieldsInput"]: {
+	test?: string | undefined | null | Variable<any, string>
+};
+	["UpdateProductOptionCustomFieldsInput"]: {
+	test?: string | undefined | null | Variable<any, string>
+};
+	["ProductOptionGroupCustomFields"]: AliasType<{
+	test?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductOptionGroupCustomFieldsInput"]: {
+	test?: string | undefined | null | Variable<any, string>
+};
+	["UpdateProductOptionGroupCustomFieldsInput"]: {
+	test?: string | undefined | null | Variable<any, string>
+};
+	["ProductVariantCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductVariantCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>
+};
+	["UpdateProductVariantCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>
+};
+	["OrderLineCustomFieldsInput"]: {
+	stringTest?: string | undefined | null | Variable<any, string>,
+	textTest?: string | undefined | null | Variable<any, string>
+};
 	["NativeAuthInput"]: {
 	username: string | Variable<any, string>,
 	password: string | Variable<any, string>
@@ -5083,8 +5331,8 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
-betterMetricSummary?: [{	input: ResolverInputTypes["BetterMetricSummaryInput"]},ResolverInputTypes["BetterMetricSummary"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
+betterMetricSummary?: [{	input: ResolverInputTypes["BetterMetricSummaryInput"]},ResolverInputTypes["BetterMetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -5334,7 +5582,7 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	["CreateAssetInput"]: {
 	file: ResolverInputTypes["Upload"],
 	tags?: Array<string> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateAssetCustomFieldsInput"] | undefined | null
 };
 	["CoordinateInput"]: {
 	x: number,
@@ -5355,7 +5603,7 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	name?: string | undefined | null,
 	focalPoint?: ResolverInputTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateAssetCustomFieldsInput"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
 	assetIds: Array<string>,
@@ -5460,7 +5708,7 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	filters?:ResolverInputTypes["ConfigurableOperation"],
 	translations?:ResolverInputTypes["CollectionTranslation"],
 productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | undefined | null},ResolverInputTypes["ProductVariantList"]],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["CollectionCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionListOptions"]: {
@@ -5486,7 +5734,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null,
@@ -5494,7 +5742,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null,
@@ -5504,7 +5752,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<ResolverInputTypes["ConfigurableOperationInput"]>,
 	translations: Array<ResolverInputTypes["CreateCollectionTranslationInput"]>,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateCollectionCustomFieldsInput"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
 	parentId?: string | undefined | null,
@@ -5520,7 +5768,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<ResolverInputTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<ResolverInputTypes["UpdateCollectionTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateCollectionCustomFieldsInput"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
 	collectionIds: Array<string>,
@@ -5697,7 +5945,7 @@ orders?: [{	options?: ResolverInputTypes["OrderListOptions"] | undefined | null}
 	values?:ResolverInputTypes["FacetValue"],
 valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined | null},ResolverInputTypes["FacetValueList"]],
 	translations?:ResolverInputTypes["FacetTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["FacetCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetListOptions"]: {
@@ -5716,21 +5964,21 @@ valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined
 	id?: string | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["FacetTranslationInputCustomFields"] | undefined | null
 };
 	["CreateFacetInput"]: {
 	code: string,
 	isPrivate: boolean,
 	translations: Array<ResolverInputTypes["FacetTranslationInput"]>,
 	values?: Array<ResolverInputTypes["CreateFacetValueWithFacetInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateFacetCustomFieldsInput"] | undefined | null
 };
 	["UpdateFacetInput"]: {
 	id: string,
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["FacetTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateFacetCustomFieldsInput"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
 	id?: string | undefined | null,
@@ -5948,7 +6196,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary?:ResolverInputTypes["OrderTaxSummary"],
 history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined | null},ResolverInputTypes["HistoryEntryList"]],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["OrderCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Fulfillment"]: AliasType<{
@@ -6020,7 +6268,9 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	total?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
+	attributes?: ResolverInputTypes["StringOperators"] | undefined | null,
+	additionalInfo?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -6038,7 +6288,9 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	shipping?: ResolverInputTypes["SortOrder"] | undefined | null,
 	shippingWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
 	total?: ResolverInputTypes["SortOrder"] | undefined | null,
-	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null
+	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
+	attributes?: ResolverInputTypes["SortOrder"] | undefined | null,
+	additionalInfo?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6059,7 +6311,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 };
 	["UpdateOrderInput"]: {
 	id: string,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ResolverInputTypes["OrderLineInput"]>,
@@ -6088,7 +6340,8 @@ version. */
 };
 	["OrderLineInput"]: {
 	orderLineId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
 };
 	["SettleRefundInput"]: {
 	id: string,
@@ -6147,11 +6400,13 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ResolverInputTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<string> | undefined | null,
+	customFields?: ResolverInputTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 	productVariantId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
 };
 	["SurchargeInput"]: {
 	description: string,
@@ -6169,11 +6424,13 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 	productVariantId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
 };
 	["AdjustDraftOrderLineInput"]: {
 	orderLineId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: AliasType<{
@@ -6494,7 +6751,7 @@ variantList?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | und
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductTranslation"],
 	collections?:ResolverInputTypes["Collection"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductVariantPrice"]: AliasType<{
@@ -6533,7 +6790,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	options?:ResolverInputTypes["ProductOption"],
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductVariantTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductVariantCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -6546,13 +6803,13 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	code: string,
 	translations: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]>,
 	options: Array<ResolverInputTypes["CreateGroupOptionInput"]>,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateProductOptionGroupCustomFieldsInput"] | undefined | null
 };
 	["UpdateProductOptionGroupInput"]: {
 	id: string,
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateProductOptionGroupCustomFieldsInput"] | undefined | null
 };
 	["ProductOptionTranslationInput"]: {
 	id?: string | undefined | null,
@@ -6568,13 +6825,13 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	productOptionGroupId: string,
 	code: string,
 	translations: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]>,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateProductOptionCustomFieldsInput"] | undefined | null
 };
 	["UpdateProductOptionInput"]: {
 	id: string,
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateProductOptionCustomFieldsInput"] | undefined | null
 };
 	["SearchResult"]: AliasType<{
 	enabled?:boolean | `@${string}`,
@@ -6629,7 +6886,22 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	description?: ResolverInputTypes["StringOperators"] | undefined | null,
 	enabled?: ResolverInputTypes["BooleanOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null,
+	discountBy?: ResolverInputTypes["StringOperators"] | undefined | null,
+	boolTest?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	floatTest?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	intTest?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
+	textTest?: ResolverInputTypes["StringOperators"] | undefined | null,
+	dateTime?: ResolverInputTypes["DateOperators"] | undefined | null,
+	listTestString?: ResolverInputTypes["StringListOperators"] | undefined | null,
+	listTestInt?: ResolverInputTypes["NumberListOperators"] | undefined | null,
+	listTestFloat?: ResolverInputTypes["NumberListOperators"] | undefined | null,
+	listTestText?: ResolverInputTypes["StringListOperators"] | undefined | null,
+	listLocaleString?: ResolverInputTypes["StringListOperators"] | undefined | null,
+	listLocaleText?: ResolverInputTypes["StringListOperators"] | undefined | null,
+	seoTitle?: ResolverInputTypes["StringOperators"] | undefined | null,
+	seoDescription?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6663,7 +6935,8 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	priceWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	stockLevel?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
+	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null,
@@ -6671,7 +6944,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["ProductTranslationInputCustomFields"] | undefined | null
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null,
@@ -6679,7 +6952,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	assetIds?: Array<string> | undefined | null,
 	facetValueIds?: Array<string> | undefined | null,
 	translations: Array<ResolverInputTypes["ProductTranslationInput"]>,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateProductCustomFieldsInput"] | undefined | null
 };
 	["UpdateProductInput"]: {
 	id: string,
@@ -6688,7 +6961,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	assetIds?: Array<string> | undefined | null,
 	facetValueIds?: Array<string> | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateProductCustomFieldsInput"] | undefined | null
 };
 	["ProductVariantTranslationInput"]: {
 	id?: string | undefined | null,
@@ -6727,7 +7000,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined | null,
 	useGlobalOutOfStockThreshold?: boolean | undefined | null,
 	trackInventory?: ResolverInputTypes["GlobalFlag"] | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateProductVariantCustomFieldsInput"] | undefined | null
 };
 	["UpdateProductVariantInput"]: {
 	id: string,
@@ -6748,7 +7021,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined | null,
 	useGlobalOutOfStockThreshold?: boolean | undefined | null,
 	trackInventory?: ResolverInputTypes["GlobalFlag"] | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateProductVariantCustomFieldsInput"] | undefined | null
 };
 	["AssignProductsToChannelInput"]: {
 	productIds: Array<string>,
@@ -7281,7 +7554,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview?:boolean | `@${string}`,
 	focalPoint?:ResolverInputTypes["Coordinate"],
 	tags?:ResolverInputTypes["Tag"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["AssetCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Coordinate"]: AliasType<{
@@ -7344,6 +7617,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["CollectionTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionList"]: AliasType<{
@@ -8094,6 +8368,7 @@ customers?: [{	options?: ResolverInputTypes["CustomerListOptions"] | undefined |
 	updatedAt?:boolean | `@${string}`,
 	languageCode?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["FacetTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetList"]: AliasType<{
@@ -8249,7 +8524,7 @@ and refund calculations. */
 	taxLines?:ResolverInputTypes["TaxLine"],
 	order?:ResolverInputTypes["Order"],
 	fulfillmentLines?:ResolverInputTypes["FulfillmentLine"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["OrderLineCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["RefundLine"]: AliasType<{
@@ -8329,7 +8604,7 @@ and refund calculations. */
 	name?:boolean | `@${string}`,
 	options?:ResolverInputTypes["ProductOption"],
 	translations?:ResolverInputTypes["ProductOptionGroupTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductOptionGroupCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslation"]: AliasType<{
@@ -8350,7 +8625,7 @@ and refund calculations. */
 	groupId?:boolean | `@${string}`,
 	group?:ResolverInputTypes["ProductOptionGroup"],
 	translations?:ResolverInputTypes["ProductOptionTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductOptionCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionTranslation"]: AliasType<{
@@ -8417,6 +8692,7 @@ by the search, and in what quantity. */
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductList"]: AliasType<{
@@ -8656,6 +8932,25 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["MetricSummary"]: AliasType<{
+	interval?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ResolverInputTypes["MetricSummaryEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricInterval"]:MetricInterval;
+	["MetricType"]:MetricType;
+	["MetricSummaryEntry"]: AliasType<{
+	label?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricSummaryInput"]: {
+	interval: ResolverInputTypes["MetricInterval"],
+	types: Array<ResolverInputTypes["MetricType"]>,
+	refresh?: boolean | undefined | null
+};
 	["BetterMetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -8686,25 +8981,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: ResolverInputTypes["BetterMetricIntervalInput"],
 	types: Array<ResolverInputTypes["BetterMetricType"]>,
 	productIDs?: Array<string> | undefined | null,
-	refresh?: boolean | undefined | null
-};
-	["MetricSummary"]: AliasType<{
-	interval?:boolean | `@${string}`,
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ResolverInputTypes["MetricSummaryEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricInterval"]:MetricInterval;
-	["MetricType"]:MetricType;
-	["MetricSummaryEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricSummaryInput"]: {
-	interval: ResolverInputTypes["MetricInterval"],
-	types: Array<ResolverInputTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
 };
 	["AdministratorFilterParameter"]: {
@@ -8738,7 +9014,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	source?: ResolverInputTypes["StringOperators"] | undefined | null,
 	preview?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["AssetFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["AssetFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["AssetFilterParameter"]> | undefined | null,
+	attributes?: ResolverInputTypes["StringOperators"] | undefined | null,
+	additionalInfo?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["AssetSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -8750,7 +9028,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	width?: ResolverInputTypes["SortOrder"] | undefined | null,
 	height?: ResolverInputTypes["SortOrder"] | undefined | null,
 	source?: ResolverInputTypes["SortOrder"] | undefined | null,
-	preview?: ResolverInputTypes["SortOrder"] | undefined | null
+	preview?: ResolverInputTypes["SortOrder"] | undefined | null,
+	attributes?: ResolverInputTypes["SortOrder"] | undefined | null,
+	additionalInfo?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["ChannelFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -8788,7 +9068,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ResolverInputTypes["StringOperators"] | undefined | null,
 	parentId?: ResolverInputTypes["IDOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null,
+	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
+	localestringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
+	seoTitle?: ResolverInputTypes["StringOperators"] | undefined | null,
+	seoDescription?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["CollectionSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -8798,7 +9082,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
 	position?: ResolverInputTypes["SortOrder"] | undefined | null,
 	description?: ResolverInputTypes["SortOrder"] | undefined | null,
-	parentId?: ResolverInputTypes["SortOrder"] | undefined | null
+	parentId?: ResolverInputTypes["SortOrder"] | undefined | null,
+	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	localestringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	seoTitle?: ResolverInputTypes["SortOrder"] | undefined | null,
+	seoDescription?: ResolverInputTypes["SortOrder"] | undefined | null,
+	facebookImage?: ResolverInputTypes["SortOrder"] | undefined | null,
+	twitterImage?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -8812,7 +9102,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	price?: ResolverInputTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null
+	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null,
+	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -8869,14 +9160,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["StringOperators"] | undefined | null,
 	code?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null,
+	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
+	localestringTest?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["FacetSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
 	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
-	code?: ResolverInputTypes["SortOrder"] | undefined | null
+	code?: ResolverInputTypes["SortOrder"] | undefined | null,
+	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	localestringTest?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -8948,7 +9243,19 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
-	description?: ResolverInputTypes["SortOrder"] | undefined | null
+	description?: ResolverInputTypes["SortOrder"] | undefined | null,
+	discountBy?: ResolverInputTypes["SortOrder"] | undefined | null,
+	boolTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	floatTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	intTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	textTest?: ResolverInputTypes["SortOrder"] | undefined | null,
+	dateTime?: ResolverInputTypes["SortOrder"] | undefined | null,
+	singleAssetTestP?: ResolverInputTypes["SortOrder"] | undefined | null,
+	seoTitle?: ResolverInputTypes["SortOrder"] | undefined | null,
+	seoDescription?: ResolverInputTypes["SortOrder"] | undefined | null,
+	facebookImage?: ResolverInputTypes["SortOrder"] | undefined | null,
+	twitterImage?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["PromotionFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9140,6 +9447,195 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null
 };
+	["AssetCustomFields"]: AliasType<{
+	attributes?:boolean | `@${string}`,
+	additionalInfo?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateAssetCustomFieldsInput"]: {
+	attributes?: string | undefined | null,
+	additionalInfo?: string | undefined | null
+};
+	["UpdateAssetCustomFieldsInput"]: {
+	attributes?: string | undefined | null,
+	additionalInfo?: string | undefined | null
+};
+	["CollectionCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+	localestringTest?:boolean | `@${string}`,
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+	facebookImage?:ResolverInputTypes["Asset"],
+	twitterImage?:ResolverInputTypes["Asset"],
+		__typename?: boolean | `@${string}`
+}>;
+	["CollectionTranslationCustomFields"]: AliasType<{
+	localestringTest?:boolean | `@${string}`,
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateCollectionCustomFieldsInput"]: {
+	stringTest?: string | undefined | null,
+	facebookImageId?: string | undefined | null,
+	twitterImageId?: string | undefined | null
+};
+	["UpdateCollectionCustomFieldsInput"]: {
+	stringTest?: string | undefined | null,
+	facebookImageId?: string | undefined | null,
+	twitterImageId?: string | undefined | null
+};
+	["CreateCollectionTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined | null,
+	seoTitle?: string | undefined | null,
+	seoDescription?: string | undefined | null
+};
+	["UpdateCollectionTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined | null,
+	seoTitle?: string | undefined | null,
+	seoDescription?: string | undefined | null
+};
+	["FacetCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+	localestringTest?:boolean | `@${string}`,
+	ProductListTest?:ResolverInputTypes["Product"],
+	listProductVariantTest?:ResolverInputTypes["ProductVariant"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FacetTranslationCustomFields"]: AliasType<{
+	localestringTest?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateFacetCustomFieldsInput"]: {
+	stringTest?: string | undefined | null,
+	ProductListTestIds?: Array<string> | undefined | null,
+	listProductVariantTestIds?: Array<string> | undefined | null
+};
+	["UpdateFacetCustomFieldsInput"]: {
+	stringTest?: string | undefined | null,
+	ProductListTestIds?: Array<string> | undefined | null,
+	listProductVariantTestIds?: Array<string> | undefined | null
+};
+	["FacetTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined | null
+};
+	["OrderCustomFields"]: AliasType<{
+	attributes?:boolean | `@${string}`,
+	additionalInfo?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateOrderCustomFieldsInput"]: {
+	attributes?: string | undefined | null,
+	additionalInfo?: string | undefined | null
+};
+	["OrderLineCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+	textTest?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductCustomFields"]: AliasType<{
+	discountBy?:boolean | `@${string}`,
+	boolTest?:boolean | `@${string}`,
+	floatTest?:boolean | `@${string}`,
+	intTest?:boolean | `@${string}`,
+	stringTest?:boolean | `@${string}`,
+	textTest?:boolean | `@${string}`,
+	dateTime?:boolean | `@${string}`,
+	listTestString?:boolean | `@${string}`,
+	listTestInt?:boolean | `@${string}`,
+	listTestFloat?:boolean | `@${string}`,
+	listTestText?:boolean | `@${string}`,
+	listLocaleString?:boolean | `@${string}`,
+	listLocaleText?:boolean | `@${string}`,
+	singleAssetTestP?:ResolverInputTypes["Asset"],
+	listAssetTestP?:ResolverInputTypes["Asset"],
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+	facebookImage?:ResolverInputTypes["Asset"],
+	twitterImage?:ResolverInputTypes["Asset"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductTranslationCustomFields"]: AliasType<{
+	listLocaleString?:boolean | `@${string}`,
+	listLocaleText?:boolean | `@${string}`,
+	seoTitle?:boolean | `@${string}`,
+	seoDescription?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductCustomFieldsInput"]: {
+	discountBy?: string | undefined | null,
+	boolTest?: boolean | undefined | null,
+	floatTest?: number | undefined | null,
+	intTest?: number | undefined | null,
+	stringTest?: string | undefined | null,
+	textTest?: string | undefined | null,
+	dateTime?: ResolverInputTypes["DateTime"] | undefined | null,
+	listTestString?: Array<string> | undefined | null,
+	listTestInt?: Array<number> | undefined | null,
+	listTestFloat?: Array<number> | undefined | null,
+	listTestText?: Array<string> | undefined | null,
+	singleAssetTestPId?: string | undefined | null,
+	listAssetTestPIds?: Array<string> | undefined | null,
+	facebookImageId?: string | undefined | null,
+	twitterImageId?: string | undefined | null
+};
+	["UpdateProductCustomFieldsInput"]: {
+	discountBy?: string | undefined | null,
+	boolTest?: boolean | undefined | null,
+	floatTest?: number | undefined | null,
+	intTest?: number | undefined | null,
+	stringTest?: string | undefined | null,
+	textTest?: string | undefined | null,
+	dateTime?: ResolverInputTypes["DateTime"] | undefined | null,
+	listTestString?: Array<string> | undefined | null,
+	listTestInt?: Array<number> | undefined | null,
+	listTestFloat?: Array<number> | undefined | null,
+	listTestText?: Array<string> | undefined | null,
+	singleAssetTestPId?: string | undefined | null,
+	listAssetTestPIds?: Array<string> | undefined | null,
+	facebookImageId?: string | undefined | null,
+	twitterImageId?: string | undefined | null
+};
+	["ProductTranslationInputCustomFields"]: {
+	listLocaleString?: Array<string> | undefined | null,
+	listLocaleText?: Array<string> | undefined | null,
+	seoTitle?: string | undefined | null,
+	seoDescription?: string | undefined | null
+};
+	["ProductOptionCustomFields"]: AliasType<{
+	test?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductOptionCustomFieldsInput"]: {
+	test?: string | undefined | null
+};
+	["UpdateProductOptionCustomFieldsInput"]: {
+	test?: string | undefined | null
+};
+	["ProductOptionGroupCustomFields"]: AliasType<{
+	test?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductOptionGroupCustomFieldsInput"]: {
+	test?: string | undefined | null
+};
+	["UpdateProductOptionGroupCustomFieldsInput"]: {
+	test?: string | undefined | null
+};
+	["ProductVariantCustomFields"]: AliasType<{
+	stringTest?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateProductVariantCustomFieldsInput"]: {
+	stringTest?: string | undefined | null
+};
+	["UpdateProductVariantCustomFieldsInput"]: {
+	stringTest?: string | undefined | null
+};
+	["OrderLineCustomFieldsInput"]: {
+	stringTest?: string | undefined | null,
+	textTest?: string | undefined | null
+};
 	["NativeAuthInput"]: {
 	username: string,
 	password: string
@@ -9272,9 +9768,9 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined,
-	betterMetricSummary: Array<ModelTypes["BetterMetricSummary"]>,
 	/** Get metrics for the given interval and metric types. */
-	metricSummary: Array<ModelTypes["MetricSummary"]>
+	metricSummary: Array<ModelTypes["MetricSummary"]>,
+	betterMetricSummary: Array<ModelTypes["BetterMetricSummary"]>
 };
 	["Mutation"]: {
 		/** Create a new Administrator */
@@ -9658,7 +10154,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["CreateAssetInput"]: {
 	file: ModelTypes["Upload"],
 	tags?: Array<string> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateAssetCustomFieldsInput"] | undefined
 };
 	["CoordinateInput"]: {
 	x: number,
@@ -9679,7 +10175,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined,
 	focalPoint?: ModelTypes["CoordinateInput"] | undefined,
 	tags?: Array<string> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateAssetCustomFieldsInput"] | undefined
 };
 	["AssignAssetsToChannelInput"]: {
 	assetIds: Array<string>,
@@ -9765,7 +10261,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filters: Array<ModelTypes["ConfigurableOperation"]>,
 	translations: Array<ModelTypes["CollectionTranslation"]>,
 	productVariants: ModelTypes["ProductVariantList"],
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CollectionCustomFields"] | undefined
 };
 	["CollectionListOptions"]: {
 	topLevelOnly?: boolean | undefined,
@@ -9790,7 +10286,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateCollectionTranslationInputCustomFields"] | undefined
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined,
@@ -9798,7 +10294,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateCollectionTranslationInputCustomFields"] | undefined
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined,
@@ -9808,7 +10304,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined,
 	filters: Array<ModelTypes["ConfigurableOperationInput"]>,
 	translations: Array<ModelTypes["CreateCollectionTranslationInput"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateCollectionCustomFieldsInput"] | undefined
 };
 	["PreviewCollectionVariantsInput"]: {
 	parentId?: string | undefined,
@@ -9824,7 +10320,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined,
 	filters?: Array<ModelTypes["ConfigurableOperationInput"]> | undefined,
 	translations?: Array<ModelTypes["UpdateCollectionTranslationInput"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateCollectionCustomFieldsInput"] | undefined
 };
 	["AssignCollectionsToChannelInput"]: {
 	collectionIds: Array<string>,
@@ -9985,7 +10481,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Returns a paginated, sortable, filterable list of the Facet's values. Added in v2.1.0. */
 	valueList: ModelTypes["FacetValueList"],
 	translations: Array<ModelTypes["FacetTranslation"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["FacetCustomFields"] | undefined
 };
 	["FacetListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10003,21 +10499,21 @@ as well as removing any of the group's options from the Product's ProductVariant
 	id?: string | undefined,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["FacetTranslationInputCustomFields"] | undefined
 };
 	["CreateFacetInput"]: {
 	code: string,
 	isPrivate: boolean,
 	translations: Array<ModelTypes["FacetTranslationInput"]>,
 	values?: Array<ModelTypes["CreateFacetValueWithFacetInput"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateFacetCustomFieldsInput"] | undefined
 };
 	["UpdateFacetInput"]: {
 	id: string,
 	isPrivate?: boolean | undefined,
 	code?: string | undefined,
 	translations?: Array<ModelTypes["FacetTranslationInput"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateFacetCustomFieldsInput"] | undefined
 };
 	["FacetValueTranslationInput"]: {
 	id?: string | undefined,
@@ -10211,7 +10707,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary: Array<ModelTypes["OrderTaxSummary"]>,
 	history: ModelTypes["HistoryEntryList"],
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["OrderCustomFields"] | undefined
 };
 	["Fulfillment"]: {
 		nextStates: Array<string>,
@@ -10278,7 +10774,9 @@ sum of `OrderLine.discountedLinePrice` values. */
 	total?: ModelTypes["NumberOperators"] | undefined,
 	totalWithTax?: ModelTypes["NumberOperators"] | undefined,
 	_and?: Array<ModelTypes["OrderFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined,
+	attributes?: ModelTypes["StringOperators"] | undefined,
+	additionalInfo?: ModelTypes["StringOperators"] | undefined
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ModelTypes["SortOrder"] | undefined,
@@ -10296,7 +10794,9 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shipping?: ModelTypes["SortOrder"] | undefined,
 	shippingWithTax?: ModelTypes["SortOrder"] | undefined,
 	total?: ModelTypes["SortOrder"] | undefined,
-	totalWithTax?: ModelTypes["SortOrder"] | undefined
+	totalWithTax?: ModelTypes["SortOrder"] | undefined,
+	attributes?: ModelTypes["SortOrder"] | undefined,
+	additionalInfo?: ModelTypes["SortOrder"] | undefined
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10317,7 +10817,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["UpdateOrderInput"]: {
 	id: string,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateOrderCustomFieldsInput"] | undefined
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ModelTypes["OrderLineInput"]>,
@@ -10346,7 +10846,8 @@ version. */
 };
 	["OrderLineInput"]: {
 	orderLineId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	["SettleRefundInput"]: {
 	id: string,
@@ -10405,11 +10906,13 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ModelTypes["ModifyOrderOptions"] | undefined,
 	couponCodes?: Array<string> | undefined,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined
+	shippingMethodIds?: Array<string> | undefined,
+	customFields?: ModelTypes["UpdateOrderCustomFieldsInput"] | undefined
 };
 	["AddItemInput"]: {
 	productVariantId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	["SurchargeInput"]: {
 	description: string,
@@ -10427,11 +10930,13 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 	productVariantId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	["AdjustDraftOrderLineInput"]: {
 	orderLineId: string,
-	quantity: number
+	quantity: number,
+	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: {
@@ -10651,7 +11156,7 @@ is not in the required state. */
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductTranslation"]>,
 	collections: Array<ModelTypes["Collection"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["ProductCustomFields"] | undefined
 };
 	["ProductVariantPrice"]: {
 		currencyCode: ModelTypes["CurrencyCode"],
@@ -10688,7 +11193,7 @@ is not in the required state. */
 	options: Array<ModelTypes["ProductOption"]>,
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductVariantTranslation"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["ProductVariantCustomFields"] | undefined
 };
 	["ProductOptionGroupTranslationInput"]: {
 	id?: string | undefined,
@@ -10700,13 +11205,13 @@ is not in the required state. */
 	code: string,
 	translations: Array<ModelTypes["ProductOptionGroupTranslationInput"]>,
 	options: Array<ModelTypes["CreateGroupOptionInput"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateProductOptionGroupCustomFieldsInput"] | undefined
 };
 	["UpdateProductOptionGroupInput"]: {
 	id: string,
 	code?: string | undefined,
 	translations?: Array<ModelTypes["ProductOptionGroupTranslationInput"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateProductOptionGroupCustomFieldsInput"] | undefined
 };
 	["ProductOptionTranslationInput"]: {
 	id?: string | undefined,
@@ -10722,13 +11227,13 @@ is not in the required state. */
 	productOptionGroupId: string,
 	code: string,
 	translations: Array<ModelTypes["ProductOptionGroupTranslationInput"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateProductOptionCustomFieldsInput"] | undefined
 };
 	["UpdateProductOptionInput"]: {
 	id: string,
 	code?: string | undefined,
 	translations?: Array<ModelTypes["ProductOptionGroupTranslationInput"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateProductOptionCustomFieldsInput"] | undefined
 };
 	["SearchResult"]: {
 		enabled: boolean,
@@ -10782,7 +11287,22 @@ is not in the required state. */
 	description?: ModelTypes["StringOperators"] | undefined,
 	enabled?: ModelTypes["BooleanOperators"] | undefined,
 	_and?: Array<ModelTypes["ProductFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined,
+	discountBy?: ModelTypes["StringOperators"] | undefined,
+	boolTest?: ModelTypes["BooleanOperators"] | undefined,
+	floatTest?: ModelTypes["NumberOperators"] | undefined,
+	intTest?: ModelTypes["NumberOperators"] | undefined,
+	stringTest?: ModelTypes["StringOperators"] | undefined,
+	textTest?: ModelTypes["StringOperators"] | undefined,
+	dateTime?: ModelTypes["DateOperators"] | undefined,
+	listTestString?: ModelTypes["StringListOperators"] | undefined,
+	listTestInt?: ModelTypes["NumberListOperators"] | undefined,
+	listTestFloat?: ModelTypes["NumberListOperators"] | undefined,
+	listTestText?: ModelTypes["StringListOperators"] | undefined,
+	listLocaleString?: ModelTypes["StringListOperators"] | undefined,
+	listLocaleText?: ModelTypes["StringListOperators"] | undefined,
+	seoTitle?: ModelTypes["StringOperators"] | undefined,
+	seoDescription?: ModelTypes["StringOperators"] | undefined
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10816,7 +11336,8 @@ is not in the required state. */
 	priceWithTax?: ModelTypes["NumberOperators"] | undefined,
 	stockLevel?: ModelTypes["StringOperators"] | undefined,
 	_and?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined,
+	stringTest?: ModelTypes["StringOperators"] | undefined
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined,
@@ -10824,7 +11345,7 @@ is not in the required state. */
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["ProductTranslationInputCustomFields"] | undefined
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined,
@@ -10832,7 +11353,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations: Array<ModelTypes["ProductTranslationInput"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateProductCustomFieldsInput"] | undefined
 };
 	["UpdateProductInput"]: {
 	id: string,
@@ -10841,7 +11362,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations?: Array<ModelTypes["ProductTranslationInput"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateProductCustomFieldsInput"] | undefined
 };
 	["ProductVariantTranslationInput"]: {
 	id?: string | undefined,
@@ -10880,7 +11401,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined,
 	useGlobalOutOfStockThreshold?: boolean | undefined,
 	trackInventory?: ModelTypes["GlobalFlag"] | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["CreateProductVariantCustomFieldsInput"] | undefined
 };
 	["UpdateProductVariantInput"]: {
 	id: string,
@@ -10901,7 +11422,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined,
 	useGlobalOutOfStockThreshold?: boolean | undefined,
 	trackInventory?: ModelTypes["GlobalFlag"] | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["UpdateProductVariantCustomFieldsInput"] | undefined
 };
 	["AssignProductsToChannelInput"]: {
 	productIds: Array<string>,
@@ -11382,7 +11903,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview: string,
 	focalPoint?: ModelTypes["Coordinate"] | undefined,
 	tags: Array<ModelTypes["Tag"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["AssetCustomFields"] | undefined
 };
 	["Coordinate"]: {
 		x: number,
@@ -11437,7 +11958,8 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	languageCode: ModelTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string
+	description: string,
+	customFields?: ModelTypes["CollectionTranslationCustomFields"] | undefined
 };
 	["CollectionList"]: {
 		items: Array<ModelTypes["Collection"]>,
@@ -11933,7 +12455,8 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
-	name: string
+	name: string,
+	customFields?: ModelTypes["FacetTranslationCustomFields"] | undefined
 };
 	["FacetList"]: {
 		items: Array<ModelTypes["Facet"]>,
@@ -12073,7 +12596,7 @@ and refund calculations. */
 	taxLines: Array<ModelTypes["TaxLine"]>,
 	order: ModelTypes["Order"],
 	fulfillmentLines?: Array<ModelTypes["FulfillmentLine"]> | undefined,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["OrderLineCustomFields"] | undefined
 };
 	["RefundLine"]: {
 		orderLine: ModelTypes["OrderLine"],
@@ -12146,7 +12669,7 @@ and refund calculations. */
 	name: string,
 	options: Array<ModelTypes["ProductOption"]>,
 	translations: Array<ModelTypes["ProductOptionGroupTranslation"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["ProductOptionGroupCustomFields"] | undefined
 };
 	["ProductOptionGroupTranslation"]: {
 		id: string,
@@ -12165,7 +12688,7 @@ and refund calculations. */
 	groupId: string,
 	group: ModelTypes["ProductOptionGroup"],
 	translations: Array<ModelTypes["ProductOptionTranslation"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["ProductOptionCustomFields"] | undefined
 };
 	["ProductOptionTranslation"]: {
 		id: string,
@@ -12218,7 +12741,8 @@ by the search, and in what quantity. */
 	languageCode: ModelTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string
+	description: string,
+	customFields?: ModelTypes["ProductTranslationCustomFields"] | undefined
 };
 	["ProductList"]: {
 		items: Array<ModelTypes["Product"]>,
@@ -12417,6 +12941,23 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined
 };
+	["MetricSummary"]: {
+		interval: ModelTypes["MetricInterval"],
+	type: ModelTypes["MetricType"],
+	title: string,
+	entries: Array<ModelTypes["MetricSummaryEntry"]>
+};
+	["MetricInterval"]:MetricInterval;
+	["MetricType"]:MetricType;
+	["MetricSummaryEntry"]: {
+		label: string,
+	value: number
+};
+	["MetricSummaryInput"]: {
+	interval: ModelTypes["MetricInterval"],
+	types: Array<ModelTypes["MetricType"]>,
+	refresh?: boolean | undefined
+};
 	["BetterMetricSummary"]: {
 		interval: ModelTypes["BetterMetricInterval"],
 	type: ModelTypes["BetterMetricType"],
@@ -12444,23 +12985,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: ModelTypes["BetterMetricIntervalInput"],
 	types: Array<ModelTypes["BetterMetricType"]>,
 	productIDs?: Array<string> | undefined,
-	refresh?: boolean | undefined
-};
-	["MetricSummary"]: {
-		interval: ModelTypes["MetricInterval"],
-	type: ModelTypes["MetricType"],
-	title: string,
-	entries: Array<ModelTypes["MetricSummaryEntry"]>
-};
-	["MetricInterval"]:MetricInterval;
-	["MetricType"]:MetricType;
-	["MetricSummaryEntry"]: {
-		label: string,
-	value: number
-};
-	["MetricSummaryInput"]: {
-	interval: ModelTypes["MetricInterval"],
-	types: Array<ModelTypes["MetricType"]>,
 	refresh?: boolean | undefined
 };
 	["AdministratorFilterParameter"]: {
@@ -12494,7 +13018,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	source?: ModelTypes["StringOperators"] | undefined,
 	preview?: ModelTypes["StringOperators"] | undefined,
 	_and?: Array<ModelTypes["AssetFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["AssetFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["AssetFilterParameter"]> | undefined,
+	attributes?: ModelTypes["StringOperators"] | undefined,
+	additionalInfo?: ModelTypes["StringOperators"] | undefined
 };
 	["AssetSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined,
@@ -12506,7 +13032,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	width?: ModelTypes["SortOrder"] | undefined,
 	height?: ModelTypes["SortOrder"] | undefined,
 	source?: ModelTypes["SortOrder"] | undefined,
-	preview?: ModelTypes["SortOrder"] | undefined
+	preview?: ModelTypes["SortOrder"] | undefined,
+	attributes?: ModelTypes["SortOrder"] | undefined,
+	additionalInfo?: ModelTypes["SortOrder"] | undefined
 };
 	["ChannelFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -12544,7 +13072,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ModelTypes["StringOperators"] | undefined,
 	parentId?: ModelTypes["IDOperators"] | undefined,
 	_and?: Array<ModelTypes["CollectionFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["CollectionFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["CollectionFilterParameter"]> | undefined,
+	stringTest?: ModelTypes["StringOperators"] | undefined,
+	localestringTest?: ModelTypes["StringOperators"] | undefined,
+	seoTitle?: ModelTypes["StringOperators"] | undefined,
+	seoDescription?: ModelTypes["StringOperators"] | undefined
 };
 	["CollectionSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined,
@@ -12554,7 +13086,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ModelTypes["SortOrder"] | undefined,
 	position?: ModelTypes["SortOrder"] | undefined,
 	description?: ModelTypes["SortOrder"] | undefined,
-	parentId?: ModelTypes["SortOrder"] | undefined
+	parentId?: ModelTypes["SortOrder"] | undefined,
+	stringTest?: ModelTypes["SortOrder"] | undefined,
+	localestringTest?: ModelTypes["SortOrder"] | undefined,
+	seoTitle?: ModelTypes["SortOrder"] | undefined,
+	seoDescription?: ModelTypes["SortOrder"] | undefined,
+	facebookImage?: ModelTypes["SortOrder"] | undefined,
+	twitterImage?: ModelTypes["SortOrder"] | undefined
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ModelTypes["SortOrder"] | undefined,
@@ -12568,7 +13106,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["SortOrder"] | undefined,
 	price?: ModelTypes["SortOrder"] | undefined,
 	priceWithTax?: ModelTypes["SortOrder"] | undefined,
-	stockLevel?: ModelTypes["SortOrder"] | undefined
+	stockLevel?: ModelTypes["SortOrder"] | undefined,
+	stringTest?: ModelTypes["SortOrder"] | undefined
 };
 	["CountryFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -12625,14 +13164,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["StringOperators"] | undefined,
 	code?: ModelTypes["StringOperators"] | undefined,
 	_and?: Array<ModelTypes["FacetFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["FacetFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["FacetFilterParameter"]> | undefined,
+	stringTest?: ModelTypes["StringOperators"] | undefined,
+	localestringTest?: ModelTypes["StringOperators"] | undefined
 };
 	["FacetSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined,
 	createdAt?: ModelTypes["SortOrder"] | undefined,
 	updatedAt?: ModelTypes["SortOrder"] | undefined,
 	name?: ModelTypes["SortOrder"] | undefined,
-	code?: ModelTypes["SortOrder"] | undefined
+	code?: ModelTypes["SortOrder"] | undefined,
+	stringTest?: ModelTypes["SortOrder"] | undefined,
+	localestringTest?: ModelTypes["SortOrder"] | undefined
 };
 	["FacetValueFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -12704,7 +13247,19 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ModelTypes["SortOrder"] | undefined,
 	name?: ModelTypes["SortOrder"] | undefined,
 	slug?: ModelTypes["SortOrder"] | undefined,
-	description?: ModelTypes["SortOrder"] | undefined
+	description?: ModelTypes["SortOrder"] | undefined,
+	discountBy?: ModelTypes["SortOrder"] | undefined,
+	boolTest?: ModelTypes["SortOrder"] | undefined,
+	floatTest?: ModelTypes["SortOrder"] | undefined,
+	intTest?: ModelTypes["SortOrder"] | undefined,
+	stringTest?: ModelTypes["SortOrder"] | undefined,
+	textTest?: ModelTypes["SortOrder"] | undefined,
+	dateTime?: ModelTypes["SortOrder"] | undefined,
+	singleAssetTestP?: ModelTypes["SortOrder"] | undefined,
+	seoTitle?: ModelTypes["SortOrder"] | undefined,
+	seoDescription?: ModelTypes["SortOrder"] | undefined,
+	facebookImage?: ModelTypes["SortOrder"] | undefined,
+	twitterImage?: ModelTypes["SortOrder"] | undefined
 };
 	["PromotionFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -12896,6 +13451,183 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ModelTypes["SortOrder"] | undefined,
 	updatedAt?: ModelTypes["SortOrder"] | undefined
 };
+	["AssetCustomFields"]: {
+		attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["CreateAssetCustomFieldsInput"]: {
+	attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["UpdateAssetCustomFieldsInput"]: {
+	attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["CollectionCustomFields"]: {
+		stringTest?: string | undefined,
+	localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined,
+	facebookImage?: ModelTypes["Asset"] | undefined,
+	twitterImage?: ModelTypes["Asset"] | undefined
+};
+	["CollectionTranslationCustomFields"]: {
+		localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["CreateCollectionCustomFieldsInput"]: {
+	stringTest?: string | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["UpdateCollectionCustomFieldsInput"]: {
+	stringTest?: string | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["CreateCollectionTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["UpdateCollectionTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["FacetCustomFields"]: {
+		stringTest?: string | undefined,
+	localestringTest?: string | undefined,
+	ProductListTest?: Array<ModelTypes["Product"]> | undefined,
+	listProductVariantTest?: Array<ModelTypes["ProductVariant"]> | undefined
+};
+	["FacetTranslationCustomFields"]: {
+		localestringTest?: string | undefined
+};
+	["CreateFacetCustomFieldsInput"]: {
+	stringTest?: string | undefined,
+	ProductListTestIds?: Array<string> | undefined,
+	listProductVariantTestIds?: Array<string> | undefined
+};
+	["UpdateFacetCustomFieldsInput"]: {
+	stringTest?: string | undefined,
+	ProductListTestIds?: Array<string> | undefined,
+	listProductVariantTestIds?: Array<string> | undefined
+};
+	["FacetTranslationInputCustomFields"]: {
+	localestringTest?: string | undefined
+};
+	["OrderCustomFields"]: {
+		attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["UpdateOrderCustomFieldsInput"]: {
+	attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["OrderLineCustomFields"]: {
+		stringTest?: string | undefined,
+	textTest?: string | undefined
+};
+	["ProductCustomFields"]: {
+		discountBy?: string | undefined,
+	boolTest?: boolean | undefined,
+	floatTest?: number | undefined,
+	intTest?: number | undefined,
+	stringTest?: string | undefined,
+	textTest?: string | undefined,
+	dateTime?: ModelTypes["DateTime"] | undefined,
+	listTestString?: Array<string> | undefined,
+	listTestInt?: Array<number> | undefined,
+	listTestFloat?: Array<number> | undefined,
+	listTestText?: Array<string> | undefined,
+	listLocaleString?: Array<string> | undefined,
+	listLocaleText?: Array<string> | undefined,
+	singleAssetTestP?: ModelTypes["Asset"] | undefined,
+	listAssetTestP?: Array<ModelTypes["Asset"]> | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined,
+	facebookImage?: ModelTypes["Asset"] | undefined,
+	twitterImage?: ModelTypes["Asset"] | undefined
+};
+	["ProductTranslationCustomFields"]: {
+		listLocaleString?: Array<string> | undefined,
+	listLocaleText?: Array<string> | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["CreateProductCustomFieldsInput"]: {
+	discountBy?: string | undefined,
+	boolTest?: boolean | undefined,
+	floatTest?: number | undefined,
+	intTest?: number | undefined,
+	stringTest?: string | undefined,
+	textTest?: string | undefined,
+	dateTime?: ModelTypes["DateTime"] | undefined,
+	listTestString?: Array<string> | undefined,
+	listTestInt?: Array<number> | undefined,
+	listTestFloat?: Array<number> | undefined,
+	listTestText?: Array<string> | undefined,
+	singleAssetTestPId?: string | undefined,
+	listAssetTestPIds?: Array<string> | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["UpdateProductCustomFieldsInput"]: {
+	discountBy?: string | undefined,
+	boolTest?: boolean | undefined,
+	floatTest?: number | undefined,
+	intTest?: number | undefined,
+	stringTest?: string | undefined,
+	textTest?: string | undefined,
+	dateTime?: ModelTypes["DateTime"] | undefined,
+	listTestString?: Array<string> | undefined,
+	listTestInt?: Array<number> | undefined,
+	listTestFloat?: Array<number> | undefined,
+	listTestText?: Array<string> | undefined,
+	singleAssetTestPId?: string | undefined,
+	listAssetTestPIds?: Array<string> | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["ProductTranslationInputCustomFields"]: {
+	listLocaleString?: Array<string> | undefined,
+	listLocaleText?: Array<string> | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["ProductOptionCustomFields"]: {
+		test?: string | undefined
+};
+	["CreateProductOptionCustomFieldsInput"]: {
+	test?: string | undefined
+};
+	["UpdateProductOptionCustomFieldsInput"]: {
+	test?: string | undefined
+};
+	["ProductOptionGroupCustomFields"]: {
+		test?: string | undefined
+};
+	["CreateProductOptionGroupCustomFieldsInput"]: {
+	test?: string | undefined
+};
+	["UpdateProductOptionGroupCustomFieldsInput"]: {
+	test?: string | undefined
+};
+	["ProductVariantCustomFields"]: {
+		stringTest?: string | undefined
+};
+	["CreateProductVariantCustomFieldsInput"]: {
+	stringTest?: string | undefined
+};
+	["UpdateProductVariantCustomFieldsInput"]: {
+	stringTest?: string | undefined
+};
+	["OrderLineCustomFieldsInput"]: {
+	stringTest?: string | undefined,
+	textTest?: string | undefined
+};
 	["NativeAuthInput"]: {
 	username: string,
 	password: string
@@ -13026,9 +13758,9 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined,
-	betterMetricSummary: Array<GraphQLTypes["BetterMetricSummary"]>,
 	/** Get metrics for the given interval and metric types. */
-	metricSummary: Array<GraphQLTypes["MetricSummary"]>
+	metricSummary: Array<GraphQLTypes["MetricSummary"]>,
+	betterMetricSummary: Array<GraphQLTypes["BetterMetricSummary"]>
 };
 	["Mutation"]: {
 	__typename: "Mutation",
@@ -13420,7 +14152,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["CreateAssetInput"]: {
 		file: GraphQLTypes["Upload"],
 	tags?: Array<string> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateAssetCustomFieldsInput"] | undefined
 };
 	["CoordinateInput"]: {
 		x: number,
@@ -13441,7 +14173,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined,
 	focalPoint?: GraphQLTypes["CoordinateInput"] | undefined,
 	tags?: Array<string> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateAssetCustomFieldsInput"] | undefined
 };
 	["AssignAssetsToChannelInput"]: {
 		assetIds: Array<string>,
@@ -13547,7 +14279,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filters: Array<GraphQLTypes["ConfigurableOperation"]>,
 	translations: Array<GraphQLTypes["CollectionTranslation"]>,
 	productVariants: GraphQLTypes["ProductVariantList"],
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CollectionCustomFields"] | undefined
 };
 	["CollectionListOptions"]: {
 		topLevelOnly?: boolean | undefined,
@@ -13572,7 +14304,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateCollectionTranslationInputCustomFields"] | undefined
 };
 	["UpdateCollectionTranslationInput"]: {
 		id?: string | undefined,
@@ -13580,7 +14312,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateCollectionTranslationInputCustomFields"] | undefined
 };
 	["CreateCollectionInput"]: {
 		isPrivate?: boolean | undefined,
@@ -13590,7 +14322,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined,
 	filters: Array<GraphQLTypes["ConfigurableOperationInput"]>,
 	translations: Array<GraphQLTypes["CreateCollectionTranslationInput"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateCollectionCustomFieldsInput"] | undefined
 };
 	["PreviewCollectionVariantsInput"]: {
 		parentId?: string | undefined,
@@ -13606,7 +14338,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined,
 	filters?: Array<GraphQLTypes["ConfigurableOperationInput"]> | undefined,
 	translations?: Array<GraphQLTypes["UpdateCollectionTranslationInput"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateCollectionCustomFieldsInput"] | undefined
 };
 	["AssignCollectionsToChannelInput"]: {
 		collectionIds: Array<string>,
@@ -13785,7 +14517,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Returns a paginated, sortable, filterable list of the Facet's values. Added in v2.1.0. */
 	valueList: GraphQLTypes["FacetValueList"],
 	translations: Array<GraphQLTypes["FacetTranslation"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["FacetCustomFields"] | undefined
 };
 	["FacetListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -13803,21 +14535,21 @@ as well as removing any of the group's options from the Product's ProductVariant
 		id?: string | undefined,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["FacetTranslationInputCustomFields"] | undefined
 };
 	["CreateFacetInput"]: {
 		code: string,
 	isPrivate: boolean,
 	translations: Array<GraphQLTypes["FacetTranslationInput"]>,
 	values?: Array<GraphQLTypes["CreateFacetValueWithFacetInput"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateFacetCustomFieldsInput"] | undefined
 };
 	["UpdateFacetInput"]: {
 		id: string,
 	isPrivate?: boolean | undefined,
 	code?: string | undefined,
 	translations?: Array<GraphQLTypes["FacetTranslationInput"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateFacetCustomFieldsInput"] | undefined
 };
 	["FacetValueTranslationInput"]: {
 		id?: string | undefined,
@@ -14036,7 +14768,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	/** A summary of the taxes being applied to this Order */
 	taxSummary: Array<GraphQLTypes["OrderTaxSummary"]>,
 	history: GraphQLTypes["HistoryEntryList"],
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["OrderCustomFields"] | undefined
 };
 	["Fulfillment"]: {
 	__typename: "Fulfillment",
@@ -14107,7 +14839,9 @@ sum of `OrderLine.discountedLinePrice` values. */
 	total?: GraphQLTypes["NumberOperators"] | undefined,
 	totalWithTax?: GraphQLTypes["NumberOperators"] | undefined,
 	_and?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined,
+	attributes?: GraphQLTypes["StringOperators"] | undefined,
+	additionalInfo?: GraphQLTypes["StringOperators"] | undefined
 };
 	["OrderSortParameter"]: {
 		customerLastName?: GraphQLTypes["SortOrder"] | undefined,
@@ -14125,7 +14859,9 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shipping?: GraphQLTypes["SortOrder"] | undefined,
 	shippingWithTax?: GraphQLTypes["SortOrder"] | undefined,
 	total?: GraphQLTypes["SortOrder"] | undefined,
-	totalWithTax?: GraphQLTypes["SortOrder"] | undefined
+	totalWithTax?: GraphQLTypes["SortOrder"] | undefined,
+	attributes?: GraphQLTypes["SortOrder"] | undefined,
+	additionalInfo?: GraphQLTypes["SortOrder"] | undefined
 };
 	["OrderListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14146,7 +14882,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["UpdateOrderInput"]: {
 		id: string,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateOrderCustomFieldsInput"] | undefined
 };
 	["FulfillOrderInput"]: {
 		lines: Array<GraphQLTypes["OrderLineInput"]>,
@@ -14175,7 +14911,8 @@ version. */
 };
 	["OrderLineInput"]: {
 		orderLineId: string,
-	quantity: number
+	quantity: number,
+	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	["SettleRefundInput"]: {
 		id: string,
@@ -14234,11 +14971,13 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: GraphQLTypes["ModifyOrderOptions"] | undefined,
 	couponCodes?: Array<string> | undefined,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined
+	shippingMethodIds?: Array<string> | undefined,
+	customFields?: GraphQLTypes["UpdateOrderCustomFieldsInput"] | undefined
 };
 	["AddItemInput"]: {
 		productVariantId: string,
-	quantity: number
+	quantity: number,
+	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	["SurchargeInput"]: {
 		description: string,
@@ -14256,11 +14995,13 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 		productVariantId: string,
-	quantity: number
+	quantity: number,
+	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	["AdjustDraftOrderLineInput"]: {
 		orderLineId: string,
-	quantity: number
+	quantity: number,
+	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: {
@@ -14583,7 +15324,7 @@ is not in the required state. */
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductTranslation"]>,
 	collections: Array<GraphQLTypes["Collection"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["ProductCustomFields"] | undefined
 };
 	["ProductVariantPrice"]: {
 	__typename: "ProductVariantPrice",
@@ -14622,7 +15363,7 @@ is not in the required state. */
 	options: Array<GraphQLTypes["ProductOption"]>,
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductVariantTranslation"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["ProductVariantCustomFields"] | undefined
 };
 	["ProductOptionGroupTranslationInput"]: {
 		id?: string | undefined,
@@ -14634,13 +15375,13 @@ is not in the required state. */
 		code: string,
 	translations: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]>,
 	options: Array<GraphQLTypes["CreateGroupOptionInput"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateProductOptionGroupCustomFieldsInput"] | undefined
 };
 	["UpdateProductOptionGroupInput"]: {
 		id: string,
 	code?: string | undefined,
 	translations?: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateProductOptionGroupCustomFieldsInput"] | undefined
 };
 	["ProductOptionTranslationInput"]: {
 		id?: string | undefined,
@@ -14656,13 +15397,13 @@ is not in the required state. */
 		productOptionGroupId: string,
 	code: string,
 	translations: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateProductOptionCustomFieldsInput"] | undefined
 };
 	["UpdateProductOptionInput"]: {
 		id: string,
 	code?: string | undefined,
 	translations?: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateProductOptionCustomFieldsInput"] | undefined
 };
 	["SearchResult"]: {
 	__typename: "SearchResult",
@@ -14717,7 +15458,22 @@ is not in the required state. */
 	description?: GraphQLTypes["StringOperators"] | undefined,
 	enabled?: GraphQLTypes["BooleanOperators"] | undefined,
 	_and?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined,
+	discountBy?: GraphQLTypes["StringOperators"] | undefined,
+	boolTest?: GraphQLTypes["BooleanOperators"] | undefined,
+	floatTest?: GraphQLTypes["NumberOperators"] | undefined,
+	intTest?: GraphQLTypes["NumberOperators"] | undefined,
+	stringTest?: GraphQLTypes["StringOperators"] | undefined,
+	textTest?: GraphQLTypes["StringOperators"] | undefined,
+	dateTime?: GraphQLTypes["DateOperators"] | undefined,
+	listTestString?: GraphQLTypes["StringListOperators"] | undefined,
+	listTestInt?: GraphQLTypes["NumberListOperators"] | undefined,
+	listTestFloat?: GraphQLTypes["NumberListOperators"] | undefined,
+	listTestText?: GraphQLTypes["StringListOperators"] | undefined,
+	listLocaleString?: GraphQLTypes["StringListOperators"] | undefined,
+	listLocaleText?: GraphQLTypes["StringListOperators"] | undefined,
+	seoTitle?: GraphQLTypes["StringOperators"] | undefined,
+	seoDescription?: GraphQLTypes["StringOperators"] | undefined
 };
 	["ProductVariantListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14751,7 +15507,8 @@ is not in the required state. */
 	priceWithTax?: GraphQLTypes["NumberOperators"] | undefined,
 	stockLevel?: GraphQLTypes["StringOperators"] | undefined,
 	_and?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined,
+	stringTest?: GraphQLTypes["StringOperators"] | undefined
 };
 	["ProductTranslationInput"]: {
 		id?: string | undefined,
@@ -14759,7 +15516,7 @@ is not in the required state. */
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["ProductTranslationInputCustomFields"] | undefined
 };
 	["CreateProductInput"]: {
 		featuredAssetId?: string | undefined,
@@ -14767,7 +15524,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations: Array<GraphQLTypes["ProductTranslationInput"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateProductCustomFieldsInput"] | undefined
 };
 	["UpdateProductInput"]: {
 		id: string,
@@ -14776,7 +15533,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations?: Array<GraphQLTypes["ProductTranslationInput"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateProductCustomFieldsInput"] | undefined
 };
 	["ProductVariantTranslationInput"]: {
 		id?: string | undefined,
@@ -14815,7 +15572,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined,
 	useGlobalOutOfStockThreshold?: boolean | undefined,
 	trackInventory?: GraphQLTypes["GlobalFlag"] | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["CreateProductVariantCustomFieldsInput"] | undefined
 };
 	["UpdateProductVariantInput"]: {
 		id: string,
@@ -14836,7 +15593,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	outOfStockThreshold?: number | undefined,
 	useGlobalOutOfStockThreshold?: boolean | undefined,
 	trackInventory?: GraphQLTypes["GlobalFlag"] | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["UpdateProductVariantCustomFieldsInput"] | undefined
 };
 	["AssignProductsToChannelInput"]: {
 		productIds: Array<string>,
@@ -15370,7 +16127,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview: string,
 	focalPoint?: GraphQLTypes["Coordinate"] | undefined,
 	tags: Array<GraphQLTypes["Tag"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["AssetCustomFields"] | undefined
 };
 	["Coordinate"]: {
 	__typename: "Coordinate",
@@ -15432,7 +16189,8 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	languageCode: GraphQLTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string
+	description: string,
+	customFields?: GraphQLTypes["CollectionTranslationCustomFields"] | undefined
 };
 	["CollectionList"]: {
 	__typename: "CollectionList",
@@ -16182,7 +16940,8 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
-	name: string
+	name: string,
+	customFields?: GraphQLTypes["FacetTranslationCustomFields"] | undefined
 };
 	["FacetList"]: {
 	__typename: "FacetList",
@@ -16338,7 +17097,7 @@ and refund calculations. */
 	taxLines: Array<GraphQLTypes["TaxLine"]>,
 	order: GraphQLTypes["Order"],
 	fulfillmentLines?: Array<GraphQLTypes["FulfillmentLine"]> | undefined,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["OrderLineCustomFields"] | undefined
 };
 	["RefundLine"]: {
 	__typename: "RefundLine",
@@ -16418,7 +17177,7 @@ and refund calculations. */
 	name: string,
 	options: Array<GraphQLTypes["ProductOption"]>,
 	translations: Array<GraphQLTypes["ProductOptionGroupTranslation"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["ProductOptionGroupCustomFields"] | undefined
 };
 	["ProductOptionGroupTranslation"]: {
 	__typename: "ProductOptionGroupTranslation",
@@ -16439,7 +17198,7 @@ and refund calculations. */
 	groupId: string,
 	group: GraphQLTypes["ProductOptionGroup"],
 	translations: Array<GraphQLTypes["ProductOptionTranslation"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["ProductOptionCustomFields"] | undefined
 };
 	["ProductOptionTranslation"]: {
 	__typename: "ProductOptionTranslation",
@@ -16505,7 +17264,8 @@ by the search, and in what quantity. */
 	languageCode: GraphQLTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string
+	description: string,
+	customFields?: GraphQLTypes["ProductTranslationCustomFields"] | undefined
 };
 	["ProductList"]: {
 	__typename: "ProductList",
@@ -16744,6 +17504,25 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined
 };
+	["MetricSummary"]: {
+	__typename: "MetricSummary",
+	interval: GraphQLTypes["MetricInterval"],
+	type: GraphQLTypes["MetricType"],
+	title: string,
+	entries: Array<GraphQLTypes["MetricSummaryEntry"]>
+};
+	["MetricInterval"]: MetricInterval;
+	["MetricType"]: MetricType;
+	["MetricSummaryEntry"]: {
+	__typename: "MetricSummaryEntry",
+	label: string,
+	value: number
+};
+	["MetricSummaryInput"]: {
+		interval: GraphQLTypes["MetricInterval"],
+	types: Array<GraphQLTypes["MetricType"]>,
+	refresh?: boolean | undefined
+};
 	["BetterMetricSummary"]: {
 	__typename: "BetterMetricSummary",
 	interval: GraphQLTypes["BetterMetricInterval"],
@@ -16774,25 +17553,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 		interval: GraphQLTypes["BetterMetricIntervalInput"],
 	types: Array<GraphQLTypes["BetterMetricType"]>,
 	productIDs?: Array<string> | undefined,
-	refresh?: boolean | undefined
-};
-	["MetricSummary"]: {
-	__typename: "MetricSummary",
-	interval: GraphQLTypes["MetricInterval"],
-	type: GraphQLTypes["MetricType"],
-	title: string,
-	entries: Array<GraphQLTypes["MetricSummaryEntry"]>
-};
-	["MetricInterval"]: MetricInterval;
-	["MetricType"]: MetricType;
-	["MetricSummaryEntry"]: {
-	__typename: "MetricSummaryEntry",
-	label: string,
-	value: number
-};
-	["MetricSummaryInput"]: {
-		interval: GraphQLTypes["MetricInterval"],
-	types: Array<GraphQLTypes["MetricType"]>,
 	refresh?: boolean | undefined
 };
 	["AdministratorFilterParameter"]: {
@@ -16826,7 +17586,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	source?: GraphQLTypes["StringOperators"] | undefined,
 	preview?: GraphQLTypes["StringOperators"] | undefined,
 	_and?: Array<GraphQLTypes["AssetFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["AssetFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["AssetFilterParameter"]> | undefined,
+	attributes?: GraphQLTypes["StringOperators"] | undefined,
+	additionalInfo?: GraphQLTypes["StringOperators"] | undefined
 };
 	["AssetSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined,
@@ -16838,7 +17600,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	width?: GraphQLTypes["SortOrder"] | undefined,
 	height?: GraphQLTypes["SortOrder"] | undefined,
 	source?: GraphQLTypes["SortOrder"] | undefined,
-	preview?: GraphQLTypes["SortOrder"] | undefined
+	preview?: GraphQLTypes["SortOrder"] | undefined,
+	attributes?: GraphQLTypes["SortOrder"] | undefined,
+	additionalInfo?: GraphQLTypes["SortOrder"] | undefined
 };
 	["ChannelFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -16876,7 +17640,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: GraphQLTypes["StringOperators"] | undefined,
 	parentId?: GraphQLTypes["IDOperators"] | undefined,
 	_and?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined,
+	stringTest?: GraphQLTypes["StringOperators"] | undefined,
+	localestringTest?: GraphQLTypes["StringOperators"] | undefined,
+	seoTitle?: GraphQLTypes["StringOperators"] | undefined,
+	seoDescription?: GraphQLTypes["StringOperators"] | undefined
 };
 	["CollectionSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined,
@@ -16886,7 +17654,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: GraphQLTypes["SortOrder"] | undefined,
 	position?: GraphQLTypes["SortOrder"] | undefined,
 	description?: GraphQLTypes["SortOrder"] | undefined,
-	parentId?: GraphQLTypes["SortOrder"] | undefined
+	parentId?: GraphQLTypes["SortOrder"] | undefined,
+	stringTest?: GraphQLTypes["SortOrder"] | undefined,
+	localestringTest?: GraphQLTypes["SortOrder"] | undefined,
+	seoTitle?: GraphQLTypes["SortOrder"] | undefined,
+	seoDescription?: GraphQLTypes["SortOrder"] | undefined,
+	facebookImage?: GraphQLTypes["SortOrder"] | undefined,
+	twitterImage?: GraphQLTypes["SortOrder"] | undefined
 };
 	["ProductVariantSortParameter"]: {
 		stockOnHand?: GraphQLTypes["SortOrder"] | undefined,
@@ -16900,7 +17674,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["SortOrder"] | undefined,
 	price?: GraphQLTypes["SortOrder"] | undefined,
 	priceWithTax?: GraphQLTypes["SortOrder"] | undefined,
-	stockLevel?: GraphQLTypes["SortOrder"] | undefined
+	stockLevel?: GraphQLTypes["SortOrder"] | undefined,
+	stringTest?: GraphQLTypes["SortOrder"] | undefined
 };
 	["CountryFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -16957,14 +17732,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["StringOperators"] | undefined,
 	code?: GraphQLTypes["StringOperators"] | undefined,
 	_and?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined,
+	stringTest?: GraphQLTypes["StringOperators"] | undefined,
+	localestringTest?: GraphQLTypes["StringOperators"] | undefined
 };
 	["FacetSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined,
 	createdAt?: GraphQLTypes["SortOrder"] | undefined,
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined,
 	name?: GraphQLTypes["SortOrder"] | undefined,
-	code?: GraphQLTypes["SortOrder"] | undefined
+	code?: GraphQLTypes["SortOrder"] | undefined,
+	stringTest?: GraphQLTypes["SortOrder"] | undefined,
+	localestringTest?: GraphQLTypes["SortOrder"] | undefined
 };
 	["FacetValueFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -17036,7 +17815,19 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined,
 	name?: GraphQLTypes["SortOrder"] | undefined,
 	slug?: GraphQLTypes["SortOrder"] | undefined,
-	description?: GraphQLTypes["SortOrder"] | undefined
+	description?: GraphQLTypes["SortOrder"] | undefined,
+	discountBy?: GraphQLTypes["SortOrder"] | undefined,
+	boolTest?: GraphQLTypes["SortOrder"] | undefined,
+	floatTest?: GraphQLTypes["SortOrder"] | undefined,
+	intTest?: GraphQLTypes["SortOrder"] | undefined,
+	stringTest?: GraphQLTypes["SortOrder"] | undefined,
+	textTest?: GraphQLTypes["SortOrder"] | undefined,
+	dateTime?: GraphQLTypes["SortOrder"] | undefined,
+	singleAssetTestP?: GraphQLTypes["SortOrder"] | undefined,
+	seoTitle?: GraphQLTypes["SortOrder"] | undefined,
+	seoDescription?: GraphQLTypes["SortOrder"] | undefined,
+	facebookImage?: GraphQLTypes["SortOrder"] | undefined,
+	twitterImage?: GraphQLTypes["SortOrder"] | undefined
 };
 	["PromotionFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -17227,6 +18018,195 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 		id?: GraphQLTypes["SortOrder"] | undefined,
 	createdAt?: GraphQLTypes["SortOrder"] | undefined,
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined
+};
+	["AssetCustomFields"]: {
+	__typename: "AssetCustomFields",
+	attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["CreateAssetCustomFieldsInput"]: {
+		attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["UpdateAssetCustomFieldsInput"]: {
+		attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["CollectionCustomFields"]: {
+	__typename: "CollectionCustomFields",
+	stringTest?: string | undefined,
+	localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined,
+	facebookImage?: GraphQLTypes["Asset"] | undefined,
+	twitterImage?: GraphQLTypes["Asset"] | undefined
+};
+	["CollectionTranslationCustomFields"]: {
+	__typename: "CollectionTranslationCustomFields",
+	localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["CreateCollectionCustomFieldsInput"]: {
+		stringTest?: string | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["UpdateCollectionCustomFieldsInput"]: {
+		stringTest?: string | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["CreateCollectionTranslationInputCustomFields"]: {
+		localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["UpdateCollectionTranslationInputCustomFields"]: {
+		localestringTest?: string | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["FacetCustomFields"]: {
+	__typename: "FacetCustomFields",
+	stringTest?: string | undefined,
+	localestringTest?: string | undefined,
+	ProductListTest?: Array<GraphQLTypes["Product"]> | undefined,
+	listProductVariantTest?: Array<GraphQLTypes["ProductVariant"]> | undefined
+};
+	["FacetTranslationCustomFields"]: {
+	__typename: "FacetTranslationCustomFields",
+	localestringTest?: string | undefined
+};
+	["CreateFacetCustomFieldsInput"]: {
+		stringTest?: string | undefined,
+	ProductListTestIds?: Array<string> | undefined,
+	listProductVariantTestIds?: Array<string> | undefined
+};
+	["UpdateFacetCustomFieldsInput"]: {
+		stringTest?: string | undefined,
+	ProductListTestIds?: Array<string> | undefined,
+	listProductVariantTestIds?: Array<string> | undefined
+};
+	["FacetTranslationInputCustomFields"]: {
+		localestringTest?: string | undefined
+};
+	["OrderCustomFields"]: {
+	__typename: "OrderCustomFields",
+	attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["UpdateOrderCustomFieldsInput"]: {
+		attributes?: string | undefined,
+	additionalInfo?: string | undefined
+};
+	["OrderLineCustomFields"]: {
+	__typename: "OrderLineCustomFields",
+	stringTest?: string | undefined,
+	textTest?: string | undefined
+};
+	["ProductCustomFields"]: {
+	__typename: "ProductCustomFields",
+	discountBy?: string | undefined,
+	boolTest?: boolean | undefined,
+	floatTest?: number | undefined,
+	intTest?: number | undefined,
+	stringTest?: string | undefined,
+	textTest?: string | undefined,
+	dateTime?: GraphQLTypes["DateTime"] | undefined,
+	listTestString?: Array<string> | undefined,
+	listTestInt?: Array<number> | undefined,
+	listTestFloat?: Array<number> | undefined,
+	listTestText?: Array<string> | undefined,
+	listLocaleString?: Array<string> | undefined,
+	listLocaleText?: Array<string> | undefined,
+	singleAssetTestP?: GraphQLTypes["Asset"] | undefined,
+	listAssetTestP?: Array<GraphQLTypes["Asset"]> | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined,
+	facebookImage?: GraphQLTypes["Asset"] | undefined,
+	twitterImage?: GraphQLTypes["Asset"] | undefined
+};
+	["ProductTranslationCustomFields"]: {
+	__typename: "ProductTranslationCustomFields",
+	listLocaleString?: Array<string> | undefined,
+	listLocaleText?: Array<string> | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["CreateProductCustomFieldsInput"]: {
+		discountBy?: string | undefined,
+	boolTest?: boolean | undefined,
+	floatTest?: number | undefined,
+	intTest?: number | undefined,
+	stringTest?: string | undefined,
+	textTest?: string | undefined,
+	dateTime?: GraphQLTypes["DateTime"] | undefined,
+	listTestString?: Array<string> | undefined,
+	listTestInt?: Array<number> | undefined,
+	listTestFloat?: Array<number> | undefined,
+	listTestText?: Array<string> | undefined,
+	singleAssetTestPId?: string | undefined,
+	listAssetTestPIds?: Array<string> | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["UpdateProductCustomFieldsInput"]: {
+		discountBy?: string | undefined,
+	boolTest?: boolean | undefined,
+	floatTest?: number | undefined,
+	intTest?: number | undefined,
+	stringTest?: string | undefined,
+	textTest?: string | undefined,
+	dateTime?: GraphQLTypes["DateTime"] | undefined,
+	listTestString?: Array<string> | undefined,
+	listTestInt?: Array<number> | undefined,
+	listTestFloat?: Array<number> | undefined,
+	listTestText?: Array<string> | undefined,
+	singleAssetTestPId?: string | undefined,
+	listAssetTestPIds?: Array<string> | undefined,
+	facebookImageId?: string | undefined,
+	twitterImageId?: string | undefined
+};
+	["ProductTranslationInputCustomFields"]: {
+		listLocaleString?: Array<string> | undefined,
+	listLocaleText?: Array<string> | undefined,
+	seoTitle?: string | undefined,
+	seoDescription?: string | undefined
+};
+	["ProductOptionCustomFields"]: {
+	__typename: "ProductOptionCustomFields",
+	test?: string | undefined
+};
+	["CreateProductOptionCustomFieldsInput"]: {
+		test?: string | undefined
+};
+	["UpdateProductOptionCustomFieldsInput"]: {
+		test?: string | undefined
+};
+	["ProductOptionGroupCustomFields"]: {
+	__typename: "ProductOptionGroupCustomFields",
+	test?: string | undefined
+};
+	["CreateProductOptionGroupCustomFieldsInput"]: {
+		test?: string | undefined
+};
+	["UpdateProductOptionGroupCustomFieldsInput"]: {
+		test?: string | undefined
+};
+	["ProductVariantCustomFields"]: {
+	__typename: "ProductVariantCustomFields",
+	stringTest?: string | undefined
+};
+	["CreateProductVariantCustomFieldsInput"]: {
+		stringTest?: string | undefined
+};
+	["UpdateProductVariantCustomFieldsInput"]: {
+		stringTest?: string | undefined
+};
+	["OrderLineCustomFieldsInput"]: {
+		stringTest?: string | undefined,
+	textTest?: string | undefined
 };
 	["NativeAuthInput"]: {
 		username: string,
@@ -17851,6 +18831,14 @@ export const enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
+export const enum MetricInterval {
+	Daily = "Daily"
+}
+export const enum MetricType {
+	OrderCount = "OrderCount",
+	OrderTotal = "OrderTotal",
+	AverageOrderValue = "AverageOrderValue"
+}
 export const enum BetterMetricInterval {
 	Weekly = "Weekly",
 	Monthly = "Monthly",
@@ -17866,14 +18854,6 @@ export const enum BetterMetricType {
 	OrderTotal = "OrderTotal",
 	AverageOrderValue = "AverageOrderValue",
 	OrderTotalProductsCount = "OrderTotalProductsCount"
-}
-export const enum MetricInterval {
-	Daily = "Daily"
-}
-export const enum MetricType {
-	OrderCount = "OrderCount",
-	OrderTotal = "OrderTotal",
-	AverageOrderValue = "AverageOrderValue"
 }
 
 type ZEUS_VARIABLES = {
@@ -18062,13 +19042,13 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
+	["MetricInterval"]: ValueTypes["MetricInterval"];
+	["MetricType"]: ValueTypes["MetricType"];
+	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];
 	["BetterMetricInterval"]: ValueTypes["BetterMetricInterval"];
 	["BetterMetricType"]: ValueTypes["BetterMetricType"];
 	["BetterMetricIntervalInput"]: ValueTypes["BetterMetricIntervalInput"];
 	["BetterMetricSummaryInput"]: ValueTypes["BetterMetricSummaryInput"];
-	["MetricInterval"]: ValueTypes["MetricInterval"];
-	["MetricType"]: ValueTypes["MetricType"];
-	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];
 	["AdministratorFilterParameter"]: ValueTypes["AdministratorFilterParameter"];
 	["AdministratorSortParameter"]: ValueTypes["AdministratorSortParameter"];
 	["AssetFilterParameter"]: ValueTypes["AssetFilterParameter"];
@@ -18114,5 +19094,25 @@ type ZEUS_VARIABLES = {
 	["ZoneSortParameter"]: ValueTypes["ZoneSortParameter"];
 	["HistoryEntryFilterParameter"]: ValueTypes["HistoryEntryFilterParameter"];
 	["HistoryEntrySortParameter"]: ValueTypes["HistoryEntrySortParameter"];
+	["CreateAssetCustomFieldsInput"]: ValueTypes["CreateAssetCustomFieldsInput"];
+	["UpdateAssetCustomFieldsInput"]: ValueTypes["UpdateAssetCustomFieldsInput"];
+	["CreateCollectionCustomFieldsInput"]: ValueTypes["CreateCollectionCustomFieldsInput"];
+	["UpdateCollectionCustomFieldsInput"]: ValueTypes["UpdateCollectionCustomFieldsInput"];
+	["CreateCollectionTranslationInputCustomFields"]: ValueTypes["CreateCollectionTranslationInputCustomFields"];
+	["UpdateCollectionTranslationInputCustomFields"]: ValueTypes["UpdateCollectionTranslationInputCustomFields"];
+	["CreateFacetCustomFieldsInput"]: ValueTypes["CreateFacetCustomFieldsInput"];
+	["UpdateFacetCustomFieldsInput"]: ValueTypes["UpdateFacetCustomFieldsInput"];
+	["FacetTranslationInputCustomFields"]: ValueTypes["FacetTranslationInputCustomFields"];
+	["UpdateOrderCustomFieldsInput"]: ValueTypes["UpdateOrderCustomFieldsInput"];
+	["CreateProductCustomFieldsInput"]: ValueTypes["CreateProductCustomFieldsInput"];
+	["UpdateProductCustomFieldsInput"]: ValueTypes["UpdateProductCustomFieldsInput"];
+	["ProductTranslationInputCustomFields"]: ValueTypes["ProductTranslationInputCustomFields"];
+	["CreateProductOptionCustomFieldsInput"]: ValueTypes["CreateProductOptionCustomFieldsInput"];
+	["UpdateProductOptionCustomFieldsInput"]: ValueTypes["UpdateProductOptionCustomFieldsInput"];
+	["CreateProductOptionGroupCustomFieldsInput"]: ValueTypes["CreateProductOptionGroupCustomFieldsInput"];
+	["UpdateProductOptionGroupCustomFieldsInput"]: ValueTypes["UpdateProductOptionGroupCustomFieldsInput"];
+	["CreateProductVariantCustomFieldsInput"]: ValueTypes["CreateProductVariantCustomFieldsInput"];
+	["UpdateProductVariantCustomFieldsInput"]: ValueTypes["UpdateProductVariantCustomFieldsInput"];
+	["OrderLineCustomFieldsInput"]: ValueTypes["OrderLineCustomFieldsInput"];
 	["NativeAuthInput"]: ValueTypes["NativeAuthInput"];
 }

@@ -1,25 +1,16 @@
 import { Input, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { LanguageCode, ModelTypes } from '@deenruv/admin-types';
-import React, { ChangeEvent } from 'react';
+import { ModelTypes } from '@deenruv/admin-types';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@/components';
 
 interface BasicFieldsCardProps {
-  currentTranslationLng: LanguageCode;
   currentTranslationValue: Partial<ModelTypes['Product']['translations'][0]> | undefined;
-  onNameChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onSlugChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onDescChange: (e: string) => void;
+  onChange: (field: 'name' | 'slug' | 'description', value: string) => void;
 }
 
-export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({
-  currentTranslationLng,
-  currentTranslationValue,
-  onNameChange,
-  onSlugChange,
-  onDescChange,
-}) => {
+export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTranslationValue, onChange }) => {
   const { t } = useTranslation('products');
 
   return (
@@ -33,19 +24,20 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({
             <Input
               label={t('name')}
               placeholder={t('name')}
-              key={currentTranslationLng}
               value={currentTranslationValue?.name}
-              onChange={onNameChange}
+              onChange={(e) => onChange('name', e.target.value)}
             />
             <Input
-              key={currentTranslationLng + 'slug'}
               value={currentTranslationValue?.slug}
               label={t('slug')}
               placeholder={t('slug')}
-              onChange={onSlugChange}
+              onChange={(e) => onChange('slug', e.target.value)}
             />
           </Stack>
-          <RichTextEditor content={currentTranslationValue?.description} onContentChanged={onDescChange} />
+          <RichTextEditor
+            content={currentTranslationValue?.description}
+            onContentChanged={(value) => onChange('description', value)}
+          />
         </Stack>
       </CardContent>
     </Card>

@@ -1,3 +1,3 @@
-export * from './DetailViewMaker';
+export * from './DetailViewMarker';
 export * from './ListViewMarker';
 export * from './Renderer';

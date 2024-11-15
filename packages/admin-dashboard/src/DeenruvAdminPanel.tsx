@@ -4,14 +4,14 @@ import { I18nextProvider } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 import i18n from './i18.js';
-import { Routes, PluginProvider, PluginStore } from '@deenruv/react-ui-devkit';
+import { Routes, PluginProvider, PluginStore, DeenruvAdminPanelSettings } from '@deenruv/react-ui-devkit';
 
 import { Root } from '@/pages/Root';
 import { LoginScreen } from '@/pages/LoginScreen';
 import { Custom404 } from '@/pages/Custom404';
 import * as Pages from '@/pages';
 import { useSettings } from '@/state/settings';
-import { DeenruvAdminPanelSettings, DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
+import { DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
 import { BrandingStoreProvider } from './state/branding.js';
 import * as resources from './locales';
 import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';

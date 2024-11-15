@@ -13,22 +13,14 @@ import { AssetsCard } from '@/pages/products/_components/AssetsCard';
 import { PriceCard } from '@/pages/products/_components/PriceCard';
 import { StockCard } from '@/pages/products/_components/StockCard';
 import { OptionsCard } from '@/pages/products/_components/OptionsCard';
-import { FacetsAccordions } from '@/pages/products/_components/FacetsAccordions';
-import { FacetListOptionsType } from '@/graphql/facets';
 
 interface VariantProps {
   variant: ProductVariantType;
   currentTranslationLng: LanguageCode;
-  facetsOptions: FacetListOptionsType['items'] | undefined;
   onActionCompleted: () => void;
 }
 
-export const Variant: React.FC<VariantProps> = ({
-  variant,
-  currentTranslationLng,
-  facetsOptions,
-  onActionCompleted,
-}) => {
+export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng, onActionCompleted }) => {
   const { t } = useTranslation('products');
   const { state, setField } = useGFFLP(
     'UpdateProductVariantInput',
@@ -90,8 +82,8 @@ export const Variant: React.FC<VariantProps> = ({
               trackInventory: state.trackInventory?.validatedValue,
               taxCategoryId: state.taxCategoryId?.validatedValue,
               useGlobalOutOfStockThreshold: state.useGlobalOutOfStockThreshold?.validatedValue,
-              facetValueIds: state.facetValueIds?.validatedValue,
               stockLevels: state.stockLevels?.validatedValue,
+              facetValueIds: [],
             },
           ],
         },
@@ -193,11 +185,6 @@ export const Variant: React.FC<VariantProps> = ({
               </Stack>
             </CardContent>
           </Card>
-          <FacetsAccordions
-            facetsOptions={facetsOptions}
-            handleFacetCheckboxChange={handleFacetCheckboxChange}
-            checkedFacetsIds={state.facetValueIds?.value}
-          />
         </Stack>
         <Stack className="w-1/2 flex-col gap-4">
           <PriceCard

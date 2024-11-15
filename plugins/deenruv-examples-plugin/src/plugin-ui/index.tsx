@@ -5,6 +5,7 @@ import { SquareIcon } from './assets';
 import { widgets } from './widgets';
 import { inputs } from './inputs';
 import { tables } from './tables';
+import { tabs } from './tabs';
 import pl from './locales/pl';
 import en from './locales/en';
 import { translationNS } from './translation-ns';
@@ -16,6 +17,7 @@ export const UIPlugin = createDeenruvUIPlugin({
     widgets,
     inputs,
     tables,
+    tabs,
     translations: {
         ns: translationNS,
         data: { en, pl },

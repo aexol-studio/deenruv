@@ -19,7 +19,10 @@ import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 
 type ViableEntity = Uncapitalize<
-  keyof Pick<ModelTypes, 'Product' | 'ProductVariant' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine'>
+  keyof Pick<
+    ModelTypes,
+    'Product' | 'ProductVariant' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine' | 'ProductOptionGroup'
+  >
 >;
 type CF = Record<string, unknown>;
 

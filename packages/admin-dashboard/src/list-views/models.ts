@@ -1,4 +1,4 @@
-import { CustomFieldConfigType, LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
+import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import React from 'react';
 
 export type PaginationInputSort = { key: string; sortDir: SortOrder };
@@ -20,7 +20,8 @@ export type PaginationInput = {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type PromisePaginated = (
   props: PaginationInput,
-  customFieldsConfig?: CustomFieldConfigType[],
+  customFieldsSelector?: object,
+  additionalSelector?: object,
 ) => Promise<{
   totalItems: number;
   items: any;

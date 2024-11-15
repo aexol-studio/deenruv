@@ -11,7 +11,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { MoreHorizontal, PanelsTopLeft } from 'lucide-react';
 import { toast } from 'sonner';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
 
 export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
   return {
@@ -68,9 +68,19 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                 {t('actionsMenu.copyId')}
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to={route.to(row.original.id)} className="text-primary-600">
+                <Button
+                  variant="ghost"
+                  size="default"
+                  onClick={() => {
+                    if ('edit' in route) {
+                      route.edit(row.original.id);
+                    } else {
+                      redirect(route.to(row.original.id));
+                    }
+                  }}
+                >
                   {t('actionsMenu.view')}
-                </Link>
+                </Button>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {rowActions?.map((action) => (

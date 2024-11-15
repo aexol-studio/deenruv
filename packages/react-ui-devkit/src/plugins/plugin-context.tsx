@@ -1,7 +1,14 @@
 import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 import { PluginStore } from './plugin-store';
-import { ListLocationID, PluginNavigationGroup, PluginNavigationLink, Widget } from '@/types';
+import {
+    DeenruvUIPlugin,
+    DetailLocationID,
+    ListLocationID,
+    PluginNavigationGroup,
+    PluginNavigationLink,
+    Widget,
+} from '@/types';
 import { WidgetsStoreProvider } from '@/widgets/widgets-context';
 
 type Channel = {
@@ -22,26 +29,8 @@ const PluginStoreContext = createContext<{
     setOpenDropdown: (open: boolean) => void;
     getComponents: (position: string) => React.ComponentType<any>[];
     getInputComponent: (id: string) => React.ComponentType<any> | null;
-    getTableExtensions: (location: ListLocationID) => {
-        id: string;
-        rowActions?: {
-            label: string;
-            onClick: (props: {
-                table: any;
-                refetch: () => void;
-                data: any;
-            }) => { success: string } | { error: string };
-        }[];
-        bulkActions?: {
-            label: string;
-            onClick: (props: {
-                table: any;
-                refetch: () => void;
-                data: any[];
-            }) => { success: string } | { error: string };
-        }[];
-        columns?: any[];
-    }[];
+    getDetailViewTabs: (location: DetailLocationID) => DeenruvUIPlugin['tabs'];
+    getTableExtensions: (location: ListLocationID) => DeenruvUIPlugin['tables'];
     navMenuData: {
         groups: PluginNavigationGroup[];
         links: PluginNavigationLink[];
@@ -57,6 +46,7 @@ const PluginStoreContext = createContext<{
     setOpenDropdown: () => undefined,
     getComponents: () => [],
     getInputComponent: () => () => null,
+    getDetailViewTabs: () => [],
     getTableExtensions: () => [],
     navMenuData: {
         groups: [],
@@ -86,6 +76,10 @@ export const PluginProvider: FC<
         return plugins.getTableExtensions(location);
     };
 
+    const getDetailViewTabs = (location: DetailLocationID) => {
+        return plugins.getDetailViewTabs(location);
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.ctrlKey && e.key === 'x') {
@@ -109,6 +103,7 @@ export const PluginProvider: FC<
                 getComponents,
                 getInputComponent,
                 getTableExtensions,
+                getDetailViewTabs,
                 navMenuData: plugins.navMenuData,
                 widgets: plugins.widgets,
             }}

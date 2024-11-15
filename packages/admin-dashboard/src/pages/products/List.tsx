@@ -4,11 +4,12 @@ import { GenericList } from '@/list-views/GenericList';
 import { PaginationInput } from '@/lists/models';
 import { deepMerge, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
 
-const fetch = async <T,>(
+const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
   customFieldsSelector?: T,
+  additionalSelector?: K,
 ) => {
-  const selector = deepMerge(ProductListSelector, customFieldsSelector ?? {});
+  const selector = deepMerge(deepMerge(ProductListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
   const response = await apiCall()('query')({
     ['products']: [
       {

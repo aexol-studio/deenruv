@@ -8,3 +8,4 @@ export * from './custom_fields';
 export * from './zeus-client';
 export * from './selectors';
 export * from './routes';
+export * from './tailwind.config';

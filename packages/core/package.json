@@ -39,10 +39,10 @@
         "cli/**/*"
     ],
     "dependencies": {
-        "@deenruv/core": "workspace:*",
-        "@deenruv/common": "workspace:*",
         "@apollo/server": "^4.10.4",
         "@apollographql/graphql-playground-html": "^1.6.29",
+        "@deenruv/common": "workspace:*",
+        "@deenruv/core": "workspace:*",
         "@graphql-tools/stitch": "^9.2.10",
         "@graphql-tools/utils": "^10.5.4",
         "@nestjs/apollo": "~12.2.0",
@@ -106,6 +106,7 @@
         "rimraf": "^5.0.5",
         "sql.js": "1.10.2",
         "sqlite3": "^5.1.7",
+        "ts-node": "^10.9.2",
         "typescript": "5.3.3"
     }
 }

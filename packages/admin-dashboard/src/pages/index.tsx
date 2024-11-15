@@ -14,5 +14,4 @@ export * from './payment-methods/index.js';
 export * from './orders/index.js';
 export * from './dashboard/index.js';
 export * from './assets/index.js';
-export * from './product-variants/index.js';
 // NOTE: do not export Custom404, LoginScreen and Root from here

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DeenruvUIPlugin, ListLocationID } from '../types';
+import { DeenruvUIPlugin, DetailLocationID, ListLocationID } from '../types';
 
 const pagePathPrefix = 'admin-ui/extensions/';
 
@@ -92,6 +92,16 @@ export class PluginStore {
             });
         });
         return Array.from(tables.values()).filter(table => table.id === location);
+    }
+
+    getDetailViewTabs(location: DetailLocationID) {
+        const tabs = new Map<string | number, NonNullable<DeenruvUIPlugin['tabs']>[number]>();
+        this.pluginMap.forEach(plugin => {
+            plugin.tabs?.forEach(tab => {
+                tabs.set(tab.id, tab);
+            });
+        });
+        return Array.from(tabs.values()).filter(tab => tab.id === location);
     }
 
     get widgets() {

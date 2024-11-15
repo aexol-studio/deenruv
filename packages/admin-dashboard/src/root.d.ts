@@ -1,22 +1,9 @@
-import type { DeenruvUIPlugin } from '@deenruv/react-ui-devkit';
-
-type Logo = string | JSX.Element;
-export type DeenruvUIPlugins = Array<DeenruvUIPlugin>;
-export type DeenruvAdminPanelSettings = {
-  api: { uri: string };
-  branding: {
-    name: string;
-    logo?: {
-      full: Logo;
-      collapsed?: Logo;
-    };
-  };
-};
+import type { DeenruvUIPlugin, DeenruvAdminPanelSettings } from '@deenruv/react-ui-devkit';
 
 export function DeenruvAdminPanel({
   plugins,
   settings,
 }: {
-  plugins: DeenruvUIPlugins;
+  plugins: Array<DeenruvUIPlugin>;
   settings: DeenruvAdminPanelSettings;
 }): JSX.Element;

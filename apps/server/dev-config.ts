@@ -70,7 +70,10 @@ export const devConfig: DeenruvConfig = {
         paymentMethodHandlers: [dummyPaymentHandler],
     },
 
-    customFields: {},
+    customFields: {
+        ProductOption: [{ name: 'test', type: 'string' }],
+        ProductOptionGroup: [{ name: 'test', type: 'string' }],
+    },
     logger: new DefaultLogger({ level: LogLevel.Verbose }),
     importExportOptions: {
         importAssetsDir: path.join(__dirname, 'import-assets'),
@@ -163,6 +166,6 @@ export const devConfig: DeenruvConfig = {
         //     expiresIn: 60 * 60 * 24 * 3,
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
-        SeoPlugin
+        SeoPlugin,
     ],
 };

@@ -2,12 +2,24 @@ import type { FC, SVGProps } from 'react';
 import { Routes } from './routes';
 import { ColumnDef } from '@tanstack/react-table';
 import { ProductListSelector } from './selectors';
-import { FromSelectorWithScalars } from '@deenruv/admin-types';
+import { FromSelectorWithScalars, GraphQLTypes } from '@deenruv/admin-types';
 
+type Logo = string | JSX.Element;
+export type DeenruvAdminPanelSettings = {
+    api: { uri: string };
+    branding: {
+        name: string;
+        logo?: {
+            full: Logo;
+            collapsed?: Logo;
+        };
+    };
+};
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
 export type ListLocationID = `${RouteKeys}-list-view`;
 export type DetailLocationID = `${RouteKeys}-detail-view`;
+export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 
 const ListLocations = {
     'products-list-view': {
@@ -37,8 +49,21 @@ type DetailLocationsType<KEY extends keyof typeof DetailLocations> = FromSelecto
     (typeof DetailLocations)[KEY]['type']
 >;
 
+export interface ExternalListLocationSelector<K extends LocationKeys = LocationKeys> {
+    [key: string]: FromSelectorWithScalars<ListLocationType[K]['selector'], ListLocationType[K]['type']>;
+}
+
 type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     id: KEY;
+    externalSelector?: ExternalListLocationSelector[KEY];
+    rowActions?: Array<{
+        label: string;
+        onClick: (props: {
+            data: Array<ListLocationsType<KEY>>;
+            refetch: () => void;
+            table: any;
+        }) => { success: string } | { error: string };
+    }>;
     bulkActions?: Array<{
         label: string;
         onClick: (props: {
@@ -55,17 +80,25 @@ type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
     component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
 };
 
+type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
+    id: KEY;
+    label: string;
+    component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
+};
+
 export type DeenruvUIPlugin = {
     name: string;
     version: string;
     /** Applied on the selected tables */
-    tables?: DeenruvUITable<LocationKeys>[];
-    /** Inputs allow to override the default components from custom fields */
-    inputs?: PluginComponent[];
+    tables?: Array<DeenruvUITable<LocationKeys>>;
     /** Applied on the detail views (pages) */
-    components?: DeenruvUIDetailComponent<DetailKeys>[];
+    tabs?: Array<DeenruvTabs<DetailKeys>>;
+    /** Inputs allow to override the default components from custom fields */
+    inputs?: Array<PluginComponent>;
+    /** Applied on the detail views (pages) */
+    components?: Array<DeenruvUIDetailComponent<DetailKeys>>;
     /** Applied on the dashboard */
-    widgets?: Widget[];
+    widgets?: Array<Widget>;
     /** Applied on the navigation */
     navMenuGroups?: Array<PluginNavigationGroup>;
     /** Applied on the navigation */
@@ -73,7 +106,7 @@ export type DeenruvUIPlugin = {
     /** Applied on the app globally */
     pages?: Array<PluginPage>;
     /** Applied on the app globally */
-    translations?: { ns: string; data: Record<string, object[]> };
+    translations?: { ns: string; data: Record<string, Array<object>> };
 };
 
 export type Widget = {
