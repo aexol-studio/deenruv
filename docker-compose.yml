@@ -23,6 +23,8 @@ services:
       - 6379
   deenruv-minio:
     image: 'minio/minio:latest'
+    hostname: deenruv-minio
+    container_name: deenruv-minio
     ports:
       - 9000:9000
       - 9090:9090

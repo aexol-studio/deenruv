@@ -9,8 +9,6 @@
         "run:server": "APP_ENV=LOCAL tsx index.ts",
         "run:worker": "APP_ENV=LOCAL tsx index-worker.ts",
         "start": "concurrently npm:run*",
-        "docker-up": "docker compose up -d",
-        "docker-down": "docker compose down -v",
         "migration:generate": "tsx migration.ts generate",
         "migration:run": "tsx migration.ts run",
         "migration:revert": "tsx migration.ts revert",
