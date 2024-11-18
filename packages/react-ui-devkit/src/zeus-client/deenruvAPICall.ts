@@ -3,7 +3,7 @@ import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-type
 // * We can think about caching the response in the future
 // ! TODO: Add pattern of authToken from dashboard so we need `useSettings` here
 
-export const api = (options: fetchOptions, authTokenName: string) => {
+export const deenruvAPICall = (options: fetchOptions) => {
     return async (query: string, variables: Record<string, unknown> = {}) => {
         const fetchOptions = options[1] || {};
         if (fetchOptions.method && fetchOptions.method === 'GET') {
@@ -16,8 +16,16 @@ export const api = (options: fetchOptions, authTokenName: string) => {
                     return response.data;
                 });
         }
-        return fetch(`${options[0]}`, { body: JSON.stringify({ query, variables }), ...fetchOptions })
+        return fetch(`${options[0]}`, {
+            body: JSON.stringify({ query, variables }),
+            headers: {
+                ...fetchOptions.headers,
+                // Authorization: `Bearer ${token}`,
+            },
+            ...fetchOptions,
+        })
             .then(r => {
+                const authTokenName = 'deenruv-auth-token';
                 const authToken = r.headers.get(authTokenName);
                 // if (authToken != null) token = authToken;
                 return handleFetchResponse(r);

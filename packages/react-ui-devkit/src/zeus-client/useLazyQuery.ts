@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { DocumentNode } from 'graphql';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { print } from 'graphql';
-import { api } from './api';
+import { deenruvAPICall } from './deenruvAPICall';
 import { buildDeenruvParams } from './utils';
 
 export function useLazyQuery<T, V extends Record<string, any> = Record<string, any>>(
@@ -16,13 +16,12 @@ export function useLazyQuery<T, V extends Record<string, any> = Record<string, a
         try {
             setLoading(true);
             setError(null);
-            const result = (await api(
+            const result = (await deenruvAPICall(
                 buildDeenruvParams({
                     adminAPIHost: 'http://localhost:3000',
                     languageCode: 'en',
                     channel: { name: 'deenruv-token', value: '__default_channel__' },
                 }),
-                'deenruv-auth-token',
             )(print(query), variables)) as T;
             setData(result);
             return result;
