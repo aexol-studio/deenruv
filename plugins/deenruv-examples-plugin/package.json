@@ -19,7 +19,6 @@
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
     },
     "dependencies": {
-        "graphql-tag": "^2.12.6",
         "react": "^18.2.0"
     },
     "devDependencies": {
@@ -39,6 +38,7 @@
         "@nestjs/common": "~10.3.10",
         "@nestjs/graphql": "~12.2.0",
         "typeorm": "0.3.20",
-        "recharts": "^2.12.7"
+        "recharts": "^2.12.7",
+        "graphql-tag": "^2.12.6"
     }
 }

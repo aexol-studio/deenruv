@@ -1,12 +1,12 @@
 import { createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 import { pages } from './pages';
-import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
+import { LanguagesIcon } from 'lucide-react';
 import pl from './locales/pl';
 import en from './locales/en';
 
 export const translationNs = 'second-plugin';
 
-export const UIPlugin = createDeenruvUIPlugin({
+export const DeenruvSecondUiPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'Second Plugin',
     pages,

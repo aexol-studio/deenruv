@@ -6,7 +6,7 @@ import { Logger } from '@deenruv/core';
 import { Readable } from 'stream';
 import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import * as mime from 'mime';
+import mime from 'mime-types';
 
 export class MinkoLogger {
     private logger: Logger;
@@ -109,7 +109,7 @@ export class StorageService {
     }
 
     private async writeFile(key: string, data: Blob | Readable, mimeType: string) {
-        mimeType = (!mimeType && mime.getType(key)) || mimeType;
+        mimeType = (!mimeType && mime.contentType(key)) || mimeType;
         const metaData = {};
         let buffer;
         if (data instanceof Blob) {

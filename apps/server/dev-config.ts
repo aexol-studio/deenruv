@@ -4,6 +4,10 @@ import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-serve
 import { SeoPlugin } from '@deenruv/seo-plugin';
 import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
 import { BadgesServerPlugin } from '@deenruv/product-badges-plugin';
+import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin';
+// import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
+// import { RestPlugin } from './test-plugins/rest-plugin';
+// import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
@@ -17,11 +21,8 @@ import {
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
 import path from 'path';
-// import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 
-import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
-// import { MinkoCorePlugin } from '@deenruv/minko-core-plugin/plugin-server';
 import { s3Client } from './client-s3';
 /**
  * Config settings used during development

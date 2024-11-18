@@ -1967,9 +1967,6 @@ importers:
       express:
         specifier: ^4.21.1
         version: 4.21.1
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.9.0)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2001,6 +1998,9 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
         version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
@@ -2098,9 +2098,6 @@ importers:
 
   plugins/deenruv-examples-plugin:
     dependencies:
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.9.0)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2129,6 +2126,9 @@ importers:
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
         version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
@@ -2159,6 +2159,10 @@ importers:
 
   plugins/deenruv-second-plugin:
     dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+    devDependencies:
       '@deenruv/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -2174,40 +2178,36 @@ importers:
       '@nestjs/graphql':
         specifier: ~12.2.0
         version: 12.2.1(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
-      date-fns:
-        specifier: ^4.1.0
-        version: 4.1.0
-      graphql:
-        specifier: ~16.9.0
-        version: 16.9.0
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.1
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
-        specifier: ^5.4.2
-        version: 5.4.5(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
+        specifier: ^7.0.0
+        version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
       react-i18next:
         specifier: ^14.0.5
         version: 14.1.3(i18next@23.16.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    devDependencies:
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.3.12
+      react-router-dom:
+        specifier: ^6.22.1
+        version: 6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rimraf:
         specifier: ^5.0.10
         version: 5.0.10
-      tslib:
-        specifier: ^2.6.2
-        version: 2.8.1
+      sonner:
+        specifier: ^1.4.41
+        version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      typeorm:
+        specifier: 0.3.20
+        version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -2374,6 +2374,22 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.583.0
         version: 3.689.0
+      '@react-pdf/renderer':
+        specifier: ^3.3.8
+        version: 3.4.5(encoding@0.1.13)(react@18.3.1)
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      mime:
+        specifier: ^3.0.0
+        version: 3.0.0
+      mime-types:
+        specifier: ^2.1.35
+        version: 2.1.35
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+    devDependencies:
       '@deenruv/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -2389,52 +2405,45 @@ importers:
       '@nestjs/graphql':
         specifier: ~12.2.0
         version: 12.2.1(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
-      '@react-pdf/renderer':
-        specifier: ^3.3.8
-        version: 3.4.5(encoding@0.1.13)(react@18.3.1)
-      graphql:
-        specifier: ~16.9.0
-        version: 16.9.0
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.9.0)
-      graphql-zeus:
-        specifier: ^5.4.2
-        version: 5.4.5(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
-      lucide-react:
-        specifier: ^0.363.0
-        version: 0.363.0(react@18.3.1)
-      mime:
-        specifier: ^3.0.0
-        version: 3.0.0
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-      react-i18next:
-        specifier: ^14.0.5
-        version: 14.1.3(i18next@23.16.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      typeorm:
-        specifier: ^0.3.0
-        version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
-    devDependencies:
-      '@types/mime':
-        specifier: ^3.0.0
-        version: 3.0.4
+      '@types/mime-types':
+        specifier: ^2.1.3
+        version: 2.1.4
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.12
       '@types/react-dom':
         specifier: ^18.2.0
         version: 18.3.1
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      graphql-zeus:
+        specifier: ^7.0.0
+        version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
+      lucide-react:
+        specifier: ^0.363.0
+        version: 0.363.0(react@18.3.1)
+      react-i18next:
+        specifier: ^14.0.5
+        version: 14.1.3(i18next@23.16.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.22.1
+        version: 6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts:
+        specifier: ^2.12.7
+        version: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rimraf:
         specifier: ^5.0.10
         version: 5.0.10
-      tslib:
-        specifier: ^2.6.2
-        version: 2.8.1
+      sonner:
+        specifier: ^1.4.41
+        version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      typeorm:
+        specifier: 0.3.20
+        version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -2517,9 +2526,6 @@ importers:
 
   plugins/product-badges-plugin:
     dependencies:
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.9.0)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2545,6 +2551,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.0
         version: 18.3.1
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
         version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
@@ -7477,9 +7486,6 @@ packages:
 
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
-
-  '@types/mime@3.0.4':
-    resolution: {integrity: sha512-iJt33IQnVRkqeqC7PzBHPTC6fDlRNRW8vjrgqtScAhrmMwe8c4Eo7+fUGTa+XdWrpEgpyKWMYmi2dIwMAYRzPw==}
 
   '@types/mjml-core@4.15.1':
     resolution: {integrity: sha512-qu8dUksU8yXX18qMTFINkM4uoz7WQYC5F14lcWeSNmWbulaGG0KG19yeZwpx75b9RJXr8WI/FRHH0LyQTU9JbA==}
@@ -21592,8 +21598,6 @@ snapshots:
   '@types/mime-types@2.1.4': {}
 
   '@types/mime@1.3.5': {}
-
-  '@types/mime@3.0.4': {}
 
   '@types/mjml-core@4.15.1': {}
 

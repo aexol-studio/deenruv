@@ -1,56 +1,51 @@
 {
     "name": "@deenruv/minko-core-plugin",
-    "version": "0.0.20",
-    "homepage": "https://www.deenruv.io/",
+    "version": "1.0.0",
+    "homepage": "https://www.deenruv.com/",
     "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
+    "main": "./dist/plugin-server/index.js",
     "exports": {
+        ".": "./dist/plugin-server/index.js",
         "./plugin-server": "./dist/plugin-server/index.js",
         "./plugin-ui": "./dist/plugin-ui/index.js"
     },
     "files": [
         "dist/**/*"
     ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
-    },
     "scripts": {
         "build": "rimraf dist && tsc --build",
-        "watch": "tsc --watch",
+        "watch": "tsc --build --watch",
         "lint": "eslint --fix .",
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
-    },
-    "bugs": {
-        "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.583.0",
         "@aws-sdk/s3-request-presigner": "^3.583.0",
+        "react": "^18.2.0",
+        "@react-pdf/renderer": "^3.3.8",
+        "graphql": "~16.9.0",
+        "mime": "^3.0.0",
+        "mime-types": "^2.1.35"
+    },
+    "devDependencies": {
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
         "@deenruv/react-ui-devkit": "workspace:*",
+        "react-i18next": "^14.0.5",
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "react-router-dom": "^6.22.1",
+        "rimraf": "^5.0.10",
+        "typescript": "5.3.3",
+        "graphql-zeus": "^7.0.0",
+        "date-fns": "^3.6.0",
+        "lucide-react": "^0.363.0",
+        "sonner": "^1.4.41",
         "@nestjs/common": "~10.3.10",
         "@nestjs/graphql": "~12.2.0",
-        "@react-pdf/renderer": "^3.3.8",
-        "graphql": "~16.9.0",
+        "typeorm": "0.3.20",
+        "recharts": "^2.12.7",
         "graphql-tag": "^2.12.6",
-        "graphql-zeus": "^5.4.2",
-        "lucide-react": "^0.363.0",
-        "mime": "^3.0.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-i18next": "^14.0.5",
-        "typeorm": "^0.3.0"
-    },
-    "devDependencies": {
-        "@types/react": "^18.2.0",
-        "@types/mime": "^3.0.0",
-        "@types/react-dom": "^18.2.0",
-        "rimraf": "^5.0.10",
-        "tslib": "^2.6.2",
-        "typescript": "5.3.3"
+        "@types/mime-types": "^2.1.3"
     }
 }

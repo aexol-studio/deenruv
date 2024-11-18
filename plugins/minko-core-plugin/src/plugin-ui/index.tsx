@@ -1,7 +1,5 @@
 import { BASE_GROUP_ID, createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
-import pl from './locales/pl';
-import en from './locales/en';
 import { translationNS } from './translation-ns';
 
 export const UIPlugin = createDeenruvUIPlugin({
