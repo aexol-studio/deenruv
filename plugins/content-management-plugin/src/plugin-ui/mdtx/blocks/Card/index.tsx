@@ -1,18 +1,17 @@
-import React, { ReactElement } from 'react';
-import dynamic from 'next/dynamic';
+import React, { ReactElement, Suspense, lazy } from 'react';
 import dynamicIconImports from 'lucide-react/dynamicIconImports';
 import { ComponentConfig } from '@measured/puck';
-import { getClassNameFactory } from '../../getClassNameFactory';
 import styles from './styles.module.css';
+import { getClassNameFactory } from '../../../getClassNameFactory';
 
 const getClassName = getClassNameFactory('Card', styles);
 
 const icons = Object.keys(dynamicIconImports).reduce<Record<string, ReactElement>>((acc, iconName) => {
-    const El = dynamic((dynamicIconImports as any)[iconName]);
+    const LucideIcon = lazy(dynamicIconImports[iconName as keyof typeof dynamicIconImports]);
 
     return {
         ...acc,
-        [iconName]: <El />,
+        [iconName]: <LucideIcon />,
     };
 }, {});
 
@@ -53,7 +52,9 @@ export const Card: ComponentConfig<CardProps> = {
     render: ({ title, icon, description, mode }) => {
         return (
             <div className={getClassName({ [mode]: mode })}>
-                <div className={getClassName('icon')}>{icon && icons[icon]}</div>
+                <Suspense fallback={<div className={getClassName('icon')}>...</div>}>
+                    <div className={getClassName('icon')}>{icon && icons[icon]}</div>
+                </Suspense>
                 <div className={getClassName('title')}>{title}</div>
                 <div className={getClassName('description')}>{description}</div>
             </div>

@@ -1,59 +1,43 @@
 {
     "name": "@deenruv/content-management-plugin",
-    "version": "0.0.20",
-    "homepage": "https://www.deenruv.io/",
+    "version": "1.0.0",
+    "homepage": "https://www.deenruv.com/",
     "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
-    "exports": {
-        "./plugin-server": "./dist/plugin-server/index.js",
-        "./plugin-ui": "./dist/plugin-ui/index.js"
-    },
     "files": [
         "dist/**/*"
     ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/deenruv-ecommerce/deenruv.git"
+    "main": "./dist/plugin-server/index.js",
+    "exports": {
+        ".": "./dist/plugin-server/index.js",
+        "./plugin-server": "./dist/plugin-server/index.js",
+        "./plugin-ui": "./dist/plugin-ui/index.js"
     },
     "scripts": {
         "build": "rimraf dist && tsc --build",
-        "watch": "tsc --watch",
+        "watch": "tsc --build --watch",
         "lint": "eslint --fix .",
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui",
         "zeus-mdtx": "zeus http://localhost:4200/api/graphql ./src/plugin-ui/mdtx"
     },
-    "bugs": {
-        "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
-    },
     "dependencies": {
-        "@deenruv/common": "workspace:*",
-        "@deenruv/content-management-config": "workspace:*",
-        "@deenruv/core": "workspace:*",
-        "@deenruv/react-ui-devkit": "workspace:*",
-        "@measured/puck": "^0.16.1",
-        "@nestjs/common": "~10.3.10",
-        "@nestjs/graphql": "~12.2.0",
-        "classnames": "^2.5.1",
-        "date-fns": "^4.1.0",
-        "express": "^4.21.1",
-        "graphql": "~16.9.0",
         "graphql-tag": "^2.12.6",
-        "graphql-zeus": "^5.4.2",
-        "lucide-react": "^0.363.0",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-i18next": "^14.0.5",
-        "recharts": "^2.12.7",
-        "typeorm": "^0.3.20"
+        "react": "^18.2.0"
     },
     "devDependencies": {
-        "@types/express": "^4.17.21",
+        "@deenruv/common": "workspace:*",
+        "@deenruv/core": "workspace:*",
+        "@deenruv/react-ui-devkit": "workspace:*",
+        "react-i18next": "^14.0.5",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
+        "react-router-dom": "^6.22.1",
         "rimraf": "^5.0.10",
-        "tslib": "^2.6.2",
-        "typescript": "5.3.3"
+        "typescript": "5.3.3",
+        "graphql-zeus": "^7.0.0",
+        "lucide-react": "^0.363.0",
+        "sonner": "^1.4.41",
+        "@nestjs/common": "~10.3.10",
+        "@nestjs/graphql": "~12.2.0",
+        "typeorm": "0.3.20"
     }
 }
