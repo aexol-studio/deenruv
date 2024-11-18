@@ -55,7 +55,6 @@ export const ProductDetailView = () => {
 
   useEffect(() => {
     if (!id) return;
-
     try {
       setLoading(true);
       fetchProduct();
@@ -95,13 +94,6 @@ export const ProductDetailView = () => {
     </div>
   ) : (
     <div>
-      {editMode && (
-        <div className="mb-4 flex">
-          <Button variant="action" onClick={saveChanges} className="ml-auto justify-self-end">
-            {t('editProduct')}
-          </Button>
-        </div>
-      )}
       <div className="flex w-full gap-4">
         <div className="flex w-full flex-col gap-4">
           <BasicFieldsCard currentTranslationValue={currentTranslationValue} onChange={setTranslationField} />

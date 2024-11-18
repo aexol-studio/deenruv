@@ -127,7 +127,7 @@ const uploadFileApi =
   };
 
 // * here we will just replace apiFetchVendure with deenruvAPICall
-export const VendureChain = (...options: chainOptions) => Thunder(deenruvAPICall(options), { scalars });
+export const VendureChain = (...options: chainOptions) => Thunder(apiFetchVendure(options), { scalars });
 export const VendureUploadChain = (...options: chainOptions) => Thunder(uploadFileApi(options), { scalars });
 
 const buildHeaders = (): Parameters<typeof VendureChain>[1] => {

@@ -2,6 +2,11 @@ import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-type
 
 // * We can think about caching the response in the future
 // ! TODO: Add pattern of authToken from dashboard so we need `useSettings` here
+// const MINUTE = 1000 * 60;
+// export const cache = new LRUCache({
+//     ttl: MINUTE * 0.5,
+//     ttlAutopurge: true,
+// });
 
 export const deenruvAPICall = (options: fetchOptions) => {
     return async (query: string, variables: Record<string, unknown> = {}) => {
@@ -18,8 +23,10 @@ export const deenruvAPICall = (options: fetchOptions) => {
         }
         return fetch(`${options[0]}`, {
             body: JSON.stringify({ query, variables }),
+            method: 'POST',
             headers: {
                 ...fetchOptions.headers,
+                'Content-Type': 'application/json',
                 // Authorization: `Bearer ${token}`,
             },
             ...fetchOptions,

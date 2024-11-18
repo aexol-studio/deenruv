@@ -12,10 +12,13 @@ export const ProductsDetailPage = () => {
       <DetailView
         id={id}
         locationId="products-detail-view"
+        main={{
+          name: 'Product',
+          component: <ProductDetailView />,
+        }}
         defaultTabs={[
-          { name: 'Product', component: <ProductDetailView /> },
-          { name: 'Options', component: <OptionsTab />, disabled: !id },
-          { name: 'Variants', component: <VariantsTab />, disabled: !id },
+          { name: 'Options', component: <OptionsTab /> },
+          { name: 'Variants', component: <VariantsTab /> },
         ]}
       />
     </div>
