@@ -1,6 +1,5 @@
-import { Button, DialogClose, DialogContent, DialogFooter } from '@deenruv/react-ui-devkit';
+import { Button, DialogClose, DialogContent, DialogFooter, useSettings } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
-import { useSettings } from '@/state';
 import { ValueTypes } from '@deenruv/admin-types';
 import React, { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';

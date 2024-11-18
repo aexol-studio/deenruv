@@ -3,7 +3,6 @@ import { CornerDownRight } from 'lucide-react';
 import { useList } from '@/lists/useList';
 import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
-import { useSettings } from '@/state';
 import { useLocalStorage } from '@/hooks';
 import {
   ColumnDef,
@@ -48,6 +47,7 @@ import {
   TableRow,
   Routes,
   EmptyState,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { ImageWithPreview, Search, SortButton, Stack, TranslationSelect } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';

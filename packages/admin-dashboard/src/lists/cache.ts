@@ -1,4 +1,4 @@
-import { SETTINGS_LOCAL_STORAGE_KEY } from '@/state/settings';
+import { SETTINGS_LOCAL_STORAGE_KEY } from '@deenruv/react-ui-devkit';
 
 export type PaginatedCacheables =
   | 'administrators'

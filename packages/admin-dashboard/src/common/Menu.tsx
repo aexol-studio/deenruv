@@ -24,6 +24,8 @@ import {
   PopoverContent,
   PopoverTrigger,
   Routes,
+  useSettings,
+  getLanguageName,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -46,10 +48,10 @@ import { Nav } from './AwesomeMenu/Nav.js';
 import { NavLink, useMatches, useNavigate } from 'react-router-dom';
 import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
-import { languages, useSettings } from '@/state/settings';
 import { useServer } from '@/state';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 import { BrandLogo } from '@/components/BrandLogo.js';
+import { LanguageCode } from '@deenruv/admin-types';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
@@ -94,6 +96,8 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
     language: p.language,
     setLanguage: p.setLanguage,
   }));
+
+  const languages = [LanguageCode.en, LanguageCode.pl];
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -254,13 +258,10 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                              {languages.map((l) => (
-                                <DropdownMenuItem
-                                  key={l.language}
-                                  onClick={() => l.language !== language && setLanguage(l.language)}
-                                >
-                                  <span>{l.name}</span>
-                                  {l.language === language && <Check className="ml-auto h-4 w-4" />}
+                              {languages.map((lng) => (
+                                <DropdownMenuItem key={lng} onClick={() => lng !== language && setLanguage(lng)}>
+                                  <span>{getLanguageName(lng)}</span>
+                                  {lng === language && <Check className="ml-auto h-4 w-4" />}
                                 </DropdownMenuItem>
                               ))}
                             </DropdownMenuSubContent>

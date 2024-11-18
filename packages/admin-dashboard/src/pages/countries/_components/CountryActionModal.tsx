@@ -10,12 +10,12 @@ import {
   DialogTitle,
   Input,
   Label,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { CountryListType } from '@/graphql/settings';
 import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
-import { useSettings } from '@/state';
 import { DeletionResult, LanguageCode } from '@deenruv/admin-types';
 
 import React, { useEffect, useMemo } from 'react';

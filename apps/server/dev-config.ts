@@ -4,7 +4,7 @@ import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-serve
 import { SeoPlugin } from '@deenruv/seo-plugin';
 import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
 import { BadgesServerPlugin } from '@deenruv/product-badges-plugin';
-import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin';
+import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
@@ -163,7 +163,7 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
-        // DeenruvExamplesPlugin,
+        DeenruvExamplesServerPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,

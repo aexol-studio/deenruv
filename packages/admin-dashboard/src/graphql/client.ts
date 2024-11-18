@@ -1,5 +1,4 @@
 import { scalars } from '@/graphql/scalars';
-import { useSettings } from '@/state/settings';
 import {
   GraphQLError,
   GraphQLResponse,
@@ -8,7 +7,7 @@ import {
   chainOptions,
   fetchOptions,
 } from '@deenruv/admin-types';
-import { ADMIN_API_URL, deenruvAPICall } from '@deenruv/react-ui-devkit';
+import { ADMIN_API_URL, useSettings, deenruvAPICall } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 
 const apiFetchVendure =

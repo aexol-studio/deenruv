@@ -1,8 +1,15 @@
 import { cn } from '@/lib/utils';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  usePluginStore,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
 import { useServer } from '@/state/server';
-import { useSettings } from '@/state/settings';
 import { clearAllCache } from '@/lists/cache';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { useTranslation } from 'react-i18next';

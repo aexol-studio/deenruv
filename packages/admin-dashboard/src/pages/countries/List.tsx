@@ -18,9 +18,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { Search, Stack, TranslationSelect, ListTable } from '@/components';
-import { useSettings } from '@/state';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useLocalStorage } from '@/hooks';
 import {

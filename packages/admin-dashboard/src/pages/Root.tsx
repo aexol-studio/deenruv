@@ -8,12 +8,13 @@ import {
   paymentMethodsSelector,
   countrySelector,
 } from '@/graphql/base';
-import { useServer, useSettings } from '@/state';
+import { useServer } from '@/state';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { toast } from 'sonner';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
+import { useSettings } from '@deenruv/react-ui-devkit';
 
 const TAKE = 100;
 const getAllPaginatedCountries = async () => {

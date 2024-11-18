@@ -1,5 +1,13 @@
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@deenruv/react-ui-devkit';
-import { useSettings } from '@/state';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  getLanguageName,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 import { Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +29,7 @@ export const TranslationSelect = () => {
         <SelectGroup>
           {availableLanguages.map((l) => (
             <SelectItem key={l} value={l}>
-              {`${t(`languageCode.${l}`)} ${l.toUpperCase()}`}
+              {getLanguageName(l)}
             </SelectItem>
           ))}
         </SelectGroup>

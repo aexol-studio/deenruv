@@ -1,7 +1,7 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { useSettings } from '@/state/settings';
+import { useSettings } from '@deenruv/react-ui-devkit';
 
 export const defaultNS = 'common';
 

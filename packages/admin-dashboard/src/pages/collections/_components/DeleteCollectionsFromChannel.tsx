@@ -6,9 +6,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
-import { useSettings } from '@/state';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
