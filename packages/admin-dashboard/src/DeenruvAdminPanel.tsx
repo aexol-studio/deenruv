@@ -4,14 +4,20 @@ import { I18nextProvider } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 import i18n from './i18.js';
-import { Routes, PluginProvider, PluginStore, DeenruvAdminPanelSettings, useSettings } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  PluginProvider,
+  PluginStore,
+  DeenruvAdminPanelSettings,
+  useSettings,
+  GlobalStoreProvider,
+} from '@deenruv/react-ui-devkit';
 
 import { Root } from '@/pages/Root';
 import { LoginScreen } from '@/pages/LoginScreen';
 import { Custom404 } from '@/pages/Custom404';
 import * as Pages from '@/pages';
 import { DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
-import { BrandingStoreProvider } from './state/branding.js';
 import * as resources from './locales';
 import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
 
@@ -61,7 +67,14 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   const isLocalhost = window.location.hostname === 'localhost';
   pluginsStore.install(plugins, i18n);
   loadTranslations();
-  window.__DEENRUV_SETTINGS__ = settings;
+  window.__DEENRUV_SETTINGS__ = {
+    ...settings,
+    api: {
+      ...settings.api,
+      authTokenName: settings.api.authTokenName || 'deenruv-auth-token',
+      channelTokenName: settings.api.channelTokenName || 'deenruv-token',
+    },
+  };
 
   const router = createBrowserRouter([
     { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },
@@ -85,7 +98,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   }, [theme]);
 
   return (
-    <BrandingStoreProvider {...settings}>
+    <GlobalStoreProvider {...settings}>
       <I18nextProvider i18n={i18n} defaultNS={'translation'}>
         <AnimatePresence>
           {isLoggedIn ? (
@@ -99,6 +112,6 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
         </AnimatePresence>
         <Toaster theme={theme} richColors toastOptions={{ closeButton: true, className: 'border' }} />
       </I18nextProvider>
-    </BrandingStoreProvider>
+    </GlobalStoreProvider>
   );
 };

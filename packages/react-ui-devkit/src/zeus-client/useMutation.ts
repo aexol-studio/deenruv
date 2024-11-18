@@ -3,7 +3,6 @@ import { DocumentNode } from 'graphql';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { print } from 'graphql';
 import { deenruvAPICall } from './deenruvAPICall';
-import { buildDeenruvParams } from './utils';
 
 export function useMutation<T, V extends Record<string, any> = Record<string, any>>(
     mutation: DocumentNode | TypedDocumentNode<T, V>,
@@ -16,13 +15,7 @@ export function useMutation<T, V extends Record<string, any> = Record<string, an
         try {
             setLoading(true);
             setError(null);
-            const result = (await deenruvAPICall(
-                buildDeenruvParams({
-                    adminAPIHost: 'http://localhost:3000',
-                    languageCode: 'en',
-                    channel: { name: 'deenruv-token', value: '__default_channel__' },
-                }),
-            )(print(mutation), variables)) as T;
+            const result = (await deenruvAPICall()(print(mutation), variables)) as T;
             setData(result);
             return result;
         } catch (err) {

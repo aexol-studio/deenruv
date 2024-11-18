@@ -1,4 +1,4 @@
-import { FromSelectorWithScalars, LanguageCode, Selector } from '@deenruv/admin-types';
+import { CurrencyCode, FromSelectorWithScalars, LanguageCode, Selector } from '@deenruv/admin-types';
 import { getI18n } from 'react-i18next';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';

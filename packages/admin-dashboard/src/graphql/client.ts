@@ -8,62 +8,6 @@ import {
   fetchOptions,
 } from '@deenruv/admin-types';
 import { ADMIN_API_URL, useSettings, deenruvAPICall } from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-
-const apiFetchVendure =
-  (options: fetchOptions) =>
-  (query: string, variables: Record<string, unknown> = {}) => {
-    const fetchOptions = options[1] || {};
-    if (fetchOptions.method && fetchOptions.method === 'GET') {
-      return fetch(`${options[0]}?query=${encodeURIComponent(query)}`, fetchOptions)
-        .then(handleFetchResponse)
-        .then((response: GraphQLResponse) => {
-          if (response.errors) {
-            response.errors.forEach((e) =>
-              toast.error(`GlobalError: ${'path' in e ? (e.path as string) : ''} ${e.message}`),
-            );
-            throw new GraphQLError(response);
-          }
-          return response.data;
-        });
-    }
-    const token = useSettings.getState().token;
-    const logIn = useSettings.getState().logIn;
-    const selectedChannel = useSettings.getState().selectedChannel;
-    const additionalHeaders: Record<string, string> = token
-      ? {
-          ...(selectedChannel && { 'vendure-token': selectedChannel.token }),
-          Authorization: `Bearer ${token}`,
-        }
-      : {};
-
-    return fetch(`${options[0]}`, {
-      ...fetchOptions,
-      body: JSON.stringify({ query, variables }),
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        ...additionalHeaders,
-      },
-    })
-      .then((r) => {
-        const authToken = r.headers.get('deenruv-auth-token');
-        if (authToken !== null) {
-          logIn(authToken);
-        }
-        return handleFetchResponse(r);
-      })
-      .then((response: GraphQLResponse) => {
-        if (response.errors) {
-          response.errors.forEach((e) =>
-            toast.error(`GlobalError: ${'path' in e ? (e.path as string) : ''} ${e.message}`),
-          );
-          throw new GraphQLError(response);
-        }
-        return response.data;
-      });
-  };
 
 const uploadFileApi =
   (options: fetchOptions) =>
@@ -126,37 +70,19 @@ const uploadFileApi =
   };
 
 // * here we will just replace apiFetchVendure with deenruvAPICall
-export const VendureChain = (...options: chainOptions) => Thunder(apiFetchVendure(options), { scalars });
+export const VendureChain = () => Thunder(deenruvAPICall(), { scalars });
 export const VendureUploadChain = (...options: chainOptions) => Thunder(uploadFileApi(options), { scalars });
 
-const buildHeaders = (): Parameters<typeof VendureChain>[1] => {
-  const channel = useSettings.getState().selectedChannel;
-
-  return channel
-    ? {
-        headers: {
-          'Content-Type': 'application/json',
-          'vendure-token': channel.token,
-        },
-      }
-    : {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-};
 const buildURL = (): string => {
   const uri = window?.__DEENRUV_SETTINGS__?.api?.uri;
   return `${uri || ADMIN_API_URL}/admin-api?languageCode=${useSettings.getState().translationsLanguage}`;
 };
 
-export const apiCall = () => VendureChain(buildURL(), { ...buildHeaders() });
+export const apiCall = () => VendureChain();
 export const uploadApiCall = () => VendureUploadChain(buildURL());
 
-// @ts-error This is a workaround for the issue with the types of the VendureChain function
-export const adminApiQuery = VendureChain(buildURL(), { ...buildHeaders() })('query', { scalars });
-// @ts-error This is a workaround for the issue with the types of the VendureChain function
-export const adminApiMutation = VendureChain(buildURL(), { ...buildHeaders() })('mutation', { scalars });
+export const adminApiQuery = VendureChain()('query', { scalars });
+export const adminApiMutation = VendureChain()('mutation', { scalars });
 
 const handleFetchResponse = (response: Response): Promise<GraphQLResponse> => {
   if (!response.ok) {

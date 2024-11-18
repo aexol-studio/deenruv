@@ -6,7 +6,7 @@ import { FromSelectorWithScalars, GraphQLTypes } from '@deenruv/admin-types';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
-    api: { uri: string };
+    api: { uri: string; channelTokenName: string; authTokenName: string };
     branding: {
         name: string;
         logo?: {

@@ -3,7 +3,6 @@ import { DocumentNode } from 'graphql';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { print } from 'graphql';
 import { deenruvAPICall } from './deenruvAPICall';
-import { buildDeenruvParams } from './utils';
 
 export function useQuery<T, V extends Record<string, any> = Record<string, any>>(
     query: DocumentNode | TypedDocumentNode<T, V>,
@@ -18,13 +17,7 @@ export function useQuery<T, V extends Record<string, any> = Record<string, any>>
         try {
             setLoading(true);
             setError(null);
-            const result = (await deenruvAPICall(
-                buildDeenruvParams({
-                    adminAPIHost: 'http://localhost:3000',
-                    languageCode: 'en',
-                    channel: { name: 'deenruv-token', value: '__default_channel__' },
-                }),
-            )(print(query), passedVariables || variables)) as T;
+            const result = (await deenruvAPICall()(print(query), passedVariables || variables)) as T;
             setData(result);
             return result;
         } catch (err) {

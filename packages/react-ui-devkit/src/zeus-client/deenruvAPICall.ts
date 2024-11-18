@@ -1,3 +1,4 @@
+import { useSettings } from '@/state';
 import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-types';
 
 // * We can think about caching the response in the future
@@ -8,33 +9,29 @@ import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-type
 //     ttlAutopurge: true,
 // });
 
-export const deenruvAPICall = (options: fetchOptions) => {
+export const deenruvAPICall = () => {
     return async (query: string, variables: Record<string, unknown> = {}) => {
-        const fetchOptions = options[1] || {};
-        if (fetchOptions.method && fetchOptions.method === 'GET') {
-            return fetch(`${options[0]}?query=${encodeURIComponent(query)}`, fetchOptions)
-                .then(handleFetchResponse)
-                .then((response: GraphQLResponse) => {
-                    if (response.errors) {
-                        throw new GraphQLError(response);
-                    }
-                    return response.data;
-                });
-        }
-        return fetch(`${options[0]}`, {
+        const { language, selectedChannel, token, logIn } = useSettings.getState();
+        const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
+        const url = `${uri}/admin-api?languageCode=${language}`;
+        const additionalHeaders: Record<string, string> = token
+            ? {
+                  Authorization: `Bearer ${token}`,
+                  ...(selectedChannel?.token && { [channelTokenName]: selectedChannel.token }),
+              }
+            : {};
+        return fetch(url, {
             body: JSON.stringify({ query, variables }),
             method: 'POST',
+            credentials: 'include',
             headers: {
-                ...fetchOptions.headers,
+                ...additionalHeaders,
                 'Content-Type': 'application/json',
-                // Authorization: `Bearer ${token}`,
             },
-            ...fetchOptions,
         })
             .then(r => {
-                const authTokenName = 'deenruv-auth-token';
                 const authToken = r.headers.get(authTokenName);
-                // if (authToken != null) token = authToken;
+                if (authToken !== null) logIn(authToken);
                 return handleFetchResponse(r);
             })
             .then((response: GraphQLResponse) => {
