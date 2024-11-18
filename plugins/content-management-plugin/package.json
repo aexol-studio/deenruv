@@ -21,9 +21,15 @@
     },
     "dependencies": {
         "graphql-tag": "^2.12.6",
-        "react": "^18.2.0"
+        "react": "^18.2.0",
+        "@measured/puck": "^0.16.1",
+        "classnames": "^2.5.1",
+        "express": "^4.21.1"
     },
     "devDependencies": {
+        "recharts": "^2.12.7",
+        "@types/express": "^4.17.21",
+        "date-fns": "^3.6.0",
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
         "@deenruv/react-ui-devkit": "workspace:*",
@@ -38,6 +44,7 @@
         "sonner": "^1.4.41",
         "@nestjs/common": "~10.3.10",
         "@nestjs/graphql": "~12.2.0",
-        "typeorm": "0.3.20"
+        "typeorm": "0.3.20",
+        "react-dom": "^18.2.0"
     }
 }

@@ -18,7 +18,7 @@ import 'dotenv/config';
 import path from 'path';
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 
-// import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin/plugin-server';
+import { DeenruvExamplesPlugin } from '@deenruv/deenruv-examples-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin/plugin-server';
 import { s3Client } from './client-s3';
@@ -161,7 +161,7 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
-        // DeenruvExamplesPlugin,
+        DeenruvExamplesPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,
