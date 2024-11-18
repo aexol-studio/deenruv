@@ -3,7 +3,6 @@ export * from './Stack.js';
 export * from './Search/index.js';
 export * from './ImageWithPreview.js';
 export * from './AutoComplete/ProductVariantSearch.js';
-export * from './EmptyState.js';
 export * from './TranslationSelect.js';
 export * from './AssetsModalInput.js';
 export * from './SortButton.js';

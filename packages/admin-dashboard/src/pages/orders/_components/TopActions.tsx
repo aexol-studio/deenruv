@@ -16,10 +16,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   Routes,
+  OrderStateBadge,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
-import { OrderStateBadge } from '@/pages/orders/_components/OrderStateBadge';
 import { PossibleOrderStates } from '@/pages/orders/_components/PossibleOrderStates';
 import { useServer } from '@/state';
 import { DeletionResult, ResolverInputTypes } from '@deenruv/admin-types';

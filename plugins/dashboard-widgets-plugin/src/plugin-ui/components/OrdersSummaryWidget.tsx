@@ -1,5 +1,5 @@
 import { priceFormatter, Badge, Card, CardTitle } from '@deenruv/react-ui-devkit';
-import { client, scalars } from '../graphql/client';
+import { createClient, scalars } from '../graphql/client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     endOfMonth,
@@ -13,7 +13,7 @@ import {
     startOfYear,
     startOfYesterday,
 } from 'date-fns';
-import { CurrencyCode } from '../zeus';
+import { CurrencyCode, LanguageCode } from '../zeus';
 import {
     Select,
     SelectContent,
@@ -118,7 +118,7 @@ export const OrdersSummaryWidget = () => {
     ];
 
     const getOrders = async (range: { start: Date; end: Date }) => {
-        const response = await client('query', { scalars })({
+        const response = await createClient(LanguageCode.en)('query', { scalars })({
             orders: [
                 { options: { filter: { orderPlacedAt: { between: range } } } },
                 { items: SummaryOrdersSelector, totalItems: true },

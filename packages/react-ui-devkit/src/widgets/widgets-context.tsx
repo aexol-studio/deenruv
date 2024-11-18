@@ -4,9 +4,11 @@ import { createStore, useStore } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { createContext, useContext } from 'react';
 import { Widget } from '@/types';
+import { Channel } from '@/plugins';
 
 interface WidgetsStoreProps {
     widgets: Widget[];
+    context: { channel?: Channel; language: string; translationsLanguage: string } | undefined;
     options?: {
         localStorageKey?: string;
     };
@@ -24,6 +26,7 @@ type WidgetsStoreType = ReturnType<typeof createWidgetsStore>;
 const createWidgetsStore = (initProps?: Partial<WidgetsStoreProps>) => {
     const DEFAULT_PROPS: WidgetsStoreProps = {
         widgets: [],
+        context: undefined,
         options: {
             localStorageKey: 'dashboard-widgets',
         },

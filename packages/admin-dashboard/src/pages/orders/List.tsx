@@ -43,12 +43,13 @@ import {
   TableHeader,
   TableRow,
   Routes,
+  EmptyState,
+  OrderStateBadge,
 } from '@deenruv/react-ui-devkit';
-import { PaymentMethodImage, Search, SortButton, EmptyState } from '@/components';
+import { PaymentMethodImage, Search, SortButton } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { OrderStateBadge } from './_components/OrderStateBadge.js';
 import { toast } from 'sonner';
 import { OrdersSortOptions, ParamFilterFieldTuple, ordersSortOptionsArray } from '@/lists/types';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
@@ -79,6 +80,7 @@ const getOrders = async (options: ResolverInputTypes['OrderListOptions']) => {
 
 export const OrdersListPage = () => {
   const { t } = useTranslation('orders');
+  const { t: tCommon } = useTranslation('common');
   const navigate = useNavigate();
   const [filterState, setFilterState] = useState<ModelTypes[ListType['orders']] | undefined>();
 
@@ -591,7 +593,11 @@ export const OrdersListPage = () => {
                   </TableRow>
                 ))
               ) : (
-                <EmptyState columnsLength={columns.length} filtered={isFilterOn} />
+                <EmptyState
+                  columnsLength={columns.length}
+                  title={tCommon(`emptyState.default.${isFilterOn ? 'filtered' : 'empty'}.title`)}
+                  description={tCommon(`emptyState.default.${isFilterOn ? 'filtered' : 'empty'}.text`)}
+                />
               )}
             </TableBody>
           </Table>

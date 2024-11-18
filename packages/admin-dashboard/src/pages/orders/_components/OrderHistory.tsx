@@ -28,8 +28,8 @@ import {
   TimelineHeading,
   TimelineItem,
   TimelineLine,
+  OrderStateBadge,
 } from '@deenruv/react-ui-devkit';
-import { OrderStateBadge } from './OrderStateBadge.js';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 import { apiCall } from '@/graphql/client';
 import { DeletionResult, HistoryEntryType, ModelTypes } from '@deenruv/admin-types';

@@ -150,3 +150,27 @@ export type PluginNavigationLink = {
     icon: FC<SVGProps<SVGSVGElement>>;
     placement?: { linkId: string; where?: 'above' | 'under' };
 };
+
+export enum PaymentMethod {
+    Przelewy24 = 'przelewy24',
+    Standard = 'standard-payment',
+    Transfer = 'przelew-bankowy',
+    OnDelivery = 'gotowka-za-pobraniem',
+}
+
+export enum ORDER_STATE {
+    CREATED = 'Created',
+    DRAFT = 'Draft',
+    ADDING_ITEMS = 'AddingItems',
+    ARRANGING_PAYMENT = 'ArrangingPayment',
+    PAYMENT_AUTHORIZED = 'PaymentAuthorized',
+    PAYMENT_SETTLED = 'PaymentSettled',
+    PARTIALLY_SHIPPED = 'PartiallyShipped',
+    SHIPPED = 'Shipped',
+    PARTIALLY_DELIVERED = 'PartiallyDelivered',
+    DELIVERED = 'Delivered',
+    MODIFYING = 'Modifying',
+    ARRANGING_ADDITIONAL_PAYMENT = 'ArrangingAdditionalPayment',
+    CANCELLED = 'Cancelled',
+    IN_REALIZATION = 'InRealization',
+}

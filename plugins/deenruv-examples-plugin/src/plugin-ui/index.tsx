@@ -2,7 +2,6 @@ import { BASE_GROUP_ID, createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
 import { pages } from './pages';
 import { SquareIcon } from './assets';
-import { widgets } from './widgets';
 import { inputs } from './inputs';
 import { tables } from './tables';
 import { tabs } from './tabs';
@@ -14,7 +13,6 @@ export const UIPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'First Plugin',
     pages,
-    widgets,
     inputs,
     tables,
     tabs,

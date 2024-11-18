@@ -11,7 +11,7 @@ import {
 } from '@/types';
 import { WidgetsStoreProvider } from '@/widgets/widgets-context';
 
-type Channel = {
+export type Channel = {
     id: string;
     code: string;
     currencyCode: string;
@@ -108,7 +108,9 @@ export const PluginProvider: FC<
                 widgets: plugins.widgets,
             }}
         >
-            <WidgetsStoreProvider widgets={plugins.widgets}>{children}</WidgetsStoreProvider>
+            <WidgetsStoreProvider context={context} widgets={plugins.widgets}>
+                {children}
+            </WidgetsStoreProvider>
         </PluginStoreContext.Provider>
     );
 };

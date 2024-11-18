@@ -2,6 +2,7 @@
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-server-plugin';
 import { SeoPlugin } from '@deenruv/seo-plugin';
+import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
 import { BadgesServerPlugin } from '@deenruv/product-badges-plugin';
 
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
@@ -169,6 +170,7 @@ export const devConfig: DeenruvConfig = {
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
         SeoPlugin,
+        DashboardWidgetsPlugin,
         BadgesServerPlugin,
     ],
 };

@@ -12,10 +12,10 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  OrderStateBadge,
 } from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { useTranslation } from 'react-i18next';
-import { OrderStateBadge } from '@/pages/orders/_components/OrderStateBadge';
 import { ORDER_STATE } from '@/graphql/base';
 import { ToRealizationForm } from '@/pages/orders/_components/ToRealizationForm';
 

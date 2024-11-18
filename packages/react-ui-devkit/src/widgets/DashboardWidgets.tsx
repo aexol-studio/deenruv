@@ -33,17 +33,20 @@ import { CSS } from '@dnd-kit/utilities';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { Widget } from '@/types';
 import { useWidgetsStore } from './widgets-context';
+import { LanguageCode } from '@deenruv/admin-types';
 
 const WidgetItemContext = createContext<{
     size: { width: number; height: number };
     sizes: { width: number; height: number }[];
     removeWidget: () => void;
     resizeWidget: (size: { width: number; height: number }) => void;
+    language: LanguageCode;
 }>({
     size: { width: 0, height: 0 },
     sizes: [],
     removeWidget: () => undefined,
     resizeWidget: () => undefined,
+    language: LanguageCode.en,
 });
 
 const WidgetItemProvider: React.FC<
@@ -60,6 +63,7 @@ const WidgetItemProvider: React.FC<
                 sizes: widget.sizes,
                 removeWidget: () => remove(widget.id),
                 resizeWidget: (size: { width: number; height: number }) => resize(widget.id, size),
+                language: LanguageCode.en,
             }}
         >
             {children}

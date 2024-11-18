@@ -20,8 +20,9 @@ import {
   TableHeader,
   TableRow,
   Routes,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
-import { EmptyState, EntityCustomFields, ContextMenu } from '@/components';
+import { EntityCustomFields, ContextMenu } from '@/components';
 import { ChevronLeft, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog.js';
@@ -337,7 +338,11 @@ export const FacetsDetailPage = () => {
                         ))
                       ) : (
                         <>
-                          <EmptyState columnsLength={tableHeaders.length} elementsType="facets" />
+                          <EmptyState
+                            columnsLength={tableHeaders.length}
+                            title={t(`common:emptyState.facets.empty.title`)}
+                            description={t(`common:emptyState.facets.empty.text`)}
+                          />
                         </>
                       )}
                     </TableBody>

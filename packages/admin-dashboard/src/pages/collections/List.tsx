@@ -47,8 +47,9 @@ import {
   TableHeader,
   TableRow,
   Routes,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
-import { EmptyState, ImageWithPreview, Search, SortButton, Stack, TranslationSelect } from '@/components';
+import { ImageWithPreview, Search, SortButton, Stack, TranslationSelect } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, ChevronDown, MoreHorizontal } from 'lucide-react';
 import { format } from 'date-fns';
@@ -80,6 +81,7 @@ const getChildren = async (parentId: string, callback: (items: CollectionListTyp
 
 export const CollectionsListPage = () => {
   const { t } = useTranslation('collections');
+  const { t: tCommon } = useTranslation('common');
   const [subRows, setSubRows] = useState<{ [key: string]: CollectionListType[] }>();
   const [tableLoading, setTableLoading] = useState(false);
   const [drawerData, setDrawerData] = useState<
@@ -581,7 +583,12 @@ export const CollectionsListPage = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <EmptyState columnsLength={columns.length} filtered={isFilterOn} />
+                  <EmptyState
+                    columnsLength={columns.length}
+                    filtered={isFilterOn}
+                    title={tCommon(`emptyState.default.empty.title`)}
+                    description={tCommon(`emptyState.default.empty.text`)}
+                  />
                 )}
               </TableBody>
             </Table>

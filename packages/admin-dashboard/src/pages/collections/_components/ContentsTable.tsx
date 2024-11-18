@@ -20,6 +20,7 @@ import {
   TableRow,
   Skeleton,
   Routes,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
@@ -44,7 +45,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDebounce } from 'use-debounce';
-import { EmptyState, ImageWithPreview } from '@/components';
+import { ImageWithPreview } from '@/components';
 
 interface ContentsProps {
   collectionId?: string;
@@ -221,7 +222,12 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
               </>
             ))
           ) : (
-            <EmptyState columnsLength={columns.length} filtered={false} />
+            <EmptyState
+              columnsLength={columns.length}
+              filtered={false}
+              title={t(`common:emptyState.default.empty.title`)}
+              description={t(`common:emptyState.default.empty.text`)}
+            />
           )}
         </TableBody>
       </Table>{' '}

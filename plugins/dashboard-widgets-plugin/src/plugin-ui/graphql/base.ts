@@ -1,0 +1,16 @@
+export enum ORDER_STATE {
+    CREATED = 'Created',
+    DRAFT = 'Draft',
+    ADDING_ITEMS = 'AddingItems',
+    ARRANGING_PAYMENT = 'ArrangingPayment',
+    PAYMENT_AUTHORIZED = 'PaymentAuthorized',
+    PAYMENT_SETTLED = 'PaymentSettled',
+    PARTIALLY_SHIPPED = 'PartiallyShipped',
+    SHIPPED = 'Shipped',
+    PARTIALLY_DELIVERED = 'PartiallyDelivered',
+    DELIVERED = 'Delivered',
+    MODIFYING = 'Modifying',
+    ARRANGING_ADDITIONAL_PAYMENT = 'ArrangingAdditionalPayment',
+    CANCELLED = 'Cancelled',
+    IN_REALIZATION = 'InRealization',
+}

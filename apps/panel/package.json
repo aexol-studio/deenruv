@@ -21,6 +21,7 @@
     "@deenruv/product-badges-plugin": "workspace:*",
     "@deenruv/deenruv-examples-plugin": "workspace:*",
     "@deenruv/deenruv-second-plugin": "workspace:*",
+    "@deenruv/dashboard-widgets-plugin": "workspace:*",
     "@deenruv/react-ui-devkit": "workspace:*",
     "@deenruv/admin-types": "workspace:*",
     "@aexol-studio/hooks": "^0.2.16",

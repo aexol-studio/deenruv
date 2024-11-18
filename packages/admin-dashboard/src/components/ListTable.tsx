@@ -1,8 +1,7 @@
 import { ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@deenruv/react-ui-devkit';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, EmptyState } from '@deenruv/react-ui-devkit';
 import { ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EmptyState } from '.';
 
 interface ListTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -58,7 +57,12 @@ export function ListTable<TData, TValue>({ table, columns, isFiltered, Paginate 
                 </TableRow>
               ))
             ) : (
-              <EmptyState columnsLength={columns.length} filtered={isFiltered} />
+              <EmptyState
+                columnsLength={columns.length}
+                filtered={isFiltered}
+                title={t(`emptyState.default.${isFiltered ? 'filtered' : 'empty'}.title`)}
+                description={t(`emptyState.default.${isFiltered ? 'filtered' : 'empty'}.text`)}
+              />
             )}
           </TableBody>
         </Table>
