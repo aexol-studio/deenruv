@@ -163,7 +163,7 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
-        DeenruvExamplesPlugin,
+        // DeenruvExamplesPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,

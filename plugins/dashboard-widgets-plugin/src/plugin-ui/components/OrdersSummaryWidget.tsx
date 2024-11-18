@@ -1,4 +1,4 @@
-import { priceFormatter, Badge, Card, CardTitle } from '@deenruv/react-ui-devkit';
+import { priceFormatter, Badge, Card, CardTitle, useQuery } from '@deenruv/react-ui-devkit';
 import { createClient, scalars } from '../graphql/client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -25,6 +25,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { SummaryOrdersSelector } from '../graphql/selectors';
 import { translationNS } from '../translation-ns';
+import { A, TEST } from '../graphql/queries';
 
 enum Periods {
     Today = 'today',
@@ -42,6 +43,7 @@ type Period = {
 };
 
 export const OrdersSummaryWidget = () => {
+    const { data } = useQuery(A, { id: '1' });
     const { t } = useTranslation(translationNS);
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');

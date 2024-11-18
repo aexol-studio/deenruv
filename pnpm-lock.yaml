@@ -909,6 +909,13 @@ importers:
         version: 4.3.2(typescript@5.4.2)(vite@5.4.11(@types/node@20.17.6)(less@4.2.0)(sass@1.80.7)(stylus@0.62.0)(terser@5.36.0))
 
   packages/admin-types:
+    dependencies:
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.9.0)
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
     devDependencies:
       rimraf:
         specifier: ^6.0.1
@@ -1570,6 +1577,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@18.3.1)
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.9.0)
       '@radix-ui/react-accordion':
         specifier: ^1.1.2
         version: 1.2.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1675,6 +1685,9 @@ importers:
       framer-motion:
         specifier: ^11.1.7
         version: 11.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2034,6 +2047,9 @@ importers:
 
   plugins/dashboard-widgets-plugin:
     dependencies:
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.9.0)
       react:
         specifier: ^18.2.0
         version: 18.3.1

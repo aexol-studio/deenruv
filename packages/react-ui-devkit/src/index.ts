@@ -9,3 +9,4 @@ export * from './zeus-client';
 export * from './selectors';
 export * from './routes';
 export * from './tailwind.config';
+export * from './zeus-client/index';
