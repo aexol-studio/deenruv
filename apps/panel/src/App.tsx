@@ -23,7 +23,7 @@ const settings: DeenruvAdminPanelSettings = {
       collapsed: <DeenruvLogo isCollapsed={true} />,
     },
   },
-  api: { uri: 'http://localhost:3000' },
+  api: { uri: 'http://localhost:3000', authTokenName: 'deenruv-auth-token', channelTokenName: 'deenruv-token' },
 };
 
 function App() {

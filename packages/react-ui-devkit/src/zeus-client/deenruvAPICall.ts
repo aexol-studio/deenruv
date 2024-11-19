@@ -14,6 +14,7 @@ export const deenruvAPICall = () => {
         const { language, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
         const url = `${uri}/admin-api?languageCode=${language}`;
+        console.log(token);
         const additionalHeaders: Record<string, string> = token
             ? {
                   Authorization: `Bearer ${token}`,
@@ -36,6 +37,13 @@ export const deenruvAPICall = () => {
             })
             .then((response: GraphQLResponse) => {
                 if (response.errors) {
+                    const shouldLogout = response.errors.some(
+                        (e: any) => 'extensions' in e && e.extensions.code === 'FORBIDDEN',
+                    );
+                    if (shouldLogout) {
+                        useSettings.getState().logOut();
+                        return response.data;
+                    }
                     throw new GraphQLError(response);
                 }
                 return response.data;
