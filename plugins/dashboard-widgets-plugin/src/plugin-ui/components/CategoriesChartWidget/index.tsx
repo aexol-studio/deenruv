@@ -10,59 +10,23 @@ import {
     ChartTooltip,
     ChartTooltipContent,
     Separator,
+    useLazyQuery,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useState } from 'react';
-import { BetterMetricInterval, BetterMetricType, LanguageCode, ResolverInputTypes } from '../../zeus';
-import { createClient, scalars } from '../../graphql/client';
+import { BetterMetricInterval, BetterMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { endOfToday, startOfToday } from 'date-fns';
 import { PeriodSelect, Period, Periods } from '../shared';
 import { dashCaseToSpaces } from './dashCaseToSpaces';
 import { colors, EmptyData } from '../shared';
 import { translationNS } from '../../translation-ns';
-
-const getProductsCollections = async (ids: string[]) => {
-    const { products } = await createClient(LanguageCode.en)('query', { scalars })({
-        products: [
-            {
-                options: {
-                    filter: {
-                        id: {
-                            in: ids,
-                        },
-                    },
-                },
-            },
-            { items: { collections: { slug: true } } },
-        ],
-    });
-
-    return products.items.map(p => p.collections);
-};
-
-const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryInput']) => {
-    const { betterMetricSummary } = await createClient(LanguageCode.en)('query', { scalars })({
-        betterMetricSummary: [
-            { input },
-            {
-                title: true,
-                interval: true,
-                type: true,
-                entries: {
-                    label: true,
-                    value: true,
-                    additionalData: { id: true, name: true, quantity: true },
-                },
-            },
-        ],
-    });
-
-    return betterMetricSummary;
-};
+import { BetterMetricsQuery, ProductCollectionsQuery } from '../../graphql';
 
 export const CategoriesChartWidget = () => {
     const { t } = useTranslation(translationNS);
     const [chartData, setChartData] = useState<{ category: string; value: number }[]>([]);
+    const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
+    const [fetchProductCollections] = useLazyQuery(ProductCollectionsQuery);
     const [selectedPeriod, setSelectedPeriod] = useState<Period>({
         period: Periods.Today,
         text: t('today'),
@@ -71,15 +35,17 @@ export const CategoriesChartWidget = () => {
     });
 
     useEffect(() => {
-        getBetterMetrics({
-            interval: {
-                type: BetterMetricInterval.Custom,
-                start: selectedPeriod.start,
-                end: selectedPeriod.end,
+        fetchBetterMetrics({
+            input: {
+                interval: {
+                    type: BetterMetricInterval.Custom,
+                    start: selectedPeriod.start,
+                    end: selectedPeriod.end,
+                },
+                types: [BetterMetricType.OrderTotalProductsCount],
             },
-            types: [BetterMetricType.OrderTotalProductsCount],
-        }).then(resp => {
-            const entries = resp[0].entries;
+        }).then(({ betterMetricSummary }) => {
+            const entries = betterMetricSummary[0].entries;
             const salesTotals: Record<string, { name: string; quantity: number }> = {};
 
             entries.forEach(entry => {
@@ -95,11 +61,11 @@ export const CategoriesChartWidget = () => {
                 });
             });
 
-            getProductsCollections(Object.keys(salesTotals)).then(collections => {
+            fetchProductCollections({ in: Object.keys(salesTotals) }).then(({ products }) => {
                 const categoryCounts: Record<string, number> = {};
 
-                collections.forEach(productCategories => {
-                    productCategories
+                products?.items.forEach(({ collections }) => {
+                    collections
                         .filter(c => c.slug !== 'wszystkie')
                         .forEach(category => {
                             const categoryName = dashCaseToSpaces(category.slug.trim());
@@ -155,6 +121,7 @@ export const CategoriesChartWidget = () => {
                     <ChartContainer
                         config={chartConfig}
                         className="mx-auto aspect-square max-h-[400px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+                        style={{ height: `300px`, width: '100%' }}
                     >
                         <PieChart>
                             <ChartTooltip content={<ChartTooltipContent hideLabel />} />

@@ -1,5 +1,5 @@
+import { FromSelectorWithScalars } from '@deenruv/admin-types';
 import { Selector } from '../zeus';
-import { FromSelectorWithScalars } from './';
 
 export const SummaryOrdersSelector = Selector('Order')({
     total: true,

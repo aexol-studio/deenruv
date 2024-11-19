@@ -19,34 +19,28 @@ import {
     Separator,
     PaymentMethod,
     OrderStateBadge,
+    useQuery,
 } from '@deenruv/react-ui-devkit';
-import { ORDER_STATE, scalars, LatestOrderListType, LatestOrderSelector, createClient } from '../../graphql';
+import { LatestOrderListType, LatestOrdersQuery } from '../../graphql';
 import { Routes, priceFormatter, useWidgetsStore } from '@deenruv/react-ui-devkit';
-import { LanguageCode, SortOrder } from '../../zeus';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { formatDistanceToNow } from 'date-fns';
 import { pl } from 'date-fns/locale/pl';
 import { ArrowRight, Hash, RefreshCw } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { translationNS } from '../../translation-ns';
 
 type LatestOrdersProps = object;
 
-const LATEST_ORDERS_EXCLUDED_STATUSES = [
-    ORDER_STATE.CANCELLED,
-    ORDER_STATE.DRAFT,
-    ORDER_STATE.MODIFYING,
-    ORDER_STATE.ADDING_ITEMS,
-];
-
 export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
     const { t } = useTranslation(translationNS);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [orders, setOrders] = useState<LatestOrderListType[]>([]);
     const language = useWidgetsStore(p => p.context?.language);
+    const { data: latestOrdersData, runQuery: getOrders } = useQuery(LatestOrdersQuery);
+    const orders = latestOrdersData?.orders?.items || [];
 
     const columns: ColumnDef<LatestOrderListType>[] = [
         {
@@ -105,31 +99,6 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
             ),
         },
     ];
-
-    const getOrders = async () => {
-        const response = await createClient(LanguageCode.en)('query', { scalars })({
-            orders: [
-                {
-                    options: {
-                        take: 5,
-                        filter: { active: { eq: false }, state: { notIn: LATEST_ORDERS_EXCLUDED_STATUSES } },
-                        sort: { createdAt: SortOrder.DESC },
-                    },
-                },
-                {
-                    items: LatestOrderSelector,
-                    totalItems: true,
-                },
-            ],
-        });
-        setIsLoading(false);
-
-        setOrders(response.orders.items);
-    };
-
-    useEffect(() => {
-        getOrders();
-    }, []);
 
     const table = useReactTable({
         data: orders || [],

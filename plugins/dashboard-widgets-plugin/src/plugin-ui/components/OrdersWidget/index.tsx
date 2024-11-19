@@ -11,6 +11,7 @@ import {
     addMissingDays,
     getZonedDate,
     usePluginStore,
+    useLazyQuery,
 } from '@deenruv/react-ui-devkit';
 
 import { MetricsIntervalSelect } from './MetricsIntervalSelect';
@@ -18,8 +19,8 @@ import { MetricsCustomDates } from './MetricCustomDates';
 import { MetricTypeSelect } from './MetricTypeSelect';
 import { OrdersChart } from './OrdersChart';
 
-import { BetterMetricInterval, BetterMetricType, LanguageCode, ResolverInputTypes } from '../../zeus';
-import { createClient } from '../../graphql';
+import { BetterMetricInterval, BetterMetricType, ResolverInputTypes } from '../../zeus';
+import { BetterMetricsQuery } from '../../graphql';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 type BetterMetricsChartDataType = {
@@ -29,30 +30,10 @@ type BetterMetricsChartDataType = {
     entries: { label: string; value: number; additionalData?: AdditionalEntryData[] }[];
 }[];
 
-const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryInput']) => {
-    const { betterMetricSummary } = await createClient(LanguageCode.en)('query')({
-        betterMetricSummary: [
-            { input },
-            {
-                title: true,
-                interval: true,
-                type: true,
-                entries: {
-                    label: true,
-                    value: true,
-                    additionalData: { id: true, name: true, quantity: true },
-                },
-            },
-        ],
-    });
-
-    return betterMetricSummary;
-};
-
 export const OrdersWidget = () => {
     const { t } = useTranslation('dashboard');
+    const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
     const { language } = usePluginStore();
-    console.log(language);
     const [metricLoading, setMetricLoading] = useState(false);
     const [metricSelectValue, setMetricSelectValue] = useState(BetterMetricInterval.Weekly);
 
@@ -123,9 +104,9 @@ export const OrdersWidget = () => {
         (async () => {
             try {
                 setMetricLoading(true);
-                const metric = await getBetterMetrics(metricSettings);
+                const { betterMetricSummary } = await fetchBetterMetrics({ input: metricSettings });
 
-                setBetterMetrics(metric);
+                setBetterMetrics(betterMetricSummary);
             } catch (e) {
                 console.log(e);
             } finally {

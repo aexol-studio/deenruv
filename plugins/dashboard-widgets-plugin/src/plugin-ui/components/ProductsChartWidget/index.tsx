@@ -1,5 +1,5 @@
 import { Bar, BarChart, Cell, XAxis, YAxis } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
+import { Card, CardContent, CardHeader, CardTitle, useLazyQuery } from '@deenruv/react-ui-devkit';
 import {
     ChartConfig,
     ChartContainer,
@@ -8,36 +8,17 @@ import {
     Separator,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
-import { BetterMetricInterval, BetterMetricType, LanguageCode, ResolverInputTypes } from '../../zeus';
-import { createClient, scalars } from '../../graphql/client';
+import { BetterMetricInterval, BetterMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { PeriodSelect, Period, Periods } from '../shared';
 import { endOfToday, startOfToday } from 'date-fns';
 import { translationNS } from '../../translation-ns';
 import { colors, EmptyData } from '../shared';
-
-const getBetterMetrics = async (input: ResolverInputTypes['BetterMetricSummaryInput']) => {
-    const { betterMetricSummary } = await createClient(LanguageCode.en)('query', { scalars })({
-        betterMetricSummary: [
-            { input },
-            {
-                title: true,
-                interval: true,
-                type: true,
-                entries: {
-                    label: true,
-                    value: true,
-                    additionalData: { id: true, name: true, quantity: true },
-                },
-            },
-        ],
-    });
-
-    return betterMetricSummary;
-};
+import { BetterMetricsQuery } from '../../graphql';
 
 export const ProductsChartWidget = () => {
     const { t } = useTranslation(translationNS);
+    const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
     const [chartData, setChartData] = useState<{ product: string; value: number }[]>([]);
     const [selectedPeriod, setSelectedPeriod] = useState<Period>({
         period: Periods.Today,
@@ -47,15 +28,17 @@ export const ProductsChartWidget = () => {
     });
 
     useEffect(() => {
-        getBetterMetrics({
-            interval: {
-                type: BetterMetricInterval.Custom,
-                start: selectedPeriod.start,
-                end: selectedPeriod.end,
+        fetchBetterMetrics({
+            input: {
+                interval: {
+                    type: BetterMetricInterval.Custom,
+                    start: selectedPeriod.start,
+                    end: selectedPeriod.end,
+                },
+                types: [BetterMetricType.OrderTotalProductsCount],
             },
-            types: [BetterMetricType.OrderTotalProductsCount],
-        }).then(resp => {
-            const entries = resp[0].entries;
+        }).then(({ betterMetricSummary }) => {
+            const entries = betterMetricSummary[0].entries;
             const salesTotals: Record<string, { name: string; quantity: number }> = {};
 
             entries.forEach(entry => {

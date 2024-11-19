@@ -1,5 +1,4 @@
-import { priceFormatter, Badge, Card, CardTitle, useQuery } from '@deenruv/react-ui-devkit';
-import { createClient, scalars } from '../graphql/client';
+import { priceFormatter, Badge, Card, CardTitle, useLazyQuery } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     endOfMonth,
@@ -13,7 +12,7 @@ import {
     startOfYear,
     startOfYesterday,
 } from 'date-fns';
-import { CurrencyCode, LanguageCode } from '../zeus';
+import { CurrencyCode } from '../zeus';
 import {
     Select,
     SelectContent,
@@ -23,9 +22,8 @@ import {
     SelectValue,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { SummaryOrdersSelector } from '../graphql/selectors';
 import { translationNS } from '../translation-ns';
-import { A, TEST } from '../graphql/queries';
+import { OrdersSummaryQuery } from '../graphql/queries';
 
 enum Periods {
     Today = 'today',
@@ -43,7 +41,8 @@ type Period = {
 };
 
 export const OrdersSummaryWidget = () => {
-    const { data } = useQuery(A, { id: '1' });
+    const [fetchOrders] = useLazyQuery(OrdersSummaryQuery);
+
     const { t } = useTranslation(translationNS);
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
@@ -53,6 +52,23 @@ export const OrdersSummaryWidget = () => {
         total: number;
         currencyCode: CurrencyCode;
     }>();
+
+    const getOrders = async (range: { start: Date; end: Date }) => {
+        const response = await fetchOrders({
+            options: { filter: { orderPlacedAt: { between: range } } },
+        });
+
+        setOrders({
+            totalCount: response.orders.totalItems,
+            totalWithTax: response.orders.items
+                .map(i => i.totalWithTax)
+                .reduce((accumulator, totalWithTax) => accumulator + totalWithTax, 0),
+            total: response.orders.items
+                .map(i => i.total)
+                .reduce((accumulator, total) => accumulator + total, 0),
+            currencyCode: response.orders.items[0]?.currencyCode || CurrencyCode.PLN,
+        });
+    };
 
     useEffect(() => {
         getOrders({ start: startOfToday(), end: endOfToday() });
@@ -118,26 +134,6 @@ export const OrdersSummaryWidget = () => {
             text: t('net'),
         },
     ];
-
-    const getOrders = async (range: { start: Date; end: Date }) => {
-        const response = await createClient(LanguageCode.en)('query', { scalars })({
-            orders: [
-                { options: { filter: { orderPlacedAt: { between: range } } } },
-                { items: SummaryOrdersSelector, totalItems: true },
-            ],
-        });
-
-        setOrders({
-            totalCount: response.orders.totalItems,
-            totalWithTax: response.orders.items
-                .map(i => i.totalWithTax)
-                .reduce((accumulator, totalWithTax) => accumulator + totalWithTax, 0),
-            total: response.orders.items
-                .map(i => i.total)
-                .reduce((accumulator, total) => accumulator + total, 0),
-            currencyCode: response.orders.items[0]?.currencyCode || CurrencyCode.PLN,
-        });
-    };
 
     return (
         <Card className="relative p-6">
