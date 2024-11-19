@@ -125,9 +125,9 @@ export const Root = () => {
   return (
     <div className="bg-background text-foreground flex  max-h-[100vh] w-full max-w-full overflow-hidden">
       <Menu>
-        <div className="flex h-full w-full flex-1 flex-col gap-y-4 space-y-4 overflow-y-auto">
-          {loaded ? <Outlet /> : <></>}
-        </div>
+        {/* <div className="flex h-full w-full flex-1 flex-col gap-y-4 space-y-4 overflow-y-auto"> */}
+        {loaded ? <Outlet /> : <></>}
+        {/* </div> */}
       </Menu>
     </div>
   );

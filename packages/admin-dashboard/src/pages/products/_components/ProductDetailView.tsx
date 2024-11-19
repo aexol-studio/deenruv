@@ -8,7 +8,7 @@ import {
   DetailViewMarker,
   Spinner,
 } from '@deenruv/react-ui-devkit';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
@@ -21,13 +21,16 @@ import { toast } from 'sonner';
 import { apiCall } from '@/graphql/client';
 
 export const ProductDetailView = () => {
-  const { id, contentLanguage, setContentLanguage } = useDetailViewStore(
-    ({ id, contentLanguage, setContentLanguage }) => ({
+  const { id, contentLanguage, setContentLanguage, view, generateSideBar } = useDetailViewStore(
+    ({ id, contentLanguage, setContentLanguage, view, generateSideBar }) => ({
       id,
       contentLanguage,
       setContentLanguage,
+      view,
+      generateSideBar,
     }),
   );
+  console.log(view);
   const { t } = useTranslation('products');
   const editMode = !!id;
   const [loading, setLoading] = useState(id ? true : false);
@@ -94,20 +97,20 @@ export const ProductDetailView = () => {
     </div>
   ) : (
     <div>
-      <div className="flex w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
+        <BasicFieldsCard currentTranslationValue={currentTranslationValue} onChange={setTranslationField} />
+        <DetailViewMarker position={'products-detail-view'} />
+        <EntityCustomFields entityName="product" id={id} currentLanguage={contentLanguage} />
+        <AssetsCard
+          onAddAsset={() => ''}
+          featuredAssetId={state.featuredAssetId?.value}
+          assetsIds={state.assetIds?.value}
+          onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
+          onAssetsChange={(ids) => setField('assetIds', ids)}
+        />
+      </div>
+      {generateSideBar(
         <div className="flex w-full flex-col gap-4">
-          <BasicFieldsCard currentTranslationValue={currentTranslationValue} onChange={setTranslationField} />
-          <DetailViewMarker position={'products-detail-view'} />
-          <EntityCustomFields entityName="product" id={id} currentLanguage={contentLanguage} />
-          <AssetsCard
-            onAddAsset={() => ''}
-            featuredAssetId={state.featuredAssetId?.value}
-            assetsIds={state.assetIds?.value}
-            onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
-            onAssetsChange={(ids) => setField('assetIds', ids)}
-          />
-        </div>
-        <div className="flex w-1/4 flex-col gap-4">
           <SettingsCard
             currentTranslationLng={contentLanguage}
             enabledValue={state.enabled?.value}
@@ -134,8 +137,8 @@ export const ProductDetailView = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </div>,
+      )}
     </div>
   );
 };

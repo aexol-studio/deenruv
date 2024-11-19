@@ -1,8 +1,8 @@
 import type { FC, SVGProps } from 'react';
 import { Routes } from './routes';
 import { ColumnDef } from '@tanstack/react-table';
-import { ProductListSelector } from './selectors';
-import { FromSelectorWithScalars, GraphQLTypes } from '@deenruv/admin-types';
+import { ProductDetailSelector, ProductListSelector } from './selectors';
+import { FromSelectorWithScalars } from '@deenruv/admin-types';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -21,7 +21,7 @@ export type ListLocationID = `${RouteKeys}-list-view`;
 export type DetailLocationID = `${RouteKeys}-detail-view`;
 export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 
-const ListLocations = {
+export const ListLocations = {
     'products-list-view': {
         type: 'Product' as const,
         selector: ProductListSelector,
@@ -35,10 +35,10 @@ type ListLocationsType<KEY extends keyof typeof ListLocations> = FromSelectorWit
     (typeof ListLocations)[KEY]['type']
 >;
 
-const DetailLocations = {
+export const DetailLocations = {
     'products-detail-view': {
         type: 'Product' as const,
-        selector: ProductListSelector,
+        selector: ProductDetailSelector,
     },
 };
 type DetailLocationType = typeof DetailLocations;
@@ -48,6 +48,10 @@ type DetailLocationsType<KEY extends keyof typeof DetailLocations> = FromSelecto
     (typeof DetailLocations)[KEY]['selector'],
     (typeof DetailLocations)[KEY]['type']
 >;
+
+export interface ExternalDetailLocationSelector<K extends DetailKeys = DetailKeys> {
+    [key: string]: FromSelectorWithScalars<DetailLocationType[K]['selector'], DetailLocationType[K]['type']>;
+}
 
 export interface ExternalListLocationSelector<K extends LocationKeys = LocationKeys> {
     [key: string]: FromSelectorWithScalars<ListLocationType[K]['selector'], ListLocationType[K]['type']>;
