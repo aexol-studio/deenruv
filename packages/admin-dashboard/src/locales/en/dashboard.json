@@ -1,6 +1,7 @@
 {
   "metrics": "Metrics",
   "averageOrderValue": "Average order value",
+  "showAll": "Show all",
   "orderCount": "Order count",
   "orderTotal": "Order total",
   "dataTypes": "Data types",

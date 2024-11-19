@@ -2,6 +2,7 @@
   "metrics": "Wskaźniki",
   "averageOrderValue": "Średnia wartość zamówienia",
   "orderCount": "Ilość zamówień",
+  "showAll": "Wszystkie",
   "orderTotal": "Wartość zamówień",
   "dataTypes": "Dostępne typy danych",
   "intervalTypes": "Typ interwału",

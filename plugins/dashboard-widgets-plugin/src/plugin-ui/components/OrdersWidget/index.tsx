@@ -155,8 +155,8 @@ export const OrdersWidget = () => {
     }, [betterMetrics, betterMetricsSettings.interval.start, betterMetricsSettings.interval.end, language]);
 
     return (
-        <Card>
-            <CardHeader>
+        <Card className="border-0 shadow-none pr-6 py-6">
+            <CardHeader className="pt-0">
                 <div className="flex flex-col justify-between gap-4">
                     <CardTitle className="flex items-center gap-8 text-lg">
                         <span>{t('metrics')}</span>
@@ -183,7 +183,7 @@ export const OrdersWidget = () => {
                 </div>
             </CardHeader>
             <div className="mb-6" />
-            <CardContent className="pl-0">
+            <CardContent className="p-0 mr-6 mb-6">
                 <OrdersChart data={betterData} language={language} />
             </CardContent>
         </Card>

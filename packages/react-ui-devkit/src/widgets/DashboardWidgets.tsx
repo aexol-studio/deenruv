@@ -102,12 +102,12 @@ const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'>
 
     return (
         <div ref={setNodeRef} style={style}>
-            <Card className="flex flex-col gap-2 p-4">
-                <div className="flex justify-end">
-                    <div className="flex items-center justify-center gap-4">
+            <Card className="flex flex-col h-full">
+                <div className="flex justify-end relative">
+                    <div className="flex items-center justify-center gap-2 absolute -right-2 -top-2 z-10">
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="icon">
+                                <Button variant="outline" size="icon" className="w-6 h-6">
                                     <Menu className="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
@@ -147,7 +147,13 @@ const WidgetItem: React.FC<PropsWithChildren<{ widget: Omit<Widget, 'component'>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                        <Button variant="outline" size="icon" {...listeners} {...attributes}>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="w-6 h-6"
+                            {...listeners}
+                            {...attributes}
+                        >
                             <Grip className="h-4 w-4" />
                         </Button>
                     </div>

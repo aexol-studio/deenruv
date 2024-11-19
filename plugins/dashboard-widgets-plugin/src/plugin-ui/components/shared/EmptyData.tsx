@@ -7,7 +7,7 @@ interface Props {
 
 export const EmptyData: React.FC<Props> = ({ text }) => {
     return (
-        <div className="flex h-full flex-col items-center justify-center p-2">
+        <div className="flex h-full flex-col items-center justify-center p-6">
             <div className="flex flex-col items-center">
                 <BarChart3 size={48} className="mb-4" />
             </div>

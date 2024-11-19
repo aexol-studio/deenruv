@@ -1,4 +1,4 @@
-import { priceFormatter, Badge, Card, CardTitle, useLazyQuery } from '@deenruv/react-ui-devkit';
+import { priceFormatter, Card, CardTitle, useLazyQuery, SimpleSelect } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     endOfMonth,
@@ -39,6 +39,8 @@ type Period = {
     start: Date;
     end: Date;
 };
+
+type GrossNet = 'gross' | 'net';
 
 export const OrdersSummaryWidget = () => {
     const [fetchOrders] = useLazyQuery(OrdersSummaryQuery);
@@ -136,9 +138,9 @@ export const OrdersSummaryWidget = () => {
     ];
 
     return (
-        <Card className="relative p-6">
-            <div className="items-center justify-between">
-                <div className="gap-12">
+        <Card className="relative border-0 shadow-none p-6">
+            <div className="flex items-center justify-between">
+                <div className="flex gap-8 items-center">
                     <CardTitle className="text-lg">{t('ordersSummary')}</CardTitle>
                     <Select
                         onValueChange={value => handlePeriodChange(value as Periods)}
@@ -159,31 +161,25 @@ export const OrdersSummaryWidget = () => {
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="items-center gap-6 lg:gap-12">
-                    <div className="items-center gap-2 lg:gap-4">
-                        <div className="mt-1">{t('totalOrdersCount')}</div>
-                        <h3 className="text-3xl">{orders?.totalCount}</h3>
+                <div className="flex items-center gap-6 lg:gap-8">
+                    <div className="flex items-center gap-2 lg:gap-4">
+                        <div className="mt-1 whitespace-nowrap">{t('totalOrdersCount')}</div>
+                        <h3 className="text-2xl">{orders?.totalCount || 0}</h3>
                     </div>
-                    <div className="items-center gap-4 lg:gap-6">
-                        <div className="mt-1">{t('totalOrdersValue')}</div>
-                        <h3 className="text-3xl">
+                    <div className="flex items-center gap-4 lg:gap-6">
+                        <div className="mt-1 whitespace-nowrap">{t('totalOrdersValue')}</div>
+                        <h3 className="text-2xl">
                             {priceFormatter(
                                 grossOrNet === 'gross' ? orders?.totalWithTax || 0 : orders?.total || 0,
                                 orders?.currencyCode || CurrencyCode.PLN,
                             )}
                         </h3>
-                        <div className="mt-2 gap-2">
-                            {_grossNet.map(e => (
-                                <Badge
-                                    key={e.type}
-                                    className="cursor-pointer"
-                                    onClick={() => setGrossOrNet(e.type)}
-                                    variant={grossOrNet === e.type ? 'default' : 'outline'}
-                                >
-                                    {e.text}
-                                </Badge>
-                            ))}
-                        </div>
+                        <SimpleSelect
+                            size="sm"
+                            options={_grossNet.map(e => ({ label: e.text, value: e.type }))}
+                            value={grossOrNet}
+                            onValueChange={e => setGrossOrNet(e as GrossNet)}
+                        />
                     </div>
                 </div>
             </div>

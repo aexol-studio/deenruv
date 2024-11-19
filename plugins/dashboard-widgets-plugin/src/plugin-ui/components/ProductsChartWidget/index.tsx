@@ -79,7 +79,7 @@ export const ProductsChartWidget = () => {
     }, []);
 
     return (
-        <Card className="flex flex-col">
+        <Card className="flex flex-col border-0 shadow-none h-full">
             <CardHeader className="flex justify-between">
                 <div className="flex items-start gap-8">
                     <CardTitle className="text-lg">{t('bestsellers')}</CardTitle>
@@ -90,9 +90,11 @@ export const ProductsChartWidget = () => {
                 </div>
             </CardHeader>
             <Separator className="mb-3" />
-            <CardContent className="flex flex-grow items-center justify-center">
+            <CardContent className="flex flex-1 justify-center items-center">
                 {!chartData.length ? (
-                    <EmptyData text={t('emptyData')} />
+                    <div className="flex flex-col items-center text-center">
+                        <EmptyData text={t('emptyData')} />
+                    </div>
                 ) : (
                     <ChartContainer config={chartConfig} className="w-full">
                         <BarChart data={chartData} layout="vertical">

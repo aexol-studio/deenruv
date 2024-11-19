@@ -107,7 +107,7 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
     });
 
     return (
-        <Card className="basis-1/2">
+        <Card>
             <CardHeader>
                 <div className="flex justify-between">
                     <div className="flex gap-3">

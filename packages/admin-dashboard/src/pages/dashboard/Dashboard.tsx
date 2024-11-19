@@ -18,8 +18,8 @@ export const Dashboard = () => {
   }));
 
   return (
-    <div className="px-4 py-2 md:px-8 md:py-4">
-      <div className="mb-2 flex justify-end">
+    <div className="px-4 pb-4 pt-2 md:px-8 md:py-4">
+      <div className="mb-4 flex justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">Add widget</Button>

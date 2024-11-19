@@ -13,8 +13,8 @@ export const widgets = [
         name: 'Orders Summary Widget',
         component: <OrdersSummaryWidget />,
         visible: true,
-        size: { width: 4, height: 8 },
-        sizes: [{ width: 4, height: 8 }],
+        size: { width: 12, height: 4 },
+        sizes: [{ width: 12, height: 4 }],
     },
     {
         id: '2',
