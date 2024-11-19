@@ -8,7 +8,7 @@ import {
   Routes,
   PluginProvider,
   PluginStore,
-  DeenruvAdminPanelSettings,
+  type DeenruvSettingsWindowType,
   useSettings,
   GlobalStoreProvider,
 } from '@deenruv/react-ui-devkit';
@@ -23,7 +23,7 @@ import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
 
 declare global {
   interface Window {
-    __DEENRUV_SETTINGS__: DeenruvAdminPanelSettings;
+    __DEENRUV_SETTINGS__: DeenruvSettingsWindowType;
   }
 }
 

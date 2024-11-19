@@ -15,6 +15,11 @@ export type DeenruvAdminPanelSettings = {
         };
     };
 };
+
+export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
+    api: Required<DeenruvAdminPanelSettings['api']>;
+};
+
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
 export type ListLocationID = `${RouteKeys}-list-view`;
