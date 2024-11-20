@@ -26,6 +26,8 @@ import { useDetailViewStore } from '@/state/detail-view';
 
 export const OptionsTab: React.FC = () => {
   const { id, contentLanguage, setContentLanguage, getMarker } = useDetailViewStore(
+    'CreateProductInput',
+    'products-detail-view',
     ({ id, contentLanguage, setContentLanguage, getMarker }) => ({
       id,
       contentLanguage,

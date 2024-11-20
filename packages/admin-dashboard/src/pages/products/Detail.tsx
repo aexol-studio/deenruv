@@ -3,6 +3,7 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { DetailView } from '@/detail-views/DetailView';
 import { ProductDetailView } from './_components/ProductDetailView';
+import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
 
 export const ProductsDetailPage = () => {
   const { id } = useParams();
@@ -13,12 +14,19 @@ export const ProductsDetailPage = () => {
         id={id}
         locationId="products-detail-view"
         main={{
-          name: 'Product',
+          name: 'product',
+          label: 'Product',
           component: <ProductDetailView />,
+          sidebar: <ProductDetailSidebar />,
+          form: {
+            key: 'CreateProductInput',
+            keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
+            config: { translations: { validate: (v) => {} } },
+          },
         }}
         defaultTabs={[
-          { name: 'Options', component: <OptionsTab /> },
-          { name: 'Variants', component: <VariantsTab /> },
+          { label: 'Options', name: 'options', component: <OptionsTab />, hideSidebar: true },
+          { label: 'Variants', name: 'variants', component: <VariantsTab />, sidebarReplacement: <p>dupa</p> },
         ]}
       />
     </div>

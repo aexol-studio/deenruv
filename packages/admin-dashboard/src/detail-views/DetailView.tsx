@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import {
   Button,
   DetailLocationID,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Tabs,
@@ -13,60 +12,99 @@ import {
   TabsList,
   TabsTrigger,
   usePluginStore,
-  ExternalDetailLocationSelector,
-  DetailLocations,
   cn,
+  DetailKeys,
+  DeenruvTabs,
 } from '@deenruv/react-ui-devkit';
 import { DetailViewStoreProvider, useDetailViewStore } from '@/state/detail-view';
 import { useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
-import { adminApiQuery } from '@/graphql/client';
-import { ValueTypes } from '@deenruv/admin-types';
+import { useGFFLP } from '@/lists/useGflp';
+import { ModelTypes } from '@deenruv/admin-types';
 
-interface DetailViewProps<T extends DetailLocationID, E extends ExternalDetailLocationSelector[T]> {
+interface DetailViewProps<
+  LOCATION extends DetailKeys,
+  FORMKEY extends keyof ModelTypes,
+  FORMKEYS extends keyof ModelTypes[FORMKEY],
+  PICKEDKEYS extends keyof Pick<ModelTypes[FORMKEY], FORMKEYS>,
+> {
   id?: string;
-  locationId: T;
-  main: { name: string; component: React.ReactNode };
-  defaultTabs: { name: string; component: React.ReactNode; disabled?: boolean }[];
+  locationId: LOCATION;
+  main: {
+    name: string;
+    label: string;
+    component: React.ReactNode;
+    form: {
+      key: FORMKEY;
+      keys: FORMKEYS[];
+      config: {
+        [PICKEDKEY in PICKEDKEYS]?: {
+          validate?: (o: PICKEDKEYS[PICKEDKEY]) => string[] | void;
+          initialValue?: PICKEDKEYS[PICKEDKEY];
+        };
+      };
+    };
+    sidebar?: React.ReactNode;
+  };
+  defaultTabs: Omit<DeenruvTabs<LOCATION>, 'id'>[];
 }
 
-export const DetailView = <T extends DetailLocationID, E extends ExternalDetailLocationSelector[T]>({
+export const DetailView = <LOCATION extends DetailKeys>({
   id,
   locationId,
   main,
   defaultTabs,
-}: DetailViewProps<T, E>) => {
+}: DetailViewProps<LOCATION, keyof ModelTypes, keyof ModelTypes[keyof ModelTypes], ModelTypes[keyof ModelTypes]>) => {
   const [searchParams] = useSearchParams();
   const { getDetailViewTabs } = usePluginStore();
+  const form = useGFFLP(main.form.key, ...(main.form.keys as string[]))({});
   const tab = useMemo(() => searchParams.get('tab') || main.name, [searchParams]);
   const tabs = useMemo(() => {
     return (
-      getDetailViewTabs(locationId)?.map(({ label, component }) => ({
-        name: label,
-        component: <React.Fragment>{React.createElement(component)}</React.Fragment>,
+      getDetailViewTabs(locationId)?.map(({ name, label, component }) => ({
+        name,
+        label,
+        component: <React.Fragment>{component}</React.Fragment>,
       })) || []
     );
   }, [locationId]);
 
   return (
-    <DetailViewStoreProvider id={id} tab={tab} locationId={locationId} tabs={[main, ...defaultTabs, ...tabs]}>
+    <DetailViewStoreProvider
+      id={id}
+      tab={tab}
+      sidebar={main.sidebar}
+      locationId={locationId}
+      tabs={[main, ...defaultTabs, ...tabs]}
+      form={form}
+    >
       <DetailTabs />
     </DetailViewStoreProvider>
   );
 };
 
 const DetailTabs = () => {
-  const { tabs, tab, setActiveTab, sidebar } = useDetailViewStore(({ tabs, tab, setActiveTab, sidebar }) => ({
-    tabs,
-    tab,
-    setActiveTab,
-    sidebar,
-  }));
+  const { tabs, tab, setActiveTab, sidebar, setSidebar } = useDetailViewStore(
+    'CreateProductInput',
+    'products-detail-view',
+    ({ tabs, tab, setActiveTab, sidebar, setSidebar }) => ({
+      tabs,
+      tab,
+      setActiveTab,
+      sidebar,
+      setSidebar,
+    }),
+  );
+
   const [, setSearchParams] = useSearchParams();
   return (
     <Tabs
       value={tab}
       onValueChange={(value) => {
+        const changingTo = tabs.find((t) => t.name === value);
+        if (changingTo?.hideSidebar) setSidebar(null);
+        else if (changingTo?.sidebarReplacement) setSidebar(changingTo.sidebarReplacement);
+        else setSidebar(undefined);
         setActiveTab(value);
         setSearchParams({ tab: value });
       }}
@@ -74,10 +112,14 @@ const DetailTabs = () => {
       <div className="bg-muted sticky top-0 z-[100] w-full items-center justify-start shadow-xl">
         <div className="flex w-full items-center justify-between px-4 py-2">
           <div className="flex w-full flex-1">
-            <TabsList className="z-50 h-12 w-full items-center justify-start rounded-none px-4 shadow-xl">
-              {tabs.map((tab) => (
-                <TabsTrigger disabled={tab.disabled} value={tab.name}>
-                  {tab.name}
+            <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-none rounded-sm px-4 shadow-xl">
+              {tabs.map((t) => (
+                <TabsTrigger
+                  disabled={t.disabled}
+                  value={t.name}
+                  className={cn('px-8', 'data-[state=active]:bg-secondary bg-card')}
+                >
+                  {t.label}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -104,7 +146,7 @@ const DetailTabs = () => {
         {tabs.map((tab) => (
           <TabsContent value={tab.name}>
             <div className={cn(sidebar ? 'grid grid-cols-[minmax(0,1fr)_400px] gap-4' : 'w-full')}>
-              {tab.component}
+              {tab.component ? tab.component : <div>Missing component</div>}
               {sidebar}
             </div>
           </TabsContent>

@@ -20,11 +20,15 @@ import { GenericList } from '@/list-views/GenericList';
 import { PaginationInput } from '@/list-views/models';
 
 export const VariantsTab = () => {
-  const { id, contentLanguage, getMarker } = useDetailViewStore(({ id, contentLanguage, getMarker }) => ({
-    id,
-    contentLanguage,
-    getMarker,
-  }));
+  const { id, contentLanguage, getMarker } = useDetailViewStore(
+    'CreateProductInput',
+    'products-detail-view',
+    ({ id, contentLanguage, getMarker }) => ({
+      id,
+      contentLanguage,
+      getMarker,
+    }),
+  );
   const [variants, setVariants] = useState<ProductVariantType[]>();
   const [loading, setLoading] = useState<boolean>();
 

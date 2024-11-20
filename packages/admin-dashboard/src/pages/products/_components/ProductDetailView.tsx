@@ -1,81 +1,44 @@
-import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  DetailViewMarker,
-  Spinner,
-} from '@deenruv/react-ui-devkit';
-import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
+import { useCallback, useEffect } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
-import { SettingsCard } from './SettingsCard';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { useTranslation } from 'react-i18next';
-import { ProductDetailSelector, ProductDetailType } from '@/graphql/products';
 import { useDetailViewStore } from '@/state/detail-view';
-import { toast } from 'sonner';
-import { apiCall } from '@/graphql/client';
 
 export const ProductDetailView = () => {
-  const { id, contentLanguage, setContentLanguage, view, generateSideBar } = useDetailViewStore(
-    ({ id, contentLanguage, setContentLanguage, view, generateSideBar }) => ({
+  const { id, contentLanguage, setContentLanguage, view, form } = useDetailViewStore(
+    'CreateProductInput',
+    'products-detail-view',
+    ({ id, contentLanguage, setContentLanguage, view, form }) => ({
       id,
       contentLanguage,
       setContentLanguage,
       view,
-      generateSideBar,
+      form,
     }),
   );
-  console.log(view);
   const { t } = useTranslation('products');
   const editMode = !!id;
-  const [loading, setLoading] = useState(id ? true : false);
-  const [product, setProduct] = useState<ProductDetailType>();
+  const { state, setField } = form;
 
-  const fetchProduct = useCallback(async () => {
-    const response = await apiCall()('query')({ product: [{ id }, ProductDetailSelector] });
-    if (!response.product) {
-      toast.error(t('toasts.fetchProductErrorToast'));
-      return;
-    }
-    setProduct(response.product);
-    setLoading(false);
-    setField('translations', response.product.translations);
+  useEffect(() => {
+    if (!view.entity) return;
+    setField('translations', view.entity.translations);
     setField(
       'facetValueIds',
-      response.product.facetValues.map((f) => f.id),
+      view.entity.facetValues.map((f) => f.id),
     );
     setField(
       'assetIds',
-      response.product.assets.map((a) => a.id),
+      view.entity.assets.map((a) => a.id),
     );
-    setField('featuredAssetId', response.product.featuredAsset?.id);
-  }, []);
+    setField('featuredAssetId', view.entity.featuredAsset?.id);
+  }, [view.entity]);
 
-  useEffect(() => {
-    if (!id) return;
-    try {
-      setLoading(true);
-      fetchProduct();
-    } finally {
-      setLoading(false);
-    }
-  }, [id]);
-
-  const { state, setField } = useGFFLP(
-    'UpdateProductInput',
-    'translations',
-    'featuredAssetId',
-    'enabled',
-    'assetIds',
-    'facetValueIds',
-  )({});
   const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === contentLanguage);
+  const currentTranslationValue = (translations as any[]).find((v) => v.languageCode === contentLanguage);
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(
@@ -90,8 +53,7 @@ export const ProductDetailView = () => {
     [contentLanguage, translations],
   );
 
-  const saveChanges = () => {};
-  return loading ? (
+  return view.loading ? (
     <div>
       <Spinner height={'80vh'} />
     </div>
@@ -109,36 +71,6 @@ export const ProductDetailView = () => {
           onAssetsChange={(ids) => setField('assetIds', ids)}
         />
       </div>
-      {generateSideBar(
-        <div className="flex w-full flex-col gap-4">
-          <SettingsCard
-            currentTranslationLng={contentLanguage}
-            enabledValue={state.enabled?.value}
-            onEnabledChange={(e) => setField('enabled', e)}
-            onCurrentLanguageChange={setContentLanguage}
-          />
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('channels')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {product?.channels.map((p) => <Badge key={p.id}>{p.code}</Badge>)}
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('collections')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-2">
-                {product?.collections.map((c) => <Badge key={c.slug}>{c.name}</Badge>)}
-              </div>
-            </CardContent>
-          </Card>
-        </div>,
-      )}
     </div>
   );
 };

@@ -45,9 +45,13 @@ export const DetailLocations = {
         type: 'Product' as const,
         selector: ProductDetailSelector,
     },
+    'collections-detail-view': {
+        type: 'Collection' as const,
+        selector: ProductDetailSelector,
+    },
 };
-type DetailLocationType = typeof DetailLocations;
-type DetailKeys = keyof DetailLocationType;
+export type DetailLocationType = typeof DetailLocations;
+export type DetailKeys = keyof DetailLocationType;
 
 type DetailLocationsType<KEY extends keyof typeof DetailLocations> = FromSelectorWithScalars<
     (typeof DetailLocations)[KEY]['selector'],
@@ -85,14 +89,27 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
 };
 
 type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
+    /** Used as localization */
     id: KEY;
+    /** Detail view component */
     component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
 };
 
-type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
+export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
+    /** Used as localization */
     id: KEY;
+    /** Label used as readable value */
     label: string;
-    component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
+    /** Name used as query param */
+    name: string;
+    /** Tab component */
+    component: React.ReactNode;
+    /** Choose if sidebar is hidden */
+    hideSidebar?: boolean;
+    /** Choose if sidebar is replaced */
+    sidebarReplacement?: React.ReactNode;
+    /** Choose if tab is disabled */
+    disabled?: boolean;
 };
 
 export type DeenruvUIPlugin = {
