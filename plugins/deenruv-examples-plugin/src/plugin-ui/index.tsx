@@ -1,19 +1,21 @@
 import { BASE_GROUP_ID, createDeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 import { BarChart, Camera, LanguagesIcon } from 'lucide-react';
-import { pages } from './pages';
 import { SquareIcon } from './assets';
-import { inputs } from './inputs';
 import { tables } from './tables';
 import { tabs } from './tabs';
 import pl from './locales/pl';
 import en from './locales/en';
 import { translationNS } from './translation-ns';
+import { LocaleTest } from './components/TestPage';
+import React from 'react';
+import { CustomInput, TestComponent } from './components';
 
 export const UIPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'First Plugin',
-    pages,
-    inputs,
+    pages: [{ path: 'locale-test', element: <LocaleTest /> }],
+    inputs: [{ id: 'string-custom-field-input', component: CustomInput }],
+    components: [{ component: TestComponent, id: 'products-detail-view' as const }],
     tables,
     tabs,
     translations: {

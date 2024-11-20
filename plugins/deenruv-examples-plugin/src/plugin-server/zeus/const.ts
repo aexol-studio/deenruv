@@ -173,9 +173,6 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		metricSummary:{
 			input:"MetricSummaryInput"
-		},
-		betterMetricSummary:{
-			input:"BetterMetricSummaryInput"
 		}
 	},
 	Mutation:{
@@ -1098,9 +1095,7 @@ export const AllTypesProps: Record<string,any> = {
 		listTestFloat:"NumberListOperators",
 		listTestText:"StringListOperators",
 		listLocaleString:"StringListOperators",
-		listLocaleText:"StringListOperators",
-		seoTitle:"StringOperators",
-		seoDescription:"StringOperators"
+		listLocaleText:"StringListOperators"
 	},
 	ProductVariantListOptions:{
 		sort:"ProductVariantSortParameter",
@@ -1461,17 +1456,6 @@ export const AllTypesProps: Record<string,any> = {
 		interval:"MetricInterval",
 		types:"MetricType"
 	},
-	BetterMetricInterval: "enum" as const,
-	BetterMetricType: "enum" as const,
-	BetterMetricIntervalInput:{
-		type:"BetterMetricInterval",
-		start:"DateTime",
-		end:"DateTime"
-	},
-	BetterMetricSummaryInput:{
-		interval:"BetterMetricIntervalInput",
-		types:"BetterMetricType"
-	},
 	AdministratorFilterParameter:{
 		id:"IDOperators",
 		createdAt:"DateOperators",
@@ -1559,9 +1543,7 @@ export const AllTypesProps: Record<string,any> = {
 		_and:"CollectionFilterParameter",
 		_or:"CollectionFilterParameter",
 		stringTest:"StringOperators",
-		localestringTest:"StringOperators",
-		seoTitle:"StringOperators",
-		seoDescription:"StringOperators"
+		localestringTest:"StringOperators"
 	},
 	CollectionSortParameter:{
 		id:"SortOrder",
@@ -1573,11 +1555,7 @@ export const AllTypesProps: Record<string,any> = {
 		description:"SortOrder",
 		parentId:"SortOrder",
 		stringTest:"SortOrder",
-		localestringTest:"SortOrder",
-		seoTitle:"SortOrder",
-		seoDescription:"SortOrder",
-		facebookImage:"SortOrder",
-		twitterImage:"SortOrder"
+		localestringTest:"SortOrder"
 	},
 	ProductVariantSortParameter:{
 		stockOnHand:"SortOrder",
@@ -1740,11 +1718,7 @@ export const AllTypesProps: Record<string,any> = {
 		stringTest:"SortOrder",
 		textTest:"SortOrder",
 		dateTime:"SortOrder",
-		singleAssetTestP:"SortOrder",
-		seoTitle:"SortOrder",
-		seoDescription:"SortOrder",
-		facebookImage:"SortOrder",
-		twitterImage:"SortOrder"
+		singleAssetTestP:"SortOrder"
 	},
 	PromotionFilterParameter:{
 		id:"IDOperators",
@@ -2074,8 +2048,7 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
-		metricSummary:"MetricSummary",
-		betterMetricSummary:"BetterMetricSummary"
+		metricSummary:"MetricSummary"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -3967,38 +3940,16 @@ export const ReturnTypes: Record<string,any> = {
 		label:"String",
 		value:"Float"
 	},
-	BetterMetricSummary:{
-		interval:"BetterMetricInterval",
-		type:"BetterMetricType",
-		title:"String",
-		entries:"BetterMetricSummaryEntry"
-	},
-	BetterMeticSummaryEntryAdditionalData:{
-		id:"String",
-		name:"String",
-		quantity:"Float"
-	},
-	BetterMetricSummaryEntry:{
-		label:"String",
-		value:"Float",
-		additionalData:"BetterMeticSummaryEntryAdditionalData"
-	},
 	AssetCustomFields:{
 		attributes:"String",
 		additionalInfo:"String"
 	},
 	CollectionCustomFields:{
 		stringTest:"String",
-		localestringTest:"String",
-		seoTitle:"String",
-		seoDescription:"String",
-		facebookImage:"Asset",
-		twitterImage:"Asset"
+		localestringTest:"String"
 	},
 	CollectionTranslationCustomFields:{
-		localestringTest:"String",
-		seoTitle:"String",
-		seoDescription:"String"
+		localestringTest:"String"
 	},
 	FacetCustomFields:{
 		stringTest:"String",
@@ -4032,17 +3983,11 @@ export const ReturnTypes: Record<string,any> = {
 		listLocaleString:"String",
 		listLocaleText:"String",
 		singleAssetTestP:"Asset",
-		listAssetTestP:"Asset",
-		seoTitle:"String",
-		seoDescription:"String",
-		facebookImage:"Asset",
-		twitterImage:"Asset"
+		listAssetTestP:"Asset"
 	},
 	ProductTranslationCustomFields:{
 		listLocaleString:"String",
-		listLocaleText:"String",
-		seoTitle:"String",
-		seoDescription:"String"
+		listLocaleText:"String"
 	},
 	ProductOptionCustomFields:{
 		test:"String"

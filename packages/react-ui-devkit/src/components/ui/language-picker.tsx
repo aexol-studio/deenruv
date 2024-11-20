@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@deenruv/react-ui-devkit';
-import { LanguageCode } from '../zeus';
+import React from 'react';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '.';
 import { Globe } from 'lucide-react';
-import { createClient } from '../client';
+import { LanguageCode } from '@deenruv/admin-types';
+import { useSettings } from '@/state';
 
 function getActiveLocale(localeOverride?: unknown): string {
     const locale = typeof localeOverride === 'string' ? localeOverride.replace('_', '-') : 'en';
@@ -28,22 +21,8 @@ type Props = {
     onChange: (lang: LanguageCode) => void;
 };
 
-export const LanguageSelector = ({ onChange, value }: Props) => {
-    const [languages, setLanguages] = useState<LanguageCode[]>([]);
-
-    const client = createClient(value);
-
-    useEffect(() => {
-        (async () => {
-            const { globalSettings } = await client('query')({
-                globalSettings: {
-                    availableLanguages: true,
-                },
-            });
-
-            setLanguages(globalSettings?.availableLanguages);
-        })();
-    }, []);
+export const LanguagePicker = ({ onChange, value }: Props) => {
+    const { availableLanguages } = useSettings();
 
     return (
         <Select
@@ -59,7 +38,7 @@ export const LanguageSelector = ({ onChange, value }: Props) => {
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
-                    {languages.map((lng, idx) => {
+                    {availableLanguages.map((lng, idx) => {
                         const name = new Intl.DisplayNames([getActiveLocale(lng.replace('_', '-'))], {
                             type: 'language',
                         });

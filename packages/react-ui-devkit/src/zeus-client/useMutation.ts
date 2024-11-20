@@ -11,11 +11,11 @@ export function useMutation<T, V extends Record<string, any> = Record<string, an
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    const runMutation = useCallback(async (variables?: V) => {
+    const runMutation = useCallback(async (variables?: V, customParams?: Record<string, string>) => {
         try {
             setLoading(true);
             setError(null);
-            const result = (await deenruvAPICall()(print(mutation), variables)) as T;
+            const result = (await deenruvAPICall()(print(mutation), variables, customParams)) as T;
             setData(result);
             return result;
         } catch (err) {

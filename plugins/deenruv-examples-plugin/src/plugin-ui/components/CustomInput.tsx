@@ -6,7 +6,7 @@ export const CustomInput = () => {
 
     return (
         <div>
-            This is custom input field
+            This is custom input field for custom fields
             <Label>{label}</Label>
             <CardDescription>{description}</CardDescription>
             <Input value={value} onChange={e => setValue(e.target.value)} />

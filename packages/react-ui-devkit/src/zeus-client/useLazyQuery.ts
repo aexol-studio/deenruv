@@ -11,11 +11,11 @@ export function useLazyQuery<T, V extends Record<string, any> = Record<string, a
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    const runQuery = useCallback(async (variables?: V) => {
+    const runQuery = useCallback(async (variables?: V, customParams?: Record<string, string>) => {
         try {
             setLoading(true);
             setError(null);
-            const result = (await deenruvAPICall()(print(query), variables)) as T;
+            const result = (await deenruvAPICall()(print(query), variables, customParams)) as T;
             setData(result);
             return result;
         } catch (err) {

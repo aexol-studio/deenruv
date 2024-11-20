@@ -178,9 +178,6 @@ importers:
       '@deenruv/deenruv-examples-plugin':
         specifier: workspace:*
         version: link:../../plugins/deenruv-examples-plugin
-      '@deenruv/deenruv-second-plugin':
-        specifier: workspace:*
-        version: link:../../plugins/deenruv-second-plugin
       '@deenruv/product-badges-plugin':
         specifier: workspace:*
         version: link:../../plugins/product-badges-plugin
@@ -594,9 +591,6 @@ importers:
       '@deenruv/deenruv-examples-plugin':
         specifier: workspace:*
         version: link:../../plugins/deenruv-examples-plugin
-      '@deenruv/deenruv-second-plugin':
-        specifier: workspace:*
-        version: link:../../plugins/deenruv-second-plugin
       '@deenruv/react-ui-devkit':
         specifier: workspace:*
         version: link:../react-ui-devkit
@@ -1971,19 +1965,6 @@ importers:
 
   plugins/content-management-plugin:
     dependencies:
-      '@measured/puck':
-        specifier: ^0.16.1
-        version: 0.16.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      classnames:
-        specifier: ^2.5.1
-        version: 2.5.1
-      express:
-        specifier: ^4.21.1
-        version: 4.21.1
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-    devDependencies:
       '@deenruv/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -1993,24 +1974,24 @@ importers:
       '@deenruv/react-ui-devkit':
         specifier: workspace:*
         version: link:../../packages/react-ui-devkit
+      '@measured/puck':
+        specifier: ^0.16.1
+        version: 0.16.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@nestjs/common':
         specifier: ~10.3.10
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/graphql':
         specifier: ~12.2.0
         version: 12.2.1(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.2.0
-        version: 18.3.1
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
+      express:
+        specifier: ^4.21.1
+        version: 4.21.1
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.9.0)
@@ -2020,6 +2001,9 @@ importers:
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
@@ -2032,15 +2016,25 @@ importers:
       recharts:
         specifier: ^2.12.7
         version: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rimraf:
-        specifier: ^5.0.10
-        version: 5.0.10
       sonner:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
         specifier: 0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
+    devDependencies:
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.1
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -2059,9 +2053,6 @@ importers:
       '@deenruv/react-ui-devkit':
         specifier: workspace:*
         version: link:../../packages/react-ui-devkit
-      '@graphql-typed-document-node/core':
-        specifier: ^3.2.0
-        version: 3.2.0(graphql@16.9.0)
       '@nestjs/common':
         specifier: ~10.3.10
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -2102,6 +2093,9 @@ importers:
         specifier: 0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
     devDependencies:
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.9.0)
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.12
@@ -2117,10 +2111,9 @@ importers:
 
   plugins/deenruv-examples-plugin:
     dependencies:
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-    devDependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:*
+        version: link:../../packages/admin-types
       '@deenruv/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -2136,12 +2129,6 @@ importers:
       '@nestjs/graphql':
         specifier: ~12.2.0
         version: 12.2.1(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.2.0
-        version: 18.3.1
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -2151,9 +2138,21 @@ importers:
       graphql-zeus:
         specifier: ^7.0.0
         version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
+      i:
+        specifier: ^0.3.7
+        version: 0.3.7
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
+      npm:
+        specifier: ^10.9.0
+        version: 10.9.0
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-hook-form:
+        specifier: ^7.51.3
+        version: 7.53.2(react@18.3.1)
       react-i18next:
         specifier: ^14.0.5
         version: 14.1.3(i18next@23.16.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2163,70 +2162,25 @@ importers:
       recharts:
         specifier: ^2.12.7
         version: 2.13.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rimraf:
-        specifier: ^5.0.10
-        version: 5.0.10
       sonner:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
         specifier: 0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
-      typescript:
-        specifier: 5.3.3
-        version: 5.3.3
-
-  plugins/deenruv-second-plugin:
-    dependencies:
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
     devDependencies:
-      '@deenruv/common':
-        specifier: workspace:*
-        version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@deenruv/react-ui-devkit':
-        specifier: workspace:*
-        version: link:../../packages/react-ui-devkit
-      '@nestjs/common':
-        specifier: ~10.3.10
-        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@nestjs/graphql':
-        specifier: ~12.2.0
-        version: 12.2.1(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.9.0)
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.12
       '@types/react-dom':
         specifier: ^18.2.0
         version: 18.3.1
-      graphql-tag:
-        specifier: ^2.12.6
-        version: 2.12.6(graphql@16.9.0)
-      graphql-zeus:
-        specifier: ^7.0.0
-        version: 7.0.1(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
-      lucide-react:
-        specifier: ^0.363.0
-        version: 0.363.0(react@18.3.1)
-      react-i18next:
-        specifier: ^14.0.5
-        version: 14.1.3(i18next@23.16.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-router-dom:
-        specifier: ^6.22.1
-        version: 6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       rimraf:
         specifier: ^5.0.10
         version: 5.0.10
-      sonner:
-        specifier: ^1.4.41
-        version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      typeorm:
-        specifier: 0.3.20
-        version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -2545,10 +2499,9 @@ importers:
 
   plugins/product-badges-plugin:
     dependencies:
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-    devDependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:*
+        version: link:../../packages/admin-types
       '@deenruv/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -2564,12 +2517,6 @@ importers:
       '@nestjs/graphql':
         specifier: ~12.2.0
         version: 12.2.1(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
-      '@types/react':
-        specifier: ^18.2.0
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.2.0
-        version: 18.3.1
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.9.0)
@@ -2579,21 +2526,34 @@ importers:
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
       react-i18next:
         specifier: ^14.0.5
         version: 14.1.3(i18next@23.16.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-router-dom:
         specifier: ^6.22.1
         version: 6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      rimraf:
-        specifier: ^5.0.10
-        version: 5.0.10
       sonner:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
         specifier: 0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.2(@swc/helpers@0.5.15))(@types/node@20.17.6)(typescript@5.3.3))
+    devDependencies:
+      '@graphql-typed-document-node/core':
+        specifier: 3.2.0
+        version: 3.2.0(graphql@16.9.0)
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.1
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -2642,7 +2602,7 @@ importers:
         version: 5.0.10
 
   plugins/seo-plugin:
-    devDependencies:
+    dependencies:
       '@deenruv/common':
         specifier: workspace:*
         version: link:../../packages/common
@@ -2652,6 +2612,7 @@ importers:
       '@deenruv/react-ui-devkit':
         specifier: workspace:*
         version: link:../../packages/react-ui-devkit
+    devDependencies:
       rimraf:
         specifier: ^5.0.10
         version: 5.0.10
@@ -10683,6 +10644,10 @@ packages:
   i18next@23.16.5:
     resolution: {integrity: sha512-KTlhE3EP9x6pPTAW7dy0WKIhoCpfOGhRQlO+jttQLgzVaoOjWwBWramu7Pp0i+8wDNduuzXfe3kkVbzrKyrbTA==}
 
+  i@0.3.7:
+    resolution: {integrity: sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==}
+    engines: {node: '>=0.4'}
+
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
     engines: {node: '>=0.10.0'}
@@ -12299,6 +12264,80 @@ packages:
   npm-run-path@5.3.0:
     resolution: {integrity: sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  npm@10.9.0:
+    resolution: {integrity: sha512-ZanDioFylI9helNhl2LNd+ErmVD+H5I53ry41ixlLyCBgkuYb+58CvbAp99hW+zr5L9W4X7CchSoeqKdngOLSw==}
+    engines: {node: ^18.17.0 || >=20.5.0}
+    hasBin: true
+    bundledDependencies:
+      - '@isaacs/string-locale-compare'
+      - '@npmcli/arborist'
+      - '@npmcli/config'
+      - '@npmcli/fs'
+      - '@npmcli/map-workspaces'
+      - '@npmcli/package-json'
+      - '@npmcli/promise-spawn'
+      - '@npmcli/redact'
+      - '@npmcli/run-script'
+      - '@sigstore/tuf'
+      - abbrev
+      - archy
+      - cacache
+      - chalk
+      - ci-info
+      - cli-columns
+      - fastest-levenshtein
+      - fs-minipass
+      - glob
+      - graceful-fs
+      - hosted-git-info
+      - ini
+      - init-package-json
+      - is-cidr
+      - json-parse-even-better-errors
+      - libnpmaccess
+      - libnpmdiff
+      - libnpmexec
+      - libnpmfund
+      - libnpmhook
+      - libnpmorg
+      - libnpmpack
+      - libnpmpublish
+      - libnpmsearch
+      - libnpmteam
+      - libnpmversion
+      - make-fetch-happen
+      - minimatch
+      - minipass
+      - minipass-pipeline
+      - ms
+      - node-gyp
+      - nopt
+      - normalize-package-data
+      - npm-audit-report
+      - npm-install-checks
+      - npm-package-arg
+      - npm-pick-manifest
+      - npm-profile
+      - npm-registry-fetch
+      - npm-user-validate
+      - p-map
+      - pacote
+      - parse-conflict-json
+      - proc-log
+      - qrcode-terminal
+      - read
+      - semver
+      - spdx-expression-parse
+      - ssri
+      - supports-color
+      - tar
+      - text-table
+      - tiny-relative-date
+      - treeverse
+      - validate-npm-package-name
+      - which
+      - write-file-atomic
 
   npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
@@ -25939,6 +25978,8 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.26.0
 
+  i@0.3.7: {}
+
   iconv-lite@0.4.24:
     dependencies:
       safer-buffer: 2.1.2
@@ -27857,6 +27898,8 @@ snapshots:
   npm-run-path@5.3.0:
     dependencies:
       path-key: 4.0.0
+
+  npm@10.9.0: {}
 
   npmlog@5.0.1:
     dependencies:

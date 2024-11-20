@@ -37,3 +37,4 @@ export * from './radio-group';
 export * from './separator';
 export * from './multiple-selector';
 export * from './drawer';
+export * from './language-picker';

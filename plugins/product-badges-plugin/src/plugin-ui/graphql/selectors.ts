@@ -6,3 +6,5 @@ export const ProductsSelector = Selector('Product')({
     id: true,
     description: true,
 });
+
+export const BadgeSelector = Selector('Badge')({ id: true, name: true, color: true });

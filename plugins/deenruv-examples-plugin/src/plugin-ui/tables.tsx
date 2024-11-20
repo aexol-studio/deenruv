@@ -1,7 +1,7 @@
 import { DeenruvUIPlugin } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { ScalarsType } from './graphql/client';
 import { FromSelector, GraphQLTypes } from './zeus';
+import { ScalarsType } from '@deenruv/admin-types';
 
 export type FromSelectorWithScalars<SELECTOR, NAME extends keyof GraphQLTypes> = FromSelector<
     SELECTOR,

@@ -17,10 +17,12 @@
         "lint": "eslint --fix .",
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
     },
-    "devDependencies": {
+    "dependencies": {
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
-        "@deenruv/react-ui-devkit": "workspace:*",
+        "@deenruv/react-ui-devkit": "workspace:*"
+    },
+    "devDependencies": {
         "rimraf": "^5.0.10",
         "typescript": "5.3.3"
     }

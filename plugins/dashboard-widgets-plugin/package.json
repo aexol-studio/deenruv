@@ -19,7 +19,6 @@
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
     },
     "dependencies": {
-        "@graphql-typed-document-node/core": "^3.2.0",
         "react": "^18.2.0",
         "lucide-react": "^0.363.0",
         "@deenruv/react-ui-devkit": "workspace:*",
@@ -42,6 +41,7 @@
         "rimraf": "^5.0.10",
         "typescript": "5.3.3",
         "@types/react": "^18.2.0",
-        "@types/react-dom": "^18.2.0"
+        "@types/react-dom": "^18.2.0",
+        "@graphql-typed-document-node/core": "^3.2.0"
     }
 }

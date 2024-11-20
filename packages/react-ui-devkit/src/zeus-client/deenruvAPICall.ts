@@ -10,11 +10,21 @@ import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-type
 // });
 
 export const deenruvAPICall = () => {
-    return async (query: string, variables: Record<string, unknown> = {}) => {
+    return async (
+        query: string,
+        variables: Record<string, unknown> = {},
+        customParams?: Record<string, string>,
+    ) => {
         const { language, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
-        const url = `${uri}/admin-api?languageCode=${language}`;
-        console.log(token);
+
+        const defaultParams = {
+            languageCode: language,
+        };
+
+        const params = new URLSearchParams(customParams || defaultParams).toString();
+
+        const url = `${uri}/admin-api?${params}`;
         const additionalHeaders: Record<string, string> = token
             ? {
                   Authorization: `Bearer ${token}`,
