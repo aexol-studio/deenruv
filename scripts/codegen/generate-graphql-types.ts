@@ -1,16 +1,20 @@
 import { generate } from '@graphql-codegen/cli';
-import { Types } from '@graphql-codegen/plugin-helpers';
+import type { Types } from '@graphql-codegen/plugin-helpers';
 import fs from 'fs';
 import { buildClientSchema } from 'graphql';
 import path from 'path';
 
-import { ADMIN_API_PATH, SHOP_API_PATH } from '../../packages/common/src/shared-constants';
+import pkg from '../../packages/common/src/shared-constants.js';
+const { ADMIN_API_PATH, SHOP_API_PATH } = pkg;
 
-import { downloadIntrospectionSchema } from './download-introspection-schema';
+import { fileURLToPath } from "url";
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+import { downloadIntrospectionSchema } from './download-introspection-schema.js';
 
 const CLIENT_QUERY_FILES = [
-    path.join(__dirname, '../../packages/admin-ui/src/lib/core/src/data/definitions/**/*.ts'),
-    path.join(__dirname, '../../packages/admin-ui/src/lib/**/*.ts'),
+    'packages/admin-ui/src/lib/core/src/data/definitions/**/*.ts',
+    'packages/admin-ui/src/lib/**/*.ts',
 ];
 
 const specFileToIgnore = [
@@ -33,21 +37,12 @@ const specFileToIgnore = [
     'error-handler-strategy.e2e-spec',
     'order-multi-vendor.e2e-spec',
 ];
-const E2E_ADMIN_QUERY_FILES = path.join(
-    __dirname,
-    `../../packages/core/e2e/**/!(${specFileToIgnore.join('|')}).ts`,
-);
-const E2E_SHOP_QUERY_FILES = [path.join(__dirname, '../../packages/core/e2e/graphql/shop-definitions.ts')];
-const E2E_ELASTICSEARCH_PLUGIN_QUERY_FILES = path.join(
-    __dirname,
-    '../../packages/elasticsearch-plugin/e2e/**/*.ts',
-);
-const E2E_ASSET_SERVER_PLUGIN_QUERY_FILES = path.join(
-    __dirname,
-    '../../packages/asset-server-plugin/e2e/**/*.ts',
-);
-const ADMIN_SCHEMA_OUTPUT_FILE = path.join(__dirname, '../../schema-admin.json');
-const SHOP_SCHEMA_OUTPUT_FILE = path.join(__dirname, '../../schema-shop.json');
+const E2E_ADMIN_QUERY_FILES = `packages/core/e2e/**/!(${specFileToIgnore.join('|')}).ts`;
+const E2E_SHOP_QUERY_FILES = ['packages/core/e2e/graphql/shop-definitions.ts'];
+const E2E_ELASTICSEARCH_PLUGIN_QUERY_FILES = 'plugins/elasticsearch-plugin/e2e/**/*.ts';
+const E2E_ASSET_SERVER_PLUGIN_QUERY_FILES = 'plugins/asset-server-plugin/e2e/**/*.ts';
+const ADMIN_SCHEMA_OUTPUT_FILE = 'schema-admin.json';
+const SHOP_SCHEMA_OUTPUT_FILE = 'schema-shop.json';
 
 /* eslint-disable no-console */
 
@@ -62,8 +57,8 @@ Promise.all([
 
         const adminSchemaJson = JSON.parse(fs.readFileSync(ADMIN_SCHEMA_OUTPUT_FILE, 'utf-8'));
         const shopSchemaJson = JSON.parse(fs.readFileSync(SHOP_SCHEMA_OUTPUT_FILE, 'utf-8'));
-        const adminSchema = buildClientSchema(adminSchemaJson.data);
-        const shopSchema = buildClientSchema(shopSchemaJson.data);
+        buildClientSchema(adminSchemaJson.data);
+        buildClientSchema(shopSchemaJson.data);
 
         const config = {
             namingConvention: {
@@ -79,58 +74,56 @@ Promise.all([
             skipTypename: true,
         };
         const disableEsLintPlugin = { add: { content: '/* eslint-disable */' } };
-        const graphQlErrorsPlugin = path.join(__dirname, './plugins/graphql-errors-plugin.js');
+        const graphQlErrorsPlugin = path.join(__dirname, './plugins/graphql-errors-plugin.ts');
         const commonPlugins = [disableEsLintPlugin, 'typescript'];
         const clientPlugins = [...commonPlugins, 'typescript-operations', 'typed-document-node'];
 
         const codegenConfig: Types.Config = {
             overwrite: true,
+            pluginLoader: async (mod: string) => {
+                try {
+                    return await import(mod);
+                } catch (e) {
+                    // This is neccessary due to how codegen identifies "not found" errors
+                    // for modules. In ESM environments this might be undefined.
+                    (e as unknown as Record<string, unknown>).code = 'MODULE_NOT_FOUND';
+                    throw e
+                };
+            },
             generates: {
-                [path.join(
-                    __dirname,
-                    '../../packages/core/src/common/error/generated-graphql-admin-errors.ts',
-                )]: {
+                ['packages/core/src/common/error/generated-graphql-admin-errors.ts']: {
                     schema: [ADMIN_SCHEMA_OUTPUT_FILE],
                     plugins: [disableEsLintPlugin, graphQlErrorsPlugin],
                 },
-                [path.join(
-                    __dirname,
-                    '../../packages/core/src/common/error/generated-graphql-shop-errors.ts',
-                )]: {
+                ['packages/core/src/common/error/generated-graphql-shop-errors.ts']: {
                     schema: [SHOP_SCHEMA_OUTPUT_FILE],
                     plugins: [disableEsLintPlugin, graphQlErrorsPlugin],
                 },
-                [path.join(__dirname, '../../packages/core/e2e/graphql/generated-e2e-admin-types.ts')]: {
+                ['packages/core/e2e/graphql/generated-e2e-admin-types.ts']: {
                     schema: [ADMIN_SCHEMA_OUTPUT_FILE],
                     documents: E2E_ADMIN_QUERY_FILES,
                     plugins: clientPlugins,
                     config: e2eConfig,
                 },
-                [path.join(__dirname, '../../packages/core/e2e/graphql/generated-e2e-shop-types.ts')]: {
+                ['packages/core/e2e/graphql/generated-e2e-shop-types.ts']: {
                     schema: [SHOP_SCHEMA_OUTPUT_FILE],
                     documents: E2E_SHOP_QUERY_FILES,
                     plugins: clientPlugins,
                     config: e2eConfig,
                 },
-                [path.join(
-                    __dirname,
-                    '../../packages/elasticsearch-plugin/e2e/graphql/generated-e2e-elasticsearch-plugin-types.ts',
-                )]: {
+                ['plugins/elasticsearch-plugin/e2e/graphql/generated-e2e-elasticsearch-plugin-types.ts']: {
                     schema: [ADMIN_SCHEMA_OUTPUT_FILE],
                     documents: E2E_ELASTICSEARCH_PLUGIN_QUERY_FILES,
                     plugins: clientPlugins,
                     config: e2eConfig,
-                },
-                [path.join(
-                    __dirname,
-                    '../../packages/asset-server-plugin/e2e/graphql/generated-e2e-asset-server-plugin-types.ts',
-                )]: {
+                }, 
+                ['plugins/asset-server-plugin/e2e/graphql/generated-e2e-asset-server-plugin-types.ts']: {
                     schema: [ADMIN_SCHEMA_OUTPUT_FILE],
                     documents: E2E_ASSET_SERVER_PLUGIN_QUERY_FILES,
                     plugins: clientPlugins,
                     config: e2eConfig,
                 },
-                [path.join(__dirname, '../../packages/admin-ui/src/lib/core/src/common/generated-types.ts')]:
+                ['packages/admin-ui/src/lib/core/src/common/generated-types.ts']:
                     {
                         schema: [ADMIN_SCHEMA_OUTPUT_FILE, path.join(__dirname, 'client-schema.ts')],
                         documents: CLIENT_QUERY_FILES,
@@ -140,16 +133,13 @@ Promise.all([
                             skipTypeNameForRoot: true,
                         },
                     },
-                [path.join(
-                    __dirname,
-                    '../../packages/admin-ui/src/lib/core/src/common/introspection-result.ts',
-                )]: {
+                ['packages/admin-ui/src/lib/core/src/common/introspection-result.ts']: {
                     schema: [ADMIN_SCHEMA_OUTPUT_FILE, path.join(__dirname, 'client-schema.ts')],
                     documents: CLIENT_QUERY_FILES,
                     plugins: [disableEsLintPlugin, 'fragment-matcher'],
                     config: { ...config, apolloClientVersion: 3 },
                 },
-                [path.join(__dirname, '../../packages/common/src/generated-types.ts')]: {
+                ['packages/common/src/generated-types.ts']: {
                     schema: [ADMIN_SCHEMA_OUTPUT_FILE],
                     plugins: commonPlugins,
                     config: {
@@ -161,7 +151,7 @@ Promise.all([
                         maybeValue: 'T',
                     },
                 },
-                [path.join(__dirname, '../../packages/common/src/generated-shop-types.ts')]: {
+                ['packages/common/src/generated-shop-types.ts']: {
                     schema: [SHOP_SCHEMA_OUTPUT_FILE],
                     plugins: commonPlugins,
                     config: {
@@ -173,46 +163,35 @@ Promise.all([
                         maybeValue: 'T',
                     },
                 },
-                [path.join(__dirname, '../../packages/payments-plugin/e2e/graphql/generated-admin-types.ts')]:
+                ['plugins/payments-plugin/e2e/graphql/generated-admin-types.ts']:
                     {
                         schema: [ADMIN_SCHEMA_OUTPUT_FILE],
-                        documents: path.join(
-                            __dirname,
-                            '../../packages/payments-plugin/e2e/graphql/admin-queries.ts',
-                        ),
+                        documents: 'plugins/payments-plugin/e2e/graphql/admin-queries.ts',
                         plugins: clientPlugins,
                         config: e2eConfig,
                     },
-                [path.join(__dirname, '../../packages/payments-plugin/e2e/graphql/generated-shop-types.ts')]:
+                ['plugins/payments-plugin/e2e/graphql/generated-shop-types.ts']:
                     {
                         schema: [SHOP_SCHEMA_OUTPUT_FILE],
-                        documents: path.join(
-                            __dirname,
-                            '../../packages/payments-plugin/e2e/graphql/shop-queries.ts',
-                        ),
+                        documents: 'plugins/payments-plugin/e2e/graphql/shop-queries.ts',
                         plugins: clientPlugins,
                         config: e2eConfig,
                     },
-                [path.join(
-                    __dirname,
-                    '../../packages/payments-plugin/src/mollie/graphql/generated-shop-types.ts',
-                )]: {
+                ['plugins/payments-plugin/src/mollie/graphql/generated-shop-types.ts']: {
                     schema: [
                         SHOP_SCHEMA_OUTPUT_FILE,
-                        path.join(
-                            __dirname,
-                            '../../packages/payments-plugin/src/mollie/mollie-shop-schema.ts',
-                        ),
+                        'plugins/payments-plugin/src/mollie/api-extensions.ts',
                     ],
                     plugins: clientPlugins,
                     config,
                 },
             },
         };
+        process.chdir(path.resolve(__dirname, '../..'))
         return generate(codegenConfig);
     })
     .then(
-        result => {
+        () => {
             process.exit(0);
         },
         err => {

@@ -2,6 +2,9 @@ import { makeExecutableSchema } from '@graphql-tools/schema';
 import fs from 'fs';
 import path from 'path';
 
+import { fileURLToPath } from "url";
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
 const CLIENT_SCHEMA_FILE = '../../packages/admin-ui/src/lib/core/src/data/client-state/client-types.graphql';
 const LANGUAGE_CODE_FILE = '../../packages/core/src/api/schema/common/language-code.graphql';
 const AUTH_TYPE_FILE = '../../packages/core/src/api/schema/common/auth.type.graphql';

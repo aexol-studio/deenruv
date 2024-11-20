@@ -1,11 +1,6 @@
 /* eslint-disable no-console */
 import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
 import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-server-plugin';
-import { SeoPlugin } from '@deenruv/seo-plugin';
-import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
-import { BadgesServerPlugin } from '@deenruv/product-badges-plugin';
-import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
-import { FacetHarmonicaServerPlugin } from '@deenruv/facet-harmonica-plugin';
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
@@ -75,10 +70,6 @@ export const devConfig: DeenruvConfig = {
         paymentMethodHandlers: [dummyPaymentHandler],
     },
 
-    customFields: {
-        ProductOption: [{ name: 'test', type: 'string' }],
-        ProductOptionGroup: [{ name: 'test', type: 'string' }],
-    },
     logger: new DefaultLogger({ level: LogLevel.Verbose }),
     importExportOptions: {
         importAssetsDir: path.join(__dirname, 'import-assets'),
@@ -164,16 +155,11 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
-        DeenruvExamplesServerPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,
         //     expiresIn: 60 * 60 * 24 * 3,
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
-        SeoPlugin,
-        DashboardWidgetsPlugin,
-        BadgesServerPlugin,
-        FacetHarmonicaServerPlugin
     ],
 };

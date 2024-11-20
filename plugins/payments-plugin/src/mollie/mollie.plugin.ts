@@ -8,6 +8,7 @@ import {
     DeenruvPlugin,
 } from '@deenruv/core';
 
+import { shopApiExtensions, adminApiExtensions } from './api-extensions';
 import { PLUGIN_INIT_OPTIONS } from './constants';
 import { orderCustomFields } from './custom-fields';
 import { MollieCommonResolver } from './mollie.common-resolver';
@@ -15,7 +16,6 @@ import { MollieController } from './mollie.controller';
 import { molliePaymentHandler } from './mollie.handler';
 import { MollieService } from './mollie.service';
 import { MollieShopResolver } from './mollie.shop-resolver';
-import gql from 'graphql-tag';
 
 export type AdditionalEnabledPaymentMethodsParams = Partial<Omit<ListParameters, 'resource'>>;
 
@@ -199,123 +199,14 @@ export interface MolliePluginOptions {
         return config;
     },
     shopApiExtensions: {
-        schema: gql`
-            input MolliePaymentIntentInput {
-                """
-                The code of the Deenruv payment method to use for the payment.
-                Must have Mollie as payment method handler.
-                Without this, the first method with Mollie as handler will be used.
-                """
-                paymentMethodCode: String
-                """
-                The redirect url to which the customer will be redirected after the payment is completed.
-                The configured fallback redirect will be used if this is not provided.
-                """
-                redirectUrl: String
-                """
-                Optional preselected Mollie payment method. When this is passed
-                the payment selection step will be skipped.
-                """
-                molliePaymentMethodCode: String
-                """
-                Use this to create a payment intent for a specific order. This allows you to create intents for
-                orders that are not active orders.
-                """
-                orderId: String
-            }
-
-            type MolliePaymentIntent {
-                url: String!
-            }
-
-            type MolliePaymentIntentError implements ErrorResult {
-                errorCode: ErrorCode!
-                message: String!
-            }
-
-            union MolliePaymentIntentResult = MolliePaymentIntent | MolliePaymentIntentError
-
-            extend type Mutation {
-                createMolliePaymentIntent(input: MolliePaymentIntentInput!): MolliePaymentIntentResult!
-            }
-
-            type MollieAmount {
-                value: String
-                currency: String
-            }
-            type MolliePaymentMethodImages {
-                size1x: String
-                size2x: String
-                svg: String
-            }
-            type MolliePaymentMethod {
-                id: ID!
-                code: String!
-                description: String
-                minimumAmount: MollieAmount
-                maximumAmount: MollieAmount
-                image: MolliePaymentMethodImages
-                status: String
-            }
-
-            input MolliePaymentMethodsInput {
-                paymentMethodCode: String!
-            }
-
-            extend type Query {
-                molliePaymentMethods(input: MolliePaymentMethodsInput!): [MolliePaymentMethod!]!
-            }
-        `,
+        schema: shopApiExtensions,
         resolvers: [MollieCommonResolver, MollieShopResolver],
     },
     adminApiExtensions: {
-        schema: gql`
-            input MolliePaymentIntentInput {
-                """
-                The code of the Deenruv payment method to use for the payment.
-                Must have Mollie as payment method handler.
-                Without this, the first method with Mollie as handler will be used.
-                """
-                paymentMethodCode: String
-                """
-                The redirect url to which the customer will be redirected after the payment is completed.
-                The configured fallback redirect will be used if this is not provided.
-                """
-                redirectUrl: String
-                """
-                Optional preselected Mollie payment method. When this is passed
-                the payment selection step will be skipped.
-                """
-                molliePaymentMethodCode: String
-                """
-                Use this to create a payment intent for a specific order. This allows you to create intents for
-                orders that are not active orders.
-                """
-                orderId: String
-            }
-
-            type MolliePaymentIntent {
-                url: String!
-            }
-
-            type MolliePaymentIntentError implements ErrorResult {
-                errorCode: ErrorCode!
-                message: String!
-            }
-
-            union MolliePaymentIntentResult = MolliePaymentIntent | MolliePaymentIntentError
-
-            extend type Mutation {
-                createMolliePaymentIntent(input: MolliePaymentIntentInput!): MolliePaymentIntentResult!
-            }
-
-            extend enum ErrorCode {
-                ORDER_PAYMENT_STATE_ERROR
-            }
-        `,
+        schema: adminApiExtensions,
         resolvers: [MollieCommonResolver],
     },
-    compatibility: '^0.0.0',
+    compatibility: '^0.0.1',
 })
 export class MolliePlugin {
     static options: MolliePluginOptions;

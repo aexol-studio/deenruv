@@ -2,7 +2,8 @@ import fs from 'fs';
 import { getIntrospectionQuery } from 'graphql';
 import http from 'http';
 
-import { ADMIN_API_PATH, API_PORT } from '../../packages/common/src/shared-constants';
+import pkg from '../../packages/common/src/shared-constants.js';
+const { API_PORT } = pkg;
 
 /* eslint-disable no-console */
 
