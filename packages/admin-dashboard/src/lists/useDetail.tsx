@@ -1,5 +1,5 @@
 import { DetailCacheables, cache } from '@/lists/cache';
-import { GenericReturnDetail, PromiseDetail } from '@/lists/models';
+import { GenericReturnDetail, PromiseDetail } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

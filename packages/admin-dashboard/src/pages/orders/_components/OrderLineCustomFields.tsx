@@ -2,8 +2,15 @@ import { EntityCustomFields } from '@/components';
 import { ORDER_STATE } from '@/graphql/base';
 import { apiCall } from '@/graphql/client';
 import { DraftOrderType } from '@/graphql/draft_order';
-import { useServer } from '@/state';
-import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, ScrollArea } from '@deenruv/react-ui-devkit';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+  ScrollArea,
+  useServer,
+} from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
 type Props = {

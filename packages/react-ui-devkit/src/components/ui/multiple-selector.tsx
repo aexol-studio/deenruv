@@ -5,9 +5,8 @@ import { X } from 'lucide-react';
 import * as React from 'react';
 import { forwardRef, useEffect } from 'react';
 
-import { Badge } from '@/components/ui/badge';
-import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
+import { Badge, Command, CommandGroup, CommandItem, CommandList } from '@/components';
 
 interface Option {
     value: string;

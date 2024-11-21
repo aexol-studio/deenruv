@@ -1,4 +1,3 @@
-export * from './types';
 export * from './plugins';
 export * from './components';
 export * from './widgets';
@@ -11,3 +10,5 @@ export * from './routes';
 export * from './tailwind.config';
 export * from './zeus-client/index';
 export * from './state';
+export * from './hooks';
+export * from './types';

@@ -6,14 +6,14 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from '@/components/ui/pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+} from '@/components/atoms/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/atoms/select';
 import { cn } from '@/lib/utils';
 import React from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
-import { GenericReturn, PaginationInput, PromisePaginated } from '@/models';
+import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models';
 import { cache } from './cache';
 import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 

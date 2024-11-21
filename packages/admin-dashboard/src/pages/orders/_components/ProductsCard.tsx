@@ -50,7 +50,6 @@ import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
 import { ImageWithPreview, ProductVariantSearch } from '@/components';
 // import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
-// import { useServer } from '@/state';
 
 type AddItemCustomFieldsType = any;
 type ProductVariantCustomFields = any;

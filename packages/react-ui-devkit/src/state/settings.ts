@@ -1,20 +1,11 @@
-import { CurrencyCode, FromSelectorWithScalars, LanguageCode, Selector } from '@deenruv/admin-types';
+import { ChannelType } from '@/selectors';
+import { LanguageCode } from '@deenruv/admin-types';
 import { getI18n } from 'react-i18next';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export const SETTINGS_LOCAL_STORAGE_KEY = 'deenruv-admin-panel-storage';
 type ThemeType = 'dark' | 'light' | 'system';
-
-export const channelSelector = Selector('Channel')({
-    id: true,
-    code: true,
-    token: true,
-    currencyCode: true,
-    defaultLanguageCode: true,
-});
-
-export type ChannelType = FromSelectorWithScalars<typeof channelSelector, 'Channel'>;
 
 interface Settings {
     language: LanguageCode;

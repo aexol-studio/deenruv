@@ -7,7 +7,7 @@ import {
     chainOptions,
     fetchOptions,
 } from '@deenruv/admin-types';
-import type { DeenruvSettingsWindowType } from './types';
+import type { DeenruvSettingsWindowType } from './types/types';
 declare global {
     interface Window {
         __DEENRUV_SETTINGS__: DeenruvSettingsWindowType;

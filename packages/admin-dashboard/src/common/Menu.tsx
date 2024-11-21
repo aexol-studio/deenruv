@@ -26,6 +26,7 @@ import {
   Routes,
   useSettings,
   getLanguageName,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -48,7 +49,6 @@ import { Nav } from './AwesomeMenu/Nav.js';
 import { NavLink, useMatches, useNavigate } from 'react-router-dom';
 import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
-import { useServer } from '@/state';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguageCode } from '@deenruv/admin-types';

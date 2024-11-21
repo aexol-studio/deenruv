@@ -14,14 +14,13 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, StockLocationsSortOptions, stockLocationsSortOptionsArray } from '@/lists/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { ListTable, DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton } from '@/components';
+import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { StockLocationListSelector, StockLocationListType } from '@/graphql/stockLocations';
 import { stripHtmlTags } from '@/lib';
 import { ActionsColumn } from '@/components/Columns';

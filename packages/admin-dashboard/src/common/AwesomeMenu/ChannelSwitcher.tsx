@@ -5,11 +5,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  usePluginStore,
+  useServer,
   useSettings,
 } from '@deenruv/react-ui-devkit';
 import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
-import { useServer } from '@/state/server';
 import { clearAllCache } from '@/lists/cache';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { useTranslation } from 'react-i18next';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DeenruvUIPlugin, DetailLocationID, ListLocationID } from '../types';
+import { DeenruvUIPlugin, DetailLocationID, ListLocationID } from '../types/types';
 
 const pagePathPrefix = 'admin-ui/extensions/';
 

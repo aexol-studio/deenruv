@@ -1,5 +1,4 @@
-import { Button, Label, Popover, PopoverContent, PopoverTrigger } from '@deenruv/react-ui-devkit';
-import { useServer } from '@/state/server';
+import { Button, Label, Popover, PopoverContent, PopoverTrigger, useServer } from '@deenruv/react-ui-devkit';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';

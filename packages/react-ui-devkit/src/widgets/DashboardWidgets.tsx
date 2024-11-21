@@ -12,7 +12,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuShortcut,
     DropdownMenuTrigger,
-} from '@/components/ui';
+} from '@/components/atoms';
 import {
     DndContext,
     closestCenter,

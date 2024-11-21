@@ -12,13 +12,13 @@ import {
   Label,
   MultipleSelector,
   Option,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/zones/_components/PageHeader';
-import { useServer } from '@/state';
 import { ZoneDetailsSelector, ZoneDetailsType } from '@/graphql/zones';
 import { Stack } from '@/components';
 
@@ -34,7 +34,7 @@ export const ZonesDetailPage = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [countriesIdsToRemove, setCountriesIdsToRemove] = useState<string[]>([]);
   const [countriesIdsToAdd, setCountriesIdsToAdd] = useState<string[]>([]);
-  const { countries } = useServer();
+  const countries = useServer((p) => p.countries);
 
   const fetchZone = useCallback(async () => {
     if (id) {

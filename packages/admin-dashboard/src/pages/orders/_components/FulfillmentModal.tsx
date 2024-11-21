@@ -19,13 +19,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem.js';
 import { useGFFLP } from '@/lists/useGflp';
 import { ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
-import { useServer } from '@/state/server';
 
 interface Props {
   draftOrder: DraftOrderType;

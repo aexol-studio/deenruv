@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/atoms/popover';
 import { Button, CardDescription, Label } from '@/components';
 import { CalendarIcon } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
+import { Calendar } from '@/components/atoms/calendar';
 import { format } from 'date-fns';
 import { useCustomFields } from '@/custom_fields/context';
 import React from 'react';

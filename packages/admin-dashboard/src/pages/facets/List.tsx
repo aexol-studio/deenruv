@@ -27,13 +27,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Routes,
+  SortButton,
+  useLocalStorage,
+  ListTable,
 } from '@deenruv/react-ui-devkit';
-import { DeleteDialog, ListTable, Search, SortButton } from '@/components';
+import { DeleteDialog, Search } from '@/components';
 import { Link, NavLink, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { FacetsSortOptions, ParamFilterFieldTuple, facetsSortOptionsArray } from '@/lists/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { FacetListSelector, FacetListType } from '@/graphql/facets';
 import facetsJson from '@/locales/en/facets.json';
 

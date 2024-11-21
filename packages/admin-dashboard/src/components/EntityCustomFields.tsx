@@ -9,11 +9,11 @@ import {
   Spinner,
   mergeSelectorWithCustomFields,
   CardContent,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { LanguageCode, ModelTypes } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useServer } from '@/state';
 import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';

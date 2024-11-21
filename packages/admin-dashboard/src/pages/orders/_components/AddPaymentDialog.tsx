@@ -14,10 +14,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { PAYMENT_STATE } from '@/graphql/base';
 import { DraftOrderType } from '@/graphql/draft_order';
-import { useServer } from '@/state';
 import { priceFormatter } from '@/utils';
 import { ResolverInputTypes } from '@deenruv/admin-types';
 import { useMemo } from 'react';

@@ -12,6 +12,7 @@ import {
   Label,
   MultipleSelector,
   type Option,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -20,7 +21,6 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/channels/_components/PageHeader';
 import { ChannelDetailsSelector, ChannelDetailsType } from '@/graphql/channels';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
-import { useServer } from '@/state';
 import commonJson from '@/locales/en/common.json';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { SimpleSelect, Stack } from '@/components';
@@ -36,7 +36,7 @@ export const ChannelsDetailPage = () => {
   const [channel, setChannel] = useState<ChannelDetailsType>();
   const [sellersOptions, setSellersOptions] = useState<Option[]>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const { countries } = useServer();
+  const countries = useServer((p) => p.countries);
 
   const fetchChannel = useCallback(async () => {
     if (id) {

@@ -1,8 +1,16 @@
-import { Card, CardHeader, CardTitle, CardContent, Button, Input, Separator } from '@deenruv/react-ui-devkit';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Button,
+  Input,
+  Separator,
+  useServer,
+} from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { apiCall } from '@/graphql/client';
-import { useServer } from '@/state';
 import { useGFFLP } from '@/lists/useGflp';
 import { ModelTypes } from '@deenruv/admin-types';
 import { Lines } from '@/pages/shipping-methods/_components/Lines';

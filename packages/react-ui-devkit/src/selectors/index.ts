@@ -3,3 +3,4 @@ export * from './ProductListSelector';
 export * from './ProductVariantsListSelector';
 export * from './PromotionListSelector';
 export * from './ProductDetailSelector';
+export * from './BaseSelectors';

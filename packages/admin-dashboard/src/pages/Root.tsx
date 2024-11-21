@@ -2,19 +2,21 @@ import { Menu } from '@/common/Menu';
 import { apiCall } from '@/graphql/client';
 import {
   serverConfigSelector,
-  activeAdministratorSelector,
   configurableOperationDefinitionSelector,
-  PaymentMethodsType,
-  paymentMethodsSelector,
   countrySelector,
-} from '@/graphql/base';
-import { useServer } from '@/state';
+} from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { toast } from 'sonner';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
-import { useSettings } from '@deenruv/react-ui-devkit';
+import {
+  PaymentMethodsType,
+  activeAdministratorSelector,
+  paymentMethodsSelector,
+  useServer,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 
 const TAKE = 100;
 const getAllPaginatedCountries = async () => {

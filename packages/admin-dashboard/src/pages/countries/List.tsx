@@ -4,7 +4,7 @@ import { useList } from '@/lists/useList';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowDown, ArrowRight, ArrowUp, ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, Trash } from 'lucide-react';
+import { ArrowRight, ChevronDown, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
 import {
   Routes,
@@ -19,10 +19,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
   useSettings,
+  useLocalStorage,
+  SortButton,
+  TranslationSelect,
+  ListTable,
 } from '@deenruv/react-ui-devkit';
-import { Search, Stack, TranslationSelect, ListTable } from '@/components';
-import { PropsWithChildren, useEffect, useState } from 'react';
-import { useLocalStorage } from '@/hooks';
+import { Search, Stack } from '@/components';
+import { useEffect, useState } from 'react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -34,30 +37,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { CountriesSortOptions, ParamFilterFieldTuple, countriesSortOptionsArray } from '@/lists/types';
-import { PaginationInput } from '@/lists/models';
 
 import { format } from 'date-fns';
 import { CountryListType, CountrySelector } from '@/graphql/settings';
 import { CountryActionModal } from './_components/CountryActionModal.js';
-
-const SortButton: React.FC<
-  PropsWithChildren<{ sortKey: string; currSort: PaginationInput['sort']; onClick: () => void }>
-> = ({ currSort, onClick, children, sortKey }) => {
-  return (
-    <Button variant="ghost" className="w-full justify-start" onClick={onClick}>
-      {children}
-      {currSort && currSort.key === sortKey ? (
-        currSort.sortDir === SortOrder.ASC ? (
-          <ArrowUp className="ml-2 h-4 w-4" />
-        ) : (
-          <ArrowDown className="ml-2 h-4 w-4" />
-        )
-      ) : (
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      )}
-    </Button>
-  );
-};
 
 const getCountries = async (options: ResolverInputTypes['CountryListOptions']) => {
   const response = await apiCall()('query')({

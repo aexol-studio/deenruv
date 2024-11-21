@@ -14,8 +14,8 @@ import {
   TimelineDot,
   TimelineContent,
   TimelineHeading,
+  useServer,
 } from '@deenruv/react-ui-devkit';
-import { useServer } from '@/state/server';
 import { useTranslation } from 'react-i18next';
 
 export const PossibleOrderStates: React.FC<{

@@ -12,6 +12,8 @@ import {
   TableHeader,
   TableRow,
   Routes,
+  ChannelType,
+  channelSelector,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -30,7 +32,6 @@ import { Link } from 'react-router-dom';
 import { CollectionListType } from '@/graphql/collections';
 import { apiCall } from '@/graphql/client';
 import { toast } from 'sonner';
-import { channelSelector, ChannelType } from '@/graphql/base';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
 type SimpleTableData = { name: string; slug: string; id: string; breadcrumbs: { name: string; slug: string }[] };

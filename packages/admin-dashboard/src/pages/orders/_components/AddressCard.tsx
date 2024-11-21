@@ -25,11 +25,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { AddressBaseType, addressBaseSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
-import { useServer } from '@/state/server';
 import { phoneNumberRegExp } from '@/utils/regExp';
 import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';

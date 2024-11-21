@@ -14,13 +14,12 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox } from '@deenruv/react-ui-devkit';
-import { DeleteDialog, ListButtons, ListColumnDropdown, Search, SortButton, ListTable } from '@/components';
+import { Routes, Badge, Checkbox, useLocalStorage, SortButton, ListTable } from '@deenruv/react-ui-devkit';
+import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ChannelsSortOptions, ParamFilterFieldTuple, channelsSortOptionsArray } from '@/lists/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ChannelListSelector, ChannelListType } from '@/graphql/channels';
 import { ActionsColumn } from '@/components/Columns';

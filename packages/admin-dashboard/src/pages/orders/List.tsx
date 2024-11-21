@@ -45,14 +45,15 @@ import {
   Routes,
   EmptyState,
   OrderStateBadge,
+  SortButton,
+  useLocalStorage,
 } from '@deenruv/react-ui-devkit';
-import { PaymentMethodImage, Search, SortButton } from '@/components';
+import { PaymentMethodImage, Search } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { OrdersSortOptions, ParamFilterFieldTuple, ordersSortOptionsArray } from '@/lists/types';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { priceFormatter } from '@/utils';
 import { ORDER_STATE } from '@/graphql/base';
 import { PaymentMethod } from '@/types';

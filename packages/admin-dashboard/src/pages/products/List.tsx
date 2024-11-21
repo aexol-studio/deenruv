@@ -1,8 +1,6 @@
 import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { GenericList } from '@/list-views/GenericList';
-import { PaginationInput } from '@/lists/models';
-import { deepMerge, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { deepMerge, GenericList, PaginationInput, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
 
 const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,

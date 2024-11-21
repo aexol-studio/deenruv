@@ -2,8 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Row } from '@tanstack/react-table';
-import { SortButton } from '@/components';
-import { TimeColumnProps } from '@/lists/models';
+import { SortButton, TimeColumnProps } from '@deenruv/react-ui-devkit';
 
 const UpdatedAtColumn = <T extends { updatedAt?: string }>({ currSort, setSort }: TimeColumnProps): ColumnDef<T> => {
   const { t } = useTranslation();

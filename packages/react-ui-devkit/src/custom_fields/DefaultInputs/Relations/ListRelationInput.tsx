@@ -7,7 +7,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/components/atoms/dialog';
 import { AssetUploadButton, Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
 import { cn } from '@/lib/utils';
 import { CircleX } from 'lucide-react';
