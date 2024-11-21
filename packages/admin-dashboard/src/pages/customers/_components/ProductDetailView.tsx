@@ -9,7 +9,6 @@ import { useDetailViewStore } from '@/state/detail-view';
 
 export const ProductDetailView = () => {
   const { id, contentLanguage, setContentLanguage, view, form } = useDetailViewStore(
-    'CreateProductInput',
     'products-detail-view',
     ({ id, contentLanguage, setContentLanguage, view, form }) => ({
       id,
@@ -18,10 +17,13 @@ export const ProductDetailView = () => {
       view,
       form,
     }),
+    'CreateProductInput',
   );
   const { t } = useTranslation('products');
   const editMode = !!id;
-  const { state, setField } = form;
+  const {
+    base: { state, setField },
+  } = form;
 
   useEffect(() => {
     if (!view.entity) return;

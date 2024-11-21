@@ -19,13 +19,13 @@ import { SortOrder } from '@deenruv/admin-types';
 
 export const VariantsTab = () => {
   const { id, contentLanguage, getMarker } = useDetailViewStore(
-    'CreateProductInput',
     'products-detail-view',
     ({ id, contentLanguage, getMarker }) => ({
       id,
       contentLanguage,
       getMarker,
     }),
+    'CreateProductInput',
   );
   const [variants, setVariants] = useState<ProductVariantType[]>();
   const [loading, setLoading] = useState<boolean>();

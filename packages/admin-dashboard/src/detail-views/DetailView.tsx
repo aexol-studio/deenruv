@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import {
   Button,
-  DetailLocationID,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -14,35 +13,64 @@ import {
   usePluginStore,
   cn,
   DetailKeys,
-  DeenruvTabs,
 } from '@deenruv/react-ui-devkit';
 import { DetailViewStoreProvider, useDetailViewStore } from '@/state/detail-view';
 import { useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
-import { useGFFLP } from '@/lists/useGflp';
+import { FormField, useGFFLP } from '@/lists/useGflp';
 import { ModelTypes } from '@deenruv/admin-types';
 
-type DetailViewForm<
+type Event =
+  | React.FormEvent<HTMLFormElement>
+  | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  | React.MouseEvent<HTMLDivElement>;
+
+interface DetailViewFormProps<
   FORMKEY extends keyof ModelTypes,
   FORMKEYS extends keyof ModelTypes[FORMKEY],
-  PICKEDKEYS extends keyof Pick<ModelTypes[FORMKEY], FORMKEYS>,
-> = {
+  Z extends Pick<ModelTypes[FORMKEY], FORMKEYS>,
+> {
   key: FORMKEY;
-  keys: FORMKEYS[];
+  keys: Array<FORMKEYS>;
   config: {
-    [PICKEDKEY in keyof Pick<ModelTypes[FORMKEY], FORMKEYS>]?: {
-      validate?: (o: PICKEDKEYS[PICKEDKEY]) => string[] | void;
-      initialValue?: PICKEDKEYS[PICKEDKEY];
+    [P in keyof Z]?: {
+      validate?: (o: Z[P]) => string[] | void;
+      initialValue?: Z[P];
     };
   };
-};
+  onSubmitted: (
+    event: Event,
+    data: Partial<{
+      [P in keyof Z]: FormField<Z[P]>;
+    }>,
+  ) => void;
+  onDeleted?: (
+    event: Event,
+    data: Partial<{
+      [P in keyof Z]: FormField<Z[P]>;
+    }>,
+  ) => void;
+}
 
-interface DetailViewProps<
-  LOCATION extends DetailKeys,
+export const createDeenruvForm = <
   FORMKEY extends keyof ModelTypes,
   FORMKEYS extends keyof ModelTypes[FORMKEY],
-  PICKEDKEYS extends keyof Pick<ModelTypes[FORMKEY], FORMKEYS>,
-> {
+  Z extends Pick<ModelTypes[FORMKEY], FORMKEYS>,
+>({
+  key,
+  keys,
+  config,
+  onSubmitted,
+  onDeleted,
+}: DetailViewFormProps<FORMKEY, FORMKEYS, Z>) => ({
+  key,
+  keys,
+  config,
+  onSubmitted,
+  onDeleted,
+});
+
+interface DetailViewProps<LOCATION extends DetailKeys> {
   id?: string;
   locationId: LOCATION;
   main: {
@@ -50,9 +78,15 @@ interface DetailViewProps<
     label: string;
     component: React.ReactNode;
     sidebar?: React.ReactNode;
-    form: DetailViewForm<FORMKEY, FORMKEYS, PICKEDKEYS>;
+    form: ReturnType<typeof createDeenruvForm>;
   };
-  defaultTabs: Omit<DeenruvTabs<LOCATION>, 'id'>[];
+  defaultTabs: Array<{
+    label: string;
+    name: string;
+    component: React.ReactNode;
+    hideSidebar?: boolean;
+    sidebarReplacement?: React.ReactNode;
+  }>;
 }
 
 export const DetailView = <LOCATION extends DetailKeys>({
@@ -60,10 +94,10 @@ export const DetailView = <LOCATION extends DetailKeys>({
   locationId,
   main,
   defaultTabs,
-}: DetailViewProps<LOCATION, keyof ModelTypes, keyof ModelTypes[keyof ModelTypes], ModelTypes[keyof ModelTypes]>) => {
+}: DetailViewProps<LOCATION>) => {
   const [searchParams] = useSearchParams();
   const { getDetailViewTabs } = usePluginStore();
-  const form = useGFFLP(main.form.key, ...(main.form.keys as string[]))({});
+  const form = useGFFLP(main.form.key, ...main.form.keys)({});
   const tab = useMemo(() => searchParams.get('tab') || main.name, [searchParams]);
   const tabs = useMemo(() => {
     return (
@@ -82,7 +116,11 @@ export const DetailView = <LOCATION extends DetailKeys>({
       sidebar={main.sidebar}
       locationId={locationId}
       tabs={[main, ...defaultTabs, ...tabs]}
-      form={form}
+      form={{
+        base: form,
+        onSubmitted: main.form.onSubmitted,
+        onDeleted: main.form.onDeleted,
+      }}
     >
       <DetailTabs />
     </DetailViewStoreProvider>
@@ -90,16 +128,18 @@ export const DetailView = <LOCATION extends DetailKeys>({
 };
 
 const DetailTabs = () => {
-  const { tabs, tab, setActiveTab, sidebar, setSidebar } = useDetailViewStore(
-    'CreateProductInput',
+  const { tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete } = useDetailViewStore(
     'products-detail-view',
-    ({ tabs, tab, setActiveTab, sidebar, setSidebar }) => ({
+    ({ tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete }) => ({
       tabs,
       tab,
       setActiveTab,
       sidebar,
       setSidebar,
+      onSubmit,
+      onDelete,
     }),
+    'CreateProductInput',
   );
 
   const [, setSearchParams] = useSearchParams();
@@ -131,7 +171,7 @@ const DetailTabs = () => {
             </TabsList>
           </div>
           <div className="flex items-center justify-end gap-2">
-            <Button variant="action" onClick={() => {}} className="ml-auto justify-self-end">
+            <Button variant="action" onClick={onSubmit} className="ml-auto justify-self-end">
               Edit product
             </Button>
             <DropdownMenu>
@@ -142,7 +182,7 @@ const DetailTabs = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="z-[101] mr-4">
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Delete product</DropdownMenuItem>
+                <DropdownMenuItem onClick={onDelete}>Delete product</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

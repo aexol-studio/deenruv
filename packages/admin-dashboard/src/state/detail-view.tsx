@@ -25,7 +25,23 @@ interface DetailViewProps<
   sidebar?: React.ReactNode;
   tabs: Omit<DeenruvTabs<LOCATION>, 'id'>[];
   contentLanguage: LanguageCode;
-  form: ReturnType<typeof useFFLP<Pick<ModelTypes[FORMKEY], FORMKEYS>>>;
+  form: {
+    base: ReturnType<typeof useFFLP<Pick<ModelTypes[FORMKEY], FORMKEYS>>>;
+    onSubmitted: (
+      event:
+        | React.FormEvent<HTMLFormElement>
+        | React.MouseEvent<HTMLButtonElement, MouseEvent>
+        | React.MouseEvent<HTMLDivElement>,
+      data: ModelTypes[FORMKEY],
+    ) => void;
+    onDeleted?: (
+      event:
+        | React.FormEvent<HTMLFormElement>
+        | React.MouseEvent<HTMLButtonElement, MouseEvent>
+        | React.MouseEvent<HTMLDivElement>,
+      data: ModelTypes[FORMKEY],
+    ) => void;
+  };
   formKey?: FORMKEY;
   formKeys?: FORMKEYS[];
   view: {
@@ -36,8 +52,17 @@ interface DetailViewProps<
     refetch: () => Promise<LOCATIONTYPE | undefined>;
   };
 }
-interface DetailViewState<T extends DetailKeys, E extends keyof ModelTypes>
-  extends DetailViewProps<T, ExternalDetailLocationSelector[T], E, keyof ModelTypes[E]> {
+interface DetailViewState<
+  LOCATION extends DetailKeys,
+  FORMKEY extends keyof ModelTypes,
+  FORMKEYS extends keyof ModelTypes[FORMKEY],
+> extends DetailViewProps<LOCATION, ExternalDetailLocationSelector[LOCATION], FORMKEY, FORMKEYS> {
+  onSubmit: (
+    event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>,
+  ) => void;
+  onDelete: (
+    event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>,
+  ) => void;
   setContentLanguage: (language: LanguageCode) => void;
   setActiveTab: (tab: string) => void;
   getMarker: () => React.ReactNode | null;
@@ -50,10 +75,11 @@ const createDetailViewStore = <
   LOCATION extends DetailKeys,
   LOCATIONTYPE extends ExternalDetailLocationSelector[LOCATION],
   FORMKEY extends keyof ModelTypes,
+  FORMKEYS extends keyof ModelTypes[FORMKEY],
 >(
-  initProps?: Partial<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, keyof ModelTypes[FORMKEY]>>,
+  initProps?: Partial<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>>,
 ) => {
-  const DEFAULT_PROPS: Omit<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, keyof ModelTypes[FORMKEY]>, 'form'> = {
+  const DEFAULT_PROPS: Omit<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>, 'form'> = {
     id: '',
     contentLanguage: LanguageCode.en,
     tab: '',
@@ -66,10 +92,10 @@ const createDetailViewStore = <
       setEntity: () => undefined,
     },
   };
-  return createStore<DetailViewState<LOCATION, FORMKEY>>((set, get) => ({
+  return createStore<DetailViewState<LOCATION, FORMKEY, FORMKEYS>>((set, get) => ({
     ...DEFAULT_PROPS,
     ...initProps,
-    form: initProps?.form as ReturnType<typeof useFFLP<Pick<ModelTypes[FORMKEY], keyof ModelTypes[FORMKEY]>>>,
+    form: initProps?.form as DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>['form'],
     view: {
       ...DEFAULT_PROPS.view,
       setEntity: (entity) => set({ view: { ...get().view, entity } }),
@@ -103,6 +129,15 @@ const createDetailViewStore = <
           set({ view: { ...get().view, loading: false } });
         }
       },
+    },
+    onDelete: (event) => {
+      const { onDeleted } = get().form;
+      if (!onDeleted) return;
+      onDeleted(event, get().form.base.state);
+    },
+    onSubmit: (event) => {
+      const { onSubmitted } = get().form;
+      onSubmitted(event, get().form.base.state);
     },
     setSidebar: (sidebar) => {
       if (typeof sidebar === 'undefined') {
@@ -154,13 +189,16 @@ export function DetailViewStoreProvider({
 export function useDetailViewStore<
   LOCATION extends DetailKeys,
   FORMKEY extends keyof ModelTypes,
-  RETURNTYPE extends Partial<DetailViewState<LOCATION, FORMKEY>>,
+  FORMKEYS extends keyof ModelTypes[FORMKEY],
+  RETURNTYPE extends Partial<DetailViewState<LOCATION, FORMKEY, FORMKEYS>>,
 >(
-  formKey: keyof ModelTypes,
-  locationId: keyof typeof DetailLocations,
-  selector: (state: DetailViewState<typeof locationId, typeof formKey>) => RETURNTYPE,
+  locationId: LOCATION,
+  selector: (state: DetailViewState<typeof locationId, typeof key, (typeof pick)[number]>) => RETURNTYPE,
+  key: FORMKEY,
+  ...pick: FORMKEYS[]
 ) {
   const store = useContext(DetailViewStoreContext);
   if (!store) throw new Error('Missing DetailViewStoreContext.Provider in the tree');
+  // @ts-expect-error - This is a valid use case
   return useStore(store, selector);
 }

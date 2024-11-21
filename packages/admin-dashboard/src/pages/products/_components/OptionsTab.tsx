@@ -26,7 +26,6 @@ import { useDetailViewStore } from '@/state/detail-view';
 
 export const OptionsTab: React.FC = () => {
   const { id, contentLanguage, setContentLanguage, getMarker } = useDetailViewStore(
-    'CreateProductInput',
     'products-detail-view',
     ({ id, contentLanguage, setContentLanguage, getMarker }) => ({
       id,
@@ -34,6 +33,7 @@ export const OptionsTab: React.FC = () => {
       setContentLanguage,
       getMarker,
     }),
+    'CreateProductInput',
   );
   const { t } = useTranslation('products');
   const [optionGroups, setOptionGroups] = useState<OptionGroupType[]>();

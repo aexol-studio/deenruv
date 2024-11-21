@@ -22,6 +22,8 @@ export const CustomersDetailPage = () => {
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
             config: { '': {} },
+            onDeleted: (event, data) => {},
+            onSubmitted: (event, data) => {},
           },
         }}
         defaultTabs={[

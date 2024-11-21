@@ -7,8 +7,6 @@ import { useDetailViewStore } from '@/state/detail-view';
 
 export const ProductDetailSidebar = () => {
   const { contentLanguage, setContentLanguage, view, form } = useDetailViewStore(
-    'CreateProductInput',
-    // ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
     'products-detail-view',
     ({ contentLanguage, setContentLanguage, view, form }) => ({
       contentLanguage,
@@ -16,9 +14,12 @@ export const ProductDetailSidebar = () => {
       view,
       form,
     }),
+    'CreateProductInput',
   );
   const { t } = useTranslation('products');
-  const { state, setField } = form;
+  const {
+    base: { state, setField },
+  } = form;
 
   useEffect(() => {
     if (!view.entity) return;

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
-import { DetailView } from '@/detail-views/DetailView';
+import { createDeenruvForm, DetailView } from '@/detail-views/DetailView';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
 
@@ -18,15 +18,21 @@ export const ProductsDetailPage = () => {
           label: 'Product',
           component: <ProductDetailView />,
           sidebar: <ProductDetailSidebar />,
-          form: {
+          form: createDeenruvForm({
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
-            config: { '': {} },
-          },
+            config: {},
+            onSubmitted: (event, data) => {
+              console.log('submitted', data.assetIds?.value);
+            },
+            onDeleted: (event, data) => {
+              console.log('deleted', data);
+            },
+          }),
         }}
         defaultTabs={[
           { label: 'Options', name: 'options', component: <OptionsTab />, hideSidebar: true },
-          { label: 'Variants', name: 'variants', component: <VariantsTab />, sidebarReplacement: <p>dupa</p> },
+          { label: 'Variants', name: 'variants', component: <VariantsTab />, hideSidebar: true },
         ]}
       />
     </div>
