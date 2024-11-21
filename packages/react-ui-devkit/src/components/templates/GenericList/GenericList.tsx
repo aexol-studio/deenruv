@@ -1,4 +1,4 @@
-import { ListType, useGenericList } from './useGenericList';
+import { useGenericList } from './useGenericList';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -25,6 +25,7 @@ import { ListLocationID, PromisePaginated } from '@/types';
 import { useLocalStorage } from '@/hooks';
 import { Button, TranslationSelect } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
+import { ListType } from './useGenericList/types';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
@@ -54,6 +55,7 @@ export function GenericList<T extends PromisePaginated>({
     entityName,
     searchFields,
     hideColumns,
+    additionalColumns = [],
 }: {
     fetch: T;
     route:
@@ -65,6 +67,7 @@ export function GenericList<T extends PromisePaginated>({
     entityName: keyof ValueTypes;
     searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
     hideColumns?: FIELDS<T>;
+    additionalColumns?: ColumnDef<AwaitedReturnType<T>['items'][number]>[];
 }) {
     const { t } = useTranslation('table');
     const navigate = useNavigate();
@@ -76,7 +79,7 @@ export function GenericList<T extends PromisePaginated>({
     );
     const rowActions = tableExtensions?.flatMap(table => table.rowActions || []);
     const bulkActions = tableExtensions?.flatMap(table => table.bulkActions || []);
-    const customColumns = tableExtensions?.flatMap(table => table.columns || []) as ColumnDef<
+    const customColumns = (tableExtensions?.flatMap(table => table.columns) || []) as ColumnDef<
         AwaitedReturnType<T>['items']
     >[];
 
@@ -141,10 +144,14 @@ export function GenericList<T extends PromisePaginated>({
                 },
                 cell: ({ row }) => {
                     const value = row.original[key];
+
+                    if (!value) return JSON.stringify(value);
+
                     if (typeof value === 'boolean') {
                         if (value) return <CircleCheck size={20} className="text-primary-600" />;
                         else return <Circle size={20} className="text-gray-400" />;
                     }
+
                     if (typeof value === 'object') {
                         if ('__typename' in value) {
                             // that means we know this type
@@ -194,7 +201,7 @@ export function GenericList<T extends PromisePaginated>({
         const getAccessorKey = (column: ColumnDef<AwaitedReturnType<T>['items']>) =>
             'accessorKey' in column ? column.accessorKey : column.id;
 
-        const mergedAndReplacedColumns = [...columns, ...customColumns].reduce(
+        const mergedAndReplacedColumns = [...columns, ...customColumns, ...additionalColumns].reduce(
             (acc, column) => {
                 const columnKey = getAccessorKey(column);
                 const existingIndex = acc.findIndex(c => getAccessorKey(c) === columnKey);

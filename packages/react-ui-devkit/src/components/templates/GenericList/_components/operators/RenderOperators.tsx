@@ -8,9 +8,9 @@ import { NumberOperator } from './NumberOperator';
 import { StringOperator } from './StringOperator';
 import { FilterInputType, FilterInputTypeUnion } from '../types';
 import { ModelTypes } from '@deenruv/admin-types';
-import { ListType, ListTypeKeys } from '../../useGenericList';
 import React from 'react';
 import { cn } from '@/lib';
+import { ListType, ListTypeKeys } from '../../useGenericList/types';
 
 type FilterKey<T extends keyof ListType> = keyof ModelTypes[(typeof ListTypeKeys)[T]];
 

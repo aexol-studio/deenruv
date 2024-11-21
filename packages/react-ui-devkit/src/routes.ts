@@ -35,6 +35,7 @@ export const Routes = {
     },
     customers: {
         list: '/admin-ui/customers',
+        new: '/admin-ui/customers/new',
         route: '/admin-ui/customers/:id',
         to: (customerId: string) => `/admin-ui/customers/${customerId}`,
     },

@@ -1,13 +1,15 @@
 import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { deepMerge, GenericList, PaginationInput, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { CustomerListSelector, deepMerge, GenericList, PaginationInput, Routes } from '@deenruv/react-ui-devkit';
+import { CircleCheck, CircleX } from 'lucide-react';
 
 const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(ProductListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(deepMerge(CustomerListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+
   const response = await apiCall()('query')({
     customers: [
       {
@@ -40,11 +42,19 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 
 export const CustomersListPage = () => (
   <GenericList
-    searchFields={['name']}
-    hideColumns={['customFields', 'translations', 'collections', 'variantList']}
-    entityName={'Product'}
-    type={'products'}
-    route={Routes['products']}
+    searchFields={['firstName', 'lastName', 'emailAddress']}
+    hideColumns={['customFields', 'user', 'title']}
+    additionalColumns={[
+      {
+        id: 'verified',
+        accessorKey: 'createdAt',
+        header: () => 'verified',
+        cell: ({ row }) => (row.original.user?.verified ? <CircleCheck color="green" /> : <CircleX color="red" />),
+      },
+    ]}
+    entityName={'Customer'}
+    type={'customers'}
+    route={Routes['customers']}
     tableId="customers-list-view"
     fetch={fetch}
     onRemove={onRemove}

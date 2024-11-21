@@ -71,6 +71,7 @@
   "menu": {
     "dashboard": "deska rozdzielcza",
     "products": "produkty",
+    "customers": "klienci",
     "collections": "kolekcje",
     "orders": "zamówienia",
     "facets": "aspekty",

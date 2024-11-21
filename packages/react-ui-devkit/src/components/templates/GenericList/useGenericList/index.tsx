@@ -8,6 +8,7 @@ import { FiltersButton } from './FiltersButton';
 import React from 'react';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models';
 import { SortButton } from '@/components';
+import { ListType } from './types';
 
 type LimitKeys =
     | '10perPage'
@@ -36,54 +37,6 @@ const enum SearchParamKey {
     FILTER = 'filter',
     FILTER_OPERATOR = 'operator',
 }
-
-export type ListType = {
-    administrators: 'AdministratorFilterParameter';
-    assets: 'AssetFilterParameter';
-    channels: 'ChannelFilterParameter';
-    collections: 'CollectionFilterParameter';
-    'countries-list': 'CountryFilterParameter';
-    productVariants: 'ProductVariantFilterParameter';
-    facets: 'FacetFilterParameter';
-    'modal-assets-list': 'AssetFilterParameter';
-    'modal-product-variants-list': 'ProductVariantFilterParameter';
-    'modal-products-list': 'ProductFilterParameter';
-    orders: 'OrderFilterParameter';
-    paymentMethods: 'PaymentMethodFilterParameter';
-    products: 'ProductFilterParameter';
-    promotions: 'PromotionFilterParameter';
-    roles: 'RoleFilterParameter';
-    sellers: 'SellerFilterParameter';
-    shippingMethods: 'ShippingMethodFilterParameter';
-    stockLocations: 'StockLocationFilterParameter';
-    taxCategories: 'TaxCategoryFilterParameter';
-    taxRates: 'TaxRateFilterParameter';
-    zones: 'ZoneFilterParameter';
-};
-
-export const ListTypeKeys = {
-    administrators: 'AdministratorFilterParameter' as const,
-    assets: 'AssetFilterParameter' as const,
-    channels: 'ChannelFilterParameter' as const,
-    collections: 'CollectionFilterParameter' as const,
-    'countries-list': 'CountryFilterParameter' as const,
-    productVariants: 'ProductVariantFilterParameter' as const,
-    facets: 'FacetFilterParameter' as const,
-    'modal-assets-list': 'AssetFilterParameter' as const,
-    'modal-product-variants-list': 'ProductVariantFilterParameter' as const,
-    'modal-products-list': 'ProductFilterParameter' as const,
-    orders: 'OrderFilterParameter' as const,
-    paymentMethods: 'PaymentMethodFilterParameter' as const,
-    products: 'ProductFilterParameter' as const,
-    roles: 'RoleFilterParameter' as const,
-    sellers: 'SellerFilterParameter' as const,
-    shippingMethods: 'ShippingMethodFilterParameter' as const,
-    stockLocations: 'StockLocationFilterParameter' as const,
-    taxCategories: 'TaxCategoryFilterParameter' as const,
-    taxRates: 'TaxRateFilterParameter' as const,
-    zones: 'ZoneFilterParameter' as const,
-    promotions: 'PromotionFilterParameter' as const,
-};
 
 type FIELD = keyof ModelTypes[ListType[keyof ListType]];
 type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
