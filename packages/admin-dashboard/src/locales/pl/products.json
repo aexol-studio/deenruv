@@ -4,6 +4,7 @@
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Stworzony: {{value}}",
     "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "facetPlaceholder": "Dodaj facety",
     "group": "Grupa",
     "image": "Obraz",
     "name": "Nazwa",

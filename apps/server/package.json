@@ -29,6 +29,7 @@
         "@deenruv/deenruv-examples-plugin": "workspace:*",
         "@deenruv/seo-plugin": "workspace:*",
         "@deenruv/dashboard-widgets-plugin": "workspace:*",
+        "@deenruv/facet-harmonica-plugin": "workspace:*",
         "@deenruv/product-badges-plugin": "workspace:*",
         "@deenruv/minko-core-plugin": "workspace:*",
         "@deenruv/elasticsearch-plugin": "workspace:*",

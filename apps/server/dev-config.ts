@@ -5,6 +5,7 @@ import { SeoPlugin } from '@deenruv/seo-plugin';
 import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
 import { BadgesServerPlugin } from '@deenruv/product-badges-plugin';
 import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
+import { FacetHarmonicaServerPlugin } from '@deenruv/facet-harmonica-plugin';
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
@@ -173,5 +174,6 @@ export const devConfig: DeenruvConfig = {
         SeoPlugin,
         DashboardWidgetsPlugin,
         BadgesServerPlugin,
+        FacetHarmonicaServerPlugin
     ],
 };
