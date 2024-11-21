@@ -36,6 +36,8 @@ const PluginStoreContext = createContext<{
         links: PluginNavigationLink[];
     };
     widgets: Widget[];
+    topNavigationComponents: DeenruvUIPlugin['topNavigationComponents'];
+    topNavigationActionsMenu: DeenruvUIPlugin['topNavigationActionsMenu'];
 }>({
     channel: undefined,
     language: '',
@@ -53,6 +55,8 @@ const PluginStoreContext = createContext<{
         links: [],
     },
     widgets: [],
+    topNavigationComponents: [],
+    topNavigationActionsMenu: [],
 });
 
 export const PluginProvider: FC<
@@ -106,6 +110,8 @@ export const PluginProvider: FC<
                 getDetailViewTabs,
                 navMenuData: plugins.navMenuData,
                 widgets: plugins.widgets,
+                topNavigationComponents: plugins.topNavigationComponents,
+                topNavigationActionsMenu: plugins.topNavigationActionsMenu,
             }}
         >
             <WidgetsStoreProvider context={context} widgets={plugins.widgets}>

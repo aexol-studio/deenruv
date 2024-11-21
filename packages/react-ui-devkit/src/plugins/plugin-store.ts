@@ -104,6 +104,26 @@ export class PluginStore {
         return Array.from(tabs.values()).filter(tab => tab.id === location);
     }
 
+    get topNavigationComponents() {
+        const components = new Map<string, { component: React.ComponentType; id: string }>();
+        this.pluginMap.forEach(plugin => {
+            plugin.topNavigationComponents?.forEach(({ component, id }) => {
+                components.set(id, { component, id });
+            });
+        });
+        return Array.from(components.values());
+    }
+
+    get topNavigationActionsMenu() {
+        const actions = new Map<string, NonNullable<DeenruvUIPlugin['topNavigationActionsMenu']>[number]>();
+        this.pluginMap.forEach(plugin => {
+            plugin.topNavigationActionsMenu?.forEach(action => {
+                actions.set(action.label, action);
+            });
+        });
+        return Array.from(actions.values());
+    }
+
     get widgets() {
         const widgets = new Map<string | number, NonNullable<DeenruvUIPlugin['widgets']>[number]>();
         this.pluginMap.forEach(plugin => {

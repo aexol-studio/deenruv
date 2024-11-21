@@ -131,9 +131,15 @@ export type DeenruvUIPlugin = {
     navMenuLinks?: Array<PluginNavigationLink>;
     /** Applied on the app globally */
     pages?: Array<PluginPage>;
+    /** Applied on top navigation bar */
+    topNavigationComponents?: Array<PluginComponent>;
+    /** Applied on top navigation action menu */
+    topNavigationActionsMenu?: Array<NavigationAction>;
     /** Applied on the app globally */
     translations?: { ns: string; data: Record<string, Array<object>> };
 };
+
+export type NavigationAction = { label: string; icon?: any; className?: string; onClick: () => void };
 
 export type Widget = {
     id: string | number;

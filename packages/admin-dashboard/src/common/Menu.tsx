@@ -27,6 +27,7 @@ import {
   useSettings,
   getLanguageName,
   useServer,
+  usePluginStore,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -89,6 +90,7 @@ const removableCrumbs = ['draft', 'admin-ui'];
 export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
+  const { topNavigationActionsMenu, topNavigationComponents } = usePluginStore();
   const { logOut, theme, setTheme, language, setLanguage } = useSettings((p) => ({
     logOut: p.logOut,
     theme: p.theme,
@@ -195,6 +197,13 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     <div className="flex items-center gap-2"></div>
                   </div>
                   <div className="flex flex-1 items-center justify-end gap-2">
+                    {topNavigationComponents && topNavigationComponents.length > 0 ? (
+                      <div className="flex items-center gap-2">
+                        {topNavigationComponents.map(({ component: Component }, index) => (
+                          <Component key={index} />
+                        ))}
+                      </div>
+                    ) : null}
                     <div className="min-w-52">
                       <ChannelSwitcher isCollapsed={isCollapsed} />
                     </div>
@@ -267,6 +276,22 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                             </DropdownMenuSubContent>
                           </DropdownMenuPortal>
                         </DropdownMenuSub>
+                        {topNavigationActionsMenu?.length && topNavigationActionsMenu.length > 0 ? (
+                          <>
+                            <DropdownMenuSeparator />
+                            {topNavigationActionsMenu.map((action) => (
+                              <DropdownMenuItem
+                                key={action.label}
+                                className="flex cursor-pointer items-center gap-2"
+                                onSelect={action.onClick}
+                              >
+                                {action.icon && <action.icon className="h-4 w-4" />}
+                                {action.label}
+                              </DropdownMenuItem>
+                            ))}
+                          </>
+                        ) : null}
+
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="flex cursor-pointer items-center gap-2" onSelect={() => logOut()}>
                           <LogOutIcon className="h-4 w-4" />
