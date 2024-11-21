@@ -21,7 +21,7 @@ export const ProductsDetailPage = () => {
           form: {
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
-            config: { translations: { validate: (v) => {} } },
+            config: { '': {} },
           },
         }}
         defaultTabs={[

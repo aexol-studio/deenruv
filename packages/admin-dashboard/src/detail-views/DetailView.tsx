@@ -22,6 +22,21 @@ import { EllipsisVerticalIcon } from 'lucide-react';
 import { useGFFLP } from '@/lists/useGflp';
 import { ModelTypes } from '@deenruv/admin-types';
 
+type DetailViewForm<
+  FORMKEY extends keyof ModelTypes,
+  FORMKEYS extends keyof ModelTypes[FORMKEY],
+  PICKEDKEYS extends keyof Pick<ModelTypes[FORMKEY], FORMKEYS>,
+> = {
+  key: FORMKEY;
+  keys: FORMKEYS[];
+  config: {
+    [PICKEDKEY in keyof Pick<ModelTypes[FORMKEY], FORMKEYS>]?: {
+      validate?: (o: PICKEDKEYS[PICKEDKEY]) => string[] | void;
+      initialValue?: PICKEDKEYS[PICKEDKEY];
+    };
+  };
+};
+
 interface DetailViewProps<
   LOCATION extends DetailKeys,
   FORMKEY extends keyof ModelTypes,
@@ -34,17 +49,8 @@ interface DetailViewProps<
     name: string;
     label: string;
     component: React.ReactNode;
-    form: {
-      key: FORMKEY;
-      keys: FORMKEYS[];
-      config: {
-        [PICKEDKEY in PICKEDKEYS]?: {
-          validate?: (o: PICKEDKEYS[PICKEDKEY]) => string[] | void;
-          initialValue?: PICKEDKEYS[PICKEDKEY];
-        };
-      };
-    };
     sidebar?: React.ReactNode;
+    form: DetailViewForm<FORMKEY, FORMKEYS, PICKEDKEYS>;
   };
   defaultTabs: Omit<DeenruvTabs<LOCATION>, 'id'>[];
 }
