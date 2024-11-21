@@ -1,11 +1,10 @@
-import { DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
+import { useDetailViewStore, DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
+import { setInArrayBy } from '@/lists/useGflp';
 import { useTranslation } from 'react-i18next';
-import { useDetailViewStore } from '@/state/detail-view';
 
 export const ProductDetailView = () => {
   const { id, contentLanguage, setContentLanguage, view, form } = useDetailViewStore(
@@ -40,7 +39,7 @@ export const ProductDetailView = () => {
   }, [view.entity]);
 
   const translations = state?.translations?.value || [];
-  const currentTranslationValue = (translations as any[]).find((v) => v.languageCode === contentLanguage);
+  const currentTranslationValue = translations.find((v) => v.languageCode === contentLanguage);
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(

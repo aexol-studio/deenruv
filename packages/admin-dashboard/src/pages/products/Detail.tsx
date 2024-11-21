@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
-import { createDeenruvForm, DetailView } from '@/detail-views/DetailView';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
+import { createDeenruvForm, DetailView } from '@deenruv/react-ui-devkit';
 
 export const ProductsDetailPage = () => {
   const { id } = useParams();

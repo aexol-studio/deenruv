@@ -8,13 +8,13 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  useDetailViewStore,
 } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
 import { AddVariantDialog } from '@/pages/products/_components/AddVariantDialog';
 import { Variant } from '@/pages/products/_components/Variant';
 import { useCallback, useEffect, useState } from 'react';
-import { useDetailViewStore } from '@/state/detail-view';
 import { SortOrder } from '@deenruv/admin-types';
 
 export const VariantsTab = () => {

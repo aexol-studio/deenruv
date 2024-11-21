@@ -1,11 +1,10 @@
-import { DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
+import { useDetailViewStore, DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
 import { setInArrayBy } from '@/lists/useGflp';
 import { useTranslation } from 'react-i18next';
-import { useDetailViewStore } from '@/state/detail-view';
 
 const PRODUCT_FORM_KEYS = [
   'CreateProductInput',

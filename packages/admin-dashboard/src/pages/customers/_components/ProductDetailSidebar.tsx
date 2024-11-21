@@ -1,9 +1,8 @@
-import { Badge, Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
+import { useDetailViewStore, Badge, Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
 import { useEffect } from 'react';
 
 import { SettingsCard } from './SettingsCard';
 import { useTranslation } from 'react-i18next';
-import { useDetailViewStore } from '@/state/detail-view';
 
 export const ProductDetailSidebar = () => {
   const { contentLanguage, setContentLanguage, view, form } = useDetailViewStore(

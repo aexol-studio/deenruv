@@ -15,6 +15,7 @@ import {
   TableRow,
   MultipleSelector,
   type Option,
+  useDetailViewStore,
 } from '@deenruv/react-ui-devkit';
 import { Trash } from 'lucide-react';
 import { apiCall } from '@/graphql/client';
@@ -22,7 +23,6 @@ import { toast } from 'sonner';
 import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
 import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
 import { Stack } from '@/components';
-import { useDetailViewStore } from '@/state/detail-view';
 
 export const OptionsTab: React.FC = () => {
   const { id, contentLanguage, setContentLanguage, getMarker } = useDetailViewStore(
