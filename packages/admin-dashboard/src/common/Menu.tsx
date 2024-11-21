@@ -241,7 +241,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           <MenuIcon className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className="mr-6 min-w-40">
+                      <DropdownMenuContent className="z-[150] mr-6 min-w-40">
                         <DropdownMenuLabel>{activeAdministrator?.emailAddress}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
@@ -257,7 +257,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                             <span>{t('language')}</span>
                           </DropdownMenuSubTrigger>
                           <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
+                            <DropdownMenuSubContent className="z-[150]">
                               {languages.map((lng) => (
                                 <DropdownMenuItem key={lng} onClick={() => lng !== language && setLanguage(lng)}>
                                   <span>{getLanguageName(lng)}</span>
