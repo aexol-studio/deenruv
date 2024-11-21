@@ -41,8 +41,8 @@ const sharedCacheExtension = gql`
 })
 export class ApolloCachePlugin {
     static options: ApolloCachePluginOptions = {};
-    static init(options: ApolloCachePluginOptions) {
-        this.options = options;
+    static init(options?: ApolloCachePluginOptions) {
+        this.options = options ?? {};
         return ApolloCachePlugin;
     }
 }
