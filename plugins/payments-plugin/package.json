@@ -1,71 +1,71 @@
 {
-  "name": "@deenruv/payments-plugin",
-  "version": "0.0.24",
-  "license": "MIT",
-  "main": "package/index.js",
-  "types": "package/index.d.ts",
-  "files": [
-    "package/**/*"
-  ],
-  "private": false,
-  "scripts": {
-    "watch": "tsc -p ./tsconfig.build.json --watch",
-    "build": "rimraf package && tsc -p ./tsconfig.build.json",
-    "e2e": "cross-env PACKAGE=payments-plugin vitest --config ../../e2e-common/vitest.config.mts --run",
-    "e2e:watch": "cross-env PACKAGE=payments-plugin vitest --config ../../e2e-common/vitest.config.mts",
-    "lint": "eslint --fix .",
-    "ci": "npm run build",
-    "dev-server:mollie": "npm run build && DB=sqlite node -r ts-node/register e2e/mollie-dev-server.ts",
-    "dev-server:stripe": "npm run build && DB=sqlite node -r ts-node/register e2e/stripe-dev-server.ts"
-  },
-  "homepage": "https://www.deenruv.io/",
-  "publishConfig": {
-    "access": "public"
-  },
-  "peerDependencies": {
-    "@mollie/api-client": "3.x",
-    "braintree": "3.x",
-    "graphql": "~16.9.0",
-    "graphql-tag": "^2.12.6",
-    "stripe": "13.x"
-  },
-  "dependencies": {
-    "@deenruv/common": "workspace:*",
-    "@deenruv/core": "workspace:*",
-    "@deenruv/testing": "workspace:*",
-    "@nestjs/common": "~10.3.10",
-    "@nestjs/core": "~10.3.10",
-    "@nestjs/graphql": "~12.2.0",
-    "axios": "^1.7.7",
-    "body-parser": "^1.20.2",
-    "currency.js": "2.0.4",
-    "express": "^4.21.0"
-  },
-  "peerDependenciesMeta": {
-    "@mollie/api-client": {
-      "optional": true
+    "name": "@deenruv/payments-plugin",
+    "version": "0.0.29",
+    "license": "MIT",
+    "main": "package/index.js",
+    "types": "package/index.d.ts",
+    "files": [
+        "package/**/*"
+    ],
+    "private": false,
+    "scripts": {
+        "watch": "tsc -p ./tsconfig.build.json --watch",
+        "build": "rimraf package && tsc -p ./tsconfig.build.json",
+        "e2e": "cross-env PACKAGE=payments-plugin vitest --config ../../e2e-common/vitest.config.mts --run",
+        "e2e:watch": "cross-env PACKAGE=payments-plugin vitest --config ../../e2e-common/vitest.config.mts",
+        "lint": "eslint --fix .",
+        "ci": "npm run build",
+        "dev-server:mollie": "npm run build && DB=sqlite node -r ts-node/register e2e/mollie-dev-server.ts",
+        "dev-server:stripe": "npm run build && DB=sqlite node -r ts-node/register e2e/stripe-dev-server.ts"
     },
-    "braintree": {
-      "optional": true
+    "homepage": "https://www.deenruv.io/",
+    "publishConfig": {
+        "access": "public"
     },
-    "stripe": {
-      "optional": true
+    "peerDependencies": {
+        "@mollie/api-client": "3.x",
+        "braintree": "3.x",
+        "graphql": "~16.9.0",
+        "graphql-tag": "^2.12.6",
+        "stripe": "13.x"
+    },
+    "dependencies": {
+        "@deenruv/common": "workspace:*",
+        "@deenruv/core": "workspace:*",
+        "@deenruv/testing": "workspace:*",
+        "@nestjs/common": "~10.3.10",
+        "@nestjs/core": "~10.3.10",
+        "@nestjs/graphql": "~12.2.0",
+        "axios": "^1.7.7",
+        "body-parser": "^1.20.2",
+        "currency.js": "2.0.4",
+        "express": "^4.21.0"
+    },
+    "peerDependenciesMeta": {
+        "@mollie/api-client": {
+            "optional": true
+        },
+        "braintree": {
+            "optional": true
+        },
+        "stripe": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@mollie/api-client": "^3.7.0",
+        "@types/body-parser": "^1.19.5",
+        "@types/braintree": "^3.3.11",
+        "@types/connect": "^3.4.38",
+        "@types/express": "^4.17.21",
+        "@types/localtunnel": "2.0.4",
+        "braintree": "^3.22.0",
+        "graphql": "~16.9.0",
+        "graphql-tag": "^2.12.6",
+        "localtunnel": "2.0.2",
+        "nock": "^13.1.4",
+        "rimraf": "^5.0.5",
+        "stripe": "^13.3.0",
+        "typescript": "5.1.6"
     }
-  },
-  "devDependencies": {
-    "@mollie/api-client": "^3.7.0",
-    "@types/body-parser": "^1.19.5",
-    "@types/braintree": "^3.3.11",
-    "@types/connect": "^3.4.38",
-    "@types/express": "^4.17.21",
-    "@types/localtunnel": "2.0.4",
-    "braintree": "^3.22.0",
-    "graphql": "~16.9.0",
-    "graphql-tag": "^2.12.6",
-    "localtunnel": "2.0.2",
-    "nock": "^13.1.4",
-    "rimraf": "^5.0.5",
-    "stripe": "^13.3.0",
-    "typescript": "5.1.6"
-  }
 }

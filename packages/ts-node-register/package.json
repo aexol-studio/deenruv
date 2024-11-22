@@ -1,26 +1,26 @@
 {
-  "name": "@deenruv/ts-node-register",
-  "version": "0.0.24",
-  "description": "ts-node register hook",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/deenruv-ecommerce/deenruv/"
-  },
-  "keywords": [
-    "deenruv"
-  ],
-  "homepage": "https://www.deenruv.io/",
-  "private": false,
-  "license": "MIT",
-  "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "index.mjs",
-  "files": [
-    "index.mjs"
-  ],
-  "dependencies": {
-    "ts-node": "^10.9.2"
-  }
+    "name": "@deenruv/ts-node-register",
+    "version": "0.0.29",
+    "description": "ts-node register hook",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/deenruv-ecommerce/deenruv/"
+    },
+    "keywords": [
+        "deenruv"
+    ],
+    "homepage": "https://www.deenruv.io/",
+    "private": false,
+    "license": "MIT",
+    "type": "module",
+    "publishConfig": {
+        "access": "public"
+    },
+    "main": "index.mjs",
+    "files": [
+        "index.mjs"
+    ],
+    "dependencies": {
+        "ts-node": "^10.9.2"
+    }
 }
