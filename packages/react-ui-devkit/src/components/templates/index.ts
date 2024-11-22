@@ -1,1 +1,2 @@
-export * from './GenericList';
+export * from './DetailList';
+export * from './DetailView';

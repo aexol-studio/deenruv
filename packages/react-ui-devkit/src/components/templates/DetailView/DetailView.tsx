@@ -16,9 +16,10 @@ import {
     TabsList,
     TabsTrigger,
     TabsContent,
+    DetailViewStoreProvider,
+    useDetailView,
 } from '@/components';
-import { DetailViewStoreProvider, useDetailViewStore } from '@/state';
-import { GFFLPFormField, useGFFLP } from '@/detail-views';
+import { GFFLPFormField, useGFFLP } from '@/hooks';
 
 type Event =
     | React.FormEvent<HTMLFormElement>
@@ -128,7 +129,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
 };
 
 const DetailTabs = () => {
-    const { tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete } = useDetailViewStore(
+    const { tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete } = useDetailView(
         'products-detail-view',
         ({ tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete }) => ({
             tabs,

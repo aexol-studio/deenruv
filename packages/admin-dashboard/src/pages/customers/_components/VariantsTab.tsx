@@ -8,7 +8,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  useDetailViewStore,
+  useDetailView,
 } from '@deenruv/react-ui-devkit';
 import { apiCall } from '@/graphql/client';
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
@@ -18,7 +18,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { SortOrder } from '@deenruv/admin-types';
 
 export const VariantsTab = () => {
-  const { id, contentLanguage, getMarker } = useDetailViewStore(
+  const { id, contentLanguage, getMarker } = useDetailView(
     'products-detail-view',
     ({ id, contentLanguage, getMarker }) => ({
       id,

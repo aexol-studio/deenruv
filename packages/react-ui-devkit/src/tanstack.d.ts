@@ -1,4 +1,4 @@
-import { GenericListContextType } from '@/components/templates/GenericList/useGenericList/types';
+import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { RowData } from '@tanstack/react-table';
 
 declare module '@tanstack/react-table' {

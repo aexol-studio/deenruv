@@ -12,4 +12,4 @@ export * from './zeus-client/index';
 export * from './state';
 export * from './hooks';
 export * from './types';
-export * from './detail-views';
+export * from './components/templates/DetailView';

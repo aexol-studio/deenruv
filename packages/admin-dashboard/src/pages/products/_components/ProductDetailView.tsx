@@ -1,4 +1,4 @@
-import { useDetailViewStore, DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
+import { useDetailView, DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
@@ -15,7 +15,7 @@ const PRODUCT_FORM_KEYS = [
 ] as const;
 
 export const ProductDetailView = () => {
-  const { id, contentLanguage, setContentLanguage, view, form } = useDetailViewStore(
+  const { id, contentLanguage, setContentLanguage, view, form } = useDetailView(
     'products-detail-view',
     ({ id, contentLanguage, setContentLanguage, view, form }) => ({
       id,

@@ -1,4 +1,4 @@
-import { useGenericList } from './useGenericList';
+import { useDetailList } from './useDetailList';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
-import { SelectIDColumn, ActionsDropdown } from './GenericListColumns';
+import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer } from '@/state';
 import { ValueTypes } from '@deenruv/admin-types';
@@ -25,7 +25,7 @@ import { ListLocationID, PromisePaginated } from '@/types';
 import { useLocalStorage } from '@/hooks';
 import { Button, TranslationSelect } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
-import { ListType } from './useGenericList/types';
+import { ListType } from './useDetailList/types';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
@@ -46,7 +46,7 @@ type FIELDS<T extends PromisePaginated> = Array<
     keyof AwaitedReturnType<T>['items'][number] | AdditionalColumn<'CustomColumn'>
 >;
 
-export function GenericList<T extends PromisePaginated>({
+export function DetailList<T extends PromisePaginated>({
     fetch,
     route,
     onRemove,
@@ -110,7 +110,7 @@ export function GenericList<T extends PromisePaginated>({
         Search,
         FiltersButton,
         FiltersResult,
-    } = useGenericList({
+    } = useDetailList({
         type,
         fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
         searchFields,

@@ -1,6 +1,6 @@
 import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { deepMerge, GenericList, PaginationInput, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { deepMerge, DetailList, PaginationInput, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
 
 const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
@@ -39,7 +39,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 };
 
 export const ProductsListPage = () => (
-  <GenericList
+  <DetailList
     searchFields={['name']}
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'Product'}

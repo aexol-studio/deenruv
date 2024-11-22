@@ -15,7 +15,7 @@ import {
   TableRow,
   MultipleSelector,
   type Option,
-  useDetailViewStore,
+  useDetailView,
 } from '@deenruv/react-ui-devkit';
 import { Trash } from 'lucide-react';
 import { apiCall } from '@/graphql/client';
@@ -25,7 +25,7 @@ import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
 import { Stack } from '@/components';
 
 export const OptionsTab: React.FC = () => {
-  const { id, contentLanguage, setContentLanguage, getMarker } = useDetailViewStore(
+  const { id, contentLanguage, setContentLanguage, getMarker } = useDetailView(
     'products-detail-view',
     ({ id, contentLanguage, setContentLanguage, getMarker }) => ({
       id,

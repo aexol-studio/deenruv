@@ -1,6 +1,6 @@
 import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { CustomerListSelector, deepMerge, GenericList, PaginationInput, Routes } from '@deenruv/react-ui-devkit';
+import { CustomerListSelector, deepMerge, DetailList, PaginationInput, Routes } from '@deenruv/react-ui-devkit';
 import { CircleCheck, CircleX } from 'lucide-react';
 
 const fetch = async <T, K>(
@@ -41,7 +41,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 };
 
 export const CustomersListPage = () => (
-  <GenericList
+  <DetailList
     searchFields={['firstName', 'lastName', 'emailAddress']}
     hideColumns={['customFields', 'user', 'title']}
     additionalColumns={[

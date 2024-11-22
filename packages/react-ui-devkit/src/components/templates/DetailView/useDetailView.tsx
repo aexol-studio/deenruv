@@ -7,7 +7,7 @@ import { ModelTypes } from '@deenruv/admin-types';
 import { DeenruvTabs, DetailKeys, DetailLocations, ExternalDetailLocationSelector } from '@/types';
 import { client } from '@/zeus-client';
 import { DetailViewMarker } from '@/components';
-import { useFFLP } from '@/detail-views';
+import { useFFLP } from '@/hooks';
 
 interface DetailViewProps<
     LOCATION extends DetailKeys,
@@ -190,7 +190,7 @@ export function DetailViewStoreProvider({
     );
 }
 
-export function useDetailViewStore<
+export function useDetailView<
     LOCATION extends DetailKeys,
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
