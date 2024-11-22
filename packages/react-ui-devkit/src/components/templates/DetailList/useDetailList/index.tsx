@@ -197,7 +197,12 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         () => Math.ceil(total / searchParamValues.perPage),
         [total, searchParamValues],
     );
-    const filterProperties = { type, filter: searchParamValues.filter, setFilterField, removeFilterField };
+    const filterProperties = {
+        type,
+        filter: searchParamValues.filter,
+        setFilterField,
+        removeFilterField,
+    };
 
     return {
         FiltersResult: <FiltersResult {...filterProperties} />,

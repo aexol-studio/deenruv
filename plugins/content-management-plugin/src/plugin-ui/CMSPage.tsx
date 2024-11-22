@@ -4,6 +4,6 @@ import '@measured/puck/puck.css';
 import { useMDTX } from './mdtx';
 
 export const CMSPage = () => {
-    const { loading, ...mdtx } = useMDTX({ slug: 'post1', model: 'model_jarka' });
+    const { loading, ...mdtx } = useMDTX({ slug: 'about', model: 'homepage' });
     return <div className="cms-editor">{loading ? <div>Loading...</div> : <Puck {...mdtx} />}</div>;
 };

@@ -11,7 +11,7 @@ import {
 } from '@/components';
 import { MoreHorizontal, PanelsTopLeft } from 'lucide-react';
 import { toast } from 'sonner';
-import { Link, redirect } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 import React from 'react';
 
 export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
@@ -70,43 +70,43 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
                                 {t('actionsMenu.copyId')}
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="default"
-                                    onClick={() => {
-                                        if ('edit' in route) {
-                                            route.edit(row.original.id);
-                                        } else {
-                                            redirect(route.to(row.original.id));
-                                        }
-                                    }}
-                                >
-                                    {t('actionsMenu.view')}
-                                </Button>
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    if ('edit' in route) {
+                                        route.edit(row.original.id);
+                                    } else {
+                                        redirect(route.to(row.original.id));
+                                    }
+                                }}
+                            >
+                                {t('actionsMenu.view')}
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            {rowActions?.map(action => (
-                                <DropdownMenuItem
-                                    key={action.label}
-                                    onClick={async () => {
-                                        const result = await action.onClick({
-                                            data: row.original,
-                                            table,
-                                            refetch,
-                                        });
-                                        if ('success' in result) {
-                                            //show success message
-                                            toast.success(result.success);
-                                        } else {
-                                            // show error message
-                                            toast.error(result.error);
-                                        }
-                                    }}
-                                >
-                                    {action.label}
-                                </DropdownMenuItem>
-                            ))}
+                            {rowActions && rowActions?.length > 0 && (
+                                <>
+                                    <DropdownMenuSeparator />
+                                    {rowActions?.map(action => (
+                                        <DropdownMenuItem
+                                            key={action.label}
+                                            onClick={async () => {
+                                                const result = await action.onClick({
+                                                    data: row.original,
+                                                    table,
+                                                    refetch,
+                                                });
+                                                if ('success' in result) {
+                                                    //show success message
+                                                    toast.success(result.success);
+                                                } else {
+                                                    // show error message
+                                                    toast.error(result.error);
+                                                }
+                                            }}
+                                        >
+                                            {action.label}
+                                        </DropdownMenuItem>
+                                    ))}
+                                </>
+                            )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => onRemove([row.original])}>
                                 <div className="text-red-400 hover:text-red-400 dark:hover:text-red-400">

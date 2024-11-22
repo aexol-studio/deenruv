@@ -3,6 +3,7 @@ import { Routes } from '../routes';
 import { ColumnDef } from '@tanstack/react-table';
 import { ProductDetailSelector, ProductListSelector } from '../selectors';
 import type { FromSelectorWithScalars } from '@deenruv/admin-types';
+import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -69,22 +70,8 @@ export interface ExternalListLocationSelector<K extends LocationKeys = LocationK
 type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     id: KEY;
     externalSelector?: ExternalListLocationSelector[KEY];
-    rowActions?: Array<{
-        label: string;
-        onClick: (props: {
-            data: Array<ListLocationsType<KEY>>;
-            refetch: () => void;
-            table: any;
-        }) => { success: string } | { error: string };
-    }>;
-    bulkActions?: Array<{
-        label: string;
-        onClick: (props: {
-            data: Array<ListLocationsType<KEY>>;
-            refetch: () => void;
-            table: any;
-        }) => { success: string } | { error: string };
-    }>;
+    rowActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['rowActions'];
+    bulkActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['bulkActions'];
     columns?: Array<ColumnDef<ListLocationsType<KEY>>>;
 };
 

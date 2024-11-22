@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
@@ -56,6 +56,7 @@ export function DetailList<T extends PromisePaginated>({
     searchFields,
     hideColumns,
     additionalColumns = [],
+    detailLinkColumn,
 }: {
     fetch: T;
     route:
@@ -68,6 +69,7 @@ export function DetailList<T extends PromisePaginated>({
     searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
     hideColumns?: FIELDS<T>;
     additionalColumns?: ColumnDef<AwaitedReturnType<T>['items'][number]>[];
+    detailLinkColumn?: keyof AwaitedReturnType<T>['items'][number];
 }) {
     const { t } = useTranslation('table');
     const navigate = useNavigate();
@@ -117,9 +119,13 @@ export function DetailList<T extends PromisePaginated>({
         customFieldsSelector,
         entityName,
     });
+
     const columns = useMemo(() => {
         const entry = objects?.[0];
-        const keys = entry ? Object.keys(entry) : DEFAULT_COLUMNS;
+        const keys = entry
+            ? Array.from(new Set([...DEFAULT_COLUMNS, ...Object.keys(entry)]))
+            : DEFAULT_COLUMNS;
+
         const columns: ColumnDef<AwaitedReturnType<T>['items']>[] = [];
         for (const key of keys) {
             if (key === 'id') {
@@ -176,7 +182,7 @@ export function DetailList<T extends PromisePaginated>({
                             </div>
                         );
                     }
-                    if (key === 'name') {
+                    if (key === detailLinkColumn) {
                         return (
                             <Button
                                 variant="outline"
@@ -189,7 +195,7 @@ export function DetailList<T extends PromisePaginated>({
                                     }
                                 }}
                             >
-                                {row.original.name}
+                                {row.original[detailLinkColumn]}
                                 <ArrowRight className="pl-1" size={16} />
                             </Button>
                         );
@@ -198,6 +204,7 @@ export function DetailList<T extends PromisePaginated>({
                 },
             });
         }
+
         const getAccessorKey = (column: ColumnDef<AwaitedReturnType<T>['items']>) =>
             'accessorKey' in column ? column.accessorKey : column.id;
 
@@ -211,13 +218,15 @@ export function DetailList<T extends PromisePaginated>({
             },
             [] as ColumnDef<AwaitedReturnType<T>['items']>[],
         );
-        return mergedAndReplacedColumns
+        const resultColumns = mergedAndReplacedColumns
             .filter(column => !hideColumns?.includes(getAccessorKey(column) as string))
             .sort((a, b) => {
                 const keyA = getAccessorKey(a) as string;
                 const keyB = getAccessorKey(b) as string;
                 return getPriority(keyA) - getPriority(keyB);
             }) as ColumnDef<AwaitedReturnType<T>['items']>[];
+
+        return resultColumns;
     }, [objects]);
 
     useEffect(() => {
@@ -248,8 +257,8 @@ export function DetailList<T extends PromisePaginated>({
         onRowSelectionChange: setRowSelection,
         onColumnFiltersChange: setColumnFilters,
         meta: {
-            bulkActions: bulkActions as any, //TODO: FIX TYPES
-            rowActions: rowActions as any, //TODO: FIX TYPES
+            bulkActions: bulkActions as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
+            rowActions: rowActions as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
             route,
             refetch,
             onRemove: items => {
@@ -294,6 +303,16 @@ export function DetailList<T extends PromisePaginated>({
             console.error('Error deleting items');
         }
     };
+
+    const allFilterFields = useMemo(() => {
+        const fields = table.getAllColumns().map(column => column.id);
+        return fields.map(field => ({
+            name: field,
+            // type: 'StringOperators',
+            // value: filter && field in filter ? filter[field] : undefined,
+        }));
+    }, [objects]);
+    console.log(allFilterFields);
 
     return (
         <div className="px-4 py-2 md:px-8 md:py-4">
