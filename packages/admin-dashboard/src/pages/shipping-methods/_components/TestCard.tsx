@@ -7,10 +7,11 @@ import {
   Input,
   Separator,
   useServer,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
+
 import { useGFFLP } from '@/lists/useGflp';
 import { ModelTypes } from '@deenruv/admin-types';
 import { Lines } from '@/pages/shipping-methods/_components/Lines';
@@ -63,7 +64,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
 
   const testShippingMethod = useCallback(async () => {
     if (state.calculator && state.checker && state.shippingAddress && state.lines?.validatedValue) {
-      const resp = await apiCall()('query')({
+      const resp = await apiClient('query')({
         testShippingMethod: [
           {
             input: {

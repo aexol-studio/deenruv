@@ -10,8 +10,9 @@ import {
   DialogFooter,
   Checkbox,
   DropdownMenuItem,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { LanguageCode } from '@deenruv/admin-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -91,7 +92,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
 
   const saveFacetValue = useCallback(
     () =>
-      apiCall()('mutation')({
+      apiClient('mutation')({
         createFacetValues: [
           {
             input: [
@@ -126,7 +127,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   const updateFacetValue = useCallback(() => {
     if (!facetValue?.id) return;
 
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateFacetValues: [
         {
           input: [

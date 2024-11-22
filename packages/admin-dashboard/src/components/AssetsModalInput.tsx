@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@deenruv/react-ui-devkit';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import {
   Button,
   DropdownMenu,
@@ -24,7 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
 import { AssetType, assetsSelector } from '@/graphql/base';
 import { cn } from '@/lib/utils';
 import { useAssets, ASSETS_PER_PAGE, ASSETS_ITEMS_PER_PAGE } from '@/hooks';
@@ -71,7 +78,7 @@ export function AssetsModalInput({
 
   useEffect(() => {
     if (value?.id) {
-      apiCall()('query')({
+      apiClient('query')({
         assets: [{ options: { take: 1, filter: { id: { eq: value.id as string } } } }, { items: assetsSelector }],
       }).then(({ assets }) => {
         setSelectedAsset(assets.items[0]);
@@ -80,7 +87,7 @@ export function AssetsModalInput({
   }, [value]);
 
   useEffect(() => {
-    apiCall()('query')({
+    apiClient('query')({
       tags: [{}, { items: { id: true, value: true } }],
     }).then(({ tags }) => {
       setTags(tags.items);

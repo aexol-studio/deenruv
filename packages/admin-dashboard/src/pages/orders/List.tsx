@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { OrderListSelector, OrderListType } from '@/graphql/orders';
 import { ListType, useList } from '@/lists/useList';
@@ -47,6 +46,7 @@ import {
   OrderStateBadge,
   SortButton,
   useLocalStorage,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { PaymentMethodImage, Search } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -59,14 +59,14 @@ import { ORDER_STATE } from '@/graphql/base';
 import { PaymentMethod } from '@/types';
 
 const createDraftOrder = async () => {
-  const response = await apiCall()('mutation')({
+  const response = await apiClient('mutation')({
     createDraftOrder: { id: true },
   });
   return response.createDraftOrder.id;
 };
 
 const getOrders = async (options: ResolverInputTypes['OrderListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     orders: [
       { options },
       {
@@ -161,7 +161,7 @@ export const OrdersListPage = () => {
     const resp = await Promise.all(
       ordersToDelete
         .filter((i) => i.state === ORDER_STATE.DRAFT)
-        .map((i) => apiCall()('mutation')({ deleteDraftOrder: [{ orderId: i.id }, { message: true, result: true }] })),
+        .map((i) => apiClient('mutation')({ deleteDraftOrder: [{ orderId: i.id }, { message: true, result: true }] })),
     );
     resp.forEach((i) =>
       i.deleteDraftOrder.result === DeletionResult.NOT_DELETED
@@ -175,7 +175,7 @@ export const OrdersListPage = () => {
             i.state !== ORDER_STATE.DRAFT && i.state !== ORDER_STATE.CANCELLED && i.state !== ORDER_STATE.MODIFYING,
         )
         .map((i) =>
-          apiCall()('mutation')({
+          apiClient('mutation')({
             cancelOrder: [
               { input: { orderId: i.id } },
               {

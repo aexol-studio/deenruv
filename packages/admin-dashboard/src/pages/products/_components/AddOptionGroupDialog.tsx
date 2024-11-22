@@ -8,11 +8,12 @@ import {
   DialogTrigger,
   Label,
   DialogFooter,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { apiCall } from '@/graphql/client';
+
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { Stack } from '@/components';
@@ -36,7 +37,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
 
   const createGroup = useCallback(() => {
     if (state.code?.validatedValue && state.translations?.validatedValue)
-      return apiCall()('mutation')({
+      return apiClient('mutation')({
         createProductOptionGroup: [
           {
             input: {
@@ -52,7 +53,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
       })
         .then((res) => {
           if (productId)
-            return apiCall()('mutation')({
+            return apiClient('mutation')({
               addOptionGroupToProduct: [
                 {
                   productId,

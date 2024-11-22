@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import {
   Button,
   Card,
@@ -16,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import {
   EligibleShippingMethodsType,
@@ -49,7 +49,7 @@ export const ShippingMethod: React.FC = () => {
   useEffect(() => {
     const fetch = async () => {
       if (order && order.id) {
-        const { eligibleShippingMethodsForDraftOrder } = await apiCall()('query')({
+        const { eligibleShippingMethodsForDraftOrder } = await apiClient('query')({
           eligibleShippingMethodsForDraftOrder: [{ orderId: order.id }, eligibleShippingMethodsSelector],
         });
         if (!eligibleShippingMethodsForDraftOrder) {
@@ -85,7 +85,7 @@ export const ShippingMethod: React.FC = () => {
       return;
     }
 
-    const { setDraftOrderShippingMethod } = await apiCall()('mutation')({
+    const { setDraftOrderShippingMethod } = await apiClient('mutation')({
       setDraftOrderShippingMethod: [
         { orderId, shippingMethodId },
         {

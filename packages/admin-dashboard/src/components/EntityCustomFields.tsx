@@ -10,11 +10,12 @@ import {
   mergeSelectorWithCustomFields,
   CardContent,
   useServer,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { LanguageCode, ModelTypes } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { apiCall } from '@/graphql/client';
+
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 
@@ -125,7 +126,7 @@ export function EntityCustomFields<T extends ViableEntity>({
       if (fetch) {
         response = await fetch(runtimeSelector);
       } else {
-        const { [entityName]: genericResponse } = (await apiCall()('query')({
+        const { [entityName]: genericResponse } = (await apiClient('query')({
           [entityName]: [{ id }, runtimeSelector],
         } as any)) as Record<T, EntityWithCF>;
         response = genericResponse;
@@ -162,7 +163,7 @@ export function EntityCustomFields<T extends ViableEntity>({
         const mutationName = entityDictionary[entityName]?.['mutationName'];
         if (!mutationName)
           throw new Error('no mutationName provided. Add it to entityDictionary or provide custom mutation prop');
-        await apiCall()('mutation')({
+        await apiClient('mutation')({
           [mutationName]: [
             {
               input: {

@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import {
   Card,
   CardHeader,
@@ -10,6 +9,7 @@ import {
   TableCell,
   Button,
   Table,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { draftOrderSelector } from '@/graphql/draft_order';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -25,7 +25,7 @@ export const RealizationCard: React.FC = () => {
 
   const markAsDelivered = async (fulfillmentId: string) => {
     if (!order) return;
-    const { transitionFulfillmentToState } = await apiCall()('mutation')({
+    const { transitionFulfillmentToState } = await apiClient('mutation')({
       transitionFulfillmentToState: [
         { id: fulfillmentId, state: 'Delivered' },
         {
@@ -44,7 +44,7 @@ export const RealizationCard: React.FC = () => {
       ],
     });
     if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-      const resp = await apiCall()('query')({ order: [{ id: order.id }, draftOrderSelector] });
+      const resp = await apiClient('query')({ order: [{ id: order.id }, draftOrderSelector] });
       setOrder(resp.order);
       fetchOrderHistory();
       toast.success('Fulfillment marked as delivered', { position: 'top-center' });

@@ -1,7 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Option, MultipleSelector, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+import {
+  Option,
+  MultipleSelector,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
+
 import { RoleSelector, RoleType } from '@/graphql/roles';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
 
@@ -21,7 +29,7 @@ export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChang
   }, [adminRoleIds, allRoles]);
 
   const fetchAllRoles = useCallback(() => {
-    apiCall()('query')({
+    apiClient('query')({
       roles: [
         {},
         {

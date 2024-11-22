@@ -21,8 +21,9 @@ import {
   Skeleton,
   Routes,
   EmptyState,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
 import { cn } from '@/lib/utils';
 import { ITEMS_PER_PAGE } from '@/lists/useList';
@@ -69,7 +70,7 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
   const getCollectionProductVariants = async (cellectionId: string) => {
     setTableLoading(true);
     try {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         collection: [
           { id: cellectionId },
           {

@@ -11,9 +11,10 @@ import {
   TableCell,
   TableRow,
   Tooltip,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
-import { apiCall } from '@/graphql/client';
+
 import { DeletionResult } from '@deenruv/admin-types';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { TooltipContent, TooltipTrigger } from '@radix-ui/react-tooltip';
@@ -71,7 +72,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
   };
 
   const onEditName = useCallback(async () => {
-    const { updateAsset } = await apiCall()('mutation')({
+    const { updateAsset } = await apiClient('mutation')({
       updateAsset: [{ input: { id: asset.id, name: assetName } }, { name: true }],
     });
     if (updateAsset.name) {
@@ -82,7 +83,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
   }, [assetName, asset.id, onAssetChange, t]);
 
   const onDelete = useCallback(async () => {
-    const { deleteAsset } = await apiCall()('mutation')({
+    const { deleteAsset } = await apiClient('mutation')({
       deleteAsset: [{ input: { assetId: asset.id } }, { message: true, result: true }],
     });
     if (deleteAsset.result === DeletionResult.DELETED) {
@@ -93,7 +94,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
   }, [asset.id, onAssetChange, t]);
 
   const getAsset = async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       asset: [
         {
           id: asset.id,

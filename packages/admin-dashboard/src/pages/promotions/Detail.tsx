@@ -12,9 +12,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { apiCall } from '@/graphql/client';
+
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
@@ -58,7 +59,7 @@ const FormSchema = z.object({
 
 const getConditionsAndActions = async () => {
   const [{ promotionActions }, { promotionConditions }] = await Promise.all([
-    apiCall()('query')({
+    apiClient('query')({
       promotionActions: {
         code: true,
         description: true,
@@ -74,7 +75,7 @@ const getConditionsAndActions = async () => {
         },
       },
     }),
-    apiCall()('query')({
+    apiClient('query')({
       promotionConditions: {
         code: true,
         description: true,
@@ -142,7 +143,7 @@ export const PromotionsDetailPage = () => {
         })),
       };
 
-      const { createPromotion } = await apiCall()('mutation')({
+      const { createPromotion } = await apiClient('mutation')({
         createPromotion: [
           { input },
           {

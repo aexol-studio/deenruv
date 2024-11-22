@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
   Routes,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -29,7 +30,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { CollectionListType } from '@/graphql/collections';
-import { apiCall } from '@/graphql/client';
+
 import { toast } from 'sonner';
 
 type SimpleTableData = { name: string; slug: string; id: string; breadcrumbs: { name: string; slug: string }[] };
@@ -61,7 +62,7 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
         selectedTableData
           .map((t) => t.id)
           .map(async (collectionId) => {
-            const response = await apiCall()('mutation')({
+            const response = await apiClient('mutation')({
               moveCollection: [
                 {
                   input: {

@@ -25,7 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 // import { emailRegExp, phoneNumberRegExp } from '@/utils/regExp';
 // import { toast } from 'sonner';
-// import { apiCall } from '@/graphql/client';
+//
 // import { Edit } from 'lucide-react';
 import { useOrder } from '@/state/order';
 
@@ -97,7 +97,7 @@ export const CustomerSelectCard: React.FC = () => {
   //     }
 
   //     if ((tab === 'create' && checkIfAllFieldsAreValid()) || (tab === 'select' && selected)) {
-  //       const { setCustomerForDraftOrder } = await apiCall()('mutation')({
+  //       const { setCustomerForDraftOrder } = await apiClient('mutation')({
   //         setCustomerForDraftOrder: [
   //           {
   //             orderId: order.id,

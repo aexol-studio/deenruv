@@ -1,9 +1,10 @@
 import { Menu } from '@/common/Menu';
-import { apiCall } from '@/graphql/client';
+
 import {
   serverConfigSelector,
   configurableOperationDefinitionSelector,
   countrySelector,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,7 @@ const getAllPaginatedCountries = async () => {
   do {
     const {
       countries: { items, totalItems: total },
-    } = await apiCall()('query')({
+    } = await apiClient('query')({
       countries: [{ options: { skip, take: TAKE } }, { items: countrySelector, totalItems: true }],
     });
     countries = [...countries, ...items];
@@ -43,7 +44,7 @@ const getAllPaymentMethods = async () => {
   do {
     const {
       paymentMethods: { items, totalItems: total },
-    } = await apiCall()('query')({
+    } = await apiClient('query')({
       paymentMethods: [
         { options: { skip, take: TAKE, filter: { enabled: { eq: true } } } },
         { items: paymentMethodsSelector, totalItems: true },
@@ -71,7 +72,7 @@ export const Root = () => {
 
   useEffect(() => {
     const init = async () => {
-      const activeAdministratorResponse = await apiCall()('query')({
+      const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
       });
 
@@ -90,10 +91,10 @@ export const Root = () => {
 
       const [serverConfigResponse, countriesResponse, paymentsResponse, fulfillmentsResponse] =
         await Promise.allSettled([
-          apiCall()('query')({ globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true } }),
+          apiClient('query')({ globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true } }),
           getAllPaginatedCountries(),
           getAllPaymentMethods(),
-          apiCall()('query')({ fulfillmentHandlers: configurableOperationDefinitionSelector }),
+          apiClient('query')({ fulfillmentHandlers: configurableOperationDefinitionSelector }),
         ]);
       if (serverConfigResponse.status === 'rejected') {
         toast.error(t('setup.failedServer'));

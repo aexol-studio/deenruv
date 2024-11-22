@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import {
   Card,
   CardHeader,
@@ -24,6 +23,7 @@ import {
   TooltipTrigger,
   TooltipContent,
   Tooltip,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import {
   DraftOrderLineType,
@@ -110,7 +110,7 @@ export const ProductsCard: React.FC = () => {
       return;
     }
 
-    const { addItemToDraftOrder } = await apiCall()('mutation')({
+    const { addItemToDraftOrder } = await apiClient('mutation')({
       addItemToDraftOrder: [
         { input: { productVariantId: productVariant.id, quantity, customFields }, orderId: order.id },
         updatedDraftOrderSelector,
@@ -138,7 +138,7 @@ export const ProductsCard: React.FC = () => {
       return;
     }
 
-    const { removeDraftOrderLine } = await apiCall()('mutation')({
+    const { removeDraftOrderLine } = await apiClient('mutation')({
       removeDraftOrderLine: [{ orderId: order.id, orderLineId }, removeOrderItemsResultSelector],
     });
     if (removeDraftOrderLine.__typename === 'Order') setOrder(removeDraftOrderLine);
@@ -178,7 +178,7 @@ export const ProductsCard: React.FC = () => {
     } else if (mode === 'create') {
       const editedLineIdx = order.lines.findIndex((l) => l.id === lineID);
       if (quantityChange) {
-        const { adjustDraftOrderLine } = await apiCall()('mutation')({
+        const { adjustDraftOrderLine } = await apiClient('mutation')({
           adjustDraftOrderLine: [
             {
               orderId: order.id,
@@ -201,7 +201,7 @@ export const ProductsCard: React.FC = () => {
         //  we are feeding this function with correct input, but it is returning order in prev state,
         // so if you set price to 1000 nothing will change,
         // then if you will set price to 2000, price will be 1000. Need to rewrite this in future
-        // const { overrideLinesPrices } = await apiCall()('mutation')({
+        // const { overrideLinesPrices } = await apiClient('mutation')({
         //   overrideLinesPrices: [
         //     {
         //       input: {
@@ -227,7 +227,7 @@ export const ProductsCard: React.FC = () => {
         //     netto: !!isNettoPrice,
         //   },
         // });
-        // const { overrideLinesPrices: secondOverrideLinesPrices } = await apiCall()('mutation')({
+        // const { overrideLinesPrices: secondOverrideLinesPrices } = await apiClient('mutation')({
         //   overrideLinesPrices: [
         //     {
         //       input: {
@@ -245,7 +245,7 @@ export const ProductsCard: React.FC = () => {
         //   ],
         // });
         // if (!secondOverrideLinesPrices) throw new Error('Failed to override lines prices');
-        // await apiCall()('mutation')({
+        // await apiClient('mutation')({
         //   setPricesAfterModification: [{ orderID: order.id }, true],
         // });
       }
@@ -276,7 +276,7 @@ export const ProductsCard: React.FC = () => {
       setOpen(false);
     }
 
-    const { adjustDraftOrderLine } = await apiCall()('mutation')({
+    const { adjustDraftOrderLine } = await apiClient('mutation')({
       adjustDraftOrderLine: [
         { orderId: order.id, input: { orderLineId, quantity, customFields } },
         updateOrderItemsSelector,

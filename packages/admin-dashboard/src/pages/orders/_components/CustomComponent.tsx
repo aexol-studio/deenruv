@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { apiCall } from '@/graphql/client';
+
 import { Selector } from '@deenruv/admin-types';
 import { FromSelectorWithScalars } from '@/graphql/scalars';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +11,7 @@ import {
   HoverCardTrigger,
   Input,
   Label,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
@@ -88,7 +89,7 @@ export const CustomComponent = ({
   useEffect(() => {
     const init = async () => {
       if (!productId) return;
-      const { product } = await apiCall()('query')({
+      const { product } = await apiClient('query')({
         product: [{ id: productId }, ProductSelector],
       });
       setFacets(match(product?.facetValues));

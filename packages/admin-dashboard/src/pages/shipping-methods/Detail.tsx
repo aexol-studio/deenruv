@@ -1,8 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input, Label, Option } from '@deenruv/react-ui-devkit';
+
+import {
+  Routes,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Option,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -31,7 +41,7 @@ export const ShippingMethodsDetailPage = () => {
 
   const fetchShippingMethod = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         shippingMethod: [
           {
             id,
@@ -45,7 +55,7 @@ export const ShippingMethodsDetailPage = () => {
   }, [id]);
 
   const fetchFulfillmentHandlers = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       fulfillmentHandlers: { code: true, description: true },
     });
 
@@ -93,7 +103,7 @@ export const ShippingMethodsDetailPage = () => {
   }, [shippingMethod]);
 
   const createShippingMethod = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createShippingMethod: [
         {
           input: {
@@ -117,7 +127,7 @@ export const ShippingMethodsDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateShippingMethod = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateShippingMethod: [
         {
           input: {

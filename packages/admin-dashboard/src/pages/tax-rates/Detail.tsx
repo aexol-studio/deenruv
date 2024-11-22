@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
+
 import {
   Routes,
   Card,
@@ -12,6 +12,7 @@ import {
   Label,
   Switch,
   Option,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -35,7 +36,7 @@ export const TaxRatesDetailPage = () => {
 
   const fetchTaxRate = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         taxRate: [
           {
             id,
@@ -49,7 +50,7 @@ export const TaxRatesDetailPage = () => {
   }, [id]);
 
   const fetchItemsForOptions = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       taxCategories: [
         {},
         {
@@ -104,7 +105,7 @@ export const TaxRatesDetailPage = () => {
   }, [taxRate]);
 
   const createTaxRate = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createTaxRate: [
         {
           input: {
@@ -129,7 +130,7 @@ export const TaxRatesDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateTaxRate = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateTaxRate: [
         {
           input: {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BadgeType } from './Badges';
-import { LanguageCode } from '../zeus';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
@@ -10,23 +9,24 @@ import {
     DialogTitle,
     Input,
     useMutation,
+    useSettings,
 } from '@deenruv/react-ui-devkit';
 import { translationNS } from '../translation-ns';
 import { CreateBadgeMutation, EditBadgeMutation } from '../graphql/mutations';
 
 type Props = {
     productId: string;
-    lang: LanguageCode;
     closeHandler: () => void;
     onSuccess?: () => Promise<unknown>;
     badge?: BadgeType;
 };
 
-export const BadgesModal = ({ onSuccess, closeHandler, productId, badge, lang }: Props) => {
+export const BadgesModal = ({ onSuccess, closeHandler, productId, badge }: Props) => {
     const { t } = useTranslation(translationNS);
     const [text, setText] = useState(badge?.name || '');
     const [loading, setLoading] = useState(false);
     const [color, setColor] = useState(badge?.color || '#000000');
+    const contentLng = useSettings(p => p.translationsLanguage);
 
     const [editBadge] = useMutation(EditBadgeMutation);
     const [createBadge] = useMutation(CreateBadgeMutation);
@@ -42,7 +42,7 @@ export const BadgesModal = ({ onSuccess, closeHandler, productId, badge, lang }:
             setLoading(true);
             const input = {
                 color,
-                translations: [{ languageCode: lang, name: text }],
+                translations: [{ languageCode: contentLng, name: text }],
             };
 
             if (mode === 'edit') {

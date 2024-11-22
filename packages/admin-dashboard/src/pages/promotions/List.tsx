@@ -1,13 +1,19 @@
-import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { deepMerge, DetailList, PaginationInput, PromotionListSelector, Routes } from '@deenruv/react-ui-devkit';
+import {
+  apiClient,
+  deepMerge,
+  DetailList,
+  PaginationInput,
+  PromotionListSelector,
+  Routes,
+} from '@deenruv/react-ui-devkit';
 
 const fetch = async <T,>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
   customFieldsSelector?: T,
 ) => {
   const selector = deepMerge(PromotionListSelector, customFieldsSelector ?? {});
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     ['promotions']: [
       {
         options: {
@@ -27,7 +33,7 @@ const fetch = async <T,>(
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
     const ids = items.map((item) => item.id);
-    const { deletePromotions } = await apiCall()('mutation')({
+    const { deletePromotions } = await apiClient('mutation')({
       deletePromotions: [{ ids }, { message: true, result: true }],
     });
     return !!deletePromotions.length;

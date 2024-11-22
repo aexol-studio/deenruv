@@ -1,6 +1,6 @@
 import { EntityCustomFields } from '@/components';
 import { ORDER_STATE } from '@/graphql/base';
-import { apiCall } from '@/graphql/client';
+
 import { DraftOrderType } from '@/graphql/draft_order';
 import {
   Button,
@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
   ScrollArea,
+  apiClient,
   useServer,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
@@ -41,7 +42,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
             id={line.id}
             disabled={order.state !== ORDER_STATE.DRAFT && !order?.nextStates.includes(ORDER_STATE.MODIFYING)}
             fetch={async (runtimeSelector) => {
-              const { order: orderResponse } = await apiCall()('query')({
+              const { order: orderResponse } = await apiClient('query')({
                 order: [{ id: order.id }, { lines: { id: true, ...runtimeSelector } }],
               });
               const foundLine = orderResponse?.lines?.find((el) => el.id === line.id);
@@ -52,7 +53,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
               const orderId = order.id;
 
               if (currentState === ORDER_STATE.DRAFT) {
-                const { adjustDraftOrderLine } = await apiCall()('mutation')({
+                const { adjustDraftOrderLine } = await apiClient('mutation')({
                   adjustDraftOrderLine: [
                     {
                       orderId,
@@ -67,14 +68,14 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
 
               if (!order?.nextStates.includes(ORDER_STATE.MODIFYING)) throw new Error("Order can't be edited.");
 
-              await apiCall()('mutation')({
+              await apiClient('mutation')({
                 transitionOrderToState: [
                   { id: orderId, state: ORDER_STATE.MODIFYING },
                   { '...on Order': { id: true } },
                 ],
               });
 
-              const { modifyOrder } = await apiCall()('mutation')({
+              const { modifyOrder } = await apiClient('mutation')({
                 modifyOrder: [
                   {
                     input: {
@@ -91,7 +92,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
                 ],
               });
 
-              const { transitionOrderToState } = await apiCall()('mutation')({
+              const { transitionOrderToState } = await apiClient('mutation')({
                 transitionOrderToState: [{ id: orderId, state: currentState }, { '...on Order': { id: true } }],
               });
 

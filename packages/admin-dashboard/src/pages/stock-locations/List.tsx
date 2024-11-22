@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -26,7 +25,7 @@ import { stripHtmlTags } from '@/lib';
 import { ActionsColumn } from '@/components/Columns';
 
 const getStockLocations = async (options: ResolverInputTypes['StockLocationListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     stockLocations: [{ options }, { items: StockLocationListSelector, totalItems: true }],
   });
 
@@ -78,7 +77,7 @@ export const StockLocationsListPage = () => {
   }, []);
 
   const deleteStocksToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteStockLocations: [{ input: stocksToDelete.map((s) => ({ id: s.id })) }, { message: true, result: true }],
     });
 

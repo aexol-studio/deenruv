@@ -1,5 +1,12 @@
-import { apiCall } from '@/graphql/client';
-import { Card, CardContent, CardHeader, CardTitle, MultipleSelector, Option } from '@deenruv/react-ui-devkit';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  MultipleSelector,
+  Option,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,7 +21,7 @@ export const FacetsCard: React.FC<FacetsCardProps> = ({ facetsIds, onChange }) =
   const [currentFacetsOptions, setCurrentFacetOptions] = useState<Option[]>([]);
 
   const fetchFacets = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       facets: [
         {},
         {

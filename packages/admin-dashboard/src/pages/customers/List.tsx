@@ -1,6 +1,12 @@
-import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { CustomerListSelector, deepMerge, DetailList, PaginationInput, Routes } from '@deenruv/react-ui-devkit';
+import {
+  apiClient,
+  CustomerListSelector,
+  deepMerge,
+  DetailList,
+  PaginationInput,
+  Routes,
+} from '@deenruv/react-ui-devkit';
 import { CircleCheck, CircleX } from 'lucide-react';
 
 const fetch = async <T, K>(
@@ -10,7 +16,7 @@ const fetch = async <T, K>(
 ) => {
   const selector = deepMerge(deepMerge(CustomerListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
 
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     customers: [
       {
         options: {
@@ -30,7 +36,7 @@ const fetch = async <T, K>(
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
     const ids = items.map((item) => item.id);
-    const { deleteProducts } = await apiCall()('mutation')({
+    const { deleteProducts } = await apiClient('mutation')({
       deleteProducts: [{ ids }, { message: true, result: true }],
     });
     return !!deleteProducts.length;

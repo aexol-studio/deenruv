@@ -1,6 +1,7 @@
 import { AssetType, assetsSelector } from '@/graphql/base';
-import { apiCall } from '@/graphql/client';
+
 import { LogicalOperator, SortOrder } from '@deenruv/admin-types';
+import { apiClient } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
@@ -25,7 +26,7 @@ export const useAssets = (config?: Config) => {
   const refetchData = useCallback(async () => {
     setIsPending(true);
     try {
-      const { assets } = await apiCall()('query')({
+      const { assets } = await apiClient('query')({
         assets: [
           {
             options: {

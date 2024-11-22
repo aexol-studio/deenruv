@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
+
 import { FacetDetailsSelector, FacetDetailsType } from '@/graphql/facets';
 import {
   Button,
@@ -21,6 +21,7 @@ import {
   TableRow,
   Routes,
   EmptyState,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields, ContextMenu } from '@/components';
 import { ChevronLeft, Trash2 } from 'lucide-react';
@@ -44,7 +45,7 @@ export const FacetsDetailPage = () => {
 
   const fetchFacet = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         facet: [
           {
             id,
@@ -87,7 +88,7 @@ export const FacetsDetailPage = () => {
   }, [state.name?.value, setField, editMode]);
 
   const saveChanges = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       ['updateFacet']: [
         {
           input: {
@@ -120,7 +121,7 @@ export const FacetsDetailPage = () => {
   }, [state, resetCache, fetchFacet, id, t]);
 
   const createFacet = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createFacet: [
         {
           input: {
@@ -189,7 +190,7 @@ export const FacetsDetailPage = () => {
 
   const removeAssetValue = useCallback(
     async (id: string) => {
-      const response = await apiCall()('mutation')({
+      const response = await apiClient('mutation')({
         deleteFacetValues: [
           {
             ids: [id],

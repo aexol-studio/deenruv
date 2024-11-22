@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import {
@@ -13,7 +12,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -26,7 +25,7 @@ import CreatedAtColumn from '@/components/Columns/CreatedAtColumn';
 import UpdatedAtColumn from '@/components/Columns/UpdatedAtColumn';
 
 const getShippingMethods = async (options: ResolverInputTypes['StockLocationListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     shippingMethods: [{ options }, { items: ShippingMethodListSelector, totalItems: true }],
   });
 
@@ -79,7 +78,7 @@ export const ShippingMethodsListPage = () => {
   }, []);
 
   const deleteMethodsToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteShippingMethods: [{ ids: methodsToDelete.map((m) => m.id) }, { message: true, result: true }],
     });
 

@@ -13,9 +13,10 @@ import {
   CardContent,
   Separator,
   Option,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { SimpleSelect, Stack } from '@/components';
-import { apiCall } from '@/graphql/client';
+
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
 import { FacetsSelector } from '@/pages/collections/_components/FacetsSelector';
@@ -40,7 +41,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
   const [allFiltersOptions, setAllFiltersOptions] = useState<Option[]>([]);
 
   const fetchOptions = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       collectionFilters: PaymentMethodHandlerSelector,
     });
     setAllFiltersOptions(

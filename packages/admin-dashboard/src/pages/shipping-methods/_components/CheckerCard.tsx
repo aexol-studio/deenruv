@@ -11,8 +11,9 @@ import {
   CardTitle,
   CardContent,
   Option,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
 import { SimpleSelect, Stack } from '@/components';
@@ -28,7 +29,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
   const [allCheckersOptions, setAllCheckersOptions] = useState<Option[]>([]);
 
   const fetchOptions = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       shippingEligibilityCheckers: PaymentMethodHandlerSelector,
     });
     setAllCheckersOptions(

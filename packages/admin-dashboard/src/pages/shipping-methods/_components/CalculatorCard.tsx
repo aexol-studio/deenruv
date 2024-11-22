@@ -11,8 +11,9 @@ import {
   CardTitle,
   CardContent,
   Option,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
 import { SimpleSelect, Stack } from '@/components';
@@ -28,7 +29,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({ currentCalculato
   const [allCalculatorsOptions, setAllCalculatorsOptions] = useState<Option[]>([]);
 
   const fetchOptions = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       shippingCalculators: PaymentMethodHandlerSelector,
     });
     setAllCalculatorsOptions(

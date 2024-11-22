@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
+import { Button, Input, Card, CardHeader, CardTitle, CardContent, apiClient } from '@deenruv/react-ui-devkit';
 import { ProductOptionType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { apiCall } from '@/graphql/client';
+
 import { toast } from 'sonner';
 import { LanguageCode } from '@deenruv/admin-types';
 import { Stack } from '@/components';
@@ -22,7 +22,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({ productOption,
 
   const editOption = useCallback(() => {
     if (productOption.id)
-      return apiCall()('mutation')({
+      return apiClient('mutation')({
         updateProductOption: [
           {
             input: {

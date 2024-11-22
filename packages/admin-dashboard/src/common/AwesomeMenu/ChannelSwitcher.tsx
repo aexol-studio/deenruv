@@ -8,26 +8,26 @@ import {
   useServer,
   useSettings,
 } from '@deenruv/react-ui-devkit';
-import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
+// import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
 import { clearAllCache } from '@/lists/cache';
 import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 
-function FlagIcon({ langCode }: { langCode?: string }) {
-  switch (langCode) {
-    case 'en':
-      return <US />;
-    case 'pl':
-      return <PL />;
-    case 'cs':
-      return <CZ />;
-    case 'de':
-      return <DE />;
-    default:
-      return null;
-  }
-}
+// function FlagIcon({ langCode }: { langCode?: string }) {
+//   switch (langCode) {
+//     case 'en':
+//       return <US />;
+//     case 'pl':
+//       return <PL />;
+//     case 'cs':
+//       return <CZ />;
+//     case 'de':
+//       return <DE />;
+//     default:
+//       return null;
+//   }
+// }
 
 interface ChannelSwitcherProps {
   isCollapsed: boolean;
@@ -61,7 +61,6 @@ export function ChannelSwitcher({ isCollapsed }: ChannelSwitcherProps) {
         aria-label="Select an channel"
       >
         <SelectValue>
-          <FlagIcon langCode={channels.find((account) => account.id === selectedChannel?.id)?.defaultLanguageCode} />
           <span className={cn('ml-2', isCollapsed && 'hidden')}>
             {getChannelLabel(channels.find((account) => account.id === selectedChannel?.id)?.code)}
           </span>
@@ -71,7 +70,6 @@ export function ChannelSwitcher({ isCollapsed }: ChannelSwitcherProps) {
         {channels.map((channel) => (
           <SelectItem key={channel.code} value={channel.id}>
             <div className="[&_svg]:text-foreground flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0">
-              <FlagIcon langCode={channel.defaultLanguageCode} />
               {getChannelLabel(channel.code)}
             </div>
           </SelectItem>

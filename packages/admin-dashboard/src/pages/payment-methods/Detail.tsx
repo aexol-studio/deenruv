@@ -1,8 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input, Label, Switch } from '@deenruv/react-ui-devkit';
+
+import {
+  Routes,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Switch,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -28,7 +38,7 @@ export const PaymentMethodsDetailPage = () => {
 
   const fetchPaymentMethod = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         paymentMethod: [
           {
             id,
@@ -80,7 +90,7 @@ export const PaymentMethodsDetailPage = () => {
   }, [paymentMethod]);
 
   const createPaymentMethod = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createPaymentMethod: [
         {
           input: {
@@ -104,7 +114,7 @@ export const PaymentMethodsDetailPage = () => {
   }, [state, t, navigate]);
 
   const updatePaymentMethod = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updatePaymentMethod: [
         {
           input: {

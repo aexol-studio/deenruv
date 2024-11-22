@@ -10,9 +10,10 @@ import {
   DialogTitle,
   Input,
   Label,
+  apiClient,
   useSettings,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { CountryListType } from '@/graphql/settings';
 import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
@@ -91,7 +92,7 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
         if (!checkIfAllFieldsAreValid()) {
           return;
         }
-        const resp = await apiCall()('mutation')({
+        const resp = await apiClient('mutation')({
           createCountry: [
             {
               input: {
@@ -113,7 +114,7 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
       }
       case 'edit': {
         if (!checkIfAllFieldsAreValid() || !countryToEdit?.id) return;
-        const resp = await apiCall()('mutation')({
+        const resp = await apiClient('mutation')({
           updateCountry: [
             {
               input: {
@@ -135,7 +136,7 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
         return;
       }
       case 'delete': {
-        const resp = await apiCall()('mutation')({
+        const resp = await apiClient('mutation')({
           deleteCountries: [{ ids: countriesToDelete.map((i) => i.id) }, { message: true, result: true }],
         });
         if (resp.deleteCountries.some((i) => i.result === DeletionResult.NOT_DELETED)) {

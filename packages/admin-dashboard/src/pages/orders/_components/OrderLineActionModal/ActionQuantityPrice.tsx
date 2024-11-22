@@ -96,7 +96,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
     if (!line?.id) return;
     (async () => {
       try {
-        // const { getInitialLinePrice } = await apiCall()('query')({
+        // const { getInitialLinePrice } = await apiClient('query')({
         //   getInitialLinePrice: [{ lineID: line?.id ?? '' }, true],
         // });
         // if (getInitialLinePrice) {

@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -20,12 +19,12 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, PaymentMethodsSortOptions, paymentMethodsSortOptionsArray } from '@/lists/types';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { PaymentMethodListSelector, PaymentMethodListType } from '@/graphql/paymentMethods';
 import { ActionsColumn } from '@/components/Columns';
 
 const getPaymentMethods = async (options: ResolverInputTypes['PaymentMethodListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     paymentMethods: [{ options }, { items: PaymentMethodListSelector, totalItems: true }],
   });
 
@@ -79,7 +78,7 @@ export const PaymentMethodsListPage = () => {
   }, []);
 
   const deleteMethodsToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deletePaymentMethods: [{ ids: methodsToDelete.map((m) => m.id) }, { message: true, result: true }],
     });
 

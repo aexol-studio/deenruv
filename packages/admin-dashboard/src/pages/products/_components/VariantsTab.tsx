@@ -1,4 +1,5 @@
 import {
+  apiClient,
   deepMerge,
   Dialog,
   DialogContent,
@@ -10,7 +11,7 @@ import {
   TabsTrigger,
   useDetailView,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
 import { AddVariantDialog } from '@/pages/products/_components/AddVariantDialog';
 import { Variant } from '@/pages/products/_components/Variant';
@@ -35,7 +36,7 @@ export const VariantsTab = () => {
   //   customFieldsSelector?: T,
   // ) => {
   //   const selector = deepMerge(ProductVariantsListSelector, customFieldsSelector ?? {});
-  //   const response = await apiCall()('query')({
+  //   const response = await apiClient('query')({
   //     ['productVariants']: [
   //       {
   //         options: {
@@ -55,7 +56,7 @@ export const VariantsTab = () => {
   const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
     try {
       const ids = items.map((item) => item.id);
-      const { deleteProductVariants } = await apiCall()('mutation')({
+      const { deleteProductVariants } = await apiClient('mutation')({
         deleteProductVariants: [{ ids }, { message: true, result: true }],
       });
       return !!deleteProductVariants.length;
@@ -68,7 +69,7 @@ export const VariantsTab = () => {
   const fetchData = useCallback(async () => {
     if (id) {
       setLoading(true);
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         productVariants: [{ productId: id }, { items: ProductVariantSelector }],
       });
 

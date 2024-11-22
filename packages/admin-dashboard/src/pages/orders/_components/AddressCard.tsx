@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import {
   Card,
   CardHeader,
@@ -26,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
   useServer,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { AddressBaseType, addressBaseSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
@@ -193,7 +193,7 @@ export const AddressCard: React.FC<{
             province: state.province?.validatedValue,
           };
 
-    const { setDraftOrderShippingAddress, setDraftOrderBillingAddress } = await apiCall()('mutation')(
+    const { setDraftOrderShippingAddress, setDraftOrderBillingAddress } = await apiClient('mutation')(
       type === 'shipping'
         ? { setDraftOrderShippingAddress: [{ orderId: order.id, input: newAddress }, draftOrderSelector] }
         : { setDraftOrderBillingAddress: [{ orderId: order.id, input: newAddress }, draftOrderSelector] },
@@ -211,7 +211,7 @@ export const AddressCard: React.FC<{
       );
     }
     if (tab === 'create' && createForCustomer && order.customer?.id) {
-      const { createCustomerAddress } = await apiCall()('mutation')({
+      const { createCustomerAddress } = await apiClient('mutation')({
         createCustomerAddress: [
           {
             customerId: order.customer.id,

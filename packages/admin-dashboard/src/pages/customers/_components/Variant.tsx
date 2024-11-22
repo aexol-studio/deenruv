@@ -1,6 +1,6 @@
-import { Button, Input } from '@deenruv/react-ui-devkit';
+import { Button, Input, apiClient } from '@deenruv/react-ui-devkit';
 import { ConfirmationDialog, EntityCustomFields, Stack } from '@/components';
-import { apiCall } from '@/graphql/client';
+
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { LanguageCode } from '@deenruv/admin-types';
@@ -66,7 +66,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   }, [variant]);
 
   const updateVariant = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateProductVariants: [
         {
           input: [
@@ -102,7 +102,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   }, [state, variant]);
 
   const deleteVariant = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       deleteProductVariant: [{ id: variant.id }, { message: true }],
     })
       .then(() => {

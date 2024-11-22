@@ -11,11 +11,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   Label,
   ScrollArea,
@@ -25,24 +21,11 @@ import {
   PopoverTrigger,
   Routes,
   useSettings,
-  getLanguageName,
   useServer,
   usePluginStore,
 } from '@deenruv/react-ui-devkit';
 
-import {
-  Bell,
-  Check,
-  GripVertical,
-  Languages,
-  LogOutIcon,
-  MenuIcon,
-  Moon,
-  Slash,
-  Sun,
-  Trash2Icon,
-  SunMoon,
-} from 'lucide-react';
+import { Bell, GripVertical, LogOutIcon, MenuIcon, Moon, Slash, Sun, Trash2Icon, SunMoon } from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 
 import { cn } from '@/lib/utils';
@@ -52,7 +35,7 @@ import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 import { BrandLogo } from '@/components/BrandLogo.js';
-import { LanguageCode } from '@deenruv/admin-types';
+import { LanguagesDropdown } from './AwesomeMenu/LanguagesDropdown.js';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
@@ -98,8 +81,6 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
     language: p.language,
     setLanguage: p.setLanguage,
   }));
-
-  const languages = [LanguageCode.en, LanguageCode.pl];
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -204,7 +185,8 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         ))}
                       </div>
                     ) : null}
-                    <div className="min-w-52">
+                    <LanguagesDropdown />
+                    <div className="min-w-44">
                       <ChannelSwitcher isCollapsed={isCollapsed} />
                     </div>
                     {/* <ActiveAdmins /> */}
@@ -260,22 +242,6 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           <Trash2Icon className="h-4 w-4" />
                           {t('clearCache')}
                         </DropdownMenuItem>
-                        <DropdownMenuSub>
-                          <DropdownMenuSubTrigger>
-                            <Languages className="mr-2 h-4 w-4" />
-                            <span>{t('language')}</span>
-                          </DropdownMenuSubTrigger>
-                          <DropdownMenuPortal>
-                            <DropdownMenuSubContent className="z-[150]">
-                              {languages.map((lng) => (
-                                <DropdownMenuItem key={lng} onClick={() => lng !== language && setLanguage(lng)}>
-                                  <span>{getLanguageName(lng)}</span>
-                                  {lng === language && <Check className="ml-auto h-4 w-4" />}
-                                </DropdownMenuItem>
-                              ))}
-                            </DropdownMenuSubContent>
-                          </DropdownMenuPortal>
-                        </DropdownMenuSub>
                         {topNavigationActionsMenu?.length && topNavigationActionsMenu.length > 0 ? (
                           <>
                             <DropdownMenuSeparator />

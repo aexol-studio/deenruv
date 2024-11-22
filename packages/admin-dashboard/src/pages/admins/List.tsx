@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +24,7 @@ import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ActionsColumn } from '@/components/Columns';
 
 const getAdmins = async (options: ResolverInputTypes['AdministratorListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     administrators: [{ options }, { items: AdminListSelector, totalItems: true }],
   });
 
@@ -78,7 +77,7 @@ export const AdminsListPage = () => {
   }, []);
 
   const deleteAdminsToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteAdministrators: [{ ids: adminsToDelete.map((a) => a.id) }, { message: true, result: true }],
     });
 

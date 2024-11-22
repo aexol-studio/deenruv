@@ -29,9 +29,10 @@ import {
   TimelineItem,
   TimelineLine,
   OrderStateBadge,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
-import { apiCall } from '@/graphql/client';
+
 import { DeletionResult, HistoryEntryType, ModelTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +57,7 @@ export const OrderHistory: React.FC = () => {
   const addMessageToOrder = async () => {
     if (!order) return;
 
-    const { addNoteToOrder } = await apiCall()('mutation')({
+    const { addNoteToOrder } = await apiClient('mutation')({
       addNoteToOrder: [{ input: { id: order.id, isPublic: !isPrivate, note: newNote } }, { id: true }],
     });
     if (addNoteToOrder?.id) {
@@ -68,7 +69,7 @@ export const OrderHistory: React.FC = () => {
   };
 
   const deleteMessageFromOrder = async (id: string) => {
-    const { deleteOrderNote } = await apiCall()('mutation')({
+    const { deleteOrderNote } = await apiClient('mutation')({
       deleteOrderNote: [{ id }, { message: true, result: true }],
     });
     if (deleteOrderNote.result === DeletionResult.DELETED) {
@@ -78,7 +79,7 @@ export const OrderHistory: React.FC = () => {
     }
   };
   const editMessageInOrder = (input: ModelTypes['UpdateOrderNoteInput']) => {
-    apiCall()('mutation')({ updateOrderNote: [{ input }, { id: true }] })
+    apiClient('mutation')({ updateOrderNote: [{ input }, { id: true }] })
       .then(() => fetchOrderHistory())
       .catch(() => toast.error(t('history.editError'), { position: 'top-center' }));
   };

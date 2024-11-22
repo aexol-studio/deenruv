@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@deenruv/react-ui-devkit';
+
+import { Routes, Card, CardContent, CardHeader, CardTitle, Input, Label, apiClient } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -24,7 +24,7 @@ export const StockLocationsDetailPage = () => {
 
   const fetchStockLocation = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         stockLocation: [
           {
             id,
@@ -51,7 +51,7 @@ export const StockLocationsDetailPage = () => {
   }, [stockLocation]);
 
   const createStockLocation = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createStockLocation: [
         {
           input: {
@@ -72,7 +72,7 @@ export const StockLocationsDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateStockLocation = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateStockLocation: [
         {
           input: {

@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -25,7 +24,7 @@ import { SellerListSelector, SellerListType } from '@/graphql/sellers';
 import { ActionsColumn } from '@/components/Columns';
 
 const getSellers = async (options: ResolverInputTypes['ZoneListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     sellers: [{ options }, { items: SellerListSelector, totalItems: true }],
   });
 
@@ -77,7 +76,7 @@ export const SellersListPage = () => {
   }, []);
 
   const deleteSellersToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteSellers: [{ ids: sellersToDelete.map((ch) => ch.id) }, { message: true, result: true }],
     });
 

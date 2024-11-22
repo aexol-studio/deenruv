@@ -13,11 +13,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { apiCall } from '@/graphql/client';
+
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
@@ -38,7 +39,7 @@ export const AddVariantDialog: React.FC<AddVariantDialogProps> = ({ currentTrans
 
   const fetchOptionGroups = useCallback(async () => {
     if (productId) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         product: [
           {
             id: productId,
@@ -70,7 +71,7 @@ export const AddVariantDialog: React.FC<AddVariantDialogProps> = ({ currentTrans
       state.optionIds?.validatedValue,
     );
     if (productId && state.sku?.validatedValue && state.translations?.validatedValue)
-      return apiCall()('mutation')({
+      return apiClient('mutation')({
         createProductVariants: [
           {
             input: [

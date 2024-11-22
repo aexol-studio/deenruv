@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input } from '@deenruv/react-ui-devkit';
+
+import { Routes, Card, CardContent, CardHeader, CardTitle, Input, apiClient } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -23,7 +23,7 @@ export const SellersDetailPage = () => {
 
   const fetchSeller = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         seller: [
           {
             id,
@@ -49,7 +49,7 @@ export const SellersDetailPage = () => {
   }, [seller]);
 
   const createSeller = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createSeller: [
         {
           input: {
@@ -69,7 +69,7 @@ export const SellersDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateSeller = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateSeller: [
         {
           input: {

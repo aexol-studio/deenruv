@@ -1,6 +1,6 @@
 import { BrandLogo } from '@/components/BrandLogo';
-import { apiCall } from '@/graphql/client';
-import { Button, Checkbox, Input, Label } from '@deenruv/react-ui-devkit';
+
+import { Button, Checkbox, Input, Label, apiClient } from '@deenruv/react-ui-devkit';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -20,7 +20,7 @@ export const LoginScreen = () => {
     const username = (e.currentTarget.elements.namedItem('username') as HTMLInputElement).value;
     const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
     const rememberMe = (e.currentTarget.elements.namedItem('rememberMe') as HTMLInputElement).checked;
-    const data = await apiCall()('mutation')({
+    const data = await apiClient('mutation')({
       login: [
         { username, password, rememberMe },
         {

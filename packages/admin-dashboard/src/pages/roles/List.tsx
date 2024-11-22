@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { Checkbox, ListTable } from '@deenruv/react-ui-devkit';
+import { Checkbox, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { Routes, Badge, SortButton, useLocalStorage } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -27,7 +26,7 @@ import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { ActionsColumn } from '@/components/Columns';
 
 const getRoles = async (options: ResolverInputTypes['RoleListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     roles: [{ options }, { items: RoleListSelector, totalItems: true }],
   });
 
@@ -81,7 +80,7 @@ export const RolesListPage = () => {
   }, []);
 
   const deleteRolesToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteRoles: [{ ids: rolesToDelete.map((a) => a.id) }, { message: true, result: true }],
     });
 

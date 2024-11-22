@@ -1,15 +1,15 @@
 import React, { PropsWithChildren } from 'react';
 import { Button, ButtonProps } from '.';
-import { uploadClient } from '@/zeus-client';
 import { $, ModelTypes } from '@deenruv/admin-types';
 import { ImageUp } from 'lucide-react';
 import { cn } from '@/lib';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
+import { apiUploadClient } from '@/zeus-client';
 
 type Props = {
     refetch?: () => void;
-    cb?: (asset: Pick<ModelTypes['Asset'], 'id'>) => {};
+    cb?: (asset: Pick<ModelTypes['Asset'], 'id'>) => object;
     hideIcon?: true;
     buttonProps?: ButtonProps;
 };
@@ -40,7 +40,7 @@ export const AssetUploadButton: React.FC<PropsWithChildren<Props>> = ({
                     if (!file) return;
 
                     try {
-                        const { createAssets } = await uploadClient('mutation')(
+                        const { createAssets } = await apiUploadClient('mutation')(
                             {
                                 createAssets: [
                                     { input: $('input', '[CreateAssetInput!]!') },

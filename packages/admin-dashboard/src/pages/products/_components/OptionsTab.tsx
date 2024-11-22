@@ -16,9 +16,10 @@ import {
   MultipleSelector,
   type Option,
   useDetailView,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { Trash } from 'lucide-react';
-import { apiCall } from '@/graphql/client';
+
 import { toast } from 'sonner';
 import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
 import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
@@ -41,7 +42,7 @@ export const OptionsTab: React.FC = () => {
 
   const fetchOptionGroups = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         product: [{ id }, { optionGroups: OptionGroupSelector }],
       });
 
@@ -61,7 +62,7 @@ export const OptionsTab: React.FC = () => {
   const removeGroup = useCallback(
     (optionGroupId: string) => {
       if (!id) return;
-      apiCall()('mutation')({
+      apiClient('mutation')({
         removeOptionGroupFromProduct: [
           { optionGroupId, productId: id },
           { '...on Product': { id: true }, '...on ProductOptionInUseError': { message: true } },
@@ -81,7 +82,7 @@ export const OptionsTab: React.FC = () => {
   const addOption = useCallback(
     (option: Option, optionGroupId: string) => {
       if (!id) return;
-      apiCall()('mutation')({
+      apiClient('mutation')({
         createProductOption: [
           {
             input: {

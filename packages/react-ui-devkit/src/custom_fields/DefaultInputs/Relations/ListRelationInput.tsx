@@ -16,8 +16,8 @@ import { useList } from '@/useList';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { type ResolverInputTypes } from '@deenruv/admin-types';
-import { client } from '@/zeus-client';
 import { CustomFieldSelectorsType, customFieldSelectors } from '@/selectors';
+import { apiClient } from '@/zeus-client';
 
 type CF = CustomFieldSelectorsType;
 
@@ -54,7 +54,7 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
     const getEntities = async (options: ResolverInputTypes['AssetListOptions']) => {
         const responseEntityField = entityName.charAt(0).toLowerCase() + entityName.slice(1) + 's';
 
-        const { [responseEntityField]: response } = await client('query')({
+        const { [responseEntityField]: response } = await apiClient('query')({
             [responseEntityField]: [
                 { options },
                 {

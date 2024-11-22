@@ -1,8 +1,8 @@
-import React, { useState, type MouseEvent, useMemo, useEffect, useTransition } from 'react';
+import React, { useState, type MouseEvent, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Info, Plus, Trash } from 'lucide-react';
 import { toast } from 'sonner';
-import { LanguageCode, FromSelector } from '../zeus';
+import { FromSelector } from '../zeus';
 import {
     Button,
     Card,
@@ -12,9 +12,9 @@ import {
     CardTitle,
     Dialog,
     DialogTrigger,
-    LanguagePicker,
     useLazyQuery,
     useMutation,
+    useSettings,
 } from '@deenruv/react-ui-devkit';
 import { useLocation } from 'react-router-dom';
 import { BadgesModal } from './BadgesModal';
@@ -29,10 +29,12 @@ export const Badges = () => {
     const [editedBadge, setEditedBadge] = useState<BadgeType>();
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [lang, setLang] = useState<LanguageCode>(LanguageCode.en);
     const { t } = useTranslation(translationNS);
     const { pathname } = useLocation();
     const [removeBadge] = useMutation(RemoveBadgeMutation);
+    const contentLng = useSettings(p => p.translationsLanguage);
+
+    console.log('ącontentLng', contentLng);
 
     const productId = useMemo(() => pathname.match(/\/products\/(\d+)(\/.*)?$/)?.[1] || '', [pathname]);
 
@@ -56,7 +58,7 @@ export const Badges = () => {
             setLoading(true);
             await removeBadge({ id });
 
-            await fetchBadges({ productId }, { languageCode: lang });
+            await fetchBadges({ productId });
             toast.success(t('modal.remove.success'));
         } catch (err) {
             console.log(err);
@@ -67,8 +69,8 @@ export const Badges = () => {
     };
 
     useEffect(() => {
-        fetchBadges({ productId }, { languageCode: lang });
-    }, [lang]);
+        fetchBadges({ productId });
+    }, [contentLng]);
 
     if (!productId) return null;
     return (
@@ -81,7 +83,6 @@ export const Badges = () => {
                             <CardDescription>{t('description')}</CardDescription>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-2">
-                            <LanguagePicker onChange={setLang} value={lang} />
                             <Dialog
                                 open={open}
                                 onOpenChange={open => {
@@ -99,8 +100,7 @@ export const Badges = () => {
                                         closeHandler={() => setOpen(false)}
                                         productId={productId}
                                         badge={editedBadge}
-                                        lang={lang}
-                                        onSuccess={() => fetchBadges({ productId }, { languageCode: lang })}
+                                        onSuccess={() => fetchBadges({ productId })}
                                     />
                                 )}
                             </Dialog>

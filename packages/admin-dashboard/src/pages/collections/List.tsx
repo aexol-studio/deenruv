@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { CornerDownRight } from 'lucide-react';
 import { useList } from '@/lists/useList';
 import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
@@ -50,6 +49,7 @@ import {
   useSettings,
   SortButton,
   TranslationSelect,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { ImageWithPreview, Search, Stack } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -65,7 +65,7 @@ type ParamFilterFieldTuple = [CollectionsSortOptions, Record<string, string>];
 
 const getChildren = async (parentId: string, callback: (items: CollectionListType[], parentId: string) => void) => {
   try {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       collections: [
         {
           options: {
@@ -122,7 +122,7 @@ export const CollectionsListPage = () => {
   const getCollections = async (paginate?: ResolverInputTypes['CollectionListOptions']) => {
     setTableLoading(true);
     try {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         collections: [
           {
             options: {
@@ -188,7 +188,7 @@ export const CollectionsListPage = () => {
   }, [tableWrapperRef]);
 
   const deleteCollections = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteCollections: [{ ids: collectionsToDelete.map((i) => i.id) }, { message: true, result: true }],
     });
 

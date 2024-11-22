@@ -1,6 +1,12 @@
-import { apiCall } from '@/graphql/client';
 import { SortOrder } from '@deenruv/admin-types';
-import { deepMerge, DetailList, PaginationInput, ProductListSelector, Routes } from '@deenruv/react-ui-devkit';
+import {
+  apiClient,
+  deepMerge,
+  DetailList,
+  PaginationInput,
+  ProductListSelector,
+  Routes,
+} from '@deenruv/react-ui-devkit';
 
 const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
@@ -8,7 +14,7 @@ const fetch = async <T, K>(
   additionalSelector?: K,
 ) => {
   const selector = deepMerge(deepMerge(ProductListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     ['products']: [
       {
         options: {
@@ -28,7 +34,7 @@ const fetch = async <T, K>(
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
     const ids = items.map((item) => item.id);
-    const { deleteProducts } = await apiCall()('mutation')({
+    const { deleteProducts } = await apiClient('mutation')({
       deleteProducts: [{ ids }, { message: true, result: true }],
     });
     return !!deleteProducts.length;

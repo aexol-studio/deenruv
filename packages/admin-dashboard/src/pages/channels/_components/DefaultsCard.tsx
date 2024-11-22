@@ -1,6 +1,15 @@
-import { Card, CardContent, CardHeader, CardTitle, Label, Switch, type Option } from '@deenruv/react-ui-devkit';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Label,
+  Switch,
+  type Option,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import { SimpleSelect, Stack } from '@/components';
-import { apiCall } from '@/graphql/client';
+
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +44,7 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
   const [zonesOptions, setZonesOptions] = useState<Option[]>();
 
   const fetchZones = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       zones: [
         {},
         {

@@ -1,5 +1,6 @@
 import { useSettings } from '@/state';
-import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-types';
+import { DeenruvSettingsWindowType } from '@/types';
+import { GraphQLResponse, GraphQLError, Thunder, scalars, ResolverInputTypes } from '@deenruv/admin-types';
 
 // * We can think about caching the response in the future
 // ! TODO: Add pattern of authToken from dashboard so we need `useSettings` here
@@ -9,41 +10,83 @@ import { GraphQLResponse, GraphQLError, fetchOptions } from '@deenruv/admin-type
 //     ttlAutopurge: true,
 // });
 
-export const deenruvAPICall = () => {
+declare global {
+    interface Window {
+        __DEENRUV_SETTINGS__: DeenruvSettingsWindowType;
+    }
+}
+type CallOptions = { type: 'standard' | 'upload' };
+export const deenruvAPICall = (options?: CallOptions) => {
     return async (
         query: string,
         variables: Record<string, unknown> = {},
         customParams?: Record<string, string>,
     ) => {
-        const { language, selectedChannel, token, logIn } = useSettings.getState();
+        const { translationsLanguage, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
+        const { type } = options || {};
 
         const defaultParams = {
-            languageCode: language,
+            languageCode: translationsLanguage,
         };
 
         const params = new URLSearchParams(customParams || defaultParams).toString();
 
-        const url = `${uri}/admin-api?${params}`;
-        const additionalHeaders: Record<string, string> = token
+        let body: RequestInit['body'];
+
+        const headers: Record<string, string> = token
             ? {
                   Authorization: `Bearer ${token}`,
                   ...(selectedChannel?.token && { [channelTokenName]: selectedChannel.token }),
               }
             : {};
+
+        if (type === 'upload') {
+            const formData = new FormData();
+            formData.append('operations', JSON.stringify({ query, variables }));
+            const mapData: Record<string, string[]> = {};
+            const files = variables.input as ResolverInputTypes['CreateAssetInput'][];
+            files.forEach((_, index) => {
+                mapData[(index + 1).toString()] = ['variables.input.' + index + '.file'];
+            });
+            formData.append('map', JSON.stringify(mapData));
+            files.forEach((item, index) => {
+                formData.append((index + 1).toString(), item.file as Blob);
+            });
+            body = formData;
+        }
+
+        if (!type || type === 'standard') {
+            body = JSON.stringify({ query, variables });
+            headers['Content-Type'] = 'application/json';
+        }
+
+        const url = `${uri}/admin-api?${params}`;
+
         return fetch(url, {
-            body: JSON.stringify({ query, variables }),
+            body,
+            headers,
             method: 'POST',
             credentials: 'include',
-            headers: {
-                ...additionalHeaders,
-                'Content-Type': 'application/json',
-            },
         })
-            .then(r => {
-                const authToken = r.headers.get(authTokenName);
+            .then(response => {
+                const authToken = response.headers.get(authTokenName);
                 if (authToken !== null) logIn(authToken);
-                return handleFetchResponse(r);
+                if (!response.ok) {
+                    return new Promise((_, reject) => {
+                        response
+                            .text()
+                            .then(text => {
+                                try {
+                                    reject(JSON.parse(text));
+                                } catch {
+                                    reject(text);
+                                }
+                            })
+                            .catch(reject);
+                    }) as Promise<GraphQLResponse>;
+                }
+                return response.json() as Promise<GraphQLResponse>;
             })
             .then((response: GraphQLResponse) => {
                 if (response.errors) {
@@ -61,20 +104,5 @@ export const deenruvAPICall = () => {
     };
 };
 
-const handleFetchResponse = (response: Response): Promise<GraphQLResponse> => {
-    if (!response.ok) {
-        return new Promise((_, reject) => {
-            response
-                .text()
-                .then(text => {
-                    try {
-                        reject(JSON.parse(text));
-                    } catch {
-                        reject(text);
-                    }
-                })
-                .catch(reject);
-        });
-    }
-    return response.json() as Promise<GraphQLResponse>;
-};
+export const apiClient = Thunder(deenruvAPICall({ type: 'standard' }), { scalars });
+export const apiUploadClient = Thunder(deenruvAPICall({ type: 'upload' }), { scalars });

@@ -10,8 +10,9 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { CurrencyCode } from '@deenruv/admin-types';
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,7 +42,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
   }>();
 
   const fetchTaxRates = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       taxCategories: [
         {},
         {

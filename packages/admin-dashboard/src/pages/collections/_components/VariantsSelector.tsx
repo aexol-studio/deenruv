@@ -1,5 +1,5 @@
-import { Label, MultipleSelector, type Option } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+import { Label, MultipleSelector, apiClient, type Option } from '@deenruv/react-ui-devkit';
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { Stack } from '@/components';
 
@@ -14,7 +14,7 @@ export const VariantsSelector: React.FC<VariantsSelectorProps> = ({ type, label,
   const [options, setOptions] = useState<Option[]>();
 
   const fetchVariants = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       productVariants: [
         {},
         {
@@ -29,7 +29,7 @@ export const VariantsSelector: React.FC<VariantsSelectorProps> = ({ type, label,
   }, []);
 
   const fetchProducts = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       products: [
         {},
         {

@@ -13,7 +13,7 @@ import {
   SelectItem,
   Textarea,
 } from '@deenruv/react-ui-devkit';
-// import { apiCall } from '@/graphql/client';
+//
 import { DraftOrderType } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 import { useOrder } from '@/state/order';
@@ -50,7 +50,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
 
   const addRealization = async () => {
     if (!order || !deadlineDate || !plannedDate) return;
-    // const { registerRealization } = await apiCall()('mutation')({
+    // const { registerRealization } = await apiClient('mutation')({
     //   registerRealization: [
     //     {
     //       input: {

@@ -1,7 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
-import { Input, Label, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+import {
+  Input,
+  Label,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
+
 import { useTranslation } from 'react-i18next';
 import { LogicalOperator } from '@deenruv/admin-types';
 import { SearchCustomerType, searchCustomerSelector } from '@/graphql/draft_order';
@@ -21,7 +31,7 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
 
   useEffect(() => {
     const search = async () => {
-      const data = await apiCall()('query')({
+      const data = await apiClient('query')({
         customers: [
           {
             options: {

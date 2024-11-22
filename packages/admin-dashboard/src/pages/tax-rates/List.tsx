@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight, Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Checkbox, Badge, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Checkbox, Badge, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -25,7 +24,7 @@ import { TaxRateListSelector, TaxRateListType } from '@/graphql/taxRates';
 import { ActionsColumn } from '@/components/Columns';
 
 const getTaxRates = async (options: ResolverInputTypes['TaxRateListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     taxRates: [{ options }, { items: TaxRateListSelector, totalItems: true }],
   });
 
@@ -80,7 +79,7 @@ export const TaxRatesListPage = () => {
   }, []);
 
   const deleteTaxRatesToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteTaxRates: [{ ids: taxRatesToDelete.map((ch) => ch.id) }, { message: true, result: true }],
     });
 

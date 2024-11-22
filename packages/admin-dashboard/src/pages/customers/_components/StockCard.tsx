@@ -18,8 +18,9 @@ import {
   CardTitle,
   CardContent,
   Separator,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { StockLevelsType } from '@/graphql/products';
 import { GlobalFlag } from '@deenruv/admin-types';
 import { MapPin } from 'lucide-react';
@@ -72,7 +73,7 @@ export const StockCard: React.FC<StockCardProps> = ({
   );
 
   const fetchStockLocations = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       stockLocations: [
         {},
         {

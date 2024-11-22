@@ -1,5 +1,3 @@
-import { apiCall } from '@/graphql/client';
-
 import { useList } from '@/lists/useList';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +21,7 @@ import {
   SortButton,
   TranslationSelect,
   ListTable,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { Search, Stack } from '@/components';
 import { useEffect, useState } from 'react';
@@ -43,7 +42,7 @@ import { CountryListType, CountrySelector } from '@/graphql/settings';
 import { CountryActionModal } from './_components/CountryActionModal.js';
 
 const getCountries = async (options: ResolverInputTypes['CountryListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     countries: [{ options }, { items: CountrySelector, totalItems: true }],
   });
   return response.countries;

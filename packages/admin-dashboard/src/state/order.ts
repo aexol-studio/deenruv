@@ -1,5 +1,5 @@
 import { ORDER_STATE } from '@/graphql/base';
-import { apiCall } from '@/graphql/client';
+
 import {
   DraftOrderType,
   OrderHistoryEntryType,
@@ -11,6 +11,7 @@ import { paymentSelector } from '@/graphql/orders';
 
 import { giveModificationInfo } from '@/utils/objectCompare';
 import { HistoryEntryType, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { apiClient } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { create } from 'zustand';
 
@@ -90,7 +91,7 @@ const getAllOrderHistory = async (id: string) => {
   let totalItems = 0;
   let skip = 0;
   do {
-    const { order } = await apiCall()('query')({
+    const { order } = await apiClient('query')({
       order: [
         { id },
         {
@@ -162,7 +163,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
     const { setOrder, fetchOrderHistory, setModifiedOrder } = get();
     set({ loading: true });
     try {
-      const { order } = await apiCall()('query')({ order: [{ id }, draftOrderSelector] });
+      const { order } = await apiClient('query')({ order: [{ id }, draftOrderSelector] });
       if (!order) toast.error(`Failed to load order with id ${id}`);
       setOrder(order);
       set({ modifiedOrder: undefined });
@@ -179,7 +180,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
     const { surcharges, ...restInput } = modifiedOrder ?? {};
     if (order?.id) {
       try {
-        const { modifyOrder } = await apiCall()('mutation')({
+        const { modifyOrder } = await apiClient('mutation')({
           modifyOrder: [{ input: { orderId: order.id, dryRun: true, ...restInput } }, modifyOrderSelector],
         });
 
@@ -223,7 +224,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       // }, 0);
       // const orderTotalPrice = order?.subTotalWithTax;
 
-      const { modifyOrder } = await apiCall()('mutation')({
+      const { modifyOrder } = await apiClient('mutation')({
         modifyOrder: [
           {
             input: {
@@ -325,13 +326,13 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       // );
 
       // if (surcharges?.length) {
-      //   await apiCall()('mutation')({
+      //   await apiClient('mutation')({
       //     modifyOrder: [{ input: { dryRun: false, orderId: order.id, surcharges } }, { __typename: true }],
       //   });
       // }
 
       // if (linePriceChangeInput?.linesToOverride.length) {
-      //   const { overrideLinesPrices } = await apiCall()('mutation')({
+      //   const { overrideLinesPrices } = await apiClient('mutation')({
       //     overrideLinesPrices: [
       //       {
       //         input: {
@@ -344,13 +345,13 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       //   });
       //   if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
       // }
-      // const linePriceModification = await apiCall()('mutation')({
+      // const linePriceModification = await apiClient('mutation')({
       //   setPricesAfterModification: [{ orderID: order.id }, true],
       // });
       // if (!linePriceModification.setPricesAfterModification) throw new Error('Failed to set prices after modification');
 
       // if (orderTotalPrice !== modifyOrderTotalPrice) {
-      //   const { transitionOrderToState } = await apiCall()('mutation')({
+      //   const { transitionOrderToState } = await apiClient('mutation')({
       //     transitionOrderToState: [
       //       { id: order.id, state: ORDER_STATE.PAYMENT_SETTLED },
       //       {
@@ -367,7 +368,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       //     ],
       //   });
       //   if (transitionOrderToState?.__typename !== 'Order') {
-      //     const { transitionOrderToState } = await apiCall()('mutation')({
+      //     const { transitionOrderToState } = await apiClient('mutation')({
       //       transitionOrderToState: [
       //         { id: order.id, state: ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT },
       //         {
@@ -385,7 +386,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       //     });
 
       //     if (transitionOrderToState?.__typename !== 'Order') {
-      //       const { transitionOrderToState } = await apiCall()('mutation')({
+      //       const { transitionOrderToState } = await apiClient('mutation')({
       //         transitionOrderToState: [
       //           { id: order.id, state: ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT },
       //           {
@@ -403,7 +404,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       //       });
 
       //       if (transitionOrderToState?.__typename !== 'Order') {
-      //         const { transitionOrderToState } = await apiCall()('mutation')({
+      //         const { transitionOrderToState } = await apiClient('mutation')({
       //           transitionOrderToState: [
       //             { id: order.id, state: orderState },
       //             {
@@ -425,7 +426,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       //   }
       // }
 
-      const { order: modfiedOrderWithOverwrittenPrices } = await apiCall()('query')({
+      const { order: modfiedOrderWithOverwrittenPrices } = await apiClient('query')({
         order: [{ id: order.id }, draftOrderSelector],
       });
 
@@ -478,7 +479,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
 
   addPaymentToOrder: async (input) => {
     const { fetchOrderHistory } = get();
-    // const { customAddManualPaymentToOrder } = await apiCall()('mutation')({
+    // const { customAddManualPaymentToOrder } = await apiClient('mutation')({
     //   customAddManualPaymentToOrder: [
     //     { input },
     //     {
@@ -499,7 +500,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   settlePayment: async (input) => {
     const { order, fetchOrder, fetchOrderHistory } = get();
     if (!order) return;
-    const { settlePayment } = await apiCall()('mutation')({
+    const { settlePayment } = await apiClient('mutation')({
       settlePayment: [
         input,
         {

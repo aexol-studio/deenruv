@@ -5,9 +5,9 @@ import { LanguageCode, ValueTypes } from '@deenruv/admin-types';
 
 import { ModelTypes } from '@deenruv/admin-types';
 import { DeenruvTabs, DetailKeys, DetailLocations, ExternalDetailLocationSelector } from '@/types';
-import { client } from '@/zeus-client';
 import { DetailViewMarker } from '@/components';
 import { useFFLP } from '@/hooks';
+import { apiClient } from '@/zeus-client/deenruvAPICall';
 
 interface DetailViewProps<
     LOCATION extends DetailKeys,
@@ -111,7 +111,7 @@ const createDetailViewStore = <
                 set({ view: { ...get().view, loading: true, error: null } });
                 try {
                     const query = { [name]: [{ id }, selector] } as unknown as ValueTypes['Query'];
-                    const data = await client('query')(query);
+                    const data = await apiClient('query')(query);
                     if (data && data[name]) {
                         set({ view: { ...get().view, entity: data[name] as LOCATIONTYPE, loading: false } });
                         return data[name] as LOCATIONTYPE;

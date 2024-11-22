@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input } from '@deenruv/react-ui-devkit';
+
+import { Routes, Card, CardContent, CardHeader, CardTitle, Input, apiClient } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -24,7 +24,7 @@ export const AdminsDetailPage = () => {
 
   const fetchAdmin = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         administrator: [
           {
             id,
@@ -65,7 +65,7 @@ export const AdminsDetailPage = () => {
   }, [admin]);
 
   const createAdmin = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createAdministrator: [
         {
           input: {
@@ -89,7 +89,7 @@ export const AdminsDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateAdmin = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateAdministrator: [
         {
           input: {

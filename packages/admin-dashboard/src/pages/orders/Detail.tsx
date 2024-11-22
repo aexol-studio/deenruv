@@ -14,13 +14,13 @@ import {
   Payments,
 } from '@/pages/orders/_components';
 import { useOrder } from '@/state/order';
-import { apiCall } from '@/graphql/client';
+
 import { draftOrderSelector, eligibleShippingMethodsSelector, updatedDraftOrderSelector } from '@/graphql/draft_order';
 import { toast } from 'sonner';
 import { HistoryEntryType } from '@deenruv/admin-types';
 import { ModifyOrderPage } from './ModifyOrderPage.js';
 import { EntityCustomFields } from '@/components';
-import { Routes } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient } from '@deenruv/react-ui-devkit';
 
 export const OrdersDetailPage = () => {
   const { id } = useParams();
@@ -36,12 +36,12 @@ export const OrdersDetailPage = () => {
 
   const createOrderCopy = async () => {
     setCopyingOrder(true);
-    const { createDraftOrder: newOrder } = await apiCall()('mutation')({
+    const { createDraftOrder: newOrder } = await apiClient('mutation')({
       createDraftOrder: draftOrderSelector,
     });
     if (newOrder.id && order) {
       if (order.billingAddress) {
-        await apiCall()('mutation')({
+        await apiClient('mutation')({
           setDraftOrderBillingAddress: [
             {
               orderId: newOrder.id,
@@ -62,7 +62,7 @@ export const OrdersDetailPage = () => {
         });
       }
       if (order.shippingAddress) {
-        await apiCall()('mutation')({
+        await apiClient('mutation')({
           setDraftOrderShippingAddress: [
             {
               orderId: newOrder.id,
@@ -83,7 +83,7 @@ export const OrdersDetailPage = () => {
         });
       }
       if (order.customer?.id) {
-        const resp = await apiCall()('mutation')({
+        const resp = await apiClient('mutation')({
           setCustomerForDraftOrder: [
             {
               orderId: newOrder.id,
@@ -102,7 +102,7 @@ export const OrdersDetailPage = () => {
       }
       if (order.lines.length) {
         for (const i of order.lines) {
-          const resp = await apiCall()('mutation')({
+          const resp = await apiClient('mutation')({
             addItemToDraftOrder: [
               {
                 orderId: newOrder.id,
@@ -126,14 +126,14 @@ export const OrdersDetailPage = () => {
       }
 
       if (order.shippingLines.length) {
-        const { eligibleShippingMethodsForDraftOrder } = await apiCall()('query')({
+        const { eligibleShippingMethodsForDraftOrder } = await apiClient('query')({
           eligibleShippingMethodsForDraftOrder: [{ orderId: order.id }, eligibleShippingMethodsSelector],
         });
         if (!eligibleShippingMethodsForDraftOrder) {
           toast.error(t('toasts.orderLoadingDraftShippingError', { value: order.id }));
         }
         if (eligibleShippingMethodsForDraftOrder.find((i) => i.id === order.shippingLines[0].shippingMethod.id)) {
-          const resp = await apiCall()('mutation')({
+          const resp = await apiClient('mutation')({
             setDraftOrderShippingMethod: [
               {
                 orderId: newOrder.id,
@@ -156,7 +156,7 @@ export const OrdersDetailPage = () => {
       if (orderHistory.data.length) {
         for (const i of orderHistory.data) {
           if (i.type === HistoryEntryType.CUSTOMER_NOTE || i.type === HistoryEntryType.ORDER_NOTE) {
-            await apiCall()('mutation')({
+            await apiClient('mutation')({
               addNoteToOrder: [
                 {
                   input: {
@@ -171,7 +171,7 @@ export const OrdersDetailPage = () => {
           }
         }
       }
-      await apiCall()('mutation')({
+      await apiClient('mutation')({
         addNoteToOrder: [
           {
             input: {

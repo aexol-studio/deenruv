@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox, useLocalStorage, SortButton, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, useLocalStorage, SortButton, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +24,7 @@ import { ChannelListSelector, ChannelListType } from '@/graphql/channels';
 import { ActionsColumn } from '@/components/Columns';
 
 const getChannels = async (options: ResolverInputTypes['ChannelListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     channels: [{ options }, { items: ChannelListSelector, totalItems: true }],
   });
 
@@ -77,7 +76,7 @@ export const ChannelsListPage = () => {
   }, []);
 
   const deleteChannelsToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteChannels: [{ ids: channelsToDelete.map((ch) => ch.id) }, { message: true, result: true }],
     });
 

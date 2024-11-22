@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
+
 import {
   Card,
   CardContent,
@@ -12,6 +12,7 @@ import {
   MultipleSelector,
   type Option,
   Routes,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -37,7 +38,7 @@ export const RolesDetailPage = () => {
 
   const fetchRole = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         role: [
           {
             id,
@@ -51,7 +52,7 @@ export const RolesDetailPage = () => {
   }, [id]);
 
   const fetchChannels = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       channels: [
         {},
         {
@@ -99,7 +100,7 @@ export const RolesDetailPage = () => {
   }, [role]);
 
   const createRole = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createRole: [
         {
           input: {
@@ -122,7 +123,7 @@ export const RolesDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateRole = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateRole: [
         {
           input: {

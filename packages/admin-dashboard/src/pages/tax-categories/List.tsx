@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { format } from 'date-fns';
@@ -14,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight, Check, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable } from '@deenruv/react-ui-devkit';
+import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -25,7 +24,7 @@ import { ParamFilterFieldTuple, TaxCategoriesSortOptions, taxCategoriesSortOptio
 import { ActionsColumn } from '@/components/Columns';
 
 const getTaxCategories = async (options: ResolverInputTypes['TaxCategoryListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     taxCategories: [{ options }, { items: TaxCategoryListSelector, totalItems: true }],
   });
 
@@ -77,7 +76,7 @@ export const TaxCategoriesListPage = () => {
   }, []);
 
   const deleteTaxCategoriesToDelete = async () => {
-    const resp = await apiCall()('mutation')({
+    const resp = await apiClient('mutation')({
       deleteTaxCategories: [{ ids: taxCategoriesToDelete.map((ch) => ch.id) }, { message: true, result: true }],
     });
 

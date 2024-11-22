@@ -1,8 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModelTypes } from '@deenruv/admin-types';
-import { Checkbox, Label, Card, CardHeader, CardTitle, CardContent, type Option } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+import {
+  Checkbox,
+  Label,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  type Option,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
+
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { SimpleSelect, Stack } from '@/components';
 
@@ -26,7 +35,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
   const [allCheckersOptions, setAllCheckersOptions] = useState<Option[]>([]);
 
   const fetchOptions = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       paymentMethodHandlers: PaymentMethodHandlerSelector,
       paymentMethodEligibilityCheckers: PaymentMethodHandlerSelector,
     });

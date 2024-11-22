@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
+
 import {
   Routes,
   Card,
@@ -13,6 +13,7 @@ import {
   MultipleSelector,
   Option,
   useServer,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -38,7 +39,7 @@ export const ZonesDetailPage = () => {
 
   const fetchZone = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         zone: [
           {
             id,
@@ -72,7 +73,7 @@ export const ZonesDetailPage = () => {
   }, [zone]);
 
   const createZone = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createZone: [
         {
           input: {
@@ -93,7 +94,7 @@ export const ZonesDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateZone = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateZone: [
         {
           input: {

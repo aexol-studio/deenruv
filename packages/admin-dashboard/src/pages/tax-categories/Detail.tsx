@@ -1,8 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input, Label, Switch } from '@deenruv/react-ui-devkit';
+
+import {
+  Routes,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Switch,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -23,7 +33,7 @@ export const TaxCategoriesDetailPage = () => {
 
   const fetchTaxCategory = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         taxCategory: [
           {
             id,
@@ -58,7 +68,7 @@ export const TaxCategoriesDetailPage = () => {
   }, [taxCategory]);
 
   const createTaxCategory = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createTaxCategory: [
         {
           input: {
@@ -79,7 +89,7 @@ export const TaxCategoriesDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateTaxCategory = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateTaxCategory: [
         {
           input: {

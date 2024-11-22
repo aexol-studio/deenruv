@@ -9,10 +9,11 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { AssetsModalInput, Stack } from '@/components';
 import { AssetType, assetsSelector } from '@/graphql/base';
-import { apiCall } from '@/graphql/client';
+
 import { cn } from '@/lib/utils';
 import { ImageOff } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -38,7 +39,7 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
   const [assets, setAssets] = useState<AssetType[]>([]);
 
   const getAsset = useCallback(async (id: string) => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       asset: [
         {
           id: id,

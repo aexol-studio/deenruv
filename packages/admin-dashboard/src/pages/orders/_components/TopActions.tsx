@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import {
   AlertDialogHeader,
   AlertDialogFooter,
@@ -18,6 +17,7 @@ import {
   Routes,
   OrderStateBadge,
   useServer,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
@@ -59,7 +59,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
 
   const transitionOrderToModify = async () => {
     if (!order) return;
-    const { transitionOrderToState } = await apiCall()('mutation')({
+    const { transitionOrderToState } = await apiClient('mutation')({
       transitionOrderToState: [
         { id: order.id, state: ORDER_STATE.MODIFYING },
         {
@@ -88,7 +88,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
       toast.error(t('topActions.fillAll'), { position: 'top-center', closeButton: true });
       return;
     }
-    const { transitionOrderToState } = await apiCall()('mutation')({
+    const { transitionOrderToState } = await apiClient('mutation')({
       transitionOrderToState: [
         { id: order.id, state: 'ArrangingPayment' },
         {
@@ -118,7 +118,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
 
   const createProforma = async (type: 'proforma' | 'receipt') => {
     if (order) {
-      // const { sendInvoiceToWFirma } = await apiCall()('mutation')({
+      // const { sendInvoiceToWFirma } = await apiClient('mutation')({
       //   sendInvoiceToWFirma: [
       //     { input: { orderID: order.id, invoiceType: type === 'proforma' ? 'proforma' : 'receipt_fiscal_normal' } },
       //     { url: true },
@@ -138,11 +138,11 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
 
   const fulfillOrder = async (input: ResolverInputTypes['FulfillOrderInput']) => {
     if (!order) return;
-    const { addFulfillmentToOrder } = await apiCall()('mutation')({
+    const { addFulfillmentToOrder } = await apiClient('mutation')({
       addFulfillmentToOrder: [{ input }, addFulfillmentToOrderResultSelector],
     });
     if (addFulfillmentToOrder.__typename === 'Fulfillment') {
-      const { transitionFulfillmentToState } = await apiCall()('mutation')({
+      const { transitionFulfillmentToState } = await apiClient('mutation')({
         transitionFulfillmentToState: [
           { id: addFulfillmentToOrder.id, state: ORDER_STATE.SHIPPED },
           {
@@ -161,7 +161,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         ],
       });
       if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-        const resp = await apiCall()('query')({ order: [{ id: order.id }, draftOrderSelector] });
+        const resp = await apiClient('query')({ order: [{ id: order.id }, draftOrderSelector] });
         if (resp.order) setOrder(resp.order);
         fetchOrderHistory();
         toast.success(t('topActions.fulfillmentAdded'), { position: 'top-center' });
@@ -176,7 +176,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
 
   const cancelOrder = async () => {
     if (order) {
-      const { cancelOrder } = await apiCall()('mutation')({
+      const { cancelOrder } = await apiClient('mutation')({
         cancelOrder: [
           { input: { orderId: order.id } },
           {
@@ -216,7 +216,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
 
   const deleteDraftOrder = async () => {
     if (!order) return;
-    const { deleteDraftOrder } = await apiCall()('mutation')({
+    const { deleteDraftOrder } = await apiClient('mutation')({
       deleteDraftOrder: [{ orderId: order.id }, { message: true, result: true }],
     });
     if (deleteDraftOrder.result === DeletionResult.DELETED) {
@@ -228,7 +228,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
   };
   const changeOrderStatus = async (newState: string) => {
     if (!order || !newState) return;
-    const { transitionOrderToState } = await apiCall()('mutation')({
+    const { transitionOrderToState } = await apiClient('mutation')({
       transitionOrderToState: [
         { id: order.id, state: newState },
         {

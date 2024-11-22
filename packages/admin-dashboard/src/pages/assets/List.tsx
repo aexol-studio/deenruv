@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { apiCall, uploadApiCall } from '@/graphql/client';
 import { ItemsPerPageType, useList } from '@/lists/useList';
 import { $, ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Button } from '@deenruv/react-ui-devkit';
+import { Button, apiClient, apiUploadClient } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { FileUp, ImageOff, XIcon } from 'lucide-react';
 import { Stack, Search } from '@/components';
@@ -22,7 +21,7 @@ const validateFiles = (files: File[]) => {
 };
 
 const getAssets = async (options: ResolverInputTypes['AssetListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     assets: [
       { options },
       {
@@ -60,7 +59,7 @@ export const AssetsListPage = () => {
     e.preventDefault();
     const input: ResolverInputTypes['CreateAssetInput'][] = assetsToUpload.map((file) => ({ file }));
     try {
-      const { createAssets } = await uploadApiCall()('mutation')(
+      const { createAssets } = await apiUploadClient('mutation')(
         {
           createAssets: [
             { input: $('input', '[CreateAssetInput!]!') },

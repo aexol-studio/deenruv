@@ -6,9 +6,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  apiClient,
   useSettings,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -29,7 +30,7 @@ export const DeleteCollectionsFromChannel: React.FC<DeleteCollectionsFromChannel
   const removeCollectionsFromChannel = async () => {
     try {
       if (selectedChannel?.id) {
-        await apiCall()('mutation')({
+        await apiClient('mutation')({
           removeCollectionsFromChannel: [
             {
               input: {

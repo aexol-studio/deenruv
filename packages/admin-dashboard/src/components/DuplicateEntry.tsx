@@ -1,5 +1,4 @@
-import { Button, DialogClose, DialogContent, DialogFooter, useSettings } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+import { Button, DialogClose, DialogContent, DialogFooter, apiClient, useSettings } from '@deenruv/react-ui-devkit';
 import { ValueTypes } from '@deenruv/admin-types';
 import React, { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +25,7 @@ export const DuplicateEntity: React.FC<DeleteCollectionsFromChannel> = ({
       if (selectedChannel?.id) {
         const res = await Promise.all(
           inputs.map(async (input) => {
-            const singleRes = await apiCall()('mutation')({
+            const singleRes = await apiClient('mutation')({
               duplicateEntity: [
                 { input },
                 {

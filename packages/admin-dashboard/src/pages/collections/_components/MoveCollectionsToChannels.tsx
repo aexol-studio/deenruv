@@ -14,6 +14,7 @@ import {
   Routes,
   ChannelType,
   channelSelector,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -30,7 +31,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { CollectionListType } from '@/graphql/collections';
-import { apiCall } from '@/graphql/client';
+
 import { toast } from 'sonner';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
@@ -61,7 +62,7 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
   const [channels, setChannels] = useState<{ activeChannel?: ChannelType; channels: ChannelType[] }>({ channels: [] });
   const moveCollectionToChannel = async () => {
     try {
-      const response = await apiCall()('mutation')({
+      const response = await apiClient('mutation')({
         assignCollectionsToChannel: [
           {
             input: {
@@ -92,7 +93,7 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
   };
   useEffect(() => {
     (async () => {
-      const channelsResponse = await apiCall()('query')({
+      const channelsResponse = await apiClient('query')({
         channels: [{ options: { take: 10 } }, { items: channelSelector, totalItems: true }],
         activeChannel: channelSelector,
       });

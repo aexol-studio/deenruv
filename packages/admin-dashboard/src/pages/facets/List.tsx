@@ -1,4 +1,3 @@
-import { apiCall } from '@/graphql/client';
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
 import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
@@ -30,6 +29,7 @@ import {
   SortButton,
   useLocalStorage,
   ListTable,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, Search } from '@/components';
 import { Link, NavLink, useSearchParams } from 'react-router-dom';
@@ -40,7 +40,7 @@ import { FacetListSelector, FacetListType } from '@/graphql/facets';
 import facetsJson from '@/locales/en/facets.json';
 
 const getFacets = async (options: ResolverInputTypes['FacetListOptions']) => {
-  const response = await apiCall()('query')({
+  const response = await apiClient('query')({
     facets: [
       { options },
       {
@@ -100,7 +100,7 @@ export const FacetsListPage = () => {
   const deleteFacetsToDelete = async () => {
     const resp = await Promise.all(
       facetsToDelete.map((i) =>
-        apiCall()('mutation')({ deleteFacet: [{ id: i.id }, { message: true, result: true }] }),
+        apiClient('mutation')({ deleteFacet: [{ id: i.id }, { message: true, result: true }] }),
       ),
     );
     resp.forEach((i) =>

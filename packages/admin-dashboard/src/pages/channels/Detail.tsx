@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { apiCall } from '@/graphql/client';
+
 import {
   Routes,
   Card,
@@ -13,6 +13,7 @@ import {
   MultipleSelector,
   type Option,
   useServer,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -40,7 +41,7 @@ export const ChannelsDetailPage = () => {
 
   const fetchChannel = useCallback(async () => {
     if (id) {
-      const response = await apiCall()('query')({
+      const response = await apiClient('query')({
         channel: [
           {
             id,
@@ -54,7 +55,7 @@ export const ChannelsDetailPage = () => {
   }, [id]);
 
   const fetchSellers = useCallback(async () => {
-    const response = await apiCall()('query')({
+    const response = await apiClient('query')({
       sellers: [
         {},
         {
@@ -107,7 +108,7 @@ export const ChannelsDetailPage = () => {
   }, [channel]);
 
   const createChannel = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       createChannel: [
         {
           input: {
@@ -143,7 +144,7 @@ export const ChannelsDetailPage = () => {
   }, [state, t, navigate]);
 
   const updateChannel = useCallback(() => {
-    apiCall()('mutation')({
+    apiClient('mutation')({
       updateChannel: [
         {
           input: {

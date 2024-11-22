@@ -10,8 +10,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
-import { apiCall } from '@/graphql/client';
+
 import { useTranslation } from 'react-i18next';
 import {
   ProductVariantType,
@@ -38,7 +39,7 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
 
   useEffect(() => {
     const search = async () => {
-      const data = await apiCall()('query')({
+      const data = await apiClient('query')({
         search: [
           {
             input: { take: 10, groupByProduct: false, term: debouncedValue },
@@ -114,7 +115,7 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
                         <Button
                           variant="outline"
                           onClick={async () => {
-                            const { productVariant } = await apiCall()('query')({
+                            const { productVariant } = await apiClient('query')({
                               productVariant: [{ id: r.productVariantId }, productVariantSelector],
                             });
                             if (productVariant) {
