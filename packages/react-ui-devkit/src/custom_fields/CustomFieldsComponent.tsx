@@ -4,6 +4,7 @@ import type { GraphQLTypes, ModelTypes, CustomFieldConfigType } from '@deenruv/a
 import { usePluginStore } from '@/plugins';
 import { CustomFieldsProvider } from '@/custom_fields/context';
 import { generateCustomFields } from '@/custom_fields/logic';
+import { cn } from '@/lib';
 
 export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSON'] | undefined }>({
     customFields,
@@ -18,7 +19,7 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
 }) {
     const { getInputComponent } = usePluginStore();
     const [rendered, setRendered] = useState<
-        Record<string, { name: string; component: React.ReactElement }[]>
+        Record<string, { name: string; component: React.ReactElement; ui: Record<string, unknown> }[]>
     >({});
 
     useEffect(() => {
@@ -28,7 +29,10 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
                 acc[field.tab].push(field);
                 return acc;
             },
-            {} as Record<string, { name: string; component: React.ReactElement }[]>,
+            {} as Record<
+                string,
+                { name: string; component: React.ReactElement; ui: Record<string, unknown> }[]
+            >,
         );
         setRendered(result);
     }, []);
@@ -74,7 +78,12 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
                                     setValue={data => setValue(_field, data)}
                                 >
                                     <Suspense fallback={<span>Loading...</span>}>
-                                        <div className={`flex-1 min-w-[250px] basis-1/3`}>
+                                        <div
+                                            className={cn(
+                                                `flex-1 min-w-[250px] basis-1/3`,
+                                                !!field.ui?.fullWidth && `basis-full`,
+                                            )}
+                                        >
                                             {field.component}
                                         </div>
                                     </Suspense>
