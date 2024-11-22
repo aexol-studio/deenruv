@@ -1,10 +1,5 @@
 export const TailwindConfig = {
     darkMode: ['class'],
-    content: [
-        './src/**/*.{ts,tsx}',
-        './node_modules/@deenruv/react-ui-devkit/src/**/*.{ts,tsx}',
-        './node_modules/@deenruv/admin-dashboard/dist/**/*.js',
-    ],
     theme: {
         container: {
             center: true,

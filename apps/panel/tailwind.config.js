@@ -1,6 +1,14 @@
-const { TailwindConfig } = require('@deenruv/react-ui-devkit');
+import { TailwindConfig } from '@deenruv/react-ui-devkit';
+import tailwindCssAnimate from 'tailwindcss-animate';
+import tailwindCssTypography from '@tailwindcss/typography';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   ...TailwindConfig,
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  content: [
+    './src/**/*.{ts,tsx}',
+    '../../node_modules/@deenruv/admin-dashboard/dist/**/*.js',
+    '../../node_modules/@deenruv/react-ui-devkit/dist/**/*.js',
+  ],
+  plugins: [tailwindCssAnimate, tailwindCssTypography],
 };
