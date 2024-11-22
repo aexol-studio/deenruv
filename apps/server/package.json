@@ -1,5 +1,5 @@
 {
-    "name": "@deenruv/server",
+    "name": "server",
     "version": "0.0.29",
     "main": "index.js",
     "license": "MIT",
