@@ -138,7 +138,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                   <Nav isCollapsed={isCollapsed} />
                   <div className="bg-secondary flex h-[40px] w-full select-none items-center justify-center gap-2 text-xs shadow-2xl">
                     <p className="uppercase">Deenruv</p>
-                    <span>ver. {ADMIN_DASHBOARD_VERSION}</span>
+                    <span>ver. {window.__DEENRUV_SETTINGS__.appVersion}</span>
                   </div>
                 </div>
               </ResizablePanel>

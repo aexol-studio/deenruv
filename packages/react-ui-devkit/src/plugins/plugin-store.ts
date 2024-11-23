@@ -18,6 +18,7 @@ export class PluginStore {
         groups: Array<NonNullable<DeenruvUIPlugin['navMenuGroups']>[number]>;
         links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number]>;
     } = { groups: [], links: [] };
+
     install(plugins: DeenruvUIPlugin[], i18next: I18Next) {
         this.i18next = i18next;
         plugins.forEach(({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {

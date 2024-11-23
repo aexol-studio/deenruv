@@ -1,5 +1,6 @@
 import { LanguageCode } from '@deenruv/admin-types';
 import {
+  Badge,
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
+import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
 const uiLanguages = [LanguageCode.en, LanguageCode.pl];
 
 export const LanguagesDropdown = () => {
@@ -30,7 +31,21 @@ export const LanguagesDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{t('language')}</Button>
+        <Button variant="outline">
+          {t('language')}
+          {/* TODO: Change to better handling */}
+          <Badge variant="outline" className="ml-2">
+            {contentLng === LanguageCode.en ? (
+              <US className="h-4 w-4" />
+            ) : contentLng === LanguageCode.pl ? (
+              <PL className="h-4 w-4" />
+            ) : contentLng === LanguageCode.cs ? (
+              <CZ className="h-4 w-4" />
+            ) : contentLng === LanguageCode.de ? (
+              <DE className="h-4 w-4" />
+            ) : null}
+          </Badge>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="z-[150]">
         <DropdownMenuSub>

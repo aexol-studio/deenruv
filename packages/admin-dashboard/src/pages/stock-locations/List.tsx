@@ -21,7 +21,6 @@ import { ParamFilterFieldTuple, StockLocationsSortOptions, stockLocationsSortOpt
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { StockLocationListSelector, StockLocationListType } from '@/graphql/stockLocations';
-import { stripHtmlTags } from '@/lib';
 import { ActionsColumn } from '@/components/Columns';
 
 const getStockLocations = async (options: ResolverInputTypes['StockLocationListOptions']) => {
@@ -159,7 +158,7 @@ export const StockLocationsListPage = () => {
           {t('table.description')}
         </SortButton>
       ),
-      cell: ({ row }) => stripHtmlTags(row.original.description),
+      cell: ({ row }) => row.original.description,
     },
     ActionsColumn({
       viewRoute: Routes.stockLocations.to,

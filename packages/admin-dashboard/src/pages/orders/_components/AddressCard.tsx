@@ -30,7 +30,6 @@ import {
 import { AddressBaseType, addressBaseSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
-import { phoneNumberRegExp } from '@/utils/regExp';
 import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -127,7 +126,6 @@ export const AddressCard: React.FC<{
       initialValue: '',
       validate: (v) => {
         if (!v || v === '') return [t('selectAddress.phoneNumberRequired')];
-        if (!phoneNumberRegExp.test(v)) return [t('selectAddress.phoneError')];
       },
     },
     city: {

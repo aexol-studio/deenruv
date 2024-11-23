@@ -7,3 +7,5 @@ export function DeenruvAdminPanel({
   plugins: Array<DeenruvUIPlugin>;
   settings: DeenruvAdminPanelSettings;
 }): JSX.Element;
+
+export type { DeenruvAdminPanelSettings, DeenruvUIPlugin };

@@ -23,9 +23,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 // import { useGFFLP } from '@/lists/useGflp';
 import { cn } from '@/lib/utils';
-// import { emailRegExp, phoneNumberRegExp } from '@/utils/regExp';
 // import { toast } from 'sonner';
-//
 // import { Edit } from 'lucide-react';
 import { useOrder } from '@/state/order';
 
@@ -70,7 +68,6 @@ export const CustomerSelectCard: React.FC = () => {
   //     initialValue: '',
   //     validate: (v) => {
   //       if (!v || v === '') return [t('form.requiredError')];
-  //       if (!emailRegExp.test(v.toLowerCase())) return [t('form.emailError')];
   //     },
   //   },
   // });

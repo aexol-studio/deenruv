@@ -7,7 +7,7 @@ import { ModelTypes } from '@deenruv/admin-types';
 import { DeenruvTabs, DetailKeys, DetailLocations, ExternalDetailLocationSelector } from '@/types';
 import { DetailViewMarker } from '@/components';
 import { useFFLP } from '@/hooks';
-import { apiClient } from '@/zeus-client/deenruvAPICall';
+import { apiClient } from '@/zeus_client/deenruvAPICall';
 
 interface DetailViewProps<
     LOCATION extends DetailKeys,

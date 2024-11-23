@@ -36,7 +36,7 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({ chartProps, langua
             : value;
 
     return (
-        <Card className="flex flex-col  bg-muted">
+        <Card className="flex flex-col bg-muted">
             <CardHeader className="pb-2">
                 <CardDescription>{payload?.name}</CardDescription>
                 <CardTitle className="border-b border-muted-foreground pb-2 text-xl">

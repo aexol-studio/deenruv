@@ -1,4 +1,4 @@
-import { Menu } from '@/common/Menu';
+import { Menu } from '@/components';
 
 import {
   serverConfigSelector,
@@ -10,13 +10,13 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { toast } from 'sonner';
-import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import {
   PaymentMethodsType,
   activeAdministratorSelector,
   paymentMethodsSelector,
   useServer,
   useSettings,
+  DEFAULT_CHANNEL_CODE,
 } from '@deenruv/react-ui-devkit';
 
 const TAKE = 100;

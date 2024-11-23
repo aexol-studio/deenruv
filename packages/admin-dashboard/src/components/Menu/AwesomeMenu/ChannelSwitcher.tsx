@@ -7,10 +7,10 @@ import {
   SelectValue,
   useServer,
   useSettings,
+  DEFAULT_CHANNEL_CODE,
 } from '@deenruv/react-ui-devkit';
 // import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
 import { clearAllCache } from '@/lists/cache';
-import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 
