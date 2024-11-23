@@ -536,6 +536,9 @@ importers:
       '@deenruv/job-queue-plugin':
         specifier: workspace:*
         version: link:../../plugins/job-queue-plugin
+      '@deenruv/method-modal-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/method-modal-plugin
       '@deenruv/minko-core-plugin':
         specifier: workspace:*
         version: link:../../plugins/minko-core-plugin
@@ -2420,6 +2423,25 @@ importers:
         version: 5.4.1
       rimraf:
         specifier: ^5.0.5
+        version: 5.0.10
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
+  plugins/method-modal-plugin:
+    dependencies:
+      '@deenruv/common':
+        specifier: workspace:*
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:*
+        version: link:../../packages/react-ui-devkit
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.10
         version: 5.0.10
       typescript:
         specifier: 5.3.3
@@ -23003,7 +23025,10 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+<<<<<<< HEAD
     requiresBuild: true
+=======
+>>>>>>> 319ece812e6ea940efd1ef26fe10522d80595f95
 
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}

@@ -5,3 +5,4 @@ export * from './SimpleSelect';
 export * from './SortButton';
 export * from './TranslationSelect';
 export * from './ListTable';
+export * from './RichTextEditor';

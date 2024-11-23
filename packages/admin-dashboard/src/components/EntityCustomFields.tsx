@@ -22,7 +22,16 @@ import { getGqlError } from '@/utils';
 type ViableEntity = Uncapitalize<
   keyof Pick<
     ModelTypes,
-    'Product' | 'ProductVariant' | 'Order' | 'Asset' | 'Collection' | 'Facet' | 'OrderLine' | 'ProductOptionGroup'
+    | 'Product'
+    | 'ProductVariant'
+    | 'Order'
+    | 'Asset'
+    | 'Collection'
+    | 'Facet'
+    | 'OrderLine'
+    | 'ProductOptionGroup'
+    | 'PaymentMethod'
+    | 'ShippingMethod'
   >
 >;
 type CF = Record<string, unknown>;
@@ -73,6 +82,14 @@ const entityDictionary: Partial<
   facet: {
     inputName: 'UpdateFacetInput',
     mutationName: 'updateFacet',
+  },
+  paymentMethod: {
+    inputName: 'UpdatePaymentMethodInput',
+    mutationName: 'updatePaymentMethod',
+  },
+  shippingMethod: {
+    inputName: 'UpdateShippingMethodInput',
+    mutationName: 'updateShippingMethod',
   },
 };
 

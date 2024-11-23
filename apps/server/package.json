@@ -1,5 +1,5 @@
 {
-    "name": "@deenruv/server",
+    "name": "server",
     "version": "0.0.29",
     "main": "index.js",
     "license": "MIT",
@@ -31,6 +31,7 @@
         "@deenruv/dashboard-widgets-plugin": "workspace:*",
         "@deenruv/facet-harmonica-plugin": "workspace:*",
         "@deenruv/product-badges-plugin": "workspace:*",
+        "@deenruv/method-modal-plugin": "workspace:*",
         "@deenruv/minko-core-plugin": "workspace:*",
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",

@@ -21,11 +21,10 @@ import { PageHeader } from '@/pages/shipping-methods/_components/PageHeader';
 import { ShippingMethodDetailsSelector, ShippingMethodDetailsType } from '@/graphql/shippingMethods';
 import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { ModalCard } from '@/pages/shipping-methods/_components/ModalCard';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
 import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
-import { SimpleSelect, Stack } from '@/components';
+import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
 
 export const ShippingMethodsDetailPage = () => {
   const { id } = useParams();
@@ -250,10 +249,7 @@ export const ShippingMethodsDetailPage = () => {
               </CardContent>
             </CardHeader>
           </Card>
-          <ModalCard
-            currentTranslationValue={currentTranslationValue?.customFields}
-            onValuesChange={(translationCustomFields) => setTranslationField('customFields', translationCustomFields)}
-          />
+          {id && <EntityCustomFields entityName="shippingMethod" id={id} />}
           <CheckerCard
             currentCheckerValue={state.checker?.value}
             onCheckerValueChange={(checker) => setField('checker', checker)}

@@ -1,5 +1,5 @@
 {
-    "name": "@deenruv/content-management-config",
+    "name": "content-management-config",
     "version": "0.0.29",
     "main": "./dist/index.js",
     "scripts": {

@@ -1,5 +1,5 @@
 {
-  "name": "@deenruv/panel",
+  "name": "panel",
   "private": true,
   "version": "0.0.29",
   "type": "module",

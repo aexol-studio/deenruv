@@ -21,9 +21,8 @@ import { PageHeader } from '@/pages/payment-methods/_components/PageHeader';
 import { PaymentMethodDetailsSelector, PaymentMethodDetailsType } from '@/graphql/paymentMethods';
 import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { ModalCard } from '@/pages/payment-methods/_components/ModalCard';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 
 export const PaymentMethodsDetailPage = () => {
   const { id } = useParams();
@@ -234,10 +233,7 @@ export const PaymentMethodsDetailPage = () => {
               </CardContent>
             </CardHeader>
           </Card>
-          <ModalCard
-            currentTranslationValue={currentTranslationValue?.customFields}
-            onValuesChange={(translationCustomFields) => setTranslationField('customFields', translationCustomFields)}
-          />
+          {id && <EntityCustomFields entityName="paymentMethod" id={id} />}
           <OptionsCard
             currentHandlerValue={state.handler?.value}
             currentCheckerValue={state.checker?.value}

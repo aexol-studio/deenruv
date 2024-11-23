@@ -7,6 +7,7 @@ import {
     DefaultTextInput,
     DefaultTextarea,
     DefaultRelationInput,
+    DefaultRichText,
 } from './DefaultInputs';
 import React from 'react';
 import { DefaultSimpleListInput } from './DefaultInputs/DefaultSimpleListInput';
@@ -54,7 +55,7 @@ function generateSingleFields({ field }: { field: CustomFieldConfigType }) {
             return { ...field, component: <DefaultTextInput /> };
         case 'TextCustomFieldConfig':
         case 'LocaleTextCustomFieldConfig':
-            return { ...field, component: <DefaultTextarea /> };
+            return { ...field, component: field.ui.richText ? <DefaultRichText /> : <DefaultTextarea /> };
         case 'RelationCustomFieldConfig':
             return { ...field, component: <DefaultRelationInput /> };
         default:

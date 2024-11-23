@@ -4,6 +4,7 @@ export * from './DefaultFloatInput';
 export * from './DefaultIntInput';
 export * from './DefaultTextInput';
 export * from './DefaultTextarea';
+export * from './DefaultRichText';
 export * from './DefaultTimeSelect';
 export * from './Relations';
 export * from './types';
