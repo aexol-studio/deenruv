@@ -12,8 +12,8 @@ import {
     getZonedDate,
     usePluginStore,
     useLazyQuery,
+    CardFooter,
 } from '@deenruv/react-ui-devkit';
-
 import { MetricsIntervalSelect } from './MetricsIntervalSelect';
 import { MetricsCustomDates } from './MetricCustomDates';
 import { MetricTypeSelect } from './MetricTypeSelect';
@@ -21,17 +21,21 @@ import { OrdersChart } from './OrdersChart';
 
 import { BetterMetricInterval, BetterMetricType, ResolverInputTypes } from '../../zeus';
 import { BetterMetricsQuery } from '../../graphql';
+import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 type BetterMetricsChartDataType = {
-    title: string;
-    type: BetterMetricType;
-    interval: BetterMetricInterval;
-    entries: { label: string; value: number; additionalData?: AdditionalEntryData[] }[];
-}[];
+    data: {
+        title: string;
+        type: BetterMetricType;
+        interval: BetterMetricInterval;
+        entries: { label: string; value: number; additionalData?: AdditionalEntryData[] }[];
+    }[];
+    lastCacheRefreshTime?: string;
+};
 
 export const OrdersWidget = () => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('dashboard-widgets-plugin');
     const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
     const { language } = usePluginStore();
     const [metricLoading, setMetricLoading] = useState(false);
@@ -45,7 +49,7 @@ export const OrdersWidget = () => {
         refresh: false,
     });
 
-    const [betterMetrics, setBetterMetrics] = useState<BetterMetricsChartDataType>([]);
+    const [betterMetrics, setBetterMetrics] = useState<BetterMetricsChartDataType>({ data: [] });
 
     const getCustomIntervalDates = useCallback(
         (interval: BetterMetricInterval): { start: Date; end: Date } => {
@@ -84,35 +88,39 @@ export const OrdersWidget = () => {
         [],
     );
 
-    useEffect(() => {
-        const metricSettings = betterMetricsSettings;
-
-        if (
-            [
-                BetterMetricInterval.LastMonth,
-                BetterMetricInterval.ThisMonth,
-                BetterMetricInterval.LastWeek,
-                BetterMetricInterval.ThisWeek,
-            ].includes(betterMetricsSettings.interval.type)
-        ) {
-            metricSettings.interval = {
-                type: BetterMetricInterval.Custom,
-                ...getCustomIntervalDates(betterMetricsSettings.interval.type),
-            };
-        }
-
-        (async () => {
+    const fetchData = useCallback(
+        async (refresh: boolean = false) => {
+            const metricSettings = betterMetricsSettings;
+            if (
+                [
+                    BetterMetricInterval.LastMonth,
+                    BetterMetricInterval.ThisMonth,
+                    BetterMetricInterval.LastWeek,
+                    BetterMetricInterval.ThisWeek,
+                ].includes(betterMetricsSettings.interval.type)
+            ) {
+                metricSettings.interval = {
+                    type: BetterMetricInterval.Custom,
+                    ...getCustomIntervalDates(betterMetricsSettings.interval.type),
+                };
+            }
             try {
                 setMetricLoading(true);
-                const { betterMetricSummary } = await fetchBetterMetrics({ input: metricSettings });
-
+                const { betterMetricSummary } = await fetchBetterMetrics({
+                    input: { ...metricSettings, refresh },
+                });
                 setBetterMetrics(betterMetricSummary);
             } catch (e) {
                 console.log(e);
             } finally {
                 setMetricLoading(false);
             }
-        })();
+        },
+        [betterMetricsSettings, getCustomIntervalDates],
+    );
+
+    useEffect(() => {
+        fetchData();
     }, [betterMetricsSettings, getCustomIntervalDates]);
 
     const changeBetterMetricType = (type: BetterMetricType) => {
@@ -127,7 +135,7 @@ export const OrdersWidget = () => {
     };
 
     const betterData = useMemo(() => {
-        return betterMetrics
+        return betterMetrics.data
             .map(metric => {
                 return metric.interval !== BetterMetricInterval.Custom
                     ? metric.entries.map(entry => ({
@@ -186,6 +194,12 @@ export const OrdersWidget = () => {
             <CardContent className="p-0 mr-6 mb-6">
                 <OrdersChart data={betterData} language={language} />
             </CardContent>
+            <CardFooter className="justify-end pb-0">
+                <RefreshCacheButton
+                    fetchData={() => fetchData(true)}
+                    lastCacheRefreshTime={betterMetrics.lastCacheRefreshTime}
+                />
+            </CardFooter>
         </Card>
     );
 };

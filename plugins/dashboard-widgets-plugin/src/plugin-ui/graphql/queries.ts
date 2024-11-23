@@ -19,14 +19,17 @@ export const BetterMetricsQuery = typedGql('query', { scalars })({
             input: $('input', 'BetterMetricSummaryInput!'),
         },
         {
-            title: true,
-            interval: true,
-            type: true,
-            entries: {
-                label: true,
-                value: true,
-                additionalData: { id: true, name: true, quantity: true },
+            data: {
+                title: true,
+                interval: true,
+                type: true,
+                entries: {
+                    label: true,
+                    value: true,
+                    additionalData: { id: true, name: true, quantity: true },
+                },
             },
+            lastCacheRefreshTime: true,
         },
     ],
 });

@@ -171,14 +171,11 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
-		metricSummary:{
-			input:"MetricSummaryInput"
-		},
 		betterMetricSummary:{
 			input:"BetterMetricSummaryInput"
 		},
-		getProductBadges:{
-			input:"GetProductBadgesInput"
+		metricSummary:{
+			input:"MetricSummaryInput"
 		}
 	},
 	Mutation:{
@@ -655,15 +652,6 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		removeMembersFromZone:{
 
-		},
-		createBadge:{
-			input:"CreateBadgeInput"
-		},
-		editBadge:{
-			input:"EditBadgeInput"
-		},
-		removeBadge:{
-			input:"RemoveBadgeInput"
 		}
 	},
 	AdministratorListOptions:{
@@ -688,7 +676,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateAssetInput:{
 		file:"Upload",
-		customFields:"CreateAssetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	CoordinateInput:{
 
@@ -701,7 +689,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	UpdateAssetInput:{
 		focalPoint:"CoordinateInput",
-		customFields:"UpdateAssetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignAssetsToChannelInput:{
 
@@ -743,16 +731,16 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateCollectionTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"CreateCollectionTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	UpdateCollectionTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"UpdateCollectionTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	CreateCollectionInput:{
 		filters:"ConfigurableOperationInput",
 		translations:"CreateCollectionTranslationInput",
-		customFields:"CreateCollectionCustomFieldsInput"
+		customFields:"JSON"
 	},
 	PreviewCollectionVariantsInput:{
 		filters:"ConfigurableOperationInput"
@@ -760,7 +748,7 @@ export const AllTypesProps: Record<string,any> = {
 	UpdateCollectionInput:{
 		filters:"ConfigurableOperationInput",
 		translations:"UpdateCollectionTranslationInput",
-		customFields:"UpdateCollectionCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignCollectionsToChannelInput:{
 
@@ -846,16 +834,16 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	FacetTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"FacetTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	CreateFacetInput:{
 		translations:"FacetTranslationInput",
 		values:"CreateFacetValueWithFacetInput",
-		customFields:"CreateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateFacetInput:{
 		translations:"FacetTranslationInput",
-		customFields:"UpdateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	FacetValueTranslationInput:{
 		languageCode:"LanguageCode",
@@ -914,9 +902,7 @@ export const AllTypesProps: Record<string,any> = {
 		total:"NumberOperators",
 		totalWithTax:"NumberOperators",
 		_and:"OrderFilterParameter",
-		_or:"OrderFilterParameter",
-		attributes:"StringOperators",
-		additionalInfo:"StringOperators"
+		_or:"OrderFilterParameter"
 	},
 	OrderSortParameter:{
 		customerLastName:"SortOrder",
@@ -934,9 +920,7 @@ export const AllTypesProps: Record<string,any> = {
 		shipping:"SortOrder",
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
-		totalWithTax:"SortOrder",
-		attributes:"SortOrder",
-		additionalInfo:"SortOrder"
+		totalWithTax:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -947,7 +931,7 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	UpdateOrderInput:{
-		customFields:"UpdateOrderCustomFieldsInput"
+		customFields:"JSON"
 	},
 	FulfillOrderInput:{
 		lines:"OrderLineInput",
@@ -963,7 +947,7 @@ export const AllTypesProps: Record<string,any> = {
 		amount:"Money"
 	},
 	OrderLineInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	SettleRefundInput:{
 
@@ -994,11 +978,10 @@ export const AllTypesProps: Record<string,any> = {
 		updateBillingAddress:"UpdateOrderAddressInput",
 		refund:"AdministratorRefundInput",
 		refunds:"AdministratorRefundInput",
-		options:"ModifyOrderOptions",
-		customFields:"UpdateOrderCustomFieldsInput"
+		options:"ModifyOrderOptions"
 	},
 	AddItemInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	SurchargeInput:{
 		price:"Money"
@@ -1007,10 +990,10 @@ export const AllTypesProps: Record<string,any> = {
 		metadata:"JSON"
 	},
 	AddItemToDraftOrderInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	AdjustDraftOrderLineInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	PaymentMethodListOptions:{
 		sort:"PaymentMethodSortParameter",
@@ -1056,11 +1039,11 @@ export const AllTypesProps: Record<string,any> = {
 	CreateProductOptionGroupInput:{
 		translations:"ProductOptionGroupTranslationInput",
 		options:"CreateGroupOptionInput",
-		customFields:"CreateProductOptionGroupCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateProductOptionGroupInput:{
 		translations:"ProductOptionGroupTranslationInput",
-		customFields:"UpdateProductOptionGroupCustomFieldsInput"
+		customFields:"JSON"
 	},
 	ProductOptionTranslationInput:{
 		languageCode:"LanguageCode",
@@ -1071,11 +1054,11 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateProductOptionInput:{
 		translations:"ProductOptionGroupTranslationInput",
-		customFields:"CreateProductOptionCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateProductOptionInput:{
 		translations:"ProductOptionGroupTranslationInput",
-		customFields:"UpdateProductOptionCustomFieldsInput"
+		customFields:"JSON"
 	},
 	StockMovementListOptions:{
 		type:"StockMovementType"
@@ -1097,22 +1080,7 @@ export const AllTypesProps: Record<string,any> = {
 		description:"StringOperators",
 		enabled:"BooleanOperators",
 		_and:"ProductFilterParameter",
-		_or:"ProductFilterParameter",
-		discountBy:"StringOperators",
-		boolTest:"BooleanOperators",
-		floatTest:"NumberOperators",
-		intTest:"NumberOperators",
-		stringTest:"StringOperators",
-		textTest:"StringOperators",
-		dateTime:"DateOperators",
-		listTestString:"StringListOperators",
-		listTestInt:"NumberListOperators",
-		listTestFloat:"NumberListOperators",
-		listTestText:"StringListOperators",
-		listLocaleString:"StringListOperators",
-		listLocaleText:"StringListOperators",
-		seoTitle:"StringOperators",
-		seoDescription:"StringOperators"
+		_or:"ProductFilterParameter"
 	},
 	ProductVariantListOptions:{
 		sort:"ProductVariantSortParameter",
@@ -1139,20 +1107,19 @@ export const AllTypesProps: Record<string,any> = {
 		priceWithTax:"NumberOperators",
 		stockLevel:"StringOperators",
 		_and:"ProductVariantFilterParameter",
-		_or:"ProductVariantFilterParameter",
-		stringTest:"StringOperators"
+		_or:"ProductVariantFilterParameter"
 	},
 	ProductTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"ProductTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	CreateProductInput:{
 		translations:"ProductTranslationInput",
-		customFields:"CreateProductCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateProductInput:{
 		translations:"ProductTranslationInput",
-		customFields:"UpdateProductCustomFieldsInput"
+		customFields:"JSON"
 	},
 	ProductVariantTranslationInput:{
 		languageCode:"LanguageCode",
@@ -1173,7 +1140,7 @@ export const AllTypesProps: Record<string,any> = {
 		price:"Money",
 		stockLevels:"StockLevelInput",
 		trackInventory:"GlobalFlag",
-		customFields:"CreateProductVariantCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateProductVariantInput:{
 		translations:"ProductVariantTranslationInput",
@@ -1181,7 +1148,7 @@ export const AllTypesProps: Record<string,any> = {
 		prices:"ProductVariantPriceInput",
 		stockLevels:"StockLevelInput",
 		trackInventory:"GlobalFlag",
-		customFields:"UpdateProductVariantCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignProductsToChannelInput:{
 
@@ -1467,12 +1434,6 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
-	MetricInterval: "enum" as const,
-	MetricType: "enum" as const,
-	MetricSummaryInput:{
-		interval:"MetricInterval",
-		types:"MetricType"
-	},
 	BetterMetricInterval: "enum" as const,
 	BetterMetricType: "enum" as const,
 	BetterMetricIntervalInput:{
@@ -1484,25 +1445,11 @@ export const AllTypesProps: Record<string,any> = {
 		interval:"BetterMetricIntervalInput",
 		types:"BetterMetricType"
 	},
-	Badge:{
-		translations:{
-			languageCode:"LanguageCode"
-		}
-	},
-	BadgeTranslationInput:{
-		languageCode:"LanguageCode"
-	},
-	CreateBadgeInput:{
-		translations:"BadgeTranslationInput"
-	},
-	RemoveBadgeInput:{
-
-	},
-	EditBadgeInput:{
-		translations:"BadgeTranslationInput"
-	},
-	GetProductBadgesInput:{
-
+	MetricInterval: "enum" as const,
+	MetricType: "enum" as const,
+	MetricSummaryInput:{
+		interval:"MetricInterval",
+		types:"MetricType"
 	},
 	AdministratorFilterParameter:{
 		id:"IDOperators",
@@ -1535,9 +1482,7 @@ export const AllTypesProps: Record<string,any> = {
 		source:"StringOperators",
 		preview:"StringOperators",
 		_and:"AssetFilterParameter",
-		_or:"AssetFilterParameter",
-		attributes:"StringOperators",
-		additionalInfo:"StringOperators"
+		_or:"AssetFilterParameter"
 	},
 	AssetSortParameter:{
 		id:"SortOrder",
@@ -1549,9 +1494,7 @@ export const AllTypesProps: Record<string,any> = {
 		width:"SortOrder",
 		height:"SortOrder",
 		source:"SortOrder",
-		preview:"SortOrder",
-		attributes:"SortOrder",
-		additionalInfo:"SortOrder"
+		preview:"SortOrder"
 	},
 	ChannelFilterParameter:{
 		id:"IDOperators",
@@ -1589,11 +1532,7 @@ export const AllTypesProps: Record<string,any> = {
 		description:"StringOperators",
 		parentId:"IDOperators",
 		_and:"CollectionFilterParameter",
-		_or:"CollectionFilterParameter",
-		stringTest:"StringOperators",
-		localestringTest:"StringOperators",
-		seoTitle:"StringOperators",
-		seoDescription:"StringOperators"
+		_or:"CollectionFilterParameter"
 	},
 	CollectionSortParameter:{
 		id:"SortOrder",
@@ -1603,13 +1542,7 @@ export const AllTypesProps: Record<string,any> = {
 		slug:"SortOrder",
 		position:"SortOrder",
 		description:"SortOrder",
-		parentId:"SortOrder",
-		stringTest:"SortOrder",
-		localestringTest:"SortOrder",
-		seoTitle:"SortOrder",
-		seoDescription:"SortOrder",
-		facebookImage:"SortOrder",
-		twitterImage:"SortOrder"
+		parentId:"SortOrder"
 	},
 	ProductVariantSortParameter:{
 		stockOnHand:"SortOrder",
@@ -1623,8 +1556,7 @@ export const AllTypesProps: Record<string,any> = {
 		name:"SortOrder",
 		price:"SortOrder",
 		priceWithTax:"SortOrder",
-		stockLevel:"SortOrder",
-		stringTest:"SortOrder"
+		stockLevel:"SortOrder"
 	},
 	CountryFilterParameter:{
 		id:"IDOperators",
@@ -1681,18 +1613,14 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetFilterParameter",
-		_or:"FacetFilterParameter",
-		stringTest:"StringOperators",
-		localestringTest:"StringOperators"
+		_or:"FacetFilterParameter"
 	},
 	FacetSortParameter:{
 		id:"SortOrder",
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder",
-		stringTest:"SortOrder",
-		localestringTest:"SortOrder"
+		code:"SortOrder"
 	},
 	FacetValueFilterParameter:{
 		id:"IDOperators",
@@ -1764,19 +1692,7 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		name:"SortOrder",
 		slug:"SortOrder",
-		description:"SortOrder",
-		discountBy:"SortOrder",
-		boolTest:"SortOrder",
-		floatTest:"SortOrder",
-		intTest:"SortOrder",
-		stringTest:"SortOrder",
-		textTest:"SortOrder",
-		dateTime:"SortOrder",
-		singleAssetTestP:"SortOrder",
-		seoTitle:"SortOrder",
-		seoDescription:"SortOrder",
-		facebookImage:"SortOrder",
-		twitterImage:"SortOrder"
+		description:"SortOrder"
 	},
 	PromotionFilterParameter:{
 		id:"IDOperators",
@@ -1968,66 +1884,6 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder"
 	},
-	CreateAssetCustomFieldsInput:{
-
-	},
-	UpdateAssetCustomFieldsInput:{
-
-	},
-	CreateCollectionCustomFieldsInput:{
-
-	},
-	UpdateCollectionCustomFieldsInput:{
-
-	},
-	CreateCollectionTranslationInputCustomFields:{
-
-	},
-	UpdateCollectionTranslationInputCustomFields:{
-
-	},
-	CreateFacetCustomFieldsInput:{
-
-	},
-	UpdateFacetCustomFieldsInput:{
-
-	},
-	FacetTranslationInputCustomFields:{
-
-	},
-	UpdateOrderCustomFieldsInput:{
-
-	},
-	CreateProductCustomFieldsInput:{
-		dateTime:"DateTime"
-	},
-	UpdateProductCustomFieldsInput:{
-		dateTime:"DateTime"
-	},
-	ProductTranslationInputCustomFields:{
-
-	},
-	CreateProductOptionCustomFieldsInput:{
-
-	},
-	UpdateProductOptionCustomFieldsInput:{
-
-	},
-	CreateProductOptionGroupCustomFieldsInput:{
-
-	},
-	UpdateProductOptionGroupCustomFieldsInput:{
-
-	},
-	CreateProductVariantCustomFieldsInput:{
-
-	},
-	UpdateProductVariantCustomFieldsInput:{
-
-	},
-	OrderLineCustomFieldsInput:{
-
-	},
 	NativeAuthInput:{
 
 	}
@@ -2106,9 +1962,8 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
-		metricSummary:"MetricSummary",
 		betterMetricSummary:"BetterMetricSummary",
-		getProductBadges:"Badge"
+		metricSummary:"MetricSummary"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2272,10 +2127,7 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZone:"DeletionResponse",
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
-		removeMembersFromZone:"Zone",
-		createBadge:"Badge",
-		editBadge:"Badge",
-		removeBadge:"Boolean"
+		removeMembersFromZone:"Zone"
 	},
 	Administrator:{
 		id:"ID",
@@ -2347,7 +2199,7 @@ export const ReturnTypes: Record<string,any> = {
 		filters:"ConfigurableOperation",
 		translations:"CollectionTranslation",
 		productVariants:"ProductVariantList",
-		customFields:"CollectionCustomFields"
+		customFields:"JSON"
 	},
 	Customer:{
 		groups:"CustomerGroup",
@@ -2407,7 +2259,7 @@ export const ReturnTypes: Record<string,any> = {
 		values:"FacetValue",
 		valueList:"FacetValueList",
 		translations:"FacetTranslation",
-		customFields:"FacetCustomFields"
+		customFields:"JSON"
 	},
 	FacetInUseError:{
 		errorCode:"ErrorCode",
@@ -2535,7 +2387,7 @@ export const ReturnTypes: Record<string,any> = {
 		totalWithTax:"Money",
 		taxSummary:"OrderTaxSummary",
 		history:"HistoryEntryList",
-		customFields:"OrderCustomFields"
+		customFields:"JSON"
 	},
 	Fulfillment:{
 		nextStates:"String",
@@ -2792,8 +2644,7 @@ export const ReturnTypes: Record<string,any> = {
 		facetValues:"FacetValue",
 		translations:"ProductTranslation",
 		collections:"Collection",
-		badges:"Badge",
-		customFields:"ProductCustomFields"
+		customFields:"JSON"
 	},
 	ProductVariantPrice:{
 		currencyCode:"CurrencyCode",
@@ -2830,7 +2681,7 @@ export const ReturnTypes: Record<string,any> = {
 		options:"ProductOption",
 		facetValues:"FacetValue",
 		translations:"ProductVariantTranslation",
-		customFields:"ProductVariantCustomFields"
+		customFields:"JSON"
 	},
 	SearchResult:{
 		enabled:"Boolean",
@@ -3023,7 +2874,7 @@ export const ReturnTypes: Record<string,any> = {
 		preview:"String",
 		focalPoint:"Coordinate",
 		tags:"Tag",
-		customFields:"AssetCustomFields"
+		customFields:"JSON"
 	},
 	Coordinate:{
 		x:"Float",
@@ -3075,8 +2926,7 @@ export const ReturnTypes: Record<string,any> = {
 		languageCode:"LanguageCode",
 		name:"String",
 		slug:"String",
-		description:"String",
-		customFields:"CollectionTranslationCustomFields"
+		description:"String"
 	},
 	CollectionList:{
 		items:"Collection",
@@ -3228,7 +3078,6 @@ export const ReturnTypes: Record<string,any> = {
 		"...on User": "User",
 		"...on AuthenticationMethod": "AuthenticationMethod",
 		"...on Zone": "Zone",
-		"...on Badge": "Badge",
 		id:"ID"
 	},
 	ErrorResult:{
@@ -3562,8 +3411,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"DateTime",
 		updatedAt:"DateTime",
 		languageCode:"LanguageCode",
-		name:"String",
-		customFields:"FacetTranslationCustomFields"
+		name:"String"
 	},
 	FacetList:{
 		items:"Facet",
@@ -3644,7 +3492,7 @@ export const ReturnTypes: Record<string,any> = {
 		taxLines:"TaxLine",
 		order:"Order",
 		fulfillmentLines:"FulfillmentLine",
-		customFields:"OrderLineCustomFields"
+		customFields:"JSON"
 	},
 	RefundLine:{
 		orderLine:"OrderLine",
@@ -3717,7 +3565,7 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		options:"ProductOption",
 		translations:"ProductOptionGroupTranslation",
-		customFields:"ProductOptionGroupCustomFields"
+		customFields:"JSON"
 	},
 	ProductOptionGroupTranslation:{
 		id:"ID",
@@ -3736,7 +3584,7 @@ export const ReturnTypes: Record<string,any> = {
 		groupId:"ID",
 		group:"ProductOptionGroup",
 		translations:"ProductOptionTranslation",
-		customFields:"ProductOptionCustomFields"
+		customFields:"JSON"
 	},
 	ProductOptionTranslation:{
 		id:"ID",
@@ -3785,8 +3633,7 @@ export const ReturnTypes: Record<string,any> = {
 		languageCode:"LanguageCode",
 		name:"String",
 		slug:"String",
-		description:"String",
-		customFields:"ProductTranslationCustomFields"
+		description:"String"
 	},
 	ProductList:{
 		items:"Product",
@@ -3995,21 +3842,15 @@ export const ReturnTypes: Record<string,any> = {
 		members:"Region",
 		customFields:"JSON"
 	},
-	MetricSummary:{
-		interval:"MetricInterval",
-		type:"MetricType",
-		title:"String",
-		entries:"MetricSummaryEntry"
-	},
-	MetricSummaryEntry:{
-		label:"String",
-		value:"Float"
-	},
-	BetterMetricSummary:{
+	BetterMetricDataType:{
 		interval:"BetterMetricInterval",
 		type:"BetterMetricType",
 		title:"String",
 		entries:"BetterMetricSummaryEntry"
+	},
+	BetterMetricSummary:{
+		data:"BetterMetricDataType",
+		lastCacheRefreshTime:"DateTime"
 	},
 	BetterMeticSummaryEntryAdditionalData:{
 		id:"String",
@@ -4021,91 +3862,15 @@ export const ReturnTypes: Record<string,any> = {
 		value:"Float",
 		additionalData:"BetterMeticSummaryEntryAdditionalData"
 	},
-	BadgeTranslation:{
-		id:"ID",
-		createdAt:"DateTime",
-		updatedAt:"DateTime",
-		languageCode:"LanguageCode",
-		name:"String"
+	MetricSummary:{
+		interval:"MetricInterval",
+		type:"MetricType",
+		title:"String",
+		entries:"MetricSummaryEntry"
 	},
-	Badge:{
-		id:"ID",
-		createdAt:"DateTime",
-		updatedAt:"DateTime",
-		product:"Product",
-		color:"String",
-		name:"String",
-		translations:"BadgeTranslation"
-	},
-	AssetCustomFields:{
-		attributes:"String",
-		additionalInfo:"String"
-	},
-	CollectionCustomFields:{
-		stringTest:"String",
-		localestringTest:"String",
-		seoTitle:"String",
-		seoDescription:"String",
-		facebookImage:"Asset",
-		twitterImage:"Asset"
-	},
-	CollectionTranslationCustomFields:{
-		localestringTest:"String",
-		seoTitle:"String",
-		seoDescription:"String"
-	},
-	FacetCustomFields:{
-		stringTest:"String",
-		localestringTest:"String",
-		ProductListTest:"Product",
-		listProductVariantTest:"ProductVariant"
-	},
-	FacetTranslationCustomFields:{
-		localestringTest:"String"
-	},
-	OrderCustomFields:{
-		attributes:"String",
-		additionalInfo:"String"
-	},
-	OrderLineCustomFields:{
-		stringTest:"String",
-		textTest:"String"
-	},
-	ProductCustomFields:{
-		discountBy:"String",
-		boolTest:"Boolean",
-		floatTest:"Float",
-		intTest:"Int",
-		stringTest:"String",
-		textTest:"String",
-		dateTime:"DateTime",
-		listTestString:"String",
-		listTestInt:"Int",
-		listTestFloat:"Float",
-		listTestText:"String",
-		listLocaleString:"String",
-		listLocaleText:"String",
-		singleAssetTestP:"Asset",
-		listAssetTestP:"Asset",
-		seoTitle:"String",
-		seoDescription:"String",
-		facebookImage:"Asset",
-		twitterImage:"Asset"
-	},
-	ProductTranslationCustomFields:{
-		listLocaleString:"String",
-		listLocaleText:"String",
-		seoTitle:"String",
-		seoDescription:"String"
-	},
-	ProductOptionCustomFields:{
-		test:"String"
-	},
-	ProductOptionGroupCustomFields:{
-		test:"String"
-	},
-	ProductVariantCustomFields:{
-		stringTest:"String"
+	MetricSummaryEntry:{
+		label:"String",
+		value:"Float"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",

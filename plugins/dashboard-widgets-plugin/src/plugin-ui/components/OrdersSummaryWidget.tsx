@@ -22,7 +22,7 @@ import {
     SelectValue,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { translationNS } from '../translation-ns';
+
 import { OrdersSummaryQuery } from '../graphql/queries';
 
 enum Periods {
@@ -45,7 +45,7 @@ type GrossNet = 'gross' | 'net';
 export const OrdersSummaryWidget = () => {
     const [fetchOrders] = useLazyQuery(OrdersSummaryQuery);
 
-    const { t } = useTranslation(translationNS);
+    const { t } = useTranslation('dashboard-widgets-plugin');
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
     const [orders, setOrders] = useState<{
