@@ -45,7 +45,7 @@ export const OrdersWidget = () => {
         ResolverInputTypes['BetterMetricSummaryInput']
     >({
         interval: { type: BetterMetricInterval.Weekly },
-        types: [BetterMetricType.OrderCount],
+        types: [BetterMetricType.OrderTotal],
         refresh: false,
     });
 
