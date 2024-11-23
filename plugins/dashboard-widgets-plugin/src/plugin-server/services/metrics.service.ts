@@ -33,7 +33,7 @@ export type MetricData = {
     orders: MetricResponse[];
 };
 
-const QUERY_MAPPINGS2 = {
+const QUERY_MAPPINGS = {
     [BetterMetricType.OrderCount]: ORDER_COUNT_QUERY_SELECT,
     [BetterMetricType.OrderTotal]: ORDER_TOTAL_QUERY_SELECT,
     [BetterMetricType.AverageOrderValue]: ORDER_TOTAL_QUERY_SELECT,
@@ -310,7 +310,7 @@ const finishFormattingQueryBuilder = (
     },
 ) => {
     const { ctx, metricType, startDate, endDate } = args;
-    qb.select(QUERY_MAPPINGS2[metricType]);
+    qb.select(QUERY_MAPPINGS[metricType]);
     // we are adding startDate to query builder and channel id
     qb.where('o."orderPlacedAt" >= :startDate', {
         startDate,
