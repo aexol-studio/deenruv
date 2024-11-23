@@ -228,7 +228,7 @@ export class BetterMetricsService {
 
         // here we are finish formatting query builders
         // type casting for now bcs idk why it is shouting with wrong type
-        finishFormattingQueryBuilders(qb as any as SelectQueryBuilder<Order>, {
+        finishFormattingQueryBuilder(qb as any as SelectQueryBuilder<Order>, {
             ctx,
             metricType,
             startDate,
@@ -300,7 +300,7 @@ export class BetterMetricsService {
     }
 }
 
-const finishFormattingQueryBuilders = (
+const finishFormattingQueryBuilder = (
     qb: SelectQueryBuilder<Order>,
     args: {
         ctx: RequestContext;
