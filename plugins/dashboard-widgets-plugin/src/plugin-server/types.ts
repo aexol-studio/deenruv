@@ -5,3 +5,7 @@ export type MetricResponse = {
     orderProducts: { id: number; name: string; quantity: number }[];
     overallQuantity: number;
 };
+
+export interface DashboardWidgetsPluginOptions {
+    cacheTime: number;
+}

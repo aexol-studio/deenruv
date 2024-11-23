@@ -30,12 +30,11 @@ import { ArrowRight, Hash, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { translationNS } from '../../translation-ns';
 
 type LatestOrdersProps = object;
 
 export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
-    const { t } = useTranslation(translationNS);
+    const { t } = useTranslation('dashboard-widgets-plugin');
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const language = useWidgetsStore(p => p.context?.language);

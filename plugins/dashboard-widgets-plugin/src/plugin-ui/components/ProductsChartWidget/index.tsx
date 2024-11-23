@@ -1,5 +1,5 @@
 import { Bar, BarChart, Cell, XAxis, YAxis } from 'recharts';
-import { Card, CardContent, CardHeader, CardTitle, useLazyQuery } from '@deenruv/react-ui-devkit';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, useLazyQuery } from '@deenruv/react-ui-devkit';
 import {
     ChartConfig,
     ChartContainer,
@@ -12,14 +12,15 @@ import { BetterMetricInterval, BetterMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { PeriodSelect, Period, Periods } from '../shared';
 import { endOfToday, startOfToday } from 'date-fns';
-import { translationNS } from '../../translation-ns';
 import { colors, EmptyData } from '../shared';
 import { BetterMetricsQuery } from '../../graphql';
+import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 
 export const ProductsChartWidget = () => {
-    const { t } = useTranslation(translationNS);
+    const { t } = useTranslation('dashboard-widgets-plugin');
     const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
     const [chartData, setChartData] = useState<{ product: string; value: number }[]>([]);
+    const [lastRefreshedCache, setLastRefreshedCache] = useState<string | undefined>();
     const [selectedPeriod, setSelectedPeriod] = useState<Period>({
         period: Periods.Today,
         text: t('today'),
@@ -27,43 +28,52 @@ export const ProductsChartWidget = () => {
         end: endOfToday(),
     });
 
-    useEffect(() => {
-        fetchBetterMetrics({
-            input: {
-                interval: {
-                    type: BetterMetricInterval.Custom,
-                    start: selectedPeriod.start,
-                    end: selectedPeriod.end,
+    const fetchData = useCallback(
+        async (refresh: boolean = false) => {
+            fetchBetterMetrics({
+                input: {
+                    interval: {
+                        type: BetterMetricInterval.Custom,
+                        start: selectedPeriod.start,
+                        end: selectedPeriod.end,
+                    },
+                    types: [BetterMetricType.OrderTotalProductsCount],
+                    refresh,
                 },
-                types: [BetterMetricType.OrderTotalProductsCount],
-            },
-        }).then(({ betterMetricSummary }) => {
-            const entries = betterMetricSummary[0].entries;
-            const salesTotals: Record<string, { name: string; quantity: number }> = {};
+            }).then(({ betterMetricSummary }) => {
+                const entries = betterMetricSummary.data[0].entries;
+                setLastRefreshedCache(betterMetricSummary.lastCacheRefreshTime);
+                const salesTotals: Record<string, { name: string; quantity: number }> = {};
 
-            entries.forEach(entry => {
-                entry.additionalData?.forEach(product => {
-                    if (salesTotals[product.id]) {
-                        salesTotals[product.id].quantity += product.quantity;
-                    } else {
-                        salesTotals[product.id] = {
-                            name: product.name,
-                            quantity: product.quantity,
-                        };
-                    }
+                entries.forEach(entry => {
+                    entry.additionalData?.forEach(product => {
+                        if (salesTotals[product.id]) {
+                            salesTotals[product.id].quantity += product.quantity;
+                        } else {
+                            salesTotals[product.id] = {
+                                name: product.name,
+                                quantity: product.quantity,
+                            };
+                        }
+                    });
                 });
+
+                const _chartData = Object.values(salesTotals)
+                    .map(product => ({
+                        product: product.name,
+                        value: product.quantity,
+                    }))
+                    .sort((a, b) => b.value - a.value)
+                    .slice(0, 5);
+
+                setChartData(_chartData);
             });
+        },
+        [selectedPeriod],
+    );
 
-            const _chartData = Object.values(salesTotals)
-                .map(product => ({
-                    product: product.name,
-                    value: product.quantity,
-                }))
-                .sort((a, b) => b.value - a.value)
-                .slice(0, 5);
-
-            setChartData(_chartData);
-        });
+    useEffect(() => {
+        fetchData();
     }, [selectedPeriod]);
 
     const chartConfig: ChartConfig = chartData.reduce((config, item, index) => {
@@ -120,6 +130,12 @@ export const ProductsChartWidget = () => {
                     </ChartContainer>
                 )}
             </CardContent>
+            <CardFooter className="justify-end">
+                <RefreshCacheButton
+                    fetchData={() => fetchData(true)}
+                    lastCacheRefreshTime={lastRefreshedCache}
+                />
+            </CardFooter>
         </Card>
     );
 };

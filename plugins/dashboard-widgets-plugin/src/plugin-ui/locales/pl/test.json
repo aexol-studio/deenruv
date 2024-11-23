@@ -35,5 +35,6 @@
     "chooseEndDate": "Data końcowa",
     "orderTotalProductsCount": "Liczba sprzedanych produktów",
     "emptyDataTitle": "Brak zamówień",
-    "emptyData": "Wygląda na to, że nie ma zamówień dla wybranego okresu"
+    "emptyData": "Wygląda na to, że nie ma zamówień dla wybranego okresu",
+    "lastRefresh": "Ostatnia aktualizacja: "
 }

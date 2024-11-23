@@ -35,5 +35,6 @@
     "chooseEndDate": "Choose end date",
     "orderTotalProductsCount": "Total products count",
     "emptyDataTitle": "No orders",
-    "emptyData": "Looks like there are no orders for selected period"
+    "emptyData": "Looks like there are no orders for selected period",
+    "lastRefresh": "Last refresh: "
 }

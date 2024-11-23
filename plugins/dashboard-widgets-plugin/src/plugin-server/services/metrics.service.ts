@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { assertNever } from '@deenruv/common/lib/shared-utils';
 import type { SelectQueryBuilder } from 'typeorm';
 import { Logger, Order, RequestContext, TransactionalConnection, TtlCache } from '@deenruv/core';
@@ -21,12 +21,13 @@ import {
     endOfWeek,
 } from 'date-fns';
 import { BetterMetricInterval, BetterMetricType, GraphQLTypes, ResolverInputTypes } from '../zeus';
-import { MetricResponse } from '../types';
+import { DashboardWidgetsPluginOptions, MetricResponse } from '../types';
 import {
     ORDER_COUNT_QUERY_SELECT,
     ORDER_TOTAL_PRODUCT_QUERY_SELECT,
     ORDER_TOTAL_QUERY_SELECT,
 } from '../raw-sql';
+import { PLUGIN_INIT_OPTIONS } from '../constants';
 
 export type MetricData = {
     date: Date;
@@ -100,15 +101,21 @@ const MAPPINGS = {
 
 @Injectable()
 export class BetterMetricsService {
-    private cache = new TtlCache<string, GraphQLTypes['BetterMetricSummary'][]>({
-        ttl: 1000 * 60 * 60 * 24,
-    });
-    constructor(private connection: TransactionalConnection) {}
+    private cache: TtlCache<string, GraphQLTypes['BetterMetricSummary']>;
+    constructor(
+        private connection: TransactionalConnection,
+        @Inject(PLUGIN_INIT_OPTIONS)
+        private options: DashboardWidgetsPluginOptions,
+    ) {
+        this.cache = new TtlCache<string, GraphQLTypes['BetterMetricSummary']>({
+            ttl: this.options.cacheTime,
+        });
+    }
 
     async getBetterMetrics(
         ctx: RequestContext,
         { interval, types, refresh, productIDs }: ResolverInputTypes['BetterMetricSummaryInput'],
-    ): Promise<GraphQLTypes['BetterMetricSummary'][]> {
+    ): Promise<GraphQLTypes['BetterMetricSummary']> {
         const endDate = interval.end ? endOfDay(new Date(interval.end as string)) : endOfDay(new Date());
         const cacheKey = JSON.stringify({
             startDate: interval.start,
@@ -117,13 +124,14 @@ export class BetterMetricsService {
             interval: interval.type,
             channel: ctx.channel.token,
         });
-        const cachedMetricList = this.cache.get(cacheKey);
-        if (cachedMetricList && refresh !== true) {
+        const cachedMetrics = this.cache.get(cacheKey);
+
+        if (cachedMetrics && refresh !== true) {
             Logger.verbose(
                 `Returning cached metrics for channel ${ctx.channel.token}`,
                 'BetterMetricsService',
             );
-            return cachedMetricList;
+            return cachedMetrics;
         }
         Logger.verbose(
             `No cache hit, calculating ${interval.type} metrics until ${endDate.toISOString()} for channel ${
@@ -136,7 +144,11 @@ export class BetterMetricsService {
             // for now bcs we are using only one type
             metricType: types[0],
         });
-        const metrics: GraphQLTypes['BetterMetricSummary'][] = [];
+        const metrics: GraphQLTypes['BetterMetricSummary'] = {
+            __typename: 'BetterMetricSummary',
+            data: [],
+            lastCacheRefreshTime: new Date().toISOString() as any,
+        };
         for (const type of types) {
             const entry = MAPPINGS[type];
 
@@ -155,8 +167,8 @@ export class BetterMetricsService {
                 });
             });
 
-            metrics.push({
-                __typename: 'BetterMetricSummary',
+            metrics.data.push({
+                __typename: 'BetterMetricDataType',
                 interval: interval.type,
                 title: entry.title,
                 type,
