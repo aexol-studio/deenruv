@@ -139,7 +139,7 @@ export const OrdersSummaryWidget = () => {
 
     return (
         <Card className="relative border-0 shadow-none p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-wrap gap-2">
                 <div className="flex gap-8 items-center">
                     <CardTitle className="text-lg">{t('ordersSummary')}</CardTitle>
                     <Select
