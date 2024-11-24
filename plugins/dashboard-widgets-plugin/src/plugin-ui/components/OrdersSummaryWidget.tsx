@@ -20,7 +20,6 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-    useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { OrdersSummaryQuery } from '../graphql/queries';
@@ -44,7 +43,10 @@ type GrossNet = 'gross' | 'net';
 
 export const OrdersSummaryWidget = () => {
     const [fetchOrders] = useLazyQuery(OrdersSummaryQuery);
-    const { t } = useTranslation('dashboard-widgets-plugin');
+    const t = (key: string) => {
+        if (!window.__DEENRUV_SETTINGS__ || !window.__DEENRUV_SETTINGS__.translate) return key;
+        return window.__DEENRUV_SETTINGS__.translate(key, { ns: 'dashboard-widgets-plugin' });
+    };
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
     const [orders, setOrders] = useState<{
