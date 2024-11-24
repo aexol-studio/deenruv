@@ -20,8 +20,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
+    useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 
 import { OrdersSummaryQuery } from '../graphql/queries';
 
@@ -44,7 +44,6 @@ type GrossNet = 'gross' | 'net';
 
 export const OrdersSummaryWidget = () => {
     const [fetchOrders] = useLazyQuery(OrdersSummaryQuery);
-
     const { t } = useTranslation('dashboard-widgets-plugin');
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
