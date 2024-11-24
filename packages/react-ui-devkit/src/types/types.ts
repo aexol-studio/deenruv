@@ -19,6 +19,7 @@ export type DeenruvAdminPanelSettings = {
 export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
     appVersion: string;
     api: Required<DeenruvAdminPanelSettings['api']>;
+    changeLanguage(lng?: string, callback?: any): Promise<any>;
 };
 
 type NotAvailablePages = 'dashboard';

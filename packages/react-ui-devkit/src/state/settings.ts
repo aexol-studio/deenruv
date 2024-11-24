@@ -1,6 +1,5 @@
 import { ChannelType } from '@/selectors';
 import { LanguageCode } from '@deenruv/admin-types';
-import { getI18n } from 'react-i18next';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -39,7 +38,7 @@ export const useSettings = create<Settings & Actions>()(
             availableLanguages: [],
             setTheme: theme => set({ theme }),
             setLanguage: language => {
-                getI18n().changeLanguage(language);
+                window.__DEENRUV_SETTINGS__.changeLanguage(language);
                 set({ language });
             },
             logIn: token => set({ token, isLoggedIn: true }),

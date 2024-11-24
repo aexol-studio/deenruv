@@ -76,6 +76,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
       channelTokenName: settings.api.channelTokenName || 'deenruv-token',
     },
     appVersion: ADMIN_DASHBOARD_VERSION,
+    changeLanguage: i18n.changeLanguage,
   };
 
   const router = createBrowserRouter([

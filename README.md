@@ -194,13 +194,14 @@ _(For the sake of this example lets say our version is 1.1.15)_
 1. `git checkout main`
 2. `git pull origin develop`
 3. `pnpm -r exec pnpm version patch` - this will patch version in every package.json by **1** so in our case we would get **1.1.16**
-4. `git commit -m "v1.1.16"` - we have to specify version that we got after previous command so in this case it will be **1.1.16**
-5. `git push`
-6. `git tag v1.1.16` - specify the tag same as the new version
-7. `git push origin v1.1.16` - will upload tag specified in previous command to remote
-8. `git checkout develop`
-9. `git merge main` - sync develop with main
-10. `git push`
+4. `git add .` - to include all modified package.json files
+5. `git commit -m "v1.1.16"` - we have to specify version that we got after previous command so in this case it will be **1.1.16**
+6. `git push`
+7. `git tag v1.1.16` - specify the tag same as the new version
+8. `git push origin v1.1.16` - will upload tag specified in previous command to remote
+9. `git checkout develop`
+10. `git merge main` - sync develop with main
+11. `git push`
 
 ## Code generation for legacy admin panel
 
