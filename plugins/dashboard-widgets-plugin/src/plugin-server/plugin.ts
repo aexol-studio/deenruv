@@ -79,10 +79,10 @@ import { DashboardWidgetsPluginOptions } from './types';
     },
 })
 export class DashboardWidgetsPlugin {
-    private static options: DashboardWidgetsPluginOptions;
+    private static options?: DashboardWidgetsPluginOptions;
 
     static init(options: DashboardWidgetsPluginOptions): Type<DashboardWidgetsPlugin> {
-        DashboardWidgetsPlugin.options = options ?? { cacheTime: DEFAULT_CACHE_TIME };
+        DashboardWidgetsPlugin.options = options;
         return this;
     }
 }
