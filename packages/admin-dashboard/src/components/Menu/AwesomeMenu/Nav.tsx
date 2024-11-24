@@ -70,12 +70,7 @@ export function Nav({ isCollapsed }: NavProps) {
           { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link-dashboard', icon: BarChart },
           { title: t('menu.assets'), href: Routes.assets.list, id: 'link-assets', icon: Images },
           { title: t('menu.products'), href: Routes.products.list, id: 'link-products', icon: Barcode },
-          {
-            title: t('menu.customers'),
-            href: Routes.customers.list,
-            id: 'link-customers',
-            icon: UserRoundSearch,
-          },
+          { title: t('menu.customers'), href: Routes.customers.list, id: 'link-customers', icon: UserRoundSearch },
           { title: t('menu.collections'), href: Routes.collections.list, id: 'link-collections', icon: Folder },
           { title: t('menu.facets'), href: Routes.facets.list, id: 'link-facets', icon: Tag },
           { title: t('menu.orders'), href: Routes.orders.list, id: 'link-orders', icon: ShoppingCart },
@@ -88,12 +83,7 @@ export function Nav({ isCollapsed }: NavProps) {
           { title: t('menu.channels'), href: Routes.channels.list, id: 'link-channels', icon: Globe2 },
           { title: t('menu.zones'), href: Routes.zones.list, id: 'link-zones', icon: Globe },
           { title: t('menu.countries'), href: Routes.countries.list, id: 'link-countries', icon: Flag },
-          {
-            title: t('menu.taxCategories'),
-            href: Routes.taxCategories.list,
-            id: 'link-tax-categories',
-            icon: Coins,
-          },
+          { title: t('menu.taxCategories'), href: Routes.taxCategories.list, id: 'link-tax-categories', icon: Coins },
           { title: t('menu.taxRates'), href: Routes.taxRates.list, id: 'link-tax-rates', icon: Percent },
         ],
       },
@@ -110,12 +100,7 @@ export function Nav({ isCollapsed }: NavProps) {
         label: t('menuGroups.promotions'),
         id: 'promotions-group',
         links: [
-          {
-            title: t('menu.promotions'),
-            href: Routes.promotions.list,
-            id: 'link-promotions',
-            icon: ShoppingCart,
-          },
+          { title: t('menu.promotions'), href: Routes.promotions.list, id: 'link-promotions', icon: ShoppingCart },
         ],
       },
       {

@@ -12,6 +12,7 @@ import {
   MultipleSelector,
   type Option,
   Routes,
+  DEFAULT_CHANNEL_CODE,
   apiClient,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
@@ -20,7 +21,6 @@ import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { RoleDetailsSelector, RoleDetailsType } from '@/graphql/roles';
 import { Permission } from '@deenruv/admin-types';
-import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { PageHeader } from '@/pages/roles/_components/PageHeader';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 import { Stack } from '@/components';

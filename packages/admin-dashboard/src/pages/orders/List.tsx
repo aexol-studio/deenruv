@@ -56,7 +56,6 @@ import { toast } from 'sonner';
 import { OrdersSortOptions, ParamFilterFieldTuple, ordersSortOptionsArray } from '@/lists/types';
 import { priceFormatter } from '@/utils';
 import { ORDER_STATE } from '@/graphql/base';
-import { PaymentMethod } from '@/types';
 
 const createDraftOrder = async () => {
   const response = await apiClient('mutation')({
@@ -351,7 +350,7 @@ export const OrdersListPage = () => {
       header: () => t('table.paymentMethod'),
       cell: ({ row }) => (
         <div className="text-nowrap">
-          <PaymentMethodImage paymentType={row.original.payments?.[0]?.method as PaymentMethod} />
+          <PaymentMethodImage paymentType={row.original.payments?.[0]?.method || ''} />
         </div>
       ),
     },

@@ -10,14 +10,14 @@ export type DeenruvAdminPanelSettings = {
     api: { uri: string; channelTokenName?: string; authTokenName?: string };
     branding: {
         name: string;
-        logo?: {
-            full: Logo;
-            collapsed?: Logo;
-        };
+        showAppVersion?: boolean;
+        loginPage?: { logo?: Logo; showAppName?: boolean };
+        logo?: { full: Logo; collapsed?: Logo };
     };
 };
 
 export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
+    appVersion: string;
     api: Required<DeenruvAdminPanelSettings['api']>;
 };
 

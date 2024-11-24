@@ -12,6 +12,7 @@ import {
   useSettings,
   GlobalStoreProvider,
 } from '@deenruv/react-ui-devkit';
+import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
 import { Root } from '@/pages/Root';
 import { LoginScreen } from '@/pages/LoginScreen';
@@ -74,6 +75,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
       authTokenName: settings.api.authTokenName || 'deenruv-auth-token',
       channelTokenName: settings.api.channelTokenName || 'deenruv-token',
     },
+    appVersion: ADMIN_DASHBOARD_VERSION,
   };
 
   const router = createBrowserRouter([

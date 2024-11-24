@@ -3,23 +3,22 @@ import { Banknote, CircleDollarSign, CreditCard, Wallet } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import common from '@/locales/en/common.json';
 import { useMemo } from 'react';
-import { PaymentMethod } from '@/types';
 
-export const PaymentMethodImage: React.FC<{ paymentType: PaymentMethod }> = ({ paymentType }) => {
+export const PaymentMethodImage: React.FC<{ paymentType: string }> = ({ paymentType }) => {
   const { t } = useTranslation('common');
 
   const paymentIcon = useMemo(() => {
     switch (paymentType) {
-      case PaymentMethod.Transfer:
+      case 'transfer':
         return <CreditCard />;
 
-      case PaymentMethod.Standard:
+      case 'standard':
         return <Banknote />;
 
-      case PaymentMethod.Przelewy24:
+      case 'przelewy24':
         return <img src={`Przelewy24`} width={50} />;
 
-      case PaymentMethod.OnDelivery:
+      case 'onDelivery':
         return <Wallet />;
 
       default:

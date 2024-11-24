@@ -1,8 +1,8 @@
-import { Menu } from '@/common/Menu';
+import { Menu } from '@/components';
 
 export const Custom404 = () => {
   return (
-    <div className="flex max-h-[100vh] w-full  max-w-full overflow-hidden bg-background text-foreground">
+    <div className="bg-background text-foreground flex  max-h-[100vh] w-full max-w-full overflow-hidden">
       <Menu>
         <div className="flex h-full w-full flex-1 flex-col overflow-y-auto p-4 pt-6 md:p-8">
           <h1>404</h1>

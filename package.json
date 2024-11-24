@@ -21,7 +21,7 @@
         "server-docker-down": "docker compose down -v",
         "server-populate": "pnpm -filter=@deenruv/server populate",
         "build": "pnpm -r run build",
-        "build:dev": "pnpm -r -filter='!@deenruv/admin-ui' -filter='!@deenruv/admin-ui-plugin' -filter='!@deenruv/panel' run build",
+        "build:dev": "pnpm -r -filter='!@deenruv/admin-ui' -filter='!@deenruv/admin-ui-plugin' -filter='!panel' run build",
         "watch:plugin:deenruv-examples-plugin": "pnpm -filter=@deenruv/deenruv-examples-plugin run watch",
         "watch:plugin:deenruv-second-plugin": "pnpm -filter=@deenruv/deenruv-second-plugin run watch",
         "watch:package:react-ui-devkit": "pnpm -filter=@deenruv/react-ui-devkit run watch",
@@ -29,7 +29,8 @@
         "check-imports": "node --import @deenruv/ts-node-register scripts/check-imports.ts",
         "check-core-type-defs": "node --import @deenruv/ts-node-register scripts/check-core-type-defs.ts",
         "check-angular-versions": "node --import @deenruv/ts-node-register scripts/check-angular-versions.ts",
-        "generate-changelog": "node --import @deenruv/ts-node-register scripts/changelogs/generate-changelog.ts"
+        "generate-changelog": "node --import @deenruv/ts-node-register scripts/changelogs/generate-changelog.ts",
+        "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules && pnpm -r exec rm -rf dist"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.1.0",

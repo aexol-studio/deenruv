@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/admin-dashboard",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "dist/index.js",
   "style": "dist/index.css",
   "types": "dist/index.d.ts",
@@ -9,8 +9,9 @@
   ],
   "scripts": {
     "watch": "tspc --watch",
-    "build": "tspc --build && npm run copy-types",
+    "build": "tspc --build && npm run copy-types && npm run copy-styles",
     "copy-types": "cp src/root.d.ts dist/index.d.ts",
+    "copy-styles": "cp src/root.css dist/index.css",
     "check-types": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "zeus:local": "zeus http://localhost:3000/admin-api ./src/",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

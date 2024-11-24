@@ -13,7 +13,7 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { Checkbox, ListTable, apiClient } from '@deenruv/react-ui-devkit';
+import { DEFAULT_CHANNEL_CODE, Checkbox, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { Routes, Badge, SortButton, useLocalStorage } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -22,7 +22,6 @@ import { toast } from 'sonner';
 import { ParamFilterFieldTuple, RolesSortOptions, rolesSortOptionsArray } from '@/lists/types';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { RoleListSelector, RoleListType } from '@/graphql/roles';
-import { DEFAULT_CHANNEL_CODE } from '@/consts';
 import { ActionsColumn } from '@/components/Columns';
 
 const getRoles = async (options: ResolverInputTypes['RoleListOptions']) => {

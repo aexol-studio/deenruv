@@ -40,6 +40,7 @@ export const OrdersChart: React.FC<ChartProps> = ({ data, language, options: _op
                 <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={12} />
                 <YAxis dataKey="value" tickLine={false} axisLine={false} tickMargin={4} />
                 <ChartTooltip
+                    wrapperStyle={{ zIndex: 1000 }}
                     cursor={false}
                     content={p => <CustomTooltip chartProps={p} language={language} />}
                 />

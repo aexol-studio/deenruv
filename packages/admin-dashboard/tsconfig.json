@@ -16,6 +16,7 @@
     "sourceMap": false,
     "strictPropertyInitialization": false,
     "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "skipLibCheck": true, // TODO: @kamil temponary hack we can't resolve good dependecies.
     "paths": {
       "@/*": ["./src/*"]
     },

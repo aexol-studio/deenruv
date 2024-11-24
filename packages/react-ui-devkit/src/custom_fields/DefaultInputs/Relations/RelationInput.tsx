@@ -15,7 +15,7 @@ import { useList } from '@/useList';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { type ResolverInputTypes } from '@deenruv/admin-types';
-import { apiClient } from '@/zeus-client';
+import { apiClient } from '@/zeus_client';
 import { CustomFieldSelectorsType, customFieldSelectors } from '@/selectors';
 
 type CF = CustomFieldSelectorsType;
