@@ -27,7 +27,7 @@ import {
     ORDER_TOTAL_PRODUCT_QUERY_SELECT,
     ORDER_TOTAL_QUERY_SELECT,
 } from '../raw-sql';
-import { PLUGIN_INIT_OPTIONS } from '../constants';
+import { DEFAULT_CACHE_TIME, PLUGIN_INIT_OPTIONS } from '../constants';
 
 export type MetricData = {
     date: Date;
@@ -105,10 +105,11 @@ export class BetterMetricsService {
     constructor(
         private connection: TransactionalConnection,
         @Inject(PLUGIN_INIT_OPTIONS)
-        private options: DashboardWidgetsPluginOptions,
+        private options?: DashboardWidgetsPluginOptions,
     ) {
+        this.options = options;
         this.cache = new TtlCache<string, GraphQLTypes['BetterMetricSummary']>({
-            ttl: this.options.cacheTime,
+            ttl: this.options?.cacheTime ?? DEFAULT_CACHE_TIME,
         });
     }
 
