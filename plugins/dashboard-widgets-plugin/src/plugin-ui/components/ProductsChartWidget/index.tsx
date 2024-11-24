@@ -17,7 +17,9 @@ import { BetterMetricsQuery } from '../../graphql';
 import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 
 export const ProductsChartWidget = () => {
-    const { t } = useTranslation('dashboard-widgets-plugin');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
     const [chartData, setChartData] = useState<{ product: string; value: number }[]>([]);
     const [lastRefreshedCache, setLastRefreshedCache] = useState<string | undefined>();

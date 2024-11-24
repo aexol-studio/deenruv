@@ -42,7 +42,9 @@ interface PeriodSelectProps {
 }
 
 export const PeriodSelect: React.FC<PeriodSelectProps> = ({ selectedPeriod, onPeriodChange }) => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
 
     const _periods = useMemo(
         (): Period[] => [

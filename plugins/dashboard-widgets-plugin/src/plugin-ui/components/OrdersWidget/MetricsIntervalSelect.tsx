@@ -16,7 +16,9 @@ export const MetricsIntervalSelect: React.FC<{
     changeMetricInterval: (interval: BetterMetricInterval) => void;
     loading: boolean;
 }> = ({ changeMetricInterval, value, loading }) => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     return (
         <div className="flex gap-4">
             <div className="relative">

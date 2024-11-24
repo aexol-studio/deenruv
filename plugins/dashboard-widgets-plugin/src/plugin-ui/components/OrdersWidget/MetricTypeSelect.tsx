@@ -15,7 +15,9 @@ export const MetricTypeSelect: React.FC<{
     changeMetricType: (type: BetterMetricType) => void;
     loading: boolean;
 }> = ({ changeMetricType, loading }) => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     return (
         <div className="relative flex gap-4">
             <div className="relative">

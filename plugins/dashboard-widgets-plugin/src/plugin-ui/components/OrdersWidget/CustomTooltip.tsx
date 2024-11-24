@@ -20,7 +20,9 @@ interface CustomTooltipProps {
     language: string;
 }
 export const CustomTooltip: React.FC<CustomTooltipProps> = ({ chartProps, language }) => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     const payload = chartProps.payload?.[0]?.payload;
     const value = payload?.value;
     const additionalData = payload?.additionalData as AdditionalEntryData[];

@@ -34,7 +34,9 @@ import { NavLink, useNavigate } from 'react-router-dom';
 type LatestOrdersProps = object;
 
 export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
-    const { t } = useTranslation('dashboard-widgets-plugin');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const language = useWidgetsStore(p => p.context?.language);

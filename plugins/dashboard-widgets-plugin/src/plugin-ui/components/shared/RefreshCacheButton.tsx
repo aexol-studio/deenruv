@@ -12,7 +12,9 @@ export const RefreshCacheButton: React.FC<RefreshCacheButtonProps> = ({
     fetchData,
     lastCacheRefreshTime,
 }) => {
-    const { t } = useTranslation('dashboard-widgets-plugin');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     return (
         <div className="flex items-center gap-2">
             <span className="text-muted-foreground text-xs">

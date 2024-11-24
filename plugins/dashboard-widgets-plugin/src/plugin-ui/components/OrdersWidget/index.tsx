@@ -35,7 +35,9 @@ type BetterMetricsChartDataType = {
 };
 
 export const OrdersWidget = () => {
-    const { t } = useTranslation('dashboard-widgets-plugin');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
     const { language } = usePluginStore();
     const [metricLoading, setMetricLoading] = useState(false);

@@ -44,7 +44,9 @@ type GrossNet = 'gross' | 'net';
 
 export const OrdersSummaryWidget = () => {
     const [fetchOrders] = useLazyQuery(OrdersSummaryQuery);
-    const { t } = useTranslation('dashboard-widgets-plugin', { i18n: window.__DEENRUV_SETTINGS__.i18n });
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
     const [orders, setOrders] = useState<{

@@ -10,7 +10,9 @@ export const MetricsCustomDates: React.FC<{
     setDate: (date: Date | undefined, key: 'start' | 'end') => void;
     isVisible: boolean;
 }> = ({ endDate, startDate, setDate, isVisible }) => {
-    const { t } = useTranslation('dashboard');
+    const { t } = useTranslation('dashboard-widgets-plugin', {
+        i18n: window.__DEENRUV_SETTINGS__.i18n,
+    });
     if (!isVisible) return null;
     return (
         <>
