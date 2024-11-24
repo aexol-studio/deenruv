@@ -53,7 +53,7 @@ export function Nav({ isCollapsed }: NavProps) {
     const split = trans.split('.');
     const key = split.slice(1).join('.') || '';
     const ns = split[0] || '';
-    //@ts-expect-error 123
+
     return _pluginT(key, { ns });
   };
 

@@ -17,7 +17,7 @@ const settings: DeenruvAdminPanelSettings = {
     },
   },
   api: {
-    uri: 'https://shop.samarite.eu',
+    uri: 'http://localhost:3000',
     authTokenName: 'deenruv-auth-token',
     channelTokenName: 'deenruv-token',
   },

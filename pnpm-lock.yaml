@@ -215,7 +215,7 @@ importers:
         specifier: ^11.1.7
         version: 11.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       i18next:
-        specifier: ^23.10.0
+        specifier: ^23.2.3
         version: 23.16.8
       i18next-browser-languagedetector:
         specifier: ^7.2.0
@@ -628,8 +628,8 @@ importers:
         specifier: 11.1.7
         version: 11.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       i18next:
-        specifier: 23.10.0
-        version: 23.10.0
+        specifier: ^23.2.3
+        version: 23.16.8
       i18next-browser-languagedetector:
         specifier: ^7.2.0
         version: 7.2.1
@@ -662,7 +662,7 @@ importers:
         version: 7.53.2(react@18.3.1)
       react-i18next:
         specifier: ^14.0.5
-        version: 14.1.3(i18next@23.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-resizable-panels:
         specifier: ^2.0.17
         version: 2.1.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1270,7 +1270,7 @@ importers:
         specifier: ^2.0.6
         version: 2.0.7(@types/express@4.17.21)
       i18next:
-        specifier: ^23.12.1
+        specifier: ^23.2.3
         version: 23.16.8
       i18next-fs-backend:
         specifier: ^2.3.1
@@ -10643,9 +10643,6 @@ packages:
   i18next-resources-for-ts@1.5.0:
     resolution: {integrity: sha512-gzVYct/sMeeOzomK0+8nl7YSr61xiDzf4Kg51g7StBaXAaKE/Vb1CLNHZ8dY56sYz6qmbwHRYHqMPanGi0go4w==}
     hasBin: true
-
-  i18next@23.10.0:
-    resolution: {integrity: sha512-/TgHOqsa7/9abUKJjdPeydoyDc0oTi/7u9F8lMSj6ufg4cbC1Oj3f/Jja7zj7WRIhEQKB7Q4eN6y68I9RDxxGQ==}
 
   i18next@23.16.8:
     resolution: {integrity: sha512-06r/TitrM88Mg5FdUXAKL96dJMzgqLE5dv3ryBAra4KCwD9mJ4ndOTS95ZuymIGoE+2hzfdaMak2X11/es7ZWg==}
@@ -25980,10 +25977,6 @@ snapshots:
       '@babel/runtime': 7.26.0
       yaml: 2.6.1
 
-  i18next@23.10.0:
-    dependencies:
-      '@babel/runtime': 7.26.0
-
   i18next@23.16.8:
     dependencies:
       '@babel/runtime': 7.26.0
@@ -28844,15 +28837,6 @@ snapshots:
   react-hotkeys-hook@4.6.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-
-  react-i18next@14.1.3(i18next@23.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      '@babel/runtime': 7.26.0
-      html-parse-stringify: 3.0.1
-      i18next: 23.10.0
-      react: 18.3.1
-    optionalDependencies:
       react-dom: 18.3.1(react@18.3.1)
 
   react-i18next@14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
