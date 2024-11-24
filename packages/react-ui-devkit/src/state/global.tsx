@@ -16,8 +16,7 @@ const createGlobalStore = (initProps?: Partial<DeenruvAdminPanelSettings>) => {
             channelTokenName: 'deenruv-token',
             authTokenName: 'deenruv-auth-token',
         },
-        changeLanguage: async () => {},
-        translate: (key: string) => key,
+        i18n: {},
     };
 
     return createStore<DeenruvSettingsWindowType>()(

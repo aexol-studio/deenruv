@@ -38,7 +38,7 @@ export const useSettings = create<Settings & Actions>()(
             availableLanguages: [],
             setTheme: theme => set({ theme }),
             setLanguage: language => {
-                window.__DEENRUV_SETTINGS__.changeLanguage(language);
+                window.__DEENRUV_SETTINGS__.i18n.changeLanguage(language);
                 set({ language });
             },
             logIn: token => set({ token, isLoggedIn: true }),
