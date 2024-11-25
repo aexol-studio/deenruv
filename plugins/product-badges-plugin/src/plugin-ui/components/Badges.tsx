@@ -90,7 +90,7 @@ export const Badges = () => {
                                     if (open) setOpen(true);
                                 }}
                             >
-                                <DialogTrigger>
+                                <DialogTrigger asChild>
                                     <Button size="sm" className="h-10" variant="action">
                                         <Plus />
                                     </Button>

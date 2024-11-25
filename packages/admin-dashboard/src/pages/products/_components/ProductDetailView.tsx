@@ -1,4 +1,4 @@
-import { useDetailView, DetailViewMarker, Spinner } from '@deenruv/react-ui-devkit';
+import { useDetailView, DetailViewMarker, Spinner, useSettings } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
@@ -15,12 +15,11 @@ const PRODUCT_FORM_KEYS = [
 ] as const;
 
 export const ProductDetailView = () => {
-  const { id, contentLanguage, setContentLanguage, view, form } = useDetailView(
+  const contentLng = useSettings((p) => p.translationsLanguage);
+  const { id, view, form } = useDetailView(
     'products-detail-view',
     ({ id, contentLanguage, setContentLanguage, view, form }) => ({
       id,
-      contentLanguage,
-      setContentLanguage,
       view,
       form,
     }),
@@ -34,33 +33,38 @@ export const ProductDetailView = () => {
   } = form;
 
   useEffect(() => {
+    view.refetch();
+  }, [contentLng]);
+
+  useEffect(() => {
     if (!view.entity) return;
-    setField('translations', view.entity.translations);
-    setField(
-      'facetValueIds',
-      view.entity.facetValues.map((f) => f.id),
-    );
-    setField(
-      'assetIds',
-      view.entity.assets.map((a) => a.id),
-    );
-    setField('featuredAssetId', view.entity.featuredAsset?.id);
+    view.setEntity(view.entity);
+    // setField('translations', view.entity.translations);
+    // setField(
+    //   'facetValueIds',
+    //   view.entity.facetValues.map((f) => f.id),
+    // );
+    // setField(
+    //   'assetIds',
+    //   view.entity.assets.map((a) => a.id),
+    // );
+    // setField('featuredAssetId', view.entity.featuredAsset?.id);
   }, [view.entity]);
 
   const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === contentLanguage);
+  const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== contentLanguage, {
+        setInArrayBy(translations, (t) => t.languageCode !== contentLng, {
           [field]: e,
-          languageCode: contentLanguage,
+          languageCode: contentLng,
         }),
       );
     },
 
-    [contentLanguage, translations],
+    [contentLng, translations],
   );
 
   return view.loading ? (
@@ -72,7 +76,7 @@ export const ProductDetailView = () => {
       <div className="flex w-full flex-col gap-4">
         <BasicFieldsCard currentTranslationValue={currentTranslationValue} onChange={setTranslationField} />
         <DetailViewMarker position={'products-detail-view'} />
-        <EntityCustomFields entityName="product" id={id} currentLanguage={contentLanguage} />
+        <EntityCustomFields entityName="product" id={id} currentLanguage={contentLng} />
         <AssetsCard
           onAddAsset={() => ''}
           featuredAssetId={state.featuredAssetId?.value}

@@ -18,6 +18,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
+import { useSettings } from '@deenruv/react-ui-devkit';
 
 type ViableEntity = Uncapitalize<
   keyof Pick<
@@ -105,11 +106,12 @@ export function EntityCustomFields<T extends ViableEntity>({
   fetch,
   disabled,
 }: Props<T>) {
-  const { t, i18n } = useTranslation('common');
+  const { t } = useTranslation('common');
+  const language = useSettings((p) => p.translationsLanguage);
 
   const currentLanguage = useMemo(
-    () => _currentLanguage || i18n?.language || 'en',
-    [_currentLanguage, t],
+    () => _currentLanguage || language || 'en',
+    [_currentLanguage, language],
   ) as LanguageCode;
 
   const [loading, setLoading] = useState(true);

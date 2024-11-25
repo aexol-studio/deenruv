@@ -273,7 +273,7 @@ importers:
         version: 1.2.0
       tailwind-merge:
         specifier: ^2.2.2
-        version: 2.5.4
+        version: 2.5.5
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.15(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.7)(typescript@5.4.2)))
@@ -689,7 +689,7 @@ importers:
         version: 1.2.0
       tailwind-merge:
         specifier: ^2.2.2
-        version: 2.5.4
+        version: 2.5.5
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.15(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.7)(typescript@5.4.2)))
@@ -1627,7 +1627,7 @@ importers:
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
         specifier: ^2.2.2
-        version: 2.5.4
+        version: 2.5.5
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.15(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.7)(typescript@5.3.3))
@@ -7401,8 +7401,8 @@ packages:
   '@types/express-serve-static-core@4.19.6':
     resolution: {integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==}
 
-  '@types/express-serve-static-core@5.0.1':
-    resolution: {integrity: sha512-CRICJIl0N5cXDONAdlTv5ShATZ4HEwk6kDDIW2/w9qOWKg+NU/5F8wYRWCrONad0/UKkloNSmmyN/wX4rtpbVA==}
+  '@types/express-serve-static-core@5.0.2':
+    resolution: {integrity: sha512-vluaspfvWEtE4vcSDlKRNer52DvOGrB2xv6diXy6UKyKW0lqZiWHGNApSyxOv+8DE5Z27IzVvE7hNkxg7EXIcg==}
 
   '@types/express@4.17.21':
     resolution: {integrity: sha512-ejlPM315qwLpaQlQDTjPdsUFSc6ZsP4AN6AlWnogPjQ7CVi7PYF3YVz+CY3jE2pwYf7E/7HlDAN0rV2GxTG0HQ==}
@@ -14166,8 +14166,8 @@ packages:
     resolution: {integrity: sha512-vrozgXDQwYO72vHjUb/HnFbQx1exDjoKzqx23aXEg2a9VIg2TSFZ8FmeZpTjUCFMYw7mpX4BE2SFu8wI7asYsw==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  tailwind-merge@2.5.4:
-    resolution: {integrity: sha512-0q8cfZHMu9nuYP/b5Shb7Y7Sh1B7Nnl5GqNr1U+n2p6+mybvRtayrQ+0042Z5byvTA8ihjlP8Odo8/VnHbZu4Q==}
+  tailwind-merge@2.5.5:
+    resolution: {integrity: sha512-0LXunzzAZzo0tEPxV3I297ffKZPlKDrjj7NXphC8V5ak9yHC5zRmxnOe2m/Rd/7ivsOMJe3JZ2JVocoDdQTRBA==}
 
   tailwindcss-animate@1.0.7:
     resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
@@ -14319,8 +14319,8 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
 
-  ts-api-utils@1.4.0:
-    resolution: {integrity: sha512-032cPxaEKwM+GT3vA5JXNzIaizx388rhsSW79vGRNGXfRRAdEAn2mvk36PvK5HnOchyWZ7afLEXqYCvPCrzuzQ==}
+  ts-api-utils@1.4.1:
+    resolution: {integrity: sha512-5RU2/lxTA3YUZxju61HO2U6EoZLvBLtmV2mbTvqyu4a/7s7RmJPT+1YekhMVsQhznRWk/czIwDUg+V8Q9ZuG4w==}
     engines: {node: '>=16'}
     peerDependencies:
       typescript: '>=4.2.0'
@@ -21505,7 +21505,7 @@ snapshots:
 
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
-      '@types/express-serve-static-core': 5.0.1
+      '@types/express-serve-static-core': 5.0.2
       '@types/node': 18.19.65
 
   '@types/connect@3.4.38':
@@ -21596,7 +21596,7 @@ snapshots:
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
-  '@types/express-serve-static-core@5.0.1':
+  '@types/express-serve-static-core@5.0.2':
     dependencies:
       '@types/node': 18.19.65
       '@types/qs': 6.9.17
@@ -21926,7 +21926,7 @@ snapshots:
       ignore: 5.3.2
       natural-compare: 1.4.0
       semver: 7.6.3
-      ts-api-utils: 1.4.0(typescript@5.4.2)
+      ts-api-utils: 1.4.1(typescript@5.4.2)
     optionalDependencies:
       typescript: 5.4.2
     transitivePeerDependencies:
@@ -21944,7 +21944,7 @@ snapshots:
       graphemer: 1.4.0
       ignore: 5.3.2
       natural-compare: 1.4.0
-      ts-api-utils: 1.4.0(typescript@5.3.3)
+      ts-api-utils: 1.4.1(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
     transitivePeerDependencies:
@@ -22058,7 +22058,7 @@ snapshots:
       '@typescript-eslint/utils': 6.21.0(eslint@8.57.1)(typescript@5.4.2)
       debug: 4.3.7
       eslint: 8.57.1
-      ts-api-utils: 1.4.0(typescript@5.4.2)
+      ts-api-utils: 1.4.1(typescript@5.4.2)
     optionalDependencies:
       typescript: 5.4.2
     transitivePeerDependencies:
@@ -22070,7 +22070,7 @@ snapshots:
       '@typescript-eslint/utils': 7.11.0(eslint@8.57.1)(typescript@5.3.3)
       debug: 4.3.7
       eslint: 8.57.1
-      ts-api-utils: 1.4.0(typescript@5.3.3)
+      ts-api-utils: 1.4.1(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
     transitivePeerDependencies:
@@ -22082,7 +22082,7 @@ snapshots:
       '@typescript-eslint/utils': 8.15.0(eslint@8.57.1)(typescript@5.3.3)
       debug: 4.3.7
       eslint: 8.57.1
-      ts-api-utils: 1.4.0(typescript@5.3.3)
+      ts-api-utils: 1.4.1(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
     transitivePeerDependencies:
@@ -22133,7 +22133,7 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.3
       semver: 7.6.3
-      ts-api-utils: 1.4.0(typescript@5.4.2)
+      ts-api-utils: 1.4.1(typescript@5.4.2)
     optionalDependencies:
       typescript: 5.4.2
     transitivePeerDependencies:
@@ -22148,7 +22148,7 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
-      ts-api-utils: 1.4.0(typescript@5.3.3)
+      ts-api-utils: 1.4.1(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
     transitivePeerDependencies:
@@ -22163,7 +22163,7 @@ snapshots:
       is-glob: 4.0.3
       minimatch: 9.0.5
       semver: 7.6.3
-      ts-api-utils: 1.4.0(typescript@5.3.3)
+      ts-api-utils: 1.4.1(typescript@5.3.3)
     optionalDependencies:
       typescript: 5.3.3
     transitivePeerDependencies:
@@ -29955,7 +29955,7 @@ snapshots:
       '@pkgr/core': 0.1.1
       tslib: 2.8.1
 
-  tailwind-merge@2.5.4: {}
+  tailwind-merge@2.5.5: {}
 
   tailwindcss-animate@1.0.7(tailwindcss@3.4.15(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.7)(typescript@5.3.3))):
     dependencies:
@@ -30184,11 +30184,11 @@ snapshots:
 
   tree-kill@1.2.2: {}
 
-  ts-api-utils@1.4.0(typescript@5.3.3):
+  ts-api-utils@1.4.1(typescript@5.3.3):
     dependencies:
       typescript: 5.3.3
 
-  ts-api-utils@1.4.0(typescript@5.4.2):
+  ts-api-utils@1.4.1(typescript@5.4.2):
     dependencies:
       typescript: 5.4.2
 

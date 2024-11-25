@@ -3,10 +3,21 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
-import { createDeenruvForm, DetailView } from '@deenruv/react-ui-devkit';
+import { createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
+import { $, scalars, typedGql } from '@deenruv/admin-types';
+
+const EditProductMutation = typedGql('mutation', { scalars })({
+  updateProduct: [
+    {
+      input: $('input', 'UpdateProductInput!'),
+    },
+    { id: true },
+  ],
+});
 
 export const ProductsDetailPage = () => {
   const { id } = useParams();
+  const [update] = useMutation(EditProductMutation);
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -23,7 +34,12 @@ export const ProductsDetailPage = () => {
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
             config: {},
             onSubmitted: (event, data) => {
-              console.log('submitted', data.assetIds?.value);
+              update({
+                input: {
+                  id: id!,
+                  translations: data.translations?.validatedValue,
+                },
+              });
             },
             onDeleted: (event, data) => {
               console.log('deleted', data);

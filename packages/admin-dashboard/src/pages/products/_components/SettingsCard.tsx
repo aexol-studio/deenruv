@@ -40,7 +40,7 @@ export const SettingsCard: React.FC<SettingsCardProps> = ({
           <Switch id="product-enabled" checked={enabledValue} onCheckedChange={onEnabledChange} />
           <Label htmlFor="product-enabled">{t('enabled')}</Label>
         </div>
-        <Select defaultValue={LanguageCode.en} value={currentTranslationLng} onValueChange={onCurrentLanguageChange}>
+        {/* <Select defaultValue={LanguageCode.en} value={currentTranslationLng} onValueChange={onCurrentLanguageChange}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Theme" />
           </SelectTrigger>
@@ -48,7 +48,7 @@ export const SettingsCard: React.FC<SettingsCardProps> = ({
             <SelectItem value={LanguageCode.en}>{LanguageCode.en}</SelectItem>
             <SelectItem value={LanguageCode.pl}>{LanguageCode.pl}</SelectItem>
           </SelectContent>
-        </Select>
+        </Select> */}
       </CardContent>
     </Card>
   );

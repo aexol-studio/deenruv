@@ -112,7 +112,7 @@ export function AssetsModalInput({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="secondary" size="sm">
           {t('asset.dialogButton')}
         </Button>

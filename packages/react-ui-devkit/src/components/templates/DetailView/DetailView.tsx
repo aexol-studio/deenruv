@@ -160,8 +160,9 @@ const DetailTabs = () => {
                 <div className="flex w-full items-center justify-between px-4 py-2">
                     <div className="flex w-full flex-1">
                         <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-none rounded-sm px-4 shadow-xl">
-                            {tabs.map(t => (
+                            {tabs.map((t, idx )=> (
                                 <TabsTrigger
+                                    key={idx}
                                     disabled={t.disabled}
                                     value={t.name}
                                     className={cn('px-8', 'data-[state=active]:bg-secondary bg-card')}
@@ -190,8 +191,8 @@ const DetailTabs = () => {
                 </div>
             </div>
             <div className="px-4 py-2 md:px-8 md:py-4">
-                {tabs.map(tab => (
-                    <TabsContent value={tab.name}>
+                {tabs.map((tab, idx) => (
+                    <TabsContent key={idx} value={tab.name}>
                         <div
                             className={cn(sidebar ? 'grid grid-cols-[minmax(0,1fr)_400px] gap-4' : 'w-full')}
                         >
