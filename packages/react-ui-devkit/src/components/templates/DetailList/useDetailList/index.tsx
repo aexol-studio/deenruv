@@ -57,8 +57,6 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     customFieldsSelector?: S;
 }): {
     Paginate: JSX.Element;
-    FiltersResult: JSX.Element;
-    FiltersButton: JSX.Element;
     Search: JSX.Element;
     SortButton: (
         key: keyof Awaited<ReturnType<PromisePaginated>>['items'][number],
@@ -67,6 +65,10 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     objects: GenericReturn<T> | undefined;
     searchParamValues: PaginationInput;
     refetch: (initialFilterState?: ModelTypes[ListType[K]] | undefined) => void;
+    type: K;
+    filter: ModelTypes[ListType[K]] | undefined;
+    setFilterField: any;
+    removeFilterField: any;
 } => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [total, setTotal] = useState(0);
@@ -170,7 +172,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         } catch (err) {
             throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
         }
-    }, [searchParams, searchFields]);
+    }, [searchParams, type, searchFields]);
 
     const refetch = useCallback(
         (initialFilterState?: ModelTypes[ListType[K]] | undefined) => {
@@ -197,16 +199,12 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         () => Math.ceil(total / searchParamValues.perPage),
         [total, searchParamValues],
     );
-    const filterProperties = {
+
+    return {
         type,
         filter: searchParamValues.filter,
         setFilterField,
         removeFilterField,
-    };
-
-    return {
-        FiltersResult: <FiltersResult {...filterProperties} />,
-        FiltersButton: <FiltersButton {...filterProperties} />,
         Search: (
             <Search
                 {...{

@@ -3,7 +3,7 @@
     "filter": "Filter type",
     "select": "Select type"
   },
-  "withSelected": "With $1 selected",
+  "withSelected": "With {{amount}} selected",
   "clearSelected": "Clear selected",
   "true": "True",
   "false": "False",

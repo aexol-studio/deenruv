@@ -10,14 +10,14 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-type ConfirmationDialogProps<T extends { id: string; name: string }> = {
+type ConfirmationDialogProps<T extends { id: string }> = {
     onConfirmDelete: () => void;
     setDeleteDialogOpened: (e: boolean) => void;
     itemsToDelete: T[];
     deleteDialogOpened: boolean;
 };
 
-export function DeleteDialog<T extends { id: string; name: string }>({
+export function DeleteDialog<T extends { id: string }>({
     onConfirmDelete,
     setDeleteDialogOpened,
     deleteDialogOpened,
@@ -35,7 +35,7 @@ export function DeleteDialog<T extends { id: string; name: string }>({
                     </DialogDescription>
                     <DialogDescription>
                         {itemsToDelete.map(n => (
-                            <div key={n.id}>{n.name}</div>
+                            <div key={n.id}>{n.id}</div>
                         ))}
                     </DialogDescription>
                 </div>

@@ -132,7 +132,7 @@ export const ProductsChartWidget = () => {
                     </ChartContainer>
                 )}
             </CardContent>
-            <CardFooter className="justify-end">
+            <CardFooter className="justify-end mt-2">
                 <RefreshCacheButton
                     fetchData={() => fetchData(true)}
                     lastCacheRefreshTime={lastRefreshedCache}

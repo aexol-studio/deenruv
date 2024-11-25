@@ -16,19 +16,21 @@ import React from 'react';
 type FilterKey<T extends keyof ListType> = keyof ModelTypes[(typeof ListTypeKeys)[T]];
 
 export const FiltersButton = <T extends keyof ListType, K extends (string | number | symbol)[]>({
+    columnsLabels,
     type,
     filter,
     setFilterField,
     removeFilterField,
 }: {
+    columnsLabels: string[];
     type: T;
     filter: ModelTypes[(typeof ListTypeKeys)[T]] | undefined;
     setFilterField: any;
     removeFilterField: any;
 }) => {
     const { t } = useTranslation('table');
-    const labels = t('filterLabels', { returnObjects: true });
 
+    const labels = t('filterLabels', { returnObjects: true });
     const allFilterFields = useMemo(() => {
         return [
             {

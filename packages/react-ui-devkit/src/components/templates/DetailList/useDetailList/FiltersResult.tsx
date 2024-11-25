@@ -8,11 +8,13 @@ import React from 'react';
 type FilterKey<T extends keyof ListType> = keyof ModelTypes[(typeof ListTypeKeys)[T]];
 
 export const FiltersResult = <T extends keyof ListType, K extends (string | number | symbol)[]>({
+    columnsLabels,
     type,
     filter,
     setFilterField,
     removeFilterField,
 }: {
+    columnsLabels: string[];
     type: T;
     filter: ModelTypes[(typeof ListTypeKeys)[T]] | undefined;
     setFilterField: any;

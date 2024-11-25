@@ -6,6 +6,7 @@ export const scalars = ZeusScalars({
     },
     DateTime: {
         decode: (e: unknown) => new Date(e as string).toISOString(),
+        encode: (e: unknown) => (e as Date).toISOString(),
     },
     JSON: {
         encode: (e: unknown) => {
@@ -14,7 +15,7 @@ export const scalars = ZeusScalars({
             return JSON.stringify(e).replace(/"(\w+)":/g, '$1:');
         },
         decode: (e: unknown) => {
-            return JSON.parse(e as string);
+            return JSON.parse(JSON.stringify(e) as string);
         },
     },
 });

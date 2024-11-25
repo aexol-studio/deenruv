@@ -15,7 +15,9 @@ export type PaginationInput = {
         | ModelTypes['CountryFilterParameter'];
     filterOperator?: LogicalOperator;
 };
-
+export interface PromisePaginatedItem {
+    id: string | number;
+}
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type PromisePaginated = (
     props: PaginationInput,

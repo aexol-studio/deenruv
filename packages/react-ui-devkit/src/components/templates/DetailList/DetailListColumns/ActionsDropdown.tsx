@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { redirect } from 'react-router-dom';
 import React from 'react';
 
+const EXCLUDED_COLUMNS = ['actions', 'select-id'];
 export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
     return {
         id: 'actions',
@@ -21,6 +22,7 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
         header: ({ table }) => {
             const { t } = useTranslation('table');
             const columnsTranslations = t('columns', { returnObjects: true });
+            const hideColumns = table.options.meta?.hideColumns ?? [];
             return (
                 <div className="text-right">
                     <DropdownMenu>
@@ -33,7 +35,12 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                         <DropdownMenuContent align="end">
                             {table
                                 .getAllColumns()
-                                .filter(column => column.getCanHide())
+                                .filter(column => {
+                                    const isHideable = column.getCanHide();
+                                    const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
+                                    const isNotHidden = !hideColumns.includes(column.id);
+                                    return isHideable && isNotExcluded && isNotHidden;
+                                })
                                 .map(column => {
                                     return (
                                         <DropdownMenuCheckboxItem

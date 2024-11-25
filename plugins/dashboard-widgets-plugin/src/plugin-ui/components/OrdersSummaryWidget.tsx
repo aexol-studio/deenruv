@@ -128,14 +128,8 @@ export const OrdersSummaryWidget = () => {
     );
 
     const _grossNet: { type: 'gross' | 'net'; text: string }[] = [
-        {
-            type: 'gross',
-            text: t('gross'),
-        },
-        {
-            type: 'net',
-            text: t('net'),
-        },
+        { type: 'gross', text: t('gross') },
+        { type: 'net', text: t('net') },
     ];
 
     return (

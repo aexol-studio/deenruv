@@ -14,7 +14,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-export const SelectIDColumn = <T extends { id: string; name: string }>(): ColumnDef<T> => {
+export const SelectIDColumn = <T extends { id: string }>(): ColumnDef<T> => {
     return {
         id: 'select-id',
         header: ({ table }) => {

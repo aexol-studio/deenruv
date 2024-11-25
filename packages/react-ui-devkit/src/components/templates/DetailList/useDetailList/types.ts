@@ -6,6 +6,7 @@ export type GenericListContextType<T> = {
         | { create: () => void; edit: (id: string) => void };
     onRemove: (items: T[]) => void;
     refetch: () => void;
+    hideColumns?: string[];
     rowActions?:
         | {
               label: string;

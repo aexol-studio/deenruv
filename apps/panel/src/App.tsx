@@ -17,7 +17,7 @@ const settings: DeenruvAdminPanelSettings = {
     },
   },
   api: {
-    uri: 'http://localhost:3000',
+    uri: 'https://shop.qa.samarite.aexol.work',
     authTokenName: 'deenruv-auth-token',
     channelTokenName: 'deenruv-token',
   },

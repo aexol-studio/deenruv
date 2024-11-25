@@ -26,9 +26,12 @@ import { useLocalStorage } from '@/hooks';
 import { Button, TranslationSelect } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
 import { ListType } from './useDetailList/types';
+import { FiltersButton } from './useDetailList/FiltersButton';
+import { FiltersResult } from './useDetailList/FiltersResult';
 
 const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
+const EXCLUDED_COLUMNS = ['actions', 'select-id'];
 
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
 
@@ -110,8 +113,10 @@ export function DetailList<T extends PromisePaginated>({
         SortButton,
         Paginate,
         Search,
-        FiltersButton,
-        FiltersResult,
+        type: searchParamType,
+        filter: searchParamFilter,
+        setFilterField,
+        removeFilterField,
     } = useDetailList({
         type,
         fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
@@ -257,6 +262,7 @@ export function DetailList<T extends PromisePaginated>({
         onRowSelectionChange: setRowSelection,
         onColumnFiltersChange: setColumnFilters,
         meta: {
+            hideColumns: hideColumns as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
             bulkActions: bulkActions as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
             rowActions: rowActions as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
             route,
@@ -303,16 +309,26 @@ export function DetailList<T extends PromisePaginated>({
             console.error('Error deleting items');
         }
     };
-
-    const allFilterFields = useMemo(() => {
-        const fields = table.getAllColumns().map(column => column.id);
-        return fields.map(field => ({
-            name: field,
-            // type: 'StringOperators',
-            // value: filter && field in filter ? filter[field] : undefined,
-        }));
-    }, [objects]);
-    console.log(allFilterFields);
+    const columnsLabels = useMemo(
+        () =>
+            table
+                .getAllColumns()
+                .filter(column => {
+                    const isHideable = column.getCanHide();
+                    const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
+                    const isNotHidden = !hideColumns?.includes(column.id);
+                    return isHideable && isNotExcluded && isNotHidden;
+                })
+                .map(column => ('accessorKey' in column ? (column.accessorKey as string) : column.id)),
+        [objects],
+    );
+    const filterProperties = {
+        columnsLabels,
+        type: searchParamType,
+        filter: searchParamFilter,
+        setFilterField,
+        removeFilterField,
+    };
 
     return (
         <div className="px-4 py-2 md:px-8 md:py-4">
@@ -325,7 +341,7 @@ export function DetailList<T extends PromisePaginated>({
                         <div className="flex flex-1 flex-col items-start gap-2">
                             <TranslationSelect />
                             <div className="flex items-center gap-2">
-                                {FiltersButton}
+                                <FiltersButton {...filterProperties} />
                                 {Search}
                             </div>
                         </div>
@@ -333,11 +349,8 @@ export function DetailList<T extends PromisePaginated>({
                             <Button
                                 className="flex items-center gap-2"
                                 onClick={() => {
-                                    if ('create' in route) {
-                                        route.create();
-                                    } else {
-                                        navigate(route.new);
-                                    }
+                                    if ('create' in route) route.create();
+                                    else navigate(route.new);
                                 }}
                             >
                                 <PlusCircleIcon size={16} />
@@ -345,7 +358,7 @@ export function DetailList<T extends PromisePaginated>({
                             </Button>
                         </div>
                     </div>
-                    {FiltersResult}
+                    <FiltersResult {...filterProperties} />
                 </div>
                 <ListTable {...{ columns, isFiltered, table, Paginate }} />
             </div>

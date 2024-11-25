@@ -1,7 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { endOfMonth, endOfWeek, format, startOfMonth, startOfWeek, subMonths, subWeeks } from 'date-fns';
+import {
+    addDays,
+    endOfMonth,
+    endOfWeek,
+    format,
+    startOfMonth,
+    startOfWeek,
+    subMonths,
+    subWeeks,
+} from 'date-fns';
 import { pl, enGB } from 'date-fns/locale';
 import {
     Card,
@@ -70,7 +79,7 @@ export const OrdersWidget = () => {
 
                 case BetterMetricInterval.ThisMonth:
                     return {
-                        start: startOfMonth(new Date()),
+                        start: addDays(startOfMonth(new Date()), 1),
                         end: endOfMonth(new Date()),
                     };
 
@@ -158,7 +167,15 @@ export const OrdersWidget = () => {
                           betterMetricsSettings.interval.end as string,
                           metric.type,
                           language,
-                          metric.entries,
+                          metric.entries.map(entry => ({
+                              label: entry.label,
+                              value:
+                                  metric.type === BetterMetricType.AverageOrderValue ||
+                                  metric.type === BetterMetricType.OrderTotal
+                                      ? entry.value / 100
+                                      : entry.value,
+                              additionalData: entry.additionalData,
+                          })),
                       );
             })
             .flat();
@@ -196,7 +213,7 @@ export const OrdersWidget = () => {
             <CardContent className="p-0 mr-6 mb-6">
                 <OrdersChart data={betterData} language={language} />
             </CardContent>
-            <CardFooter className="justify-end pb-0">
+            <CardFooter className="justify-end pb-0 mt-4">
                 <RefreshCacheButton
                     fetchData={() => fetchData(true)}
                     lastCacheRefreshTime={betterMetrics.lastCacheRefreshTime}
