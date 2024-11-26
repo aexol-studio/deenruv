@@ -2,7 +2,7 @@ import { FilterIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import { ListType, ListTypeKeys } from './types';
 import { ModelTypes } from '@deenruv/admin-types';
-import { FilterInputType } from '../_components/types';
+import { FilterInputType, FilterInputTypeUnion } from '../_components/types';
 import { useTranslation } from 'react-i18next';
 import {
     Button,
@@ -13,56 +13,43 @@ import {
 } from '@/components';
 import React from 'react';
 
-type FilterKey<T extends keyof ListType> = keyof ModelTypes[(typeof ListTypeKeys)[T]];
-
-export const FiltersButton = <T extends keyof ListType, K extends (string | number | symbol)[]>({
-    columnsLabels,
+export const FiltersButton = <T extends keyof ListType>({
+    filterLabels,
     type,
     filter,
     setFilterField,
     removeFilterField,
 }: {
-    columnsLabels: string[];
+    filterLabels: { name: string | number | symbol; type: string }[];
     type: T;
     filter: ModelTypes[(typeof ListTypeKeys)[T]] | undefined;
-    setFilterField: any;
-    removeFilterField: any;
+    setFilterField: (
+        field: keyof ModelTypes[(typeof ListTypeKeys)[T]],
+        value: FilterInputTypeUnion | undefined,
+    ) => void;
+    removeFilterField: (field: keyof ModelTypes[(typeof ListTypeKeys)[T]]) => void;
 }) => {
     const { t } = useTranslation('table');
-
     const labels = t('filterLabels', { returnObjects: true });
+
     const allFilterFields = useMemo(() => {
-        return [
-            {
-                name: 'id',
-                type: 'IDOperators',
-                value: filter && filter['id'],
-            },
-            {
-                name: 'createdAt',
-                type: 'DateOperators',
-                value: filter && filter['createdAt'],
-            },
-            {
-                name: 'updatedAt',
-                type: 'DateOperators',
-                value: filter && filter['updatedAt'],
-            },
-            {
-                name: 'name',
-                type: 'StringOperators',
-                value: filter && 'name' in filter && filter['name'],
-            },
-            {
-                name: 'enabled',
-                type: 'BooleanOperators',
-                value: filter && 'enabled' in filter && filter['enabled'],
-            },
-        ] as {
-            name: keyof ModelTypes[(typeof ListTypeKeys)[T]];
-            type: keyof FilterInputType;
-            value: ModelTypes[(typeof ListTypeKeys)[T]];
-        }[];
+        return filterLabels.map(({ name, type }) => {
+            let label = '';
+            if (typeof name === 'string') {
+                label = labels[name as keyof typeof labels];
+            }
+            if (label === '' || label === undefined) {
+                label = String(name);
+            }
+            return {
+                name: label as keyof ModelTypes[(typeof ListTypeKeys)[T]],
+                type: type as keyof FilterInputType,
+                value:
+                    filter && Object.keys(filter).includes(name.toString())
+                        ? filter[name as keyof ModelTypes[(typeof ListTypeKeys)[T]]]
+                        : undefined,
+            };
+        });
     }, [filter, type]);
 
     return (
@@ -73,18 +60,20 @@ export const FiltersButton = <T extends keyof ListType, K extends (string | numb
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="max-h-[400px] overflow-y-auto">
-                {allFilterFields.map((i, index) => (
-                    <DropdownMenuCheckboxItem
-                        key={index}
-                        checked={filter && filter[i.name] ? true : false}
-                        onCheckedChange={value => {
-                            if (value) setFilterField(i.name, {});
-                            else removeFilterField(i.name);
-                        }}
-                    >
-                        {typeof i.name === 'string' ? labels[i.name as keyof typeof labels] : String(i.name)}
-                    </DropdownMenuCheckboxItem>
-                ))}
+                {allFilterFields.map((i, index) => {
+                    return (
+                        <DropdownMenuCheckboxItem
+                            key={index}
+                            checked={filter && filter[i.name] ? true : false}
+                            onCheckedChange={value => {
+                                if (value) setFilterField(i.name, {});
+                                else removeFilterField(i.name);
+                            }}
+                        >
+                            {i.name as string}
+                        </DropdownMenuCheckboxItem>
+                    );
+                })}
             </DropdownMenuContent>
         </DropdownMenu>
     );

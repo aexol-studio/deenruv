@@ -55,7 +55,7 @@ function generateSingleFields({ field }: { field: CustomFieldConfigType }) {
             return { ...field, component: <DefaultTextInput /> };
         case 'TextCustomFieldConfig':
         case 'LocaleTextCustomFieldConfig':
-            return { ...field, component: field.ui.richText ? <DefaultRichText /> : <DefaultTextarea /> };
+            return { ...field, component: field?.ui?.richText ? <DefaultRichText /> : <DefaultTextarea /> };
         case 'RelationCustomFieldConfig':
             return { ...field, component: <DefaultRelationInput /> };
         default:

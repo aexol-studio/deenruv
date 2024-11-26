@@ -42,6 +42,22 @@ type FIELDS<T extends PromisePaginated> = Array<
 
 type CheckIfInModelTypes<T extends string> = T extends keyof ModelTypes ? T : never;
 
+type FilterField<ENTITY extends keyof ModelTypes> = {
+    key: Exclude<keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>], '_or' | '_and'>;
+    // TODO: infer operator based on the type of the field
+    operator:
+        | 'StringOperators'
+        | 'IDOperators'
+        | 'BooleanOperators'
+        | 'NumberOperators'
+        | 'DateOperators'
+        | 'StringListOperators'
+        | 'NumberListOperators'
+        | 'BooleanListOperators'
+        | 'IDListOperators'
+        | 'DateListOperators';
+};
+
 export function DetailList<T extends PromisePaginated, ENTITY extends keyof ValueTypes>({
     fetch,
     route,
@@ -68,9 +84,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     hideColumns?: FIELDS<T>;
     additionalColumns?: ColumnDef<AwaitedReturnType<T>['items'][number]>[];
     detailLinkColumn?: keyof AwaitedReturnType<T>['items'][number];
-    filterFields?: Array<
-        Exclude<keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>], '_or' | '_and'>
-    >;
+    filterFields?: FilterField<ENTITY>[];
     noPaddings?: boolean;
 }) {
     const { t } = useTranslation('table');
@@ -157,8 +171,48 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             ? Array.from(new Set([...DEFAULT_COLUMNS, ...Object.keys(entry)]))
             : DEFAULT_COLUMNS;
 
+        if (keys.includes('customFields')) {
+            const customFields = 'customFields' in entry ? entry.customFields : {};
+            const customFieldsKeys = Object.keys(customFields).map(key => `customFields.${key}`);
+            keys.push(...customFieldsKeys);
+        }
+
         const columns: ColumnDef<AwaitedReturnType<T>['items']>[] = [];
         for (const key of keys) {
+            if (key.startsWith('customFields.')) {
+                columns.push({
+                    enableHiding: true,
+                    accessorKey: key,
+                    header: () => {
+                        const field = entityCustomFields?.find(el => el.name === key.split('.')[1]);
+                        const fieldTranslation =
+                            field?.label?.find(el => el.languageCode === 'en')?.value ||
+                            field?.label?.[0]?.value;
+
+                        let label = key;
+                        if (fieldTranslation) {
+                            label = fieldTranslation;
+                        }
+                        if (
+                            columnsTranslations[key as keyof typeof columnsTranslations] !== undefined &&
+                            columnsTranslations[key as keyof typeof columnsTranslations] !== ''
+                        ) {
+                            label = columnsTranslations[key as keyof typeof columnsTranslations];
+                        }
+
+                        return <div className="whitespace-nowrap">{label}</div>;
+                    },
+                    cell: ({ row }) => {
+                        const value = row.original.customFields[key.split('.')[1]];
+                        if (typeof value === 'object') {
+                            return JSON.stringify(value);
+                        }
+                        return value;
+                    },
+                });
+                continue;
+            }
+
             if (key === 'id') {
                 columns.push(SelectIDColumn());
                 columns.push(ActionsDropdown());
@@ -265,6 +319,18 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             const keys = objects?.[0] ? Object.keys(objects[0]) : [];
             const newVisibility = { ...prev };
             for (const key of keys) {
+                if (key === 'customFields') {
+                    const customFields = 'customFields' in objects[0] ? objects[0].customFields : {};
+                    const customFieldsKeys = Object.keys(customFields).map(key => `customFields.${key}`);
+                    for (const customKey of customFieldsKeys) {
+                        if (hideColumns?.includes(customKey)) {
+                            newVisibility[customKey] = false;
+                        } else if (prev[customKey] === undefined) {
+                            newVisibility[customKey] = true;
+                        }
+                    }
+                }
+
                 if (hideColumns?.includes(key)) {
                     newVisibility[key] = false;
                 } else if (prev[key] === undefined) {
@@ -338,22 +404,21 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         }
     };
 
-    const columnsLabels = useMemo(
-        () =>
-            table
-                .getAllColumns()
-                .filter(column => {
-                    const isHideable = column.getCanHide();
-                    const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
-                    const isNotHidden = !hideColumns?.includes(column.id);
-                    return isHideable && isNotExcluded && isNotHidden;
-                })
-                .map(column => ('accessorKey' in column ? (column.accessorKey as string) : column.id)),
-        [objects],
-    );
+    const defaultFilterFields = DEFAULT_COLUMNS.map(key => {
+        if (key === 'id') {
+            return { key: 'id', operator: 'IDOperators' };
+        } else if (key === 'createdAt' || key === 'updatedAt') {
+            return { key, operator: 'DateOperators' };
+        }
+        return { key, operator: 'StringOperators' };
+    });
 
     const filterProperties = {
-        columnsLabels,
+        filterLabels:
+            [...defaultFilterFields, ...(filterFields || [])].map(({ key, operator }) => ({
+                name: key,
+                type: operator,
+            })) || [],
         type: searchParamType,
         filter: searchParamFilter,
         setFilterField,

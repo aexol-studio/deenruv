@@ -1,6 +1,5 @@
 import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { Paginate } from './Paginate';
 import { Search } from './Search';
 import { FiltersResult } from './FiltersResult';
@@ -9,6 +8,7 @@ import React from 'react';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models';
 import { SortButton } from '@/components';
 import { ListType } from './types';
+import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
 
 type LimitKeys =
     | '10perPage'
@@ -70,7 +70,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     setFilterField: any;
     removeFilterField: any;
 } => {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useCustomSearchParams();
     const [total, setTotal] = useState(0);
     const [objects, setObjects] = useState<GenericReturn<T>>();
 

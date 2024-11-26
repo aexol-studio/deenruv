@@ -46,6 +46,8 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 
 export const ProductsListPage = () => (
   <DetailList
+    filterFields={[{ key: 'languageCode', operator: 'StringOperators' }]}
+    detailLinkColumn="id"
     searchFields={['name']}
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'Product'}
