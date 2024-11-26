@@ -67,4 +67,11 @@ export interface AssetStorageStrategy extends InjectableStrategy {
      * should not be implemented.
      */
     toAbsoluteUrl?(request: Request, identifier: string): string;
+
+    /**
+     * @description
+     * Use an existing file from the storage. This is useful for scenarios where
+     * the file is already stored in the storage and we just want to use it.
+     */
+    useExisting?(identifier: string): Promise<boolean>;
 }

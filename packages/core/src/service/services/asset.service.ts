@@ -287,10 +287,20 @@ export class AssetService {
      *
      * See the [Uploading Files docs](/guides/developer-guide/uploading-files) for an example of usage.
      */
-    async create(ctx: RequestContext, input: CreateAssetInput): Promise<CreateAssetResult> {
+    async create(
+        ctx: RequestContext,
+        input:
+            | CreateAssetInput
+            | {
+                  filename: string;
+                  mimetype: string;
+                  tags?: CreateAssetInput['tags'];
+                  customFields?: CreateAssetInput['customFields'];
+              },
+    ): Promise<CreateAssetResult> {
         return new Promise(async (resolve, reject) => {
-            const { createReadStream, filename, mimetype } = await input.file;
-            const stream = createReadStream();
+            const { createReadStream, filename, mimetype } = 'file' in input ? input.file : input;
+            const stream = createReadStream && createReadStream();
             stream.on('error', (err: any) => {
                 reject(err);
             });
@@ -311,7 +321,7 @@ export class AssetService {
                 result.tags = tags;
                 await this.connection.getRepository(ctx, Asset).save(result);
             }
-            await this.eventBus.publish(new AssetEvent(ctx, result, 'created', input));
+            await this.eventBus.publish(new AssetEvent(ctx, result, 'created', { ...input, id: result.id }));
             resolve(result);
         });
     }
@@ -523,7 +533,7 @@ export class AssetService {
 
     private async createAssetInternal(
         ctx: RequestContext,
-        stream: Stream,
+        stream: Stream | undefined,
         filename: string,
         mimetype: string,
         customFields?: { [key: string]: any },
@@ -533,10 +543,24 @@ export class AssetService {
             return new MimeTypeError({ fileName: filename, mimeType: mimetype });
         }
         const { assetPreviewStrategy, assetStorageStrategy } = assetOptions;
-        const sourceFileName = await this.getSourceFileName(ctx, filename);
-        const previewFileName = await this.getPreviewFileName(ctx, sourceFileName);
+        const { fileName: sourceFileName, upload: uploadSourceFile } = await this.getSourceFileName(
+            ctx,
+            filename,
+        );
+        const { fileName: previewFileName, upload: uploadPreviewFile } = await this.getPreviewFileName(
+            ctx,
+            sourceFileName,
+        );
 
-        const sourceFileIdentifier = await assetStorageStrategy.writeFileFromStream(sourceFileName, stream);
+        if ((uploadSourceFile || uploadPreviewFile) && !stream) {
+            throw new InternalServerError('error.stream-must-be-provided');
+        }
+
+        const sourceFileIdentifier =
+            uploadSourceFile && stream
+                ? await assetStorageStrategy.writeFileFromStream(sourceFileName, stream)
+                : filename;
+
         const sourceFile = await assetStorageStrategy.readFileToBuffer(sourceFileIdentifier);
         let preview: Buffer;
         try {
@@ -546,10 +570,10 @@ export class AssetService {
             Logger.error(`Could not create Asset preview image: ${message}`, undefined, e.stack);
             throw e;
         }
-        const previewFileIdentifier = await assetStorageStrategy.writeFileFromBuffer(
-            previewFileName,
-            preview,
-        );
+        const previewFileIdentifier =
+            uploadPreviewFile && stream
+                ? await assetStorageStrategy.writeFileFromBuffer(previewFileName, preview)
+                : filename;
         const type = getAssetType(mimetype);
         const { width, height } = this.getDimensions(type === AssetType.IMAGE ? sourceFile : preview);
 
@@ -569,14 +593,20 @@ export class AssetService {
         return this.connection.getRepository(ctx, Asset).save(asset);
     }
 
-    private async getSourceFileName(ctx: RequestContext, fileName: string): Promise<string> {
+    private async getSourceFileName(
+        ctx: RequestContext,
+        fileName: string,
+    ): Promise<{ fileName: string; upload: boolean }> {
         const { assetOptions } = this.configService;
         return this.generateUniqueName(fileName, (name, conflict) =>
             assetOptions.assetNamingStrategy.generateSourceFileName(ctx, name, conflict),
         );
     }
 
-    private async getPreviewFileName(ctx: RequestContext, fileName: string): Promise<string> {
+    private async getPreviewFileName(
+        ctx: RequestContext,
+        fileName: string,
+    ): Promise<{ fileName: string; upload: boolean }> {
         const { assetOptions } = this.configService;
         return this.generateUniqueName(fileName, (name, conflict) =>
             assetOptions.assetNamingStrategy.generatePreviewFileName(ctx, name, conflict),
@@ -586,13 +616,19 @@ export class AssetService {
     private async generateUniqueName(
         inputFileName: string,
         generateNameFn: (fileName: string, conflictName?: string) => string,
-    ): Promise<string> {
+    ): Promise<{ fileName: string; upload: boolean }> {
         const { assetOptions } = this.configService;
         let outputFileName: string | undefined;
+
         do {
             outputFileName = generateNameFn(inputFileName, outputFileName);
-        } while (await assetOptions.assetStorageStrategy.fileExists(outputFileName));
-        return outputFileName;
+            const exists = await assetOptions.assetStorageStrategy.fileExists(outputFileName);
+            const useExisting = await assetOptions.assetStorageStrategy.useExisting?.(outputFileName);
+            if (!exists || (exists && useExisting)) {
+                return { fileName: outputFileName, upload: !(exists && useExisting) };
+            }
+            // eslint-disable-next-line no-constant-condition
+        } while (true);
     }
 
     private getDimensions(imageFile: Buffer): { width: number; height: number } {
