@@ -39,7 +39,7 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
             const columnsTranslations = t('columns', { returnObjects: true });
             const hideColumns = table.options.meta?.hideColumns ?? [];
 
-            const order = useMemo(() => table.getState().columnOrder, [table]);
+            const order = table.getState().columnOrder;
             const allColumns = useMemo(() => {
                 return table
                     .getAllColumns()
@@ -61,9 +61,10 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                 }),
             );
 
-            function arrayMove<T>(array: T[], from: number, to: number) {
+            function arrayMove<T>(array: T[], from: number, to: number): T[] {
                 const newArray = array.slice();
                 newArray.splice(to < 0 ? newArray.length + to : to, 0, newArray.splice(from, 1)[0]);
+
                 return newArray;
             }
 
@@ -84,12 +85,8 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                                     const { active, over } = e;
 
                                     if (active.id !== over?.id) {
-                                        const oldIndex = table
-                                            .getAllColumns()
-                                            .findIndex(column => column.id === active.id);
-                                        const newIndex = table
-                                            .getAllColumns()
-                                            .findIndex(column => column.id === over?.id);
+                                        const oldIndex = order.findIndex(column => column === active.id);
+                                        const newIndex = order.findIndex(column => column === over?.id);
 
                                         const newOrder = arrayMove(order, oldIndex, newIndex);
                                         table.setColumnOrder(newOrder);
@@ -209,8 +206,8 @@ const DraggableMenuItem: React.FC<DraggableMenuItemProps> = ({ id, children }) =
 
     return (
         <div ref={setNodeRef} style={style} {...attributes} className="flex items-center">
-            <Button variant="outline" {...listeners} className="cursor-move mr-2 px-2 py-2">
-                <Grip className="h-4 w-4" />
+            <Button variant="outline" {...listeners} className="cursor-move mr-2 p-1 h-auto">
+                <Grip className="h-3.5 w-3.5" />
             </Button>
             {children}
         </div>

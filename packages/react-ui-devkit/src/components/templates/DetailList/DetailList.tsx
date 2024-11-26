@@ -1,13 +1,11 @@
 import { useDetailList } from './useDetailList';
 import {
-    Column,
     ColumnDef,
     ColumnFiltersState,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
-    RowData,
     useReactTable,
     VisibilityState,
 } from '@tanstack/react-table';
@@ -123,28 +121,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         `${type}-table-visibility`,
         { id: true, createdAt: true, updatedAt: true },
     );
-    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
-
-    const [movingColumnId, setMovingColumnId] = useState<string | null>(null);
-    const [targetColumnId, setTargetColumnId] = useState<string | null>(null);
 
     const columnsTranslations = t('columns', { returnObjects: true });
-
-    const reorderColumn = (movingColumnId: string, targetColumnId: string): string[] => {
-        const newColumnOrder = [...columnsOrderState];
-        newColumnOrder.splice(
-            newColumnOrder.indexOf(targetColumnId),
-            0,
-            newColumnOrder.splice(newColumnOrder.indexOf(movingColumnId), 1)[0],
-        );
-        setColumnsOrderState(newColumnOrder);
-        return newColumnOrder;
-    };
-
-    const handleDragEnd = (e: DragEvent) => {
-        if (!movingColumnId || !targetColumnId) return;
-        setColumnsOrderState(reorderColumn(movingColumnId, targetColumnId));
-    };
 
     const {
         objects,
@@ -313,6 +291,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
         return resultColumns;
     }, [objects]);
+
+    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
 
     useEffect(() => {
         setColumnsVisibilityState(prev => {
