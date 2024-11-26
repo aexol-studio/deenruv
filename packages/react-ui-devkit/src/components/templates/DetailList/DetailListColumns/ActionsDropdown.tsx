@@ -9,12 +9,27 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
 } from '@/components';
-import { MoreHorizontal, PanelsTopLeft } from 'lucide-react';
+import { Grip, MoreHorizontal, PanelsTopLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import { redirect } from 'react-router-dom';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { EXCLUDED_COLUMNS } from '../useDetailList/constants';
+import {
+    closestCenter,
+    DndContext,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core';
+import {
+    SortableContext,
+    sortableKeyboardCoordinates,
+    useSortable,
+    verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
-const EXCLUDED_COLUMNS = ['actions', 'select-id'];
 export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
     return {
         id: 'actions',
@@ -23,6 +38,35 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
             const { t } = useTranslation('table');
             const columnsTranslations = t('columns', { returnObjects: true });
             const hideColumns = table.options.meta?.hideColumns ?? [];
+
+            const order = useMemo(() => table.getState().columnOrder, [table]);
+            const allColumns = useMemo(() => {
+                return table
+                    .getAllColumns()
+                    .filter(column => {
+                        const isHideable = column.getCanHide();
+                        const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
+                        const isNotHidden = !hideColumns.includes(column.id as keyof T);
+                        return isHideable && isNotExcluded && isNotHidden;
+                    })
+                    .sort((a, b) => {
+                        return order.indexOf(a.id) - order.indexOf(b.id);
+                    });
+            }, [table, hideColumns, order]);
+
+            const sensors = useSensors(
+                useSensor(PointerSensor),
+                useSensor(KeyboardSensor, {
+                    coordinateGetter: sortableKeyboardCoordinates,
+                }),
+            );
+
+            function arrayMove<T>(array: T[], from: number, to: number) {
+                const newArray = array.slice();
+                newArray.splice(to < 0 ? newArray.length + to : to, 0, newArray.splice(from, 1)[0]);
+                return newArray;
+            }
+
             return (
                 <div className="text-right">
                     <DropdownMenu>
@@ -33,28 +77,49 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            {table
-                                .getAllColumns()
-                                .filter(column => {
-                                    const isHideable = column.getCanHide();
-                                    const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
-                                    const isNotHidden = !hideColumns.includes(column.id);
-                                    return isHideable && isNotExcluded && isNotHidden;
-                                })
-                                .map(column => {
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            key={column.id}
-                                            className="capitalize"
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={value => column.toggleVisibility(!!value)}
-                                        >
-                                            {columnsTranslations[
-                                                column.id as keyof typeof columnsTranslations
-                                            ] ?? column.id}
-                                        </DropdownMenuCheckboxItem>
-                                    );
-                                })}
+                            <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={e => {
+                                    const { active, over } = e;
+
+                                    if (active.id !== over?.id) {
+                                        const oldIndex = table
+                                            .getAllColumns()
+                                            .findIndex(column => column.id === active.id);
+                                        const newIndex = table
+                                            .getAllColumns()
+                                            .findIndex(column => column.id === over?.id);
+
+                                        const newOrder = arrayMove(order, oldIndex, newIndex);
+                                        table.setColumnOrder(newOrder);
+                                    }
+                                }}
+                            >
+                                <SortableContext
+                                    items={allColumns.map(column => column.id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    {allColumns.map(column => {
+                                        return (
+                                            <DraggableMenuItem key={column.id} id={column.id}>
+                                                <DropdownMenuCheckboxItem
+                                                    key={column.id}
+                                                    className="capitalize"
+                                                    checked={column.getIsVisible()}
+                                                    onCheckedChange={value =>
+                                                        column.toggleVisibility(!!value)
+                                                    }
+                                                >
+                                                    {columnsTranslations[
+                                                        column.id as keyof typeof columnsTranslations
+                                                    ] ?? column.id}
+                                                </DropdownMenuCheckboxItem>
+                                            </DraggableMenuItem>
+                                        );
+                                    })}
+                                </SortableContext>
+                            </DndContext>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
@@ -126,4 +191,28 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
             );
         },
     };
+};
+
+interface DraggableMenuItemProps {
+    id: string;
+    children: React.ReactNode;
+}
+const DraggableMenuItem: React.FC<DraggableMenuItemProps> = ({ id, children }) => {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id,
+    });
+
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+    };
+
+    return (
+        <div ref={setNodeRef} style={style} {...attributes} className="flex items-center">
+            <Button variant="outline" {...listeners} className="cursor-move mr-2 px-2 py-2">
+                <Grip className="h-4 w-4" />
+            </Button>
+            {children}
+        </div>
+    );
 };

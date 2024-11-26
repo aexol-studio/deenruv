@@ -1,55 +1,48 @@
 import { useDetailList } from './useDetailList';
 import {
+    Column,
     ColumnDef,
     ColumnFiltersState,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    RowData,
     useReactTable,
     VisibilityState,
 } from '@tanstack/react-table';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer } from '@/state';
-import { ValueTypes } from '@deenruv/admin-types';
+import { ModelTypes, ValueTypes } from '@deenruv/admin-types';
 import React from 'react';
 import { deepMerge, mergeSelectorWithCustomFields } from '@/utils';
 import { usePluginStore } from '@/plugins';
 import { ListLocationID, PromisePaginated } from '@/types';
 import { useLocalStorage } from '@/hooks';
-import { Button, TranslationSelect } from '@/components';
+import { Button } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
 import { ListType } from './useDetailList/types';
 import { FiltersButton } from './useDetailList/FiltersButton';
 import { FiltersResult } from './useDetailList/FiltersResult';
+import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS, EXCLUDED_COLUMNS } from './useDetailList/constants';
+import { cn } from '@/lib';
 
-const DEFAULT_COLUMNS = ['id', 'createdAt', 'updatedAt'];
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
-const EXCLUDED_COLUMNS = ['actions', 'select-id'];
-
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
-
-const COLUMN_PRIORITIES: Record<string, number> = {
-    'select-id': 0,
-    id: 1,
-    featuredAsset: 2,
-    createdAt: 3,
-    updatedAt: 4,
-    actions: 999,
-} as const;
-const getPriority = (key: string): number => COLUMN_PRIORITIES[key] ?? 500;
 type AdditionalColumn<T> = string & { __type?: T };
 type FIELDS<T extends PromisePaginated> = Array<
     keyof AwaitedReturnType<T>['items'][number] | AdditionalColumn<'CustomColumn'>
 >;
 
-export function DetailList<T extends PromisePaginated>({
+type CheckIfInModelTypes<T extends string> = T extends keyof ModelTypes ? T : never;
+
+export function DetailList<T extends PromisePaginated, ENTITY extends keyof ValueTypes>({
     fetch,
     route,
     onRemove,
@@ -60,6 +53,8 @@ export function DetailList<T extends PromisePaginated>({
     hideColumns,
     additionalColumns = [],
     detailLinkColumn,
+    filterFields,
+    noPaddings,
 }: {
     fetch: T;
     route:
@@ -68,13 +63,23 @@ export function DetailList<T extends PromisePaginated>({
     onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
     type: keyof ListType;
     tableId: ListLocationID;
-    entityName: keyof ValueTypes;
+    entityName: ENTITY;
     searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
     hideColumns?: FIELDS<T>;
     additionalColumns?: ColumnDef<AwaitedReturnType<T>['items'][number]>[];
     detailLinkColumn?: keyof AwaitedReturnType<T>['items'][number];
+    filterFields?: Array<
+        Exclude<keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>], '_or' | '_and'>
+    >;
+    noPaddings?: boolean;
 }) {
     const { t } = useTranslation('table');
+    const getPriority = (key: string): number => {
+        // TODO: Here we probably need to add a check for custom columns
+        // (or add a custom priority for them)
+        return DEFAULT_COLUMN_PRIORITIES[key] ?? 500;
+    };
+
     const navigate = useNavigate();
     const { getTableExtensions } = usePluginStore();
     const tableExtensions = getTableExtensions(tableId);
@@ -104,7 +109,28 @@ export function DetailList<T extends PromisePaginated>({
         `${type}-table-visibility`,
         { id: true, createdAt: true, updatedAt: true },
     );
+    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
+
+    const [movingColumnId, setMovingColumnId] = useState<string | null>(null);
+    const [targetColumnId, setTargetColumnId] = useState<string | null>(null);
+
     const columnsTranslations = t('columns', { returnObjects: true });
+
+    const reorderColumn = (movingColumnId: string, targetColumnId: string): string[] => {
+        const newColumnOrder = [...columnsOrderState];
+        newColumnOrder.splice(
+            newColumnOrder.indexOf(targetColumnId),
+            0,
+            newColumnOrder.splice(newColumnOrder.indexOf(movingColumnId), 1)[0],
+        );
+        setColumnsOrderState(newColumnOrder);
+        return newColumnOrder;
+    };
+
+    const handleDragEnd = (e: DragEvent) => {
+        if (!movingColumnId || !targetColumnId) return;
+        setColumnsOrderState(reorderColumn(movingColumnId, targetColumnId));
+    };
 
     const {
         objects,
@@ -261,10 +287,11 @@ export function DetailList<T extends PromisePaginated>({
         onColumnVisibilityChange: setColumnsVisibilityState,
         onRowSelectionChange: setRowSelection,
         onColumnFiltersChange: setColumnFilters,
+        onColumnOrderChange: setColumnsOrderState,
         meta: {
-            hideColumns: hideColumns as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
-            bulkActions: bulkActions as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
-            rowActions: rowActions as any, //TODO: FIX TYPES that is not easy to fix because of the way it is implemented and types passed by .d.ts
+            hideColumns,
+            bulkActions,
+            rowActions,
             route,
             refetch,
             onRemove: items => {
@@ -273,6 +300,7 @@ export function DetailList<T extends PromisePaginated>({
             },
         },
         state: {
+            columnOrder: columnsOrderState,
             columnVisibility: columnsVisibilityState,
             pagination: { pageIndex: page, pageSize: perPage },
             rowSelection,
@@ -309,6 +337,7 @@ export function DetailList<T extends PromisePaginated>({
             console.error('Error deleting items');
         }
     };
+
     const columnsLabels = useMemo(
         () =>
             table
@@ -322,6 +351,7 @@ export function DetailList<T extends PromisePaginated>({
                 .map(column => ('accessorKey' in column ? (column.accessorKey as string) : column.id)),
         [objects],
     );
+
     const filterProperties = {
         columnsLabels,
         type: searchParamType,
@@ -331,19 +361,16 @@ export function DetailList<T extends PromisePaginated>({
     };
 
     return (
-        <div className="px-4 py-2 md:px-8 md:py-4">
+        <div className={cn('w-full', !noPaddings && 'px-4 py-2 md:px-8 md:py-4')}>
             <DeleteDialog
                 {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
             />
             <div className="page-content-h flex w-full flex-col gap-2">
                 <div className="flex w-full flex-col items-start gap-4">
                     <div className="flex w-full items-end justify-between gap-4">
-                        <div className="flex flex-1 flex-col items-start gap-2">
-                            <TranslationSelect />
-                            <div className="flex items-center gap-2">
-                                <FiltersButton {...filterProperties} />
-                                {Search}
-                            </div>
+                        <div className="flex items-center gap-2">
+                            <FiltersButton {...filterProperties} />
+                            {Search}
                         </div>
                         <div className="flex">
                             <Button

@@ -1,30 +1,36 @@
 import { Table } from '@tanstack/react-table';
 
+type ActionResult = { success: string; error?: never } | { success?: never; error: string };
+
+type ActionBaseProps<T> = {
+    table: Table<T>;
+    refetch: () => void;
+};
+
+type RowActionProps<T> = ActionBaseProps<T> & {
+    data: T;
+};
+
+type BulkActionProps<T> = ActionBaseProps<T> & {
+    data: T[];
+};
+
+type ActionDefinition<P> = {
+    label: string;
+    onClick: (props: P) => Promise<ActionResult> | ActionResult;
+};
+
+type RouteConfig =
+    | { list: string; new: string; route: string; to: (id: string) => string }
+    | { create: () => void; edit: (id: string) => void };
+
 export type GenericListContextType<T> = {
-    route:
-        | { list: string; new: string; route: string; to: (id: string) => string }
-        | { create: () => void; edit: (id: string) => void };
+    route: RouteConfig;
     onRemove: (items: T[]) => void;
     refetch: () => void;
-    hideColumns?: string[];
-    rowActions?:
-        | {
-              label: string;
-              onClick: (props: {
-                  table: Table<T>;
-                  refetch: () => void;
-                  data: T;
-              }) => { success: string } | { error: string };
-          }[]
-        | undefined;
-    bulkActions?: Array<{
-        label: string;
-        onClick: (props: {
-            table: Table<T>;
-            refetch: () => void;
-            data: T[];
-        }) => Promise<{ success: string } | { error: string }> | { success: string } | { error: string };
-    }>;
+    hideColumns?: (keyof T)[];
+    rowActions?: ActionDefinition<RowActionProps<T>>[];
+    bulkActions?: ActionDefinition<BulkActionProps<T>>[];
 };
 
 export type LimitKeys =
