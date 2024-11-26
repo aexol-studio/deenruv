@@ -21,8 +21,8 @@
         "graphql-query-complexity": "^0.12.0"
     },
     "devDependencies": {
-        "@deenruv/common": "workspace:*",
-        "@deenruv/core": "workspace:*",
+        "@deenruv/common": "workspace:^",
+        "@deenruv/core": "workspace:^",
         "rimraf": "^5.0.5"
     }
 }

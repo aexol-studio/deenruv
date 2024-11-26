@@ -30,12 +30,12 @@
         "stripe": "13.x"
     },
     "dependencies": {
-        "@deenruv/common": "workspace:*",
-        "@deenruv/core": "workspace:*",
-        "@deenruv/testing": "workspace:*",
-        "@nestjs/common": "~10.3.10",
-        "@nestjs/core": "~10.3.10",
-        "@nestjs/graphql": "~12.2.0",
+        "@deenruv/common": "workspace:^",
+        "@deenruv/core": "workspace:^",
+        "@deenruv/testing": "workspace:^",
+        "@nestjs/common": "^10.3.10",
+        "@nestjs/core": "^10.3.10",
+        "@nestjs/graphql": "^12.2.0",
         "axios": "^1.7.7",
         "body-parser": "^1.20.2",
         "currency.js": "2.0.4",

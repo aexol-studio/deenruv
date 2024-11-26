@@ -18,9 +18,9 @@
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server && zeus http://localhost:3000/admin-api ./src/plugin-ui"
     },
     "dependencies": {
-        "@deenruv/common": "workspace:*",
-        "@deenruv/core": "workspace:*",
-        "@deenruv/react-ui-devkit": "workspace:*"
+        "@deenruv/common": "workspace:^",
+        "@deenruv/core": "workspace:^",
+        "@deenruv/react-ui-devkit": "workspace:^"
     },
     "devDependencies": {
         "rimraf": "^5.0.10",
