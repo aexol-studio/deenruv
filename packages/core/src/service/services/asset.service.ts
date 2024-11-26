@@ -301,9 +301,11 @@ export class AssetService {
         return new Promise(async (resolve, reject) => {
             const { createReadStream, filename, mimetype } = 'file' in input ? input.file : input;
             const stream = createReadStream && createReadStream();
-            stream.on('error', (err: any) => {
-                reject(err);
-            });
+            if (stream) {
+                stream.on('error', (err: any) => {
+                    reject(err);
+                });
+            }
             let result: Asset | MimeTypeError;
             try {
                 result = await this.createAssetInternal(ctx, stream, filename, mimetype, input.customFields);
@@ -552,7 +554,7 @@ export class AssetService {
             sourceFileName,
         );
 
-        if ((uploadSourceFile || uploadPreviewFile) && !stream) {
+        if (!(uploadSourceFile || uploadPreviewFile) && !stream) {
             throw new InternalServerError('error.stream-must-be-provided');
         }
 
