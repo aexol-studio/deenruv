@@ -554,7 +554,7 @@ export class AssetService {
             sourceFileName,
         );
 
-        if (!(uploadSourceFile || uploadPreviewFile) && !stream) {
+        if ((uploadSourceFile || uploadPreviewFile) && !stream) {
             throw new InternalServerError('error.stream-must-be-provided');
         }
 
