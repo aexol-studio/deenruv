@@ -65,22 +65,22 @@ export class LoginComponent implements OnInit {
     }
 
     loadImage() {
-        this.httpClient
-            .get('https://login-image.deenruv.io')
-            .toPromise()
-            .then(res => {
-                this.updateImage(res);
-            });
+        // this.httpClient
+        //     .get('https://login-image.deenruv.io')
+        //     .toPromise()
+        //     .then(res => {
+        //         this.updateImage(res);
+        //     });
     }
 
     updateImage(res: any) {
         const user: any = (res as any).user;
         const location: any = (res as any).location;
 
-        this.imageUrl = res.urls.regular + '?utm_source=Deenruv+Login+Image&utm_medium=referral';
+        this.imageUrl = res.urls.regular;
         this.imageCreator = user.name;
         this.imageLocation = location.name;
-        this.imageCreatorUrl = user.links.html + '?utm_source=Deenruv+Login+Image&utm_medium=referral';
+        this.imageCreatorUrl = user.links.html;
         this.imageUnsplashUrl = res.links.html;
     }
 
