@@ -31,18 +31,31 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
 
   useEffect(() => {
     const search = async () => {
+      const terms = debouncedValue.split(' ').filter(Boolean);
+      const filter =
+        terms.length > 1
+          ? {
+              OR: [
+                { firstName: { contains: terms[0] } },
+                { lastName: { contains: terms[1] } },
+                { emailAddress: { contains: debouncedValue } },
+                { id: { eq: debouncedValue } },
+              ],
+            }
+          : {
+              firstName: { contains: debouncedValue },
+              lastName: { contains: debouncedValue },
+              emailAddress: { contains: debouncedValue },
+              id: { eq: debouncedValue },
+            };
+
       const data = await apiClient('query')({
         customers: [
           {
             options: {
               take: 10,
               ...(debouncedValue && {
-                filter: {
-                  firstName: { contains: debouncedValue },
-                  lastName: { contains: debouncedValue },
-                  emailAddress: { contains: debouncedValue },
-                  id: { eq: debouncedValue },
-                },
+                filter,
                 filterOperator: LogicalOperator.OR,
               }),
             },
