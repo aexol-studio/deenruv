@@ -299,7 +299,7 @@ export class AssetService {
               },
     ): Promise<CreateAssetResult> {
         return new Promise(async (resolve, reject) => {
-            const { createReadStream, filename, mimetype } = 'file' in input ? input.file : input;
+            const { createReadStream, filename, mimetype } = 'file' in input ? await input.file : input;
             const stream = createReadStream && createReadStream();
             if (stream) {
                 stream.on('error', (err: any) => {
