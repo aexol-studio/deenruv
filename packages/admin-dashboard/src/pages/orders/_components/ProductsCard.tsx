@@ -24,6 +24,7 @@ import {
   TooltipContent,
   Tooltip,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import {
   DraftOrderLineType,
@@ -43,7 +44,6 @@ import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types.js';
 import { OrderLineActionModal } from './OrderLineActionModal/index.js';
-import { cn } from '@/lib/utils';
 // import { useServer } from '@/state';
 // import { CustomFieldsComponent } from '@/custom_fields';
 import { CustomComponent } from './CustomComponent.js';

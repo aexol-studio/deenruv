@@ -10,11 +10,11 @@ import {
   CardTitle,
   CardContent,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { AssetsModalInput, Stack } from '@/components';
 import { AssetType, assetsSelector } from '@/graphql/base';
 
-import { cn } from '@/lib/utils';
 import { ImageOff } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

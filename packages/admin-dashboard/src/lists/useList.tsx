@@ -15,8 +15,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  cn,
 } from '@deenruv/react-ui-devkit';
-import { cn } from '@/lib/utils';
 import { cache } from '@/lists/cache';
 import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';

@@ -43,7 +43,7 @@ interface NavProps {
   isCollapsed: boolean;
 }
 
-export function Nav({ isCollapsed }: NavProps) {
+export function Navigation({ isCollapsed }: NavProps) {
   const { t } = useTranslation('common');
   const { t: _pluginT } = useTranslation();
   const location = useLocation();
@@ -170,10 +170,10 @@ export function Nav({ isCollapsed }: NavProps) {
       >
         {navigationGroups.map((group) => (
           <React.Fragment key={group.id}>
-            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase text-gray-400">{group.label}</h4>}
+            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase text-primary">{group.label}</h4>}
             <nav
               id={group.id}
-              className="grid gap-1 px-2 text-zinc-500 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+              className="grid gap-1 px-2 text-primary-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
             >
               {group.links.map((link, index) => (
                 <React.Fragment key={link.id}>

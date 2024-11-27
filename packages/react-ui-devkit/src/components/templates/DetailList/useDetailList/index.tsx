@@ -7,8 +7,9 @@ import { FiltersButton } from './FiltersButton';
 import React from 'react';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models';
 import { SortButton } from '@/components';
-import { ListType } from './types';
+import { ListType, ListTypeKeys } from './types';
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
+import { FilterInputTypeUnion } from '../_components/types';
 
 type LimitKeys =
     | '10perPage'
@@ -67,8 +68,8 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     refetch: (initialFilterState?: ModelTypes[ListType[K]] | undefined) => void;
     type: K;
     filter: ModelTypes[ListType[K]] | undefined;
-    setFilterField: any;
-    removeFilterField: any;
+    setFilterField: (field: FIELD, value: VALUE) => void;
+    removeFilterField: (field: FIELD) => void;
 } => {
     const [searchParams, setSearchParams] = useCustomSearchParams();
     const [total, setTotal] = useState(0);

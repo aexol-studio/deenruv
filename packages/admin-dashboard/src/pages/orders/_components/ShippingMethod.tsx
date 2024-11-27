@@ -16,13 +16,13 @@ import {
   DialogTitle,
   DialogTrigger,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import {
   EligibleShippingMethodsType,
   draftOrderSelector,
   eligibleShippingMethodsSelector,
 } from '@/graphql/draft_order';
-import { cn } from '@/lib/utils';
 import { priceFormatter } from '@/utils';
 import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';

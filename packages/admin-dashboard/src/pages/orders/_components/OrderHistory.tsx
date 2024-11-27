@@ -30,13 +30,13 @@ import {
   TimelineLine,
   OrderStateBadge,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 
 import { DeletionResult, HistoryEntryType, ModelTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
-import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { useOrder } from '@/state/order';
 

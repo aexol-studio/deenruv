@@ -26,9 +26,9 @@ import {
   DialogTrigger,
   useServer,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { AddressBaseType, addressBaseSelector, draftOrderSelector } from '@/graphql/draft_order';
-import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
 import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';

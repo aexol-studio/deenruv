@@ -1,8 +1,6 @@
 import { Button, DialogFooter, Input, Label } from '@deenruv/react-ui-devkit';
-import { RadioGroup, RadioGroupItem } from '@deenruv/react-ui-devkit';
+import { cn, RadioGroup, RadioGroupItem } from '@deenruv/react-ui-devkit';
 import { DraftOrderLineType } from '@/graphql/draft_order';
-
-import { cn } from '@/lib/utils';
 
 import { priceFormatter } from '@/utils';
 

@@ -3,8 +3,7 @@ export const EXCLUDED_COLUMNS = ['actions', 'select-id'];
 export const DEFAULT_COLUMN_PRIORITIES: Record<string, number> = {
     'select-id': 0,
     id: 1,
-    featuredAsset: 2,
-    createdAt: 3,
-    updatedAt: 4,
+    createdAt: 2,
+    updatedAt: 3,
     actions: 999,
 } as const;

@@ -6,7 +6,7 @@ import Text from '@tiptap/extension-text';
 import Heading from '@tiptap/extension-heading';
 import { useEffect } from 'react';
 import { EditorToolbar } from '@/components/RichTextEditor/EditorToolbar';
-import { cn } from '@/lib/utils';
+import { cn } from '@deenruv/react-ui-devkit';
 
 const extensions = [StarterKit, Document, Paragraph, Text, Heading];
 

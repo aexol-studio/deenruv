@@ -16,10 +16,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { ImageWithPreview, ProductVariantSearch } from '@/components';
 import { DraftOrderType, ProductVariantType } from '@/graphql/draft_order';
-import { cn } from '@/lib/utils';
 // import { CustomComponent } from '@/pages/orders/_components';
 import { ModifyingCard } from '@/pages/orders/_components/ModifyingCard';
 import { PromotionsList } from '@/pages/orders/_components/PromotionsList';

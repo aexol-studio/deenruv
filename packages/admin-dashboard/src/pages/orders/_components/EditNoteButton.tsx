@@ -11,9 +11,9 @@ import {
   Checkbox,
   Label,
   Button,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
-import { cn } from '@/lib/utils';
 import { ModelTypes } from '@deenruv/admin-types';
 
 import { Pencil } from 'lucide-react';

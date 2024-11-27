@@ -11,13 +11,13 @@ import {
   PopoverContent,
   PopoverTrigger,
   Switch,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { LogicalOperator, ModelTypes } from '@deenruv/admin-types';
 
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from 'use-debounce';
 import { ChevronDown, CircleX } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { StringOperator } from '@/components/Search/StringOperator';
 import {
   SearchProps,

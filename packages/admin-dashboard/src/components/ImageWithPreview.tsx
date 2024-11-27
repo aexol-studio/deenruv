@@ -1,5 +1,4 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@deenruv/react-ui-devkit';
-import { cn } from '@/lib/utils';
+import { cn, HoverCard, HoverCardContent, HoverCardTrigger } from '@deenruv/react-ui-devkit';
 interface Props
   extends Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'className'> {
   imageClassName?: string;

@@ -12,10 +12,10 @@ import {
   Label,
   apiClient,
   useSettings,
+  cn,
 } from '@deenruv/react-ui-devkit';
 
 import { CountryListType } from '@/graphql/settings';
-import { cn } from '@/lib/utils';
 import { useGFFLP } from '@/lists/useGflp';
 import { DeletionResult, LanguageCode } from '@deenruv/admin-types';
 

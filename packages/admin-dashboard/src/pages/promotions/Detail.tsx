@@ -13,10 +13,10 @@ import {
   PopoverContent,
   PopoverTrigger,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 
-import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';

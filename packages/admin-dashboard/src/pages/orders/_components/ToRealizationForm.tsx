@@ -12,10 +12,10 @@ import {
   SelectGroup,
   SelectItem,
   Textarea,
+  cn,
 } from '@deenruv/react-ui-devkit';
-//
+
 import { DraftOrderType } from '@/graphql/draft_order';
-import { cn } from '@/lib/utils';
 import { useOrder } from '@/state/order';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';

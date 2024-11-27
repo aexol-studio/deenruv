@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import {
   Select,
   SelectContent,
@@ -8,6 +7,7 @@ import {
   useServer,
   useSettings,
   DEFAULT_CHANNEL_CODE,
+  cn,
 } from '@deenruv/react-ui-devkit';
 // import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
 import { clearAllCache } from '@/lists/cache';

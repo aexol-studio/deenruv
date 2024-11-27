@@ -16,13 +16,13 @@ import {
   // DialogHeader,
   // DialogTitle,
   // DialogTrigger,
+  cn,
 } from '@deenruv/react-ui-devkit';
 // import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import { SearchCustomerType } from '@/graphql/draft_order';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 // import { useGFFLP } from '@/lists/useGflp';
-import { cn } from '@/lib/utils';
 // import { toast } from 'sonner';
 // import { Edit } from 'lucide-react';
 import { useOrder } from '@/state/order';

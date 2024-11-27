@@ -22,10 +22,10 @@ import {
   Routes,
   EmptyState,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
-import { cn } from '@/lib/utils';
 import { ITEMS_PER_PAGE } from '@/lists/useList';
 import { ValueTypes } from '@deenruv/admin-types';
 import {

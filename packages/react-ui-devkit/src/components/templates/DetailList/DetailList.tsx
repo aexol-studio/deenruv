@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
@@ -112,7 +112,6 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         () => mergeSelectorWithCustomFields({}, entityName, entityCustomFields),
         [entityCustomFields],
     );
-
     const [itemsToDelete, setItemsToDelete] = useState<AwaitedReturnType<T>['items']>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [rowSelection, setRowSelection] = useState({});
@@ -121,7 +120,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         `${type}-table-visibility`,
         { id: true, createdAt: true, updatedAt: true },
     );
-
+    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
     const columnsTranslations = t('columns', { returnObjects: true });
 
     const {
@@ -292,8 +291,6 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         return resultColumns;
     }, [objects]);
 
-    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
-
     useEffect(() => {
         setColumnsVisibilityState(prev => {
             const keys = objects?.[0] ? Object.keys(objects[0]) : [];
@@ -346,7 +343,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             },
         },
         state: {
-            columnOrder: columnsOrderState,
+            ...(columnsOrderState &&
+                columnsOrderState.filter(Boolean).length > 0 && {
+                    columnOrder: ['select-id', ...columnsOrderState, 'actions'],
+                }),
             columnVisibility: columnsVisibilityState,
             pagination: { pageIndex: page, pageSize: perPage },
             rowSelection,

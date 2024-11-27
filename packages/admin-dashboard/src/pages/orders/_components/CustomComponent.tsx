@@ -12,9 +12,9 @@ import {
   Input,
   Label,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { cn } from '@/lib/utils';
 import { InfoIcon, Trash } from 'lucide-react';
 
 const ProductSelector = Selector('Product')({

@@ -31,9 +31,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
-import { cn } from '@/lib/utils';
 import { useAssets, ASSETS_PER_PAGE, ASSETS_ITEMS_PER_PAGE } from '@/hooks';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, CircleX } from 'lucide-react';

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@deenruv/react-ui-devkit';
 import { CircleOff } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
 import pkg from 'react-color';

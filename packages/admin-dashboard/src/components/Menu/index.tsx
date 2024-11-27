@@ -23,17 +23,16 @@ import {
   useSettings,
   useServer,
   usePluginStore,
+  cn,
 } from '@deenruv/react-ui-devkit';
 
 import { Bell, GripVertical, LogOutIcon, MenuIcon, Moon, Slash, Sun, Trash2Icon, SunMoon } from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 
-import { cn } from '@/lib/utils';
-import { Nav } from './AwesomeMenu/Nav.js';
+import { Navigation } from './AwesomeMenu/Navigation.js';
 import { NavLink, useMatches, useNavigate } from 'react-router-dom';
 import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
-import { ADMIN_DASHBOARD_VERSION } from '@/version';
 import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './AwesomeMenu/LanguagesDropdown.js';
 
@@ -74,7 +73,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
   const { topNavigationActionsMenu, topNavigationComponents } = usePluginStore();
-  const { logOut, theme, setTheme, language, setLanguage } = useSettings((p) => ({
+  const { logOut, theme, setTheme } = useSettings((p) => ({
     logOut: p.logOut,
     theme: p.theme,
     setTheme: p.setTheme,
@@ -135,10 +134,10 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <Nav isCollapsed={isCollapsed} />
+                  <Navigation isCollapsed={isCollapsed} />
                   <div className="bg-secondary flex h-[40px] w-full select-none items-center justify-center gap-2 text-xs shadow-2xl">
-                    <p className="uppercase">Deenruv</p>
-                    <span>ver. {window.__DEENRUV_SETTINGS__.appVersion}</span>
+                    {!isCollapsed && <p className="uppercase">Deenruv</p>}
+                    <span>{!isCollapsed ? "ver. " : "v. "}{window.__DEENRUV_SETTINGS__.appVersion}</span>
                   </div>
                 </div>
               </ResizablePanel>

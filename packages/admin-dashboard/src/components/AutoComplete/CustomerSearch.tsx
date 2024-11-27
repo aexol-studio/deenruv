@@ -10,12 +10,12 @@ import {
   TableHeader,
   TableRow,
   apiClient,
+  cn,
 } from '@deenruv/react-ui-devkit';
 
 import { useTranslation } from 'react-i18next';
 import { LogicalOperator } from '@deenruv/admin-types';
 import { SearchCustomerType, searchCustomerSelector } from '@/graphql/draft_order';
-import { cn } from '@/lib/utils';
 
 interface Props {
   onSelect: (selected: SearchCustomerType) => void;
