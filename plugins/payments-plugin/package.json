@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/payments-plugin",
-    "version": "0.0.41",
+    "version": "0.0.42",
     "license": "MIT",
     "main": "package/index.js",
     "types": "package/index.d.ts",
