@@ -170,10 +170,10 @@ export function Navigation({ isCollapsed }: NavProps) {
       >
         {navigationGroups.map((group) => (
           <React.Fragment key={group.id}>
-            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase text-primary">{group.label}</h4>}
+            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase text-secondary-foreground">{group.label}</h4>}
             <nav
               id={group.id}
-              className="grid gap-1 px-2 text-primary-foreground group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+              className="grid text-muted-foreground gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
             >
               {group.links.map((link, index) => (
                 <React.Fragment key={link.id}>
@@ -187,7 +187,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                 buttonVariants({ variant: 'ghost', size: 'icon' }),
                                 'h-9 w-9',
                                 location.pathname === link.href &&
-                                  'bg-muted text-muted-foreground hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted dark:text-white dark:hover:text-white',
+                                  'bg-muted text-secondary hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
                               )}
                             >
                               <link.icon className="h-6 w-6" />
@@ -208,7 +208,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                         className={cn(
                           buttonVariants({ variant: 'ghost', size: 'sm' }),
                           location.pathname === link.href &&
-                            'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold text-black dark:text-white dark:hover:text-white',
+                            'text-secondary-foreground bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold',
                           'justify-start capitalize',
                         )}
                       >

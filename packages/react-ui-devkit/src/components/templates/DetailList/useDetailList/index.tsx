@@ -185,7 +185,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
                 setTotal(totalItems);
             });
         },
-        [searchParams, type, searchParamValues],
+        [searchParams, type, searchParamValues, Object.keys(customFieldsSelector || {}).length],
     );
 
     useEffect(() => {
@@ -193,7 +193,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
             setObjects(items);
             setTotal(totalItems);
         });
-    }, [searchParamValues]);
+    }, [searchParamValues, Object.keys(customFieldsSelector || {}).length]);
 
     const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
     const totalPages = useMemo(

@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
@@ -28,7 +28,7 @@ import { ListTable } from '@/components/molecules/ListTable';
 import { ListType } from './useDetailList/types';
 import { FiltersButton } from './useDetailList/FiltersButton';
 import { FiltersResult } from './useDetailList/FiltersResult';
-import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS, EXCLUDED_COLUMNS } from './useDetailList/constants';
+import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailList/constants';
 import { cn } from '@/lib';
 
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
