@@ -44,7 +44,7 @@ export const addMissingDays = <T>(
         ]),
     );
     return days.map(day => {
-        const matchingDate = day.toISOString();
+        const matchingDate = new Date(day).toISOString();
         const displayDate = format(new Date(day), 'PPP', {
             locale: language === 'pl' ? pl : enGB,
         });
