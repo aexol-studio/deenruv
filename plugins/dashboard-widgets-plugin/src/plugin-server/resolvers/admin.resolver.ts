@@ -9,10 +9,19 @@ export class AdminResolver {
 
     @Allow(Permission.Authenticated)
     @Query()
-    async betterMetricSummary(
+    async chartMetric(
         @Ctx() ctx: RequestContext,
-        @Args() args: { input: ResolverInputTypes['BetterMetricSummaryInput'] },
+        @Args() args: { input: ResolverInputTypes['ChartMetricInput'] },
     ) {
-        return this.betterMetricsService.getBetterMetrics(ctx, args.input);
+        return this.betterMetricsService.getChartMetrics(ctx, args.input);
+    }
+
+    @Allow(Permission.Authenticated)
+    @Query()
+    async orderSummaryMetric(
+        @Ctx() ctx: RequestContext,
+        @Args() args: { input: ResolverInputTypes['OrderSummaryMetricInput'] },
+    ) {
+        return this.betterMetricsService.getOrderSummaryMetric(ctx, args.input);
     }
 }

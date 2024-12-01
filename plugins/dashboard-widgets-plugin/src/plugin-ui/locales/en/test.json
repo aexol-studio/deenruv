@@ -1,10 +1,12 @@
 {
     "metrics": "Metrics",
     "averageOrderValue": "Average order value",
+    "averageOrdersValue": "Average orders value",
     "bestsellers": "Bestsellers",
     "categories": "Popular categories",
     "showAll": "Show all",
     "sold": "Sold: ",
+    "soldValue": "Sold value: ",
     "orderCount": "Order count",
     "orderTotal": "Order total",
     "dataTypes": "Data types",
@@ -36,5 +38,8 @@
     "orderTotalProductsCount": "Total products count",
     "emptyDataTitle": "No orders",
     "emptyData": "Looks like there are no orders for selected period",
-    "lastRefresh": "Last refresh: "
+    "lastRefresh": "Last refresh: ",
+    "sortBy": "Sort by",
+    "sortByCount": "Sort by count",
+    "sortByNet": "Sort by values"
 }

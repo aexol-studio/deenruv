@@ -33,18 +33,14 @@ export const MetricsIntervalSelect: React.FC<{
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value={BetterMetricInterval.ThisWeek}>
+                            <SelectItem value={BetterMetricInterval.Weekly}>
                                 {t('thisWeekInterval')}
                             </SelectItem>
-                            <SelectItem value={BetterMetricInterval.Weekly}>{t('weeklyInterval')}</SelectItem>
                             <SelectItem value={BetterMetricInterval.LastWeek}>
                                 {t('lastWeekInterval')}
                             </SelectItem>
-                            <SelectItem value={BetterMetricInterval.ThisMonth}>
-                                {t('thisMonthInterval')}
-                            </SelectItem>
                             <SelectItem value={BetterMetricInterval.Monthly}>
-                                {t('mothlyInterval')}
+                                {t('thisMonthInterval')}
                             </SelectItem>
                             <SelectItem value={BetterMetricInterval.LastMonth}>
                                 {t('lastMonthInterval')}

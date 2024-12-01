@@ -1,10 +1,12 @@
 {
     "metrics": "Wykres szczegółowy",
     "averageOrderValue": "Średnia wartość zamówienia",
+    "averageOrdersValue": "Średnia wartość zamówień",
     "bestsellers": "Bestsellery",
     "categories": "Popularne kategorie",
     "showAll": "Pokaż wszystkie",
     "sold": "Sprzedano: ",
+    "soldValue": "Wartość sprzedaży: ",
     "orderCount": "Ilość zamówień",
     "orderTotal": "Wartość zamówień",
     "dataTypes": "Dostępne typy danych",
@@ -36,5 +38,8 @@
     "orderTotalProductsCount": "Liczba sprzedanych produktów",
     "emptyDataTitle": "Brak zamówień",
     "emptyData": "Wygląda na to, że nie ma zamówień dla wybranego okresu",
-    "lastRefresh": "Ostatnia aktualizacja: "
+    "lastRefresh": "Ostatnia aktualizacja: ",
+    "sortBy": "Sortuj po",
+    "sortByCount": "Sortuj po ilości",
+    "sortByNet": "Sortuj po wartości"
 }

@@ -15,7 +15,7 @@ export const MetricsCustomDates: React.FC<{
     });
     if (!isVisible) return null;
     return (
-        <>
+        <div className="flex gap-2 flex-wrap">
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
@@ -60,6 +60,6 @@ export const MetricsCustomDates: React.FC<{
                     />
                 </PopoverContent>
             </Popover>
-        </>
+        </div>
     );
 };

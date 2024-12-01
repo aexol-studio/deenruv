@@ -13,10 +13,10 @@ export const OrdersSummaryQuery = typedGql('query', { scalars })({
     ],
 });
 
-export const BetterMetricsQuery = typedGql('query', { scalars })({
-    betterMetricSummary: [
+export const ChartMetricQuery = typedGql('query', { scalars })({
+    chartMetric: [
         {
-            input: $('input', 'BetterMetricSummaryInput!'),
+            input: $('input', 'ChartMetricInput!'),
         },
         {
             data: {
@@ -26,7 +26,12 @@ export const BetterMetricsQuery = typedGql('query', { scalars })({
                 entries: {
                     label: true,
                     value: true,
-                    additionalData: { id: true, name: true, quantity: true },
+                    additionalData: {
+                        id: true,
+                        name: true,
+                        quantity: true,
+                        priceWithTax: true,
+                    },
                 },
             },
             lastCacheRefreshTime: true,
@@ -34,6 +39,24 @@ export const BetterMetricsQuery = typedGql('query', { scalars })({
     ],
 });
 
+export const OrderSummaryMetricsQuery = typedGql('query', { scalars })({
+    orderSummaryMetric: [
+        { input: $('input', 'OrderSummaryMetricInput!') },
+        {
+            __typename: true,
+            data: {
+                __typename: true,
+                currencyCode: true,
+                averageOrderValue: true,
+                averageOrderValueWithTax: true,
+                orderCount: true,
+                total: true,
+                totalWithTax: true,
+            },
+            lastCacheRefreshTime: true,
+        },
+    ],
+});
 export const ProductCollectionsQuery = typedGql('query', { scalars })({
     products: [
         {
@@ -61,7 +84,10 @@ export const LatestOrdersQuery = typedGql('query', { scalars })({
         {
             options: {
                 take: 5,
-                filter: { active: { eq: false }, state: { notIn: LATEST_ORDERS_EXCLUDED_STATUSES } },
+                filter: {
+                    active: { eq: false },
+                    state: { notIn: LATEST_ORDERS_EXCLUDED_STATUSES },
+                },
                 sort: { createdAt: SortOrder.DESC },
             },
         },

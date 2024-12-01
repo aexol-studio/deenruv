@@ -1,4 +1,3 @@
-import { getZonedDate } from '@/utils';
 import { eachDayOfInterval, format } from 'date-fns';
 import { pl, enGB } from 'date-fns/locale';
 
@@ -16,7 +15,11 @@ export const addMissingDays = <T>(
     end: string,
     type: T,
     language: string,
-    partialData: { label: string; value: number; additionalData?: AdditionalEntryData[] }[] = [],
+    partialData: {
+        label: string;
+        value: number;
+        additionalData?: AdditionalEntryData[];
+    }[] = [],
 ): MetricData<T>[] => {
     const startDate = new Date(start);
     const endDate = new Date(end);
@@ -29,13 +32,22 @@ export const addMissingDays = <T>(
         type,
     }));
 
-    const dataMap = new Map(mappedPartialData.map(item => [item.name, item]));
+    const dataMap = new Map(
+        mappedPartialData.map(item => [
+            item.name,
+            {
+                ...item,
+                name: format(new Date(item.name), 'PPP', {
+                    locale: language === 'pl' ? pl : enGB,
+                }),
+            },
+        ]),
+    );
     return days.map(day => {
-        const matchingDate = format(getZonedDate(day), 'yyyy-MM-dd');
-        const displayDate = format(getZonedDate(day), 'PPP', {
+        const matchingDate = day.toISOString();
+        const displayDate = format(new Date(day), 'PPP', {
             locale: language === 'pl' ? pl : enGB,
         });
-
         return (
             dataMap.get(matchingDate) || {
                 name: displayDate,

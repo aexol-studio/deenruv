@@ -17,28 +17,31 @@ import {
     CardTitle,
     CardHeader,
     CardContent,
-    addMissingDays,
-    getZonedDate,
     usePluginStore,
     useLazyQuery,
     CardFooter,
+    addMissingDays,
 } from '@deenruv/react-ui-devkit';
 import { MetricsIntervalSelect } from './MetricsIntervalSelect';
 import { MetricsCustomDates } from './MetricCustomDates';
 import { MetricTypeSelect } from './MetricTypeSelect';
 import { OrdersChart } from './OrdersChart';
 
-import { BetterMetricInterval, BetterMetricType, ResolverInputTypes } from '../../zeus';
-import { BetterMetricsQuery } from '../../graphql';
+import { BetterMetricInterval, ChartMetricType, ResolverInputTypes } from '../../zeus';
+import { ChartMetricQuery } from '../../graphql';
 import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 type BetterMetricsChartDataType = {
     data: {
         title: string;
-        type: BetterMetricType;
+        type: ChartMetricType;
         interval: BetterMetricInterval;
-        entries: { label: string; value: number; additionalData?: AdditionalEntryData[] }[];
+        entries: {
+            label: string;
+            value: number;
+            additionalData?: AdditionalEntryData[];
+        }[];
     }[];
     lastCacheRefreshTime?: string;
 };
@@ -47,16 +50,16 @@ export const OrdersWidget = () => {
     const { t } = useTranslation('dashboard-widgets-plugin', {
         i18n: window.__DEENRUV_SETTINGS__.i18n,
     });
-    const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
+    const [fetchChartMetrics] = useLazyQuery(ChartMetricQuery);
     const { language } = usePluginStore();
     const [metricLoading, setMetricLoading] = useState(false);
     const [metricSelectValue, setMetricSelectValue] = useState(BetterMetricInterval.Weekly);
 
     const [betterMetricsSettings, setBetterMetricsSettings] = useState<
-        ResolverInputTypes['BetterMetricSummaryInput']
+        ResolverInputTypes['ChartMetricInput']
     >({
         interval: { type: BetterMetricInterval.Weekly },
-        types: [BetterMetricType.OrderTotal],
+        types: [ChartMetricType.OrderTotal],
         refresh: false,
     });
 
@@ -65,12 +68,6 @@ export const OrdersWidget = () => {
     const getCustomIntervalDates = useCallback(
         (interval: BetterMetricInterval): { start: Date; end: Date } => {
             switch (interval) {
-                case BetterMetricInterval.ThisWeek:
-                    return {
-                        start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-                        end: endOfWeek(new Date(), { weekStartsOn: 1 }),
-                    };
-
                 case BetterMetricInterval.LastWeek:
                     return {
                         start: startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
@@ -107,7 +104,6 @@ export const OrdersWidget = () => {
                     BetterMetricInterval.LastMonth,
                     BetterMetricInterval.ThisMonth,
                     BetterMetricInterval.LastWeek,
-                    BetterMetricInterval.ThisWeek,
                 ].includes(betterMetricsSettings.interval.type)
             ) {
                 metricSettings.interval = {
@@ -117,10 +113,10 @@ export const OrdersWidget = () => {
             }
             try {
                 setMetricLoading(true);
-                const { betterMetricSummary } = await fetchBetterMetrics({
+                const { chartMetric } = await fetchChartMetrics({
                     input: { ...metricSettings, refresh },
                 });
-                setBetterMetrics(betterMetricSummary);
+                setBetterMetrics(chartMetric);
             } catch (e) {
                 console.log(e);
             } finally {
@@ -134,7 +130,7 @@ export const OrdersWidget = () => {
         fetchData();
     }, [betterMetricsSettings, getCustomIntervalDates]);
 
-    const changeBetterMetricType = (type: BetterMetricType) => {
+    const changeBetterMetricType = (type: ChartMetricType) => {
         setBetterMetricsSettings(prev => ({ ...prev, types: [type] }));
     };
     const changeMetricsInterval = (interval: BetterMetricInterval) => {
@@ -142,7 +138,10 @@ export const OrdersWidget = () => {
         setBetterMetricsSettings(p => ({ ...p, interval: { type: interval } }));
     };
     const changeCustomIntervalDate = (date: Date | undefined, key: 'end' | 'start') => {
-        setBetterMetricsSettings(p => ({ ...p, interval: { ...p.interval, [key]: date } }));
+        setBetterMetricsSettings(p => ({
+            ...p,
+            interval: { ...p.interval, [key]: date },
+        }));
     };
 
     const betterData = useMemo(() => {
@@ -150,12 +149,12 @@ export const OrdersWidget = () => {
             .map(metric => {
                 return metric.interval !== BetterMetricInterval.Custom
                     ? metric.entries.map(entry => ({
-                          name: format(getZonedDate(entry.label), 'PPP', {
+                          name: format(new Date(entry.label), 'PPP', {
                               locale: language === 'pl' ? pl : enGB,
                           }),
                           value:
-                              metric.type === BetterMetricType.AverageOrderValue ||
-                              metric.type === BetterMetricType.OrderTotal
+                              metric.type === ChartMetricType.AverageOrderValue ||
+                              metric.type === ChartMetricType.OrderTotal
                                   ? entry.value / 100
                                   : entry.value,
                           type: metric.type,
@@ -170,8 +169,8 @@ export const OrdersWidget = () => {
                           metric.entries.map(entry => ({
                               label: entry.label,
                               value:
-                                  metric.type === BetterMetricType.AverageOrderValue ||
-                                  metric.type === BetterMetricType.OrderTotal
+                                  metric.type === ChartMetricType.AverageOrderValue ||
+                                  metric.type === ChartMetricType.OrderTotal
                                       ? entry.value / 100
                                       : entry.value,
                               additionalData: entry.additionalData,
@@ -185,26 +184,24 @@ export const OrdersWidget = () => {
         <Card className="border-0 shadow-none pr-6 py-6">
             <CardHeader className="pt-0">
                 <div className="flex flex-col justify-between gap-4">
-                    <CardTitle className="flex items-center gap-8 text-lg">
+                    <CardTitle className="flex items-center justify-between gap-2 text-lg">
                         <span>{t('metrics')}</span>
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 flex-wrap justify-between">
                             <MetricTypeSelect
                                 changeMetricType={changeBetterMetricType}
                                 loading={metricLoading}
                             />
-                            <div className="flex gap-3">
-                                <MetricsIntervalSelect
-                                    value={metricSelectValue}
-                                    changeMetricInterval={changeMetricsInterval}
-                                    loading={metricLoading}
-                                />
-                                <MetricsCustomDates
-                                    isVisible={metricSelectValue === BetterMetricInterval.Custom}
-                                    endDate={betterMetricsSettings.interval.end as Date | undefined}
-                                    startDate={betterMetricsSettings.interval.start as Date | undefined}
-                                    setDate={changeCustomIntervalDate}
-                                />
-                            </div>
+                            <MetricsIntervalSelect
+                                value={metricSelectValue}
+                                changeMetricInterval={changeMetricsInterval}
+                                loading={metricLoading}
+                            />
+                            <MetricsCustomDates
+                                isVisible={metricSelectValue === BetterMetricInterval.Custom}
+                                endDate={betterMetricsSettings.interval.end as Date | undefined}
+                                startDate={betterMetricsSettings.interval.start as Date | undefined}
+                                setDate={changeCustomIntervalDate}
+                            />
                         </div>
                     </CardTitle>
                 </div>

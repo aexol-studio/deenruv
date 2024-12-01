@@ -14,14 +14,14 @@ import {
     useLazyQuery,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useState } from 'react';
-import { BetterMetricInterval, BetterMetricType } from '../../zeus';
+import { BetterMetricInterval, ChartMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { endOfToday, startOfToday } from 'date-fns';
 import { PeriodSelect, Period, Periods } from '../shared';
 import { dashCaseToSpaces } from './dashCaseToSpaces';
 import { colors, EmptyData } from '../shared';
 
-import { BetterMetricsQuery, ProductCollectionsQuery } from '../../graphql';
+import { ChartMetricQuery, ProductCollectionsQuery } from '../../graphql';
 import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 
 export const CategoriesChartWidget = () => {
@@ -30,7 +30,7 @@ export const CategoriesChartWidget = () => {
     });
     const [chartData, setChartData] = useState<{ category: string; value: number }[]>([]);
     const [lastRefreshedCache, setLastRefreshedCache] = useState<string | undefined>();
-    const [fetchBetterMetrics] = useLazyQuery(BetterMetricsQuery);
+    const [fetchBetterMetrics] = useLazyQuery(ChartMetricQuery);
     const [fetchProductCollections] = useLazyQuery(ProductCollectionsQuery);
     const [selectedPeriod, setSelectedPeriod] = useState<Period>({
         period: Periods.Today,
@@ -47,12 +47,12 @@ export const CategoriesChartWidget = () => {
                         start: selectedPeriod.start,
                         end: selectedPeriod.end,
                     },
-                    types: [BetterMetricType.OrderTotalProductsCount],
+                    types: [ChartMetricType.OrderTotalProductsCount],
                     refresh,
                 },
-            }).then(({ betterMetricSummary }) => {
-                const entries = betterMetricSummary.data[0].entries;
-                setLastRefreshedCache(betterMetricSummary.lastCacheRefreshTime);
+            }).then(({ chartMetric }) => {
+                const entries = chartMetric.data[0].entries;
+                setLastRefreshedCache(chartMetric.lastCacheRefreshTime);
                 const salesTotals: Record<string, { name: string; quantity: number }> = {};
 
                 entries.forEach(entry => {

@@ -1,31 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { assertNever } from '@deenruv/common/lib/shared-utils';
-import type { SelectQueryBuilder } from 'typeorm';
+
 import { Logger, Order, RequestContext, TransactionalConnection, TtlCache } from '@deenruv/core';
 import {
     endOfDay,
-    getDayOfYear,
-    getDay,
-    getISOWeek,
-    getMonth,
-    getDaysInMonth,
     startOfDay,
     startOfWeek,
     startOfMonth,
-    add,
-    getDate,
-    isLeapYear,
     startOfYear,
     endOfYear,
     endOfMonth,
     endOfWeek,
+    addDays,
+    eachDayOfInterval,
 } from 'date-fns';
-import { BetterMetricInterval, BetterMetricType, GraphQLTypes, ResolverInputTypes } from '../zeus';
+import { BetterMetricInterval, ChartMetricType, GraphQLTypes, ResolverInputTypes } from '../zeus';
 import { DashboardWidgetsPluginOptions, MetricResponse } from '../types';
 import {
-    ORDER_COUNT_QUERY_SELECT,
-    ORDER_TOTAL_PRODUCT_QUERY_SELECT,
-    ORDER_TOTAL_QUERY_SELECT,
+    CHART_DATA_AVERAGE_VALUE_QUERY_SELECT,
+    CHART_ORDER_COUNT_QUERY_SELECT,
+    CHART_ORDER_TOTAL_QUERY_SELECT,
+    ORDERS_SUMMARY_QUERY_SELECT,
 } from '../raw-sql';
 import { DEFAULT_CACHE_TIME, PLUGIN_INIT_OPTIONS } from '../constants';
 
@@ -34,91 +29,89 @@ export type MetricData = {
     orders: MetricResponse[];
 };
 
-const QUERY_MAPPINGS = {
-    [BetterMetricType.OrderCount]: ORDER_COUNT_QUERY_SELECT,
-    [BetterMetricType.OrderTotal]: ORDER_TOTAL_QUERY_SELECT,
-    [BetterMetricType.AverageOrderValue]: ORDER_TOTAL_QUERY_SELECT,
-    [BetterMetricType.OrderTotalProductsCount]: ORDER_TOTAL_PRODUCT_QUERY_SELECT,
-};
 const MAPPINGS = {
-    [BetterMetricType.OrderCount]: {
+    [ChartMetricType.OrderCount]: {
         title: 'order-count',
-        calculate: (data: MetricData) => data.orders.length,
+        query: CHART_ORDER_COUNT_QUERY_SELECT,
     },
-    [BetterMetricType.OrderTotal]: {
+    [ChartMetricType.OrderTotal]: {
         title: 'order-total',
-        calculate: (data: MetricData) =>
-            data.orders.map(o => o.totalWithTax).reduce((_total, current) => _total + current, 0),
+        query: CHART_ORDER_TOTAL_QUERY_SELECT,
     },
-    [BetterMetricType.AverageOrderValue]: {
+    [ChartMetricType.AverageOrderValue]: {
         title: 'average-order-value',
-        calculate: (data: MetricData) => {
-            if (!data.orders.length) return 0;
-            const total = data.orders.map(o => o.totalWithTax).reduce((_total, current) => _total + current);
-            const average = Math.round(total / data.orders.length);
-            return average;
-        },
+        query: CHART_DATA_AVERAGE_VALUE_QUERY_SELECT,
     },
-    [BetterMetricType.OrderTotalProductsCount]: {
+    [ChartMetricType.OrderTotalProductsCount]: {
         title: 'order-products-count',
-        calculate: (data: MetricData) =>
-            data.orders.map(o => o.overallQuantity).reduce((_total, current) => _total + current, 0),
-        additionalData: (data: MetricData) => {
-            const uniqueProductsObject = data.orders.reduce(
-                (acc, curr) => {
-                    curr.orderProducts?.map(({ id, name, quantity }) => {
-                        if (acc[id]) {
-                            acc[id] = {
-                                ...acc[id],
-                                quantity: acc[id].quantity + quantity,
-                            };
-                        } else
-                            acc[id] = {
-                                __typename: 'BetterMeticSummaryEntryAdditionalData',
-                                name,
-                                quantity,
-                            };
-                    });
-
-                    return acc;
-                },
-                {} as {
-                    [key: number]: {
-                        __typename: 'BetterMeticSummaryEntryAdditionalData';
-                        name: string;
-                        quantity: number;
-                    };
-                },
-            );
-            const productArray = Object.entries(uniqueProductsObject).map(([key, value]) => ({
-                id: key,
-                ...value,
-            }));
-            return productArray;
-        },
     },
 };
-
+type ChartMetricCacheType = GraphQLTypes['ChartMetrics'] & {
+    metricType?: string;
+};
+type OrderSummaryCacheType = GraphQLTypes['OrderSummaryMetrics'] & {
+    metricType?: string;
+};
+type CacheType = ChartMetricCacheType | OrderSummaryCacheType;
 @Injectable()
 export class BetterMetricsService {
-    private cache: TtlCache<string, GraphQLTypes['BetterMetricSummary']>;
+    private cache: TtlCache<string, CacheType>;
     constructor(
         private connection: TransactionalConnection,
         @Inject(PLUGIN_INIT_OPTIONS)
         private options?: DashboardWidgetsPluginOptions,
     ) {
         this.options = options;
-        this.cache = new TtlCache<string, GraphQLTypes['BetterMetricSummary']>({
+        this.cache = new TtlCache<string, CacheType>({
             ttl: this.options?.cacheTime ?? DEFAULT_CACHE_TIME,
         });
     }
 
-    async getBetterMetrics(
+    async getOrderSummaryMetric(
         ctx: RequestContext,
-        { interval, types, refresh, productIDs }: ResolverInputTypes['BetterMetricSummaryInput'],
-    ): Promise<GraphQLTypes['BetterMetricSummary']> {
-        const endDate = interval.end ? endOfDay(new Date(interval.end as string)) : endOfDay(new Date());
+        { interval, refresh }: ResolverInputTypes['OrderSummaryMetricInput'],
+    ): Promise<GraphQLTypes['OrderSummaryMetrics']> {
+        const endDate = interval.end ? interval.end : endOfDay(new Date());
         const cacheKey = JSON.stringify({
+            metricType: 'OrderSummary',
+            startDate: interval.start,
+            endDate,
+            interval: interval.type,
+            channel: ctx.channel.token,
+        });
+        const cachedMetrics = this.cache.get(cacheKey);
+
+        if (cachedMetrics && refresh !== true) {
+            Logger.verbose(
+                `Returning cached metrics for channel ${ctx.channel.token}`,
+                'BetterMetricsService',
+            );
+
+            delete cachedMetrics.metricType;
+            return cachedMetrics as GraphQLTypes['OrderSummaryMetrics'];
+        }
+        const data = await this.loadSummaryOrdersData(ctx, {
+            ...interval,
+        });
+        this.cache.set(cacheKey, {
+            __typename: 'OrderSummaryMetrics',
+            data: data as GraphQLTypes['OrderSummaryDataMetric'],
+            lastCacheRefreshTime: new Date().toISOString() as any,
+        });
+        return {
+            __typename: 'OrderSummaryMetrics',
+            data,
+            lastCacheRefreshTime: new Date().toISOString() as any,
+        };
+    }
+
+    async getChartMetrics(
+        ctx: RequestContext,
+        { interval, types, refresh, productIDs }: ResolverInputTypes['ChartMetricInput'],
+    ): Promise<GraphQLTypes['ChartMetrics']> {
+        const endDate = interval.end ? interval.end : endOfDay(new Date());
+        const cacheKey = JSON.stringify({
+            metricType: 'Chart',
             startDate: interval.start,
             endDate,
             types: types.sort(),
@@ -132,48 +125,49 @@ export class BetterMetricsService {
                 `Returning cached metrics for channel ${ctx.channel.token}`,
                 'BetterMetricsService',
             );
-            return cachedMetrics;
+
+            delete cachedMetrics.metricType;
+            return cachedMetrics as GraphQLTypes['ChartMetrics'];
         }
+
         Logger.verbose(
-            `No cache hit, calculating ${interval.type} metrics until ${endDate.toISOString()} for channel ${
+            `No cache hit, calculating ${interval.type} metrics until ${endDate} for channel ${
                 ctx.channel.token
             } for all orders`,
             'BetterMetricsService',
         );
-        const data = await this.loadData(ctx, {
+        const data = await this.loadChartData(ctx, {
             ...interval,
             // for now bcs we are using only one type
             metricType: types[0],
         });
-        const metrics: GraphQLTypes['BetterMetricSummary'] = {
-            __typename: 'BetterMetricSummary',
+        const metrics: GraphQLTypes['ChartMetrics'] = {
+            __typename: 'ChartMetrics',
             data: [],
             lastCacheRefreshTime: new Date().toISOString() as any,
         };
         for (const type of types) {
             const entry = MAPPINGS[type];
 
-            if (!entry?.calculate) {
-                throw new Error(`Unknown metric type ${type}`);
-            }
-            const entries: GraphQLTypes['BetterMetricSummaryEntry'][] = [];
-            data.forEach(dataPerTick => {
+            const entries: GraphQLTypes['ChartEntry'][] = [];
+            data.response.forEach((dataPerDay: any) => {
                 entries.push({
-                    __typename: 'BetterMetricSummaryEntry',
-                    label: dataPerTick.date.toISOString().split('T')[0],
-                    value: entry.calculate(dataPerTick),
-                    ...('additionalData' in entry
-                        ? { additionalData: entry.additionalData(dataPerTick) }
-                        : {}),
+                    __typename: 'ChartEntry',
+                    label: dataPerDay.label,
+                    value:
+                        'orderCount' in dataPerDay
+                            ? dataPerDay.value / dataPerDay.orderCount
+                            : dataPerDay.value,
+                    ...('additionalData' in dataPerDay ? { additionalData: dataPerDay.additionalData } : {}),
                 });
             });
 
             metrics.data.push({
-                __typename: 'BetterMetricDataType',
+                __typename: 'ChartDataType',
                 interval: interval.type,
                 title: entry.title,
                 type,
-                entries,
+                entries: entries,
             });
         }
         if (interval.type !== BetterMetricInterval.Custom && !productIDs) {
@@ -182,7 +176,7 @@ export class BetterMetricsService {
         return metrics;
     }
 
-    async loadData(
+    async loadChartData(
         ctx: RequestContext,
         {
             type: interval,
@@ -190,48 +184,33 @@ export class BetterMetricsService {
             end,
             metricType,
         }: ResolverInputTypes['BetterMetricIntervalInput'] & {
-            metricType: BetterMetricType;
+            metricType: ChartMetricType;
         },
-    ): Promise<Map<number, MetricData>> {
+    ): Promise<{ response: any }> {
         const orderRepo = this.connection.getRepository(ctx, Order);
+        let response: any;
 
-        // query builder base, we always want to fetch the channel and orderLines,
-        const qb = orderRepo
-            .createQueryBuilder('o')
-            .innerJoin('order_channels_channel', 'occ', 'occ."orderId" = o.id')
-            .innerJoin('order_line', 'ol', 'ol."orderId" = o.id');
-
-        let getTickNrFn: typeof getMonth | typeof getISOWeek;
         const today = new Date();
         let startDate: Date;
         let endDate: Date | undefined;
-        let tickOffset = 0;
-        let ticks: number[] = [];
         switch (interval) {
             case BetterMetricInterval.Weekly: {
-                getTickNrFn = getDay;
-                startDate = startOfWeek(today);
-                endDate = endOfWeek(today);
-                ticks = Array.from({ length: 7 }, (_, i) => i + 1);
-                tickOffset = 1;
+                startDate = startOfWeek(today, { weekStartsOn: 1 });
+                endDate = endOfWeek(today, { weekStartsOn: 1 });
                 break;
             }
             case BetterMetricInterval.Monthly: {
-                getTickNrFn = getDate;
                 startDate = startOfMonth(today);
                 endDate = endOfMonth(today);
-                ticks = Array.from({ length: getDaysInMonth(today) }, (_, i) => i + 1);
                 break;
             }
             case BetterMetricInterval.Yearly: {
-                getTickNrFn = getDayOfYear;
                 startDate = startOfYear(today);
                 endDate = endOfYear(today);
-                ticks = Array.from({ length: isLeapYear(today) ? 366 : 365 }, (_, i) => i + 1);
                 break;
             }
             case BetterMetricInterval.Custom: {
-                startDate = start ? startOfDay(new Date(start as string)) : startOfDay(today);
+                startDate = start ? new Date(start as string) : startOfDay(today);
                 endDate = end as Date | undefined;
                 break;
             }
@@ -239,113 +218,289 @@ export class BetterMetricsService {
                 assertNever(interval as never);
         }
 
-        // here we are finish formatting query builders
-        // type casting for now bcs idk why it is shouting with wrong type
-        finishFormattingQueryBuilder(qb as any as SelectQueryBuilder<Order>, {
-            ctx,
-            metricType,
-            startDate,
-            endDate,
-        });
+        if (metricType === ChartMetricType.OrderTotalProductsCount) {
+            let daysMapping: any[] = [];
+            // here we have raw query bcs i dont have time to figure out how to properly build it with queryBuilder using nested query (now i know but i dont have time )
 
-        let skip = 0;
-        const take = 1000;
-        let hasMoreOrders = true;
-        const orders: MetricResponse[] = [];
-        const totalItems = await qb.getCount();
+            // !!!!!!!!!IMPORTANT for now we are assuming that listPrice from orderLine includes tax IMPORTANT!!!!!!!!!
 
-        while (hasMoreOrders) {
-            let queryResponse: MetricResponse[] = [];
-            queryResponse = await qb.limit(take).offset(skip).getRawMany();
-            orders.push(...queryResponse);
-            Logger.verbose(
-                `Fetched orders ${skip}-${skip + take} for channel ${
-                    ctx.channel.token
-                } for ${interval} metrics`,
-                'BetterMetricsService',
-            );
-            skip += queryResponse.length;
-            if (orders.length >= totalItems) hasMoreOrders = false;
-        }
+            const query = `
+          WITH base_data AS (
+            SELECT 
+              extract(epoch from o."orderPlacedAt" - $1)::integer / 86400 + 1 AS "day",
+              ol."productVariantId" AS "productVariantId",
+              pt."languageCode" AS "languageCode",
+              pt."name" AS "name",
+              SUM(ol."quantity") AS "quantitySum",
+              SUM(
+                  (ol."listPrice" * ol."quantity" - ol."quantity" * COALESCE(ol."customFieldsDiscountby", 0) ) - COALESCE(
+                    (SELECT SUM((adj->>'amount')::numeric)
+                    FROM jsonb_array_elements(ol."adjustments"::jsonb) adj),
+                    0
+                  )
+                ) AS "adjustedPriceSum"
+            FROM "public"."order" o
+            INNER JOIN "public"."order_channels_channel" occ ON occ."orderId" = o."id"
+            INNER JOIN "public"."order_line" ol ON ol."orderId" = o."id"
+            INNER JOIN "public"."product_variant" pv ON pv.id = ol."productVariantId"
+            INNER JOIN "public"."product_translation" pt ON pt."baseId" = pv."productId"
+            WHERE o."orderPlacedAt"::timestamptz >= $1
+            AND occ."channelId" = $2
+            ${endDate ? 'AND o."orderPlacedAt"::timestamptz <= $4' : ''}
+            GROUP BY "day", ol."productVariantId", pt."languageCode", pt."name"
+          )
+          SELECT DISTINCT ON (base_data."day", base_data."productVariantId")
+            base_data."day",
+            base_data."productVariantId",
+            base_data."name",
+            base_data."quantitySum",
+            base_data."adjustedPriceSum"
+            FROM base_data
+          ORDER BY base_data."day" ASC, base_data."productVariantId" ASC, 
+          CASE WHEN base_data."languageCode" = $3 THEN 1 ELSE 2 END ASC, 
+          base_data."languageCode" ASC;
+`;
+            // Parametry do zapytania
+            const params = [
+                startDate.toISOString(),
+                ctx.channelId,
+                ctx.languageCode,
+                ...(endDate ? [endDate.toISOString()] : []),
+            ];
+            const result = await orderRepo.query(query, params);
 
-        Logger.verbose(
-            `Finished fetching all ${orders.length} orders for channel ${ctx.channel.token} for ${interval} metrics`,
-            'BetterMetricsService',
-        );
-
-        const dataPerInterval = new Map<number, MetricData>();
-        let objectForGroup: { [key: string]: MetricResponse[] } = {};
-        if (interval === BetterMetricInterval.Custom) {
-            objectForGroup = orders.reduce(
-                (acc, curr) => {
-                    const key = endOfDay(new Date(curr.orderPlacedAt)).toISOString().split('T')[0];
-                    if (acc[key]) {
-                        acc[key].push(curr);
-                    } else acc[key] = [curr];
-                    return acc;
-                },
-                {} as { [key: string]: MetricResponse[] },
-            );
-            ticks = Array.from({ length: Object.keys(objectForGroup).length }, (_, i) => i);
-        }
-
-        ticks.forEach(tick => {
-            if (interval === BetterMetricInterval.Custom) {
-                const ordersInCurrentTick = Object.values(objectForGroup)[tick];
-                const date = new Date(ordersInCurrentTick[0].orderPlacedAt);
-                dataPerInterval.set(tick, {
-                    orders: ordersInCurrentTick,
-                    date,
+            const reducedRes = (result as any[]).reduce((acc, curr) => {
+                if (acc[curr.day]) {
+                    acc[curr.day].value += +curr.quantitySum;
+                    acc[curr.day].additionaldata.push({
+                        name: curr.name,
+                        id: curr.productVariantId,
+                        quantity: +curr.quantitySum,
+                        priceWithTax: +curr.adjustedPriceSum,
+                    });
+                } else {
+                    acc[curr.day] = {
+                        value: +curr.quantitySum,
+                        additionaldata: [
+                            {
+                                name: curr.name,
+                                id: curr.productVariantId,
+                                quantity: +curr.quantitySum,
+                                priceWithTax: +curr.adjustedPriceSum,
+                            },
+                        ],
+                    };
+                }
+                return acc;
+            }, {});
+            if (endDate) {
+                daysMapping = eachDayOfInterval({ start: startDate, end: endDate });
+            } else {
+                daysMapping = eachDayOfInterval({
+                    start: startDate,
+                    end: addDays(startDate, Object.keys(reducedRes).length - 1),
                 });
-                return;
             }
-            const ordersInCurrentTick = orders.filter(order => {
-                return getTickNrFn(new Date(order.orderPlacedAt)) === tick;
-            });
-            dataPerInterval.set(tick, {
-                orders: ordersInCurrentTick,
-                date: add(startDate, { days: tick + tickOffset }),
-                ...(metricType === BetterMetricType.OrderTotalProductsCount ? {} : {}),
-            });
-        });
 
-        return dataPerInterval;
+            const mappedResponse = Object.values(reducedRes).map((r: any, i: number) => ({
+                label: daysMapping[i].toISOString(),
+                value: r.value,
+                additionalData: r.additionaldata,
+            }));
+            response = mappedResponse;
+        } else {
+            let daysMapping: any[] = [];
+            const qb = orderRepo
+                .createQueryBuilder('o')
+                .innerJoin('order_channels_channel', 'occ', 'occ."orderId" = o.id')
+                .select(MAPPINGS[metricType].query)
+                .where('o."orderPlacedAt"::timestamptz >= :startDate::timestamptz', {
+                    startDate: startDate.toISOString(),
+                })
+                .andWhere('occ.channelId = :channelId', { channelId: ctx.channel.id });
+            if (endDate) {
+                qb.andWhere('o."orderPlacedAt"::timestamptz <= :endDate::timestamptz', {
+                    endDate: endDate.toISOString(),
+                });
+            }
+            qb.groupBy('day').orderBy('day');
+
+            const res = await qb.getRawMany();
+
+            if (endDate) {
+                daysMapping = eachDayOfInterval({ start: startDate, end: endDate }, {});
+            } else {
+                daysMapping = eachDayOfInterval({
+                    start: startDate,
+                    end: addDays(startDate, res.length - 1),
+                });
+            }
+
+            const mappedResponse = res.map((r: any, i: number) => ({
+                label: daysMapping[i].toISOString(),
+                value: +r.value,
+                ...('ordercount' in r ? { orderCount: +r.ordercount } : {}),
+            }));
+
+            response = mappedResponse;
+        }
+
+        return { response };
+    }
+
+    async loadSummaryOrdersData(
+        ctx: RequestContext,
+        { type: interval, start, end }: ResolverInputTypes['BetterMetricIntervalInput'],
+    ): Promise<GraphQLTypes['OrderSummaryDataMetric']> {
+        const orderRepo = this.connection.getRepository(ctx, Order);
+        let response: any;
+
+        const today = new Date();
+        let startDate: Date;
+        let endDate: Date | undefined;
+        switch (interval) {
+            case BetterMetricInterval.Weekly: {
+                startDate = startOfWeek(today);
+                endDate = endOfWeek(today);
+                break;
+            }
+            case BetterMetricInterval.Monthly: {
+                startDate = startOfMonth(today);
+                endDate = endOfMonth(today);
+                break;
+            }
+            case BetterMetricInterval.Yearly: {
+                startDate = startOfYear(today);
+                endDate = endOfYear(today);
+                break;
+            }
+            case BetterMetricInterval.Custom: {
+                startDate = start ? new Date(start as string) : startOfDay(today);
+                endDate = end as Date | undefined;
+                break;
+            }
+            default:
+                assertNever(interval as never);
+        }
+        const qb = orderRepo
+            .createQueryBuilder('o')
+            .innerJoin('order_channels_channel', 'occ', 'occ."orderId" = o.id')
+            .select(ORDERS_SUMMARY_QUERY_SELECT)
+            .where('o."orderPlacedAt"::timestamptz >= :startDate::timestamptz', {
+                startDate: startDate.toISOString(),
+            })
+            .andWhere('occ.channelId = :channelId', { channelId: ctx.channel.id });
+        if (endDate) {
+            qb.andWhere('o."orderPlacedAt"::timestamptz <= :endDate::timestamptz', {
+                endDate: endDate.toISOString(),
+            });
+        }
+        qb.groupBy('day');
+        const res = await qb.getRawMany();
+
+        const reducedResponse = res.reduce(
+            (acc, curr) => {
+                acc.averageOrderValue += +curr.averagetotal;
+                acc.averageOrderValueWithTax += +curr.averagewithtax;
+                acc.orderCount += +curr.ordercount;
+                acc.total += +curr.total;
+                acc.totalWithTax += +curr.totalwithtax;
+                return acc;
+            },
+            {
+                currencyCode: ctx.currencyCode,
+                __typename: 'OrderSummaryDataMetric',
+                averageOrderValue: 0,
+                averageOrderValueWithTax: 0,
+                orderCount: 0,
+                total: 0,
+                totalWithTax: 0,
+            } as GraphQLTypes['OrderSummaryDataMetric'],
+        );
+        return {
+            currencyCode: reducedResponse.currencyCode,
+            __typename: reducedResponse.__typename,
+            averageOrderValue: reducedResponse.averageOrderValue.toFixed(2),
+            averageOrderValueWithTax: reducedResponse.averageOrderValueWithTax.toFixed(2),
+            orderCount: reducedResponse.orderCount,
+            total: reducedResponse?.total.toFixed(2),
+            totalWithTax: reducedResponse?.totalWithTax.toFixed(2),
+        };
     }
 }
 
-const finishFormattingQueryBuilder = (
-    qb: SelectQueryBuilder<Order>,
-    args: {
-        ctx: RequestContext;
-        metricType: BetterMetricType;
-        startDate: Date;
-        endDate?: Date;
-    },
-) => {
-    const { ctx, metricType, startDate, endDate } = args;
-    qb.select(QUERY_MAPPINGS[metricType]);
-    // we are adding startDate to query builder and channel id
-    qb.where('o."orderPlacedAt" >= :startDate', {
-        startDate,
-    }).andWhere('occ.channelId = :channelId', { channelId: ctx.channel.id });
+// ========================================================================================
+// THIS IS WORKING RAW QUERY WITHOUT COUNTIG ADJUSTED ORDERLINE SUM
 
-    // we are adding endDate to query builder if it exists
-    if (endDate) {
-        qb.andWhere('o."orderPlacedAt" <= :endDate', {
-            endDate,
-        });
-    }
-    if (metricType === BetterMetricType.OrderTotalProductsCount) {
-        qb.innerJoin('product_variant', 'pv', 'pv.id = ol."productVariantId"') // add product_variant
-            .innerJoin('product', 'p', 'p.id = pv."productId"') // add product
-            .innerJoin('product_translation', 'pt', 'pt."baseId" = p.id')
-            .andWhere('pt."languageCode" = :languageCode', {
-                languageCode: ctx.languageCode,
-            });
-    }
+// WITH base_data AS (
+//   SELECT
+//     extract(epoch from o."orderPlacedAt" - $1)::integer / 86400 + 1 AS "day",
+//     ol."productVariantId" AS "productVariantId",
+//     pt."languageCode" AS "languageCode",
+//     pt."name" AS "name",
+//     SUM(ol."quantity") AS "quantitySum"
+//   FROM "public"."order" o
+//   INNER JOIN "public"."order_channels_channel" occ ON occ."orderId" = o."id"
+//   INNER JOIN "public"."order_line" ol ON ol."orderId" = o."id"
+//   INNER JOIN "public"."product_translation" pt ON pt."baseId" = ol."productVariantId"
+//   WHERE o."orderPlacedAt"::timestamptz >= $1
+//   AND occ."channelId" = $2
+//   ${endDate ? 'AND o."orderPlacedAt"::timestamptz <= $4' : ''}
+//   GROUP BY "day", ol."productVariantId", pt."languageCode", pt."name"
+// )
+// SELECT DISTINCT ON (base_data."day", base_data."productVariantId")
+//   base_data."day",
+//   base_data."productVariantId",
+//   base_data."name",
+//   base_data."quantitySum"
+//   FROM base_data
+// ORDER BY base_data."day" ASC, base_data."productVariantId" ASC,
+// CASE WHEN base_data."languageCode" = $3 THEN 1 ELSE 2 END ASC,
+// base_data."languageCode" ASC;
 
-    qb.groupBy('occ."channelId"')
-        .addGroupBy('o.id')
-        .addGroupBy('o."orderPlacedAt"')
-        .orderBy('o."orderPlacedAt"', 'ASC');
-};
+// ========================================================================================
+
+// this is raw query for total products count which is agregating data,
+// for now i cant build it with queryBuilder as it is nested query
+// need to use leftJoin on subQuery
+// const query = orderRepo.query(
+//   `
+//   SELECT
+//     day,
+//     SUM(quantitySum) AS value,
+//     json_agg(
+//       json_build_object(
+//         'productVariantName', pt_name,
+//         'productVariantId', "productVariantId",
+//         'value', quantitySum
+//       )
+//     ) AS additionalData
+//   FROM (
+//     SELECT
+//       extract(epoch from o."orderPlacedAt" - $1)::integer / 86400 + 1 AS day,
+//       ol."productVariantId",
+//       pt."name" AS pt_name,
+//       SUM(ol."quantity") AS quantitySum
+//     FROM "public"."order" o
+//     INNER JOIN "public"."order_channels_channel" "occ"
+//       ON occ."orderId" = o."id"
+//     INNER JOIN "public"."order_line" ol
+//       ON ol."orderId" = o."id"
+//     INNER JOIN "public"."product_translation" pt
+//       ON pt."baseId" = ol."productVariantId"
+//     WHERE o."orderPlacedAt"::timestamptz >= $1::timestamptz
+//       ${endDate ? 'AND o."orderPlacedAt"::timestamptz <= $4::timestamptz' : ''}
+//       AND occ."channelId" = $2
+//       AND pt."languageCode" = $3
+//       GROUP BY day, ol."productVariantId", pt."name"
+//   ) AS subquery
+//   GROUP BY day
+//   ORDER BY day ASC;
+//   `,
+//   [
+//     startDate.toISOString(),
+//     ctx.channel.id,
+//     ctx.languageCode,
+//     ...(endDate ? [endDate.toISOString()] : []),
+//   ],
+// );

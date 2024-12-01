@@ -1,18 +1,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
-import { BetterMetricType } from '../../zeus';
+import { ChartMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { TooltipProps } from 'recharts';
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 import React from 'react';
+import { format } from 'date-fns';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 type DataTKeys = 'averageOrderValue' | 'orderCount' | 'orderTotal' | 'orderTotalProductsCount';
 
-const metricTypeLabels: Record<BetterMetricType, DataTKeys> = {
-    [BetterMetricType.AverageOrderValue]: 'averageOrderValue',
-    [BetterMetricType.OrderCount]: 'orderCount',
-    [BetterMetricType.OrderTotal]: 'orderTotal',
-    [BetterMetricType.OrderTotalProductsCount]: 'orderTotalProductsCount',
+const metricTypeLabels: Record<ChartMetricType, DataTKeys> = {
+    [ChartMetricType.AverageOrderValue]: 'averageOrderValue',
+    [ChartMetricType.OrderCount]: 'orderCount',
+    [ChartMetricType.OrderTotal]: 'orderTotal',
+    [ChartMetricType.OrderTotalProductsCount]: 'orderTotalProductsCount',
 };
 
 interface CustomTooltipProps {
@@ -26,21 +27,23 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({ chartProps, langua
     const payload = chartProps.payload?.[0]?.payload;
     const value = payload?.value;
     const additionalData = payload?.additionalData as AdditionalEntryData[];
-    const metricType = payload?.type as BetterMetricType;
+    const metricType = payload?.type as ChartMetricType;
     const labelKey = metricTypeLabels[metricType];
     const currencyFormatter = new Intl.NumberFormat(language === 'pl' ? 'pl-PL' : 'en-GB', {
         style: 'currency',
         currency: 'PLN',
     });
     const formattedValue =
-        metricType === BetterMetricType.AverageOrderValue || metricType === BetterMetricType.OrderTotal
+        metricType === ChartMetricType.AverageOrderValue || metricType === ChartMetricType.OrderTotal
             ? currencyFormatter.format(value as number)
             : value;
 
     return (
         <Card className="flex flex-col bg-muted">
             <CardHeader className="pb-2">
-                <CardDescription>{payload?.name}</CardDescription>
+                <CardDescription>
+                    {payload?.name ? format(new Date(payload.name), 'PPP') : ''}
+                </CardDescription>
                 <CardTitle className="border-b border-muted-foreground pb-2 text-xl">
                     <span>
                         {t(labelKey)}: {formattedValue}

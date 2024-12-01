@@ -3,7 +3,7 @@ import { AdminResolver } from './resolvers/admin.resolver';
 import { BetterMetricsService } from './services/metrics.service';
 import gql from 'graphql-tag';
 import { AdminUIController } from './controllers/admin-ui-controller';
-import { DEFAULT_CACHE_TIME, PLUGIN_INIT_OPTIONS } from './constants';
+import { PLUGIN_INIT_OPTIONS } from './constants';
 import { DashboardWidgetsPluginOptions } from './types';
 @DeenruvPlugin({
     compatibility: '0.0.20',
@@ -21,58 +21,77 @@ import { DashboardWidgetsPluginOptions } from './types';
     },
     adminApiExtensions: {
         schema: gql`
-            type BetterMetricDataType {
+            type ChartDataType {
                 interval: BetterMetricInterval!
-                type: BetterMetricType!
+                type: ChartMetricType!
                 title: String!
-                entries: [BetterMetricSummaryEntry!]!
+                entries: [ChartEntry!]!
             }
 
-            type BetterMetricSummary {
-                data: [BetterMetricDataType!]!
-                lastCacheRefreshTime: DateTime!
+            type ChartMetrics {
+                data: [ChartDataType!]!
+                lastCacheRefreshTime: String!
+            }
+            type OrderSummaryMetrics {
+                data: OrderSummaryDataMetric!
+                lastCacheRefreshTime: String!
+            }
+            type OrderSummaryDataMetric {
+                currencyCode: CurrencyCode!
+                total: Float!
+                totalWithTax: Float!
+                orderCount: Float!
+                averageOrderValue: Float!
+                averageOrderValueWithTax: Float!
             }
             enum BetterMetricInterval {
                 Weekly
                 Monthly
                 Yearly
                 Custom
-                ThisWeek
                 LastWeek
                 ThisMonth
                 LastMonth
             }
-            enum BetterMetricType {
+            enum ChartMetricType {
                 OrderCount
                 OrderTotal
                 AverageOrderValue
                 OrderTotalProductsCount
             }
-            type BetterMeticSummaryEntryAdditionalData {
+            type ChartEntryAdditionalData {
                 id: String!
                 name: String!
                 quantity: Float!
+                priceWithTax: Float!
             }
 
-            type BetterMetricSummaryEntry {
+            type ChartEntry {
                 label: String!
                 value: Float!
-                additionalData: [BetterMeticSummaryEntryAdditionalData!]
+                additionalData: [ChartEntryAdditionalData!]
             }
             input BetterMetricIntervalInput {
                 type: BetterMetricInterval!
                 start: DateTime
                 end: DateTime
             }
-            input BetterMetricSummaryInput {
+
+            input OrderSummaryMetricInput {
                 interval: BetterMetricIntervalInput!
-                types: [BetterMetricType!]!
+                refresh: Boolean
+            }
+
+            input ChartMetricInput {
+                interval: BetterMetricIntervalInput!
+                types: [ChartMetricType!]!
                 productIDs: [String!]
                 refresh: Boolean
             }
 
             extend type Query {
-                betterMetricSummary(input: BetterMetricSummaryInput!): BetterMetricSummary!
+                chartMetric(input: ChartMetricInput!): ChartMetrics!
+                orderSummaryMetric(input: OrderSummaryMetricInput!): OrderSummaryMetrics!
             }
         `,
         resolvers: [AdminResolver],
