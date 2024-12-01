@@ -1,5 +1,6 @@
 import { eachDayOfInterval, format } from 'date-fns';
 import { pl, enGB } from 'date-fns/locale';
+import { getZonedDate } from './get-zoned-date';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 
@@ -34,7 +35,7 @@ export const addMissingDays = <T>(
 
     const dataMap = new Map(
         mappedPartialData.map(item => [
-            new Date(item.name).toISOString(),
+            getZonedDate(item.name).toISOString(),
             {
                 ...item,
                 name: format(new Date(item.name), 'PPP', {
@@ -44,7 +45,7 @@ export const addMissingDays = <T>(
         ]),
     );
     return days.map(day => {
-        const matchingDate = new Date(day).toISOString();
+        const matchingDate = day.toISOString();
         const displayDate = format(new Date(day), 'PPP', {
             locale: language === 'pl' ? pl : enGB,
         });
