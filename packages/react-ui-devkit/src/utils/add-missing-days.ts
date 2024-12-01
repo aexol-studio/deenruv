@@ -34,7 +34,7 @@ export const addMissingDays = <T>(
 
     const dataMap = new Map(
         mappedPartialData.map(item => [
-            item.name,
+            new Date(item.name).toISOString(),
             {
                 ...item,
                 name: format(new Date(item.name), 'PPP', {
