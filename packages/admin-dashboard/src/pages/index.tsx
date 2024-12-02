@@ -15,4 +15,6 @@ export * from './orders/index.js';
 export * from './dashboard/index.js';
 export * from './assets/index.js';
 export * from './customers/index.js';
+export * from './channels/index.js';
+export * from './countries/index.js';
 // NOTE: do not export Custom404, LoginScreen and Root from here

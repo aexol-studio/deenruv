@@ -34,6 +34,7 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
     return {
         id: 'actions',
         enableHiding: false,
+        enablePinning: true,
         header: ({ table }) => {
             const { t } = useTranslation('table');
             const columnsTranslations = t('columns', { returnObjects: true });

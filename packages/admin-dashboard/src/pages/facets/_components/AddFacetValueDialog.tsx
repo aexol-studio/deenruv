@@ -5,43 +5,35 @@ import {
   Input,
   Dialog,
   DialogContent,
-  DialogTrigger,
   Label,
   DialogFooter,
-  Checkbox,
-  DropdownMenuItem,
   apiClient,
 } from '@deenruv/react-ui-devkit';
 
 import { LanguageCode } from '@deenruv/admin-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { ColorSample } from './ColorSample.js';
-import { ImageOff, Pencil } from 'lucide-react';
-import { FacetValueType } from '@/graphql/facets';
 import { useGFFLP } from '@/lists/useGflp';
-import { Stack, AssetsModalInput } from '@/components';
+import { Stack, EntityCustomFields } from '@/components';
 
 interface AddFacetValueDialogProps {
   facetId: string;
+  facetValueId?: string | null;
   onFacetValueChange: () => void;
-  facetValue?: FacetValueType;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   facetId,
   onFacetValueChange,
-  facetValue,
+  open,
+  setOpen,
+  facetValueId,
 }) => {
-  const editMode = useMemo(() => !!facetValue, [facetValue]);
+  const editMode = useMemo(() => !!facetValueId, [facetValueId]);
   const { t } = useTranslation('facets');
-  const [open, setOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [image, setImage] = useState<{ id: string; preview: string; source: string } | undefined>(
-    // facetValue?.customFields?.image || undefined,
-    undefined,
-  );
 
   const { state, setField } = useGFFLP(
     'FacetValue',
@@ -50,26 +42,42 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
     'customFields',
   )({
     name: {
-      initialValue: facetValue?.name,
       validate: (v) => {
         if (!v || v === '') return [t('requiredError')];
       },
     },
     code: {
-      initialValue: facetValue?.code,
       validate: (v) => {
         if (!v || v === '') return [t('requiredError')];
       },
     },
-    customFields: {
-      initialValue: {
-        // hexColor: facetValue?.customFields?.hexColor,
-        // isNew: facetValue?.customFields?.isNew,
-        hexColor: undefined,
-        isNew: false,
-      },
-    },
   });
+
+  const fetchFacetValue = useCallback(
+    () =>
+      facetValueId &&
+      apiClient('query')({
+        facetValues: [
+          { options: { filter: { id: { eq: facetValueId } } } },
+          {
+            items: {
+              code: true,
+              translations: {
+                name: true,
+              },
+            },
+          },
+        ],
+      }).then((resp) => {
+        setField('code', resp.facetValues.items[0].code);
+        setField('name', resp.facetValues.items[0].translations[0].name);
+      }),
+    [facetValueId, t],
+  );
+
+  useEffect(() => {
+    fetchFacetValue();
+  }, [fetchFacetValue, facetValueId]);
 
   useEffect(() => {
     if (editMode || !state.name?.value) return;
@@ -80,14 +88,8 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   const resetValues = useCallback(() => {
     onFacetValueChange();
     setOpen(false);
-    setImage(undefined);
     setField('name', '');
     setField('code', '');
-    setField('customFields', {
-      hexColor: undefined,
-      image: undefined,
-      isNew: false,
-    });
   }, [onFacetValueChange, setField]);
 
   const saveFacetValue = useCallback(
@@ -98,11 +100,6 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
             input: [
               {
                 code: state.code!.value,
-                customFields: {
-                  hexColor: state.customFields?.value?.hexColor,
-                  isNew: state.customFields?.value?.isNew,
-                  imageId: image?.id,
-                },
                 translations: [
                   {
                     languageCode: LanguageCode.pl,
@@ -121,11 +118,11 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           resetValues();
         })
         .catch((err) => toast.message(t('addValueModal.error') + ': ' + err)),
-    [state, facetId, image, resetValues, t],
+    [state, facetId, resetValues, t],
   );
 
   const updateFacetValue = useCallback(() => {
-    if (!facetValue?.id) return;
+    if (!facetId) return;
 
     apiClient('mutation')({
       updateFacetValues: [
@@ -133,18 +130,13 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           input: [
             {
               code: state.code!.value,
-              customFields: {
-                hexColor: state.customFields?.value?.hexColor,
-                isNew: state.customFields?.value?.isNew,
-                imageId: image?.id,
-              },
               translations: [
                 {
                   languageCode: LanguageCode.pl,
                   name: state.name?.value,
                 },
               ],
-              id: facetValue?.id,
+              id: facetId,
             },
           ],
         },
@@ -156,20 +148,10 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
         resetValues();
       })
       .catch((err) => toast.message(t('addValueModal.error') + ': ' + err));
-  }, [state, image, facetValue?.id, resetValues, t]);
+  }, [state, facetId, resetValues, t]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {editMode ? (
-          <DropdownMenuItem className="flex cursor-pointer items-center gap-3 p-2" onSelect={(e) => e.preventDefault()}>
-            <Pencil size={20} />
-            {t('buttons.editValue')}
-          </DropdownMenuItem>
-        ) : (
-          <Button size={'sm'}>{t('addValueModal.button')}</Button>
-        )}
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{editMode ? t('addValueModal.editTitle') : t('addValueModal.title')}</DialogTitle>
@@ -183,52 +165,30 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
             <Label>{t('addValueModal.codeLabel')}</Label>
             <Input className="mt-1" value={state.code?.value} onChange={(e) => setField('code', e.target.value)} />
           </div>
-          <Label className="mt-2">{t('addValueModal.options')}</Label>
-          <Stack className="border-grey-500 mb-2 justify-between border-t pt-3">
-            <Stack className="items-center gap-3">
-              <Checkbox
-                className="mt-1"
-                checked={state.customFields?.value?.isNew}
-                onCheckedChange={(e) =>
-                  setField('customFields', {
-                    ...state.customFields?.value,
-                    isNew: e as boolean,
-                  })
-                }
-              />
-              <Label>{t('addValueModal.isNew')}</Label>
-            </Stack>
-            <Stack className="items-center gap-3">
-              <Checkbox className="mt-1" checked={hidden} onCheckedChange={(e) => setHidden(e as boolean)} />
-              <Label>{t('addValueModal.hidden')}</Label>
-            </Stack>
-            <Stack className="relative items-center gap-3">
-              <ColorSample
-                color={state.customFields?.value?.hexColor}
-                setColor={(color) =>
-                  setField('customFields', {
-                    ...state.customFields?.value,
-                    hexColor: color,
-                  })
-                }
-              />
-              <Label>{t('addValueModal.color')}</Label>
-            </Stack>
-          </Stack>
-
-          <Label className="mt-2">{t('addValueModal.image')}</Label>
-          <Stack className="border-grey-500 gap-4 border-t pt-3">
-            <div className="flex h-64 w-64 items-center justify-center border border-solid border-gray-300 p-2 shadow">
-              {image ? (
-                <img src={image.preview} className="h-60" alt="Facet image preview" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gray-200 p-3">
-                  <ImageOff size={48} />
-                </div>
-              )}
-            </div>
-            <AssetsModalInput setValue={setImage} />
-          </Stack>
+          {facetValueId && (
+            <EntityCustomFields
+              entityName="facetValue"
+              id={facetValueId}
+              fetch={async (runtimeSelector) => {
+                const { facetValues: resp } = await apiClient('query')({
+                  facetValues: [
+                    { options: { filter: { id: { eq: facetValueId } } } },
+                    {
+                      items: {
+                        code: true,
+                        translations: {
+                          name: true,
+                        },
+                        ...runtimeSelector,
+                      },
+                    },
+                  ],
+                });
+                const foundValue = resp?.items[0];
+                return { customFields: foundValue?.customFields as any };
+              }}
+            />
+          )}
         </Stack>
         <DialogFooter className="mt-2">
           <Button onClick={editMode ? updateFacetValue : saveFacetValue}>

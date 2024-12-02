@@ -1,8 +1,9 @@
-import { ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
+import { Column, ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, EmptyState } from '@/components';
-import { ReactNode, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import { cn } from '@/lib';
 
 interface ListTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -10,6 +11,32 @@ interface ListTableProps<TData, TValue> {
     table: ReactTable<TData>;
     Paginate: ReactNode;
 }
+
+const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
+    const isPinned = column.getIsPinned();
+    const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
+    const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
+
+    return {
+        boxShadow: isLastLeftPinnedColumn
+            ? '-4px 0 4px -4px gray inset'
+            : isFirstRightPinnedColumn
+              ? '4px 0 4px -4px gray inset'
+              : undefined,
+        left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+        right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+        opacity: isPinned ? 0.95 : 1,
+        position: isPinned ? 'sticky' : 'relative',
+        width: column.getSize(),
+        zIndex: isPinned ? 1 : 0,
+    };
+};
+
+const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
+    const isPinned = column.getIsPinned();
+    if (!isPinned) return '';
+    return isPinned ? cn('bg-primary-foreground') : '';
+};
 
 export function ListTable<TData, TValue>({
     table,
@@ -44,12 +71,16 @@ export function ListTable<TData, TValue>({
                     className="w-full"
                     {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}
                 >
-                    <TableHeader className="bg-primary-foreground sticky top-0">
+                    <TableHeader className="bg-primary-foreground sticky top-0 z-20">
                         {table.getHeaderGroups().map(headerGroup => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map(header => {
                                     return (
-                                        <TableHead key={header.id}>
+                                        <TableHead
+                                            key={header.id}
+                                            className={getCommonClassNameStyles(header.column)}
+                                            style={{ ...getCommonPinningStyles(header.column) }}
+                                        >
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -67,7 +98,11 @@ export function ListTable<TData, TValue>({
                             table.getRowModel().rows.map(row => (
                                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                                     {row.getVisibleCells().map(cell => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell
+                                            key={cell.id}
+                                            className={getCommonClassNameStyles(cell.column)}
+                                            style={{ ...getCommonPinningStyles(cell.column) }}
+                                        >
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}

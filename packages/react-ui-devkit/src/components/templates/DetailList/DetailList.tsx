@@ -343,10 +343,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             },
         },
         state: {
-            ...(columnsOrderState &&
-                columnsOrderState.filter(Boolean).length > 0 && {
-                    columnOrder: ['select-id', ...columnsOrderState, 'actions'],
-                }),
+            ...((columnsOrderState || []).filter(Boolean).length > 0 && {
+                columnOrder: ['select-id', ...columnsOrderState, 'actions'],
+            }),
+            columnPinning: { right: ['actions'] },
             columnVisibility: columnsVisibilityState,
             pagination: { pageIndex: page, pageSize: perPage },
             rowSelection,

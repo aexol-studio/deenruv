@@ -22,6 +22,7 @@
     "@deenruv/deenruv-examples-plugin": "workspace:*",
     "@deenruv/dashboard-widgets-plugin": "workspace:*",
     "@deenruv/react-ui-devkit": "workspace:*",
+    "@deenruv/facet-color-fields-plugin": "workspace:*",
     "@deenruv/admin-types": "workspace:*",
     "@aexol-studio/hooks": "^0.2.16",
     "class-variance-authority": "^0.7.0",

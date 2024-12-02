@@ -22,16 +22,61 @@ import {
   Routes,
   EmptyState,
   apiClient,
+  DetailList,
+  deepMerge,
+  PaginationInput,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields, ContextMenu } from '@/components';
 import { ChevronLeft, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog.js';
-import { DeletionResult, LanguageCode } from '@deenruv/admin-types';
+import { DeletionResult, LanguageCode, SortOrder } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
+
+const fetch = async <T, K>(
+  { page, perPage, filter, filterOperator, sort }: PaginationInput,
+  customFieldsSelector?: T,
+  additionalSelector?: K,
+) => {
+  const selector = deepMerge(
+    deepMerge(
+      { id: true, name: true, code: true, customFields: true },
+      customFieldsSelector ?? { hexColor: true, isNew: true, isHidden: true, image: true },
+    ),
+    additionalSelector ?? {},
+  );
+  const response = await apiClient('query')({
+    ['facetValues']: [
+      {
+        options: {
+          take: perPage,
+          skip: (page - 1) * perPage,
+          filterOperator: filterOperator,
+          sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+          ...(filter && { filter }),
+        },
+      },
+      { items: selector, totalItems: true },
+    ],
+  });
+  return response['facetValues'];
+};
+
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+  try {
+    const ids = items.map((item) => item.id);
+    const { deleteFacetValues } = await apiClient('mutation')({
+      deleteFacetValues: [{ ids }, { message: true, result: true }],
+    });
+    return !!deleteFacetValues.length;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
 
 export const FacetsDetailPage = () => {
   const { id } = useParams();
@@ -42,6 +87,8 @@ export const FacetsDetailPage = () => {
   const [loading, setLoading] = useState(id ? true : false);
   const [facet, setFacet] = useState<FacetDetailsType>();
   const [facetChanged, setFacetChanged] = useState(false);
+  const [facetValueIdInModal, setFacetValueIdInModal] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   const fetchFacet = useCallback(async () => {
     if (id) {
@@ -282,72 +329,35 @@ export const FacetsDetailPage = () => {
               <CardHeader>
                 <CardTitle className="flex flex-row justify-between text-base">
                   {t('facets:details.facetValues')}
-                  <AddFacetValueDialog facetId={facet.id} onFacetValueChange={fetchFacet} />
+                  <AddFacetValueDialog
+                    open={open}
+                    setOpen={setOpen}
+                    facetId={facet.id}
+                    facetValueId={facetValueIdInModal}
+                    onFacetValueChange={fetchFacet}
+                  />
                 </CardTitle>
-                <CardContent className="flex gap-8 p-0 pt-2">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        {tableHeaders.map((h) => (
-                          <TableHead key={h}>{h}</TableHead>
-                        ))}
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {facet.values.length ? (
-                        facet.values.map((v) => (
-                          <TableRow key={v.name}>
-                            <TableCell>{v.name}</TableCell>
-                            <TableCell>{v.code}</TableCell>
-                            <TableCell>{format(v.createdAt, 'PPP')}</TableCell>
-                            {/* <TableCell>
-                              <ColorSample color={v.customFields?.hexColor} />
-                            </TableCell>
-                            <TableCell>{v.customFields?.isNew ? <Check /> : <X />}</TableCell>
-                            <TableCell>{v.customFields?.isHidden ? <Check /> : <X />}</TableCell>
-                            <TableCell>
-                              {v.customFields?.image?.source ? (
-                                <Tooltip>
-                                  <TooltipTrigger>
-                                    <img width={24} src={v.customFields.image.source + '?preset=tiny'} />
-                                  </TooltipTrigger>
-                                  <TooltipContent className="my-2">
-                                    <img width={300} src={v.customFields.image.source + '?preset=medium'} />
-                                  </TooltipContent>
-                                </Tooltip>
-                              ) : (
-                                <ImageOff />
-                              )}
-                            </TableCell> */}
-                            <TableCell className="flex justify-end gap-2">
-                              <ContextMenu>
-                                <DropdownMenuItem
-                                  onClick={() => removeAssetValue(v.id)}
-                                  className="flex cursor-pointer items-center gap-3 p-2"
-                                >
-                                  <Trash2 size={20} />
-                                  {t('facets:buttons.deleteValue')}
-                                </DropdownMenuItem>
-                                <AddFacetValueDialog
-                                  facetId={facet.id}
-                                  onFacetValueChange={fetchFacet}
-                                  facetValue={v}
-                                />
-                              </ContextMenu>
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      ) : (
-                        <>
-                          <EmptyState
-                            columnsLength={tableHeaders.length}
-                            title={t(`common:emptyState.facets.empty.title`)}
-                            description={t(`common:emptyState.facets.empty.text`)}
-                          />
-                        </>
-                      )}
-                    </TableBody>
-                  </Table>
+                <CardContent className="flex p-0 pt-0">
+                  <DetailList
+                    entityName="FacetValue"
+                    hideColumns={['customFields', 'createdAt', 'updatedAt']}
+                    fetch={fetch}
+                    onRemove={onRemove}
+                    route={{
+                      edit: (id) => {
+                        setFacetValueIdInModal(id);
+                        setOpen(true);
+                      },
+                      create: () => {
+                        setFacetValueIdInModal(null);
+                        setOpen(true);
+                      },
+                    }}
+                    searchFields={['name']}
+                    tableId={'facet-values-list' as any}
+                    type={'facetValues' as any}
+                    noPaddings
+                  />
                 </CardContent>
               </CardHeader>
             </Card>

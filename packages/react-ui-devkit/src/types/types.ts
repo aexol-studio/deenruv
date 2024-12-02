@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ProductDetailSelector, ProductListSelector } from '../selectors';
 import type { FromSelectorWithScalars } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
+import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -33,6 +34,10 @@ export const ListLocations = {
         type: 'Product' as const,
         selector: ProductListSelector,
     },
+    'facet-values-list': {
+        type: 'FacetValue' as const,
+        selector: FacetValueSelector,
+    }
 };
 type ListLocationType = typeof ListLocations;
 type LocationKeys = keyof ListLocationType;
