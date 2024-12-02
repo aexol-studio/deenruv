@@ -1,24 +1,24 @@
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import React, { useMemo } from 'react';
 import { ChartMetricType } from '../../zeus';
-import { camelCaseToSpaces } from '@deenruv/react-ui-devkit';
+import { camelCaseToSpaces, useWidgetItem } from '@deenruv/react-ui-devkit';
 import { CustomTooltip } from './CustomTooltip';
 import { ChartConfig, ChartContainer, ChartTooltip } from '@deenruv/react-ui-devkit';
+import { UIPluginOptions } from '../..';
 
 interface ChartProps {
     data: { name: string; value: number; type: ChartMetricType }[];
     language: string;
-    options?: { colorFrom?: string; colorTo?: string; stroke?: string };
 }
 
 const HEIGHT = 300;
 
-export const OrdersChart: React.FC<ChartProps> = ({ data, language, options: _options }) => {
+export const OrdersChart: React.FC<ChartProps> = ({ data, language }) => {
     const chartConfig = useMemo((): ChartConfig => {
         return { value: { label: camelCaseToSpaces(data[0]?.type) } };
     }, [data]);
-
-    const options = _options || {
+    const { plugin } = useWidgetItem();
+    const options = (plugin?.config as UIPluginOptions)?.horizontalChartColors || {
         colorFrom: `#4338ca`,
         colorTo: `#6366f1`,
         stroke: `#6366f1`,

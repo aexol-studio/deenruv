@@ -8,4 +8,6 @@ export type MetricResponse = {
 
 export interface DashboardWidgetsPluginOptions {
     cacheTime: number;
+    /** This field is populated right now at Samarite and Minko storefronts */
+    discountByCustomField?: boolean;
 }

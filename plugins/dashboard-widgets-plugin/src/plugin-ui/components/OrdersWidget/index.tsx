@@ -20,7 +20,6 @@ import {
     usePluginStore,
     useLazyQuery,
     CardFooter,
-    addMissingDays,
 } from '@deenruv/react-ui-devkit';
 import { MetricsIntervalSelect } from './MetricsIntervalSelect';
 import { MetricsCustomDates } from './MetricCustomDates';
@@ -146,37 +145,20 @@ export const OrdersWidget = () => {
 
     const betterData = useMemo(() => {
         return betterMetrics.data
-            .map(metric => {
-                return metric.interval !== BetterMetricInterval.Custom
-                    ? metric.entries.map(entry => ({
-                          name: format(new Date(entry.label), 'PPP', {
-                              locale: language === 'pl' ? pl : enGB,
-                          }),
-                          value:
-                              metric.type === ChartMetricType.AverageOrderValue ||
-                              metric.type === ChartMetricType.OrderTotal
-                                  ? entry.value / 100
-                                  : entry.value,
-                          type: metric.type,
-                          additionalData: entry.additionalData,
-                      }))
-                    : // When interval is custom, Backend returns only entries with values. This adds remaining days.
-                      addMissingDays(
-                          betterMetricsSettings.interval.start as string,
-                          betterMetricsSettings.interval.end as string,
-                          metric.type,
-                          language,
-                          metric.entries.map(entry => ({
-                              label: entry.label,
-                              value:
-                                  metric.type === ChartMetricType.AverageOrderValue ||
-                                  metric.type === ChartMetricType.OrderTotal
-                                      ? entry.value / 100
-                                      : entry.value,
-                              additionalData: entry.additionalData,
-                          })),
-                      );
-            })
+            .map(metric =>
+                metric.entries.map(entry => ({
+                    name: format(new Date(entry.label), 'PPP', {
+                        locale: language === 'pl' ? pl : enGB,
+                    }),
+                    value:
+                        metric.type === ChartMetricType.AverageOrderValue ||
+                        metric.type === ChartMetricType.OrderTotal
+                            ? entry.value / 100
+                            : entry.value,
+                    type: metric.type,
+                    additionalData: entry.additionalData,
+                })),
+            )
             .flat();
     }, [betterMetrics, betterMetricsSettings.interval.start, betterMetricsSettings.interval.end, language]);
 

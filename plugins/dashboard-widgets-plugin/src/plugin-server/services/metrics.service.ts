@@ -148,16 +148,12 @@ export class BetterMetricsService {
         };
         for (const type of types) {
             const entry = MAPPINGS[type];
-
             const entries: GraphQLTypes['ChartEntry'][] = [];
             data.response.forEach((dataPerDay: any) => {
                 entries.push({
                     __typename: 'ChartEntry',
                     label: dataPerDay.label,
-                    value:
-                        'orderCount' in dataPerDay
-                            ? dataPerDay.value / dataPerDay.orderCount
-                            : dataPerDay.value,
+                    value: dataPerDay.value,
                     ...('additionalData' in dataPerDay ? { additionalData: dataPerDay.additionalData } : {}),
                 });
             });
@@ -189,7 +185,7 @@ export class BetterMetricsService {
     ): Promise<{ response: any }> {
         const orderRepo = this.connection.getRepository(ctx, Order);
         let response: any;
-
+        const daysMap = new Map();
         const today = new Date();
         let startDate: Date;
         let endDate: Date | undefined;
@@ -233,7 +229,7 @@ export class BetterMetricsService {
               pt."name" AS "name",
               SUM(ol."quantity") AS "quantitySum",
               SUM(
-                  (ol."listPrice" * ol."quantity" - ol."quantity" * COALESCE(ol."customFieldsDiscountby", 0) ) - COALESCE(
+                  (ol."listPrice" * ol."quantity"  ${this.options?.discountByCustomField ? '- ol."quantity" * COALESCE(ol."customFieldsDiscountby", 0)' : ''} ) - COALESCE(
                     (SELECT SUM((adj->>'amount')::numeric)
                     FROM jsonb_array_elements(ol."adjustments"::jsonb) adj),
                     0
@@ -302,12 +298,25 @@ export class BetterMetricsService {
                 });
             }
 
-            const mappedResponse = Object.values(reducedRes).map((r: any, i: number) => ({
-                label: daysMapping[i].toISOString(),
-                value: r.value,
-                additionalData: r.additionaldata,
-            }));
-            response = mappedResponse;
+            Object.entries(reducedRes).forEach(([key, r]: [key: string, r: any]) => {
+                const entry = {
+                    label: daysMapping[+key - 1].toISOString(),
+                    value: +(+r.value.toFixed(2)),
+                    additionalData: r.additionaldata,
+                };
+                daysMap.set(daysMapping[+key - 1].toISOString(), entry);
+            });
+            const finalResponse = daysMapping.map(day => {
+                const matchingDate = day.toISOString();
+                return (
+                    daysMap.get(matchingDate) || {
+                        label: day.toISOString(),
+                        value: 0,
+                        additionalData: [],
+                    }
+                );
+            });
+            response = finalResponse;
         } else {
             let daysMapping: any[] = [];
             const qb = orderRepo
@@ -324,27 +333,40 @@ export class BetterMetricsService {
                 });
             }
             qb.groupBy('day').orderBy('day');
-
             const res = await qb.getRawMany();
 
             if (endDate) {
-                daysMapping = eachDayOfInterval({ start: startDate, end: endDate }, {});
+                daysMapping = eachDayOfInterval({ start: startDate, end: endDate });
             } else {
                 daysMapping = eachDayOfInterval({
                     start: startDate,
                     end: addDays(startDate, res.length - 1),
                 });
             }
-
-            const mappedResponse = res.map((r: any, i: number) => ({
-                label: daysMapping[i].toISOString(),
-                value: +r.value,
-                ...('ordercount' in r ? { orderCount: +r.ordercount } : {}),
+            const mappedResponse = res.map((r: any) => ({
+                day: r.day,
+                label: daysMapping[r.day - 1].toISOString(),
+                value: +('ordercount' in r ? +r.value / +r.ordercount : +r.value).toFixed(2),
             }));
 
-            response = mappedResponse;
+            mappedResponse.forEach((r: any) => {
+                const entry = {
+                    label: daysMapping[r.day - 1].toISOString(),
+                    value: +r.value,
+                };
+                daysMap.set(daysMapping[r.day - 1].toISOString(), entry);
+            });
+            const finalResponse = daysMapping.map(day => {
+                const matchingDate = day.toISOString();
+                return (
+                    daysMap.get(matchingDate) || {
+                        label: day.toISOString(),
+                        value: 0,
+                    }
+                );
+            });
+            response = finalResponse;
         }
-
         return { response };
     }
 
@@ -353,8 +375,6 @@ export class BetterMetricsService {
         { type: interval, start, end }: ResolverInputTypes['BetterMetricIntervalInput'],
     ): Promise<GraphQLTypes['OrderSummaryDataMetric']> {
         const orderRepo = this.connection.getRepository(ctx, Order);
-        let response: any;
-
         const today = new Date();
         let startDate: Date;
         let endDate: Date | undefined;
@@ -400,28 +420,26 @@ export class BetterMetricsService {
 
         const reducedResponse = res.reduce(
             (acc, curr) => {
-                acc.averageOrderValue += +curr.averagetotal;
-                acc.averageOrderValueWithTax += +curr.averagewithtax;
                 acc.orderCount += +curr.ordercount;
                 acc.total += +curr.total;
                 acc.totalWithTax += +curr.totalwithtax;
                 return acc;
             },
             {
-                currencyCode: ctx.currencyCode,
-                __typename: 'OrderSummaryDataMetric',
-                averageOrderValue: 0,
-                averageOrderValueWithTax: 0,
                 orderCount: 0,
                 total: 0,
                 totalWithTax: 0,
-            } as GraphQLTypes['OrderSummaryDataMetric'],
+            },
         );
+
         return {
-            currencyCode: reducedResponse.currencyCode,
-            __typename: reducedResponse.__typename,
-            averageOrderValue: reducedResponse.averageOrderValue.toFixed(2),
-            averageOrderValueWithTax: reducedResponse.averageOrderValueWithTax.toFixed(2),
+            currencyCode: ctx.currencyCode,
+            __typename: 'OrderSummaryDataMetric',
+            averageOrderValue: +(reducedResponse?.total / reducedResponse.orderCount).toFixed(2),
+            averageOrderValueWithTax: +(reducedResponse?.totalWithTax / reducedResponse.orderCount).toFixed(
+                2,
+            ),
+            // reducedResponse.averageOrderValueWithTax.toFixed(2),
             orderCount: reducedResponse.orderCount,
             total: reducedResponse?.total.toFixed(2),
             totalWithTax: reducedResponse?.totalWithTax.toFixed(2),
