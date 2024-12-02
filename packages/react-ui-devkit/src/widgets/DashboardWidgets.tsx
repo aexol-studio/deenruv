@@ -31,7 +31,7 @@ import {
 import { Grip, Menu, Trash } from 'lucide-react';
 import { CSS } from '@dnd-kit/utilities';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
-import { Widget } from '@/types';
+import { DeenruvUIPlugin, Widget } from '@/types';
 import { useWidgetsStore } from './widgets-context';
 import { LanguageCode } from '@deenruv/admin-types';
 
@@ -41,12 +41,14 @@ const WidgetItemContext = createContext<{
     removeWidget: () => void;
     resizeWidget: (size: { width: number; height: number }) => void;
     language: LanguageCode;
+    plugin?: DeenruvUIPlugin;
 }>({
     size: { width: 0, height: 0 },
     sizes: [],
     removeWidget: () => undefined,
     resizeWidget: () => undefined,
     language: LanguageCode.en,
+    plugin: undefined,
 });
 
 const WidgetItemProvider: React.FC<
@@ -64,6 +66,7 @@ const WidgetItemProvider: React.FC<
                 removeWidget: () => remove(widget.id),
                 resizeWidget: (size: { width: number; height: number }) => resize(widget.id, size),
                 language: LanguageCode.en,
+                plugin: widget.plugin,
             }}
         >
             {children}

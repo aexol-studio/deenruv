@@ -1,3 +1,5 @@
 import { DeenruvUIPlugin } from '../types/types';
 
-export const createDeenruvUIPlugin = (plugin: DeenruvUIPlugin): DeenruvUIPlugin => plugin;
+export const createDeenruvUIPlugin = <T extends Record<string, any>>(
+    plugin: DeenruvUIPlugin<T>,
+): DeenruvUIPlugin<T> => plugin;

@@ -37,7 +37,7 @@ export const ListLocations = {
     'facet-values-list': {
         type: 'FacetValue' as const,
         selector: FacetValueSelector,
-    }
+    },
 };
 type ListLocationType = typeof ListLocations;
 type LocationKeys = keyof ListLocationType;
@@ -105,9 +105,10 @@ export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
     disabled?: boolean;
 };
 
-export type DeenruvUIPlugin = {
+export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
     name: string;
     version: string;
+    config?: T;
     /** Applied on the selected tables */
     tables?: Array<DeenruvUITable<LocationKeys>>;
     /** Applied on the detail views (pages) */
@@ -117,7 +118,7 @@ export type DeenruvUIPlugin = {
     /** Applied on the detail views (pages) */
     components?: Array<DeenruvUIDetailComponent<DetailKeys>>;
     /** Applied on the dashboard */
-    widgets?: Array<Widget>;
+    widgets?: Array<Widget<T>>;
     /** Applied on the navigation */
     navMenuGroups?: Array<PluginNavigationGroup>;
     /** Applied on the navigation */
@@ -134,13 +135,14 @@ export type DeenruvUIPlugin = {
 
 export type NavigationAction = { label: string; icon?: any; className?: string; onClick: () => void };
 
-export type Widget = {
+export type Widget<T extends Record<string, any> = object> = {
     id: string | number;
     name: string;
     component: JSX.Element;
     visible: boolean;
     size: { width: number; height: number };
     sizes: { width: number; height: number }[];
+    plugin?: DeenruvUIPlugin<T>;
 };
 
 export type PluginPage = {

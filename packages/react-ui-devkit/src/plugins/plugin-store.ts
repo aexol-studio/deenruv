@@ -12,6 +12,7 @@ type I18Next = {
 
 export class PluginStore {
     private i18next: I18Next;
+    private pluginConfig: Map<string, Record<string, any>> = new Map();
     private pluginMap: Map<string, DeenruvUIPlugin> = new Map();
     private pluginPages: Array<NonNullable<DeenruvUIPlugin['pages']>[number]> = [];
     private pluginsNavigationDataField: {
@@ -23,6 +24,7 @@ export class PluginStore {
         this.i18next = i18next;
         plugins.forEach(({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {
             this.pluginMap.set(plugin.name, plugin);
+            this.pluginConfig.set(plugin.name, plugin.config || {});
 
             if (!translations) return;
             for (const [lng, locales] of Object.entries(translations.data)) {
@@ -129,7 +131,7 @@ export class PluginStore {
         const widgets = new Map<string | number, NonNullable<DeenruvUIPlugin['widgets']>[number]>();
         this.pluginMap.forEach(plugin => {
             plugin.widgets?.forEach(widget => {
-                widgets.set(widget.id, widget);
+                widgets.set(widget.id, { ...widget, plugin });
             });
         });
         return Array.from(widgets.values());
@@ -141,5 +143,9 @@ export class PluginStore {
 
     get routes() {
         return this.pluginPages;
+    }
+
+    get configs() {
+        return this.pluginConfig;
     }
 }
