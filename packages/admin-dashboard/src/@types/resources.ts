@@ -1,5 +1,6 @@
 import collections from '../locales/en/collections.json';
 import common from '../locales/en/common.json';
+import countries from '../locales/en/countries.json';
 import orders from '../locales/en/orders.json';
 import dashboard from '../locales/en/dashboard.json';
 import products from '../locales/en/products.json';
@@ -21,6 +22,7 @@ import table from '../locales/en/table.json';
 const resources = {
   collections,
   common,
+  countries,
   orders,
   products,
   dashboard,

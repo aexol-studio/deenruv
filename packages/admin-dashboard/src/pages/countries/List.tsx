@@ -113,7 +113,7 @@ export const CountriesListPage = () => {
       ),
       cell: ({ row }) => (
         <div className="pl-4">
-          <Link to={Routes.products.to(row.original.id)} className="text-primary-600">
+          <Link to={Routes.countries.to(row.original.id)} className="text-primary-600">
             <Badge variant="outline" className="flex  w-max items-center justify-center">
               {row.original.id}
               <ArrowRight className="pl-1" size={16} />

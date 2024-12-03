@@ -147,7 +147,7 @@ export const CustomComponent = ({
         <Label>{t('custom.customAdditional', { value: custom.length })}</Label>
       </div>
 
-      <div className="h-0 grow overflow-y-auto py-2  pr-4">
+      <div className="grow overflow-y-auto py-2 pr-4">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4 border-b pb-4 ">
             {custom.map((i) => (
