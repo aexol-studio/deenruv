@@ -961,9 +961,36 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
+announcementBar?: [{	id: string | Variable<any, string>},ValueTypes["AnnouncementBar"]],
+announcementBars?: [{	options?: ValueTypes["AnnouncementBarListOptions"] | undefined | null | Variable<any, string>},ValueTypes["AnnouncementBarList"]],
+	getActiveAnnouncementBar?:ValueTypes["AnnouncementBar"],
+reviewProduct?: [{	id: string | Variable<any, string>},ValueTypes["ReviewProduct"]],
+reviewsProduct?: [{	options?: ValueTypes["ReviewProductListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ReviewProductList"]],
+reviewStore?: [{	id: string | Variable<any, string>},ValueTypes["ReviewStore"]],
+reviewsStore?: [{	options?: ValueTypes["ReviewStoreListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ReviewStoreList"]],
+formList?: [{	options?: ValueTypes["FormListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormList"]],
+form?: [{	id: string | Variable<any, string>},ValueTypes["Form"]],
+formAnswerList?: [{	formId: string | Variable<any, string>,	options?: ValueTypes["FormAnswerListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormAnswerList"]],
+formAnswer?: [{	id: string | Variable<any, string>},ValueTypes["FormAnswer"]],
+formAnswersToDocument?: [{	formId: string | Variable<any, string>,	startDate?: string | undefined | null | Variable<any, string>,	endDate?: string | undefined | null | Variable<any, string>},boolean | `@${string}`],
+formEmail?: [{	id: string | Variable<any, string>},ValueTypes["FormEmail"]],
+formSectionList?: [{	options?: ValueTypes["FormSectionListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormSectionList"]],
+formSection?: [{	id: string | Variable<any, string>},ValueTypes["FormSection"]],
+formHeroList?: [{	options?: ValueTypes["FormHeroListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormHeroList"]],
+formEmailList?: [{	options?: ValueTypes["FormEmailListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormEmailList"]],
+formEmailLogoList?: [{	options?: ValueTypes["FormEmailLogoListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormEmailLogoList"]],
+formThanksPageList?: [{	options?: ValueTypes["FormThanksPageListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormThanksPageList"]],
+formThanksPage?: [{	id: string | Variable<any, string>},ValueTypes["FormThanksPage"]],
+formLinkList?: [{	options?: ValueTypes["FormLinkListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FormLinkList"]],
+getSpecialOffer?: [{	type: ValueTypes["SpecialOfferType"] | Variable<any, string>},ValueTypes["SpecialOffer"]],
+effectsApplications?: [{	options?: ValueTypes["EffectsApplicationListOptions"] | undefined | null | Variable<any, string>},ValueTypes["EffectsApplicationList"]],
+castingApplications?: [{	options?: ValueTypes["CastingApplicationListOptions"] | undefined | null | Variable<any, string>},ValueTypes["CastingApplicationList"]],
+simplifiedFormApplications?: [{	options?: ValueTypes["SimplifiedFormApplicationListOptions"] | undefined | null | Variable<any, string>},ValueTypes["SimplifiedFormApplicationList"]],
 chartMetric?: [{	input: ValueTypes["ChartMetricInput"] | Variable<any, string>},ValueTypes["ChartMetrics"]],
 orderSummaryMetric?: [{	input: ValueTypes["OrderSummaryMetricInput"] | Variable<any, string>},ValueTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
+exportOrdersToDocument?: [{	fromDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,	toDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>},boolean | `@${string}`],
+exportSpecialOfferApplicationsToDocument?: [{	fromDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,	toDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,	type?: ValueTypes["SpecialOfferType"] | undefined | null | Variable<any, string>},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -1130,8 +1157,89 @@ deleteZone?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse
 deleteZones?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
+manageSuggestion?: [{	input: ValueTypes["ProductSuggestionInput"] | Variable<any, string>},ValueTypes["ProductSuggestionEntity"]],
+updateAnnouncementBar?: [{	input: ValueTypes["UpdateAnnouncementBarInput"] | Variable<any, string>},ValueTypes["AnnouncementBar"]],
+createAnnouncementBar?: [{	input: ValueTypes["CreateAnnouncementBarInput"] | Variable<any, string>},ValueTypes["AnnouncementBar"]],
+deleteAnnouncementBar?: [{	input: ValueTypes["DeleteAnnouncementBarInput"] | Variable<any, string>},boolean | `@${string}`],
+changeStatusAnnouncementBar?: [{	input: ValueTypes["ChangeStatusAnnouncementBarInput"] | Variable<any, string>},boolean | `@${string}`],
+transitionReviewProductToState?: [{	id: string | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["ReviewProduct"]],
+createReviewProduct?: [{	input: ValueTypes["CreateReviewProductInput"] | Variable<any, string>},ValueTypes["ReviewProduct"]],
+updateReviewProduct?: [{	input: ValueTypes["UpdateReviewProductInput"] | Variable<any, string>},ValueTypes["ReviewProduct"]],
+transitionReviewStoreToState?: [{	id: string | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["ReviewStore"]],
+createReviewStore?: [{	input: ValueTypes["CreateReviewStoreInput"] | Variable<any, string>},ValueTypes["ReviewStore"]],
+updateReviewStore?: [{	input?: ValueTypes["UpdateReviewStoreInput"] | undefined | null | Variable<any, string>},ValueTypes["ReviewStore"]],
+createForm?: [{	input: ValueTypes["CreateFormInput"] | Variable<any, string>},ValueTypes["Form"]],
+updateForm?: [{	input: ValueTypes["UpdateFormInput"] | Variable<any, string>},ValueTypes["Form"]],
+deleteForms?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+createFormSection?: [{	input: ValueTypes["CreateFormSectionInput"] | Variable<any, string>},ValueTypes["FormSection"]],
+updateFormSection?: [{	input: ValueTypes["UpdateFormSectionInput"] | Variable<any, string>},ValueTypes["FormSection"]],
+deleteFormSections?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+createFormHero?: [{	input: ValueTypes["CreateHeroInput"] | Variable<any, string>},ValueTypes["FormHero"]],
+createFormEmailLogo?: [{	input: ValueTypes["CreateFormEmailLogoInput"] | Variable<any, string>},ValueTypes["FormEmailLogo"]],
+deleteFormHeros?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+deleteFormEmailLogos?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+preparePutUrl?: [{	mimeType: string | Variable<any, string>},ValueTypes["PreparePutUrlResponse"]],
+createFormThanksPage?: [{	input: ValueTypes["CreateFormThanksPageInput"] | Variable<any, string>},ValueTypes["FormThanksPage"]],
+updateFormThanksPage?: [{	input: ValueTypes["UpdateFormThanksPageInput"] | Variable<any, string>},ValueTypes["FormThanksPage"]],
+deleteFormThanksPages?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+changeFromStatus?: [{	id: string | Variable<any, string>},boolean | `@${string}`],
+clearFormRegistrationCount?: [{	id: string | Variable<any, string>},boolean | `@${string}`],
+createFormLinks?: [{	input: Array<ValueTypes["CreateFormLinkInput"]> | Variable<any, string>},boolean | `@${string}`],
+deleteFormLinks?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+createFormEmail?: [{	input: ValueTypes["CreateFormEmailInput"] | Variable<any, string>},ValueTypes["FormEmail"]],
+updateFormEmail?: [{	input: ValueTypes["UpdateFormEmailInput"] | Variable<any, string>},ValueTypes["FormEmail"]],
+deleteFormEmails?: [{	ids: Array<string> | Variable<any, string>},boolean | `@${string}`],
+setSpecialOffer?: [{	input: ValueTypes["SetSpecialOfferInput"] | Variable<any, string>},ValueTypes["SpecialOffer"]],
+	archiveAllCreamForCreamApplications?:boolean | `@${string}`,
+	archiveAllSimplifiedFormApplications?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["SimplifiedFormApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["SimplifiedFormApplicationSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["SimplifiedFormApplicationFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["SimplifiedFormApplicationSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	surname?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	street?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	buildingNumber?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	flatNumber?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	postalCode?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	city?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	phone?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	email?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	companyName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	instagramLogin?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	applicationNumber?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["SimplifiedFormApplicationFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	surname?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	street?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	buildingNumber?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	flatNumber?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	postalCode?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	city?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	phone?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	email?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	companyName?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	instagramLogin?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	applicationNumber?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null | Variable<any, string>
+};
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null | Variable<any, string>,
@@ -1212,7 +1320,7 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	["CreateAssetInput"]: {
 	file: ValueTypes["Upload"] | Variable<any, string>,
 	tags?: Array<string> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["CreateAssetCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CoordinateInput"]: {
 	x: number | Variable<any, string>,
@@ -1233,7 +1341,7 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	name?: string | undefined | null | Variable<any, string>,
 	focalPoint?: ValueTypes["CoordinateInput"] | undefined | null | Variable<any, string>,
 	tags?: Array<string> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["UpdateAssetCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignAssetsToChannelInput"]: {
 	assetIds: Array<string> | Variable<any, string>,
@@ -1334,7 +1442,7 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	filters?:ValueTypes["ConfigurableOperation"],
 	translations?:ValueTypes["CollectionTranslation"],
 productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ProductVariantList"]],
-	customFields?:ValueTypes["CollectionCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionListOptions"]: {
@@ -1360,7 +1468,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	name: string | Variable<any, string>,
 	slug: string | Variable<any, string>,
 	description: string | Variable<any, string>,
-	customFields?: ValueTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -1368,7 +1476,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
@@ -1378,7 +1486,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	inheritFilters?: boolean | undefined | null | Variable<any, string>,
 	filters: Array<ValueTypes["ConfigurableOperationInput"]> | Variable<any, string>,
 	translations: Array<ValueTypes["CreateCollectionTranslationInput"]> | Variable<any, string>,
-	customFields?: ValueTypes["CreateCollectionCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["PreviewCollectionVariantsInput"]: {
 	parentId?: string | undefined | null | Variable<any, string>,
@@ -1394,7 +1502,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	inheritFilters?: boolean | undefined | null | Variable<any, string>,
 	filters?: Array<ValueTypes["ConfigurableOperationInput"]> | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["UpdateCollectionTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["UpdateCollectionCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignCollectionsToChannelInput"]: {
 	collectionIds: Array<string> | Variable<any, string>,
@@ -1568,7 +1676,7 @@ orders?: [{	options?: ValueTypes["OrderListOptions"] | undefined | null | Variab
 	values?:ValueTypes["FacetValue"],
 valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FacetValueList"]],
 	translations?:ValueTypes["FacetTranslation"],
-	customFields?:ValueTypes["FacetCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetListOptions"]: {
@@ -1587,21 +1695,21 @@ valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null 
 	id?: string | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["FacetTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateFacetInput"]: {
 	code: string | Variable<any, string>,
 	isPrivate: boolean | Variable<any, string>,
 	translations: Array<ValueTypes["FacetTranslationInput"]> | Variable<any, string>,
 	values?: Array<ValueTypes["CreateFacetValueWithFacetInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["CreateFacetCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateFacetInput"]: {
 	id: string | Variable<any, string>,
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["FacetTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["UpdateFacetCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["FacetValueTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -1890,8 +1998,14 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	totalWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
 	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
-	attributes?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	additionalInfo?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	inPostPoint?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	dpdPickupPoint?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	invoiceUrl?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	reminderSent?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	abandonedCartReminderSent?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	notes?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	paymentType?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	needInvoice?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -1910,8 +2024,14 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	shippingWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	total?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	attributes?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	additionalInfo?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	inPostPoint?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	dpdPickupPoint?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	invoiceUrl?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	reminderSent?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	abandonedCartReminderSent?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	notes?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	paymentType?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	needInvoice?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -2003,7 +2123,8 @@ fields will be removed in a future version. */
 	province?: string | undefined | null | Variable<any, string>,
 	postalCode?: string | undefined | null | Variable<any, string>,
 	countryCode?: string | undefined | null | Variable<any, string>,
-	phoneNumber?: string | undefined | null | Variable<any, string>
+	phoneNumber?: string | undefined | null | Variable<any, string>,
+	customFields?: ValueTypes["UpdateAddressCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["ModifyOrderInput"]: {
 	dryRun: boolean | Variable<any, string>,
@@ -2360,6 +2481,8 @@ variantList?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined |
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductTranslation"],
 	collections?:ValueTypes["Collection"],
+	freeShippingSuggestion?:ValueTypes["ProductSuggestionEntity"],
+	defaultSuggestion?:ValueTypes["ProductSuggestionEntity"],
 	customFields?:ValueTypes["ProductCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
@@ -2464,6 +2587,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	collectionIds?:boolean | `@${string}`,
 	/** A relevance score for the result. Differs between database implementations */
 	score?:boolean | `@${string}`,
+	inStock?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["StockMovementListOptions"]: {
@@ -2496,19 +2620,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	enabled?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>,
 	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>,
-	discountBy?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	boolTest?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
-	floatTest?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
-	intTest?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	textTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	dateTime?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
-	listTestString?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
-	listTestInt?: ValueTypes["NumberListOperators"] | undefined | null | Variable<any, string>,
-	listTestFloat?: ValueTypes["NumberListOperators"] | undefined | null | Variable<any, string>,
-	listTestText?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
-	listLocaleString?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>,
-	listLocaleText?: ValueTypes["StringListOperators"] | undefined | null | Variable<any, string>
+	productId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -2543,7 +2655,14 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	stockLevel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
 	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	limit?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	freeGift?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	comment?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	excludeFromShop?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	notifyAboutAvailability?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	isTreatedAsGift?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	discountBy?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	inSetLabel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -2551,7 +2670,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["ProductTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null | Variable<any, string>,
@@ -3140,7 +3259,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	phoneNumber?:boolean | `@${string}`,
 	defaultShippingAddress?:boolean | `@${string}`,
 	defaultBillingAddress?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["AddressCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Asset"]: AliasType<{
@@ -3157,7 +3276,8 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview?:boolean | `@${string}`,
 	focalPoint?:ValueTypes["Coordinate"],
 	tags?:ValueTypes["Tag"],
-	customFields?:ValueTypes["AssetCustomFields"],
+	thumbnail?:boolean | `@${string}`,
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["Coordinate"]: AliasType<{
@@ -3220,7 +3340,6 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ValueTypes["CollectionTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionList"]: AliasType<{
@@ -3398,6 +3517,20 @@ current session. */
 		['...on ShippingMethodList']?: Omit<ValueTypes["ShippingMethodList"],keyof ValueTypes["PaginatedList"]>;
 		['...on TagList']?: Omit<ValueTypes["TagList"],keyof ValueTypes["PaginatedList"]>;
 		['...on TaxRateList']?: Omit<ValueTypes["TaxRateList"],keyof ValueTypes["PaginatedList"]>;
+		['...on AnnouncementBarList']?: Omit<ValueTypes["AnnouncementBarList"],keyof ValueTypes["PaginatedList"]>;
+		['...on ReviewProductList']?: Omit<ValueTypes["ReviewProductList"],keyof ValueTypes["PaginatedList"]>;
+		['...on ReviewStoreList']?: Omit<ValueTypes["ReviewStoreList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormList']?: Omit<ValueTypes["FormList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormAnswerList']?: Omit<ValueTypes["FormAnswerList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormSectionList']?: Omit<ValueTypes["FormSectionList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormHeroList']?: Omit<ValueTypes["FormHeroList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormEmailList']?: Omit<ValueTypes["FormEmailList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormEmailLogoList']?: Omit<ValueTypes["FormEmailLogoList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormThanksPageList']?: Omit<ValueTypes["FormThanksPageList"],keyof ValueTypes["PaginatedList"]>;
+		['...on FormLinkList']?: Omit<ValueTypes["FormLinkList"],keyof ValueTypes["PaginatedList"]>;
+		['...on EffectsApplicationList']?: Omit<ValueTypes["EffectsApplicationList"],keyof ValueTypes["PaginatedList"]>;
+		['...on CastingApplicationList']?: Omit<ValueTypes["CastingApplicationList"],keyof ValueTypes["PaginatedList"]>;
+		['...on SimplifiedFormApplicationList']?: Omit<ValueTypes["SimplifiedFormApplicationList"],keyof ValueTypes["PaginatedList"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Node"]:AliasType<{
@@ -3446,6 +3579,26 @@ current session. */
 		['...on User']?: Omit<ValueTypes["User"],keyof ValueTypes["Node"]>;
 		['...on AuthenticationMethod']?: Omit<ValueTypes["AuthenticationMethod"],keyof ValueTypes["Node"]>;
 		['...on Zone']?: Omit<ValueTypes["Zone"],keyof ValueTypes["Node"]>;
+		['...on ProductSuggestionItemEntity']?: Omit<ValueTypes["ProductSuggestionItemEntity"],keyof ValueTypes["Node"]>;
+		['...on ProductSuggestionEntity']?: Omit<ValueTypes["ProductSuggestionEntity"],keyof ValueTypes["Node"]>;
+		['...on AnnouncementBar']?: Omit<ValueTypes["AnnouncementBar"],keyof ValueTypes["Node"]>;
+		['...on ReviewProduct']?: Omit<ValueTypes["ReviewProduct"],keyof ValueTypes["Node"]>;
+		['...on ReviewStore']?: Omit<ValueTypes["ReviewStore"],keyof ValueTypes["Node"]>;
+		['...on FormAnswer']?: Omit<ValueTypes["FormAnswer"],keyof ValueTypes["Node"]>;
+		['...on Form']?: Omit<ValueTypes["Form"],keyof ValueTypes["Node"]>;
+		['...on FormEmail']?: Omit<ValueTypes["FormEmail"],keyof ValueTypes["Node"]>;
+		['...on FormHero']?: Omit<ValueTypes["FormHero"],keyof ValueTypes["Node"]>;
+		['...on FormEmailLogo']?: Omit<ValueTypes["FormEmailLogo"],keyof ValueTypes["Node"]>;
+		['...on FormNode']?: Omit<ValueTypes["FormNode"],keyof ValueTypes["Node"]>;
+		['...on FormSection']?: Omit<ValueTypes["FormSection"],keyof ValueTypes["Node"]>;
+		['...on FormThanksPageListItem']?: Omit<ValueTypes["FormThanksPageListItem"],keyof ValueTypes["Node"]>;
+		['...on FormThanksPage']?: Omit<ValueTypes["FormThanksPage"],keyof ValueTypes["Node"]>;
+		['...on FormLink']?: Omit<ValueTypes["FormLink"],keyof ValueTypes["Node"]>;
+		['...on SpecialOffer']?: Omit<ValueTypes["SpecialOffer"],keyof ValueTypes["Node"]>;
+		['...on EffectsApplicationProduct']?: Omit<ValueTypes["EffectsApplicationProduct"],keyof ValueTypes["Node"]>;
+		['...on EffectsApplication']?: Omit<ValueTypes["EffectsApplication"],keyof ValueTypes["Node"]>;
+		['...on CastingApplication']?: Omit<ValueTypes["CastingApplication"],keyof ValueTypes["Node"]>;
+		['...on SimplifiedFormApplication']?: Omit<ValueTypes["SimplifiedFormApplication"],keyof ValueTypes["Node"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["ErrorResult"]:AliasType<{
@@ -3639,7 +3792,8 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined | null | Variable<any, string>,
 	take?: number | undefined | null | Variable<any, string>,
 	skip?: number | undefined | null | Variable<any, string>,
-	sort?: ValueTypes["SearchResultSortParameter"] | undefined | null | Variable<any, string>
+	sort?: ValueTypes["SearchResultSortParameter"] | undefined | null | Variable<any, string>,
+	inStock?: boolean | undefined | null | Variable<any, string>
 };
 	["SearchResultSortParameter"]: {
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -3670,7 +3824,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null | Variable<any, string>,
 	defaultShippingAddress?: boolean | undefined | null | Variable<any, string>,
 	defaultBillingAddress?: boolean | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["CreateAddressCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	/** Input used to update an Address.
 
@@ -3690,7 +3844,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null | Variable<any, string>,
 	defaultShippingAddress?: boolean | undefined | null | Variable<any, string>,
 	defaultBillingAddress?: boolean | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateAddressCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	/** Indicates that an operation succeeded, where we do not want to return any more specific information. */
 ["Success"]: AliasType<{
@@ -3966,7 +4120,6 @@ customers?: [{	options?: ValueTypes["CustomerListOptions"] | undefined | null | 
 	updatedAt?:boolean | `@${string}`,
 	languageCode?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
-	customFields?:ValueTypes["FacetTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetList"]: AliasType<{
@@ -4042,7 +4195,7 @@ by taxRate. */
 	country?:boolean | `@${string}`,
 	countryCode?:boolean | `@${string}`,
 	phoneNumber?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["AddressCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderList"]: AliasType<{
@@ -4289,7 +4442,6 @@ by the search, and in what quantity. */
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ValueTypes["ProductTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductList"]: AliasType<{
@@ -4529,8 +4681,711 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["SuggestionType"]:SuggestionType;
+	["ProductSuggestionItemEntity"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	priority?:boolean | `@${string}`,
+	productVariant?:ValueTypes["ProductVariant"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductSuggestionEntity"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	priority?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	suggestionItems?:ValueTypes["ProductSuggestionItemEntity"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductSuggestionItemInput"]: {
+	priority: number | Variable<any, string>,
+	productVariantId: string | Variable<any, string>
+};
+	["ProductSuggestionInput"]: {
+	priority?: number | undefined | null | Variable<any, string>,
+	type: ValueTypes["SuggestionType"] | Variable<any, string>,
+	productId: string | Variable<any, string>,
+	productVariantIds?: Array<ValueTypes["ProductSuggestionItemInput"]> | undefined | null | Variable<any, string>
+};
+	["ANNOUNCEMENT_BAR_TYPE_ENUM"]:ANNOUNCEMENT_BAR_TYPE_ENUM;
+	["AnnouncementBarEntryTranslation"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	languageCode?:boolean | `@${string}`,
+	text?:boolean | `@${string}`,
+	redirectUrl?:boolean | `@${string}`,
+	icon?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBarEntry"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	text?:boolean | `@${string}`,
+	redirectUrl?:boolean | `@${string}`,
+	icon?:boolean | `@${string}`,
+	colorIcon?:boolean | `@${string}`,
+	colorText?:boolean | `@${string}`,
+translations?: [{	languageCode?: ValueTypes["LanguageCode"] | undefined | null | Variable<any, string>},ValueTypes["AnnouncementBarEntryTranslation"]],
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBar"]: AliasType<{
+	id?:boolean | `@${string}`,
+	channelCode?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	enabled?:boolean | `@${string}`,
+	startDate?:boolean | `@${string}`,
+	endDate?:boolean | `@${string}`,
+	speed?:boolean | `@${string}`,
+	spaceBetween?:boolean | `@${string}`,
+	colorBackground?:boolean | `@${string}`,
+	nowActive?:boolean | `@${string}`,
+	entries?:ValueTypes["AnnouncementBarEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBarList"]: AliasType<{
+	items?:ValueTypes["AnnouncementBar"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBarListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["AnnouncementBarSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["AnnouncementBarFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["AnnouncementBarEntryTranslationInput"]: {
+	id?: string | undefined | null | Variable<any, string>,
+	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
+	text: string | Variable<any, string>,
+	redirectUrl: string | Variable<any, string>,
+	icon: string | Variable<any, string>
+};
+	["AnnouncementBarEntryInput"]: {
+	id?: string | undefined | null | Variable<any, string>,
+	colorIcon?: string | undefined | null | Variable<any, string>,
+	colorText?: string | undefined | null | Variable<any, string>,
+	translations?: Array<ValueTypes["AnnouncementBarEntryTranslationInput"]> | undefined | null | Variable<any, string>
+};
+	["UpdateAnnouncementBarInput"]: {
+	id: string | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	type?: ValueTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null | Variable<any, string>,
+	enabled?: boolean | undefined | null | Variable<any, string>,
+	startDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	speed?: number | undefined | null | Variable<any, string>,
+	spaceBetween?: number | undefined | null | Variable<any, string>,
+	colorBackground?: string | undefined | null | Variable<any, string>,
+	entries?: Array<ValueTypes["AnnouncementBarEntryInput"]> | undefined | null | Variable<any, string>
+};
+	["CreateAnnouncementBarInput"]: {
+	title?: string | undefined | null | Variable<any, string>,
+	type?: ValueTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null | Variable<any, string>,
+	enabled?: boolean | undefined | null | Variable<any, string>,
+	startDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	speed?: number | undefined | null | Variable<any, string>,
+	spaceBetween?: number | undefined | null | Variable<any, string>,
+	colorBackground?: string | undefined | null | Variable<any, string>,
+	entries?: Array<ValueTypes["AnnouncementBarEntryInput"]> | undefined | null | Variable<any, string>
+};
+	["DeleteAnnouncementBarInput"]: {
+	id: string | Variable<any, string>
+};
+	["ChangeStatusAnnouncementBarInput"]: {
+	id: string | Variable<any, string>,
+	enabled: boolean | Variable<any, string>
+};
+	["ReviewProduct"]: AliasType<{
+	id?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	state?:boolean | `@${string}`,
+	stars?:boolean | `@${string}`,
+	nextStates?:boolean | `@${string}`,
+	product?:ValueTypes["Product"],
+	customerIpNumber?:boolean | `@${string}`,
+	customerName?:boolean | `@${string}`,
+	customerEmail?:boolean | `@${string}`,
+	publishPermission?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateReviewProductInput"]: {
+	productId: string | Variable<any, string>,
+	title: string | Variable<any, string>,
+	description: string | Variable<any, string>,
+	stars: number | Variable<any, string>,
+	customerIpNumber?: string | undefined | null | Variable<any, string>,
+	customerName?: string | undefined | null | Variable<any, string>,
+	customerEmail?: string | undefined | null | Variable<any, string>
+};
+	["ReviewProductList"]: AliasType<{
+	items?:ValueTypes["ReviewProduct"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateReviewProductInput"]: {
+	id: string | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	description?: string | undefined | null | Variable<any, string>,
+	customerName?: string | undefined | null | Variable<any, string>
+};
+	["ReviewProductListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["ReviewProductSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["ReviewProductFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["ReviewStore"]: AliasType<{
+	id?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	state?:boolean | `@${string}`,
+	nextStates?:boolean | `@${string}`,
+	customerIpNumber?:boolean | `@${string}`,
+	customerName?:boolean | `@${string}`,
+	customerEmail?:boolean | `@${string}`,
+	articleSlug?:boolean | `@${string}`,
+	language?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateReviewStoreInput"]: {
+	title: string | Variable<any, string>,
+	description: string | Variable<any, string>,
+	customerName?: string | undefined | null | Variable<any, string>,
+	customerIpNumber?: string | undefined | null | Variable<any, string>,
+	customerEmail?: string | undefined | null | Variable<any, string>,
+	articleSlug?: string | undefined | null | Variable<any, string>,
+	language?: string | undefined | null | Variable<any, string>
+};
+	["UpdateReviewStoreInput"]: {
+	id: string | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	description?: string | undefined | null | Variable<any, string>,
+	customerName?: string | undefined | null | Variable<any, string>
+};
+	["ReviewStoreList"]: AliasType<{
+	items?:ValueTypes["ReviewStore"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ReviewStoreListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["ReviewStoreSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["ReviewStoreFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormAnswer"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	form?:ValueTypes["Form"],
+	answerData?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["NodeType"]:NodeType;
+	["NodeTypeOnSubmitAction"]:NodeTypeOnSubmitAction;
+	["Form"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	formName?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	slug?:boolean | `@${string}`,
+	hero?:ValueTypes["FormHero"],
+	thanksPage?:ValueTypes["FormThanksPage"],
+	email?:ValueTypes["FormEmail"],
+	sections?:ValueTypes["FormSection"],
+	registrationCount?:boolean | `@${string}`,
+	maxRegistrationCount?:boolean | `@${string}`,
+	active?:boolean | `@${string}`,
+	startDate?:boolean | `@${string}`,
+	endDate?:boolean | `@${string}`,
+	sectionsOrder?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmail"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	subject?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	body?:boolean | `@${string}`,
+	logo?:ValueTypes["FormEmailLogo"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FormHero"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	fileUrl?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmailLogo"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	fileUrl?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductForRating"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	previewImage?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormNode"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	nodeAction?:boolean | `@${string}`,
+	handlesForAction?:boolean | `@${string}`,
+	handle?:boolean | `@${string}`,
+	formFieldName?:boolean | `@${string}`,
+	label?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	required?:boolean | `@${string}`,
+	unique?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	selectionOptions?:boolean | `@${string}`,
+	productsForRating?:ValueTypes["ProductForRating"],
+	order?:boolean | `@${string}`,
+	maxFilesCount?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormSection"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	nodes?:ValueTypes["FormNode"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FormThanksPageListItem"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	heroUrl?:boolean | `@${string}`,
+	answerLabel?:boolean | `@${string}`,
+	slug?:boolean | `@${string}`,
+	paragraph?:boolean | `@${string}`,
+	links?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormThanksPage"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	hero?:ValueTypes["FormHero"],
+	answerLabel?:boolean | `@${string}`,
+	slug?:boolean | `@${string}`,
+	paragraph?:boolean | `@${string}`,
+	links?:ValueTypes["FormLink"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FormLink"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	label?:boolean | `@${string}`,
+	href?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormList"]: AliasType<{
+	items?:ValueTypes["Form"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormAnswerList"]: AliasType<{
+	items?:ValueTypes["FormAnswer"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormSectionList"]: AliasType<{
+	items?:ValueTypes["FormSection"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormHeroList"]: AliasType<{
+	items?:ValueTypes["FormHero"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmailList"]: AliasType<{
+	items?:ValueTypes["FormEmail"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmailLogoList"]: AliasType<{
+	items?:ValueTypes["FormEmailLogo"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormThanksPageList"]: AliasType<{
+	items?:ValueTypes["FormThanksPage"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormLinkList"]: AliasType<{
+	items?:ValueTypes["FormLink"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["PreparePutUrlResponse"]: AliasType<{
+	fileKey?:boolean | `@${string}`,
+	putUrl?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateFormInput"]: {
+	formName: string | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	slug: string | Variable<any, string>,
+	hero?: string | undefined | null | Variable<any, string>,
+	email?: string | undefined | null | Variable<any, string>,
+	thanksPage?: string | undefined | null | Variable<any, string>,
+	sections: Array<string> | Variable<any, string>,
+	sectionsOrder: Array<string> | Variable<any, string>,
+	maxRegistrationCount?: number | undefined | null | Variable<any, string>,
+	active: boolean | Variable<any, string>,
+	startDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
+};
+	["UpdateFormInput"]: {
+	id: string | Variable<any, string>,
+	formName?: string | undefined | null | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	slug: string | Variable<any, string>,
+	hero?: string | undefined | null | Variable<any, string>,
+	email?: string | undefined | null | Variable<any, string>,
+	thanksPage?: string | undefined | null | Variable<any, string>,
+	sections: Array<string> | Variable<any, string>,
+	sectionsOrder: Array<string> | Variable<any, string>,
+	maxRegistrationCount?: number | undefined | null | Variable<any, string>,
+	active: boolean | Variable<any, string>,
+	startDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
+};
+	["CreateFormSectionInput"]: {
+	title?: string | undefined | null | Variable<any, string>,
+	name: string | Variable<any, string>,
+	nodes: Array<ValueTypes["CreateFormNodeInput"]> | Variable<any, string>
+};
+	["UpdateFormSectionInput"]: {
+	id: string | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	name: string | Variable<any, string>,
+	nodes?: Array<ValueTypes["UpdateFormNodeInput"]> | undefined | null | Variable<any, string>
+};
+	["CreateFormNodeInput"]: {
+	type: ValueTypes["NodeType"] | Variable<any, string>,
+	formFieldName: string | Variable<any, string>,
+	label?: string | undefined | null | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	required?: boolean | undefined | null | Variable<any, string>,
+	unique?: boolean | undefined | null | Variable<any, string>,
+	email?: boolean | undefined | null | Variable<any, string>,
+	selectionOptions?: Array<string> | undefined | null | Variable<any, string>,
+	productsForRating?: Array<string> | undefined | null | Variable<any, string>,
+	order: number | Variable<any, string>,
+	imageNodeLabel?: string | undefined | null | Variable<any, string>,
+	maxFilesCount?: number | undefined | null | Variable<any, string>,
+	nodeAction?: ValueTypes["NodeTypeOnSubmitAction"] | undefined | null | Variable<any, string>,
+	handlesForAction?: Array<string> | undefined | null | Variable<any, string>,
+	handle?: string | undefined | null | Variable<any, string>
+};
+	["UpdateFormNodeInput"]: {
+	id?: string | undefined | null | Variable<any, string>,
+	type?: ValueTypes["NodeType"] | undefined | null | Variable<any, string>,
+	formFieldName: string | Variable<any, string>,
+	label?: string | undefined | null | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	required?: boolean | undefined | null | Variable<any, string>,
+	unique?: boolean | undefined | null | Variable<any, string>,
+	email?: boolean | undefined | null | Variable<any, string>,
+	selectionOptions?: Array<string> | undefined | null | Variable<any, string>,
+	productsForRating?: Array<string> | undefined | null | Variable<any, string>,
+	order: number | Variable<any, string>,
+	imageNodeLabel?: string | undefined | null | Variable<any, string>,
+	maxFilesCount?: number | undefined | null | Variable<any, string>,
+	nodeAction?: ValueTypes["NodeTypeOnSubmitAction"] | undefined | null | Variable<any, string>,
+	handlesForAction?: Array<string> | undefined | null | Variable<any, string>,
+	handle?: string | undefined | null | Variable<any, string>
+};
+	["CreateFormThanksPageInput"]: {
+	hero?: string | undefined | null | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	answerLabel?: string | undefined | null | Variable<any, string>,
+	slug: string | Variable<any, string>,
+	paragraph?: string | undefined | null | Variable<any, string>,
+	links?: Array<string> | undefined | null | Variable<any, string>
+};
+	["UpdateFormThanksPageInput"]: {
+	id: string | Variable<any, string>,
+	hero?: string | undefined | null | Variable<any, string>,
+	title?: string | undefined | null | Variable<any, string>,
+	answerLabel?: string | undefined | null | Variable<any, string>,
+	slug?: string | undefined | null | Variable<any, string>,
+	paragraph?: string | undefined | null | Variable<any, string>,
+	links?: Array<string> | undefined | null | Variable<any, string>
+};
+	["CreateHeroInput"]: {
+	fileKey: string | Variable<any, string>
+};
+	["CreateFormEmailInput"]: {
+	subject: string | Variable<any, string>,
+	title: string | Variable<any, string>,
+	body: string | Variable<any, string>,
+	logo?: string | undefined | null | Variable<any, string>
+};
+	["UpdateFormEmailInput"]: {
+	id: string | Variable<any, string>,
+	subject: string | Variable<any, string>,
+	title: string | Variable<any, string>,
+	body: string | Variable<any, string>,
+	logo?: string | undefined | null | Variable<any, string>
+};
+	["CreateFormEmailLogoInput"]: {
+	fileKey: string | Variable<any, string>
+};
+	["CreateFormLinkInput"]: {
+	href: string | Variable<any, string>,
+	label: string | Variable<any, string>
+};
+	["FormSectionListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormSectionSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormSectionFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormHeroListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormHeroSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormHeroFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormAnswerListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormAnswerSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormAnswerFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormThanksPageListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormThanksPageSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormThanksPageFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormLinkListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormLinkSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormLinkFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormEmailLogoListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormEmailLogoSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormEmailLogoFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["FormEmailListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["FormEmailSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["FormEmailFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["SpecialOfferType"]:SpecialOfferType;
+	["SpecialOffer"]: AliasType<{
+	id?:boolean | `@${string}`,
+	startDate?:boolean | `@${string}`,
+	endDate?:boolean | `@${string}`,
+	sendEmail?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SetSpecialOfferInput"]: {
+	startDate: ValueTypes["DateTime"] | Variable<any, string>,
+	endDate: ValueTypes["DateTime"] | Variable<any, string>,
+	sendEmail?: boolean | undefined | null | Variable<any, string>,
+	type: ValueTypes["SpecialOfferType"] | Variable<any, string>
+};
+	["EffectsApplicationProduct"]: AliasType<{
+	id?:boolean | `@${string}`,
+	product?:ValueTypes["Product"],
+	review?:ValueTypes["ReviewProduct"],
+		__typename?: boolean | `@${string}`
+}>;
+	["EffectsApplication"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	phone?:boolean | `@${string}`,
+	instagramLogin?:boolean | `@${string}`,
+	beforePhotos?:boolean | `@${string}`,
+	afterPhotos?:boolean | `@${string}`,
+	products?:ValueTypes["EffectsApplicationProduct"],
+		__typename?: boolean | `@${string}`
+}>;
+	["EffectsApplicationList"]: AliasType<{
+	items?:ValueTypes["EffectsApplication"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["EffectsApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["EffectsApplicationSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["EffectsApplicationFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["CastingApplication"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	city?:boolean | `@${string}`,
+	phone?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	instagramLogin?:boolean | `@${string}`,
+	ageRange?:boolean | `@${string}`,
+	skinTypes?:boolean | `@${string}`,
+	dreamProduct?:boolean | `@${string}`,
+	photos?:boolean | `@${string}`,
+	publishPermission?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CastingApplicationList"]: AliasType<{
+	items?:ValueTypes["CastingApplication"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CastingApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null | Variable<any, string>,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null | Variable<any, string>,
+	/** Specifies which properties to sort the results by */
+	sort?: ValueTypes["CastingApplicationSortParameter"] | undefined | null | Variable<any, string>,
+	/** Allows the results to be filtered */
+	filter?: ValueTypes["CastingApplicationFilterParameter"] | undefined | null | Variable<any, string>,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
+	["SimplifiedFormApplication"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	surname?:boolean | `@${string}`,
+	street?:boolean | `@${string}`,
+	buildingNumber?:boolean | `@${string}`,
+	flatNumber?:boolean | `@${string}`,
+	postalCode?:boolean | `@${string}`,
+	city?:boolean | `@${string}`,
+	phone?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	companyName?:boolean | `@${string}`,
+	instagramLogin?:boolean | `@${string}`,
+	applicationNumber?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SimplifiedFormApplicationList"]: AliasType<{
+	items?:ValueTypes["SimplifiedFormApplication"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SimplifiedFormApplicationOptions"]: {
+	take?: number | undefined | null | Variable<any, string>,
+	skip?: number | undefined | null | Variable<any, string>,
+	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
+};
 	["ChartDataType"]: AliasType<{
-	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
 	title?:boolean | `@${string}`,
 	entries?:ValueTypes["ChartEntry"],
@@ -4565,22 +5420,21 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 		__typename?: boolean | `@${string}`
 }>;
 	["ChartEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
+	day?:boolean | `@${string}`,
 	value?:boolean | `@${string}`,
 	additionalData?:ValueTypes["ChartEntryAdditionalData"],
 		__typename?: boolean | `@${string}`
 }>;
-	["BetterMetricIntervalInput"]: {
-	type: ValueTypes["BetterMetricInterval"] | Variable<any, string>,
-	start?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
+	["BetterMetricRangeInput"]: {
+	start: ValueTypes["DateTime"] | Variable<any, string>,
 	end?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
 };
 	["OrderSummaryMetricInput"]: {
-	interval: ValueTypes["BetterMetricIntervalInput"] | Variable<any, string>,
+	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
 	refresh?: boolean | undefined | null | Variable<any, string>
 };
 	["ChartMetricInput"]: {
-	interval: ValueTypes["BetterMetricIntervalInput"] | Variable<any, string>,
+	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
 	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
 	productIDs?: Array<string> | undefined | null | Variable<any, string>,
 	refresh?: boolean | undefined | null | Variable<any, string>
@@ -4634,10 +5488,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	source?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	preview?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	thumbnail?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["AssetFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["AssetFilterParameter"]> | undefined | null | Variable<any, string>,
-	attributes?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	additionalInfo?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["AssetFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["AssetSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4650,8 +5503,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	source?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	preview?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	attributes?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	additionalInfo?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	thumbnail?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["ChannelFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4689,9 +5541,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	parentId?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	localestringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["CollectionSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4701,9 +5551,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	position?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	parentId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	localestringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	parentId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4718,7 +5566,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	price?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	priceWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	limit?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	freeGift?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	comment?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	excludeFromShop?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	notifyAboutAvailability?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	isTreatedAsGift?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	discountBy?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	inSetLabel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["CountryFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4775,18 +5630,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	code?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	localestringTest?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["FacetSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	code?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	localestringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	code?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["FacetValueFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4859,14 +5710,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	discountBy?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	boolTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	floatTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	intTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stringTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	textTest?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	dateTime?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	singleAssetTestP?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	productId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["PromotionFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -5044,6 +5888,262 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
+	["AnnouncementBarFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	channelCode?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	type?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	enabled?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	startDate?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	speed?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	spaceBetween?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	colorBackground?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	nowActive?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["AnnouncementBarFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["AnnouncementBarFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["AnnouncementBarSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	channelCode?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	startDate?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	speed?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	spaceBetween?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	colorBackground?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["ReviewProductFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	state?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	stars?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	customerIpNumber?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	customerName?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	customerEmail?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	publishPermission?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["ReviewProductFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["ReviewProductFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["ReviewProductSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	state?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	stars?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	customerIpNumber?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	customerName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	customerEmail?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["ReviewStoreFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	state?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	customerIpNumber?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	customerName?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	customerEmail?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	articleSlug?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	language?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["ReviewStoreFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["ReviewStoreFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["ReviewStoreSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	state?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	customerIpNumber?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	customerName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	customerEmail?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	articleSlug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	language?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	formName?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	slug?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	registrationCount?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	maxRegistrationCount?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
+	active?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	startDate?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	formName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	registrationCount?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	maxRegistrationCount?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	startDate?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	endDate?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormAnswerFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormAnswerFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormAnswerFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormAnswerSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormSectionFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormSectionFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormSectionFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormSectionSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormHeroFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	fileUrl?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormHeroFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormHeroFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormHeroSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	fileUrl?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormEmailFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	subject?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	body?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormEmailFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormEmailFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormEmailSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	subject?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	body?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormEmailLogoFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	fileUrl?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormEmailLogoFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormEmailLogoFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormEmailLogoSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	fileUrl?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormThanksPageFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	answerLabel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	slug?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	paragraph?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormThanksPageFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormThanksPageFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormThanksPageSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	title?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	answerLabel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	paragraph?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["FormLinkFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	label?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	href?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["FormLinkFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["FormLinkFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["FormLinkSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	label?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	href?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["EffectsApplicationFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	email?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	phone?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	instagramLogin?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["EffectsApplicationFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["EffectsApplicationFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["EffectsApplicationSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	email?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	phone?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	instagramLogin?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
+	["CastingApplicationFilterParameter"]: {
+	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	city?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	phone?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	email?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	instagramLogin?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	ageRange?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	dreamProduct?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
+	publishPermission?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	_and?: Array<ValueTypes["CastingApplicationFilterParameter"]> | undefined | null | Variable<any, string>,
+	_or?: Array<ValueTypes["CastingApplicationFilterParameter"]> | undefined | null | Variable<any, string>
+};
+	["CastingApplicationSortParameter"]: {
+	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	city?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	phone?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	email?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	instagramLogin?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	ageRange?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	dreamProduct?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+};
 	["HistoryEntryFilterParameter"]: {
 	isPublic?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -5058,148 +6158,104 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
-	["AssetCustomFields"]: AliasType<{
-	attributes?:boolean | `@${string}`,
-	additionalInfo?:boolean | `@${string}`,
+	["AddressCustomFields"]: AliasType<{
+	comment?:boolean | `@${string}`,
+	taxNumber?:boolean | `@${string}`,
+	firstName?:boolean | `@${string}`,
+	lastName?:boolean | `@${string}`,
+	buildingNumber?:boolean | `@${string}`,
+	flatNumber?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["CreateAssetCustomFieldsInput"]: {
-	attributes?: string | undefined | null | Variable<any, string>,
-	additionalInfo?: string | undefined | null | Variable<any, string>
+	["CreateAddressCustomFieldsInput"]: {
+	comment?: string | undefined | null | Variable<any, string>,
+	taxNumber?: string | undefined | null | Variable<any, string>,
+	firstName?: string | undefined | null | Variable<any, string>,
+	lastName?: string | undefined | null | Variable<any, string>,
+	buildingNumber?: string | undefined | null | Variable<any, string>,
+	flatNumber?: string | undefined | null | Variable<any, string>
 };
-	["UpdateAssetCustomFieldsInput"]: {
-	attributes?: string | undefined | null | Variable<any, string>,
-	additionalInfo?: string | undefined | null | Variable<any, string>
-};
-	["CollectionCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
-	localestringTest?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CollectionTranslationCustomFields"]: AliasType<{
-	localestringTest?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateCollectionCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>
-};
-	["UpdateCollectionCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>
-};
-	["CreateCollectionTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null | Variable<any, string>
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null | Variable<any, string>
-};
-	["FacetCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
-	localestringTest?:boolean | `@${string}`,
-	ProductListTest?:ValueTypes["Product"],
-	listProductVariantTest?:ValueTypes["ProductVariant"],
-		__typename?: boolean | `@${string}`
-}>;
-	["FacetTranslationCustomFields"]: AliasType<{
-	localestringTest?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateFacetCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>,
-	ProductListTestIds?: Array<string> | undefined | null | Variable<any, string>,
-	listProductVariantTestIds?: Array<string> | undefined | null | Variable<any, string>
-};
-	["UpdateFacetCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>,
-	ProductListTestIds?: Array<string> | undefined | null | Variable<any, string>,
-	listProductVariantTestIds?: Array<string> | undefined | null | Variable<any, string>
-};
-	["FacetTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null | Variable<any, string>
+	["UpdateAddressCustomFieldsInput"]: {
+	comment?: string | undefined | null | Variable<any, string>,
+	taxNumber?: string | undefined | null | Variable<any, string>,
+	firstName?: string | undefined | null | Variable<any, string>,
+	lastName?: string | undefined | null | Variable<any, string>,
+	buildingNumber?: string | undefined | null | Variable<any, string>,
+	flatNumber?: string | undefined | null | Variable<any, string>
 };
 	["OrderCustomFields"]: AliasType<{
-	attributes?:boolean | `@${string}`,
-	additionalInfo?:boolean | `@${string}`,
+	inPostPoint?:boolean | `@${string}`,
+	dpdPickupPoint?:boolean | `@${string}`,
+	invoiceUrl?:boolean | `@${string}`,
+	reminderSent?:boolean | `@${string}`,
+	abandonedCartReminderSent?:boolean | `@${string}`,
+	notes?:boolean | `@${string}`,
+	paymentType?:boolean | `@${string}`,
+	needInvoice?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["UpdateOrderCustomFieldsInput"]: {
-	attributes?: string | undefined | null | Variable<any, string>,
-	additionalInfo?: string | undefined | null | Variable<any, string>
+	inPostPoint?: string | undefined | null | Variable<any, string>,
+	dpdPickupPoint?: string | undefined | null | Variable<any, string>,
+	invoiceUrl?: string | undefined | null | Variable<any, string>,
+	reminderSent?: boolean | undefined | null | Variable<any, string>,
+	abandonedCartReminderSent?: boolean | undefined | null | Variable<any, string>,
+	notes?: string | undefined | null | Variable<any, string>,
+	paymentType?: string | undefined | null | Variable<any, string>,
+	needInvoice?: boolean | undefined | null | Variable<any, string>
 };
 	["OrderLineCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
-	textTest?:boolean | `@${string}`,
+	freeGiftForCouponCode?:boolean | `@${string}`,
+	discountBy?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductCustomFields"]: AliasType<{
-	discountBy?:boolean | `@${string}`,
-	boolTest?:boolean | `@${string}`,
-	floatTest?:boolean | `@${string}`,
-	intTest?:boolean | `@${string}`,
-	stringTest?:boolean | `@${string}`,
-	textTest?:boolean | `@${string}`,
-	dateTime?:boolean | `@${string}`,
-	listTestString?:boolean | `@${string}`,
-	listTestInt?:boolean | `@${string}`,
-	listTestFloat?:boolean | `@${string}`,
-	listTestText?:boolean | `@${string}`,
-	listLocaleString?:boolean | `@${string}`,
-	listLocaleText?:boolean | `@${string}`,
-	singleAssetTestP?:ValueTypes["Asset"],
-	listAssetTestP?:ValueTypes["Asset"],
-		__typename?: boolean | `@${string}`
-}>;
-	["ProductTranslationCustomFields"]: AliasType<{
-	listLocaleString?:boolean | `@${string}`,
-	listLocaleText?:boolean | `@${string}`,
+	productId?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CreateProductCustomFieldsInput"]: {
-	discountBy?: string | undefined | null | Variable<any, string>,
-	boolTest?: boolean | undefined | null | Variable<any, string>,
-	floatTest?: number | undefined | null | Variable<any, string>,
-	intTest?: number | undefined | null | Variable<any, string>,
-	stringTest?: string | undefined | null | Variable<any, string>,
-	textTest?: string | undefined | null | Variable<any, string>,
-	dateTime?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
-	listTestString?: Array<string> | undefined | null | Variable<any, string>,
-	listTestInt?: Array<number> | undefined | null | Variable<any, string>,
-	listTestFloat?: Array<number> | undefined | null | Variable<any, string>,
-	listTestText?: Array<string> | undefined | null | Variable<any, string>,
-	singleAssetTestPId?: string | undefined | null | Variable<any, string>,
-	listAssetTestPIds?: Array<string> | undefined | null | Variable<any, string>
+	productId?: string | undefined | null | Variable<any, string>
 };
 	["UpdateProductCustomFieldsInput"]: {
-	discountBy?: string | undefined | null | Variable<any, string>,
-	boolTest?: boolean | undefined | null | Variable<any, string>,
-	floatTest?: number | undefined | null | Variable<any, string>,
-	intTest?: number | undefined | null | Variable<any, string>,
-	stringTest?: string | undefined | null | Variable<any, string>,
-	textTest?: string | undefined | null | Variable<any, string>,
-	dateTime?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
-	listTestString?: Array<string> | undefined | null | Variable<any, string>,
-	listTestInt?: Array<number> | undefined | null | Variable<any, string>,
-	listTestFloat?: Array<number> | undefined | null | Variable<any, string>,
-	listTestText?: Array<string> | undefined | null | Variable<any, string>,
-	singleAssetTestPId?: string | undefined | null | Variable<any, string>,
-	listAssetTestPIds?: Array<string> | undefined | null | Variable<any, string>
-};
-	["ProductTranslationInputCustomFields"]: {
-	listLocaleString?: Array<string> | undefined | null | Variable<any, string>,
-	listLocaleText?: Array<string> | undefined | null | Variable<any, string>
+	productId?: string | undefined | null | Variable<any, string>
 };
 	["ProductVariantCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
+	limit?:boolean | `@${string}`,
+	freeGift?:boolean | `@${string}`,
+	comment?:boolean | `@${string}`,
+	excludeFromShop?:boolean | `@${string}`,
+	notifyAboutAvailability?:boolean | `@${string}`,
+	isTreatedAsGift?:boolean | `@${string}`,
+	discountBy?:boolean | `@${string}`,
+	inSet?:ValueTypes["ProductVariant"],
+	inSetLabel?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CreateProductVariantCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>
+	limit?: number | undefined | null | Variable<any, string>,
+	freeGift?: boolean | undefined | null | Variable<any, string>,
+	comment?: string | undefined | null | Variable<any, string>,
+	excludeFromShop?: boolean | undefined | null | Variable<any, string>,
+	notifyAboutAvailability?: boolean | undefined | null | Variable<any, string>,
+	isTreatedAsGift?: boolean | undefined | null | Variable<any, string>,
+	discountBy?: number | undefined | null | Variable<any, string>,
+	inSetIds?: Array<string> | undefined | null | Variable<any, string>,
+	inSetLabel?: string | undefined | null | Variable<any, string>
 };
 	["UpdateProductVariantCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>
+	limit?: number | undefined | null | Variable<any, string>,
+	freeGift?: boolean | undefined | null | Variable<any, string>,
+	comment?: string | undefined | null | Variable<any, string>,
+	excludeFromShop?: boolean | undefined | null | Variable<any, string>,
+	notifyAboutAvailability?: boolean | undefined | null | Variable<any, string>,
+	isTreatedAsGift?: boolean | undefined | null | Variable<any, string>,
+	discountBy?: number | undefined | null | Variable<any, string>,
+	inSetIds?: Array<string> | undefined | null | Variable<any, string>,
+	inSetLabel?: string | undefined | null | Variable<any, string>
 };
 	["OrderLineCustomFieldsInput"]: {
-	stringTest?: string | undefined | null | Variable<any, string>,
-	textTest?: string | undefined | null | Variable<any, string>
+	freeGiftForCouponCode?: string | undefined | null | Variable<any, string>,
+	discountBy?: number | undefined | null | Variable<any, string>
 };
 	["NativeAuthInput"]: {
 	username: string | Variable<any, string>,
@@ -5319,9 +6375,36 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
+announcementBar?: [{	id: string},ResolverInputTypes["AnnouncementBar"]],
+announcementBars?: [{	options?: ResolverInputTypes["AnnouncementBarListOptions"] | undefined | null},ResolverInputTypes["AnnouncementBarList"]],
+	getActiveAnnouncementBar?:ResolverInputTypes["AnnouncementBar"],
+reviewProduct?: [{	id: string},ResolverInputTypes["ReviewProduct"]],
+reviewsProduct?: [{	options?: ResolverInputTypes["ReviewProductListOptions"] | undefined | null},ResolverInputTypes["ReviewProductList"]],
+reviewStore?: [{	id: string},ResolverInputTypes["ReviewStore"]],
+reviewsStore?: [{	options?: ResolverInputTypes["ReviewStoreListOptions"] | undefined | null},ResolverInputTypes["ReviewStoreList"]],
+formList?: [{	options?: ResolverInputTypes["FormListOptions"] | undefined | null},ResolverInputTypes["FormList"]],
+form?: [{	id: string},ResolverInputTypes["Form"]],
+formAnswerList?: [{	formId: string,	options?: ResolverInputTypes["FormAnswerListOptions"] | undefined | null},ResolverInputTypes["FormAnswerList"]],
+formAnswer?: [{	id: string},ResolverInputTypes["FormAnswer"]],
+formAnswersToDocument?: [{	formId: string,	startDate?: string | undefined | null,	endDate?: string | undefined | null},boolean | `@${string}`],
+formEmail?: [{	id: string},ResolverInputTypes["FormEmail"]],
+formSectionList?: [{	options?: ResolverInputTypes["FormSectionListOptions"] | undefined | null},ResolverInputTypes["FormSectionList"]],
+formSection?: [{	id: string},ResolverInputTypes["FormSection"]],
+formHeroList?: [{	options?: ResolverInputTypes["FormHeroListOptions"] | undefined | null},ResolverInputTypes["FormHeroList"]],
+formEmailList?: [{	options?: ResolverInputTypes["FormEmailListOptions"] | undefined | null},ResolverInputTypes["FormEmailList"]],
+formEmailLogoList?: [{	options?: ResolverInputTypes["FormEmailLogoListOptions"] | undefined | null},ResolverInputTypes["FormEmailLogoList"]],
+formThanksPageList?: [{	options?: ResolverInputTypes["FormThanksPageListOptions"] | undefined | null},ResolverInputTypes["FormThanksPageList"]],
+formThanksPage?: [{	id: string},ResolverInputTypes["FormThanksPage"]],
+formLinkList?: [{	options?: ResolverInputTypes["FormLinkListOptions"] | undefined | null},ResolverInputTypes["FormLinkList"]],
+getSpecialOffer?: [{	type: ResolverInputTypes["SpecialOfferType"]},ResolverInputTypes["SpecialOffer"]],
+effectsApplications?: [{	options?: ResolverInputTypes["EffectsApplicationListOptions"] | undefined | null},ResolverInputTypes["EffectsApplicationList"]],
+castingApplications?: [{	options?: ResolverInputTypes["CastingApplicationListOptions"] | undefined | null},ResolverInputTypes["CastingApplicationList"]],
+simplifiedFormApplications?: [{	options?: ResolverInputTypes["SimplifiedFormApplicationListOptions"] | undefined | null},ResolverInputTypes["SimplifiedFormApplicationList"]],
 chartMetric?: [{	input: ResolverInputTypes["ChartMetricInput"]},ResolverInputTypes["ChartMetrics"]],
 orderSummaryMetric?: [{	input: ResolverInputTypes["OrderSummaryMetricInput"]},ResolverInputTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
+exportOrdersToDocument?: [{	fromDate?: ResolverInputTypes["DateTime"] | undefined | null,	toDate?: ResolverInputTypes["DateTime"] | undefined | null},boolean | `@${string}`],
+exportSpecialOfferApplicationsToDocument?: [{	fromDate?: ResolverInputTypes["DateTime"] | undefined | null,	toDate?: ResolverInputTypes["DateTime"] | undefined | null,	type?: ResolverInputTypes["SpecialOfferType"] | undefined | null},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -5488,8 +6571,89 @@ deleteZone?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
 deleteZones?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
+manageSuggestion?: [{	input: ResolverInputTypes["ProductSuggestionInput"]},ResolverInputTypes["ProductSuggestionEntity"]],
+updateAnnouncementBar?: [{	input: ResolverInputTypes["UpdateAnnouncementBarInput"]},ResolverInputTypes["AnnouncementBar"]],
+createAnnouncementBar?: [{	input: ResolverInputTypes["CreateAnnouncementBarInput"]},ResolverInputTypes["AnnouncementBar"]],
+deleteAnnouncementBar?: [{	input: ResolverInputTypes["DeleteAnnouncementBarInput"]},boolean | `@${string}`],
+changeStatusAnnouncementBar?: [{	input: ResolverInputTypes["ChangeStatusAnnouncementBarInput"]},boolean | `@${string}`],
+transitionReviewProductToState?: [{	id: string,	state: string},ResolverInputTypes["ReviewProduct"]],
+createReviewProduct?: [{	input: ResolverInputTypes["CreateReviewProductInput"]},ResolverInputTypes["ReviewProduct"]],
+updateReviewProduct?: [{	input: ResolverInputTypes["UpdateReviewProductInput"]},ResolverInputTypes["ReviewProduct"]],
+transitionReviewStoreToState?: [{	id: string,	state: string},ResolverInputTypes["ReviewStore"]],
+createReviewStore?: [{	input: ResolverInputTypes["CreateReviewStoreInput"]},ResolverInputTypes["ReviewStore"]],
+updateReviewStore?: [{	input?: ResolverInputTypes["UpdateReviewStoreInput"] | undefined | null},ResolverInputTypes["ReviewStore"]],
+createForm?: [{	input: ResolverInputTypes["CreateFormInput"]},ResolverInputTypes["Form"]],
+updateForm?: [{	input: ResolverInputTypes["UpdateFormInput"]},ResolverInputTypes["Form"]],
+deleteForms?: [{	ids: Array<string>},boolean | `@${string}`],
+createFormSection?: [{	input: ResolverInputTypes["CreateFormSectionInput"]},ResolverInputTypes["FormSection"]],
+updateFormSection?: [{	input: ResolverInputTypes["UpdateFormSectionInput"]},ResolverInputTypes["FormSection"]],
+deleteFormSections?: [{	ids: Array<string>},boolean | `@${string}`],
+createFormHero?: [{	input: ResolverInputTypes["CreateHeroInput"]},ResolverInputTypes["FormHero"]],
+createFormEmailLogo?: [{	input: ResolverInputTypes["CreateFormEmailLogoInput"]},ResolverInputTypes["FormEmailLogo"]],
+deleteFormHeros?: [{	ids: Array<string>},boolean | `@${string}`],
+deleteFormEmailLogos?: [{	ids: Array<string>},boolean | `@${string}`],
+preparePutUrl?: [{	mimeType: string},ResolverInputTypes["PreparePutUrlResponse"]],
+createFormThanksPage?: [{	input: ResolverInputTypes["CreateFormThanksPageInput"]},ResolverInputTypes["FormThanksPage"]],
+updateFormThanksPage?: [{	input: ResolverInputTypes["UpdateFormThanksPageInput"]},ResolverInputTypes["FormThanksPage"]],
+deleteFormThanksPages?: [{	ids: Array<string>},boolean | `@${string}`],
+changeFromStatus?: [{	id: string},boolean | `@${string}`],
+clearFormRegistrationCount?: [{	id: string},boolean | `@${string}`],
+createFormLinks?: [{	input: Array<ResolverInputTypes["CreateFormLinkInput"]>},boolean | `@${string}`],
+deleteFormLinks?: [{	ids: Array<string>},boolean | `@${string}`],
+createFormEmail?: [{	input: ResolverInputTypes["CreateFormEmailInput"]},ResolverInputTypes["FormEmail"]],
+updateFormEmail?: [{	input: ResolverInputTypes["UpdateFormEmailInput"]},ResolverInputTypes["FormEmail"]],
+deleteFormEmails?: [{	ids: Array<string>},boolean | `@${string}`],
+setSpecialOffer?: [{	input: ResolverInputTypes["SetSpecialOfferInput"]},ResolverInputTypes["SpecialOffer"]],
+	archiveAllCreamForCreamApplications?:boolean | `@${string}`,
+	archiveAllSimplifiedFormApplications?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["SimplifiedFormApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["SimplifiedFormApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["SimplifiedFormApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["SimplifiedFormApplicationSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	name?: ResolverInputTypes["SortOrder"] | undefined | null,
+	surname?: ResolverInputTypes["SortOrder"] | undefined | null,
+	street?: ResolverInputTypes["SortOrder"] | undefined | null,
+	buildingNumber?: ResolverInputTypes["SortOrder"] | undefined | null,
+	flatNumber?: ResolverInputTypes["SortOrder"] | undefined | null,
+	postalCode?: ResolverInputTypes["SortOrder"] | undefined | null,
+	city?: ResolverInputTypes["SortOrder"] | undefined | null,
+	phone?: ResolverInputTypes["SortOrder"] | undefined | null,
+	email?: ResolverInputTypes["SortOrder"] | undefined | null,
+	companyName?: ResolverInputTypes["SortOrder"] | undefined | null,
+	instagramLogin?: ResolverInputTypes["SortOrder"] | undefined | null,
+	applicationNumber?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["SimplifiedFormApplicationFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	name?: ResolverInputTypes["StringOperators"] | undefined | null,
+	surname?: ResolverInputTypes["StringOperators"] | undefined | null,
+	street?: ResolverInputTypes["StringOperators"] | undefined | null,
+	buildingNumber?: ResolverInputTypes["StringOperators"] | undefined | null,
+	flatNumber?: ResolverInputTypes["StringOperators"] | undefined | null,
+	postalCode?: ResolverInputTypes["StringOperators"] | undefined | null,
+	city?: ResolverInputTypes["StringOperators"] | undefined | null,
+	phone?: ResolverInputTypes["StringOperators"] | undefined | null,
+	email?: ResolverInputTypes["StringOperators"] | undefined | null,
+	companyName?: ResolverInputTypes["StringOperators"] | undefined | null,
+	instagramLogin?: ResolverInputTypes["StringOperators"] | undefined | null,
+	applicationNumber?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null
+};
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
 	skip?: number | undefined | null,
@@ -5571,7 +6735,7 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	["CreateAssetInput"]: {
 	file: ResolverInputTypes["Upload"],
 	tags?: Array<string> | undefined | null,
-	customFields?: ResolverInputTypes["CreateAssetCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CoordinateInput"]: {
 	x: number,
@@ -5592,7 +6756,7 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	name?: string | undefined | null,
 	focalPoint?: ResolverInputTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
-	customFields?: ResolverInputTypes["UpdateAssetCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
 	assetIds: Array<string>,
@@ -5697,7 +6861,7 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	filters?:ResolverInputTypes["ConfigurableOperation"],
 	translations?:ResolverInputTypes["CollectionTranslation"],
 productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | undefined | null},ResolverInputTypes["ProductVariantList"]],
-	customFields?:ResolverInputTypes["CollectionCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionListOptions"]: {
@@ -5723,7 +6887,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: ResolverInputTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null,
@@ -5731,7 +6895,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ResolverInputTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null,
@@ -5741,7 +6905,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<ResolverInputTypes["ConfigurableOperationInput"]>,
 	translations: Array<ResolverInputTypes["CreateCollectionTranslationInput"]>,
-	customFields?: ResolverInputTypes["CreateCollectionCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
 	parentId?: string | undefined | null,
@@ -5757,7 +6921,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<ResolverInputTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<ResolverInputTypes["UpdateCollectionTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["UpdateCollectionCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
 	collectionIds: Array<string>,
@@ -5934,7 +7098,7 @@ orders?: [{	options?: ResolverInputTypes["OrderListOptions"] | undefined | null}
 	values?:ResolverInputTypes["FacetValue"],
 valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined | null},ResolverInputTypes["FacetValueList"]],
 	translations?:ResolverInputTypes["FacetTranslation"],
-	customFields?:ResolverInputTypes["FacetCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetListOptions"]: {
@@ -5953,21 +7117,21 @@ valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined
 	id?: string | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
-	customFields?: ResolverInputTypes["FacetTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateFacetInput"]: {
 	code: string,
 	isPrivate: boolean,
 	translations: Array<ResolverInputTypes["FacetTranslationInput"]>,
 	values?: Array<ResolverInputTypes["CreateFacetValueWithFacetInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["CreateFacetCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateFacetInput"]: {
 	id: string,
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["FacetTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["UpdateFacetCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
 	id?: string | undefined | null,
@@ -6258,8 +7422,14 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	totalWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
-	attributes?: ResolverInputTypes["StringOperators"] | undefined | null,
-	additionalInfo?: ResolverInputTypes["StringOperators"] | undefined | null
+	inPostPoint?: ResolverInputTypes["StringOperators"] | undefined | null,
+	dpdPickupPoint?: ResolverInputTypes["StringOperators"] | undefined | null,
+	invoiceUrl?: ResolverInputTypes["StringOperators"] | undefined | null,
+	reminderSent?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	abandonedCartReminderSent?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	notes?: ResolverInputTypes["StringOperators"] | undefined | null,
+	paymentType?: ResolverInputTypes["StringOperators"] | undefined | null,
+	needInvoice?: ResolverInputTypes["BooleanOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -6278,8 +7448,14 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	shippingWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
 	total?: ResolverInputTypes["SortOrder"] | undefined | null,
 	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	attributes?: ResolverInputTypes["SortOrder"] | undefined | null,
-	additionalInfo?: ResolverInputTypes["SortOrder"] | undefined | null
+	inPostPoint?: ResolverInputTypes["SortOrder"] | undefined | null,
+	dpdPickupPoint?: ResolverInputTypes["SortOrder"] | undefined | null,
+	invoiceUrl?: ResolverInputTypes["SortOrder"] | undefined | null,
+	reminderSent?: ResolverInputTypes["SortOrder"] | undefined | null,
+	abandonedCartReminderSent?: ResolverInputTypes["SortOrder"] | undefined | null,
+	notes?: ResolverInputTypes["SortOrder"] | undefined | null,
+	paymentType?: ResolverInputTypes["SortOrder"] | undefined | null,
+	needInvoice?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6371,7 +7547,8 @@ fields will be removed in a future version. */
 	province?: string | undefined | null,
 	postalCode?: string | undefined | null,
 	countryCode?: string | undefined | null,
-	phoneNumber?: string | undefined | null
+	phoneNumber?: string | undefined | null,
+	customFields?: ResolverInputTypes["UpdateAddressCustomFieldsInput"] | undefined | null
 };
 	["ModifyOrderInput"]: {
 	dryRun: boolean,
@@ -6740,6 +7917,8 @@ variantList?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | und
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductTranslation"],
 	collections?:ResolverInputTypes["Collection"],
+	freeShippingSuggestion?:ResolverInputTypes["ProductSuggestionEntity"],
+	defaultSuggestion?:ResolverInputTypes["ProductSuggestionEntity"],
 	customFields?:ResolverInputTypes["ProductCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
@@ -6844,6 +8023,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	collectionIds?:boolean | `@${string}`,
 	/** A relevance score for the result. Differs between database implementations */
 	score?:boolean | `@${string}`,
+	inStock?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["StockMovementListOptions"]: {
@@ -6876,19 +8056,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	enabled?: ResolverInputTypes["BooleanOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null,
 	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null,
-	discountBy?: ResolverInputTypes["StringOperators"] | undefined | null,
-	boolTest?: ResolverInputTypes["BooleanOperators"] | undefined | null,
-	floatTest?: ResolverInputTypes["NumberOperators"] | undefined | null,
-	intTest?: ResolverInputTypes["NumberOperators"] | undefined | null,
-	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
-	textTest?: ResolverInputTypes["StringOperators"] | undefined | null,
-	dateTime?: ResolverInputTypes["DateOperators"] | undefined | null,
-	listTestString?: ResolverInputTypes["StringListOperators"] | undefined | null,
-	listTestInt?: ResolverInputTypes["NumberListOperators"] | undefined | null,
-	listTestFloat?: ResolverInputTypes["NumberListOperators"] | undefined | null,
-	listTestText?: ResolverInputTypes["StringListOperators"] | undefined | null,
-	listLocaleString?: ResolverInputTypes["StringListOperators"] | undefined | null,
-	listLocaleText?: ResolverInputTypes["StringListOperators"] | undefined | null
+	productId?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6923,7 +8091,14 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	stockLevel?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
 	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
-	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null
+	limit?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	freeGift?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	comment?: ResolverInputTypes["StringOperators"] | undefined | null,
+	excludeFromShop?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	notifyAboutAvailability?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	isTreatedAsGift?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	discountBy?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	inSetLabel?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null,
@@ -6931,7 +8106,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ResolverInputTypes["ProductTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null,
@@ -7524,7 +8699,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	phoneNumber?:boolean | `@${string}`,
 	defaultShippingAddress?:boolean | `@${string}`,
 	defaultBillingAddress?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["AddressCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Asset"]: AliasType<{
@@ -7541,7 +8716,8 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview?:boolean | `@${string}`,
 	focalPoint?:ResolverInputTypes["Coordinate"],
 	tags?:ResolverInputTypes["Tag"],
-	customFields?:ResolverInputTypes["AssetCustomFields"],
+	thumbnail?:boolean | `@${string}`,
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["Coordinate"]: AliasType<{
@@ -7604,7 +8780,6 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ResolverInputTypes["CollectionTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionList"]: AliasType<{
@@ -7782,6 +8957,20 @@ current session. */
 		['...on ShippingMethodList']?: Omit<ResolverInputTypes["ShippingMethodList"],keyof ResolverInputTypes["PaginatedList"]>;
 		['...on TagList']?: Omit<ResolverInputTypes["TagList"],keyof ResolverInputTypes["PaginatedList"]>;
 		['...on TaxRateList']?: Omit<ResolverInputTypes["TaxRateList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on AnnouncementBarList']?: Omit<ResolverInputTypes["AnnouncementBarList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on ReviewProductList']?: Omit<ResolverInputTypes["ReviewProductList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on ReviewStoreList']?: Omit<ResolverInputTypes["ReviewStoreList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormList']?: Omit<ResolverInputTypes["FormList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormAnswerList']?: Omit<ResolverInputTypes["FormAnswerList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormSectionList']?: Omit<ResolverInputTypes["FormSectionList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormHeroList']?: Omit<ResolverInputTypes["FormHeroList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormEmailList']?: Omit<ResolverInputTypes["FormEmailList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormEmailLogoList']?: Omit<ResolverInputTypes["FormEmailLogoList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormThanksPageList']?: Omit<ResolverInputTypes["FormThanksPageList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on FormLinkList']?: Omit<ResolverInputTypes["FormLinkList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on EffectsApplicationList']?: Omit<ResolverInputTypes["EffectsApplicationList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on CastingApplicationList']?: Omit<ResolverInputTypes["CastingApplicationList"],keyof ResolverInputTypes["PaginatedList"]>;
+		['...on SimplifiedFormApplicationList']?: Omit<ResolverInputTypes["SimplifiedFormApplicationList"],keyof ResolverInputTypes["PaginatedList"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Node"]:AliasType<{
@@ -7830,6 +9019,26 @@ current session. */
 		['...on User']?: Omit<ResolverInputTypes["User"],keyof ResolverInputTypes["Node"]>;
 		['...on AuthenticationMethod']?: Omit<ResolverInputTypes["AuthenticationMethod"],keyof ResolverInputTypes["Node"]>;
 		['...on Zone']?: Omit<ResolverInputTypes["Zone"],keyof ResolverInputTypes["Node"]>;
+		['...on ProductSuggestionItemEntity']?: Omit<ResolverInputTypes["ProductSuggestionItemEntity"],keyof ResolverInputTypes["Node"]>;
+		['...on ProductSuggestionEntity']?: Omit<ResolverInputTypes["ProductSuggestionEntity"],keyof ResolverInputTypes["Node"]>;
+		['...on AnnouncementBar']?: Omit<ResolverInputTypes["AnnouncementBar"],keyof ResolverInputTypes["Node"]>;
+		['...on ReviewProduct']?: Omit<ResolverInputTypes["ReviewProduct"],keyof ResolverInputTypes["Node"]>;
+		['...on ReviewStore']?: Omit<ResolverInputTypes["ReviewStore"],keyof ResolverInputTypes["Node"]>;
+		['...on FormAnswer']?: Omit<ResolverInputTypes["FormAnswer"],keyof ResolverInputTypes["Node"]>;
+		['...on Form']?: Omit<ResolverInputTypes["Form"],keyof ResolverInputTypes["Node"]>;
+		['...on FormEmail']?: Omit<ResolverInputTypes["FormEmail"],keyof ResolverInputTypes["Node"]>;
+		['...on FormHero']?: Omit<ResolverInputTypes["FormHero"],keyof ResolverInputTypes["Node"]>;
+		['...on FormEmailLogo']?: Omit<ResolverInputTypes["FormEmailLogo"],keyof ResolverInputTypes["Node"]>;
+		['...on FormNode']?: Omit<ResolverInputTypes["FormNode"],keyof ResolverInputTypes["Node"]>;
+		['...on FormSection']?: Omit<ResolverInputTypes["FormSection"],keyof ResolverInputTypes["Node"]>;
+		['...on FormThanksPageListItem']?: Omit<ResolverInputTypes["FormThanksPageListItem"],keyof ResolverInputTypes["Node"]>;
+		['...on FormThanksPage']?: Omit<ResolverInputTypes["FormThanksPage"],keyof ResolverInputTypes["Node"]>;
+		['...on FormLink']?: Omit<ResolverInputTypes["FormLink"],keyof ResolverInputTypes["Node"]>;
+		['...on SpecialOffer']?: Omit<ResolverInputTypes["SpecialOffer"],keyof ResolverInputTypes["Node"]>;
+		['...on EffectsApplicationProduct']?: Omit<ResolverInputTypes["EffectsApplicationProduct"],keyof ResolverInputTypes["Node"]>;
+		['...on EffectsApplication']?: Omit<ResolverInputTypes["EffectsApplication"],keyof ResolverInputTypes["Node"]>;
+		['...on CastingApplication']?: Omit<ResolverInputTypes["CastingApplication"],keyof ResolverInputTypes["Node"]>;
+		['...on SimplifiedFormApplication']?: Omit<ResolverInputTypes["SimplifiedFormApplication"],keyof ResolverInputTypes["Node"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["ErrorResult"]:AliasType<{
@@ -8023,7 +9232,8 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
 	skip?: number | undefined | null,
-	sort?: ResolverInputTypes["SearchResultSortParameter"] | undefined | null
+	sort?: ResolverInputTypes["SearchResultSortParameter"] | undefined | null,
+	inStock?: boolean | undefined | null
 };
 	["SearchResultSortParameter"]: {
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -8054,7 +9264,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["CreateAddressCustomFieldsInput"] | undefined | null
 };
 	/** Input used to update an Address.
 
@@ -8074,7 +9284,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateAddressCustomFieldsInput"] | undefined | null
 };
 	/** Indicates that an operation succeeded, where we do not want to return any more specific information. */
 ["Success"]: AliasType<{
@@ -8355,7 +9565,6 @@ customers?: [{	options?: ResolverInputTypes["CustomerListOptions"] | undefined |
 	updatedAt?:boolean | `@${string}`,
 	languageCode?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
-	customFields?:ResolverInputTypes["FacetTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["FacetList"]: AliasType<{
@@ -8431,7 +9640,7 @@ by taxRate. */
 	country?:boolean | `@${string}`,
 	countryCode?:boolean | `@${string}`,
 	phoneNumber?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["AddressCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderList"]: AliasType<{
@@ -8679,7 +9888,6 @@ by the search, and in what quantity. */
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ResolverInputTypes["ProductTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductList"]: AliasType<{
@@ -8919,8 +10127,711 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["SuggestionType"]:SuggestionType;
+	["ProductSuggestionItemEntity"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	priority?:boolean | `@${string}`,
+	productVariant?:ResolverInputTypes["ProductVariant"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductSuggestionEntity"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	priority?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	suggestionItems?:ResolverInputTypes["ProductSuggestionItemEntity"],
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductSuggestionItemInput"]: {
+	priority: number,
+	productVariantId: string
+};
+	["ProductSuggestionInput"]: {
+	priority?: number | undefined | null,
+	type: ResolverInputTypes["SuggestionType"],
+	productId: string,
+	productVariantIds?: Array<ResolverInputTypes["ProductSuggestionItemInput"]> | undefined | null
+};
+	["ANNOUNCEMENT_BAR_TYPE_ENUM"]:ANNOUNCEMENT_BAR_TYPE_ENUM;
+	["AnnouncementBarEntryTranslation"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	languageCode?:boolean | `@${string}`,
+	text?:boolean | `@${string}`,
+	redirectUrl?:boolean | `@${string}`,
+	icon?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBarEntry"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	text?:boolean | `@${string}`,
+	redirectUrl?:boolean | `@${string}`,
+	icon?:boolean | `@${string}`,
+	colorIcon?:boolean | `@${string}`,
+	colorText?:boolean | `@${string}`,
+translations?: [{	languageCode?: ResolverInputTypes["LanguageCode"] | undefined | null},ResolverInputTypes["AnnouncementBarEntryTranslation"]],
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBar"]: AliasType<{
+	id?:boolean | `@${string}`,
+	channelCode?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	enabled?:boolean | `@${string}`,
+	startDate?:boolean | `@${string}`,
+	endDate?:boolean | `@${string}`,
+	speed?:boolean | `@${string}`,
+	spaceBetween?:boolean | `@${string}`,
+	colorBackground?:boolean | `@${string}`,
+	nowActive?:boolean | `@${string}`,
+	entries?:ResolverInputTypes["AnnouncementBarEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBarList"]: AliasType<{
+	items?:ResolverInputTypes["AnnouncementBar"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["AnnouncementBarListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["AnnouncementBarSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["AnnouncementBarFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["AnnouncementBarEntryTranslationInput"]: {
+	id?: string | undefined | null,
+	languageCode: ResolverInputTypes["LanguageCode"],
+	text: string,
+	redirectUrl: string,
+	icon: string
+};
+	["AnnouncementBarEntryInput"]: {
+	id?: string | undefined | null,
+	colorIcon?: string | undefined | null,
+	colorText?: string | undefined | null,
+	translations?: Array<ResolverInputTypes["AnnouncementBarEntryTranslationInput"]> | undefined | null
+};
+	["UpdateAnnouncementBarInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	type?: ResolverInputTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	enabled?: boolean | undefined | null,
+	startDate?: ResolverInputTypes["DateTime"] | undefined | null,
+	endDate?: ResolverInputTypes["DateTime"] | undefined | null,
+	speed?: number | undefined | null,
+	spaceBetween?: number | undefined | null,
+	colorBackground?: string | undefined | null,
+	entries?: Array<ResolverInputTypes["AnnouncementBarEntryInput"]> | undefined | null
+};
+	["CreateAnnouncementBarInput"]: {
+	title?: string | undefined | null,
+	type?: ResolverInputTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	enabled?: boolean | undefined | null,
+	startDate?: ResolverInputTypes["DateTime"] | undefined | null,
+	endDate?: ResolverInputTypes["DateTime"] | undefined | null,
+	speed?: number | undefined | null,
+	spaceBetween?: number | undefined | null,
+	colorBackground?: string | undefined | null,
+	entries?: Array<ResolverInputTypes["AnnouncementBarEntryInput"]> | undefined | null
+};
+	["DeleteAnnouncementBarInput"]: {
+	id: string
+};
+	["ChangeStatusAnnouncementBarInput"]: {
+	id: string,
+	enabled: boolean
+};
+	["ReviewProduct"]: AliasType<{
+	id?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	state?:boolean | `@${string}`,
+	stars?:boolean | `@${string}`,
+	nextStates?:boolean | `@${string}`,
+	product?:ResolverInputTypes["Product"],
+	customerIpNumber?:boolean | `@${string}`,
+	customerName?:boolean | `@${string}`,
+	customerEmail?:boolean | `@${string}`,
+	publishPermission?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateReviewProductInput"]: {
+	productId: string,
+	title: string,
+	description: string,
+	stars: number,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null
+};
+	["ReviewProductList"]: AliasType<{
+	items?:ResolverInputTypes["ReviewProduct"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateReviewProductInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	description?: string | undefined | null,
+	customerName?: string | undefined | null
+};
+	["ReviewProductListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["ReviewProductSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["ReviewProductFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["ReviewStore"]: AliasType<{
+	id?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	description?:boolean | `@${string}`,
+	state?:boolean | `@${string}`,
+	nextStates?:boolean | `@${string}`,
+	customerIpNumber?:boolean | `@${string}`,
+	customerName?:boolean | `@${string}`,
+	customerEmail?:boolean | `@${string}`,
+	articleSlug?:boolean | `@${string}`,
+	language?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateReviewStoreInput"]: {
+	title: string,
+	description: string,
+	customerName?: string | undefined | null,
+	customerIpNumber?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	articleSlug?: string | undefined | null,
+	language?: string | undefined | null
+};
+	["UpdateReviewStoreInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	description?: string | undefined | null,
+	customerName?: string | undefined | null
+};
+	["ReviewStoreList"]: AliasType<{
+	items?:ResolverInputTypes["ReviewStore"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ReviewStoreListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["ReviewStoreSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["ReviewStoreFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswer"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	form?:ResolverInputTypes["Form"],
+	answerData?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["NodeType"]:NodeType;
+	["NodeTypeOnSubmitAction"]:NodeTypeOnSubmitAction;
+	["Form"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	formName?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	slug?:boolean | `@${string}`,
+	hero?:ResolverInputTypes["FormHero"],
+	thanksPage?:ResolverInputTypes["FormThanksPage"],
+	email?:ResolverInputTypes["FormEmail"],
+	sections?:ResolverInputTypes["FormSection"],
+	registrationCount?:boolean | `@${string}`,
+	maxRegistrationCount?:boolean | `@${string}`,
+	active?:boolean | `@${string}`,
+	startDate?:boolean | `@${string}`,
+	endDate?:boolean | `@${string}`,
+	sectionsOrder?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmail"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	subject?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	body?:boolean | `@${string}`,
+	logo?:ResolverInputTypes["FormEmailLogo"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FormHero"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	fileUrl?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmailLogo"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	fileUrl?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["ProductForRating"]: AliasType<{
+	id?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	previewImage?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormNode"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	nodeAction?:boolean | `@${string}`,
+	handlesForAction?:boolean | `@${string}`,
+	handle?:boolean | `@${string}`,
+	formFieldName?:boolean | `@${string}`,
+	label?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	required?:boolean | `@${string}`,
+	unique?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	selectionOptions?:boolean | `@${string}`,
+	productsForRating?:ResolverInputTypes["ProductForRating"],
+	order?:boolean | `@${string}`,
+	maxFilesCount?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormSection"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	nodes?:ResolverInputTypes["FormNode"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FormThanksPageListItem"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	heroUrl?:boolean | `@${string}`,
+	answerLabel?:boolean | `@${string}`,
+	slug?:boolean | `@${string}`,
+	paragraph?:boolean | `@${string}`,
+	links?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormThanksPage"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	hero?:ResolverInputTypes["FormHero"],
+	answerLabel?:boolean | `@${string}`,
+	slug?:boolean | `@${string}`,
+	paragraph?:boolean | `@${string}`,
+	links?:ResolverInputTypes["FormLink"],
+		__typename?: boolean | `@${string}`
+}>;
+	["FormLink"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	updatedAt?:boolean | `@${string}`,
+	label?:boolean | `@${string}`,
+	href?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormList"]: AliasType<{
+	items?:ResolverInputTypes["Form"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswerList"]: AliasType<{
+	items?:ResolverInputTypes["FormAnswer"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormSectionList"]: AliasType<{
+	items?:ResolverInputTypes["FormSection"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormHeroList"]: AliasType<{
+	items?:ResolverInputTypes["FormHero"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmailList"]: AliasType<{
+	items?:ResolverInputTypes["FormEmail"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormEmailLogoList"]: AliasType<{
+	items?:ResolverInputTypes["FormEmailLogo"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormThanksPageList"]: AliasType<{
+	items?:ResolverInputTypes["FormThanksPage"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["FormLinkList"]: AliasType<{
+	items?:ResolverInputTypes["FormLink"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["PreparePutUrlResponse"]: AliasType<{
+	fileKey?:boolean | `@${string}`,
+	putUrl?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CreateFormInput"]: {
+	formName: string,
+	title?: string | undefined | null,
+	slug: string,
+	hero?: string | undefined | null,
+	email?: string | undefined | null,
+	thanksPage?: string | undefined | null,
+	sections: Array<string>,
+	sectionsOrder: Array<string>,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: ResolverInputTypes["DateTime"] | undefined | null,
+	endDate?: ResolverInputTypes["DateTime"] | undefined | null
+};
+	["UpdateFormInput"]: {
+	id: string,
+	formName?: string | undefined | null,
+	title?: string | undefined | null,
+	slug: string,
+	hero?: string | undefined | null,
+	email?: string | undefined | null,
+	thanksPage?: string | undefined | null,
+	sections: Array<string>,
+	sectionsOrder: Array<string>,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: ResolverInputTypes["DateTime"] | undefined | null,
+	endDate?: ResolverInputTypes["DateTime"] | undefined | null
+};
+	["CreateFormSectionInput"]: {
+	title?: string | undefined | null,
+	name: string,
+	nodes: Array<ResolverInputTypes["CreateFormNodeInput"]>
+};
+	["UpdateFormSectionInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	name: string,
+	nodes?: Array<ResolverInputTypes["UpdateFormNodeInput"]> | undefined | null
+};
+	["CreateFormNodeInput"]: {
+	type: ResolverInputTypes["NodeType"],
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required?: boolean | undefined | null,
+	unique?: boolean | undefined | null,
+	email?: boolean | undefined | null,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<string> | undefined | null,
+	order: number,
+	imageNodeLabel?: string | undefined | null,
+	maxFilesCount?: number | undefined | null,
+	nodeAction?: ResolverInputTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null
+};
+	["UpdateFormNodeInput"]: {
+	id?: string | undefined | null,
+	type?: ResolverInputTypes["NodeType"] | undefined | null,
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required?: boolean | undefined | null,
+	unique?: boolean | undefined | null,
+	email?: boolean | undefined | null,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<string> | undefined | null,
+	order: number,
+	imageNodeLabel?: string | undefined | null,
+	maxFilesCount?: number | undefined | null,
+	nodeAction?: ResolverInputTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null
+};
+	["CreateFormThanksPageInput"]: {
+	hero?: string | undefined | null,
+	title?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph?: string | undefined | null,
+	links?: Array<string> | undefined | null
+};
+	["UpdateFormThanksPageInput"]: {
+	id: string,
+	hero?: string | undefined | null,
+	title?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug?: string | undefined | null,
+	paragraph?: string | undefined | null,
+	links?: Array<string> | undefined | null
+};
+	["CreateHeroInput"]: {
+	fileKey: string
+};
+	["CreateFormEmailInput"]: {
+	subject: string,
+	title: string,
+	body: string,
+	logo?: string | undefined | null
+};
+	["UpdateFormEmailInput"]: {
+	id: string,
+	subject: string,
+	title: string,
+	body: string,
+	logo?: string | undefined | null
+};
+	["CreateFormEmailLogoInput"]: {
+	fileKey: string
+};
+	["CreateFormLinkInput"]: {
+	href: string,
+	label: string
+};
+	["FormSectionListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormSectionSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormSectionFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormHeroListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormHeroSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormHeroFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswerListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormAnswerSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormAnswerFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormThanksPageListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormThanksPageSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormThanksPageFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormLinkListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormLinkSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormLinkFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormEmailLogoListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormEmailLogoSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormEmailLogoFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["FormEmailListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["FormEmailSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["FormEmailFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["SpecialOfferType"]:SpecialOfferType;
+	["SpecialOffer"]: AliasType<{
+	id?:boolean | `@${string}`,
+	startDate?:boolean | `@${string}`,
+	endDate?:boolean | `@${string}`,
+	sendEmail?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SetSpecialOfferInput"]: {
+	startDate: ResolverInputTypes["DateTime"],
+	endDate: ResolverInputTypes["DateTime"],
+	sendEmail?: boolean | undefined | null,
+	type: ResolverInputTypes["SpecialOfferType"]
+};
+	["EffectsApplicationProduct"]: AliasType<{
+	id?:boolean | `@${string}`,
+	product?:ResolverInputTypes["Product"],
+	review?:ResolverInputTypes["ReviewProduct"],
+		__typename?: boolean | `@${string}`
+}>;
+	["EffectsApplication"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	phone?:boolean | `@${string}`,
+	instagramLogin?:boolean | `@${string}`,
+	beforePhotos?:boolean | `@${string}`,
+	afterPhotos?:boolean | `@${string}`,
+	products?:ResolverInputTypes["EffectsApplicationProduct"],
+		__typename?: boolean | `@${string}`
+}>;
+	["EffectsApplicationList"]: AliasType<{
+	items?:ResolverInputTypes["EffectsApplication"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["EffectsApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["EffectsApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["EffectsApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["CastingApplication"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	city?:boolean | `@${string}`,
+	phone?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	instagramLogin?:boolean | `@${string}`,
+	ageRange?:boolean | `@${string}`,
+	skinTypes?:boolean | `@${string}`,
+	dreamProduct?:boolean | `@${string}`,
+	photos?:boolean | `@${string}`,
+	publishPermission?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CastingApplicationList"]: AliasType<{
+	items?:ResolverInputTypes["CastingApplication"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CastingApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ResolverInputTypes["CastingApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ResolverInputTypes["CastingApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
+	["SimplifiedFormApplication"]: AliasType<{
+	id?:boolean | `@${string}`,
+	createdAt?:boolean | `@${string}`,
+	name?:boolean | `@${string}`,
+	surname?:boolean | `@${string}`,
+	street?:boolean | `@${string}`,
+	buildingNumber?:boolean | `@${string}`,
+	flatNumber?:boolean | `@${string}`,
+	postalCode?:boolean | `@${string}`,
+	city?:boolean | `@${string}`,
+	phone?:boolean | `@${string}`,
+	email?:boolean | `@${string}`,
+	companyName?:boolean | `@${string}`,
+	instagramLogin?:boolean | `@${string}`,
+	applicationNumber?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SimplifiedFormApplicationList"]: AliasType<{
+	items?:ResolverInputTypes["SimplifiedFormApplication"],
+	totalItems?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SimplifiedFormApplicationOptions"]: {
+	take?: number | undefined | null,
+	skip?: number | undefined | null,
+	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
+};
 	["ChartDataType"]: AliasType<{
-	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
 	title?:boolean | `@${string}`,
 	entries?:ResolverInputTypes["ChartEntry"],
@@ -8955,22 +10866,21 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 		__typename?: boolean | `@${string}`
 }>;
 	["ChartEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
+	day?:boolean | `@${string}`,
 	value?:boolean | `@${string}`,
 	additionalData?:ResolverInputTypes["ChartEntryAdditionalData"],
 		__typename?: boolean | `@${string}`
 }>;
-	["BetterMetricIntervalInput"]: {
-	type: ResolverInputTypes["BetterMetricInterval"],
-	start?: ResolverInputTypes["DateTime"] | undefined | null,
+	["BetterMetricRangeInput"]: {
+	start: ResolverInputTypes["DateTime"],
 	end?: ResolverInputTypes["DateTime"] | undefined | null
 };
 	["OrderSummaryMetricInput"]: {
-	interval: ResolverInputTypes["BetterMetricIntervalInput"],
+	range: ResolverInputTypes["BetterMetricRangeInput"],
 	refresh?: boolean | undefined | null
 };
 	["ChartMetricInput"]: {
-	interval: ResolverInputTypes["BetterMetricIntervalInput"],
+	range: ResolverInputTypes["BetterMetricRangeInput"],
 	types: Array<ResolverInputTypes["ChartMetricType"]>,
 	productIDs?: Array<string> | undefined | null,
 	refresh?: boolean | undefined | null
@@ -9024,10 +10934,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	source?: ResolverInputTypes["StringOperators"] | undefined | null,
 	preview?: ResolverInputTypes["StringOperators"] | undefined | null,
+	thumbnail?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["AssetFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["AssetFilterParameter"]> | undefined | null,
-	attributes?: ResolverInputTypes["StringOperators"] | undefined | null,
-	additionalInfo?: ResolverInputTypes["StringOperators"] | undefined | null
+	_or?: Array<ResolverInputTypes["AssetFilterParameter"]> | undefined | null
 };
 	["AssetSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -9040,8 +10949,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: ResolverInputTypes["SortOrder"] | undefined | null,
 	source?: ResolverInputTypes["SortOrder"] | undefined | null,
 	preview?: ResolverInputTypes["SortOrder"] | undefined | null,
-	attributes?: ResolverInputTypes["SortOrder"] | undefined | null,
-	additionalInfo?: ResolverInputTypes["SortOrder"] | undefined | null
+	thumbnail?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["ChannelFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9079,9 +10987,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ResolverInputTypes["StringOperators"] | undefined | null,
 	parentId?: ResolverInputTypes["IDOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null,
-	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
-	localestringTest?: ResolverInputTypes["StringOperators"] | undefined | null
+	_or?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null
 };
 	["CollectionSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -9091,9 +10997,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
 	position?: ResolverInputTypes["SortOrder"] | undefined | null,
 	description?: ResolverInputTypes["SortOrder"] | undefined | null,
-	parentId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	localestringTest?: ResolverInputTypes["SortOrder"] | undefined | null
+	parentId?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -9108,7 +11012,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	price?: ResolverInputTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
 	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null
+	limit?: ResolverInputTypes["SortOrder"] | undefined | null,
+	freeGift?: ResolverInputTypes["SortOrder"] | undefined | null,
+	comment?: ResolverInputTypes["SortOrder"] | undefined | null,
+	excludeFromShop?: ResolverInputTypes["SortOrder"] | undefined | null,
+	notifyAboutAvailability?: ResolverInputTypes["SortOrder"] | undefined | null,
+	isTreatedAsGift?: ResolverInputTypes["SortOrder"] | undefined | null,
+	discountBy?: ResolverInputTypes["SortOrder"] | undefined | null,
+	inSetLabel?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9165,18 +11076,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["StringOperators"] | undefined | null,
 	code?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null,
-	stringTest?: ResolverInputTypes["StringOperators"] | undefined | null,
-	localestringTest?: ResolverInputTypes["StringOperators"] | undefined | null
+	_or?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null
 };
 	["FacetSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
 	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
-	code?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	localestringTest?: ResolverInputTypes["SortOrder"] | undefined | null
+	code?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9249,14 +11156,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
 	description?: ResolverInputTypes["SortOrder"] | undefined | null,
-	discountBy?: ResolverInputTypes["SortOrder"] | undefined | null,
-	boolTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	floatTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	intTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stringTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	textTest?: ResolverInputTypes["SortOrder"] | undefined | null,
-	dateTime?: ResolverInputTypes["SortOrder"] | undefined | null,
-	singleAssetTestP?: ResolverInputTypes["SortOrder"] | undefined | null
+	productId?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["PromotionFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9434,6 +11334,262 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	name?: ResolverInputTypes["SortOrder"] | undefined | null
 };
+	["AnnouncementBarFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	channelCode?: ResolverInputTypes["StringOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	type?: ResolverInputTypes["StringOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	enabled?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	startDate?: ResolverInputTypes["DateOperators"] | undefined | null,
+	endDate?: ResolverInputTypes["DateOperators"] | undefined | null,
+	speed?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	spaceBetween?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	colorBackground?: ResolverInputTypes["StringOperators"] | undefined | null,
+	nowActive?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["AnnouncementBarFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["AnnouncementBarFilterParameter"]> | undefined | null
+};
+	["AnnouncementBarSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	channelCode?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	startDate?: ResolverInputTypes["SortOrder"] | undefined | null,
+	endDate?: ResolverInputTypes["SortOrder"] | undefined | null,
+	speed?: ResolverInputTypes["SortOrder"] | undefined | null,
+	spaceBetween?: ResolverInputTypes["SortOrder"] | undefined | null,
+	colorBackground?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["ReviewProductFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	description?: ResolverInputTypes["StringOperators"] | undefined | null,
+	state?: ResolverInputTypes["StringOperators"] | undefined | null,
+	stars?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	customerIpNumber?: ResolverInputTypes["StringOperators"] | undefined | null,
+	customerName?: ResolverInputTypes["StringOperators"] | undefined | null,
+	customerEmail?: ResolverInputTypes["StringOperators"] | undefined | null,
+	publishPermission?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["ReviewProductFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["ReviewProductFilterParameter"]> | undefined | null
+};
+	["ReviewProductSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	description?: ResolverInputTypes["SortOrder"] | undefined | null,
+	state?: ResolverInputTypes["SortOrder"] | undefined | null,
+	stars?: ResolverInputTypes["SortOrder"] | undefined | null,
+	customerIpNumber?: ResolverInputTypes["SortOrder"] | undefined | null,
+	customerName?: ResolverInputTypes["SortOrder"] | undefined | null,
+	customerEmail?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["ReviewStoreFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	description?: ResolverInputTypes["StringOperators"] | undefined | null,
+	state?: ResolverInputTypes["StringOperators"] | undefined | null,
+	customerIpNumber?: ResolverInputTypes["StringOperators"] | undefined | null,
+	customerName?: ResolverInputTypes["StringOperators"] | undefined | null,
+	customerEmail?: ResolverInputTypes["StringOperators"] | undefined | null,
+	articleSlug?: ResolverInputTypes["StringOperators"] | undefined | null,
+	language?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["ReviewStoreFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["ReviewStoreFilterParameter"]> | undefined | null
+};
+	["ReviewStoreSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	description?: ResolverInputTypes["SortOrder"] | undefined | null,
+	state?: ResolverInputTypes["SortOrder"] | undefined | null,
+	customerIpNumber?: ResolverInputTypes["SortOrder"] | undefined | null,
+	customerName?: ResolverInputTypes["SortOrder"] | undefined | null,
+	customerEmail?: ResolverInputTypes["SortOrder"] | undefined | null,
+	articleSlug?: ResolverInputTypes["SortOrder"] | undefined | null,
+	language?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	formName?: ResolverInputTypes["StringOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	slug?: ResolverInputTypes["StringOperators"] | undefined | null,
+	registrationCount?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	maxRegistrationCount?: ResolverInputTypes["NumberOperators"] | undefined | null,
+	active?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	startDate?: ResolverInputTypes["DateOperators"] | undefined | null,
+	endDate?: ResolverInputTypes["DateOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormFilterParameter"]> | undefined | null
+};
+	["FormSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	formName?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
+	registrationCount?: ResolverInputTypes["SortOrder"] | undefined | null,
+	maxRegistrationCount?: ResolverInputTypes["SortOrder"] | undefined | null,
+	startDate?: ResolverInputTypes["SortOrder"] | undefined | null,
+	endDate?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormAnswerFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormAnswerFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormAnswerFilterParameter"]> | undefined | null
+};
+	["FormAnswerSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormSectionFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	name?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormSectionFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormSectionFilterParameter"]> | undefined | null
+};
+	["FormSectionSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	name?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormHeroFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	fileUrl?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormHeroFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormHeroFilterParameter"]> | undefined | null
+};
+	["FormHeroSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	fileUrl?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormEmailFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	subject?: ResolverInputTypes["StringOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	body?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormEmailFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormEmailFilterParameter"]> | undefined | null
+};
+	["FormEmailSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	subject?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	body?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormEmailLogoFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	fileUrl?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormEmailLogoFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormEmailLogoFilterParameter"]> | undefined | null
+};
+	["FormEmailLogoSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	fileUrl?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormThanksPageFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	title?: ResolverInputTypes["StringOperators"] | undefined | null,
+	answerLabel?: ResolverInputTypes["StringOperators"] | undefined | null,
+	slug?: ResolverInputTypes["StringOperators"] | undefined | null,
+	paragraph?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormThanksPageFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormThanksPageFilterParameter"]> | undefined | null
+};
+	["FormThanksPageSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	title?: ResolverInputTypes["SortOrder"] | undefined | null,
+	answerLabel?: ResolverInputTypes["SortOrder"] | undefined | null,
+	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
+	paragraph?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["FormLinkFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	label?: ResolverInputTypes["StringOperators"] | undefined | null,
+	href?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["FormLinkFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["FormLinkFilterParameter"]> | undefined | null
+};
+	["FormLinkSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	label?: ResolverInputTypes["SortOrder"] | undefined | null,
+	href?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["EffectsApplicationFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	name?: ResolverInputTypes["StringOperators"] | undefined | null,
+	email?: ResolverInputTypes["StringOperators"] | undefined | null,
+	phone?: ResolverInputTypes["StringOperators"] | undefined | null,
+	instagramLogin?: ResolverInputTypes["StringOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["EffectsApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["EffectsApplicationFilterParameter"]> | undefined | null
+};
+	["EffectsApplicationSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	name?: ResolverInputTypes["SortOrder"] | undefined | null,
+	email?: ResolverInputTypes["SortOrder"] | undefined | null,
+	phone?: ResolverInputTypes["SortOrder"] | undefined | null,
+	instagramLogin?: ResolverInputTypes["SortOrder"] | undefined | null
+};
+	["CastingApplicationFilterParameter"]: {
+	id?: ResolverInputTypes["IDOperators"] | undefined | null,
+	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
+	name?: ResolverInputTypes["StringOperators"] | undefined | null,
+	city?: ResolverInputTypes["StringOperators"] | undefined | null,
+	phone?: ResolverInputTypes["StringOperators"] | undefined | null,
+	email?: ResolverInputTypes["StringOperators"] | undefined | null,
+	instagramLogin?: ResolverInputTypes["StringOperators"] | undefined | null,
+	ageRange?: ResolverInputTypes["StringOperators"] | undefined | null,
+	dreamProduct?: ResolverInputTypes["StringOperators"] | undefined | null,
+	publishPermission?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<ResolverInputTypes["CastingApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<ResolverInputTypes["CastingApplicationFilterParameter"]> | undefined | null
+};
+	["CastingApplicationSortParameter"]: {
+	id?: ResolverInputTypes["SortOrder"] | undefined | null,
+	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
+	name?: ResolverInputTypes["SortOrder"] | undefined | null,
+	city?: ResolverInputTypes["SortOrder"] | undefined | null,
+	phone?: ResolverInputTypes["SortOrder"] | undefined | null,
+	email?: ResolverInputTypes["SortOrder"] | undefined | null,
+	instagramLogin?: ResolverInputTypes["SortOrder"] | undefined | null,
+	ageRange?: ResolverInputTypes["SortOrder"] | undefined | null,
+	dreamProduct?: ResolverInputTypes["SortOrder"] | undefined | null
+};
 	["HistoryEntryFilterParameter"]: {
 	isPublic?: ResolverInputTypes["BooleanOperators"] | undefined | null,
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9448,148 +11604,104 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null
 };
-	["AssetCustomFields"]: AliasType<{
-	attributes?:boolean | `@${string}`,
-	additionalInfo?:boolean | `@${string}`,
+	["AddressCustomFields"]: AliasType<{
+	comment?:boolean | `@${string}`,
+	taxNumber?:boolean | `@${string}`,
+	firstName?:boolean | `@${string}`,
+	lastName?:boolean | `@${string}`,
+	buildingNumber?:boolean | `@${string}`,
+	flatNumber?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["CreateAssetCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	["CreateAddressCustomFieldsInput"]: {
+	comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
-	["UpdateAssetCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
-};
-	["CollectionCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
-	localestringTest?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CollectionTranslationCustomFields"]: AliasType<{
-	localestringTest?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateCollectionCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
-};
-	["UpdateCollectionCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
-};
-	["CreateCollectionTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null
-};
-	["FacetCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
-	localestringTest?:boolean | `@${string}`,
-	ProductListTest?:ResolverInputTypes["Product"],
-	listProductVariantTest?:ResolverInputTypes["ProductVariant"],
-		__typename?: boolean | `@${string}`
-}>;
-	["FacetTranslationCustomFields"]: AliasType<{
-	localestringTest?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateFacetCustomFieldsInput"]: {
-	stringTest?: string | undefined | null,
-	ProductListTestIds?: Array<string> | undefined | null,
-	listProductVariantTestIds?: Array<string> | undefined | null
-};
-	["UpdateFacetCustomFieldsInput"]: {
-	stringTest?: string | undefined | null,
-	ProductListTestIds?: Array<string> | undefined | null,
-	listProductVariantTestIds?: Array<string> | undefined | null
-};
-	["FacetTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null
+	["UpdateAddressCustomFieldsInput"]: {
+	comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
 	["OrderCustomFields"]: AliasType<{
-	attributes?:boolean | `@${string}`,
-	additionalInfo?:boolean | `@${string}`,
+	inPostPoint?:boolean | `@${string}`,
+	dpdPickupPoint?:boolean | `@${string}`,
+	invoiceUrl?:boolean | `@${string}`,
+	reminderSent?:boolean | `@${string}`,
+	abandonedCartReminderSent?:boolean | `@${string}`,
+	notes?:boolean | `@${string}`,
+	paymentType?:boolean | `@${string}`,
+	needInvoice?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["UpdateOrderCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	inPostPoint?: string | undefined | null,
+	dpdPickupPoint?: string | undefined | null,
+	invoiceUrl?: string | undefined | null,
+	reminderSent?: boolean | undefined | null,
+	abandonedCartReminderSent?: boolean | undefined | null,
+	notes?: string | undefined | null,
+	paymentType?: string | undefined | null,
+	needInvoice?: boolean | undefined | null
 };
 	["OrderLineCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
-	textTest?:boolean | `@${string}`,
+	freeGiftForCouponCode?:boolean | `@${string}`,
+	discountBy?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductCustomFields"]: AliasType<{
-	discountBy?:boolean | `@${string}`,
-	boolTest?:boolean | `@${string}`,
-	floatTest?:boolean | `@${string}`,
-	intTest?:boolean | `@${string}`,
-	stringTest?:boolean | `@${string}`,
-	textTest?:boolean | `@${string}`,
-	dateTime?:boolean | `@${string}`,
-	listTestString?:boolean | `@${string}`,
-	listTestInt?:boolean | `@${string}`,
-	listTestFloat?:boolean | `@${string}`,
-	listTestText?:boolean | `@${string}`,
-	listLocaleString?:boolean | `@${string}`,
-	listLocaleText?:boolean | `@${string}`,
-	singleAssetTestP?:ResolverInputTypes["Asset"],
-	listAssetTestP?:ResolverInputTypes["Asset"],
-		__typename?: boolean | `@${string}`
-}>;
-	["ProductTranslationCustomFields"]: AliasType<{
-	listLocaleString?:boolean | `@${string}`,
-	listLocaleText?:boolean | `@${string}`,
+	productId?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CreateProductCustomFieldsInput"]: {
-	discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: ResolverInputTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	singleAssetTestPId?: string | undefined | null,
-	listAssetTestPIds?: Array<string> | undefined | null
+	productId?: string | undefined | null
 };
 	["UpdateProductCustomFieldsInput"]: {
-	discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: ResolverInputTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	singleAssetTestPId?: string | undefined | null,
-	listAssetTestPIds?: Array<string> | undefined | null
-};
-	["ProductTranslationInputCustomFields"]: {
-	listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null
+	productId?: string | undefined | null
 };
 	["ProductVariantCustomFields"]: AliasType<{
-	stringTest?:boolean | `@${string}`,
+	limit?:boolean | `@${string}`,
+	freeGift?:boolean | `@${string}`,
+	comment?:boolean | `@${string}`,
+	excludeFromShop?:boolean | `@${string}`,
+	notifyAboutAvailability?:boolean | `@${string}`,
+	isTreatedAsGift?:boolean | `@${string}`,
+	discountBy?:boolean | `@${string}`,
+	inSet?:ResolverInputTypes["ProductVariant"],
+	inSetLabel?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CreateProductVariantCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
+	limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSetIds?: Array<string> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["UpdateProductVariantCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
+	limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSetIds?: Array<string> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["OrderLineCustomFieldsInput"]: {
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null
+	freeGiftForCouponCode?: string | undefined | null,
+	discountBy?: number | undefined | null
 };
 	["NativeAuthInput"]: {
 	username: string,
@@ -9723,10 +11835,41 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined | null,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined | null,
+	announcementBar?: ModelTypes["AnnouncementBar"] | undefined | null,
+	announcementBars: ModelTypes["AnnouncementBarList"],
+	getActiveAnnouncementBar?: ModelTypes["AnnouncementBar"] | undefined | null,
+	/** Get the review product */
+	reviewProduct?: ModelTypes["ReviewProduct"] | undefined | null,
+	/** Get the list of reviews product */
+	reviewsProduct: ModelTypes["ReviewProductList"],
+	/** Get the review store */
+	reviewStore?: ModelTypes["ReviewStore"] | undefined | null,
+	/** Get the list of reviews store */
+	reviewsStore: ModelTypes["ReviewStoreList"],
+	formList: ModelTypes["FormList"],
+	form?: ModelTypes["Form"] | undefined | null,
+	formAnswerList: ModelTypes["FormAnswerList"],
+	formAnswer?: ModelTypes["FormAnswer"] | undefined | null,
+	formAnswersToDocument: string,
+	formEmail?: ModelTypes["FormEmail"] | undefined | null,
+	formSectionList: ModelTypes["FormSectionList"],
+	formSection?: ModelTypes["FormSection"] | undefined | null,
+	formHeroList: ModelTypes["FormHeroList"],
+	formEmailList: ModelTypes["FormEmailList"],
+	formEmailLogoList: ModelTypes["FormEmailLogoList"],
+	formThanksPageList: ModelTypes["FormThanksPageList"],
+	formThanksPage?: ModelTypes["FormThanksPage"] | undefined | null,
+	formLinkList: ModelTypes["FormLinkList"],
+	getSpecialOffer?: ModelTypes["SpecialOffer"] | undefined | null,
+	effectsApplications: ModelTypes["EffectsApplicationList"],
+	castingApplications: ModelTypes["CastingApplicationList"],
+	simplifiedFormApplications: ModelTypes["SimplifiedFormApplicationList"],
 	chartMetric: ModelTypes["ChartMetrics"],
 	orderSummaryMetric: ModelTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
-	metricSummary: Array<ModelTypes["MetricSummary"]>
+	metricSummary: Array<ModelTypes["MetricSummary"]>,
+	exportOrdersToDocument: string,
+	exportSpecialOfferApplicationsToDocument: string
 };
 	["Mutation"]: {
 		/** Create a new Administrator */
@@ -10034,7 +12177,88 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Add members to a Zone */
 	addMembersToZone: ModelTypes["Zone"],
 	/** Remove members from a Zone */
-	removeMembersFromZone: ModelTypes["Zone"]
+	removeMembersFromZone: ModelTypes["Zone"],
+	manageSuggestion?: ModelTypes["ProductSuggestionEntity"] | undefined | null,
+	updateAnnouncementBar: ModelTypes["AnnouncementBar"],
+	createAnnouncementBar: ModelTypes["AnnouncementBar"],
+	deleteAnnouncementBar?: boolean | undefined | null,
+	changeStatusAnnouncementBar: boolean,
+	transitionReviewProductToState?: ModelTypes["ReviewProduct"] | undefined | null,
+	createReviewProduct?: ModelTypes["ReviewProduct"] | undefined | null,
+	updateReviewProduct?: ModelTypes["ReviewProduct"] | undefined | null,
+	transitionReviewStoreToState?: ModelTypes["ReviewStore"] | undefined | null,
+	createReviewStore?: ModelTypes["ReviewStore"] | undefined | null,
+	updateReviewStore?: ModelTypes["ReviewStore"] | undefined | null,
+	createForm?: ModelTypes["Form"] | undefined | null,
+	updateForm?: ModelTypes["Form"] | undefined | null,
+	deleteForms: boolean,
+	createFormSection?: ModelTypes["FormSection"] | undefined | null,
+	updateFormSection?: ModelTypes["FormSection"] | undefined | null,
+	deleteFormSections: boolean,
+	createFormHero?: ModelTypes["FormHero"] | undefined | null,
+	createFormEmailLogo?: ModelTypes["FormEmailLogo"] | undefined | null,
+	deleteFormHeros: boolean,
+	deleteFormEmailLogos: boolean,
+	preparePutUrl?: ModelTypes["PreparePutUrlResponse"] | undefined | null,
+	createFormThanksPage?: ModelTypes["FormThanksPage"] | undefined | null,
+	updateFormThanksPage?: ModelTypes["FormThanksPage"] | undefined | null,
+	deleteFormThanksPages: boolean,
+	changeFromStatus: boolean,
+	clearFormRegistrationCount: boolean,
+	createFormLinks: boolean,
+	deleteFormLinks: boolean,
+	createFormEmail?: ModelTypes["FormEmail"] | undefined | null,
+	updateFormEmail?: ModelTypes["FormEmail"] | undefined | null,
+	deleteFormEmails: boolean,
+	setSpecialOffer?: ModelTypes["SpecialOffer"] | undefined | null,
+	archiveAllCreamForCreamApplications?: string | undefined | null,
+	archiveAllSimplifiedFormApplications?: string | undefined | null
+};
+	["SimplifiedFormApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["SimplifiedFormApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["SimplifiedFormApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["SimplifiedFormApplicationSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	name?: ModelTypes["SortOrder"] | undefined | null,
+	surname?: ModelTypes["SortOrder"] | undefined | null,
+	street?: ModelTypes["SortOrder"] | undefined | null,
+	buildingNumber?: ModelTypes["SortOrder"] | undefined | null,
+	flatNumber?: ModelTypes["SortOrder"] | undefined | null,
+	postalCode?: ModelTypes["SortOrder"] | undefined | null,
+	city?: ModelTypes["SortOrder"] | undefined | null,
+	phone?: ModelTypes["SortOrder"] | undefined | null,
+	email?: ModelTypes["SortOrder"] | undefined | null,
+	companyName?: ModelTypes["SortOrder"] | undefined | null,
+	instagramLogin?: ModelTypes["SortOrder"] | undefined | null,
+	applicationNumber?: ModelTypes["SortOrder"] | undefined | null
+};
+	["SimplifiedFormApplicationFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	name?: ModelTypes["StringOperators"] | undefined | null,
+	surname?: ModelTypes["StringOperators"] | undefined | null,
+	street?: ModelTypes["StringOperators"] | undefined | null,
+	buildingNumber?: ModelTypes["StringOperators"] | undefined | null,
+	flatNumber?: ModelTypes["StringOperators"] | undefined | null,
+	postalCode?: ModelTypes["StringOperators"] | undefined | null,
+	city?: ModelTypes["StringOperators"] | undefined | null,
+	phone?: ModelTypes["StringOperators"] | undefined | null,
+	email?: ModelTypes["StringOperators"] | undefined | null,
+	companyName?: ModelTypes["StringOperators"] | undefined | null,
+	instagramLogin?: ModelTypes["StringOperators"] | undefined | null,
+	applicationNumber?: ModelTypes["NumberOperators"] | undefined | null,
+	_and?: Array<ModelTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null
 };
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10110,7 +12334,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["CreateAssetInput"]: {
 	file: ModelTypes["Upload"],
 	tags?: Array<string> | undefined | null,
-	customFields?: ModelTypes["CreateAssetCustomFieldsInput"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CoordinateInput"]: {
 	x: number,
@@ -10131,7 +12355,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined | null,
 	focalPoint?: ModelTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
-	customFields?: ModelTypes["UpdateAssetCustomFieldsInput"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
 	assetIds: Array<string>,
@@ -10217,7 +12441,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filters: Array<ModelTypes["ConfigurableOperation"]>,
 	translations: Array<ModelTypes["CollectionTranslation"]>,
 	productVariants: ModelTypes["ProductVariantList"],
-	customFields?: ModelTypes["CollectionCustomFields"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CollectionListOptions"]: {
 	topLevelOnly?: boolean | undefined | null,
@@ -10242,7 +12466,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: ModelTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null,
@@ -10250,7 +12474,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ModelTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null,
@@ -10260,7 +12484,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<ModelTypes["ConfigurableOperationInput"]>,
 	translations: Array<ModelTypes["CreateCollectionTranslationInput"]>,
-	customFields?: ModelTypes["CreateCollectionCustomFieldsInput"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
 	parentId?: string | undefined | null,
@@ -10276,7 +12500,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<ModelTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<ModelTypes["UpdateCollectionTranslationInput"]> | undefined | null,
-	customFields?: ModelTypes["UpdateCollectionCustomFieldsInput"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
 	collectionIds: Array<string>,
@@ -10437,7 +12661,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Returns a paginated, sortable, filterable list of the Facet's values. Added in v2.1.0. */
 	valueList: ModelTypes["FacetValueList"],
 	translations: Array<ModelTypes["FacetTranslation"]>,
-	customFields?: ModelTypes["FacetCustomFields"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["FacetListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10455,21 +12679,21 @@ as well as removing any of the group's options from the Product's ProductVariant
 	id?: string | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
-	customFields?: ModelTypes["FacetTranslationInputCustomFields"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CreateFacetInput"]: {
 	code: string,
 	isPrivate: boolean,
 	translations: Array<ModelTypes["FacetTranslationInput"]>,
 	values?: Array<ModelTypes["CreateFacetValueWithFacetInput"]> | undefined | null,
-	customFields?: ModelTypes["CreateFacetCustomFieldsInput"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateFacetInput"]: {
 	id: string,
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["FacetTranslationInput"]> | undefined | null,
-	customFields?: ModelTypes["UpdateFacetCustomFieldsInput"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
 	id?: string | undefined | null,
@@ -10731,8 +12955,14 @@ sum of `OrderLine.discountedLinePrice` values. */
 	totalWithTax?: ModelTypes["NumberOperators"] | undefined | null,
 	_and?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null,
-	attributes?: ModelTypes["StringOperators"] | undefined | null,
-	additionalInfo?: ModelTypes["StringOperators"] | undefined | null
+	inPostPoint?: ModelTypes["StringOperators"] | undefined | null,
+	dpdPickupPoint?: ModelTypes["StringOperators"] | undefined | null,
+	invoiceUrl?: ModelTypes["StringOperators"] | undefined | null,
+	reminderSent?: ModelTypes["BooleanOperators"] | undefined | null,
+	abandonedCartReminderSent?: ModelTypes["BooleanOperators"] | undefined | null,
+	notes?: ModelTypes["StringOperators"] | undefined | null,
+	paymentType?: ModelTypes["StringOperators"] | undefined | null,
+	needInvoice?: ModelTypes["BooleanOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ModelTypes["SortOrder"] | undefined | null,
@@ -10751,8 +12981,14 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: ModelTypes["SortOrder"] | undefined | null,
 	total?: ModelTypes["SortOrder"] | undefined | null,
 	totalWithTax?: ModelTypes["SortOrder"] | undefined | null,
-	attributes?: ModelTypes["SortOrder"] | undefined | null,
-	additionalInfo?: ModelTypes["SortOrder"] | undefined | null
+	inPostPoint?: ModelTypes["SortOrder"] | undefined | null,
+	dpdPickupPoint?: ModelTypes["SortOrder"] | undefined | null,
+	invoiceUrl?: ModelTypes["SortOrder"] | undefined | null,
+	reminderSent?: ModelTypes["SortOrder"] | undefined | null,
+	abandonedCartReminderSent?: ModelTypes["SortOrder"] | undefined | null,
+	notes?: ModelTypes["SortOrder"] | undefined | null,
+	paymentType?: ModelTypes["SortOrder"] | undefined | null,
+	needInvoice?: ModelTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10844,7 +13080,8 @@ fields will be removed in a future version. */
 	province?: string | undefined | null,
 	postalCode?: string | undefined | null,
 	countryCode?: string | undefined | null,
-	phoneNumber?: string | undefined | null
+	phoneNumber?: string | undefined | null,
+	customFields?: ModelTypes["UpdateAddressCustomFieldsInput"] | undefined | null
 };
 	["ModifyOrderInput"]: {
 	dryRun: boolean,
@@ -11112,6 +13349,8 @@ is not in the required state. */
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductTranslation"]>,
 	collections: Array<ModelTypes["Collection"]>,
+	freeShippingSuggestion?: ModelTypes["ProductSuggestionEntity"] | undefined | null,
+	defaultSuggestion?: ModelTypes["ProductSuggestionEntity"] | undefined | null,
 	customFields?: ModelTypes["ProductCustomFields"] | undefined | null
 };
 	["ProductVariantPrice"]: {
@@ -11212,7 +13451,8 @@ is not in the required state. */
 	/** An array of ids of the Collections in which this result appears */
 	collectionIds: Array<string>,
 	/** A relevance score for the result. Differs between database implementations */
-	score: number
+	score: number,
+	inStock: boolean
 };
 	["StockMovementListOptions"]: {
 	type?: ModelTypes["StockMovementType"] | undefined | null,
@@ -11244,19 +13484,7 @@ is not in the required state. */
 	enabled?: ModelTypes["BooleanOperators"] | undefined | null,
 	_and?: Array<ModelTypes["ProductFilterParameter"]> | undefined | null,
 	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined | null,
-	discountBy?: ModelTypes["StringOperators"] | undefined | null,
-	boolTest?: ModelTypes["BooleanOperators"] | undefined | null,
-	floatTest?: ModelTypes["NumberOperators"] | undefined | null,
-	intTest?: ModelTypes["NumberOperators"] | undefined | null,
-	stringTest?: ModelTypes["StringOperators"] | undefined | null,
-	textTest?: ModelTypes["StringOperators"] | undefined | null,
-	dateTime?: ModelTypes["DateOperators"] | undefined | null,
-	listTestString?: ModelTypes["StringListOperators"] | undefined | null,
-	listTestInt?: ModelTypes["NumberListOperators"] | undefined | null,
-	listTestFloat?: ModelTypes["NumberListOperators"] | undefined | null,
-	listTestText?: ModelTypes["StringListOperators"] | undefined | null,
-	listLocaleString?: ModelTypes["StringListOperators"] | undefined | null,
-	listLocaleText?: ModelTypes["StringListOperators"] | undefined | null
+	productId?: ModelTypes["StringOperators"] | undefined | null
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -11291,7 +13519,14 @@ is not in the required state. */
 	stockLevel?: ModelTypes["StringOperators"] | undefined | null,
 	_and?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined | null,
 	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined | null,
-	stringTest?: ModelTypes["StringOperators"] | undefined | null
+	limit?: ModelTypes["NumberOperators"] | undefined | null,
+	freeGift?: ModelTypes["BooleanOperators"] | undefined | null,
+	comment?: ModelTypes["StringOperators"] | undefined | null,
+	excludeFromShop?: ModelTypes["BooleanOperators"] | undefined | null,
+	notifyAboutAvailability?: ModelTypes["BooleanOperators"] | undefined | null,
+	isTreatedAsGift?: ModelTypes["BooleanOperators"] | undefined | null,
+	discountBy?: ModelTypes["NumberOperators"] | undefined | null,
+	inSetLabel?: ModelTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null,
@@ -11299,7 +13534,7 @@ is not in the required state. */
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ModelTypes["ProductTranslationInputCustomFields"] | undefined | null
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null,
@@ -11841,7 +14076,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["AddressCustomFields"] | undefined | null
 };
 	["Asset"]: {
 		id: string,
@@ -11857,7 +14092,8 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview: string,
 	focalPoint?: ModelTypes["Coordinate"] | undefined | null,
 	tags: Array<ModelTypes["Tag"]>,
-	customFields?: ModelTypes["AssetCustomFields"] | undefined | null
+	thumbnail: string,
+	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["Coordinate"]: {
 		x: number,
@@ -11912,8 +14148,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	languageCode: ModelTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: ModelTypes["CollectionTranslationCustomFields"] | undefined | null
+	description: string
 };
 	["CollectionList"]: {
 		items: Array<ModelTypes["Collection"]>,
@@ -12017,8 +14252,8 @@ current session. */
 ["Upload"]:any;
 	/** The `Money` scalar type represents monetary values and supports signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
 ["Money"]:any;
-	["PaginatedList"]: ModelTypes["AdministratorList"] | ModelTypes["ChannelList"] | ModelTypes["CustomerGroupList"] | ModelTypes["JobList"] | ModelTypes["PaymentMethodList"] | ModelTypes["SellerList"] | ModelTypes["StockLocationList"] | ModelTypes["TaxCategoryList"] | ModelTypes["ZoneList"] | ModelTypes["AssetList"] | ModelTypes["CollectionList"] | ModelTypes["CustomerList"] | ModelTypes["FacetList"] | ModelTypes["FacetValueList"] | ModelTypes["HistoryEntryList"] | ModelTypes["OrderList"] | ModelTypes["ProductList"] | ModelTypes["ProductVariantList"] | ModelTypes["PromotionList"] | ModelTypes["CountryList"] | ModelTypes["ProvinceList"] | ModelTypes["RoleList"] | ModelTypes["ShippingMethodList"] | ModelTypes["TagList"] | ModelTypes["TaxRateList"];
-	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"];
+	["PaginatedList"]: ModelTypes["AdministratorList"] | ModelTypes["ChannelList"] | ModelTypes["CustomerGroupList"] | ModelTypes["JobList"] | ModelTypes["PaymentMethodList"] | ModelTypes["SellerList"] | ModelTypes["StockLocationList"] | ModelTypes["TaxCategoryList"] | ModelTypes["ZoneList"] | ModelTypes["AssetList"] | ModelTypes["CollectionList"] | ModelTypes["CustomerList"] | ModelTypes["FacetList"] | ModelTypes["FacetValueList"] | ModelTypes["HistoryEntryList"] | ModelTypes["OrderList"] | ModelTypes["ProductList"] | ModelTypes["ProductVariantList"] | ModelTypes["PromotionList"] | ModelTypes["CountryList"] | ModelTypes["ProvinceList"] | ModelTypes["RoleList"] | ModelTypes["ShippingMethodList"] | ModelTypes["TagList"] | ModelTypes["TaxRateList"] | ModelTypes["AnnouncementBarList"] | ModelTypes["ReviewProductList"] | ModelTypes["ReviewStoreList"] | ModelTypes["FormList"] | ModelTypes["FormAnswerList"] | ModelTypes["FormSectionList"] | ModelTypes["FormHeroList"] | ModelTypes["FormEmailList"] | ModelTypes["FormEmailLogoList"] | ModelTypes["FormThanksPageList"] | ModelTypes["FormLinkList"] | ModelTypes["EffectsApplicationList"] | ModelTypes["CastingApplicationList"] | ModelTypes["SimplifiedFormApplicationList"];
+	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"] | ModelTypes["ProductSuggestionItemEntity"] | ModelTypes["ProductSuggestionEntity"] | ModelTypes["AnnouncementBar"] | ModelTypes["ReviewProduct"] | ModelTypes["ReviewStore"] | ModelTypes["FormAnswer"] | ModelTypes["Form"] | ModelTypes["FormEmail"] | ModelTypes["FormHero"] | ModelTypes["FormEmailLogo"] | ModelTypes["FormNode"] | ModelTypes["FormSection"] | ModelTypes["FormThanksPageListItem"] | ModelTypes["FormThanksPage"] | ModelTypes["FormLink"] | ModelTypes["SpecialOffer"] | ModelTypes["EffectsApplicationProduct"] | ModelTypes["EffectsApplication"] | ModelTypes["CastingApplication"] | ModelTypes["SimplifiedFormApplication"];
 	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
 	["Adjustment"]: {
 		adjustmentSource: string,
@@ -12155,7 +14390,8 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
 	skip?: number | undefined | null,
-	sort?: ModelTypes["SearchResultSortParameter"] | undefined | null
+	sort?: ModelTypes["SearchResultSortParameter"] | undefined | null,
+	inStock?: boolean | undefined | null
 };
 	["SearchResultSortParameter"]: {
 	name?: ModelTypes["SortOrder"] | undefined | null,
@@ -12186,7 +14422,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["CreateAddressCustomFieldsInput"] | undefined | null
 };
 	/** Input used to update an Address.
 
@@ -12206,7 +14442,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["UpdateAddressCustomFieldsInput"] | undefined | null
 };
 	/** Indicates that an operation succeeded, where we do not want to return any more specific information. */
 ["Success"]: {
@@ -12409,8 +14645,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
-	name: string,
-	customFields?: ModelTypes["FacetTranslationCustomFields"] | undefined | null
+	name: string
 };
 	["FacetList"]: {
 		items: Array<ModelTypes["Facet"]>,
@@ -12474,7 +14709,7 @@ by taxRate. */
 	country?: string | undefined | null,
 	countryCode?: string | undefined | null,
 	phoneNumber?: string | undefined | null,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["AddressCustomFields"] | undefined | null
 };
 	["OrderList"]: {
 		items: Array<ModelTypes["Order"]>,
@@ -12695,8 +14930,7 @@ by the search, and in what quantity. */
 	languageCode: ModelTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: ModelTypes["ProductTranslationCustomFields"] | undefined | null
+	description: string
 };
 	["ProductList"]: {
 		items: Array<ModelTypes["Product"]>,
@@ -12895,9 +15129,674 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
+	["SuggestionType"]:SuggestionType;
+	["ProductSuggestionItemEntity"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	priority: number,
+	productVariant: ModelTypes["ProductVariant"]
+};
+	["ProductSuggestionEntity"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	priority?: number | undefined | null,
+	type: ModelTypes["SuggestionType"],
+	suggestionItems?: Array<ModelTypes["ProductSuggestionItemEntity"]> | undefined | null
+};
+	["ProductSuggestionItemInput"]: {
+	priority: number,
+	productVariantId: string
+};
+	["ProductSuggestionInput"]: {
+	priority?: number | undefined | null,
+	type: ModelTypes["SuggestionType"],
+	productId: string,
+	productVariantIds?: Array<ModelTypes["ProductSuggestionItemInput"]> | undefined | null
+};
+	["ANNOUNCEMENT_BAR_TYPE_ENUM"]:ANNOUNCEMENT_BAR_TYPE_ENUM;
+	["AnnouncementBarEntryTranslation"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	languageCode: ModelTypes["LanguageCode"],
+	text: string,
+	redirectUrl: string,
+	icon: string
+};
+	["AnnouncementBarEntry"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	text?: string | undefined | null,
+	redirectUrl?: string | undefined | null,
+	icon?: string | undefined | null,
+	colorIcon?: string | undefined | null,
+	colorText?: string | undefined | null,
+	translations: Array<ModelTypes["AnnouncementBarEntryTranslation"]>
+};
+	["AnnouncementBar"]: {
+		id: string,
+	channelCode: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	type?: ModelTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	title: string,
+	enabled: boolean,
+	startDate: ModelTypes["DateTime"],
+	endDate: ModelTypes["DateTime"],
+	speed: number,
+	spaceBetween: number,
+	colorBackground?: string | undefined | null,
+	nowActive?: boolean | undefined | null,
+	entries?: Array<ModelTypes["AnnouncementBarEntry"]> | undefined | null
+};
+	["AnnouncementBarList"]: {
+		items: Array<ModelTypes["AnnouncementBar"]>,
+	totalItems: number
+};
+	["AnnouncementBarListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["AnnouncementBarSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["AnnouncementBarFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["AnnouncementBarEntryTranslationInput"]: {
+	id?: string | undefined | null,
+	languageCode: ModelTypes["LanguageCode"],
+	text: string,
+	redirectUrl: string,
+	icon: string
+};
+	["AnnouncementBarEntryInput"]: {
+	id?: string | undefined | null,
+	colorIcon?: string | undefined | null,
+	colorText?: string | undefined | null,
+	translations?: Array<ModelTypes["AnnouncementBarEntryTranslationInput"]> | undefined | null
+};
+	["UpdateAnnouncementBarInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	type?: ModelTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	enabled?: boolean | undefined | null,
+	startDate?: ModelTypes["DateTime"] | undefined | null,
+	endDate?: ModelTypes["DateTime"] | undefined | null,
+	speed?: number | undefined | null,
+	spaceBetween?: number | undefined | null,
+	colorBackground?: string | undefined | null,
+	entries?: Array<ModelTypes["AnnouncementBarEntryInput"]> | undefined | null
+};
+	["CreateAnnouncementBarInput"]: {
+	title?: string | undefined | null,
+	type?: ModelTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	enabled?: boolean | undefined | null,
+	startDate?: ModelTypes["DateTime"] | undefined | null,
+	endDate?: ModelTypes["DateTime"] | undefined | null,
+	speed?: number | undefined | null,
+	spaceBetween?: number | undefined | null,
+	colorBackground?: string | undefined | null,
+	entries?: Array<ModelTypes["AnnouncementBarEntryInput"]> | undefined | null
+};
+	["DeleteAnnouncementBarInput"]: {
+	id: string
+};
+	["ChangeStatusAnnouncementBarInput"]: {
+	id: string,
+	enabled: boolean
+};
+	["ReviewProduct"]: {
+		id: string,
+	title: string,
+	description: string,
+	state: string,
+	stars: number,
+	nextStates: Array<string>,
+	product?: ModelTypes["Product"] | undefined | null,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	publishPermission?: boolean | undefined | null
+};
+	["CreateReviewProductInput"]: {
+	productId: string,
+	title: string,
+	description: string,
+	stars: number,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null
+};
+	["ReviewProductList"]: {
+		items: Array<ModelTypes["ReviewProduct"]>,
+	totalItems: number
+};
+	["UpdateReviewProductInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	description?: string | undefined | null,
+	customerName?: string | undefined | null
+};
+	["ReviewProductListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["ReviewProductSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["ReviewProductFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["ReviewStore"]: {
+		id: string,
+	title: string,
+	description: string,
+	state: string,
+	nextStates: Array<string>,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	articleSlug?: string | undefined | null,
+	language?: string | undefined | null
+};
+	["CreateReviewStoreInput"]: {
+	title: string,
+	description: string,
+	customerName?: string | undefined | null,
+	customerIpNumber?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	articleSlug?: string | undefined | null,
+	language?: string | undefined | null
+};
+	["UpdateReviewStoreInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	description?: string | undefined | null,
+	customerName?: string | undefined | null
+};
+	["ReviewStoreList"]: {
+		items: Array<ModelTypes["ReviewStore"]>,
+	totalItems: number
+};
+	["ReviewStoreListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["ReviewStoreSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["ReviewStoreFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswer"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	form: ModelTypes["Form"],
+	answerData: ModelTypes["JSON"]
+};
+	["NodeType"]:NodeType;
+	["NodeTypeOnSubmitAction"]:NodeTypeOnSubmitAction;
+	["Form"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	formName: string,
+	title: string,
+	slug: string,
+	hero?: ModelTypes["FormHero"] | undefined | null,
+	thanksPage?: ModelTypes["FormThanksPage"] | undefined | null,
+	email?: ModelTypes["FormEmail"] | undefined | null,
+	sections: Array<ModelTypes["FormSection"]>,
+	registrationCount: number,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: ModelTypes["DateTime"] | undefined | null,
+	endDate?: ModelTypes["DateTime"] | undefined | null,
+	sectionsOrder?: Array<string> | undefined | null
+};
+	["FormEmail"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	subject?: string | undefined | null,
+	title?: string | undefined | null,
+	body?: string | undefined | null,
+	logo?: ModelTypes["FormEmailLogo"] | undefined | null
+};
+	["FormHero"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	fileUrl: string
+};
+	["FormEmailLogo"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	fileUrl: string
+};
+	["ProductForRating"]: {
+		id: string,
+	name: string,
+	previewImage?: string | undefined | null
+};
+	["FormNode"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	type: ModelTypes["NodeType"],
+	nodeAction?: ModelTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null,
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required: boolean,
+	unique: boolean,
+	email: boolean,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<ModelTypes["ProductForRating"]> | undefined | null,
+	order: number,
+	maxFilesCount?: number | undefined | null
+};
+	["FormSection"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	title?: string | undefined | null,
+	name: string,
+	nodes: Array<ModelTypes["FormNode"]>
+};
+	["FormThanksPageListItem"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	title: string,
+	heroUrl?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph: string,
+	links: Array<string>
+};
+	["FormThanksPage"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	title: string,
+	hero?: ModelTypes["FormHero"] | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph: string,
+	links?: Array<ModelTypes["FormLink"]> | undefined | null
+};
+	["FormLink"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	updatedAt: ModelTypes["DateTime"],
+	label: string,
+	href: string
+};
+	["FormList"]: {
+		items: Array<ModelTypes["Form"]>,
+	totalItems: number
+};
+	["FormListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswerList"]: {
+		items: Array<ModelTypes["FormAnswer"]>,
+	totalItems: number
+};
+	["FormSectionList"]: {
+		items: Array<ModelTypes["FormSection"]>,
+	totalItems: number
+};
+	["FormHeroList"]: {
+		items: Array<ModelTypes["FormHero"]>,
+	totalItems: number
+};
+	["FormEmailList"]: {
+		items: Array<ModelTypes["FormEmail"]>,
+	totalItems: number
+};
+	["FormEmailLogoList"]: {
+		items: Array<ModelTypes["FormEmailLogo"]>,
+	totalItems: number
+};
+	["FormThanksPageList"]: {
+		items: Array<ModelTypes["FormThanksPage"]>,
+	totalItems: number
+};
+	["FormLinkList"]: {
+		items: Array<ModelTypes["FormLink"]>,
+	totalItems: number
+};
+	["PreparePutUrlResponse"]: {
+		fileKey: string,
+	putUrl: string
+};
+	["CreateFormInput"]: {
+	formName: string,
+	title?: string | undefined | null,
+	slug: string,
+	hero?: string | undefined | null,
+	email?: string | undefined | null,
+	thanksPage?: string | undefined | null,
+	sections: Array<string>,
+	sectionsOrder: Array<string>,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: ModelTypes["DateTime"] | undefined | null,
+	endDate?: ModelTypes["DateTime"] | undefined | null
+};
+	["UpdateFormInput"]: {
+	id: string,
+	formName?: string | undefined | null,
+	title?: string | undefined | null,
+	slug: string,
+	hero?: string | undefined | null,
+	email?: string | undefined | null,
+	thanksPage?: string | undefined | null,
+	sections: Array<string>,
+	sectionsOrder: Array<string>,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: ModelTypes["DateTime"] | undefined | null,
+	endDate?: ModelTypes["DateTime"] | undefined | null
+};
+	["CreateFormSectionInput"]: {
+	title?: string | undefined | null,
+	name: string,
+	nodes: Array<ModelTypes["CreateFormNodeInput"]>
+};
+	["UpdateFormSectionInput"]: {
+	id: string,
+	title?: string | undefined | null,
+	name: string,
+	nodes?: Array<ModelTypes["UpdateFormNodeInput"]> | undefined | null
+};
+	["CreateFormNodeInput"]: {
+	type: ModelTypes["NodeType"],
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required?: boolean | undefined | null,
+	unique?: boolean | undefined | null,
+	email?: boolean | undefined | null,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<string> | undefined | null,
+	order: number,
+	imageNodeLabel?: string | undefined | null,
+	maxFilesCount?: number | undefined | null,
+	nodeAction?: ModelTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null
+};
+	["UpdateFormNodeInput"]: {
+	id?: string | undefined | null,
+	type?: ModelTypes["NodeType"] | undefined | null,
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required?: boolean | undefined | null,
+	unique?: boolean | undefined | null,
+	email?: boolean | undefined | null,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<string> | undefined | null,
+	order: number,
+	imageNodeLabel?: string | undefined | null,
+	maxFilesCount?: number | undefined | null,
+	nodeAction?: ModelTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null
+};
+	["CreateFormThanksPageInput"]: {
+	hero?: string | undefined | null,
+	title?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph?: string | undefined | null,
+	links?: Array<string> | undefined | null
+};
+	["UpdateFormThanksPageInput"]: {
+	id: string,
+	hero?: string | undefined | null,
+	title?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug?: string | undefined | null,
+	paragraph?: string | undefined | null,
+	links?: Array<string> | undefined | null
+};
+	["CreateHeroInput"]: {
+	fileKey: string
+};
+	["CreateFormEmailInput"]: {
+	subject: string,
+	title: string,
+	body: string,
+	logo?: string | undefined | null
+};
+	["UpdateFormEmailInput"]: {
+	id: string,
+	subject: string,
+	title: string,
+	body: string,
+	logo?: string | undefined | null
+};
+	["CreateFormEmailLogoInput"]: {
+	fileKey: string
+};
+	["CreateFormLinkInput"]: {
+	href: string,
+	label: string
+};
+	["FormSectionListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormSectionSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormSectionFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormHeroListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormHeroSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormHeroFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswerListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormAnswerSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormAnswerFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormThanksPageListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormThanksPageSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormThanksPageFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormLinkListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormLinkSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormLinkFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormEmailLogoListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormEmailLogoSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormEmailLogoFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["FormEmailListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["FormEmailSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["FormEmailFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["SpecialOfferType"]:SpecialOfferType;
+	["SpecialOffer"]: {
+		id: string,
+	startDate: ModelTypes["DateTime"],
+	endDate: ModelTypes["DateTime"],
+	sendEmail?: boolean | undefined | null,
+	type: ModelTypes["SpecialOfferType"]
+};
+	["SetSpecialOfferInput"]: {
+	startDate: ModelTypes["DateTime"],
+	endDate: ModelTypes["DateTime"],
+	sendEmail?: boolean | undefined | null,
+	type: ModelTypes["SpecialOfferType"]
+};
+	["EffectsApplicationProduct"]: {
+		id: string,
+	product: ModelTypes["Product"],
+	review?: ModelTypes["ReviewProduct"] | undefined | null
+};
+	["EffectsApplication"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	name: string,
+	email: string,
+	phone?: string | undefined | null,
+	instagramLogin?: string | undefined | null,
+	beforePhotos: Array<string | undefined | null>,
+	afterPhotos: Array<string | undefined | null>,
+	products: Array<ModelTypes["EffectsApplicationProduct"] | undefined | null>
+};
+	["EffectsApplicationList"]: {
+		items: Array<ModelTypes["EffectsApplication"]>,
+	totalItems: number
+};
+	["EffectsApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["EffectsApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["EffectsApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["CastingApplication"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	name: string,
+	city: string,
+	phone: string,
+	email: string,
+	instagramLogin?: string | undefined | null,
+	ageRange: string,
+	skinTypes: Array<string | undefined | null>,
+	dreamProduct?: string | undefined | null,
+	photos: Array<string | undefined | null>,
+	publishPermission: boolean
+};
+	["CastingApplicationList"]: {
+		items: Array<ModelTypes["CastingApplication"]>,
+	totalItems: number
+};
+	["CastingApplicationListOptions"]: {
+	/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: ModelTypes["CastingApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: ModelTypes["CastingApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
+	["SimplifiedFormApplication"]: {
+		id: string,
+	createdAt: ModelTypes["DateTime"],
+	name: string,
+	surname: string,
+	street: string,
+	buildingNumber: string,
+	flatNumber?: string | undefined | null,
+	postalCode: string,
+	city: string,
+	phone: string,
+	email: string,
+	companyName: string,
+	instagramLogin: string,
+	applicationNumber: number
+};
+	["SimplifiedFormApplicationList"]: {
+		items: Array<ModelTypes["SimplifiedFormApplication"]>,
+	totalItems: number
+};
+	["SimplifiedFormApplicationOptions"]: {
+	take?: number | undefined | null,
+	skip?: number | undefined | null,
+	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
+};
 	["ChartDataType"]: {
-		interval: ModelTypes["BetterMetricInterval"],
-	type: ModelTypes["ChartMetricType"],
+		type: ModelTypes["ChartMetricType"],
 	title: string,
 	entries: Array<ModelTypes["ChartEntry"]>
 };
@@ -12926,21 +15825,20 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	priceWithTax: number
 };
 	["ChartEntry"]: {
-		label: string,
+		day: number,
 	value: number,
 	additionalData?: Array<ModelTypes["ChartEntryAdditionalData"]> | undefined | null
 };
-	["BetterMetricIntervalInput"]: {
-	type: ModelTypes["BetterMetricInterval"],
-	start?: ModelTypes["DateTime"] | undefined | null,
+	["BetterMetricRangeInput"]: {
+	start: ModelTypes["DateTime"],
 	end?: ModelTypes["DateTime"] | undefined | null
 };
 	["OrderSummaryMetricInput"]: {
-	interval: ModelTypes["BetterMetricIntervalInput"],
+	range: ModelTypes["BetterMetricRangeInput"],
 	refresh?: boolean | undefined | null
 };
 	["ChartMetricInput"]: {
-	interval: ModelTypes["BetterMetricIntervalInput"],
+	range: ModelTypes["BetterMetricRangeInput"],
 	types: Array<ModelTypes["ChartMetricType"]>,
 	productIDs?: Array<string> | undefined | null,
 	refresh?: boolean | undefined | null
@@ -12992,10 +15890,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: ModelTypes["NumberOperators"] | undefined | null,
 	source?: ModelTypes["StringOperators"] | undefined | null,
 	preview?: ModelTypes["StringOperators"] | undefined | null,
+	thumbnail?: ModelTypes["StringOperators"] | undefined | null,
 	_and?: Array<ModelTypes["AssetFilterParameter"]> | undefined | null,
-	_or?: Array<ModelTypes["AssetFilterParameter"]> | undefined | null,
-	attributes?: ModelTypes["StringOperators"] | undefined | null,
-	additionalInfo?: ModelTypes["StringOperators"] | undefined | null
+	_or?: Array<ModelTypes["AssetFilterParameter"]> | undefined | null
 };
 	["AssetSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined | null,
@@ -13008,8 +15905,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: ModelTypes["SortOrder"] | undefined | null,
 	source?: ModelTypes["SortOrder"] | undefined | null,
 	preview?: ModelTypes["SortOrder"] | undefined | null,
-	attributes?: ModelTypes["SortOrder"] | undefined | null,
-	additionalInfo?: ModelTypes["SortOrder"] | undefined | null
+	thumbnail?: ModelTypes["SortOrder"] | undefined | null
 };
 	["ChannelFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -13047,9 +15943,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ModelTypes["StringOperators"] | undefined | null,
 	parentId?: ModelTypes["IDOperators"] | undefined | null,
 	_and?: Array<ModelTypes["CollectionFilterParameter"]> | undefined | null,
-	_or?: Array<ModelTypes["CollectionFilterParameter"]> | undefined | null,
-	stringTest?: ModelTypes["StringOperators"] | undefined | null,
-	localestringTest?: ModelTypes["StringOperators"] | undefined | null
+	_or?: Array<ModelTypes["CollectionFilterParameter"]> | undefined | null
 };
 	["CollectionSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined | null,
@@ -13059,9 +15953,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ModelTypes["SortOrder"] | undefined | null,
 	position?: ModelTypes["SortOrder"] | undefined | null,
 	description?: ModelTypes["SortOrder"] | undefined | null,
-	parentId?: ModelTypes["SortOrder"] | undefined | null,
-	stringTest?: ModelTypes["SortOrder"] | undefined | null,
-	localestringTest?: ModelTypes["SortOrder"] | undefined | null
+	parentId?: ModelTypes["SortOrder"] | undefined | null
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ModelTypes["SortOrder"] | undefined | null,
@@ -13076,7 +15968,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	price?: ModelTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ModelTypes["SortOrder"] | undefined | null,
 	stockLevel?: ModelTypes["SortOrder"] | undefined | null,
-	stringTest?: ModelTypes["SortOrder"] | undefined | null
+	limit?: ModelTypes["SortOrder"] | undefined | null,
+	freeGift?: ModelTypes["SortOrder"] | undefined | null,
+	comment?: ModelTypes["SortOrder"] | undefined | null,
+	excludeFromShop?: ModelTypes["SortOrder"] | undefined | null,
+	notifyAboutAvailability?: ModelTypes["SortOrder"] | undefined | null,
+	isTreatedAsGift?: ModelTypes["SortOrder"] | undefined | null,
+	discountBy?: ModelTypes["SortOrder"] | undefined | null,
+	inSetLabel?: ModelTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -13133,18 +16032,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["StringOperators"] | undefined | null,
 	code?: ModelTypes["StringOperators"] | undefined | null,
 	_and?: Array<ModelTypes["FacetFilterParameter"]> | undefined | null,
-	_or?: Array<ModelTypes["FacetFilterParameter"]> | undefined | null,
-	stringTest?: ModelTypes["StringOperators"] | undefined | null,
-	localestringTest?: ModelTypes["StringOperators"] | undefined | null
+	_or?: Array<ModelTypes["FacetFilterParameter"]> | undefined | null
 };
 	["FacetSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined | null,
 	createdAt?: ModelTypes["SortOrder"] | undefined | null,
 	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
 	name?: ModelTypes["SortOrder"] | undefined | null,
-	code?: ModelTypes["SortOrder"] | undefined | null,
-	stringTest?: ModelTypes["SortOrder"] | undefined | null,
-	localestringTest?: ModelTypes["SortOrder"] | undefined | null
+	code?: ModelTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -13217,14 +16112,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["SortOrder"] | undefined | null,
 	slug?: ModelTypes["SortOrder"] | undefined | null,
 	description?: ModelTypes["SortOrder"] | undefined | null,
-	discountBy?: ModelTypes["SortOrder"] | undefined | null,
-	boolTest?: ModelTypes["SortOrder"] | undefined | null,
-	floatTest?: ModelTypes["SortOrder"] | undefined | null,
-	intTest?: ModelTypes["SortOrder"] | undefined | null,
-	stringTest?: ModelTypes["SortOrder"] | undefined | null,
-	textTest?: ModelTypes["SortOrder"] | undefined | null,
-	dateTime?: ModelTypes["SortOrder"] | undefined | null,
-	singleAssetTestP?: ModelTypes["SortOrder"] | undefined | null
+	productId?: ModelTypes["SortOrder"] | undefined | null
 };
 	["PromotionFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -13402,6 +16290,262 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
 	name?: ModelTypes["SortOrder"] | undefined | null
 };
+	["AnnouncementBarFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	channelCode?: ModelTypes["StringOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	type?: ModelTypes["StringOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	enabled?: ModelTypes["BooleanOperators"] | undefined | null,
+	startDate?: ModelTypes["DateOperators"] | undefined | null,
+	endDate?: ModelTypes["DateOperators"] | undefined | null,
+	speed?: ModelTypes["NumberOperators"] | undefined | null,
+	spaceBetween?: ModelTypes["NumberOperators"] | undefined | null,
+	colorBackground?: ModelTypes["StringOperators"] | undefined | null,
+	nowActive?: ModelTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<ModelTypes["AnnouncementBarFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["AnnouncementBarFilterParameter"]> | undefined | null
+};
+	["AnnouncementBarSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	channelCode?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	startDate?: ModelTypes["SortOrder"] | undefined | null,
+	endDate?: ModelTypes["SortOrder"] | undefined | null,
+	speed?: ModelTypes["SortOrder"] | undefined | null,
+	spaceBetween?: ModelTypes["SortOrder"] | undefined | null,
+	colorBackground?: ModelTypes["SortOrder"] | undefined | null
+};
+	["ReviewProductFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	description?: ModelTypes["StringOperators"] | undefined | null,
+	state?: ModelTypes["StringOperators"] | undefined | null,
+	stars?: ModelTypes["NumberOperators"] | undefined | null,
+	customerIpNumber?: ModelTypes["StringOperators"] | undefined | null,
+	customerName?: ModelTypes["StringOperators"] | undefined | null,
+	customerEmail?: ModelTypes["StringOperators"] | undefined | null,
+	publishPermission?: ModelTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<ModelTypes["ReviewProductFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["ReviewProductFilterParameter"]> | undefined | null
+};
+	["ReviewProductSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	description?: ModelTypes["SortOrder"] | undefined | null,
+	state?: ModelTypes["SortOrder"] | undefined | null,
+	stars?: ModelTypes["SortOrder"] | undefined | null,
+	customerIpNumber?: ModelTypes["SortOrder"] | undefined | null,
+	customerName?: ModelTypes["SortOrder"] | undefined | null,
+	customerEmail?: ModelTypes["SortOrder"] | undefined | null
+};
+	["ReviewStoreFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	description?: ModelTypes["StringOperators"] | undefined | null,
+	state?: ModelTypes["StringOperators"] | undefined | null,
+	customerIpNumber?: ModelTypes["StringOperators"] | undefined | null,
+	customerName?: ModelTypes["StringOperators"] | undefined | null,
+	customerEmail?: ModelTypes["StringOperators"] | undefined | null,
+	articleSlug?: ModelTypes["StringOperators"] | undefined | null,
+	language?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["ReviewStoreFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["ReviewStoreFilterParameter"]> | undefined | null
+};
+	["ReviewStoreSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	description?: ModelTypes["SortOrder"] | undefined | null,
+	state?: ModelTypes["SortOrder"] | undefined | null,
+	customerIpNumber?: ModelTypes["SortOrder"] | undefined | null,
+	customerName?: ModelTypes["SortOrder"] | undefined | null,
+	customerEmail?: ModelTypes["SortOrder"] | undefined | null,
+	articleSlug?: ModelTypes["SortOrder"] | undefined | null,
+	language?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	formName?: ModelTypes["StringOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	slug?: ModelTypes["StringOperators"] | undefined | null,
+	registrationCount?: ModelTypes["NumberOperators"] | undefined | null,
+	maxRegistrationCount?: ModelTypes["NumberOperators"] | undefined | null,
+	active?: ModelTypes["BooleanOperators"] | undefined | null,
+	startDate?: ModelTypes["DateOperators"] | undefined | null,
+	endDate?: ModelTypes["DateOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormFilterParameter"]> | undefined | null
+};
+	["FormSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	formName?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	slug?: ModelTypes["SortOrder"] | undefined | null,
+	registrationCount?: ModelTypes["SortOrder"] | undefined | null,
+	maxRegistrationCount?: ModelTypes["SortOrder"] | undefined | null,
+	startDate?: ModelTypes["SortOrder"] | undefined | null,
+	endDate?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormAnswerFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormAnswerFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormAnswerFilterParameter"]> | undefined | null
+};
+	["FormAnswerSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormSectionFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	name?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormSectionFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormSectionFilterParameter"]> | undefined | null
+};
+	["FormSectionSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	name?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormHeroFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	fileUrl?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormHeroFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormHeroFilterParameter"]> | undefined | null
+};
+	["FormHeroSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	fileUrl?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormEmailFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	subject?: ModelTypes["StringOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	body?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormEmailFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormEmailFilterParameter"]> | undefined | null
+};
+	["FormEmailSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	subject?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	body?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormEmailLogoFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	fileUrl?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormEmailLogoFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormEmailLogoFilterParameter"]> | undefined | null
+};
+	["FormEmailLogoSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	fileUrl?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormThanksPageFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	title?: ModelTypes["StringOperators"] | undefined | null,
+	answerLabel?: ModelTypes["StringOperators"] | undefined | null,
+	slug?: ModelTypes["StringOperators"] | undefined | null,
+	paragraph?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormThanksPageFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormThanksPageFilterParameter"]> | undefined | null
+};
+	["FormThanksPageSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	title?: ModelTypes["SortOrder"] | undefined | null,
+	answerLabel?: ModelTypes["SortOrder"] | undefined | null,
+	slug?: ModelTypes["SortOrder"] | undefined | null,
+	paragraph?: ModelTypes["SortOrder"] | undefined | null
+};
+	["FormLinkFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
+	label?: ModelTypes["StringOperators"] | undefined | null,
+	href?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["FormLinkFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["FormLinkFilterParameter"]> | undefined | null
+};
+	["FormLinkSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
+	label?: ModelTypes["SortOrder"] | undefined | null,
+	href?: ModelTypes["SortOrder"] | undefined | null
+};
+	["EffectsApplicationFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	name?: ModelTypes["StringOperators"] | undefined | null,
+	email?: ModelTypes["StringOperators"] | undefined | null,
+	phone?: ModelTypes["StringOperators"] | undefined | null,
+	instagramLogin?: ModelTypes["StringOperators"] | undefined | null,
+	_and?: Array<ModelTypes["EffectsApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["EffectsApplicationFilterParameter"]> | undefined | null
+};
+	["EffectsApplicationSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	name?: ModelTypes["SortOrder"] | undefined | null,
+	email?: ModelTypes["SortOrder"] | undefined | null,
+	phone?: ModelTypes["SortOrder"] | undefined | null,
+	instagramLogin?: ModelTypes["SortOrder"] | undefined | null
+};
+	["CastingApplicationFilterParameter"]: {
+	id?: ModelTypes["IDOperators"] | undefined | null,
+	createdAt?: ModelTypes["DateOperators"] | undefined | null,
+	name?: ModelTypes["StringOperators"] | undefined | null,
+	city?: ModelTypes["StringOperators"] | undefined | null,
+	phone?: ModelTypes["StringOperators"] | undefined | null,
+	email?: ModelTypes["StringOperators"] | undefined | null,
+	instagramLogin?: ModelTypes["StringOperators"] | undefined | null,
+	ageRange?: ModelTypes["StringOperators"] | undefined | null,
+	dreamProduct?: ModelTypes["StringOperators"] | undefined | null,
+	publishPermission?: ModelTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<ModelTypes["CastingApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<ModelTypes["CastingApplicationFilterParameter"]> | undefined | null
+};
+	["CastingApplicationSortParameter"]: {
+	id?: ModelTypes["SortOrder"] | undefined | null,
+	createdAt?: ModelTypes["SortOrder"] | undefined | null,
+	name?: ModelTypes["SortOrder"] | undefined | null,
+	city?: ModelTypes["SortOrder"] | undefined | null,
+	phone?: ModelTypes["SortOrder"] | undefined | null,
+	email?: ModelTypes["SortOrder"] | undefined | null,
+	instagramLogin?: ModelTypes["SortOrder"] | undefined | null,
+	ageRange?: ModelTypes["SortOrder"] | undefined | null,
+	dreamProduct?: ModelTypes["SortOrder"] | undefined | null
+};
 	["HistoryEntryFilterParameter"]: {
 	isPublic?: ModelTypes["BooleanOperators"] | undefined | null,
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -13416,138 +16560,99 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ModelTypes["SortOrder"] | undefined | null,
 	updatedAt?: ModelTypes["SortOrder"] | undefined | null
 };
-	["AssetCustomFields"]: {
-		attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	["AddressCustomFields"]: {
+		comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
-	["CreateAssetCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	["CreateAddressCustomFieldsInput"]: {
+	comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
-	["UpdateAssetCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
-};
-	["CollectionCustomFields"]: {
-		stringTest?: string | undefined | null,
-	localestringTest?: string | undefined | null
-};
-	["CollectionTranslationCustomFields"]: {
-		localestringTest?: string | undefined | null
-};
-	["CreateCollectionCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
-};
-	["UpdateCollectionCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
-};
-	["CreateCollectionTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null
-};
-	["FacetCustomFields"]: {
-		stringTest?: string | undefined | null,
-	localestringTest?: string | undefined | null,
-	ProductListTest?: Array<ModelTypes["Product"]> | undefined | null,
-	listProductVariantTest?: Array<ModelTypes["ProductVariant"]> | undefined | null
-};
-	["FacetTranslationCustomFields"]: {
-		localestringTest?: string | undefined | null
-};
-	["CreateFacetCustomFieldsInput"]: {
-	stringTest?: string | undefined | null,
-	ProductListTestIds?: Array<string> | undefined | null,
-	listProductVariantTestIds?: Array<string> | undefined | null
-};
-	["UpdateFacetCustomFieldsInput"]: {
-	stringTest?: string | undefined | null,
-	ProductListTestIds?: Array<string> | undefined | null,
-	listProductVariantTestIds?: Array<string> | undefined | null
-};
-	["FacetTranslationInputCustomFields"]: {
-	localestringTest?: string | undefined | null
+	["UpdateAddressCustomFieldsInput"]: {
+	comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
 	["OrderCustomFields"]: {
-		attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+		inPostPoint?: string | undefined | null,
+	dpdPickupPoint?: string | undefined | null,
+	invoiceUrl?: string | undefined | null,
+	reminderSent?: boolean | undefined | null,
+	abandonedCartReminderSent?: boolean | undefined | null,
+	notes?: string | undefined | null,
+	paymentType?: string | undefined | null,
+	needInvoice?: boolean | undefined | null
 };
 	["UpdateOrderCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	inPostPoint?: string | undefined | null,
+	dpdPickupPoint?: string | undefined | null,
+	invoiceUrl?: string | undefined | null,
+	reminderSent?: boolean | undefined | null,
+	abandonedCartReminderSent?: boolean | undefined | null,
+	notes?: string | undefined | null,
+	paymentType?: string | undefined | null,
+	needInvoice?: boolean | undefined | null
 };
 	["OrderLineCustomFields"]: {
-		stringTest?: string | undefined | null,
-	textTest?: string | undefined | null
+		freeGiftForCouponCode?: string | undefined | null,
+	discountBy?: number | undefined | null
 };
 	["ProductCustomFields"]: {
-		discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: ModelTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null,
-	singleAssetTestP?: ModelTypes["Asset"] | undefined | null,
-	listAssetTestP?: Array<ModelTypes["Asset"]> | undefined | null
-};
-	["ProductTranslationCustomFields"]: {
-		listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null
+		productId?: string | undefined | null
 };
 	["CreateProductCustomFieldsInput"]: {
-	discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: ModelTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	singleAssetTestPId?: string | undefined | null,
-	listAssetTestPIds?: Array<string> | undefined | null
+	productId?: string | undefined | null
 };
 	["UpdateProductCustomFieldsInput"]: {
-	discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: ModelTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	singleAssetTestPId?: string | undefined | null,
-	listAssetTestPIds?: Array<string> | undefined | null
-};
-	["ProductTranslationInputCustomFields"]: {
-	listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null
+	productId?: string | undefined | null
 };
 	["ProductVariantCustomFields"]: {
-		stringTest?: string | undefined | null
+		limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSet?: Array<ModelTypes["ProductVariant"]> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["CreateProductVariantCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
+	limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSetIds?: Array<string> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["UpdateProductVariantCustomFieldsInput"]: {
-	stringTest?: string | undefined | null
+	limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSetIds?: Array<string> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["OrderLineCustomFieldsInput"]: {
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null
+	freeGiftForCouponCode?: string | undefined | null,
+	discountBy?: number | undefined | null
 };
 	["NativeAuthInput"]: {
 	username: string,
@@ -13679,10 +16784,41 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined | null,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined | null,
+	announcementBar?: GraphQLTypes["AnnouncementBar"] | undefined | null,
+	announcementBars: GraphQLTypes["AnnouncementBarList"],
+	getActiveAnnouncementBar?: GraphQLTypes["AnnouncementBar"] | undefined | null,
+	/** Get the review product */
+	reviewProduct?: GraphQLTypes["ReviewProduct"] | undefined | null,
+	/** Get the list of reviews product */
+	reviewsProduct: GraphQLTypes["ReviewProductList"],
+	/** Get the review store */
+	reviewStore?: GraphQLTypes["ReviewStore"] | undefined | null,
+	/** Get the list of reviews store */
+	reviewsStore: GraphQLTypes["ReviewStoreList"],
+	formList: GraphQLTypes["FormList"],
+	form?: GraphQLTypes["Form"] | undefined | null,
+	formAnswerList: GraphQLTypes["FormAnswerList"],
+	formAnswer?: GraphQLTypes["FormAnswer"] | undefined | null,
+	formAnswersToDocument: string,
+	formEmail?: GraphQLTypes["FormEmail"] | undefined | null,
+	formSectionList: GraphQLTypes["FormSectionList"],
+	formSection?: GraphQLTypes["FormSection"] | undefined | null,
+	formHeroList: GraphQLTypes["FormHeroList"],
+	formEmailList: GraphQLTypes["FormEmailList"],
+	formEmailLogoList: GraphQLTypes["FormEmailLogoList"],
+	formThanksPageList: GraphQLTypes["FormThanksPageList"],
+	formThanksPage?: GraphQLTypes["FormThanksPage"] | undefined | null,
+	formLinkList: GraphQLTypes["FormLinkList"],
+	getSpecialOffer?: GraphQLTypes["SpecialOffer"] | undefined | null,
+	effectsApplications: GraphQLTypes["EffectsApplicationList"],
+	castingApplications: GraphQLTypes["CastingApplicationList"],
+	simplifiedFormApplications: GraphQLTypes["SimplifiedFormApplicationList"],
 	chartMetric: GraphQLTypes["ChartMetrics"],
 	orderSummaryMetric: GraphQLTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
-	metricSummary: Array<GraphQLTypes["MetricSummary"]>
+	metricSummary: Array<GraphQLTypes["MetricSummary"]>,
+	exportOrdersToDocument: string,
+	exportSpecialOfferApplicationsToDocument: string
 };
 	["Mutation"]: {
 	__typename: "Mutation",
@@ -13991,7 +17127,88 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Add members to a Zone */
 	addMembersToZone: GraphQLTypes["Zone"],
 	/** Remove members from a Zone */
-	removeMembersFromZone: GraphQLTypes["Zone"]
+	removeMembersFromZone: GraphQLTypes["Zone"],
+	manageSuggestion?: GraphQLTypes["ProductSuggestionEntity"] | undefined | null,
+	updateAnnouncementBar: GraphQLTypes["AnnouncementBar"],
+	createAnnouncementBar: GraphQLTypes["AnnouncementBar"],
+	deleteAnnouncementBar?: boolean | undefined | null,
+	changeStatusAnnouncementBar: boolean,
+	transitionReviewProductToState?: GraphQLTypes["ReviewProduct"] | undefined | null,
+	createReviewProduct?: GraphQLTypes["ReviewProduct"] | undefined | null,
+	updateReviewProduct?: GraphQLTypes["ReviewProduct"] | undefined | null,
+	transitionReviewStoreToState?: GraphQLTypes["ReviewStore"] | undefined | null,
+	createReviewStore?: GraphQLTypes["ReviewStore"] | undefined | null,
+	updateReviewStore?: GraphQLTypes["ReviewStore"] | undefined | null,
+	createForm?: GraphQLTypes["Form"] | undefined | null,
+	updateForm?: GraphQLTypes["Form"] | undefined | null,
+	deleteForms: boolean,
+	createFormSection?: GraphQLTypes["FormSection"] | undefined | null,
+	updateFormSection?: GraphQLTypes["FormSection"] | undefined | null,
+	deleteFormSections: boolean,
+	createFormHero?: GraphQLTypes["FormHero"] | undefined | null,
+	createFormEmailLogo?: GraphQLTypes["FormEmailLogo"] | undefined | null,
+	deleteFormHeros: boolean,
+	deleteFormEmailLogos: boolean,
+	preparePutUrl?: GraphQLTypes["PreparePutUrlResponse"] | undefined | null,
+	createFormThanksPage?: GraphQLTypes["FormThanksPage"] | undefined | null,
+	updateFormThanksPage?: GraphQLTypes["FormThanksPage"] | undefined | null,
+	deleteFormThanksPages: boolean,
+	changeFromStatus: boolean,
+	clearFormRegistrationCount: boolean,
+	createFormLinks: boolean,
+	deleteFormLinks: boolean,
+	createFormEmail?: GraphQLTypes["FormEmail"] | undefined | null,
+	updateFormEmail?: GraphQLTypes["FormEmail"] | undefined | null,
+	deleteFormEmails: boolean,
+	setSpecialOffer?: GraphQLTypes["SpecialOffer"] | undefined | null,
+	archiveAllCreamForCreamApplications?: string | undefined | null,
+	archiveAllSimplifiedFormApplications?: string | undefined | null
+};
+	["SimplifiedFormApplicationListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["SimplifiedFormApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["SimplifiedFormApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["SimplifiedFormApplicationSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	name?: GraphQLTypes["SortOrder"] | undefined | null,
+	surname?: GraphQLTypes["SortOrder"] | undefined | null,
+	street?: GraphQLTypes["SortOrder"] | undefined | null,
+	buildingNumber?: GraphQLTypes["SortOrder"] | undefined | null,
+	flatNumber?: GraphQLTypes["SortOrder"] | undefined | null,
+	postalCode?: GraphQLTypes["SortOrder"] | undefined | null,
+	city?: GraphQLTypes["SortOrder"] | undefined | null,
+	phone?: GraphQLTypes["SortOrder"] | undefined | null,
+	email?: GraphQLTypes["SortOrder"] | undefined | null,
+	companyName?: GraphQLTypes["SortOrder"] | undefined | null,
+	instagramLogin?: GraphQLTypes["SortOrder"] | undefined | null,
+	applicationNumber?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["SimplifiedFormApplicationFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	name?: GraphQLTypes["StringOperators"] | undefined | null,
+	surname?: GraphQLTypes["StringOperators"] | undefined | null,
+	street?: GraphQLTypes["StringOperators"] | undefined | null,
+	buildingNumber?: GraphQLTypes["StringOperators"] | undefined | null,
+	flatNumber?: GraphQLTypes["StringOperators"] | undefined | null,
+	postalCode?: GraphQLTypes["StringOperators"] | undefined | null,
+	city?: GraphQLTypes["StringOperators"] | undefined | null,
+	phone?: GraphQLTypes["StringOperators"] | undefined | null,
+	email?: GraphQLTypes["StringOperators"] | undefined | null,
+	companyName?: GraphQLTypes["StringOperators"] | undefined | null,
+	instagramLogin?: GraphQLTypes["StringOperators"] | undefined | null,
+	applicationNumber?: GraphQLTypes["NumberOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["SimplifiedFormApplicationFilterParameter"]> | undefined | null
 };
 	["AdministratorListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14074,7 +17291,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["CreateAssetInput"]: {
 		file: GraphQLTypes["Upload"],
 	tags?: Array<string> | undefined | null,
-	customFields?: GraphQLTypes["CreateAssetCustomFieldsInput"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CoordinateInput"]: {
 		x: number,
@@ -14095,7 +17312,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined | null,
 	focalPoint?: GraphQLTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
-	customFields?: GraphQLTypes["UpdateAssetCustomFieldsInput"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
 		assetIds: Array<string>,
@@ -14201,7 +17418,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filters: Array<GraphQLTypes["ConfigurableOperation"]>,
 	translations: Array<GraphQLTypes["CollectionTranslation"]>,
 	productVariants: GraphQLTypes["ProductVariantList"],
-	customFields?: GraphQLTypes["CollectionCustomFields"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CollectionListOptions"]: {
 		topLevelOnly?: boolean | undefined | null,
@@ -14226,7 +17443,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: GraphQLTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
 		id?: string | undefined | null,
@@ -14234,7 +17451,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: GraphQLTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CreateCollectionInput"]: {
 		isPrivate?: boolean | undefined | null,
@@ -14244,7 +17461,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<GraphQLTypes["ConfigurableOperationInput"]>,
 	translations: Array<GraphQLTypes["CreateCollectionTranslationInput"]>,
-	customFields?: GraphQLTypes["CreateCollectionCustomFieldsInput"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
 		parentId?: string | undefined | null,
@@ -14260,7 +17477,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<GraphQLTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<GraphQLTypes["UpdateCollectionTranslationInput"]> | undefined | null,
-	customFields?: GraphQLTypes["UpdateCollectionCustomFieldsInput"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
 		collectionIds: Array<string>,
@@ -14439,7 +17656,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Returns a paginated, sortable, filterable list of the Facet's values. Added in v2.1.0. */
 	valueList: GraphQLTypes["FacetValueList"],
 	translations: Array<GraphQLTypes["FacetTranslation"]>,
-	customFields?: GraphQLTypes["FacetCustomFields"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["FacetListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14457,21 +17674,21 @@ as well as removing any of the group's options from the Product's ProductVariant
 		id?: string | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
-	customFields?: GraphQLTypes["FacetTranslationInputCustomFields"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CreateFacetInput"]: {
 		code: string,
 	isPrivate: boolean,
 	translations: Array<GraphQLTypes["FacetTranslationInput"]>,
 	values?: Array<GraphQLTypes["CreateFacetValueWithFacetInput"]> | undefined | null,
-	customFields?: GraphQLTypes["CreateFacetCustomFieldsInput"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateFacetInput"]: {
 		id: string,
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["FacetTranslationInput"]> | undefined | null,
-	customFields?: GraphQLTypes["UpdateFacetCustomFieldsInput"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
 		id?: string | undefined | null,
@@ -14762,8 +17979,14 @@ sum of `OrderLine.discountedLinePrice` values. */
 	totalWithTax?: GraphQLTypes["NumberOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null,
-	attributes?: GraphQLTypes["StringOperators"] | undefined | null,
-	additionalInfo?: GraphQLTypes["StringOperators"] | undefined | null
+	inPostPoint?: GraphQLTypes["StringOperators"] | undefined | null,
+	dpdPickupPoint?: GraphQLTypes["StringOperators"] | undefined | null,
+	invoiceUrl?: GraphQLTypes["StringOperators"] | undefined | null,
+	reminderSent?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	abandonedCartReminderSent?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	notes?: GraphQLTypes["StringOperators"] | undefined | null,
+	paymentType?: GraphQLTypes["StringOperators"] | undefined | null,
+	needInvoice?: GraphQLTypes["BooleanOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 		customerLastName?: GraphQLTypes["SortOrder"] | undefined | null,
@@ -14782,8 +18005,14 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
 	total?: GraphQLTypes["SortOrder"] | undefined | null,
 	totalWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
-	attributes?: GraphQLTypes["SortOrder"] | undefined | null,
-	additionalInfo?: GraphQLTypes["SortOrder"] | undefined | null
+	inPostPoint?: GraphQLTypes["SortOrder"] | undefined | null,
+	dpdPickupPoint?: GraphQLTypes["SortOrder"] | undefined | null,
+	invoiceUrl?: GraphQLTypes["SortOrder"] | undefined | null,
+	reminderSent?: GraphQLTypes["SortOrder"] | undefined | null,
+	abandonedCartReminderSent?: GraphQLTypes["SortOrder"] | undefined | null,
+	notes?: GraphQLTypes["SortOrder"] | undefined | null,
+	paymentType?: GraphQLTypes["SortOrder"] | undefined | null,
+	needInvoice?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14875,7 +18104,8 @@ fields will be removed in a future version. */
 	province?: string | undefined | null,
 	postalCode?: string | undefined | null,
 	countryCode?: string | undefined | null,
-	phoneNumber?: string | undefined | null
+	phoneNumber?: string | undefined | null,
+	customFields?: GraphQLTypes["UpdateAddressCustomFieldsInput"] | undefined | null
 };
 	["ModifyOrderInput"]: {
 		dryRun: boolean,
@@ -15246,6 +18476,8 @@ is not in the required state. */
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductTranslation"]>,
 	collections: Array<GraphQLTypes["Collection"]>,
+	freeShippingSuggestion?: GraphQLTypes["ProductSuggestionEntity"] | undefined | null,
+	defaultSuggestion?: GraphQLTypes["ProductSuggestionEntity"] | undefined | null,
 	customFields?: GraphQLTypes["ProductCustomFields"] | undefined | null
 };
 	["ProductVariantPrice"]: {
@@ -15349,7 +18581,8 @@ is not in the required state. */
 	/** An array of ids of the Collections in which this result appears */
 	collectionIds: Array<string>,
 	/** A relevance score for the result. Differs between database implementations */
-	score: number
+	score: number,
+	inStock: boolean
 };
 	["StockMovementListOptions"]: {
 		type?: GraphQLTypes["StockMovementType"] | undefined | null,
@@ -15381,19 +18614,7 @@ is not in the required state. */
 	enabled?: GraphQLTypes["BooleanOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined | null,
 	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined | null,
-	discountBy?: GraphQLTypes["StringOperators"] | undefined | null,
-	boolTest?: GraphQLTypes["BooleanOperators"] | undefined | null,
-	floatTest?: GraphQLTypes["NumberOperators"] | undefined | null,
-	intTest?: GraphQLTypes["NumberOperators"] | undefined | null,
-	stringTest?: GraphQLTypes["StringOperators"] | undefined | null,
-	textTest?: GraphQLTypes["StringOperators"] | undefined | null,
-	dateTime?: GraphQLTypes["DateOperators"] | undefined | null,
-	listTestString?: GraphQLTypes["StringListOperators"] | undefined | null,
-	listTestInt?: GraphQLTypes["NumberListOperators"] | undefined | null,
-	listTestFloat?: GraphQLTypes["NumberListOperators"] | undefined | null,
-	listTestText?: GraphQLTypes["StringListOperators"] | undefined | null,
-	listLocaleString?: GraphQLTypes["StringListOperators"] | undefined | null,
-	listLocaleText?: GraphQLTypes["StringListOperators"] | undefined | null
+	productId?: GraphQLTypes["StringOperators"] | undefined | null
 };
 	["ProductVariantListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -15428,7 +18649,14 @@ is not in the required state. */
 	stockLevel?: GraphQLTypes["StringOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined | null,
 	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined | null,
-	stringTest?: GraphQLTypes["StringOperators"] | undefined | null
+	limit?: GraphQLTypes["NumberOperators"] | undefined | null,
+	freeGift?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	comment?: GraphQLTypes["StringOperators"] | undefined | null,
+	excludeFromShop?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	notifyAboutAvailability?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	isTreatedAsGift?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	discountBy?: GraphQLTypes["NumberOperators"] | undefined | null,
+	inSetLabel?: GraphQLTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 		id?: string | undefined | null,
@@ -15436,7 +18664,7 @@ is not in the required state. */
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: GraphQLTypes["ProductTranslationInputCustomFields"] | undefined | null
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
 		featuredAssetId?: string | undefined | null,
@@ -16030,7 +19258,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["AddressCustomFields"] | undefined | null
 };
 	["Asset"]: {
 	__typename: "Asset",
@@ -16047,7 +19275,8 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	preview: string,
 	focalPoint?: GraphQLTypes["Coordinate"] | undefined | null,
 	tags: Array<GraphQLTypes["Tag"]>,
-	customFields?: GraphQLTypes["AssetCustomFields"] | undefined | null
+	thumbnail: string,
+	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["Coordinate"]: {
 	__typename: "Coordinate",
@@ -16109,8 +19338,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	languageCode: GraphQLTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: GraphQLTypes["CollectionTranslationCustomFields"] | undefined | null
+	description: string
 };
 	["CollectionList"]: {
 	__typename: "CollectionList",
@@ -16260,7 +19488,7 @@ current session. */
 	/** The `Money` scalar type represents monetary values and supports signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
 ["Money"]: "scalar" & { name: "Money" };
 	["PaginatedList"]: {
-	__typename:"AdministratorList" | "ChannelList" | "CustomerGroupList" | "JobList" | "PaymentMethodList" | "SellerList" | "StockLocationList" | "TaxCategoryList" | "ZoneList" | "AssetList" | "CollectionList" | "CustomerList" | "FacetList" | "FacetValueList" | "HistoryEntryList" | "OrderList" | "ProductList" | "ProductVariantList" | "PromotionList" | "CountryList" | "ProvinceList" | "RoleList" | "ShippingMethodList" | "TagList" | "TaxRateList",
+	__typename:"AdministratorList" | "ChannelList" | "CustomerGroupList" | "JobList" | "PaymentMethodList" | "SellerList" | "StockLocationList" | "TaxCategoryList" | "ZoneList" | "AssetList" | "CollectionList" | "CustomerList" | "FacetList" | "FacetValueList" | "HistoryEntryList" | "OrderList" | "ProductList" | "ProductVariantList" | "PromotionList" | "CountryList" | "ProvinceList" | "RoleList" | "ShippingMethodList" | "TagList" | "TaxRateList" | "AnnouncementBarList" | "ReviewProductList" | "ReviewStoreList" | "FormList" | "FormAnswerList" | "FormSectionList" | "FormHeroList" | "FormEmailList" | "FormEmailLogoList" | "FormThanksPageList" | "FormLinkList" | "EffectsApplicationList" | "CastingApplicationList" | "SimplifiedFormApplicationList",
 	items: Array<GraphQLTypes["Node"]>,
 	totalItems: number
 	['...on AdministratorList']: '__union' & GraphQLTypes["AdministratorList"];
@@ -16288,9 +19516,23 @@ current session. */
 	['...on ShippingMethodList']: '__union' & GraphQLTypes["ShippingMethodList"];
 	['...on TagList']: '__union' & GraphQLTypes["TagList"];
 	['...on TaxRateList']: '__union' & GraphQLTypes["TaxRateList"];
+	['...on AnnouncementBarList']: '__union' & GraphQLTypes["AnnouncementBarList"];
+	['...on ReviewProductList']: '__union' & GraphQLTypes["ReviewProductList"];
+	['...on ReviewStoreList']: '__union' & GraphQLTypes["ReviewStoreList"];
+	['...on FormList']: '__union' & GraphQLTypes["FormList"];
+	['...on FormAnswerList']: '__union' & GraphQLTypes["FormAnswerList"];
+	['...on FormSectionList']: '__union' & GraphQLTypes["FormSectionList"];
+	['...on FormHeroList']: '__union' & GraphQLTypes["FormHeroList"];
+	['...on FormEmailList']: '__union' & GraphQLTypes["FormEmailList"];
+	['...on FormEmailLogoList']: '__union' & GraphQLTypes["FormEmailLogoList"];
+	['...on FormThanksPageList']: '__union' & GraphQLTypes["FormThanksPageList"];
+	['...on FormLinkList']: '__union' & GraphQLTypes["FormLinkList"];
+	['...on EffectsApplicationList']: '__union' & GraphQLTypes["EffectsApplicationList"];
+	['...on CastingApplicationList']: '__union' & GraphQLTypes["CastingApplicationList"];
+	['...on SimplifiedFormApplicationList']: '__union' & GraphQLTypes["SimplifiedFormApplicationList"];
 };
 	["Node"]: {
-	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone",
+	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone" | "ProductSuggestionItemEntity" | "ProductSuggestionEntity" | "AnnouncementBar" | "ReviewProduct" | "ReviewStore" | "FormAnswer" | "Form" | "FormEmail" | "FormHero" | "FormEmailLogo" | "FormNode" | "FormSection" | "FormThanksPageListItem" | "FormThanksPage" | "FormLink" | "SpecialOffer" | "EffectsApplicationProduct" | "EffectsApplication" | "CastingApplication" | "SimplifiedFormApplication",
 	id: string
 	['...on Administrator']: '__union' & GraphQLTypes["Administrator"];
 	['...on Collection']: '__union' & GraphQLTypes["Collection"];
@@ -16336,6 +19578,26 @@ current session. */
 	['...on User']: '__union' & GraphQLTypes["User"];
 	['...on AuthenticationMethod']: '__union' & GraphQLTypes["AuthenticationMethod"];
 	['...on Zone']: '__union' & GraphQLTypes["Zone"];
+	['...on ProductSuggestionItemEntity']: '__union' & GraphQLTypes["ProductSuggestionItemEntity"];
+	['...on ProductSuggestionEntity']: '__union' & GraphQLTypes["ProductSuggestionEntity"];
+	['...on AnnouncementBar']: '__union' & GraphQLTypes["AnnouncementBar"];
+	['...on ReviewProduct']: '__union' & GraphQLTypes["ReviewProduct"];
+	['...on ReviewStore']: '__union' & GraphQLTypes["ReviewStore"];
+	['...on FormAnswer']: '__union' & GraphQLTypes["FormAnswer"];
+	['...on Form']: '__union' & GraphQLTypes["Form"];
+	['...on FormEmail']: '__union' & GraphQLTypes["FormEmail"];
+	['...on FormHero']: '__union' & GraphQLTypes["FormHero"];
+	['...on FormEmailLogo']: '__union' & GraphQLTypes["FormEmailLogo"];
+	['...on FormNode']: '__union' & GraphQLTypes["FormNode"];
+	['...on FormSection']: '__union' & GraphQLTypes["FormSection"];
+	['...on FormThanksPageListItem']: '__union' & GraphQLTypes["FormThanksPageListItem"];
+	['...on FormThanksPage']: '__union' & GraphQLTypes["FormThanksPage"];
+	['...on FormLink']: '__union' & GraphQLTypes["FormLink"];
+	['...on SpecialOffer']: '__union' & GraphQLTypes["SpecialOffer"];
+	['...on EffectsApplicationProduct']: '__union' & GraphQLTypes["EffectsApplicationProduct"];
+	['...on EffectsApplication']: '__union' & GraphQLTypes["EffectsApplication"];
+	['...on CastingApplication']: '__union' & GraphQLTypes["CastingApplication"];
+	['...on SimplifiedFormApplication']: '__union' & GraphQLTypes["SimplifiedFormApplication"];
 };
 	["ErrorResult"]: {
 	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError",
@@ -16528,7 +19790,8 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
 	skip?: number | undefined | null,
-	sort?: GraphQLTypes["SearchResultSortParameter"] | undefined | null
+	sort?: GraphQLTypes["SearchResultSortParameter"] | undefined | null,
+	inStock?: boolean | undefined | null
 };
 	["SearchResultSortParameter"]: {
 		name?: GraphQLTypes["SortOrder"] | undefined | null,
@@ -16559,7 +19822,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["CreateAddressCustomFieldsInput"] | undefined | null
 };
 	/** Input used to update an Address.
 
@@ -16579,7 +19842,7 @@ If an invalid code is passed, the mutation will fail. */
 	phoneNumber?: string | undefined | null,
 	defaultShippingAddress?: boolean | undefined | null,
 	defaultBillingAddress?: boolean | undefined | null,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["UpdateAddressCustomFieldsInput"] | undefined | null
 };
 	/** Indicates that an operation succeeded, where we do not want to return any more specific information. */
 ["Success"]: {
@@ -16860,8 +20123,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
-	name: string,
-	customFields?: GraphQLTypes["FacetTranslationCustomFields"] | undefined | null
+	name: string
 };
 	["FacetList"]: {
 	__typename: "FacetList",
@@ -16937,7 +20199,7 @@ by taxRate. */
 	country?: string | undefined | null,
 	countryCode?: string | undefined | null,
 	phoneNumber?: string | undefined | null,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["AddressCustomFields"] | undefined | null
 };
 	["OrderList"]: {
 	__typename: "OrderList",
@@ -17184,8 +20446,7 @@ by the search, and in what quantity. */
 	languageCode: GraphQLTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: GraphQLTypes["ProductTranslationCustomFields"] | undefined | null
+	description: string
 };
 	["ProductList"]: {
 	__typename: "ProductList",
@@ -17424,9 +20685,712 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
+	["SuggestionType"]: SuggestionType;
+	["ProductSuggestionItemEntity"]: {
+	__typename: "ProductSuggestionItemEntity",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	priority: number,
+	productVariant: GraphQLTypes["ProductVariant"]
+};
+	["ProductSuggestionEntity"]: {
+	__typename: "ProductSuggestionEntity",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	priority?: number | undefined | null,
+	type: GraphQLTypes["SuggestionType"],
+	suggestionItems?: Array<GraphQLTypes["ProductSuggestionItemEntity"]> | undefined | null
+};
+	["ProductSuggestionItemInput"]: {
+		priority: number,
+	productVariantId: string
+};
+	["ProductSuggestionInput"]: {
+		priority?: number | undefined | null,
+	type: GraphQLTypes["SuggestionType"],
+	productId: string,
+	productVariantIds?: Array<GraphQLTypes["ProductSuggestionItemInput"]> | undefined | null
+};
+	["ANNOUNCEMENT_BAR_TYPE_ENUM"]: ANNOUNCEMENT_BAR_TYPE_ENUM;
+	["AnnouncementBarEntryTranslation"]: {
+	__typename: "AnnouncementBarEntryTranslation",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	languageCode: GraphQLTypes["LanguageCode"],
+	text: string,
+	redirectUrl: string,
+	icon: string
+};
+	["AnnouncementBarEntry"]: {
+	__typename: "AnnouncementBarEntry",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	text?: string | undefined | null,
+	redirectUrl?: string | undefined | null,
+	icon?: string | undefined | null,
+	colorIcon?: string | undefined | null,
+	colorText?: string | undefined | null,
+	translations: Array<GraphQLTypes["AnnouncementBarEntryTranslation"]>
+};
+	["AnnouncementBar"]: {
+	__typename: "AnnouncementBar",
+	id: string,
+	channelCode: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	type?: GraphQLTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	title: string,
+	enabled: boolean,
+	startDate: GraphQLTypes["DateTime"],
+	endDate: GraphQLTypes["DateTime"],
+	speed: number,
+	spaceBetween: number,
+	colorBackground?: string | undefined | null,
+	nowActive?: boolean | undefined | null,
+	entries?: Array<GraphQLTypes["AnnouncementBarEntry"]> | undefined | null
+};
+	["AnnouncementBarList"]: {
+	__typename: "AnnouncementBarList",
+	items: Array<GraphQLTypes["AnnouncementBar"]>,
+	totalItems: number
+};
+	["AnnouncementBarListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["AnnouncementBarSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["AnnouncementBarFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["AnnouncementBarEntryTranslationInput"]: {
+		id?: string | undefined | null,
+	languageCode: GraphQLTypes["LanguageCode"],
+	text: string,
+	redirectUrl: string,
+	icon: string
+};
+	["AnnouncementBarEntryInput"]: {
+		id?: string | undefined | null,
+	colorIcon?: string | undefined | null,
+	colorText?: string | undefined | null,
+	translations?: Array<GraphQLTypes["AnnouncementBarEntryTranslationInput"]> | undefined | null
+};
+	["UpdateAnnouncementBarInput"]: {
+		id: string,
+	title?: string | undefined | null,
+	type?: GraphQLTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	enabled?: boolean | undefined | null,
+	startDate?: GraphQLTypes["DateTime"] | undefined | null,
+	endDate?: GraphQLTypes["DateTime"] | undefined | null,
+	speed?: number | undefined | null,
+	spaceBetween?: number | undefined | null,
+	colorBackground?: string | undefined | null,
+	entries?: Array<GraphQLTypes["AnnouncementBarEntryInput"]> | undefined | null
+};
+	["CreateAnnouncementBarInput"]: {
+		title?: string | undefined | null,
+	type?: GraphQLTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"] | undefined | null,
+	enabled?: boolean | undefined | null,
+	startDate?: GraphQLTypes["DateTime"] | undefined | null,
+	endDate?: GraphQLTypes["DateTime"] | undefined | null,
+	speed?: number | undefined | null,
+	spaceBetween?: number | undefined | null,
+	colorBackground?: string | undefined | null,
+	entries?: Array<GraphQLTypes["AnnouncementBarEntryInput"]> | undefined | null
+};
+	["DeleteAnnouncementBarInput"]: {
+		id: string
+};
+	["ChangeStatusAnnouncementBarInput"]: {
+		id: string,
+	enabled: boolean
+};
+	["ReviewProduct"]: {
+	__typename: "ReviewProduct",
+	id: string,
+	title: string,
+	description: string,
+	state: string,
+	stars: number,
+	nextStates: Array<string>,
+	product?: GraphQLTypes["Product"] | undefined | null,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	publishPermission?: boolean | undefined | null
+};
+	["CreateReviewProductInput"]: {
+		productId: string,
+	title: string,
+	description: string,
+	stars: number,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null
+};
+	["ReviewProductList"]: {
+	__typename: "ReviewProductList",
+	items: Array<GraphQLTypes["ReviewProduct"]>,
+	totalItems: number
+};
+	["UpdateReviewProductInput"]: {
+		id: string,
+	title?: string | undefined | null,
+	description?: string | undefined | null,
+	customerName?: string | undefined | null
+};
+	["ReviewProductListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["ReviewProductSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["ReviewProductFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["ReviewStore"]: {
+	__typename: "ReviewStore",
+	id: string,
+	title: string,
+	description: string,
+	state: string,
+	nextStates: Array<string>,
+	customerIpNumber?: string | undefined | null,
+	customerName?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	articleSlug?: string | undefined | null,
+	language?: string | undefined | null
+};
+	["CreateReviewStoreInput"]: {
+		title: string,
+	description: string,
+	customerName?: string | undefined | null,
+	customerIpNumber?: string | undefined | null,
+	customerEmail?: string | undefined | null,
+	articleSlug?: string | undefined | null,
+	language?: string | undefined | null
+};
+	["UpdateReviewStoreInput"]: {
+		id: string,
+	title?: string | undefined | null,
+	description?: string | undefined | null,
+	customerName?: string | undefined | null
+};
+	["ReviewStoreList"]: {
+	__typename: "ReviewStoreList",
+	items: Array<GraphQLTypes["ReviewStore"]>,
+	totalItems: number
+};
+	["ReviewStoreListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["ReviewStoreSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["ReviewStoreFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswer"]: {
+	__typename: "FormAnswer",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	form: GraphQLTypes["Form"],
+	answerData: GraphQLTypes["JSON"]
+};
+	["NodeType"]: NodeType;
+	["NodeTypeOnSubmitAction"]: NodeTypeOnSubmitAction;
+	["Form"]: {
+	__typename: "Form",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	formName: string,
+	title: string,
+	slug: string,
+	hero?: GraphQLTypes["FormHero"] | undefined | null,
+	thanksPage?: GraphQLTypes["FormThanksPage"] | undefined | null,
+	email?: GraphQLTypes["FormEmail"] | undefined | null,
+	sections: Array<GraphQLTypes["FormSection"]>,
+	registrationCount: number,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: GraphQLTypes["DateTime"] | undefined | null,
+	endDate?: GraphQLTypes["DateTime"] | undefined | null,
+	sectionsOrder?: Array<string> | undefined | null
+};
+	["FormEmail"]: {
+	__typename: "FormEmail",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	subject?: string | undefined | null,
+	title?: string | undefined | null,
+	body?: string | undefined | null,
+	logo?: GraphQLTypes["FormEmailLogo"] | undefined | null
+};
+	["FormHero"]: {
+	__typename: "FormHero",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	fileUrl: string
+};
+	["FormEmailLogo"]: {
+	__typename: "FormEmailLogo",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	fileUrl: string
+};
+	["ProductForRating"]: {
+	__typename: "ProductForRating",
+	id: string,
+	name: string,
+	previewImage?: string | undefined | null
+};
+	["FormNode"]: {
+	__typename: "FormNode",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	type: GraphQLTypes["NodeType"],
+	nodeAction?: GraphQLTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null,
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required: boolean,
+	unique: boolean,
+	email: boolean,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<GraphQLTypes["ProductForRating"]> | undefined | null,
+	order: number,
+	maxFilesCount?: number | undefined | null
+};
+	["FormSection"]: {
+	__typename: "FormSection",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	title?: string | undefined | null,
+	name: string,
+	nodes: Array<GraphQLTypes["FormNode"]>
+};
+	["FormThanksPageListItem"]: {
+	__typename: "FormThanksPageListItem",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	title: string,
+	heroUrl?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph: string,
+	links: Array<string>
+};
+	["FormThanksPage"]: {
+	__typename: "FormThanksPage",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	title: string,
+	hero?: GraphQLTypes["FormHero"] | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph: string,
+	links?: Array<GraphQLTypes["FormLink"]> | undefined | null
+};
+	["FormLink"]: {
+	__typename: "FormLink",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	updatedAt: GraphQLTypes["DateTime"],
+	label: string,
+	href: string
+};
+	["FormList"]: {
+	__typename: "FormList",
+	items: Array<GraphQLTypes["Form"]>,
+	totalItems: number
+};
+	["FormListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswerList"]: {
+	__typename: "FormAnswerList",
+	items: Array<GraphQLTypes["FormAnswer"]>,
+	totalItems: number
+};
+	["FormSectionList"]: {
+	__typename: "FormSectionList",
+	items: Array<GraphQLTypes["FormSection"]>,
+	totalItems: number
+};
+	["FormHeroList"]: {
+	__typename: "FormHeroList",
+	items: Array<GraphQLTypes["FormHero"]>,
+	totalItems: number
+};
+	["FormEmailList"]: {
+	__typename: "FormEmailList",
+	items: Array<GraphQLTypes["FormEmail"]>,
+	totalItems: number
+};
+	["FormEmailLogoList"]: {
+	__typename: "FormEmailLogoList",
+	items: Array<GraphQLTypes["FormEmailLogo"]>,
+	totalItems: number
+};
+	["FormThanksPageList"]: {
+	__typename: "FormThanksPageList",
+	items: Array<GraphQLTypes["FormThanksPage"]>,
+	totalItems: number
+};
+	["FormLinkList"]: {
+	__typename: "FormLinkList",
+	items: Array<GraphQLTypes["FormLink"]>,
+	totalItems: number
+};
+	["PreparePutUrlResponse"]: {
+	__typename: "PreparePutUrlResponse",
+	fileKey: string,
+	putUrl: string
+};
+	["CreateFormInput"]: {
+		formName: string,
+	title?: string | undefined | null,
+	slug: string,
+	hero?: string | undefined | null,
+	email?: string | undefined | null,
+	thanksPage?: string | undefined | null,
+	sections: Array<string>,
+	sectionsOrder: Array<string>,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: GraphQLTypes["DateTime"] | undefined | null,
+	endDate?: GraphQLTypes["DateTime"] | undefined | null
+};
+	["UpdateFormInput"]: {
+		id: string,
+	formName?: string | undefined | null,
+	title?: string | undefined | null,
+	slug: string,
+	hero?: string | undefined | null,
+	email?: string | undefined | null,
+	thanksPage?: string | undefined | null,
+	sections: Array<string>,
+	sectionsOrder: Array<string>,
+	maxRegistrationCount?: number | undefined | null,
+	active: boolean,
+	startDate?: GraphQLTypes["DateTime"] | undefined | null,
+	endDate?: GraphQLTypes["DateTime"] | undefined | null
+};
+	["CreateFormSectionInput"]: {
+		title?: string | undefined | null,
+	name: string,
+	nodes: Array<GraphQLTypes["CreateFormNodeInput"]>
+};
+	["UpdateFormSectionInput"]: {
+		id: string,
+	title?: string | undefined | null,
+	name: string,
+	nodes?: Array<GraphQLTypes["UpdateFormNodeInput"]> | undefined | null
+};
+	["CreateFormNodeInput"]: {
+		type: GraphQLTypes["NodeType"],
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required?: boolean | undefined | null,
+	unique?: boolean | undefined | null,
+	email?: boolean | undefined | null,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<string> | undefined | null,
+	order: number,
+	imageNodeLabel?: string | undefined | null,
+	maxFilesCount?: number | undefined | null,
+	nodeAction?: GraphQLTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null
+};
+	["UpdateFormNodeInput"]: {
+		id?: string | undefined | null,
+	type?: GraphQLTypes["NodeType"] | undefined | null,
+	formFieldName: string,
+	label?: string | undefined | null,
+	title?: string | undefined | null,
+	required?: boolean | undefined | null,
+	unique?: boolean | undefined | null,
+	email?: boolean | undefined | null,
+	selectionOptions?: Array<string> | undefined | null,
+	productsForRating?: Array<string> | undefined | null,
+	order: number,
+	imageNodeLabel?: string | undefined | null,
+	maxFilesCount?: number | undefined | null,
+	nodeAction?: GraphQLTypes["NodeTypeOnSubmitAction"] | undefined | null,
+	handlesForAction?: Array<string> | undefined | null,
+	handle?: string | undefined | null
+};
+	["CreateFormThanksPageInput"]: {
+		hero?: string | undefined | null,
+	title?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug: string,
+	paragraph?: string | undefined | null,
+	links?: Array<string> | undefined | null
+};
+	["UpdateFormThanksPageInput"]: {
+		id: string,
+	hero?: string | undefined | null,
+	title?: string | undefined | null,
+	answerLabel?: string | undefined | null,
+	slug?: string | undefined | null,
+	paragraph?: string | undefined | null,
+	links?: Array<string> | undefined | null
+};
+	["CreateHeroInput"]: {
+		fileKey: string
+};
+	["CreateFormEmailInput"]: {
+		subject: string,
+	title: string,
+	body: string,
+	logo?: string | undefined | null
+};
+	["UpdateFormEmailInput"]: {
+		id: string,
+	subject: string,
+	title: string,
+	body: string,
+	logo?: string | undefined | null
+};
+	["CreateFormEmailLogoInput"]: {
+		fileKey: string
+};
+	["CreateFormLinkInput"]: {
+		href: string,
+	label: string
+};
+	["FormSectionListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormSectionSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormSectionFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormHeroListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormHeroSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormHeroFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormAnswerListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormAnswerSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormAnswerFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormThanksPageListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormThanksPageSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormThanksPageFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormLinkListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormLinkSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormLinkFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormEmailLogoListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormEmailLogoSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormEmailLogoFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["FormEmailListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["FormEmailSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["FormEmailFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["SpecialOfferType"]: SpecialOfferType;
+	["SpecialOffer"]: {
+	__typename: "SpecialOffer",
+	id: string,
+	startDate: GraphQLTypes["DateTime"],
+	endDate: GraphQLTypes["DateTime"],
+	sendEmail?: boolean | undefined | null,
+	type: GraphQLTypes["SpecialOfferType"]
+};
+	["SetSpecialOfferInput"]: {
+		startDate: GraphQLTypes["DateTime"],
+	endDate: GraphQLTypes["DateTime"],
+	sendEmail?: boolean | undefined | null,
+	type: GraphQLTypes["SpecialOfferType"]
+};
+	["EffectsApplicationProduct"]: {
+	__typename: "EffectsApplicationProduct",
+	id: string,
+	product: GraphQLTypes["Product"],
+	review?: GraphQLTypes["ReviewProduct"] | undefined | null
+};
+	["EffectsApplication"]: {
+	__typename: "EffectsApplication",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	name: string,
+	email: string,
+	phone?: string | undefined | null,
+	instagramLogin?: string | undefined | null,
+	beforePhotos: Array<string | undefined | null>,
+	afterPhotos: Array<string | undefined | null>,
+	products: Array<GraphQLTypes["EffectsApplicationProduct"] | undefined | null>
+};
+	["EffectsApplicationList"]: {
+	__typename: "EffectsApplicationList",
+	items: Array<GraphQLTypes["EffectsApplication"]>,
+	totalItems: number
+};
+	["EffectsApplicationListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["EffectsApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["EffectsApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["CastingApplication"]: {
+	__typename: "CastingApplication",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	name: string,
+	city: string,
+	phone: string,
+	email: string,
+	instagramLogin?: string | undefined | null,
+	ageRange: string,
+	skinTypes: Array<string | undefined | null>,
+	dreamProduct?: string | undefined | null,
+	photos: Array<string | undefined | null>,
+	publishPermission: boolean
+};
+	["CastingApplicationList"]: {
+	__typename: "CastingApplicationList",
+	items: Array<GraphQLTypes["CastingApplication"]>,
+	totalItems: number
+};
+	["CastingApplicationListOptions"]: {
+		/** Skips the first n results, for use in pagination */
+	skip?: number | undefined | null,
+	/** Takes n results, for use in pagination */
+	take?: number | undefined | null,
+	/** Specifies which properties to sort the results by */
+	sort?: GraphQLTypes["CastingApplicationSortParameter"] | undefined | null,
+	/** Allows the results to be filtered */
+	filter?: GraphQLTypes["CastingApplicationFilterParameter"] | undefined | null,
+	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
+	["SimplifiedFormApplication"]: {
+	__typename: "SimplifiedFormApplication",
+	id: string,
+	createdAt: GraphQLTypes["DateTime"],
+	name: string,
+	surname: string,
+	street: string,
+	buildingNumber: string,
+	flatNumber?: string | undefined | null,
+	postalCode: string,
+	city: string,
+	phone: string,
+	email: string,
+	companyName: string,
+	instagramLogin: string,
+	applicationNumber: number
+};
+	["SimplifiedFormApplicationList"]: {
+	__typename: "SimplifiedFormApplicationList",
+	items: Array<GraphQLTypes["SimplifiedFormApplication"]>,
+	totalItems: number
+};
+	["SimplifiedFormApplicationOptions"]: {
+		take?: number | undefined | null,
+	skip?: number | undefined | null,
+	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
+};
 	["ChartDataType"]: {
 	__typename: "ChartDataType",
-	interval: GraphQLTypes["BetterMetricInterval"],
 	type: GraphQLTypes["ChartMetricType"],
 	title: string,
 	entries: Array<GraphQLTypes["ChartEntry"]>
@@ -17461,21 +21425,20 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["ChartEntry"]: {
 	__typename: "ChartEntry",
-	label: string,
+	day: number,
 	value: number,
 	additionalData?: Array<GraphQLTypes["ChartEntryAdditionalData"]> | undefined | null
 };
-	["BetterMetricIntervalInput"]: {
-		type: GraphQLTypes["BetterMetricInterval"],
-	start?: GraphQLTypes["DateTime"] | undefined | null,
+	["BetterMetricRangeInput"]: {
+		start: GraphQLTypes["DateTime"],
 	end?: GraphQLTypes["DateTime"] | undefined | null
 };
 	["OrderSummaryMetricInput"]: {
-		interval: GraphQLTypes["BetterMetricIntervalInput"],
+		range: GraphQLTypes["BetterMetricRangeInput"],
 	refresh?: boolean | undefined | null
 };
 	["ChartMetricInput"]: {
-		interval: GraphQLTypes["BetterMetricIntervalInput"],
+		range: GraphQLTypes["BetterMetricRangeInput"],
 	types: Array<GraphQLTypes["ChartMetricType"]>,
 	productIDs?: Array<string> | undefined | null,
 	refresh?: boolean | undefined | null
@@ -17529,10 +21492,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: GraphQLTypes["NumberOperators"] | undefined | null,
 	source?: GraphQLTypes["StringOperators"] | undefined | null,
 	preview?: GraphQLTypes["StringOperators"] | undefined | null,
+	thumbnail?: GraphQLTypes["StringOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["AssetFilterParameter"]> | undefined | null,
-	_or?: Array<GraphQLTypes["AssetFilterParameter"]> | undefined | null,
-	attributes?: GraphQLTypes["StringOperators"] | undefined | null,
-	additionalInfo?: GraphQLTypes["StringOperators"] | undefined | null
+	_or?: Array<GraphQLTypes["AssetFilterParameter"]> | undefined | null
 };
 	["AssetSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined | null,
@@ -17545,8 +21507,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	height?: GraphQLTypes["SortOrder"] | undefined | null,
 	source?: GraphQLTypes["SortOrder"] | undefined | null,
 	preview?: GraphQLTypes["SortOrder"] | undefined | null,
-	attributes?: GraphQLTypes["SortOrder"] | undefined | null,
-	additionalInfo?: GraphQLTypes["SortOrder"] | undefined | null
+	thumbnail?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["ChannelFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17584,9 +21545,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: GraphQLTypes["StringOperators"] | undefined | null,
 	parentId?: GraphQLTypes["IDOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined | null,
-	_or?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined | null,
-	stringTest?: GraphQLTypes["StringOperators"] | undefined | null,
-	localestringTest?: GraphQLTypes["StringOperators"] | undefined | null
+	_or?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined | null
 };
 	["CollectionSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined | null,
@@ -17596,9 +21555,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: GraphQLTypes["SortOrder"] | undefined | null,
 	position?: GraphQLTypes["SortOrder"] | undefined | null,
 	description?: GraphQLTypes["SortOrder"] | undefined | null,
-	parentId?: GraphQLTypes["SortOrder"] | undefined | null,
-	stringTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	localestringTest?: GraphQLTypes["SortOrder"] | undefined | null
+	parentId?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["ProductVariantSortParameter"]: {
 		stockOnHand?: GraphQLTypes["SortOrder"] | undefined | null,
@@ -17613,7 +21570,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	price?: GraphQLTypes["SortOrder"] | undefined | null,
 	priceWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
 	stockLevel?: GraphQLTypes["SortOrder"] | undefined | null,
-	stringTest?: GraphQLTypes["SortOrder"] | undefined | null
+	limit?: GraphQLTypes["SortOrder"] | undefined | null,
+	freeGift?: GraphQLTypes["SortOrder"] | undefined | null,
+	comment?: GraphQLTypes["SortOrder"] | undefined | null,
+	excludeFromShop?: GraphQLTypes["SortOrder"] | undefined | null,
+	notifyAboutAvailability?: GraphQLTypes["SortOrder"] | undefined | null,
+	isTreatedAsGift?: GraphQLTypes["SortOrder"] | undefined | null,
+	discountBy?: GraphQLTypes["SortOrder"] | undefined | null,
+	inSetLabel?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17670,18 +21634,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["StringOperators"] | undefined | null,
 	code?: GraphQLTypes["StringOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined | null,
-	_or?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined | null,
-	stringTest?: GraphQLTypes["StringOperators"] | undefined | null,
-	localestringTest?: GraphQLTypes["StringOperators"] | undefined | null
+	_or?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined | null
 };
 	["FacetSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined | null,
 	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
 	name?: GraphQLTypes["SortOrder"] | undefined | null,
-	code?: GraphQLTypes["SortOrder"] | undefined | null,
-	stringTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	localestringTest?: GraphQLTypes["SortOrder"] | undefined | null
+	code?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17754,14 +21714,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["SortOrder"] | undefined | null,
 	slug?: GraphQLTypes["SortOrder"] | undefined | null,
 	description?: GraphQLTypes["SortOrder"] | undefined | null,
-	discountBy?: GraphQLTypes["SortOrder"] | undefined | null,
-	boolTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	floatTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	intTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	stringTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	textTest?: GraphQLTypes["SortOrder"] | undefined | null,
-	dateTime?: GraphQLTypes["SortOrder"] | undefined | null,
-	singleAssetTestP?: GraphQLTypes["SortOrder"] | undefined | null
+	productId?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["PromotionFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17939,6 +21892,262 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
 	name?: GraphQLTypes["SortOrder"] | undefined | null
 };
+	["AnnouncementBarFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	channelCode?: GraphQLTypes["StringOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	type?: GraphQLTypes["StringOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	enabled?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	startDate?: GraphQLTypes["DateOperators"] | undefined | null,
+	endDate?: GraphQLTypes["DateOperators"] | undefined | null,
+	speed?: GraphQLTypes["NumberOperators"] | undefined | null,
+	spaceBetween?: GraphQLTypes["NumberOperators"] | undefined | null,
+	colorBackground?: GraphQLTypes["StringOperators"] | undefined | null,
+	nowActive?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["AnnouncementBarFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["AnnouncementBarFilterParameter"]> | undefined | null
+};
+	["AnnouncementBarSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	channelCode?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	startDate?: GraphQLTypes["SortOrder"] | undefined | null,
+	endDate?: GraphQLTypes["SortOrder"] | undefined | null,
+	speed?: GraphQLTypes["SortOrder"] | undefined | null,
+	spaceBetween?: GraphQLTypes["SortOrder"] | undefined | null,
+	colorBackground?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["ReviewProductFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	description?: GraphQLTypes["StringOperators"] | undefined | null,
+	state?: GraphQLTypes["StringOperators"] | undefined | null,
+	stars?: GraphQLTypes["NumberOperators"] | undefined | null,
+	customerIpNumber?: GraphQLTypes["StringOperators"] | undefined | null,
+	customerName?: GraphQLTypes["StringOperators"] | undefined | null,
+	customerEmail?: GraphQLTypes["StringOperators"] | undefined | null,
+	publishPermission?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["ReviewProductFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["ReviewProductFilterParameter"]> | undefined | null
+};
+	["ReviewProductSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	description?: GraphQLTypes["SortOrder"] | undefined | null,
+	state?: GraphQLTypes["SortOrder"] | undefined | null,
+	stars?: GraphQLTypes["SortOrder"] | undefined | null,
+	customerIpNumber?: GraphQLTypes["SortOrder"] | undefined | null,
+	customerName?: GraphQLTypes["SortOrder"] | undefined | null,
+	customerEmail?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["ReviewStoreFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	description?: GraphQLTypes["StringOperators"] | undefined | null,
+	state?: GraphQLTypes["StringOperators"] | undefined | null,
+	customerIpNumber?: GraphQLTypes["StringOperators"] | undefined | null,
+	customerName?: GraphQLTypes["StringOperators"] | undefined | null,
+	customerEmail?: GraphQLTypes["StringOperators"] | undefined | null,
+	articleSlug?: GraphQLTypes["StringOperators"] | undefined | null,
+	language?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["ReviewStoreFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["ReviewStoreFilterParameter"]> | undefined | null
+};
+	["ReviewStoreSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	description?: GraphQLTypes["SortOrder"] | undefined | null,
+	state?: GraphQLTypes["SortOrder"] | undefined | null,
+	customerIpNumber?: GraphQLTypes["SortOrder"] | undefined | null,
+	customerName?: GraphQLTypes["SortOrder"] | undefined | null,
+	customerEmail?: GraphQLTypes["SortOrder"] | undefined | null,
+	articleSlug?: GraphQLTypes["SortOrder"] | undefined | null,
+	language?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	formName?: GraphQLTypes["StringOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	slug?: GraphQLTypes["StringOperators"] | undefined | null,
+	registrationCount?: GraphQLTypes["NumberOperators"] | undefined | null,
+	maxRegistrationCount?: GraphQLTypes["NumberOperators"] | undefined | null,
+	active?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	startDate?: GraphQLTypes["DateOperators"] | undefined | null,
+	endDate?: GraphQLTypes["DateOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormFilterParameter"]> | undefined | null
+};
+	["FormSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	formName?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	slug?: GraphQLTypes["SortOrder"] | undefined | null,
+	registrationCount?: GraphQLTypes["SortOrder"] | undefined | null,
+	maxRegistrationCount?: GraphQLTypes["SortOrder"] | undefined | null,
+	startDate?: GraphQLTypes["SortOrder"] | undefined | null,
+	endDate?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormAnswerFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormAnswerFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormAnswerFilterParameter"]> | undefined | null
+};
+	["FormAnswerSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormSectionFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	name?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormSectionFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormSectionFilterParameter"]> | undefined | null
+};
+	["FormSectionSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	name?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormHeroFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	fileUrl?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormHeroFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormHeroFilterParameter"]> | undefined | null
+};
+	["FormHeroSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	fileUrl?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormEmailFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	subject?: GraphQLTypes["StringOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	body?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormEmailFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormEmailFilterParameter"]> | undefined | null
+};
+	["FormEmailSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	subject?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	body?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormEmailLogoFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	fileUrl?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormEmailLogoFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormEmailLogoFilterParameter"]> | undefined | null
+};
+	["FormEmailLogoSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	fileUrl?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormThanksPageFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	title?: GraphQLTypes["StringOperators"] | undefined | null,
+	answerLabel?: GraphQLTypes["StringOperators"] | undefined | null,
+	slug?: GraphQLTypes["StringOperators"] | undefined | null,
+	paragraph?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormThanksPageFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormThanksPageFilterParameter"]> | undefined | null
+};
+	["FormThanksPageSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	title?: GraphQLTypes["SortOrder"] | undefined | null,
+	answerLabel?: GraphQLTypes["SortOrder"] | undefined | null,
+	slug?: GraphQLTypes["SortOrder"] | undefined | null,
+	paragraph?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["FormLinkFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	label?: GraphQLTypes["StringOperators"] | undefined | null,
+	href?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["FormLinkFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["FormLinkFilterParameter"]> | undefined | null
+};
+	["FormLinkSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	label?: GraphQLTypes["SortOrder"] | undefined | null,
+	href?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["EffectsApplicationFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	name?: GraphQLTypes["StringOperators"] | undefined | null,
+	email?: GraphQLTypes["StringOperators"] | undefined | null,
+	phone?: GraphQLTypes["StringOperators"] | undefined | null,
+	instagramLogin?: GraphQLTypes["StringOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["EffectsApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["EffectsApplicationFilterParameter"]> | undefined | null
+};
+	["EffectsApplicationSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	name?: GraphQLTypes["SortOrder"] | undefined | null,
+	email?: GraphQLTypes["SortOrder"] | undefined | null,
+	phone?: GraphQLTypes["SortOrder"] | undefined | null,
+	instagramLogin?: GraphQLTypes["SortOrder"] | undefined | null
+};
+	["CastingApplicationFilterParameter"]: {
+		id?: GraphQLTypes["IDOperators"] | undefined | null,
+	createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
+	name?: GraphQLTypes["StringOperators"] | undefined | null,
+	city?: GraphQLTypes["StringOperators"] | undefined | null,
+	phone?: GraphQLTypes["StringOperators"] | undefined | null,
+	email?: GraphQLTypes["StringOperators"] | undefined | null,
+	instagramLogin?: GraphQLTypes["StringOperators"] | undefined | null,
+	ageRange?: GraphQLTypes["StringOperators"] | undefined | null,
+	dreamProduct?: GraphQLTypes["StringOperators"] | undefined | null,
+	publishPermission?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	_and?: Array<GraphQLTypes["CastingApplicationFilterParameter"]> | undefined | null,
+	_or?: Array<GraphQLTypes["CastingApplicationFilterParameter"]> | undefined | null
+};
+	["CastingApplicationSortParameter"]: {
+		id?: GraphQLTypes["SortOrder"] | undefined | null,
+	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
+	name?: GraphQLTypes["SortOrder"] | undefined | null,
+	city?: GraphQLTypes["SortOrder"] | undefined | null,
+	phone?: GraphQLTypes["SortOrder"] | undefined | null,
+	email?: GraphQLTypes["SortOrder"] | undefined | null,
+	instagramLogin?: GraphQLTypes["SortOrder"] | undefined | null,
+	ageRange?: GraphQLTypes["SortOrder"] | undefined | null,
+	dreamProduct?: GraphQLTypes["SortOrder"] | undefined | null
+};
 	["HistoryEntryFilterParameter"]: {
 		isPublic?: GraphQLTypes["BooleanOperators"] | undefined | null,
 	id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17953,148 +22162,104 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null
 };
-	["AssetCustomFields"]: {
-	__typename: "AssetCustomFields",
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	["AddressCustomFields"]: {
+	__typename: "AddressCustomFields",
+	comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
-	["CreateAssetCustomFieldsInput"]: {
-		attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	["CreateAddressCustomFieldsInput"]: {
+		comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
-	["UpdateAssetCustomFieldsInput"]: {
-		attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
-};
-	["CollectionCustomFields"]: {
-	__typename: "CollectionCustomFields",
-	stringTest?: string | undefined | null,
-	localestringTest?: string | undefined | null
-};
-	["CollectionTranslationCustomFields"]: {
-	__typename: "CollectionTranslationCustomFields",
-	localestringTest?: string | undefined | null
-};
-	["CreateCollectionCustomFieldsInput"]: {
-		stringTest?: string | undefined | null
-};
-	["UpdateCollectionCustomFieldsInput"]: {
-		stringTest?: string | undefined | null
-};
-	["CreateCollectionTranslationInputCustomFields"]: {
-		localestringTest?: string | undefined | null
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-		localestringTest?: string | undefined | null
-};
-	["FacetCustomFields"]: {
-	__typename: "FacetCustomFields",
-	stringTest?: string | undefined | null,
-	localestringTest?: string | undefined | null,
-	ProductListTest?: Array<GraphQLTypes["Product"]> | undefined | null,
-	listProductVariantTest?: Array<GraphQLTypes["ProductVariant"]> | undefined | null
-};
-	["FacetTranslationCustomFields"]: {
-	__typename: "FacetTranslationCustomFields",
-	localestringTest?: string | undefined | null
-};
-	["CreateFacetCustomFieldsInput"]: {
-		stringTest?: string | undefined | null,
-	ProductListTestIds?: Array<string> | undefined | null,
-	listProductVariantTestIds?: Array<string> | undefined | null
-};
-	["UpdateFacetCustomFieldsInput"]: {
-		stringTest?: string | undefined | null,
-	ProductListTestIds?: Array<string> | undefined | null,
-	listProductVariantTestIds?: Array<string> | undefined | null
-};
-	["FacetTranslationInputCustomFields"]: {
-		localestringTest?: string | undefined | null
+	["UpdateAddressCustomFieldsInput"]: {
+		comment?: string | undefined | null,
+	taxNumber?: string | undefined | null,
+	firstName?: string | undefined | null,
+	lastName?: string | undefined | null,
+	buildingNumber?: string | undefined | null,
+	flatNumber?: string | undefined | null
 };
 	["OrderCustomFields"]: {
 	__typename: "OrderCustomFields",
-	attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+	inPostPoint?: string | undefined | null,
+	dpdPickupPoint?: string | undefined | null,
+	invoiceUrl?: string | undefined | null,
+	reminderSent?: boolean | undefined | null,
+	abandonedCartReminderSent?: boolean | undefined | null,
+	notes?: string | undefined | null,
+	paymentType?: string | undefined | null,
+	needInvoice?: boolean | undefined | null
 };
 	["UpdateOrderCustomFieldsInput"]: {
-		attributes?: string | undefined | null,
-	additionalInfo?: string | undefined | null
+		inPostPoint?: string | undefined | null,
+	dpdPickupPoint?: string | undefined | null,
+	invoiceUrl?: string | undefined | null,
+	reminderSent?: boolean | undefined | null,
+	abandonedCartReminderSent?: boolean | undefined | null,
+	notes?: string | undefined | null,
+	paymentType?: string | undefined | null,
+	needInvoice?: boolean | undefined | null
 };
 	["OrderLineCustomFields"]: {
 	__typename: "OrderLineCustomFields",
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null
+	freeGiftForCouponCode?: string | undefined | null,
+	discountBy?: number | undefined | null
 };
 	["ProductCustomFields"]: {
 	__typename: "ProductCustomFields",
-	discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: GraphQLTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null,
-	singleAssetTestP?: GraphQLTypes["Asset"] | undefined | null,
-	listAssetTestP?: Array<GraphQLTypes["Asset"]> | undefined | null
-};
-	["ProductTranslationCustomFields"]: {
-	__typename: "ProductTranslationCustomFields",
-	listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null
+	productId?: string | undefined | null
 };
 	["CreateProductCustomFieldsInput"]: {
-		discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: GraphQLTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	singleAssetTestPId?: string | undefined | null,
-	listAssetTestPIds?: Array<string> | undefined | null
+		productId?: string | undefined | null
 };
 	["UpdateProductCustomFieldsInput"]: {
-		discountBy?: string | undefined | null,
-	boolTest?: boolean | undefined | null,
-	floatTest?: number | undefined | null,
-	intTest?: number | undefined | null,
-	stringTest?: string | undefined | null,
-	textTest?: string | undefined | null,
-	dateTime?: GraphQLTypes["DateTime"] | undefined | null,
-	listTestString?: Array<string> | undefined | null,
-	listTestInt?: Array<number> | undefined | null,
-	listTestFloat?: Array<number> | undefined | null,
-	listTestText?: Array<string> | undefined | null,
-	singleAssetTestPId?: string | undefined | null,
-	listAssetTestPIds?: Array<string> | undefined | null
-};
-	["ProductTranslationInputCustomFields"]: {
-		listLocaleString?: Array<string> | undefined | null,
-	listLocaleText?: Array<string> | undefined | null
+		productId?: string | undefined | null
 };
 	["ProductVariantCustomFields"]: {
 	__typename: "ProductVariantCustomFields",
-	stringTest?: string | undefined | null
+	limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSet?: Array<GraphQLTypes["ProductVariant"]> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["CreateProductVariantCustomFieldsInput"]: {
-		stringTest?: string | undefined | null
+		limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSetIds?: Array<string> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["UpdateProductVariantCustomFieldsInput"]: {
-		stringTest?: string | undefined | null
+		limit?: number | undefined | null,
+	freeGift?: boolean | undefined | null,
+	comment?: string | undefined | null,
+	excludeFromShop?: boolean | undefined | null,
+	notifyAboutAvailability?: boolean | undefined | null,
+	isTreatedAsGift?: boolean | undefined | null,
+	discountBy?: number | undefined | null,
+	inSetIds?: Array<string> | undefined | null,
+	inSetLabel?: string | undefined | null
 };
 	["OrderLineCustomFieldsInput"]: {
-		stringTest?: string | undefined | null,
-	textTest?: string | undefined | null
+		freeGiftForCouponCode?: string | undefined | null,
+	discountBy?: number | undefined | null
 };
 	["NativeAuthInput"]: {
 		username: string,
@@ -18719,6 +22884,35 @@ export enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
+export enum SuggestionType {
+	DEFAULT = "DEFAULT",
+	SHIPPING = "SHIPPING"
+}
+export enum ANNOUNCEMENT_BAR_TYPE_ENUM {
+	FADE_IN = "FADE_IN",
+	MARQUE = "MARQUE",
+	STATIC = "STATIC"
+}
+export enum NodeType {
+	Select = "Select",
+	Radio = "Radio",
+	MultiCheckbox = "MultiCheckbox",
+	Checkbox = "Checkbox",
+	Image = "Image",
+	Text = "Text",
+	TextArea = "TextArea",
+	Rating = "Rating"
+}
+export enum NodeTypeOnSubmitAction {
+	None = "None",
+	Newsletter = "Newsletter"
+}
+export enum SpecialOfferType {
+	CREAM_FOR_CREAM = "CREAM_FOR_CREAM",
+	EFFECTS = "EFFECTS",
+	CASTING = "CASTING",
+	SIMPLIFIED_FORM = "SIMPLIFIED_FORM"
+}
 export enum BetterMetricInterval {
 	Weekly = "Weekly",
 	Monthly = "Monthly",
@@ -18744,6 +22938,9 @@ export enum MetricType {
 }
 
 type ZEUS_VARIABLES = {
+	["SimplifiedFormApplicationListOptions"]: ValueTypes["SimplifiedFormApplicationListOptions"];
+	["SimplifiedFormApplicationSortParameter"]: ValueTypes["SimplifiedFormApplicationSortParameter"];
+	["SimplifiedFormApplicationFilterParameter"]: ValueTypes["SimplifiedFormApplicationFilterParameter"];
 	["AdministratorListOptions"]: ValueTypes["AdministratorListOptions"];
 	["CreateAdministratorInput"]: ValueTypes["CreateAdministratorInput"];
 	["UpdateAdministratorInput"]: ValueTypes["UpdateAdministratorInput"];
@@ -18929,9 +23126,54 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
+	["SuggestionType"]: ValueTypes["SuggestionType"];
+	["ProductSuggestionItemInput"]: ValueTypes["ProductSuggestionItemInput"];
+	["ProductSuggestionInput"]: ValueTypes["ProductSuggestionInput"];
+	["ANNOUNCEMENT_BAR_TYPE_ENUM"]: ValueTypes["ANNOUNCEMENT_BAR_TYPE_ENUM"];
+	["AnnouncementBarListOptions"]: ValueTypes["AnnouncementBarListOptions"];
+	["AnnouncementBarEntryTranslationInput"]: ValueTypes["AnnouncementBarEntryTranslationInput"];
+	["AnnouncementBarEntryInput"]: ValueTypes["AnnouncementBarEntryInput"];
+	["UpdateAnnouncementBarInput"]: ValueTypes["UpdateAnnouncementBarInput"];
+	["CreateAnnouncementBarInput"]: ValueTypes["CreateAnnouncementBarInput"];
+	["DeleteAnnouncementBarInput"]: ValueTypes["DeleteAnnouncementBarInput"];
+	["ChangeStatusAnnouncementBarInput"]: ValueTypes["ChangeStatusAnnouncementBarInput"];
+	["CreateReviewProductInput"]: ValueTypes["CreateReviewProductInput"];
+	["UpdateReviewProductInput"]: ValueTypes["UpdateReviewProductInput"];
+	["ReviewProductListOptions"]: ValueTypes["ReviewProductListOptions"];
+	["CreateReviewStoreInput"]: ValueTypes["CreateReviewStoreInput"];
+	["UpdateReviewStoreInput"]: ValueTypes["UpdateReviewStoreInput"];
+	["ReviewStoreListOptions"]: ValueTypes["ReviewStoreListOptions"];
+	["NodeType"]: ValueTypes["NodeType"];
+	["NodeTypeOnSubmitAction"]: ValueTypes["NodeTypeOnSubmitAction"];
+	["FormListOptions"]: ValueTypes["FormListOptions"];
+	["CreateFormInput"]: ValueTypes["CreateFormInput"];
+	["UpdateFormInput"]: ValueTypes["UpdateFormInput"];
+	["CreateFormSectionInput"]: ValueTypes["CreateFormSectionInput"];
+	["UpdateFormSectionInput"]: ValueTypes["UpdateFormSectionInput"];
+	["CreateFormNodeInput"]: ValueTypes["CreateFormNodeInput"];
+	["UpdateFormNodeInput"]: ValueTypes["UpdateFormNodeInput"];
+	["CreateFormThanksPageInput"]: ValueTypes["CreateFormThanksPageInput"];
+	["UpdateFormThanksPageInput"]: ValueTypes["UpdateFormThanksPageInput"];
+	["CreateHeroInput"]: ValueTypes["CreateHeroInput"];
+	["CreateFormEmailInput"]: ValueTypes["CreateFormEmailInput"];
+	["UpdateFormEmailInput"]: ValueTypes["UpdateFormEmailInput"];
+	["CreateFormEmailLogoInput"]: ValueTypes["CreateFormEmailLogoInput"];
+	["CreateFormLinkInput"]: ValueTypes["CreateFormLinkInput"];
+	["FormSectionListOptions"]: ValueTypes["FormSectionListOptions"];
+	["FormHeroListOptions"]: ValueTypes["FormHeroListOptions"];
+	["FormAnswerListOptions"]: ValueTypes["FormAnswerListOptions"];
+	["FormThanksPageListOptions"]: ValueTypes["FormThanksPageListOptions"];
+	["FormLinkListOptions"]: ValueTypes["FormLinkListOptions"];
+	["FormEmailLogoListOptions"]: ValueTypes["FormEmailLogoListOptions"];
+	["FormEmailListOptions"]: ValueTypes["FormEmailListOptions"];
+	["SpecialOfferType"]: ValueTypes["SpecialOfferType"];
+	["SetSpecialOfferInput"]: ValueTypes["SetSpecialOfferInput"];
+	["EffectsApplicationListOptions"]: ValueTypes["EffectsApplicationListOptions"];
+	["CastingApplicationListOptions"]: ValueTypes["CastingApplicationListOptions"];
+	["SimplifiedFormApplicationOptions"]: ValueTypes["SimplifiedFormApplicationOptions"];
 	["BetterMetricInterval"]: ValueTypes["BetterMetricInterval"];
 	["ChartMetricType"]: ValueTypes["ChartMetricType"];
-	["BetterMetricIntervalInput"]: ValueTypes["BetterMetricIntervalInput"];
+	["BetterMetricRangeInput"]: ValueTypes["BetterMetricRangeInput"];
 	["OrderSummaryMetricInput"]: ValueTypes["OrderSummaryMetricInput"];
 	["ChartMetricInput"]: ValueTypes["ChartMetricInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];
@@ -18980,21 +23222,39 @@ type ZEUS_VARIABLES = {
 	["TaxRateSortParameter"]: ValueTypes["TaxRateSortParameter"];
 	["ZoneFilterParameter"]: ValueTypes["ZoneFilterParameter"];
 	["ZoneSortParameter"]: ValueTypes["ZoneSortParameter"];
+	["AnnouncementBarFilterParameter"]: ValueTypes["AnnouncementBarFilterParameter"];
+	["AnnouncementBarSortParameter"]: ValueTypes["AnnouncementBarSortParameter"];
+	["ReviewProductFilterParameter"]: ValueTypes["ReviewProductFilterParameter"];
+	["ReviewProductSortParameter"]: ValueTypes["ReviewProductSortParameter"];
+	["ReviewStoreFilterParameter"]: ValueTypes["ReviewStoreFilterParameter"];
+	["ReviewStoreSortParameter"]: ValueTypes["ReviewStoreSortParameter"];
+	["FormFilterParameter"]: ValueTypes["FormFilterParameter"];
+	["FormSortParameter"]: ValueTypes["FormSortParameter"];
+	["FormAnswerFilterParameter"]: ValueTypes["FormAnswerFilterParameter"];
+	["FormAnswerSortParameter"]: ValueTypes["FormAnswerSortParameter"];
+	["FormSectionFilterParameter"]: ValueTypes["FormSectionFilterParameter"];
+	["FormSectionSortParameter"]: ValueTypes["FormSectionSortParameter"];
+	["FormHeroFilterParameter"]: ValueTypes["FormHeroFilterParameter"];
+	["FormHeroSortParameter"]: ValueTypes["FormHeroSortParameter"];
+	["FormEmailFilterParameter"]: ValueTypes["FormEmailFilterParameter"];
+	["FormEmailSortParameter"]: ValueTypes["FormEmailSortParameter"];
+	["FormEmailLogoFilterParameter"]: ValueTypes["FormEmailLogoFilterParameter"];
+	["FormEmailLogoSortParameter"]: ValueTypes["FormEmailLogoSortParameter"];
+	["FormThanksPageFilterParameter"]: ValueTypes["FormThanksPageFilterParameter"];
+	["FormThanksPageSortParameter"]: ValueTypes["FormThanksPageSortParameter"];
+	["FormLinkFilterParameter"]: ValueTypes["FormLinkFilterParameter"];
+	["FormLinkSortParameter"]: ValueTypes["FormLinkSortParameter"];
+	["EffectsApplicationFilterParameter"]: ValueTypes["EffectsApplicationFilterParameter"];
+	["EffectsApplicationSortParameter"]: ValueTypes["EffectsApplicationSortParameter"];
+	["CastingApplicationFilterParameter"]: ValueTypes["CastingApplicationFilterParameter"];
+	["CastingApplicationSortParameter"]: ValueTypes["CastingApplicationSortParameter"];
 	["HistoryEntryFilterParameter"]: ValueTypes["HistoryEntryFilterParameter"];
 	["HistoryEntrySortParameter"]: ValueTypes["HistoryEntrySortParameter"];
-	["CreateAssetCustomFieldsInput"]: ValueTypes["CreateAssetCustomFieldsInput"];
-	["UpdateAssetCustomFieldsInput"]: ValueTypes["UpdateAssetCustomFieldsInput"];
-	["CreateCollectionCustomFieldsInput"]: ValueTypes["CreateCollectionCustomFieldsInput"];
-	["UpdateCollectionCustomFieldsInput"]: ValueTypes["UpdateCollectionCustomFieldsInput"];
-	["CreateCollectionTranslationInputCustomFields"]: ValueTypes["CreateCollectionTranslationInputCustomFields"];
-	["UpdateCollectionTranslationInputCustomFields"]: ValueTypes["UpdateCollectionTranslationInputCustomFields"];
-	["CreateFacetCustomFieldsInput"]: ValueTypes["CreateFacetCustomFieldsInput"];
-	["UpdateFacetCustomFieldsInput"]: ValueTypes["UpdateFacetCustomFieldsInput"];
-	["FacetTranslationInputCustomFields"]: ValueTypes["FacetTranslationInputCustomFields"];
+	["CreateAddressCustomFieldsInput"]: ValueTypes["CreateAddressCustomFieldsInput"];
+	["UpdateAddressCustomFieldsInput"]: ValueTypes["UpdateAddressCustomFieldsInput"];
 	["UpdateOrderCustomFieldsInput"]: ValueTypes["UpdateOrderCustomFieldsInput"];
 	["CreateProductCustomFieldsInput"]: ValueTypes["CreateProductCustomFieldsInput"];
 	["UpdateProductCustomFieldsInput"]: ValueTypes["UpdateProductCustomFieldsInput"];
-	["ProductTranslationInputCustomFields"]: ValueTypes["ProductTranslationInputCustomFields"];
 	["CreateProductVariantCustomFieldsInput"]: ValueTypes["CreateProductVariantCustomFieldsInput"];
 	["UpdateProductVariantCustomFieldsInput"]: ValueTypes["UpdateProductVariantCustomFieldsInput"];
 	["OrderLineCustomFieldsInput"]: ValueTypes["OrderLineCustomFieldsInput"];

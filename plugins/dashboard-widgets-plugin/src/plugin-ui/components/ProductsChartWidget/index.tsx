@@ -16,7 +16,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { ChartConfig, ChartContainer, ChartTooltip, Separator } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { BetterMetricInterval, ChartMetricType } from '../../zeus';
+import { ChartMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { PeriodSelect, Period, Periods } from '../shared';
 import { endOfToday, startOfToday } from 'date-fns';
@@ -48,8 +48,7 @@ export const ProductsChartWidget = () => {
         async (refresh: boolean = false) => {
             fetchChartMetrics({
                 input: {
-                    interval: {
-                        type: BetterMetricInterval.Custom,
+                    range: {
                         start: selectedPeriod.start,
                         end: selectedPeriod.end,
                     },

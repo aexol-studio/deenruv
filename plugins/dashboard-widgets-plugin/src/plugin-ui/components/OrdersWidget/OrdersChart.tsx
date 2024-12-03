@@ -9,16 +9,19 @@ import { UIPluginOptions } from '../..';
 interface ChartProps {
     data: { name: string; value: number; type: ChartMetricType }[];
     language: string;
+    options?: { colorFrom?: string; colorTo?: string; stroke?: string };
 }
 
 const HEIGHT = 300;
 
-export const OrdersChart: React.FC<ChartProps> = ({ data, language }) => {
+export const OrdersChart: React.FC<ChartProps> = ({ data, language, options: _options }) => {
     const chartConfig = useMemo((): ChartConfig => {
         return { value: { label: camelCaseToSpaces(data[0]?.type) } };
     }, [data]);
     const { plugin } = useWidgetItem();
-    const options = (plugin?.config as UIPluginOptions)?.horizontalChartColors || {
+    // @ts-expect-error: for now we dont have types, we now that this is working
+
+    const options = (plugin?.config.options as UIPluginOptions)?.horizontalChartColors || {
         colorFrom: `#4338ca`,
         colorTo: `#6366f1`,
         stroke: `#6366f1`,

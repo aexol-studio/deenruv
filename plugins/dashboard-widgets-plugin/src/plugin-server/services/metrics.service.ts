@@ -1,25 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { assertNever } from '@deenruv/common/lib/shared-utils';
 
 import { Logger, Order, RequestContext, TransactionalConnection, TtlCache } from '@deenruv/core';
-import {
-    endOfDay,
-    startOfDay,
-    startOfWeek,
-    startOfMonth,
-    startOfYear,
-    endOfYear,
-    endOfMonth,
-    endOfWeek,
-    addDays,
-    eachDayOfInterval,
-} from 'date-fns';
-import { BetterMetricInterval, ChartMetricType, GraphQLTypes, ResolverInputTypes } from '../zeus';
+import { endOfDay } from 'date-fns';
+import { ChartMetricType, GraphQLTypes, ResolverInputTypes } from '../zeus';
 import { DashboardWidgetsPluginOptions, MetricResponse } from '../types';
 import {
     CHART_DATA_AVERAGE_VALUE_QUERY_SELECT,
     CHART_ORDER_COUNT_QUERY_SELECT,
     CHART_ORDER_TOTAL_QUERY_SELECT,
+    formatTotalProductsCountQuery,
     ORDERS_SUMMARY_QUERY_SELECT,
 } from '../raw-sql';
 import { DEFAULT_CACHE_TIME, PLUGIN_INIT_OPTIONS } from '../constants';
@@ -69,14 +58,13 @@ export class BetterMetricsService {
 
     async getOrderSummaryMetric(
         ctx: RequestContext,
-        { interval, refresh }: ResolverInputTypes['OrderSummaryMetricInput'],
+        { range, refresh }: ResolverInputTypes['OrderSummaryMetricInput'],
     ): Promise<GraphQLTypes['OrderSummaryMetrics']> {
-        const endDate = interval.end ? interval.end : endOfDay(new Date());
+        const endDate = range.end ? range.end : endOfDay(new Date());
         const cacheKey = JSON.stringify({
             metricType: 'OrderSummary',
-            startDate: interval.start,
+            startDate: range.start,
             endDate,
-            interval: interval.type,
             channel: ctx.channel.token,
         });
         const cachedMetrics = this.cache.get(cacheKey);
@@ -91,7 +79,7 @@ export class BetterMetricsService {
             return cachedMetrics as GraphQLTypes['OrderSummaryMetrics'];
         }
         const data = await this.loadSummaryOrdersData(ctx, {
-            ...interval,
+            ...range,
         });
         this.cache.set(cacheKey, {
             __typename: 'OrderSummaryMetrics',
@@ -107,15 +95,14 @@ export class BetterMetricsService {
 
     async getChartMetrics(
         ctx: RequestContext,
-        { interval, types, refresh, productIDs }: ResolverInputTypes['ChartMetricInput'],
+        { range, types, refresh, productIDs }: ResolverInputTypes['ChartMetricInput'],
     ): Promise<GraphQLTypes['ChartMetrics']> {
-        const endDate = interval.end ? interval.end : endOfDay(new Date());
+        const endDate = range.end ? range.end : endOfDay(new Date());
         const cacheKey = JSON.stringify({
             metricType: 'Chart',
-            startDate: interval.start,
+            startDate: range.start,
             endDate,
             types: types.sort(),
-            interval: interval.type,
             channel: ctx.channel.token,
         });
         const cachedMetrics = this.cache.get(cacheKey);
@@ -131,13 +118,13 @@ export class BetterMetricsService {
         }
 
         Logger.verbose(
-            `No cache hit, calculating ${interval.type} metrics until ${endDate} for channel ${
+            `No cache hit, calculating [${range.start} ${range.end ? `- ${range.end}` : ''} ] metrics until ${endDate} for channel ${
                 ctx.channel.token
             } for all orders`,
             'BetterMetricsService',
         );
         const data = await this.loadChartData(ctx, {
-            ...interval,
+            ...range,
             // for now bcs we are using only one type
             metricType: types[0],
         });
@@ -149,120 +136,52 @@ export class BetterMetricsService {
         for (const type of types) {
             const entry = MAPPINGS[type];
             const entries: GraphQLTypes['ChartEntry'][] = [];
-            data.response.forEach((dataPerDay: any) => {
+            data.response?.forEach((dataPerDay: any) => {
                 entries.push({
                     __typename: 'ChartEntry',
-                    label: dataPerDay.label,
-                    value: dataPerDay.value,
-                    ...('additionalData' in dataPerDay ? { additionalData: dataPerDay.additionalData } : {}),
+                    ...dataPerDay,
                 });
             });
 
             metrics.data.push({
                 __typename: 'ChartDataType',
-                interval: interval.type,
                 title: entry.title,
                 type,
                 entries: entries,
             });
         }
-        if (interval.type !== BetterMetricInterval.Custom && !productIDs) {
-            this.cache.set(cacheKey, metrics);
-        }
+
+        this.cache.set(cacheKey, metrics);
+
         return metrics;
     }
 
     async loadChartData(
         ctx: RequestContext,
         {
-            type: interval,
             start,
             end,
             metricType,
-        }: ResolverInputTypes['BetterMetricIntervalInput'] & {
+        }: ResolverInputTypes['BetterMetricRangeInput'] & {
             metricType: ChartMetricType;
         },
     ): Promise<{ response: any }> {
         const orderRepo = this.connection.getRepository(ctx, Order);
         let response: any;
-        const daysMap = new Map();
-        const today = new Date();
-        let startDate: Date;
-        let endDate: Date | undefined;
-        switch (interval) {
-            case BetterMetricInterval.Weekly: {
-                startDate = startOfWeek(today, { weekStartsOn: 1 });
-                endDate = endOfWeek(today, { weekStartsOn: 1 });
-                break;
-            }
-            case BetterMetricInterval.Monthly: {
-                startDate = startOfMonth(today);
-                endDate = endOfMonth(today);
-                break;
-            }
-            case BetterMetricInterval.Yearly: {
-                startDate = startOfYear(today);
-                endDate = endOfYear(today);
-                break;
-            }
-            case BetterMetricInterval.Custom: {
-                startDate = start ? startOfDay(new Date(start as string)) : startOfDay(today);
-                endDate = end ? endOfDay(end as Date) : undefined;
-                break;
-            }
-            default:
-                assertNever(interval as never);
-        }
+        const startDate = start as string;
+        const endDate = end as string | undefined;
 
         if (metricType === ChartMetricType.OrderTotalProductsCount) {
-            let daysMapping: any[] = [];
             // here we have raw query bcs i dont have time to figure out how to properly build it with queryBuilder using nested query (now i know but i dont have time )
 
             // !!!!!!!!!IMPORTANT for now we are assuming that listPrice from orderLine includes tax IMPORTANT!!!!!!!!!
-
-            const query = `
-          WITH base_data AS (
-            SELECT 
-              extract(epoch from o."orderPlacedAt" - $1)::integer / 86400 + 1 AS "day",
-              ol."productVariantId" AS "productVariantId",
-              pt."languageCode" AS "languageCode",
-              pt."name" AS "name",
-              SUM(ol."quantity") AS "quantitySum",
-              SUM(
-                  (ol."listPrice" * ol."quantity"  ${this.options?.discountByCustomField ? '- ol."quantity" * COALESCE(ol."customFieldsDiscountby", 0)' : ''} ) - COALESCE(
-                    (SELECT SUM((adj->>'amount')::numeric)
-                    FROM jsonb_array_elements(ol."adjustments"::jsonb) adj),
-                    0
-                  )
-                ) AS "adjustedPriceSum"
-            FROM "public"."order" o
-            INNER JOIN "public"."order_channels_channel" occ ON occ."orderId" = o."id"
-            INNER JOIN "public"."order_line" ol ON ol."orderId" = o."id"
-            INNER JOIN "public"."product_variant" pv ON pv.id = ol."productVariantId"
-            INNER JOIN "public"."product_translation" pt ON pt."baseId" = pv."productId"
-            WHERE o."orderPlacedAt"::timestamptz >= $1
-            AND occ."channelId" = $2
-            ${endDate ? 'AND o."orderPlacedAt"::timestamptz <= $4' : ''}
-            GROUP BY "day", ol."productVariantId", pt."languageCode", pt."name"
-          )
-          SELECT DISTINCT ON (base_data."day", base_data."productVariantId")
-            base_data."day",
-            base_data."productVariantId",
-            base_data."name",
-            base_data."quantitySum",
-            base_data."adjustedPriceSum"
-            FROM base_data
-          ORDER BY base_data."day" ASC, base_data."productVariantId" ASC, 
-          CASE WHEN base_data."languageCode" = $3 THEN 1 ELSE 2 END ASC, 
-          base_data."languageCode" ASC;
-`;
+            const query = formatTotalProductsCountQuery({
+                discountByCustomField: this.options?.discountByCustomField,
+                endDate,
+            });
             // Parametry do zapytania
-            const params = [
-                startDate.toISOString(),
-                ctx.channelId,
-                ctx.languageCode,
-                ...(endDate ? [endDate.toISOString()] : []),
-            ];
+            const params = [startDate, ctx.channelId, ctx.languageCode, ...(endDate ? [endDate] : [])];
+
             const result = await orderRepo.query(query, params);
 
             const reducedRes = (result as any[]).reduce((acc, curr) => {
@@ -289,135 +208,63 @@ export class BetterMetricsService {
                 }
                 return acc;
             }, {});
-            if (endDate) {
-                daysMapping = eachDayOfInterval({ start: startDate, end: endDate });
-            } else {
-                daysMapping = eachDayOfInterval({
-                    start: startDate,
-                    end: addDays(startDate, Object.keys(reducedRes).length - 1),
-                });
-            }
 
-            Object.entries(reducedRes).forEach(([key, r]: [key: string, r: any]) => {
-                const entry = {
-                    label: daysMapping[+key - 1].toISOString(),
-                    value: +(+r.value.toFixed(2)),
-                    additionalData: r.additionaldata,
-                };
-                daysMap.set(daysMapping[+key - 1].toISOString(), entry);
-            });
-            const finalResponse = daysMapping.map(day => {
-                const matchingDate = day.toISOString();
-                return (
-                    daysMap.get(matchingDate) || {
-                        label: day.toISOString(),
-                        value: 0,
-                        additionalData: [],
-                    }
-                );
-            });
-            response = finalResponse;
+            const mappedResponse = Object.entries(reducedRes)?.map(([key, r]: [key: string, r: any]) => ({
+                day: key,
+                value: +(+r.value.toFixed(2)),
+                additionalData: r.additionaldata,
+            }));
+
+            response = mappedResponse;
         } else {
-            let daysMapping: any[] = [];
             const qb = orderRepo
                 .createQueryBuilder('o')
                 .innerJoin('order_channels_channel', 'occ', 'occ."orderId" = o.id')
                 .select(MAPPINGS[metricType].query)
                 .where('o."orderPlacedAt"::timestamptz >= :startDate::timestamptz', {
-                    startDate: startDate.toISOString(),
+                    startDate,
                 })
                 .andWhere('occ.channelId = :channelId', { channelId: ctx.channel.id });
             if (endDate) {
                 qb.andWhere('o."orderPlacedAt"::timestamptz <= :endDate::timestamptz', {
-                    endDate: endDate.toISOString(),
+                    endDate: endDate,
                 });
             }
             qb.groupBy('day').orderBy('day');
             const res = await qb.getRawMany();
-
-            if (endDate) {
-                daysMapping = eachDayOfInterval({ start: startDate, end: endDate });
-            } else {
-                daysMapping = eachDayOfInterval({
-                    start: startDate,
-                    end: addDays(startDate, res.length - 1),
-                });
-            }
             const mappedResponse = res.map((r: any) => ({
                 day: r.day,
-                label: daysMapping[r.day - 1].toISOString(),
                 value: +('ordercount' in r ? +r.value / +r.ordercount : +r.value).toFixed(2),
             }));
-
-            mappedResponse.forEach((r: any) => {
-                const entry = {
-                    label: daysMapping[r.day - 1].toISOString(),
-                    value: +r.value,
-                };
-                daysMap.set(daysMapping[r.day - 1].toISOString(), entry);
-            });
-            const finalResponse = daysMapping.map(day => {
-                const matchingDate = day.toISOString();
-                return (
-                    daysMap.get(matchingDate) || {
-                        label: day.toISOString(),
-                        value: 0,
-                    }
-                );
-            });
-            response = finalResponse;
+            response = mappedResponse;
         }
         return { response };
     }
 
     async loadSummaryOrdersData(
         ctx: RequestContext,
-        { type: interval, start, end }: ResolverInputTypes['BetterMetricIntervalInput'],
+        { start, end }: ResolverInputTypes['BetterMetricRangeInput'],
     ): Promise<GraphQLTypes['OrderSummaryDataMetric']> {
         const orderRepo = this.connection.getRepository(ctx, Order);
-        const today = new Date();
-        let startDate: Date;
-        let endDate: Date | undefined;
-        switch (interval) {
-            case BetterMetricInterval.Weekly: {
-                startDate = startOfWeek(today);
-                endDate = endOfWeek(today);
-                break;
-            }
-            case BetterMetricInterval.Monthly: {
-                startDate = startOfMonth(today);
-                endDate = endOfMonth(today);
-                break;
-            }
-            case BetterMetricInterval.Yearly: {
-                startDate = startOfYear(today);
-                endDate = endOfYear(today);
-                break;
-            }
-            case BetterMetricInterval.Custom: {
-                startDate = start ? startOfDay(new Date(start as string)) : startOfDay(today);
-                endDate = end ? endOfDay(end as Date) : undefined;
-                break;
-            }
-            default:
-                assertNever(interval as never);
-        }
+
+        const startDate = start as string;
+        const endDate = end as string | undefined;
+
         const qb = orderRepo
             .createQueryBuilder('o')
             .innerJoin('order_channels_channel', 'occ', 'occ."orderId" = o.id')
             .select(ORDERS_SUMMARY_QUERY_SELECT)
             .where('o."orderPlacedAt"::timestamptz >= :startDate::timestamptz', {
-                startDate: startDate.toISOString(),
+                startDate,
             })
             .andWhere('occ.channelId = :channelId', { channelId: ctx.channel.id });
         if (endDate) {
             qb.andWhere('o."orderPlacedAt"::timestamptz <= :endDate::timestamptz', {
-                endDate: endDate.toISOString(),
+                endDate,
             });
         }
         qb.groupBy('day');
         const res = await qb.getRawMany();
-
         const reducedResponse = res.reduce(
             (acc, curr) => {
                 acc.orderCount += +curr.ordercount;
@@ -439,7 +286,6 @@ export class BetterMetricsService {
             averageOrderValueWithTax: +(reducedResponse?.totalWithTax / reducedResponse.orderCount).toFixed(
                 2,
             ),
-            // reducedResponse.averageOrderValueWithTax.toFixed(2),
             orderCount: reducedResponse.orderCount,
             total: reducedResponse?.total.toFixed(2),
             totalWithTax: reducedResponse?.totalWithTax.toFixed(2),

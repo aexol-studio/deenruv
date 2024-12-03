@@ -14,7 +14,7 @@ import {
     useLazyQuery,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useState } from 'react';
-import { BetterMetricInterval, ChartMetricType } from '../../zeus';
+import { ChartMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
 import { endOfToday, startOfToday } from 'date-fns';
 import { PeriodSelect, Period, Periods } from '../shared';
@@ -42,8 +42,7 @@ export const CategoriesChartWidget = () => {
         async (refresh: boolean = false) => {
             fetchBetterMetrics({
                 input: {
-                    interval: {
-                        type: BetterMetricInterval.Custom,
+                    range: {
                         start: selectedPeriod.start,
                         end: selectedPeriod.end,
                     },

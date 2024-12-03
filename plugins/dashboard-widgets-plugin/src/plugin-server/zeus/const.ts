@@ -171,6 +171,78 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
+		announcementBar:{
+
+		},
+		announcementBars:{
+			options:"AnnouncementBarListOptions"
+		},
+		reviewProduct:{
+
+		},
+		reviewsProduct:{
+			options:"ReviewProductListOptions"
+		},
+		reviewStore:{
+
+		},
+		reviewsStore:{
+			options:"ReviewStoreListOptions"
+		},
+		formList:{
+			options:"FormListOptions"
+		},
+		form:{
+
+		},
+		formAnswerList:{
+			options:"FormAnswerListOptions"
+		},
+		formAnswer:{
+
+		},
+		formAnswersToDocument:{
+
+		},
+		formEmail:{
+
+		},
+		formSectionList:{
+			options:"FormSectionListOptions"
+		},
+		formSection:{
+
+		},
+		formHeroList:{
+			options:"FormHeroListOptions"
+		},
+		formEmailList:{
+			options:"FormEmailListOptions"
+		},
+		formEmailLogoList:{
+			options:"FormEmailLogoListOptions"
+		},
+		formThanksPageList:{
+			options:"FormThanksPageListOptions"
+		},
+		formThanksPage:{
+
+		},
+		formLinkList:{
+			options:"FormLinkListOptions"
+		},
+		getSpecialOffer:{
+			type:"SpecialOfferType"
+		},
+		effectsApplications:{
+			options:"EffectsApplicationListOptions"
+		},
+		castingApplications:{
+			options:"CastingApplicationListOptions"
+		},
+		simplifiedFormApplications:{
+			options:"SimplifiedFormApplicationListOptions"
+		},
 		chartMetric:{
 			input:"ChartMetricInput"
 		},
@@ -179,6 +251,15 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		metricSummary:{
 			input:"MetricSummaryInput"
+		},
+		exportOrdersToDocument:{
+			fromDate:"DateTime",
+			toDate:"DateTime"
+		},
+		exportSpecialOfferApplicationsToDocument:{
+			fromDate:"DateTime",
+			toDate:"DateTime",
+			type:"SpecialOfferType"
 		}
 	},
 	Mutation:{
@@ -655,7 +736,145 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		removeMembersFromZone:{
 
+		},
+		manageSuggestion:{
+			input:"ProductSuggestionInput"
+		},
+		updateAnnouncementBar:{
+			input:"UpdateAnnouncementBarInput"
+		},
+		createAnnouncementBar:{
+			input:"CreateAnnouncementBarInput"
+		},
+		deleteAnnouncementBar:{
+			input:"DeleteAnnouncementBarInput"
+		},
+		changeStatusAnnouncementBar:{
+			input:"ChangeStatusAnnouncementBarInput"
+		},
+		transitionReviewProductToState:{
+
+		},
+		createReviewProduct:{
+			input:"CreateReviewProductInput"
+		},
+		updateReviewProduct:{
+			input:"UpdateReviewProductInput"
+		},
+		transitionReviewStoreToState:{
+
+		},
+		createReviewStore:{
+			input:"CreateReviewStoreInput"
+		},
+		updateReviewStore:{
+			input:"UpdateReviewStoreInput"
+		},
+		createForm:{
+			input:"CreateFormInput"
+		},
+		updateForm:{
+			input:"UpdateFormInput"
+		},
+		deleteForms:{
+
+		},
+		createFormSection:{
+			input:"CreateFormSectionInput"
+		},
+		updateFormSection:{
+			input:"UpdateFormSectionInput"
+		},
+		deleteFormSections:{
+
+		},
+		createFormHero:{
+			input:"CreateHeroInput"
+		},
+		createFormEmailLogo:{
+			input:"CreateFormEmailLogoInput"
+		},
+		deleteFormHeros:{
+
+		},
+		deleteFormEmailLogos:{
+
+		},
+		preparePutUrl:{
+
+		},
+		createFormThanksPage:{
+			input:"CreateFormThanksPageInput"
+		},
+		updateFormThanksPage:{
+			input:"UpdateFormThanksPageInput"
+		},
+		deleteFormThanksPages:{
+
+		},
+		changeFromStatus:{
+
+		},
+		clearFormRegistrationCount:{
+
+		},
+		createFormLinks:{
+			input:"CreateFormLinkInput"
+		},
+		deleteFormLinks:{
+
+		},
+		createFormEmail:{
+			input:"CreateFormEmailInput"
+		},
+		updateFormEmail:{
+			input:"UpdateFormEmailInput"
+		},
+		deleteFormEmails:{
+
+		},
+		setSpecialOffer:{
+			input:"SetSpecialOfferInput"
 		}
+	},
+	SimplifiedFormApplicationListOptions:{
+		sort:"SimplifiedFormApplicationSortParameter",
+		filter:"SimplifiedFormApplicationFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	SimplifiedFormApplicationSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		name:"SortOrder",
+		surname:"SortOrder",
+		street:"SortOrder",
+		buildingNumber:"SortOrder",
+		flatNumber:"SortOrder",
+		postalCode:"SortOrder",
+		city:"SortOrder",
+		phone:"SortOrder",
+		email:"SortOrder",
+		companyName:"SortOrder",
+		instagramLogin:"SortOrder",
+		applicationNumber:"SortOrder"
+	},
+	SimplifiedFormApplicationFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		name:"StringOperators",
+		surname:"StringOperators",
+		street:"StringOperators",
+		buildingNumber:"StringOperators",
+		flatNumber:"StringOperators",
+		postalCode:"StringOperators",
+		city:"StringOperators",
+		phone:"StringOperators",
+		email:"StringOperators",
+		companyName:"StringOperators",
+		instagramLogin:"StringOperators",
+		applicationNumber:"NumberOperators",
+		_and:"SimplifiedFormApplicationFilterParameter",
+		_or:"SimplifiedFormApplicationFilterParameter"
 	},
 	AdministratorListOptions:{
 		sort:"AdministratorSortParameter",
@@ -679,7 +898,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateAssetInput:{
 		file:"Upload",
-		customFields:"CreateAssetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	CoordinateInput:{
 
@@ -692,7 +911,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	UpdateAssetInput:{
 		focalPoint:"CoordinateInput",
-		customFields:"UpdateAssetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignAssetsToChannelInput:{
 
@@ -734,16 +953,16 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateCollectionTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"CreateCollectionTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	UpdateCollectionTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"UpdateCollectionTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	CreateCollectionInput:{
 		filters:"ConfigurableOperationInput",
 		translations:"CreateCollectionTranslationInput",
-		customFields:"CreateCollectionCustomFieldsInput"
+		customFields:"JSON"
 	},
 	PreviewCollectionVariantsInput:{
 		filters:"ConfigurableOperationInput"
@@ -751,7 +970,7 @@ export const AllTypesProps: Record<string,any> = {
 	UpdateCollectionInput:{
 		filters:"ConfigurableOperationInput",
 		translations:"UpdateCollectionTranslationInput",
-		customFields:"UpdateCollectionCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignCollectionsToChannelInput:{
 
@@ -837,16 +1056,16 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	FacetTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"FacetTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	CreateFacetInput:{
 		translations:"FacetTranslationInput",
 		values:"CreateFacetValueWithFacetInput",
-		customFields:"CreateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateFacetInput:{
 		translations:"FacetTranslationInput",
-		customFields:"UpdateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	FacetValueTranslationInput:{
 		languageCode:"LanguageCode",
@@ -906,8 +1125,14 @@ export const AllTypesProps: Record<string,any> = {
 		totalWithTax:"NumberOperators",
 		_and:"OrderFilterParameter",
 		_or:"OrderFilterParameter",
-		attributes:"StringOperators",
-		additionalInfo:"StringOperators"
+		inPostPoint:"StringOperators",
+		dpdPickupPoint:"StringOperators",
+		invoiceUrl:"StringOperators",
+		reminderSent:"BooleanOperators",
+		abandonedCartReminderSent:"BooleanOperators",
+		notes:"StringOperators",
+		paymentType:"StringOperators",
+		needInvoice:"BooleanOperators"
 	},
 	OrderSortParameter:{
 		customerLastName:"SortOrder",
@@ -926,8 +1151,14 @@ export const AllTypesProps: Record<string,any> = {
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
 		totalWithTax:"SortOrder",
-		attributes:"SortOrder",
-		additionalInfo:"SortOrder"
+		inPostPoint:"SortOrder",
+		dpdPickupPoint:"SortOrder",
+		invoiceUrl:"SortOrder",
+		reminderSent:"SortOrder",
+		abandonedCartReminderSent:"SortOrder",
+		notes:"SortOrder",
+		paymentType:"SortOrder",
+		needInvoice:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -975,7 +1206,7 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	UpdateOrderAddressInput:{
-
+		customFields:"UpdateAddressCustomFieldsInput"
 	},
 	ModifyOrderInput:{
 		addItems:"AddItemInput",
@@ -1089,19 +1320,7 @@ export const AllTypesProps: Record<string,any> = {
 		enabled:"BooleanOperators",
 		_and:"ProductFilterParameter",
 		_or:"ProductFilterParameter",
-		discountBy:"StringOperators",
-		boolTest:"BooleanOperators",
-		floatTest:"NumberOperators",
-		intTest:"NumberOperators",
-		stringTest:"StringOperators",
-		textTest:"StringOperators",
-		dateTime:"DateOperators",
-		listTestString:"StringListOperators",
-		listTestInt:"NumberListOperators",
-		listTestFloat:"NumberListOperators",
-		listTestText:"StringListOperators",
-		listLocaleString:"StringListOperators",
-		listLocaleText:"StringListOperators"
+		productId:"StringOperators"
 	},
 	ProductVariantListOptions:{
 		sort:"ProductVariantSortParameter",
@@ -1129,11 +1348,18 @@ export const AllTypesProps: Record<string,any> = {
 		stockLevel:"StringOperators",
 		_and:"ProductVariantFilterParameter",
 		_or:"ProductVariantFilterParameter",
-		stringTest:"StringOperators"
+		limit:"NumberOperators",
+		freeGift:"BooleanOperators",
+		comment:"StringOperators",
+		excludeFromShop:"BooleanOperators",
+		notifyAboutAvailability:"BooleanOperators",
+		isTreatedAsGift:"BooleanOperators",
+		discountBy:"NumberOperators",
+		inSetLabel:"StringOperators"
 	},
 	ProductTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"ProductTranslationInputCustomFields"
+		customFields:"JSON"
 	},
 	CreateProductInput:{
 		translations:"ProductTranslationInput",
@@ -1432,10 +1658,10 @@ export const AllTypesProps: Record<string,any> = {
 		customFields:"JSON"
 	},
 	CreateAddressInput:{
-		customFields:"JSON"
+		customFields:"CreateAddressCustomFieldsInput"
 	},
 	UpdateAddressInput:{
-		customFields:"JSON"
+		customFields:"UpdateAddressCustomFieldsInput"
 	},
 	CurrencyCode: "enum" as const,
 	CustomerGroup:{
@@ -1456,18 +1682,186 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
+	SuggestionType: "enum" as const,
+	ProductSuggestionItemInput:{
+
+	},
+	ProductSuggestionInput:{
+		type:"SuggestionType",
+		productVariantIds:"ProductSuggestionItemInput"
+	},
+	ANNOUNCEMENT_BAR_TYPE_ENUM: "enum" as const,
+	AnnouncementBarEntry:{
+		translations:{
+			languageCode:"LanguageCode"
+		}
+	},
+	AnnouncementBarListOptions:{
+		sort:"AnnouncementBarSortParameter",
+		filter:"AnnouncementBarFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	AnnouncementBarEntryTranslationInput:{
+		languageCode:"LanguageCode"
+	},
+	AnnouncementBarEntryInput:{
+		translations:"AnnouncementBarEntryTranslationInput"
+	},
+	UpdateAnnouncementBarInput:{
+		type:"ANNOUNCEMENT_BAR_TYPE_ENUM",
+		startDate:"DateTime",
+		endDate:"DateTime",
+		entries:"AnnouncementBarEntryInput"
+	},
+	CreateAnnouncementBarInput:{
+		type:"ANNOUNCEMENT_BAR_TYPE_ENUM",
+		startDate:"DateTime",
+		endDate:"DateTime",
+		entries:"AnnouncementBarEntryInput"
+	},
+	DeleteAnnouncementBarInput:{
+
+	},
+	ChangeStatusAnnouncementBarInput:{
+
+	},
+	CreateReviewProductInput:{
+
+	},
+	UpdateReviewProductInput:{
+
+	},
+	ReviewProductListOptions:{
+		sort:"ReviewProductSortParameter",
+		filter:"ReviewProductFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	CreateReviewStoreInput:{
+
+	},
+	UpdateReviewStoreInput:{
+
+	},
+	ReviewStoreListOptions:{
+		sort:"ReviewStoreSortParameter",
+		filter:"ReviewStoreFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	NodeType: "enum" as const,
+	NodeTypeOnSubmitAction: "enum" as const,
+	FormListOptions:{
+		sort:"FormSortParameter",
+		filter:"FormFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	CreateFormInput:{
+		startDate:"DateTime",
+		endDate:"DateTime"
+	},
+	UpdateFormInput:{
+		startDate:"DateTime",
+		endDate:"DateTime"
+	},
+	CreateFormSectionInput:{
+		nodes:"CreateFormNodeInput"
+	},
+	UpdateFormSectionInput:{
+		nodes:"UpdateFormNodeInput"
+	},
+	CreateFormNodeInput:{
+		type:"NodeType",
+		nodeAction:"NodeTypeOnSubmitAction"
+	},
+	UpdateFormNodeInput:{
+		type:"NodeType",
+		nodeAction:"NodeTypeOnSubmitAction"
+	},
+	CreateFormThanksPageInput:{
+
+	},
+	UpdateFormThanksPageInput:{
+
+	},
+	CreateHeroInput:{
+
+	},
+	CreateFormEmailInput:{
+
+	},
+	UpdateFormEmailInput:{
+
+	},
+	CreateFormEmailLogoInput:{
+
+	},
+	CreateFormLinkInput:{
+
+	},
+	FormSectionListOptions:{
+		sort:"FormSectionSortParameter",
+		filter:"FormSectionFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	FormHeroListOptions:{
+		sort:"FormHeroSortParameter",
+		filter:"FormHeroFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	FormAnswerListOptions:{
+		sort:"FormAnswerSortParameter",
+		filter:"FormAnswerFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	FormThanksPageListOptions:{
+		sort:"FormThanksPageSortParameter",
+		filter:"FormThanksPageFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	FormLinkListOptions:{
+		sort:"FormLinkSortParameter",
+		filter:"FormLinkFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	FormEmailLogoListOptions:{
+		sort:"FormEmailLogoSortParameter",
+		filter:"FormEmailLogoFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	FormEmailListOptions:{
+		sort:"FormEmailSortParameter",
+		filter:"FormEmailFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	SpecialOfferType: "enum" as const,
+	SetSpecialOfferInput:{
+		startDate:"DateTime",
+		endDate:"DateTime",
+		type:"SpecialOfferType"
+	},
+	EffectsApplicationListOptions:{
+		sort:"EffectsApplicationSortParameter",
+		filter:"EffectsApplicationFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	CastingApplicationListOptions:{
+		sort:"CastingApplicationSortParameter",
+		filter:"CastingApplicationFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
+	SimplifiedFormApplicationOptions:{
+		filterOperator:"LogicalOperator"
+	},
 	BetterMetricInterval: "enum" as const,
 	ChartMetricType: "enum" as const,
-	BetterMetricIntervalInput:{
-		type:"BetterMetricInterval",
+	BetterMetricRangeInput:{
 		start:"DateTime",
 		end:"DateTime"
 	},
 	OrderSummaryMetricInput:{
-		interval:"BetterMetricIntervalInput"
+		range:"BetterMetricRangeInput"
 	},
 	ChartMetricInput:{
-		interval:"BetterMetricIntervalInput",
+		range:"BetterMetricRangeInput",
 		types:"ChartMetricType"
 	},
 	MetricInterval: "enum" as const,
@@ -1506,10 +1900,9 @@ export const AllTypesProps: Record<string,any> = {
 		height:"NumberOperators",
 		source:"StringOperators",
 		preview:"StringOperators",
+		thumbnail:"StringOperators",
 		_and:"AssetFilterParameter",
-		_or:"AssetFilterParameter",
-		attributes:"StringOperators",
-		additionalInfo:"StringOperators"
+		_or:"AssetFilterParameter"
 	},
 	AssetSortParameter:{
 		id:"SortOrder",
@@ -1522,8 +1915,7 @@ export const AllTypesProps: Record<string,any> = {
 		height:"SortOrder",
 		source:"SortOrder",
 		preview:"SortOrder",
-		attributes:"SortOrder",
-		additionalInfo:"SortOrder"
+		thumbnail:"SortOrder"
 	},
 	ChannelFilterParameter:{
 		id:"IDOperators",
@@ -1561,9 +1953,7 @@ export const AllTypesProps: Record<string,any> = {
 		description:"StringOperators",
 		parentId:"IDOperators",
 		_and:"CollectionFilterParameter",
-		_or:"CollectionFilterParameter",
-		stringTest:"StringOperators",
-		localestringTest:"StringOperators"
+		_or:"CollectionFilterParameter"
 	},
 	CollectionSortParameter:{
 		id:"SortOrder",
@@ -1573,9 +1963,7 @@ export const AllTypesProps: Record<string,any> = {
 		slug:"SortOrder",
 		position:"SortOrder",
 		description:"SortOrder",
-		parentId:"SortOrder",
-		stringTest:"SortOrder",
-		localestringTest:"SortOrder"
+		parentId:"SortOrder"
 	},
 	ProductVariantSortParameter:{
 		stockOnHand:"SortOrder",
@@ -1590,7 +1978,14 @@ export const AllTypesProps: Record<string,any> = {
 		price:"SortOrder",
 		priceWithTax:"SortOrder",
 		stockLevel:"SortOrder",
-		stringTest:"SortOrder"
+		limit:"SortOrder",
+		freeGift:"SortOrder",
+		comment:"SortOrder",
+		excludeFromShop:"SortOrder",
+		notifyAboutAvailability:"SortOrder",
+		isTreatedAsGift:"SortOrder",
+		discountBy:"SortOrder",
+		inSetLabel:"SortOrder"
 	},
 	CountryFilterParameter:{
 		id:"IDOperators",
@@ -1647,18 +2042,14 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetFilterParameter",
-		_or:"FacetFilterParameter",
-		stringTest:"StringOperators",
-		localestringTest:"StringOperators"
+		_or:"FacetFilterParameter"
 	},
 	FacetSortParameter:{
 		id:"SortOrder",
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder",
-		stringTest:"SortOrder",
-		localestringTest:"SortOrder"
+		code:"SortOrder"
 	},
 	FacetValueFilterParameter:{
 		id:"IDOperators",
@@ -1731,14 +2122,7 @@ export const AllTypesProps: Record<string,any> = {
 		name:"SortOrder",
 		slug:"SortOrder",
 		description:"SortOrder",
-		discountBy:"SortOrder",
-		boolTest:"SortOrder",
-		floatTest:"SortOrder",
-		intTest:"SortOrder",
-		stringTest:"SortOrder",
-		textTest:"SortOrder",
-		dateTime:"SortOrder",
-		singleAssetTestP:"SortOrder"
+		productId:"SortOrder"
 	},
 	PromotionFilterParameter:{
 		id:"IDOperators",
@@ -1916,6 +2300,262 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		name:"SortOrder"
 	},
+	AnnouncementBarFilterParameter:{
+		id:"IDOperators",
+		channelCode:"StringOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		type:"StringOperators",
+		title:"StringOperators",
+		enabled:"BooleanOperators",
+		startDate:"DateOperators",
+		endDate:"DateOperators",
+		speed:"NumberOperators",
+		spaceBetween:"NumberOperators",
+		colorBackground:"StringOperators",
+		nowActive:"BooleanOperators",
+		_and:"AnnouncementBarFilterParameter",
+		_or:"AnnouncementBarFilterParameter"
+	},
+	AnnouncementBarSortParameter:{
+		id:"SortOrder",
+		channelCode:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		title:"SortOrder",
+		startDate:"SortOrder",
+		endDate:"SortOrder",
+		speed:"SortOrder",
+		spaceBetween:"SortOrder",
+		colorBackground:"SortOrder"
+	},
+	ReviewProductFilterParameter:{
+		id:"IDOperators",
+		title:"StringOperators",
+		description:"StringOperators",
+		state:"StringOperators",
+		stars:"NumberOperators",
+		customerIpNumber:"StringOperators",
+		customerName:"StringOperators",
+		customerEmail:"StringOperators",
+		publishPermission:"BooleanOperators",
+		_and:"ReviewProductFilterParameter",
+		_or:"ReviewProductFilterParameter"
+	},
+	ReviewProductSortParameter:{
+		id:"SortOrder",
+		title:"SortOrder",
+		description:"SortOrder",
+		state:"SortOrder",
+		stars:"SortOrder",
+		customerIpNumber:"SortOrder",
+		customerName:"SortOrder",
+		customerEmail:"SortOrder"
+	},
+	ReviewStoreFilterParameter:{
+		id:"IDOperators",
+		title:"StringOperators",
+		description:"StringOperators",
+		state:"StringOperators",
+		customerIpNumber:"StringOperators",
+		customerName:"StringOperators",
+		customerEmail:"StringOperators",
+		articleSlug:"StringOperators",
+		language:"StringOperators",
+		_and:"ReviewStoreFilterParameter",
+		_or:"ReviewStoreFilterParameter"
+	},
+	ReviewStoreSortParameter:{
+		id:"SortOrder",
+		title:"SortOrder",
+		description:"SortOrder",
+		state:"SortOrder",
+		customerIpNumber:"SortOrder",
+		customerName:"SortOrder",
+		customerEmail:"SortOrder",
+		articleSlug:"SortOrder",
+		language:"SortOrder"
+	},
+	FormFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		formName:"StringOperators",
+		title:"StringOperators",
+		slug:"StringOperators",
+		registrationCount:"NumberOperators",
+		maxRegistrationCount:"NumberOperators",
+		active:"BooleanOperators",
+		startDate:"DateOperators",
+		endDate:"DateOperators",
+		_and:"FormFilterParameter",
+		_or:"FormFilterParameter"
+	},
+	FormSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		formName:"SortOrder",
+		title:"SortOrder",
+		slug:"SortOrder",
+		registrationCount:"SortOrder",
+		maxRegistrationCount:"SortOrder",
+		startDate:"SortOrder",
+		endDate:"SortOrder"
+	},
+	FormAnswerFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		_and:"FormAnswerFilterParameter",
+		_or:"FormAnswerFilterParameter"
+	},
+	FormAnswerSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder"
+	},
+	FormSectionFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		title:"StringOperators",
+		name:"StringOperators",
+		_and:"FormSectionFilterParameter",
+		_or:"FormSectionFilterParameter"
+	},
+	FormSectionSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		title:"SortOrder",
+		name:"SortOrder"
+	},
+	FormHeroFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		fileUrl:"StringOperators",
+		_and:"FormHeroFilterParameter",
+		_or:"FormHeroFilterParameter"
+	},
+	FormHeroSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		fileUrl:"SortOrder"
+	},
+	FormEmailFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		subject:"StringOperators",
+		title:"StringOperators",
+		body:"StringOperators",
+		_and:"FormEmailFilterParameter",
+		_or:"FormEmailFilterParameter"
+	},
+	FormEmailSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		subject:"SortOrder",
+		title:"SortOrder",
+		body:"SortOrder"
+	},
+	FormEmailLogoFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		fileUrl:"StringOperators",
+		_and:"FormEmailLogoFilterParameter",
+		_or:"FormEmailLogoFilterParameter"
+	},
+	FormEmailLogoSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		fileUrl:"SortOrder"
+	},
+	FormThanksPageFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		title:"StringOperators",
+		answerLabel:"StringOperators",
+		slug:"StringOperators",
+		paragraph:"StringOperators",
+		_and:"FormThanksPageFilterParameter",
+		_or:"FormThanksPageFilterParameter"
+	},
+	FormThanksPageSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		title:"SortOrder",
+		answerLabel:"SortOrder",
+		slug:"SortOrder",
+		paragraph:"SortOrder"
+	},
+	FormLinkFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		updatedAt:"DateOperators",
+		label:"StringOperators",
+		href:"StringOperators",
+		_and:"FormLinkFilterParameter",
+		_or:"FormLinkFilterParameter"
+	},
+	FormLinkSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		updatedAt:"SortOrder",
+		label:"SortOrder",
+		href:"SortOrder"
+	},
+	EffectsApplicationFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		name:"StringOperators",
+		email:"StringOperators",
+		phone:"StringOperators",
+		instagramLogin:"StringOperators",
+		_and:"EffectsApplicationFilterParameter",
+		_or:"EffectsApplicationFilterParameter"
+	},
+	EffectsApplicationSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		name:"SortOrder",
+		email:"SortOrder",
+		phone:"SortOrder",
+		instagramLogin:"SortOrder"
+	},
+	CastingApplicationFilterParameter:{
+		id:"IDOperators",
+		createdAt:"DateOperators",
+		name:"StringOperators",
+		city:"StringOperators",
+		phone:"StringOperators",
+		email:"StringOperators",
+		instagramLogin:"StringOperators",
+		ageRange:"StringOperators",
+		dreamProduct:"StringOperators",
+		publishPermission:"BooleanOperators",
+		_and:"CastingApplicationFilterParameter",
+		_or:"CastingApplicationFilterParameter"
+	},
+	CastingApplicationSortParameter:{
+		id:"SortOrder",
+		createdAt:"SortOrder",
+		name:"SortOrder",
+		city:"SortOrder",
+		phone:"SortOrder",
+		email:"SortOrder",
+		instagramLogin:"SortOrder",
+		ageRange:"SortOrder",
+		dreamProduct:"SortOrder"
+	},
 	HistoryEntryFilterParameter:{
 		isPublic:"BooleanOperators",
 		id:"IDOperators",
@@ -1930,43 +2570,19 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder"
 	},
-	CreateAssetCustomFieldsInput:{
+	CreateAddressCustomFieldsInput:{
 
 	},
-	UpdateAssetCustomFieldsInput:{
-
-	},
-	CreateCollectionCustomFieldsInput:{
-
-	},
-	UpdateCollectionCustomFieldsInput:{
-
-	},
-	CreateCollectionTranslationInputCustomFields:{
-
-	},
-	UpdateCollectionTranslationInputCustomFields:{
-
-	},
-	CreateFacetCustomFieldsInput:{
-
-	},
-	UpdateFacetCustomFieldsInput:{
-
-	},
-	FacetTranslationInputCustomFields:{
+	UpdateAddressCustomFieldsInput:{
 
 	},
 	UpdateOrderCustomFieldsInput:{
 
 	},
 	CreateProductCustomFieldsInput:{
-		dateTime:"DateTime"
+
 	},
 	UpdateProductCustomFieldsInput:{
-		dateTime:"DateTime"
-	},
-	ProductTranslationInputCustomFields:{
 
 	},
 	CreateProductVariantCustomFieldsInput:{
@@ -2056,9 +2672,36 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
+		announcementBar:"AnnouncementBar",
+		announcementBars:"AnnouncementBarList",
+		getActiveAnnouncementBar:"AnnouncementBar",
+		reviewProduct:"ReviewProduct",
+		reviewsProduct:"ReviewProductList",
+		reviewStore:"ReviewStore",
+		reviewsStore:"ReviewStoreList",
+		formList:"FormList",
+		form:"Form",
+		formAnswerList:"FormAnswerList",
+		formAnswer:"FormAnswer",
+		formAnswersToDocument:"String",
+		formEmail:"FormEmail",
+		formSectionList:"FormSectionList",
+		formSection:"FormSection",
+		formHeroList:"FormHeroList",
+		formEmailList:"FormEmailList",
+		formEmailLogoList:"FormEmailLogoList",
+		formThanksPageList:"FormThanksPageList",
+		formThanksPage:"FormThanksPage",
+		formLinkList:"FormLinkList",
+		getSpecialOffer:"SpecialOffer",
+		effectsApplications:"EffectsApplicationList",
+		castingApplications:"CastingApplicationList",
+		simplifiedFormApplications:"SimplifiedFormApplicationList",
 		chartMetric:"ChartMetrics",
 		orderSummaryMetric:"OrderSummaryMetrics",
-		metricSummary:"MetricSummary"
+		metricSummary:"MetricSummary",
+		exportOrdersToDocument:"String",
+		exportSpecialOfferApplicationsToDocument:"String"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2222,7 +2865,42 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZone:"DeletionResponse",
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
-		removeMembersFromZone:"Zone"
+		removeMembersFromZone:"Zone",
+		manageSuggestion:"ProductSuggestionEntity",
+		updateAnnouncementBar:"AnnouncementBar",
+		createAnnouncementBar:"AnnouncementBar",
+		deleteAnnouncementBar:"Boolean",
+		changeStatusAnnouncementBar:"Boolean",
+		transitionReviewProductToState:"ReviewProduct",
+		createReviewProduct:"ReviewProduct",
+		updateReviewProduct:"ReviewProduct",
+		transitionReviewStoreToState:"ReviewStore",
+		createReviewStore:"ReviewStore",
+		updateReviewStore:"ReviewStore",
+		createForm:"Form",
+		updateForm:"Form",
+		deleteForms:"Boolean",
+		createFormSection:"FormSection",
+		updateFormSection:"FormSection",
+		deleteFormSections:"Boolean",
+		createFormHero:"FormHero",
+		createFormEmailLogo:"FormEmailLogo",
+		deleteFormHeros:"Boolean",
+		deleteFormEmailLogos:"Boolean",
+		preparePutUrl:"PreparePutUrlResponse",
+		createFormThanksPage:"FormThanksPage",
+		updateFormThanksPage:"FormThanksPage",
+		deleteFormThanksPages:"Boolean",
+		changeFromStatus:"Boolean",
+		clearFormRegistrationCount:"Boolean",
+		createFormLinks:"Boolean",
+		deleteFormLinks:"Boolean",
+		createFormEmail:"FormEmail",
+		updateFormEmail:"FormEmail",
+		deleteFormEmails:"Boolean",
+		setSpecialOffer:"SpecialOffer",
+		archiveAllCreamForCreamApplications:"String",
+		archiveAllSimplifiedFormApplications:"String"
 	},
 	Administrator:{
 		id:"ID",
@@ -2294,7 +2972,7 @@ export const ReturnTypes: Record<string,any> = {
 		filters:"ConfigurableOperation",
 		translations:"CollectionTranslation",
 		productVariants:"ProductVariantList",
-		customFields:"CollectionCustomFields"
+		customFields:"JSON"
 	},
 	Customer:{
 		groups:"CustomerGroup",
@@ -2354,7 +3032,7 @@ export const ReturnTypes: Record<string,any> = {
 		values:"FacetValue",
 		valueList:"FacetValueList",
 		translations:"FacetTranslation",
-		customFields:"FacetCustomFields"
+		customFields:"JSON"
 	},
 	FacetInUseError:{
 		errorCode:"ErrorCode",
@@ -2739,6 +3417,8 @@ export const ReturnTypes: Record<string,any> = {
 		facetValues:"FacetValue",
 		translations:"ProductTranslation",
 		collections:"Collection",
+		freeShippingSuggestion:"ProductSuggestionEntity",
+		defaultSuggestion:"ProductSuggestionEntity",
 		customFields:"ProductCustomFields"
 	},
 	ProductVariantPrice:{
@@ -2796,7 +3476,8 @@ export const ReturnTypes: Record<string,any> = {
 		facetIds:"ID",
 		facetValueIds:"ID",
 		collectionIds:"ID",
-		score:"Float"
+		score:"Float",
+		inStock:"Boolean"
 	},
 	ProductOptionInUseError:{
 		errorCode:"ErrorCode",
@@ -2953,7 +3634,7 @@ export const ReturnTypes: Record<string,any> = {
 		phoneNumber:"String",
 		defaultShippingAddress:"Boolean",
 		defaultBillingAddress:"Boolean",
-		customFields:"JSON"
+		customFields:"AddressCustomFields"
 	},
 	Asset:{
 		id:"ID",
@@ -2969,7 +3650,8 @@ export const ReturnTypes: Record<string,any> = {
 		preview:"String",
 		focalPoint:"Coordinate",
 		tags:"Tag",
-		customFields:"AssetCustomFields"
+		thumbnail:"String",
+		customFields:"JSON"
 	},
 	Coordinate:{
 		x:"Float",
@@ -3021,8 +3703,7 @@ export const ReturnTypes: Record<string,any> = {
 		languageCode:"LanguageCode",
 		name:"String",
 		slug:"String",
-		description:"String",
-		customFields:"CollectionTranslationCustomFields"
+		description:"String"
 	},
 	CollectionList:{
 		items:"Collection",
@@ -3126,6 +3807,20 @@ export const ReturnTypes: Record<string,any> = {
 		"...on ShippingMethodList": "ShippingMethodList",
 		"...on TagList": "TagList",
 		"...on TaxRateList": "TaxRateList",
+		"...on AnnouncementBarList": "AnnouncementBarList",
+		"...on ReviewProductList": "ReviewProductList",
+		"...on ReviewStoreList": "ReviewStoreList",
+		"...on FormList": "FormList",
+		"...on FormAnswerList": "FormAnswerList",
+		"...on FormSectionList": "FormSectionList",
+		"...on FormHeroList": "FormHeroList",
+		"...on FormEmailList": "FormEmailList",
+		"...on FormEmailLogoList": "FormEmailLogoList",
+		"...on FormThanksPageList": "FormThanksPageList",
+		"...on FormLinkList": "FormLinkList",
+		"...on EffectsApplicationList": "EffectsApplicationList",
+		"...on CastingApplicationList": "CastingApplicationList",
+		"...on SimplifiedFormApplicationList": "SimplifiedFormApplicationList",
 		items:"Node",
 		totalItems:"Int"
 	},
@@ -3174,6 +3869,26 @@ export const ReturnTypes: Record<string,any> = {
 		"...on User": "User",
 		"...on AuthenticationMethod": "AuthenticationMethod",
 		"...on Zone": "Zone",
+		"...on ProductSuggestionItemEntity": "ProductSuggestionItemEntity",
+		"...on ProductSuggestionEntity": "ProductSuggestionEntity",
+		"...on AnnouncementBar": "AnnouncementBar",
+		"...on ReviewProduct": "ReviewProduct",
+		"...on ReviewStore": "ReviewStore",
+		"...on FormAnswer": "FormAnswer",
+		"...on Form": "Form",
+		"...on FormEmail": "FormEmail",
+		"...on FormHero": "FormHero",
+		"...on FormEmailLogo": "FormEmailLogo",
+		"...on FormNode": "FormNode",
+		"...on FormSection": "FormSection",
+		"...on FormThanksPageListItem": "FormThanksPageListItem",
+		"...on FormThanksPage": "FormThanksPage",
+		"...on FormLink": "FormLink",
+		"...on SpecialOffer": "SpecialOffer",
+		"...on EffectsApplicationProduct": "EffectsApplicationProduct",
+		"...on EffectsApplication": "EffectsApplication",
+		"...on CastingApplication": "CastingApplication",
+		"...on SimplifiedFormApplication": "SimplifiedFormApplication",
 		id:"ID"
 	},
 	ErrorResult:{
@@ -3507,8 +4222,7 @@ export const ReturnTypes: Record<string,any> = {
 		createdAt:"DateTime",
 		updatedAt:"DateTime",
 		languageCode:"LanguageCode",
-		name:"String",
-		customFields:"FacetTranslationCustomFields"
+		name:"String"
 	},
 	FacetList:{
 		items:"Facet",
@@ -3539,7 +4253,7 @@ export const ReturnTypes: Record<string,any> = {
 		country:"String",
 		countryCode:"String",
 		phoneNumber:"String",
-		customFields:"JSON"
+		customFields:"AddressCustomFields"
 	},
 	OrderList:{
 		items:"Order",
@@ -3730,8 +4444,7 @@ export const ReturnTypes: Record<string,any> = {
 		languageCode:"LanguageCode",
 		name:"String",
 		slug:"String",
-		description:"String",
-		customFields:"ProductTranslationCustomFields"
+		description:"String"
 	},
 	ProductList:{
 		items:"Product",
@@ -3940,8 +4653,303 @@ export const ReturnTypes: Record<string,any> = {
 		members:"Region",
 		customFields:"JSON"
 	},
+	ProductSuggestionItemEntity:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		priority:"Int",
+		productVariant:"ProductVariant"
+	},
+	ProductSuggestionEntity:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		priority:"Int",
+		type:"SuggestionType",
+		suggestionItems:"ProductSuggestionItemEntity"
+	},
+	AnnouncementBarEntryTranslation:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		languageCode:"LanguageCode",
+		text:"String",
+		redirectUrl:"String",
+		icon:"String"
+	},
+	AnnouncementBarEntry:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		text:"String",
+		redirectUrl:"String",
+		icon:"String",
+		colorIcon:"String",
+		colorText:"String",
+		translations:"AnnouncementBarEntryTranslation"
+	},
+	AnnouncementBar:{
+		id:"ID",
+		channelCode:"String",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		type:"ANNOUNCEMENT_BAR_TYPE_ENUM",
+		title:"String",
+		enabled:"Boolean",
+		startDate:"DateTime",
+		endDate:"DateTime",
+		speed:"Int",
+		spaceBetween:"Int",
+		colorBackground:"String",
+		nowActive:"Boolean",
+		entries:"AnnouncementBarEntry"
+	},
+	AnnouncementBarList:{
+		items:"AnnouncementBar",
+		totalItems:"Int"
+	},
+	ReviewProduct:{
+		id:"ID",
+		title:"String",
+		description:"String",
+		state:"String",
+		stars:"Int",
+		nextStates:"String",
+		product:"Product",
+		customerIpNumber:"String",
+		customerName:"String",
+		customerEmail:"String",
+		publishPermission:"Boolean"
+	},
+	ReviewProductList:{
+		items:"ReviewProduct",
+		totalItems:"Int"
+	},
+	ReviewStore:{
+		id:"ID",
+		title:"String",
+		description:"String",
+		state:"String",
+		nextStates:"String",
+		customerIpNumber:"String",
+		customerName:"String",
+		customerEmail:"String",
+		articleSlug:"String",
+		language:"String"
+	},
+	ReviewStoreList:{
+		items:"ReviewStore",
+		totalItems:"Int"
+	},
+	FormAnswer:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		form:"Form",
+		answerData:"JSON"
+	},
+	Form:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		formName:"String",
+		title:"String",
+		slug:"String",
+		hero:"FormHero",
+		thanksPage:"FormThanksPage",
+		email:"FormEmail",
+		sections:"FormSection",
+		registrationCount:"Int",
+		maxRegistrationCount:"Int",
+		active:"Boolean",
+		startDate:"DateTime",
+		endDate:"DateTime",
+		sectionsOrder:"String"
+	},
+	FormEmail:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		subject:"String",
+		title:"String",
+		body:"String",
+		logo:"FormEmailLogo"
+	},
+	FormHero:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		fileUrl:"String"
+	},
+	FormEmailLogo:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		fileUrl:"String"
+	},
+	ProductForRating:{
+		id:"ID",
+		name:"String",
+		previewImage:"String"
+	},
+	FormNode:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		type:"NodeType",
+		nodeAction:"NodeTypeOnSubmitAction",
+		handlesForAction:"String",
+		handle:"String",
+		formFieldName:"String",
+		label:"String",
+		title:"String",
+		required:"Boolean",
+		unique:"Boolean",
+		email:"Boolean",
+		selectionOptions:"String",
+		productsForRating:"ProductForRating",
+		order:"Int",
+		maxFilesCount:"Int"
+	},
+	FormSection:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		title:"String",
+		name:"String",
+		nodes:"FormNode"
+	},
+	FormThanksPageListItem:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		title:"String",
+		heroUrl:"String",
+		answerLabel:"String",
+		slug:"String",
+		paragraph:"String",
+		links:"String"
+	},
+	FormThanksPage:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		title:"String",
+		hero:"FormHero",
+		answerLabel:"String",
+		slug:"String",
+		paragraph:"String",
+		links:"FormLink"
+	},
+	FormLink:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		label:"String",
+		href:"String"
+	},
+	FormList:{
+		items:"Form",
+		totalItems:"Int"
+	},
+	FormAnswerList:{
+		items:"FormAnswer",
+		totalItems:"Int"
+	},
+	FormSectionList:{
+		items:"FormSection",
+		totalItems:"Int"
+	},
+	FormHeroList:{
+		items:"FormHero",
+		totalItems:"Int"
+	},
+	FormEmailList:{
+		items:"FormEmail",
+		totalItems:"Int"
+	},
+	FormEmailLogoList:{
+		items:"FormEmailLogo",
+		totalItems:"Int"
+	},
+	FormThanksPageList:{
+		items:"FormThanksPage",
+		totalItems:"Int"
+	},
+	FormLinkList:{
+		items:"FormLink",
+		totalItems:"Int"
+	},
+	PreparePutUrlResponse:{
+		fileKey:"String",
+		putUrl:"String"
+	},
+	SpecialOffer:{
+		id:"ID",
+		startDate:"DateTime",
+		endDate:"DateTime",
+		sendEmail:"Boolean",
+		type:"SpecialOfferType"
+	},
+	EffectsApplicationProduct:{
+		id:"ID",
+		product:"Product",
+		review:"ReviewProduct"
+	},
+	EffectsApplication:{
+		id:"ID",
+		createdAt:"DateTime",
+		name:"String",
+		email:"String",
+		phone:"String",
+		instagramLogin:"String",
+		beforePhotos:"String",
+		afterPhotos:"String",
+		products:"EffectsApplicationProduct"
+	},
+	EffectsApplicationList:{
+		items:"EffectsApplication",
+		totalItems:"Int"
+	},
+	CastingApplication:{
+		id:"ID",
+		createdAt:"DateTime",
+		name:"String",
+		city:"String",
+		phone:"String",
+		email:"String",
+		instagramLogin:"String",
+		ageRange:"String",
+		skinTypes:"String",
+		dreamProduct:"String",
+		photos:"String",
+		publishPermission:"Boolean"
+	},
+	CastingApplicationList:{
+		items:"CastingApplication",
+		totalItems:"Int"
+	},
+	SimplifiedFormApplication:{
+		id:"ID",
+		createdAt:"DateTime",
+		name:"String",
+		surname:"String",
+		street:"String",
+		buildingNumber:"String",
+		flatNumber:"String",
+		postalCode:"String",
+		city:"String",
+		phone:"String",
+		email:"String",
+		companyName:"String",
+		instagramLogin:"String",
+		applicationNumber:"Int"
+	},
+	SimplifiedFormApplicationList:{
+		items:"SimplifiedFormApplication",
+		totalItems:"Int"
+	},
 	ChartDataType:{
-		interval:"BetterMetricInterval",
 		type:"ChartMetricType",
 		title:"String",
 		entries:"ChartEntry"
@@ -3969,7 +4977,7 @@ export const ReturnTypes: Record<string,any> = {
 		priceWithTax:"Float"
 	},
 	ChartEntry:{
-		label:"String",
+		day:"Int",
 		value:"Float",
 		additionalData:"ChartEntryAdditionalData"
 	},
@@ -3983,57 +4991,41 @@ export const ReturnTypes: Record<string,any> = {
 		label:"String",
 		value:"Float"
 	},
-	AssetCustomFields:{
-		attributes:"String",
-		additionalInfo:"String"
-	},
-	CollectionCustomFields:{
-		stringTest:"String",
-		localestringTest:"String"
-	},
-	CollectionTranslationCustomFields:{
-		localestringTest:"String"
-	},
-	FacetCustomFields:{
-		stringTest:"String",
-		localestringTest:"String",
-		ProductListTest:"Product",
-		listProductVariantTest:"ProductVariant"
-	},
-	FacetTranslationCustomFields:{
-		localestringTest:"String"
+	AddressCustomFields:{
+		comment:"String",
+		taxNumber:"String",
+		firstName:"String",
+		lastName:"String",
+		buildingNumber:"String",
+		flatNumber:"String"
 	},
 	OrderCustomFields:{
-		attributes:"String",
-		additionalInfo:"String"
+		inPostPoint:"String",
+		dpdPickupPoint:"String",
+		invoiceUrl:"String",
+		reminderSent:"Boolean",
+		abandonedCartReminderSent:"Boolean",
+		notes:"String",
+		paymentType:"String",
+		needInvoice:"Boolean"
 	},
 	OrderLineCustomFields:{
-		stringTest:"String",
-		textTest:"String"
+		freeGiftForCouponCode:"String",
+		discountBy:"Int"
 	},
 	ProductCustomFields:{
-		discountBy:"String",
-		boolTest:"Boolean",
-		floatTest:"Float",
-		intTest:"Int",
-		stringTest:"String",
-		textTest:"String",
-		dateTime:"DateTime",
-		listTestString:"String",
-		listTestInt:"Int",
-		listTestFloat:"Float",
-		listTestText:"String",
-		listLocaleString:"String",
-		listLocaleText:"String",
-		singleAssetTestP:"Asset",
-		listAssetTestP:"Asset"
-	},
-	ProductTranslationCustomFields:{
-		listLocaleString:"String",
-		listLocaleText:"String"
+		productId:"String"
 	},
 	ProductVariantCustomFields:{
-		stringTest:"String"
+		limit:"Int",
+		freeGift:"Boolean",
+		comment:"String",
+		excludeFromShop:"Boolean",
+		notifyAboutAvailability:"Boolean",
+		isTreatedAsGift:"Boolean",
+		discountBy:"Int",
+		inSet:"ProductVariant",
+		inSetLabel:"String"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",

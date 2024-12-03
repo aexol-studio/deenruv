@@ -21,10 +21,9 @@ export const ChartMetricQuery = typedGql('query', { scalars })({
         {
             data: {
                 title: true,
-                interval: true,
                 type: true,
                 entries: {
-                    label: true,
+                    day: true,
                     value: true,
                     additionalData: {
                         id: true,

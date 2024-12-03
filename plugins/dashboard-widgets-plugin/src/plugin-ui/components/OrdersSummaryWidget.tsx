@@ -12,7 +12,7 @@ import {
     startOfYear,
     startOfYesterday,
 } from 'date-fns';
-import { BetterMetricInterval, CurrencyCode, GraphQLTypes } from '../zeus';
+import { CurrencyCode, GraphQLTypes } from '../zeus';
 import {
     Select,
     SelectContent,
@@ -63,8 +63,7 @@ export const OrdersSummaryWidget = () => {
     }) => {
         const response = await getOrdersSummaryMetric({
             input: {
-                interval: {
-                    type: BetterMetricInterval.Custom,
+                range: {
                     start,
                     end,
                 },
@@ -149,24 +148,11 @@ export const OrdersSummaryWidget = () => {
                 <div className="flex flex-col lg:flex-row w-full gap-2 lg:gap-8 lg:items-center lg:justify-between">
                     <CardTitle className="text-lg shrink-0">{t('ordersSummary')}</CardTitle>
                     <div className="flex flex-col md:flex-row gap-2 md:items-center">
-                        <Select
-                            onValueChange={value => handlePeriodChange(value as Periods)}
-                            value={selectedPeriod}
-                            defaultValue={_periods[0].period}
-                        >
-                            <SelectTrigger className="h-[30px] w-[180px] text-[13px]">
-                                <SelectValue placeholder={t('selectDataType')} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    {_periods.map(p => (
-                                        <SelectItem key={p.period} value={p.period}>
-                                            {p.text}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
+                        <RefreshCacheButton
+                            className="shrink-0"
+                            fetchData={refreshData}
+                            lastCacheRefreshTime={ordersSummaryMetric?.lastCacheRefreshTime}
+                        />
                         <div className="shrink flex gap-2">
                             <SimpleSelect
                                 size="sm"
@@ -177,11 +163,24 @@ export const OrdersSummaryWidget = () => {
                                 value={grossOrNet}
                                 onValueChange={e => setGrossOrNet(e as GrossNet)}
                             />
-                            <RefreshCacheButton
-                                className="shrink-0"
-                                fetchData={refreshData}
-                                lastCacheRefreshTime={ordersSummaryMetric?.lastCacheRefreshTime}
-                            />
+                            <Select
+                                onValueChange={value => handlePeriodChange(value as Periods)}
+                                value={selectedPeriod}
+                                defaultValue={_periods[0].period}
+                            >
+                                <SelectTrigger className="h-[30px] w-[180px] text-[13px]">
+                                    <SelectValue placeholder={t('selectDataType')} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        {_periods.map(p => (
+                                            <SelectItem key={p.period} value={p.period}>
+                                                {p.text}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 </div>

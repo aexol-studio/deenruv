@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { TooltipProps } from 'recharts';
 import { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
 import React from 'react';
-import { format } from 'date-fns';
 
 type AdditionalEntryData = { id: string; name: string; quantity: number };
 type DataTKeys = 'averageOrderValue' | 'orderCount' | 'orderTotal' | 'orderTotalProductsCount';

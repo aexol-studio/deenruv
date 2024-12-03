@@ -6,7 +6,7 @@ import { AdminUIController } from './controllers/admin-ui-controller';
 import { PLUGIN_INIT_OPTIONS } from './constants';
 import { DashboardWidgetsPluginOptions } from './types';
 @DeenruvPlugin({
-    compatibility: '0.0.20',
+    compatibility: '^0.0.0',
     imports: [PluginCommonModule],
     controllers: [AdminUIController],
     providers: [
@@ -22,7 +22,6 @@ import { DashboardWidgetsPluginOptions } from './types';
     adminApiExtensions: {
         schema: gql`
             type ChartDataType {
-                interval: BetterMetricInterval!
                 type: ChartMetricType!
                 title: String!
                 entries: [ChartEntry!]!
@@ -67,23 +66,22 @@ import { DashboardWidgetsPluginOptions } from './types';
             }
 
             type ChartEntry {
-                label: String!
+                day: Int!
                 value: Float!
                 additionalData: [ChartEntryAdditionalData!]
             }
-            input BetterMetricIntervalInput {
-                type: BetterMetricInterval!
-                start: DateTime
+            input BetterMetricRangeInput {
+                start: DateTime!
                 end: DateTime
             }
 
             input OrderSummaryMetricInput {
-                interval: BetterMetricIntervalInput!
+                range: BetterMetricRangeInput!
                 refresh: Boolean
             }
 
             input ChartMetricInput {
-                interval: BetterMetricIntervalInput!
+                range: BetterMetricRangeInput!
                 types: [ChartMetricType!]!
                 productIDs: [String!]
                 refresh: Boolean

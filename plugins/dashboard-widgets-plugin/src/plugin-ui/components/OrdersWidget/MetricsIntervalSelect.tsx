@@ -11,7 +11,7 @@ import { BetterMetricInterval } from '../../zeus';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const MetricsIntervalSelect: React.FC<{
+export const MetricsRangeSelect: React.FC<{
     value: BetterMetricInterval;
     changeMetricInterval: (interval: BetterMetricInterval) => void;
     loading: boolean;
