@@ -37,6 +37,7 @@
         "@deenruv/elasticsearch-plugin": "workspace:*",
         "@deenruv/email-plugin": "workspace:*",
         "@deenruv/job-queue-plugin": "workspace:*",
+        "@deenruv/product-options-fields-plugin": "workspace:*",
         "@nestjs/axios": "^3.0.2",
         "@nestjs/common": "~10.3.10",
         "@nestjs/serve-static": "^4.0.2",

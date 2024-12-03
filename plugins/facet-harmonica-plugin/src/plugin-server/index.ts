@@ -23,6 +23,9 @@ const FacetValueCustomFields = [
       name: 'hexColor',
       type: 'string' as const,
       public: true,
+      defaultValue: '---',
+      nullable: true,
+      ui: { component: 'color-picker-input' },
   },
 ];
 

@@ -34,6 +34,7 @@ type ViableEntity = Uncapitalize<
     | 'PaymentMethod'
     | 'ShippingMethod'
     | 'FacetValue'
+    | 'ProductOption'
   >
 >;
 type CF = Record<string, unknown>;
@@ -96,6 +97,10 @@ const entityDictionary: Partial<
   facetValue: {
     inputName: 'UpdateFacetValueInput',
     mutationName: 'updateFacetValues',
+  },
+  productOption: {
+    inputName: 'UpdateProductOptionInput',
+    mutationName: 'updateProductOption',
   },
 };
 

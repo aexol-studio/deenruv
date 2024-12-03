@@ -160,7 +160,7 @@ const DetailTabs = () => {
                 <div className="flex w-full items-center justify-between px-4 py-2">
                     <div className="flex w-full flex-1">
                         <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-none rounded-sm px-4 shadow-xl">
-                            {tabs.map((t, idx )=> (
+                            {tabs.map((t, idx) => (
                                 <TabsTrigger
                                     key={idx}
                                     disabled={t.disabled}

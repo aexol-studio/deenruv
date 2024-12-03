@@ -6,19 +6,30 @@ import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 
 import { toast } from 'sonner';
 import { LanguageCode } from '@deenruv/admin-types';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 
 interface OptionValueCardProps {
   productOption: ProductOptionType;
   currentTranslationLng: LanguageCode;
+  optionGroupId: string;
   onEdited: () => void;
 }
 
-export const OptionValueCard: React.FC<OptionValueCardProps> = ({ productOption, onEdited, currentTranslationLng }) => {
+export const OptionValueCard: React.FC<OptionValueCardProps> = ({
+  productOption,
+  onEdited,
+  currentTranslationLng,
+  optionGroupId,
+}) => {
   const { t } = useTranslation('products');
   const { state, setField } = useGFFLP('UpdateProductOptionInput', 'code', 'translations', 'customFields')({});
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+
+  useEffect(() => {
+    setField('code', productOption.code);
+    setField('translations', productOption.translations);
+  }, [productOption]);
 
   const editOption = useCallback(() => {
     if (productOption.id)
@@ -70,6 +81,28 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({ productOption,
               value={state.code?.value}
               onChange={(e) => {
                 setField('code', e.target.value);
+              }}
+            />
+          </Stack>
+          <Stack column className="basis-2/3 gap-3">
+            <EntityCustomFields
+              entityName="productOption"
+              id={productOption.id}
+              currentLanguage={currentTranslationLng}
+              fetch={async (runtimeSelector) => {
+                const { productOptionGroup: resp } = await apiClient('query')({
+                  productOptionGroup: [
+                    { id: optionGroupId },
+                    {
+                      options: {
+                        id: true,
+                        ...runtimeSelector,
+                      },
+                    },
+                  ],
+                });
+                const foundValue = resp?.options.find((o) => o.id === productOption.id);
+                return { customFields: foundValue?.customFields as any };
               }}
             />
           </Stack>

@@ -188,6 +188,7 @@ export const OptionsTab: React.FC = () => {
                         key={o.id}
                         currentTranslationLng={contentLanguage}
                         productOption={o}
+                        optionGroupId={oG.id}
                         onEdited={fetchOptionGroups}
                       />
                     ))}

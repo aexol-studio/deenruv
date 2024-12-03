@@ -1,37 +1,6 @@
 import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset } from '@deenruv/core';
 
-const FacetColorsCustomFields = [
-    {
-        name: 'usedForColors',
-        type: 'boolean' as const,
-        label: [
-            { languageCode: LanguageCode.en, value: 'Used for colors' },
-            { languageCode: LanguageCode.pl, value: 'Używany dla kolorów' },
-        ],
-        description: [
-            { languageCode: LanguageCode.en, value: 'Use this attribute for guys that are colours' },
-            { languageCode: LanguageCode.pl, value: 'Użyj tego atrybutu dla facetów, którzy mają kolory' },
-        ],
-        defaultValue: false,
-        public: true,
-    },
-    {
-        name: 'colorsCollection',
-        type: 'boolean' as const,
-        label: [
-            { languageCode: LanguageCode.en, value: 'Color collection' },
-            { languageCode: LanguageCode.pl, value: 'Kolekcja kolorów' },
-        ],
-        description: [
-            { languageCode: LanguageCode.en, value: 'Use this for the product paths in COLOUR (BLATH/CORPUS)' },
-            { languageCode: LanguageCode.pl, value: 'Użyj tej opcji dla ścieżek produktu w KOLORZE (BLAT/CORPUS)' },
-        ],
-        defaultValue: false,
-        public: true,
-    },
-];
-
-const FacetValueCustomFields = [
+const ProductOptionCustomFields = [
     {
         name: 'hexColor',
         type: 'string' as const,
@@ -80,10 +49,9 @@ const FacetValueCustomFields = [
     compatibility: '^0.0.20',
     imports: [PluginCommonModule],
     configuration: config => {
-        config.customFields.Facet.push(...FacetColorsCustomFields);
-        config.customFields.FacetValue.push(...FacetValueCustomFields);
+        config.customFields.ProductOption.push(...ProductOptionCustomFields);
 
         return config;
     },
 })
-export class FacetColorFieldsPlugin {}
+export class ProductOptionServerPlugin {}
