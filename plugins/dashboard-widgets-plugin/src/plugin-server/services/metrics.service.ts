@@ -206,8 +206,8 @@ export class BetterMetricsService {
                 break;
             }
             case BetterMetricInterval.Custom: {
-                startDate = start ? new Date(start as string) : startOfDay(today);
-                endDate = end as Date | undefined;
+                startDate = start ? startOfDay(new Date(start as string)) : startOfDay(today);
+                endDate = end ? endOfDay(end as Date) : undefined;
                 break;
             }
             default:
@@ -395,8 +395,8 @@ export class BetterMetricsService {
                 break;
             }
             case BetterMetricInterval.Custom: {
-                startDate = start ? new Date(start as string) : startOfDay(today);
-                endDate = end as Date | undefined;
+                startDate = start ? startOfDay(new Date(start as string)) : startOfDay(today);
+                endDate = end ? endOfDay(end as Date) : undefined;
                 break;
             }
             default:
