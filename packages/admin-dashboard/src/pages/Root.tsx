@@ -67,6 +67,8 @@ export const Root = () => {
   const setPaymentMethodsType = useServer((p) => p.setPaymentMethodsType);
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
   const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
+  const setLanguage = useSettings((p) => p.setLanguage);
+  const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
   const [loaded, setLoaded] = useState(false);
   const { selectedChannel } = useSettings();
 
@@ -84,11 +86,22 @@ export const Root = () => {
         setChannels(allChannels);
         if (!selectedChannel) {
           const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
-          setSelectedChannel(defaultChannel);
+          const existingChannel = allChannels.find(
+            (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+          );
+          if (existingChannel) setSelectedChannel(existingChannel);
+          else setSelectedChannel(defaultChannel);
         }
+
         setLoaded(true);
       }
-
+      if (window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode) {
+        window?.__DEENRUV_SETTINGS__.i18n.changeLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
+        setLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
+      }
+      if (window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode) {
+        setTranslationLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode);
+      }
       const [serverConfigResponse, countriesResponse, paymentsResponse, fulfillmentsResponse] =
         await Promise.allSettled([
           apiClient('query')({ globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true } }),

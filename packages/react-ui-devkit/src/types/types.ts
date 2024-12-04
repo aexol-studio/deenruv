@@ -2,13 +2,18 @@ import type { FC, SVGProps } from 'react';
 import { Routes } from '../routes';
 import { ColumnDef } from '@tanstack/react-table';
 import { ProductDetailSelector, ProductListSelector } from '../selectors';
-import type { FromSelectorWithScalars } from '@deenruv/admin-types';
+import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
     api: { uri: string; channelTokenName?: string; authTokenName?: string };
+    ui?: {
+        defaultChannelCode?: string;
+        defaultLanguageCode?: LanguageCode;
+        defaultTranslationLanguageCode?: LanguageCode;
+    };
     branding: {
         name: string;
         showAppVersion?: boolean;

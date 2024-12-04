@@ -11,6 +11,7 @@ import {
   type DeenruvSettingsWindowType,
   useSettings,
   GlobalStoreProvider,
+  DEFAULT_CHANNEL_CODE,
 } from '@deenruv/react-ui-devkit';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
@@ -21,6 +22,7 @@ import * as Pages from '@/pages';
 import { DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
 import * as resources from './locales';
 import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
+import { LanguageCode } from '@deenruv/admin-types';
 
 declare global {
   interface Window {
@@ -70,6 +72,12 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   loadTranslations();
   window.__DEENRUV_SETTINGS__ = {
     ...settings,
+    ui: {
+      ...settings.ui,
+      defaultChannelCode: settings?.ui?.defaultChannelCode || DEFAULT_CHANNEL_CODE,
+      defaultLanguageCode: settings?.ui?.defaultLanguageCode || LanguageCode.en,
+      defaultTranslationLanguageCode: settings?.ui?.defaultTranslationLanguageCode || LanguageCode.en,
+    },
     api: {
       ...settings.api,
       authTokenName: settings.api.authTokenName || 'deenruv-auth-token',
@@ -89,6 +97,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
     language: p.language,
     translationsLanguage: p.translationsLanguage,
   }));
+
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');

@@ -6,6 +6,7 @@ import { DeenruvAdminPanel, DeenruvAdminPanelSettings, DeenruvUIPlugin } from '@
 // import { BadgesUiPlugin } from '@deenruv/product-badges-plugin/plugin-ui';
 
 import { DeenruvLogo } from './DeenruvLogo';
+import { LanguageCode } from '@deenruv/admin-types';
 
 // const plugins: Array<DeenruvUIPlugin> = [ExampleUiPlugin, CMSPlugin, BadgesUiPlugin, DashboardWidgetsPlugin];
 const plugins: Array<DeenruvUIPlugin> = [];
@@ -16,6 +17,11 @@ const settings: DeenruvAdminPanelSettings = {
       full: <DeenruvLogo isCollapsed={false} />,
       collapsed: <DeenruvLogo isCollapsed={true} />,
     },
+  },
+  ui: {
+    defaultChannelCode: 'de-channel',
+    defaultLanguageCode: LanguageCode.pl,
+    defaultTranslationLanguageCode: LanguageCode.pl,
   },
   api: {
     uri: 'http://localhost:3000',
