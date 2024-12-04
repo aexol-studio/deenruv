@@ -137,7 +137,10 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                   <Navigation isCollapsed={isCollapsed} />
                   <div className="bg-secondary flex h-[40px] w-full select-none items-center justify-center gap-2 text-xs shadow-2xl">
                     {!isCollapsed && <p className="uppercase">Deenruv</p>}
-                    <span>{!isCollapsed ? "ver. " : "v. "}{window.__DEENRUV_SETTINGS__.appVersion}</span>
+                    <span>
+                      {!isCollapsed ? 'ver. ' : 'v. '}
+                      {window.__DEENRUV_SETTINGS__.appVersion}
+                    </span>
                   </div>
                 </div>
               </ResizablePanel>
@@ -154,7 +157,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
                                   <NavLink to={'/admin-ui/' + linkPath.join('/')}>
-                                    <p className="text-2xl font-bold capitalize text-black dark:text-white">{c}</p>
+                                    <p className="text-foreground text-2xl font-bold capitalize">{c}</p>
                                   </NavLink>
                                 </BreadcrumbItem>
                                 {i !== crumbs.length - 1 && (
@@ -168,7 +171,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         ) : (
                           <BreadcrumbItem>
                             <NavLink to={Routes.dashboard}>
-                              <p className="text-2xl font-bold text-black dark:text-white">{t('dashboard')}</p>
+                              <p className="text-foreground text-2xl font-bold">{t('dashboard')}</p>
                             </NavLink>
                           </BreadcrumbItem>
                         )}
@@ -186,7 +189,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     ) : null}
                     <LanguagesDropdown />
                     <div className="min-w-44">
-                      <ChannelSwitcher isCollapsed={isCollapsed} />
+                      <ChannelSwitcher />
                     </div>
                     {/* <ActiveAdmins /> */}
                     <Popover>

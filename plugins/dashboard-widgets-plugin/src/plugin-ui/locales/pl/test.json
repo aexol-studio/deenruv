@@ -21,7 +21,9 @@
     "today": "Dzisiaj",
     "yesterday": "Wczoraj",
     "thisWeek": "W tym tygodniu",
+    "lastWeek": "W zeszłym tygodniu",
     "thisMonth": "W tym miesiącu",
+    "lastMonth": "Ostatni miesiąc",
     "thisYear": "W tym roku",
     "gross": "Brutto",
     "net": "Netto",
@@ -41,5 +43,7 @@
     "lastRefresh": "Ostatnia aktualizacja: ",
     "sortBy": "Sortuj po",
     "sortByCount": "Sortuj po ilości",
-    "sortByNet": "Sortuj po wartości"
+    "sortByNet": "Sortuj po wartości",
+    "showFirstFive": "Pokaż pierwsze pięć",
+    "variantID": "ID wariantu"
 }

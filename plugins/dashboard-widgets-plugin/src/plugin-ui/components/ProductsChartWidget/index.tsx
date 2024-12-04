@@ -1,4 +1,4 @@
-import { Bar, BarChart, Cell, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, Cell, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import {
     Card,
     CardContent,
@@ -13,8 +13,9 @@ import {
     SelectValue,
     useLazyQuery,
     useSettings,
+    useWidgetItem,
 } from '@deenruv/react-ui-devkit';
-import { ChartConfig, ChartContainer, ChartTooltip, Separator } from '@deenruv/react-ui-devkit';
+import { ChartConfig, ChartTooltip, Separator } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChartMetricType } from '../../zeus';
 import { useTranslation } from 'react-i18next';
@@ -25,8 +26,11 @@ import { ChartMetricQuery } from '../../graphql';
 import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 import { CurrencyCode } from '@deenruv/admin-types';
 import { CustomBarChartTooltip } from './CustomBarChartTooltip';
+import { UIPluginOptions } from '../..';
+import { getRandomColor } from '../../utils';
 
 type SortBy = 'BY_COUNT' | 'BY_NET_WORTH';
+type ShowData = 'FIRST_FIVE' | 'ALL';
 
 export const ProductsChartWidget = () => {
     const { t } = useTranslation('dashboard-widgets-plugin', {
@@ -34,7 +38,12 @@ export const ProductsChartWidget = () => {
     });
     const [fetchChartMetrics] = useLazyQuery(ChartMetricQuery);
     const currencyCode = useSettings(p => p.selectedChannel?.currencyCode);
+    const [showData, setShowData] = useState<ShowData>('FIRST_FIVE');
+    const { plugin } = useWidgetItem();
 
+    const barColors =
+        // @ts-expect-error: for now we dont have information about these types, but we know that this exists
+        (plugin?.config?.options as UIPluginOptions)?.barChartColors || colors;
     const [chartData, setChartData] = useState<{ product: string; value: number; priceValue: number }[]>([]);
     const [lastRefreshedCache, setLastRefreshedCache] = useState<string | undefined>();
     const [selectedPeriod, setSelectedPeriod] = useState<Period>({
@@ -82,8 +91,9 @@ export const ProductsChartWidget = () => {
                         value: product.quantity,
                         priceValue: product.priceWithTax,
                     }))
-                    .sort((a, b) => (sortBy === 'BY_COUNT' ? b.value - a.value : b.priceValue - a.priceValue))
-                    .slice(0, 5);
+                    .sort((a, b) =>
+                        sortBy === 'BY_COUNT' ? b.value - a.value : b.priceValue - a.priceValue,
+                    );
 
                 setChartData(_chartData);
             });
@@ -106,7 +116,7 @@ export const ProductsChartWidget = () => {
     const chartConfig: ChartConfig = chartData.reduce((config, item, index) => {
         config[item.product] = {
             label: item.product,
-            color: colors[index],
+            color: getRandomColor(barColors),
         };
         return config;
     }, {} as ChartConfig);
@@ -119,7 +129,24 @@ export const ProductsChartWidget = () => {
         <Card className="flex flex-col border-0 shadow-none h-full">
             <CardHeader className="flex justify-between">
                 <div className="flex flex-col items-start gap-4">
-                    <CardTitle className="text-lg">{t('bestsellers')}</CardTitle>
+                    <div className="flex items-center justify-between w-full">
+                        <CardTitle className="text-lg">{t('bestsellers')}</CardTitle>{' '}
+                        <Select
+                            onValueChange={value => setShowData(value as ShowData)}
+                            value={showData}
+                            defaultValue={'BY_COUNT'}
+                        >
+                            <SelectTrigger className="h-[30px] w-[180px] text-[13px]">
+                                <SelectValue placeholder={t('sortBy')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value={'FIRST_FIVE'}>{t('showFirstFive')}</SelectItem>
+                                    <SelectItem value={'ALL'}>{t('showAll')}</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="w-full flex gap-2 items-center justify-between flex-wrap">
                         <PeriodSelect
                             selectedPeriod={selectedPeriod.period}
@@ -144,21 +171,32 @@ export const ProductsChartWidget = () => {
                 </div>
             </CardHeader>
             <Separator className="mb-3" />
-            <CardContent className="flex flex-1 justify-center items-center">
+            <CardContent className="flex flex-1 justify-center items-center text-xs  ">
                 {!chartData.length ? (
                     <div className="flex flex-col items-center text-center">
                         <EmptyData text={t('emptyData')} />
                     </div>
                 ) : (
-                    <ChartContainer config={chartConfig} className="w-full">
-                        <BarChart data={sortedData} layout="vertical">
+                    <ResponsiveContainer
+                        className="transition-all"
+                        width="100%"
+                        height={
+                            (showData === 'FIRST_FIVE' ? sortedData.slice(0, 5).length : sortedData.length) *
+                            50
+                        }
+                    >
+                        <BarChart
+                            data={showData === 'FIRST_FIVE' ? sortedData.slice(0, 5) : sortedData}
+                            layout="vertical"
+                        >
                             <YAxis
                                 dataKey="product"
                                 type="category"
                                 tickLine={false}
                                 tickMargin={10}
                                 axisLine={false}
-                                width={150}
+                                width={180}
+                                tick={{ fontSize: 12, fontSizeAdjust: 0.5 }}
                             />
                             <XAxis type="number" hide />
                             <ChartTooltip
@@ -172,6 +210,7 @@ export const ProductsChartWidget = () => {
                                 )}
                             />
                             <Bar
+                                minPointSize={5}
                                 dataKey={sortBy === 'BY_COUNT' ? 'value' : 'priceValue'}
                                 radius={5}
                                 barSize={40}
@@ -181,7 +220,7 @@ export const ProductsChartWidget = () => {
                                 ))}
                             </Bar>
                         </BarChart>
-                    </ChartContainer>
+                    </ResponsiveContainer>
                 )}
             </CardContent>
             <CardFooter className="justify-end mt-2">

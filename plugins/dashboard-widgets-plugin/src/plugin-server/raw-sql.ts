@@ -31,9 +31,9 @@ export const formatTotalProductsCountQuery = (args: {
         ol."productVariantId" AS "productVariantId",
         pt."languageCode" AS "languageCode",
         pt."name" AS "name",
-        SUM(ol."quantity") AS "quantitySum",
+        SUM(ol."orderPlacedQuantity") AS "quantitySum",
         SUM(
-            (ol."listPrice" * ol."quantity"  ${args.discountByCustomField ? '- ol."quantity" * COALESCE(ol."customFieldsDiscountby", 0)' : ''} ) - COALESCE(
+            (ol."listPrice" * ol."orderPlacedQuantity"  ${args.discountByCustomField ? '- ol."orderPlacedQuantity" * COALESCE(ol."customFieldsDiscountby", 0)' : ''} ) - COALESCE(
               (SELECT SUM((adj->>'amount')::numeric)
               FROM jsonb_array_elements(ol."adjustments"::jsonb) adj),
               0

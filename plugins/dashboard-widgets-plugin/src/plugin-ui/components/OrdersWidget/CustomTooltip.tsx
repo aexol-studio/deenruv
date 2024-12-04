@@ -48,12 +48,14 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({ chartProps, langua
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <span className="h-[1px] w-full bg-border" />
                 {additionalData
                     ?.sort((a, b) => b.quantity - a.quantity)
                     ?.map(d => (
                         <div key={d.id} className="flex justify-between gap-4">
-                            <span className="text-muted-foreground">{d.name}:</span>
+                            <div className="text-muted-foreground flex items-center gap-1">
+                                <span className="">{d.name}</span>
+                                <span className="opacity-70">{`( ${t('variantID')}: ${d.id} ) `}:</span>
+                            </div>
                             <span>{d.quantity}</span>
                         </div>
                     ))}

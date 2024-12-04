@@ -19,6 +19,7 @@ export const TailwindConfig = {
         },
         extend: {
             colors: {
+                'navigation-link': 'hsl(var(--navigation-link))',
                 warning: 'hsl(var(--warning))',
                 'warning-foreground': 'hsl(var(--warning-foreground))',
                 border: 'hsl(var(--border))',

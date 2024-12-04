@@ -11,6 +11,8 @@ import {
     startOfWeek,
     startOfYear,
     startOfYesterday,
+    subMonths,
+    subWeeks,
 } from 'date-fns';
 import { CurrencyCode, GraphQLTypes } from '../zeus';
 import {
@@ -30,7 +32,9 @@ enum Periods {
     Today = 'today',
     Yesterday = 'yesterday',
     ThisWeek = 'thisWeek',
+    LastWeek = 'lastWeek',
     ThisMonth = 'thisMonth',
+    lastMonth = 'lastMonth',
     ThisYear = 'thisYear',
 }
 
@@ -108,10 +112,22 @@ export const OrdersSummaryWidget = () => {
                 end: endOfWeek(new Date(), { weekStartsOn: 1 }),
             },
             {
+                period: Periods.LastWeek,
+                text: t('lastWeek'),
+                start: startOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
+                end: endOfWeek(subWeeks(new Date(), 1), { weekStartsOn: 1 }),
+            },
+            {
                 period: Periods.ThisMonth,
                 text: t('thisMonth'),
                 start: startOfMonth(new Date()),
                 end: endOfMonth(new Date()),
+            },
+            {
+                period: Periods.lastMonth,
+                text: t('lastMonth'),
+                start: startOfMonth(subMonths(new Date(), 1)),
+                end: endOfMonth(subMonths(new Date(), 1)),
             },
             {
                 period: Periods.ThisYear,
@@ -168,7 +184,7 @@ export const OrdersSummaryWidget = () => {
                                 value={selectedPeriod}
                                 defaultValue={_periods[0].period}
                             >
-                                <SelectTrigger className="h-[30px] w-[180px] text-[13px]">
+                                <SelectTrigger className="h-[30px] w-[280px] text-[13px]">
                                     <SelectValue placeholder={t('selectDataType')} />
                                 </SelectTrigger>
                                 <SelectContent>

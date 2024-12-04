@@ -170,10 +170,10 @@ export function Navigation({ isCollapsed }: NavProps) {
       >
         {navigationGroups.map((group) => (
           <React.Fragment key={group.id}>
-            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase text-secondary-foreground">{group.label}</h4>}
+            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase">{group.label}</h4>}
             <nav
               id={group.id}
-              className="grid text-muted-foreground gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+              className="text-muted-foreground grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
             >
               {group.links.map((link, index) => (
                 <React.Fragment key={link.id}>
@@ -184,10 +184,10 @@ export function Navigation({ isCollapsed }: NavProps) {
                           <NavLink to={link.href}>
                             <div
                               className={cn(
-                                buttonVariants({ variant: 'ghost', size: 'icon' }),
+                                buttonVariants({ variant: 'navigation-link', size: 'icon' }),
                                 'h-9 w-9',
                                 location.pathname === link.href &&
-                                  'bg-muted text-secondary hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted',
+                                  'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted opacity-100',
                               )}
                             >
                               <link.icon className="h-6 w-6" />
@@ -206,10 +206,10 @@ export function Navigation({ isCollapsed }: NavProps) {
                       <div
                         id={link.id}
                         className={cn(
-                          buttonVariants({ variant: 'ghost', size: 'sm' }),
-                          location.pathname === link.href &&
-                            'text-secondary-foreground bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold',
+                          buttonVariants({ variant: 'navigation-link', size: 'sm' }),
                           'justify-start capitalize',
+                          location.pathname === link.href &&
+                            'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold opacity-100',
                         )}
                       >
                         <link.icon className="mr-2 h-4 w-4" />

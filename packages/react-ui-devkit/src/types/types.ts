@@ -12,7 +12,7 @@ export type DeenruvAdminPanelSettings = {
     branding: {
         name: string;
         showAppVersion?: boolean;
-        loginPage?: { logo?: Logo; showAppName?: boolean };
+        loginPage?: { logo?: Logo; showAppName?: boolean; hideFormLogo?: boolean };
         logo?: { full: Logo; collapsed?: Logo };
     };
 };

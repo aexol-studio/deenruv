@@ -21,7 +21,9 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "thisWeek": "This week",
+    "lastWeek": "Last week",
     "thisMonth": "This month",
+    "lastMonth": "Last month",
     "thisYear": "This year",
     "gross": "Gross",
     "net": "Net",
@@ -41,5 +43,7 @@
     "lastRefresh": "Last refresh: ",
     "sortBy": "Sort by",
     "sortByCount": "Sort by count",
-    "sortByNet": "Sort by values"
+    "sortByNet": "Sort by values",
+    "showFirstFive": "Show first five",
+    "variantID": "Variant ID"
 }

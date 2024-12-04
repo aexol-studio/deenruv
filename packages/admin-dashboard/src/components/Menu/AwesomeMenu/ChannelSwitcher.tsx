@@ -29,11 +29,7 @@ import { useCallback } from 'react';
 //   }
 // }
 
-interface ChannelSwitcherProps {
-  isCollapsed: boolean;
-}
-
-export function ChannelSwitcher({ isCollapsed }: ChannelSwitcherProps) {
+export function ChannelSwitcher() {
   const channels = useServer((p) => p.channels);
   const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
   const selectedChannel = useSettings((p) => p.selectedChannel);
@@ -56,12 +52,11 @@ export function ChannelSwitcher({ isCollapsed }: ChannelSwitcherProps) {
       <SelectTrigger
         className={cn(
           'flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0',
-          isCollapsed && 'flex h-9 w-9 shrink-0 items-center justify-center p-0 [&>span]:w-auto [&>svg]:hidden',
         )}
         aria-label="Select an channel"
       >
         <SelectValue>
-          <span className={cn('ml-2', isCollapsed && 'hidden')}>
+          <span className="ml-2">
             {getChannelLabel(channels.find((account) => account.id === selectedChannel?.id)?.code)}
           </span>
         </SelectValue>

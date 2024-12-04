@@ -99,3 +99,8 @@ export const convertBackedDataToChartData = (
     });
     return convertedData;
 };
+
+export const getRandomColor = (colorsArray: string[]) => {
+    const randomIndex = Math.floor(Math.random() * colorsArray.length);
+    return colorsArray[randomIndex];
+};
