@@ -34,10 +34,15 @@
     "mothlyInterval": "Miesiąc",
     "lastMonthInterval": "Ostatni miesiąc",
     "yearlyInterval": "Rok",
+    "firstYearQuarterInterval": "Pierwszy kwartał",
+    "secondYearQuarterInterval": "Drugi kwartał",
+    "thirdYearQuarterInterval": "Trzeci kwartał",
+    "fourthYearQuarterInterval": "Czwarty kwartał",
     "customInterval": "Niestandardowy",
     "chooseStartDate": "Data początkowa",
     "chooseEndDate": "Data końcowa",
     "orderTotalProductsCount": "Liczba sprzedanych produktów",
+    "orderTotalProductsValue": "Wartość sprzedanych produktów",
     "emptyDataTitle": "Brak zamówień",
     "emptyData": "Wygląda na to, że nie ma zamówień dla wybranego okresu",
     "lastRefresh": "Ostatnia aktualizacja: ",
@@ -45,5 +50,10 @@
     "sortByCount": "Sortuj po ilości",
     "sortByNet": "Sortuj po wartości",
     "showFirstFive": "Pokaż pierwsze pięć",
-    "variantID": "ID wariantu"
+    "variantID": "ID wariantu",
+    "selectProducts": "Wybierz produkt...",
+    "selectedProducts": "wybrane produkty",
+    "searchProduct": "Wyszukaj produkt...",
+    "clearProducts": "Wyczyść produkty",
+    "noProductsFound": "Nie znaleziono produktów"
 }

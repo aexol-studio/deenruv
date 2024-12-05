@@ -34,10 +34,15 @@
     "mothlyInterval": "Monthly",
     "lastMonthInterval": "Last month",
     "yearlyInterval": "Yearly",
+    "firstYearQuarterInterval": "First quarter",
+    "secondYearQuarterInterval": "Second quarter",
+    "thirdYearQuarterInterval": "Third quarter",
+    "fourthYearQuarterInterval": "Fourth quarter",
     "customInterval": "Custom",
     "chooseStartDate": "Choose start date",
     "chooseEndDate": "Choose end date",
     "orderTotalProductsCount": "Total products count",
+    "orderTotalProductsValue": "Total products value",
     "emptyDataTitle": "No orders",
     "emptyData": "Looks like there are no orders for selected period",
     "lastRefresh": "Last refresh: ",
@@ -45,5 +50,10 @@
     "sortByCount": "Sort by count",
     "sortByNet": "Sort by values",
     "showFirstFive": "Show first five",
-    "variantID": "Variant ID"
+    "variantID": "Variant ID",
+    "selectProducts": "Select products...",
+    "selectedProducts": "Selected products",
+    "searchProduct": "Search product...",
+    "clearProducts": "Clear products",
+    "noProductsFound": "No products found"
 }
