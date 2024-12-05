@@ -34,6 +34,9 @@ const MAPPINGS = {
     [ChartMetricType.OrderTotalProductsCount]: {
         title: 'order-products-count',
     },
+    [ChartMetricType.OrderTotalProductsValue]: {
+        title: 'order-products-value',
+    },
 };
 type ChartMetricCacheType = GraphQLTypes['ChartMetrics'] & {
     metricType?: string;
@@ -171,7 +174,10 @@ export class BetterMetricsService {
         const startDate = start as string;
         const endDate = end as string | undefined;
 
-        if (metricType === ChartMetricType.OrderTotalProductsCount) {
+        if (
+            metricType === ChartMetricType.OrderTotalProductsCount ||
+            metricType === ChartMetricType.OrderTotalProductsValue
+        ) {
             // here we have raw query bcs i dont have time to figure out how to properly build it with queryBuilder using nested query (now i know but i dont have time )
 
             // !!!!!!!!!IMPORTANT for now we are assuming that listPrice from orderLine includes tax IMPORTANT!!!!!!!!!
@@ -181,12 +187,12 @@ export class BetterMetricsService {
             });
             // Parametry do zapytania
             const params = [startDate, ctx.channelId, ctx.languageCode, ...(endDate ? [endDate] : [])];
-
+            const isTotalProductsCount = metricType === ChartMetricType.OrderTotalProductsCount;
             const result = await orderRepo.query(query, params);
 
             const reducedRes = (result as any[]).reduce((acc, curr) => {
                 if (acc[curr.day]) {
-                    acc[curr.day].value += +curr.quantitySum;
+                    acc[curr.day].value += isTotalProductsCount ? +curr.quantitySum : +curr.adjustedPriceSum;
                     acc[curr.day].additionaldata.push({
                         name: curr.name,
                         id: curr.productVariantId,
@@ -195,7 +201,7 @@ export class BetterMetricsService {
                     });
                 } else {
                     acc[curr.day] = {
-                        value: +curr.quantitySum,
+                        value: isTotalProductsCount ? +curr.quantitySum : +curr.adjustedPriceSum,
                         additionaldata: [
                             {
                                 name: curr.name,

@@ -20,22 +20,9 @@ import { OrdersChart } from './OrdersChart';
 import { BetterMetricInterval, ChartMetricType } from '../../zeus';
 import { ChartMetricQuery } from '../../graphql';
 import { RefreshCacheButton } from '../shared/RefreshCacheButton';
-import { convertBackedDataToChartData, getCustomIntervalDates } from '../../utils';
-
-type AdditionalEntryData = { id: string; name: string; quantity: number };
-type BetterMetricsChartDataType = {
-    data: {
-        title: string;
-        type: ChartMetricType;
-        entries: {
-            type: ChartMetricType;
-            name: string;
-            value: number;
-            additionalData?: AdditionalEntryData[];
-        }[];
-    }[];
-    lastCacheRefreshTime?: string;
-};
+import { convertBackedDataToChartData, generateBrightRandomColor, getCustomIntervalDates } from '../../utils';
+import { ProductSelector } from './ProductSelector';
+import { BetterMetricsChartDataType } from '../../types';
 
 type DateRangeType = { start: Date; end?: Date };
 export const OrdersWidget = () => {
@@ -53,6 +40,10 @@ export const OrdersWidget = () => {
     const [metricType, setMetricType] = useState<ChartMetricType>(ChartMetricType.OrderTotal);
 
     const [betterMetrics, setBetterMetrics] = useState<BetterMetricsChartDataType>({ data: [] });
+    const [allAvailableProducts, setAllAvailableProducts] = useState<{ name: string; id: string }[]>([]);
+    const [selectedAvailableProducts, setSelectedAvailableProducts] = useState<
+        { id: string; color: string }[]
+    >([]);
 
     const fetchData = useCallback(
         async (refresh: boolean = false) => {
@@ -72,7 +63,24 @@ export const OrdersWidget = () => {
                             dateRange.end,
                         ),
                     }));
-
+                    if (
+                        metricType === ChartMetricType.OrderTotalProductsCount ||
+                        metricType === ChartMetricType.OrderTotalProductsValue
+                    ) {
+                        const flatted = dataWithMappedEntries.map(d => d.entries).flat();
+                        const allAvailableProducts = flatted.reduce(
+                            (acc, curr) => {
+                                curr.additionalData?.forEach(product => {
+                                    if (!acc.some(p => p.id === product.id)) {
+                                        acc.push({ id: product.id, name: product.name });
+                                    }
+                                });
+                                return acc;
+                            },
+                            [] as { name: string; id: string }[],
+                        );
+                        setAllAvailableProducts(allAvailableProducts);
+                    }
                     setBetterMetrics({
                         lastCacheRefreshTime: chartMetric.lastCacheRefreshTime,
                         data: dataWithMappedEntries,
@@ -88,8 +96,14 @@ export const OrdersWidget = () => {
     );
 
     useEffect(() => {
-        if (metricRangeTypeSelectValue === BetterMetricInterval.Custom) return;
-        setDateRange(getCustomIntervalDates(metricRangeTypeSelectValue));
+        if (metricRangeTypeSelectValue !== BetterMetricInterval.Custom)
+            setDateRange(getCustomIntervalDates(metricRangeTypeSelectValue));
+        if (
+            metricType === ChartMetricType.OrderTotalProductsCount ||
+            metricType === ChartMetricType.OrderTotalProductsValue
+        )
+            return;
+        setSelectedAvailableProducts([]);
     }, [metricRangeTypeSelectValue, metricType]);
 
     useEffect(() => {
@@ -101,35 +115,86 @@ export const OrdersWidget = () => {
     };
 
     const betterData = useMemo(() => {
-        return betterMetrics.data.map(metric => metric.entries).flat();
-    }, [betterMetrics, language]);
+        const allData = betterMetrics.data
+            .map(metric =>
+                metric.entries.map(entry => {
+                    const reduced = selectedAvailableProducts.reduce(
+                        (acc, selectedProduct) => {
+                            const product = entry.additionalData?.find(
+                                data => data.id === selectedProduct.id,
+                            );
+                            acc[selectedProduct.id] =
+                                metricType === ChartMetricType.OrderTotalProductsCount
+                                    ? product?.quantity || 0
+                                    : (product?.priceWithTax || 0) / 100;
+                            return acc;
+                        },
+                        {} as Record<string, number>,
+                    );
+                    return { ...entry, ...reduced };
+                }),
+            )
+            .flat();
+
+        return {
+            allData,
+        };
+    }, [betterMetrics, language, selectedAvailableProducts]);
+
+    const onSelectedAvailableProductsChange = (id: string) => {
+        setSelectedAvailableProducts(prev =>
+            prev.some(product => product.id === id)
+                ? prev.filter(p => p.id !== id)
+                : [
+                      ...prev,
+                      {
+                          id,
+                          color: generateBrightRandomColor(),
+                      },
+                  ],
+        );
+    };
 
     return (
         <Card className="border-0 shadow-none pr-6 py-6">
             <CardHeader className="pt-0">
-                <div className="flex flex-col justify-between gap-4">
-                    <CardTitle className="flex items-center justify-between gap-2 text-lg">
-                        <span>{t('metrics')}</span>
-                        <div className="flex gap-3 flex-wrap justify-between">
-                            <MetricTypeSelect changeMetricType={setMetricType} loading={metricLoading} />
-                            <MetricsRangeSelect
-                                value={metricRangeTypeSelectValue}
-                                changeMetricInterval={setMetricRangeTypeSelectValue}
-                                loading={metricLoading}
-                            />
-                            <MetricsCustomDates
-                                isVisible={metricRangeTypeSelectValue === BetterMetricInterval.Custom}
-                                endDate={dateRange.end as Date | undefined}
-                                startDate={dateRange.start as Date | undefined}
-                                setDate={changeCustomMetricRange}
-                            />
-                        </div>
-                    </CardTitle>
+                <div className="flex justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                        <CardTitle className="flex items-center justify-between gap-2 text-lg">
+                            <span>{t('metrics')}</span>
+                        </CardTitle>
+                        <ProductSelector
+                            onSelectedAvailableProductsChange={onSelectedAvailableProductsChange}
+                            clearSelectedProducts={() => setSelectedAvailableProducts([])}
+                            metricType={metricType}
+                            allAvailableProducts={allAvailableProducts}
+                            selectedAvailableProducts={selectedAvailableProducts}
+                        />
+                    </div>
+                    <div className="flex gap-3 flex-wrap justify-between">
+                        <MetricTypeSelect changeMetricType={setMetricType} loading={metricLoading} />
+                        <MetricsRangeSelect
+                            value={metricRangeTypeSelectValue}
+                            changeMetricInterval={setMetricRangeTypeSelectValue}
+                            loading={metricLoading}
+                        />
+                        <MetricsCustomDates
+                            isVisible={metricRangeTypeSelectValue === BetterMetricInterval.Custom}
+                            endDate={dateRange.end as Date | undefined}
+                            startDate={dateRange.start as Date | undefined}
+                            setDate={changeCustomMetricRange}
+                        />
+                    </div>
                 </div>
             </CardHeader>
             <div className="mb-6" />
             <CardContent className="p-0 mr-6 mb-6">
-                <OrdersChart data={betterData} language={language} />
+                <OrdersChart
+                    selectedAvailableProducts={selectedAvailableProducts}
+                    data={betterData.allData}
+                    language={language}
+                    metricType={metricType}
+                />
             </CardContent>
             <CardFooter className="justify-end pb-0 mt-4">
                 <RefreshCacheButton

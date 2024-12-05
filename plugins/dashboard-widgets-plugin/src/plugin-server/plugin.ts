@@ -51,12 +51,17 @@ import { DashboardWidgetsPluginOptions } from './types';
                 LastWeek
                 ThisMonth
                 LastMonth
+                FirstQuarter
+                SecondQuarter
+                ThirdQuarter
+                FourthQuarter
             }
             enum ChartMetricType {
                 OrderCount
                 OrderTotal
                 AverageOrderValue
                 OrderTotalProductsCount
+                OrderTotalProductsValue
             }
             type ChartEntryAdditionalData {
                 id: String!

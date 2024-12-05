@@ -11,11 +11,17 @@ import { BetterMetricInterval } from '../../zeus';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const MetricsRangeSelect: React.FC<{
+interface MetricTypeSelectProps {
     value: BetterMetricInterval;
     changeMetricInterval: (interval: BetterMetricInterval) => void;
     loading: boolean;
-}> = ({ changeMetricInterval, value, loading }) => {
+}
+
+export const MetricsRangeSelect: React.FC<MetricTypeSelectProps> = ({
+    changeMetricInterval,
+    value,
+    loading,
+}) => {
     const { t } = useTranslation('dashboard-widgets-plugin', {
         i18n: window.__DEENRUV_SETTINGS__.i18n,
     });
@@ -46,6 +52,18 @@ export const MetricsRangeSelect: React.FC<{
                                 {t('lastMonthInterval')}
                             </SelectItem>
                             <SelectItem value={BetterMetricInterval.Yearly}>{t('yearlyInterval')}</SelectItem>
+                            <SelectItem value={BetterMetricInterval.FirstQuarter}>
+                                {t('firstYearQuarterInterval')}
+                            </SelectItem>
+                            <SelectItem value={BetterMetricInterval.SecondQuarter}>
+                                {t('secondYearQuarterInterval')}
+                            </SelectItem>
+                            <SelectItem value={BetterMetricInterval.ThirdQuarter}>
+                                {t('thirdYearQuarterInterval')}
+                            </SelectItem>
+                            <SelectItem value={BetterMetricInterval.FourthQuarter}>
+                                {t('fourthYearQuarterInterval')}
+                            </SelectItem>
                             <SelectItem value={BetterMetricInterval.Custom}>{t('customInterval')}</SelectItem>
                         </SelectGroup>
                     </SelectContent>

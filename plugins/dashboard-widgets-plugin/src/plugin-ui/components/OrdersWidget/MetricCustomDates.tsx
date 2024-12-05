@@ -4,18 +4,25 @@ import { CalendarIcon } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const MetricsCustomDates: React.FC<{
+interface MetricsCustomDatesProps {
     startDate: Date | undefined;
     endDate: Date | undefined;
     setDate: (date: Date | undefined, key: 'start' | 'end') => void;
     isVisible: boolean;
-}> = ({ endDate, startDate, setDate, isVisible }) => {
+}
+
+export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
+    endDate,
+    startDate,
+    setDate,
+    isVisible,
+}) => {
     const { t } = useTranslation('dashboard-widgets-plugin', {
         i18n: window.__DEENRUV_SETTINGS__.i18n,
     });
     if (!isVisible) return null;
     return (
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap ">
             <Popover>
                 <PopoverTrigger asChild>
                     <Button

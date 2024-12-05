@@ -28,9 +28,7 @@ import { CurrencyCode } from '@deenruv/admin-types';
 import { CustomBarChartTooltip } from './CustomBarChartTooltip';
 import { UIPluginOptions } from '../..';
 import { getRandomColor } from '../../utils';
-
-type SortBy = 'BY_COUNT' | 'BY_NET_WORTH';
-type ShowData = 'FIRST_FIVE' | 'ALL';
+import { ShowData, SortBy } from '../../types';
 
 export const ProductsChartWidget = () => {
     const { t } = useTranslation('dashboard-widgets-plugin', {

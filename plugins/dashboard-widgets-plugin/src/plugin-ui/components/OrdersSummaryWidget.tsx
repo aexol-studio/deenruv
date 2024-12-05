@@ -27,25 +27,8 @@ import {
 import { OrderSummaryMetricsQuery } from '../graphql/queries';
 import { useTranslation } from 'react-i18next';
 import { RefreshCacheButton } from './shared/RefreshCacheButton';
-
-enum Periods {
-    Today = 'today',
-    Yesterday = 'yesterday',
-    ThisWeek = 'thisWeek',
-    LastWeek = 'lastWeek',
-    ThisMonth = 'thisMonth',
-    lastMonth = 'lastMonth',
-    ThisYear = 'thisYear',
-}
-
-type Period = {
-    period: Periods;
-    text: string;
-    start: Date;
-    end: Date;
-};
-
-type GrossNet = 'gross' | 'net';
+import { getQuartersForYear } from '../utils';
+import { GrossNet, Period, Periods } from '../types';
 
 export const OrdersSummaryWidget = () => {
     const [getOrdersSummaryMetric] = useLazyQuery(OrderSummaryMetricsQuery);
@@ -55,7 +38,7 @@ export const OrdersSummaryWidget = () => {
     const [selectedPeriod, setSelectedPeriod] = useState<Periods>(Periods.Today);
     const [grossOrNet, setGrossOrNet] = useState<'gross' | 'net'>('gross');
     const [ordersSummaryMetric, setOrdersSummaryMetrics] = useState<GraphQLTypes['OrderSummaryMetrics']>();
-
+    const quarters = useMemo(() => getQuartersForYear(), []);
     const getOrders = async ({
         end,
         start,
@@ -134,6 +117,26 @@ export const OrdersSummaryWidget = () => {
                 text: t('thisYear'),
                 start: startOfYear(new Date()),
                 end: endOfYear(new Date()),
+            },
+            {
+                period: Periods.FirstYearQuarter,
+                text: t('firstYearQuarterInterval'),
+                ...quarters[0],
+            },
+            {
+                period: Periods.SecondYearQuarter,
+                text: t('secondYearQuarterInterval'),
+                ...quarters[1],
+            },
+            {
+                period: Periods.ThirdYearQuarter,
+                text: t('thirdYearQuarterInterval'),
+                ...quarters[2],
+            },
+            {
+                period: Periods.FourthYearQuarter,
+                text: t('fourthYearQuarterInterval'),
+                ...quarters[3],
             },
         ],
         [t],

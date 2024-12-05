@@ -11,10 +11,12 @@ import {
     Skeleton,
 } from '@deenruv/react-ui-devkit';
 
-export const MetricTypeSelect: React.FC<{
+interface MetricTypeSelectProps {
     changeMetricType: (type: ChartMetricType) => void;
     loading: boolean;
-}> = ({ changeMetricType, loading }) => {
+}
+
+export const MetricTypeSelect: React.FC<MetricTypeSelectProps> = ({ changeMetricType, loading }) => {
     const { t } = useTranslation('dashboard-widgets-plugin', {
         i18n: window.__DEENRUV_SETTINGS__.i18n,
     });
@@ -38,6 +40,9 @@ export const MetricTypeSelect: React.FC<{
                             <SelectItem value={ChartMetricType.OrderTotal}>{t('orderTotal')}</SelectItem>
                             <SelectItem value={ChartMetricType.OrderTotalProductsCount}>
                                 {t('orderTotalProductsCount')}
+                            </SelectItem>
+                            <SelectItem value={ChartMetricType.OrderTotalProductsValue}>
+                                {t('orderTotalProductsValue')}
                             </SelectItem>
                         </SelectGroup>
                     </SelectContent>

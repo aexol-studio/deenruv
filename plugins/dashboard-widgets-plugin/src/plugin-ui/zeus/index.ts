@@ -22920,13 +22920,18 @@ export enum BetterMetricInterval {
 	Custom = "Custom",
 	LastWeek = "LastWeek",
 	ThisMonth = "ThisMonth",
-	LastMonth = "LastMonth"
+	LastMonth = "LastMonth",
+	FirstQuarter = "FirstQuarter",
+	SecondQuarter = "SecondQuarter",
+	ThirdQuarter = "ThirdQuarter",
+	FourthQuarter = "FourthQuarter"
 }
 export enum ChartMetricType {
 	OrderCount = "OrderCount",
 	OrderTotal = "OrderTotal",
 	AverageOrderValue = "AverageOrderValue",
-	OrderTotalProductsCount = "OrderTotalProductsCount"
+	OrderTotalProductsCount = "OrderTotalProductsCount",
+	OrderTotalProductsValue = "OrderTotalProductsValue"
 }
 export enum MetricInterval {
 	Daily = "Daily"
