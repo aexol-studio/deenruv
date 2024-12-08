@@ -15,7 +15,6 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { sortBySelected } from '../../utils';
-import { useTranslation } from 'react-i18next';
 
 interface ProductSelectProps {
     metricType: ChartMetricType;
@@ -33,24 +32,26 @@ export const ProductSelector: React.FC<ProductSelectProps> = ({
     clearSelectedProducts,
 }) => {
     const [popoverOpen, setPopoverOpen] = useState(false);
-    const { t } = useTranslation('dashboard-widgets-plugin', {
-        i18n: window.__DEENRUV_SETTINGS__.i18n,
-    });
+
     return metricType === ChartMetricType.OrderTotalProductsCount ||
         metricType === ChartMetricType.OrderTotalProductsValue ? (
         <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
             <PopoverTrigger asChild>
-                <Button variant="outline" role="combobox" className="w-[240px] h-[30px] justify-between py-0">
+                <Button
+                    variant="outline"
+                    role="combobox"
+                    className="w-full max-w-[240px] h-[30px] justify-between py-0"
+                >
                     {selectedAvailableProducts.length
-                        ? `${t('selectedProducts')} (${selectedAvailableProducts.length})`
-                        : t('selectProducts')}
+                        ? `Selected products (${selectedAvailableProducts.length})`
+                        : 'Select products...'}
                     <ChevronsUpDown size={16} className="opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0 w-max">
                 <Command>
                     <div className="relative">
-                        <CommandInput className="border-none" placeholder={t('searchProduct')} />
+                        <CommandInput className="border-none" placeholder="Search product..." />
                         {selectedAvailableProducts.length ? (
                             <Button
                                 onClick={clearSelectedProducts}
@@ -58,12 +59,12 @@ export const ProductSelector: React.FC<ProductSelectProps> = ({
                                 size="sm"
                                 className="text-primary absolute top-1/2 -translate-y-1/2 right-1"
                             >
-                                {t('clearProducts')}
+                                Clear selected
                             </Button>
                         ) : null}
                     </div>
                     <CommandList>
-                        <CommandEmpty>{t('noProductsFound')}</CommandEmpty>
+                        <CommandEmpty>No product found</CommandEmpty>
 
                         <CommandGroup>
                             {allAvailableProducts

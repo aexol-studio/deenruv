@@ -5,13 +5,14 @@ import { camelCaseToSpaces, priceFormatter, useSettings, useWidgetItem } from '@
 import { CustomTooltip } from './CustomTooltip';
 import { ChartConfig, ChartContainer, ChartTooltip } from '@deenruv/react-ui-devkit';
 import { UIPluginOptions } from '../..';
+
 import { CurrencyCode } from '@deenruv/admin-types';
 
 interface ChartProps {
     data: {
         [key: string]: any;
         name: string;
-        value: number;
+        value?: number;
         type: ChartMetricType;
     }[];
     language: string;
@@ -40,7 +41,6 @@ export const OrdersChart: React.FC<ChartProps> = ({
         colorTo: `#6366f1`,
         stroke: `#6366f1`,
     };
-
     return (
         <ChartContainer config={chartConfig} style={{ height: `${HEIGHT}px`, width: '100%' }}>
             <ComposedChart
@@ -56,8 +56,6 @@ export const OrdersChart: React.FC<ChartProps> = ({
                 <CartesianGrid vertical={false} />
                 <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={12} />
                 <YAxis
-                    // domain={['dataMin', 'dataMax']}
-                    dataKey="value"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={4}
@@ -88,7 +86,7 @@ export const OrdersChart: React.FC<ChartProps> = ({
                     </linearGradient>
                 </defs>
                 <Area
-                    dataKey="value"
+                    dataKey={selectedAvailableProducts.length ? 'no-value' : 'value'}
                     type="monotone"
                     fill="url(#fill)"
                     fillOpacity={0.4}

@@ -44,6 +44,8 @@ import { DashboardWidgetsPluginOptions } from './types';
                 averageOrderValueWithTax: Float!
             }
             enum BetterMetricInterval {
+                Today
+                Yesterday
                 Weekly
                 Monthly
                 Yearly

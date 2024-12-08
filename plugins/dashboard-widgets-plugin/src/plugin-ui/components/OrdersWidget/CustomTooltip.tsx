@@ -53,7 +53,6 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
         metricType === ChartMetricType.OrderTotalProductsValue
             ? currencyFormatter.format(value as number)
             : value;
-
     return (
         <Card className="flex flex-col bg-muted">
             <CardHeader className="pb-2">
@@ -66,6 +65,11 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
             </CardHeader>
             <CardContent>
                 {additionalData
+                    ?.filter(d =>
+                        selectedAvailableProducts?.length
+                            ? selectedAvailableProducts?.some(sap => sap.id === d.id)
+                            : true,
+                    )
                     ?.sort((a, b) =>
                         metricType === ChartMetricType.OrderTotalProductsCount
                             ? b.quantity - a.quantity

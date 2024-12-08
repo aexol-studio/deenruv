@@ -22,13 +22,13 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
     });
     if (!isVisible) return null;
     return (
-        <div className="flex gap-2 flex-wrap ">
+        <div className="flex flex-col xl:flex-row gap-2 justify-end">
             <Popover>
                 <PopoverTrigger asChild>
                     <Button
                         variant={'outline'}
                         className={cn(
-                            'h-[30px] w-[240px] justify-start text-left text-[13px] font-normal',
+                            'h-[30px] w-full max-w-[240px] justify-start text-left text-[13px] font-normal',
                             !startDate && 'text-muted-foreground',
                         )}
                     >
@@ -50,7 +50,7 @@ export const MetricsCustomDates: React.FC<MetricsCustomDatesProps> = ({
                     <Button
                         variant={'outline'}
                         className={cn(
-                            'h-[30px] w-[240px] justify-start text-left text-[13px] font-normal',
+                            'h-[30px] w-full max-w-[240px] justify-start text-left text-[13px] font-normal',
                             !endDate && 'text-muted-foreground',
                         )}
                     >

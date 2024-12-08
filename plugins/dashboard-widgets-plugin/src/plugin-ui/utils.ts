@@ -4,13 +4,17 @@ import {
     eachDayOfInterval,
     endOfMonth,
     endOfQuarter,
+    endOfToday,
     endOfWeek,
     endOfYear,
+    endOfYesterday,
     format,
     startOfMonth,
     startOfQuarter,
+    startOfToday,
     startOfWeek,
     startOfYear,
+    startOfYesterday,
     subMonths,
     subWeeks,
 } from 'date-fns';
@@ -37,9 +41,21 @@ export const getQuartersForYear = () => {
 
     return quarters;
 };
-export const getCustomIntervalDates = (interval: BetterMetricInterval): { start: Date; end: Date } => {
+export const getCustomIntervalDates = (interval?: BetterMetricInterval): { start: Date; end: Date } => {
     const quarters = getQuartersForYear();
     switch (interval) {
+        case BetterMetricInterval.Today: {
+            return {
+                start: startOfToday(),
+                end: endOfToday(),
+            };
+        }
+        case BetterMetricInterval.Yesterday: {
+            return {
+                start: startOfYesterday(),
+                end: endOfYesterday(),
+            };
+        }
         case BetterMetricInterval.Monthly: {
             return {
                 start: startOfMonth(new Date()),
@@ -48,8 +64,8 @@ export const getCustomIntervalDates = (interval: BetterMetricInterval): { start:
         }
         case BetterMetricInterval.Weekly: {
             return {
-                start: startOfWeek(new Date()),
-                end: endOfWeek(new Date()),
+                start: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                end: endOfWeek(new Date(), { weekStartsOn: 1 }),
             };
         }
         case BetterMetricInterval.Yearly: {

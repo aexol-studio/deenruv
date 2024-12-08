@@ -22914,6 +22914,8 @@ export enum SpecialOfferType {
 	SIMPLIFIED_FORM = "SIMPLIFIED_FORM"
 }
 export enum BetterMetricInterval {
+	Today = "Today",
+	Yesterday = "Yesterday",
 	Weekly = "Weekly",
 	Monthly = "Monthly",
 	Yearly = "Yearly",

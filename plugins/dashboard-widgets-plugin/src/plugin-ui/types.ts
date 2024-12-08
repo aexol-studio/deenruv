@@ -59,3 +59,4 @@ export type Period = {
     end: Date;
 };
 export type GrossNet = 'gross' | 'net';
+export type DateRangeType = { start: Date; end?: Date };

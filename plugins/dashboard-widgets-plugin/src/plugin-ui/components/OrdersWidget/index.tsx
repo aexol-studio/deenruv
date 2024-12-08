@@ -12,7 +12,7 @@ import {
     useLazyQuery,
     CardFooter,
 } from '@deenruv/react-ui-devkit';
-import { MetricsRangeSelect } from './MetricsIntervalSelect';
+
 import { MetricsCustomDates } from './MetricCustomDates';
 import { MetricTypeSelect } from './MetricTypeSelect';
 import { OrdersChart } from './OrdersChart';
@@ -22,9 +22,9 @@ import { ChartMetricQuery } from '../../graphql';
 import { RefreshCacheButton } from '../shared/RefreshCacheButton';
 import { convertBackedDataToChartData, generateBrightRandomColor, getCustomIntervalDates } from '../../utils';
 import { ProductSelector } from './ProductSelector';
-import { BetterMetricsChartDataType } from '../../types';
+import { BetterMetricsChartDataType, DateRangeType } from '../../types';
+import { MetricsRangeSelect } from '../shared/MetricsRangeSelect';
 
-type DateRangeType = { start: Date; end?: Date };
 export const OrdersWidget = () => {
     const { t } = useTranslation('dashboard-widgets-plugin', {
         i18n: window.__DEENRUV_SETTINGS__.i18n,
@@ -36,7 +36,7 @@ export const OrdersWidget = () => {
         start: startOfWeek(new Date(), { weekStartsOn: 1 }),
         end: endOfWeek(new Date(), { weekStartsOn: 1 }),
     });
-    const [metricRangeTypeSelectValue, setMetricRangeTypeSelectValue] = useState(BetterMetricInterval.Weekly);
+    const [metricRangeTypeSelectValue, setMetricRangeTypeSelectValue] = useState<BetterMetricInterval>();
     const [metricType, setMetricType] = useState<ChartMetricType>(ChartMetricType.OrderTotal);
 
     const [betterMetrics, setBetterMetrics] = useState<BetterMetricsChartDataType>({ data: [] });
@@ -154,15 +154,38 @@ export const OrdersWidget = () => {
                   ],
         );
     };
+    useEffect(() => {
+        try {
+            const widgetConfig = localStorage.getItem('ordersChartWidgetConfig');
+            if (widgetConfig) {
+                const parsedConfig = JSON.parse(widgetConfig);
+                setDateRange({
+                    start: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                    end: endOfWeek(new Date(), { weekStartsOn: 1 }),
+                    ...parsedConfig?.dateRange,
+                });
+                setMetricRangeTypeSelectValue(parsedConfig?.dateRangeType ?? BetterMetricInterval.Weekly);
+                setMetricType(parsedConfig?.metricType ?? ChartMetricType.OrderTotal);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }, []);
+    useEffect(() => {
+        const config = {
+            dateRange,
+            dateRangeType: metricRangeTypeSelectValue,
+            metricType,
+        };
+        localStorage.setItem('ordersChartWidgetConfig', JSON.stringify(config));
+    }, [dateRange, metricRangeTypeSelectValue, metricType]);
 
     return (
         <Card className="border-0 shadow-none pr-6 py-6">
             <CardHeader className="pt-0">
-                <div className="flex justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                        <CardTitle className="flex items-center justify-between gap-2 text-lg">
-                            <span>{t('metrics')}</span>
-                        </CardTitle>
+                <div className="flex flex-col md:flex-row justify-between gap-2">
+                    <div className="flex flex-col lg:flex-row gap-2">
+                        <CardTitle className="text-lg shrink-0">{t('metrics')}</CardTitle>
                         <ProductSelector
                             onSelectedAvailableProductsChange={onSelectedAvailableProductsChange}
                             clearSelectedProducts={() => setSelectedAvailableProducts([])}
@@ -171,13 +194,19 @@ export const OrdersWidget = () => {
                             selectedAvailableProducts={selectedAvailableProducts}
                         />
                     </div>
-                    <div className="flex gap-3 flex-wrap justify-between">
-                        <MetricTypeSelect changeMetricType={setMetricType} loading={metricLoading} />
-                        <MetricsRangeSelect
-                            value={metricRangeTypeSelectValue}
-                            changeMetricInterval={setMetricRangeTypeSelectValue}
-                            loading={metricLoading}
-                        />
+                    <div className="flex flex-col gap-2 flex-wrap justify-between">
+                        <div className="flex flex-col xl:flex-row gap-2 justify-end">
+                            <MetricTypeSelect
+                                metricType={metricType}
+                                changeMetricType={setMetricType}
+                                loading={metricLoading}
+                            />
+                            <MetricsRangeSelect
+                                value={metricRangeTypeSelectValue}
+                                changeMetricInterval={setMetricRangeTypeSelectValue}
+                                loading={metricLoading}
+                            />
+                        </div>
                         <MetricsCustomDates
                             isVisible={metricRangeTypeSelectValue === BetterMetricInterval.Custom}
                             endDate={dateRange.end as Date | undefined}
