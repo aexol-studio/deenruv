@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
 import { ModelTypes } from '@deenruv/admin-types';
@@ -81,7 +81,7 @@ interface DetailViewProps<LOCATION extends DetailKeys> {
         sidebar?: React.ReactNode;
         form: ReturnType<typeof createDeenruvForm>;
     };
-    defaultTabs: Array<{
+    defaultTabs?: Array<{
         label: string;
         name: string;
         component: React.ReactNode;
@@ -94,7 +94,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
     id,
     locationId,
     main,
-    defaultTabs,
+    defaultTabs = [],
 }: DetailViewProps<LOCATION>) => {
     const [searchParams] = useSearchParams();
     const { getDetailViewTabs } = usePluginStore();
@@ -159,22 +159,24 @@ const DetailTabs = () => {
             <div className="bg-muted sticky top-0 z-[100] w-full items-center justify-start shadow-xl">
                 <div className="flex w-full items-center justify-between px-4 py-2">
                     <div className="flex w-full flex-1">
-                        <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-none rounded-sm px-4 shadow-xl">
-                            {tabs.map((t, idx) => (
-                                <TabsTrigger
-                                    key={idx}
-                                    disabled={t.disabled}
-                                    value={t.name}
-                                    className={cn('px-8', 'data-[state=active]:bg-secondary bg-card')}
-                                >
-                                    {t.label}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
+                        {tabs.length > 1 && (
+                            <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-none rounded-sm px-4 shadow-xl">
+                                {tabs.map((t, idx) => (
+                                    <TabsTrigger
+                                        key={idx}
+                                        disabled={t.disabled}
+                                        value={t.name}
+                                        className={cn('px-8', 'data-[state=active]:bg-secondary bg-card')}
+                                    >
+                                        {t.label}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                        )}
                     </div>
                     <div className="flex items-center justify-end gap-2">
                         <Button variant="action" onClick={onSubmit} className="ml-auto justify-self-end">
-                            Edit product
+                            Edit
                         </Button>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -184,7 +186,7 @@ const DetailTabs = () => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="z-[101] mr-4">
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={onDelete}>Delete product</DropdownMenuItem>
+                                <DropdownMenuItem onClick={onDelete}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

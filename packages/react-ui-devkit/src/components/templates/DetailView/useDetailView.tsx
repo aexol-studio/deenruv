@@ -94,6 +94,7 @@ const createDetailViewStore = <
             setEntity: () => undefined,
         },
     };
+
     return createStore<DetailViewState<LOCATION, FORMKEY, FORMKEYS>>((set, get) => ({
         ...DEFAULT_PROPS,
         ...initProps,
@@ -101,10 +102,12 @@ const createDetailViewStore = <
         view: {
             ...DEFAULT_PROPS.view,
             setEntity: entity => set({ view: { ...get().view, entity } }),
+            // @ts-expect-error - This is a valid use case TODO: Fix this
             refetch: async () => {
                 const { id, locationId } = get();
                 const entityGraphQL = DetailLocations[locationId as keyof typeof DetailLocations];
-                const name = entityGraphQL['type'].toLowerCase() as keyof ValueTypes['Query'];
+                const name = (entityGraphQL['type'].charAt(0).toLowerCase() +
+                    entityGraphQL['type'].slice(1)) as keyof ValueTypes['Query'];
                 const selector = entityGraphQL['selector'];
                 if (!id) return;
 
@@ -112,9 +115,17 @@ const createDetailViewStore = <
                 try {
                     const query = { [name]: [{ id }, selector] } as unknown as ValueTypes['Query'];
                     const data = await apiClient('query')(query);
+                    // @ts-expect-error - This is a valid use case TODO: Fix this
+                    const entity = data[name] as LOCATIONTYPE;
                     if (data && data[name]) {
-                        set({ view: { ...get().view, entity: data[name] as LOCATIONTYPE, loading: false } });
-                        return data[name] as LOCATIONTYPE;
+                        set({
+                            view: {
+                                ...get().view,
+                                entity,
+                                loading: false,
+                            },
+                        });
+                        return data[name];
                     } else {
                         set({ view: { ...get().view, entity: null, loading: false } });
                     }
@@ -138,8 +149,8 @@ const createDetailViewStore = <
             onDeleted(event, get().form.base.state);
         },
         onSubmit: event => {
-            const { onSubmitted } = get().form;
-            onSubmitted(event, get().form.base.state);
+            const { onSubmitted, base } = get().form;
+            onSubmitted(event, base.state);
         },
         setSidebar: sidebar => {
             if (typeof sidebar === 'undefined') {
@@ -176,14 +187,8 @@ export function DetailViewStoreProvider({
     >
 >) {
     const storeRef = useRef<DetailViewStoreType>();
-    if (!storeRef.current) {
-        storeRef.current = createDetailViewStore(props);
-    }
-
-    useEffect(() => {
-        if (!props.id || !storeRef.current) return;
-        storeRef.current?.getState().view.refetch();
-    }, [storeRef.current, props.id]);
+    //TODO: Check if this is the correct way to create a store
+    storeRef.current = createDetailViewStore(props);
 
     return (
         <DetailViewStoreContext.Provider value={storeRef.current}>{children}</DetailViewStoreContext.Provider>
@@ -202,6 +207,7 @@ export function useDetailView<
     ...pick: FORMKEYS[]
 ) {
     const store = useContext(DetailViewStoreContext);
+
     if (!store) throw new Error('Missing DetailViewStoreContext.Provider in the tree');
     // @ts-expect-error - This is a valid use case
     return useStore(store, selector);

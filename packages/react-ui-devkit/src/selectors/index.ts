@@ -5,3 +5,4 @@ export * from './ProductVariantsListSelector';
 export * from './PromotionListSelector';
 export * from './ProductDetailSelector';
 export * from './CustomerListSelector';
+export * from './TaxCategoryDetailSelector';

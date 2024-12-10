@@ -1,5 +1,5 @@
 import { ModelTypes as DefaultModelTypes } from '@deenruv/admin-types';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type GFFLPFormField<T> = {
     initialValue?: T;
@@ -36,18 +36,20 @@ export const useFFLP = <X>(config: {
         <F extends keyof X>(field: F, value: X[F]) => {
             const isToBeValidated = !!config[field]?.validate;
             const invalid = config[field]?.validate?.(value);
-            state[field] =
+            const updatedField =
                 isToBeValidated && invalid && invalid.length > 0
                     ? ({
-                          value: value,
+                          value,
                           initialValue: state[field]?.initialValue,
                           errors: invalid,
                       } as GFFLPFormField<X[F]>)
                     : ({
-                          value: value,
+                          value,
                           initialValue: state[field]?.initialValue,
                           validatedValue: value,
                       } as GFFLPFormField<X[F]>);
+
+            state[field] = updatedField;
             _setState(JSON.parse(JSON.stringify(state)));
         },
         [config, state],

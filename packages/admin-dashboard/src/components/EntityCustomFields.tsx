@@ -35,6 +35,7 @@ type ViableEntity = Uncapitalize<
     | 'ShippingMethod'
     | 'FacetValue'
     | 'ProductOption'
+    | 'TaxCategory'
   >
 >;
 type CF = Record<string, unknown>;

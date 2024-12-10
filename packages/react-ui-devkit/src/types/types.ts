@@ -1,7 +1,7 @@
 import type { FC, SVGProps } from 'react';
 import { Routes } from '../routes';
 import { ColumnDef } from '@tanstack/react-table';
-import { ProductDetailSelector, ProductListSelector } from '../selectors';
+import { ProductDetailSelector, ProductListSelector, TaxCategoryDetailSelector } from '../selectors';
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
@@ -61,6 +61,10 @@ export const DetailLocations = {
         type: 'Collection' as const,
         selector: ProductDetailSelector,
     },
+    'taxCategories-detail-view': {
+        type: 'TaxCategory' as const,
+        selector: TaxCategoryDetailSelector,
+    },
 };
 export type DetailLocationType = typeof DetailLocations;
 export type DetailKeys = keyof DetailLocationType;
@@ -70,13 +74,18 @@ type DetailLocationsType<KEY extends keyof typeof DetailLocations> = FromSelecto
     (typeof DetailLocations)[KEY]['type']
 >;
 
-export interface ExternalDetailLocationSelector<K extends DetailKeys = DetailKeys> {
-    [key: string]: FromSelectorWithScalars<DetailLocationType[K]['selector'], DetailLocationType[K]['type']>;
-}
-
-export interface ExternalListLocationSelector<K extends LocationKeys = LocationKeys> {
-    [key: string]: FromSelectorWithScalars<ListLocationType[K]['selector'], ListLocationType[K]['type']>;
-}
+export type ExternalDetailLocationSelector = {
+    [K in DetailKeys]: FromSelectorWithScalars<
+        DetailLocationType[K]['selector'],
+        DetailLocationType[K]['type']
+    >;
+};
+export type ExternalListLocationSelector = {
+    [K in LocationKeys]: FromSelectorWithScalars<
+        ListLocationType[K]['selector'],
+        ListLocationType[K]['type']
+    >;
+};
 
 type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     id: KEY;
