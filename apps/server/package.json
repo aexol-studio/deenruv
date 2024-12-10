@@ -38,6 +38,7 @@
         "@deenruv/email-plugin": "workspace:*",
         "@deenruv/job-queue-plugin": "workspace:*",
         "@deenruv/product-options-fields-plugin": "workspace:*",
+        "@deenruv/order-line-attributes-plugin": "workspace:*",
         "@nestjs/axios": "^3.0.2",
         "@nestjs/common": "~10.3.10",
         "@nestjs/serve-static": "^4.0.2",

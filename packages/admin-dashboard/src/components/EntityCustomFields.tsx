@@ -26,6 +26,7 @@ type ViableEntity = Uncapitalize<
     | 'Product'
     | 'ProductVariant'
     | 'Order'
+    | 'OrderLine'
     | 'Asset'
     | 'Collection'
     | 'Facet'
@@ -49,6 +50,8 @@ type Props<T extends ViableEntity> = {
   entityName: T;
   id?: string;
   currentLanguage?: LanguageCode;
+  onChange?: (customFields: CF, translations?: unknown) => void;
+  hideButton?: boolean;
   fetch?: (runtimeSelector: any) => Promise<EntityWithCF>;
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
@@ -74,6 +77,10 @@ const entityDictionary: Partial<
   order: {
     inputName: 'UpdateOrderInput',
     mutationName: 'setOrderCustomFields',
+  },
+  orderLine: {
+    inputName: 'OrderLineInput',
+    mutationName: 'adjustDraftOrderLine',
   },
   asset: {
     inputName: 'UpdateAssetInput',
@@ -115,6 +122,8 @@ export function EntityCustomFields<T extends ViableEntity>({
   currentLanguage: _currentLanguage,
   mutation,
   fetch,
+  onChange,
+  hideButton,
   disabled,
 }: Props<T>) {
   const { t } = useTranslation('common');
@@ -133,6 +142,33 @@ export function EntityCustomFields<T extends ViableEntity>({
     ),
   )?.customFields;
 
+  const relationFields = useMemo(
+    () => entityCustomFields?.filter((el) => el.__typename === 'RelationCustomFieldConfig').map((el) => el.name),
+    [entityCustomFields],
+  );
+
+  const prepareCustomFields = useCallback(() => {
+    return Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
+      (acc, [key, val]) => {
+        if (relationFields?.includes(key)) {
+          const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+          acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
+        } else acc[key] = val;
+
+        return acc;
+      },
+      {} as CF,
+    );
+  }, [state, relationFields]);
+
+  useEffect(() => {
+    // TODO Add debounce
+    if (onChange) {
+      const preparedCustomFields = prepareCustomFields();
+      onChange(preparedCustomFields, state?.translations?.validatedValue);
+    }
+  }, [state, prepareCustomFields]);
+
   const capitalizedEntityName = useMemo(
     () => (entityName.charAt(0).toUpperCase() + entityName.slice(1)) as Capitalize<T>,
     [entityName],
@@ -141,11 +177,6 @@ export function EntityCustomFields<T extends ViableEntity>({
   const runtimeSelector = useMemo(
     () => mergeSelectorWithCustomFields({}, capitalizedEntityName, entityCustomFields),
     [entityCustomFields, capitalizedEntityName],
-  );
-
-  const relationFields = useMemo(
-    () => entityCustomFields?.filter((el) => el.__typename === 'RelationCustomFieldConfig').map((el) => el.name),
-    [entityCustomFields],
   );
 
   const fetchEntity = useCallback(async () => {
@@ -175,16 +206,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   }, [runtimeSelector, entityName, id]);
 
   const updateEntity = useCallback(async () => {
-    const preparedCustomFields = Object.entries(
-      (state.customFields?.validatedValue || {}) as Record<string, any>,
-    ).reduce((acc, [key, val]) => {
-      if (relationFields?.includes(key)) {
-        const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
-        acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
-      } else acc[key] = val;
-
-      return acc;
-    }, {} as CF);
+    const preparedCustomFields = prepareCustomFields();
 
     try {
       if (mutation) {
@@ -268,11 +290,13 @@ export function EntityCustomFields<T extends ViableEntity>({
           />
         )}
         <hr className="my-4" />
-        <div className="flex justify-end">
-          <Button disabled={disabled} onClick={updateEntity}>
-            {t('update')}
-          </Button>
-        </div>
+        {!hideButton && (
+          <div className="flex justify-end">
+            <Button disabled={disabled} onClick={updateEntity}>
+              {t('update')}
+            </Button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

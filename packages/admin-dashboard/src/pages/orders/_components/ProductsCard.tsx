@@ -25,6 +25,8 @@ import {
   Tooltip,
   apiClient,
   cn,
+  useServer,
+  CustomFieldsComponent,
 } from '@deenruv/react-ui-devkit';
 import {
   DraftOrderLineType,
@@ -45,10 +47,10 @@ import { toast } from 'sonner';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types.js';
 import { OrderLineActionModal } from './OrderLineActionModal/index.js';
 // import { useServer } from '@/state';
-// import { CustomFieldsComponent } from '@/custom_fields';
 import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
-import { ImageWithPreview, ProductVariantSearch } from '@/components';
+import { EntityCustomFields, ImageWithPreview, ProductVariantSearch } from '@/components';
+import { useSearchParams } from 'react-router-dom';
 // import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 
 type AddItemCustomFieldsType = any;
@@ -57,6 +59,9 @@ type ProductVariantCustomFields = any;
 export const ProductsCard: React.FC = () => {
   const { t } = useTranslation('orders');
   // const activeAdministrator = useServer((p) => p.activeAdministrator);
+  const orderLineCustomFields = useServer(
+    (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
+  );
 
   const {
     mode,
@@ -81,11 +86,12 @@ export const ProductsCard: React.FC = () => {
     { action: OrderLineActions | undefined; line: DraftOrderLineType } | undefined
   >();
   const isLineAddedInModify = (lineId: string) => order?.lines.findIndex((l) => l.id === lineId) === -1;
+  const [, setSearchParams] = useSearchParams();
 
   const addToOrder = async (
     productVariant: ProductVariantType,
     quantity: number,
-    customFields: AddItemCustomFieldsType,
+    customFields?: AddItemCustomFieldsType,
   ) => {
     if (!order) return;
 
@@ -98,8 +104,8 @@ export const ProductsCard: React.FC = () => {
         linePriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
         discountedLinePriceWithTax: productVariant.priceWithTax * quantity,
         productVariant,
-        customFields,
         taxRate: order.taxSummary[0].taxRate,
+        ...(customFields && { customFields }),
       };
 
       setModifiedOrder({
@@ -112,7 +118,14 @@ export const ProductsCard: React.FC = () => {
 
     const { addItemToDraftOrder } = await apiClient('mutation')({
       addItemToDraftOrder: [
-        { input: { productVariantId: productVariant.id, quantity, customFields }, orderId: order.id },
+        {
+          input: {
+            productVariantId: productVariant.id,
+            quantity,
+            ...(customFields && { customFields }),
+          },
+          orderId: order.id,
+        },
         updatedDraftOrderSelector,
       ],
     });
@@ -317,12 +330,14 @@ export const ProductsCard: React.FC = () => {
       discountBy: input.customFields?.discountBy,
     });
     setQuantity(input.quantity ? input.quantity : 1);
+    setSearchParams({ productId: input.variant.productId });
   };
 
   const closeAddVariantDialog = () => {
     setOpen(false);
     setSelectedVariant(undefined);
     setOrderLineId(undefined);
+    setSearchParams(undefined);
   };
   const onOrderLineActionModalOpenChange = (bool: boolean) => {
     if (!bool) {
@@ -396,7 +411,11 @@ export const ProductsCard: React.FC = () => {
             <>
               <div>
                 <Label htmlFor="product">{t('create.searchPlaceholder')}</Label>
-                <ProductVariantSearch onSelectItem={(i) => openAddVariantDialog({ variant: i })} />
+                <ProductVariantSearch
+                  onSelectItem={(i) =>
+                    orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
+                  }
+                />
               </div>
             </>
           ) : null}
@@ -550,22 +569,16 @@ export const ProductsCard: React.FC = () => {
             {...orderLineAction}
           />
           <Dialog open={open} onOpenChange={(e) => (!e ? closeAddVariantDialog() : setOpen(true))}>
-            <DialogContent className="max-h-[90vh] min-h-[60vh] max-w-[50vw]">
+            <DialogContent className="max-h-[90vh] min-h-[60vh] max-w-[50vw] overflow-auto">
               {selectedVariant ? (
                 <div className="flex h-full w-full flex-col justify-between">
                   <div className="flex h-full flex-col gap-8">
                     <div className="flex w-full flex-col items-center gap-2">
                       <div className="flex w-full flex-col">
                         <LineItem noBorder noHover variant={{ ...selectedVariant, quantity: 1 }} />
-                        {/* <CustomFieldsComponent
-                          data={{ selectedVariant }}
-                          value={undefined}
-                          setValue={(field, data) => {}}
-                          customFields={orderLineCustomFields}
-                        /> */}
                         <CustomComponent
                           onVariantAdd={handleNewVariantAdd}
-                          productId={selectedVariant.product.id}
+                          orderLineId={selectedVariant.product.id}
                           value={customFields?.attributes || ''}
                           setValue={(data) => setCustomFields((p: any) => ({ ...p, attributes: data }))} // data źle sformatowana
                         />

@@ -1,0 +1,10 @@
+{
+  "custom": {
+    "customLabel": "Custom value",
+    "customPlaceholder": "Value",
+    "addCustomKey": "Add custom attribute",
+    "customKey": "Key",
+    "customValue": "Value",
+    "customAdditional": "Additional custom attributes: {{value}}"
+  }
+}
