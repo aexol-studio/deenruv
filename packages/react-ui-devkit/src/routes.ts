@@ -90,7 +90,7 @@ export const Routes = {
         list: '/admin-ui/stock-locations',
         new: '/admin-ui/stock-locations/new',
         route: '/admin-ui/stock-locations/:id',
-        to: (stockId: string) => `/admin-ui/stocks/${stockId}`,
+        to: (stockId: string) => `/admin-ui/stock-locations/${stockId}`,
     },
     taxCategories: {
         list: '/admin-ui/tax-categories',

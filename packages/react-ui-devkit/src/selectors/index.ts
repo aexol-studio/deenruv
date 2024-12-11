@@ -6,3 +6,5 @@ export * from './PromotionListSelector';
 export * from './ProductDetailSelector';
 export * from './CustomerListSelector';
 export * from './TaxCategoryDetailSelector';
+export * from './StockLocationListSelector';
+export * from './StockLocationDetailSelector';

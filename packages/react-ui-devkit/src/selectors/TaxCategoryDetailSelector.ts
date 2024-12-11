@@ -1,11 +1,9 @@
 import { Selector } from '@deenruv/admin-types';
 import type { FromSelectorWithScalars } from '@deenruv/admin-types';
+import { COMMON_FIELDS } from './commonFields'
 
 export const TaxCategoryDetailSelector = Selector('TaxCategory')({
-    name: true,
-    id: true,
-    createdAt: true,
-    updatedAt: true,
+    ...COMMON_FIELDS,
     isDefault: true
 });
 

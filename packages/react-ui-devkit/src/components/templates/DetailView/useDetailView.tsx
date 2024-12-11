@@ -151,6 +151,8 @@ const createDetailViewStore = <
         onSubmit: event => {
             const { onSubmitted, base } = get().form;
             onSubmitted(event, base.state);
+            // TODO GLOBAL SUCCESS / ERROR HANDLING
+            // console.log('SUMIS');
         },
         setSidebar: sidebar => {
             if (typeof sidebar === 'undefined') {
