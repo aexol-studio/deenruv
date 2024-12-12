@@ -1,7 +1,23 @@
 import { useParams } from 'react-router-dom';
-import { DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
+import { DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { StockLocationDetailView } from './_components/StockLocationDetailView';
-import { typedGql, scalars, $ } from '@deenruv/admin-types';
+import { typedGql, scalars, $, ModelTypes } from '@deenruv/admin-types';
+import { useCallback } from 'react';
+
+type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
+type FormDataType = Partial<{
+  name: GFFLPFormField<CreateStockLocationInput['name']>;
+  description: GFFLPFormField<CreateStockLocationInput['description']>;
+}>;
+
+const CreateStockLocationMutation = typedGql('mutation', { scalars })({
+  createStockLocation: [
+    {
+      input: $('input', 'CreateStockLocationInput!'),
+    },
+    { id: true },
+  ],
+});
 
 const EditStockLocationMutation = typedGql('mutation', { scalars })({
   updateStockLocation: [
@@ -12,9 +28,55 @@ const EditStockLocationMutation = typedGql('mutation', { scalars })({
   ],
 });
 
+const DeleteStockLocationMutation = typedGql('mutation', { scalars })({
+  deleteStockLocation: [
+    {
+      input: $('input', 'DeleteStockLocationInput!'),
+    },
+    { message: true },
+  ],
+});
+
 export const StockLocationsDetailPage = () => {
   const { id } = useParams();
   const [update] = useMutation(EditStockLocationMutation);
+  const [create] = useMutation(CreateStockLocationMutation);
+  const [remove] = useMutation(DeleteStockLocationMutation);
+
+  const onSubmitHandler = useCallback(
+    (_event: React.FormEvent, data: FormDataType) => {
+      if (!data.name?.validatedValue) {
+        throw new Error('Name is required.');
+      }
+
+      const inputData = {
+        name: data.name.validatedValue,
+        description: data.description?.validatedValue,
+      };
+
+      if (id) {
+        return update({
+          input: {
+            id,
+            ...inputData,
+          },
+        });
+      } else {
+        return create({
+          input: inputData,
+        });
+      }
+    },
+    [id, update, create],
+  );
+
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
+
+    return remove({ input: { id } });
+  }, [remove, id]);
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -29,19 +91,8 @@ export const StockLocationsDetailPage = () => {
             key: 'CreateStockLocationInput',
             keys: ['description', 'name'],
             config: {},
-            onSubmitted: (_event, data) => {
-              update({
-                input: {
-                  id: id!,
-                  name: data.name?.validatedValue,
-                  // @ts-ignore
-                  description: data.description?.validatedValue,
-                },
-              });
-            },
-            onDeleted: (_event, data) => {
-              console.log('deleted', data);
-            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
           }),
         }}
       />

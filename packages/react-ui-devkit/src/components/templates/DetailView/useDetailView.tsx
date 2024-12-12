@@ -1,13 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { createStore, useStore } from 'zustand';
 import { createContext, useContext } from 'react';
-import { LanguageCode, ValueTypes } from '@deenruv/admin-types';
+import { DeletionResult, GraphQLResponse, LanguageCode, ValueTypes } from '@deenruv/admin-types';
 
 import { ModelTypes } from '@deenruv/admin-types';
 import { DeenruvTabs, DetailKeys, DetailLocations, ExternalDetailLocationSelector } from '@/types';
 import { DetailViewMarker } from '@/components';
 import { useFFLP } from '@/hooks';
 import { apiClient } from '@/zeus_client/deenruvAPICall';
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { GraphQLError } from 'graphql';
 
 interface DetailViewProps<
     LOCATION extends DetailKeys,
@@ -29,14 +32,14 @@ interface DetailViewProps<
                 | React.MouseEvent<HTMLButtonElement, MouseEvent>
                 | React.MouseEvent<HTMLDivElement>,
             data: ModelTypes[FORMKEY],
-        ) => void;
+        ) => Promise<Record<string, unknown>>;
         onDeleted?: (
             event:
                 | React.FormEvent<HTMLFormElement>
                 | React.MouseEvent<HTMLButtonElement, MouseEvent>
                 | React.MouseEvent<HTMLDivElement>,
             data: ModelTypes[FORMKEY],
-        ) => void;
+        ) => Promise<Record<string, unknown>>;
     };
     formKey?: FORMKEY;
     formKeys?: FORMKEYS[];
@@ -73,6 +76,16 @@ interface DetailViewState<
 
 type DetailViewStoreType = ReturnType<typeof createDetailViewStore>;
 
+const handleError = (resp: { response: { errors: GraphQLError[] } }) => {
+    const code = resp.response?.errors?.[0]?.extensions.code as string;
+    const message = code
+        .toLowerCase()
+        .replace(/_/g, ' ')
+        .replace(/^\w/, (c: string) => c.toUpperCase());
+
+    toast.error(message || 'There was an error', { closeButton: false });
+};
+
 const createDetailViewStore = <
     LOCATION extends DetailKeys,
     LOCATIONTYPE extends ExternalDetailLocationSelector[LOCATION],
@@ -81,6 +94,31 @@ const createDetailViewStore = <
 >(
     initProps?: Partial<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>>,
 ) => {
+    const navigate = useNavigate();
+
+    const handleSuccess = useCallback((resp: Record<string, any>) => {
+        const [mutationName] = Object.keys(resp);
+
+        if (mutationName.startsWith('delete')) {
+            const result = Object.values(resp)[0].result;
+
+            if (result !== DeletionResult.DELETED) {
+                toast.warning(Object.values(resp)[0].message, { closeButton: false });
+                return;
+            }
+        }
+
+        const string = mutationName.charAt(0).toUpperCase() + mutationName.slice(1);
+        const message = `${string.replace(/([A-Z])/g, ' $1').trim()} - Success`;
+        const listPath = location.pathname.replace(/\/[^/]+$/, '');
+
+        if (mutationName.startsWith('create') || mutationName.startsWith('delete')) {
+            navigate(listPath);
+        }
+
+        toast.success(message, { closeButton: false });
+    }, []);
+
     const DEFAULT_PROPS: Omit<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>, 'form'> = {
         id: '',
         contentLanguage: LanguageCode.en,
@@ -146,13 +184,11 @@ const createDetailViewStore = <
         onDelete: event => {
             const { onDeleted } = get().form;
             if (!onDeleted) return;
-            onDeleted(event, get().form.base.state);
+            onDeleted(event, get().form.base.state).then(handleSuccess).catch(handleError);
         },
         onSubmit: event => {
             const { onSubmitted, base } = get().form;
-            onSubmitted(event, base.state);
-            // TODO GLOBAL SUCCESS / ERROR HANDLING
-            // console.log('SUMIS');
+            onSubmitted(event, base.state).then(handleSuccess).catch(handleError);
         },
         setSidebar: sidebar => {
             if (typeof sidebar === 'undefined') {

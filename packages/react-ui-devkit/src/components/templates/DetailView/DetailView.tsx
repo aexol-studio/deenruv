@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
 import { ModelTypes } from '@deenruv/admin-types';
 import { cn } from '@/lib';
@@ -44,13 +44,13 @@ interface DetailViewFormProps<
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
-    ) => void;
+    ) => Promise<Record<string, unknown>>;
     onDeleted?: (
         event: Event,
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
-    ) => void;
+    ) => Promise<Record<string, unknown>>;
 }
 
 export const createDeenruvForm = <
@@ -144,6 +144,7 @@ const DetailTabs = () => {
     );
 
     const [, setSearchParams] = useSearchParams();
+    const { id } = useParams();
     return (
         <Tabs
             value={tab}
@@ -160,7 +161,7 @@ const DetailTabs = () => {
                 <div className="flex w-full items-center justify-between px-4 py-2">
                     <div className="flex w-full flex-1">
                         {tabs.length > 1 && (
-                            <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-none rounded-sm px-4 shadow-xl">
+                            <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-sm px-4 shadow-xl">
                                 {tabs.map((t, idx) => (
                                     <TabsTrigger
                                         key={idx}
@@ -176,10 +177,10 @@ const DetailTabs = () => {
                     </div>
                     <div className="flex items-center justify-end gap-2">
                         <Button variant="action" onClick={onSubmit} className="ml-auto justify-self-end">
-                            Edit
+                            {id ? 'Edit' : 'Create'}
                         </Button>
                         <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
+                            <DropdownMenuTrigger asChild {...(!id && { className: 'invisible' })}>
                                 <Button variant="secondary" size="icon">
                                     <EllipsisVerticalIcon />
                                 </Button>

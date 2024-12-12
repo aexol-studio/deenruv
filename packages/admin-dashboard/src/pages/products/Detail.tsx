@@ -33,17 +33,14 @@ export const ProductsDetailPage = () => {
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
             config: {},
-            onSubmitted: (event, data) => {
+            onSubmitted: (event, data) =>
               update({
                 input: {
                   id: id!,
                   translations: data.translations?.validatedValue,
                 },
-              });
-            },
-            onDeleted: (event, data) => {
-              console.log('deleted', data);
-            },
+              }),
+            onDeleted: (event, data) => new Promise((res) => res({})),
           }),
         }}
         defaultTabs={[
