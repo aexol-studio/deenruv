@@ -7,13 +7,13 @@ import {
   SelectValue,
   Skeleton,
 } from '@deenruv/react-ui-devkit';
-import { BetterMetricInterval } from '../../zeus';
+import { MetricRangeType } from '../../zeus';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface MetricTypeSelectProps {
-  value?: BetterMetricInterval;
-  changeMetricInterval: (interval: BetterMetricInterval) => void;
+  value?: MetricRangeType;
+  changeMetricInterval: (interval: MetricRangeType) => void;
   loading: boolean;
   withoutCustom?: boolean;
 }
@@ -35,50 +35,51 @@ export const MetricsRangeSelect: React.FC<MetricTypeSelectProps> = ({
       <Select
         value={value}
         onValueChange={(value) =>
-          changeMetricInterval(value as BetterMetricInterval)
+          changeMetricInterval(value as MetricRangeType)
         }
-        defaultValue={BetterMetricInterval.Weekly}
+        defaultValue={MetricRangeType.ThisWeek}
       >
         <SelectTrigger className="h-[30px] w-full  text-[13px]">
           <SelectValue placeholder={t('selectDataType')} />
         </SelectTrigger>
         <SelectContent className="max-h-none w-full">
           <SelectGroup>
-            <SelectItem value={BetterMetricInterval.Today}>
-              {t('today')}
-            </SelectItem>
-            <SelectItem value={BetterMetricInterval.Yesterday}>
+            <SelectItem value={MetricRangeType.Today}>{t('today')}</SelectItem>
+            <SelectItem value={MetricRangeType.Yesterday}>
               {t('yesterday')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.Weekly}>
-              {t('thisWeekInterval')}
+            <SelectItem value={MetricRangeType.ThisWeek}>
+              {t('thisWeek')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.LastWeek}>
-              {t('lastWeekInterval')}
+            <SelectItem value={MetricRangeType.LastWeek}>
+              {t('lastWeek')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.Monthly}>
-              {t('thisMonthInterval')}
+            <SelectItem value={MetricRangeType.ThisMonth}>
+              {t('thisMonth')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.LastMonth}>
-              {t('lastMonthInterval')}
+            <SelectItem value={MetricRangeType.LastMonth}>
+              {t('lastMonth')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.Yearly}>
-              {t('yearlyInterval')}
+            <SelectItem value={MetricRangeType.ThisYear}>
+              {t('thisYear')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.FirstQuarter}>
+            <SelectItem value={MetricRangeType.LastYear}>
+              {t('lastYear')}
+            </SelectItem>
+            <SelectItem value={MetricRangeType.FirstQuarter}>
               {t('firstYearQuarterInterval')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.SecondQuarter}>
+            <SelectItem value={MetricRangeType.SecondQuarter}>
               {t('secondYearQuarterInterval')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.ThirdQuarter}>
+            <SelectItem value={MetricRangeType.ThirdQuarter}>
               {t('thirdYearQuarterInterval')}
             </SelectItem>
-            <SelectItem value={BetterMetricInterval.FourthQuarter}>
+            <SelectItem value={MetricRangeType.FourthQuarter}>
               {t('fourthYearQuarterInterval')}
             </SelectItem>
             {!withoutCustom ? (
-              <SelectItem value={BetterMetricInterval.Custom}>
+              <SelectItem value={MetricRangeType.Custom}>
                 {t('customInterval')}
               </SelectItem>
             ) : null}

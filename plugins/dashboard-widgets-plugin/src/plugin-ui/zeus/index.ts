@@ -5393,12 +5393,10 @@ translations?: [{	languageCode?: ValueTypes["LanguageCode"] | undefined | null |
 }>;
 	["ChartMetrics"]: AliasType<{
 	data?:ValueTypes["ChartDataType"],
-	lastCacheRefreshTime?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderSummaryMetrics"]: AliasType<{
 	data?:ValueTypes["OrderSummaryDataMetric"],
-	lastCacheRefreshTime?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderSummaryDataMetric"]: AliasType<{
@@ -5408,19 +5406,20 @@ translations?: [{	languageCode?: ValueTypes["LanguageCode"] | undefined | null |
 	orderCount?:boolean | `@${string}`,
 	averageOrderValue?:boolean | `@${string}`,
 	averageOrderValueWithTax?:boolean | `@${string}`,
+	productCount?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["BetterMetricInterval"]:BetterMetricInterval;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
 	["ChartMetricType"]:ChartMetricType;
 	["ChartEntryAdditionalData"]: AliasType<{
 	id?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
 	quantity?:boolean | `@${string}`,
-	priceWithTax?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ChartEntry"]: AliasType<{
-	day?:boolean | `@${string}`,
+	intervalTick?:boolean | `@${string}`,
 	value?:boolean | `@${string}`,
 	additionalData?:ValueTypes["ChartEntryAdditionalData"],
 		__typename?: boolean | `@${string}`
@@ -5431,13 +5430,14 @@ translations?: [{	languageCode?: ValueTypes["LanguageCode"] | undefined | null |
 };
 	["OrderSummaryMetricInput"]: {
 	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
-	refresh?: boolean | undefined | null | Variable<any, string>
+	orderStates: Array<string> | Variable<any, string>
 };
 	["ChartMetricInput"]: {
 	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
+	interval: ValueTypes["MetricIntervalType"] | Variable<any, string>,
 	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
-	productIDs?: Array<string> | undefined | null | Variable<any, string>,
-	refresh?: boolean | undefined | null | Variable<any, string>
+	orderStates: Array<string> | Variable<any, string>,
+	productIDs?: Array<string> | undefined | null | Variable<any, string>
 };
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
@@ -10839,12 +10839,10 @@ translations?: [{	languageCode?: ResolverInputTypes["LanguageCode"] | undefined 
 }>;
 	["ChartMetrics"]: AliasType<{
 	data?:ResolverInputTypes["ChartDataType"],
-	lastCacheRefreshTime?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderSummaryMetrics"]: AliasType<{
 	data?:ResolverInputTypes["OrderSummaryDataMetric"],
-	lastCacheRefreshTime?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderSummaryDataMetric"]: AliasType<{
@@ -10854,19 +10852,20 @@ translations?: [{	languageCode?: ResolverInputTypes["LanguageCode"] | undefined 
 	orderCount?:boolean | `@${string}`,
 	averageOrderValue?:boolean | `@${string}`,
 	averageOrderValueWithTax?:boolean | `@${string}`,
+	productCount?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["BetterMetricInterval"]:BetterMetricInterval;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
 	["ChartMetricType"]:ChartMetricType;
 	["ChartEntryAdditionalData"]: AliasType<{
 	id?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
 	quantity?:boolean | `@${string}`,
-	priceWithTax?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ChartEntry"]: AliasType<{
-	day?:boolean | `@${string}`,
+	intervalTick?:boolean | `@${string}`,
 	value?:boolean | `@${string}`,
 	additionalData?:ResolverInputTypes["ChartEntryAdditionalData"],
 		__typename?: boolean | `@${string}`
@@ -10877,13 +10876,14 @@ translations?: [{	languageCode?: ResolverInputTypes["LanguageCode"] | undefined 
 };
 	["OrderSummaryMetricInput"]: {
 	range: ResolverInputTypes["BetterMetricRangeInput"],
-	refresh?: boolean | undefined | null
+	orderStates: Array<string>
 };
 	["ChartMetricInput"]: {
 	range: ResolverInputTypes["BetterMetricRangeInput"],
+	interval: ResolverInputTypes["MetricIntervalType"],
 	types: Array<ResolverInputTypes["ChartMetricType"]>,
-	productIDs?: Array<string> | undefined | null,
-	refresh?: boolean | undefined | null
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null
 };
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
@@ -15801,12 +15801,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	entries: Array<ModelTypes["ChartEntry"]>
 };
 	["ChartMetrics"]: {
-		data: Array<ModelTypes["ChartDataType"]>,
-	lastCacheRefreshTime: string
+		data: Array<ModelTypes["ChartDataType"]>
 };
 	["OrderSummaryMetrics"]: {
-		data: ModelTypes["OrderSummaryDataMetric"],
-	lastCacheRefreshTime: string
+		data: ModelTypes["OrderSummaryDataMetric"]
 };
 	["OrderSummaryDataMetric"]: {
 		currencyCode: ModelTypes["CurrencyCode"],
@@ -15814,18 +15812,19 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalWithTax: number,
 	orderCount: number,
 	averageOrderValue: number,
-	averageOrderValueWithTax: number
+	averageOrderValueWithTax: number,
+	productCount: number
 };
-	["BetterMetricInterval"]:BetterMetricInterval;
+	["MetricRangeType"]:MetricRangeType;
+	["MetricIntervalType"]:MetricIntervalType;
 	["ChartMetricType"]:ChartMetricType;
 	["ChartEntryAdditionalData"]: {
 		id: string,
 	name: string,
-	quantity: number,
-	priceWithTax: number
+	quantity: number
 };
 	["ChartEntry"]: {
-		day: number,
+		intervalTick: number,
 	value: number,
 	additionalData?: Array<ModelTypes["ChartEntryAdditionalData"]> | undefined | null
 };
@@ -15835,13 +15834,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["OrderSummaryMetricInput"]: {
 	range: ModelTypes["BetterMetricRangeInput"],
-	refresh?: boolean | undefined | null
+	orderStates: Array<string>
 };
 	["ChartMetricInput"]: {
 	range: ModelTypes["BetterMetricRangeInput"],
+	interval: ModelTypes["MetricIntervalType"],
 	types: Array<ModelTypes["ChartMetricType"]>,
-	productIDs?: Array<string> | undefined | null,
-	refresh?: boolean | undefined | null
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null
 };
 	["MetricSummary"]: {
 		interval: ModelTypes["MetricInterval"],
@@ -21397,13 +21397,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["ChartMetrics"]: {
 	__typename: "ChartMetrics",
-	data: Array<GraphQLTypes["ChartDataType"]>,
-	lastCacheRefreshTime: string
+	data: Array<GraphQLTypes["ChartDataType"]>
 };
 	["OrderSummaryMetrics"]: {
 	__typename: "OrderSummaryMetrics",
-	data: GraphQLTypes["OrderSummaryDataMetric"],
-	lastCacheRefreshTime: string
+	data: GraphQLTypes["OrderSummaryDataMetric"]
 };
 	["OrderSummaryDataMetric"]: {
 	__typename: "OrderSummaryDataMetric",
@@ -21412,20 +21410,21 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalWithTax: number,
 	orderCount: number,
 	averageOrderValue: number,
-	averageOrderValueWithTax: number
+	averageOrderValueWithTax: number,
+	productCount: number
 };
-	["BetterMetricInterval"]: BetterMetricInterval;
+	["MetricRangeType"]: MetricRangeType;
+	["MetricIntervalType"]: MetricIntervalType;
 	["ChartMetricType"]: ChartMetricType;
 	["ChartEntryAdditionalData"]: {
 	__typename: "ChartEntryAdditionalData",
 	id: string,
 	name: string,
-	quantity: number,
-	priceWithTax: number
+	quantity: number
 };
 	["ChartEntry"]: {
 	__typename: "ChartEntry",
-	day: number,
+	intervalTick: number,
 	value: number,
 	additionalData?: Array<GraphQLTypes["ChartEntryAdditionalData"]> | undefined | null
 };
@@ -21435,13 +21434,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["OrderSummaryMetricInput"]: {
 		range: GraphQLTypes["BetterMetricRangeInput"],
-	refresh?: boolean | undefined | null
+	orderStates: Array<string>
 };
 	["ChartMetricInput"]: {
 		range: GraphQLTypes["BetterMetricRangeInput"],
+	interval: GraphQLTypes["MetricIntervalType"],
 	types: Array<GraphQLTypes["ChartMetricType"]>,
-	productIDs?: Array<string> | undefined | null,
-	refresh?: boolean | undefined | null
+	orderStates: Array<string>,
+	productIDs?: Array<string> | undefined | null
 };
 	["MetricSummary"]: {
 	__typename: "MetricSummary",
@@ -22913,27 +22913,30 @@ export enum SpecialOfferType {
 	CASTING = "CASTING",
 	SIMPLIFIED_FORM = "SIMPLIFIED_FORM"
 }
-export enum BetterMetricInterval {
+export enum MetricRangeType {
 	Today = "Today",
 	Yesterday = "Yesterday",
-	Weekly = "Weekly",
-	Monthly = "Monthly",
-	Yearly = "Yearly",
-	Custom = "Custom",
+	ThisWeek = "ThisWeek",
 	LastWeek = "LastWeek",
 	ThisMonth = "ThisMonth",
 	LastMonth = "LastMonth",
+	ThisYear = "ThisYear",
+	LastYear = "LastYear",
 	FirstQuarter = "FirstQuarter",
 	SecondQuarter = "SecondQuarter",
 	ThirdQuarter = "ThirdQuarter",
-	FourthQuarter = "FourthQuarter"
+	FourthQuarter = "FourthQuarter",
+	Custom = "Custom"
+}
+export enum MetricIntervalType {
+	Day = "Day",
+	Hour = "Hour"
 }
 export enum ChartMetricType {
 	OrderCount = "OrderCount",
 	OrderTotal = "OrderTotal",
 	AverageOrderValue = "AverageOrderValue",
-	OrderTotalProductsCount = "OrderTotalProductsCount",
-	OrderTotalProductsValue = "OrderTotalProductsValue"
+	OrderTotalProductsCount = "OrderTotalProductsCount"
 }
 export enum MetricInterval {
 	Daily = "Daily"
@@ -23178,7 +23181,8 @@ type ZEUS_VARIABLES = {
 	["EffectsApplicationListOptions"]: ValueTypes["EffectsApplicationListOptions"];
 	["CastingApplicationListOptions"]: ValueTypes["CastingApplicationListOptions"];
 	["SimplifiedFormApplicationOptions"]: ValueTypes["SimplifiedFormApplicationOptions"];
-	["BetterMetricInterval"]: ValueTypes["BetterMetricInterval"];
+	["MetricRangeType"]: ValueTypes["MetricRangeType"];
+	["MetricIntervalType"]: ValueTypes["MetricIntervalType"];
 	["ChartMetricType"]: ValueTypes["ChartMetricType"];
 	["BetterMetricRangeInput"]: ValueTypes["BetterMetricRangeInput"];
 	["OrderSummaryMetricInput"]: ValueTypes["OrderSummaryMetricInput"];

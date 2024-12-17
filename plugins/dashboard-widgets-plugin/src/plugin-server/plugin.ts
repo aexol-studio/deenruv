@@ -5,10 +5,22 @@ import gql from 'graphql-tag';
 import { AdminUIController } from './controllers/admin-ui-controller';
 import { PLUGIN_INIT_OPTIONS } from './constants';
 import { DashboardWidgetsPluginOptions } from './types';
+import { OrderSummaryViewEntity } from './materialisedViewEntities/order_summary';
+import { TotalProductsViewEntity } from './materialisedViewEntities/total_products';
+import { OrderSummaryWithStateViewEntity } from './materialisedViewEntities/orders_summary_with_state';
+import { TotalProductsWithStateViewEntity } from './materialisedViewEntities/total_products_with_state';
+import { RefreshViewController } from './controllers/refresh-view-controller';
+
 @DeenruvPlugin({
     compatibility: '^0.0.0',
     imports: [PluginCommonModule],
-    controllers: [AdminUIController],
+    controllers: [AdminUIController, RefreshViewController],
+    entities: [
+        OrderSummaryViewEntity,
+        OrderSummaryWithStateViewEntity,
+        TotalProductsViewEntity,
+        TotalProductsWithStateViewEntity,
+    ],
     providers: [
         BetterMetricsService,
         {
@@ -21,84 +33,90 @@ import { DashboardWidgetsPluginOptions } from './types';
     },
     adminApiExtensions: {
         schema: gql`
-            type ChartDataType {
-                type: ChartMetricType!
-                title: String!
-                entries: [ChartEntry!]!
-            }
+      type ChartDataType {
+        type: ChartMetricType!
+        title: String!
+        entries: [ChartEntry!]!
+      }
 
-            type ChartMetrics {
-                data: [ChartDataType!]!
-                lastCacheRefreshTime: String!
-            }
-            type OrderSummaryMetrics {
-                data: OrderSummaryDataMetric!
-                lastCacheRefreshTime: String!
-            }
-            type OrderSummaryDataMetric {
-                currencyCode: CurrencyCode!
-                total: Float!
-                totalWithTax: Float!
-                orderCount: Float!
-                averageOrderValue: Float!
-                averageOrderValueWithTax: Float!
-            }
-            enum BetterMetricInterval {
-                Today
-                Yesterday
-                Weekly
-                Monthly
-                Yearly
-                Custom
-                LastWeek
-                ThisMonth
-                LastMonth
-                FirstQuarter
-                SecondQuarter
-                ThirdQuarter
-                FourthQuarter
-            }
-            enum ChartMetricType {
-                OrderCount
-                OrderTotal
-                AverageOrderValue
-                OrderTotalProductsCount
-                OrderTotalProductsValue
-            }
-            type ChartEntryAdditionalData {
-                id: String!
-                name: String!
-                quantity: Float!
-                priceWithTax: Float!
-            }
+      type ChartMetrics {
+        data: [ChartDataType!]!
+      }
+      type OrderSummaryMetrics {
+        data: OrderSummaryDataMetric!
+      }
+      type OrderSummaryDataMetric {
+        currencyCode: CurrencyCode!
+        total: Float!
+        totalWithTax: Float!
+        orderCount: Float!
+        averageOrderValue: Float!
+        averageOrderValueWithTax: Float!
+        productCount: Float!
+      }
+      enum MetricRangeType {
+        Today
+        Yesterday
+        ThisWeek
+        LastWeek
+        ThisMonth
+        LastMonth
+        ThisYear
+        LastYear
+        FirstQuarter
+        SecondQuarter
+        ThirdQuarter
+        FourthQuarter
+        Custom
+      }
 
-            type ChartEntry {
-                day: Int!
-                value: Float!
-                additionalData: [ChartEntryAdditionalData!]
-            }
-            input BetterMetricRangeInput {
-                start: DateTime!
-                end: DateTime
-            }
+      enum MetricIntervalType {
+        Day
+        Hour
+      }
 
-            input OrderSummaryMetricInput {
-                range: BetterMetricRangeInput!
-                refresh: Boolean
-            }
+      enum ChartMetricType {
+        OrderCount
+        OrderTotal
+        AverageOrderValue
+        OrderTotalProductsCount
+      }
+      type ChartEntryAdditionalData {
+        id: String!
+        name: String!
+        quantity: Float!
+      }
 
-            input ChartMetricInput {
-                range: BetterMetricRangeInput!
-                types: [ChartMetricType!]!
-                productIDs: [String!]
-                refresh: Boolean
-            }
+      type ChartEntry {
+        intervalTick: Int!
+        value: Float!
+        additionalData: [ChartEntryAdditionalData!]
+      }
+      input BetterMetricRangeInput {
+        start: DateTime!
+        end: DateTime
+      }
 
-            extend type Query {
-                chartMetric(input: ChartMetricInput!): ChartMetrics!
-                orderSummaryMetric(input: OrderSummaryMetricInput!): OrderSummaryMetrics!
-            }
-        `,
+      input OrderSummaryMetricInput {
+        range: BetterMetricRangeInput!
+        orderStates: [String!]!
+      }
+
+      input ChartMetricInput {
+        range: BetterMetricRangeInput!
+        interval: MetricIntervalType!
+        types: [ChartMetricType!]!
+        orderStates: [String!]!
+        productIDs: [String!]
+      }
+
+      extend type Query {
+        chartMetric(input: ChartMetricInput!): ChartMetrics!
+        orderSummaryMetric(
+          input: OrderSummaryMetricInput!
+        ): OrderSummaryMetrics!
+      }
+    `,
         resolvers: [AdminResolver],
     },
 })

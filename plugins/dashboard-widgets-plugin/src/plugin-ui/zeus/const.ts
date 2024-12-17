@@ -1851,7 +1851,8 @@ export const AllTypesProps: Record<string,any> = {
 	SimplifiedFormApplicationOptions:{
 		filterOperator:"LogicalOperator"
 	},
-	BetterMetricInterval: "enum" as const,
+	MetricRangeType: "enum" as const,
+	MetricIntervalType: "enum" as const,
 	ChartMetricType: "enum" as const,
 	BetterMetricRangeInput:{
 		start:"DateTime",
@@ -1862,6 +1863,7 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	ChartMetricInput:{
 		range:"BetterMetricRangeInput",
+		interval:"MetricIntervalType",
 		types:"ChartMetricType"
 	},
 	MetricInterval: "enum" as const,
@@ -4955,12 +4957,10 @@ export const ReturnTypes: Record<string,any> = {
 		entries:"ChartEntry"
 	},
 	ChartMetrics:{
-		data:"ChartDataType",
-		lastCacheRefreshTime:"String"
+		data:"ChartDataType"
 	},
 	OrderSummaryMetrics:{
-		data:"OrderSummaryDataMetric",
-		lastCacheRefreshTime:"String"
+		data:"OrderSummaryDataMetric"
 	},
 	OrderSummaryDataMetric:{
 		currencyCode:"CurrencyCode",
@@ -4968,16 +4968,16 @@ export const ReturnTypes: Record<string,any> = {
 		totalWithTax:"Float",
 		orderCount:"Float",
 		averageOrderValue:"Float",
-		averageOrderValueWithTax:"Float"
+		averageOrderValueWithTax:"Float",
+		productCount:"Float"
 	},
 	ChartEntryAdditionalData:{
 		id:"String",
 		name:"String",
-		quantity:"Float",
-		priceWithTax:"Float"
+		quantity:"Float"
 	},
 	ChartEntry:{
-		day:"Int",
+		intervalTick:"Int",
 		value:"Float",
 		additionalData:"ChartEntryAdditionalData"
 	},
