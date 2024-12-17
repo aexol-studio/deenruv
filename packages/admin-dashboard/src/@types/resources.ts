@@ -1,3 +1,4 @@
+import customers from '../locales/en/customers.json';
 import collections from '../locales/en/collections.json';
 import common from '../locales/en/common.json';
 import countries from '../locales/en/countries.json';
@@ -23,6 +24,7 @@ const resources = {
   collections,
   common,
   countries,
+  customers,
   orders,
   products,
   dashboard,

@@ -47,6 +47,7 @@ export const Routes = {
     },
     orders: {
         list: '/admin-ui/orders',
+        new: '/admin-ui/orders/new',
         route: '/admin-ui/orders/:id',
         to: (orderId: string) => `/admin-ui/orders/${orderId}`,
     },

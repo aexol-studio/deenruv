@@ -69,12 +69,13 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     detailLinkColumn,
     filterFields,
     noPaddings,
+    noCreateButton,
 }: {
     fetch: T;
     route:
         | { list: string; new: string; route: string; to: (id: string) => string }
         | { create: () => void; edit: (id: string) => void };
-    onRemove: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
+    onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
     type: keyof ListType;
     tableId: ListLocationID;
     entityName: ENTITY;
@@ -84,6 +85,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     detailLinkColumn?: keyof AwaitedReturnType<T>['items'][number];
     filterFields?: FilterField<ENTITY>[];
     noPaddings?: boolean;
+    noCreateButton?: boolean;
 }) {
     const { t } = useTranslation('table');
     const getPriority = (key: string): number => {
@@ -373,7 +375,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
     const onConfirmDelete = async () => {
         try {
-            const result = await onRemove(itemsToDelete);
+            const result = await onRemove?.(itemsToDelete);
             if (!result) return;
             refetch();
             table.toggleAllRowsSelected(false);
@@ -407,9 +409,11 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
     return (
         <div className={cn('w-full', !noPaddings && 'px-4 py-2 md:px-8 md:py-4')}>
-            <DeleteDialog
-                {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
-            />
+            {onRemove && (
+                <DeleteDialog
+                    {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
+                />
+            )}
             <div className="page-content-h flex w-full flex-col gap-2">
                 <div className="flex w-full flex-col items-start gap-4">
                     <div className="flex w-full items-end justify-between gap-4">
@@ -418,16 +422,18 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             {Search}
                         </div>
                         <div className="flex">
-                            <Button
-                                className="flex items-center gap-2"
-                                onClick={() => {
-                                    if ('create' in route) route.create();
-                                    else navigate(route.new);
-                                }}
-                            >
-                                <PlusCircleIcon size={16} />
-                                {t('create')}
-                            </Button>
+                            {!noCreateButton && (
+                                <Button
+                                    className="flex items-center gap-2"
+                                    onClick={() => {
+                                        if ('create' in route) route.create();
+                                        else navigate(route.new);
+                                    }}
+                                >
+                                    <PlusCircleIcon size={16} />
+                                    {t('create')}
+                                </Button>
+                            )}
                         </div>
                     </div>
                     <FiltersResult {...filterProperties} />

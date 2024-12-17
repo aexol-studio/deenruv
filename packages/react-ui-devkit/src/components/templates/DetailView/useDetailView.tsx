@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { createStore, useStore } from 'zustand';
 import { createContext, useContext } from 'react';
-import { DeletionResult, GraphQLResponse, LanguageCode, ValueTypes } from '@deenruv/admin-types';
+import { DeletionResult, LanguageCode, ValueTypes } from '@deenruv/admin-types';
 
 import { ModelTypes } from '@deenruv/admin-types';
 import { DeenruvTabs, DetailKeys, DetailLocations, ExternalDetailLocationSelector } from '@/types';
@@ -191,6 +191,7 @@ const createDetailViewStore = <
             onSubmitted(event, base.state).then(handleSuccess).catch(handleError);
         },
         setSidebar: sidebar => {
+            // TODO This logic is not in use as sidebar is handled in DetailView.tsx
             if (typeof sidebar === 'undefined') {
                 set({ sidebar: initProps?.sidebar });
             } else if (sidebar === null) {

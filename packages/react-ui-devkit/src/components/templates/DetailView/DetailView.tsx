@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
 import { ModelTypes } from '@deenruv/admin-types';
@@ -110,11 +110,20 @@ export const DetailView = <LOCATION extends DetailKeys>({
         );
     }, [locationId]);
 
+    const currentSidebar = useMemo(() => {
+        const currentTab = defaultTabs.find(t => t.name === tab);
+        return currentTab?.hideSidebar
+            ? null
+            : currentTab?.sidebarReplacement
+              ? currentTab.sidebarReplacement
+              : main.sidebar;
+    }, [defaultTabs, tab]);
+
     return (
         <DetailViewStoreProvider
             id={id}
             tab={tab}
-            sidebar={main.sidebar}
+            sidebar={currentSidebar}
             locationId={locationId}
             tabs={[main, ...defaultTabs, ...tabs]}
             form={{
@@ -145,6 +154,7 @@ const DetailTabs = () => {
 
     const [, setSearchParams] = useSearchParams();
     const { id } = useParams();
+
     return (
         <Tabs
             value={tab}

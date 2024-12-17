@@ -15,3 +15,4 @@ export * from './ListButtons.js';
 export * from './ListColumnDropdown.js';
 export * from './EntityCustomFields.js';
 export * from './Aexol.js';
+export * from './History';

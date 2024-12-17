@@ -5,6 +5,7 @@ import { ProductDetailSelector, ProductListSelector, StockLocationDetailSelector
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
+import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -72,6 +73,10 @@ export const DetailLocations = {
     'stockLocations-detail-view': {
         type: 'StockLocation' as const,
         selector: StockLocationDetailSelector,
+    },
+    'customers-detail-view': {
+        type: 'Customer' as const,
+        selector: CustomerDetailSelector,
     },
 
 };

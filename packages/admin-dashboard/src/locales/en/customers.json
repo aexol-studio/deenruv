@@ -1,0 +1,38 @@
+{
+    "personalData": {
+        "header": "Personal data",
+        "title": "Title",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "emailAddress": "Email address",
+        "phoneNumber": "Phone number"
+    },
+    "verified": {
+        "header": "Customer roles",
+        "true": "Verified",
+        "false": "Guest"
+    },
+    "customerGroups": {
+        "header": "Customer groups",
+        "placeholder": "Add groups",
+        "toastAdded": "User has been added to the group",
+        "toastRemoved": "User has been removed from the group"
+    },
+    "addresses": {
+        "header": "Addresses",
+        "empty": "It looks like there are no addresses yet.",
+        "addBtn": "Add address",
+        "phoneNumberShort": "tel.{{value}}",
+        "edit": "Edit",
+        "save": "Save",
+        "cancel": "Cancel"
+    },
+    "orders": {
+        "header": "Orders"
+    },
+    "history": {
+        "header": "History",
+        "toastError": "There was an error",
+        "toastSuccess": "Action completed successfully"
+    }
+}
