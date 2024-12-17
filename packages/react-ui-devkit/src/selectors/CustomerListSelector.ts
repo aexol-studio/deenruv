@@ -8,6 +8,7 @@ export const CustomerListSelector = Selector('Customer')({
     updatedAt: true,
     title: true,
     emailAddress: true,
+    phoneNumber: true,
     user: {
         id: true,
         verified: true,

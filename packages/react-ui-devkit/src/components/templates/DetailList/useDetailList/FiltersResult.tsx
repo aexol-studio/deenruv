@@ -41,8 +41,9 @@ export const FiltersResult = <T extends keyof ListType>({
                     label = String(name);
                 }
                 return {
-                    name: label as keyof ModelTypes[(typeof ListTypeKeys)[T]],
+                    name: name as keyof ModelTypes[(typeof ListTypeKeys)[T]],
                     type: type as keyof FilterInputType,
+                    label,
                     value:
                         filter && Object.keys(filter).includes(name.toString())
                             ? (filter[

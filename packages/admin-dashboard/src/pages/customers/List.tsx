@@ -51,13 +51,13 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 export const CustomersListPage = () => (
   <DetailList
     detailLinkColumn="id"
-    filterFields={[{ key: 'id', operator: 'IDOperators' }]}
+    filterFields={[{ key: 'phoneNumber', operator: 'StringOperators' }]}
     searchFields={['firstName', 'lastName', 'emailAddress']}
     hideColumns={['customFields', 'user', 'title']}
     additionalColumns={[
       {
         id: 'verified',
-        accessorKey: 'createdAt',
+        accessorKey: 'verified',
         header: () => 'verified',
         cell: ({ row }) => (row.original.user?.verified ? <CircleCheck color="green" /> : <CircleX color="red" />),
       },

@@ -42,7 +42,8 @@ export const FiltersButton = <T extends keyof ListType>({
                 label = String(name);
             }
             return {
-                name: label as keyof ModelTypes[(typeof ListTypeKeys)[T]],
+                name: name as keyof ModelTypes[(typeof ListTypeKeys)[T]],
+                label: label as keyof ModelTypes[(typeof ListTypeKeys)[T]],
                 type: type as keyof FilterInputType,
                 value:
                     filter && Object.keys(filter).includes(name.toString())
@@ -70,7 +71,7 @@ export const FiltersButton = <T extends keyof ListType>({
                                 else removeFilterField(i.name);
                             }}
                         >
-                            {i.name as string}
+                            {i.label as string}
                         </DropdownMenuCheckboxItem>
                     );
                 })}

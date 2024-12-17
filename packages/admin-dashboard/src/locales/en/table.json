@@ -47,6 +47,7 @@
     "enabled": "Enabled",
     "name": "Name",
     "firstName": "First name",
+    "phoneNumber": "Phone number",
     "emailAddress": "Email address",
     "slug": "Slug",
     "description": "Description",

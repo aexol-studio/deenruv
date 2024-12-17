@@ -168,7 +168,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
                 perPage: perPage ? parseInt(perPage) : 10,
                 sort: sort && sortDir ? { key: sort, sortDir: sortDir as SortOrder } : undefined,
                 filter: mergedFilters,
-                filterOperator: Object.keys(searchFilter).length ? LogicalOperator.AND : LogicalOperator.OR,
+                filterOperator: Object.keys(searchFilter).length ? LogicalOperator.OR : LogicalOperator.AND,
             };
         } catch (err) {
             throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);

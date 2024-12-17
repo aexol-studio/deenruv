@@ -26,10 +26,15 @@ export function RenderOperators<T extends keyof ListType, F extends ModelTypes[(
     currentFilter: FilterKey<T> | undefined;
     setCurrentFilter: (value: FilterKey<T> | undefined) => void;
     removeFilterField: (field: FilterKey<T>) => void;
-    filters: { name: FilterKey<T>; type: keyof FilterInputType; value?: FilterInputTypeUnion }[];
+    filters: {
+        name: FilterKey<T>;
+        type: keyof FilterInputType;
+        value?: FilterInputTypeUnion;
+        label: string;
+    }[];
     setFilterField: (field: FilterKey<T>, value: FilterInputTypeUnion) => void;
 }) {
-    return filters.map(({ name, type, value: _value }) => {
+    return filters.map(({ name, type, label, value: _value }, i) => {
         let validValue = undefined;
         try {
             const value = JSON.parse(JSON.stringify(_value));
@@ -42,8 +47,13 @@ export function RenderOperators<T extends keyof ListType, F extends ModelTypes[(
                 validValue = undefined;
             }
         }
+
         return (
-            <Popover open={currentFilter === name} onOpenChange={e => setCurrentFilter(e ? name : undefined)}>
+            <Popover
+                open={currentFilter === name}
+                onOpenChange={e => setCurrentFilter(e ? name : undefined)}
+                key={i}
+            >
                 <PopoverTrigger asChild className="flex items-center gap-4">
                     <Button
                         variant="outline"
@@ -51,7 +61,7 @@ export function RenderOperators<T extends keyof ListType, F extends ModelTypes[(
                         onClick={() => setCurrentFilter(name)}
                         className={cn('h-8 border-dashed', !validValue && 'border-red-600')}
                     >
-                        {typeof name === 'string' ? name : ''}
+                        {typeof label === 'string' ? label : ''}
                         {validValue && (
                             <span className="text-primary-600 text-xs font-normal">{validValue}</span>
                         )}
