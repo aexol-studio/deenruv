@@ -19,6 +19,6 @@ export class DefaultMoneyStrategy implements MoneyStrategy {
     readonly precision: number = 2;
 
     round(value: number, quantity = 1): number {
-        return Math.round(value) * quantity;
+        return Math.round(value * quantity);
     }
 }
