@@ -166,10 +166,12 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     const filter = searchParams.get(SearchParamKey.FILTER);
     const filterOperator = searchParams.get(SearchParamKey.FILTER_OPERATOR);
 
+    const DEFAULT_PER_PAGE = customItemsPerPage?.[0].value || 10;
+
     try {
       return {
         page: page ? parseInt(page) : 1,
-        perPage: perPage ? parseInt(perPage) : 10,
+        perPage: perPage ? parseInt(perPage) : DEFAULT_PER_PAGE,
         sort: sort && sortDir ? { key: sort, sortDir: sortDir as SortOrder } : undefined,
         filter: filter ? (JSON.parse(filter) as ModelTypes[ListType[typeof listType]]) : undefined,
         filterOperator: filterOperator ? (filterOperator as LogicalOperator) : LogicalOperator.OR,
@@ -177,7 +179,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     } catch (err) {
       throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
     }
-  }, [searchParams]);
+  }, [searchParams, customItemsPerPage]);
 
   const isFilterOn = useMemo(() => {
     let isFilterOn = false;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ItemsPerPageType, useList } from '@/lists/useList';
-import { $, ResolverInputTypes } from '@deenruv/admin-types';
+import { $, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button, apiClient, apiUploadClient } from '@deenruv/react-ui-devkit';
@@ -44,7 +44,14 @@ export const AssetsListPage = () => {
     optionInfo,
     refetch,
   } = useList({
-    route: async (p) => getAssets({ take: 32, skip: (p.page - 1) * 32 }),
+    route: async ({ page, perPage, sort, filter, filterOperator }) =>
+      getAssets({
+        take: perPage,
+        skip: (page - 1) * perPage,
+        filterOperator: filterOperator,
+        sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+        ...(filter && { filter }),
+      }),
     listType: 'assets',
     customItemsPerPage: ITEMS_PER_PAGE,
   });
@@ -89,7 +96,7 @@ export const AssetsListPage = () => {
   };
 
   return (
-    <main>
+    <main className="w-full px-4 py-2 md:px-8 md:py-4">
       <form
         onDrop={(e) => {
           e.preventDefault();
