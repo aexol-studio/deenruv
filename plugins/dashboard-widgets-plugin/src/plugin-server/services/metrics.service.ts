@@ -212,16 +212,14 @@ export class BetterMetricsService {
 
             const dbResponse = await viewQb.getRawMany();
 
-            // !!!!!!!!!IMPORTANT for now we are assuming that listPrice from orderLine includes tax IMPORTANT!!!!!!!!!
-
             const reducedRes = (dbResponse as any[]).reduce((acc, curr) => {
                 if (acc[curr.intervalTick]) {
-                    acc[curr.intervalTick].value + curr.orderPlacedQuantitySum,
-                        acc[curr.intervalTick].additionaldata.push({
-                            name: curr.name,
-                            id: curr.productVariantId,
-                            quantity: +curr.orderPlacedQuantitySum,
-                        });
+                    acc[curr.intervalTick].value += +curr.orderPlacedQuantitySum;
+                    acc[curr.intervalTick].additionaldata.push({
+                        name: curr.name,
+                        id: curr.productVariantId,
+                        quantity: +curr.orderPlacedQuantitySum,
+                    });
                 } else {
                     acc[curr.intervalTick] = {
                         value: +curr.orderPlacedQuantitySum,
