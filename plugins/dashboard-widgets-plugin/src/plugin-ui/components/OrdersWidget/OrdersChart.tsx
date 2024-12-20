@@ -36,6 +36,7 @@ interface ChartProps {
   selectedAvailableProducts: { id: string; color: string }[];
   metricType: ChartMetricType;
   shouldShowCompare: boolean;
+
 }
 
 const HEIGHT = 300;
@@ -99,6 +100,7 @@ export const OrdersChart: React.FC<ChartProps> = ({
           cursor={false}
           content={(p) => (
             <CustomTooltip
+              currencyCode={currencyCode}
               valueStroke={options.stroke}
               prevValueStroke="#82FF9E"
               shouldShowCompare={shouldShowCompare}
