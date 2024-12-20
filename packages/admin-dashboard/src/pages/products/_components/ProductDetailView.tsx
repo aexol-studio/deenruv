@@ -67,6 +67,12 @@ export const ProductDetailView = () => {
     [contentLng, translations],
   );
 
+  const handleAddAsset = useCallback((newId: string | undefined) => {
+    if (!newId) return;
+    const currentIds = state.assetIds?.value || [];
+    setField('assetIds', [...currentIds, newId]);
+  }, []);
+
   return view.loading ? (
     <div>
       <Spinner height={'80vh'} />
@@ -78,7 +84,7 @@ export const ProductDetailView = () => {
         <DetailViewMarker position={'products-detail-view'} />
         <EntityCustomFields entityName="product" id={id} currentLanguage={contentLng} />
         <AssetsCard
-          onAddAsset={() => ''}
+          onAddAsset={handleAddAsset}
           featuredAssetId={state.featuredAssetId?.value}
           assetsIds={state.assetIds?.value}
           onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}

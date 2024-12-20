@@ -3,6 +3,9 @@ import { useEffect } from 'react';
 
 import { SettingsCard } from './SettingsCard';
 import { useTranslation } from 'react-i18next';
+import { ChannelsCard } from '@/pages/products/_components/ChannelsCard';
+import { CollectionsCard } from '@/pages/products/_components/CollectionsCard';
+import { FacetsCard } from '@/pages/products/_components/FacetsCard';
 
 export const ProductDetailSidebar = () => {
   const { contentLanguage, setContentLanguage, view, form } = useDetailView(
@@ -42,26 +45,9 @@ export const ProductDetailSidebar = () => {
         onEnabledChange={(e) => setField('enabled', e)}
         onCurrentLanguageChange={setContentLanguage}
       />
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex flex-row justify-between text-base">{t('channels')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {view.entity?.channels.map((p) => <Badge key={p.id}>{p.code}</Badge>)}
-          </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex flex-row justify-between text-base">{t('collections')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {view.entity?.collections.map((c) => <Badge key={c.slug}>{c.name}</Badge>)}
-          </div>
-        </CardContent>
-      </Card>
+      <FacetsCard facetsIds={state.facetValueIds?.value} onChange={(e) => setField('facetValueIds', e)} />
+      {view.entity?.channels?.length && <ChannelsCard channels={view.entity.channels} />}
+      {view.entity?.collections?.length && <CollectionsCard collections={view.entity.collections} />}
     </div>
   );
 };

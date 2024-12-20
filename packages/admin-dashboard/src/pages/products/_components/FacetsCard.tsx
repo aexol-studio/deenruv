@@ -1,3 +1,4 @@
+import { generateColorFromString } from '@/utils';
 import {
   Card,
   CardContent,
@@ -29,6 +30,9 @@ export const FacetsCard: React.FC<FacetsCardProps> = ({ facetsIds, onChange }) =
             values: {
               id: true,
               name: true,
+              facet: {
+                name: true,
+              },
             },
           },
         },
@@ -41,6 +45,8 @@ export const FacetsCard: React.FC<FacetsCardProps> = ({ facetsIds, onChange }) =
       values.map((v) => ({
         value: v.id,
         label: v.name,
+        parent: v.facet.name,
+        color: generateColorFromString(v.facet.name),
       })),
     );
   }, [setAllFacetOptions]);
@@ -49,8 +55,21 @@ export const FacetsCard: React.FC<FacetsCardProps> = ({ facetsIds, onChange }) =
     fetchFacets();
   }, [fetchFacets]);
 
+  const getFacetValueLabel = useCallback(
+    (facetValueId: string) => {
+      const facetValue = allFacetsOptions.find((f) => f.value === facetValueId);
+
+      return facetValue ? `${(facetValue['parent'] as string).toUpperCase()} ${facetValue.label}` : facetValueId;
+    },
+    [allFacetsOptions],
+  );
+
   useEffect(() => {
-    const options = facetsIds?.map((f) => ({ label: f, value: f }));
+    const options = facetsIds?.map((f) => ({
+      label: getFacetValueLabel(f),
+      color: allFacetsOptions.find((e) => e.value === f)?.color,
+      value: f,
+    }));
     if (options) setCurrentFacetOptions(options);
   }, [facetsIds]);
 

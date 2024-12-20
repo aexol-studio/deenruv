@@ -16,6 +16,7 @@ interface Option {
     disable?: boolean;
     /** fixed option that can't be removed. */
     fixed?: boolean;
+    color?: string;
     /** Group the options by providing key. */
     [key: string]: string | boolean | undefined;
 }
@@ -446,6 +447,9 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                                         'data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground',
                                         badgeClassName,
                                     )}
+                                    {...(option.color && {
+                                        style: { backgroundColor: option.color },
+                                    })}
                                     data-fixed={option.fixed}
                                     data-disabled={disabled || undefined}
                                 >
@@ -453,6 +457,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                                     <button
                                         className={cn(
                                             'ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2',
+                                            option.color ? 'bg-white opacity-50' : '',
                                             (disabled || option.fixed) && 'hidden',
                                         )}
                                         onKeyDown={e => {
@@ -556,7 +561,7 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                                                     return (
                                                         <CommandItem
                                                             key={option.value}
-                                                            value={option.value}
+                                                            value={option.label}
                                                             disabled={option.disable}
                                                             onMouseDown={e => {
                                                                 e.preventDefault();

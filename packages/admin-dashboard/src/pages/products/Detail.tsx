@@ -33,11 +33,14 @@ export const ProductsDetailPage = () => {
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
             config: {},
-            onSubmitted: (event, data) =>
+            onSubmitted: (_event, data) =>
               update({
                 input: {
                   id: id!,
                   translations: data.translations?.validatedValue,
+                  assetIds: data.assetIds?.validatedValue,
+                  featuredAssetId: data.featuredAssetId?.validatedValue,
+                  facetValueIds: data.facetValueIds?.validatedValue,
                 },
               }),
             onDeleted: (event, data) => new Promise((res) => res({})),

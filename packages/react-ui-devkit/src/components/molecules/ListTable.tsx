@@ -16,6 +16,7 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
     const isPinned = column.getIsPinned();
     const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
     const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
+    const selectIdColumnWidth = 28;
 
     return {
         boxShadow: isLastLeftPinnedColumn
@@ -27,7 +28,7 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
         right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.95 : 1,
         position: isPinned ? 'sticky' : 'relative',
-        width: column.getSize(),
+        width: column.id === 'select-id' ? selectIdColumnWidth : column.getSize(),
         zIndex: isPinned ? 1 : 0,
     };
 };
