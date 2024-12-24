@@ -1,10 +1,6 @@
 import {
   apiClient,
-  deepMerge,
-  Dialog,
-  DialogContent,
-  ProductVariantsListSelector,
-  Routes,
+  EmptyState,
   Tabs,
   TabsContent,
   TabsList,
@@ -13,12 +9,14 @@ import {
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
-import { AddVariantDialog } from '@/pages/products/_components/AddVariantDialog';
 import { Variant } from '@/pages/products/_components/Variant';
 import { useCallback, useEffect, useState } from 'react';
-import { SortOrder } from '@deenruv/admin-types';
+import { Stack } from '@/components';
+import { PlusCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const VariantsTab = () => {
+  const { t } = useTranslation('products');
   const { id, contentLanguage, getMarker } = useDetailView(
     'products-detail-view',
     ({ id, contentLanguage, getMarker }) => ({
@@ -30,41 +28,6 @@ export const VariantsTab = () => {
   );
   const [variants, setVariants] = useState<ProductVariantType[]>();
   const [loading, setLoading] = useState<boolean>();
-
-  // const fetch = async <T,>(
-  //   { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  //   customFieldsSelector?: T,
-  // ) => {
-  //   const selector = deepMerge(ProductVariantsListSelector, customFieldsSelector ?? {});
-  //   const response = await apiClient('query')({
-  //     ['productVariants']: [
-  //       {
-  //         options: {
-  //           take: perPage,
-  //           skip: (page - 1) * perPage,
-  //           filterOperator: filterOperator,
-  //           sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
-  //           ...(filter && { filter: { ...filter, productId: { eq: id } } }),
-  //         },
-  //       },
-  //       { items: selector, totalItems: true },
-  //     ],
-  //   });
-  //   return response['productVariants'];
-  // };
-
-  const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
-    try {
-      const ids = items.map((item) => item.id);
-      const { deleteProductVariants } = await apiClient('mutation')({
-        deleteProductVariants: [{ ids }, { message: true, result: true }],
-      });
-      return !!deleteProductVariants.length;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  };
 
   const fetchData = useCallback(async () => {
     if (id) {
@@ -84,21 +47,48 @@ export const VariantsTab = () => {
     fetchData();
   }, [fetchData]);
 
-  const [variantId, setVariantId] = useState<string>();
   return (
     <div className="flex flex-col">
-      {/* <AddVariantDialog currentTranslationLng={contentLanguage} productId={id} onSuccess={fetchData} /> */}
-
       {getMarker()}
       {loading ? (
         <div className="flex w-full items-center justify-center">
           <div className="customSpinner" />
         </div>
       ) : (
-        <div className="flex gap-4">
-          <div></div>
-          <div></div>
-        </div>
+        <Stack column className="items-end gap-4">
+          <Tabs defaultValue={variants?.[0]?.id} className="w-full">
+            <TabsList className="h-auto flex-wrap justify-start">
+              <TabsTrigger key={'new-variant'} value={'new'} className="text-blue-600">
+                <PlusCircle size={16} className="mr-2 translate-y-[1px]" />
+                {t('addVariantDialog.new')}
+              </TabsTrigger>
+              {variants?.map((v) => (
+                <TabsTrigger key={v.id + '-trigger'} value={v.id}>
+                  {v.name}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value={'new'} key={'new-variant-content'}>
+              <Variant currentTranslationLng={contentLanguage} onActionCompleted={fetchData} productId={id} />
+            </TabsContent>
+            {variants?.length ? (
+              variants?.map((v) => (
+                <TabsContent value={v.id} key={v.id + '-content'}>
+                  <Variant
+                    currentTranslationLng={contentLanguage}
+                    variant={v}
+                    onActionCompleted={fetchData}
+                    productId={id}
+                  />
+                </TabsContent>
+              ))
+            ) : (
+              <Stack className="w-full items-center justify-center">
+                <EmptyState columnsLength={1} title="Test" description="Test" />
+              </Stack>
+            )}
+          </Tabs>
+        </Stack>
       )}
     </div>
   );

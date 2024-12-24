@@ -83,7 +83,10 @@
     "deleteProductVariantSuccessToast": "Variant has been deleted",
     "deleteProductVariantErrorToast": "Failed to delete the variant",
     "createOptionSuccessToast": "Option created successfully",
+    "createOptionInUseToast": "Option is used by some variants. Remove them first.",
     "createOptionErrorToast": "Failed to create the option",
+    "deleteOptionSuccessToast": "Option deleted successfully",
+    "deleteOptionErrorToast": "Failed to delete the option",
     "updateOptionSuccessToast": "Option has been updated",
     "updateOptionErrorToast": "Failed to update the option",
     "deletionOptionSuccessToast": "Option group removed successfully",
@@ -117,8 +120,8 @@
     "inherit": "Inherit from global settings",
     "outThreshold": "Out-of-stock threshold",
     "useGlobal": "Use global value",
-    "defaultStock1": "Default stock location: Stock",
-    "defaultStock2": "Default stock location: Allocated"
+    "defaultStock1": "Total stock level",
+    "defaultStock2": "Total stock level: Allocated"
   },
   "customFields": {
     "seo": {
@@ -157,7 +160,10 @@
     "name": "Name",
     "sku": "SKU",
     "cancel": "Cancel",
-    "add": "Add",
-    "selectOption": "Select option"
+    "add": "Add variant",
+    "new": "New variant",
+    "selectOption": "Select option",
+    "createBasic": "Basic data",
+    "createOptions": "Options"
   }
 }

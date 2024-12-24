@@ -11,12 +11,12 @@ import {
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface FacetsCardProps {
-  onChange: (facetsIds: string[]) => void;
-  facetsIds: string[] | undefined;
+interface FacetValuesCardProps {
+  onChange: (facetValuesIds: string[]) => void;
+  facetValuesIds: string[] | undefined;
 }
 
-export const FacetsCard: React.FC<FacetsCardProps> = ({ facetsIds, onChange }) => {
+export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds, onChange }) => {
   const { t } = useTranslation('products');
   const [allFacetsOptions, setAllFacetOptions] = useState<Option[]>([]);
   const [currentFacetsOptions, setCurrentFacetOptions] = useState<Option[]>([]);
@@ -65,13 +65,13 @@ export const FacetsCard: React.FC<FacetsCardProps> = ({ facetsIds, onChange }) =
   );
 
   useEffect(() => {
-    const options = facetsIds?.map((f) => ({
+    const options = facetValuesIds?.map((f) => ({
       label: getFacetValueLabel(f),
       color: allFacetsOptions.find((e) => e.value === f)?.color,
       value: f,
     }));
     if (options) setCurrentFacetOptions(options);
-  }, [facetsIds]);
+  }, [facetValuesIds, allFacetsOptions]);
 
   const onFacetsChange = useCallback((facetIds: string[]) => {
     onChange(facetIds);

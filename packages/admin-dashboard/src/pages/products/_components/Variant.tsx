@@ -3,7 +3,7 @@ import { ConfirmationDialog, EntityCustomFields, Stack } from '@/components';
 
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { LanguageCode } from '@deenruv/admin-types';
+import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
@@ -13,14 +13,16 @@ import { AssetsCard } from '@/pages/products/_components/AssetsCard';
 import { PriceCard } from '@/pages/products/_components/PriceCard';
 import { StockCard } from '@/pages/products/_components/StockCard';
 import { OptionsCard } from '@/pages/products/_components/OptionsCard';
+import { FacetValuesCard } from '@/pages/products/_components/FacetValuesCard';
 
 interface VariantProps {
-  variant: ProductVariantType;
+  productId: string;
+  variant?: ProductVariantType;
   currentTranslationLng: LanguageCode;
   onActionCompleted: () => void;
 }
 
-export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng, onActionCompleted }) => {
+export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng, onActionCompleted, productId }) => {
   const { t } = useTranslation('products');
   const { state, setField } = useGFFLP(
     'UpdateProductVariantInput',
@@ -36,11 +38,14 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     'useGlobalOutOfStockThreshold',
     'trackInventory',
     'facetValueIds',
+    'optionIds',
   )({});
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
   useEffect(() => {
+    if (!variant) return;
+
     setField('sku', variant.sku);
     setField('price', variant.price);
     setField('translations', variant.translations);
@@ -65,7 +70,46 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     // eslint-disable-next-line
   }, [variant]);
 
+  const createVariant = useCallback(() => {
+    if (productId && state.sku?.validatedValue && state.translations?.validatedValue)
+      return apiClient('mutation')({
+        createProductVariants: [
+          {
+            input: [
+              {
+                productId,
+                translations: state.translations?.validatedValue,
+                price: +state.price?.validatedValue,
+                sku: state.sku?.validatedValue,
+                assetIds: state.assetIds?.validatedValue,
+                featuredAssetId: state.featuredAssetId?.validatedValue,
+                outOfStockThreshold: state.outOfStockThreshold?.validatedValue,
+                stockOnHand: state.stockOnHand?.validatedValue,
+                trackInventory: state.trackInventory?.validatedValue,
+                taxCategoryId: state.taxCategoryId?.validatedValue,
+                useGlobalOutOfStockThreshold: state.useGlobalOutOfStockThreshold?.validatedValue,
+                stockLevels: state.stockLevels?.validatedValue,
+                facetValueIds: state.facetValueIds?.validatedValue,
+                optionIds: state.optionIds?.validatedValue,
+              },
+            ],
+          },
+          {
+            id: true,
+          },
+        ],
+      })
+        .then(() => {
+          toast(t('toasts.createProductVariantSuccessToast'));
+          onActionCompleted();
+        })
+        .catch(() => {
+          toast(t('toasts.createProductVariantErrorToast'));
+        });
+  }, [state, productId, onActionCompleted, t]);
+
   const updateVariant = useCallback(() => {
+    if (!variant) return;
     apiClient('mutation')({
       updateProductVariants: [
         {
@@ -83,7 +127,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               taxCategoryId: state.taxCategoryId?.validatedValue,
               useGlobalOutOfStockThreshold: state.useGlobalOutOfStockThreshold?.validatedValue,
               stockLevels: state.stockLevels?.validatedValue,
-              facetValueIds: [],
+              facetValueIds: state.facetValueIds?.validatedValue,
             },
           ],
         },
@@ -102,6 +146,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   }, [state, variant]);
 
   const deleteVariant = useCallback(() => {
+    if (!variant) return;
     apiClient('mutation')({
       deleteProductVariant: [{ id: variant.id }, { message: true }],
     })
@@ -130,21 +175,10 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     [currentTranslationLng, translations],
   );
 
-  const handleFacetCheckboxChange = (itemId: string, checked: boolean) => {
-    const current = state.facetValueIds?.value;
-    if (checked) {
-      current?.push(itemId);
-      setField('facetValueIds', current);
-    } else {
-      const filtered = current?.filter((id) => id !== itemId.toString());
-      setField('facetValueIds', filtered);
-    }
-  };
-
   const handleAddAsset = (id: string | undefined) => {
     if (!id) return;
 
-    const newIds = state.assetIds?.value;
+    const newIds = state.assetIds?.value || [];
     if (newIds?.includes(id)) return;
     newIds?.push(id);
     setField('assetIds', newIds);
@@ -153,63 +187,41 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   return (
     <Stack column className="mt-4 gap-4">
       <Stack className="gap-3 self-end">
-        <ConfirmationDialog onConfirm={deleteVariant}>
-          <Button variant={'destructive'}>{t('forms.removeVariant')}</Button>
-        </ConfirmationDialog>
-        <Button variant={'action'} onClick={updateVariant}>
-          {t('forms.updateVariant')}
-        </Button>
+        {variant ? (
+          <>
+            <ConfirmationDialog onConfirm={deleteVariant}>
+              <Button variant={'destructive'}>{t('forms.removeVariant')}</Button>
+            </ConfirmationDialog>
+            <Button variant={'action'} onClick={updateVariant}>
+              {t('forms.updateVariant')}
+            </Button>
+          </>
+        ) : (
+          <Button variant={'action'} onClick={createVariant}>
+            {t('addVariantDialog.add')}
+          </Button>
+        )}
       </Stack>
       <Stack className="gap-4">
-        <Stack className="w-1/2 flex-col gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('name')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Stack column key={variant.id} className="gap-y-4">
-                <Input
-                  label={t('sku')}
-                  placeholder={t('sku')}
-                  key={currentTranslationLng}
-                  value={state?.sku?.value}
-                  onChange={(e) => setField('sku', e.target.value)}
-                />
-                <Input
-                  label={t('name')}
-                  placeholder={t('name')}
-                  key={currentTranslationLng}
-                  value={currentTranslationValue?.name}
-                  onChange={(e) => setTranslationField('name', e)}
-                />
-              </Stack>
-            </CardContent>
-          </Card>
-        </Stack>
-        <Stack className="w-1/2 flex-col gap-4">
-          <PriceCard
-            currencyCode={variant.currencyCode}
-            priceValue={state.price?.value}
-            onPriceChange={(e) => setField('price', e.target.value)}
-            taxRateValue={state.taxCategoryId?.value}
-            onTaxRateChange={(id) => setField('taxCategoryId', id)}
-          />
-          <StockCard
-            priceValue={state.price?.value}
-            taxRateValue={state.taxCategoryId?.value}
-            outOfStockThresholdValue={state.outOfStockThreshold?.value}
-            stockLevelsValue={state.stockLevels?.value}
-            stockOnHandValue={state.stockOnHand?.value}
-            useGlobalOutOfStockThresholdValue={state.useGlobalOutOfStockThreshold?.value}
-            onThresholdChange={(e) => setField('outOfStockThreshold', +e.target.value)}
-            onUseGlobalChange={(e) => setField('useGlobalOutOfStockThreshold', e)}
-            onTrackInventoryChange={(e) => setField('trackInventory', e)}
-            onStockOnHandChange={(e) => setField('stockOnHand', +e.target.value)}
-            onStockLocationsChange={(e) => setField('stockLevels', e)}
-            allStockLocations={variant.stockLevels}
-            stockAllocated={variant.stockAllocated}
-            trackInventoryValue={state.trackInventory?.value}
-          />
+        <Stack className="w-2/3 flex-col gap-4">
+          {!!variant && (
+            <StockCard
+              priceValue={state.price?.value}
+              taxRateValue={state.taxCategoryId?.value}
+              outOfStockThresholdValue={state.outOfStockThreshold?.value}
+              stockLevelsValue={state.stockLevels?.value}
+              stockOnHandValue={state.stockOnHand?.value}
+              useGlobalOutOfStockThresholdValue={state.useGlobalOutOfStockThreshold?.value}
+              onThresholdChange={(e) => setField('outOfStockThreshold', +e.target.value)}
+              onUseGlobalChange={(e) => setField('useGlobalOutOfStockThreshold', e)}
+              onTrackInventoryChange={(e) => setField('trackInventory', e)}
+              onStockOnHandChange={(e) => setField('stockOnHand', +e.target.value)}
+              onStockLocationsChange={(e) => setField('stockLevels', e)}
+              allStockLocations={variant?.stockLevels}
+              stockAllocated={variant?.stockAllocated}
+              trackInventoryValue={state.trackInventory?.value}
+            />
+          )}
           <AssetsCard
             onAddAsset={handleAddAsset}
             featuredAssetId={state.featuredAssetId?.value}
@@ -217,10 +229,52 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
             onAssetsChange={(ids) => setField('assetIds', ids)}
           />
-          <OptionsCard optionGroups={variant.options} />
+        </Stack>
+        <Stack className="w-1/3 flex-col gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex flex-row justify-between text-base">{t('name')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Stack column className="gap-y-4">
+                <Input
+                  label={t('sku')}
+                  placeholder={t('sku')}
+                  value={state?.sku?.value}
+                  onChange={(e) => setField('sku', e.target.value)}
+                />
+                <Input
+                  label={t('name')}
+                  placeholder={t('name')}
+                  value={currentTranslationValue?.name}
+                  onChange={(e) => setTranslationField('name', e)}
+                />
+              </Stack>
+            </CardContent>
+          </Card>
+          <OptionsCard
+            optionGroups={variant?.options || []}
+            productId={productId}
+            optionIds={state.optionIds?.value}
+            onChange={(e) => setField('optionIds', e)}
+            createMode={!variant}
+          />
+          <PriceCard
+            currencyCode={variant?.currencyCode || CurrencyCode.PLN}
+            priceValue={state.price?.value}
+            onPriceChange={(e) => setField('price', e.target.value)}
+            taxRateValue={state.taxCategoryId?.value}
+            onTaxRateChange={(id) => setField('taxCategoryId', id)}
+          />
+          {!!variant && (
+            <FacetValuesCard
+              facetValuesIds={state.facetValueIds?.value}
+              onChange={(e) => setField('facetValueIds', e)}
+            />
+          )}
         </Stack>
       </Stack>
-      <EntityCustomFields entityName="productVariant" id={variant.id} />
+      <EntityCustomFields entityName="productVariant" id={variant?.id} />
     </Stack>
   );
 };

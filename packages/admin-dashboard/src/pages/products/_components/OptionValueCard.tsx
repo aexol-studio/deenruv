@@ -56,13 +56,13 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
   }, [state, productOption, t, onEdited]);
 
   return (
-    <Card>
+    <Card className="flex-grow basis-1/5">
       <CardHeader>
         <CardTitle className="flex flex-row justify-between text-base">{productOption.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack className="justify-between gap-6">
-          <Stack column className="basis-1/3 gap-3">
+        <Stack column className="justify-between gap-6">
+          <Stack column className="gap-3">
             <Input
               label="name"
               value={currentTranslationValue?.name}
@@ -84,7 +84,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
               }}
             />
           </Stack>
-          <Stack column className="basis-2/3 gap-3">
+          <Stack column className="gap-3">
             <EntityCustomFields
               entityName="productOption"
               id={productOption.id}

@@ -4,29 +4,20 @@ import { BasicFieldsCard } from './BasicFieldsCard';
 import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
 import { setInArrayBy } from '@/lists/useGflp';
-import { useTranslation } from 'react-i18next';
 
-const PRODUCT_FORM_KEYS = [
-  'CreateProductInput',
-  'translations',
-  'facetValueIds',
-  'assetIds',
-  'featuredAssetId',
-] as const;
+const PRODUCT_FORM_KEYS = ['CreateProductInput', 'translations', 'assetIds', 'featuredAssetId'] as const;
 
 export const ProductDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { id, view, form } = useDetailView(
     'products-detail-view',
-    ({ id, contentLanguage, setContentLanguage, view, form }) => ({
+    ({ id, view, form }) => ({
       id,
       view,
       form,
     }),
     ...PRODUCT_FORM_KEYS,
   );
-  const { t } = useTranslation('products');
-  const editMode = !!id;
 
   const {
     base: { setField, state },
@@ -38,17 +29,15 @@ export const ProductDetailView = () => {
 
   useEffect(() => {
     if (!view.entity) return;
-    view.setEntity(view.entity);
-    // setField('translations', view.entity.translations);
-    // setField(
-    //   'facetValueIds',
-    //   view.entity.facetValues.map((f) => f.id),
-    // );
-    // setField(
-    //   'assetIds',
-    //   view.entity.assets.map((a) => a.id),
-    // );
-    // setField('featuredAssetId', view.entity.featuredAsset?.id);
+    else {
+      setField('translations', view.entity.translations);
+      setField(
+        'assetIds',
+        view.entity.assets.map((a) => a.id),
+      );
+      setField('featuredAssetId', view.entity.featuredAsset?.id);
+      view.setEntity(view.entity);
+    }
   }, [view.entity]);
 
   const translations = state?.translations?.value || [];

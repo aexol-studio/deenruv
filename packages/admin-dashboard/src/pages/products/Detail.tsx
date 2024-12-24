@@ -15,9 +15,31 @@ const EditProductMutation = typedGql('mutation', { scalars })({
   ],
 });
 
+const CreateProductMutation = typedGql('mutation', { scalars })({
+  createProduct: [
+    {
+      input: $('input', 'CreateProductInput!'),
+    },
+    { id: true },
+  ],
+});
+
+const DeleteProductMutation = typedGql('mutation', { scalars })({
+  deleteProduct: [
+    {
+      id: $('id', 'ID!'),
+    },
+    {
+      result: true,
+    },
+  ],
+});
+
 export const ProductsDetailPage = () => {
   const { id } = useParams();
   const [update] = useMutation(EditProductMutation);
+  const [create] = useMutation(CreateProductMutation);
+  const [remove] = useMutation(DeleteProductMutation);
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -33,17 +55,28 @@ export const ProductsDetailPage = () => {
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
             config: {},
-            onSubmitted: (_event, data) =>
-              update({
-                input: {
-                  id: id!,
-                  translations: data.translations?.validatedValue,
-                  assetIds: data.assetIds?.validatedValue,
-                  featuredAssetId: data.featuredAssetId?.validatedValue,
-                  facetValueIds: data.facetValueIds?.validatedValue,
-                },
-              }),
-            onDeleted: (event, data) => new Promise((res) => res({})),
+            onSubmitted: (_event, data) => {
+              if (!data.translations) throw new Error('Name is required.');
+              const sharedInput = {
+                translations: data.translations?.validatedValue,
+                assetIds: data.assetIds?.validatedValue,
+                featuredAssetId: data.featuredAssetId?.validatedValue,
+                facetValueIds: data.facetValueIds?.validatedValue,
+                enabled: data.enabled?.validatedValue,
+              };
+
+              return id
+                ? update({
+                    input: {
+                      id: id!,
+                      ...sharedInput,
+                    },
+                  })
+                : create({
+                    input: sharedInput,
+                  });
+            },
+            onDeleted: (id) => remove({ id }),
           }),
         }}
         defaultTabs={[

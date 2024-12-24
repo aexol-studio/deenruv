@@ -155,7 +155,8 @@ export const StockCard: React.FC<StockCardProps> = ({
                 type="number"
                 label={t('details.defaultStock1')}
                 value={stockOnHandValue}
-                onChange={onStockOnHandChange}
+                disabled
+                // onChange={onStockOnHandChange}
               />
             </div>
             <Stack column className="w-1/2 gap-3">

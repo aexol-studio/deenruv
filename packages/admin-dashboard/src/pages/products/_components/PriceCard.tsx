@@ -96,10 +96,17 @@ export const PriceCard: React.FC<PriceCardProps> = ({
       <CardContent>
         <Stack column className="gap-y-4">
           <Stack className="items-center gap-x-4">
-            <Input type="number" placeholder={t('price')} value={priceValue} onChange={onPriceChange} step={0.01} />
+            <Input
+              type="number"
+              placeholder={t('price')}
+              value={priceValue}
+              onChange={onPriceChange}
+              step={0.01}
+              className="w-2/5"
+            />
             <Badge>{currencyCode}</Badge>
             <Select value={taxRateValue} onValueChange={(id) => onTaxRateChange(id)}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-2/5">
                 <SelectValue placeholder="Tax rate" />
               </SelectTrigger>
               <SelectContent>
@@ -113,7 +120,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
           </Stack>
 
           {currentTaxCategory?.value !== undefined &&
-            `${t('details.taxRateDescription')}: ${currentTaxCategory?.value}%`}
+            `${t('details.taxRateDescription')} ${currentTaxCategory?.value}%`}
         </Stack>
       </CardContent>
     </Card>
