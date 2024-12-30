@@ -38,10 +38,10 @@ const fetch = async <T, K>(
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
     const ids = items.map((item) => item.id);
-    const { deleteProducts } = await apiClient('mutation')({
-      deleteProducts: [{ ids }, { message: true, result: true }],
+    const { deleteCustomers } = await apiClient('mutation')({
+      deleteCustomers: [{ ids }, { message: true, result: true }],
     });
-    return !!deleteProducts.length;
+    return !!deleteCustomers.length;
   } catch (error) {
     console.error(error);
     return false;
