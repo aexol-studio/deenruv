@@ -1,0 +1,15 @@
+{
+    "available-languages": {
+        "label": "Dostępne języki",
+        "description": "Ustawia języki dostępne dla wszystkich kanałów. Poszczególne kanały mogą następnie obsługiwać podzbiór tych języków.",
+        "placeholder": "wybierz języki"
+    },
+    "stock-threshold": {
+        "label": "Globalny próg braku w magazynie",
+        "description": "Określa poziom zapasów, przy którym wariant jest uznawany za wyprzedany. Użycie wartości ujemnej umożliwia wsparcie zamówień backorder. Wartość może zostać nadpisana przez warianty produktów."
+    },
+    "track-inventory": {
+        "label": "Domyślne śledzenie zapasów",
+        "description": "Jeśli śledzone, poziomy zapasów wariantów produktów będą automatycznie dostosowywane po sprzedaży."
+    }
+}

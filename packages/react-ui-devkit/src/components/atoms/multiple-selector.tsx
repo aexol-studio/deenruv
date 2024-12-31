@@ -417,7 +417,10 @@ const MultipleSelector = React.forwardRef<MultipleSelectorRef, MultipleSelectorP
                     handleKeyDown(e);
                     commandProps?.onKeyDown?.(e);
                 }}
-                className={cn('h-auto overflow-visible bg-transparent', commandProps?.className)}
+                className={cn(
+                    'h-auto overflow-visible bg-transparent dark:bg-stone-950',
+                    commandProps?.className,
+                )}
                 shouldFilter={
                     commandProps?.shouldFilter !== undefined ? commandProps.shouldFilter : !onSearch
                 } // When onSearch is provided, we don't want to filter the options. You can still override it.

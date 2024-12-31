@@ -65,7 +65,7 @@
   },
   "menuGroups": {
     "shop": "My shop",
-    "settings": "Global settings",
+    "settings": "Settings",
     "users": "Users",
     "shipping": "Shipping & Payments",
     "promotions": "Promotions"
@@ -79,6 +79,7 @@
     "orders": "orders",
     "facets": "facets",
     "channels": "channels",
+    "globalSettings": "global settings",
     "roles": "roles",
     "admins": "admins",
     "stock": "stock locations",

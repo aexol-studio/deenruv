@@ -30,6 +30,7 @@ import {
   Percent,
   CreditCard,
   Truck,
+  Cog,
 } from 'lucide-react';
 
 type NavLink = {
@@ -85,6 +86,7 @@ export function Navigation({ isCollapsed }: NavProps) {
           { title: t('menu.countries'), href: Routes.countries.list, id: 'link-countries', icon: Flag },
           { title: t('menu.taxCategories'), href: Routes.taxCategories.list, id: 'link-tax-categories', icon: Coins },
           { title: t('menu.taxRates'), href: Routes.taxRates.list, id: 'link-tax-rates', icon: Percent },
+          { title: t('menu.globalSettings'), href: Routes.globalSettings, id: 'link-global-settings', icon: Cog },
         ],
       },
       {

@@ -27,6 +27,7 @@ export const Routes = {
         route: '/admin-ui/channels/:id',
         to: (channelId: string) => `/admin-ui/channels/${channelId}`,
     },
+    globalSettings: '/admin-ui/global-settings',
     collections: {
         list: '/admin-ui/collections',
         new: '/admin-ui/collections/new',
