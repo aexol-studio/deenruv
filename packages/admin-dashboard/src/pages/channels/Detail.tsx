@@ -14,6 +14,7 @@ import {
   type Option,
   apiClient,
   useSettings,
+  fetchAndSetChannels,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -134,9 +135,10 @@ export const ChannelsDetailPage = () => {
         },
       ],
     })
-      .then((resp) => {
+      .then(async (resp) => {
         toast.message(t('toasts.channelCreatedSuccess'));
         if ('id' in resp.createChannel && resp.createChannel.id) {
+          await fetchAndSetChannels();
           navigate(Routes.channels.to(resp.createChannel.id!));
         }
       })
@@ -171,8 +173,9 @@ export const ChannelsDetailPage = () => {
         },
       ],
     })
-      .then(() => {
+      .then(async () => {
         toast.message(t('toasts.channelUpdateSuccess'));
+        await fetchAndSetChannels();
         fetchChannel();
         resetCache();
       })

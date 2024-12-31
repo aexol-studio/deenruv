@@ -5,6 +5,7 @@ import {
   configurableOperationDefinitionSelector,
   countrySelector,
   apiClient,
+  fetchAndSetChannels,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +17,6 @@ import {
   paymentMethodsSelector,
   useServer,
   useSettings,
-  DEFAULT_CHANNEL_CODE,
 } from '@deenruv/react-ui-devkit';
 
 const TAKE = 100;
@@ -59,18 +59,15 @@ const getAllPaymentMethods = async () => {
 
 export const Root = () => {
   const { t } = useTranslation('common');
-  const setChannels = useServer((p) => p.setChannels);
   const setActiveAdministrator = useServer((p) => p.setActiveAdministrator);
   const setServerConfig = useServer((p) => p.setServerConfig);
   const setCountries = useServer((p) => p.setCountries);
   const setFulfillmentHandlers = useServer((p) => p.setFulfillmentHandlers);
   const setPaymentMethodsType = useServer((p) => p.setPaymentMethodsType);
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
-  const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
   const setLanguage = useSettings((p) => p.setLanguage);
   const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
   const [loaded, setLoaded] = useState(false);
-  const { selectedChannel } = useSettings();
 
   useEffect(() => {
     const init = async () => {
@@ -82,16 +79,8 @@ export const Root = () => {
         toast.error(t('setup.failedAdmin'));
       } else {
         setActiveAdministrator(activeAdministratorResponse?.activeAdministrator);
-        const allChannels = activeAdministratorResponse.activeAdministrator?.user.roles.map((r) => r.channels).flat();
-        setChannels(allChannels);
-        if (!selectedChannel) {
-          const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
-          const existingChannel = allChannels.find(
-            (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
-          );
-          if (existingChannel) setSelectedChannel(existingChannel);
-          else setSelectedChannel(defaultChannel);
-        }
+
+        await fetchAndSetChannels();
 
         setLoaded(true);
       }

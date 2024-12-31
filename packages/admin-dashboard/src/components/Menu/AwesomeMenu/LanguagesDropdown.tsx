@@ -15,35 +15,38 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
+import { US, PL, CZ, DE, EU } from 'country-flag-icons/react/3x2';
 const uiLanguages = [LanguageCode.en, LanguageCode.pl];
+
+const langFlagDict: Partial<Record<LanguageCode, React.ComponentType>> = {
+  [LanguageCode.en]: US,
+  [LanguageCode.pl]: PL,
+  [LanguageCode.cs]: CZ,
+  [LanguageCode.de]: DE,
+  [LanguageCode.af]: EU,
+};
 
 export const LanguagesDropdown = () => {
   const { t } = useTranslation('common');
-  const { contentLng, setContentLng, setUiLng, uiLng, contentLanguages } = useSettings((p) => ({
+  const { contentLng, setContentLng, setUiLng, uiLng, selectedChannel } = useSettings((p) => ({
     uiLng: p.language,
     setUiLng: p.setLanguage,
     contentLng: p.translationsLanguage,
     setContentLng: p.setTranslationsLanguage,
-    contentLanguages: p.availableLanguages,
+    selectedChannel: p.selectedChannel,
   }));
+
+  const Flag = langFlagDict[contentLng] || EU;
+
+  const contentLanguages = selectedChannel?.availableLanguageCodes || [];
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">
           {t('language')}
-          {/* TODO: Change to better handling */}
           <Badge variant="outline" className="ml-2">
-            {contentLng === LanguageCode.en ? (
-              <US className="h-4 w-4" />
-            ) : contentLng === LanguageCode.pl ? (
-              <PL className="h-4 w-4" />
-            ) : contentLng === LanguageCode.cs ? (
-              <CZ className="h-4 w-4" />
-            ) : contentLng === LanguageCode.de ? (
-              <DE className="h-4 w-4" />
-            ) : null}
+            <Flag className="h-4 w-4" />
           </Badge>
         </Button>
       </DropdownMenuTrigger>

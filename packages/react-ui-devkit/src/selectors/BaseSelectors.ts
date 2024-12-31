@@ -13,6 +13,7 @@ export const activeAdministratorSelector = Selector('Administrator')({
                 token: true,
                 currencyCode: true,
                 defaultLanguageCode: true,
+                availableLanguageCodes: true,
             },
         },
     },
@@ -48,6 +49,7 @@ export const channelSelector = Selector('Channel')({
     token: true,
     currencyCode: true,
     defaultLanguageCode: true,
+    availableLanguageCodes: true,
 });
 
 export type ChannelType = FromSelectorWithScalars<typeof channelSelector, 'Channel'>;
