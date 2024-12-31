@@ -12,8 +12,8 @@ import {
   Label,
   MultipleSelector,
   type Option,
-  useServer,
   apiClient,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -22,7 +22,6 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/channels/_components/PageHeader';
 import { ChannelDetailsSelector, ChannelDetailsType } from '@/graphql/channels';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
-import commonJson from '@/locales/en/common.json';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { SimpleSelect, Stack } from '@/components';
 
@@ -37,7 +36,8 @@ export const ChannelsDetailPage = () => {
   const [channel, setChannel] = useState<ChannelDetailsType>();
   const [sellersOptions, setSellersOptions] = useState<Option[]>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const countries = useServer((p) => p.countries);
+
+  const availableLanguages = useSettings((p) => p.availableLanguages);
 
   const fetchChannel = useCallback(async () => {
     if (id) {
@@ -210,12 +210,10 @@ export const ChannelsDetailPage = () => {
     editMode && setButtonDisabled(areEqual);
   }, [state, channel, editMode]);
 
-  const languageOptions = useMemo((): Option[] => {
-    return countries.map((l) => ({
-      label: tCommon(`languageCode.${l.name as keyof typeof commonJson.languageCode}`),
-      value: l.code,
-    }));
-  }, [countries, tCommon]);
+  const languageOptions = useMemo(
+    () => availableLanguages.map((el) => ({ label: `${tCommon(`languageCode.${el}`)} (${el})`, value: el })),
+    [tCommon, availableLanguages],
+  );
 
   const currencyOptions = useMemo((): Option[] => {
     const currencyArray = Object.values(CurrencyCode);
