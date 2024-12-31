@@ -53,7 +53,7 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
 
   useEffect(() => {
     if (featuredAssetId) getAsset(featuredAssetId).then((a) => setFeatureAsset(a));
-  }, [featuredAssetId, getAsset]);
+  }, [featuredAssetId]);
 
   useEffect(() => {
     const promises: Promise<AssetType | undefined>[] = [];
@@ -62,7 +62,7 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
       const existingAssets = assets.filter((item): item is NonNullable<AssetType> => item !== undefined);
       setAssets(existingAssets);
     });
-  }, [assetsIds]);
+  }, [assetsIds?.toString()]);
 
   const handleRemoveAsset = useCallback(
     (id: string) => {

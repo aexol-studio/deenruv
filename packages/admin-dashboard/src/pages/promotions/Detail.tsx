@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
   apiClient,
   cn,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 
@@ -104,20 +105,20 @@ export const PromotionsDetailPage = () => {
   >();
 
   const { state, setField } = useGFFLP('CreatePromotionInput')({});
-  const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
+  const contentLng = useSettings((p) => p.translationsLanguage);
   const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(
         'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t) => t.languageCode !== contentLng, {
           [field]: e,
-          languageCode: currentTranslationLng,
+          languageCode: contentLng,
         }),
       );
     },
-    [currentTranslationLng, translations],
+    [contentLng, translations],
   );
   const [data, setData] = useState<Data>();
   useEffect(() => {
@@ -129,7 +130,7 @@ export const PromotionsDetailPage = () => {
     try {
       const validation = await FormSchema.safeParseAsync({
         ...state,
-        translations: [...translations, { ...currentTranslationValue, languageCode: currentTranslationLng }],
+        translations: [...translations, { ...currentTranslationValue, languageCode: contentLng }],
       });
       if (!validation.success) {
         throw new Error('Validation failed');
@@ -173,13 +174,9 @@ export const PromotionsDetailPage = () => {
       )}
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
         <SettingsCard
-          currentTranslationLng={currentTranslationLng}
           enabledValue={state.enabled?.value}
           onEnabledChange={(e) => {
             setField('enabled', e);
-          }}
-          onCurrentLanguageChange={(e) => {
-            setCurrentTranslationLng(e as LanguageCode);
           }}
         />
         <Card className="p-4">
