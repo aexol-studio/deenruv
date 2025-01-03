@@ -1,0 +1,59 @@
+{
+    "basicInfo": {
+        "header": "Podstawowe dane",
+        "name": "Nazwa",
+        "description": "Opis"
+    },
+    "options": {
+        "header": "Opcje",
+        "pickDate": "Wybierz datę",
+        "startsAt": "Data rozpoczęcia",
+        "endsAt": "Data zakończenia",
+        "couponCode": "Kod kuponu",
+        "usageLimit": "Limit użycia",
+        "perCustomerUsageLimit": "Limit użycia na klienta"
+    },
+    "conditions": {
+        "header": "Warunki",
+        "add": "Dodaj nowy warunek",
+        "emptyState": "Brak warunków. Dodaj jakieś.",
+        "codes": {
+            "customer_group": "Klient jest członkiem określonej grupy",
+            "minimum_order_amount": "Jeśli suma zamówienia jest większa niż X",
+            "at_least_n_with_facets": "Kup co najmniej X produktów z podanymi cechami",
+            "contains_products": "Kup co najmniej X określonych produktów",
+            "buy_x_get_y_free": "Kup X produktów, otrzymaj Y produktów za darmo"
+        },
+        "labels": {
+            "amount": "Kwota",
+            "taxInclusive": "Z podatkiem",
+            "minimum": "Minimum",
+            "amountX": "Kwota X",
+            "amountY": "Kwota Y",
+            "Buy amountX of these variants": "Kup ilość X tych wariantów",
+            "Get amountY of these variants for free": "Otrzymaj ilość Y tych wariantów za darmo"
+        }
+    },
+    "actions": {
+        "header": "Akcje",
+        "add": "Dodaj nową akcję",
+        "emptyState": "Brak akcji. Dodaj jakieś.",
+        "codes": {
+            "free_shipping": "Darmowa wysyłka",
+            "order_fixed_discount": "Zniżka na zamówienie o stałą kwotę",
+            "order_percentage_discount": "Zniżka na zamówienie o X%",
+            "facet_based_discount": "Zniżka na produkty z tymi cechami o X%",
+            "products_percentage_discount": "Zniżka na określone produkty o X%",
+            "buy_x_get_y_free": "Kup X produktów, otrzymaj Y produktów za darmo"
+        },
+        "labels": {
+            "discount": "Zniżka",
+            "taxInclusive": "Z podatkiem",
+            "minimum": "Minimum",
+            "amountX": "Kwota X",
+            "amountY": "Kwota Y",
+            "Buy amountX of these variants": "Kup ilość X tych wariantów",
+            "Get amountY of these variants for free": "Otrzymaj ilość Y tych wariantów za darmo"
+        }
+    }
+}

@@ -8,9 +8,16 @@ interface VariantsSelectorProps {
   label: string;
   value: string[];
   onChange: (e: string[]) => void;
+  singleSelection?: true;
 }
 
-export const VariantsSelector: React.FC<VariantsSelectorProps> = ({ type, label, value, onChange }) => {
+export const VariantsSelector: React.FC<VariantsSelectorProps> = ({
+  type,
+  label,
+  value,
+  singleSelection,
+  onChange,
+}) => {
   const [options, setOptions] = useState<Option[]>();
 
   const fetchVariants = useCallback(async () => {
@@ -48,7 +55,7 @@ export const VariantsSelector: React.FC<VariantsSelectorProps> = ({ type, label,
   }, [type, fetchProducts, fetchVariants]);
 
   return (
-    <Stack column className="basis-full gap-3">
+    <Stack column className="basis-full gap-2">
       <Label>{label}</Label>
       <MultipleSelector
         options={options}
@@ -62,6 +69,7 @@ export const VariantsSelector: React.FC<VariantsSelectorProps> = ({ type, label,
         }
         placeholder={label}
         onChange={(e) => onChange(e.map((e) => e.value))}
+        {...(singleSelection && { maxSelected: 1 })}
         hideClearAllButton
       />
     </Stack>

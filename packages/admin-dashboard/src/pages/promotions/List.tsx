@@ -52,5 +52,6 @@ export const PromotionsListPage = () => (
     tableId="promotions-list-view"
     fetch={fetch}
     onRemove={onRemove}
+    detailLinkColumn="id"
   />
 );

@@ -33,7 +33,7 @@ export const FacetsSelector: React.FC<FacetsSelectorProps> = ({ value, onChange 
   }, [fetchFacets]);
 
   return (
-    <Stack column className="basis-full gap-3">
+    <Stack column className="basis-full gap-2">
       <Label>{t('details.filters.addFacets')}</Label>
       <MultipleSelector
         options={facetsOptions}

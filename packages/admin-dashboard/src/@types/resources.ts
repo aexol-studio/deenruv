@@ -18,6 +18,7 @@ import stockLocations from '../locales/en/stockLocations.json';
 import sellers from '../locales/en/sellers.json';
 import paymentMethods from '../locales/en/paymentMethods.json';
 import shippingMethods from '../locales/en/shippingMethods.json';
+import promotions from '../locales/en/shippingMethods.json';
 import table from '../locales/en/table.json';
 
 const resources = {
@@ -42,6 +43,7 @@ const resources = {
   paymentMethods,
   shippingMethods,
   table,
+  promotions
 } as const;
 
 export default resources;

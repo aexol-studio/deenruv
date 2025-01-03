@@ -19,6 +19,7 @@ import zones from './zones.json';
 import table from './table.json';
 import customers from './customers.json';
 import globalSettings from './globalSettings.json';
+import promotions from './promotions.json';
 
 export default {
   admins,
@@ -32,6 +33,7 @@ export default {
   paymentMethods,
   permissions,
   products,
+  promotions,
   roles,
   sellers,
   shippingMethods,

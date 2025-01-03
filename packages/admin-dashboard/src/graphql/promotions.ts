@@ -11,3 +11,21 @@ export const PromotionsListSelector = Selector('Promotion')({
   usageLimit: true,
 });
 export type PromotionsListType = FromSelectorWithScalars<typeof PromotionsListSelector, 'Promotion'>;
+
+export const PromotionConditionAndActionSelector = Selector('ConfigurableOperationDefinition')({
+  code: true,
+  args: {
+    defaultValue: true,
+    description: true,
+    name: true,
+    label: true,
+    list: true,
+    type: true,
+    required: true,
+    ui: true,
+  },
+});
+export type PromotionConditionAndActionType = FromSelectorWithScalars<
+  typeof PromotionConditionAndActionSelector,
+  'ConfigurableOperationDefinition'
+>;

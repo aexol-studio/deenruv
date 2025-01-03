@@ -11,7 +11,7 @@ import {
 } from '@/components';
 import { Grip, MoreHorizontal, PanelsTopLeft } from 'lucide-react';
 import { toast } from 'sonner';
-import { redirect } from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
 import React, { useMemo } from 'react';
 import { EXCLUDED_COLUMNS } from '../useDetailList/constants';
 import {
@@ -30,7 +30,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
+export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunction): ColumnDef<T> => {
     return {
         id: 'actions',
         enableHiding: false,
@@ -148,9 +148,7 @@ export const ActionsDropdown = <T extends { id: string }>(): ColumnDef<T> => {
                                 onClick={() => {
                                     if ('edit' in route) {
                                         route.edit(row.original.id);
-                                    } else {
-                                        redirect(route.to(row.original.id));
-                                    }
+                                    } else navigate(route.to(row.original.id));
                                 }}
                             >
                                 {t('actionsMenu.view')}

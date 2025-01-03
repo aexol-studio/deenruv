@@ -194,7 +194,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
             if (key === 'id') {
                 columns.push(SelectIDColumn());
-                columns.push(ActionsDropdown());
+                columns.push(ActionsDropdown(navigate));
             }
             columns.push({
                 accessorKey: key,
