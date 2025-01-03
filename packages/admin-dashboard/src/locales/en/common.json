@@ -572,5 +572,6 @@
       "ORDER_MODIFIED": "Order modified",
       "ORDER_CUSTOMER_UPDATED": "Order customer updated"
     }
-  }
+  },
+  "noImage": "No image for the item"
 }

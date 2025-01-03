@@ -67,12 +67,12 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
     pageSize: 10,
   });
   const { t } = useTranslation(['collections', 'common']);
-  const getCollectionProductVariants = async (cellectionId: string) => {
+  const getCollectionProductVariants = async (collectionId: string) => {
     setTableLoading(true);
     try {
       const response = await apiClient('query')({
         collection: [
-          { id: cellectionId },
+          { id: collectionId },
           {
             productVariants: [
               {

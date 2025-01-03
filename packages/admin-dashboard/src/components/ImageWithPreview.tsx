@@ -1,17 +1,29 @@
 import { cn, HoverCard, HoverCardContent, HoverCardTrigger } from '@deenruv/react-ui-devkit';
+import { ImageOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 interface Props
   extends Omit<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'className'> {
   imageClassName?: string;
   previewClassName?: string;
 }
 
-export const ImageWithPreview: React.FC<Props> = ({ imageClassName, previewClassName, src, ...props }) => (
-  <HoverCard>
-    <HoverCardTrigger className="cursor-pointer" asChild>
-      <img className={cn('h-14 w-14', imageClassName)} src={src || 'placeholder'} {...props} />
-    </HoverCardTrigger>
-    <HoverCardContent className={cn('w-80 rounded border p-0', previewClassName)}>
-      <img className="object-cover" src={src || 'placeholder'} {...props} />
-    </HoverCardContent>
-  </HoverCard>
-);
+export const ImageWithPreview: React.FC<Props> = ({ imageClassName, previewClassName, src, ...props }) => {
+  const { t } = useTranslation('common');
+
+  return (
+    <HoverCard>
+      <HoverCardTrigger className="cursor-pointer" asChild>
+        {src ? (
+          <img className={cn('h-14 w-14', imageClassName)} src={src} {...props} />
+        ) : (
+          <div className={cn('flex h-14 w-14 items-center justify-center bg-gray-100', imageClassName)}>
+            <ImageOff />
+          </div>
+        )}
+      </HoverCardTrigger>
+      <HoverCardContent className={cn('w-80 rounded border p-0', previewClassName)}>
+        {src ? <img className="object-cover" src={src} {...props} /> : <p className="m-3">{t('noImage')}</p>}
+      </HoverCardContent>
+    </HoverCard>
+  );
+};

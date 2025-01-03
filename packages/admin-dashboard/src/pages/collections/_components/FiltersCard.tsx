@@ -79,12 +79,29 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
     [filters, onFiltersValueChange, currentFiltersValue],
   );
 
-  const clearInput = useCallback(() => {
-    onFiltersValueChange(undefined);
-  }, [onFiltersValueChange]);
+  const handleRemoveFilter = useCallback(
+    (code: string) => {
+      if (currentFiltersValue) {
+        let newValue = [...currentFiltersValue];
+        newValue = newValue.filter((v) => v.code !== code);
+        onFiltersValueChange(newValue);
+      }
+    },
+    [onFiltersValueChange, currentFiltersValue],
+  );
 
   const handleAddFilter = useCallback(() => {
-    const newFiltersValue = [...(currentFiltersValue || []), { code: '', arguments: [] }];
+    const defaultFilter = filters[0];
+    const newFiltersValue = [
+      ...(currentFiltersValue || []),
+      {
+        code: defaultFilter.code,
+        arguments: defaultFilter.args.map((a) => ({
+          name: a.name,
+          value: 'false',
+        })),
+      },
+    ];
     onFiltersValueChange(newFiltersValue);
   }, [onFiltersValueChange, currentFiltersValue]);
 
@@ -116,7 +133,14 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                     options={allFiltersOptions}
                   />
                   {filter?.code && (
-                    <Button variant={'secondary'} className="p-2" onClick={clearInput}>
+                    <Button
+                      variant={'secondary'}
+                      className="p-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleRemoveFilter(filter.code);
+                      }}
+                    >
                       <X size={20} />
                     </Button>
                   )}

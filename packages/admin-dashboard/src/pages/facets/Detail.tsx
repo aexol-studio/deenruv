@@ -9,25 +9,17 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  DropdownMenuItem,
   Input,
   Label,
   Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Routes,
-  EmptyState,
   apiClient,
   DetailList,
   deepMerge,
   PaginationInput,
 } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, ContextMenu } from '@/components';
-import { ChevronLeft, Trash2 } from 'lucide-react';
+import { EntityCustomFields } from '@/components';
+import { ChevronLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog.js';
 import { DeletionResult, LanguageCode, SortOrder } from '@deenruv/admin-types';
@@ -35,35 +27,6 @@ import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
-
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(
-    deepMerge(
-      { id: true, name: true, code: true, customFields: true },
-      customFieldsSelector ?? { hexColor: true, isNew: true, isHidden: true, image: true },
-    ),
-    additionalSelector ?? {},
-  );
-  const response = await apiClient('query')({
-    ['facetValues']: [
-      {
-        options: {
-          take: perPage,
-          skip: (page - 1) * perPage,
-          filterOperator: filterOperator,
-          sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
-          ...(filter && { filter }),
-        },
-      },
-      { items: selector, totalItems: true },
-    ],
-  });
-  return response['facetValues'];
-};
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
@@ -89,6 +52,43 @@ export const FacetsDetailPage = () => {
   const [facetChanged, setFacetChanged] = useState(false);
   const [facetValueIdInModal, setFacetValueIdInModal] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+
+  const fetchFacetValues = useCallback(
+    async <T, K>(
+      { page, perPage, filter, filterOperator, sort }: PaginationInput,
+      customFieldsSelector?: T,
+      additionalSelector?: K,
+    ) => {
+      const selector = deepMerge(
+        deepMerge(
+          { id: true, name: true, code: true, customFields: true },
+          customFieldsSelector ?? { hexColor: true, isNew: true, isHidden: true, image: true },
+        ),
+        additionalSelector ?? {},
+      );
+      const response = await apiClient('query')({
+        ['facetValues']: [
+          {
+            options: {
+              take: perPage,
+              skip: (page - 1) * perPage,
+              filterOperator: filterOperator,
+              sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+              ...(filter && {
+                filter: {
+                  ...filter,
+                  facetId: { eq: id },
+                },
+              }),
+            },
+          },
+          { items: selector, totalItems: true },
+        ],
+      });
+      return response['facetValues'];
+    },
+    [id],
+  );
 
   const fetchFacet = useCallback(async () => {
     if (id) {
@@ -124,7 +124,7 @@ export const FacetsDetailPage = () => {
 
     setField('name', facet.name);
     setField('code', facet.code);
-    // setField('isPrivate', facet.isPrivate);
+    setField('isPrivate', facet.isPrivate);
     // setField('customFields', facet.customFields);
   }, [facet]);
 
@@ -224,17 +224,6 @@ export const FacetsDetailPage = () => {
     setFacetChanged(!areEqual);
   }, [state, facet]);
 
-  const tableHeaders = [
-    t('facets:table.name'),
-    t('facets:table.code'),
-    t('facets:table.createdAt'),
-    t('facets:table.color'),
-    t('facets:table.new'),
-    t('facets:table.isPrivate'),
-    t('facets:table.image'),
-    '',
-  ];
-
   const removeAssetValue = useCallback(
     async (id: string) => {
       const response = await apiClient('mutation')({
@@ -271,7 +260,7 @@ export const FacetsDetailPage = () => {
       {t('facets:toasts.facetLoadingError', { value: id })}
     </div>
   ) : (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -341,7 +330,7 @@ export const FacetsDetailPage = () => {
                   <DetailList
                     entityName="FacetValue"
                     hideColumns={['customFields', 'createdAt', 'updatedAt']}
-                    fetch={fetch}
+                    fetch={fetchFacetValues}
                     onRemove={onRemove}
                     route={{
                       edit: (id) => {

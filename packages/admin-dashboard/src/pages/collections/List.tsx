@@ -51,7 +51,7 @@ import {
   TranslationSelect,
   apiClient,
 } from '@deenruv/react-ui-devkit';
-import { ImageWithPreview, Search, Stack } from '@/components';
+import { ImageWithPreview, ListButtons, Search, Stack } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, ChevronDown, MoreHorizontal } from 'lucide-react';
 import { format } from 'date-fns';
@@ -494,7 +494,7 @@ export const CollectionsListPage = () => {
   }, [translationsLanguage]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <CollectionProductVariantsDrawer {...drawerData}>
         <div className="page-content-h flex w-full flex-col">
           <div className="mb-4 flex flex-wrap justify-between gap-4">
@@ -554,6 +554,15 @@ export const CollectionsListPage = () => {
               setFilterField={setFilterField}
               removeFilterField={removeFilterField}
               setFilterLogicalOperator={setFilterLogicalOperator}
+            />
+            <ListButtons
+              selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+              createLabel={t('create')}
+              createRoute={Routes.collections.new}
+              handleClick={() => {
+                setCollectionsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
+                setDeleteDialogOpened(true);
+              }}
             />
           </div>
 

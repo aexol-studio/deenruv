@@ -70,6 +70,9 @@ export const CollectionsDetailPage = () => {
     isPrivate: {
       initialValue: true,
     },
+    inheritFilters: {
+      initialValue: true,
+    },
   });
 
   const translations = state?.translations?.value || [];
@@ -209,7 +212,7 @@ export const CollectionsDetailPage = () => {
       {t('toasts.collectionLoadingError', { value: id })}
     </div>
   ) : (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           currentTranslationLng={currentTranslationLng}

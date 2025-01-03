@@ -509,5 +509,6 @@
       "description": "Wybierz warianty produktów z listy",
       "pick": "Wybierz wariant produktu"
     }
-  }
+  },
+  "noImage": "Ten element nie ma obrazka"
 }

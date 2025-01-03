@@ -80,7 +80,9 @@ export const CollectionProductVariantsDrawer: React.FC<CollectionProductVariants
           <DrawerHeader className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="shrink-0">
-                <DrawerTitle>{t('drawer.title', { collectionName })}</DrawerTitle>
+                <DrawerTitle>
+                  {t('drawer.title', { collectionName, interpolation: { escapeValue: false } })}
+                </DrawerTitle>
                 <DrawerDescription>{t('drawer.count', { count })}</DrawerDescription>{' '}
               </div>
               <Select
