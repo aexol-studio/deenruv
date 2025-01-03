@@ -28,7 +28,10 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
         right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.95 : 1,
         position: isPinned ? 'sticky' : 'relative',
-        width: column.id === 'select-id' ? selectIdColumnWidth : column.getSize(),
+        width:
+            column.id === 'select-id' || column.id === 'select' || column.id === 'id'
+                ? selectIdColumnWidth
+                : column.getSize(),
         zIndex: isPinned ? 1 : 0,
     };
 };

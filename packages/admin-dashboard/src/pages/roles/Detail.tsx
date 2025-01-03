@@ -20,10 +20,10 @@ import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { RoleDetailsSelector, RoleDetailsType } from '@/graphql/roles';
-import { Permission } from '@deenruv/admin-types';
 import { PageHeader } from '@/pages/roles/_components/PageHeader';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 import { Stack } from '@/components';
+import { Permission } from '@deenruv/admin-types';
 
 export const RolesDetailPage = () => {
   const { id } = useParams();
@@ -77,7 +77,27 @@ export const RolesDetailPage = () => {
     fetchChannels();
   }, [id, setLoading, fetchRole, fetchChannels]);
 
-  const { state, setField } = useGFFLP('UpdateRoleInput', 'code', 'description', 'channelIds', 'permissions')({});
+  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+    'UpdateRoleInput',
+    'code',
+    'description',
+    'channelIds',
+    'permissions',
+  )({
+    channelIds: {
+      validate: (v) => (!v || !v.length ? ['Field required'] : undefined),
+    },
+    code: {
+      validate: (v) => (!v || v === '' ? ['Field required'] : undefined),
+    },
+    permissions: {
+      initialValue: [Permission.Authenticated],
+      validate: (v) => (!v || !v.length ? ['Field required'] : undefined),
+    },
+    description: {
+      initialValue: '',
+    },
+  });
 
   const currentChannelOptions = useMemo((): Option[] | undefined => {
     if (!allChannelOptions) return undefined;
@@ -100,26 +120,27 @@ export const RolesDetailPage = () => {
   }, [role]);
 
   const createRole = useCallback(() => {
-    apiClient('mutation')({
-      createRole: [
-        {
-          input: {
-            code: state.code!.validatedValue!,
-            description: state.description!.validatedValue!,
-            channelIds: state.channelIds!.validatedValue!,
-            permissions: [Permission.Authenticated], // just for now
+    if (checkIfAllFieldsAreValid())
+      apiClient('mutation')({
+        createRole: [
+          {
+            input: {
+              code: state.code!.validatedValue!,
+              description: state.description!.validatedValue!,
+              channelIds: state.channelIds!.validatedValue!,
+              permissions: state.permissions?.validatedValue!,
+            },
           },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then((resp) => {
-        toast.message(t('toasts.roleCreatedSuccess'));
-        navigate(Routes.roles.to(resp.createRole.id));
+          {
+            id: true,
+          },
+        ],
       })
-      .catch(() => toast.error(t('toasts.roleCreatedError')));
+        .then((resp) => {
+          toast.message(t('toasts.roleCreatedSuccess'));
+          navigate(Routes.roles.to(resp.createRole.id));
+        })
+        .catch(() => toast.error(t('toasts.roleCreatedError')));
   }, [state, t, navigate]);
 
   const updateRole = useCallback(() => {

@@ -172,12 +172,19 @@ export const AdminsListPage = () => {
           {t('table.role')}
         </SortButton>
       ),
-      cell: ({ row }) =>
-        row.original.user.roles.map((r) => (
-          <Badge key={r.description} variant="outline" className="flex w-full items-center justify-center py-2">
-            {r.description}
-          </Badge>
-        )),
+      cell: ({ row }) => (
+        <div className="flex gap-1">
+          {row.original.user.roles.map((r) => (
+            <Badge
+              key={r.description}
+              variant="outline"
+              className="flex items-center justify-center whitespace-nowrap py-2"
+            >
+              {r.description}
+            </Badge>
+          ))}
+        </div>
+      ),
     },
     ActionsColumn({
       viewRoute: Routes.admins.to,
@@ -243,7 +250,7 @@ export const AdminsListPage = () => {
   }, [admins]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <ListColumnDropdown table={table} t={t} />

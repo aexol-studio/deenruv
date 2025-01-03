@@ -6,6 +6,7 @@ import { Label } from '@/components/atoms/label';
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     endAdornment?: React.ReactNode;
+    wrapperClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => {
@@ -15,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
     );
     if (props.label) {
         return (
-            <div className="grid w-full gap-1.5">
+            <div className={cn('grid w-full gap-1.5', props.wrapperClassName)}>
                 <Label htmlFor="email">{props.label}</Label>
                 <div className="flex items-center">
                     <input type={type} className={inputClassName} ref={ref} {...props} />

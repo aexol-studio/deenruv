@@ -159,28 +159,28 @@ export const AdminsDetailPage = () => {
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex gap-4 p-0 pt-4">
                 <Input
-                  className="basis-full md:basis-1/2 xl:basis-1/4"
+                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
                   label={t('details.basic.firstName')}
                   value={state.firstName?.value}
                   onChange={(e) => setField('firstName', e.target.value)}
                   required
                 />
                 <Input
-                  className="basis-full md:basis-1/2 xl:basis-1/4"
+                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
                   label={t('details.basic.lastName')}
                   value={state.lastName?.value}
                   onChange={(e) => setField('lastName', e.target.value)}
                   required
                 />
                 <Input
-                  className="basis-full md:basis-1/2 xl:basis-1/4"
+                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
                   label={t('details.basic.emailAddress')}
                   value={state.emailAddress?.value}
                   onChange={(e) => setField('emailAddress', e.target.value)}
                   required
                 />
                 <Input
-                  className="basis-full md:basis-1/2 xl:basis-1/4"
+                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
                   label={t('details.basic.password')}
                   value={state.password?.value}
                   onChange={(e) => setField('password', e.target.value)}

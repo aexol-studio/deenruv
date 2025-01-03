@@ -44,6 +44,7 @@ export const PaymentMethodDetailsSelector = Selector('PaymentMethod')({
   translations: {
     name: true,
     languageCode: true,
+    description: true,
     // customFields: {
     //   modalTitle: true,
     //   modalDescription: true,
