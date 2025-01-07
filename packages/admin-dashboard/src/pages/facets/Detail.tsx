@@ -173,7 +173,7 @@ export const FacetsDetailPage = () => {
         {
           input: {
             code: state.code!.value,
-            isPrivate: state.isPrivate!.value,
+            isPrivate: !!state.isPrivate?.value,
             translations: [
               {
                 languageCode: LanguageCode.pl,
