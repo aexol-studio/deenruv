@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export const EditorToolbar = ({ editor }: { editor: Editor | null }) => {
-    if (!editor) {
+    if (!editor || !editor.isEditable) {
         return null;
     }
 

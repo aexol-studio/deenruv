@@ -5,7 +5,7 @@ import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
-import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
+// import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
 
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
@@ -21,7 +21,7 @@ import 'dotenv/config';
 import path from 'path';
 
 // import { RestPlugin } from './test-plugins/rest-plugin';
-import { s3Client } from './client-s3';
+// import { s3Client } from './client-s3';
 /**
  * Config settings used during development
  */
@@ -158,7 +158,7 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
-        DeenruvExamplesServerPlugin,
+        // DeenruvExamplesServerPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({
         //     s3Client,

@@ -10,7 +10,11 @@ export function DefaultRichText() {
         <div className="flex flex-col gap-1">
             <Label htmlFor={field?.name}>{label || field?.name}</Label>
             <CardDescription>{description}</CardDescription>
-            <RichTextEditor content={value as string} onContentChanged={e => setValue(e)} />
+            <RichTextEditor
+                content={value as string}
+                onContentChanged={e => setValue(e)}
+                disabled={field?.readonly}
+            />
         </div>
     );
 }

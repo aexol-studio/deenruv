@@ -9,7 +9,12 @@ export function DefaultTextarea() {
         <div className="flex flex-col gap-1">
             <Label htmlFor={field?.name}>{label || field?.name}</Label>
             <CardDescription>{description}</CardDescription>
-            <Textarea id={field?.name} value={value as string} onChange={e => setValue(e.target.value)} />
+            <Textarea
+                id={field?.name}
+                value={value as string}
+                disabled={field?.readonly}
+                onChange={e => setValue(e.target.value)}
+            />
         </div>
     );
 }

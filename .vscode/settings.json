@@ -19,5 +19,6 @@
         "repo"
     ],
     "conventionalCommits.gitmoji": false,
-    "cSpell.words": ["Deenruv"]
+    "cSpell.words": ["Deenruv"],
+    "angular.enable-strict-mode-prompt": false
 }

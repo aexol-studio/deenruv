@@ -14,9 +14,10 @@ const extensions = [StarterKit, Document, Paragraph, Text, Heading];
 interface RichTextEditorProps {
     content: string | undefined;
     onContentChanged: (content: string) => void;
+    disabled?: boolean;
 }
 
-export const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onContentChanged }) => {
+export const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onContentChanged, disabled }) => {
     const editor = useEditor({
         extensions: extensions,
         content: content,
@@ -29,6 +30,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onConte
                 ),
             },
         },
+        editable: !disabled,
     });
 
     useEffect(() => {

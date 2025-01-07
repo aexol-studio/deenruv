@@ -11,6 +11,7 @@ export const DefaultIntInput: React.FC = () => {
             <Input
                 id={field?.name}
                 type="number"
+                disabled={field?.readonly}
                 value={value as string}
                 onChange={e => {
                     setValue(parseInt(e.target.value || '0', 10));

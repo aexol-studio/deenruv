@@ -147,19 +147,40 @@ export function EntityCustomFields<T extends ViableEntity>({
     [entityCustomFields],
   );
 
-  const prepareCustomFields = useCallback(() => {
-    return Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
-      (acc, [key, val]) => {
-        if (relationFields?.includes(key)) {
-          const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
-          acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
-        } else acc[key] = val;
+  const readOnlyFieldsDict = useMemo(
+    () =>
+      entityCustomFields?.reduce(
+        (acc, el) => {
+          if (el.readonly) {
+            acc[el.name] = true;
+          }
+          return acc;
+        },
+        {} as Record<string, boolean>,
+      ) || {},
+    [entityCustomFields],
+  );
 
-        return acc;
-      },
-      {} as CF,
-    );
-  }, [state, relationFields]);
+  const prepareCustomFields = useCallback(
+    (props?: { filterReadonly: boolean }) => {
+      const { filterReadonly } = props || {};
+
+      return Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
+        (acc, [key, val]) => {
+          if (filterReadonly && readOnlyFieldsDict[key]) return acc;
+
+          if (relationFields?.includes(key)) {
+            const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+            acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
+          } else acc[key] = val;
+
+          return acc;
+        },
+        {} as CF,
+      );
+    },
+    [state, relationFields],
+  );
 
   useEffect(() => {
     // TODO Add debounce
@@ -206,7 +227,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   }, [runtimeSelector, entityName, id]);
 
   const updateEntity = useCallback(async () => {
-    const preparedCustomFields = prepareCustomFields();
+    const preparedCustomFields = prepareCustomFields({ filterReadonly: true });
 
     try {
       if (mutation) {

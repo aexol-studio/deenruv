@@ -32,14 +32,14 @@ interface DetailViewProps<
                 | React.MouseEvent<HTMLButtonElement, MouseEvent>
                 | React.MouseEvent<HTMLDivElement>,
             data: ModelTypes[FORMKEY],
-        ) => Promise<Record<string, unknown>>;
+        ) => Promise<Record<string, unknown>> | undefined;
         onDeleted?: (
             event:
                 | React.FormEvent<HTMLFormElement>
                 | React.MouseEvent<HTMLButtonElement, MouseEvent>
                 | React.MouseEvent<HTMLDivElement>,
             data: ModelTypes[FORMKEY],
-        ) => Promise<Record<string, unknown>>;
+        ) => Promise<Record<string, unknown>> | undefined;
     };
     formKey?: FORMKEY;
     formKeys?: FORMKEYS[];
@@ -184,11 +184,11 @@ const createDetailViewStore = <
         onDelete: event => {
             const { onDeleted } = get().form;
             if (!onDeleted) return;
-            onDeleted(event, get().form.base.state).then(handleSuccess).catch(handleError);
+            onDeleted(event, get().form.base.state)?.then(handleSuccess).catch(handleError);
         },
         onSubmit: event => {
             const { onSubmitted, base } = get().form;
-            onSubmitted(event, base.state).then(handleSuccess).catch(handleError);
+            onSubmitted(event, base.state)?.then(handleSuccess).catch(handleError);
         },
         setSidebar: sidebar => {
             // TODO This logic is not in use as sidebar is handled in DetailView.tsx

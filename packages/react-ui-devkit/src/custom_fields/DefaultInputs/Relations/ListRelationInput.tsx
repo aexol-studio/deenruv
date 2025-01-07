@@ -62,6 +62,7 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
                     items: customFieldSelectors[entityName],
                 },
             ],
+            // eslint-disable-next-line
         } as any);
         return response as { items: CommonFields[]; totalItems: number };
     };
@@ -95,11 +96,15 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
                             return (
                                 <div>
                                     <div className="h-32 w-32 relative">
-                                        <CircleX
-                                            size={20}
-                                            className="text-foreground fill-muted absolute top-0.5 right-0.5 cursor-pointer"
-                                            onClick={() => setValue(value.filter(el2 => el.id !== el2.id))}
-                                        />
+                                        {!field?.readonly && (
+                                            <CircleX
+                                                size={20}
+                                                className="text-foreground fill-muted absolute top-0.5 right-0.5 cursor-pointer"
+                                                onClick={() =>
+                                                    setValue(value.filter(el2 => el.id !== el2.id))
+                                                }
+                                            />
+                                        )}
                                         {!img ? (
                                             <ImagePlaceholder />
                                         ) : (
@@ -122,18 +127,20 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
                         })}
                     </div>
                 )}
-                <div className="flex gap-2">
-                    {!!value?.length && (
-                        <Button variant="destructive" size="sm" onClick={() => setValue([])}>
-                            {t('custom-fields.clear')}
-                        </Button>
-                    )}
-                    <DialogTrigger asChild>
-                        <Button variant="secondary" size="sm" onClick={() => setModalOpened(true)}>
-                            {t(`custom-fields.${entityName.toLowerCase()}.pick`)}
-                        </Button>
-                    </DialogTrigger>
-                </div>
+                {!field?.readonly && (
+                    <div className="flex gap-2">
+                        {!!value?.length && (
+                            <Button variant="destructive" size="sm" onClick={() => setValue([])}>
+                                {t('custom-fields.clear')}
+                            </Button>
+                        )}
+                        <DialogTrigger asChild>
+                            <Button variant="secondary" size="sm" onClick={() => setModalOpened(true)}>
+                                {t(`custom-fields.${entityName.toLowerCase()}.pick`)}
+                            </Button>
+                        </DialogTrigger>
+                    </div>
+                )}
             </div>
             <DialogContent className="max-h-[80vh] max-w-[80vw] overflow-auto">
                 <DialogHeader>
@@ -180,7 +187,7 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
                             )}
                             <Button
                                 onClick={() => {
-                                    selected && setValue(selected);
+                                    if (selected) setValue(selected);
                                     onOpenChange(false);
                                 }}
                                 variant={selected ? 'action' : 'secondary'}

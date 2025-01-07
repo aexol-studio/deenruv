@@ -14,7 +14,7 @@ import { DefaultSimpleListInput } from './DefaultInputs/DefaultSimpleListInput';
 
 export function generateCustomFields(
     customFields: CustomFieldConfigType[],
-    getInputComponent: (id: string) => React.ComponentType<{}> | null,
+    getInputComponent: (id: string) => React.ComponentType<object> | null,
 ) {
     const fields: (any & { tab: string; component: React.ReactElement })[] = [];
     for (const field of customFields) {

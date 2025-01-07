@@ -7,7 +7,12 @@ export const DefaultCheckbox = () => {
     return (
         <>
             <div className="flex items-center space-x-2">
-                <Checkbox id={field?.name} checked={value as boolean} onCheckedChange={setValue} />
+                <Checkbox
+                    id={field?.name}
+                    disabled={field?.readonly}
+                    checked={value as boolean}
+                    onCheckedChange={setValue}
+                />
                 <Label htmlFor={field?.name}>{label || field?.name}</Label>
             </div>
             <CardDescription>{description}</CardDescription>

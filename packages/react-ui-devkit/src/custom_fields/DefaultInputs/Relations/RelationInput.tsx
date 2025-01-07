@@ -49,7 +49,7 @@ export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: 
     const [selected, setSelected] = useState<typeof value>();
 
     const onOpenChange = (open: boolean) => {
-        value && setSelected(value);
+        if (value) setSelected(value);
         setModalOpened(open);
     };
 
@@ -64,6 +64,7 @@ export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: 
                     items: customFieldSelectors[entityName],
                 },
             ],
+            // eslint-disable-next-line
         } as any);
         return response as { items: CommonFields[]; totalItems: number };
     };
@@ -109,19 +110,21 @@ export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: 
                         </div>
                     </div>
                 )}
-                <div className="flex gap-2">
-                    {!value ? (
-                        <DialogTrigger asChild>
-                            <Button variant="secondary" size="sm" onClick={() => setModalOpened(true)}>
-                                {t(`custom-fields.${entityName.toLowerCase()}.pick`)}
+                {!field?.readonly && (
+                    <div className="flex gap-2">
+                        {!value ? (
+                            <DialogTrigger asChild>
+                                <Button variant="secondary" size="sm" onClick={() => setModalOpened(true)}>
+                                    {t(`custom-fields.${entityName.toLowerCase()}.pick`)}
+                                </Button>
+                            </DialogTrigger>
+                        ) : (
+                            <Button variant="destructive" size="sm" onClick={() => setValue(undefined)}>
+                                {t('remove')}
                             </Button>
-                        </DialogTrigger>
-                    ) : (
-                        <Button variant="destructive" size="sm" onClick={() => setValue(undefined)}>
-                            {t('remove')}
-                        </Button>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
             </div>
             <DialogContent className="max-h-[80vh] max-w-[80vw] overflow-auto">
                 <DialogHeader>
@@ -162,7 +165,7 @@ export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: 
                             )}
                             <Button
                                 onClick={() => {
-                                    selected && setValue(selected);
+                                    if (selected) setValue(selected);
                                     onOpenChange(false);
                                 }}
                                 variant={selected ? 'action' : 'secondary'}
