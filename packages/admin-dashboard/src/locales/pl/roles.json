@@ -18,7 +18,8 @@
     "openMenu": "Otwórz menu",
     "copyId": "Kopiuj identyfikator",
     "viewRole": "Zobacz rolę",
-    "columns": "Kolumny"
+    "columns": "Kolumny",
+    "defaultRoleInfo": "To jest domyślna rola i nie może być edytowana"
   },
   "details": {
     "basic": {

@@ -17,11 +17,11 @@ import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiCli
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { TaxCategoryListSelector, TaxCategoryListType } from '@/graphql/taxCategories';
 import { ParamFilterFieldTuple, TaxCategoriesSortOptions, taxCategoriesSortOptionsArray } from '@/lists/types';
-import { ActionsColumn } from '@/components/Columns';
+import { ActionsColumn, BooleanCell } from '@/components/Columns';
 
 const getTaxCategories = async (options: ResolverInputTypes['TaxCategoryListOptions']) => {
   const response = await apiClient('query')({
@@ -80,12 +80,19 @@ export const TaxCategoriesListPage = () => {
       deleteTaxCategories: [{ ids: taxCategoriesToDelete.map((ch) => ch.id) }, { message: true, result: true }],
     });
 
-    if (resp.deleteTaxCategories) {
+    const deletedAll = !resp.deleteTaxCategories.some(({ result }) => result !== DeletionResult.DELETED);
+
+    if (deletedAll) {
       toast.message(t('toasts.taxCategoryDeleteSuccess'));
-      refetchTaxCategories();
-      setDeleteDialogOpened(false);
       setTaxCategoriesToDelete([]);
-    } else toast.error(t('toasts.taxCategoryDeleteError'));
+    } else if (resp.deleteTaxCategories.length === 1) {
+      toast.error(t('toasts.taxCategoryDeleteError'));
+    } else {
+      toast.warning(t('toasts.taxCategoryDeleteAllError'));
+    }
+
+    refetchTaxCategories();
+    setDeleteDialogOpened(false);
   };
 
   const columns: ColumnDef<TaxCategoryListType>[] = [
@@ -154,7 +161,7 @@ export const TaxCategoriesListPage = () => {
       accessorKey: 'isDefault',
       enableColumnFilter: false,
       header: () => t('table.isDefault'),
-      cell: ({ row }) => (row.original.isDefault ? <Check /> : <X />),
+      cell: ({ row }) => <BooleanCell value={row.original.isDefault} />,
     },
     ActionsColumn({
       viewRoute: Routes.taxCategories.to,
@@ -220,7 +227,7 @@ export const TaxCategoriesListPage = () => {
   }, [taxCategories]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <ListColumnDropdown table={table} t={t} />

@@ -33,7 +33,8 @@
     "taxCategoryCreatedSuccess": "Kategoria podatkowa została pomyślnie utworzona",
     "taxCategoryCreatedError": "Nie udało się utworzyć kategorii podatkowej",
     "taxCategoryDeleteSuccess": "Kategoria podatkowa została pomyślnie usunięta",
-    "taxCategoryDeleteError": "Nie udało się usunąć kategorii podatkowej"
+    "taxCategoryDeleteError": "Nie udało się usunąć kategorii podatkowej. Prawdopodobnie jest używana",
+    "taxCategoryDeleteAllError": "Niektóre kategorie nie zostały usunięte. Prawdopodobnie są używane"
   },
   "deleteTaxCategory": {
     "title": "Usuń kategorię podatkową",

@@ -220,7 +220,7 @@ export const ShippingMethodsListPage = () => {
   }, [shippingMethods]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <ListColumnDropdown table={table} t={t} />

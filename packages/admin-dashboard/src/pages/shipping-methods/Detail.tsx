@@ -72,7 +72,7 @@ export const ShippingMethodsDetailPage = () => {
     fetchFulfillmentHandlers();
   }, [id, setLoading, fetchShippingMethod, fetchFulfillmentHandlers]);
 
-  const { state, setField } = useGFFLP(
+  const { state, setField, haveValidFields } = useGFFLP(
     'UpdateShippingMethodInput',
     'code',
     'customFields',
@@ -80,7 +80,18 @@ export const ShippingMethodsDetailPage = () => {
     'checker',
     'calculator',
     'fulfillmentHandler',
-  )({});
+  )({
+    checker: {
+      validate: (v) => {
+        if (!v) return [t('validation.checkerRequired')];
+      },
+    },
+    calculator: {
+      validate: (v) => {
+        if (!v) return [t('validation.calculatorRequired')];
+      },
+    },
+  });
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
@@ -136,7 +147,7 @@ export const ShippingMethodsDetailPage = () => {
             fulfillmentHandler: state.fulfillmentHandler?.validatedValue,
             translations: state.translations!.validatedValue!,
             customFields: state.customFields?.validatedValue,
-            checker: state.checker?.validatedValue?.code !== '' ? state.checker?.validatedValue : undefined,
+            checker: state.checker?.validatedValue,
           },
         },
         {
@@ -159,7 +170,7 @@ export const ShippingMethodsDetailPage = () => {
         calculator: state.calculator?.value,
         fulfillmentHandler: state.fulfillmentHandler?.value,
         translations: state.translations?.value,
-        customFields: state.customFields?.value,
+        // customFields: state.customFields?.value,
       },
       {
         code: shippingMethod?.code,
@@ -170,7 +181,9 @@ export const ShippingMethodsDetailPage = () => {
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    const disabled = areEqual || !haveValidFields;
+
+    setButtonDisabled(disabled);
   }, [state, shippingMethod, editMode]);
 
   const setTranslationField = useCallback(
@@ -195,7 +208,7 @@ export const ShippingMethodsDetailPage = () => {
       {t('toasts.shippingMethodLoadingError', { value: id })}
     </div>
   ) : (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           currentTranslationLng={currentTranslationLng}

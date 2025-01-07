@@ -40,6 +40,7 @@ import { CountriesSortOptions, ParamFilterFieldTuple, countriesSortOptionsArray 
 import { format } from 'date-fns';
 import { CountryListType, CountrySelector } from '@/graphql/settings';
 import { CountryActionModal } from './_components/CountryActionModal.js';
+import { BooleanCell } from '@/components/Columns/BooleanCell.js';
 
 const getCountries = async (options: ResolverInputTypes['CountryListOptions']) => {
   const response = await apiClient('query')({
@@ -50,7 +51,7 @@ const getCountries = async (options: ResolverInputTypes['CountryListOptions']) =
 
 export const CountriesListPage = () => {
   const translationsLanguage = useSettings((p) => p.translationsLanguage);
-  const { t } = useTranslation('products');
+  const { t } = useTranslation('countries');
 
   const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
     'countries-table-visibility',
@@ -136,10 +137,19 @@ export const CountriesListPage = () => {
       accessorKey: 'code',
       header: () => (
         <SortButton currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('code')}>
-          Kod
+          {t('table.code')}
         </SortButton>
       ),
-      cell: ({ row }) => <div className="text-nowrap pl-4">{row.original.name}</div>,
+      cell: ({ row }) => <div className="text-nowrap pl-4">{row.original.code}</div>,
+    },
+    {
+      accessorKey: 'enabled',
+      header: () => (
+        <SortButton currSort={optionInfo.sort} sortKey="enabled" onClick={() => setSort('enabled')}>
+          {t('table.enabled')}
+        </SortButton>
+      ),
+      cell: ({ row }) => <BooleanCell value={row.original.enabled} />,
     },
     {
       accessorKey: 'createdAt',
@@ -184,7 +194,7 @@ export const CountriesListPage = () => {
               }}
               className="item-center group flex cursor-pointer justify-between gap-2"
             >
-              Edytuj kraj
+              {t('edit')}
               <Pencil className="h-4 w-4 group-hover:text-blue-600" />
             </DropdownMenuItem>
             <DropdownMenuItem
@@ -194,7 +204,7 @@ export const CountriesListPage = () => {
                 setCountriesToDelete([row.original]);
               }}
             >
-              <span>Usuń kraj</span>
+              <span>{t('deleteCountry.title')}</span>
               <Trash className="h-4 w-4 group-hover:text-red-600" />
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -267,7 +277,7 @@ export const CountriesListPage = () => {
     setCountryAction(undefined);
   };
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <TranslationSelect />

@@ -21,7 +21,7 @@ import { ParamFilterFieldTuple, PaymentMethodsSortOptions, paymentMethodsSortOpt
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { PaymentMethodListSelector, PaymentMethodListType } from '@/graphql/paymentMethods';
-import { ActionsColumn } from '@/components/Columns';
+import { ActionsColumn, BooleanCell } from '@/components/Columns';
 
 const getPaymentMethods = async (options: ResolverInputTypes['PaymentMethodListOptions']) => {
   const response = await apiClient('query')({
@@ -170,7 +170,7 @@ export const PaymentMethodsListPage = () => {
           {t('table.enabled')}
         </SortButton>
       ),
-      cell: ({ row }) => (row.original.enabled ? <Check /> : <X />),
+      cell: ({ row }) => <BooleanCell value={row.original.enabled} />,
     },
     // {
     //   accessorKey: 'modalTitle',

@@ -9,6 +9,8 @@
   "table": {
     "id": "Id",
     "code": "Kod",
+    "name": "Nazwa",
+    "enabled": "Włączony",
     "createdAt": "Utworzono na stronie",
     "updatedAt": "Zaktualizowano na stronie",
     "openMenu": "Otwórz menu",

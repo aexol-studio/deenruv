@@ -18,7 +18,8 @@
     "openMenu": "Open menu",
     "copyId": "Copy id",
     "viewRole": "View role",
-    "columns": "Columns"
+    "columns": "Columns",
+    "defaultRoleInfo": "This is a default Role and cannot be modified"
   },
   "details": {
     "basic": {

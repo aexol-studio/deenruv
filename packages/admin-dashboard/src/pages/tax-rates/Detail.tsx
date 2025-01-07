@@ -196,7 +196,7 @@ export const TaxRatesDetailPage = () => {
       {t('toasts.taxRateLoadingError', { value: id })}
     </div>
   ) : (
-    <main className="min-h-96">
+    <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           taxRate={taxRate}

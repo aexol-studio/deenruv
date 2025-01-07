@@ -65,6 +65,10 @@
     "shippingMethodDeleteSuccess": "Shipping method deleted successfully",
     "shippingMethodDeleteError": "Failed to delete shipping method"
   },
+  "validation": {
+    "checkerRequired": "Shipping eligibility checker is required",
+    "calculatorRequired": "Shipping calculator is required"
+  },
   "deleteShippingMethod": {
     "title": "Delete shipping method",
     "description": "Are you sure you want to delete this shipping method?",

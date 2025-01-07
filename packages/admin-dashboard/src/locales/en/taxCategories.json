@@ -30,7 +30,8 @@
     "taxCategoryCreatedSuccess": "Tax category has been created successfully",
     "taxCategoryCreatedError": "Failed to create tax category",
     "taxCategoryDeleteSuccess": "Tax category deleted successfully",
-    "taxCategoryDeleteError": "Failed to delete tax category"
+    "taxCategoryDeleteError": "Failed to delete tax category. It is probably in use",
+    "taxCategoryDeleteAllError": "Some tax categories were not deleted. They are probably in use"
   },
   "deleteTaxCategory": {
     "title": "Delete tax category",

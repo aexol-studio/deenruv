@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import {
   ColumnDef,
   ColumnFiltersState,
+  Row,
   VisibilityState,
   getCoreRowModel,
   getFilteredRowModel,
@@ -11,9 +12,20 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MoreHorizontal } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
-import { DEFAULT_CHANNEL_CODE, Checkbox, ListTable, apiClient } from '@deenruv/react-ui-devkit';
+import {
+  DEFAULT_CHANNEL_CODE,
+  Checkbox,
+  ListTable,
+  apiClient,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Button,
+} from '@deenruv/react-ui-devkit';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { Routes, Badge, SortButton, useLocalStorage } from '@deenruv/react-ui-devkit';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -22,7 +34,6 @@ import { toast } from 'sonner';
 import { ParamFilterFieldTuple, RolesSortOptions, rolesSortOptionsArray } from '@/lists/types';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { RoleListSelector, RoleListType } from '@/graphql/roles';
-import { ActionsColumn } from '@/components/Columns';
 
 const getRoles = async (options: ResolverInputTypes['RoleListOptions']) => {
   const response = await apiClient('query')({
@@ -32,8 +43,13 @@ const getRoles = async (options: ResolverInputTypes['RoleListOptions']) => {
   return response.roles;
 };
 
+const DEFAULT_ROLE_CODES = ['__customer_role__', '__super_admin_role__'];
+
+const isDefaultRole = (row: Row<RoleListType>) => DEFAULT_ROLE_CODES.includes(row.original.code);
+
 export const RolesListPage = () => {
   const { t } = useTranslation('roles');
+  const { t: tCommon } = useTranslation('common');
   const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
     'roles-table-visibility',
     {
@@ -123,7 +139,11 @@ export const RolesListPage = () => {
         />
       ),
       cell: ({ row }) => (
-        <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
+        <Checkbox
+          disabled={isDefaultRole(row)}
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+        />
       ),
       enableSorting: false,
       enableHiding: false,
@@ -166,14 +186,19 @@ export const RolesListPage = () => {
           {t('table.description')}
         </SortButton>
       ),
-      cell: ({ row }) => (
-        <Link to={Routes.roles.to(row.original.id)} className="text-primary-600">
-          <Badge variant="outline" className="flex w-full items-center justify-center py-2">
+      cell: ({ row }) =>
+        isDefaultRole(row) ? (
+          <div className="flex w-full items-center justify-center py-2 text-[12px] font-medium">
             {row.original.description}
-            <ArrowRight className="pl-1" size={16} />
-          </Badge>
-        </Link>
-      ),
+          </div>
+        ) : (
+          <Link to={Routes.roles.to(row.original.id)} className="text-primary-600">
+            <Badge variant="outline" className="flex w-full items-center justify-center py-2">
+              {row.original.description}
+              <ArrowRight className="pl-1" size={16} />
+            </Badge>
+          </Link>
+        ),
     },
     {
       accessorKey: 'code',
@@ -184,7 +209,7 @@ export const RolesListPage = () => {
           {t('table.code')}
         </SortButton>
       ),
-      cell: ({ row }) => row.original.code,
+      cell: ({ row }) => (isDefaultRole(row) ? '' : row.original.code),
     },
     {
       accessorKey: 'permissions',
@@ -195,7 +220,17 @@ export const RolesListPage = () => {
           {t('table.permissions')}
         </SortButton>
       ),
-      cell: ({ row }) => <Stack className="gap-1">{renderElements(row.original.permissions)}</Stack>,
+      cell: ({ row }) => (
+        <Stack className="gap-1">
+          {isDefaultRole(row) ? (
+            <p className="flex w-full items-center justify-center py-2 text-[12px] font-medium text-gray-500">
+              {t('table.defaultRoleInfo')}
+            </p>
+          ) : (
+            renderElements(row.original.permissions)
+          )}
+        </Stack>
+      ),
     },
     {
       accessorKey: 'channels',
@@ -208,21 +243,56 @@ export const RolesListPage = () => {
       ),
       cell: ({ row }) => (
         <Stack className="gap-1">
-          {row.original.channels.map((ch) => (
-            <Badge key={ch.code} variant="outline" className="py-1">
-              {ch.code === DEFAULT_CHANNEL_CODE ? t('defaultChannel') : ch.code}
-            </Badge>
-          ))}
+          {isDefaultRole(row)
+            ? ''
+            : row.original.channels.map((ch) => (
+                <Badge key={ch.code} variant="outline" className="py-1">
+                  {ch.code === DEFAULT_CHANNEL_CODE ? t('defaultChannel') : ch.code}
+                </Badge>
+              ))}
         </Stack>
       ),
     },
-    ActionsColumn({
-      viewRoute: Routes.roles.to,
-      onDelete: (row) => {
-        setDeleteDialogOpened(true);
-        setRolesToDelete([row.original]);
-      },
-    }),
+    {
+      id: 'actions',
+      enableHiding: false,
+      cell: ({ row }) =>
+        isDefaultRole(row) ? (
+          ''
+        ) : (
+          <Stack className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">{tCommon('actionsMenu.openMenu')}</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
+                  {tCommon('actionsMenu.copyId')}
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to={Routes.roles.to(row.original.id)} className="text-primary-600">
+                    {tCommon('actionsMenu.view')}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    setDeleteDialogOpened(true);
+                    setRolesToDelete([row.original]);
+                  }}
+                >
+                  <div className=" text-red-400 hover:text-red-400 dark:hover:text-red-400">
+                    {tCommon('actionsMenu.delete')}
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Stack>
+        ),
+    },
   ];
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -280,7 +350,7 @@ export const RolesListPage = () => {
   }, [roles]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <ListColumnDropdown table={table} t={t} />

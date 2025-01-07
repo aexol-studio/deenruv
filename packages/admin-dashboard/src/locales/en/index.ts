@@ -3,6 +3,7 @@ import assets from './assets.json';
 import channels from './channels.json';
 import collections from './collections.json';
 import common from './common.json';
+import countries from './countries.json';
 import dashboard from './dashboard.json';
 import facets from './facets.json';
 import orders from './orders.json';
@@ -27,6 +28,7 @@ export default {
   channels,
   collections,
   common,
+  countries,
   dashboard,
   facets,
   orders,

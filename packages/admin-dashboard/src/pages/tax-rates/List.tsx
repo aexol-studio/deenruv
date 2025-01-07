@@ -21,7 +21,7 @@ import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { ParamFilterFieldTuple, TaxRatesSortOptions, taxCategoriesSortOptionsArray } from '@/lists/types';
 import { TaxRateListSelector, TaxRateListType } from '@/graphql/taxRates';
-import { ActionsColumn } from '@/components/Columns';
+import { ActionsColumn, BooleanCell } from '@/components/Columns';
 
 const getTaxRates = async (options: ResolverInputTypes['TaxRateListOptions']) => {
   const response = await apiClient('query')({
@@ -193,7 +193,7 @@ export const TaxRatesListPage = () => {
       accessorKey: 'enabled',
       enableColumnFilter: false,
       header: () => t('table.enabled'),
-      cell: ({ row }) => (row.original.enabled ? <Check /> : <X />),
+      cell: ({ row }) => <BooleanCell value={row.original.enabled} />,
     },
     ActionsColumn({
       viewRoute: Routes.taxRates.to,
@@ -259,7 +259,7 @@ export const TaxRatesListPage = () => {
   }, [taxRates]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <ListColumnDropdown table={table} t={t} />
