@@ -40,6 +40,12 @@ export const Routes = {
         route: '/admin-ui/customers/:id',
         to: (customerId: string) => `/admin-ui/customers/${customerId}`,
     },
+    customerGroups: {
+        list: '/admin-ui/customer-groups',
+        new: '/admin-ui/customer-groups/new',
+        route: '/admin-ui/customer-groups/:id',
+        to: (customerGroupId: string) => `/admin-ui/customer-groups/${customerGroupId}`,
+    },
     facets: {
         list: '/admin-ui/facets',
         new: '/admin-ui/facets/new',

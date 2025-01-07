@@ -74,6 +74,7 @@
     "dashboard": "dashboard",
     "products": "products",
     "customers": "customers",
+    "customerGroups": "customer groups",
     "productVariants": "product variants",
     "collections": "collections",
     "orders": "orders",

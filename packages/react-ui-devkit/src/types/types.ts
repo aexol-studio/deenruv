@@ -1,7 +1,7 @@
 import type { FC, SVGProps } from 'react';
 import { Routes } from '../routes';
 import { ColumnDef } from '@tanstack/react-table';
-import { ProductDetailSelector, ProductListSelector, PromotionDetailSelector, StockLocationDetailSelector, StockLocationListSelector, TaxCategoryDetailSelector } from '../selectors';
+import { ProductDetailSelector, ProductListSelector, PromotionDetailSelector, StockLocationDetailSelector, StockLocationListSelector, TaxCategoryDetailSelector, CustomerGroupDetailSelector } from '../selectors';
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
@@ -81,6 +81,10 @@ export const DetailLocations = {
     'customers-detail-view': {
         type: 'Customer' as const,
         selector: CustomerDetailSelector,
+    },
+    'customerGroups-detail-view': {
+        type: 'CustomerGroup' as const,
+        selector: CustomerGroupDetailSelector,
     },
 
 };

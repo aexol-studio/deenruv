@@ -31,6 +31,7 @@ import {
   CreditCard,
   Truck,
   Cog,
+  UsersRound,
 } from 'lucide-react';
 
 type NavLink = {
@@ -72,6 +73,12 @@ export function Navigation({ isCollapsed }: NavProps) {
           { title: t('menu.assets'), href: Routes.assets.list, id: 'link-assets', icon: Images },
           { title: t('menu.products'), href: Routes.products.list, id: 'link-products', icon: Barcode },
           { title: t('menu.customers'), href: Routes.customers.list, id: 'link-customers', icon: UserRoundSearch },
+          {
+            title: t('menu.customerGroups'),
+            href: Routes.customerGroups.list,
+            id: 'link-customerGroups',
+            icon: UsersRound,
+          },
           { title: t('menu.collections'), href: Routes.collections.list, id: 'link-collections', icon: Folder },
           { title: t('menu.facets'), href: Routes.facets.list, id: 'link-facets', icon: Tag },
           { title: t('menu.orders'), href: Routes.orders.list, id: 'link-orders', icon: ShoppingCart },

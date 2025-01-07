@@ -3,6 +3,7 @@ import assets from './assets.json';
 import channels from './channels.json';
 import collections from './collections.json';
 import common from './common.json';
+import countries from './countries.json';
 import dashboard from './dashboard.json';
 import facets from './facets.json';
 import orders from './orders.json';
@@ -17,7 +18,10 @@ import taxCategories from './taxCategories.json';
 import taxRates from './taxRates.json';
 import zones from './zones.json';
 import table from './table.json';
+import customerGroups from './customerGroups.json';
+import customers from './customers.json';
 import globalSettings from './globalSettings.json';
+import promotions from './promotions.json';
 
 export default {
   admins,
@@ -40,4 +44,8 @@ export default {
   zones,
   table,
   globalSettings,
+  customers,
+  countries,
+  customerGroups,
+  promotions
 };

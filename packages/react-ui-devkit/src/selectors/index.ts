@@ -10,3 +10,4 @@ export * from './TaxCategoryDetailSelector';
 export * from './StockLocationListSelector';
 export * from './StockLocationDetailSelector';
 export * from './CustomerDetailSelector';
+export * from './CustomerGroupDetailSelector';

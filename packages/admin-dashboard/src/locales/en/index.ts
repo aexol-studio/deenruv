@@ -19,6 +19,7 @@ import taxRates from './taxRates.json';
 import zones from './zones.json';
 import table from './table.json';
 import customers from './customers.json';
+import customerGroups from './customerGroups.json';
 import globalSettings from './globalSettings.json';
 import promotions from './promotions.json';
 
@@ -45,5 +46,6 @@ export default {
   zones,
   table,
   customers,
+  customerGroups,
   globalSettings,
 };

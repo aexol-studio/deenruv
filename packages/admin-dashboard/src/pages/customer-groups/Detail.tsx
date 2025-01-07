@@ -1,0 +1,100 @@
+import { useParams } from 'react-router-dom';
+import { DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
+import { CustomerGroupsDetailView } from './_components/CustomerGroupsDetailView';
+import { typedGql, scalars, $, ModelTypes } from '@deenruv/admin-types';
+import { useCallback } from 'react';
+
+type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
+type FormDataType = Partial<{
+  name: GFFLPFormField<CreateStockLocationInput['name']>;
+  description: GFFLPFormField<CreateStockLocationInput['description']>;
+}>;
+
+const CreateCustomerGroupMutation = typedGql('mutation', { scalars })({
+  createCustomerGroup: [
+    {
+      input: $('input', 'CreateCustomerGroupInput!'),
+    },
+    { id: true },
+  ],
+});
+
+const EditCustomerGroupMutation = typedGql('mutation', { scalars })({
+  updateCustomerGroup: [
+    {
+      input: $('input', 'UpdateCustomerGroupInput!'),
+    },
+    { id: true },
+  ],
+});
+
+const DeleteCustomerGroupMutation = typedGql('mutation', { scalars })({
+  deleteCustomerGroup: [
+    {
+      id: $('id', 'ID!'),
+    },
+    { message: true, result: true },
+  ],
+});
+
+export const CustomerGroupsDetailPage = () => {
+  const { id } = useParams();
+  const [update] = useMutation(EditCustomerGroupMutation);
+  const [create] = useMutation(CreateCustomerGroupMutation);
+  const [remove] = useMutation(DeleteCustomerGroupMutation);
+
+  const onSubmitHandler = useCallback(
+    (_event: React.FormEvent, data: FormDataType) => {
+      if (!data.name?.validatedValue) {
+        throw new Error('Name is required.');
+      }
+
+      const inputData: ModelTypes['CreateCustomerGroupInput'] = {
+        name: data.name.validatedValue,
+      };
+
+      if (id) {
+        return update({
+          input: {
+            id,
+            ...inputData,
+          },
+        });
+      } else {
+        return create({
+          input: inputData,
+        });
+      }
+    },
+    [id, update, create],
+  );
+
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
+
+    return remove({ id });
+  }, [remove, id]);
+
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="customerGroups-detail-view"
+        main={{
+          name: 'customerGroup',
+          label: 'Customer Group',
+          component: <CustomerGroupsDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateCustomerGroupInput',
+            keys: ['name'],
+            config: {},
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+      />
+    </div>
+  );
+};

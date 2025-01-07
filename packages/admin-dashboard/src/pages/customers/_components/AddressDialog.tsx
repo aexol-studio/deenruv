@@ -198,9 +198,9 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({ add
         </ScrollArea>
         <DialogFooter>
           <Button className="w-min place-self-end" onClick={handleSubmit}>
-            {t('customers.save')}
+            {t('addresses.save')}
           </Button>
-          <Button className="w-min place-self-end">{t('customers.cancel')}</Button>
+          <Button className="w-min place-self-end">{t('addresses.cancel')}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

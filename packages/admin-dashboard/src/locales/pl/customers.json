@@ -1,0 +1,92 @@
+{
+    "personalData": {
+        "header": "Dane osobowe",
+        "title": "Tytuł",
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "emailAddress": "Adres email",
+        "phoneNumber": "Numer telefonu"
+    },
+    "verified": {
+        "header": "Role klienta",
+        "true": "Zweryfikowany",
+        "false": "Gość"
+    },
+    "customerGroups": {
+        "header": "Grupy klientów",
+        "placeholder": "Dodaj grupy",
+        "toastAdded": "Użytkownik został dodany do grupy",
+        "toastRemoved": "Użytkownik został usunięty z grupy"
+    },
+    "addresses": {
+        "header": "Adresy",
+        "empty": "Wygląda na to, że nie ma jeszcze żadnych adresów.",
+        "addBtn": "Dodaj adres",
+        "phoneNumberShort": "tel.{{value}}",
+        "edit": "Edytuj",
+        "save": "Zapisz",
+        "cancel": "Anuluj"
+    },
+    "orders": {
+        "header": "Zamówienia"
+    },
+    "history": {
+        "header": "Historia",
+        "toastError": "Wystąpił błąd",
+        "toastSuccess": "Działanie zakończone sukcesem"
+    },
+    "selectAddress": {
+        "nameRequired": "Imię i nazwisko jest wymagane",
+        "streetRequired": "Linia ulicy 1 jest wymagana",
+        "cityRequired": "Nazwa miasta jest wymagana",
+        "postalCodeRequired": "Kod pocztowy jest wymagany",
+        "countryRequired": "Kraj jest wymagany",
+        "phoneNumberRequired": "Numer telefonu jest wymagany",
+        "shippingHeader": "Adres wysyłki",
+        "billingHeader": "Adres rozliczeniowy",
+        "shippingDescription": "Tutaj możesz ustawić adres wysyłki",
+        "billingDescription": "Tutaj możesz ustawić adres rozliczeniowy",
+        "changeShippingAddress": "Zmień adres wysyłki",
+        "selectShippingAddress": "Wybierz adres wysyłki",
+        "createShippingAddress": "Utwórz adres wysyłki",
+        "changeBillingAddress": "Zmień adres rozliczeniowy",
+        "selectBillingAddress": "Wybierz adres rozliczeniowy",
+        "createBillingAddress": "Utwórz adres rozliczeniowy",
+        "selectAddress": "Wybierz adres",
+        "createAddress": "Utwórz adres",
+        "editAddress": "Edytuj adres",
+        "addressSuccessCreateToast": "Adres wybrany pomyślnie",
+        "addressSuccessSelectToast": "Adres utworzony pomyślnie",
+        "addressFailedCreateToast": "Wybór adresu nie powiódł się",
+        "addressFailedSelectToast": "Tworzenie adresu nie powiodło się",
+        "newAddress": "Nowy adres: {{address}} dodany do konta użytkownika",
+        "addressAddFailed": "Nie udało się dodać nowego adresu do konta użytkownika",
+        "phoneError": "Nieprawidłowy format numeru telefonu",
+        "close": "Zamknij",
+        "setAsDefaultShipping": "Ustaw jako domyślny adres wysyłki",
+        "setAsDefaultBilling": "Ustaw jako domyślny adres rozliczeniowy",
+        "countrySelectLabel": "Kraj:",
+        "phoneNumberShort": "tel.{{value}}",
+        "isDefaultBilling": "Domyślny adres wysyłki klienta",
+        "isDefaultShipping": "Domyślny adres rozliczeniowy klienta",
+        "createForCustomer": "Utwórz dla klienta",
+        "inputNameLabel": "Imię i nazwisko",
+        "inputNamePlaceholder": "Imię i nazwisko",
+        "inputCompanyLabel": "Nazwa firmy",
+        "inputCompanyPlaceholder": "Nazwa firmy",
+        "inputPhoneLabel": "Numer telefonu",
+        "inputPhonePlaceholder": "Numer telefonu",
+        "inputPostalLabel": "Kod pocztowy",
+        "inputPostalPlaceholder": "Kod pocztowy",
+        "inputProvinceLabel": "Województwo",
+        "inputProvincePlaceholder": "Województwo",
+        "inputCityLabel": "Miasto",
+        "inputCityPlaceholder": "Miasto",
+        "inputStreetLabel": "Linia ulicy 1",
+        "inputStreetPlaceholder": "Linia ulicy 1",
+        "inputStreet2Label": "Linia ulicy 2",
+        "inputStreet2Placeholder": "Linia ulicy 2",
+        "inputTaxLabel": "NIP firmy",
+        "inputTaxPlaceholder": "NIP firmy"
+    }
+}

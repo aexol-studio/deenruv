@@ -87,6 +87,7 @@ export const ListTypeKeys = {
     zones: 'ZoneFilterParameter' as const,
     promotions: 'PromotionFilterParameter' as const,
     customers: 'CustomerFilterParameter' as const,
+    customerGroups: 'CustomerGroupFilterParameter' as const,
 };
 
 export type ListType = typeof ListTypeKeys;
