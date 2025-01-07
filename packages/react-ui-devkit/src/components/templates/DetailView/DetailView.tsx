@@ -44,13 +44,13 @@ interface DetailViewFormProps<
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
-    ) => Promise<Record<string, unknown>>;
+    ) => Promise<Record<string, unknown>> | undefined;
     onDeleted?: (
         event: Event,
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
-    ) => Promise<Record<string, unknown>>;
+    ) => Promise<Record<string, unknown>> | undefined;
 }
 
 export const createDeenruvForm = <

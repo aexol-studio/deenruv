@@ -33,7 +33,6 @@ export const CustomerDetailView = () => {
   useEffect(() => {
     if (!view.entity) return;
     view.setEntity(view.entity);
-    console.log('entity', view.entity);
     setField('title', view.entity.title);
     setField('phoneNumber', view.entity.phoneNumber);
     setField('firstName', view.entity.firstName);
