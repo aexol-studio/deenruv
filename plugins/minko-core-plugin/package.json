@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/minko-core-plugin",
-    "version": "0.0.60",
+    "version": "0.0.61",
     "homepage": "https://www.deenruv.com/",
     "license": "MIT",
     "main": "./dist/plugin-server/index.js",
