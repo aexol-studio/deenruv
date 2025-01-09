@@ -7,6 +7,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     label?: string;
     endAdornment?: React.ReactNode;
     wrapperClassName?: string;
+    errors?: string[];
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => {
@@ -26,6 +27,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
                         </div>
                     )}
                 </div>
+                {props.errors?.length && (
+                    <p className="text-destructive -mt-1 text-sm font-medium">{props.errors.join(', ')}</p>
+                )}
             </div>
         );
     }

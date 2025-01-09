@@ -78,20 +78,24 @@ export const CustomersDetailPage = () => {
             },
           }),
         }}
-        defaultTabs={[
-          {
-            label: 'Orders',
-            name: 'orders',
-            component: <OrdersTab />,
-            hideSidebar: true,
-          },
-          {
-            label: 'History',
-            name: 'history',
-            component: <HistoryTab />,
-            hideSidebar: true,
-          },
-        ]}
+        defaultTabs={
+          id
+            ? [
+                {
+                  label: 'Orders',
+                  name: 'orders',
+                  component: <OrdersTab />,
+                  hideSidebar: true,
+                },
+                {
+                  label: 'History',
+                  name: 'history',
+                  component: <HistoryTab />,
+                  hideSidebar: true,
+                },
+              ]
+            : []
+        }
       />
     </div>
   );

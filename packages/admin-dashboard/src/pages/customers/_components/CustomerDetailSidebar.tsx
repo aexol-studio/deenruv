@@ -8,7 +8,7 @@ const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 
 export const CustomerDetailSidebar = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { view } = useDetailView(
+  const { view, id } = useDetailView(
     'customers-detail-view',
     ({ id, view, form }) => ({
       id,
@@ -37,8 +37,8 @@ export const CustomerDetailSidebar = () => {
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <VerifiedCard verified={!!view.entity?.user?.verified} />
-          <CustomerGroupsCard customerId={view.entity?.id} groups={view.entity?.groups} />
+          {id && <VerifiedCard verified={!!view.entity?.user?.verified} />}
+          <CustomerGroupsCard customerId={id} groups={view.entity?.groups} />
         </Stack>
       </div>
     </main>

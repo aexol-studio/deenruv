@@ -14,6 +14,7 @@ interface CustomSelectProps extends SelectProps {
     options: Option[] | undefined;
     label?: string;
     size?: 'sm' | 'base';
+    errors?: string[];
 }
 
 export const SimpleSelect: React.FC<CustomSelectProps> = ({
@@ -23,6 +24,7 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
     options,
     label,
     size = 'base',
+    errors,
 }) => {
     return (
         <div className="flex flex-col w-full gap-2">
@@ -39,6 +41,9 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
                     ))}
                 </SelectContent>
             </Select>
+            {errors?.length && (
+                <p className="text-destructive mb-2  mt-1 min-h-5 text-sm font-medium">{errors.join(', ')}</p>
+            )}
         </div>
     );
 };

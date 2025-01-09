@@ -13,7 +13,7 @@ export const VerifiedCard: React.FC<RolesCardProps> = ({ verified }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('roles.header')}</CardTitle>
+        <CardTitle className="flex flex-row justify-between text-base">{t('verified.header')}</CardTitle>
         <CardContent className="flex flex-col gap-4 p-0 pt-4">
           <Stack className="gap-2">
             {verified ? <Badge>{t('verified.true')}</Badge> : <Badge>{t('verified.false')}</Badge>}

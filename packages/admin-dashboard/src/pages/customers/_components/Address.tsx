@@ -1,55 +1,164 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CustomerAddressType,
   CardFooter,
   Button,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  useMutation,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
 } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { AddressDialog } from '@/pages/customers/_components/AddressDialog';
+import { CreditCard, MoreHorizontal, Trash, Truck } from 'lucide-react';
+import { typedGql, scalars, $ } from '@deenruv/admin-types';
+import { toast } from 'sonner';
 
 interface RolesCardProps {
   address: CustomerAddressType;
   customerId: string;
+  onActionCompleted: () => void;
 }
 
-export const Address: React.FC<RolesCardProps> = ({ address, customerId }) => {
+const DeleteCustomerAddressMutation = typedGql('mutation', { scalars })({
+  deleteCustomerAddress: [{ id: $('addressId', 'ID!') }, { success: true }],
+});
+
+const SetAsDefaultBillingAddressMutation = typedGql('mutation', { scalars })({
+  updateCustomerAddress: [
+    {
+      input: {
+        id: $('addressId', 'ID!'),
+        defaultBillingAddress: true,
+      },
+    },
+    { id: true },
+  ],
+});
+
+const SetAsDefaultShippingAddressMutation = typedGql('mutation', { scalars })({
+  updateCustomerAddress: [
+    {
+      input: {
+        id: $('addressId', 'ID!'),
+        defaultShippingAddress: true,
+      },
+    },
+    { id: true },
+  ],
+});
+
+export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActionCompleted }) => {
   const { t } = useTranslation('customers');
+  const [deleteAddress] = useMutation(DeleteCustomerAddressMutation);
+  const [setAsDefaultBillingAddress] = useMutation(SetAsDefaultBillingAddressMutation);
+  const [setAsDefaultShippingAddress] = useMutation(SetAsDefaultShippingAddressMutation);
 
   return (
-    <Card className="border-primary">
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('address.header')}</CardTitle>
-        <CardContent className="flex flex-col gap-4 p-0 pt-4">
-          <Stack className="gap-2">Test</Stack>
-        </CardContent>
-        <CardDescription className="pt-2">
-          {/* <Label className="flex flex-col "> */}
-          <span className="block text-sm">{address?.fullName}</span>
-          <span className="block text-sm">
-            {address.streetLine1} {address?.streetLine2}
-          </span>
-          <span className="block text-sm">
-            {address.city} {address.postalCode} {address.province} {address.country.code}
-          </span>
-          <span className="block text-sm">
-            {address.company} {address.phoneNumber && t('addresses.phoneNumberShort', { value: address.phoneNumber })}
-          </span>
-          {/* </Label> */}
-        </CardDescription>
-        <CardFooter>
-          <AddressDialog address={address} customerId={customerId}>
+    <Card className="flex w-56 flex-col justify-between bg-gray-50">
+      <CardContent className="mt-4 flex flex-col gap-1">
+        <h5 className="mb-2">{address.streetLine1}</h5>
+        <span className="block text-sm">{address?.fullName}</span>
+        <span className="block text-sm">
+          {address.streetLine1} {address?.streetLine2}
+        </span>
+        <span className="block text-sm">
+          {address.city} {address.postalCode} {address.province} {address.country.code}
+        </span>
+        <span className="block text-sm">
+          {address.company} {address.phoneNumber && t('addresses.phoneNumberShort', { value: address.phoneNumber })}
+        </span>
+      </CardContent>
+      <CardFooter className="justify-between">
+        <div className="flex items-center gap-3">
+          {address.defaultBillingAddress && (
+            <Tooltip>
+              <TooltipTrigger>
+                <CreditCard size={20} />
+              </TooltipTrigger>
+              <TooltipContent>{t('selectAddress.defaultBilling')}</TooltipContent>
+            </Tooltip>
+          )}
+          {address.defaultShippingAddress && (
+            <Tooltip>
+              <TooltipTrigger>
+                <Truck size={20} />
+              </TooltipTrigger>
+              <TooltipContent>{t('selectAddress.defaultShipping')}</TooltipContent>
+            </Tooltip>
+          )}
+        </div>
+        <div className="flex items-center">
+          <AddressDialog address={address} customerId={customerId} onActionCompleted={onActionCompleted}>
             <Button size="sm" variant="ghost">
               {t('addresses.edit')}
             </Button>
           </AddressDialog>
-        </CardFooter>
-      </CardHeader>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">{t('selectAddress.more')}</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                disabled={address.defaultBillingAddress}
+                onClick={() =>
+                  setAsDefaultBillingAddress({ addressId: address.id }).then((resp) => {
+                    if (resp.updateCustomerAddress.id) {
+                      toast.success(t('selectAddress.addressSuccessSetAsDefaultBillingToast'));
+                      onActionCompleted();
+                    } else toast.error(t('selectAddress.addressFailedSetAsDefaultToast'));
+                  })
+                }
+              >
+                <CreditCard size={16} />
+                {t('selectAddress.setAsDefaultBilling')}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                disabled={address.defaultShippingAddress}
+                onClick={() =>
+                  setAsDefaultShippingAddress({ addressId: address.id }).then((resp) => {
+                    if (resp.updateCustomerAddress.id) {
+                      toast.success(t('selectAddress.addressSuccessSetAsDefaultShippingToast'));
+                      onActionCompleted();
+                    } else toast.error(t('selectAddress.addressFailedSetAsDefaultToast'));
+                  })
+                }
+              >
+                <Truck size={16} />
+                {t('selectAddress.setAsDefaultShipping')}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() =>
+                  deleteAddress({ addressId: address.id }).then((resp) => {
+                    if (resp.deleteCustomerAddress.success) {
+                      toast.success(t('selectAddress.addressSuccessDeleteToast'));
+                      onActionCompleted();
+                    } else toast.error(t('selectAddress.addressFailedDeleteToast'));
+                  })
+                }
+              >
+                <div className="flex items-center gap-2 text-red-400 hover:text-red-400 dark:hover:text-red-400">
+                  <Trash size={16} />
+                  {t('selectAddress.deleteAddress')}
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </CardFooter>
     </Card>
   );
 };

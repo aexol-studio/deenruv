@@ -14,6 +14,8 @@ const AddressSelector = Selector('Address')({
     country: {
         code: true,
     },
+    defaultBillingAddress: true,
+    defaultShippingAddress: true
 })
 
 const HistorySelector = Selector('HistoryEntryList')({

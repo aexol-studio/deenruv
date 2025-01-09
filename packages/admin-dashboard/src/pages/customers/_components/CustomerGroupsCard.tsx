@@ -74,16 +74,20 @@ export const CustomerGroupsCard: React.FC<RolesCardProps> = ({ groups, customerI
       <CardHeader>
         <CardTitle className="flex flex-row justify-between text-base">{t('customerGroups.header')}</CardTitle>
         <CardContent className="flex flex-col gap-4 p-0 pt-4">
-          <Stack className="gap-2">
-            <MultipleSelector
-              options={options}
-              value={value}
-              placeholder={t('customerGroups.placeholder')}
-              onChange={handleChange}
-              hideClearAllButton
-              className="h-24"
-            />
-          </Stack>
+          {customerId ? (
+            <Stack className="gap-2">
+              <MultipleSelector
+                options={options}
+                value={value}
+                placeholder={t('customerGroups.placeholder')}
+                onChange={handleChange}
+                hideClearAllButton
+                className="h-24"
+              />
+            </Stack>
+          ) : (
+            <p>{t('customerGroups.createCustomerFirst')}</p>
+          )}
         </CardContent>
       </CardHeader>
     </Card>
