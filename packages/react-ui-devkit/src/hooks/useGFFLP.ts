@@ -1,5 +1,5 @@
 import { ModelTypes as DefaultModelTypes } from '@deenruv/admin-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export type GFFLPFormField<T> = {
     initialValue?: T;
@@ -12,8 +12,8 @@ interface GFFLPFieldConfig<T> {
 }
 
 export const useGFFLP = <T extends keyof MT, Z extends keyof MT[T], MT = DefaultModelTypes>(
-    key: T,
-    ...pick: Z[]
+    _key: T,
+    ..._pick: Z[]
 ) => useFFLP<Pick<MT[T], Z>>;
 
 export const useFFLP = <X>(config: {

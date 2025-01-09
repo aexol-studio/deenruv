@@ -57,7 +57,7 @@ export const CustomersDetailPage = () => {
               if (!id) return;
               return remove({ id });
             },
-            onSubmitted: (_event, data) => {
+            onSubmitted: (data) => {
               const sharedInput = {
                 emailAddress: data.emailAddress?.validatedValue,
                 firstName: data.firstName?.validatedValue,

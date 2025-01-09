@@ -1,80 +1,14 @@
-import React, { useCallback, useRef } from 'react';
-import { createStore, useStore } from 'zustand';
+import React, { useCallback, useState } from 'react';
 import { createContext, useContext } from 'react';
-import { DeletionResult, LanguageCode, ValueTypes } from '@deenruv/admin-types';
+import { DeletionResult, ModelTypes, ValueTypes } from '@deenruv/admin-types';
 
-import { ModelTypes } from '@deenruv/admin-types';
-import { DeenruvTabs, DetailKeys, DetailLocations, ExternalDetailLocationSelector } from '@/types';
+import { type DetailKeys, DetailLocations, type ExternalDetailLocationSelector } from '@/types';
 import { DetailViewMarker } from '@/components';
-import { useFFLP } from '@/hooks';
 import { apiClient } from '@/zeus_client/deenruvAPICall';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { GraphQLError } from 'graphql';
-
-interface DetailViewProps<
-    LOCATION extends DetailKeys,
-    LOCATIONTYPE extends ExternalDetailLocationSelector[LOCATION],
-    FORMKEY extends keyof ModelTypes,
-    FORMKEYS extends keyof ModelTypes[FORMKEY],
-> {
-    id: string;
-    locationId?: LOCATION;
-    tab: string;
-    sidebar?: React.ReactNode;
-    tabs: Omit<DeenruvTabs<LOCATION>, 'id'>[];
-    contentLanguage: LanguageCode;
-    form: {
-        base: ReturnType<typeof useFFLP<Pick<ModelTypes[FORMKEY], FORMKEYS>>>;
-        onSubmitted: (
-            event:
-                | React.FormEvent<HTMLFormElement>
-                | React.MouseEvent<HTMLButtonElement, MouseEvent>
-                | React.MouseEvent<HTMLDivElement>,
-            data: ModelTypes[FORMKEY],
-        ) => Promise<Record<string, unknown>> | undefined;
-        onDeleted?: (
-            event:
-                | React.FormEvent<HTMLFormElement>
-                | React.MouseEvent<HTMLButtonElement, MouseEvent>
-                | React.MouseEvent<HTMLDivElement>,
-            data: ModelTypes[FORMKEY],
-        ) => Promise<Record<string, unknown>> | undefined;
-    };
-    formKey?: FORMKEY;
-    formKeys?: FORMKEYS[];
-    view: {
-        entity: LOCATIONTYPE | null;
-        setEntity: (entity: LOCATIONTYPE) => void;
-        loading: boolean;
-        error: string | null;
-        refetch: () => Promise<LOCATIONTYPE | undefined>;
-    };
-}
-interface DetailViewState<
-    LOCATION extends DetailKeys,
-    FORMKEY extends keyof ModelTypes,
-    FORMKEYS extends keyof ModelTypes[FORMKEY],
-> extends DetailViewProps<LOCATION, ExternalDetailLocationSelector[LOCATION], FORMKEY, FORMKEYS> {
-    onSubmit: (
-        event:
-            | React.FormEvent<HTMLFormElement>
-            | React.MouseEvent<HTMLButtonElement>
-            | React.MouseEvent<HTMLDivElement>,
-    ) => void;
-    onDelete: (
-        event:
-            | React.FormEvent<HTMLFormElement>
-            | React.MouseEvent<HTMLButtonElement>
-            | React.MouseEvent<HTMLDivElement>,
-    ) => void;
-    setContentLanguage: (language: LanguageCode) => void;
-    setActiveTab: (tab: string) => void;
-    getMarker: () => React.ReactNode | null;
-    setSidebar: (sidebar: React.ReactNode | undefined | null) => void;
-}
-
-type DetailViewStoreType = ReturnType<typeof createDetailViewStore>;
+import type { EntityType, PropsType, StoreContextType } from './types';
 
 const handleError = (resp: { response: { errors: GraphQLError[] } }) => {
     const code = resp.response?.errors?.[0]?.extensions.code as string;
@@ -86,15 +20,56 @@ const handleError = (resp: { response: { errors: GraphQLError[] } }) => {
     toast.error(message || 'There was an error', { closeButton: false });
 };
 
-const createDetailViewStore = <
-    LOCATION extends DetailKeys,
-    LOCATIONTYPE extends ExternalDetailLocationSelector[LOCATION],
-    FORMKEY extends keyof ModelTypes,
-    FORMKEYS extends keyof ModelTypes[FORMKEY],
->(
-    initProps?: Partial<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>>,
-) => {
+export const DetailViewStoreContext = createContext<
+    StoreContextType<
+        DetailKeys,
+        ExternalDetailLocationSelector[DetailKeys],
+        keyof ModelTypes,
+        keyof ModelTypes[keyof ModelTypes]
+    >
+>({
+    loading: false,
+    entity: null,
+    error: '',
+    tab: '',
+    tabs: [],
+    form: {
+        base: {
+            state: {},
+            setField: () => {},
+            checkIfAllFieldsAreValid: () => true,
+            clearErrors: () => {},
+            haveValidFields: true,
+            setState: () => {},
+        },
+        onSubmitted: () => Promise.resolve({}),
+        onDeleted: () => Promise.resolve({}),
+    },
+    actionHandler: () => {},
+    fetchEntity: async () => null,
+    setEntity: () => {},
+    setSidebar: () => {},
+    setActiveTab: () => {},
+    getMarker: () => null,
+});
+
+// TODO React.memo
+export const DetailViewStoreProvider = <
+    T extends DetailKeys,
+    F extends keyof ModelTypes,
+    FK extends keyof ModelTypes[F],
+>({
+    children,
+    ...props
+}: React.PropsWithChildren<PropsType<T, F, FK>>) => {
+    const { form, id, locationId, sidebar: _sidebar, tabs, tab: _tab } = props;
+
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [entity, setEntity] = useState<EntityType | null>(null);
+    const [error, setError] = useState('');
+    const [tab, setTab] = useState(_tab);
+    const [sidebar, _setSidebar] = useState(_sidebar);
 
     const handleSuccess = useCallback((resp: Record<string, any>) => {
         const [mutationName] = Object.keys(resp);
@@ -119,135 +94,92 @@ const createDetailViewStore = <
         toast.success(message, { closeButton: false });
     }, []);
 
-    const DEFAULT_PROPS: Omit<DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>, 'form'> = {
-        id: '',
-        contentLanguage: LanguageCode.en,
-        tab: '',
-        tabs: [],
-        view: {
-            entity: null,
-            loading: false,
-            error: null,
-            refetch: async () => undefined,
-            setEntity: () => undefined,
-        },
-    };
+    const actionHandler = useCallback(
+        (type: 'submit' | 'delete') => {
+            const { onDeleted, onSubmitted, base } = form || {};
 
-    return createStore<DetailViewState<LOCATION, FORMKEY, FORMKEYS>>((set, get) => ({
-        ...DEFAULT_PROPS,
-        ...initProps,
-        form: initProps?.form as DetailViewProps<LOCATION, LOCATIONTYPE, FORMKEY, FORMKEYS>['form'],
-        view: {
-            ...DEFAULT_PROPS.view,
-            setEntity: entity => set({ view: { ...get().view, entity } }),
-            // @ts-expect-error - This is a valid use case TODO: Fix this
-            refetch: async () => {
-                const { id, locationId } = get();
-                const entityGraphQL = DetailLocations[locationId as keyof typeof DetailLocations];
-                const name = (entityGraphQL['type'].charAt(0).toLowerCase() +
-                    entityGraphQL['type'].slice(1)) as keyof ValueTypes['Query'];
-                const selector = entityGraphQL['selector'];
-                if (!id) return;
+            if (type === 'submit') onSubmitted?.(base?.state)?.then(handleSuccess).catch(handleError);
+            if (type === 'delete') onDeleted?.(base?.state)?.then(handleSuccess).catch(handleError);
+        },
+        [props.form, handleSuccess],
+    );
 
-                set({ view: { ...get().view, loading: true, error: null } });
-                try {
-                    const query = { [name]: [{ id }, selector] } as unknown as ValueTypes['Query'];
-                    const data = await apiClient('query')(query);
-                    // @ts-expect-error - This is a valid use case TODO: Fix this
-                    const entity = data[name] as LOCATIONTYPE;
-                    if (data && data[name]) {
-                        set({
-                            view: {
-                                ...get().view,
-                                entity,
-                                loading: false,
-                            },
-                        });
-                        return data[name];
-                    } else {
-                        set({ view: { ...get().view, entity: null, loading: false } });
-                    }
-                } catch (error) {
-                    set({
-                        view: {
-                            ...get().view,
-                            error: error instanceof Error ? error.message : 'An unknown error occurred.',
-                            loading: false,
-                            entity: null,
-                        },
-                    });
-                } finally {
-                    set({ view: { ...get().view, loading: false } });
-                }
-            },
-        },
-        onDelete: event => {
-            const { onDeleted } = get().form;
-            if (!onDeleted) return;
-            onDeleted(event, get().form.base.state)?.then(handleSuccess).catch(handleError);
-        },
-        onSubmit: event => {
-            const { onSubmitted, base } = get().form;
-            onSubmitted(event, base.state)?.then(handleSuccess).catch(handleError);
-        },
-        setSidebar: sidebar => {
-            // TODO This logic is not in use as sidebar is handled in DetailView.tsx
+    const setSidebar = useCallback(
+        (sidebar: React.ReactNode) => {
             if (typeof sidebar === 'undefined') {
-                set({ sidebar: initProps?.sidebar });
+                _setSidebar(sidebar);
             } else if (sidebar === null) {
-                set({ sidebar: null });
+                _setSidebar(null);
             } else {
-                set({ sidebar });
+                _setSidebar(sidebar);
             }
         },
-        setActiveTab: tab => set({ tab }),
-        setContentLanguage: language => set({ contentLanguage: language }),
-        getMarker: () => {
-            const position = get().locationId;
-            if (!position) return null;
-            return <DetailViewMarker position={position} />;
-        },
-    }));
-};
+        [props.form, handleSuccess],
+    );
 
-export const DetailViewStoreContext = createContext<DetailViewStoreType | null>(null);
+    const getMarker = () => {
+        if (!locationId) return null;
+        return <DetailViewMarker position={locationId} />;
+    };
 
-export function DetailViewStoreProvider({
-    children,
-    ...props
-}: React.PropsWithChildren<
-    Partial<
-        DetailViewProps<
-            DetailKeys,
-            ExternalDetailLocationSelector[DetailKeys],
-            keyof ModelTypes,
-            keyof ModelTypes[keyof ModelTypes]
-        >
-    >
->) {
-    const storeRef = useRef<DetailViewStoreType>();
-    //TODO: Check if this is the correct way to create a store
-    storeRef.current = createDetailViewStore(props);
+    const fetchEntity = async () => {
+        const entityGraphQL = DetailLocations[locationId as keyof typeof DetailLocations];
+        const name = (entityGraphQL['type'].charAt(0).toLowerCase() +
+            entityGraphQL['type'].slice(1)) as keyof ValueTypes['Query'];
+        const selector = entityGraphQL['selector'];
+        if (!id) return;
+
+        setLoading(true);
+        try {
+            const query = { [name]: [{ id }, selector] } as unknown as ValueTypes['Query'];
+            const data = await apiClient('query')(query);
+            const entity = data[name] as EntityType;
+            if (data && data[name]) {
+                setEntity(entity);
+                return entity;
+            } else {
+                setEntity(null);
+            }
+        } catch (error) {
+            setError(error instanceof Error ? error.message : 'An unknown error occurred.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <DetailViewStoreContext.Provider value={storeRef.current}>{children}</DetailViewStoreContext.Provider>
+        <DetailViewStoreContext.Provider
+            value={{
+                id,
+                form,
+                loading,
+                entity,
+                error,
+                tab,
+                sidebar,
+                tabs,
+                actionHandler,
+                fetchEntity,
+                setEntity,
+                setSidebar,
+                setActiveTab: setTab,
+                getMarker,
+            }}
+        >
+            {children}
+        </DetailViewStoreContext.Provider>
     );
-}
+};
 
 export function useDetailView<
-    LOCATION extends DetailKeys,
-    FORMKEY extends keyof ModelTypes,
-    FORMKEYS extends keyof ModelTypes[FORMKEY],
-    RETURNTYPE extends Partial<DetailViewState<LOCATION, FORMKEY, FORMKEYS>>,
->(
-    locationId: LOCATION,
-    selector: (state: DetailViewState<typeof locationId, typeof key, (typeof pick)[number]>) => RETURNTYPE,
-    key: FORMKEY,
-    ...pick: FORMKEYS[]
-) {
-    const store = useContext(DetailViewStoreContext);
+    T extends DetailKeys,
+    E extends ExternalDetailLocationSelector[T],
+    F extends keyof ModelTypes,
+    FK extends keyof ModelTypes[F],
+>(_type?: T, _key?: F, ..._pick: FK[]): StoreContextType<T, E, F, FK> {
+    const ctx = useContext(DetailViewStoreContext);
+    if (!ctx) throw new Error('Missing DetailViewStoreContext.Provider in the tree');
 
-    if (!store) throw new Error('Missing DetailViewStoreContext.Provider in the tree');
-    // @ts-expect-error - This is a valid use case
-    return useStore(store, selector);
+    //@ts-expect-error can't avoid this error...
+    return ctx;
 }

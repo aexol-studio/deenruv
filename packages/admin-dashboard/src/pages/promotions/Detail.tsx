@@ -72,7 +72,7 @@ export const PromotionsDetailPage = () => {
               'translations',
             ],
             config: {},
-            onSubmitted: (_event, data) => {
+            onSubmitted: (data) => {
               if (!data.translations || !data.actions || !data.conditions || !data.enabled)
                 throw new Error('Fill required fields.');
               const sharedInput = {

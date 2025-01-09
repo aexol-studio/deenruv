@@ -19,30 +19,25 @@ const TAX_CATEGORY_FORM_KEYS = ['CreateTaxCategoryInput', 'name', 'isDefault'] a
 
 export const TaxCategoryDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id, view, setField, state } = useDetailView(
-    'taxCategories-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
-    ...TAX_CATEGORY_FORM_KEYS,
-  );
+  const { id, form, loading, fetchEntity } = useDetailView('taxCategories-detail-view', ...TAX_CATEGORY_FORM_KEYS);
   const { t } = useTranslation('taxCategories');
 
+  const {
+    base: { setField, state },
+  } = form;
+
   useEffect(() => {
-    view.refetch();
+    (async () => {
+      const res = await fetchEntity();
+
+      if (!res) return;
+
+      setField('name', res.name);
+      setField('isDefault', res['isDefault']);
+    })();
   }, [contentLng]);
 
-  useEffect(() => {
-    if (!view.entity) return;
-    view.setEntity(view.entity);
-    setField('name', view.entity.name);
-    setField('isDefault', view.entity['isDefault']);
-  }, [view.entity]);
-
-  return view.loading ? (
+  return loading ? (
     <div>
       <Spinner height={'80vh'} />
     </div>

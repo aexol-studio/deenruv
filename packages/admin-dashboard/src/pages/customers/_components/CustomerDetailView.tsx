@@ -16,33 +16,28 @@ const CUSTOMER_FORM_KEYS = [
 export const CustomerDetailView = () => {
   const [addresses, setAddresses] = useState<CustomerDetailType['addresses']>([]);
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { view, setField, state, id } = useDetailView(
-    'customers-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
-    ...CUSTOMER_FORM_KEYS,
-  );
+  const { form, loading, id, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
+
+  const {
+    base: { setField, state },
+  } = form;
 
   useEffect(() => {
-    view.refetch();
+    (async () => {
+      const res = await fetchEntity();
+
+      if (!res) return;
+
+      setField('title', res.title);
+      setField('phoneNumber', res.phoneNumber);
+      setField('firstName', res.firstName);
+      setField('lastName', res.lastName);
+      setField('emailAddress', res.emailAddress);
+      setAddresses(res.addresses);
+    })();
   }, [contentLng]);
 
-  useEffect(() => {
-    if (!view.entity) return;
-    view.setEntity(view.entity);
-    setField('title', view.entity.title);
-    setField('phoneNumber', view.entity.phoneNumber);
-    setField('firstName', view.entity.firstName);
-    setField('lastName', view.entity.lastName);
-    setField('emailAddress', view.entity.emailAddress);
-    setAddresses(view.entity.addresses);
-  }, [view.entity]);
-
-  return view.loading ? (
+  return loading ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
       <div className="customSpinner" />
     </div>
@@ -51,7 +46,7 @@ export const CustomerDetailView = () => {
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
           <PersonalDataCard setField={setField} state={state} />
-          <AddressesCard addresses={addresses} customerId={id} onActionCompleted={view.refetch} />
+          {id && <AddressesCard addresses={addresses} customerId={id} onActionCompleted={fetchEntity} />}
         </Stack>
       </div>
     </main>

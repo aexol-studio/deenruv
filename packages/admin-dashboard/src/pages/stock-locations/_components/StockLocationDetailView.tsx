@@ -18,29 +18,25 @@ const STOCK_LOCATION_FORM_KEYS = ['CreateStockLocationInput', 'name', 'descripti
 export const StockLocationDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('stockLocations');
-  const { view, setField, state } = useDetailView(
-    'stockLocations-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
-    ...STOCK_LOCATION_FORM_KEYS,
-  );
+
+  const { form, loading, fetchEntity } = useDetailView('stockLocations-detail-view', ...STOCK_LOCATION_FORM_KEYS);
+
+  const {
+    base: { setField, state },
+  } = form;
 
   useEffect(() => {
-    view.refetch();
+    (async () => {
+      const res = await fetchEntity();
+
+      if (!res) return;
+
+      setField('name', res.name);
+      setField('description', res['description']);
+    })();
   }, [contentLng]);
 
-  useEffect(() => {
-    if (!view.entity) return;
-    view.setEntity(view.entity);
-    setField('name', view.entity.name);
-    setField('description', view.entity['description']);
-  }, [view.entity]);
-
-  return view.loading ? (
+  return loading ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
       <div className="customSpinner" />
     </div>

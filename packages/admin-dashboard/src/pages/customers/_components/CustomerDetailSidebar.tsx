@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useSettings, useDetailView } from '@deenruv/react-ui-devkit';
+import { useDetailView } from '@deenruv/react-ui-devkit';
 import { Stack } from '@/components';
 import { VerifiedCard } from '@/pages/customers/_components/VerifiedCard';
 import { CustomerGroupsCard } from '@/pages/customers/_components/CustomerGroupsCard';
@@ -7,29 +6,9 @@ import { CustomerGroupsCard } from '@/pages/customers/_components/CustomerGroups
 const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 
 export const CustomerDetailSidebar = () => {
-  const contentLng = useSettings((p) => p.translationsLanguage);
-  const { view, id } = useDetailView(
-    'customers-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
+  const { id, loading, entity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
-    ...CUSTOMER_FORM_KEYS,
-  );
-
-  useEffect(() => {
-    view.refetch();
-  }, [contentLng]);
-
-  useEffect(() => {
-    if (!view.entity) return;
-    view.setEntity(view.entity);
-  }, [view.entity]);
-
-  return view.loading ? (
+  return loading ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
       <div className="customSpinner" />
     </div>
@@ -37,8 +16,8 @@ export const CustomerDetailSidebar = () => {
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          {id && <VerifiedCard verified={!!view.entity?.user?.verified} />}
-          <CustomerGroupsCard customerId={id} groups={view.entity?.groups} />
+          {id && <VerifiedCard verified={!!entity?.user?.verified} />}
+          <CustomerGroupsCard customerId={id} groups={entity?.groups} />
         </Stack>
       </div>
     </main>

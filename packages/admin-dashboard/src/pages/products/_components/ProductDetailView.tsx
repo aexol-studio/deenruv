@@ -5,40 +5,30 @@ import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
 import { setInArrayBy } from '@/lists/useGflp';
 
-const PRODUCT_FORM_KEYS = ['CreateProductInput', 'translations', 'assetIds', 'featuredAssetId'] as const;
+export const PRODUCT_FORM_KEYS = ['CreateProductInput', 'translations', 'assetIds', 'featuredAssetId'] as const;
 
 export const ProductDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id, view, form } = useDetailView(
-    'products-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      form,
-    }),
-    ...PRODUCT_FORM_KEYS,
-  );
+  const { id, form, loading, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
 
   const {
     base: { setField, state },
   } = form;
 
   useEffect(() => {
-    view.refetch();
-  }, [contentLng]);
+    (async () => {
+      const res = await fetchEntity();
 
-  useEffect(() => {
-    if (!view.entity) return;
-    else {
-      setField('translations', view.entity.translations);
+      if (!res) return;
+
+      setField('translations', res.translations);
       setField(
         'assetIds',
-        view.entity.assets.map((a) => a.id),
+        res.assets.map((a) => a.id),
       );
-      setField('featuredAssetId', view.entity.featuredAsset?.id);
-      view.setEntity(view.entity);
-    }
-  }, [view.entity]);
+      setField('featuredAssetId', res.featuredAsset?.id);
+    })();
+  }, [contentLng]);
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
@@ -62,7 +52,7 @@ export const ProductDetailView = () => {
     setField('assetIds', [...currentIds, newId]);
   }, []);
 
-  return view.loading ? (
+  return loading ? (
     <div>
       <Spinner height={'80vh'} />
     </div>

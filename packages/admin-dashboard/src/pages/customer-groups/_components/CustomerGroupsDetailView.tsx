@@ -8,28 +8,23 @@ const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name'] as const;
 export const CustomerGroupsDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('customerGroups');
-  const { view, setField, state } = useDetailView(
-    'customerGroups-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
-    ...CUSTOMER_GROUPS_FORM_KEYS,
-  );
+  const { form, loading, fetchEntity } = useDetailView('customerGroups-detail-view', ...CUSTOMER_GROUPS_FORM_KEYS);
+
+  const {
+    base: { setField, state },
+  } = form;
 
   useEffect(() => {
-    view.refetch();
+    (async () => {
+      const res = await fetchEntity();
+
+      if (!res) return;
+
+      setField('name', res.name);
+    })();
   }, [contentLng]);
 
-  useEffect(() => {
-    if (!view.entity) return;
-    view.setEntity(view.entity);
-    setField('name', view.entity.name);
-  }, [view.entity]);
-
-  return view.loading ? (
+  return loading ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
       <div className="customSpinner" />
     </div>

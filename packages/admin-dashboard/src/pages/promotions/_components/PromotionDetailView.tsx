@@ -65,65 +65,35 @@ export const PromotionQuery = typedGql('query', { scalars })({
 
 export const PromotionDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id, view, form } = useDetailView(
-    'promotions-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-      form,
-    }),
-    ...PROMOTION_FORM_KEYS,
-  );
 
-  const { data } = id ? useQuery(PromotionQuery, { initialVariables: { id } }) : { data: undefined };
+  const { form, loading, fetchEntity } = useDetailView('promotions-detail-view', ...PROMOTION_FORM_KEYS);
 
   const {
     base: { setField, state },
   } = form;
 
   useEffect(() => {
-    view.refetch();
+    (async () => {
+      const res = await fetchEntity();
+
+      if (!res) return;
+
+      setField('translations', res.translations);
+      setField('endsAt', res.endsAt);
+      setField('startsAt', res.startsAt);
+      setField('couponCode', res.couponCode);
+      setField('usageLimit', res.usageLimit);
+      setField('perCustomerUsageLimit', res.perCustomerUsageLimit);
+      setField(
+        'conditions',
+        res.conditions.map((c) => ({ code: c.code, arguments: c.args })),
+      );
+      setField(
+        'actions',
+        res.actions.map((a) => ({ code: a.code, arguments: a.args })),
+      );
+    })();
   }, [contentLng]);
-
-  useEffect(() => {
-    if (!data) return;
-    setField('translations', data.promotion!.translations);
-    setField('endsAt', data.promotion!.endsAt);
-    setField('startsAt', data.promotion!.startsAt);
-    setField('couponCode', data.promotion!.couponCode);
-    setField('usageLimit', data.promotion!.usageLimit);
-    setField('perCustomerUsageLimit', data.promotion!.perCustomerUsageLimit);
-    setField(
-      'conditions',
-      data.promotion!.conditions.map((c) => ({ code: c.code, arguments: c.args })),
-    );
-    setField(
-      'actions',
-      data.promotion!.actions.map((a) => ({ code: a.code, arguments: a.args })),
-    );
-  }, [data]);
-
-  // useEffect(() => {
-  //   if (!view.entity) return;
-  //   else {
-  //     setField('translations', view.entity.translations);
-  //     setField('endsAt', view.entity.endsAt);
-  //     setField('startsAt', view.entity.startsAt);
-  //     setField('couponCode', view.entity.couponCode);
-  //     setField('usageLimit', view.entity.usageLimit);
-  //     setField('perCustomerUsageLimit', view.entity.perCustomerUsageLimit);
-  //     setField(
-  //       'conditions',
-  //       view.entity.conditions.map((c) => ({ code: c.code, arguments: c.args })),
-  //     );
-  //     setField(
-  //       'actions',
-  //       view.entity.actions.map((a) => ({ code: a.code, arguments: a.args })),
-  //     );
-  //   }
-  // }, [view.entity]);
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
@@ -141,7 +111,7 @@ export const PromotionDetailView = () => {
     [contentLng, translations],
   );
 
-  return view.loading ? (
+  return loading ? (
     <div>
       <Spinner height={'80vh'} />
     </div>

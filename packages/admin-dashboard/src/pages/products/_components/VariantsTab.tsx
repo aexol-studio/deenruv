@@ -6,6 +6,7 @@ import {
   TabsList,
   TabsTrigger,
   useDetailView,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
@@ -16,16 +17,11 @@ import { PlusCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export const VariantsTab = () => {
+  const contentLanguage = useSettings((p) => p.translationsLanguage);
+  const { id, getMarker } = useDetailView('products-detail-view', 'CreateProductInput');
+
   const { t } = useTranslation('products');
-  const { id, contentLanguage, getMarker } = useDetailView(
-    'products-detail-view',
-    ({ id, contentLanguage, getMarker }) => ({
-      id,
-      contentLanguage,
-      getMarker,
-    }),
-    'CreateProductInput',
-  );
+
   const [variants, setVariants] = useState<ProductVariantType[]>();
   const [loading, setLoading] = useState<boolean>();
 
@@ -69,9 +65,9 @@ export const VariantsTab = () => {
               ))}
             </TabsList>
             <TabsContent value={'new'} key={'new-variant-content'}>
-              <Variant currentTranslationLng={contentLanguage} onActionCompleted={fetchData} productId={id} />
+              {id && <Variant currentTranslationLng={contentLanguage} onActionCompleted={fetchData} productId={id} />}
             </TabsContent>
-            {variants?.length ? (
+            {id && variants?.length ? (
               variants?.map((v) => (
                 <TabsContent value={v.id} key={v.id + '-content'}>
                   <Variant

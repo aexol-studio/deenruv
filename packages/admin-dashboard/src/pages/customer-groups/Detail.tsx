@@ -44,7 +44,7 @@ export const CustomerGroupsDetailPage = () => {
   const [remove] = useMutation(DeleteCustomerGroupMutation);
 
   const onSubmitHandler = useCallback(
-    (_event: React.FormEvent, data: FormDataType) => {
+    (data: FormDataType) => {
       if (!data.name?.validatedValue) {
         throw new Error('Name is required.');
       }

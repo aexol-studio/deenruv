@@ -58,7 +58,7 @@ export const TaxCategoriesDetailPage = () => {
             key: 'CreateTaxCategoryInput',
             keys: ['isDefault', 'name'],
             config: {},
-            onSubmitted: (_event, data) => {
+            onSubmitted: (data) => {
               if (!data.name?.validatedValue) {
                 throw new Error('Name is required.');
               }

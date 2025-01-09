@@ -45,19 +45,10 @@ const DeleteStockLocationMutation = typedGql('mutation', { scalars })({
 export const HistoryTab: React.FC = () => {
   const { t } = useTranslation('customers');
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { view } = useDetailView(
-    'customers-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
-    ...CUSTOMER_FORM_KEYS,
-  );
+  const { entity, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
   useEffect(() => {
-    view?.refetch();
+    fetchEntity();
   }, [contentLng]);
 
   const [edit] = useMutation(EditCustomerNoteMutation);
@@ -69,13 +60,13 @@ export const HistoryTab: React.FC = () => {
       method
         .then(() => {
           toast.success(t('history.toastSuccess'));
-          view.refetch();
+          fetchEntity();
         })
         .catch(() => {
           toast.error(t('history.toastError'));
         });
     },
-    [view],
+    [fetchEntity],
   );
 
   return (
@@ -85,11 +76,11 @@ export const HistoryTab: React.FC = () => {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <History
-          data={view.entity?.history.items.reverse()}
+          data={entity?.history.items.reverse()}
           onNoteAdd={(input) => handle(add({ input }))}
           onNoteDelete={(id) => handle(remove({ id }))}
           onNoteEdit={(input) =>
-            handle(edit({ input: { note: input.note || '', noteId: input.noteId } }).then(() => view.refetch()))
+            handle(edit({ input: { note: input.note || '', noteId: input.noteId } }).then(() => fetchEntity()))
           }
         />
       </CardContent>

@@ -55,7 +55,7 @@ export const ProductsDetailPage = () => {
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
             config: {},
-            onSubmitted: (_event, data) => {
+            onSubmitted: (data) => {
               if (!data.translations) throw new Error('Name is required.');
               const sharedInput = {
                 translations: data.translations?.validatedValue,

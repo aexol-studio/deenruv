@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
 import { ModelTypes } from '@deenruv/admin-types';
@@ -20,12 +20,6 @@ import {
     useDetailView,
 } from '@/components';
 import { GFFLPFormField, useGFFLP } from '@/hooks';
-
-type Event =
-    | React.FormEvent<HTMLFormElement>
-    | React.MouseEvent<HTMLButtonElement, MouseEvent>
-    | React.MouseEvent<HTMLDivElement>;
-
 interface DetailViewFormProps<
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
@@ -40,13 +34,11 @@ interface DetailViewFormProps<
         };
     };
     onSubmitted: (
-        event: Event,
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
     ) => Promise<Record<string, unknown>> | undefined;
     onDeleted?: (
-        event: Event,
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
@@ -138,19 +130,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
 };
 
 const DetailTabs = () => {
-    const { tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete } = useDetailView(
-        'products-detail-view',
-        ({ tabs, tab, setActiveTab, sidebar, setSidebar, onSubmit, onDelete }) => ({
-            tabs,
-            tab,
-            setActiveTab,
-            sidebar,
-            setSidebar,
-            onSubmit,
-            onDelete,
-        }),
-        'CreateProductInput',
-    );
+    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar } = useDetailView();
 
     const [, setSearchParams] = useSearchParams();
     const { id } = useParams();
@@ -186,7 +166,11 @@ const DetailTabs = () => {
                         )}
                     </div>
                     <div className="flex items-center justify-end gap-2">
-                        <Button variant="action" onClick={onSubmit} className="ml-auto justify-self-end">
+                        <Button
+                            variant="action"
+                            onClick={() => actionHandler('submit')}
+                            className="ml-auto justify-self-end"
+                        >
                             {id ? 'Edit' : 'Create'}
                         </Button>
                         <DropdownMenu>
@@ -197,7 +181,9 @@ const DetailTabs = () => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="z-[101] mr-4">
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={onDelete}>Delete</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => actionHandler('delete')}>
+                                    Delete
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

@@ -15,19 +15,10 @@ const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 
 export const OrdersTab: React.FC = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { view, id } = useDetailView(
-    'customers-detail-view',
-    ({ id, view, form }) => ({
-      id,
-      view,
-      state: form.base.state,
-      setField: form.base.setField,
-    }),
-    ...CUSTOMER_FORM_KEYS,
-  );
+  const { id, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
   useEffect(() => {
-    view.refetch();
+    fetchEntity();
   }, [contentLng]);
 
   const fetch = useCallback(
@@ -42,7 +33,7 @@ export const OrdersTab: React.FC = () => {
       );
       const response = await apiClient('query')({
         customer: [
-          { id },
+          { id: id! },
           {
             orders: [
               {
@@ -59,10 +50,12 @@ export const OrdersTab: React.FC = () => {
           },
         ],
       });
-      return response['customer']!.orders;
+      return response['customer']!.orders!;
     },
     [id],
   );
+
+  if (!id) return null;
 
   return (
     <DetailList

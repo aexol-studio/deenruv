@@ -13,6 +13,7 @@ import {
   TableRow,
   useDetailView,
   apiClient,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 
 import { toast } from 'sonner';
@@ -22,16 +23,9 @@ import { Stack } from '@/components';
 import { OptionGroup } from '@/pages/products/_components/OptionGroup';
 
 export const OptionsTab: React.FC = () => {
-  const { id, contentLanguage, setContentLanguage, getMarker } = useDetailView(
-    'products-detail-view',
-    ({ id, contentLanguage, setContentLanguage, getMarker }) => ({
-      id,
-      contentLanguage,
-      setContentLanguage,
-      getMarker,
-    }),
-    'CreateProductInput',
-  );
+  const contentLng = useSettings((p) => p.translationsLanguage);
+  const { id, getMarker } = useDetailView('products-detail-view', 'CreateProductInput');
+
   const { t } = useTranslation('products');
   const [optionGroups, setOptionGroups] = useState<OptionGroupType[]>();
   const [optionsUsedByVariants, setOptionsUsedByVariants] = useState<string[]>([]);
@@ -60,7 +54,7 @@ export const OptionsTab: React.FC = () => {
   return (
     <Stack column className="items-end">
       <Stack className="mb-4 w-fit">
-        <AddOptionGroupDialog currentTranslationLng={contentLanguage} onSuccess={fetchOptionGroups} productId={id} />
+        <AddOptionGroupDialog currentTranslationLng={contentLng} onSuccess={fetchOptionGroups} productId={id} />
       </Stack>
       {loading ? (
         <div className="flex min-h-[30vh] w-full items-center justify-center">
@@ -83,17 +77,18 @@ export const OptionsTab: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {optionGroups
-                    ?.sort((a, b) => a.id.localeCompare(b.id))
-                    ?.map((group) => (
-                      <OptionGroup
-                        contentLanguage={contentLanguage}
-                        group={group}
-                        productId={id}
-                        onActionCompleted={fetchOptionGroups}
-                        optionsUsedByVariants={optionsUsedByVariants}
-                      />
-                    ))}
+                  {id &&
+                    optionGroups
+                      ?.sort((a, b) => a.id.localeCompare(b.id))
+                      ?.map((group) => (
+                        <OptionGroup
+                          contentLanguage={contentLng}
+                          group={group}
+                          productId={id}
+                          onActionCompleted={fetchOptionGroups}
+                          optionsUsedByVariants={optionsUsedByVariants}
+                        />
+                      ))}
                 </TableBody>
               </Table>
             </CardContent>
@@ -109,7 +104,7 @@ export const OptionsTab: React.FC = () => {
                     .map((o) => (
                       <OptionValueCard
                         key={o.id}
-                        currentTranslationLng={contentLanguage}
+                        currentTranslationLng={contentLng}
                         productOption={o}
                         optionGroupId={oG.id}
                         onEdited={fetchOptionGroups}
