@@ -53,7 +53,6 @@ export const DetailViewStoreContext = createContext<
     getMarker: () => null,
 });
 
-// TODO React.memo
 export const DetailViewStoreProvider = <
     T extends DetailKeys,
     F extends keyof ModelTypes,
@@ -71,28 +70,31 @@ export const DetailViewStoreProvider = <
     const [tab, setTab] = useState(_tab);
     const [sidebar, _setSidebar] = useState(_sidebar);
 
-    const handleSuccess = useCallback((resp: Record<string, any>) => {
-        const [mutationName] = Object.keys(resp);
+    const handleSuccess = useCallback(
+        (resp: Record<string, unknown>) => {
+            const [mutationName] = Object.keys(resp);
 
-        if (mutationName.startsWith('delete')) {
-            const result = Object.values(resp)[0].result;
+            if (mutationName.startsWith('delete') && Array.isArray(resp)) {
+                const result = Object.values(resp)[0].result;
 
-            if (result !== DeletionResult.DELETED) {
-                toast.warning(Object.values(resp)[0].message, { closeButton: false });
-                return;
+                if (result !== DeletionResult.DELETED) {
+                    toast.warning(Object.values(resp)[0].message, { closeButton: false });
+                    return;
+                }
             }
-        }
 
-        const string = mutationName.charAt(0).toUpperCase() + mutationName.slice(1);
-        const message = `${string.replace(/([A-Z])/g, ' $1').trim()} - Success`;
-        const listPath = location.pathname.replace(/\/[^/]+$/, '');
+            const string = mutationName.charAt(0).toUpperCase() + mutationName.slice(1);
+            const message = `${string.replace(/([A-Z])/g, ' $1').trim()} - Success`;
+            const listPath = location.pathname.replace(/\/[^/]+$/, '');
 
-        if (mutationName.startsWith('create') || mutationName.startsWith('delete')) {
-            navigate(listPath);
-        }
+            if (mutationName.startsWith('create') || mutationName.startsWith('delete')) {
+                navigate(listPath);
+            }
 
-        toast.success(message, { closeButton: false });
-    }, []);
+            toast.success(message, { closeButton: false });
+        },
+        [navigate],
+    );
 
     const actionHandler = useCallback(
         (type: 'submit' | 'delete') => {

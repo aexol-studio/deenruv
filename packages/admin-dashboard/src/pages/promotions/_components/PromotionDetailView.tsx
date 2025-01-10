@@ -3,7 +3,6 @@ import {
   Spinner,
   useSettings,
   DetailViewMarker,
-  useQuery,
   PromotionDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect } from 'react';
@@ -75,7 +74,6 @@ export const PromotionDetailView = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchEntity();
-
       if (!res) return;
 
       setField('translations', res.translations);

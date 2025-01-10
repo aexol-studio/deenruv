@@ -19,7 +19,7 @@ const settings: DeenruvAdminPanelSettings = {
   },
 
   api: {
-    uri: 'https://shop.qa.minko.aexol.work',
+    uri: 'http://localhost:3000',
     authTokenName: 'deenruv-auth-token',
     channelTokenName: 'deenruv-token',
   },

@@ -79,7 +79,10 @@ export const PromotionsDetailPage = () => {
                 translations: data.translations?.validatedValue,
                 enabled: data.enabled?.validatedValue,
                 actions: data.actions?.validatedValue,
-                conditions: data.conditions?.validatedValue,
+                conditions: data.conditions?.validatedValue?.map((el) => ({
+                  ...el,
+                  arguments: el.arguments.map((arg) => ({ ...arg, value: arg.value.toString() })),
+                })),
                 couponCode: data.couponCode?.validatedValue,
                 endsAt: data.endsAt?.validatedValue,
                 startsAt: data.startsAt?.validatedValue,
