@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { cn, Table, TableBody, TableCell, TableRow } from '@deenruv/react-ui-devkit';
+import { cn, Table, TableBody, TableCell, TableRow, useServer } from '@deenruv/react-ui-devkit';
 import { Stack } from '@/components';
 import { CircleCheckBig } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
@@ -14,6 +14,7 @@ interface PermissionsTableProps {
 export const PermissionsTable: React.FC<PermissionsTableProps> = ({ currentPermissions, onPermissionsChange }) => {
   const { t } = useTranslation('permissions');
   const [groupedPermissions, setGroupedPermissions] = useState<Record<string, Permission[]>>();
+  const { serverConfig } = useServer();
 
   const groupPermissions = useCallback((allPermissions: Permission[]) => {
     const permissionGroups: Record<string, Permission[]> = {};
@@ -36,10 +37,8 @@ export const PermissionsTable: React.FC<PermissionsTableProps> = ({ currentPermi
   }, []);
 
   useEffect(() => {
-    const permissionsArray = Object.values(Permission);
-
-    groupPermissions(permissionsArray);
-  }, [setGroupedPermissions, groupPermissions]);
+    if (serverConfig) groupPermissions(serverConfig.permissions.map((p) => p.name) as Permission[]);
+  }, [serverConfig]);
 
   const handlePermissionsChange = useCallback(
     (permission: Permission) => {
