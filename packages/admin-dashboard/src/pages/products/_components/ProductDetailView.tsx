@@ -20,7 +20,6 @@ export const ProductDetailView = () => {
       const res = await fetchEntity();
 
       if (!res) return;
-
       setField('translations', res.translations);
       setField(
         'assetIds',
@@ -46,11 +45,14 @@ export const ProductDetailView = () => {
     [contentLng, translations],
   );
 
-  const handleAddAsset = useCallback((newId: string | undefined) => {
-    if (!newId) return;
-    const currentIds = state.assetIds?.value || [];
-    setField('assetIds', [...currentIds, newId]);
-  }, []);
+  const handleAddAsset = useCallback(
+    (newId: string | undefined) => {
+      if (!newId) return;
+      const currentIds = state.assetIds?.value || [];
+      setField('assetIds', [...currentIds, newId]);
+    },
+    [state.assetIds?.value, setField],
+  );
 
   return loading ? (
     <div>

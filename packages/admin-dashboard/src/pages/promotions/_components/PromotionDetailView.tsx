@@ -5,7 +5,7 @@ import {
   DetailViewMarker,
   PromotionDetailSelector,
 } from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { setInArrayBy } from '@/lists/useGflp';
 import { z } from 'zod';
 import { BasicFieldsCard } from '@/pages/promotions/_components/BasicFieldsCard';
@@ -93,8 +93,13 @@ export const PromotionDetailView = () => {
     })();
   }, [contentLng]);
 
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
+  const translations = useMemo(() => state?.translations?.value || [], [state?.translations?.value]);
+
+  const currentTranslationValue = useMemo(
+    () => translations.find((v) => v.languageCode === contentLng),
+    [translations, contentLng],
+  );
+
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(
