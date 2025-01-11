@@ -1,1 +1,1 @@
-export * from './custom_fields';
+export * from './custom_fields.js';
