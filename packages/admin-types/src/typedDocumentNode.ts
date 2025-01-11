@@ -10,7 +10,7 @@ import {
     ThunderGraphQLOptions,
     Zeus,
     ExtractVariables,
-} from './';
+} from './index.js';
 import { Ops } from './zeus/const.js';
 
 export const typedGql =
