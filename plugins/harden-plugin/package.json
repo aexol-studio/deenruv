@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/harden-plugin",
-    "version": "0.0.63",
+    "version": "0.0.64",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",

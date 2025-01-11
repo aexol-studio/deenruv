@@ -1,5 +1,5 @@
-import { FromSelectorWithScalars } from '../scalars';
-import { Selector } from '../zeus';
+import { FromSelectorWithScalars } from '../scalars.js';
+import { Selector } from '../zeus/index.js';
 
 const SamePartOfCustomFieldConfig = {
     name: true,

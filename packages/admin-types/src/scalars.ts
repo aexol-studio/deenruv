@@ -1,4 +1,4 @@
-import { FromSelector, GraphQLTypes, ZeusScalars } from './zeus';
+import { FromSelector, GraphQLTypes, ZeusScalars } from './zeus/index.js';
 
 export const scalars = ZeusScalars({
     Money: {

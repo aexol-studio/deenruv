@@ -11,7 +11,7 @@ import {
     Zeus,
     ExtractVariables,
 } from './';
-import { Ops } from './zeus/const';
+import { Ops } from './zeus/const.js';
 
 export const typedGql =
     <
