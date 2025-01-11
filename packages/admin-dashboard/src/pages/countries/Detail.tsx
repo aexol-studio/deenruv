@@ -169,7 +169,7 @@ export const CountriesDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.name')}
-                      value={currentTranslationValue?.name}
+                      value={currentTranslationValue?.name ?? undefined }
                       onChange={(e) => setTranslationField('name', e.target.value)}
                       required
                     />

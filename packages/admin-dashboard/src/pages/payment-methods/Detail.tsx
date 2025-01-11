@@ -205,7 +205,7 @@ export const PaymentMethodsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
-                      value={currentTranslationValue?.name}
+                      value={currentTranslationValue?.name ?? undefined }
                       onChange={(e) => setTranslationField('name', e.target.value)}
                       required
                     />
@@ -213,20 +213,20 @@ export const PaymentMethodsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.code')}
-                      value={state.code?.value}
+                      value={state.code?.value ?? undefined }
                       onChange={(e) => setField('code', e.target.value)}
                       required
                     />
                   </Stack>
                   <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
+                    <Switch checked={state.enabled?.value ?? undefined } onCheckedChange={(e) => setField('enabled', e)} />
                     <Label>{t('details.basic.enabled')}</Label>
                   </Stack>
                 </Stack>
                 <Stack column className="basis-full">
                   <Label className="mb-2">{t('details.basic.description')}</Label>
                   <RichTextEditor
-                    content={currentTranslationValue?.description}
+                    content={currentTranslationValue?.description ?? undefined }
                     onContentChanged={(e) => setTranslationField('description', e)}
                   />
                 </Stack>
@@ -235,8 +235,8 @@ export const PaymentMethodsDetailPage = () => {
           </Card>
           {id && <EntityCustomFields entityName="paymentMethod" id={id} />}
           <OptionsCard
-            currentHandlerValue={state.handler?.value}
-            currentCheckerValue={state.checker?.value}
+            currentHandlerValue={state.handler?.value ?? undefined }
+            currentCheckerValue={state.checker?.value ?? undefined }
             onHandlerValueChange={(handler) => setField('handler', handler)}
             onCheckerValueChange={(checker) => setField('checker', checker)}
           />

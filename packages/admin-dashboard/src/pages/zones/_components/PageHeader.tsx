@@ -38,11 +38,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ zone, editMode, buttonDi
           <Label className="text-muted-foreground">{t('baseInfoId', { value: zone.id })}</Label>
           <Label className="text-muted-foreground">|</Label>
           <Label className="text-muted-foreground">
-            {t('baseInfoCreated', { value: format(zone.createdAt, 'dd.MM.yyyy hh:mm') })}
+            {t('baseInfoCreated', { value: format(new Date(zone.createdAt), 'dd.MM.yyyy hh:mm') })}
           </Label>
           <Label className="text-muted-foreground">|</Label>
           <Label className="text-muted-foreground">
-            {t('baseInfoUpdated', { value: format(zone.updatedAt, 'dd.MM.yyyy hh:mm') })}
+            {t('baseInfoUpdated', { value: format(new Date(zone.updatedAt), 'dd.MM.yyyy hh:mm') })}
           </Label>
         </div>
       )}

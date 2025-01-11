@@ -44,7 +44,7 @@ export const StringOperator: React.FC<Props<StringOperator>> = ({ currentValue, 
             !currentValue ||
             (currentValue &&
                 Object.keys(currentValue).length &&
-                !Object.keys(Object.values(currentValue)[0]).length)
+                !Object.keys(Object.values(currentValue)[0] || {}).length)
         )
             return undefined;
         if (ARRAY_TYPES.includes(type)) return (Object.values(currentValue)[0] as string[]).join(',');

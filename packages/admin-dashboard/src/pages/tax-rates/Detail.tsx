@@ -214,7 +214,7 @@ export const TaxRatesDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.name')}
-                      value={state.name?.value}
+                      value={state.name?.value ?? undefined }
                       onChange={(e) => setField('name', e.target.value)}
                       required
                     />
@@ -223,7 +223,7 @@ export const TaxRatesDetailPage = () => {
                     <Input
                       type="number"
                       label={t('details.basic.value')}
-                      value={state.value?.value}
+                      value={state.value?.value ?? undefined }
                       onChange={(e) => setField('value', +e.target.value)}
                       required
                     />
@@ -233,7 +233,7 @@ export const TaxRatesDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <SimpleSelect
                       label={t('details.basic.taxCategory')}
-                      value={state.categoryId?.value}
+                      value={state.categoryId?.value ?? undefined }
                       onValueChange={(e) => setField('categoryId', e)}
                       options={taxCategoriesOptions}
                       required
@@ -242,7 +242,7 @@ export const TaxRatesDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <SimpleSelect
                       label={t('details.basic.zone')}
-                      value={state.zoneId?.value}
+                      value={state.zoneId?.value ?? undefined }
                       onValueChange={(e) => setField('zoneId', e)}
                       options={zonesOptions}
                       required
@@ -251,7 +251,7 @@ export const TaxRatesDetailPage = () => {
                 </Stack>
                 <Stack className="items-end gap-4">
                   <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/2">
-                    <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
+                    <Switch checked={state.enabled?.value ?? undefined } onCheckedChange={(e) => setField('enabled', e)} />
                     <Label>{t('details.basic.enabled')}</Label>
                   </Stack>
                 </Stack>

@@ -281,11 +281,11 @@ export const FacetsDetailPage = () => {
             <Label className="text-muted-foreground">{t('facets:baseInfoId', { value: id })}</Label>
             <Label className="text-muted-foreground">|</Label>
             <Label className="text-muted-foreground">
-              {t('facets:baseInfoCreated', { value: format(facet.createdAt, 'dd.MM.yyyy hh:mm') })}
+              {t('facets:baseInfoCreated', { value: format(new Date(facet.createdAt), 'dd.MM.yyyy hh:mm') })}
             </Label>
             <Label className="text-muted-foreground">|</Label>
             <Label className="text-muted-foreground">
-              {t('facets:baseInfoUpdated', { value: format(facet.updatedAt, 'dd.MM.yyyy hh:mm') })}
+              {t('facets:baseInfoUpdated', { value: format(new Date(facet.updatedAt), 'dd.MM.yyyy hh:mm') })}
             </Label>
           </div>
         )}

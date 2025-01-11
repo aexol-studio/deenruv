@@ -60,7 +60,7 @@ export const TaxCategoryDetailView = () => {
                   />
                 </Stack>
                 <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/2">
-                  <Switch checked={state.isDefault?.value} onCheckedChange={(e) => setField('isDefault', e)} />
+                  <Switch checked={state.isDefault?.value ?? undefined } onCheckedChange={(e) => setField('isDefault', e)} />
                   <Label>{t('details.basic.isDefault')}</Label>
                 </Stack>
               </Stack>

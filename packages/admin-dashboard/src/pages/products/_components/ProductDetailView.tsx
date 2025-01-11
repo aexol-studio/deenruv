@@ -46,7 +46,7 @@ export const ProductDetailView = () => {
   );
 
   const handleAddAsset = useCallback(
-    (newId: string | undefined) => {
+    (newId: string | undefined | null) => {
       if (!newId) return;
       const currentIds = state.assetIds?.value || [];
       setField('assetIds', [...currentIds, newId]);

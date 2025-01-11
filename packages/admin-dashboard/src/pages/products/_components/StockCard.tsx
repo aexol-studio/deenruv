@@ -34,20 +34,20 @@ interface StockLevelsValueType {
 }
 
 interface StockCardProps {
-  priceValue: number | undefined;
+  priceValue: number | undefined | null;
   onThresholdChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onUseGlobalChange: (e: boolean) => void;
   onTrackInventoryChange: (e: GlobalFlag) => void;
   onStockOnHandChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onStockLocationsChange: (e: StockLevelsValueType[]) => void;
-  taxRateValue: string | undefined;
-  stockLevelsValue: StockLevelsValueType[] | undefined;
-  stockOnHandValue: number | undefined;
-  stockAllocated: number | undefined;
-  outOfStockThresholdValue: number | undefined;
-  useGlobalOutOfStockThresholdValue: boolean | undefined;
-  trackInventoryValue: GlobalFlag | undefined;
-  allStockLocations: StockLevelsType[] | undefined;
+  taxRateValue: string | undefined | null;
+  stockLevelsValue: StockLevelsValueType[] | undefined | null;
+  stockOnHandValue: number | undefined | null;
+  stockAllocated: number | undefined | null;
+  outOfStockThresholdValue: number | undefined | null;
+  useGlobalOutOfStockThresholdValue: boolean | undefined | null;
+  trackInventoryValue: GlobalFlag | undefined | null;
+  allStockLocations: StockLevelsType[] | undefined | null;
 }
 
 export const StockCard: React.FC<StockCardProps> = ({
@@ -126,18 +126,18 @@ export const StockCard: React.FC<StockCardProps> = ({
                 type="number"
                 placeholder={t('details.outThreshold')}
                 label={t('details.outThreshold')}
-                value={outOfStockThresholdValue}
+                value={outOfStockThresholdValue ?? undefined}
                 onChange={onThresholdChange}
               />
             </div>
             <Stack column className="gap-4">
               <Label>{t('details.useGlobal')}</Label>
-              <Switch checked={useGlobalOutOfStockThresholdValue} onCheckedChange={onUseGlobalChange} />
+              <Switch checked={useGlobalOutOfStockThresholdValue ?? undefined} onCheckedChange={onUseGlobalChange} />
             </Stack>
           </Stack>
           <Stack column className="items-start justify-start gap-2">
             <Label>{t('details.trackInventory')}</Label>
-            <Select value={trackInventoryValue} onValueChange={(value: GlobalFlag) => onTrackInventoryChange(value)}>
+            <Select value={trackInventoryValue ?? undefined} onValueChange={(value: GlobalFlag) => onTrackInventoryChange(value)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -154,7 +154,7 @@ export const StockCard: React.FC<StockCardProps> = ({
               <Input
                 type="number"
                 label={t('details.defaultStock1')}
-                value={stockOnHandValue}
+                value={stockOnHandValue ?? undefined}
                 disabled
                 // onChange={onStockOnHandChange}
               />

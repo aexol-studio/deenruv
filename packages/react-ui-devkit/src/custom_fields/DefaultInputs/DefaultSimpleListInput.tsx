@@ -50,7 +50,7 @@ export function DefaultSimpleListInput() {
                         id={field?.name}
                         rows={2}
                         value={inputValue}
-                        disabled={field?.readonly}
+                        disabled={field?.readonly ?? undefined}
                         onChange={e => setInputValue(e.target.value)}
                     />
                 ) : (
@@ -58,7 +58,7 @@ export function DefaultSimpleListInput() {
                         id={field?.name}
                         type="text"
                         value={inputValue}
-                        disabled={field?.readonly}
+                        disabled={field?.readonly ?? undefined}
                         onChange={e => {
                             const val = e.target.value;
 
@@ -74,7 +74,7 @@ export function DefaultSimpleListInput() {
                 <Button
                     size="icon"
                     variant="secondary"
-                    disabled={field?.readonly}
+                    disabled={field?.readonly ?? undefined}
                     onClick={() => {
                         setValue([...(value || []), isNumber ? Number(inputValue) : inputValue]);
                         setInputValue('');

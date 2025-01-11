@@ -5,15 +5,15 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSubmit: (value: boolean) => void;
-  currentValue?: boolean;
+  currentValue?: boolean | null;
 }
 
 export const BooleanOperator: React.FC<Props> = ({ onSubmit, currentValue }) => {
   const { t } = useTranslation('common');
 
-  const [value, setValue] = useState<boolean | undefined>(currentValue);
+  const [value, setValue] = useState<boolean | undefined>(currentValue ?? undefined);
   useEffect(() => {
-    setValue(currentValue);
+    setValue(currentValue ?? undefined);
   }, [currentValue]);
 
   return (

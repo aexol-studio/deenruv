@@ -24,7 +24,7 @@ function isNumberRange(data: undefined | number | NumberRange | boolean): data i
 
 interface Props {
   onSubmit: (value: ModelTypes['NumberOperators']) => void;
-  currentValue?: ModelTypes['NumberOperators'];
+  currentValue?: ModelTypes['NumberOperators'] | null;
   isCurrency?: boolean;
 }
 
@@ -35,7 +35,7 @@ export const NumberOperator: React.FC<Props> = ({ onSubmit, currentValue, isCurr
   );
   const [value, setValue] = useState<number | NumberRange | undefined>(() => {
     if (!currentValue) return undefined;
-    const curr = Object.values(currentValue)[0];
+    const curr = Object.values(currentValue)[0] ?? undefined;
     return isNumberRange(curr)
       ? isCurrency
         ? { start: curr.start / 100, end: curr.end / 100 }

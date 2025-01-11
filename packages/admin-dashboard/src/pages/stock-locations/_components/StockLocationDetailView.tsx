@@ -58,7 +58,7 @@ export const StockLocationDetailView = () => {
                   <Stack column className="basis-full">
                     <Label className="mb-2">{t('details.basic.description')}</Label>
                     <RichTextEditor
-                      content={state.description?.value}
+                      content={state.description?.value ?? undefined}
                       onContentChanged={(e) => setField('description', e)}
                     />
                   </Stack>

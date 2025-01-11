@@ -12,7 +12,7 @@ export function DefaultTextInput() {
                 id={field?.name}
                 type="text"
                 value={value as string}
-                disabled={field?.readonly}
+                disabled={field?.readonly ?? undefined}
                 onChange={e => {
                     setValue(e.target.value);
                 }}

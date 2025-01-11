@@ -9,7 +9,7 @@ export const DefaultCheckbox = () => {
             <div className="flex items-center space-x-2">
                 <Checkbox
                     id={field?.name}
-                    disabled={field?.readonly}
+                    disabled={field?.readonly ?? undefined}
                     checked={value as boolean}
                     onCheckedChange={setValue}
                 />

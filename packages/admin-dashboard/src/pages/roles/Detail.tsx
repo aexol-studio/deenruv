@@ -213,7 +213,7 @@ export const RolesDetailPage = () => {
                 <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
                   <Input
                     label={t('details.basic.description')}
-                    value={state.description?.value}
+                    value={state.description?.value ?? undefined }
                     onChange={(e) => setField('description', e.target.value)}
                     required
                   />
@@ -221,7 +221,7 @@ export const RolesDetailPage = () => {
                 <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
                   <Input
                     label={t('details.basic.code')}
-                    value={state.code?.value}
+                    value={state.code?.value ?? undefined }
                     onChange={(e) => setField('code', e.target.value)}
                     required
                   />
@@ -245,7 +245,7 @@ export const RolesDetailPage = () => {
             </CardHeader>
           </Card>
           <PermissionsCard
-            currentPermissions={state.permissions?.value}
+            currentPermissions={state.permissions?.value ?? undefined }
             onPermissionsChange={(e) => setField('permissions', e)}
           />
         </Stack>

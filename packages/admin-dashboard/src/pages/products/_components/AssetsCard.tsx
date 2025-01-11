@@ -20,9 +20,9 @@ import { useTranslation } from 'react-i18next';
 import { AssetsModalInput, Stack } from '@/components';
 
 interface AssetsCardProps {
-  assetsIds: string[] | undefined;
-  featuredAssetId: string | undefined;
-  onAddAsset: (id: string | undefined) => void;
+  assetsIds: string[] | undefined | null;
+  featuredAssetId: string | undefined | null;
+  onAddAsset: (id: string | undefined | null) => void;
   onFeaturedAssetChange: (id: string) => void;
   onAssetsChange: (ids: string[]) => void;
 }

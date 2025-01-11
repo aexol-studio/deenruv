@@ -100,7 +100,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
           <Stack className="flex-1 basis-full md:basis-1/3">
             <Input
               label={t('details.test.city')}
-              value={state.shippingAddress?.value.city}
+              value={state.shippingAddress?.value.city ?? undefined}
               onChange={(e) => setAddressField('city', e.target.value)}
               required
             />
@@ -108,7 +108,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
           <Stack className="flex-1 basis-full md:basis-1/3">
             <Input
               label={t('details.test.province')}
-              value={state.shippingAddress?.value.province}
+              value={state.shippingAddress?.value.province ?? undefined}
               onChange={(e) => setAddressField('province', e.target.value)}
               required
             />
@@ -116,7 +116,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
           <Stack className="flex-1 basis-full md:basis-1/3">
             <Input
               label={t('details.test.postalCode')}
-              value={state.shippingAddress?.value.postalCode}
+              value={state.shippingAddress?.value.postalCode ?? undefined}
               onChange={(e) => setAddressField('postalCode', e.target.value)}
               required
             />

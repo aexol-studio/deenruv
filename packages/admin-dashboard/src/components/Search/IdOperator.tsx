@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   onSubmit: (value: string) => void;
-  currentValue?: string;
+  currentValue?: string | null;
 }
 
 export const IdOperator: React.FC<Props> = ({ onSubmit, currentValue }) => {

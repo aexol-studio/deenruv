@@ -146,8 +146,8 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputNameLabel')}
             placeholder={t('selectAddress.inputNamePlaceholder')}
-            value={state.fullName?.value}
-            defaultValue={state?.fullName?.value}
+            value={state.fullName?.value ?? undefined }
+            defaultValue={state?.fullName?.value ?? undefined }
             onChange={(e) => setField('fullName', e.target.value)}
             errors={state.fullName?.errors}
             required
@@ -156,8 +156,8 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputCompanyLabel')}
             placeholder={t('selectAddress.inputCompanyPlaceholder')}
-            value={state.company?.value}
-            defaultValue={state?.company?.value}
+            value={state.company?.value ?? undefined }
+            defaultValue={state?.company?.value ?? undefined }
             onChange={(e) => setField('company', e.target.value)}
             errors={state.company?.errors}
           />
@@ -175,8 +175,8 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputStreet2Label')}
             placeholder={t('selectAddress.inputStreet2Placeholder')}
-            value={state.streetLine2?.value}
-            defaultValue={state?.streetLine2?.value}
+            value={state.streetLine2?.value ?? undefined }
+            defaultValue={state?.streetLine2?.value ?? undefined }
             onChange={(e) => setField('streetLine2', e.target.value)}
             errors={state.streetLine2?.errors}
           />
@@ -184,7 +184,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputCityLabel')}
             placeholder={t('selectAddress.inputCityPlaceholder')}
-            defaultValue={state?.city?.value}
+            defaultValue={state?.city?.value ?? undefined }
             onChange={(e) => setField('city', e.target.value)}
             errors={state.city?.errors}
             required
@@ -193,7 +193,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputProvinceLabel')}
             placeholder={t('selectAddress.inputProvincePlaceholder')}
-            defaultValue={state?.province?.value}
+            defaultValue={state?.province?.value ?? undefined }
             onChange={(e) => setField('province', e.target.value)}
             errors={state.province?.errors}
           />
@@ -201,8 +201,8 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputPostalLabel')}
             placeholder={t('selectAddress.inputPostalPlaceholder')}
-            value={state.postalCode?.value}
-            defaultValue={state?.postalCode?.value}
+            value={state.postalCode?.value ?? undefined }
+            defaultValue={state?.postalCode?.value ?? undefined }
             onChange={(e) => setField('postalCode', e.target.value)}
             errors={state.postalCode?.errors}
             required
@@ -211,8 +211,8 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           <Input
             label={t('selectAddress.inputPhoneLabel')}
             placeholder={t('selectAddress.inputPhonePlaceholder')}
-            value={state.phoneNumber?.value}
-            defaultValue={state?.phoneNumber?.value}
+            value={state.phoneNumber?.value ?? undefined }
+            defaultValue={state?.phoneNumber?.value ?? undefined }
             onChange={(e) => setField('phoneNumber', e.target.value)}
             errors={state.phoneNumber?.errors}
             required

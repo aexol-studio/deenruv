@@ -12,7 +12,7 @@ export function DefaultTextarea() {
             <Textarea
                 id={field?.name}
                 value={value as string}
-                disabled={field?.readonly}
+                disabled={field?.readonly ?? undefined}
                 onChange={e => setValue(e.target.value)}
             />
         </div>

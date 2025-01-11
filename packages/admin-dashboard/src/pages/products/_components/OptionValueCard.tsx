@@ -65,7 +65,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
           <Stack column className="gap-3">
             <Input
               label="name"
-              value={currentTranslationValue?.name}
+              value={currentTranslationValue?.name ?? undefined}
               onChange={(e) => {
                 setField(
                   'translations',
@@ -78,7 +78,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
             />
             <Input
               label="code"
-              value={state.code?.value}
+              value={state.code?.value ?? undefined}
               onChange={(e) => {
                 setField('code', e.target.value);
               }}

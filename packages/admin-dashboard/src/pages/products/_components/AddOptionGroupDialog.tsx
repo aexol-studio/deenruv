@@ -20,7 +20,7 @@ import { Stack } from '@/components';
 
 interface AddOptionGroupDialogProps {
   currentTranslationLng: LanguageCode;
-  productId: string | undefined;
+  productId: string | undefined | null;
   onSuccess: () => void;
 }
 
@@ -91,7 +91,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
             <Label>{t('addOptionGroupDialog.name')}</Label>
             <Input
               className="mt-1"
-              value={state.translations?.value[0].name}
+              value={state.translations?.value[0].name ?? undefined}
               onChange={(e) => {
                 setField(
                   'translations',

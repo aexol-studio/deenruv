@@ -125,7 +125,7 @@ export const GlobalSettings = () => {
               <Label className="text-muted-foreground text-xs">{t('globalSettings:stock-threshold.description')}</Label>
             </div>
             <Input
-              value={state.outOfStockThreshold?.value}
+              value={state.outOfStockThreshold?.value ?? undefined }
               type="number"
               onChange={(e) => setField('outOfStockThreshold', Number(e.target.value))}
               required
@@ -137,7 +137,7 @@ export const GlobalSettings = () => {
             <p>{t('globalSettings:track-inventory.label')}</p>
             <Label className="text-muted-foreground text-xs">{t('globalSettings:track-inventory.description')}</Label>
           </div>
-          <Switch checked={state.trackInventory?.value} onCheckedChange={(val) => setField('trackInventory', val)} />
+          <Switch checked={state.trackInventory?.value ?? undefined } onCheckedChange={(val) => setField('trackInventory', val)} />
         </div>
       </Card>
     </div>

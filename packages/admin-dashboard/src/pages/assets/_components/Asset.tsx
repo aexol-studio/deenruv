@@ -54,7 +54,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
     },
     {
       header: t('detailsTable.createdAt'),
-      render: assetDetails?.createdAt && format(assetDetails?.createdAt, 'yyyy-MM-dd, HH:ss'),
+      render: assetDetails?.createdAt && format(new Date(assetDetails.createdAt), 'yyyy-MM-dd, HH:ss'),
     },
     {
       header: t('detailsTable.size'),

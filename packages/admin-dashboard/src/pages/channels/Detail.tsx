@@ -251,7 +251,7 @@ export const ChannelsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.code')}
-                      value={state.code?.value}
+                      value={state.code?.value ?? undefined }
                       onChange={(e) => setField('code', e.target.value)}
                       required
                     />
@@ -259,7 +259,7 @@ export const ChannelsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.token')}
-                      value={state.token?.value}
+                      value={state.token?.value ?? undefined }
                       onChange={(e) => setField('token', e.target.value)}
                       required
                     />
@@ -309,14 +309,14 @@ export const ChannelsDetailPage = () => {
             </CardHeader>
           </Card>
           <DefaultsCard
-            availableLanguages={state.availableLanguageCodes?.value}
-            availableCurrencies={state.availableCurrencyCodes?.value}
+            availableLanguages={state.availableLanguageCodes?.value ?? undefined }
+            availableCurrencies={state.availableCurrencyCodes?.value ?? undefined }
             onFieldChange={setField}
-            defaultLanguage={state.defaultLanguageCode?.value}
-            defaultCurrency={state.defaultCurrencyCode?.value}
-            defaultTaxZone={state.defaultTaxZoneId?.value}
-            defaultShippingZone={state.defaultShippingZoneId?.value}
-            includeTax={state.pricesIncludeTax?.value}
+            defaultLanguage={state.defaultLanguageCode?.value ?? undefined }
+            defaultCurrency={state.defaultCurrencyCode?.value ?? undefined }
+            defaultTaxZone={state.defaultTaxZoneId?.value ?? undefined }
+            defaultShippingZone={state.defaultShippingZoneId?.value ?? undefined }
+            includeTax={state.pricesIncludeTax?.value ?? undefined }
             onIncludeTaxChange={(e) => setField('pricesIncludeTax', e)}
           />
         </Stack>

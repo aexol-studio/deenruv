@@ -11,7 +11,7 @@ export const DefaultFloatInput: React.FC = () => {
             <Input
                 id={field?.name}
                 type="number"
-                disabled={field?.readonly}
+                disabled={field?.readonly ?? undefined}
                 value={value as string}
                 onChange={e => setValue(parseFloat(e.target.value || '0'))}
             />

@@ -22,7 +22,7 @@ export const DefaultTimeSelect: React.FC = () => {
                 <PopoverTrigger asChild>
                     <Button
                         variant={'outline'}
-                        disabled={field?.readonly}
+                        disabled={field?.readonly ?? undefined}
                         className={cn(
                             'w-[280px] justify-start text-left font-normal',
                             !date && 'text-muted-foreground',

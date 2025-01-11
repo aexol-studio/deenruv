@@ -56,7 +56,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
                     variant={'outline'}
                     className={cn('pl-3 text-left font-normal', !startsAt && 'text-muted-foreground')}
                   >
-                    {startsAt ? format(startsAt, 'PPP') : <span>{t('options.pickDate')}</span>}
+                    {startsAt ? format(new Date(startsAt), 'PPP') : <span>{t('options.pickDate')}</span>}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
@@ -79,7 +79,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
                     variant={'outline'}
                     className={cn('pl-3 text-left font-normal', endsAt && 'text-muted-foreground')}
                   >
-                    {endsAt ? format(endsAt, 'PPP') : <span>{t('options.pickDate')}</span>}
+                    {endsAt ? format(new Date(endsAt), 'PPP') : <span>{t('options.pickDate')}</span>}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>

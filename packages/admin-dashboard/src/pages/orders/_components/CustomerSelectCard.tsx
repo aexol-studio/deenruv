@@ -164,7 +164,7 @@ export const CustomerSelectCard: React.FC = () => {
                     <Input
                       label={t('create.selectCustomer.titleLabel')}
                       name="title"
-                      value={state.title?.value}
+                      value={state.title?.value ?? undefined }
                       onChange={(e) => setField('title', e.target.value)}
                     />
                     <p className="text-destructive mb-2 mt-1 min-h-5 border-orange-800 text-sm font-medium">
@@ -200,7 +200,7 @@ export const CustomerSelectCard: React.FC = () => {
                     <Input
                       label={t('create.selectCustomer.phoneNumberLabel')}
                       name="phoneNumber"
-                      value={state.phoneNumber?.value}
+                      value={state.phoneNumber?.value ?? undefined }
                       onChange={(e) => setField('phoneNumber', e.target.value)}
                     />
                     <p className="text-destructive mt-1 min-h-5 border-orange-800 text-sm font-medium">

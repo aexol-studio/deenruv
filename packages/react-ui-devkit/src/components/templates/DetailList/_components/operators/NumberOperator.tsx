@@ -41,7 +41,7 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
     const [type, setType] = useState(defaultType);
     const [value, setValue] = useState<number | NumberRange | boolean | undefined>(() => {
         if (!currentValue) return undefined;
-        const curr = Object.values(currentValue)[0];
+        const curr = Object.values(currentValue)[0] ?? undefined;
         return isNumberRange(curr)
             ? isCurrency
                 ? { start: curr.start / 100, end: curr.end / 100 }

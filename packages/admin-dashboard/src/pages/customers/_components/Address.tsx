@@ -111,7 +111,7 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                disabled={address.defaultBillingAddress}
+                disabled={address.defaultBillingAddress ?? undefined }
                 onClick={() =>
                   setAsDefaultBillingAddress({ addressId: address.id }).then((resp) => {
                     if (resp.updateCustomerAddress.id) {
@@ -126,7 +126,7 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                disabled={address.defaultShippingAddress}
+                disabled={address.defaultShippingAddress ?? undefined }
                 onClick={() =>
                   setAsDefaultShippingAddress({ addressId: address.id }).then((resp) => {
                     if (resp.updateCustomerAddress.id) {

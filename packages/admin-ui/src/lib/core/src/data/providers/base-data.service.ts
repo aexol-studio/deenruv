@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MutationUpdaterFn, SingleExecutionResult, WatchQueryFetchPolicy } from '@apollo/client/core';
+import { SingleExecutionResult, WatchQueryFetchPolicy } from '@apollo/client/core';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { simpleDeepClone } from '@deenruv/common/lib/simple-deep-clone';
 import { Apollo } from 'apollo-angular';
@@ -14,6 +14,7 @@ import { addCustomFields } from '../utils/add-custom-fields';
 import { removeReadonlyCustomFields } from '../utils/remove-readonly-custom-fields';
 import { transformRelationCustomFieldInputs } from '../utils/transform-relation-custom-field-inputs';
 import { isEntityCreateOrUpdateMutation } from '../utils/is-entity-create-or-update-mutation';
+import { MutationOptions } from 'apollo-angular/types';
 
 @Injectable()
 export class BaseDataService {
@@ -50,7 +51,7 @@ export class BaseDataService {
     mutate<T, V extends Record<string, any> = Record<string, any>>(
         mutation: DocumentNode | TypedDocumentNode<T, V>,
         variables?: V,
-        update?: MutationUpdaterFn<T>,
+        update?: NonNullable<MutationOptions<T, V>['update']>,
     ): Observable<T> {
         const withCustomFields = addCustomFields(mutation, this.customFields);
         const withoutReadonlyFields = this.prepareCustomFields(mutation, variables);

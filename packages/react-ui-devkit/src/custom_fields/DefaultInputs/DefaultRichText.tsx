@@ -13,7 +13,7 @@ export function DefaultRichText() {
             <RichTextEditor
                 content={value as string}
                 onContentChanged={e => setValue(e)}
-                disabled={field?.readonly}
+                disabled={field?.readonly ?? undefined}
             />
         </div>
     );

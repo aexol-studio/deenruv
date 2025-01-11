@@ -121,13 +121,13 @@ export const PromotionDetailView = () => {
   ) : (
     <div>
       <form className="flex flex-col gap-4">
-        <BasicFieldsCard currentTranslationValue={currentTranslationValue} onChange={setTranslationField} />
+        <BasicFieldsCard currentTranslationValue={currentTranslationValue ?? undefined } onChange={setTranslationField} />
         <OptionsCard
           endsAt={state.endsAt?.value}
           startsAt={state.startsAt?.value}
-          couponCode={state.couponCode?.value}
-          usageLimit={state.usageLimit?.value}
-          perCustomerUsageLimit={state.perCustomerUsageLimit?.value}
+          couponCode={state.couponCode?.value ?? undefined }
+          usageLimit={state.usageLimit?.value ?? undefined }
+          perCustomerUsageLimit={state.perCustomerUsageLimit?.value ?? undefined }
           setField={setField}
         />
         <ConditionsCard value={state.conditions?.value} onChange={setField} />

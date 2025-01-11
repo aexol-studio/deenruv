@@ -5,8 +5,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@/components';
 
+type PartialNull<T> = {
+  [P in keyof T]?: T[P] | null;
+};
+
 interface BasicFieldsCardProps {
-  currentTranslationValue: Partial<ModelTypes['Product']['translations'][0]> | undefined;
+  currentTranslationValue: PartialNull<ModelTypes['Product']['translations'][0]> | undefined;
   onChange: (field: 'name' | 'slug' | 'description', value: string) => void;
 }
 
@@ -24,14 +28,14 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
             <Input
               label={t('basicInfo.name')}
               placeholder={t('basicInfo.name')}
-              value={currentTranslationValue?.name}
+              value={currentTranslationValue?.name ?? undefined}
               onChange={(e) => onChange('name', e.target.value)}
             />
           </Stack>
           <Stack column className="basis-full">
             <Label className="mb-2">{t('basicInfo.description')}</Label>
             <RichTextEditor
-              content={currentTranslationValue?.description}
+              content={currentTranslationValue?.description ?? undefined}
               onContentChanged={(value) => onChange('description', value)}
             />
           </Stack>

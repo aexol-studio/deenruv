@@ -75,11 +75,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           <Label className="text-muted-foreground">{t('baseInfoId', { value: shippingMethod.id })}</Label>
           <Label className="text-muted-foreground">|</Label>
           <Label className="text-muted-foreground">
-            {t('baseInfoCreated', { value: format(shippingMethod.createdAt, 'dd.MM.yyyy hh:mm') })}
+            {t('baseInfoCreated', { value: format(new Date(shippingMethod.createdAt), 'dd.MM.yyyy hh:mm') })}
           </Label>
           <Label className="text-muted-foreground">|</Label>
           <Label className="text-muted-foreground">
-            {t('baseInfoUpdated', { value: format(shippingMethod.updatedAt, 'dd.MM.yyyy hh:mm') })}
+            {t('baseInfoUpdated', { value: format(new Date(shippingMethod.updatedAt), 'dd.MM.yyyy hh:mm') })}
           </Label>
         </div>
       )}

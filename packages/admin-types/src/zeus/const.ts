@@ -171,6 +171,12 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
+		chartMetric:{
+			input:"ChartMetricInput"
+		},
+		orderSummaryMetric:{
+			input:"OrderSummaryMetricInput"
+		},
 		metricSummary:{
 			input:"MetricSummaryInput"
 		}
@@ -1431,6 +1437,21 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
+	MetricRangeType: "enum" as const,
+	MetricIntervalType: "enum" as const,
+	ChartMetricType: "enum" as const,
+	BetterMetricRangeInput:{
+		start:"DateTime",
+		end:"DateTime"
+	},
+	OrderSummaryMetricInput:{
+		range:"BetterMetricRangeInput"
+	},
+	ChartMetricInput:{
+		range:"BetterMetricRangeInput",
+		interval:"MetricIntervalType",
+		types:"ChartMetricType"
+	},
 	MetricInterval: "enum" as const,
 	MetricType: "enum" as const,
 	MetricSummaryInput:{
@@ -1948,6 +1969,8 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
+		chartMetric:"ChartMetrics",
+		orderSummaryMetric:"OrderSummaryMetrics",
 		metricSummary:"MetricSummary"
 	},
 	Mutation:{
@@ -3826,6 +3849,36 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		members:"Region",
 		customFields:"JSON"
+	},
+	ChartDataType:{
+		type:"ChartMetricType",
+		title:"String",
+		entries:"ChartEntry"
+	},
+	ChartMetrics:{
+		data:"ChartDataType"
+	},
+	OrderSummaryMetrics:{
+		data:"OrderSummaryDataMetric"
+	},
+	OrderSummaryDataMetric:{
+		currencyCode:"CurrencyCode",
+		total:"Float",
+		totalWithTax:"Float",
+		orderCount:"Float",
+		averageOrderValue:"Float",
+		averageOrderValueWithTax:"Float",
+		productCount:"Float"
+	},
+	ChartEntryAdditionalData:{
+		id:"String",
+		name:"String",
+		quantity:"Float"
+	},
+	ChartEntry:{
+		intervalTick:"Int",
+		value:"Float",
+		additionalData:"ChartEntryAdditionalData"
 	},
 	MetricSummary:{
 		interval:"MetricInterval",

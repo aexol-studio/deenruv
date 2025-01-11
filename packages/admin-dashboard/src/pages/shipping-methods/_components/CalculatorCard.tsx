@@ -97,7 +97,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({ currentCalculato
                   <Input
                     type="number"
                     step={0.01}
-                    label={argument?.label}
+                    label={argument?.label ?? undefined}
                     value={currentCalculatorValue?.arguments[i].value}
                     onChange={(e) => {
                       currentCalculatorValue.arguments[i] = { name: argument?.name || '', value: e.target.value };
@@ -109,7 +109,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({ currentCalculato
               ) : argument?.type === 'string' ? (
                 <SimpleSelect
                   key={i}
-                  label={argument?.label}
+                  label={argument?.label ?? undefined}
                   value={currentCalculatorValue?.arguments[i].value}
                   onValueChange={(e) => {
                     currentCalculatorValue.arguments[i] = { name: argument?.name || '', value: e };

@@ -18,7 +18,7 @@ const stringOperatorOptions = ['eq', 'notEq', 'contains', 'notContains', 'regex'
 
 interface Props {
   onSubmit: (filterType: string, value: string) => void;
-  currentValue?: ModelTypes['StringOperators'];
+  currentValue?: ModelTypes['StringOperators'] | null;
 }
 
 export const StringOperator: React.FC<Props> = ({ onSubmit, currentValue }) => {

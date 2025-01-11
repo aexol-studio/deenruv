@@ -176,7 +176,7 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
                       <Label>Nazwa</Label>
                       <Input
                         className={cn((state.translations?.errors ?? []).length > 0 && '!border-red-500')}
-                        value={state.translations?.value?.find((t) => t.languageCode === languageCode)?.name}
+                        value={state.translations?.value?.find((t) => t.languageCode === languageCode)?.name ?? undefined }
                         onChange={(e) => handleTranslationChange(languageCode, e.target.value)}
                       />
                     </div>
@@ -189,7 +189,7 @@ export const CountryActionModal: React.FC<CountryActionModalProps> = ({
                       />
                     </div>
                     <div className="flex  items-center gap-4 ">
-                      <Checkbox checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', !!e)} />
+                      <Checkbox checked={state.enabled?.value ?? undefined } onCheckedChange={(e) => setField('enabled', !!e)} />
                       <Label>Enabled</Label>
                     </div>
                   </div>

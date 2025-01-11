@@ -175,7 +175,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     [currentTranslationLng, translations],
   );
 
-  const handleAddAsset = (id: string | undefined) => {
+  const handleAddAsset = (id: string | undefined | null) => {
     if (!id) return;
 
     const newIds = state.assetIds?.value || [];
@@ -240,13 +240,13 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
                 <Input
                   label={t('sku')}
                   placeholder={t('sku')}
-                  value={state?.sku?.value}
+                  value={state?.sku?.value ?? undefined}
                   onChange={(e) => setField('sku', e.target.value)}
                 />
                 <Input
                   label={t('name')}
                   placeholder={t('name')}
-                  value={currentTranslationValue?.name}
+                  value={currentTranslationValue?.name ?? undefined}
                   onChange={(e) => setTranslationField('name', e)}
                 />
               </Stack>
@@ -255,7 +255,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
           <OptionsCard
             optionGroups={variant?.options || []}
             productId={productId}
-            optionIds={state.optionIds?.value}
+            optionIds={state.optionIds?.value ?? undefined}
             onChange={(e) => setField('optionIds', e)}
             createMode={!variant}
           />
@@ -263,12 +263,12 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             currencyCode={variant?.currencyCode || CurrencyCode.PLN}
             priceValue={state.price?.value}
             onPriceChange={(e) => setField('price', e.target.value)}
-            taxRateValue={state.taxCategoryId?.value}
+            taxRateValue={state.taxCategoryId?.value ?? undefined}
             onTaxRateChange={(id) => setField('taxCategoryId', id)}
           />
           {!!variant && (
             <FacetValuesCard
-              facetValuesIds={state.facetValueIds?.value}
+              facetValuesIds={state.facetValueIds?.value ?? undefined}
               onChange={(e) => setField('facetValueIds', e)}
             />
           )}

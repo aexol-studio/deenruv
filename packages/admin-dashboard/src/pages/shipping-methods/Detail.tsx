@@ -230,7 +230,7 @@ export const ShippingMethodsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
-                      value={currentTranslationValue?.name}
+                      value={currentTranslationValue?.name ?? undefined }
                       onChange={(e) => setTranslationField('name', e.target.value)}
                       required
                     />
@@ -238,7 +238,7 @@ export const ShippingMethodsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.code')}
-                      value={state.code?.value}
+                      value={state.code?.value ?? undefined }
                       onChange={(e) => setField('code', e.target.value)}
                       required
                     />
@@ -247,14 +247,14 @@ export const ShippingMethodsDetailPage = () => {
                 <Stack column className="basis-full">
                   <Label className="mb-2">{t('details.basic.description')}</Label>
                   <RichTextEditor
-                    content={currentTranslationValue?.description}
+                    content={currentTranslationValue?.description ?? undefined }
                     onContentChanged={(e) => setTranslationField('description', e)}
                   />
                 </Stack>
                 <Stack className="basis-full">
                   <SimpleSelect
                     label={t('details.basic.fulfillmentHandler')}
-                    value={state.fulfillmentHandler?.value}
+                    value={state.fulfillmentHandler?.value ?? undefined }
                     onValueChange={(e) => setField('fulfillmentHandler', e)}
                     options={fulfillmentHandlersOptions}
                   />
@@ -264,14 +264,14 @@ export const ShippingMethodsDetailPage = () => {
           </Card>
           {id && <EntityCustomFields entityName="shippingMethod" id={id} />}
           <CheckerCard
-            currentCheckerValue={state.checker?.value}
+            currentCheckerValue={state.checker?.value ?? undefined }
             onCheckerValueChange={(checker) => setField('checker', checker)}
           />
           <CalculatorCard
-            currentCalculatorValue={state.calculator?.value}
+            currentCalculatorValue={state.calculator?.value ?? undefined }
             onCalculatorValueChange={(calculator) => setField('calculator', calculator)}
           />
-          <TestCard calculator={state.calculator?.value} checker={state.checker?.value} />
+          <TestCard calculator={state.calculator?.value ?? undefined } checker={state.checker?.value ?? undefined } />
         </Stack>
       </div>
     </main>

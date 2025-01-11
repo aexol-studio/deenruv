@@ -81,7 +81,7 @@ export const Payments: React.FC = () => {
               payments.map(({ amount, id, method, state, createdAt, metadata }) => (
                 <TableRow key={id} noHover>
                   <TableCell>{id}</TableCell>
-                  <TableCell>{format(createdAt, 'dd/LL/Y, kk:mm')}</TableCell>
+                  <TableCell>{format(new Date(createdAt), 'dd/LL/Y, kk:mm')}</TableCell>
                   <TableCell>{method}</TableCell>
                   <TableCell>
                     <b>{state}</b>

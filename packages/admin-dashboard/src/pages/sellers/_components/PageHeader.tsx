@@ -38,11 +38,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ seller, editMode, button
           <Label className="text-muted-foreground">{t('baseInfoId', { value: seller.id })}</Label>
           <Label className="text-muted-foreground">|</Label>
           <Label className="text-muted-foreground">
-            {t('baseInfoCreated', { value: format(seller.createdAt, 'dd.MM.yyyy hh:mm') })}
+            {t('baseInfoCreated', { value: format(new Date(seller.createdAt), 'dd.MM.yyyy hh:mm') })}
           </Label>
           <Label className="text-muted-foreground">|</Label>
           <Label className="text-muted-foreground">
-            {t('baseInfoUpdated', { value: format(seller.updatedAt, 'dd.MM.yyyy hh:mm') })}
+            {t('baseInfoUpdated', { value: format(new Date(seller.updatedAt), 'dd.MM.yyyy hh:mm') })}
           </Label>
         </div>
       )}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MutationUpdaterFn, WatchQueryFetchPolicy } from '@apollo/client/core';
+import { ApolloCache, WatchQueryFetchPolicy } from '@apollo/client/core';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { DocumentNode } from 'graphql';
 import { Observable } from 'rxjs';
@@ -18,6 +18,7 @@ import { ProductDataService } from './product-data.service';
 import { PromotionDataService } from './promotion-data.service';
 import { SettingsDataService } from './settings-data.service';
 import { ShippingMethodDataService } from './shipping-method-data.service';
+import { MutationOptions } from 'apollo-angular/types';
 
 /**
  * @description
@@ -103,10 +104,10 @@ export class DataService {
      * );
      * ```
      */
-    mutate<T, V extends Record<string, any> = Record<string, any>>(
+    mutate<T, V extends Record<string, any> = Record<string, any>, TCache extends ApolloCache<any> = ApolloCache<T>>(
         mutation: DocumentNode | TypedDocumentNode<T, V>,
         variables?: V,
-        update?: MutationUpdaterFn<T>,
+        update?: MutationOptions<T, V>['update'],
     ): Observable<T> {
         return this.baseDataService.mutate(mutation, variables, update);
     }

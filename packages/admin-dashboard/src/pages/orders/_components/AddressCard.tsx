@@ -38,10 +38,10 @@ import { ResolverInputTypes } from '@deenruv/admin-types';
 import { useOrder } from '@/state/order';
 
 type DefaultAddress = AddressBaseType & {
-  id?: string;
-  defaultBillingAddress?: boolean;
-  defaultShippingAddress?: boolean;
-  country?: { code?: string; name?: string };
+  id?: string | null;
+  defaultBillingAddress?: boolean | null;
+  defaultShippingAddress?: boolean | null;
+  country?: { code?: string | null; name?: string | null } | null;
 };
 
 export const AddressCard: React.FC<{
@@ -271,9 +271,9 @@ export const AddressCard: React.FC<{
       setSelectedAddress(undefined);
       currentAddress &&
         setState({
+          ...currentAddress,
           countryCode: currentAddress.countryCode || '',
           streetLine1: currentAddress.streetLine1 || '',
-          ...currentAddress,
         });
     }
   }, [currentAddress, order, type]);
@@ -378,8 +378,8 @@ export const AddressCard: React.FC<{
                     <Input
                       label={t('selectAddress.inputNameLabel')}
                       placeholder={t('selectAddress.inputNamePlaceholder')}
-                      value={state.fullName?.value}
-                      defaultValue={state?.fullName?.value}
+                      value={state.fullName?.value ?? undefined}
+                      defaultValue={state?.fullName?.value ?? undefined}
                       onChange={(e) => setField('fullName', e.target.value)}
                       required
                     />
@@ -418,8 +418,8 @@ export const AddressCard: React.FC<{
                     <Input
                       label={t('selectAddress.inputStreet2Label')}
                       placeholder={t('selectAddress.inputStreet2Placeholder')}
-                      value={state.streetLine2?.value}
-                      defaultValue={state?.streetLine2?.value}
+                      value={state.streetLine2?.value ?? undefined}
+                      defaultValue={state?.streetLine2?.value ?? undefined}
                       onChange={(e) => setField('streetLine2', e.target.value)}
                     />
                     <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
@@ -428,7 +428,7 @@ export const AddressCard: React.FC<{
                     <Input
                       label={t('selectAddress.inputCityLabel')}
                       placeholder={t('selectAddress.inputCityPlaceholder')}
-                      defaultValue={currentAddress?.city}
+                      defaultValue={currentAddress?.city ?? undefined}
                       onChange={(e) => setField('city', e.target.value)}
                       required
                     />
@@ -438,7 +438,7 @@ export const AddressCard: React.FC<{
                     <Input
                       label={t('selectAddress.inputProvinceLabel')}
                       placeholder={t('selectAddress.inputProvincePlaceholder')}
-                      defaultValue={currentAddress?.province}
+                      defaultValue={currentAddress?.province ?? undefined}
                       onChange={(e) => setField('province', e.target.value)}
                     />
                     <p className="text-destructive mb-2  mt-1 min-h-5 border-orange-800 text-sm font-medium">
@@ -447,8 +447,8 @@ export const AddressCard: React.FC<{
                     <Input
                       label={t('selectAddress.inputPostalLabel')}
                       placeholder={t('selectAddress.inputPostalPlaceholder')}
-                      value={state.postalCode?.value}
-                      defaultValue={state?.postalCode?.value}
+                      value={state.postalCode?.value ?? undefined}
+                      defaultValue={state?.postalCode?.value ?? undefined}
                       onChange={(e) => setField('postalCode', e.target.value)}
                       required
                     />
@@ -458,8 +458,8 @@ export const AddressCard: React.FC<{
                     <Input
                       label={t('selectAddress.inputPhoneLabel')}
                       placeholder={t('selectAddress.inputPhonePlaceholder')}
-                      value={state.phoneNumber?.value}
-                      defaultValue={state?.phoneNumber?.value}
+                      value={state.phoneNumber?.value ?? undefined}
+                      defaultValue={state?.phoneNumber?.value ?? undefined}
                       onChange={(e) => setField('phoneNumber', e.target.value)}
                       required
                     />

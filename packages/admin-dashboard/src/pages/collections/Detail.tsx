@@ -234,7 +234,7 @@ export const CollectionsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
-                      value={currentTranslationValue?.name}
+                      value={currentTranslationValue?.name ?? undefined}
                       onChange={(e) => setTranslationField('name', e.target.value)}
                       required
                     />
@@ -242,20 +242,20 @@ export const CollectionsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.slug')}
-                      value={currentTranslationValue?.slug}
+                      value={currentTranslationValue?.slug ?? undefined}
                       onChange={(e) => setTranslationField('slug', e.target.value)}
                       required
                     />
                   </Stack>
                   <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch checked={state.isPrivate?.value} onCheckedChange={(e) => setField('isPrivate', e)} />
+                    <Switch checked={state.isPrivate?.value ?? undefined} onCheckedChange={(e) => setField('isPrivate', e)} />
                     <Label>{t('details.basic.isPrivate')}</Label>
                   </Stack>
                 </Stack>
                 <Stack column className="basis-full">
                   <Label className="mb-2">{t('details.basic.description')}</Label>
                   <RichTextEditor
-                    content={currentTranslationValue?.description}
+                    content={currentTranslationValue?.description ?? undefined}
                     onContentChanged={(e) => setTranslationField('description', e)}
                   />
                 </Stack>
@@ -264,15 +264,15 @@ export const CollectionsDetailPage = () => {
           </Card>
           <AssetsCard
             onAddAsset={(id) => setField('assetIds', [...(state.assetIds?.value || []), id])}
-            featuredAssetId={state.featuredAssetId?.value}
-            assetsIds={state.assetIds?.value}
+            featuredAssetId={state.featuredAssetId?.value ?? undefined}
+            assetsIds={state.assetIds?.value ?? undefined}
             onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
             onAssetsChange={(ids) => setField('assetIds', ids)}
           />
           <FiltersCard
-            currentFiltersValue={state.filters?.value}
+            currentFiltersValue={state.filters?.value ?? undefined}
             onFiltersValueChange={(filters) => setField('filters', filters)}
-            inheritValue={state.inheritFilters?.value}
+            inheritValue={state.inheritFilters?.value ?? undefined}
             onInheritChange={(e) => setField('inheritFilters', e)}
           />
           {id && <EntityCustomFields entityName="collection" id={id} />}

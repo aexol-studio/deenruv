@@ -235,7 +235,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                         <Input
                           type="number"
                           step={0.01}
-                          label={argument?.label}
+                          label={argument?.label ?? undefined}
                           value={filter?.arguments[i].value}
                           onChange={(e) => {
                             filter.arguments[i] = { name: argument?.name || '', value: e.target.value };

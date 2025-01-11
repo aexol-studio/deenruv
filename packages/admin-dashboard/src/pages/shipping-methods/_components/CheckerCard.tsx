@@ -97,7 +97,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
                   <Input
                     type="number"
                     step={0.01}
-                    label={argument?.label}
+                    label={argument?.label ?? undefined}
                     value={currentCheckerValue?.arguments[i].value}
                     onChange={(e) =>
                       handleCheckerValueChange(currentCheckerValue?.code, [

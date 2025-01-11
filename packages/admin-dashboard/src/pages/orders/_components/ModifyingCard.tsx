@@ -51,7 +51,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                 rows={10}
                 id="note"
                 placeholder="Note"
-                value={state.note?.value}
+                value={state.note?.value ?? undefined }
                 onChange={(e) => setField('note', e.target.value)}
               />
             </div>
@@ -60,7 +60,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="recalculateShipping"
-                    checked={state.options?.value?.recalculateShipping}
+                    checked={state.options?.value?.recalculateShipping ?? undefined }
                     onCheckedChange={(e) =>
                       setField('options', {
                         freezePromotions: state?.options?.value?.freezePromotions || false,
@@ -78,7 +78,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="freezePromotions"
-                    checked={state.options?.value?.freezePromotions}
+                    checked={state.options?.value?.freezePromotions ?? undefined }
                     onCheckedChange={(e) =>
                       setField('options', {
                         freezePromotions: !!e,
@@ -125,7 +125,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                       type="reason"
                       id="reason"
                       placeholder="Reason"
-                      value={state.refund.value?.reason}
+                      value={state.refund.value?.reason ?? undefined }
                       onChange={(e) =>
                         setField('refund', {
                           paymentId: state?.refund?.value?.paymentId || '',
