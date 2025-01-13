@@ -25,6 +25,7 @@ import { ChannelDetailsSelector, ChannelDetailsType } from '@/graphql/channels';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { SimpleSelect, Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const ChannelsDetailPage = () => {
   const { id } = useParams();
@@ -37,8 +38,8 @@ export const ChannelsDetailPage = () => {
   const [channel, setChannel] = useState<ChannelDetailsType>();
   const [sellersOptions, setSellersOptions] = useState<Option[]>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
-
   const availableLanguages = useSettings((p) => p.availableLanguages);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchChannel = useCallback(async () => {
     if (id) {
@@ -109,6 +110,7 @@ export const ChannelsDetailPage = () => {
   }, [channel]);
 
   const createChannel = useCallback(() => {
+    setButtonDisabled(true);
     apiClient('mutation')({
       createChannel: [
         {
@@ -204,13 +206,13 @@ export const ChannelsDetailPage = () => {
         defaultLanguageCode: channel?.defaultLanguageCode,
         defaultShippingZoneId: channel?.defaultShippingZone?.id,
         defaultTaxZoneId: channel?.defaultTaxZone?.id,
-        pricesIncludeTax: channel?.pricesIncludeTax,
+        pricesIncludeTax: channel?.pricesIncludeTax || false,
         sellerId: channel?.seller?.id,
         token: channel?.token,
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, channel, editMode]);
 
   const languageOptions = useMemo(

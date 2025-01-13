@@ -21,6 +21,7 @@ import { cache } from '@/lists/cache';
 import { CountryDetailsSelector, CountryDetailsType } from '@/graphql/countries';
 import { Stack } from '@/components';
 import { PageHeader } from '@/pages/countries/_components/PageHeader';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const CountriesDetailPage = () => {
   const { id } = useParams();
@@ -32,6 +33,7 @@ export const CountriesDetailPage = () => {
   const [country, setCountry] = useState<CountryDetailsType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { translationsLanguage: currentTranslationLng } = useSettings();
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchCountry = useCallback(async () => {
     if (id) {
@@ -53,19 +55,45 @@ export const CountriesDetailPage = () => {
     fetchCountry();
   }, [id, setLoading, fetchCountry]);
 
-  const { state, setField } = useGFFLP('CreateCountryInput', 'translations', 'code', 'enabled')({});
+  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+    'CreateCountryInput',
+    'translations',
+    'code',
+    'enabled',
+  )({
+    enabled: {
+      initialValue: true,
+    },
+    code: {
+      validate: (v) => {
+        if (!v || v === '') return [t('validation.required')];
+      },
+    },
+    translations: {
+      validate: (v) => {
+        if (!v) return [t('validation.required')];
+      },
+    },
+  });
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
   useEffect(() => {
-    if (!country) return;
-    setField('code', country.code);
-    setField('translations', country.translations);
-    setField('enabled', country.enabled);
+    if (!country) {
+      setField('enabled', true);
+    } else {
+      setField('code', country.code);
+      setField('translations', country.translations);
+      setField('enabled', country.enabled);
+    }
   }, [country]);
 
   const createCountry = useCallback(() => {
+    setButtonDisabled(true);
+    const valid = checkIfAllFieldsAreValid();
+    if (!valid) return;
+
     apiClient('mutation')({
       createCountry: [
         {
@@ -116,16 +144,16 @@ export const CountriesDetailPage = () => {
       {
         code: state.code?.value,
         translations: state.translations?.value,
-        enabled: state.enabled?.value,
+        enabled: state.enabled?.value !== undefined ? state.enabled.value : true,
       },
       {
         code: country?.code,
         translations: country?.translations,
-        enabled: country?.enabled,
+        enabled: editMode ? country?.enabled : true,
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, country, editMode]);
 
   const setTranslationField = useCallback(
@@ -165,26 +193,26 @@ export const CountriesDetailPage = () => {
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex flex-col gap-6 p-0 pt-4">
-                <Stack className="gap-3">
-                  <Stack className="basis-full md:basis-1/2">
+                <Stack className="items-start gap-3">
+                  <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
                       value={currentTranslationValue?.name ?? undefined }
                       onChange={(e) => setTranslationField('name', e.target.value)}
+                      errors={state.translations?.errors}
                       required
                     />
                   </Stack>
-                  <Stack className="basis-full md:basis-1/2">
+                  <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.code')}
                       value={state.code?.value}
                       onChange={(e) => setField('code', e.target.value)}
+                      errors={state.code?.errors}
                       required
                     />
                   </Stack>
-                </Stack>
-                <Stack className="items-end gap-4">
-                  <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/2">
+                  <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
                     <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
                     <Label>{t('details.basic.enabled')}</Label>
                   </Stack>

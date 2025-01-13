@@ -1,4 +1,4 @@
-import { Menu } from '@/components';
+import { CanLeaveRouteDialog, Menu } from '@/components';
 
 import {
   serverConfigSelector,
@@ -134,6 +134,7 @@ export const Root = () => {
         {loaded ? <Outlet /> : <></>}
         {/* </div> */}
       </Menu>
+      <CanLeaveRouteDialog />
     </div>
   );
 };

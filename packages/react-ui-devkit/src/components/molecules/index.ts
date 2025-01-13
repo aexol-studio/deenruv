@@ -6,3 +6,5 @@ export * from './SortButton';
 export * from './TranslationSelect';
 export * from './ListTable';
 export * from './RichTextEditor';
+export * from './SearchInput';
+export * from './CustomFieldsModal';

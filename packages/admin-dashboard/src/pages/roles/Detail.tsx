@@ -24,6 +24,12 @@ import { PageHeader } from '@/pages/roles/_components/PageHeader';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 import { Stack } from '@/components';
 import { Permission } from '@deenruv/admin-types';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
+
+const DEFAULT_VALUES = {
+  permissions: [Permission.Authenticated],
+  description: '',
+};
 
 export const RolesDetailPage = () => {
   const { id } = useParams();
@@ -35,6 +41,7 @@ export const RolesDetailPage = () => {
   const [role, setRole] = useState<RoleDetailsType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [allChannelOptions, setAllChannelOptions] = useState<Option[]>([]);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchRole = useCallback(async () => {
     if (id) {
@@ -91,11 +98,11 @@ export const RolesDetailPage = () => {
       validate: (v) => (!v || v === '' ? ['Field required'] : undefined),
     },
     permissions: {
-      initialValue: [Permission.Authenticated],
+      initialValue: DEFAULT_VALUES.permissions,
       validate: (v) => (!v || !v.length ? ['Field required'] : undefined),
     },
     description: {
-      initialValue: '',
+      initialValue: DEFAULT_VALUES.description,
     },
   });
 
@@ -120,6 +127,7 @@ export const RolesDetailPage = () => {
   }, [role]);
 
   const createRole = useCallback(() => {
+    setButtonDisabled(true);
     if (checkIfAllFieldsAreValid())
       apiClient('mutation')({
         createRole: [
@@ -178,13 +186,13 @@ export const RolesDetailPage = () => {
       },
       {
         code: role?.code,
-        description: role?.description,
+        description: editMode ? role?.description : DEFAULT_VALUES.description,
         channelIds: role?.channels.map((ch) => ch.id),
-        permissions: role?.permissions,
+        permissions: editMode ? role?.permissions : DEFAULT_VALUES.permissions,
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, role, editMode]);
 
   return loading ? (
@@ -196,7 +204,7 @@ export const RolesDetailPage = () => {
       {t('toasts.roleLoadingError', { value: id })}
     </div>
   ) : (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           role={role}

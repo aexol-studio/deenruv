@@ -21,6 +21,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/tax-rates/_components/PageHeader';
 import { TaxRateDetailsSelector, TaxRateDetailsType } from '@/graphql/taxRates';
 import { SimpleSelect, Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const TaxRatesDetailPage = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ export const TaxRatesDetailPage = () => {
   const [taxCategoriesOptions, setTaxCategoriesOptions] = useState<Option[]>([]);
   const [zonesOptions, setZonesOptions] = useState<Option[]>([]);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchTaxRate = useCallback(async () => {
     if (id) {
@@ -105,6 +107,7 @@ export const TaxRatesDetailPage = () => {
   }, [taxRate]);
 
   const createTaxRate = useCallback(() => {
+    setButtonDisabled(true);
     apiClient('mutation')({
       createTaxRate: [
         {
@@ -157,14 +160,6 @@ export const TaxRatesDetailPage = () => {
   }, [state, resetCache, fetchTaxRate, id, t]);
 
   useEffect(() => {
-    console.log({
-      name: state.name?.value,
-      enabled: state.enabled?.validatedValue,
-      categoryId: state.categoryId?.validatedValue,
-      value: state.value?.validatedValue,
-      zoneId: state.zoneId?.validatedValue,
-      customerGroupId: state.customerGroupId?.validatedValue,
-    });
     const areEqual = areObjectsEqual(
       {
         name: state.name?.value,
@@ -184,7 +179,7 @@ export const TaxRatesDetailPage = () => {
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, taxRate, editMode]);
 
   return loading ? (

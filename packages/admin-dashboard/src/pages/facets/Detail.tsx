@@ -17,6 +17,7 @@ import {
   DetailList,
   deepMerge,
   PaginationInput,
+  useGFFLP,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields } from '@/components';
 import { ChevronLeft } from 'lucide-react';
@@ -24,9 +25,9 @@ import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog.js';
 import { DeletionResult, LanguageCode, SortOrder } from '@deenruv/admin-types';
 import { toast } from 'sonner';
-import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
+import { useRouteGuard } from '@/hooks/useRouteGuard.js';
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
@@ -52,6 +53,7 @@ export const FacetsDetailPage = () => {
   const [facetChanged, setFacetChanged] = useState(false);
   const [facetValueIdInModal, setFacetValueIdInModal] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  useRouteGuard({ shouldBlock: facetChanged });
 
   const fetchFacetValues = useCallback(
     async <T, K>(
@@ -132,7 +134,7 @@ export const FacetsDetailPage = () => {
     if (!editMode && state.name?.value) {
       setField('code', state.name.value.toLowerCase().replace(/\s+/g, '-'));
     }
-  }, [state.name?.value, setField, editMode]);
+  }, [state.name?.value, editMode]);
 
   const saveChanges = useCallback(() => {
     apiClient('mutation')({
@@ -168,6 +170,7 @@ export const FacetsDetailPage = () => {
   }, [state, resetCache, fetchFacet, id, t]);
 
   const createFacet = useCallback(() => {
+    setFacetChanged(false);
     apiClient('mutation')({
       createFacet: [
         {
@@ -197,7 +200,10 @@ export const FacetsDetailPage = () => {
         resetCache();
         navigate(Routes.facets.to(res.createFacet.id));
       })
-      .catch(() => toast.error(t('facets:toasts.facetUpdateError')));
+      .catch(() => {
+        toast.error(t('facets:toasts.facetUpdateError'));
+        setFacetChanged(true);
+      });
   }, [state, navigate, resetCache, t]);
 
   useEffect(() => {
@@ -206,19 +212,11 @@ export const FacetsDetailPage = () => {
         name: state.name?.value,
         code: state?.code?.value,
         isPrivate: state?.isPrivate?.value,
-        // customFields: {
-        //   usedForColors: state?.customFields?.value?.usedForColors,
-        //   colorsCollection: state?.customFields?.value?.colorsCollection,
-        // },
       },
       {
         name: facet?.name,
         code: facet?.code,
         isPrivate: facet?.isPrivate,
-        // customFields: {
-        //   usedForColors: facet?.customFields?.usedForColors,
-        //   colorsCollection: facet?.customFields?.colorsCollection,
-        // },
       },
     );
     setFacetChanged(!areEqual);

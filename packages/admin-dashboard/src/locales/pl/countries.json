@@ -26,6 +26,9 @@
       "enabled": "Włączony"
     }
   },
+  "validation": {
+    "required": "Pole jest wymagane"
+  },
   "toasts": {
     "countryLoadingError": "Nie udało się załadować kraju o id {{value}}.",
     "countryUpdateSuccess": "Kraj został pomyślnie zaktualizowany",

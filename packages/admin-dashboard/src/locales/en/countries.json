@@ -26,6 +26,9 @@
       "enabled": "Enabled"
     }
   },
+  "validation": {
+    "required": "Field is required"
+  },
   "toasts": {
     "countryLoadingError": "Failed to load country with id {{value}}",
     "countryUpdateSuccess": "Country updated successfully",

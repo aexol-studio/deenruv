@@ -11,6 +11,7 @@ import { PageHeader } from '@/pages/admins/_components/PageHeader';
 import { AdminDetailsSelector, AdminDetailsType } from '@/graphql/admins';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 import { Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const AdminsDetailPage = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ export const AdminsDetailPage = () => {
   const [loading, setLoading] = useState(id ? true : false);
   const [admin, setAdmin] = useState<AdminDetailsType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchAdmin = useCallback(async () => {
     if (id) {
@@ -65,6 +67,7 @@ export const AdminsDetailPage = () => {
   }, [admin]);
 
   const createAdmin = useCallback(() => {
+    setButtonDisabled(false);
     apiClient('mutation')({
       createAdministrator: [
         {
@@ -127,12 +130,11 @@ export const AdminsDetailPage = () => {
         firstName: admin?.firstName,
         lastName: admin?.lastName,
         emailAddress: admin?.emailAddress,
-        password: '',
+        password: editMode ? '' : undefined,
         roleIds: admin?.user.roles.map((r) => r.id),
       },
     );
-
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, admin, editMode]);
 
   return loading ? (
@@ -144,7 +146,7 @@ export const AdminsDetailPage = () => {
       {t('toasts.adminLoadingError', { value: id })}
     </div>
   ) : (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           admin={admin}

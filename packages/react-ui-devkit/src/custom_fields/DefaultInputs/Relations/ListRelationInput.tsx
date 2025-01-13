@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/atoms/dialog';
-import { AssetUploadButton, Button, ImagePlaceholder, Label, ScrollArea } from '@/components';
+import { AssetUploadButton, Button, ImagePlaceholder, Label, ScrollArea, SearchInput } from '@/components';
 import { cn } from '@/lib/utils';
 import { CircleX } from 'lucide-react';
 import { useCustomFields } from '@/custom_fields';
@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { type ResolverInputTypes } from '@deenruv/admin-types';
 import { CustomFieldSelectorsType, customFieldSelectors } from '@/selectors';
 import { apiClient } from '@/zeus_client';
+import { useDebounce } from '@/hooks';
 
 type CF = CustomFieldSelectorsType;
 
@@ -29,6 +30,8 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
     const { value, label, field, setValue } = useCustomFields<'RelationCustomFieldConfig', CommonFields[]>();
     const [modalOpened, setModalOpened] = useState(false);
     const { t } = useTranslation('common');
+    const [searchString, setSearchString] = useState<string>('');
+    const debouncedSearch = useDebounce(searchString, 500);
 
     const isAsset = (_value?: CommonFields): _value is CF['Asset'] => entityName === 'Asset';
     const isProduct = (_value?: CommonFields): _value is CF['Product'] => entityName === 'Product';
@@ -45,6 +48,10 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
     const [selected, setSelected] = useState<CommonFields[]>([]);
 
     const selectedIds = useMemo(() => selected?.map(el => el.id), [selected]);
+
+    useEffect(() => {
+        setFilterField('name', { contains: searchString });
+    }, [debouncedSearch]);
 
     const onOpenChange = (open: boolean) => {
         setSelected(value || []);
@@ -71,9 +78,14 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
         objects: entities,
         Paginate,
         refetch,
+        setFilterField,
     } = useList({
-        route: async ({ page, perPage }) => {
-            const entities = await getEntities({ skip: (page - 1) * perPage, take: perPage });
+        route: async ({ page, perPage, filter }) => {
+            const entities = await getEntities({
+                skip: (page - 1) * perPage,
+                take: perPage,
+                ...(filter && { filter }),
+            });
             return { items: entities.items, totalItems: entities.totalItems };
         },
         listType: `modal-assets-list`,
@@ -149,7 +161,13 @@ export const ListRelationInput = <K extends keyof CF>({ entityName }: { entityNa
                         {t(`custom-fields.${entityName.toLowerCase()}.description`)}
                     </DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="h-[50vh] p-2">
+                <ScrollArea className="h-[60vh] p-2">
+                    <SearchInput
+                        searchString={searchString}
+                        setSearchString={setSearchString}
+                        placeholder={t('search.AssetFilterParameter.placeholder')}
+                    />
+
                     <div className="flex flex-wrap">
                         {entities?.map(entity => {
                             const isSelected = selectedIds?.includes(entity.id);

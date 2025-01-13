@@ -2,7 +2,7 @@ import { useList } from '@/lists/useList';
 import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, ChevronDown, MoreHorizontal, Pencil, Trash } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 import {
   Routes,
@@ -12,10 +12,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
   useSettings,
   useLocalStorage,
   SortButton,
@@ -23,7 +20,7 @@ import {
   ListTable,
   apiClient,
 } from '@deenruv/react-ui-devkit';
-import { Search, Stack } from '@/components';
+import { DeleteDialog, ListButtons, Search, Stack } from '@/components';
 import { useEffect, useState } from 'react';
 import {
   ColumnDef,
@@ -39,8 +36,9 @@ import { CountriesSortOptions, ParamFilterFieldTuple, countriesSortOptionsArray 
 
 import { format } from 'date-fns';
 import { CountryListType, CountrySelector } from '@/graphql/settings';
-import { CountryActionModal } from './_components/CountryActionModal.js';
 import { BooleanCell } from '@/components/Columns/BooleanCell.js';
+import { toast } from 'sonner';
+import { ActionsColumn } from '@/components/Columns';
 
 const getCountries = async (options: ResolverInputTypes['CountryListOptions']) => {
   const response = await apiClient('query')({
@@ -52,6 +50,20 @@ const getCountries = async (options: ResolverInputTypes['CountryListOptions']) =
 export const CountriesListPage = () => {
   const translationsLanguage = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('countries');
+  const [deleteDialogOpened, setDeleteDialogOpened] = useState(false);
+
+  const deleteCountriesToDelete = async () => {
+    const resp = await apiClient('mutation')({
+      deleteCountries: [{ ids: countriesToDelete.map((c) => c.id) }, { message: true, result: true }],
+    });
+
+    if (resp.deleteCountries) {
+      toast.message(t('toasts.countryDeleteSuccess'));
+      refetchCountries();
+      setDeleteDialogOpened(false);
+      setCountriesToDelete([]);
+    } else toast.error(t('toasts.countryDeleteError'));
+  };
 
   const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
     'countries-table-visibility',
@@ -83,9 +95,6 @@ export const CountriesListPage = () => {
   });
 
   const [countriesToDelete, setCountriesToDelete] = useState<CountryListType[]>([]);
-  const [countryToEdit, setCountryToEdit] = useState<CountryListType | undefined>();
-
-  const [countryAction, setCountryAction] = useState<'create' | 'edit' | 'delete' | undefined>();
 
   const columns: ColumnDef<CountryListType>[] = [
     {
@@ -173,44 +182,13 @@ export const CountriesListPage = () => {
         <div className="text-nowrap pl-4">{format(new Date(row.original.updatedAt), 'dd.MM.yyyy hh:mm')}</div>
       ),
     },
-    {
-      id: 'actions',
-      enableHiding: false,
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">{t('table.openMenu')}</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{t('table.actions')}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                setCountryAction('edit');
-                setCountryToEdit(row.original);
-              }}
-              className="item-center group flex cursor-pointer justify-between gap-2"
-            >
-              {t('edit')}
-              <Pencil className="h-4 w-4 group-hover:text-blue-600" />
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="item-center group flex cursor-pointer justify-between  gap-2"
-              onClick={() => {
-                setCountryAction('delete');
-                setCountriesToDelete([row.original]);
-              }}
-            >
-              <span>{t('deleteCountry.title')}</span>
-              <Trash className="h-4 w-4 group-hover:text-red-600" />
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
-    },
+    ActionsColumn({
+      viewRoute: Routes.countries.to,
+      onDelete: (row) => {
+        setDeleteDialogOpened(true);
+        setCountriesToDelete([row.original]);
+      },
+    }),
   ];
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -267,15 +245,6 @@ export const CountriesListPage = () => {
     refetchCountries();
   }, [translationsLanguage]);
 
-  const onActionSucess = () => {
-    refetchCountries();
-    setCountryAction(undefined);
-  };
-  const onActionModalClose = () => {
-    setCountriesToDelete([]);
-    setCountryToEdit(undefined);
-    setCountryAction(undefined);
-  };
   return (
     <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
@@ -313,18 +282,25 @@ export const CountriesListPage = () => {
             removeFilterField={removeFilterField}
             setFilterLogicalOperator={setFilterLogicalOperator}
           />
-          <div className="flex gap-2">
-            <Button onClick={() => setCountryAction('create')}>Dodaj nowy kraj</Button>
-          </div>
+          <ListButtons
+            selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createLabel={t('create')}
+            createRoute={Routes.countries.new}
+            handleClick={() => {
+              setCountriesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
+              setDeleteDialogOpened(true);
+            }}
+          />
         </div>
 
         <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
-        <CountryActionModal
-          action={countryAction}
-          countriesToDelete={countriesToDelete}
-          countryToEdit={countryToEdit}
-          onClose={onActionModalClose}
-          onActionSucess={onActionSucess}
+        <DeleteDialog
+          title={t('deleteCountry.title')}
+          description={t('deleteCountry.description')}
+          deletedNames={countriesToDelete.map((c) => c.name)}
+          onConfirm={deleteCountriesToDelete}
+          open={deleteDialogOpened}
+          onOpenChange={setDeleteDialogOpened}
         />
       </div>
     </Stack>

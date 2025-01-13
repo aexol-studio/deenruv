@@ -23,6 +23,7 @@ import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
 import { EntityCustomFields, Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const PaymentMethodsDetailPage = () => {
   const { id } = useParams();
@@ -34,6 +35,7 @@ export const PaymentMethodsDetailPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodDetailsType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchPaymentMethod = useCallback(async () => {
     if (id) {
@@ -89,6 +91,8 @@ export const PaymentMethodsDetailPage = () => {
   }, [paymentMethod]);
 
   const createPaymentMethod = useCallback(() => {
+    setButtonDisabled(true);
+
     apiClient('mutation')({
       createPaymentMethod: [
         {
@@ -146,18 +150,18 @@ export const PaymentMethodsDetailPage = () => {
         handler: state.handler?.value,
         enabled: state.enabled?.value,
         translations: state.translations?.value,
-        customFields: state.customFields?.value,
+        // customFields: state.customFields?.value,
       },
       {
         code: paymentMethod?.code,
         handler: paymentMethod?.handler,
-        enabled: paymentMethod?.enabled,
+        enabled: paymentMethod?.enabled !== undefined ? paymentMethod.enabled : true,
         translations: paymentMethod?.translations,
         // customFields: paymentMethod?.customFields,
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, paymentMethod, editMode]);
 
   const setTranslationField = useCallback(
@@ -183,7 +187,7 @@ export const PaymentMethodsDetailPage = () => {
       {t('toasts.paymentMethodLoadingError', { value: id })}
     </div>
   ) : (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           currentTranslationLng={currentTranslationLng}

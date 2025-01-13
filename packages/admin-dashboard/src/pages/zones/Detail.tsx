@@ -22,6 +22,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/zones/_components/PageHeader';
 import { ZoneDetailsSelector, ZoneDetailsType } from '@/graphql/zones';
 import { Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const ZonesDetailPage = () => {
   const { id } = useParams();
@@ -36,6 +37,7 @@ export const ZonesDetailPage = () => {
   const [countriesIdsToRemove, setCountriesIdsToRemove] = useState<string[]>([]);
   const [countriesIdsToAdd, setCountriesIdsToAdd] = useState<string[]>([]);
   const countries = useServer((p) => p.countries);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchZone = useCallback(async () => {
     if (id) {
@@ -73,6 +75,8 @@ export const ZonesDetailPage = () => {
   }, [zone]);
 
   const createZone = useCallback(() => {
+    setButtonDisabled(true);
+
     apiClient('mutation')({
       createZone: [
         {
@@ -145,7 +149,7 @@ export const ZonesDetailPage = () => {
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, zone, editMode]);
 
   const handleChange = useCallback(
@@ -178,7 +182,7 @@ export const ZonesDetailPage = () => {
       {t('toasts.zoneLoadingError', { value: id })}
     </div>
   ) : (
-    <main className="min-h-96">
+    <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           zone={zone}

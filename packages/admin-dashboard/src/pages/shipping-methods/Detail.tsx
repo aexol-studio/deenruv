@@ -25,6 +25,7 @@ import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
 import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
 import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const ShippingMethodsDetailPage = () => {
   const { id } = useParams();
@@ -37,6 +38,8 @@ export const ShippingMethodsDetailPage = () => {
   const [fulfillmentHandlersOptions, setFulfillmentHandlersOptions] = useState<Option[]>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  useRouteGuard({ shouldBlock: hasUnsavedChanges });
 
   const fetchShippingMethod = useCallback(async () => {
     if (id) {
@@ -113,6 +116,7 @@ export const ShippingMethodsDetailPage = () => {
   }, [shippingMethod]);
 
   const createShippingMethod = useCallback(() => {
+    setHasUnsavedChanges(false);
     apiClient('mutation')({
       createShippingMethod: [
         {
@@ -180,6 +184,8 @@ export const ShippingMethodsDetailPage = () => {
         // customFields: shippingMethod?.customFields,
       },
     );
+
+    setHasUnsavedChanges(!areEqual);
 
     const disabled = areEqual || !haveValidFields;
 

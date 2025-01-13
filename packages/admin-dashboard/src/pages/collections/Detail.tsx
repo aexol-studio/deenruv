@@ -25,6 +25,7 @@ import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { EntityCustomFields, Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
@@ -36,6 +37,7 @@ export const CollectionsDetailPage = () => {
   const [collection, setCollection] = useState<CollectionDetailsType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchCollection = useCallback(async () => {
     if (id) {
@@ -100,6 +102,7 @@ export const CollectionsDetailPage = () => {
   }, [collection]);
 
   const createCollection = useCallback(() => {
+    setButtonDisabled(true);
     apiClient('mutation')({
       createCollection: [
         {
@@ -171,7 +174,7 @@ export const CollectionsDetailPage = () => {
         featuredAssetId: state.featuredAssetId?.value,
         isPrivate: state.isPrivate?.validatedValue,
         inheritFilters: state.inheritFilters?.value,
-        customFields: state.customFields?.value,
+        // customFields: state.customFields?.value,
         filters: state.filters?.value,
         translations: state.translations?.value,
       },
@@ -179,14 +182,14 @@ export const CollectionsDetailPage = () => {
         assetIds: collection?.assets.map((a) => a.id),
         featuredAssetId: collection?.featuredAsset?.id,
         isPrivate: collection?.isPrivate,
-        inheritFilters: collection?.isPrivate,
+        inheritFilters: editMode ? collection?.isPrivate : true,
         // customFields: collection?.customFields,
         filters: collection?.filters,
         translations: collection?.translations,
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, collection, editMode]);
 
   const setTranslationField = useCallback(

@@ -10,6 +10,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/sellers/_components/PageHeader';
 import { SellerListSelector, SellerListType } from '@/graphql/sellers';
 import { Stack } from '@/components';
+import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const SellersDetailPage = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ export const SellersDetailPage = () => {
   const [loading, setLoading] = useState(id ? true : false);
   const [seller, setSeller] = useState<SellerListType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  useRouteGuard({ shouldBlock: !buttonDisabled });
 
   const fetchSeller = useCallback(async () => {
     if (id) {
@@ -49,6 +51,7 @@ export const SellersDetailPage = () => {
   }, [seller]);
 
   const createSeller = useCallback(() => {
+    setButtonDisabled(true);
     apiClient('mutation')({
       createSeller: [
         {
@@ -100,7 +103,7 @@ export const SellersDetailPage = () => {
       },
     );
 
-    editMode && setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual);
   }, [state, seller, editMode]);
 
   return loading ? (
@@ -112,7 +115,7 @@ export const SellersDetailPage = () => {
       {t('toasts.sellerLoadingError', { value: id })}
     </div>
   ) : (
-    <main className="min-h-96">
+    <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <PageHeader
           seller={seller}
