@@ -3,7 +3,7 @@ import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 import { createTestEnvironment } from '../../testing/lib/create-test-environment';
 
 import * as Codegen from './graphql/generated-e2e-admin-types';

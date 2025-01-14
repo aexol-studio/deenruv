@@ -24,7 +24,8 @@
       "CouponCodeExpiredError",
       "CouponCodeInvalidError",
       "CouponCodeLimitError",
-      "Order"
+      "Order",
+      "OrderMiddlewareError"
     ],
     "AuthenticationResult": [
       "CurrentUser",
@@ -117,6 +118,7 @@
       "NoChangesSpecifiedError",
       "NothingToRefundError",
       "OrderLimitError",
+      "OrderMiddlewareError",
       "OrderModificationError",
       "OrderModificationStateError",
       "OrderStateTransitionError",
@@ -248,6 +250,7 @@
     ],
     "RemoveOrderItemsResult": [
       "Order",
+      "OrderMiddlewareError",
       "OrderModificationError"
     ],
     "SearchResultPrice": [
@@ -319,6 +322,7 @@
       "NegativeQuantityError",
       "Order",
       "OrderLimitError",
+      "OrderMiddlewareError",
       "OrderModificationError"
     ],
     "UpdatePromotionResult": [

@@ -30,7 +30,7 @@ import { Repository } from 'typeorm';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 
 import { testSuccessfulPaymentMethod } from './fixtures/test-payment-methods';
 import { TestPlugin1636_1664 } from './fixtures/test-plugins/issue-1636-1664/issue-1636-1664-plugin';

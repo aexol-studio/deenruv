@@ -22,7 +22,7 @@ import { IsNull } from 'typeorm';
 import { it, afterAll, beforeAll, describe, expect } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { TEST_SETUP_TIMEOUT_MS, testConfig } from '../../../e2e-common/test-config';
+import { TEST_SETUP_TIMEOUT_MS, testConfig } from '../../../e2e-common/test-config.js';
 import { AlreadyLoggedInError } from '../src/common/error/generated-graphql-shop-errors';
 import { CustomerEvent } from '../src/index';
 

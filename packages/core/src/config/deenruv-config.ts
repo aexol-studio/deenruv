@@ -57,6 +57,7 @@ import { ErrorHandlerStrategy } from './system/error-handler-strategy';
 import { HealthCheckStrategy } from './system/health-check-strategy';
 import { TaxLineCalculationStrategy } from './tax/tax-line-calculation-strategy';
 import { TaxZoneStrategy } from './tax/tax-zone-strategy';
+import { OrderMiddleware } from './order/order-middleware';
 
 /**
  * @description
@@ -615,6 +616,14 @@ export interface OrderOptions {
      * @default DefaultGuestCheckoutStrategy
      */
     guestCheckoutStrategy?: GuestCheckoutStrategy;
+        /**
+     * @description
+     * An array of {@link OrderInterceptor}s which can be used to modify the behavior of the Order process.
+     *
+     * @since 0.0.66
+     * @default []
+     */
+        orderMiddlewares?: OrderMiddleware[];
 }
 
 /**

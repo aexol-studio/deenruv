@@ -11,7 +11,7 @@ import path from 'path';
 import { DataSourceOptions } from 'typeorm';
 import { fileURLToPath } from 'url';
 
-import { getPackageDir } from './get-package-dir';
+import { getPackageDir } from './get-package-dir.js';
 
 declare global {
     namespace NodeJS {

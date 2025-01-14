@@ -416,6 +416,19 @@ export class OrderLimitError extends ErrorResult {
   }
 }
 
+export class OrderMiddlewareError extends ErrorResult {
+  readonly __typename = 'OrderMiddlewareError';
+  readonly errorCode = 'ORDER_MIDDLEWARE_ERROR' as any;
+  readonly message = 'ORDER_MIDDLEWARE_ERROR';
+  readonly middlewareError: Scalars['String'];
+  constructor(
+    input: { middlewareError: Scalars['String'] }
+  ) {
+    super();
+    this.middlewareError = input.middlewareError
+  }
+}
+
 export class OrderModificationError extends ErrorResult {
   readonly __typename = 'OrderModificationError';
   readonly errorCode = 'ORDER_MODIFICATION_ERROR' as any;
@@ -588,7 +601,7 @@ export class SettlePaymentError extends ErrorResult {
 }
 
 
-const errorTypeNames = new Set<string>(['AlreadyRefundedError', 'CancelActiveOrderError', 'CancelPaymentError', 'ChannelDefaultLanguageError', 'CouponCodeExpiredError', 'CouponCodeInvalidError', 'CouponCodeLimitError', 'CreateFulfillmentError', 'DuplicateEntityError', 'EmailAddressConflictError', 'EmptyOrderLineSelectionError', 'FacetInUseError', 'FulfillmentStateTransitionError', 'GuestCheckoutError', 'IneligibleShippingMethodError', 'InsufficientStockError', 'InsufficientStockOnHandError', 'InvalidCredentialsError', 'InvalidFulfillmentHandlerError', 'ItemsAlreadyFulfilledError', 'LanguageNotAvailableError', 'ManualPaymentStateError', 'MimeTypeError', 'MissingConditionsError', 'MultipleOrderError', 'NativeAuthStrategyError', 'NegativeQuantityError', 'NoActiveOrderError', 'NoChangesSpecifiedError', 'NothingToRefundError', 'OrderLimitError', 'OrderModificationError', 'OrderModificationStateError', 'OrderStateTransitionError', 'PaymentMethodMissingError', 'PaymentOrderMismatchError', 'PaymentStateTransitionError', 'ProductOptionInUseError', 'QuantityTooGreatError', 'RefundAmountError', 'RefundOrderStateError', 'RefundPaymentIdMissingError', 'RefundStateTransitionError', 'SettlePaymentError']);
+const errorTypeNames = new Set<string>(['AlreadyRefundedError', 'CancelActiveOrderError', 'CancelPaymentError', 'ChannelDefaultLanguageError', 'CouponCodeExpiredError', 'CouponCodeInvalidError', 'CouponCodeLimitError', 'CreateFulfillmentError', 'DuplicateEntityError', 'EmailAddressConflictError', 'EmptyOrderLineSelectionError', 'FacetInUseError', 'FulfillmentStateTransitionError', 'GuestCheckoutError', 'IneligibleShippingMethodError', 'InsufficientStockError', 'InsufficientStockOnHandError', 'InvalidCredentialsError', 'InvalidFulfillmentHandlerError', 'ItemsAlreadyFulfilledError', 'LanguageNotAvailableError', 'ManualPaymentStateError', 'MimeTypeError', 'MissingConditionsError', 'MultipleOrderError', 'NativeAuthStrategyError', 'NegativeQuantityError', 'NoActiveOrderError', 'NoChangesSpecifiedError', 'NothingToRefundError', 'OrderLimitError', 'OrderMiddlewareError', 'OrderModificationError', 'OrderModificationStateError', 'OrderStateTransitionError', 'PaymentMethodMissingError', 'PaymentOrderMismatchError', 'PaymentStateTransitionError', 'ProductOptionInUseError', 'QuantityTooGreatError', 'RefundAmountError', 'RefundOrderStateError', 'RefundPaymentIdMissingError', 'RefundStateTransitionError', 'SettlePaymentError']);
 function isGraphQLError(input: any): input is import('@deenruv/common/lib/generated-types').ErrorResult {
   return input instanceof ErrorResult || errorTypeNames.has(input.__typename);
 }

@@ -4,7 +4,7 @@ import { createTestEnvironment } from '@deenruv/testing';
 import path from 'path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 import { initialData } from '../mock-data/data-sources/initial-data';
 
 import {

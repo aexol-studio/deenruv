@@ -68,7 +68,7 @@ export type AlreadyLoggedInError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
-export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order;
+export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order | OrderMiddlewareError;
 
 export type Asset = Node & {
   __typename?: 'Asset';
@@ -915,6 +915,7 @@ export enum ErrorCode {
   NOT_VERIFIED_ERROR = 'NOT_VERIFIED_ERROR',
   NO_ACTIVE_ORDER_ERROR = 'NO_ACTIVE_ORDER_ERROR',
   ORDER_LIMIT_ERROR = 'ORDER_LIMIT_ERROR',
+  ORDER_MIDDLEWARE_ERROR = 'ORDER_MIDDLEWARE_ERROR',
   ORDER_MODIFICATION_ERROR = 'ORDER_MODIFICATION_ERROR',
   ORDER_PAYMENT_STATE_ERROR = 'ORDER_PAYMENT_STATE_ERROR',
   ORDER_STATE_TRANSITION_ERROR = 'ORDER_STATE_TRANSITION_ERROR',
@@ -2233,6 +2234,14 @@ export type OrderListOptions = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Returned when an order operation is rejected by an OrderInterceptor method. */
+export type OrderMiddlewareError = ErrorResult & {
+  __typename?: 'OrderMiddlewareError';
+  errorCode: ErrorCode;
+  message: Scalars['String']['output'];
+  middlewareError: Scalars['String']['output'];
+};
+
 /** Returned when attempting to modify the contents of an Order that is not in the `AddingItems` state. */
 export type OrderModificationError = ErrorResult & {
   __typename?: 'OrderModificationError';
@@ -3085,7 +3094,7 @@ export type RelationCustomFieldConfig = CustomField & {
   ui?: Maybe<Scalars['JSON']['output']>;
 };
 
-export type RemoveOrderItemsResult = Order | OrderModificationError;
+export type RemoveOrderItemsResult = Order | OrderMiddlewareError | OrderModificationError;
 
 export type RequestPasswordResetResult = NativeAuthStrategyError | Success;
 
@@ -3419,7 +3428,7 @@ export type UpdateOrderInput = {
   customFields?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderModificationError;
+export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderMiddlewareError | OrderModificationError;
 
 export type User = Node & {
   __typename?: 'User';

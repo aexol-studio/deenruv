@@ -26,7 +26,7 @@ import path from 'path';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 import { UPDATE_PRODUCT_VARIANTS } from '../../../packages/core/e2e/graphql/shared-definitions';
 import { MolliePlugin } from '../src/mollie';
 import { molliePaymentHandler } from '../src/mollie/mollie.handler';

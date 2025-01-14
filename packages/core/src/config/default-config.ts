@@ -165,6 +165,7 @@ export const defaultConfig: RuntimeDeenruvConfig = {
         activeOrderStrategy: new DefaultActiveOrderStrategy(),
         orderSellerStrategy: new DefaultOrderSellerStrategy(),
         guestCheckoutStrategy: new DefaultGuestCheckoutStrategy(),
+        orderMiddlewares: [],
     },
     paymentOptions: {
         paymentMethodEligibilityCheckers: [],

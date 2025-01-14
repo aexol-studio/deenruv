@@ -16,7 +16,7 @@ import { vi } from 'vitest';
 import { afterAll, beforeAll, describe, expect, it, Mock } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 
 import { CUSTOMER_FRAGMENT } from './graphql/fragments';
 import { DeletionResult, ErrorCode } from './graphql/generated-e2e-admin-types';

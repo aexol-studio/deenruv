@@ -101,7 +101,8 @@
     "REFUND_ORDER_STATE_ERROR": "Cannot refund an Order in the \"{ orderState }\" state",
     "SETTLE_PAYMENT_ERROR": "Settling the payment failed",
     "VERIFICATION_TOKEN_EXPIRED_ERROR": "Verification token has expired. Use refreshCustomerVerification to send a new token.",
-    "VERIFICATION_TOKEN_INVALID_ERROR": "Verification token not recognized"
+    "VERIFICATION_TOKEN_INVALID_ERROR": "Verification token not recognized",
+    "ORDER_MIDDLEWARE_ERROR": "An error occurred when attempting to modify the Order"
   },
   "message": {
     "asset-to-be-deleted-is-featured": "The selected {assetCount, plural, one {Asset is} other {Assets are}} featured by {products, plural, =0 {} one {1 Product} other {# Products}} {variants, plural, =0 {} one { 1 ProductVariant} other { # ProductVariants}} {collections, plural, =0 {} one { 1 Collection} other { # Collections}}",

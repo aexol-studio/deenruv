@@ -5,7 +5,7 @@ import { ColumnOptions } from 'typeorm';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 
 import * as Codegen from './graphql/generated-e2e-admin-types';
 import { SortOrder } from './graphql/generated-e2e-admin-types';

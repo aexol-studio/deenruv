@@ -1,7 +1,6 @@
 {
     "name": "deenruv",
     "version": "0.0.4",
-    "type": "module",
     "private": true,
     "engines": {
         "node": ">= 18"

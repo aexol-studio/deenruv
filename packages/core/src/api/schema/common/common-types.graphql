@@ -273,10 +273,16 @@ union UpdateOrderItemsResult =
     | OrderLimitError
     | NegativeQuantityError
     | InsufficientStockError
-union RemoveOrderItemsResult = Order | OrderModificationError
+    | OrderMiddlewareError
+union RemoveOrderItemsResult = Order | OrderModificationError | OrderMiddlewareError
 union SetOrderShippingMethodResult =
     | Order
     | OrderModificationError
     | IneligibleShippingMethodError
     | NoActiveOrderError
-union ApplyCouponCodeResult = Order | CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError
+union ApplyCouponCodeResult =
+    | Order
+    | CouponCodeExpiredError
+    | CouponCodeInvalidError
+    | CouponCodeLimitError
+    | OrderMiddlewareError

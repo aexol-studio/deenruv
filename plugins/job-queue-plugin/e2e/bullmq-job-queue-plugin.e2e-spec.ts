@@ -4,7 +4,7 @@ import { RedisConnection } from 'bullmq';
 import path from 'path';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config';
+import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
 import { awaitRunningJobs } from '../../core/e2e/utils/await-running-jobs';
 import { BullMQJobQueuePlugin } from '../src/bullmq/plugin';
 

@@ -165,7 +165,7 @@ export type AlreadyRefundedError = ErrorResult & {
   refundId: Scalars['ID']['output'];
 };
 
-export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order;
+export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order | OrderMiddlewareError;
 
 export type Asset = Node & {
   createdAt: Scalars['DateTime']['output'];
@@ -1597,6 +1597,7 @@ export enum ErrorCode {
   NO_ACTIVE_ORDER_ERROR = 'NO_ACTIVE_ORDER_ERROR',
   NO_CHANGES_SPECIFIED_ERROR = 'NO_CHANGES_SPECIFIED_ERROR',
   ORDER_LIMIT_ERROR = 'ORDER_LIMIT_ERROR',
+  ORDER_MIDDLEWARE_ERROR = 'ORDER_MIDDLEWARE_ERROR',
   ORDER_MODIFICATION_ERROR = 'ORDER_MODIFICATION_ERROR',
   ORDER_MODIFICATION_STATE_ERROR = 'ORDER_MODIFICATION_STATE_ERROR',
   ORDER_STATE_TRANSITION_ERROR = 'ORDER_STATE_TRANSITION_ERROR',
@@ -3979,6 +3980,13 @@ export type OrderListOptions = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Returned when an order operation is rejected by an OrderInterceptor method. */
+export type OrderMiddlewareError = ErrorResult & {
+  errorCode: ErrorCode;
+  message: Scalars['String']['output'];
+  middlewareError: Scalars['String']['output'];
+};
+
 export type OrderModification = Node & {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
@@ -5368,7 +5376,7 @@ export type RemoveFacetsFromChannelInput = {
 
 export type RemoveOptionGroupFromProductResult = Product | ProductOptionInUseError;
 
-export type RemoveOrderItemsResult = Order | OrderModificationError;
+export type RemoveOrderItemsResult = Order | OrderMiddlewareError | OrderModificationError;
 
 export type RemovePaymentMethodsFromChannelInput = {
   channelId: Scalars['ID']['input'];
@@ -6228,7 +6236,7 @@ export type UpdateOrderInput = {
   id: Scalars['ID']['input'];
 };
 
-export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderModificationError;
+export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderMiddlewareError | OrderModificationError;
 
 export type UpdateOrderNoteInput = {
   isPublic?: InputMaybe<Scalars['Boolean']['input']>;

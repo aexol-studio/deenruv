@@ -62,7 +62,7 @@ export type AlreadyLoggedInError = ErrorResult & {
   message: Scalars['String']['output'];
 };
 
-export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order;
+export type ApplyCouponCodeResult = CouponCodeExpiredError | CouponCodeInvalidError | CouponCodeLimitError | Order | OrderMiddlewareError;
 
 export type Asset = Node & {
   createdAt: Scalars['DateTime']['output'];
@@ -880,6 +880,7 @@ export enum ErrorCode {
   NOT_VERIFIED_ERROR = 'NOT_VERIFIED_ERROR',
   NO_ACTIVE_ORDER_ERROR = 'NO_ACTIVE_ORDER_ERROR',
   ORDER_LIMIT_ERROR = 'ORDER_LIMIT_ERROR',
+  ORDER_MIDDLEWARE_ERROR = 'ORDER_MIDDLEWARE_ERROR',
   ORDER_MODIFICATION_ERROR = 'ORDER_MODIFICATION_ERROR',
   ORDER_PAYMENT_STATE_ERROR = 'ORDER_PAYMENT_STATE_ERROR',
   ORDER_STATE_TRANSITION_ERROR = 'ORDER_STATE_TRANSITION_ERROR',
@@ -2093,6 +2094,13 @@ export type OrderListOptions = {
   take?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** Returned when an order operation is rejected by an OrderInterceptor method. */
+export type OrderMiddlewareError = ErrorResult & {
+  errorCode: ErrorCode;
+  message: Scalars['String']['output'];
+  middlewareError: Scalars['String']['output'];
+};
+
 /** Returned when attempting to modify the contents of an Order that is not in the `AddingItems` state. */
 export type OrderModificationError = ErrorResult & {
   errorCode: ErrorCode;
@@ -2904,7 +2912,7 @@ export type RelationCustomFieldConfig = CustomField & {
   ui?: Maybe<Scalars['JSON']['output']>;
 };
 
-export type RemoveOrderItemsResult = Order | OrderModificationError;
+export type RemoveOrderItemsResult = Order | OrderMiddlewareError | OrderModificationError;
 
 export type RequestPasswordResetResult = NativeAuthStrategyError | Success;
 
@@ -3214,7 +3222,7 @@ export type UpdateOrderInput = {
   customFields?: InputMaybe<Scalars['JSON']['input']>;
 };
 
-export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderModificationError;
+export type UpdateOrderItemsResult = InsufficientStockError | NegativeQuantityError | Order | OrderLimitError | OrderMiddlewareError | OrderModificationError;
 
 export type User = Node & {
   authenticationMethods: Array<AuthenticationMethod>;
@@ -3267,7 +3275,7 @@ export type AddItemToOrderMutationVariables = Exact<{
 }>;
 
 
-export type AddItemToOrderMutation = { addItemToOrder: { errorCode: ErrorCode, message: string, quantityAvailable: number, order: { id: string, code: string, state: string, active: boolean, total: number, totalWithTax: number, currencyCode: CurrencyCode, lines: Array<{ id: string, quantity: number, unitPrice: number, unitPriceWithTax: number, linePrice: number, linePriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> } } | { errorCode: ErrorCode, message: string } | { id: string, code: string, state: string, active: boolean, total: number, totalWithTax: number, currencyCode: CurrencyCode, lines: Array<{ id: string, quantity: number, unitPrice: number, unitPriceWithTax: number, linePrice: number, linePriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } };
+export type AddItemToOrderMutation = { addItemToOrder: { errorCode: ErrorCode, message: string, quantityAvailable: number, order: { id: string, code: string, state: string, active: boolean, total: number, totalWithTax: number, currencyCode: CurrencyCode, lines: Array<{ id: string, quantity: number, unitPrice: number, unitPriceWithTax: number, linePrice: number, linePriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> } } | { errorCode: ErrorCode, message: string } | { id: string, code: string, state: string, active: boolean, total: number, totalWithTax: number, currencyCode: CurrencyCode, lines: Array<{ id: string, quantity: number, unitPrice: number, unitPriceWithTax: number, linePrice: number, linePriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } };
 
 export type SearchProductsShopQueryVariables = Exact<{
   input: SearchInput;
@@ -3387,14 +3395,14 @@ export type AdjustItemQuantityMutationVariables = Exact<{
 }>;
 
 
-export type AdjustItemQuantityMutation = { adjustOrderLine: { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } };
+export type AdjustItemQuantityMutation = { adjustOrderLine: { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } };
 
 export type RemoveItemFromOrderMutationVariables = Exact<{
   orderLineId: Scalars['ID']['input'];
 }>;
 
 
-export type RemoveItemFromOrderMutation = { removeOrderLine: { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } };
+export type RemoveItemFromOrderMutation = { removeOrderLine: { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } };
 
 export type GetShippingMethodsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3520,7 +3528,7 @@ export type ApplyCouponCodeMutationVariables = Exact<{
 }>;
 
 
-export type ApplyCouponCodeMutation = { applyCouponCode: { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } };
+export type ApplyCouponCodeMutation = { applyCouponCode: { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } | { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } };
 
 export type RemoveCouponCodeMutationVariables = Exact<{
   couponCode: Scalars['String']['input'];
@@ -3532,7 +3540,7 @@ export type RemoveCouponCodeMutation = { removeCouponCode?: { id: string, code: 
 export type RemoveAllOrderLinesMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type RemoveAllOrderLinesMutation = { removeAllOrderLines: { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } };
+export type RemoveAllOrderLinesMutation = { removeAllOrderLines: { id: string, code: string, state: string, active: boolean, subTotal: number, subTotalWithTax: number, shipping: number, shippingWithTax: number, total: number, totalWithTax: number, currencyCode: CurrencyCode, couponCodes: Array<string>, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }>, lines: Array<{ id: string, quantity: number, linePrice: number, linePriceWithTax: number, unitPrice: number, unitPriceWithTax: number, unitPriceChangeSinceAdded: number, unitPriceWithTaxChangeSinceAdded: number, discountedUnitPriceWithTax: number, proratedUnitPriceWithTax: number, productVariant: { id: string }, discounts: Array<{ adjustmentSource: string, amount: number, amountWithTax: number, description: string, type: AdjustmentType }> }>, shippingLines: Array<{ priceWithTax: number, shippingMethod: { id: string, code: string, description: string } }>, customer?: { id: string, user?: { id: string, identifier: string } | null } | null, history: { items: Array<{ id: string, type: HistoryEntryType, data: any }> } } | { errorCode: ErrorCode, message: string } | { errorCode: ErrorCode, message: string } };
 
 export type GetEligiblePaymentMethodsQueryVariables = Exact<{ [key: string]: never; }>;
 

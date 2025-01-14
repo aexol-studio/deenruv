@@ -11,7 +11,7 @@ import path from 'path';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { TEST_SETUP_TIMEOUT_MS, testConfig } from '../../../e2e-common/test-config';
+import { TEST_SETUP_TIMEOUT_MS, testConfig } from '../../../e2e-common/test-config.js';
 import { ProductVariantPrice, ProductVariantPriceUpdateStrategy, RequestContext } from '../src/index';
 
 import * as Codegen from './graphql/generated-e2e-admin-types';
