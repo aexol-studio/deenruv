@@ -12,6 +12,7 @@ import {
   Label,
   Switch,
   apiClient,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -23,7 +24,6 @@ import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
 import { EntityCustomFields, Stack } from '@/components';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const PaymentMethodsDetailPage = () => {
   const { id } = useParams();
@@ -209,7 +209,7 @@ export const PaymentMethodsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
-                      value={currentTranslationValue?.name ?? undefined }
+                      value={currentTranslationValue?.name ?? undefined}
                       onChange={(e) => setTranslationField('name', e.target.value)}
                       required
                     />
@@ -217,20 +217,23 @@ export const PaymentMethodsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.code')}
-                      value={state.code?.value ?? undefined }
+                      value={state.code?.value ?? undefined}
                       onChange={(e) => setField('code', e.target.value)}
                       required
                     />
                   </Stack>
                   <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch checked={state.enabled?.value ?? undefined } onCheckedChange={(e) => setField('enabled', e)} />
+                    <Switch
+                      checked={state.enabled?.value ?? undefined}
+                      onCheckedChange={(e) => setField('enabled', e)}
+                    />
                     <Label>{t('details.basic.enabled')}</Label>
                   </Stack>
                 </Stack>
                 <Stack column className="basis-full">
                   <Label className="mb-2">{t('details.basic.description')}</Label>
                   <RichTextEditor
-                    content={currentTranslationValue?.description ?? undefined }
+                    content={currentTranslationValue?.description ?? undefined}
                     onContentChanged={(e) => setTranslationField('description', e)}
                   />
                 </Stack>
@@ -239,8 +242,8 @@ export const PaymentMethodsDetailPage = () => {
           </Card>
           {id && <EntityCustomFields entityName="paymentMethod" id={id} />}
           <OptionsCard
-            currentHandlerValue={state.handler?.value ?? undefined }
-            currentCheckerValue={state.checker?.value ?? undefined }
+            currentHandlerValue={state.handler?.value ?? undefined}
+            currentCheckerValue={state.checker?.value ?? undefined}
             onHandlerValueChange={(handler) => setField('handler', handler)}
             onCheckerValueChange={(checker) => setField('checker', checker)}
           />

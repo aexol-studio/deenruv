@@ -18,6 +18,7 @@ import {
   deepMerge,
   PaginationInput,
   useGFFLP,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields } from '@/components';
 import { ChevronLeft } from 'lucide-react';
@@ -27,7 +28,6 @@ import { DeletionResult, LanguageCode, SortOrder } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
-import { useRouteGuard } from '@/hooks/useRouteGuard.js';
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {

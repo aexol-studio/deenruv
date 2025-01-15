@@ -2,7 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input, apiClient } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  apiClient,
+  useRouteGuard,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -11,7 +20,6 @@ import { PageHeader } from '@/pages/admins/_components/PageHeader';
 import { AdminDetailsSelector, AdminDetailsType } from '@/graphql/admins';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 import { Stack } from '@/components';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const AdminsDetailPage = () => {
   const { id } = useParams();

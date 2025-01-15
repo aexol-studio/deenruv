@@ -26,9 +26,12 @@ export const ProductDetailSidebar = () => {
   return (
     <div className="flex w-full flex-col gap-4">
       <SettingsCard enabledValue={state.enabled?.value ?? undefined} onEnabledChange={(e) => setField('enabled', e)} />
-      <FacetValuesCard facetValuesIds={state.facetValueIds?.value ?? undefined} onChange={(e) => setField('facetValueIds', e)} />
-      {entity?.channels?.length && <ChannelsCard channels={entity.channels} />}
-      {entity?.collections?.length && <CollectionsCard collections={entity.collections} />}
+      <FacetValuesCard
+        facetValuesIds={state.facetValueIds?.value ?? undefined}
+        onChange={(e) => setField('facetValueIds', e)}
+      />
+      {!!entity?.channels?.length && <ChannelsCard channels={entity.channels} />}
+      {!!entity?.collections?.length && <CollectionsCard collections={entity.collections} />}
     </div>
   );
 };

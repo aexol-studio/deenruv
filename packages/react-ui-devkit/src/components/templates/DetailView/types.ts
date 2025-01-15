@@ -44,6 +44,7 @@ export interface StoreContextType<
     setSidebar: (sidebar: React.ReactNode) => void;
     setActiveTab: (tab: string) => void;
     getMarker: () => React.ReactNode;
+    hasUnsavedChanges: boolean;
 }
 
 export interface DetailViewProps<

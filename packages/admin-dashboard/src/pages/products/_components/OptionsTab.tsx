@@ -14,6 +14,7 @@ import {
   useDetailView,
   apiClient,
   useSettings,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
 
 import { toast } from 'sonner';
@@ -77,7 +78,7 @@ export const OptionsTab: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {id &&
+                  {id && optionGroups?.length ? (
                     optionGroups
                       ?.sort((a, b) => a.id.localeCompare(b.id))
                       ?.map((group) => (
@@ -88,7 +89,14 @@ export const OptionsTab: React.FC = () => {
                           onActionCompleted={fetchOptionGroups}
                           optionsUsedByVariants={optionsUsedByVariants}
                         />
-                      ))}
+                      ))
+                  ) : (
+                    <EmptyState
+                      columnsLength={2}
+                      title={t('optionsTab.emptyState.title')}
+                      description={t('optionsTab.emptyState.description')}
+                    />
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

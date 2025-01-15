@@ -1,14 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createContext, useContext } from 'react';
 import { DeletionResult, ModelTypes, ValueTypes } from '@deenruv/admin-types';
 
 import { type DetailKeys, DetailLocations, type ExternalDetailLocationSelector } from '@/types';
-import { DetailViewMarker } from '@/components';
+import { DetailViewMarker, checkUnsavedChanges } from '@/components';
 import { apiClient } from '@/zeus_client/deenruvAPICall';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { GraphQLError } from 'graphql';
 import type { EntityType, PropsType, StoreContextType } from './types';
+import { useRouteGuard } from '@/hooks';
 
 const handleError = (resp: { response: { errors: GraphQLError[] } }) => {
     const code = resp.response?.errors?.[0]?.extensions.code as string;
@@ -51,6 +52,7 @@ export const DetailViewStoreContext = createContext<
     setSidebar: () => {},
     setActiveTab: () => {},
     getMarker: () => null,
+    hasUnsavedChanges: false,
 });
 
 export const DetailViewStoreProvider = <
@@ -69,6 +71,13 @@ export const DetailViewStoreProvider = <
     const [error, setError] = useState('');
     const [tab, setTab] = useState(_tab);
     const [sidebar, _setSidebar] = useState(_sidebar);
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+    useRouteGuard({ shouldBlock: hasUnsavedChanges });
+
+    useEffect(() => {
+        const _hasUnsavedChanges = checkUnsavedChanges(form.base.state, entity);
+        setHasUnsavedChanges(_hasUnsavedChanges);
+    }, [form.base.state, entity]);
 
     const handleSuccess = useCallback(
         (resp: Record<string, unknown>) => {
@@ -88,7 +97,10 @@ export const DetailViewStoreProvider = <
             const listPath = location.pathname.replace(/\/[^/]+$/, '');
 
             if (mutationName.startsWith('create') || mutationName.startsWith('delete')) {
-                navigate(listPath);
+                setHasUnsavedChanges(false);
+                setTimeout(() => navigate(listPath));
+            } else {
+                fetchEntity();
             }
 
             toast.success(message, { closeButton: false });
@@ -166,6 +178,7 @@ export const DetailViewStoreProvider = <
                 setSidebar,
                 setActiveTab: setTab,
                 getMarker,
+                hasUnsavedChanges,
             }}
         >
             {children}

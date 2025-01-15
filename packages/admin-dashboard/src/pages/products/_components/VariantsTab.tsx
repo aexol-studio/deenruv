@@ -16,10 +16,12 @@ import { Stack } from '@/components';
 import { PlusCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+const NEW_VARIANT_TAB_VALUE = 'new';
+
 export const VariantsTab = () => {
   const contentLanguage = useSettings((p) => p.translationsLanguage);
   const { id, getMarker } = useDetailView('products-detail-view', 'CreateProductInput');
-
+  const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
   const { t } = useTranslation('products');
 
   const [variants, setVariants] = useState<ProductVariantType[]>();
@@ -52,9 +54,9 @@ export const VariantsTab = () => {
         </div>
       ) : (
         <Stack column className="items-end gap-4">
-          <Tabs defaultValue={variants?.[0]?.id} className="w-full">
+          <Tabs defaultValue={variants?.[0]?.id} className="w-full" onValueChange={setActiveTab}>
             <TabsList className="h-auto flex-wrap justify-start">
-              <TabsTrigger key={'new-variant'} value={'new'} className="text-blue-600">
+              <TabsTrigger key={'new-variant'} value={NEW_VARIANT_TAB_VALUE} className="text-blue-600">
                 <PlusCircle size={16} className="mr-2 translate-y-[1px]" />
                 {t('addVariantDialog.new')}
               </TabsTrigger>
@@ -64,7 +66,7 @@ export const VariantsTab = () => {
                 </TabsTrigger>
               ))}
             </TabsList>
-            <TabsContent value={'new'} key={'new-variant-content'}>
+            <TabsContent value={NEW_VARIANT_TAB_VALUE} key={'new-variant-content'}>
               {id && <Variant currentTranslationLng={contentLanguage} onActionCompleted={fetchData} productId={id} />}
             </TabsContent>
             {id && variants?.length ? (
@@ -80,7 +82,13 @@ export const VariantsTab = () => {
               ))
             ) : (
               <Stack className="w-full items-center justify-center">
-                <EmptyState columnsLength={1} title="Test" description="Test" />
+                {activeTab !== NEW_VARIANT_TAB_VALUE && (
+                  <EmptyState
+                    columnsLength={1}
+                    title={t('variantsTab.emptyState.title')}
+                    description={t('variantsTab.emptyState.description')}
+                  />
+                )}
               </Stack>
             )}
           </Tabs>

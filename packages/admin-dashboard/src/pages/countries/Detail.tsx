@@ -13,6 +13,7 @@ import {
   apiClient,
   Switch,
   useSettings,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP, setInArrayBy } from '@/lists/useGflp';
@@ -21,7 +22,6 @@ import { cache } from '@/lists/cache';
 import { CountryDetailsSelector, CountryDetailsType } from '@/graphql/countries';
 import { Stack } from '@/components';
 import { PageHeader } from '@/pages/countries/_components/PageHeader';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const CountriesDetailPage = () => {
   const { id } = useParams();
@@ -197,7 +197,7 @@ export const CountriesDetailPage = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
-                      value={currentTranslationValue?.name ?? undefined }
+                      value={currentTranslationValue?.name ?? undefined}
                       onChange={(e) => setTranslationField('name', e.target.value)}
                       errors={state.translations?.errors}
                       required

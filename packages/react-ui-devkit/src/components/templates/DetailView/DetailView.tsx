@@ -130,7 +130,8 @@ export const DetailView = <LOCATION extends DetailKeys>({
 };
 
 const DetailTabs = () => {
-    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar } = useDetailView();
+    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges } =
+        useDetailView();
 
     const [, setSearchParams] = useSearchParams();
     const { id } = useParams();
@@ -170,6 +171,7 @@ const DetailTabs = () => {
                             variant="action"
                             onClick={() => actionHandler('submit')}
                             className="ml-auto justify-self-end"
+                            disabled={!hasUnsavedChanges}
                         >
                             {id ? 'Edit' : 'Create'}
                         </Button>

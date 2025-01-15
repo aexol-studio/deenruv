@@ -14,6 +14,7 @@ import {
   Option,
   useServer,
   apiClient,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -22,7 +23,6 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/zones/_components/PageHeader';
 import { ZoneDetailsSelector, ZoneDetailsType } from '@/graphql/zones';
 import { Stack } from '@/components';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const ZonesDetailPage = () => {
   const { id } = useParams();

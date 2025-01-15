@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
-import { Badge } from 'lucide-react';
+import { Badge, Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 

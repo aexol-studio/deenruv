@@ -73,11 +73,10 @@ export const PromotionsDetailPage = () => {
             ],
             config: {},
             onSubmitted: (data) => {
-              if (!data.translations || !data.actions || !data.conditions || !data.enabled)
-                throw new Error('Fill required fields.');
+              if (!data.translations || !data.actions || !data.conditions) throw new Error('Fill required fields.');
               const sharedInput = {
                 translations: data.translations?.validatedValue,
-                enabled: data.enabled?.validatedValue,
+                enabled: data.enabled?.validatedValue || false,
                 actions: data.actions?.validatedValue,
                 conditions: data.conditions?.validatedValue?.map((el) => ({
                   ...el,

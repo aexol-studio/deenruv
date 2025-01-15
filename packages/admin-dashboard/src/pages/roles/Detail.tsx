@@ -14,6 +14,7 @@ import {
   Routes,
   DEFAULT_CHANNEL_CODE,
   apiClient,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -24,7 +25,6 @@ import { PageHeader } from '@/pages/roles/_components/PageHeader';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 import { Stack } from '@/components';
 import { Permission } from '@deenruv/admin-types';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 const DEFAULT_VALUES = {
   permissions: [Permission.Authenticated],
@@ -221,7 +221,7 @@ export const RolesDetailPage = () => {
                 <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
                   <Input
                     label={t('details.basic.description')}
-                    value={state.description?.value ?? undefined }
+                    value={state.description?.value ?? undefined}
                     onChange={(e) => setField('description', e.target.value)}
                     required
                   />
@@ -229,7 +229,7 @@ export const RolesDetailPage = () => {
                 <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
                   <Input
                     label={t('details.basic.code')}
-                    value={state.code?.value ?? undefined }
+                    value={state.code?.value ?? undefined}
                     onChange={(e) => setField('code', e.target.value)}
                     required
                   />
@@ -253,7 +253,7 @@ export const RolesDetailPage = () => {
             </CardHeader>
           </Card>
           <PermissionsCard
-            currentPermissions={state.permissions?.value ?? undefined }
+            currentPermissions={state.permissions?.value ?? undefined}
             onPermissionsChange={(e) => setField('permissions', e)}
           />
         </Stack>

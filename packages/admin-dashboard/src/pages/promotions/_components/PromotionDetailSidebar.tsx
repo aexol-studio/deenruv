@@ -12,7 +12,7 @@ export const PromotionDetailSidebar = () => {
   const { data } = id ? useQuery(PromotionQuery, { initialVariables: { id } }) : { data: undefined };
 
   useEffect(() => {
-    setField('enabled', data ? data.promotion!.enabled : true);
+    if (data) setField('enabled', data.promotion!.enabled);
   }, [data]);
 
   return (

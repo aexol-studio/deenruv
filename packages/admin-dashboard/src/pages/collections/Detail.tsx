@@ -12,6 +12,7 @@ import {
   Label,
   Switch,
   apiClient,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -25,7 +26,6 @@ import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { EntityCustomFields, Stack } from '@/components';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
@@ -251,7 +251,10 @@ export const CollectionsDetailPage = () => {
                     />
                   </Stack>
                   <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch checked={state.isPrivate?.value ?? undefined} onCheckedChange={(e) => setField('isPrivate', e)} />
+                    <Switch
+                      checked={state.isPrivate?.value ?? undefined}
+                      onCheckedChange={(e) => setField('isPrivate', e)}
+                    />
                     <Label>{t('details.basic.isPrivate')}</Label>
                   </Stack>
                 </Stack>

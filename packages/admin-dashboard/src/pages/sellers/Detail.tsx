@@ -2,7 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Routes, Card, CardContent, CardHeader, CardTitle, Input, apiClient } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  apiClient,
+  useRouteGuard,
+} from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { areObjectsEqual } from '@/utils/deepEqual';
@@ -10,7 +19,6 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/sellers/_components/PageHeader';
 import { SellerListSelector, SellerListType } from '@/graphql/sellers';
 import { Stack } from '@/components';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const SellersDetailPage = () => {
   const { id } = useParams();

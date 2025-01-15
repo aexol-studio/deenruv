@@ -15,6 +15,7 @@ import {
   apiClient,
   useSettings,
   fetchAndSetChannels,
+  useRouteGuard,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -25,7 +26,6 @@ import { ChannelDetailsSelector, ChannelDetailsType } from '@/graphql/channels';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { SimpleSelect, Stack } from '@/components';
-import { useRouteGuard } from '@/hooks/useRouteGuard';
 
 export const ChannelsDetailPage = () => {
   const { id } = useParams();
@@ -253,7 +253,7 @@ export const ChannelsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.code')}
-                      value={state.code?.value ?? undefined }
+                      value={state.code?.value ?? undefined}
                       onChange={(e) => setField('code', e.target.value)}
                       required
                     />
@@ -261,7 +261,7 @@ export const ChannelsDetailPage = () => {
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.token')}
-                      value={state.token?.value ?? undefined }
+                      value={state.token?.value ?? undefined}
                       onChange={(e) => setField('token', e.target.value)}
                       required
                     />
@@ -311,14 +311,14 @@ export const ChannelsDetailPage = () => {
             </CardHeader>
           </Card>
           <DefaultsCard
-            availableLanguages={state.availableLanguageCodes?.value ?? undefined }
-            availableCurrencies={state.availableCurrencyCodes?.value ?? undefined }
+            availableLanguages={state.availableLanguageCodes?.value ?? undefined}
+            availableCurrencies={state.availableCurrencyCodes?.value ?? undefined}
             onFieldChange={setField}
-            defaultLanguage={state.defaultLanguageCode?.value ?? undefined }
-            defaultCurrency={state.defaultCurrencyCode?.value ?? undefined }
-            defaultTaxZone={state.defaultTaxZoneId?.value ?? undefined }
-            defaultShippingZone={state.defaultShippingZoneId?.value ?? undefined }
-            includeTax={state.pricesIncludeTax?.value ?? undefined }
+            defaultLanguage={state.defaultLanguageCode?.value ?? undefined}
+            defaultCurrency={state.defaultCurrencyCode?.value ?? undefined}
+            defaultTaxZone={state.defaultTaxZoneId?.value ?? undefined}
+            defaultShippingZone={state.defaultShippingZoneId?.value ?? undefined}
+            includeTax={state.pricesIncludeTax?.value ?? undefined}
             onIncludeTaxChange={(e) => setField('pricesIncludeTax', e)}
           />
         </Stack>

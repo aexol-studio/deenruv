@@ -43,7 +43,17 @@
   "optionsTab": {
     "placeholder": "Type to add a new option value",
     "groupName": "Group name",
-    "values": "Option values"
+    "values": "Option values",
+    "emptyState": {
+      "title": "Nothing here",
+      "description": "There are no option groups yet. Use the button above to add some."
+    }
+  },
+  "variantsTab": {
+    "emptyState": {
+      "title": "Nothing here",
+      "description": "There are no variants yet. Use the button above to add some, providing that you already added some options. If not, create them in the Options tab first."
+    }
   },
   "table": {
     "featuredAsset": "Image",
