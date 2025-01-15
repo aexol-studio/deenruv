@@ -171,12 +171,6 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
-		chartMetric:{
-			input:"ChartMetricInput"
-		},
-		orderSummaryMetric:{
-			input:"OrderSummaryMetricInput"
-		},
 		metricSummary:{
 			input:"MetricSummaryInput"
 		}
@@ -1437,21 +1431,6 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
-	MetricRangeType: "enum" as const,
-	MetricIntervalType: "enum" as const,
-	ChartMetricType: "enum" as const,
-	BetterMetricRangeInput:{
-		start:"DateTime",
-		end:"DateTime"
-	},
-	OrderSummaryMetricInput:{
-		range:"BetterMetricRangeInput"
-	},
-	ChartMetricInput:{
-		range:"BetterMetricRangeInput",
-		interval:"MetricIntervalType",
-		types:"ChartMetricType"
-	},
 	MetricInterval: "enum" as const,
 	MetricType: "enum" as const,
 	MetricSummaryInput:{
@@ -1969,8 +1948,6 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
-		chartMetric:"ChartMetrics",
-		orderSummaryMetric:"OrderSummaryMetrics",
 		metricSummary:"MetricSummary"
 	},
 	Mutation:{
@@ -3008,6 +2985,11 @@ export const ReturnTypes: Record<string,any> = {
 		errorCode:"ErrorCode",
 		message:"String"
 	},
+	OrderMiddlewareError:{
+		errorCode:"ErrorCode",
+		message:"String",
+		middlewareError:"String"
+	},
 	JSON: `scalar.JSON` as const,
 	DateTime: `scalar.DateTime` as const,
 	Upload: `scalar.Upload` as const,
@@ -3133,6 +3115,7 @@ export const ReturnTypes: Record<string,any> = {
 		"...on OrderModificationError": "OrderModificationError",
 		"...on IneligibleShippingMethodError": "IneligibleShippingMethodError",
 		"...on NoActiveOrderError": "NoActiveOrderError",
+		"...on OrderMiddlewareError": "OrderMiddlewareError",
 		errorCode:"ErrorCode",
 		message:"String"
 	},
@@ -3201,11 +3184,13 @@ export const ReturnTypes: Record<string,any> = {
 		"...on OrderModificationError":"OrderModificationError",
 		"...on OrderLimitError":"OrderLimitError",
 		"...on NegativeQuantityError":"NegativeQuantityError",
-		"...on InsufficientStockError":"InsufficientStockError"
+		"...on InsufficientStockError":"InsufficientStockError",
+		"...on OrderMiddlewareError":"OrderMiddlewareError"
 	},
 	RemoveOrderItemsResult:{
 		"...on Order":"Order",
-		"...on OrderModificationError":"OrderModificationError"
+		"...on OrderModificationError":"OrderModificationError",
+		"...on OrderMiddlewareError":"OrderMiddlewareError"
 	},
 	SetOrderShippingMethodResult:{
 		"...on Order":"Order",
@@ -3217,7 +3202,8 @@ export const ReturnTypes: Record<string,any> = {
 		"...on Order":"Order",
 		"...on CouponCodeExpiredError":"CouponCodeExpiredError",
 		"...on CouponCodeInvalidError":"CouponCodeInvalidError",
-		"...on CouponCodeLimitError":"CouponCodeLimitError"
+		"...on CouponCodeLimitError":"CouponCodeLimitError",
+		"...on OrderMiddlewareError":"OrderMiddlewareError"
 	},
 	CustomField:{
 		"...on StringCustomFieldConfig": "StringCustomFieldConfig",
@@ -3849,36 +3835,6 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		members:"Region",
 		customFields:"JSON"
-	},
-	ChartDataType:{
-		type:"ChartMetricType",
-		title:"String",
-		entries:"ChartEntry"
-	},
-	ChartMetrics:{
-		data:"ChartDataType"
-	},
-	OrderSummaryMetrics:{
-		data:"OrderSummaryDataMetric"
-	},
-	OrderSummaryDataMetric:{
-		currencyCode:"CurrencyCode",
-		total:"Float",
-		totalWithTax:"Float",
-		orderCount:"Float",
-		averageOrderValue:"Float",
-		averageOrderValueWithTax:"Float",
-		productCount:"Float"
-	},
-	ChartEntryAdditionalData:{
-		id:"String",
-		name:"String",
-		quantity:"Float"
-	},
-	ChartEntry:{
-		intervalTick:"Int",
-		value:"Float",
-		additionalData:"ChartEntryAdditionalData"
 	},
 	MetricSummary:{
 		interval:"MetricInterval",

@@ -119,7 +119,7 @@ export const OrdersDetailPage = () => {
               updatedDraftOrderSelector,
             ],
           });
-          if (resp.addItemToDraftOrder.__typename !== 'Order') {
+          if (resp.addItemToDraftOrder.__typename !== 'Order' && 'message' in resp.addItemToDraftOrder) {
             toast.error(t('createCopyLineFail', { value: resp.addItemToDraftOrder.message }));
           }
         }
