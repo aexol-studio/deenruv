@@ -11,7 +11,6 @@ export const useRouteGuard = ({ shouldBlock }: UseRouteGuardProps) => {
   const location = useLocation();
 
   useBlocker((blocker) => {
-    console.log('B', shouldBlock, confirmed);
     if (shouldBlock && !confirmed) {
       setModalState(true, blocker.nextLocation.pathname);
       return true;

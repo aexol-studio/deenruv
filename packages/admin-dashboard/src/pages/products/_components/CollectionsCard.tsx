@@ -1,5 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
-import { Badge } from 'lucide-react';
+import { Badge, Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -21,7 +20,9 @@ export const CollectionsCard: React.FC<CollectionsCardProps> = ({ collections })
       <CardContent>
         <div className="flex flex-wrap gap-2">
           {collections.map((c) => (
-            <Badge key={c.slug}>{c.name}</Badge>
+            <Badge variant="secondary" key={c.slug}>
+              {c.name}
+            </Badge>
           ))}
         </div>
       </CardContent>

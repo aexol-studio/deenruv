@@ -33,6 +33,7 @@
   "otherOptions": "Other options",
   "isNew": "New",
   "isHidden": "Hidden",
+  "products": "Products",
   "forms": {
     "create": "Create Product",
     "update": "Update Product",
@@ -68,7 +69,10 @@
     "openMenu": "Open menu",
     "actions": "Actions",
     "copyId": "Copy product ID",
-    "delete": "Delete product"
+    "delete": "Delete product",
+    "allVariantsStock": "Stock of all variants",
+    "allocated": "allocated",
+    "stock": "Stock"
   },
   "deleteProductDialog": {
     "button": "Delete product",

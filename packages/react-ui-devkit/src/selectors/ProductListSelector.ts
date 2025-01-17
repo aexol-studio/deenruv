@@ -8,7 +8,7 @@ export const ProductListSelector = Selector('Product')({
     enabled: true,
     createdAt: true,
     collections: { __typename: true, name: true, slug: true },
-    variantList: [{}, { totalItems: true }],
+    variantList: [{}, { totalItems: true, items: { stockOnHand: true, stockAllocated: true } }],
     featuredAsset: { __typename: true, preview: true },
     // customFields: { discountBy: true }, // TODO: Add this field to the selector
 });

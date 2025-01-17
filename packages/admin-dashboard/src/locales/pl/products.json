@@ -2,23 +2,23 @@
     "add": "Dodaj produkt",
     "assets": "Aktywa",
     "baseInfoId": "Id: {{value}}",
-    "baseInfoCreated": "Stworzony: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
-    "facetPlaceholder": "Dodaj facety",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "facetPlaceholder": "Dodaj aspekty",
     "group": "Grupa",
     "image": "Obraz",
     "name": "Nazwa",
     "slug": "Ślimak",
     "product": "Produkt",
     "variants": "Warianty",
-    "enabled": "Włączony",
-    "facets": "Fasety",
+    "enabled": "Włączone",
+    "facets": "Aspekty",
     "collections": "Kolekcje",
     "channels": "Kanały",
     "options": "Opcje",
     "optionGroups": "Grupy opcji",
-    "editOptions": "Edytuj opcje",
-    "editOption": "Edytuj opcję",
+    "editOptions": "Edycja opcji",
+    "editOption": "Opcja edycji",
     "sku": "sku",
     "price": "cena",
     "tax_category": "kategoria podatkowa",
@@ -31,25 +31,36 @@
     "colors": "Kolory",
     "colorPalettes": "Palety kolorów",
     "otherOptions": "Inne opcje",
-    "isNew": "Nowy",
+    "isNew": "Nowość",
     "isHidden": "Ukryty",
+    "products": "Produkty",
     "forms": {
         "create": "Utwórz produkt",
-        "update": "Zaktualizuj produkt",
+        "update": "Aktualizuj produkt",
         "createVariant": "Utwórz wariant",
-        "updateVariant": "Wariant aktualizacji",
+        "updateVariant": "Aktualizacja wariantu",
         "removeVariant": "Usuń wariant"
     },
     "optionsTab": {
         "placeholder": "Wpisz, aby dodać nową wartość opcji",
         "groupName": "Nazwa grupy",
-        "values": "Wartości opcji"
+        "values": "Wartości opcji",
+        "emptyState": {
+            "title": "Nic tutaj",
+            "description": "Nie ma jeszcze grup opcji. Użyj przycisku powyżej, aby je dodać."
+        }
+    },
+    "variantsTab": {
+        "emptyState": {
+            "title": "Nic tutaj nie ma",
+            "description": "Nie ma jeszcze żadnych wariantów. Użyj przycisku powyżej, aby je dodać, pod warunkiem, że dodałeś już jakieś opcje. Jeśli nie, utwórz je najpierw w zakładce Opcje."
+        }
     },
     "table": {
         "featuredAsset": "Obraz",
         "id": "ID",
         "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano na",
+        "updatedAt": "Zaktualizowano w",
         "name": "Nazwa",
         "slug": "Ślimak",
         "variants": "# Liczba wariantów",
@@ -57,23 +68,26 @@
         "inValueCollections": "W kolekcjach {{value}}",
         "openMenu": "Otwórz menu",
         "actions": "Działania",
-        "copyId": "Skopiuj identyfikator produktu",
-        "delete": "Usuń produkt"
+        "copyId": "Kopiowanie identyfikatora produktu",
+        "delete": "Usuń produkt",
+        "allVariantsStock": "Zapasy wszystkich wariantów",
+        "allocated": "przydzielony",
+        "stock": "Akcje"
     },
     "deleteProductDialog": {
         "button": "Usuń produkt",
-        "title": "Jesteś pewien?",
+        "title": "Czy na pewno?",
         "description": "Produkt zostanie trwale usunięty.",
         "confirm": "Usuń produkt",
         "cancel": "Anuluj"
     },
     "columns": "Kolumny",
     "toasts": {
-        "deletionProductErrorToast": "Nie udało się usunąć produktu",
+        "deletionProductErrorToast": "Usunięcie produktu nie powiodło się",
         "deletionProductSuccessToast": "Produkt został pomyślnie usunięty",
         "updateProductErrorToast": "Nie udało się edytować produktu",
         "updateProductSuccessToast": "Produkt został pomyślnie zaktualizowany",
-        "createProductSuccessToast": "Produkt został pomyślnie utworzony",
+        "createProductSuccessToast": "Produkt utworzony pomyślnie",
         "createProductErrorToast": "Nie udało się utworzyć produktu",
         "fetchProductErrorToast": "Nie udało się pobrać produktu",
         "createProductVariantSuccessToast": "Wariant został utworzony",
@@ -82,8 +96,11 @@
         "updateProductVariantErrorToast": "Nie udało się zaktualizować wariantu",
         "deleteProductVariantSuccessToast": "Wariant został usunięty",
         "deleteProductVariantErrorToast": "Nie udało się usunąć wariantu",
-        "createOptionSuccessToast": "Opcja utworzona pomyślnie",
+        "createOptionSuccessToast": "Wariant utworzony pomyślnie",
+        "createOptionInUseToast": "Opcja jest używana przez niektóre warianty. Usuń je najpierw.",
         "createOptionErrorToast": "Nie udało się utworzyć opcji",
+        "deleteOptionSuccessToast": "Opcja usunięta pomyślnie",
+        "deleteOptionErrorToast": "Nie udało się usunąć opcji",
         "updateOptionSuccessToast": "Opcja została zaktualizowana",
         "updateOptionErrorToast": "Nie udało się zaktualizować opcji",
         "deletionOptionSuccessToast": "Grupa opcji została pomyślnie usunięta",
@@ -98,27 +115,27 @@
         "facetValues": "Wartość aspektu",
         "image": "Obraz",
         "price": "Cena",
-        "featuredAsset": "Wyróżniony zasób",
+        "featuredAsset": "Polecane aktywa",
         "otherAssets": "Inne aktywa",
-        "noFeaturedAsset": "Nie ustawiono",
+        "noFeaturedAsset": "Nie ustalono",
         "noAssets": "Nie ma jeszcze żadnych aktywów",
         "setAsFeatured": "Ustaw jako polecane",
         "removeAsset": "Usuń zasób",
-        "usedForColorsDesc": "Użyj tego atrybutu dla facetów, którzy mają kolory",
-        "colorsCollectionDesc": "Użyj tej opcji dla ścieżek produktu w KOLORZE (BLAT/CORPUS)",
+        "usedForColorsDesc": "Użyj tego atrybutu dla facetów, którzy są kolorami",
+        "colorsCollectionDesc": "Użyj tego dla ścieżek produktu w KOLORZE (BLAT/CORPUS)",
         "usedForProductCreationsDesc": "Użyj tego atrybutu podczas tworzenia kolekcji kolorów",
-        "valueDeleteSuccess": "Wartość aktywów została pomyślnie usunięta",
-        "valueDeleteFail": "Wystąpił błąd: ",
-        "taxRateDescription": "Obejmuje podatek w wysokości: ",
+        "valueDeleteSuccess": "Wartość zasobu została pomyślnie usunięta",
+        "valueDeleteFail": "Wystąpił błąd:",
+        "taxRateDescription": "Zawiera podatek w:",
         "stockLevels": "Poziomy zapasów",
-        "trackInventory": "Śledź zapasy",
-        "track": "Ścieżka",
+        "trackInventory": "Śledzenie stanów magazynowych",
+        "track": "Śledzenie",
         "notTrack": "Nie śledź",
-        "inherit": "Dziedzicz z ustawień globalnych",
+        "inherit": "Dziedziczenie z ustawień globalnych",
         "outThreshold": "Próg wyczerpania zapasów",
         "useGlobal": "Użyj wartości globalnej",
-        "defaultStock1": "Domyślna lokalizacja zapasów: Stan magazynowy",
-        "defaultStock2": "Domyślna lokalizacja zapasów: Przydzielone"
+        "defaultStock1": "Całkowity poziom zapasów",
+        "defaultStock2": "Całkowity poziom zapasów: Przydzielony"
     },
     "customFields": {
         "seo": {
@@ -129,14 +146,14 @@
         },
         "images": {
             "mainImage": "Główny obraz produktu",
-            "hoverImage": "Najedź kursorem na obraz produktu"
+            "hoverImage": "Obraz produktu po najechaniu kursorem"
         },
         "textCards": {
             "completionDate": "Data zakończenia",
             "delivery": "Dostawa",
             "payment": "Płatność",
             "materials": "Materiały",
-            "finish": "Zakończ",
+            "finish": "Wykończenie",
             "sizes": "Rozmiary"
         },
         "discountRating": {
@@ -157,7 +174,10 @@
         "name": "Nazwa",
         "sku": "SKU",
         "cancel": "Anuluj",
-        "add": "Dodaj",
-        "selectOption": "Wybierz opcję"
+        "add": "Dodaj wariant",
+        "new": "Nowy wariant",
+        "selectOption": "Wybierz opcję",
+        "createBasic": "Dane podstawowe",
+        "createOptions": "Opcje"
     }
 }

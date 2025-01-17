@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Circle, CircleCheck, PlusCircleIcon } from 'lucide-react';
+import { ArrowRight, Circle, CircleCheck, ImageOff, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer } from '@/state';
@@ -56,6 +56,10 @@ type FilterField<ENTITY extends keyof ModelTypes> = {
         | 'DateListOperators';
 };
 
+type RouteBase = { list: string; new: string; route: string; to: (id: string) => string };
+type RouteWithoutCreate = { edit: (id: string, parentId?: string) => void };
+type RouteWithCreate = RouteWithoutCreate & { create: () => void };
+
 export function DetailList<T extends PromisePaginated, ENTITY extends keyof ValueTypes>({
     fetch,
     route,
@@ -72,9 +76,6 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     noCreateButton,
 }: {
     fetch: T;
-    route:
-        | { list: string; new: string; route: string; to: (id: string) => string }
-        | { create: () => void; edit: (id: string) => void };
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
     type: keyof ListType;
     tableId: ListLocationID;
@@ -86,7 +87,16 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     filterFields?: FilterField<ENTITY>[];
     noPaddings?: boolean;
     noCreateButton?: boolean;
-}) {
+} & (
+    | {
+          noCreateButton: true;
+          route: RouteBase | RouteWithoutCreate;
+      }
+    | {
+          noCreateButton?: false;
+          route: RouteBase | RouteWithCreate;
+      }
+)) {
     const { t } = useTranslation('table');
     const getPriority = (key: string): number => {
         // TODO: Here we probably need to add a check for custom columns
@@ -215,6 +225,14 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                 cell: ({ row }) => {
                     const value = row.original[key];
 
+                    if (!value && (key.includes('asset') || key.includes('Asset'))) {
+                        return (
+                            <div className="flex h-16 w-16 flex-col items-center justify-center gap-2 bg-gray-200 p-3">
+                                <ImageOff size={24} className="text-gray-500" />
+                            </div>
+                        );
+                    }
+
                     if (!value) return JSON.stringify(value);
 
                     if (typeof value === 'boolean') {
@@ -253,7 +271,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                                 size="default"
                                 onClick={() => {
                                     if ('edit' in route) {
-                                        route.edit(row.original.id);
+                                        route.edit(
+                                            row.original.id,
+                                            'productId' in row.original ? row.original.productId : undefined,
+                                        );
                                     } else {
                                         navigate(route.to(row.original.id));
                                     }

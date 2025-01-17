@@ -5,11 +5,11 @@
         "placeholder": "wybierz języki"
     },
     "stock-threshold": {
-        "label": "Globalny próg braku w magazynie",
-        "description": "Określa poziom zapasów, przy którym wariant jest uznawany za wyprzedany. Użycie wartości ujemnej umożliwia wsparcie zamówień backorder. Wartość może zostać nadpisana przez warianty produktów."
+        "label": "Globalny próg wyczerpania zapasów",
+        "description": "Ustawia poziom zapasów, przy którym dany wariant jest uznawany za niedostępny. Użycie wartości ujemnej umożliwia obsługę zamówień zaległych. Może zostać zastąpione przez warianty produktu."
     },
     "track-inventory": {
         "label": "Domyślne śledzenie zapasów",
-        "description": "Jeśli śledzone, poziomy zapasów wariantów produktów będą automatycznie dostosowywane po sprzedaży."
+        "description": "W przypadku śledzenia, poziomy zapasów wariantów produktów będą automatycznie dostosowywane po sprzedaży"
     }
 }

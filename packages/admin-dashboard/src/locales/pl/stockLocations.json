@@ -1,40 +1,40 @@
 {
-  "create": "Utwórz lokalizację zapasów",
-  "edit": "Edytuj lokalizację zapasów",
-  "baseInfoCode": "Kod: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Stworzony: {{value}}",
-  "baseInfoUpdated": "Aktualizacja: {{value}}",
-  "table": {
-    "id": "Id",
-    "name": "Nazwa",
-    "description": "Opis",
-    "createdAt": "Utworzono na stronie",
-    "updatedAt": "Zaktualizowano na stronie",
-    "openMenu": "Otwórz menu",
-    "copyId": "Kopiuj identyfikator",
-    "viewStockLocation": "Wyświetl lokalizację zapasów",
-    "columns": "Kolumny"
-  },
-  "details": {
-    "basic": {
-      "title": "Podstawowe informacje",
-      "name": "Nazwa",
-      "description": "Opis"
+    "create": "Utwórz lokalizację zapasów",
+    "edit": "Edycja lokalizacji zapasów",
+    "baseInfoCode": "Kod: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "table": {
+        "id": "Id",
+        "name": "Nazwa",
+        "description": "Opis",
+        "createdAt": "Utworzono w",
+        "updatedAt": "Zaktualizowano w",
+        "openMenu": "Otwórz menu",
+        "copyId": "Kopiuj identyfikator",
+        "viewStockLocation": "Wyświetl lokalizację zapasów",
+        "columns": "Kolumny"
+    },
+    "details": {
+        "basic": {
+            "title": "Podstawowe informacje",
+            "name": "Nazwa",
+            "description": "Opis"
+        }
+    },
+    "toasts": {
+        "stockLocationLoadingError": "Nie udało się załadować lokalizacji magazynowej o identyfikatorze {{value}}",
+        "stockLocationUpdateSuccess": "Pomyślnie zaktualizowano lokalizację zapasów",
+        "stockLocationUpdateError": "Wystąpił błąd:",
+        "stockLocationCreatedSuccess": "Lokalizacja magazynowa została pomyślnie utworzona",
+        "stockLocationCreatedError": "Utworzenie lokalizacji magazynowej nie powiodło się",
+        "stockLocationDeleteSuccess": "Lokalizacja magazynowa została pomyślnie usunięta",
+        "stockLocationDeleteError": "Nie udało się usunąć lokalizacji magazynowej"
+    },
+    "deleteStockLocation": {
+        "title": "Usuń lokalizację magazynową",
+        "description": "Czy na pewno chcesz usunąć tę lokalizację magazynową?",
+        "successMessage": "Lokalizacja magazynowa została usunięta."
     }
-  },
-  "toasts": {
-    "stockLocationLoadingError": "Nie udało się załadować lokalizacji magazynowej o id {{value}}.",
-    "stockLocationUpdateSuccess": "Lokalizacja zapasów została pomyślnie zaktualizowana",
-    "stockLocationUpdateError": "Wystąpił błąd: ",
-    "stockLocationCreatedSuccess": "Lokalizacja zapasów została pomyślnie utworzona",
-    "stockLocationCreatedError": "Nie udało się utworzyć lokalizacji magazynowej",
-    "stockLocationDeleteSuccess": "Lokalizacja zapasów została pomyślnie usunięta",
-    "stockLocationDeleteError": "Usunięcie lokalizacji magazynowej nie powiodło się"
-  },
-  "deleteStockLocation": {
-    "title": "Usuń lokalizację zapasów",
-    "description": "Czy na pewno chcesz usunąć tę lokalizację magazynową?",
-    "successMessage": "Lokalizacja zapasów została usunięta."
-  }
 }

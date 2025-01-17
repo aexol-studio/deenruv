@@ -3,13 +3,13 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "requiredError": "Ta wartość jest wymagana",
     "table": {
         "id": "Id",
         "name": "Nazwa",
-        "createdAt": "Utworzono na stronie",
-        "updatedAt": "Zaktualizowano na stronie",
+        "createdAt": "Utworzono w",
+        "updatedAt": "Zaktualizowano w",
         "code": "Kod",
         "isPrivate": "Prywatny",
         "public": "Publiczny",
@@ -20,7 +20,7 @@
         "values": "Wartości",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
-        "viewFacet": "Zobacz aspekt",
+        "viewFacet": "Aspekt widoku",
         "columns": "Kolumny",
         "color": "Kolor",
         "new": "Nowy",
@@ -29,7 +29,7 @@
     "toasts": {
         "facetLoadingError": "Nie udało się załadować aspektu o id {{value}}",
         "facetUpdateSuccess": "Facet został pomyślnie zaktualizowany",
-        "facetUpdateError": "Wystąpił błąd: ",
+        "facetUpdateError": "Wystąpił błąd:",
         "facetCreatedSuccess": "Facet został utworzony pomyślnie"
     },
     "visibility": {
@@ -39,34 +39,32 @@
     "deleteFacet": {
         "title": "Usuń aspekt",
         "description": "Czy na pewno chcesz usunąć ten aspekt?",
-        "successMessage": "Facet został usunięty.",
-        "deleteOrCancel": "Usuń/Anuluj wybrane",
-        "confirm": "Usuń",
-        "cancel": "Anuluj"
+        "successMessage": "Aspekt został usunięty.",
+        "deleteOrCancel": "Usuń/Anuluj wybrane"
     },
-    "selectedValue": "{{from}} wierszy {{to}} wybranych wierszy",
+    "selectedValue": "wybrano {{from}} z {{to}} wierszy",
     "details": {
         "basicInfo": "Dane podstawowe",
         "customFields": "Pola niestandardowe",
         "facetValues": "Wartość aspektu",
-        "usedForColorsDesc": "Użyj tego atrybutu dla facetów, którzy mają kolory",
-        "colorsCollectionDesc": "Użyj tej opcji dla ścieżek produktu w KOLORZE (BLAT/CORPUS)",
+        "usedForColorsDesc": "Użyj tego atrybutu dla facetów, którzy są kolorami",
+        "colorsCollectionDesc": "Użyj tego dla ścieżek produktu w KOLORZE (BLAT/CORPUS)",
         "usedForProductCreationsDesc": "Użyj tego atrybutu podczas tworzenia kolekcji kolorów",
-        "valueDeleteSuccess": "Wartość aktywów została pomyślnie usunięta",
-        "valueDeleteFail": "Wystąpił błąd: "
+        "valueDeleteSuccess": "Wartość zasobu została pomyślnie usunięta",
+        "valueDeleteFail": "Wystąpił błąd:"
     },
     "addValueModal": {
         "button": "Dodaj wartość",
-        "editButton": "Zaktualizuj wartość",
+        "editButton": "Aktualizacja wartości",
         "title": "Dodaj wartość aspektu",
         "editTitle": "Edytuj wartość aspektu",
         "nameLabel": "Nazwa wartości aspektu",
         "codeLabel": "Kod wartości aspektu",
-        "isNew": "Nowy",
+        "isNew": "Nowość",
         "hidden": "Ukryty",
         "color": "Kolor",
-        "success": "Skuteczna wartość dodana aspektu",
-        "editSuccess": "Wartość aspektu została pomyślnie zaktualizowana",
+        "success": "Wartość dodana aspektu z powodzeniem",
+        "editSuccess": "Pomyślnie zaktualizowano wartość aspektu",
         "error": "Wystąpił błąd",
         "options": "Opcje",
         "image": "Obraz"

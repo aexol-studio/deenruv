@@ -1,48 +1,48 @@
 {
-  "create": "Utwórz kraj",
-  "edit": "Edytuj kraj",
-  "baseInfoCode": "Kod: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Stworzony: {{value}}",
-  "baseInfoUpdated": "Aktualizacja: {{value}}",
-  "defaultCountry": "Domyślny kraj",
-  "table": {
-    "id": "Id",
-    "code": "Kod",
-    "name": "Nazwa",
-    "enabled": "Włączony",
-    "createdAt": "Utworzono na stronie",
-    "updatedAt": "Zaktualizowano na stronie",
-    "openMenu": "Otwórz menu",
-    "copyId": "Kopiuj identyfikator",
-    "viewCountry": "Zobacz kraj",
-    "columns": "Kolumny"
-  },
-  "details": {
-    "basic": {
-      "title": "Podstawowe informacje",
-      "code": "Kod",
-      "name": "Nazwa",
-      "enabled": "Włączony"
-    }
-  },
-  "validation": {
-    "required": "Pole jest wymagane"
-  },
-  "toasts": {
-    "countryLoadingError": "Nie udało się załadować kraju o id {{value}}.",
-    "countryUpdateSuccess": "Kraj został pomyślnie zaktualizowany",
-    "countryUpdateError": "Wystąpił błąd: ",
-    "countryCreatedSuccess": "Kraj został pomyślnie utworzony",
-    "countryCreatedError": "Nie udało się stworzyć kraju",
-    "countryDeleteSuccess": "Kraj został pomyślnie usunięty",
-    "countryDeleteError": "Nie udało się usunąć kraju"
-  },
-  "deleteCountry": {
-    "title": "Usuń kraj",
-    "description": "Czy na pewno chcesz usunąć ten kraj?",
-    "successMessage": "Kraj został usunięty.",
-    "deleteOrCancel": "Usuń/Anuluj wybrane"
-  },
-  "selectedValue": "{{from}} z {{to}} wybranych wierszy"
+    "create": "Utwórz kraj",
+    "edit": "Edytuj kraj",
+    "baseInfoCode": "Kod: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "defaultCountry": "Domyślny kraj",
+    "table": {
+        "id": "Id",
+        "code": "Kod",
+        "name": "Nazwa",
+        "enabled": "Włączony",
+        "createdAt": "Utworzono w",
+        "updatedAt": "Zaktualizowano w",
+        "openMenu": "Otwórz menu",
+        "copyId": "Kopiuj identyfikator",
+        "viewCountry": "Wyświetl kraj",
+        "columns": "Kolumny"
+    },
+    "details": {
+        "basic": {
+            "title": "Podstawowe informacje",
+            "code": "Kod",
+            "name": "Nazwa",
+            "enabled": "Włączone"
+        }
+    },
+    "validation": {
+        "required": "Pole jest wymagane"
+    },
+    "toasts": {
+        "countryLoadingError": "Nie udało się załadować kraju o identyfikatorze {{value}}",
+        "countryUpdateSuccess": "Kraj został pomyślnie zaktualizowany",
+        "countryUpdateError": "Wystąpił błąd:",
+        "countryCreatedSuccess": "Kraj został utworzony pomyślnie",
+        "countryCreatedError": "Nie udało się utworzyć kraju",
+        "countryDeleteSuccess": "Pomyślnie usunięto kraj",
+        "countryDeleteError": "Nie udało się usunąć kraju"
+    },
+    "deleteCountry": {
+        "title": "Usuń kraj",
+        "description": "Czy na pewno chcesz usunąć ten kraj?",
+        "successMessage": "Kraj został usunięty.",
+        "deleteOrCancel": "Usuń/Anuluj wybrane"
+    },
+    "selectedValue": "wybrano {{from}} z {{to}} wierszy"
 }

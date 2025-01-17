@@ -1,45 +1,48 @@
 {
-  "create": "Utwórz stawkę podatku",
-  "edit": "Edytuj stawkę podatku",
-  "baseInfoCode": "Kod: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Stworzony: {{value}}",
-  "baseInfoUpdated": "Aktualizacja: {{value}}",
-  "table": {
-    "id": "Id",
-    "name": "Nazwa",
-    "enabled": "Włączony",
-    "taxCategory": "Kategoria podatkowa",
-    "zone": "Strefa",
-    "value": "Oceń",
-    "customerGroup": "Grupa klientów",
-    "createdAt": "Utworzono na stronie",
-    "updatedAt": "Zaktualizowano na stronie",
-    "openMenu": "Otwórz menu",
-    "copyId": "Kopiuj identyfikator",
-    "viewTaxRate": "Wyświetl stawkę podatku",
-    "columns": "Kolumny"
-  },
-  "details": {
-    "basic": {
-      "title": "Podstawowe informacje",
-      "name": "Nazwa",
-      "isDefault": "Domy��lnie"
+    "create": "Tworzenie stawki podatkowej",
+    "edit": "Edycja stawki podatkowej",
+    "baseInfoCode": "Kod: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "table": {
+        "id": "Id",
+        "name": "Nazwa",
+        "enabled": "Włączony",
+        "taxCategory": "Kategoria podatkowa",
+        "zone": "Strefa",
+        "value": "Stawka",
+        "customerGroup": "Grupa klientów",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano w",
+        "openMenu": "Otwórz menu",
+        "copyId": "Kopiuj identyfikator",
+        "viewTaxRate": "Wyświetl stawkę podatku",
+        "columns": "Kolumny"
+    },
+    "details": {
+        "basic": {
+            "title": "Podstawowe informacje",
+            "name": "Nazwa",
+            "enabled": "Włączony",
+            "taxCategory": "Kategoria podatkowa",
+            "zone": "Strefa",
+            "value": "Wartość"
+        }
+    },
+    "toasts": {
+        "taxRateLoadingError": "Nie udało się załadować stawki podatku o identyfikatorze {{value}}",
+        "taxRateUpdateSuccess": "Stawka podatku została pomyślnie zaktualizowana",
+        "taxRateUpdateError": "Wystąpił błąd:",
+        "taxRateCreatedSuccess": "Stawka podatku została utworzona pomyślnie",
+        "taxRateCreatedError": "Nie udało się utworzyć stawki podatku",
+        "taxRateDeleteSuccess": "Stawka podatku została pomyślnie usunięta",
+        "taxRateDeleteError": "Nie udało się usunąć stawki podatku"
+    },
+    "deleteTaxRate": {
+        "title": "Usuń stawkę podatku",
+        "description": "Czy na pewno chcesz usunąć tę stawkę podatku?",
+        "successMessage": "Stawka podatku została usunięta.",
+        "deleteOrCancel": "Usuń/Anuluj wybrane"
     }
-  },
-  "toasts": {
-    "taxRateLoadingError": "Nie udało się załadować stawki podatku o id {{value}}.",
-    "taxRateUpdateSuccess": "Stawka podatku została pomyślnie zaktualizowana",
-    "taxRateUpdateError": "Wystąpił błąd: ",
-    "taxRateCreatedSuccess": "Stawka podatku została utworzona pomyślnie",
-    "taxRateCreatedError": "Nie udało się utworzyć stawki podatkowej",
-    "taxRateDeleteSuccess": "Stawka podatku została pomyślnie usunięta",
-    "taxRateDeleteError": "Nie udało się usunąć stawki podatku"
-  },
-  "deleteTaxRate": {
-    "title": "Usuń stawkę podatku",
-    "description": "Czy na pewno chcesz usunąć tę stawkę podatku?",
-    "successMessage": "Stawka podatku została usunięta.",
-    "deleteOrCancel": "Usuń/Anuluj wybrane"
-  }
 }

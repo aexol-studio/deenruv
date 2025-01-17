@@ -15,6 +15,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Stack } from '@/components';
 import { PlusCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 
 const NEW_VARIANT_TAB_VALUE = 'new';
 
@@ -23,6 +24,19 @@ export const VariantsTab = () => {
   const { id, getMarker } = useDetailView('products-detail-view', 'CreateProductInput');
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
   const { t } = useTranslation('products');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.set('variantId', tab);
+    setSearchParams(updatedParams);
+  };
+
+  useEffect(() => {
+    const variantId = searchParams.get('variantId');
+    if (variantId) setActiveTab(variantId);
+  }, []);
 
   const [variants, setVariants] = useState<ProductVariantType[]>();
   const [loading, setLoading] = useState<boolean>();
@@ -54,7 +68,7 @@ export const VariantsTab = () => {
         </div>
       ) : (
         <Stack column className="items-end gap-4">
-          <Tabs defaultValue={variants?.[0]?.id} className="w-full" onValueChange={setActiveTab}>
+          <Tabs defaultValue={variants?.[0]?.id} className="w-full" value={activeTab} onValueChange={handleTabChange}>
             <TabsList className="h-auto flex-wrap justify-start">
               <TabsTrigger key={'new-variant'} value={NEW_VARIANT_TAB_VALUE} className="text-blue-600">
                 <PlusCircle size={16} className="mr-2 translate-y-[1px]" />

@@ -1,51 +1,49 @@
 {
-  "create": "Utwórz administratora",
-  "edit": "Edytuj administratora",
-  "baseInfoCode": "Kod: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Stworzony: {{value}}",
-  "baseInfoUpdated": "Aktualizacja: {{value}}",
-  "table": {
-    "id": "Id",
-    "name": "Nazwa",
-    "emailAddress": "Email",
-    "role": "Rola",
-    "createdAt": "Utworzono na stronie",
-    "updatedAt": "Zaktualizowano na stronie",
-    "openMenu": "Otwórz menu",
-    "copyId": "Kopiuj identyfikator",
-    "viewAdmin": "Wyświetl administratora",
-    "columns": "Kolumny"
-  },
-  "details": {
-    "basic": {
-      "title": "Podstawowe informacje",
-      "firstName": "Imię",
-      "lastName": "Nazwisko",
-      "emailAddress": "Adres e-mail",
-      "password": "Hasło"
+    "create": "Utwórz administratora",
+    "edit": "Edycja administratora",
+    "baseInfoCode": "Kod: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "table": {
+        "id": "Id",
+        "name": "Nazwa",
+        "emailAddress": "Email",
+        "role": "Rola",
+        "createdAt": "Utworzony w",
+        "updatedAt": "Zaktualizowano w",
+        "openMenu": "Otwórz menu",
+        "copyId": "Kopiuj identyfikator",
+        "viewAdmin": "Wyświetl administratora",
+        "columns": "Kolumny"
     },
-    "roles": {
-      "title": "Role",
-      "placeholder": "Dodaj role do użytkownika"
-    }
-  },
-  "toasts": {
-    "adminLoadingError": "Nie udało się załadować administratora o id {{value}}.",
-    "adminUpdateSuccess": "Administrator został pomyślnie zaktualizowany",
-    "adminUpdateError": "Wystąpił błąd: ",
-    "adminCreatedSuccess": "Administrator został pomyślnie utworzony",
-    "adminCreatedError": "Nie udało się utworzyć administratora",
-    "adminDeleteSuccess": "Administrator został pomyślnie usunięty",
-    "adminDeleteError": "Nie udało się usunąć administratora"
-  },
-  "deleteAdmin": {
-    "title": "Usuń administratora",
-    "description": "Czy na pewno chcesz usunąć tego administratora?",
-    "successMessage": "Administrator został usunięty.",
-    "deleteOrCancel": "Usuń/Anuluj wybrane",
-    "confirm": "Usuń",
-    "cancel": "Anuluj"
-  },
-  "selectedValue": "{{from}} z {{to}} wybranych wierszy"
+    "details": {
+        "basic": {
+            "title": "Podstawowe informacje",
+            "firstName": "Imię",
+            "lastName": "Nazwisko",
+            "emailAddress": "Adres e-mail",
+            "password": "Hasło"
+        },
+        "roles": {
+            "title": "Role",
+            "placeholder": "Dodawanie ról do użytkownika"
+        }
+    },
+    "toasts": {
+        "adminLoadingError": "Nie udało się załadować administratora o identyfikatorze {{value}}",
+        "adminUpdateSuccess": "Administrator został pomyślnie zaktualizowany",
+        "adminUpdateError": "Wystąpił błąd:",
+        "adminCreatedSuccess": "Administrator został pomyślnie utworzony",
+        "adminCreatedError": "Nie udało się utworzyć administratora",
+        "adminDeleteSuccess": "Administrator został pomyślnie usunięty",
+        "adminDeleteError": "Nie udało się usunąć administratora"
+    },
+    "deleteAdmin": {
+        "title": "Usuń administratora",
+        "description": "Czy na pewno chcesz usunąć tego administratora?",
+        "successMessage": "Administrator został usunięty.",
+        "deleteOrCancel": "Usuń/Anuluj wybrane"
+    },
+    "selectedValue": "wybrano {{from}} z {{to}} wierszy"
 }

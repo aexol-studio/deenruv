@@ -1,94 +1,94 @@
 {
-  "GlobalSettings": {
-    "title": "Ustawienia globalne",
-    "description": "Przyznaje uprawnienia do GlobalSettings"
-  },
-  "Catalog": {
-    "title": "Katalog",
-    "description": "Przyznaje uprawnienia do produktów, aspektów, zasobów, kolekcji"
-  },
-  "Settings": {
-    "title": "Ustawienia",
-    "description": "Przyznaje uprawnienia do PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings"
-  },
-  "Administrator": {
-    "title": "Administrator",
-    "description": "Przyznaje uprawnienia administratorowi"
-  },
-  "Asset": {
-    "title": "Aktywa",
-    "description": "Przyznaje uprawnienia do zasobu"
-  },
-  "Channel": {
-    "title": "Kanał",
-    "description": "Przyznaje uprawnienia na kanale"
-  },
-  "Collection": {
-    "title": "Kolekcja",
-    "description": "Przyznaje uprawnienia do kolekcji"
-  },
-  "Country": {
-    "title": "Kraj",
-    "description": "Przyznaje uprawnienia na kraj"
-  },
-  "Customer": {
-    "title": "Klient",
-    "description": "Przyznaje uprawnienia dla klienta"
-  },
-  "CustomerGroup": {
-    "title": "CustomerGroup",
-    "description": "Przyznaje uprawnienia do CustomerGroup"
-  },
-  "Facet": {
-    "title": "Facet",
-    "description": "Przyznaje uprawnienia do Facet"
-  },
-  "Order": {
-    "title": "Zamówienie",
-    "description": "Przyznaje uprawnienia na Zamówienie"
-  },
-  "PaymentMethod": {
-    "title": "PaymentMethod",
-    "description": "Przyznaje uprawnienia do PaymentMethod"
-  },
-  "Product": {
-    "title": "Produkt",
-    "description": "Przyznaje uprawnienia do produktu"
-  },
-  "Promotion": {
-    "title": "Promocja",
-    "description": "Zezwolenia na dotacje na promocję"
-  },
-  "ShippingMethod": {
-    "title": "ShippingMethod",
-    "description": "Przyznaje uprawnienia do ShippingMethod"
-  },
-  "Tag": {
-    "title": "Tag",
-    "description": "Przyznaje uprawnienia do tagu"
-  },
-  "TaxCategory": {
-    "title": "TaxCategory",
-    "description": "Przyznaje uprawnienia do TaxCategory"
-  },
-  "TaxRate": {
-    "title": "TaxRate",
-    "description": "Przyznaje uprawnienia na TaxRate"
-  },
-  "Seller": {
-    "title": "Sprzedawca",
-    "description": "Udziela uprawnień na Sprzedającego"
-  },
-  "StockLocation": {
-    "title": "StockLocation",
-    "description": "Przyznaje uprawnienia do StockLocation"
-  },
-  "System": {
-    "title": "System",
-    "description": "Przyznaje uprawnienia w systemie"
-  },
-  "Zone": {
-    "title": "Strefa",
-    "description": "Przyznaje uprawnienia w strefie"
-  }
+    "GlobalSettings": {
+        "title": "Ustawienia globalne",
+        "description": "Przyznaje uprawnienia do GlobalSettings"
+    },
+    "Catalog": {
+        "title": "Katalog",
+        "description": "Przyznaje uprawnienia do produktów, aspektów, zasobów, kolekcji"
+    },
+    "Settings": {
+        "title": "Ustawienia",
+        "description": "Przyznaje uprawnienia do PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System i GlobalSettings"
+    },
+    "Administrator": {
+        "title": "Administrator",
+        "description": "Przyznaje uprawnienia administratorowi"
+    },
+    "Asset": {
+        "title": "Zasoby",
+        "description": "Przyznaje uprawnienia do zasobu"
+    },
+    "Channel": {
+        "title": "Kanał",
+        "description": "Przyznaje uprawnienia do kanału"
+    },
+    "Collection": {
+        "title": "Kolekcja",
+        "description": "Przyznaje uprawnienia do kolekcji"
+    },
+    "Country": {
+        "title": "Kraj",
+        "description": "Przyznaje uprawnienia na kraj"
+    },
+    "Customer": {
+        "title": "Klient",
+        "description": "Przyznaje uprawnienia do klienta"
+    },
+    "CustomerGroup": {
+        "title": "CustomerGroup",
+        "description": "Przyznaje uprawnienia do grupy CustomerGroup"
+    },
+    "Facet": {
+        "title": "Facet",
+        "description": "Przyznaje uprawnienia do Facet"
+    },
+    "Order": {
+        "title": "Zamówienie",
+        "description": "Przyznaje uprawnienia do zamówienia"
+    },
+    "PaymentMethod": {
+        "title": "PaymentMethod",
+        "description": "Przyznaje uprawnienia do PaymentMethod"
+    },
+    "Product": {
+        "title": "Produkt",
+        "description": "Przyznaje uprawnienia do produktu"
+    },
+    "Promotion": {
+        "title": "Promocja",
+        "description": "Przyznawanie zezwoleń na promocję"
+    },
+    "ShippingMethod": {
+        "title": "ShippingMethod",
+        "description": "Przyznaje uprawnienia do ShippingMethod"
+    },
+    "Tag": {
+        "title": "Tag",
+        "description": "Przyznaje uprawnienia do tagu"
+    },
+    "TaxCategory": {
+        "title": "TaxCategory",
+        "description": "Przyznaje uprawnienia do TaxCategory"
+    },
+    "TaxRate": {
+        "title": "TaxRate",
+        "description": "Przyznaje uprawnienia na TaxRate"
+    },
+    "Seller": {
+        "title": "Sprzedawca",
+        "description": "Przyznaje uprawnienia Sprzedawcy"
+    },
+    "StockLocation": {
+        "title": "StockLocation",
+        "description": "Przyznaje uprawnienia do StockLocation"
+    },
+    "System": {
+        "title": "System",
+        "description": "Przyznaje uprawnienia do Systemu"
+    },
+    "Zone": {
+        "title": "Strefa",
+        "description": "Przyznaje uprawnienia do strefy"
+    }
 }

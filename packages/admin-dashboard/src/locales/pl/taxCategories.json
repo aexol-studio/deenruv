@@ -1,47 +1,42 @@
 {
-  "create": "Utwórz kategorię podatkową",
-  "edit": "Edytuj kategorię podatkową",
-  "baseInfoCode": "Kod: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Stworzony: {{value}}",
-  "baseInfoUpdated": "Aktualizacja: {{value}}",
-  "table": {
-    "id": "Id",
-    "name": "Nazwa",
-    "isDefault": "Jest domyślny",
-    "createdAt": "Utworzono na stronie",
-    "updatedAt": "Zaktualizowano na stronie",
-    "openMenu": "Otwórz menu",
-    "copyId": "Kopiuj identyfikator",
-    "viewTaxCategory": "Wyświetl kategorię podatkową",
-    "columns": "Kolumny"
-  },
-  "details": {
-    "basic": {
-      "title": "Podstawowe informacje",
-      "name": "Nazwa",
-      "enabled": "Włączony",
-      "taxCategory": "Kategoria podatkowa",
-      "zone": "Strefa",
-      "value": "Wartość"
+    "create": "Utwórz kategorię podatkową",
+    "edit": "Edycja kategorii podatkowej",
+    "baseInfoCode": "Kod: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Utworzono: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "table": {
+        "id": "Id",
+        "name": "Nazwa",
+        "isDefault": "Jest domyślna",
+        "createdAt": "Utworzony w",
+        "updatedAt": "Zaktualizowano w",
+        "openMenu": "Otwórz menu",
+        "copyId": "Kopiuj identyfikator",
+        "viewTaxCategory": "Wyświetl kategorię podatkową",
+        "columns": "Kolumny"
+    },
+    "details": {
+        "basic": {
+            "title": "Podstawowe informacje",
+            "name": "Nazwa",
+            "isDefault": "Domyślna"
+        }
+    },
+    "toasts": {
+        "taxCategoryLoadingError": "Nie udało się załadować kategorii podatkowej o identyfikatorze {{value}}",
+        "taxCategoryUpdateSuccess": "Kategoria podatkowa została pomyślnie zaktualizowana",
+        "taxCategoryUpdateError": "Wystąpił błąd:",
+        "taxCategoryCreatedSuccess": "Kategoria podatkowa została utworzona pomyślnie",
+        "taxCategoryCreatedError": "Nie udało się utworzyć kategorii podatkowej",
+        "taxCategoryDeleteSuccess": "Kategoria podatkowa została pomyślnie usunięta",
+        "taxCategoryDeleteError": "Nie udało się usunąć kategorii podatkowej. Prawdopodobnie jest ona w użyciu",
+        "taxCategoryDeleteAllError": "Niektóre kategorie podatkowe nie zostały usunięte. Prawdopodobnie są w użyciu"
+    },
+    "deleteTaxCategory": {
+        "title": "Usuń kategorię podatkową",
+        "description": "Czy na pewno chcesz usunąć tę kategorię podatkową?",
+        "successMessage": "Kategoria podatkowa została usunięta.",
+        "deleteOrCancel": "Usuń/Anuluj wybrane"
     }
-  },
-  "toasts": {
-    "taxCategoryLoadingError": "Nie udało się załadować kategorii podatkowej o id {{value}}.",
-    "taxCategoryUpdateSuccess": "Kategoria podatkowa została pomyślnie zaktualizowana",
-    "taxCategoryUpdateError": "Wystąpił błąd: ",
-    "taxCategoryCreatedSuccess": "Kategoria podatkowa została pomyślnie utworzona",
-    "taxCategoryCreatedError": "Nie udało się utworzyć kategorii podatkowej",
-    "taxCategoryDeleteSuccess": "Kategoria podatkowa została pomyślnie usunięta",
-    "taxCategoryDeleteError": "Nie udało się usunąć kategorii podatkowej. Prawdopodobnie jest używana",
-    "taxCategoryDeleteAllError": "Niektóre kategorie nie zostały usunięte. Prawdopodobnie są używane"
-  },
-  "deleteTaxCategory": {
-    "title": "Usuń kategorię podatkową",
-    "description": "Czy na pewno chcesz usunąć tę kategorię podatkową?",
-    "successMessage": "Kategoria podatkowa została usunięta.",
-    "deleteOrCancel": "Usuń/Anuluj wybrane",
-    "confirm": "Usuń",
-    "cancel": "Anuluj"
-  }
 }

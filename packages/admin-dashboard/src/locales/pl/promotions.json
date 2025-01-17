@@ -16,44 +16,44 @@
     "conditions": {
         "header": "Warunki",
         "add": "Dodaj nowy warunek",
-        "emptyState": "Brak warunków. Dodaj jakieś.",
+        "emptyState": "Nie ma jeszcze żadnych warunków. Dodaj trochę.",
         "codes": {
             "customer_group": "Klient jest członkiem określonej grupy",
             "minimum_order_amount": "Jeśli suma zamówienia jest większa niż X",
-            "at_least_n_with_facets": "Kup co najmniej X produktów z podanymi cechami",
+            "at_least_n_with_facets": "Kup co najmniej X produktów z podanymi aspektami",
             "contains_products": "Kup co najmniej X określonych produktów",
             "buy_x_get_y_free": "Kup X produktów, otrzymaj Y produktów za darmo"
         },
         "labels": {
             "amount": "Kwota",
-            "taxInclusive": "Z podatkiem",
+            "taxInclusive": "Łącznie z podatkiem",
             "minimum": "Minimum",
             "amountX": "Kwota X",
             "amountY": "Kwota Y",
             "Buy amountX of these variants": "Kup ilość X tych wariantów",
-            "Get amountY of these variants for free": "Otrzymaj ilość Y tych wariantów za darmo"
+            "Get amountY of these variants for free": "Zdobądź ilość Y tych wariantów za darmo"
         }
     },
     "actions": {
-        "header": "Akcje",
-        "add": "Dodaj nową akcję",
-        "emptyState": "Brak akcji. Dodaj jakieś.",
+        "header": "Działania",
+        "add": "Dodaj nowe działanie",
+        "emptyState": "Nie ma jeszcze żadnych działań. Dodaj jakieś.",
         "codes": {
             "free_shipping": "Darmowa wysyłka",
-            "order_fixed_discount": "Zniżka na zamówienie o stałą kwotę",
-            "order_percentage_discount": "Zniżka na zamówienie o X%",
-            "facet_based_discount": "Zniżka na produkty z tymi cechami o X%",
-            "products_percentage_discount": "Zniżka na określone produkty o X%",
+            "order_fixed_discount": "Rabat na zamówienie według ustalonej kwoty",
+            "order_percentage_discount": "Rabat na zamówienie o X%",
+            "facet_based_discount": "Rabat na produkty z tymi aspektami o X%",
+            "products_percentage_discount": "Rabat na określone produkty o X%",
             "buy_x_get_y_free": "Kup X produktów, otrzymaj Y produktów za darmo"
         },
         "labels": {
-            "discount": "Zniżka",
-            "taxInclusive": "Z podatkiem",
+            "discount": "Rabat",
+            "taxInclusive": "Z uwzględnieniem podatku",
             "minimum": "Minimum",
             "amountX": "Kwota X",
             "amountY": "Kwota Y",
             "Buy amountX of these variants": "Kup ilość X tych wariantów",
-            "Get amountY of these variants for free": "Otrzymaj ilość Y tych wariantów za darmo"
+            "Get amountY of these variants for free": "Uzyskaj ilość Y tych wariantów za darmo"
         }
     }
 }

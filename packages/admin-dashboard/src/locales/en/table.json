@@ -102,7 +102,10 @@
     "featuredAsset": "Asset",
     "name": "Name",
     "slug": "Slug",
-    "enabled": "Enabled"
+    "enabled": "Enabled",
+    "sku": "SKU",
+    "price": "Price",
+    "priceWithTax": "Price with tax"
   },
   "actionsMenu": {
     "title": "Actions",

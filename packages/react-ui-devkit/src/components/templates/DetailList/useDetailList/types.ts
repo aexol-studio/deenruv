@@ -22,7 +22,7 @@ type ActionDefinition<P> = {
 
 type RouteConfig =
     | { list: string; new: string; route: string; to: (id: string) => string }
-    | { create: () => void; edit: (id: string) => void };
+    | { create?: () => void; edit: (id: string, parentId?: string) => void };
 
 export type GenericListContextType<T> = {
     route: RouteConfig;
