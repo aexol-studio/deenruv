@@ -4,15 +4,15 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "defaultCountry": "Domyślny kraj",
     "table": {
         "id": "Id",
         "code": "Kod",
         "name": "Nazwa",
-        "enabled": "Włączony",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "enabled": "Włączone",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewCountry": "Wyświetl kraj",
@@ -21,9 +21,9 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "code": "Kod",
-            "name": "Nazwa",
-            "enabled": "Włączone"
+            "code": "Code",
+            "name": "Name",
+            "enabled": "Enabled"
         }
     },
     "validation": {
@@ -42,7 +42,7 @@
         "title": "Usuń kraj",
         "description": "Czy na pewno chcesz usunąć ten kraj?",
         "successMessage": "Kraj został usunięty.",
-        "deleteOrCancel": "Usuń/Anuluj wybrane"
+        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
     },
-    "selectedValue": "wybrano {{from}} z {{to}} wierszy"
+    "selectedValue": "{{from}} z {{to}} wybranych wierszy"
 }

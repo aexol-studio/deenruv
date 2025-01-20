@@ -16,7 +16,7 @@
         "description": "Przyznaje uprawnienia administratorowi"
     },
     "Asset": {
-        "title": "Zasoby",
+        "title": "Aktywa",
         "description": "Przyznaje uprawnienia do zasobu"
     },
     "Channel": {
@@ -28,7 +28,7 @@
         "description": "Przyznaje uprawnienia do kolekcji"
     },
     "Country": {
-        "title": "Kraj",
+        "title": "Country",
         "description": "Przyznaje uprawnienia na kraj"
     },
     "Customer": {

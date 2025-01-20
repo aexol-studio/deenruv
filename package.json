@@ -32,7 +32,8 @@
         "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules && pnpm -r exec rm -rf dist"
     },
     "devDependencies": {
-        "@aexol/dev-translate": "^0.0.3",
+        "@aexol/dev-translate": "^0.0.8",
+        "@aexol/vite-plugin-dev-translate": "^0.1.0",
         "@commitlint/cli": "^19.1.0",
         "@commitlint/config-conventional": "^19.1.0",
         "@deenruv/ts-node-register": "workspace:*",

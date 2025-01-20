@@ -4,34 +4,34 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "table": {
         "id": "Id",
         "name": "Nazwa",
         "code": "Kod",
         "modalTitle": "Tytuł modalny",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "columns": "Kolumny"
     },
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Nazwa",
+            "name": "Name",
             "description": "Opis",
-            "code": "Kod",
-            "enabled": "Włączony",
+            "code": "Code",
+            "enabled": "Włączone",
             "fulfillmentHandler": "Obsługa realizacji"
         },
         "modal": {
             "title": "Modalny",
-            "name": "Tytuł modalny",
+            "name": "Modal title",
             "description": "Opis modułu",
             "additionalDescription": "Modalny opis dodatkowy"
         },
         "options": {
             "title": "Narzędzie do sprawdzania kwalifikowalności wysyłki",
-            "checker": "Narzędzie do sprawdzania kwalifikowalności wysyłki"
+            "checker": "Shipping eligibility checker"
         },
         "calculator": {
             "title": "Kalkulator wysyłki",
@@ -39,10 +39,10 @@
         },
         "test": {
             "title": "Testowa metoda wysyłki",
-            "city": "Miasto",
-            "province": "Prowincja",
+            "city": "City",
+            "province": "Province",
             "postalCode": "Kod pocztowy",
-            "country": "Kraj",
+            "country": "Country",
             "button": "Test",
             "eligible": "Kwalifikujący się",
             "notEligible": "Nie kwalifikuje się"
@@ -52,7 +52,7 @@
             "product": "Produkt",
             "price": "Cena",
             "quantity": "Ilość",
-            "total": "Łącznie",
+            "total": "Razem",
             "noItems": "Dodaj produkty"
         }
     },

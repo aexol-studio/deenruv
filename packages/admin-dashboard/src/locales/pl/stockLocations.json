@@ -4,13 +4,13 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "table": {
         "id": "Id",
         "name": "Nazwa",
         "description": "Opis",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewStockLocation": "Wyświetl lokalizację zapasów",
@@ -19,8 +19,8 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Nazwa",
-            "description": "Opis"
+            "name": "Name",
+            "description": "Description"
         }
     },
     "toasts": {

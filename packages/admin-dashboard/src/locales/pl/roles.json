@@ -4,7 +4,7 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "defaultChannel": "Domyślny kanał",
     "table": {
         "id": "Id",
@@ -13,8 +13,8 @@
         "code": "Kod",
         "permissions": "Uprawnienia",
         "channels": "Kanały",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewRole": "Wyświetl rolę",
@@ -24,13 +24,13 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "description": "Nazwa",
-            "code": "Kod",
-            "channels": "Kanały",
+            "description": "Name",
+            "code": "Code",
+            "channels": "Channels",
             "channelsPlaceholder": "Dodaj kanał"
         },
         "permissions": {
-            "title": "Uprawnienia"
+            "title": "Permissions"
         }
     },
     "toasts": {
@@ -48,5 +48,5 @@
         "successMessage": "Rola została usunięta.",
         "deleteOrCancel": "Usuń/Anuluj zaznaczone"
     },
-    "selectedValue": "wybrano {{from}} z {{to}} wierszy"
+    "selectedValue": "{{from}} z {{to}} wybranych wierszy"
 }

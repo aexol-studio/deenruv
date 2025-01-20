@@ -4,14 +4,14 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "table": {
         "id": "Id",
         "name": "Nazwa",
-        "emailAddress": "Email",
+        "emailAddress": "E-mail",
         "role": "Rola",
-        "createdAt": "Utworzony w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewAdmin": "Wyświetl administratora",
@@ -43,7 +43,7 @@
         "title": "Usuń administratora",
         "description": "Czy na pewno chcesz usunąć tego administratora?",
         "successMessage": "Administrator został usunięty.",
-        "deleteOrCancel": "Usuń/Anuluj wybrane"
+        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
     },
-    "selectedValue": "wybrano {{from}} z {{to}} wierszy"
+    "selectedValue": "{{from}} z {{to}} wybranych wierszy"
 }

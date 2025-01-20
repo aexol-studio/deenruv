@@ -4,14 +4,14 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "defaultChannel": "Domyślny kanał",
     "table": {
         "id": "Id",
         "code": "Kod",
         "token": "Token",
-        "createdAt": "Utworzony w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewChannel": "Wyświetl kanał",
@@ -20,7 +20,7 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "code": "Kod",
+            "code": "Code",
             "token": "Token",
             "seller": "Sprzedawca",
             "languages": "Dostępne języki",
@@ -50,7 +50,7 @@
         "title": "Usuń kanał",
         "description": "Czy na pewno chcesz usunąć ten kanał?",
         "successMessage": "Kanał został usunięty.",
-        "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
+        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
     },
-    "selectedValue": "wybrano {{from}} z {{to}} wierszy"
+    "selectedValue": "{{from}} z {{to}} wybranych wierszy"
 }

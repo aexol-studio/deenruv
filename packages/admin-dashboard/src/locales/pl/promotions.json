@@ -1,6 +1,6 @@
 {
     "basicInfo": {
-        "header": "Podstawowe dane",
+        "header": "Dane podstawowe",
         "name": "Nazwa",
         "description": "Opis"
     },
@@ -26,12 +26,12 @@
         },
         "labels": {
             "amount": "Kwota",
-            "taxInclusive": "Łącznie z podatkiem",
+            "taxInclusive": "Z uwzględnieniem podatku",
             "minimum": "Minimum",
             "amountX": "Kwota X",
             "amountY": "Kwota Y",
             "Buy amountX of these variants": "Kup ilość X tych wariantów",
-            "Get amountY of these variants for free": "Zdobądź ilość Y tych wariantów za darmo"
+            "Get amountY of these variants for free": "Uzyskaj ilość Y tych wariantów za darmo"
         }
     },
     "actions": {
@@ -44,16 +44,16 @@
             "order_percentage_discount": "Rabat na zamówienie o X%",
             "facet_based_discount": "Rabat na produkty z tymi aspektami o X%",
             "products_percentage_discount": "Rabat na określone produkty o X%",
-            "buy_x_get_y_free": "Kup X produktów, otrzymaj Y produktów za darmo"
+            "buy_x_get_y_free": "Buy X products, get Y products free"
         },
         "labels": {
             "discount": "Rabat",
-            "taxInclusive": "Z uwzględnieniem podatku",
+            "taxInclusive": "Tax inclusive",
             "minimum": "Minimum",
-            "amountX": "Kwota X",
-            "amountY": "Kwota Y",
-            "Buy amountX of these variants": "Kup ilość X tych wariantów",
-            "Get amountY of these variants for free": "Uzyskaj ilość Y tych wariantów za darmo"
+            "amountX": "Amount X",
+            "amountY": "Amount Y",
+            "Buy amountX of these variants": "Buy amount X of these variants",
+            "Get amountY of these variants for free": "Get amount Y of these variants for free"
         }
     }
 }

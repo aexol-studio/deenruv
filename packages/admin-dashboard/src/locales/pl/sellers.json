@@ -4,12 +4,12 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "table": {
         "id": "Id",
         "name": "Nazwa",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewSeller": "Wyświetl sprzedawcę",
@@ -18,7 +18,7 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Nazwa",
+            "name": "Name",
             "memberPlaceholder": "Dodaj członka"
         }
     },

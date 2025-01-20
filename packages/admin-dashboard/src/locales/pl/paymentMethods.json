@@ -4,28 +4,28 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "table": {
         "id": "Id",
         "name": "Nazwa",
         "code": "Kod",
-        "enabled": "Włączony",
+        "enabled": "Włączone",
         "modalTitle": "Tytuł modalny",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "columns": "Kolumny"
     },
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Nazwa",
+            "name": "Name",
             "description": "Opis",
-            "code": "Kod",
-            "enabled": "Włączony"
+            "code": "Code",
+            "enabled": "Enabled"
         },
         "modal": {
             "title": "Modalny",
-            "name": "Tytuł modalny",
+            "name": "Modal title",
             "description": "Opis modułu",
             "additionalDescription": "Modalny opis dodatkowy"
         },
