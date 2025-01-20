@@ -18,7 +18,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, SellersSortOptions, sellersSortOptionsArray } from '@/lists/types';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { SellerListSelector, SellerListType } from '@/graphql/sellers';
 import { ActionsColumn } from '@/components/Columns';
@@ -156,6 +156,7 @@ export const SellersListPage = () => {
         setDeleteDialogOpened(true);
         setSellersToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteSeller,
     }),
   ];
 
@@ -234,6 +235,8 @@ export const SellersListPage = () => {
               setDeleteDialogOpened(true);
             }}
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createPermission={Permission.CreateSeller}
+            deletePermission={Permission.DeleteSeller}
           />
         </div>
 

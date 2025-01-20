@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { AdminsSortOptions, ParamFilterFieldTuple, adminsSortOptionsArray } from '@/lists/types';
 import { AdminListSelector, AdminListType } from '@/graphql/admins';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ActionsColumn } from '@/components/Columns';
 
 const getAdmins = async (options: ResolverInputTypes['AdministratorListOptions']) => {
@@ -192,6 +192,7 @@ export const AdminsListPage = () => {
         setDeleteDialogOpened(true);
         setAdminsToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteAdministrator,
     }),
   ];
 
@@ -270,6 +271,8 @@ export const AdminsListPage = () => {
               setDeleteDialogOpened(true);
             }}
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createPermission={Permission.CreateAdministrator}
+            deletePermission={Permission.DeleteAdministrator}
           />
         </div>
 

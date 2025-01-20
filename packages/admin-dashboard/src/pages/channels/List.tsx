@@ -19,7 +19,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ChannelsSortOptions, ParamFilterFieldTuple, channelsSortOptionsArray } from '@/lists/types';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { ChannelListSelector, ChannelListType } from '@/graphql/channels';
 import { ActionsColumn } from '@/components/Columns';
 
@@ -166,6 +166,7 @@ export const ChannelsListPage = () => {
         setDeleteDialogOpened(true);
         setChannelsToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteChannel,
     }),
   ];
 
@@ -244,6 +245,8 @@ export const ChannelsListPage = () => {
               setDeleteDialogOpened(true);
             }}
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createPermission={Permission.CreateChannel}
+            deletePermission={Permission.DeleteChannel}
           />
         </div>
 

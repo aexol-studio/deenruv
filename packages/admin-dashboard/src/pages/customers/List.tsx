@@ -1,4 +1,4 @@
-import { SortOrder } from '@deenruv/admin-types';
+import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
   Button,
   apiClient,
@@ -82,5 +82,7 @@ export const CustomersListPage = () => (
     tableId="customers-list-view"
     fetch={fetch}
     onRemove={onRemove}
+    createPermission={Permission.CreateCustomer}
+    deletePermission={Permission.DeleteCustomer}
   />
 );

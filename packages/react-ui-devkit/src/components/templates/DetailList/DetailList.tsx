@@ -17,7 +17,7 @@ import { ArrowRight, Circle, CircleCheck, ImageOff, PlusCircleIcon } from 'lucid
 import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer } from '@/state';
-import { ModelTypes, ValueTypes } from '@deenruv/admin-types';
+import { ModelTypes, Permission, ValueTypes } from '@deenruv/admin-types';
 import React from 'react';
 import { deepMerge, mergeSelectorWithCustomFields } from '@/utils';
 import { usePluginStore } from '@/plugins';
@@ -74,6 +74,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     filterFields,
     noPaddings,
     noCreateButton,
+    createPermission,
+    deletePermission,
 }: {
     fetch: T;
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
@@ -87,6 +89,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     filterFields?: FilterField<ENTITY>[];
     noPaddings?: boolean;
     noCreateButton?: boolean;
+    createPermission: Permission;
+    deletePermission: Permission;
 } & (
     | {
           noCreateButton: true;
@@ -98,6 +102,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
       }
 )) {
     const { t } = useTranslation('table');
+    const { userPermissions } = useServer();
+    const isPermittedToCreate = useMemo(() => userPermissions.includes(createPermission), [userPermissions]);
     const getPriority = (key: string): number => {
         // TODO: Here we probably need to add a check for custom columns
         // (or add a custom priority for them)
@@ -364,6 +370,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                 setItemsToDelete(items);
                 setDeleteDialogOpened(true);
             },
+            deletePermission,
         },
         state: {
             ...((columnsOrderState || []).filter(Boolean).length > 0 && {
@@ -443,12 +450,12 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             {Search}
                         </div>
                         <div className="flex">
-                            {!noCreateButton && (
+                            {!noCreateButton && isPermittedToCreate && (
                                 <Button
                                     className="flex items-center gap-2"
                                     onClick={() => {
                                         if ('create' in route) route.create();
-                                        else navigate(route.new);
+                                        else navigate((route as RouteBase).new);
                                     }}
                                 >
                                     <PlusCircleIcon size={16} />

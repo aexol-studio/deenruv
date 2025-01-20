@@ -4,7 +4,7 @@ import { CustomerDetailView } from '@/pages/customers/_components/CustomerDetail
 import { CustomerDetailSidebar } from '@/pages/customers/_components/CustomerDetailSidebar';
 import { OrdersTab } from '@/pages/customers/_components/OrdersTab';
 import { HistoryTab } from '@/pages/customers/_components/HistoryTab';
-import { $, scalars, typedGql } from '@deenruv/admin-types';
+import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 
 const CreateCustomerMutation = typedGql('mutation', { scalars })({
   createCustomer: [
@@ -96,6 +96,11 @@ export const CustomersDetailPage = () => {
               ]
             : []
         }
+        permissions={{
+          create: Permission.CreateCustomer,
+          edit: Permission.UpdateCustomer,
+          delete: Permission.DeleteCustomer,
+        }}
       />
     </div>
   );

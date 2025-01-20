@@ -19,7 +19,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, ZonesSortOptions, zonesSortOptionsArray } from '@/lists/types';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { ZoneListSelector, ZoneListType } from '@/graphql/zones';
 import { ActionsColumn } from '@/components/Columns';
@@ -167,6 +167,7 @@ export const ZonesListPage = () => {
         setDeleteDialogOpened(true);
         setZonesToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteZone,
     }),
   ];
 
@@ -225,7 +226,7 @@ export const ZonesListPage = () => {
   }, [zones]);
 
   return (
-    <Stack column className="gap-6">
+    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
       <div className="page-content-h flex w-full flex-col">
         <div className="mb-4 flex flex-wrap justify-between gap-4">
           <ListColumnDropdown table={table} t={t} />
@@ -245,6 +246,8 @@ export const ZonesListPage = () => {
               setZonesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);
             }}
+            createPermission={Permission.CreateZone}
+            deletePermission={Permission.DeleteZone}
           />
         </div>
 

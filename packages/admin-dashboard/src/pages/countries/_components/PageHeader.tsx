@@ -5,6 +5,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { CountryDetailsType } from '@/graphql/countries';
+import { CreateEditButton } from '@/components/CreateEditButton.js';
+import { Permission } from '@deenruv/admin-types';
 
 interface PageHeaderProps {
   country: CountryDetailsType | undefined;
@@ -29,9 +31,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ country, editMode, butto
             {editMode ? country?.name : t('create')}
           </h1>
         </div>
-        <Button className="ml-auto" variant={'action'} disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
-          {editMode ? t('edit') : t('create')}
-        </Button>
+        <CreateEditButton
+          createPermission={Permission.CreateCountry}
+          editPermission={Permission.UpdateCountry}
+          {...{ buttonDisabled, editMode, onCreate, onEdit }}
+        />
       </div>
       {editMode && country && (
         <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">

@@ -1,5 +1,5 @@
 import { useList } from '@/lists/useList';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, ChevronDown } from 'lucide-react';
@@ -188,6 +188,7 @@ export const CountriesListPage = () => {
         setDeleteDialogOpened(true);
         setCountriesToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteCountry,
     }),
   ];
 
@@ -290,6 +291,8 @@ export const CountriesListPage = () => {
               setCountriesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);
             }}
+            createPermission={Permission.CreateCountry}
+            deletePermission={Permission.DeleteCountry}
           />
         </div>
 

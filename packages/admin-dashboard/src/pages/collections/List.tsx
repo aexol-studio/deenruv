@@ -1,6 +1,6 @@
 import { CornerDownRight } from 'lucide-react';
 import { useList } from '@/lists/useList';
-import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { DeletionResult, Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import {
   ColumnDef,
@@ -60,6 +60,7 @@ import { CollectionsSortOptions, collectionsSortOptionsArray } from '@/lists/typ
 import { CollectionProductVariantsDrawer } from './_components/CollectionProductVariantsDrawer.js';
 import { SelectedCollectionsModalContent } from './_components/SelectedCollectionsModal.js';
 import { CollectionAction } from './consts.js';
+import { ActionsColumn } from '@/components/Columns/ActionsColumn.js';
 
 type ParamFilterFieldTuple = [CollectionsSortOptions, Record<string, string>];
 
@@ -389,7 +390,14 @@ export const CollectionsListPage = () => {
         </div>
       ),
     },
-
+    ActionsColumn({
+      viewRoute: Routes.collections.to,
+      onDelete: (row) => {
+        setDeleteDialogOpened(true);
+        setCollectionsToDelete([row.original]);
+      },
+      deletePermission: Permission.DeleteCollection,
+    }),
     {
       id: 'actions',
       enableHiding: false,
@@ -563,6 +571,8 @@ export const CollectionsListPage = () => {
                 setCollectionsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
                 setDeleteDialogOpened(true);
               }}
+              createPermission={Permission.CreateCollection}
+              deletePermission={Permission.DeleteCollection}
             />
           </div>
 

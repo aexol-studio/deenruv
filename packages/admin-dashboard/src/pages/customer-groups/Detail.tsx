@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { CustomerGroupsDetailView } from './_components/CustomerGroupsDetailView';
-import { typedGql, scalars, $, ModelTypes } from '@deenruv/admin-types';
+import { typedGql, scalars, $, ModelTypes, Permission } from '@deenruv/admin-types';
 import { useCallback } from 'react';
 
 type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
@@ -93,6 +93,11 @@ export const CustomerGroupsDetailPage = () => {
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: Permission.CreateCustomerGroup,
+          edit: Permission.UpdateCustomerGroup,
+          delete: Permission.DeleteCustomerGroup,
         }}
       />
     </div>

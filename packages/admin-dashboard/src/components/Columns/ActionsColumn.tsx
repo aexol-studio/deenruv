@@ -9,19 +9,26 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { Stack } from '../Stack';
+import { useMemo } from 'react';
+import { Permission } from '@deenruv/admin-types';
 
 interface ActionsColumnProps<T> {
   viewRoute: (id: string) => string;
   onDelete: (row: Row<T>) => void;
+  deletePermission: Permission;
 }
 
 export const ActionsColumn = <T extends { id: string }>({
   viewRoute,
   onDelete,
+  deletePermission,
 }: ActionsColumnProps<T>): ColumnDef<T> => {
   const { t } = useTranslation('common');
+  const { userPermissions } = useServer();
+  const isPermittedToDelete = useMemo(() => userPermissions.includes(deletePermission), [userPermissions]);
 
   return {
     id: 'actions',
@@ -44,14 +51,20 @@ export const ActionsColumn = <T extends { id: string }>({
                 {t('actionsMenu.view')}
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                onDelete(row);
-              }}
-            >
-              <div className=" text-red-400 hover:text-red-400 dark:hover:text-red-400">{t('actionsMenu.delete')}</div>
-            </DropdownMenuItem>
+            {isPermittedToDelete && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => {
+                    onDelete(row);
+                  }}
+                >
+                  <div className=" text-red-400 hover:text-red-400 dark:hover:text-red-400">
+                    {t('actionsMenu.delete')}
+                  </div>
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </Stack>

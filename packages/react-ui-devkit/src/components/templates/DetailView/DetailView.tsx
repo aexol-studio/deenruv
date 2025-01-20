@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { EllipsisVerticalIcon } from 'lucide-react';
-import { ModelTypes } from '@deenruv/admin-types';
+import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { cn } from '@/lib';
 import { usePluginStore } from '@/plugins';
 import { DetailKeys } from '@/types';
@@ -20,6 +20,8 @@ import {
     useDetailView,
 } from '@/components';
 import { GFFLPFormField, useGFFLP } from '@/hooks';
+import { useServer } from '@/state/server.js';
+import { useTranslation } from 'react-i18next';
 interface DetailViewFormProps<
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
@@ -63,6 +65,12 @@ export const createDeenruvForm = <
     onDeleted,
 });
 
+interface Permissions {
+    create: Permission;
+    delete: Permission;
+    edit: Permission;
+}
+
 interface DetailViewProps<LOCATION extends DetailKeys> {
     id?: string;
     locationId: LOCATION;
@@ -80,6 +88,7 @@ interface DetailViewProps<LOCATION extends DetailKeys> {
         hideSidebar?: boolean;
         sidebarReplacement?: React.ReactNode;
     }>;
+    permissions: Permissions;
 }
 
 export const DetailView = <LOCATION extends DetailKeys>({
@@ -87,6 +96,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
     locationId,
     main,
     defaultTabs = [],
+    permissions,
 }: DetailViewProps<LOCATION>) => {
     const [searchParams] = useSearchParams();
     const { getDetailViewTabs } = usePluginStore();
@@ -124,17 +134,32 @@ export const DetailView = <LOCATION extends DetailKeys>({
                 onDeleted: main.form.onDeleted,
             }}
         >
-            <DetailTabs />
+            <DetailTabs permissions={permissions} />
         </DetailViewStoreProvider>
     );
 };
 
-const DetailTabs = () => {
+const DetailTabs = ({ permissions }: { permissions: Permissions }) => {
+    const { t } = useTranslation('common');
     const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges } =
         useDetailView();
 
     const [, setSearchParams] = useSearchParams();
     const { id } = useParams();
+    const { userPermissions } = useServer();
+
+    const isPermittedToCreate = useMemo(
+        () => userPermissions.includes(permissions.create),
+        [userPermissions],
+    );
+    const isPermittedToUpdate = useMemo(() => userPermissions.includes(permissions.edit), [userPermissions]);
+    const isPermittedToDelete = useMemo(
+        () => userPermissions.includes(permissions.delete),
+        [userPermissions],
+    );
+
+    const showEditButton = id && isPermittedToUpdate;
+    const showCreateButton = !id && isPermittedToCreate;
 
     return (
         <Tabs
@@ -167,27 +192,42 @@ const DetailTabs = () => {
                         )}
                     </div>
                     <div className="flex items-center justify-end gap-2">
-                        <Button
-                            variant="action"
-                            onClick={() => actionHandler('submit')}
-                            className="ml-auto justify-self-end"
-                            disabled={!hasUnsavedChanges}
-                        >
-                            {id ? 'Edit' : 'Create'}
-                        </Button>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild {...(!id && { className: 'invisible' })}>
-                                <Button variant="secondary" size="icon">
-                                    <EllipsisVerticalIcon />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="z-[101] mr-4">
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => actionHandler('delete')}>
-                                    Delete
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        {showEditButton && (
+                            <Button
+                                variant="action"
+                                onClick={() => actionHandler('submit')}
+                                className="ml-auto justify-self-end"
+                                disabled={!hasUnsavedChanges}
+                            >
+                                {t('update')}
+                            </Button>
+                        )}
+
+                        {showCreateButton && (
+                            <Button
+                                variant="action"
+                                onClick={() => actionHandler('submit')}
+                                className="ml-auto justify-self-end"
+                                disabled={!hasUnsavedChanges}
+                            >
+                                {t('create')}
+                            </Button>
+                        )}
+                        {isPermittedToDelete && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild {...(!id && { className: 'invisible' })}>
+                                    <Button variant="secondary" size="icon">
+                                        <EllipsisVerticalIcon />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="z-[101] mr-4">
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={() => actionHandler('delete')}>
+                                        Delete
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )}
                     </div>
                 </div>
             </div>

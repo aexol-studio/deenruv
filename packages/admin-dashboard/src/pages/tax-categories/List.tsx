@@ -17,7 +17,7 @@ import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiCli
 import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { DeletionResult, Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { TaxCategoryListSelector, TaxCategoryListType } from '@/graphql/taxCategories';
 import { ParamFilterFieldTuple, TaxCategoriesSortOptions, taxCategoriesSortOptionsArray } from '@/lists/types';
@@ -169,6 +169,7 @@ export const TaxCategoriesListPage = () => {
         setDeleteDialogOpened(true);
         setTaxCategoriesToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteTaxCategory,
     }),
   ];
 
@@ -247,6 +248,8 @@ export const TaxCategoriesListPage = () => {
               setTaxCategoriesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);
             }}
+            createPermission={Permission.CreateTaxCategory}
+            deletePermission={Permission.DeleteTaxCategory}
           />
         </div>
 

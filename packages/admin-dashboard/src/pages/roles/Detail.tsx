@@ -127,7 +127,6 @@ export const RolesDetailPage = () => {
   }, [role]);
 
   const createRole = useCallback(() => {
-    setButtonDisabled(true);
     if (checkIfAllFieldsAreValid())
       apiClient('mutation')({
         createRole: [
@@ -145,8 +144,9 @@ export const RolesDetailPage = () => {
         ],
       })
         .then((resp) => {
+          setButtonDisabled(true);
           toast.message(t('toasts.roleCreatedSuccess'));
-          navigate(Routes.roles.to(resp.createRole.id));
+          setTimeout(() => navigate(Routes.roles.to(resp.createRole.id)));
         })
         .catch(() => toast.error(t('toasts.roleCreatedError')));
   }, [state, t, navigate]);

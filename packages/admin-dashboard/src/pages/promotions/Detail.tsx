@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
-import { $, scalars, typedGql } from '@deenruv/admin-types';
+import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { PromotionDetailView } from '@/pages/promotions/_components/PromotionDetailView';
 import { PromotionDetailSidebar } from '@/pages/promotions/_components/PromotionDetailSidebar';
 
@@ -105,6 +105,11 @@ export const PromotionsDetailPage = () => {
               else throw new Error('No id');
             },
           }),
+        }}
+        permissions={{
+          create: Permission.CreatePromotion,
+          edit: Permission.UpdatePromotion,
+          delete: Permission.DeletePromotion,
         }}
       />
     </div>

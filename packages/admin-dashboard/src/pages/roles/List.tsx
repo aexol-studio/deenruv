@@ -32,8 +32,9 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, RolesSortOptions, rolesSortOptionsArray } from '@/lists/types';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { RoleListSelector, RoleListType } from '@/graphql/roles';
+import { ActionsColumn } from '@/components/Columns/ActionsColumn.js';
 
 const getRoles = async (options: ResolverInputTypes['RoleListOptions']) => {
   const response = await apiClient('query')({
@@ -253,46 +254,14 @@ export const RolesListPage = () => {
         </Stack>
       ),
     },
-    {
-      id: 'actions',
-      enableHiding: false,
-      cell: ({ row }) =>
-        isDefaultRole(row) ? (
-          ''
-        ) : (
-          <Stack className="flex justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">{tCommon('actionsMenu.openMenu')}</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-                  {tCommon('actionsMenu.copyId')}
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to={Routes.roles.to(row.original.id)} className="text-primary-600">
-                    {tCommon('actionsMenu.view')}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={() => {
-                    setDeleteDialogOpened(true);
-                    setRolesToDelete([row.original]);
-                  }}
-                >
-                  <div className=" text-red-400 hover:text-red-400 dark:hover:text-red-400">
-                    {tCommon('actionsMenu.delete')}
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </Stack>
-        ),
-    },
+    ActionsColumn({
+      viewRoute: Routes.roles.to,
+      onDelete: (row) => {
+        setDeleteDialogOpened(true);
+        setRolesToDelete([row.original]);
+      },
+      deletePermission: Permission.DeleteAdministrator,
+    }),
   ];
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -370,6 +339,8 @@ export const RolesListPage = () => {
               setRolesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
               setDeleteDialogOpened(true);
             }}
+            createPermission={Permission.CreateAdministrator}
+            deletePermission={Permission.DeleteAdministrator}
           />
         </div>
 

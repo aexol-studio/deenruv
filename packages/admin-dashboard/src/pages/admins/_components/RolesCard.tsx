@@ -21,11 +21,11 @@ interface RolesCardProps {
 export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChange }) => {
   const { t } = useTranslation('admins');
   const [allRoles, setAllRoles] = useState<RoleType[]>([]);
+  console.log('IDS', adminRoleIds, allRoles);
 
   const currentPermissions = useMemo(() => {
     if (!allRoles.length) return;
-    const currentRolesPermissions = adminRoleIds?.map((id) => allRoles.find((r) => r.id === id)!.permissions);
-    return currentRolesPermissions?.flat();
+    return adminRoleIds?.flatMap((id) => allRoles.find((r) => r.id === id)?.permissions ?? []);
   }, [adminRoleIds, allRoles]);
 
   const fetchAllRoles = useCallback(() => {

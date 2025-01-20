@@ -4,7 +4,7 @@ import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
 import { createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
-import { $, scalars, typedGql } from '@deenruv/admin-types';
+import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 
 const EditProductMutation = typedGql('mutation', { scalars })({
   updateProduct: [
@@ -83,6 +83,11 @@ export const ProductsDetailPage = () => {
           { label: 'Options', name: 'options', component: <OptionsTab />, hideSidebar: true },
           { label: 'Variants', name: 'variants', component: <VariantsTab />, hideSidebar: true },
         ]}
+        permissions={{
+          create: Permission.CreateProduct,
+          edit: Permission.UpdateProduct,
+          delete: Permission.DeleteProduct,
+        }}
       />
     </div>
   );

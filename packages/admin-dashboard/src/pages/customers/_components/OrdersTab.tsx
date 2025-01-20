@@ -9,7 +9,7 @@ import {
   useDetailView,
   useSettings,
 } from '@deenruv/react-ui-devkit';
-import { SortOrder } from '@deenruv/admin-types';
+import { Permission, SortOrder } from '@deenruv/admin-types';
 
 const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 
@@ -69,6 +69,8 @@ export const OrdersTab: React.FC = () => {
       tableId="orders-list-view"
       fetch={fetch}
       noCreateButton
+      createPermission={Permission.CreateOrder}
+      deletePermission={Permission.DeleteOrder}
     />
   );
 };

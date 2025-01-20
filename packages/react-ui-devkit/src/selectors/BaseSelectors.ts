@@ -7,6 +7,7 @@ export const activeAdministratorSelector = Selector('Administrator')({
     lastName: true,
     user: {
         roles: {
+            permissions: true,
             channels: {
                 id: true,
                 code: true,

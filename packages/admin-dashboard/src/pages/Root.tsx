@@ -60,6 +60,7 @@ const getAllPaymentMethods = async () => {
 export const Root = () => {
   const { t } = useTranslation('common');
   const setActiveAdministrator = useServer((p) => p.setActiveAdministrator);
+  const setUserPermissions = useServer((p) => p.setUserPermissions);
   const setServerConfig = useServer((p) => p.setServerConfig);
   const setCountries = useServer((p) => p.setCountries);
   const setFulfillmentHandlers = useServer((p) => p.setFulfillmentHandlers);
@@ -78,7 +79,12 @@ export const Root = () => {
       if (!activeAdministratorResponse.activeAdministrator) {
         toast.error(t('setup.failedAdmin'));
       } else {
-        setActiveAdministrator(activeAdministratorResponse?.activeAdministrator);
+        setActiveAdministrator(activeAdministratorResponse.activeAdministrator);
+        setUserPermissions(
+          Array.from(
+            new Set(activeAdministratorResponse.activeAdministrator.user.roles.flatMap((role) => role.permissions)),
+          ),
+        );
 
         await fetchAndSetChannels();
 

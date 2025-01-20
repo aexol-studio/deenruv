@@ -17,7 +17,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, ShippingMethodsSortOptions, shippingMethodsSortOptionsArray } from '@/lists/types';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
 import { ShippingMethodListSelector, ShippingMethodListType } from '@/graphql/shippingMethods';
 import { ActionsColumn } from '@/components/Columns';
@@ -162,6 +162,7 @@ export const ShippingMethodsListPage = () => {
         setDeleteDialogOpened(true);
         setMethodsToDelete([row.original]);
       },
+      deletePermission: Permission.DeleteShippingMethod,
     }),
   ];
 
@@ -240,6 +241,8 @@ export const ShippingMethodsListPage = () => {
               setDeleteDialogOpened(true);
             }}
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createPermission={Permission.CreateShippingMethod}
+            deletePermission={Permission.DeleteShippingMethod}
           />
         </div>
 

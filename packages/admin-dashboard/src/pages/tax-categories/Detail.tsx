@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { TaxCategoryDetailView } from './_components/TaxCategoryDetailView';
-import { $, scalars, typedGql } from '@deenruv/admin-types';
+import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { useCallback } from 'react';
 
 const CreateTaxCategoryMutation = typedGql('mutation', { scalars })({
@@ -81,6 +81,11 @@ export const TaxCategoriesDetailPage = () => {
             },
             onDeleted: onDeleteHandler,
           }),
+        }}
+        permissions={{
+          create: Permission.CreateTaxCategory,
+          edit: Permission.UpdateTaxCategory,
+          delete: Permission.DeleteTaxCategory,
         }}
       />
     </div>

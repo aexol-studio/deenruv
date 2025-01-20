@@ -1,5 +1,5 @@
 import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
-import { SortOrder } from '@deenruv/admin-types';
+import { Permission, SortOrder } from '@deenruv/admin-types';
 import { StockLocationListSelector } from '@/graphql/stockLocations';
 
 const fetch = async <T, K>(
@@ -59,5 +59,7 @@ export const StockLocationsListPage = () => (
     tableId="stockLocations-list-view"
     fetch={fetch}
     onRemove={onRemove}
+    createPermission={Permission.CreateStockLocation}
+    deletePermission={Permission.DeleteStockLocation}
   />
 );

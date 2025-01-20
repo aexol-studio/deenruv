@@ -1,3 +1,4 @@
+import { Permission } from '@deenruv/admin-types';
 import { Table } from '@tanstack/react-table';
 
 type ActionResult = { success: string; error?: never } | { success?: never; error: string };
@@ -28,6 +29,7 @@ export type GenericListContextType<T> = {
     route: RouteConfig;
     onRemove: (items: T[]) => void;
     refetch: () => void;
+    deletePermission: Permission;
     hideColumns?: (keyof T)[];
     rowActions?: ActionDefinition<RowActionProps<T>>[];
     bulkActions?: ActionDefinition<BulkActionProps<T>>[];

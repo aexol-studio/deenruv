@@ -18,7 +18,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ParamFilterFieldTuple, PaymentMethodsSortOptions, paymentMethodsSortOptionsArray } from '@/lists/types';
-import { ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { Routes, Badge, Checkbox, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
 import { PaymentMethodListSelector, PaymentMethodListType } from '@/graphql/paymentMethods';
 import { ActionsColumn, BooleanCell } from '@/components/Columns';
@@ -188,6 +188,7 @@ export const PaymentMethodsListPage = () => {
         setDeleteDialogOpened(true);
         setMethodsToDelete([row.original]);
       },
+      deletePermission: Permission.DeletePaymentMethod,
     }),
   ];
 
@@ -266,6 +267,8 @@ export const PaymentMethodsListPage = () => {
               setDeleteDialogOpened(true);
             }}
             selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createPermission={Permission.CreatePaymentMethod}
+            deletePermission={Permission.DeletePaymentMethod}
           />
         </div>
 

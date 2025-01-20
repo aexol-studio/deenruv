@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   cn,
@@ -10,6 +10,8 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  useServer,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import {
   BarChart,
@@ -33,12 +35,14 @@ import {
   Cog,
   UsersRound,
 } from 'lucide-react';
+import { Permission } from '@deenruv/admin-types';
 
 type NavLink = {
   title: string;
   id: string;
   href: string;
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  requiredPermissions?: Permission[];
 };
 
 interface NavProps {
@@ -50,6 +54,7 @@ export function Navigation({ isCollapsed }: NavProps) {
   const { t: _pluginT } = useTranslation();
   const location = useLocation();
   const { navMenuData } = usePluginStore();
+  const { userPermissions } = useServer();
 
   const pluginT = (trans: string): string => {
     const split = trans.split('.');
@@ -70,39 +75,130 @@ export function Navigation({ isCollapsed }: NavProps) {
         id: 'shop-group',
         links: [
           { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link-dashboard', icon: BarChart },
-          { title: t('menu.assets'), href: Routes.assets.list, id: 'link-assets', icon: Images },
-          { title: t('menu.products'), href: Routes.products.list, id: 'link-products', icon: Barcode },
-          { title: t('menu.customers'), href: Routes.customers.list, id: 'link-customers', icon: UserRoundSearch },
+          {
+            title: t('menu.assets'),
+            href: Routes.assets.list,
+            id: 'link-assets',
+            icon: Images,
+            requiredPermissions: [Permission.ReadAsset, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.products'),
+            href: Routes.products.list,
+            id: 'link-products',
+            icon: Barcode,
+            requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.customers'),
+            href: Routes.customers.list,
+            id: 'link-customers',
+            icon: UserRoundSearch,
+            requiredPermissions: [Permission.ReadCustomer],
+          },
           {
             title: t('menu.customerGroups'),
             href: Routes.customerGroups.list,
             id: 'link-customerGroups',
             icon: UsersRound,
+            requiredPermissions: [Permission.ReadCustomerGroup],
           },
-          { title: t('menu.collections'), href: Routes.collections.list, id: 'link-collections', icon: Folder },
-          { title: t('menu.facets'), href: Routes.facets.list, id: 'link-facets', icon: Tag },
-          { title: t('menu.orders'), href: Routes.orders.list, id: 'link-orders', icon: ShoppingCart },
+          {
+            title: t('menu.collections'),
+            href: Routes.collections.list,
+            id: 'link-collections',
+            icon: Folder,
+            requiredPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.facets'),
+            href: Routes.facets.list,
+            id: 'link-facets',
+            icon: Tag,
+            requiredPermissions: [Permission.ReadFacet, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.orders'),
+            href: Routes.orders.list,
+            id: 'link-orders',
+            icon: ShoppingCart,
+            requiredPermissions: [Permission.ReadOrder],
+          },
         ],
       },
       {
         label: t('menuGroups.settings'),
         id: 'settings-group',
         links: [
-          { title: t('menu.channels'), href: Routes.channels.list, id: 'link-channels', icon: Globe2 },
-          { title: t('menu.zones'), href: Routes.zones.list, id: 'link-zones', icon: Globe },
-          { title: t('menu.countries'), href: Routes.countries.list, id: 'link-countries', icon: Flag },
-          { title: t('menu.taxCategories'), href: Routes.taxCategories.list, id: 'link-tax-categories', icon: Coins },
-          { title: t('menu.taxRates'), href: Routes.taxRates.list, id: 'link-tax-rates', icon: Percent },
-          { title: t('menu.globalSettings'), href: Routes.globalSettings, id: 'link-global-settings', icon: Cog },
+          {
+            title: t('menu.channels'),
+            href: Routes.channels.list,
+            id: 'link-channels',
+            icon: Globe2,
+            requiredPermissions: [Permission.ReadChannel],
+          },
+          {
+            title: t('menu.zones'),
+            href: Routes.zones.list,
+            id: 'link-zones',
+            icon: Globe,
+            requiredPermissions: [Permission.ReadZone],
+          },
+          {
+            title: t('menu.countries'),
+            href: Routes.countries.list,
+            id: 'link-countries',
+            icon: Flag,
+            requiredPermissions: [Permission.ReadCountry],
+          },
+          {
+            title: t('menu.taxCategories'),
+            href: Routes.taxCategories.list,
+            id: 'link-tax-categories',
+            icon: Coins,
+            requiredPermissions: [Permission.ReadTaxCategory],
+          },
+          {
+            title: t('menu.taxRates'),
+            href: Routes.taxRates.list,
+            id: 'link-tax-rates',
+            icon: Percent,
+            requiredPermissions: [Permission.ReadTaxRate],
+          },
+          {
+            title: t('menu.globalSettings'),
+            href: Routes.globalSettings,
+            id: 'link-global-settings',
+            icon: Cog,
+            requiredPermissions: [Permission.ReadSettings],
+          },
         ],
       },
       {
         label: t('menuGroups.users'),
         id: 'users-group',
         links: [
-          { title: t('menu.admins'), href: Routes.admins.list, id: 'link-admins', icon: UserCog },
-          { title: t('menu.roles'), href: Routes.roles.list, id: 'link-roles', icon: Users },
-          { title: t('menu.sellers'), href: Routes.sellers.list, id: 'link-sellers', icon: Store },
+          {
+            title: t('menu.admins'),
+            href: Routes.admins.list,
+            id: 'link-admins',
+            icon: UserCog,
+            requiredPermissions: [Permission.ReadAdministrator],
+          },
+          {
+            title: t('menu.roles'),
+            href: Routes.roles.list,
+            id: 'link-roles',
+            icon: Users,
+            requiredPermissions: [Permission.ReadAdministrator],
+          },
+          {
+            title: t('menu.sellers'),
+            href: Routes.sellers.list,
+            id: 'link-sellers',
+            icon: Store,
+            requiredPermissions: [Permission.ReadSeller],
+          },
         ],
       },
       {
@@ -121,14 +217,22 @@ export function Navigation({ isCollapsed }: NavProps) {
             href: Routes.paymentMethods.list,
             id: 'link-payment-methods',
             icon: CreditCard,
+            requiredPermissions: [Permission.ReadPaymentMethod],
           },
           {
             title: t('menu.shippingMethods'),
             href: Routes.shippingMethods.list,
             id: 'link-shipping-methods',
             icon: Truck,
+            requiredPermissions: [Permission.ReadShippingMethod],
           },
-          { title: t('menu.stock'), href: Routes.stockLocations.list, id: 'link-stock', icon: MapPin },
+          {
+            title: t('menu.stock'),
+            href: Routes.stockLocations.list,
+            id: 'link-stock',
+            icon: MapPin,
+            requiredPermissions: [Permission.ReadStockLocation],
+          },
         ],
       },
     ];
@@ -171,13 +275,24 @@ export function Navigation({ isCollapsed }: NavProps) {
     return navData;
   }, [navMenuData.groups, navMenuData.links, t]);
 
+  const permittedNavigationGroups = useMemo(() => {
+    return navigationGroups
+      .map((group) => ({
+        ...group,
+        links: group.links.filter((link) =>
+          link.requiredPermissions?.some((permission) => userPermissions.includes(permission)),
+        ),
+      }))
+      .filter((group) => group.links.length > 0);
+  }, [userPermissions, navigationGroups]);
+
   return (
     <div className="relative h-[calc(100vh-110px)] overflow-y-auto lg:h-[calc(100vh-120px)]">
       <div
         data-collapsed={isCollapsed}
         className="group flex h-[calc(100%-70px)] flex-col gap-4 py-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"
       >
-        {navigationGroups.map((group) => (
+        {permittedNavigationGroups.map((group) => (
           <React.Fragment key={group.id}>
             {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase">{group.label}</h4>}
             <nav

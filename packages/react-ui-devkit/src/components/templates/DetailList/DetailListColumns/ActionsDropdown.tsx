@@ -29,6 +29,8 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useServer } from '@/state';
+import { Permission } from '@deenruv/admin-types';
 
 export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunction): ColumnDef<T> => {
     return {
@@ -129,7 +131,14 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
         },
         cell: ({ table, row }) => {
             if (!table.options.meta) return null;
-            const { route, refetch, onRemove, rowActions } = table.options.meta;
+            const { route, refetch, onRemove, rowActions, deletePermission } = table.options.meta;
+
+            const { userPermissions } = useServer();
+            const isPermittedToDelete = useMemo(
+                () => userPermissions.includes(deletePermission),
+                [userPermissions],
+            );
+
             const { t } = useTranslation('table');
             return (
                 <div className="flex justify-end">
@@ -179,12 +188,16 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                                     ))}
                                 </>
                             )}
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => onRemove([row.original])}>
-                                <div className="text-red-400 hover:text-red-400 dark:hover:text-red-400">
-                                    {t('actionsMenu.delete')}
-                                </div>
-                            </DropdownMenuItem>
+                            {isPermittedToDelete && (
+                                <>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={() => onRemove([row.original])}>
+                                        <div className="text-red-400 hover:text-red-400 dark:hover:text-red-400">
+                                            {t('actionsMenu.delete')}
+                                        </div>
+                                    </DropdownMenuItem>
+                                </>
+                            )}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

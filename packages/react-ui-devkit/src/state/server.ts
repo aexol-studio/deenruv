@@ -6,6 +6,7 @@ import {
     CountryType,
     ConfigurableOperationDefinitionType,
 } from '@/selectors';
+import { Permission } from '@deenruv/admin-types';
 
 import { create } from 'zustand';
 
@@ -24,6 +25,7 @@ interface Server {
     fulfillmentHandlers: ConfigurableOperationDefinitionType[];
     serverConfig: ServerConfigType | undefined;
     activeAdministrator: ActiveAdministratorType | undefined;
+    userPermissions: Permission[];
     channels: ChannelType[];
     countries: CountryType[];
     isConnected: boolean;
@@ -35,6 +37,7 @@ interface Actions {
     setFulfillmentHandlers(fulfillmentHandlers: ConfigurableOperationDefinitionType[]): void;
     setServerConfig(serverConfig: ServerConfigType | undefined): void;
     setActiveAdministrator(activeAdministrator: ActiveAdministratorType | undefined): void;
+    setUserPermissions(permissions: Permission[]): void;
     setChannels(channels: ChannelType[]): void;
     setCountries(countries: CountryType[]): void;
     setIsConnected(isConnected: boolean): void;
@@ -50,6 +53,7 @@ export const useServer = create<Server & Actions>()(set => ({
     fulfillmentHandlers: [],
     isConnected: false,
     activeClients: [],
+    userPermissions: [],
     setServerConfig: serverConfig => set({ serverConfig }),
     setActiveAdministrator: activeAdministrator => set({ activeAdministrator }),
     setChannels: channels => set({ channels }),
@@ -58,4 +62,5 @@ export const useServer = create<Server & Actions>()(set => ({
     setActiveClients: activeClients => set({ activeClients }),
     setPaymentMethodsType: paymentMethodsType => set({ paymentMethodsType }),
     setFulfillmentHandlers: fulfillmentHandlers => set({ fulfillmentHandlers }),
+    setUserPermissions: userPermissions => set ({userPermissions})
 }));

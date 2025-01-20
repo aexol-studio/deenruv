@@ -24,7 +24,7 @@ import { EntityCustomFields } from '@/components';
 import { ChevronLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { AddFacetValueDialog } from './_components/AddFacetValueDialog.js';
-import { DeletionResult, LanguageCode, SortOrder } from '@deenruv/admin-types';
+import { DeletionResult, LanguageCode, Permission, SortOrder } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
@@ -344,6 +344,8 @@ export const FacetsDetailPage = () => {
                     tableId={'facet-values-list' as any}
                     type={'facetValues' as any}
                     noPaddings
+                    createPermission={Permission.CreateFacet}
+                    deletePermission={Permission.DeleteFacet}
                   />
                 </CardContent>
               </CardHeader>

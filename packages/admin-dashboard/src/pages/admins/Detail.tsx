@@ -75,7 +75,7 @@ export const AdminsDetailPage = () => {
   }, [admin]);
 
   const createAdmin = useCallback(() => {
-    setButtonDisabled(false);
+    setButtonDisabled(true);
     apiClient('mutation')({
       createAdministrator: [
         {

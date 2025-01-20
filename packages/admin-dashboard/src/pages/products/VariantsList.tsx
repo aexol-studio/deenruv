@@ -1,4 +1,4 @@
-import { SortOrder } from '@deenruv/admin-types';
+import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
   apiClient,
   Badge,
@@ -70,6 +70,8 @@ export const VariantsList = () => {
       tableId="productVariants-list-view"
       fetch={fetch}
       onRemove={onRemove}
+      createPermission={Permission.CreateProduct}
+      deletePermission={Permission.DeleteProduct}
       additionalColumns={[
         {
           id: 'stock',

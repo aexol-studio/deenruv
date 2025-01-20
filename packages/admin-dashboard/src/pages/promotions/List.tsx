@@ -1,4 +1,4 @@
-import { SortOrder } from '@deenruv/admin-types';
+import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
   apiClient,
   deepMerge,
@@ -53,5 +53,7 @@ export const PromotionsListPage = () => (
     fetch={fetch}
     onRemove={onRemove}
     detailLinkColumn="id"
+    createPermission={Permission.CreatePromotion}
+    deletePermission={Permission.DeletePromotion}
   />
 );

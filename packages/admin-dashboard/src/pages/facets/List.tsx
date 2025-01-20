@@ -1,6 +1,6 @@
 import { Stack } from '@/components/Stack';
 import { useList } from '@/lists/useList';
-import { DeletionResult, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
+import { DeletionResult, Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import {
   ColumnDef,
@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table';
 
 import { ChevronDown, MoreHorizontal, ArrowRight } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Badge,
   Button,
@@ -22,22 +22,22 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   Routes,
   SortButton,
   useLocalStorage,
   ListTable,
   apiClient,
+  useServer,
 } from '@deenruv/react-ui-devkit';
-import { DeleteDialog, Search } from '@/components';
-import { Link, NavLink, useSearchParams } from 'react-router-dom';
+import { DeleteDialog, ListButtons, Search } from '@/components';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { FacetsSortOptions, ParamFilterFieldTuple, facetsSortOptionsArray } from '@/lists/types';
 import { FacetListSelector, FacetListType } from '@/graphql/facets';
 import facetsJson from '@/locales/en/facets.json';
+import { ActionsColumn } from '@/components/Columns/ActionsColumn.js';
 
 const getFacets = async (options: ResolverInputTypes['FacetListOptions']) => {
   const response = await apiClient('query')({
@@ -228,39 +228,14 @@ export const FacetsListPage = () => {
     //   ),
     //   cell: ({ row }) => (row.original.customFields?.colorsCollection ? <Check size={16} /> : <X size={16} />),
     // },
-    {
-      id: 'actions',
-      enableHiding: false,
-      cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">{t('table.openMenu')}</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-              {t('table.copyId')}
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={Routes.facets.to(row.original.id)} className="text-primary-600">
-                {t('table.viewFacet')}
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                setDeleteDialogOpened(true);
-                setFacetsToDelete([row.original]);
-              }}
-            >
-              <div className=" text-red-400 hover:text-red-400 dark:hover:text-red-400">{t('deleteFacet.title')}</div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
-    },
+    ActionsColumn({
+      viewRoute: Routes.facets.to,
+      onDelete: (row) => {
+        setDeleteDialogOpened(true);
+        setFacetsToDelete([row.original]);
+      },
+      deletePermission: Permission.DeleteFacet,
+    }),
   ];
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -353,22 +328,17 @@ export const FacetsListPage = () => {
             removeFilterField={removeFilterField}
             setFilterLogicalOperator={setFilterLogicalOperator}
           />
-          <div className="flex gap-2">
-            {table.getFilteredSelectedRowModel().rows.map((i) => i.original).length ? (
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setFacetsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
-                  setDeleteDialogOpened(true);
-                }}
-              >
-                {t('deleteFacet.deleteOrCancel')}
-              </Button>
-            ) : null}
-            <Button>
-              <NavLink to={Routes.facets.new}>{t('createFacet')}</NavLink>
-            </Button>
-          </div>
+          <ListButtons
+            createLabel={t('create')}
+            createRoute={Routes.facets.new}
+            handleClick={() => {
+              setFacetsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
+              setDeleteDialogOpened(true);
+            }}
+            selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+            createPermission={Permission.CreateFacet}
+            deletePermission={Permission.DeleteFacet}
+          />
         </div>
 
         <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
