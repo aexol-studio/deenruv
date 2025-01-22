@@ -73,10 +73,6 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
     if (options) setCurrentFacetOptions(options);
   }, [facetValuesIds, allFacetsOptions]);
 
-  const onFacetsChange = useCallback((facetIds: string[]) => {
-    onChange(facetIds);
-  }, []);
-
   return (
     <Card>
       <CardHeader>
@@ -87,7 +83,7 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
           options={allFacetsOptions}
           value={currentFacetsOptions}
           placeholder={t('facetPlaceholder')}
-          onChange={(options) => onFacetsChange(options.map((o) => o.value))}
+          onChange={(options) => onChange(options.map((o) => o.value))}
           hideClearAllButton
         />
       </CardContent>

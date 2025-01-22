@@ -14,14 +14,16 @@ import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { CouponCodesCard } from '@/pages/orders/_components/CouponCodesCard.js';
 
 export const PromotionsList: React.FC = () => {
   const { order } = useOrder();
   const { t } = useTranslation('orders');
   if (!order) return null;
   return (
-    <div className="flex w-full items-center justify-between gap-8">
-      <Card className="w-full">
+    <div className="grid w-full grid-cols-6 gap-4">
+      <CouponCodesCard />
+      <Card className="col-span-2 h-full">
         <CardHeader>
           <CardTitle>Promotions</CardTitle>
           <CardDescription>Order promotions</CardDescription>
@@ -49,10 +51,10 @@ export const PromotionsList: React.FC = () => {
           </Table>
         </CardHeader>
       </Card>
-      <Card className="w-full">
+      <Card className="col-span-3 h-full">
         <CardHeader>
-          <CardTitle>Discounts</CardTitle>
-          <CardDescription>Order discounts</CardDescription>
+          <CardTitle>{t('discounts.title')}</CardTitle>
+          <CardDescription>{t('discounts.description')}</CardDescription>
           <Table>
             <TableHeader>
               <TableRow noHover>
@@ -76,7 +78,7 @@ export const PromotionsList: React.FC = () => {
                 ))
               ) : (
                 <TableRow noHover>
-                  <TableCell colSpan={4}>{t('taxSummary.noTaxSummary')}</TableCell>
+                  <TableCell colSpan={4}>{t('discounts.emptyState')}</TableCell>
                 </TableRow>
               )}
             </TableBody>

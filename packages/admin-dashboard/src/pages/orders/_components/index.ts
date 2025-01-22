@@ -16,3 +16,4 @@ export * from './ModifyAcceptModal.js';
 export * from './ChangesRegister.js';
 export * from './Payments.js';
 export * from './OrderLineActionModal/index.js';
+export * from './CouponCodesCard.js';

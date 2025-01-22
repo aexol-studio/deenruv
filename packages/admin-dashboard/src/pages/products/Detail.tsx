@@ -76,13 +76,20 @@ export const ProductsDetailPage = () => {
                     input: sharedInput,
                   });
             },
-            onDeleted: (id) => remove({ id }),
+            onDeleted: () => {
+              if (!id) return;
+              return remove({ id });
+            },
           }),
         }}
-        defaultTabs={[
-          { label: 'Options', name: 'options', component: <OptionsTab />, hideSidebar: true },
-          { label: 'Variants', name: 'variants', component: <VariantsTab />, hideSidebar: true },
-        ]}
+        defaultTabs={
+          id
+            ? [
+                { label: 'Options', name: 'options', component: <OptionsTab />, hideSidebar: true },
+                { label: 'Variants', name: 'variants', component: <VariantsTab />, hideSidebar: true },
+              ]
+            : []
+        }
         permissions={{
           create: Permission.CreateProduct,
           edit: Permission.UpdateProduct,

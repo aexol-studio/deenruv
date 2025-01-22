@@ -1,7 +1,8 @@
 {
     "update": "Aktualizacja",
+    "create": "Utwórz",
     "save": "Zapisywanie",
-    "remove": "Usuń",
+    "remove": "Usunąć",
     "upload": "Wgrywanie",
     "cancel": "Anuluj",
     "back": "Powrót",
@@ -13,7 +14,7 @@
         "title": "Potwierdź działanie",
         "description": "Czy na pewno chcesz wykonać tę czynność? To może być nieodwracalne",
         "confirmBtn": "Potwierdź",
-        "cancelBtn": "Anuluj"
+        "cancelBtn": "Cancel"
     },
     "emptyState": {
         "default": {
@@ -32,7 +33,7 @@
                 "text": "Nie ma jeszcze żadnych zamówień"
             },
             "filtered": {
-                "title": "Nic nie pasuje",
+                "title": "Nothing matches",
                 "text": "Nie ma zamówień pasujących do wyszukiwanych haseł"
             }
         },
@@ -42,8 +43,8 @@
                 "text": "Nie ma jeszcze żadnych wartości aspektów. Czy chciałbyś je dodać?"
             },
             "filtered": {
-                "title": "Nic nie pasuje",
-                "text": "Nie ma zamówień pasujących do wyszukiwanych haseł"
+                "title": "Nothing matches",
+                "text": "There are no orders that match your searching terms"
             }
         }
     },
@@ -105,7 +106,7 @@
     "partiallyShipped": "Częściowo wysłane",
     "partiallyFulfilled": "Częściowo zrealizowane",
     "partiallyDelivered": "Częściowo zrealizowane",
-    "delivered": "Dostarczono",
+    "delivered": "Dostarczone",
     "cancelled": "Anulowane",
     "modifying": "Modyfikacja",
     "inRealization": "W realizacji",
@@ -118,7 +119,7 @@
     "photoBy": "Zdjęcie autorstwa",
     "unsplash": "Unsplash",
     "poweredBy": "Powered by",
-    "logVendure": "Zaloguj się do Vendure",
+    "logVendure": "Log in into Vendure",
     "awesomeMenu": {
         "activeAdministratorsValue": "Aktywni administratorzy ({{value}})",
         "activeAdministrators": "Aktywni administratorzy",
@@ -167,62 +168,62 @@
             "placeholder": "Wyszukiwanie według nazwy"
         },
         "CollectionFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "FacetFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "OrderFilterParameter": {
             "placeholder": "Wyszukiwanie według nazwiska klienta / identyfikatora / kodu / identyfikatora transakcji"
         },
         "ProductFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "CountryFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "AdministratorFilterParameter": {
             "placeholder": "Wyszukiwanie według adresu e-mail"
         },
         "RoleFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "ChannelFilterParameter": {
             "placeholder": "Wyszukiwanie według kodu"
         },
         "ZoneFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "TaxCategoryFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "TaxRateFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "StockLocationFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "SellerFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "PaymentMethodFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "ShippingMethodFilterParameter": {
-            "placeholder": "Wyszukiwanie według nazwy"
+            "placeholder": "Search by name"
         },
         "filterLabels": {
             "active": "Aktywny",
             "additionalInformation": "Dodatkowe informacje",
             "code": "Kod",
-            "createdAt": "Utworzony w",
+            "createdAt": "Utworzona w",
             "currencyCode": "Kod waluty",
             "customerLastName": "Nazwisko klienta",
             "id": "Id",
             "orderPlacedAt": "Zamówienie złożone pod adresem",
             "shipping": "Wysyłka",
             "shippingWithTax": "Wysyłka z podatkiem",
-            "state": "Stan",
+            "state": "Państwo",
             "subTotal": "Suma cząstkowa",
             "subTotalWithTax": "Suma częściowa z podatkiem",
             "token": "Token",
@@ -273,19 +274,19 @@
         },
         "inOperator": {
             "Created": "Utworzony",
-            "Draft": "Wersja robocza",
+            "Draft": "Draft",
             "AddingItems": "Dodawanie elementów",
             "ArrangingPayment": "Organizowanie płatności",
             "PaymentAuthorized": "Autoryzowana płatność",
             "PaymentSettled": "Płatność rozliczona",
             "PartiallyShipped": "Częściowo wysłane",
-            "Shipped": "Wysłane",
+            "Shipped": "Shipped",
             "PartiallyDelivered": "Częściowo dostarczone",
-            "Delivered": "Dostarczone",
-            "Modifying": "Modyfikacja",
+            "Delivered": "Delivered",
+            "Modifying": "Modifying",
             "ArrangingAdditionalPayment": "Ustalenie dodatkowej płatności",
-            "Cancelled": "Anulowane",
-            "InRealization": "W realizacji",
+            "Cancelled": "Cancelled",
+            "InRealization": "In realization",
             "Regular": "Regularny",
             "Aggregate": "Agregat",
             "Seller": "Sprzedawca"
@@ -458,7 +459,7 @@
         "tags": "Filtruj według tagu",
         "perPageValue": "{{value}} na stronę",
         "confirmButton": "Dodaj zasób",
-        "cancel": "Anuluj",
+        "cancel": "Cancel",
         "noImages": "Nie ma zasobów dla określonego wyszukiwania",
         "description": "Przesyłanie i zarządzanie zasobami, które mogą być używane w treści"
     },
@@ -466,18 +467,18 @@
         "dialogTitle": "Wybierz produkt",
         "dialogButton": "Wybierz produkt",
         "dialogSearchPlaceholder": "Wyszukiwanie produktu według nazwy",
-        "perPageValue": "{{value}} na stronę",
+        "perPageValue": "{{value}} per page",
         "confirmButton": "Dodaj produkt",
-        "cancel": "Anuluj"
+        "cancel": "Cancel"
     },
     "paymentMethods": {
         "3": "Inne",
-        "4": "Inne",
+        "4": "Other",
         "przelewy24": "Przelewy24",
         "standard-payment": "Standardowa płatność",
         "przelew-bankowy": "Przelew bankowy",
         "gotowka-za-pobraniem": "Za pobraniem",
-        "undefined": "Inne"
+        "undefined": "Other"
     },
     "selectedValue": "{{from}} z {{to}} wybranych wierszy",
     "deleteOrCancel": "Usuń/Anuluj zaznaczone",
@@ -501,16 +502,16 @@
     "custom-fields": {
         "title": "Pola niestandardowe",
         "description": "Pola utworzone przez wtyczki serwera można znaleźć tutaj",
-        "clear": "Wyczyść",
+        "clear": "Clear",
         "asset": {
             "title": "Lista aktywów",
             "description": "Wybierz aktywa z poniższej listy",
-            "pick": "Wybierz zasób"
+            "pick": "Pick asset"
         },
         "product": {
             "title": "Lista produktów",
             "description": "Wybierz produkty z poniższej listy",
-            "pick": "Wybierz produkt"
+            "pick": "Pick product"
         },
         "productvariant": {
             "title": "Lista wariantów produktu",
@@ -520,18 +521,18 @@
     },
     "history": {
         "edit": "Edytuj",
-        "delete": "Usuń",
+        "delete": "Delete",
         "deleteNoteHeader": "Usunąć notatkę?",
         "editNoteHeader": "Edytuj notatkę",
-        "isPrivate": "Notatka jest prywatna",
+        "isPrivate": "Uwaga jest prywatna",
         "isPrivateDescription": "(opcjonalnie)",
         "toAdmins": "Widoczne tylko dla administratorów",
         "toAdminsAndCustomer": "Widoczny dla administratorów i klientów",
-        "sure": "Czy na pewno?",
-        "cancel": "Anuluj",
+        "sure": "Jesteś pewien?",
+        "cancel": "Cancel",
         "addComment": "Dodaj komentarz",
-        "addCommentButton": "Dodaj komentarz",
-        "sureDescription": "Nie można przywrócić usuniętej notatki",
+        "addCommentButton": "Add comment",
+        "sureDescription": "Usuniętej notatki nie można przywrócić",
         "showPayment": "Pokaż płatność",
         "paymentId": "ID płatności: {{value}}",
         "showFulfillment": "Pokaż realizację",
@@ -542,7 +543,7 @@
         "from": "Od:",
         "to": "do:",
         "createdAt": "Utworzono w: {{value}}",
-        "updatedAt": "Zaktualizowano o: {{value}}",
+        "updatedAt": "Updated at: {{value}}",
         "private": "prywatny",
         "public": "publiczny",
         "noteContent": "Treść uwagi:",

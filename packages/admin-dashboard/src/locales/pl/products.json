@@ -3,7 +3,7 @@
     "assets": "Aktywa",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "facetPlaceholder": "Dodaj aspekty",
     "group": "Grupa",
     "image": "Obraz",
@@ -46,23 +46,23 @@
         "groupName": "Nazwa grupy",
         "values": "Wartości opcji",
         "emptyState": {
-            "title": "Nic tutaj",
+            "title": "Nic tutaj nie ma",
             "description": "Nie ma jeszcze grup opcji. Użyj przycisku powyżej, aby je dodać."
         }
     },
     "variantsTab": {
         "emptyState": {
-            "title": "Nic tutaj nie ma",
+            "title": "Nothing here",
             "description": "Nie ma jeszcze żadnych wariantów. Użyj przycisku powyżej, aby je dodać, pod warunkiem, że dodałeś już jakieś opcje. Jeśli nie, utwórz je najpierw w zakładce Opcje."
         }
     },
     "table": {
-        "featuredAsset": "Obraz",
+        "featuredAsset": "Image",
         "id": "ID",
         "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
-        "name": "Nazwa",
-        "slug": "Ślimak",
+        "updatedAt": "Zaktualizowano o",
+        "name": "Name",
+        "slug": "Slug",
         "variants": "# Liczba wariantów",
         "collections": "W kolekcjach",
         "inValueCollections": "W kolekcjach {{value}}",
@@ -75,10 +75,10 @@
         "stock": "Akcje"
     },
     "deleteProductDialog": {
-        "button": "Usuń produkt",
-        "title": "Czy na pewno?",
+        "button": "Delete product",
+        "title": "Jesteś pewien?",
         "description": "Produkt zostanie trwale usunięty.",
-        "confirm": "Usuń produkt",
+        "confirm": "Delete Product",
         "cancel": "Anuluj"
     },
     "columns": "Kolumny",
@@ -113,7 +113,7 @@
         "basicInfo": "Podstawowe informacje",
         "customFields": "Pola niestandardowe",
         "facetValues": "Wartość aspektu",
-        "image": "Obraz",
+        "image": "Image",
         "price": "Cena",
         "featuredAsset": "Polecane aktywa",
         "otherAssets": "Inne aktywa",
@@ -164,20 +164,20 @@
     },
     "addOptionGroupDialog": {
         "title": "Dodaj grupę opcji",
-        "name": "Nazwa",
+        "name": "Name",
         "code": "Kod",
-        "cancel": "Anuluj",
+        "cancel": "Cancel",
         "add": "Dodaj"
     },
     "addVariantDialog": {
         "title": "Dodaj wariant produktu",
-        "name": "Nazwa",
+        "name": "Name",
         "sku": "SKU",
-        "cancel": "Anuluj",
+        "cancel": "Cancel",
         "add": "Dodaj wariant",
         "new": "Nowy wariant",
         "selectOption": "Wybierz opcję",
         "createBasic": "Dane podstawowe",
-        "createOptions": "Opcje"
+        "createOptions": "Options"
     }
 }

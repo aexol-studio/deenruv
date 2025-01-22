@@ -5,7 +5,14 @@ import { EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
 import { setInArrayBy } from '@/lists/useGflp';
 
-export const PRODUCT_FORM_KEYS = ['CreateProductInput', 'translations', 'assetIds', 'featuredAssetId'] as const;
+export const PRODUCT_FORM_KEYS = [
+  'CreateProductInput',
+  'translations',
+  'assetIds',
+  'featuredAssetId',
+  'facetValueIds',
+  'enabled',
+] as const;
 
 export const ProductDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);

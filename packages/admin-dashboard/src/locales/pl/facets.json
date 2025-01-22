@@ -3,13 +3,13 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "baseInfoUpdated": "Aktualizacja: {{value}}",
     "requiredError": "Ta wartość jest wymagana",
     "table": {
         "id": "Id",
         "name": "Nazwa",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "code": "Kod",
         "isPrivate": "Prywatny",
         "public": "Publiczny",
@@ -23,7 +23,7 @@
         "viewFacet": "Aspekt widoku",
         "columns": "Kolumny",
         "color": "Kolor",
-        "new": "Nowy",
+        "new": "Nowość",
         "image": "Obraz"
     },
     "toasts": {
@@ -33,16 +33,16 @@
         "facetCreatedSuccess": "Facet został utworzony pomyślnie"
     },
     "visibility": {
-        "public": "Publiczny",
-        "private": "Prywatny"
+        "public": "Public",
+        "private": "Private"
     },
     "deleteFacet": {
         "title": "Usuń aspekt",
         "description": "Czy na pewno chcesz usunąć ten aspekt?",
         "successMessage": "Aspekt został usunięty.",
-        "deleteOrCancel": "Usuń/Anuluj wybrane"
+        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
     },
-    "selectedValue": "wybrano {{from}} z {{to}} wierszy",
+    "selectedValue": "{{from}} z {{to}} wybranych wierszy",
     "details": {
         "basicInfo": "Dane podstawowe",
         "customFields": "Pola niestandardowe",
@@ -60,14 +60,14 @@
         "editTitle": "Edytuj wartość aspektu",
         "nameLabel": "Nazwa wartości aspektu",
         "codeLabel": "Kod wartości aspektu",
-        "isNew": "Nowość",
+        "isNew": "New",
         "hidden": "Ukryty",
-        "color": "Kolor",
+        "color": "Color",
         "success": "Wartość dodana aspektu z powodzeniem",
         "editSuccess": "Pomyślnie zaktualizowano wartość aspektu",
         "error": "Wystąpił błąd",
         "options": "Opcje",
-        "image": "Obraz"
+        "image": "Image"
     },
     "buttons": {
         "deleteValue": "Usuń wartość",

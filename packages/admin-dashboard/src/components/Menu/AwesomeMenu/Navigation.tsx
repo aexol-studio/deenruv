@@ -205,7 +205,13 @@ export function Navigation({ isCollapsed }: NavProps) {
         label: t('menuGroups.promotions'),
         id: 'promotions-group',
         links: [
-          { title: t('menu.promotions'), href: Routes.promotions.list, id: 'link-promotions', icon: ShoppingCart },
+          {
+            title: t('menu.promotions'),
+            href: Routes.promotions.list,
+            id: 'link-promotions',
+            icon: ShoppingCart,
+            requiredPermissions: [Permission.ReadPromotion],
+          },
         ],
       },
       {

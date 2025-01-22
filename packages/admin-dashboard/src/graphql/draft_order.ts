@@ -107,6 +107,7 @@ export const draftOrderSelector = Selector('Order')({
   //   finalPlannedAt: true,
   //   plannedAt: true,
   // },
+  couponCodes: true,
   promotions: {
     name: true,
     couponCode: true,

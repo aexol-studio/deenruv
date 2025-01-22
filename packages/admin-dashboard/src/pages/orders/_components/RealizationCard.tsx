@@ -20,7 +20,7 @@ import { useOrder } from '@/state/order';
 import { ORDER_STATE } from '@/graphql/base';
 
 export const RealizationCard: React.FC = () => {
-  const { order, setOrder, fetchOrderHistory } = useOrder();
+  const { order, setOrder, fetchOrderHistory, cancelFulfillment } = useOrder();
   const { t } = useTranslation('orders');
 
   const markAsDelivered = async (fulfillmentId: string) => {
@@ -84,12 +84,18 @@ export const RealizationCard: React.FC = () => {
                         <TableCell>{fulfillment.method}</TableCell>
                         <TableCell>{fulfillment.state}</TableCell>
                         <TableCell>{fulfillment.trackingCode}</TableCell>
-                        <TableCell className="text-right">
-                          {fulfillment.state === ORDER_STATE.SHIPPED ? (
+                        <TableCell className="flex justify-end gap-3 text-right">
+                          {fulfillment.state === ORDER_STATE.SHIPPED && (
                             <Button size="sm" variant="outline" onClick={() => markAsDelivered(fulfillment.id)}>
                               {t('fulfillments.markAsDelivered')}
                             </Button>
-                          ) : null}
+                          )}
+                          {(fulfillment.state === ORDER_STATE.DELIVERED ||
+                            fulfillment.state === ORDER_STATE.SHIPPED) && (
+                            <Button size="sm" variant="destructive" onClick={() => cancelFulfillment(fulfillment.id)}>
+                              {t('fulfillments.cancel')}
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     </React.Fragment>

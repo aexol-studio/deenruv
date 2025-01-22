@@ -21,6 +21,7 @@ import { HistoryEntryType } from '@deenruv/admin-types';
 import { ModifyOrderPage } from './ModifyOrderPage.js';
 import { EntityCustomFields } from '@/components';
 import { Routes, apiClient } from '@deenruv/react-ui-devkit';
+import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 
 export const OrdersDetailPage = () => {
   const { id } = useParams();
@@ -205,7 +206,7 @@ export const OrdersDetailPage = () => {
   }
 
   return (
-    <main>
+    <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <TopActions createOrderCopy={createOrderCopy} />
         <OrderSummary />
@@ -224,6 +225,7 @@ export const OrdersDetailPage = () => {
             <ProductsCard />
             {id && <EntityCustomFields entityName="order" id={id} />}
             <TaxSummary />
+            <PromotionsList />
             <Payments />
             <OrderHistory />
           </>

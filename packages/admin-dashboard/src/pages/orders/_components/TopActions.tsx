@@ -299,28 +299,34 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
           <Button size="sm" onClick={onSubmit} disabled={!isOrderValid}>
             {t('create.completeOrderButton')}
           </Button>
-        ) : order?.state === ORDER_STATE.IN_REALIZATION ? (
-          <FulfillmentModal draftOrder={order} onSubmitted={fulfillOrder} />
-        ) : order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
-          order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ? (
-          <>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => {
-                toast(t('create.leaveToastMessage'), {
-                  position: 'top-center',
-                  action: {
-                    label: t('create.leaveToastButton'),
-                    onClick: () => navigate(Routes.orders.list),
-                  },
-                });
-              }}
-            >
-              {t('create.realizeOrder')}
-            </Button>
-          </>
-        ) : order?.state === ORDER_STATE.MODIFYING ? (
+        ) : order?.state === ORDER_STATE.IN_REALIZATION ||
+          order?.state === ORDER_STATE.PAYMENT_SETTLED ||
+          order?.state === ORDER_STATE.SHIPPED ? (
+          <FulfillmentModal
+            draftOrder={order}
+            onSubmitted={fulfillOrder}
+            disabled={order.fulfillments?.some((f) => f.state === ORDER_STATE.SHIPPED)}
+          />
+        ) : // ) : order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
+        //   order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ? (
+        //   <>
+        //     <Button
+        //       size="sm"
+        //       variant="secondary"
+        //       onClick={() => {
+        //         toast(t('create.leaveToastMessage'), {
+        //           position: 'top-center',
+        //           action: {
+        //             label: t('create.leaveToastButton'),
+        //             onClick: () => navigate(Routes.orders.list),
+        //           },
+        //         });
+        //       }}
+        //     >
+        //       {t('create.realizeOrder')}
+        //     </Button>
+        //   </>
+        order?.state === ORDER_STATE.MODIFYING ? (
           <ModifyAcceptModal />
         ) : null}
         {order &&
@@ -329,6 +335,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         order.state !== ORDER_STATE.ARRANGING_PAYMENT &&
         order.state !== ORDER_STATE.MODIFYING &&
         order.state !== ORDER_STATE.PAYMENT_AUTHORIZED &&
+        order.state !== ORDER_STATE.PAYMENT_SETTLED &&
         order.state !== ORDER_STATE.CANCELLED ? (
           <>
             <Button variant="action" className="flex gap-2" onClick={() => createProforma('proforma')}>

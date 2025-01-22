@@ -81,9 +81,34 @@ interface Actions {
   //   newLine: ModelTypes['OverrideLinesPricesInput']['linesToOverride'][number];
   //   activeAdministrator?: string;
   // }) => void;
+  cancelPayment: (id: string) => void;
+  cancelFulfillment: (id: string) => void;
   deleteLinePriceChangeInput: (lineID: string) => void;
   resetLinePriceChangeInput: () => void;
 }
+
+const cancelPaymentMutation = (id: string) => apiClient('mutation')({
+  cancelPayment: [
+    { id },
+    {"...on CancelPaymentError": {message: true}}
+  ],
+});
+
+const cancelFulfillmentMutation = (id: string) => apiClient('mutation')({
+  transitionFulfillmentToState: [
+    { id, state: 'Cancelled' },
+    {
+      __typename: true,
+      '...on Fulfillment': {
+        id: true,
+      },
+      '...on FulfillmentStateTransitionError': {
+        errorCode: true,
+        message: true,
+      },
+    },
+  ],
+})
 
 const TAKE = 100;
 const getAllOrderHistory = async (id: string) => {
@@ -129,6 +154,14 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   },
   resetLinePriceChangeInput: () => {
     set({ linePriceChangeInput: undefined });
+  },
+  cancelPayment: async (id: string) => {
+    const { fetchOrder, order } = get();
+    cancelPaymentMutation(id).then(() => fetchOrder(order!.id))
+  },
+  cancelFulfillment: async (id: string) => {
+    const { fetchOrder, order } = get();
+    cancelFulfillmentMutation(id).then(() => fetchOrder(order!.id))
   },
   // addLinePriceChangeInput: ({ newLine, activeAdministrator }) => {
   //   set((state) => ({
@@ -478,24 +511,24 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   },
 
   addPaymentToOrder: async (input) => {
-    const { fetchOrderHistory } = get();
-    // const { customAddManualPaymentToOrder } = await apiClient('mutation')({
-    //   customAddManualPaymentToOrder: [
-    //     { input },
-    //     {
-    //       __typename: true,
-    //       '...on Order': draftOrderSelector,
-    //       '...on ManualPaymentStateError': { message: true, errorCode: true },
-    //     },
-    //   ],
-    // });
-    // if (customAddManualPaymentToOrder.__typename !== 'Order') {
-    //   toast.error(`${customAddManualPaymentToOrder.message}`, { position: 'top-center' });
-    //   return;
-    // }
-
-    // setOrder(customAddManualPaymentToOrder);
+    const { setOrder, fetchOrderHistory } = get();
+    const { addManualPaymentToOrder } = await apiClient('mutation')({
+      addManualPaymentToOrder: [
+        { input },
+        {
+          __typename: true,
+          '...on Order': draftOrderSelector,
+          '...on ManualPaymentStateError': { message: true, errorCode: true },
+        },
+      ],
+    });
+    if (addManualPaymentToOrder.__typename !== 'Order') {
+      toast.error(`${addManualPaymentToOrder.message}`, { position: 'top-center' });
+      return;
+    }
+    setOrder(addManualPaymentToOrder);
     fetchOrderHistory();
+    // if (order) fetchOrder(order.id);
   },
   settlePayment: async (input) => {
     const { order, fetchOrder, fetchOrderHistory } = get();
@@ -517,6 +550,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       toast.error(`${settlePayment.message}`, { position: 'top-center' });
       return;
     }
+
     fetchOrder(order.id);
     fetchOrderHistory();
   },

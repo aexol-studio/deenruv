@@ -26,14 +26,17 @@ import { LineItem } from './LineItem.js';
 import { useGFFLP } from '@/lists/useGflp';
 import { ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 
 interface Props {
+  disabled?: boolean;
   draftOrder: DraftOrderType;
   onSubmitted: (data: ResolverInputTypes['FulfillOrderInput']) => Promise<void>;
 }
 
-export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted }) => {
+export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted, disabled }) => {
   const { t } = useTranslation('orders');
+  const [open, setOpen] = useState(false);
   const neededFulfillmentHandlers = draftOrder?.shippingLines?.map(
     (line) => line.shippingMethod.fulfillmentHandlerCode,
   );
@@ -70,13 +73,18 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted }) =
         quantity: line.quantity,
       })),
       handler: state.handler?.value,
+    }).then((resp) => {
+      setOpen(false);
+      return resp;
     });
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">{t('fulfillment.completeOrderButton')}</Button>
+        <Button disabled={disabled} size="sm">
+          {t('fulfillment.completeOrderButton')}
+        </Button>
       </DialogTrigger>
       <DialogContent className="flex h-[70vh] max-w-[70vw] flex-col">
         <DialogHeader>
@@ -140,6 +148,8 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted }) =
                 </TableBody>
               </Table>
             </ScrollArea>
+          </div>
+          <div className="flex w-full flex-col gap-4">
             <Card className="pt-8">
               <CardContent className="flex flex-col gap-2">
                 <div className="flex">
@@ -182,7 +192,7 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted }) =
                     </div>
                     <div className="flex w-full flex-col">
                       {draftOrder.shippingLines.map((line) => (
-                        <div key={line.id} className="grid grid-cols-2 items-center gap-4">
+                        <div key={line.id} className="flex flex-col gap-1">
                           <p className="whitespace-nowrap text-xs font-medium">{line.shippingMethod.name}</p>
                           <p className="text-sm font-medium">{line.priceWithTax}</p>
                         </div>
@@ -192,37 +202,39 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted }) =
                 </div>
               </CardContent>
             </Card>
-          </div>
-          <div className="flex w-full flex-col gap-4">
             <form onSubmit={handleSubmit}>
               <Card>
                 {filteredFulfillmentHandlers.map((handler) => {
                   return (
-                    <div key={handler.code} className="flex flex-col gap-4">
+                    <div key={handler.code} className="flex flex-col">
                       <CardHeader>
-                        <CardTitle>{handler.code}</CardTitle>
-                        <CardDescription>{handler.description}</CardDescription>
-                        <CardContent>
-                          {handler.args.map((arg) => {
-                            return (
-                              <div key={arg.name} className="flex flex-col gap-2">
-                                <Input
-                                  label={arg.name}
-                                  value={state.handler?.value.arguments.find((a) => a.name === arg.name)?.value}
-                                  onChange={(e) => {
-                                    const value = [...(state.handler?.value.arguments || [])];
-                                    const index = value.findIndex((v) => v.name === arg.name);
-                                    if (index === -1) return;
-                                    value[index].name = arg.name;
-                                    value[index].value = e.target.value;
-                                    setField('handler', { code: handler.code, arguments: value });
-                                  }}
-                                />
-                              </div>
-                            );
-                          })}
-                        </CardContent>
+                        <CardTitle>{t(`fulfillment.handlers.${handler.code}.title`)}</CardTitle>
+                        <CardDescription>{t(`fulfillment.handlers.${handler.code}.description`)}</CardDescription>
                       </CardHeader>
+                      <CardContent className="flex flex-col gap-3">
+                        {handler.args.map((arg) => {
+                          return (
+                            <div key={arg.name} className="flex flex-col gap-2">
+                              <Input
+                                label={t(`fulfillment.handlers.${handler.code}.${arg.name}`)}
+                                value={
+                                  state.handler?.value.arguments.find((a) => a.name === arg.name)?.value === 'null'
+                                    ? ''
+                                    : state.handler?.value.arguments.find((a) => a.name === arg.name)?.value
+                                }
+                                onChange={(e) => {
+                                  const value = [...(state.handler?.value.arguments || [])];
+                                  const index = value.findIndex((v) => v.name === arg.name);
+                                  if (index === -1) return;
+                                  value[index].name = arg.name;
+                                  value[index].value = e.target.value;
+                                  setField('handler', { code: handler.code, arguments: value });
+                                }}
+                              />
+                            </div>
+                          );
+                        })}
+                      </CardContent>
                     </div>
                   );
                 })}

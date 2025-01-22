@@ -23,6 +23,7 @@ export enum ORDER_STATE {
 export enum PAYMENT_STATE {
   AUTHORIZED = 'Authorized',
   SETTLED = 'Settled',
+  CANCELLED = 'Cancelled'
 }
 
 export type OrderStateType = `${ORDER_STATE}`;

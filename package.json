@@ -29,7 +29,8 @@
         "check-core-type-defs": "node --import @deenruv/ts-node-register scripts/check-core-type-defs.ts",
         "check-angular-versions": "node --import @deenruv/ts-node-register scripts/check-angular-versions.ts",
         "generate-changelog": "node --import @deenruv/ts-node-register scripts/changelogs/generate-changelog.ts",
-        "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules && pnpm -r exec rm -rf dist"
+        "clean": "rm -rf node_modules && pnpm -r exec rm -rf node_modules && pnpm -r exec rm -rf dist",
+        "translate": "dev-translate translate"
     },
     "devDependencies": {
         "@aexol/dev-translate": "^0.0.8",

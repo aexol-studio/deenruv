@@ -130,6 +130,11 @@
     "areYouSure": "Are you sure?",
     "continue": "Continue",
     "cancelOrderMessage": "After canceling order no action will be allowed",
+    "discounts": {
+      "title": "Discounts",
+      "description": "Order discounts",
+      "emptyState": "No discounts applied"
+    },
     "selectCustomer": {
       "titleLabel": "Title*",
       "firstNameLabel": "First Name*",
@@ -193,8 +198,8 @@
     "selectAddress": "Select Address",
     "createAddress": "Create Address",
     "editAddress": "Edit Address",
-    "addressSuccessCreateToast": "Address selected successfully",
-    "addressSuccessSelectToast": "Address created successfully",
+    "addressSuccessCreateToast": "Address created successfully",
+    "addressSuccessSelectToast": "Address selected successfully",
     "addressFailedCreateToast": "Address selection failed",
     "addressFailedSelectToast": "Address creation failed",
     "newAddress": "New address: {{address}} added to user  account",
@@ -250,9 +255,17 @@
     "product": "Product",
     "sku": "SKU",
     "fulfilled": "Fulfilled",
-    "onStockValue": "on stock {{value}",
+    "onStockValue": "on stock {{value}}",
     "emptyState": "No items in draft order",
-    "fulfill": "Fulfill"
+    "fulfill": "Fulfill",
+    "handlers": {
+      "manual-fulfillment": {
+        "title": "Manual fulfillment",
+        "description": "Manually enter fulfillment details",
+        "method": "Method",
+        "trackingCode": "Tracking code"
+      }
+    }
   },
   "fullName": "Full Name",
   "company": "Company",
@@ -281,7 +294,8 @@
     "state": "State",
     "trackingCode": "Tracking code",
     "actions": "Actions",
-    "markAsDelivered": " Mark as delivered"
+    "markAsDelivered": " Mark as delivered",
+    "cancel": "Cancel"
   },
   "taxSummary": {
     "title": "Tax summary",
@@ -299,6 +313,7 @@
     "status": "Status",
     "method": "Method",
     "created": "Created",
+    "cancel": "Cancel",
     "amount": "Amount",
     "extra": "Additional",
     "actions": "Actions",
@@ -411,6 +426,13 @@
     "customValue": "Value",
     "hint": "All custom keys and values must be defined",
     "customAdditional": "Additional custom attributes: {{value}}"
+  },
+  "couponCodes": {
+    "title": "Codes",
+    "description": "Set coupon codes",
+    "placeholder": "Type to search",
+    "addToastSuccess": "Coupon applied successfully",
+    "removeToastSuccess": "Coupon removed successfully"
   },
   "invoice": {
     "createProformaSuccess": "The proforma has been generated",

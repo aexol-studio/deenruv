@@ -30,7 +30,7 @@ import { AddPaymentDialog } from './index.js';
 import { PAYMENT_STATE } from '@/graphql/base';
 
 export const Payments: React.FC = () => {
-  const { order, addPaymentToOrder, settlePayment } = useOrder();
+  const { order, addPaymentToOrder, settlePayment, cancelPayment } = useOrder();
   const { t } = useTranslation('orders');
   const [paymentToBeSettled, setPaymentToBeSettled] = useState('');
   if (!order) return null;
@@ -60,7 +60,7 @@ export const Payments: React.FC = () => {
         <div className="flex justify-between">
           <div>
             <CardTitle>{t('payments.title')}</CardTitle>
-            <CardDescription>{t('payments.subTitle')}</CardDescription>
+            <CardDescription className="mt-2">{t('payments.subTitle')}</CardDescription>
           </div>
           <AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />
         </div>
@@ -97,10 +97,15 @@ export const Payments: React.FC = () => {
                       </TooltipContent>
                     </Tooltip>
                   </TableCell>
-                  <TableCell>
-                    {state !== PAYMENT_STATE.SETTLED && (
+                  <TableCell className="flex gap-2">
+                    {state !== PAYMENT_STATE.SETTLED && state !== PAYMENT_STATE.CANCELLED && (
                       <Button variant="action" onClick={() => setPaymentToBeSettled(id)}>
                         {t('payments.settle.settle')}
+                      </Button>
+                    )}
+                    {state !== PAYMENT_STATE.CANCELLED && (
+                      <Button variant="destructive" onClick={() => cancelPayment(id)}>
+                        {t('payments.cancel')}
                       </Button>
                     )}
                   </TableCell>

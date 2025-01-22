@@ -6,7 +6,14 @@ import { ChannelsCard } from '@/pages/products/_components/ChannelsCard';
 import { CollectionsCard } from '@/pages/products/_components/CollectionsCard';
 import { FacetValuesCard } from '@/pages/products/_components/FacetValuesCard';
 
-const PRODUCT_FORM_KEYS = ['CreateProductInput', 'facetValueIds', 'enabled'] as const;
+const PRODUCT_FORM_KEYS = [
+  'CreateProductInput',
+  'translations',
+  'assetIds',
+  'featuredAssetId',
+  'facetValueIds',
+  'enabled',
+] as const;
 
 export const ProductDetailSidebar = () => {
   const { form, entity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
