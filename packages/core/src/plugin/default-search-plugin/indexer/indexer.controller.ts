@@ -405,12 +405,16 @@ export class IndexerController {
         await this.removeSyntheticVariants(ctx, variants);
         const productMap = new Map<ID, Product>();
 
+        const originalChannel = ctx.channel;
         for (const variant of variants) {
+            ctx.setChannel(originalChannel);
             let product = productMap.get(variant.productId);
             if (!product) {
                 product = await this.getProductInChannelQueryBuilder(ctx, variant.productId, ctx.channel);
                 if (!product) {
-                    throw new Error('Product not found for variant!');
+                    throw new Error(
+                        `Product ${variant.productId} not found for variant ${variant.id} in channel ${ctx.channel}`,
+                    );
                 }
                 productMap.set(variant.productId, product);
             }
@@ -496,6 +500,7 @@ export class IndexerController {
                 }
             }
         }
+        ctx.setChannel(originalChannel);
 
         await this.queue.push(() =>
             this.connection.getRepository(ctx, SearchIndexItem).save(items, { chunk: 2500 }),
