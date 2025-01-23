@@ -413,7 +413,7 @@ export class IndexerController {
                 product = await this.getProductInChannelQueryBuilder(ctx, variant.productId, ctx.channel);
                 if (!product) {
                     throw new Error(
-                        `Product ${variant.productId} not found for variant ${variant.id} in channel ${ctx.channel}`,
+                        `Product ${variant.productId} not found for variant ${variant.id} in channel ${typeof ctx.channel === 'string' ? ctx.channel : ctx.channel.token}`,
                     );
                 }
                 productMap.set(variant.productId, product);
