@@ -301,6 +301,8 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
           </Button>
         ) : order?.state === ORDER_STATE.IN_REALIZATION ||
           order?.state === ORDER_STATE.PAYMENT_SETTLED ||
+          order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
+          order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ||
           order?.state === ORDER_STATE.SHIPPED ? (
           <FulfillmentModal
             draftOrder={order}

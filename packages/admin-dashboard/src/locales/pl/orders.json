@@ -130,11 +130,6 @@
         "areYouSure": "Are you sure?",
         "continue": "Kontynuuj",
         "cancelOrderMessage": "Po anulowaniu zamówienia żadne działanie nie będzie dozwolone",
-        "discounts": {
-            "title": "Rabaty",
-            "description": "Rabaty na zamówienia",
-            "emptyState": "Nie zastosowano żadnych rabatów"
-        },
         "selectCustomer": {
             "titleLabel": "Tytuł*",
             "firstNameLabel": "Imię*",
@@ -168,6 +163,11 @@
         "buttonAddPayment": "Dodaj płatność do zamówienia {{value}}",
         "addPaymentTitle": "Dodaj płatność do zamówienia",
         "addPaymentDescription": "Wybierz metodę płatności, aby sfinalizować zamówienie."
+    },
+    "discounts": {
+        "title": "Rabaty",
+        "description": "Rabaty na zamówienia",
+        "emptyState": "Nie zastosowano żadnych rabatów"
     },
     "form": {
         "userError": "Nazwa użytkownika musi składać się z co najmniej 5 znaków.",
@@ -401,6 +401,8 @@
     "createCopyShippingFail": "Nie udało się dodać metody wysyłki: {{value}}",
     "modify": {
         "title": "Modyfikowanie zamówienia o Id:{{value}}",
+        "disclaimer": "Edycja ceny linii jest możliwa po zapisaniu zamówienia z nowo dodaną linią",
+        "priceDifference": "Różnica w cenie:",
         "productTable": {
             "headImage": "Image",
             "headName": "Nazwa produktu",
@@ -481,7 +483,7 @@
         "cancel": "Cancel",
         "save": "Save",
         "change": "Zmiana",
-        "quantityChange": "Zmiana ilości",
+        "quantityChange": "Nowa ilość",
         "actualQuantity": "Ilość rzeczywista",
         "quantityAfter": "Ilość po zmianie",
         "newPrice": "Nowa cena",
@@ -491,6 +493,19 @@
         "changePrice": "Wprowadź nową cenę...",
         "changeQuantity": "Wprowadź nową ilość"
     },
+    "surcharge": {
+        "title": "Dodaj dopłatę",
+        "description": "W tym miejscu można dodać dodatkowy wiersz do zamówienia",
+        "labels": {
+            "description": "Description",
+            "sku": "SKU",
+            "price": "Price",
+            "includesTax": "Zawiera podatek w wysokości {{value}}%",
+            "taxRate": "Tax rate",
+            "taxDescription": "Opis podatku"
+        },
+        "addButton": "Dodaj dopłatę"
+    },
     "changes": {
         "cancel": "Cancel",
         "save": "Save",
@@ -498,6 +513,7 @@
         "mainChanges": "Główne zmiany",
         "attributesChanges": "Zmiany atrybutów",
         "newAddedLines": "Nowe dodane linie zamówień",
+        "surcharges": "Dopłaty",
         "change": "Zmiana",
         "key": "Key",
         "value": "Value",

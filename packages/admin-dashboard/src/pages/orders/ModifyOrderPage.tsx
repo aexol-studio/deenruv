@@ -3,9 +3,8 @@ import {
   CustomerSelectCard,
   AddressCard,
   ShippingMethod,
-  TaxSummary,
   ProductsCard,
-  Payments,
+  SurchargeCard,
 } from '@/pages/orders/_components';
 import { OrderListType } from '@/graphql/orders';
 import { PromotionsList } from './_components/PromotionsList.js';
@@ -20,11 +19,8 @@ export const ModifyOrderPage: React.FC<{ currentOrder?: OrderListType }> = () =>
         <ShippingMethod />
       </div>
       <ProductsCard />
-      <TaxSummary />
-      <Payments />
-      <div className="my-8 flex flex-col gap-4">
-        <PromotionsList />
-      </div>
+      <SurchargeCard />
+      <PromotionsList />
     </>
   );
 };

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModifyingCard } from './ModifyingCard.js';
 import { useOrder } from '@/state/order';
-// import { ChangesRegister } from './ChangesRegister';
+import { ChangesRegister } from './ChangesRegister';
 
 export const ModifyAcceptModal: React.FC = () => {
   const { t } = useTranslation('orders');
@@ -25,7 +25,9 @@ export const ModifyAcceptModal: React.FC = () => {
         </DialogHeader>
         <div className="grid grow grid-cols-3 gap-4">
           <div className="col-span-2 flex h-full flex-col">
-            <div className="h-0 grow overflow-y-auto pr-2">{/* <ChangesRegister /> */}</div>
+            <div className="h-0 grow overflow-y-auto pr-2">
+              <ChangesRegister />
+            </div>
           </div>
           <ModifyingCard onNoteModified={(bool: boolean) => setOpen(bool)} />
         </div>

@@ -130,11 +130,6 @@
     "areYouSure": "Are you sure?",
     "continue": "Continue",
     "cancelOrderMessage": "After canceling order no action will be allowed",
-    "discounts": {
-      "title": "Discounts",
-      "description": "Order discounts",
-      "emptyState": "No discounts applied"
-    },
     "selectCustomer": {
       "titleLabel": "Title*",
       "firstNameLabel": "First Name*",
@@ -168,6 +163,11 @@
     "buttonAddPayment": "Add payment to order {{value}}",
     "addPaymentTitle": "Add payment to order",
     "addPaymentDescription": "Please select a payment method to complete the order."
+  },
+  "discounts": {
+    "title": "Discounts",
+    "description": "Order discounts",
+    "emptyState": "No discounts applied"
   },
   "form": {
     "userError": "Username must be at least 5 characters.",
@@ -401,6 +401,8 @@
   "createCopyShippingFail": "Failed to add shipping method: {{value}}",
   "modify": {
     "title": "Modifying order with Id:{{value}}",
+    "disclaimer": "Editing line price is possible after saving the order with the new added line",
+    "priceDifference": "Price difference: ",
     "productTable": {
       "headImage": "Image",
       "headName": "Product name",
@@ -481,7 +483,7 @@
     "cancel": "Cancel",
     "save": "Save",
     "change": "Change",
-    "quantityChange": "Quantity change",
+    "quantityChange": "New quantity",
     "actualQuantity": "Actual quantity",
     "quantityAfter": "Quantity after change",
     "newPrice": "New price",
@@ -491,6 +493,19 @@
     "changePrice": "Enter new price..",
     "changeQuantity": "Enter new quantity"
   },
+  "surcharge": {
+    "title": "Add surcharge",
+    "description": "Here you can add an additional line to the order",
+    "labels": {
+      "description": "Description",
+      "sku": "SKU",
+      "price": "Price",
+      "includesTax": "Includes tax at {{value}}%",
+      "taxRate": "Tax rate",
+      "taxDescription": "Tax description"
+    },
+    "addButton": "Add surcharge"
+  },
   "changes": {
     "cancel": "Cancel",
     "save": "Save",
@@ -498,6 +513,7 @@
     "mainChanges": "Main changes",
     "attributesChanges": "Attributes changes",
     "newAddedLines": "New added order lines",
+    "surcharges": "Surcharges",
     "change": "Zmiana",
     "key": "Key",
     "value": "Value",

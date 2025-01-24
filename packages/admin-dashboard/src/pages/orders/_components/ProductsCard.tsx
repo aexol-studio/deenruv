@@ -26,7 +26,6 @@ import {
   apiClient,
   cn,
   useServer,
-  CustomFieldsComponent,
 } from '@deenruv/react-ui-devkit';
 import {
   DraftOrderLineType,
@@ -49,7 +48,7 @@ import { OrderLineActionModal } from './OrderLineActionModal/index.js';
 // import { useServer } from '@/state';
 import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
-import { EntityCustomFields, ImageWithPreview, ProductVariantSearch } from '@/components';
+import { ImageWithPreview, ProductVariantSearch } from '@/components';
 import { useSearchParams } from 'react-router-dom';
 // import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
 
@@ -100,9 +99,13 @@ export const ProductsCard: React.FC = () => {
         id: productVariant.id,
         quantity,
         discountedLinePrice: productVariant.price * quantity,
+        unitPrice: productVariant.price,
+        unitPriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
         linePrice: productVariant.price,
         linePriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
         discountedLinePriceWithTax: productVariant.priceWithTax * quantity,
+        discountedUnitPrice: productVariant.price,
+        discountedUnitPriceWithTax: productVariant.priceWithTax,
         productVariant,
         taxRate: order.taxSummary[0].taxRate,
         ...(customFields && { customFields }),
@@ -349,8 +352,12 @@ export const ProductsCard: React.FC = () => {
   const maybeChangedValueWithTax = (line: DraftOrderLineType, withTax: boolean) => {
     const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l: any) => l.lineID === line.id);
     if (!thisLinePriceChangeInput)
+      // return priceFormatter(
+      //   (withTax ? line.discountedLinePriceWithTax : line.discountedLinePrice) / line.quantity,
+      //   line.productVariant.currencyCode,
+      // );
       return priceFormatter(
-        (withTax ? line.discountedLinePriceWithTax : line.discountedLinePrice) / line.quantity,
+        withTax ? line.discountedUnitPriceWithTax : line.discountedUnitPrice,
         line.productVariant.currencyCode,
       );
     if (withTax) {
@@ -373,10 +380,16 @@ export const ProductsCard: React.FC = () => {
     if (!thisLinePriceChangeInput)
       return priceFormatter(line.discountedLinePriceWithTax, line.productVariant.currencyCode);
 
+    // const priceValue =
+    //   (thisLinePriceChangeInput.netto
+    //     ? thisLinePriceChangeInput.value * (line?.taxRate ? 1 + line.taxRate / 100 : 1)
+    //     : thisLinePriceChangeInput.value) * line.quantity;
+
     const priceValue =
       (thisLinePriceChangeInput.netto
         ? thisLinePriceChangeInput.value * (line?.taxRate ? 1 + line.taxRate / 100 : 1)
         : thisLinePriceChangeInput.value) * line.quantity;
+
     return priceFormatter(priceValue, line.productVariant.currencyCode);
   };
   const handleNewVariantAdd = async (attributes?: string) => {
@@ -434,29 +447,30 @@ export const ProductsCard: React.FC = () => {
             </TableHeader>
             <TableBody>
               {currentOrder!.lines.length ? (
-                currentOrder!.lines.map((line) => (
-                  <TableRow key={line.id}>
-                    <TableCell>
-                      <div className="flex w-max items-center gap-2">
-                        <ImageWithPreview
-                          imageClassName="aspect-square w-10 rounded-md object-cover w-[40px] h-[40px]"
-                          src={
-                            line.productVariant.featuredAsset?.preview ||
-                            line.productVariant.product?.featuredAsset?.preview
-                          }
-                        />
-                        <div className="font-semibold">{line.productVariant.product.name}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="min-w-[200px]">{line.productVariant.sku}</TableCell>
-                    <TableCell>
-                      <OrderLineCustomFields line={line} order={currentOrder!} />
-                    </TableCell>
-                    <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, false)}</TableCell>
-                    <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, true)}</TableCell>
-                    <TableCell>
-                      <span>{line.quantity}</span>
-                      {/* {adjustLineItem ? (
+                <>
+                  {currentOrder!.lines.map((line) => (
+                    <TableRow key={line.id}>
+                      <TableCell>
+                        <div className="flex w-max items-center gap-2">
+                          <ImageWithPreview
+                            imageClassName="aspect-square w-10 rounded-md object-cover w-[40px] h-[40px]"
+                            src={
+                              line.productVariant.featuredAsset?.preview ||
+                              line.productVariant.product?.featuredAsset?.preview
+                            }
+                          />
+                          <div className="font-semibold">{line.productVariant.product.name}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="min-w-[200px]">{line.productVariant.sku}</TableCell>
+                      <TableCell>
+                        <OrderLineCustomFields line={line} order={currentOrder!} />
+                      </TableCell>
+                      <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, false)}</TableCell>
+                      <TableCell className="text-nowrap">{maybeChangedValueWithTax(line, true)}</TableCell>
+                      <TableCell>
+                        <span>{line.quantity}</span>
+                        {/* {adjustLineItem ? (
                         <div className="flex items-center gap-2">
                           {mode === 'create' && (
                             <Button
@@ -491,66 +505,79 @@ export const ProductsCard: React.FC = () => {
                       ) : (
                         line.quantity
                       )} */}
-                    </TableCell>
-                    <TableCell>{mabeyChangedOverallLinePrice(line)}</TableCell>
-                    {(mode === 'create' || mode === 'update') && (
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger>
-                              <EllipsisVertical />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                              <DropdownMenuLabel>Edytuj</DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                // disabled={isLineAddedInModify(line.id)}
-                                onClick={() =>
-                                  !isLineAddedInModify(line.id) &&
-                                  setOrderLineAction({ action: 'quantity-price', line })
-                                }
-                                className={cn('flex cursor-pointer justify-between', {
-                                  'text-muted-foreground': isLineAddedInModify(line.id),
-                                })}
-                              >
-                                <span>Ilość/Cena</span>
-                                {isLineAddedInModify(line.id) && (
-                                  <TooltipProvider>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <InfoIcon />
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>
-                                          Edytowanie ceny linii zamówienia jest możliwe dopiero po zapisaniu zamówienia
-                                          z nowo dodaną linią.
-                                        </p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                )}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
+                      </TableCell>
+                      <TableCell>{mabeyChangedOverallLinePrice(line)}</TableCell>
+                      {(mode === 'create' || mode === 'update') && (
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger>
+                                <EllipsisVertical />
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent>
+                                <DropdownMenuLabel>Edytuj</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  // disabled={isLineAddedInModify(line.id)}
+                                  onClick={() =>
+                                    !isLineAddedInModify(line.id) &&
+                                    setOrderLineAction({ action: 'quantity-price', line })
+                                  }
+                                  className={cn('flex cursor-pointer justify-between', {
+                                    'text-muted-foreground': isLineAddedInModify(line.id),
+                                  })}
+                                >
+                                  <span>{t('orderLineActionModal.actionType.quantity-price')}</span>
+                                  {isLineAddedInModify(line.id) && (
+                                    <TooltipProvider>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <InfoIcon />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                          <p>{t('modify.disclaimer')}</p>
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </TooltipProvider>
+                                  )}
+                                </DropdownMenuItem>
+                                {/* <DropdownMenuItem
                                 onClick={() => setOrderLineAction({ action: 'attributes', line })}
                                 className="flex cursor-pointer justify-between"
                               >
                                 <span>Atrybuty</span>
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                              </DropdownMenuItem> */}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
 
-                          {(mode === 'create' || isLineAddedInModify(line.id)) && (
-                            <Trash2
-                              size={20}
-                              className="cursor-pointer text-red-400"
-                              onClick={() => removeLineItem(line.id)}
-                            />
-                          )}
-                        </div>
+                            {(mode === 'create' || isLineAddedInModify(line.id)) && (
+                              <Trash2
+                                size={20}
+                                className="cursor-pointer text-red-400"
+                                onClick={() => removeLineItem(line.id)}
+                              />
+                            )}
+                          </div>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))}
+                  {currentOrder?.surcharges.map((surcharge) => (
+                    <TableRow key={surcharge.sku}>
+                      <TableCell className="font-medium">{surcharge.description}</TableCell>
+                      <TableCell className="min-w-[200px]">{surcharge.sku}</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell className="text-nowrap">
+                        {priceFormatter(surcharge.price, order.currencyCode)}
                       </TableCell>
-                    )}
-                  </TableRow>
-                ))
+                      <TableCell className="text-nowrap">
+                        {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
+                      </TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>{priceFormatter(surcharge.priceWithTax, order.currencyCode)}</TableCell>
+                    </TableRow>
+                  ))}
+                </>
               ) : (
                 <TableRow>
                   <TableCell colSpan={8}>

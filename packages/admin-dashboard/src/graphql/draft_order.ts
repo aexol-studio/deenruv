@@ -78,7 +78,10 @@ export const draftOrderLineSelector = Selector('OrderLine')({
   productVariant: productVariantSelector,
   linePrice: true,
   linePriceWithTax: true,
-
+  unitPrice: true,
+  unitPriceWithTax: true,
+  discountedUnitPrice: true,
+  discountedUnitPriceWithTax: true,
   taxRate: true,
   // customFields: {
   //   modifiedListPrice: true,
@@ -102,7 +105,14 @@ export const draftOrderSelector = Selector('Order')({
   shipping: true,
   nextStates: true,
   subTotalWithTax: true,
-  surcharges: { priceWithTax: true, sku: true },
+  surcharges: {
+    priceWithTax: true,
+    sku: true,
+    createdAt: true,
+    description: true,
+    price: true,
+    taxRate: true,
+  },
   // getRealization: {
   //   finalPlannedAt: true,
   //   plannedAt: true,

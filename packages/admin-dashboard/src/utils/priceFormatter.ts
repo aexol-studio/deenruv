@@ -25,6 +25,7 @@ export function priceFormatter(
     },
   };
   const c = translations[currencyCode];
+  if (!price) return '0';
   if (!c) {
     const formatterCode = new Intl.NumberFormat('en-US', {
       style: 'currency',

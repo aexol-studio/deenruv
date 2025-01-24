@@ -29,8 +29,8 @@ export const OrderLineActionModal: React.FC<OrderLineActonModalProps> = ({
   }, [action]);
   return (
     <Dialog open={!!action} onOpenChange={onOpenChange}>
-      <DialogContent className="flex h-[90dvh] max-w-[90dvw] flex-col ">
-        <DialogHeader>
+      <DialogContent className="flex max-w-[90dvw] flex-col lg:max-w-[60dvw] ">
+        <DialogHeader className="m-2">
           <DialogTitle>{t(`orderLineActionModal.title.${action}`)}</DialogTitle>
           <DialogDescription>{t(`orderLineActionModal.subTitle.${action}`)}</DialogDescription>
         </DialogHeader>

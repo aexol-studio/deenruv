@@ -48,7 +48,13 @@ export interface ModifyOrderChanges {
       value?: Record<string, unknown> | string | number;
     }[];
   }[];
-  resChanges: { path: string; changed: ChangesTypeKey; removed: string | number; added: string | number }[];
+  resChanges: {
+    path: string;
+    changed: ChangesTypeKey;
+    removed: string | number;
+    added: string | number;
+    value?: Record<string, any>;
+  }[];
 }
 
 interface Order {
@@ -87,28 +93,27 @@ interface Actions {
   resetLinePriceChangeInput: () => void;
 }
 
-const cancelPaymentMutation = (id: string) => apiClient('mutation')({
-  cancelPayment: [
-    { id },
-    {"...on CancelPaymentError": {message: true}}
-  ],
-});
+const cancelPaymentMutation = (id: string) =>
+  apiClient('mutation')({
+    cancelPayment: [{ id }, { '...on CancelPaymentError': { message: true } }],
+  });
 
-const cancelFulfillmentMutation = (id: string) => apiClient('mutation')({
-  transitionFulfillmentToState: [
-    { id, state: 'Cancelled' },
-    {
-      __typename: true,
-      '...on Fulfillment': {
-        id: true,
+const cancelFulfillmentMutation = (id: string) =>
+  apiClient('mutation')({
+    transitionFulfillmentToState: [
+      { id, state: 'Cancelled' },
+      {
+        __typename: true,
+        '...on Fulfillment': {
+          id: true,
+        },
+        '...on FulfillmentStateTransitionError': {
+          errorCode: true,
+          message: true,
+        },
       },
-      '...on FulfillmentStateTransitionError': {
-        errorCode: true,
-        message: true,
-      },
-    },
-  ],
-})
+    ],
+  });
 
 const TAKE = 100;
 const getAllOrderHistory = async (id: string) => {
@@ -157,11 +162,11 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   },
   cancelPayment: async (id: string) => {
     const { fetchOrder, order } = get();
-    cancelPaymentMutation(id).then(() => fetchOrder(order!.id))
+    cancelPaymentMutation(id).then(() => fetchOrder(order!.id));
   },
   cancelFulfillment: async (id: string) => {
     const { fetchOrder, order } = get();
-    cancelFulfillmentMutation(id).then(() => fetchOrder(order!.id))
+    cancelFulfillmentMutation(id).then(() => fetchOrder(order!.id));
   },
   // addLinePriceChangeInput: ({ newLine, activeAdministrator }) => {
   //   set((state) => ({
@@ -273,6 +278,7 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
                   //   discountBy: ol.customFields?.discountBy,
                   // },
                 })),
+              surcharges: modifyOrderInput?.surcharges,
               updateBillingAddress: modifiedOrder?.billingAddress,
               updateShippingAddress: modifiedOrder?.shippingAddress,
               addItems: modifiedOrder?.lines
@@ -555,3 +561,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
     fetchOrderHistory();
   },
 }));
+
+// tax jest included czyli zmienić działanie
+// dodać info o zmianie ceny

@@ -42,7 +42,7 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted, dis
   );
 
   const filteredFulfillmentHandlers = useServer((p) =>
-    p.fulfillmentHandlers.filter((handler) => neededFulfillmentHandlers.includes(handler.code)),
+    p.fulfillmentHandlers.filter((handler) => neededFulfillmentHandlers.includes(handler?.code)),
   );
 
   const { state, setField } = useGFFLP('FulfillOrderInput')({
@@ -55,8 +55,8 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted, dis
     },
     handler: {
       initialValue: {
-        code: filteredFulfillmentHandlers[0].code,
-        arguments: filteredFulfillmentHandlers[0].args.map((arg) => ({
+        code: filteredFulfillmentHandlers[0]?.code,
+        arguments: filteredFulfillmentHandlers[0]?.args.map((arg) => ({
           name: arg.name,
           value: JSON.stringify(arg.defaultValue),
         })),
@@ -109,7 +109,7 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted, dis
                         (acc, stock) => acc + stock.stockOnHand,
                         0,
                       );
-                      const stateLine = state.lines?.value.find((l) => l.orderLineId === line.id);
+                      const stateLine = state.lines?.value?.find((l) => l.orderLineId === line.id);
                       return (
                         <LineItem key={line.id} variant={line.productVariant}>
                           <TableCell>
@@ -212,15 +212,15 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted, dis
                         <CardDescription>{t(`fulfillment.handlers.${handler.code}.description`)}</CardDescription>
                       </CardHeader>
                       <CardContent className="flex flex-col gap-3">
-                        {handler.args.map((arg) => {
+                        {handler?.args.map((arg) => {
                           return (
                             <div key={arg.name} className="flex flex-col gap-2">
                               <Input
                                 label={t(`fulfillment.handlers.${handler.code}.${arg.name}`)}
                                 value={
-                                  state.handler?.value.arguments.find((a) => a.name === arg.name)?.value === 'null'
+                                  state.handler?.value.arguments?.find((a) => a.name === arg.name)?.value === 'null'
                                     ? ''
-                                    : state.handler?.value.arguments.find((a) => a.name === arg.name)?.value
+                                    : state.handler?.value.arguments?.find((a) => a.name === arg.name)?.value
                                 }
                                 onChange={(e) => {
                                   const value = [...(state.handler?.value.arguments || [])];

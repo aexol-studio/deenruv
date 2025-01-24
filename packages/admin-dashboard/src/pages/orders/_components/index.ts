@@ -17,3 +17,6 @@ export * from './ChangesRegister.js';
 export * from './Payments.js';
 export * from './OrderLineActionModal/index.js';
 export * from './CouponCodesCard.js';
+export * from './SurchargeCard.js';
+export * from './SurchargeTable.js';
+export * from './PriceChangedInfo.js';

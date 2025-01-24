@@ -20,7 +20,7 @@ import { toast } from 'sonner';
 import { HistoryEntryType } from '@deenruv/admin-types';
 import { ModifyOrderPage } from './ModifyOrderPage.js';
 import { EntityCustomFields } from '@/components';
-import { Routes, apiClient } from '@deenruv/react-ui-devkit';
+import { ORDER_STATE, Routes, apiClient } from '@deenruv/react-ui-devkit';
 import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 
 export const OrdersDetailPage = () => {
@@ -225,8 +225,8 @@ export const OrdersDetailPage = () => {
             <ProductsCard />
             {id && <EntityCustomFields entityName="order" id={id} />}
             <TaxSummary />
-            <PromotionsList />
-            <Payments />
+            {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
+            {order.state !== ORDER_STATE.DRAFT && <Payments />}
             <OrderHistory />
           </>
         )}

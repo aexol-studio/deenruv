@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
   Checkbox,
@@ -18,10 +19,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Stack } from '@/components';
+import { PriceChangedInfo } from '@/pages/orders/_components/PriceChangedInfo.js';
 
 export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> = ({ onNoteModified }) => {
   const { t } = useTranslation('orders');
-  const { modifiedOrder, setModifyOrderInput, modifyOrder } = useOrder();
+  const { modifiedOrder, setModifyOrderInput, modifyOrder, modifyOrderInput } = useOrder();
 
   const { state, setField } = useGFFLP('ModifyOrderInput')({});
   const [noteAdded, setNoteAdded] = useState(false);
@@ -30,6 +32,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
   useEffect(() => {
     if (modifiedOrder && state.note?.value) {
       setModifyOrderInput({
+        ...modifyOrderInput,
         note: state.note?.value,
         options: state.options?.value,
         refund: state.refund?.value,
@@ -40,18 +43,18 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
     modifyOrder(() => toast.message(t('modifySuccess'))).then(() => onNoteModified && onNoteModified(false));
   return (
     <form className="h-full">
-      <Card className="bg-accent/20 h-full">
+      <Card className="bg-accent/20 flex h-full flex-col">
         <CardHeader>
           <CardTitle className="text-base">{t('note')}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-1">
           <Stack column className="items-start gap-8">
             <div className="w-full items-center">
               <Textarea
                 rows={10}
                 id="note"
                 placeholder="Note"
-                value={state.note?.value ?? undefined }
+                value={state.note?.value ?? undefined}
                 onChange={(e) => setField('note', e.target.value)}
               />
             </div>
@@ -60,7 +63,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="recalculateShipping"
-                    checked={state.options?.value?.recalculateShipping ?? undefined }
+                    checked={state.options?.value?.recalculateShipping ?? undefined}
                     onCheckedChange={(e) =>
                       setField('options', {
                         freezePromotions: state?.options?.value?.freezePromotions || false,
@@ -78,7 +81,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     id="freezePromotions"
-                    checked={state.options?.value?.freezePromotions ?? undefined }
+                    checked={state.options?.value?.freezePromotions ?? undefined}
                     onCheckedChange={(e) =>
                       setField('options', {
                         freezePromotions: !!e,
@@ -125,7 +128,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                       type="reason"
                       id="reason"
                       placeholder="Reason"
-                      value={state.refund.value?.reason ?? undefined }
+                      value={state.refund.value?.reason ?? undefined}
                       onChange={(e) =>
                         setField('refund', {
                           paymentId: state?.refund?.value?.paymentId || '',
@@ -152,6 +155,9 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
             </div>
           </Stack>
         </CardContent>
+        <CardFooter>
+          <PriceChangedInfo />
+        </CardFooter>
       </Card>
     </form>
   );

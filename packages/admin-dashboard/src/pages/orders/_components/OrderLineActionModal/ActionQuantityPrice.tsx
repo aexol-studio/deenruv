@@ -1,4 +1,4 @@
-import { Button, DialogFooter, Input, Label } from '@deenruv/react-ui-devkit';
+import { Button, DialogFooter, Input, Label, Separator } from '@deenruv/react-ui-devkit';
 import { cn, RadioGroup, RadioGroupItem } from '@deenruv/react-ui-devkit';
 import { DraftOrderLineType } from '@/graphql/draft_order';
 
@@ -9,6 +9,7 @@ import { RotateCcw } from 'lucide-react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OnPriceQuantityChangeApproveInput } from './types.js';
+import { useOrder } from '@/state/order.js';
 
 type PriceType = 'brutto' | 'netto';
 
@@ -27,14 +28,27 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
   const { t } = useTranslation('orders');
   const priceInputRef = useRef<HTMLInputElement | null>(null);
   const [priceType, setPriceType] = useState<PriceType>('netto');
-  const [quantityChange, setQuantityChange] = useState<number | undefined>(undefined);
+  const [quantityChange, setQuantityChange] = useState<number | undefined>(line?.quantity);
   const [initLinePrice, _] = useState<number | undefined>();
   const [priceChange, setPriceChange] = useState({ netto: 0, brutto: 0 });
   const TAX_RATE = useMemo(() => (line?.taxRate ? line.taxRate / 100 : 0), [line?.taxRate]);
+  const { order } = useOrder();
+  const baseOrderLine = useMemo(() => order?.lines.find((l) => l.id === line?.id), [line, order?.lines]);
+
+  const changePriceToQuantity = (newQuantity: number) => {
+    if (!line) return;
+    // const currentNetPriceUnit = line?.linePrice / line?.quantity;
+    // const currentGrossPriceUnit = line?.linePriceWithTax / line?.quantity;
+    // const newNetPriceTotal = currentNetPriceUnit * newQuantity;
+    const newGrossPriceTotal = line.unitPriceWithTax * newQuantity;
+    setPriceChange({ netto: newGrossPriceTotal / (1 + TAX_RATE), brutto: newGrossPriceTotal });
+  };
+
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.currentTarget.value) setQuantityChange(0);
     const value = parseInt(e.currentTarget.value, 10);
     setQuantityChange(value);
+    changePriceToQuantity(value);
   };
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.currentTarget.value) {
@@ -65,7 +79,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
     setPriceChange({ netto: initLinePrice, brutto: initLinePrice * (1 + TAX_RATE) });
   };
   const quantityDelta = useMemo(
-    () => (quantityChange ? quantityChange - (line?.quantity ?? 0) : 0),
+    () => (quantityChange ? quantityChange - (baseOrderLine?.quantity ?? 0) : 0),
     [quantityChange, line?.quantity],
   );
   const priceDelta = useMemo(
@@ -108,7 +122,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
 
   return (
     <>
-      <div className="flex grow flex-col gap-10">
+      <div className="m-2 flex grow flex-col gap-10">
         <div className="flex items-center gap-4">
           <img
             alt="Product image"
@@ -119,122 +133,133 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
           />
           <span>{line?.productVariant.name}</span>
         </div>
-        <div className="grid gap-16 lg:grid-cols-2 lg:gap-y-28">
-          <div className="flex h-full w-full flex-col gap-2">
-            <span>{t('orderLineActionModal.quantityChange')}</span>
-            <Input
-              min={0}
-              value={quantityChange}
-              onChange={handleQuantityChange}
-              className="w-full"
-              type="number"
-              placeholder={t('orderLineActionModal.changeQuantity')}
-            />
-          </div>
-          <div className="grid shrink-0 grid-cols-3 gap-2 gap-x-5">
-            <span className="min-w-max">{t('orderLineActionModal.actualQuantity')}</span>
-            <span />
-            <span className="text-right">{line?.quantity}</span>
-            <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
-            <span />
-            <span
-              className={cn('text-muted-foreground text-right', {
-                'text-destructive': quantityDelta < 0,
-                'text-green-500': quantityDelta > 0,
-              })}
-            >
-              {quantityDelta > 0 ? `+ ${quantityDelta}` : quantityDelta}
-            </span>
-            <span className="bg-secondary col-span-3 h-[1px]"></span>
-            <span className="min-w-max">{t('orderLineActionModal.quantityAfter')}</span>
-            <span />
-            <span className="text-right">{(quantityChange ?? 0) > 0 ? quantityChange : line?.quantity}</span>
-          </div>
-          <div className="flex h-full w-full flex-col gap-2">
-            <span className="h-4" />
-            <div className="flex justify-between ">
-              <span>{t('orderLineActionModal.newPrice')}</span>
-              <RadioGroup
-                onValueChange={(priceType) => handlePriceTypeChange(priceType as PriceType)}
-                value={priceType}
-                className="flex cursor-pointer"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="netto" id="r1" />
-                  <Label className="cursor-pointer" htmlFor="r1">
-                    Netto
-                  </Label>
-                </div>
-                <div className="flex cursor-pointer items-center space-x-2">
-                  <RadioGroupItem value="brutto" id="r2" />
-                  <Label className="cursor-pointer" htmlFor="r2">
-                    Brutto
-                  </Label>
-                </div>
-              </RadioGroup>
+        <div className="flex gap-8">
+          <div className="flex w-1/2 flex-col">
+            <h3 className="mb-4 text-lg  font-medium">Quantity</h3>
+            <div className="mb-3 flex h-full w-full flex-col gap-2">
+              <span>{t('orderLineActionModal.quantityChange')}</span>
+              <Input
+                min={0}
+                value={quantityChange}
+                onChange={handleQuantityChange}
+                className="w-full"
+                type="number"
+                placeholder={t('orderLineActionModal.changeQuantity')}
+              />
             </div>
-            <Input
-              ref={priceInputRef}
-              min={0}
-              onChange={handlePriceChange}
-              className="w-full"
-              type="number"
-              placeholder={t('orderLineActionModal.changePrice')}
-            />
-            <Button
-              onClick={handleSetInitialPrice}
-              className={cn('mt-10  hidden', initLinePrice && 'flex gap-2')}
-              variant="secondary"
-            >
-              <RotateCcw />
-              <span>
-                {`${t('orderLineActionModal.resetPrice')} (${priceFormatter(initLinePrice ?? 0, line?.productVariant.currencyCode)} netto)`}
+            <div className="grid shrink-0 grid-cols-3 gap-2 gap-x-5">
+              <span className="min-w-max">{t('orderLineActionModal.actualQuantity')}</span>
+              <span />
+              <span className="text-right">{baseOrderLine?.quantity}</span>
+              <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
+              <span />
+              <span
+                className={cn('text-muted-foreground text-right', {
+                  'text-destructive': quantityDelta < 0,
+                  'text-green-500': quantityDelta > 0,
+                })}
+              >
+                {quantityDelta > 0 ? `+ ${quantityDelta}` : quantityDelta}
               </span>
-            </Button>
+              <span className="bg-secondary col-span-3 h-[1px]"></span>
+              <span className="min-w-max">{t('orderLineActionModal.quantityAfter')}</span>
+              <span />
+              <span className="text-right">{(quantityChange ?? 0) > 0 ? quantityChange : line?.quantity}</span>
+            </div>
           </div>
-          <div className="grid shrink-0 grid-cols-3 gap-2 gap-x-5">
-            <span />
-            <span className="text-muted-foreground text-right text-xs">Netto</span>
-            <span className="text-muted-foreground text-right text-xs">{`Brutto (${TAX_RATE * 100}%)`}</span>
-            <span className="min-w-max">{t('orderLineActionModal.actualPrice')}</span>
-            <span className="text-right">
-              {priceFormatter(line?.linePrice ? line.linePrice / line?.quantity : 0, line?.productVariant.currencyCode)}
-            </span>
-            <span className="text-right">
-              {priceFormatter(
-                line?.linePrice ? (line.linePrice * (1 + TAX_RATE)) / line?.quantity : 0,
-                line?.productVariant.currencyCode,
-              )}
-            </span>
-            <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
-            <span
-              className={cn('text-muted-foreground text-right', {
-                'text-destructive': priceDelta.netto < 0,
-                'text-green-500': priceDelta.netto > 0,
-              })}
-            >
-              {priceDelta.brutto > 0
-                ? `+ ${priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}`
-                : priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}
-            </span>{' '}
-            <span
-              className={cn('text-muted-foreground text-right', {
-                'text-destructive': priceDelta.brutto < 0,
-                'text-green-500': priceDelta.brutto > 0,
-              })}
-            >
-              {priceDelta.brutto > 0
-                ? `+ ${priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}`
-                : priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}
-            </span>
-            <span className="bg-secondary col-span-3 h-[1px]"></span>
-            <span className="min-w-max">{t('orderLineActionModal.priceAfter')}</span>
-            <span className="text-right">{priceFormatter(priceChange.netto, line?.productVariant.currencyCode)}</span>
-            <span className="text-right">{priceFormatter(priceChange.brutto, line?.productVariant.currencyCode)}</span>
-          </div>
+          {/* <Separator orientation="vertical" />
+          <div className="flex w-1/2 flex-col">
+            <h3 className="mb-4 text-lg font-medium">Price</h3>
+            <div className="mb-3 flex h-full w-full flex-col gap-2">
+              <div className="flex justify-between ">
+                <span>{t('orderLineActionModal.newPrice')}</span>
+                <RadioGroup
+                  onValueChange={(priceType) => handlePriceTypeChange(priceType as PriceType)}
+                  value={priceType}
+                  className="flex cursor-pointer"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="netto" id="r1" />
+                    <Label className="cursor-pointer" htmlFor="r1">
+                      Netto
+                    </Label>
+                  </div>
+                  <div className="flex cursor-pointer items-center space-x-2">
+                    <RadioGroupItem value="brutto" id="r2" />
+                    <Label className="cursor-pointer" htmlFor="r2">
+                      Brutto
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              <Input
+                ref={priceInputRef}
+                min={0}
+                onChange={handlePriceChange}
+                className="w-full"
+                type="number"
+                placeholder={t('orderLineActionModal.changePrice')}
+              />
+              <Button
+                onClick={handleSetInitialPrice}
+                className={cn('mt-10  hidden', initLinePrice && 'flex gap-2')}
+                variant="secondary"
+              >
+                <RotateCcw />
+                <span>
+                  {`${t('orderLineActionModal.resetPrice')} (${priceFormatter(initLinePrice ?? 0, line?.productVariant.currencyCode)} netto)`}
+                </span>
+              </Button>
+            </div>
+            <div className="grid shrink-0 grid-cols-3 gap-2 gap-x-5">
+              <span />
+              <span className="text-muted-foreground text-right text-xs">Netto</span>
+              <span className="text-muted-foreground text-right text-xs">{`Brutto (${TAX_RATE * 100}%)`}</span>
+              <span className="min-w-max">{t('orderLineActionModal.actualPrice')}</span>
+              <span className="text-right">
+                {priceFormatter(
+                  line?.linePrice ? line.linePrice / line?.quantity : 0,
+                  line?.productVariant.currencyCode,
+                )}
+              </span>
+              <span className="text-right">
+                {priceFormatter(
+                  line?.linePrice ? (line.linePrice * (1 + TAX_RATE)) / line?.quantity : 0,
+                  line?.productVariant.currencyCode,
+                )}
+              </span>
+              <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
+              <span
+                className={cn('text-muted-foreground text-right', {
+                  'text-destructive': priceDelta.netto < 0,
+                  'text-green-500': priceDelta.netto > 0,
+                })}
+              >
+                {priceDelta.brutto > 0
+                  ? `+ ${priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}`
+                  : priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}
+              </span>{' '}
+              <span
+                className={cn('text-muted-foreground text-right', {
+                  'text-destructive': priceDelta.brutto < 0,
+                  'text-green-500': priceDelta.brutto > 0,
+                })}
+              >
+                {priceDelta.brutto > 0
+                  ? `+ ${priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}`
+                  : priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}
+              </span>
+              <span className="bg-secondary col-span-3 h-[1px]"></span>
+              <span className="min-w-max">{t('orderLineActionModal.priceAfter')}</span>
+              <span className="text-right">{priceFormatter(priceChange.netto, line?.productVariant.currencyCode)}</span>
+              <span className="text-right">
+                {priceFormatter(priceChange.brutto, line?.productVariant.currencyCode)}
+              </span>
+            </div>
+          </div> */}
         </div>
       </div>{' '}
-      <DialogFooter>
+      <DialogFooter className="mt-6">
         <Button onClick={() => onOpenChange(false)} variant="ghost">
           {t('orderLineActionModal.cancel')}
         </Button>

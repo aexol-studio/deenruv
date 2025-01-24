@@ -90,6 +90,8 @@ export const ChangesRegister: React.FC = () => {
     };
   }, [getOrderChanges, order, modifiedOrder, linePriceChangeInput]);
 
+  const surcharges = useMemo(() => changes.resChanges.filter((ch) => ch.path.startsWith('surcharges')), [changes]);
+
   const mabeyPriceMabeyAttribute = (fieldName: string, value: string | number) => {
     if (fieldName.includes('price') && !isNaN(Number(value))) return (Number(value) / 100).toFixed(2);
     return value;
@@ -142,6 +144,7 @@ export const ChangesRegister: React.FC = () => {
                       ))}
                   </TableBody>
                 </Table>
+
                 {change?.changes.filter((change: any) => change.path.includes('attributes')).length ? (
                   <>
                     <div className="bg-muted-foreground my-6 h-[1px] w-full" />
@@ -178,6 +181,7 @@ export const ChangesRegister: React.FC = () => {
           ))}
         </div>
       ) : null}
+
       {changes.linesChanges.new.length ? (
         <div className="flex flex-col gap-2">
           <Card className="border-green-700">
@@ -227,6 +231,44 @@ export const ChangesRegister: React.FC = () => {
                       </TableRow>
                     )),
                   )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
+
+      {surcharges.length ? (
+        <div className="flex flex-col gap-2">
+          <Card className="border-green-700">
+            <CardHeader>
+              <h3 className="text-base">{t('changes.surcharges')}</h3>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('changes.keys.sku')}</TableHead>
+                    <TableHead>{t('changes.keys.price')}</TableHead>
+                    <TableHead>{t('changes.keys.priceWithTax')}</TableHead>
+                    <TableHead>{t('changes.keys.quantity')}</TableHead>
+                    <TableHead>{t('changes.keys.overallPriceWithTax')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {surcharges.map((surcharge, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="text-muted-foreground font-medium">{surcharge.value?.sku}</TableCell>
+                      <TableCell>{mabeyPriceMabeyAttribute('price', surcharge.value?.price)}</TableCell>
+                      <TableCell className="font-bold ">
+                        {mabeyPriceMabeyAttribute('price', surcharge.value?.priceWithTax)}
+                      </TableCell>
+                      <TableCell className="font-bold ">-</TableCell>
+                      <TableCell className="font-bold ">
+                        {mabeyPriceMabeyAttribute('price', surcharge.value?.priceWithTax)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </CardContent>
