@@ -59,5 +59,10 @@
   "selectProducts": "Wybierz produkty..",
   "searchProducts": "Wyszukaj parodukt..",
   "noProductsFound": "Nie znaleziono produktów",
-  "clearSelected": "Wyczyść wybrane"
+  "clearSelected": "Wyczyść wybrane",
+  "groupBy": "Grupuj według..",
+  "byDay": "Grupuj wg. dnia",
+  "byWeek": "Grupuj wg. tygodnia",
+  "byMonth": "Grupuj wg. miesiąca",
+  "byQuarter": "Grupuj wg. kwartału"
 }

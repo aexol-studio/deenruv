@@ -60,5 +60,10 @@
   "selectProducts": "Select products..",
   "searchProducts": "Search product..",
   "noProductsFound": "No products found",
-  "clearSelected": "Clear selected"
+  "clearSelected": "Clear selected",
+  "groupBy": "Group by..",
+  "byDay": "Group by day",
+  "byWeek": "Group by week",
+  "byMonth": "Group by month",
+  "byQuarter": "Group by quarter"
 }

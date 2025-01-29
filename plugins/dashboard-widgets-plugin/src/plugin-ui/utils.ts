@@ -20,11 +20,16 @@ import {
     subMonths,
     subWeeks,
     subYears,
+    parse,
+    isValid,
+    getQuarter,
+    getISOWeek,
 } from 'date-fns';
 
 import { pl, enGB } from 'date-fns/locale';
 import { MetricRangeType, ChartMetricType, GraphQLTypes, ModelTypes, MetricIntervalType } from './zeus';
 import { fromZonedTime } from 'date-fns-tz';
+import { AdditionalEntryData, GroupByPeriodArgs } from './types.js';
 
 export const getQuartersForYear = (previous?: boolean) => {
     const quarters = [];
@@ -278,4 +283,156 @@ export const giveSummaryMetricsRatio = (
         totalWithTax: +calculatePercentage(metric.totalWithTax, prevMetric.totalWithTax).toFixed(2),
     };
     return prevRatio;
+};
+
+const groupByPeriodsInitialValue = (name: string, type: ChartMetricType) => ({
+    name,
+    value: 0,
+    prevValue: 0,
+    type,
+    additionalData: [],
+});
+const quarterMap = { 1: 'I', 2: 'II', 3: 'III', 4: 'IV' };
+const monthsMap = {
+    stycznia: 'Styczeń',
+    lutego: 'Luty',
+    marca: 'Marzec',
+    kwietnia: 'Kwiecień',
+    maja: 'Maj',
+    czerwca: 'Czerwiec',
+    lipca: 'Lipiec',
+    sierpnia: 'Sierpień',
+    września: 'Wrzesień',
+    października: 'Październik',
+    listopada: 'Listopad',
+    grudnia: 'Grudzień',
+};
+
+export const groupByPeriods = (args: GroupByPeriodArgs) => {
+    const { data, language, groupBy } = args;
+
+    if (groupBy === 'day') return data;
+    return data.reduce(
+        (acc, item) => {
+            const safeName = parseNameToCurrentLanguage(item.name, language);
+            const date = parse(safeName, 'd MMMM yyyy', new Date(), {
+                locale: language === 'pl' ? pl : enGB,
+            });
+
+            switch (groupBy) {
+                case 'week': {
+                    const week = `W${getISOWeek(date)}`;
+                    if (!acc[week]) acc[week] = groupByPeriodsInitialValue(week, item.type);
+                    acc[week].value += item?.value ?? 0;
+                    acc[week].prevValue += item?.prevValue ?? 0;
+                    item.additionalData?.forEach(data => {
+                        const existingRecord = acc[week].additionalData?.find(item => item.id === data.id);
+                        if (existingRecord) {
+                            const withoutExistingRecord = acc[week].additionalData?.filter(
+                                item => item.id !== data.id,
+                            );
+                            acc[week].additionalData = [
+                                ...(withoutExistingRecord ?? []),
+                                {
+                                    ...existingRecord,
+                                    quantity: existingRecord.quantity + data.quantity,
+                                },
+                            ];
+                        } else {
+                            acc[week].additionalData?.push(data);
+                        }
+                    });
+                    return acc;
+                }
+                case 'month': {
+                    const monthDate = `${format(date, 'MMMM', {
+                        locale: language === 'pl' ? pl : enGB,
+                    })}`;
+                    const month =
+                        language === 'pl' ? monthsMap[monthDate as keyof typeof monthsMap] : monthDate;
+                    if (!acc[month]) acc[month] = groupByPeriodsInitialValue(month, item.type);
+                    acc[month].value += item?.value ?? 0;
+                    acc[month].prevValue += item?.prevValue ?? 0;
+                    item.additionalData?.forEach(data => {
+                        const existingRecord = acc[month].additionalData?.find(item => item.id === data.id);
+                        if (existingRecord) {
+                            const withoutExistingRecord = acc[month].additionalData?.filter(
+                                item => item.id !== data.id,
+                            );
+                            acc[month].additionalData = [
+                                ...(withoutExistingRecord ?? []),
+                                {
+                                    ...existingRecord,
+                                    quantity: existingRecord.quantity + data.quantity,
+                                },
+                            ];
+                        } else {
+                            acc[month].additionalData?.push(data);
+                        }
+                    });
+                    return acc;
+                }
+                case 'quarter': {
+                    const quarterDesc = language === 'pl' ? 'kwartał' : 'quarter';
+                    const quarter = `${quarterMap[getQuarter(date) as keyof typeof quarterMap]} ${quarterDesc} ${format(date, 'yyyy')}`;
+                    if (!acc[quarter]) acc[quarter] = groupByPeriodsInitialValue(quarter, item.type);
+                    acc[quarter].value += item?.value ?? 0;
+                    acc[quarter].prevValue += item?.prevValue ?? 0;
+                    item.additionalData?.forEach(data => {
+                        const existingRecord = acc[quarter].additionalData?.find(item => item.id === data.id);
+                        if (existingRecord) {
+                            const withoutExistingRecord = acc[quarter].additionalData?.filter(
+                                item => item.id !== data.id,
+                            );
+                            acc[quarter].additionalData = [
+                                ...(withoutExistingRecord ?? []),
+                                {
+                                    ...existingRecord,
+                                    quantity: existingRecord.quantity + data.quantity,
+                                },
+                            ];
+                        } else {
+                            acc[quarter].additionalData?.push(data);
+                        }
+                    });
+                    return acc;
+                }
+            }
+        },
+        {} as {
+            [key: string]: {
+                name: string;
+                value: number;
+                prevValue: number;
+                type: ChartMetricType;
+                additionalData?: AdditionalEntryData[];
+            };
+        },
+    );
+};
+
+export const parseNameToCurrentLanguage = (name: string, language: string) => {
+    const namePL = parse(name, 'd MMMM yyyy', new Date(), {
+        locale: pl,
+    });
+    const nameEN = parse(name, 'd MMMM yyyy', new Date(), {
+        locale: enGB,
+    });
+    if (isValid(namePL)) {
+        if (language === 'en') {
+            const parsedToEn = format(namePL, 'd MMMM yyyy', {
+                locale: enGB,
+            });
+            return parsedToEn;
+        } else return name;
+    }
+    if (isValid(nameEN)) {
+        if (language === 'pl') {
+            const parsedToEn = format(nameEN, 'd MMMM yyyy', {
+                locale: pl,
+            });
+            return parsedToEn;
+        } else return name;
+    }
+    return name;
 };
