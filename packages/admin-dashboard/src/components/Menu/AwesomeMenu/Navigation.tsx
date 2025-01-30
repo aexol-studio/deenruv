@@ -286,7 +286,9 @@ export function Navigation({ isCollapsed }: NavProps) {
       .map((group) => ({
         ...group,
         links: group.links.filter((link) =>
-          link.requiredPermissions?.some((permission) => userPermissions.includes(permission)),
+          'requiredPermissions' in link
+            ? link.requiredPermissions?.some((permission) => userPermissions.includes(permission))
+            : true,
         ),
       }))
       .filter((group) => group.links.length > 0);
