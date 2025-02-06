@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Inject, Post, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { ReplicateService } from '../services/replicate.service';
-import { Allow, Ctx, Permission, RequestContext } from '@deenruv/core';
+import { Ctx, RequestContext } from '@deenruv/core';
 import { Args } from '@nestjs/graphql';
 import { PredictionType } from '../graphql/generated-admin-types.js';
 

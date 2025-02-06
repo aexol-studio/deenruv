@@ -1,7 +1,7 @@
-import React, { useState, type MouseEvent, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { addDays, format } from 'date-fns';
-import { Check, ChevronsUpDown, CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { Check, CalendarIcon } from 'lucide-react';
 import { cn } from '@deenruv/react-ui-devkit';
 import { DateRange } from 'react-day-picker';
 import {
@@ -11,13 +11,10 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-    Dialog,
-    DialogTrigger,
     Input,
     Label,
     useLazyQuery,
     useMutation,
-    useSettings,
 } from '@deenruv/react-ui-devkit';
 import { translationNS } from '../translation-ns';
 import { useForm, useFormContext, FormProvider } from 'react-hook-form';

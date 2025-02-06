@@ -248,33 +248,18 @@ export class ReplicateService implements OnModuleInit {
             if (predictType === PredictionType.RFM_SCORE) replicatePredictType = 'rfm-score';
             if (predictType === PredictionType.SEGMENTATION) replicatePredictType = 'segmentation';
 
-            if (process.env.REPLICATE_DEPLOYMENT_NAME === undefined) {
+            if (!this.options.deploymentName === undefined) {
                 throw new Error('Replicate: deployment name token not set');
             }
 
-            if (!process.env.REPLICATE_URL) {
-                throw new Error('Replicate: samarite URL not set');
-            }
-
-            if (!process.env.REPLICATE_LOGIN) {
-                throw new Error('Replicate: samarite login not set');
-            }
-
-            if (!process.env.REPLICATE_PASSWORD) {
-                throw new Error('Replicate: samarite password not set');
-            }
-
-            if (!process.env.REPLICATE_API_TOKEN) {
+            if (!this.options.apiToken === undefined) {
                 throw new Error('Replicate: API token not set');
             }
 
             const response = await axios.post(
-                `https://api.replicate.com/v1/deployments/aexol-studio/${process.env.REPLICATE_DEPLOYMENT_NAME}/predictions`,
+                `https://api.replicate.com/v1/deployments/aexol-studio/${this.options.deploymentName}/predictions`,
                 {
                     input: {
-                        url: process.env.REPLICATE_URL,
-                        login: process.env.REPLICATE_URL,
-                        password: process.env.REPLICATE_PASSWORD,
                         data_path: fileInput,
                         predict_type: replicatePredictType,
                         show_metrics: showMetrics,
@@ -282,7 +267,7 @@ export class ReplicateService implements OnModuleInit {
                 },
                 {
                     headers: {
-                        Authorization: `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+                        Authorization: `Bearer ${this.options.apiToken}`,
                         'Content-Type': `application/json`,
                     },
                 },
@@ -299,7 +284,7 @@ export class ReplicateService implements OnModuleInit {
         try {
             const response = await axios.get(`https://api.replicate.com/v1/predictions/${prediction_id}`, {
                 headers: {
-                    Authorization: `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+                    Authorization: `Bearer ${this.options.apiToken}`,
                     'Content-Type': 'application/json',
                 },
             });

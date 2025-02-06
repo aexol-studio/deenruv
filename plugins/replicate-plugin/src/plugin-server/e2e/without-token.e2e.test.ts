@@ -1,17 +1,4 @@
-import {
-    ChannelService,
-    ConfigService,
-    CurrencyCode,
-    LanguageCode,
-    ProductService,
-    ProductVariantPrice,
-    ProductVariantService,
-    RequestContext,
-    RequestContextService,
-    TransactionalConnection,
-    User,
-    DefaultJobQueuePlugin,
-} from '@deenruv/core';
+import { LanguageCode, DefaultJobQueuePlugin } from '@deenruv/core';
 import { INestApplicationContext } from '@nestjs/common';
 import {
     createTestEnvironment,
@@ -27,25 +14,26 @@ import { equal } from 'assert';
 registerInitializer('postgres', new PostgresInitializer());
 
 describe('integration tests without replicate token', async () => {
-    const deploymentName = process.env.REPLICATE_DEPLOYMENT_NAME;
-    const url = process.env.REPLICATE_URL;
-    const login = process.env.REPLICATE_LOGIN;
-    const password = process.env.REPLICATE_PASSWORD;
+    const deploymentName = 'test';
     const apiToken = 'test';
-    if (!apiToken || !deploymentName || !url || !login || !password) throw new Error('impossible');
+
+    if (!apiToken || !deploymentName) throw new Error('impossible');
 
     const config = {
         ...testConfig,
         dbConnectionOptions: {
             type: 'postgres',
+            host: 'localhost',
+            port: 5432,
+            username: 'deenruv',
+            password: 'deenruv',
+            database: 'deenruv',
+            schema: 'public',
         } as { type: 'postgres' },
         plugins: [
             DefaultJobQueuePlugin.init({}),
             ReplicatePlugin.init({
                 deploymentName,
-                url,
-                login,
-                password,
                 apiToken,
             }),
         ],

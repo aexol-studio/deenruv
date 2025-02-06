@@ -1,11 +1,7 @@
 import { ID, SerializedRequestContext } from '@deenruv/core';
-import { ReplicateEntity } from './entites/replicate.entity.js';
 
 export interface ReplicatePluginOptions {
     deploymentName: string;
-    url: string;
-    login: string;
-    password: string;
     apiToken: string;
 }
 
