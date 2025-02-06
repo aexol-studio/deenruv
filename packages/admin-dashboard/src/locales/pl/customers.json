@@ -26,7 +26,7 @@
         "addBtn": "Dodaj adres",
         "phoneNumberShort": "tel.{{value}}",
         "edit": "Edytuj",
-        "save": "Zapisywanie",
+        "save": "Zapisz",
         "cancel": "Anuluj"
     },
     "orders": {

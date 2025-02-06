@@ -10,8 +10,8 @@
         "name": "Nazwa",
         "code": "Kod",
         "modalTitle": "Tytuł modalny",
-        "createdAt": "Utworzona w",
-        "updatedAt": "Zaktualizowano o",
+        "createdAt": "Utworzono w",
+        "updatedAt": "Zaktualizowano w",
         "columns": "Kolumny"
     },
     "details": {

@@ -1,6 +1,7 @@
 import { DeenruvAdminPanel, DeenruvAdminPanelSettings, DeenruvUIPlugin } from '@deenruv/admin-dashboard';
 
 // import { UIPlugin as ExampleUiPlugin } from '@deenruv/deenruv-examples-plugin/plugin-ui';
+import { ReplicateUiPlugin } from '@deenruv/replicate-plugin/plugin-ui';
 // import { UIPlugin as CMSPlugin } from '@deenruv/content-management-plugin/plugin-ui';
 // import { UIPlugin as DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin/plugin-ui';
 // import { BadgesUiPlugin } from '@deenruv/product-badges-plugin/plugin-ui';
@@ -8,7 +9,7 @@ import { DeenruvAdminPanel, DeenruvAdminPanelSettings, DeenruvUIPlugin } from '@
 import { DeenruvLogo } from './DeenruvLogo';
 
 // const plugins: Array<DeenruvUIPlugin> = [ExampleUiPlugin, CMSPlugin, BadgesUiPlugin, DashboardWidgetsPlugin];
-const plugins: Array<DeenruvUIPlugin> = [];
+const plugins: Array<DeenruvUIPlugin> = [ReplicateUiPlugin];
 const settings: DeenruvAdminPanelSettings = {
   branding: {
     name: 'Deenruv',

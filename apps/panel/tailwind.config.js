@@ -5,5 +5,11 @@ import tailwindCssTypography from '@tailwindcss/typography';
 /** @type {import('tailwindcss').Config} */
 export default {
   ...TailwindConfig,
+  content: [
+    ...TailwindConfig.content,
+    '../../node_modules/@deenruv/replicate-plugin/dist/**/*.js',
+    '../node_modules/@deenruv/replicate-plugin/dist/**/*.js',
+    './node_modules/@deenruv/replicate-plugin/dist/**/*.js',
+  ],
   plugins: [tailwindCssAnimate, tailwindCssTypography],
 };

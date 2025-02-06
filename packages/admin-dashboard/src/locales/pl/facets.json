@@ -8,8 +8,8 @@
     "table": {
         "id": "Id",
         "name": "Nazwa",
-        "createdAt": "Utworzona w",
-        "updatedAt": "Zaktualizowano o",
+        "createdAt": "Utworzono w",
+        "updatedAt": "Zaktualizowano w",
         "code": "Kod",
         "isPrivate": "Prywatny",
         "public": "Publiczny",

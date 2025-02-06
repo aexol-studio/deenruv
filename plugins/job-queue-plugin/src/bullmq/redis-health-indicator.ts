@@ -14,6 +14,9 @@ export class RedisHealthIndicator extends HealthIndicator {
         super();
     }
     async isHealthy(key: string, timeoutMs = 5000): Promise<HealthIndicatorResult> {
+        if (!this.options.connection) {
+            throw new Error('Redis connection options are not defined');
+        }
         const connection = new RedisConnection(this.options.connection);
         const pingResult = await new Promise(async (resolve, reject) => {
             try {

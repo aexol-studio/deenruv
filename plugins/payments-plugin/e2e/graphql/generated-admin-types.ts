@@ -2833,6 +2833,7 @@ export type Mutation = {
   setOrderCustomer?: Maybe<Order>;
   settlePayment: SettlePaymentResult;
   settleRefund: SettleRefundResult;
+  startOrderExportToReplicate: Scalars['Boolean']['output'];
   transitionFulfillmentToState: TransitionFulfillmentToStateResult;
   transitionOrderToState?: Maybe<TransitionOrderToStateResult>;
   transitionPaymentToState: TransitionPaymentToStateResult;
@@ -3546,6 +3547,11 @@ export type MutationSettlePaymentArgs = {
 
 export type MutationSettleRefundArgs = {
   input: SettleRefundInput;
+};
+
+
+export type MutationStartOrderExportToReplicateArgs = {
+  input: StartOrderExportToReplicateInput;
 };
 
 
@@ -4423,6 +4429,11 @@ export type PermissionDefinition = {
   description: Scalars['String']['output'];
   name: Scalars['String']['output'];
 };
+
+export enum PredictionType {
+  RFM_SCORE = 'RFM_SCORE',
+  SEGMENTATION = 'SEGMENTATION'
+}
 
 export type PreviewCollectionVariantsInput = {
   filters: Array<ConfigurableOperationInput>;
@@ -5721,6 +5732,14 @@ export enum SortOrder {
   ASC = 'ASC',
   DESC = 'DESC'
 }
+
+export type StartOrderExportToReplicateInput = {
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
+  numLastOrder?: InputMaybe<Scalars['Int']['input']>;
+  predictType?: InputMaybe<PredictionType>;
+  showMetrics?: InputMaybe<Scalars['Boolean']['input']>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
+};
 
 export type StockAdjustment = Node & StockMovement & {
   createdAt: Scalars['DateTime']['output'];

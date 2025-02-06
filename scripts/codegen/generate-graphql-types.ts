@@ -185,6 +185,14 @@ Promise.all([
                     plugins: clientPlugins,
                     config,
                 },
+                ['plugins/replicate-plugin/src/plugin-server/graphql/generated-admin-types.ts']: {
+                    schema: [
+                        ADMIN_SCHEMA_OUTPUT_FILE,
+                        'plugins/replicate-plugin/src/plugin-server/extensions/replicate.extension.ts',
+                    ],
+                    plugins: clientPlugins,
+                    config,
+                },
             },
         };
         process.chdir(path.resolve(__dirname, '../..'))

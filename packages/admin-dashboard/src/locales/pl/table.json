@@ -15,7 +15,7 @@
     "bulk": {
         "delete": {
             "title": "Czy na pewno chcesz usunąć te rekordy?",
-            "description": "Tej czynności nie można cofnąć.",
+            "description": "Tej akcji nie można cofnąć.",
             "cancel": "Anuluj",
             "confirm": "Usuń {{amount}} rekordów"
         }
@@ -24,7 +24,7 @@
         "active": "Aktywny",
         "additionalInformation": "Dodatkowe informacje",
         "code": "Kod",
-        "createdAt": "Utworzona w",
+        "createdAt": "Utworzono w",
         "currencyCode": "Kod waluty",
         "customerLastName": "Nazwisko klienta",
         "id": "Id",
@@ -40,7 +40,7 @@
         "totalWithTax": "Razem z podatkiem",
         "transactionId": "Identyfikator transakcji",
         "type": "Typ",
-        "updatedAt": "Zaktualizowano o",
+        "updatedAt": "Zaktualizowano w",
         "aggregateOrderId": "Zagregowany identyfikator zamówienia",
         "getProforma": "Pobierz proformę",
         "registeredOnCheckout": "Zarejestrowany przy kasie",

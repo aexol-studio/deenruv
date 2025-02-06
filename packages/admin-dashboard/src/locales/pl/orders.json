@@ -240,7 +240,7 @@
         "noSelectedTip": "Przed wybraniem metody wysyłki należy dodać produkty.",
         "buttonLabel": "Ustaw metodę wysyłki",
         "close": "Close",
-        "save": "Zapisywanie",
+        "save": "Zapisz",
         "setMethodTitle": "Set shipping method",
         "setMethodDescription": "Select a shipping method",
         "shippingAdded": "Metoda wysyłki została dodana pomyślnie"
@@ -504,7 +504,7 @@
             "taxRate": "Tax rate",
             "taxDescription": "Opis podatku"
         },
-        "addButton": "Dodaj dopłatę"
+        "addButton": "Add surcharge"
     },
     "changes": {
         "cancel": "Cancel",
