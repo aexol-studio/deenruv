@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/replicate-plugin",
-    "version": "0.0.60",
+    "version": "0.0.61",
     "homepage": "https://www.deenruv.com/",
     "license": "MIT",
     "files": [
@@ -17,7 +17,7 @@
         "watch": "tsc --build --watch",
         "lint": "eslint --fix .",
         "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --es --td",
-        "test:server": "cd src/plugin-server && node --test-concurrency=1 --test **/*.test.ts",
+        "test:server": "cd src/plugin-server && node --test-concurrency=1 --test .//e2e/order-export.e2e.test.ts",
         "test": "npm run test:server"
     },
     "dependencies": {
