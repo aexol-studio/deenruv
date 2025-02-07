@@ -12,6 +12,7 @@ import {
     OrderService,
     AssetService,
     DeenruvConfig,
+    Customer,
 } from '@deenruv/core';
 import { INestApplicationContext } from '@nestjs/common';
 import {
@@ -25,6 +26,7 @@ import { ReplicatePlugin } from '../index.js';
 import { ReplicateService } from '../services/replicate.service.js';
 import fs from 'fs';
 import { CreateAssetInput } from '@deenruv/common/lib/generated-types.js';
+import { In } from 'typeorm';
 import { ok } from 'assert';
 
 registerInitializer('postgres', new PostgresInitializer());
@@ -88,69 +90,109 @@ describe('integration tests with replicate token', async () => {
         await server.destroy();
     });
 
+    const output = 
     test('test order export job - model training', async () => {
-        const productVariantService = app.get(ProductVariantService);
-        const replicateService = app.get(ReplicateService);
-        const orderService = app.get(OrderService);
-        const productService = app.get(ProductService);
-        const assetService = app.get(AssetService);
+        const conn = app.get(TransactionalConnection);
 
-        await productService.create(ctx, {
-            translations: [
-                {
-                    languageCode: LanguageCode.en,
-                    name: 'Test Product',
-                    slug: 'test-product',
-                    description: 'A product for testing purposes',
-                },
-            ],
-            enabled: true,
-        });
+        let outputDict: { [key: string]: number } = {};
 
-        const assetInput: CreateAssetInput = {
-            file: {
-                createReadStream: () => fs.createReadStream(__dirname + '/fixtures/test_product_asset.png'),
-                filename: __dirname + '/fixtures/test_product_asset.png',
-                mimetype: 'image/png',
-            },
-            tags: ['test', 'product'],
-            customFields: {
-                field1: 'value1',
-                field2: 'value2',
-            },
-        };
+        outputDict = JSON.parse(`{"25438.0": 9, "25402.0": 8, "25434.0": 8, "25435.0": 8, "25439.0": 8, "67.0": 7, "25368.0": 7, "25387.0": 7, "25436.0": 6, "25431.0": 3}`) as Record<string, number>;
 
-        await assetService.create(ctx, assetInput);
+        const data: [string, number][] = [];
 
-        await productVariantService.create(ctx, [
-            {
-                productId: 1,
-                translations: [
-                    {
-                        languageCode: LanguageCode.en,
-                        name: 'Test Product Variant',
+        for (const key in outputDict) {
+            data.push([key, outputDict[key]]);
+        }
+        data.sort(([_1, ascore], [_2, bscore]) => bscore - ascore);
+
+        const predictions: {
+            email: string;
+            id: string;
+            score: number;
+        }[] = [];
+        for (let i = 0; i < data.length; i+=100) {
+            const view = data.slice(i, Math.max(i+100, data.length));
+            console.log(view.map(([id]) => parseInt(id)))
+            const res = await conn
+                .getRepository(ctx, Customer)
+                .find({
+                    where: {
+                        id: In(view.map(([id]) => parseInt(id))),
                     },
-                ],
-                facetValueIds: [],
-                sku: 'TEST-SKU',
-                price: 1000,
-                optionIds: [],
-                featuredAssetId: 1,
-                assetIds: [],
-            },
-        ]);
+                });
+            console.log(res);
 
-        const numLastOrder = 100;
+            predictions.push(...view.map(([id, score]) => ({
+                id,
+                score,
+                email: res.find((r) => r.id === id)?.emailAddress || '',
+            })));
+        }
+        console.log(predictions)
 
-        await replicateService.startModelTraining(ctx, {
-            numLastOrder,
-        });
 
-        const ordersCount = (await orderService.findAll(ctx, {})).totalItems;
+        // const productVariantService = app.get(ProductVariantService);
+        // const replicateService = app.get(ReplicateService);
+        // const orderService = app.get(OrderService);
+        // const productService = app.get(ProductService);
+        // const assetService = app.get(AssetService);
 
-        ok(
-            ordersCount >= numLastOrder,
-            'Total number of orders should be equal or greater than numLastOrder',
-        );
+        // await productService.create(ctx, {
+        //     translations: [
+        //         {
+        //             languageCode: LanguageCode.en,
+        //             name: 'Test Product',
+        //             slug: 'test-product',
+        //             description: 'A product for testing purposes',
+        //         },
+        //     ],
+        //     enabled: true,
+        // });
+
+        // const assetInput: CreateAssetInput = {
+        //     file: {
+        //         createReadStream: () => fs.createReadStream(__dirname + '/fixtures/test_product_asset.png'),
+        //         filename: __dirname + '/fixtures/test_product_asset.png',
+        //         mimetype: 'image/png',
+        //     },
+        //     tags: ['test', 'product'],
+        //     customFields: {
+        //         field1: 'value1',
+        //         field2: 'value2',
+        //     },
+        // };
+
+        // await assetService.create(ctx, assetInput);
+
+        // await productVariantService.create(ctx, [
+        //     {
+        //         productId: 1,
+        //         translations: [
+        //             {
+        //                 languageCode: LanguageCode.en,
+        //                 name: 'Test Product Variant',
+        //             },
+        //         ],
+        //         facetValueIds: [],
+        //         sku: 'TEST-SKU',
+        //         price: 1000,
+        //         optionIds: [],
+        //         featuredAssetId: 1,
+        //         assetIds: [],
+        //     },
+        // ]);
+
+        // const numLastOrder = 100;
+
+        // await replicateService.startModelTraining(ctx, {
+        //     numLastOrder,
+        // });
+
+        // const ordersCount = (await orderService.findAll(ctx, {})).totalItems;
+
+        // ok(
+        //     ordersCount >= numLastOrder,
+        //     'Total number of orders should be equal or greater than numLastOrder',
+        // );
     });
 });

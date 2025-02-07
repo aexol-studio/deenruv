@@ -316,22 +316,19 @@ export class ReplicateService implements OnModuleInit {
             }[] = [];
             for (let i = 0; i < data.length; i+=100) {
                 const view = data.slice(i, Math.max(i+100, data.length));
-                const res = (await this
+                const res = await this
                     .connection
-                    .getRepository(ctx, Order)
-                    .createQueryBuilder('o')
-                    .leftJoin('o.customer', 'c')
-                    .select(['o.id', 'c.emailAddress'])
-                    .where({
-                        id: In(view.map((v) => parseInt(v[0])))
-                    })
-                    .getRawMany()) as {id: string, emailAddress: string}[];
-                console.log(res);
+                    .getRepository(ctx, Customer)
+                    .find({
+                        where: {
+                            id: In(view.map(([id]) => parseInt(id))),
+                        },
+                    });
 
                 predictions.push(...view.map(([id, score]) => ({
                     id,
                     score,
-                    email: res.find((r) => r.id === id)?.emailAddress || '',
+                    email: res.find((r) => +r.id === +id)?.emailAddress || '',
                 })));
             }
 
