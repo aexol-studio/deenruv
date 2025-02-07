@@ -13,6 +13,7 @@ import {
     CustomerService,
     TransactionalConnection,
     ID,
+    Customer,
 } from '@deenruv/core';
 import fs from 'fs';
 import path from 'path';
@@ -26,6 +27,7 @@ import { SortOrder } from '@deenruv/common/lib/generated-types.js';
 import { mkdtemp, rm } from 'fs/promises';
 import { ReplicateEntity } from '../entites/replicate.entity.js';
 import { PredictionStatus } from '../zeus/index.js';
+import { In } from 'typeorm';
 
 @Injectable()
 export class ReplicateService implements OnModuleInit {
@@ -177,17 +179,16 @@ export class ReplicateService implements OnModuleInit {
             const orders = await this.orderService.findAll(ctx, {
                 skip: i * 1000,
                 take: 1000,
-                ...(startDate &&
-                    endDate && {
-                        filter: {
-                            orderPlacedAt: {
-                                between: {
-                                    start: new Date(startDate),
-                                    end: new Date(endDate),
-                                },
+                filter: {
+                    orderPlacedAt: startDate && endDate 
+                      ? {
+                            between: {
+                                start: new Date(startDate),
+                                end: new Date(endDate),
                             },
-                        },
-                    }),
+                        }
+                      : { isNull: false }
+                },
                 sort: {
                     orderPlacedAt: SortOrder.DESC,
                 },
@@ -282,7 +283,7 @@ export class ReplicateService implements OnModuleInit {
 
     async getPrediction(ctx: RequestContext, prediction_id: string) {
         try {
-            const response = await axios.get(`https://api.replicate.com/v1/predictions/${prediction_id}`, {
+            const response = await axios.get<{ status: string; output: string }>(`https://api.replicate.com/v1/predictions/${prediction_id}`, {
                 headers: {
                     Authorization: `Bearer ${this.options.apiToken}`,
                     'Content-Type': 'application/json',
@@ -290,24 +291,49 @@ export class ReplicateService implements OnModuleInit {
             });
 
             const status = response.data.status;
-            const customers = await this.customerService.findAll(ctx, {});
             let outputDict: { [key: string]: number } = {};
             if (!response?.data?.output) {
                 return { predictions: [], status };
             }
 
             try {
-                outputDict = JSON.parse(response?.data?.output || {});
+                outputDict = JSON.parse(response?.data?.output || '{}') as Record<string, number>;
             } catch (error) {
                 Logger.error('Failed to parse output', LOGGER_CTX);
             }
 
-            const predictions = Object.entries(outputDict).map(([key, value], index) => {
-                const email = customers.items[index]?.emailAddress || 'no-email';
-                return { id: key, score: value, email: email };
-            });
+            const data: [string, number][] = [];
 
-            predictions.sort((a, b) => b.score - a.score);
+            for (const key in outputDict) {
+                data.push([key, outputDict[key]]);
+            }
+            data.sort(([_1, ascore], [_2, bscore]) => bscore - ascore);
+
+            const predictions: {
+                email: string;
+                id: string;
+                score: number;
+            }[] = [];
+            for (let i = 0; i < data.length; i+=100) {
+                const view = data.slice(i, Math.max(i+100, data.length));
+                const res = (await this
+                    .connection
+                    .getRepository(ctx, Order)
+                    .createQueryBuilder('o')
+                    .leftJoin('o.customer', 'c')
+                    .select(['o.id', 'c.emailAddress'])
+                    .where({
+                        id: In(view.map((v) => parseInt(v[0])))
+                    })
+                    .getRawMany()) as {id: string, emailAddress: string}[];
+                console.log(res);
+
+                predictions.push(...view.map(([id, score]) => ({
+                    id,
+                    score,
+                    email: res.find((r) => r.id === id)?.emailAddress || '',
+                })));
+            }
 
             return { predictions, status };
         } catch (error) {
