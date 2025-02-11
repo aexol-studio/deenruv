@@ -17,7 +17,7 @@ import {
 } from '@deenruv/core';
 import fs from 'fs';
 import path from 'path';
-import axios from 'axios';
+import axios, { get } from 'axios';
 import {
     PredictionType,
     StartOrderExportToReplicateInput,
@@ -114,10 +114,7 @@ export class ReplicateService implements OnModuleInit {
 
     async startModelTraining(ctx: RequestContext, input: StartModelTraningInput) {
         try {
-            const { numLastOrder, startDate, endDate } = input;
-
-            const startDateObj = new Date(startDate) || new Date(2024, 1, 1);
-            const endDateObj = new Date(endDate) || new Date(2025, 1, 1);
+            const { numLastOrder } = input;
 
             const customerService = this.customerService;
             const orderService = this.orderService;
@@ -144,11 +141,28 @@ export class ReplicateService implements OnModuleInit {
                         await orderService.create(ctx, 1),
                         customer,
                     );
-                    for (let k = 0; k < Math.floor(Math.random() * 5) + 1; k++) {
-                        await orderService.addItemToOrder(ctx, order.id, 1, 1);
-                    }
-                    const randomDate = await this.randomDate(startDateObj, endDateObj, 0, 23);
-                    order.orderPlacedAt = randomDate;
+                    const itemsToAdd = Math.floor(Math.random() * 5) + 1;
+                    await orderService.addItemToOrder(ctx, order.id, 1, itemsToAdd);
+
+                    await orderService.transitionToState(ctx, order.id, 'AddingItems');
+
+                    await orderService.setShippingAddress(ctx, order.id, {
+                        streetLine1: 'test',
+                        countryCode: 'PL',
+                    });
+
+                    await orderService.setShippingMethod(ctx, order.id, [1, 2]);
+
+                    await orderService.transitionToState(ctx, order.id, 'ArrangingPayment');
+
+                    await orderService.addPaymentToOrder(ctx, order.id, {
+                        method: 'standard-payment',
+                        metadata: {
+                            transfer_group: '',
+                        },
+                    });
+
+                    await orderService.transitionToState(ctx, order.id, 'PaymentAuthorized');
                 }
             }
         } catch (error) {
@@ -180,14 +194,15 @@ export class ReplicateService implements OnModuleInit {
                 skip: i * 1000,
                 take: 1000,
                 filter: {
-                    orderPlacedAt: startDate && endDate 
-                      ? {
-                            between: {
-                                start: new Date(startDate),
-                                end: new Date(endDate),
-                            },
-                        }
-                      : { isNull: false }
+                    orderPlacedAt:
+                        startDate && endDate
+                            ? {
+                                  between: {
+                                      start: new Date(startDate),
+                                      end: new Date(endDate),
+                                  },
+                              }
+                            : { isNull: false },
                 },
                 sort: {
                     orderPlacedAt: SortOrder.DESC,
@@ -202,8 +217,6 @@ export class ReplicateService implements OnModuleInit {
         const tmp = await mkdtemp('orders');
         const filePath = path.join(tmp, './orders.csv');
         fs.writeFileSync(filePath, csvString);
-
-        Logger.info(`Orders saved to ${filePath}`, LOGGER_CTX);
         Logger.info('order export completed', LOGGER_CTX);
 
         const prediction_id = await this.triggerPredictApi(filePath, predictType, showMetrics || false);
@@ -283,12 +296,15 @@ export class ReplicateService implements OnModuleInit {
 
     async getPrediction(ctx: RequestContext, prediction_id: string) {
         try {
-            const response = await axios.get<{ status: string; output: string }>(`https://api.replicate.com/v1/predictions/${prediction_id}`, {
-                headers: {
-                    Authorization: `Bearer ${this.options.apiToken}`,
-                    'Content-Type': 'application/json',
+            const response = await axios.get<{ status: string; output: string }>(
+                `https://api.replicate.com/v1/predictions/${prediction_id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.options.apiToken}`,
+                        'Content-Type': 'application/json',
+                    },
                 },
-            });
+            );
 
             const status = response.data.status;
             let outputDict: { [key: string]: number } = {};
@@ -314,22 +330,21 @@ export class ReplicateService implements OnModuleInit {
                 id: string;
                 score: number;
             }[] = [];
-            for (let i = 0; i < data.length; i+=100) {
-                const view = data.slice(i, Math.max(i+100, data.length));
-                const res = await this
-                    .connection
-                    .getRepository(ctx, Customer)
-                    .find({
-                        where: {
-                            id: In(view.map(([id]) => parseInt(id))),
-                        },
-                    });
+            for (let i = 0; i < data.length; i += 100) {
+                const view = data.slice(i, Math.max(i + 100, data.length));
+                const res = await this.connection.getRepository(ctx, Customer).find({
+                    where: {
+                        id: In(view.map(([id]) => parseInt(id))),
+                    },
+                });
 
-                predictions.push(...view.map(([id, score]) => ({
-                    id,
-                    score,
-                    email: res.find((r) => +r.id === +id)?.emailAddress || '',
-                })));
+                predictions.push(
+                    ...view.map(([id, score]) => ({
+                        id,
+                        score,
+                        email: res.find(r => +r.id === +id)?.emailAddress || '',
+                    })),
+                );
             }
 
             return { predictions, status };

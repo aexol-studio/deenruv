@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { Check, CalendarIcon } from 'lucide-react';
 import { cn } from '@deenruv/react-ui-devkit';
 import { DateRange } from 'react-day-picker';
@@ -263,7 +263,13 @@ export const ReplicateInput = () => {
 
     const submit = async (data: Formvalues) => {
         try {
-            console.log('data', data);
+            setPredictionID(null);
+            setPredictionEntityID(null);
+            setIsPolling(true);
+            retryCountRef.current = 0;
+            retryPredictionCountRef.current = 0;
+            setLoading(true);
+
             const response = await startOrderExportToReplicate({
                 input: {
                     numLastOrder: Number(data.num_last_order),
@@ -275,7 +281,6 @@ export const ReplicateInput = () => {
             });
 
             setPredictionEntityID(response.startOrderExportToReplicate);
-            setLoading(true);
         } catch (error) {
             console.log(error);
         }

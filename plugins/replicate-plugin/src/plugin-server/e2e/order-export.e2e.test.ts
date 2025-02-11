@@ -90,52 +90,12 @@ describe('integration tests with replicate token', async () => {
         await server.destroy();
     });
 
-    const output = 
     test('test order export job - model training', async () => {
-        const conn = app.get(TransactionalConnection);
-
-        let outputDict: { [key: string]: number } = {};
-
-        outputDict = JSON.parse(`{"25438.0": 9, "25402.0": 8, "25434.0": 8, "25435.0": 8, "25439.0": 8, "67.0": 7, "25368.0": 7, "25387.0": 7, "25436.0": 6, "25431.0": 3}`) as Record<string, number>;
-
-        const data: [string, number][] = [];
-
-        for (const key in outputDict) {
-            data.push([key, outputDict[key]]);
-        }
-        data.sort(([_1, ascore], [_2, bscore]) => bscore - ascore);
-
-        const predictions: {
-            email: string;
-            id: string;
-            score: number;
-        }[] = [];
-        for (let i = 0; i < data.length; i+=100) {
-            const view = data.slice(i, Math.max(i+100, data.length));
-            console.log(view.map(([id]) => parseInt(id)))
-            const res = await conn
-                .getRepository(ctx, Customer)
-                .find({
-                    where: {
-                        id: In(view.map(([id]) => parseInt(id))),
-                    },
-                });
-            console.log(res);
-
-            predictions.push(...view.map(([id, score]) => ({
-                id,
-                score,
-                email: res.find((r) => r.id === id)?.emailAddress || '',
-            })));
-        }
-        console.log(predictions)
-
-
-        // const productVariantService = app.get(ProductVariantService);
-        // const replicateService = app.get(ReplicateService);
-        // const orderService = app.get(OrderService);
-        // const productService = app.get(ProductService);
-        // const assetService = app.get(AssetService);
+        const productVariantService = app.get(ProductVariantService);
+        const replicateService = app.get(ReplicateService);
+        const orderService = app.get(OrderService);
+        const productService = app.get(ProductService);
+        const assetService = app.get(AssetService);
 
         // await productService.create(ctx, {
         //     translations: [
@@ -181,6 +141,23 @@ describe('integration tests with replicate token', async () => {
         //         assetIds: [],
         //     },
         // ]);
+        await productVariantService.create(ctx, [
+            {
+                productId: 1,
+                translations: [
+                    {
+                        languageCode: LanguageCode.en,
+                        name: 'Test Product Variant',
+                    },
+                ],
+                facetValueIds: [],
+                sku: 'TEST-SKU',
+                price: 1000,
+                optionIds: [],
+                featuredAssetId: 1,
+                assetIds: [],
+            },
+        ]);
 
         // const numLastOrder = 100;
 
