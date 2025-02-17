@@ -47,7 +47,9 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
       {needsPayment && (
         <DialogTrigger asChild>
           <Button variant="secondary" size="sm">
-            {t('create.buttonAddPayment', { value: priceFormatter(order.totalWithTax - paidAmount || 0) })}
+            {t('create.buttonAddPayment', {
+              value: priceFormatter(order.totalWithTax - paidAmount || 0, order?.currencyCode),
+            })}
           </Button>
         </DialogTrigger>
       )}

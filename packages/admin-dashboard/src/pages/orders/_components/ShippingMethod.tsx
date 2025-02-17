@@ -155,11 +155,13 @@ export const ShippingMethod: React.FC = () => {
                           </div>
                           <div className="flex flex-col items-start">
                             <h3 className="text-sm">Price without tax</h3>
-                            <p className="text-sm">{priceFormatter(shippingMethod.price)}</p>
+                            <p className="text-sm">{priceFormatter(shippingMethod.price, order?.currencyCode)}</p>
                           </div>
                           <div className="flex flex-col items-start">
                             <h3 className="text-sm">Price with tax</h3>
-                            <p className="text-sm">{priceFormatter(shippingMethod.priceWithTax)}</p>
+                            <p className="text-sm">
+                              {priceFormatter(shippingMethod.priceWithTax, order?.currencyCode)}
+                            </p>
                           </div>
                         </button>
                       </div>
@@ -192,7 +194,9 @@ export const ShippingMethod: React.FC = () => {
               <>
                 <Label className="text-muted-foreground text-sm">{selectedShipping.name}</Label>
                 <Label className="text-muted-foreground text-sm">{selectedShipping.code}</Label>
-                <Label className="text-muted-foreground text-sm">{priceFormatter(order?.shipping || 0)}</Label>
+                <Label className="text-muted-foreground text-sm">
+                  {priceFormatter(order?.shipping || 0, order?.currencyCode)}
+                </Label>
               </>
             ) : (
               <Label className="text-muted-foreground text-sm">{t('selectShipmentMethod.noSelected')}</Label>

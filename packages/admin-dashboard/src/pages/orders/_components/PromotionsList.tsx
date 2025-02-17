@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardDescription,
   CardHeader,
@@ -15,6 +16,7 @@ import { priceFormatter } from '@/utils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CouponCodesCard } from '@/pages/orders/_components/CouponCodesCard.js';
+import { Trash } from 'lucide-react';
 
 export const PromotionsList: React.FC = () => {
   const { order } = useOrder();
@@ -31,7 +33,10 @@ export const PromotionsList: React.FC = () => {
             <TableHeader>
               <TableRow noHover>
                 <TableHead>{t('taxSummary.description')}</TableHead>
-                <TableHead>{t('taxSummary.taxRate')}</TableHead>
+                <TableHead>{t('couponCodes.title')}</TableHead>
+                {/* <TableHead align="right" style={{ textAlign: 'right' }}>
+                  {t('table.actions')}
+                </TableHead> */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -39,7 +44,12 @@ export const PromotionsList: React.FC = () => {
                 order.promotions.map(({ name, couponCode }) => (
                   <TableRow key={name} noHover>
                     <TableCell className="capitalize">{name}</TableCell>
-                    <TableCell>{couponCode}</TableCell>
+                    <TableCell>{couponCode || '-'}</TableCell>
+                    {/* <TableCell align="right">
+                      <Button size="icon" variant="destructive">
+                        <Trash size={16} />
+                      </Button>
+                    </TableCell> */}
                   </TableRow>
                 ))
               ) : (

@@ -1,6 +1,6 @@
 {
     "create": "Utwórz kolekcję",
-    "edit": "Edytuj kolekcję",
+    "edit": "Edycja kolekcji",
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
@@ -70,7 +70,7 @@
     "rowsSelected": "{{selected}} z {{all}} wybranych wierszy",
     "duplicateCollection": "Na pewno chcesz zduplikować te kolekcje?",
     "collectionActions": {
-        "move": "Przenieś",
+        "move": "Przeprowadzka",
         "copy": "Duplikat",
         "assign": "Przypisz do kanału",
         "deleteFromChannel": "Usuń z bieżącego kanału"
@@ -109,7 +109,7 @@
         "removeError": "Nie można usunąć kolekcji z kanału"
     },
     "moveCollectionsToChannels": {
-        "moveCollections": "Przenoszenie kolekcji",
+        "moveCollections": "Przenieś kolekcje",
         "move": "Move",
         "selected": "Wybrany",
         "availableChannels": "Dostępne kanały",
