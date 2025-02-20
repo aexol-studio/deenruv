@@ -53,6 +53,7 @@ export const StockLocationDetailView = () => {
                     label={t('details.basic.name')}
                     value={state.name?.value}
                     onChange={(e) => setField('name', e.target.value)}
+                    errors={state.name?.errors}
                     required
                   />
                   <Stack column className="basis-full">

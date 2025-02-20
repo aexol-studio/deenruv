@@ -5,6 +5,8 @@
   "baseInfoId": "Id: {{value}}",
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",

@@ -5,6 +5,8 @@ import { CustomerDetailSidebar } from '@/pages/customers/_components/CustomerDet
 import { OrdersTab } from '@/pages/customers/_components/OrdersTab';
 import { HistoryTab } from '@/pages/customers/_components/HistoryTab';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
+import { useValidators } from '@/hooks/useValidators.js';
+import { useTranslation } from 'react-i18next';
 
 const CreateCustomerMutation = typedGql('mutation', { scalars })({
   createCustomer: [
@@ -35,9 +37,11 @@ const RemoveCustomerMutation = typedGql('mutation', { scalars })({
 
 export const CustomersDetailPage = () => {
   const { id } = useParams();
+  const { t } = useTranslation('customers');
   const [create] = useMutation(CreateCustomerMutation);
   const [update] = useMutation(UpdateCustomerMutation);
   const [remove] = useMutation(RemoveCustomerMutation);
+  const { stringValidator, emailValidator } = useValidators();
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -52,7 +56,11 @@ export const CustomersDetailPage = () => {
           form: createDeenruvForm({
             key: 'CreateCustomerInput',
             keys: ['title', 'phoneNumber', 'firstName', 'lastName', 'emailAddress'],
-            config: {},
+            config: {
+              firstName: stringValidator(t('validation.firstNameRequired')),
+              lastName: stringValidator(t('validation.lastNameRequired')),
+              emailAddress: emailValidator,
+            },
             onDeleted: () => {
               if (!id) return;
               return remove({ id });

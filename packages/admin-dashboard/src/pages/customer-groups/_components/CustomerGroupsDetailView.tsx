@@ -42,6 +42,7 @@ export const CustomerGroupsDetailView = () => {
                     label={t('basic.name')}
                     value={state.name?.value}
                     onChange={(e) => setField('name', e.target.value)}
+                    errors={state.name?.errors}
                     required
                   />
                 </Stack>

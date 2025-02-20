@@ -6,6 +6,8 @@
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
   "defaultChannel": "Default Channel",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "code": "Code",
@@ -52,5 +54,12 @@
     "successMessage": "Channel has been deleted.",
     "deleteOrCancel": "Delete/Cancel selected"
   },
-  "selectedValue": "{{from}} of {{to}} row(s) selected"
+  "selectedValue": "{{from}} of {{to}} row(s) selected",
+  "validation": {
+    "codeRequired": "Code is required",
+    "tokenRequired": "Token is required",
+    "langCodeRequired": "Default language code is required",
+    "shippingZoneRequired": "Default shipping zone is required",
+    "taxZoneRequired": "Default tax zone is required"
+  }
 }

@@ -5,6 +5,8 @@
   "baseInfoId": "Id: {{value}}",
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",
@@ -137,5 +139,10 @@
   "errors": {
     "generic": "Something wen't wrong",
     "couldntMoveCollection": "Coudld't move collections"
+  },
+  "validation": {
+    "filtersCodeRequired": "Pick at least one filter",
+    "filterArgsRequired": "Fill all fields",
+    "nameSlugRequired": "Both fields name and slug are required"
   }
 }

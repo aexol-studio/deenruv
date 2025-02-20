@@ -3,6 +3,7 @@ import { DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@dee
 import { StockLocationDetailView } from './_components/StockLocationDetailView';
 import { typedGql, scalars, $, ModelTypes, Permission } from '@deenruv/admin-types';
 import { useCallback } from 'react';
+import { useValidators } from '@/hooks/useValidators.js';
 
 type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
 type FormDataType = Partial<{
@@ -42,6 +43,7 @@ export const StockLocationsDetailPage = () => {
   const [update] = useMutation(EditStockLocationMutation);
   const [create] = useMutation(CreateStockLocationMutation);
   const [remove] = useMutation(DeleteStockLocationMutation);
+  const { nameValidator } = useValidators();
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
@@ -90,7 +92,9 @@ export const StockLocationsDetailPage = () => {
           form: createDeenruvForm({
             key: 'CreateStockLocationInput',
             keys: ['description', 'name'],
-            config: {},
+            config: {
+              name: nameValidator,
+            },
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),

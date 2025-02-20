@@ -63,7 +63,17 @@ export const ZonesDetailPage = () => {
     fetchZone();
   }, [id, setLoading, fetchZone]);
 
-  const { state, setField } = useGFFLP('CreateZoneInput', 'name', 'memberIds')({});
+  const { state, setField, haveValidFields } = useGFFLP(
+    'CreateZoneInput',
+    'name',
+    'memberIds',
+  )({
+    name: {
+      validate: (v) => {
+        if (!v || v === '') return [t('validation.nameRequired')];
+      },
+    },
+  });
 
   useEffect(() => {
     if (!zone) return;
@@ -82,7 +92,7 @@ export const ZonesDetailPage = () => {
         {
           input: {
             name: state.name!.validatedValue!,
-            memberIds: state.memberIds!.validatedValue!,
+            memberIds: state.memberIds ? state.memberIds.validatedValue : undefined,
           },
         },
         {
@@ -149,7 +159,7 @@ export const ZonesDetailPage = () => {
       },
     );
 
-    setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual || !haveValidFields);
   }, [state, zone, editMode]);
 
   const handleChange = useCallback(
@@ -202,6 +212,7 @@ export const ZonesDetailPage = () => {
                       label={t('details.basic.name')}
                       value={state.name?.value}
                       onChange={(e) => setField('name', e.target.value)}
+                      errors={state.name?.errors}
                       required
                     />
                   </Stack>

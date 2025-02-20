@@ -13,6 +13,8 @@ import {
   Option,
   apiClient,
   useRouteGuard,
+  SimpleSelect,
+  RichTextEditor,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -21,11 +23,10 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/shipping-methods/_components/PageHeader';
 import { ShippingMethodDetailsSelector, ShippingMethodDetailsType } from '@/graphql/shippingMethods';
 import { LanguageCode } from '@deenruv/admin-types';
-import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
 import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
-import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 
 export const ShippingMethodsDetailPage = () => {
   const { id } = useParams();
@@ -75,7 +76,7 @@ export const ShippingMethodsDetailPage = () => {
     fetchFulfillmentHandlers();
   }, [id, setLoading, fetchShippingMethod, fetchFulfillmentHandlers]);
 
-  const { state, setField, haveValidFields } = useGFFLP(
+  const { state, setField, haveValidFields, checkIfAllFieldsAreValid } = useGFFLP(
     'UpdateShippingMethodInput',
     'code',
     'customFields',
@@ -84,14 +85,42 @@ export const ShippingMethodsDetailPage = () => {
     'calculator',
     'fulfillmentHandler',
   )({
+    fulfillmentHandler: {
+      validate: (v) => {
+        if (!v) return [t('validation.fulfillmentHandlerRequired')];
+      },
+    },
     checker: {
       validate: (v) => {
-        if (!v) return [t('validation.checkerRequired')];
+        const hasCode = !!v?.code;
+        const hasArguments = v?.arguments.filter((a) => a.value).length;
+        const errors = [];
+        if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
+        if (!hasArguments) errors.push(t('validation.checkerArgsRequired'));
+        return errors;
       },
     },
     calculator: {
       validate: (v) => {
-        if (!v) return [t('validation.calculatorRequired')];
+        const hasCode = !!v?.code;
+        const hasInvalidArguments = v?.arguments.filter((a) => !a.value || a.value === 'false').length; // args have 'false' value by default
+        const errors = [];
+        console.log(v?.arguments);
+        if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
+        if (hasInvalidArguments) errors.push(t('validation.checkerArgsRequired'));
+        return errors;
+      },
+    },
+    code: {
+      validate: (v) => {
+        if (!v || v === '') return [t('validation.required')];
+      },
+    },
+    translations: {
+      validate: (v) => {
+        const { name } = v[0];
+
+        if (!name) return [t('validation.nameRequired')];
       },
     },
   });
@@ -116,7 +145,9 @@ export const ShippingMethodsDetailPage = () => {
   }, [shippingMethod]);
 
   const createShippingMethod = useCallback(() => {
-    setHasUnsavedChanges(false);
+    const valid = checkIfAllFieldsAreValid();
+    if (!valid) return;
+
     apiClient('mutation')({
       createShippingMethod: [
         {
@@ -135,7 +166,8 @@ export const ShippingMethodsDetailPage = () => {
     })
       .then((resp) => {
         toast.message(t('toasts.shippingMethodCreatedSuccess'));
-        navigate(Routes.shippingMethods.to(resp.createShippingMethod.id));
+        setHasUnsavedChanges(false);
+        setTimeout(() => navigate(Routes.shippingMethods.to(resp.createShippingMethod.id)));
       })
       .catch(() => toast.error(t('toasts.shippingMethodCreatedError')));
   }, [state, t, navigate]);
@@ -178,7 +210,10 @@ export const ShippingMethodsDetailPage = () => {
       },
       {
         code: shippingMethod?.code,
-        calculator: shippingMethod?.calculator,
+        calculator: shippingMethod?.calculator && {
+          code: shippingMethod?.calculator.code,
+          arguments: shippingMethod?.calculator.args,
+        },
         fulfillmentHandler: shippingMethod?.fulfillmentHandlerCode,
         translations: shippingMethod?.translations,
         // customFields: shippingMethod?.customFields,
@@ -190,7 +225,7 @@ export const ShippingMethodsDetailPage = () => {
     const disabled = areEqual || !haveValidFields;
 
     setButtonDisabled(disabled);
-  }, [state, shippingMethod, editMode]);
+  }, [state, shippingMethod]);
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
@@ -232,12 +267,13 @@ export const ShippingMethodsDetailPage = () => {
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
-                <Stack className="flex w-full flex-wrap items-end gap-4 p-0 pt-4 xl:flex-nowrap">
+                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
                       value={currentTranslationValue?.name ?? undefined}
                       onChange={(e) => setTranslationField('name', e.target.value)}
+                      errors={state.translations?.errors}
                       required
                     />
                   </Stack>
@@ -246,6 +282,7 @@ export const ShippingMethodsDetailPage = () => {
                       label={t('details.basic.code')}
                       value={state.code?.value ?? undefined}
                       onChange={(e) => setField('code', e.target.value)}
+                      errors={state.code?.errors}
                       required
                     />
                   </Stack>
@@ -263,6 +300,7 @@ export const ShippingMethodsDetailPage = () => {
                     value={state.fulfillmentHandler?.value ?? undefined}
                     onValueChange={(e) => setField('fulfillmentHandler', e)}
                     options={fulfillmentHandlersOptions}
+                    errors={state.fulfillmentHandler?.errors}
                   />
                 </Stack>
               </CardContent>
@@ -272,10 +310,12 @@ export const ShippingMethodsDetailPage = () => {
           <CheckerCard
             currentCheckerValue={state.checker?.value ?? undefined}
             onCheckerValueChange={(checker) => setField('checker', checker)}
+            errors={state.checker?.errors}
           />
           <CalculatorCard
             currentCalculatorValue={state.calculator?.value ?? undefined}
             onCalculatorValueChange={(calculator) => setField('calculator', calculator)}
+            errors={state.calculator?.errors}
           />
           <TestCard calculator={state.calculator?.value ?? undefined} checker={state.checker?.value ?? undefined} />
         </Stack>

@@ -6,6 +6,8 @@
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Aktualizacja: {{value}}",
     "defaultCountry": "Domyślny kraj",
+    "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
+    "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "code": "Kod",
@@ -27,7 +29,7 @@
         }
     },
     "validation": {
-        "required": "Pole jest wymagane"
+        "required": "Kod jest wymagany"
     },
     "toasts": {
         "countryLoadingError": "Nie udało się załadować kraju o identyfikatorze {{value}}",

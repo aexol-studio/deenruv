@@ -5,6 +5,8 @@
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
+    "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "name": "Nazwa",
@@ -66,8 +68,13 @@
         "shippingMethodDeleteError": "Nie udało się usunąć metody wysyłki"
     },
     "validation": {
-        "checkerRequired": "Wymagane jest sprawdzenie kwalifikowalności wysyłki",
-        "calculatorRequired": "Kalkulator wysyłki jest wymagany"
+        "checkerCodeRequired": "Wymagany jest kod sprawdzający uprawnienia do wysyłki",
+        "checkerArgsRequired": "Wymagane są argumenty sprawdzania kwalifikowalności wysyłki",
+        "calculatorCodeRequired": "Wymagany jest kod kalkulatora wysyłki",
+        "calculatorArgsRequired": "Wymagane są argumenty kalkulatora wysyłki",
+        "required": "Pole jest wymagane",
+        "fulfillmentHandlerRequired": "Fulfillment Handler jest wymagany",
+        "nameRequired": "Nazwa jest wymagana"
     },
     "deleteShippingMethod": {
         "title": "Usuń metodę wysyłki",

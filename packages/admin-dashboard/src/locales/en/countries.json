@@ -6,6 +6,8 @@
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
   "defaultCountry": "Default Country",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "code": "Code",
@@ -27,7 +29,7 @@
     }
   },
   "validation": {
-    "required": "Field is required"
+    "required": "Code is required"
   },
   "toasts": {
     "countryLoadingError": "Failed to load country with id {{value}}",

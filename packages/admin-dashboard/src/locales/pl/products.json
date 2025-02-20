@@ -179,5 +179,8 @@
         "selectOption": "Wybierz opcję",
         "createBasic": "Dane podstawowe",
         "createOptions": "Options"
+    },
+    "validation": {
+        "nameSlugRequired": "Pola nazwy i slug są wymagane"
     }
 }

@@ -68,7 +68,11 @@ export const ProductDetailView = () => {
   ) : (
     <div>
       <div className="flex w-full flex-col gap-4">
-        <BasicFieldsCard currentTranslationValue={currentTranslationValue} onChange={setTranslationField} />
+        <BasicFieldsCard
+          currentTranslationValue={currentTranslationValue}
+          onChange={setTranslationField}
+          errors={state.translations?.errors}
+        />
         <DetailViewMarker position={'products-detail-view'} />
         <EntityCustomFields entityName="product" id={id} currentLanguage={contentLng} />
         <AssetsCard

@@ -1,4 +1,4 @@
-import { Routes, Button, Label } from '@deenruv/react-ui-devkit';
+import { Routes, Button, Label, SimpleTooltip } from '@deenruv/react-ui-devkit';
 import { ChannelDetailsType } from '@/graphql/channels';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
@@ -31,11 +31,15 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ channel, editMode, butto
             {editMode ? channel?.code : t('create')}
           </h1>
         </div>
-        <CreateEditButton
-          createPermission={Permission.CreateChannel}
-          editPermission={Permission.UpdateChannel}
-          {...{ buttonDisabled, editMode, onCreate, onEdit }}
-        />
+        <SimpleTooltip
+          content={buttonDisabled ? (editMode ? t('noChangesTooltip') : t('buttonDisabledTooltip')) : undefined}
+        >
+          <CreateEditButton
+            createPermission={Permission.CreateChannel}
+            editPermission={Permission.UpdateChannel}
+            {...{ buttonDisabled, editMode, onCreate, onEdit }}
+          />
+        </SimpleTooltip>
       </div>
       {editMode && channel && (
         <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">

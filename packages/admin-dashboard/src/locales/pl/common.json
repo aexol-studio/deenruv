@@ -575,5 +575,13 @@
             "ORDER_CUSTOMER_UPDATED": "Klient zamówienia został zaktualizowany"
         }
     },
-    "noImage": "Brak obrazu dla elementu"
+    "noImage": "Brak obrazu dla elementu",
+    "validation": {
+        "fieldRequired": "To pole jest wymagane",
+        "nameRequired": "Nazwa jest wymagana",
+        "emailRequired": "Email jest wymagany",
+        "emailPattern": "Wpisz poprawny adres e-mail",
+        "configurableCodeRequired": "Opcja jest wymagana",
+        "configurableArgsRequired": "Wypełnij wszystkie pola"
+    }
 }

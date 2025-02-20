@@ -12,9 +12,10 @@ type PartialNull<T> = {
 interface BasicFieldsCardProps {
   currentTranslationValue: PartialNull<ModelTypes['Product']['translations'][0]> | undefined;
   onChange: (field: 'name' | 'slug' | 'description', value: string) => void;
+  errors?: string[];
 }
 
-export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTranslationValue, onChange }) => {
+export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTranslationValue, onChange, errors }) => {
   const { t } = useTranslation('products');
 
   return (
@@ -24,12 +25,13 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
       </CardHeader>
       <CardContent>
         <Stack column className="flex-1 gap-y-4">
-          <Stack className="gap-3">
+          <Stack className="items-start gap-3">
             <Input
               label={t('name')}
               placeholder={t('name')}
               value={currentTranslationValue?.name ?? undefined}
               onChange={(e) => onChange('name', e.target.value)}
+              errors={errors}
             />
             <Input
               value={currentTranslationValue?.slug ?? undefined}

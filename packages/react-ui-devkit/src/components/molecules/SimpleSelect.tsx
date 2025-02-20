@@ -9,6 +9,7 @@ import {
     SelectValue,
 } from '@/components/atoms';
 import { SelectProps } from '@radix-ui/react-select';
+import { ErrorMessage } from '@/components/molecules';
 
 interface CustomSelectProps extends SelectProps {
     options: Option[] | undefined;
@@ -25,11 +26,17 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
     label,
     size = 'base',
     errors,
+    disabled,
 }) => {
     return (
         <div className="flex flex-col w-full gap-2">
             {label && <Label>{label}</Label>}
-            <Select defaultValue={defaultValue} onValueChange={onValueChange} value={value}>
+            <Select
+                defaultValue={defaultValue}
+                onValueChange={onValueChange}
+                value={value}
+                disabled={disabled}
+            >
                 <SelectTrigger {...(size === 'sm' && { className: 'h-[30px] text-[13px]' })}>
                     <SelectValue placeholder="Select element" />
                 </SelectTrigger>
@@ -41,9 +48,7 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
                     ))}
                 </SelectContent>
             </Select>
-            {errors?.length && (
-                <p className="text-destructive mb-2  mt-1 min-h-5 text-sm font-medium">{errors.join(', ')}</p>
-            )}
+            <ErrorMessage errors={errors} className="mt-0" />
         </div>
     );
 };

@@ -5,6 +5,7 @@ import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
 import { createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
+import { useTranslation } from 'react-i18next';
 
 const EditProductMutation = typedGql('mutation', { scalars })({
   updateProduct: [
@@ -37,6 +38,7 @@ const DeleteProductMutation = typedGql('mutation', { scalars })({
 
 export const ProductsDetailPage = () => {
   const { id } = useParams();
+  const { t } = useTranslation('products');
   const [update] = useMutation(EditProductMutation);
   const [create] = useMutation(CreateProductMutation);
   const [remove] = useMutation(DeleteProductMutation);
@@ -54,7 +56,15 @@ export const ProductsDetailPage = () => {
           form: createDeenruvForm({
             key: 'CreateProductInput',
             keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
-            config: {},
+            config: {
+              translations: {
+                validate: (v) => {
+                  const { name, slug } = v[0];
+
+                  if (!name || !slug) return [t('validation.nameSlugRequired')];
+                },
+              },
+            },
             onSubmitted: (data) => {
               if (!data.translations) throw new Error('Name is required.');
               const sharedInput = {

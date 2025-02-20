@@ -1,4 +1,4 @@
-import { Routes, Button, Label } from '@deenruv/react-ui-devkit';
+import { Routes, Button, Label, SimpleTooltip } from '@deenruv/react-ui-devkit';
 import { AdminDetailsType } from '@/graphql/admins';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
@@ -31,11 +31,15 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ admin, editMode, buttonD
             {editMode ? `${admin?.firstName} ${admin?.lastName}` : t('create')}
           </h1>
         </div>
-        <CreateEditButton
-          createPermission={Permission.CreateAdministrator}
-          editPermission={Permission.UpdateAdministrator}
-          {...{ buttonDisabled, editMode, onCreate, onEdit }}
-        />
+        <SimpleTooltip
+          content={buttonDisabled ? (editMode ? t('noChangesTooltip') : t('buttonDisabledTooltip')) : undefined}
+        >
+          <CreateEditButton
+            createPermission={Permission.CreateAdministrator}
+            editPermission={Permission.UpdateAdministrator}
+            {...{ buttonDisabled, editMode, onCreate, onEdit }}
+          />
+        </SimpleTooltip>
       </div>
       {editMode && admin && (
         <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">

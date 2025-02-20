@@ -6,6 +6,8 @@
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Aktualizacja: {{value}}",
     "defaultChannel": "Domyślny kanał",
+    "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
+    "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "code": "Kod",
@@ -52,5 +54,12 @@
         "successMessage": "Kanał został usunięty.",
         "deleteOrCancel": "Usuń/Anuluj zaznaczone"
     },
-    "selectedValue": "{{from}} z {{to}} wybranych wierszy"
+    "selectedValue": "{{from}} z {{to}} wybranych wierszy",
+    "validation": {
+        "codeRequired": "Kod jest wymagany",
+        "tokenRequired": "Token jest wymagany",
+        "langCodeRequired": "Wymagany jest domyślny kod języka",
+        "shippingZoneRequired": "Wymagana jest domyślna strefa wysyłki",
+        "taxZoneRequired": "Domyślna strefa podatkowa jest wymagana"
+    }
 }

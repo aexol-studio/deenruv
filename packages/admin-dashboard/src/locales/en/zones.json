@@ -5,6 +5,8 @@
   "baseInfoId": "Id: {{value}}",
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",
@@ -38,5 +40,8 @@
     "description": "Are you sure you want to delete this zone?",
     "successMessage": "Zone has been deleted.",
     "deleteOrCancel": "Delete/Cancel selected"
+  },
+  "validation": {
+    "nameRequired": "Zone name is required"
   }
 }

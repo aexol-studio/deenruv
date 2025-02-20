@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/atoms/label';
+import { ErrorMessage } from '@/components/molecules/ErrorMessage.js';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -27,9 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
                         </div>
                     )}
                 </div>
-                {props.errors?.length && (
-                    <p className="text-destructive -mt-1 text-sm font-medium">{props.errors.join(', ')}</p>
-                )}
+                <ErrorMessage errors={props.errors} />
             </div>
         );
     }

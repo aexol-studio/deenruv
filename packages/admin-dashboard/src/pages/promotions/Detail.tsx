@@ -3,6 +3,8 @@ import { createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-de
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { PromotionDetailView } from '@/pages/promotions/_components/PromotionDetailView';
 import { PromotionDetailSidebar } from '@/pages/promotions/_components/PromotionDetailSidebar';
+import { useValidators } from '@/hooks/useValidators.js';
+import { useTranslation } from 'react-i18next';
 
 const EditPromotionMutation = typedGql('mutation', { scalars })({
   updatePromotion: [
@@ -43,9 +45,11 @@ const DeletePromotionMutation = typedGql('mutation', { scalars })({
 
 export const PromotionsDetailPage = () => {
   const { id } = useParams();
+  const { t } = useTranslation('common');
   const [update] = useMutation(EditPromotionMutation);
   const [create] = useMutation(CreatePromotionMutation);
   const [remove] = useMutation(DeletePromotionMutation);
+  const { translationsValidator, configurableOperationArrayValidator } = useValidators();
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -71,7 +75,14 @@ export const PromotionsDetailPage = () => {
               'actions',
               'translations',
             ],
-            config: {},
+            config: {
+              translations: translationsValidator,
+              actions: configurableOperationArrayValidator(t('validation.actionsCode'), t('validation.actionsArgs')),
+              conditions: configurableOperationArrayValidator(
+                t('validation.conditionsCode'),
+                t('validation.conditionsArgs'),
+              ),
+            },
             onSubmitted: (data) => {
               if (!data.translations || !data.actions || !data.conditions) throw new Error('Fill required fields.');
               const sharedInput = {

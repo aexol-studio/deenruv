@@ -3,6 +3,7 @@ import { DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@dee
 import { CustomerGroupsDetailView } from './_components/CustomerGroupsDetailView';
 import { typedGql, scalars, $, ModelTypes, Permission } from '@deenruv/admin-types';
 import { useCallback } from 'react';
+import { useValidators } from '@/hooks/useValidators.js';
 
 type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
 type FormDataType = Partial<{
@@ -42,6 +43,7 @@ export const CustomerGroupsDetailPage = () => {
   const [update] = useMutation(EditCustomerGroupMutation);
   const [create] = useMutation(CreateCustomerGroupMutation);
   const [remove] = useMutation(DeleteCustomerGroupMutation);
+  const { nameValidator } = useValidators();
 
   const onSubmitHandler = useCallback(
     (data: FormDataType) => {
@@ -89,7 +91,9 @@ export const CustomerGroupsDetailPage = () => {
           form: createDeenruvForm({
             key: 'CreateCustomerGroupInput',
             keys: ['name'],
-            config: {},
+            config: {
+              name: nameValidator,
+            },
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),

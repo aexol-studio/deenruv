@@ -5,6 +5,8 @@
   "baseInfoId": "Id: {{value}}",
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",
@@ -45,5 +47,11 @@
     "successMessage": "Administrator has been deleted.",
     "deleteOrCancel": "Delete/Cancel selected"
   },
-  "selectedValue": "{{from}} of {{to}} row(s) selected"
+  "selectedValue": "{{from}} of {{to}} row(s) selected",
+  "validation": {
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "passwordRequired": "Password is required",
+    "rolesRequired": "Select at least one role"
+  }
 }

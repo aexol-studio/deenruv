@@ -575,5 +575,13 @@
       "ORDER_CUSTOMER_UPDATED": "Order customer updated"
     }
   },
-  "noImage": "No image for the item"
+  "noImage": "No image for the item",
+  "validation": {
+    "fieldRequired": "This field is required",
+    "nameRequired": "Name is required",
+    "emailRequired": "Email is required",
+    "emailPattern": "Type correct email",
+    "configurableCodeRequired": "Option is required",
+    "configurableArgsRequired": "Fill all fields"
+  }
 }

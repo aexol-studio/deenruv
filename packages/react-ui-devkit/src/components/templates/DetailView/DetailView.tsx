@@ -18,6 +18,7 @@ import {
     TabsContent,
     DetailViewStoreProvider,
     useDetailView,
+    SimpleTooltip,
 } from '@/components';
 import { GFFLPFormField, useGFFLP } from '@/hooks';
 import { useServer } from '@/state/server.js';
@@ -100,7 +101,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
 }: DetailViewProps<LOCATION>) => {
     const [searchParams] = useSearchParams();
     const { getDetailViewTabs } = usePluginStore();
-    const form = useGFFLP(main.form.key, ...main.form.keys)({});
+    const form = useGFFLP(main.form.key, ...main.form.keys)(main.form.config);
     const tab = useMemo(() => searchParams.get('tab') || main.name, [searchParams]);
     const tabs = useMemo(() => {
         return (
@@ -141,7 +142,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
 
 const DetailTabs = ({ permissions }: { permissions: Permissions }) => {
     const { t } = useTranslation('common');
-    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges } =
+    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges, form } =
         useDetailView();
 
     const [, setSearchParams] = useSearchParams();
@@ -160,6 +161,8 @@ const DetailTabs = ({ permissions }: { permissions: Permissions }) => {
 
     const showEditButton = id && isPermittedToUpdate;
     const showCreateButton = !id && isPermittedToCreate;
+
+    const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
 
     return (
         <Tabs
@@ -193,25 +196,37 @@ const DetailTabs = ({ permissions }: { permissions: Permissions }) => {
                     </div>
                     <div className="flex items-center justify-end gap-2">
                         {showEditButton && (
-                            <Button
-                                variant="action"
-                                onClick={() => actionHandler('submit')}
-                                className="ml-auto justify-self-end"
-                                disabled={!hasUnsavedChanges}
+                            <SimpleTooltip
+                                content={
+                                    buttonDisabled
+                                        ? form.base.haveValidFields
+                                            ? t('noChangesTooltip')
+                                            : t('buttonDisabledTooltip')
+                                        : undefined
+                                }
                             >
-                                {t('update')}
-                            </Button>
+                                <Button
+                                    variant="action"
+                                    onClick={() => actionHandler('submit')}
+                                    className="ml-auto justify-self-end"
+                                    disabled={buttonDisabled}
+                                >
+                                    {t('update')}
+                                </Button>
+                            </SimpleTooltip>
                         )}
 
                         {showCreateButton && (
-                            <Button
-                                variant="action"
-                                onClick={() => actionHandler('submit')}
-                                className="ml-auto justify-self-end"
-                                disabled={!hasUnsavedChanges}
-                            >
-                                {t('create')}
-                            </Button>
+                            <SimpleTooltip content={buttonDisabled ? t('buttonDisabledTooltip') : undefined}>
+                                <Button
+                                    variant="action"
+                                    onClick={() => actionHandler('submit')}
+                                    className="ml-auto justify-self-end"
+                                    disabled={buttonDisabled}
+                                >
+                                    {t('create')}
+                                </Button>
+                            </SimpleTooltip>
                         )}
                         {isPermittedToDelete && (
                             <DropdownMenu>
