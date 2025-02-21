@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
   line: DraftOrderType['lines'][number];
-  order: DraftOrderType;
+  order?: DraftOrderType;
 };
 
 export const OrderLineCustomFields = ({ line, order }: Props) => {
@@ -25,6 +25,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
   );
   const { t } = useTranslation('common');
 
+  if (!order) return null;
   return (
     <Dialog>
       <DialogTrigger asChild>

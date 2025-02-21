@@ -34,6 +34,7 @@ import { ORDER_STATE } from '@/graphql/base';
 import { addFulfillmentToOrderResultSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { ModifyAcceptModal } from './index.js';
 
+const COMPLETE_ORDER_STATES = [ORDER_STATE.DELIVERED];
 export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({ createOrderCopy }) => {
   const { fetchOrderHistory, setOrder, order } = useOrder();
   const { t } = useTranslation('orders');
@@ -90,7 +91,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
     }
     const { transitionOrderToState } = await apiClient('mutation')({
       transitionOrderToState: [
-        { id: order.id, state: 'ArrangingPayment' },
+        { id: order.id, state: ORDER_STATE.ARRANGING_PAYMENT },
         {
           __typename: true,
           '...on Order': draftOrderSelector,
@@ -104,6 +105,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         },
       ],
     });
+
     if (transitionOrderToState?.__typename === 'Order') {
       setOrder(transitionOrderToState);
       fetchOrderHistory();
@@ -113,26 +115,6 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         ${transitionOrderToState?.transitionError || ''}
       `;
       toast(errorMessage, { position: 'top-center' });
-    }
-  };
-
-  const createProforma = async (type: 'proforma' | 'receipt') => {
-    if (order) {
-      // const { sendInvoiceToWFirma } = await apiClient('mutation')({
-      //   sendInvoiceToWFirma: [
-      //     { input: { orderID: order.id, invoiceType: type === 'proforma' ? 'proforma' : 'receipt_fiscal_normal' } },
-      //     { url: true },
-      //   ],
-      // });
-      // if (sendInvoiceToWFirma) {
-      //   window.open(
-      //     type === 'proforma' ? 'https://wfirma.pl/invoices/index/proforma' : 'https://wfirma.pl/invoices/index/all',
-      //     '_blank',
-      //   );
-      //   toast.success(t(type === 'proforma' ? 'invoice.createProformaSuccess' : 'invoice.createReceiptSuccess'));
-      // } else {
-      //   toast.error(t(type === 'proforma' ? 'invoice.createProformaError' : 'invoice.createReceiptError'));
-      // }
     }
   };
 
@@ -260,13 +242,19 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
     setManualChange({ state: false });
   };
 
+  const canCompleteOrder = useMemo(() => {
+    return !!(
+      order?.fulfillments?.some((f) => f.state === ORDER_STATE.SHIPPED) ||
+      !currentPossibilities?.to.some((state) => COMPLETE_ORDER_STATES.includes(state as ORDER_STATE))
+    );
+  }, [order, currentPossibilities]);
+
   if (!order) return null;
 
   return (
     <div className="flex items-center gap-4 ">
       {currentPossibilities && (
         <ManualOrderChangeModal
-          defaultState={order.state}
           open={manualChange.state}
           setOpen={setManualChange}
           order={order}
@@ -304,11 +292,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
           order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
           order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ||
           order?.state === ORDER_STATE.SHIPPED ? (
-          <FulfillmentModal
-            draftOrder={order}
-            onSubmitted={fulfillOrder}
-            disabled={order.fulfillments?.some((f) => f.state === ORDER_STATE.SHIPPED)}
-          />
+          <FulfillmentModal draftOrder={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
         ) : // ) : order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
         //   order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ? (
         //   <>
@@ -330,30 +314,6 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         //   </>
         order?.state === ORDER_STATE.MODIFYING ? (
           <ModifyAcceptModal />
-        ) : null}
-        {order &&
-        order.state !== ORDER_STATE.DRAFT &&
-        order.state !== ORDER_STATE.ADDING_ITEMS &&
-        order.state !== ORDER_STATE.ARRANGING_PAYMENT &&
-        order.state !== ORDER_STATE.MODIFYING &&
-        order.state !== ORDER_STATE.PAYMENT_AUTHORIZED &&
-        order.state !== ORDER_STATE.PAYMENT_SETTLED &&
-        order.state !== ORDER_STATE.CANCELLED ? (
-          <>
-            <Button variant="action" className="flex gap-2" onClick={() => createProforma('proforma')}>
-              <Printer size={20} /> {t('invoice.createProformaButton')}
-            </Button>
-            <Button variant="action" className="flex gap-2" onClick={() => createProforma('receipt')}>
-              <Printer size={20} /> {t('invoice.createReceiptButton')}
-            </Button>
-            <Button
-              variant="secondary"
-              className="flex gap-2"
-              onClick={() => setManualChange({ state: true, toAction: 'InRealization' })}
-            >
-              <NotepadText size={20} /> {t('realization.createRealization')}
-            </Button>
-          </>
         ) : null}
       </div>
       <DropdownMenu>

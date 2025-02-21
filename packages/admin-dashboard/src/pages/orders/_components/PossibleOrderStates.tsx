@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   ScrollArea,
   Dialog,
   DialogContent,
@@ -15,6 +14,7 @@ import {
   TimelineContent,
   TimelineHeading,
   useServer,
+  Button,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
@@ -23,9 +23,10 @@ export const PossibleOrderStates: React.FC<{
 }> = ({ orderState }) => {
   const { t } = useTranslation('orders');
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
+  console.log(orderProcess);
   return (
     <Dialog>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild className="pl-2">
         <Button variant="ghost" className="w-full justify-start">
           {t('orderStates.button')}
         </Button>

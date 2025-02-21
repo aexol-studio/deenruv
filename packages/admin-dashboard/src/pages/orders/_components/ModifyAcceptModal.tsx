@@ -29,7 +29,7 @@ export const ModifyAcceptModal: React.FC = () => {
               <ChangesRegister />
             </div>
           </div>
-          <ModifyingCard onNoteModified={(bool: boolean) => setOpen(bool)} />
+          <ModifyingCard onNoteModified={(bool) => setOpen(bool)} />
         </div>
       </DialogContent>
     </Dialog>

@@ -1,8 +1,8 @@
 import { DeenruvUIPlugin, Tooltip, TooltipContent, TooltipTrigger } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { CircleOff, CheckCircle, XCircle, ImageOff } from 'lucide-react';
-import { FromSelector, GraphQLTypes } from './zeus';
 import { ScalarsType } from '@deenruv/admin-types';
+import { FromSelector, GraphQLTypes } from './zeus/index.js';
 
 export type FromSelectorWithScalars<SELECTOR, NAME extends keyof GraphQLTypes> = FromSelector<
     SELECTOR,

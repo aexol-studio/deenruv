@@ -171,8 +171,11 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
-		betterMetricSummary:{
-			input:"BetterMetricSummaryInput"
+		chartMetric:{
+			input:"ChartMetricInput"
+		},
+		orderSummaryMetric:{
+			input:"OrderSummaryMetricInput"
 		},
 		metricSummary:{
 			input:"MetricSummaryInput"
@@ -1434,16 +1437,20 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
-	BetterMetricInterval: "enum" as const,
-	BetterMetricType: "enum" as const,
-	BetterMetricIntervalInput:{
-		type:"BetterMetricInterval",
+	MetricRangeType: "enum" as const,
+	MetricIntervalType: "enum" as const,
+	ChartMetricType: "enum" as const,
+	BetterMetricRangeInput:{
 		start:"DateTime",
 		end:"DateTime"
 	},
-	BetterMetricSummaryInput:{
-		interval:"BetterMetricIntervalInput",
-		types:"BetterMetricType"
+	OrderSummaryMetricInput:{
+		range:"BetterMetricRangeInput"
+	},
+	ChartMetricInput:{
+		range:"BetterMetricRangeInput",
+		interval:"MetricIntervalType",
+		types:"ChartMetricType"
 	},
 	MetricInterval: "enum" as const,
 	MetricType: "enum" as const,
@@ -1962,7 +1969,8 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
-		betterMetricSummary:"BetterMetricSummary",
+		chartMetric:"ChartMetrics",
+		orderSummaryMetric:"OrderSummaryMetrics",
 		metricSummary:"MetricSummary"
 	},
 	Mutation:{
@@ -3842,25 +3850,35 @@ export const ReturnTypes: Record<string,any> = {
 		members:"Region",
 		customFields:"JSON"
 	},
-	BetterMetricDataType:{
-		interval:"BetterMetricInterval",
-		type:"BetterMetricType",
+	ChartDataType:{
+		type:"ChartMetricType",
 		title:"String",
-		entries:"BetterMetricSummaryEntry"
+		entries:"ChartEntry"
 	},
-	BetterMetricSummary:{
-		data:"BetterMetricDataType",
-		lastCacheRefreshTime:"DateTime"
+	ChartMetrics:{
+		data:"ChartDataType"
 	},
-	BetterMeticSummaryEntryAdditionalData:{
+	OrderSummaryMetrics:{
+		data:"OrderSummaryDataMetric"
+	},
+	OrderSummaryDataMetric:{
+		currencyCode:"CurrencyCode",
+		total:"Float",
+		totalWithTax:"Float",
+		orderCount:"Float",
+		averageOrderValue:"Float",
+		averageOrderValueWithTax:"Float",
+		productCount:"Float"
+	},
+	ChartEntryAdditionalData:{
 		id:"String",
 		name:"String",
 		quantity:"Float"
 	},
-	BetterMetricSummaryEntry:{
-		label:"String",
+	ChartEntry:{
+		intervalTick:"Int",
 		value:"Float",
-		additionalData:"BetterMeticSummaryEntryAdditionalData"
+		additionalData:"ChartEntryAdditionalData"
 	},
 	MetricSummary:{
 		interval:"MetricInterval",

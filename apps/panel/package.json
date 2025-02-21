@@ -22,7 +22,6 @@
     "@deenruv/deenruv-examples-plugin": "workspace:*",
     "@deenruv/dashboard-widgets-plugin": "workspace:*",
     "@deenruv/react-ui-devkit": "workspace:*",
-    "@deenruv/facet-color-fields-plugin": "workspace:*",
     "@deenruv/order-line-attributes-plugin": "workspace:*",
     "@deenruv/replicate-plugin": "workspace:*",
     "@deenruv/admin-types": "workspace:*",

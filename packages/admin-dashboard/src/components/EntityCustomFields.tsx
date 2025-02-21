@@ -39,7 +39,7 @@ type ViableEntity = Uncapitalize<
     | 'TaxCategory'
   >
 >;
-type CF = Record<string, unknown>;
+export type CF = Record<string, unknown>;
 
 type EntityWithCF = {
   customFields: CF;
@@ -55,6 +55,7 @@ type Props<T extends ViableEntity> = {
   fetch?: (runtimeSelector: any) => Promise<EntityWithCF>;
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
+  fetchInitialValues?: boolean;
 };
 
 const entityDictionary: Partial<
@@ -125,6 +126,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   onChange,
   hideButton,
   disabled,
+  fetchInitialValues = true,
 }: Props<T>) {
   const { t } = useTranslation('common');
   const language = useSettings((p) => p.translationsLanguage);
@@ -134,7 +136,7 @@ export function EntityCustomFields<T extends ViableEntity>({
     [_currentLanguage, language],
   ) as LanguageCode;
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(fetchInitialValues);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(
@@ -257,8 +259,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   }, [state, entityName]);
 
   useEffect(() => {
-    if (!entityCustomFields?.length) return;
-
+    if (!entityCustomFields?.length || !fetchInitialValues) return;
     try {
       setLoading(true);
       fetchEntity();

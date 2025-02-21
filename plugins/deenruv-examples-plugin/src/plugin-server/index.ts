@@ -169,6 +169,13 @@ import {
             },
         );
 
+        // ORDER_LINE
+        config.customFields.OrderLine.push({
+            name: 'SOMETHING',
+            type: 'string',
+            label: [{ languageCode: LanguageCode.en, value: 'string Test' }],
+        });
+
         // COLLECTION
         config.customFields.Collection.push({
             name: 'stringTest',

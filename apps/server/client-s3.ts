@@ -8,4 +8,9 @@ export const credentials = fromNodeProviderChain({
     clientConfig: { region },
 });
 
-export const s3Client = new S3Client({ region, credentials });
+export const s3Client = new S3Client({
+    forcePathStyle: true,
+    region: 'local',
+    endpoint: 'http://localhost:9000',
+    credentials: { accessKeyId: 'root', secretAccessKey: 'password' },
+});

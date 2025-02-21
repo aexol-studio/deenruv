@@ -9,4 +9,6 @@ export * from './ListTable';
 export * from './RichTextEditor';
 export * from './SearchInput';
 export * from './CustomFieldsModal';
+export * from './ImageWithPreview.js';
+export * from './AssetsModalInput';
 export * from './ErrorMessage';

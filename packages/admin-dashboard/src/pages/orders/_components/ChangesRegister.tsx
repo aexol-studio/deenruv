@@ -16,79 +16,17 @@ import { useOrder } from '@/state/order';
 
 export const ChangesRegister: React.FC = () => {
   const { t } = useTranslation('orders');
-  const { getObjectsChanges: getOrderChanges, linePriceChangeInput, modifiedOrder, order } = useOrder();
+  const { getObjectsChanges: getOrderChanges, modifiedOrder, order } = useOrder();
   const changes = useMemo(() => {
     const changes = getOrderChanges();
     return {
       ...changes,
       linesChanges: {
-        existing: [
-          ...changes.linesChanges
-            .filter((change) => !('isNew' in change))
-            .map((change) => {
-              const exitingLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find(
-                (l: any) => l.lineID === change.lineID,
-              );
-              const quantity = order?.lines.find((line) => line.id === change.lineID)?.quantity;
-              const modifyLine = modifiedOrder?.lines.find((line) => line.id === change.lineID);
-              if (!exitingLinePriceChangeInput || !modifyLine) return change;
-              const lineTax = modifyLine?.taxRate;
-              const orginalPrice = modifyLine.discountedLinePrice / (quantity ?? 1);
-              const orginalPriceWithTax = modifyLine.discountedLinePriceWithTax / (quantity ?? 1);
-              const price = exitingLinePriceChangeInput?.netto
-                ? exitingLinePriceChangeInput.value
-                : exitingLinePriceChangeInput.value -
-                  exitingLinePriceChangeInput.value * (typeof lineTax !== 'undefined' ? lineTax / 100 : 1);
-              const priceWithTax = exitingLinePriceChangeInput.netto
-                ? exitingLinePriceChangeInput.value * (lineTax ? 1 + lineTax / 100 : 1)
-                : exitingLinePriceChangeInput.value;
-              return {
-                ...change,
-                changes: [
-                  ...change.changes,
-                  { path: 'price', added: price, removed: orginalPrice, value: undefined, changed: undefined },
-                  {
-                    path: 'priceWithTax',
-                    added: priceWithTax,
-                    removed: orginalPriceWithTax,
-                    value: undefined,
-                    changed: undefined,
-                  },
-                ],
-              };
-            }),
-          ...(linePriceChangeInput?.linesToOverride ?? [])
-            .filter((l: any) => !changes.linesChanges.some((change) => change.lineID === l.lineID))
-            .map((l: any) => {
-              const modifyLine = modifiedOrder?.lines.find((line) => line.id === l.lineID);
-              if (!modifyLine) return null;
-              const lineTax = modifyLine?.taxRate;
-              const orginalPrice = modifyLine.discountedLinePrice / modifyLine?.quantity;
-              const orginalPriceWithTax = modifyLine.discountedLinePriceWithTax / modifyLine?.quantity;
-              const price = l?.netto
-                ? l.value
-                : l.value - l.value * (typeof lineTax !== 'undefined' ? lineTax / 100 : 1);
-              const priceWithTax = l.netto ? l.value * (lineTax ? 1 + lineTax / 100 : 1) : l.value;
-              return {
-                lineID: l.lineID,
-                variantName: modifyLine.productVariant.name,
-                changes: [
-                  { path: 'price', added: price, removed: orginalPrice, value: undefined, changed: undefined },
-                  {
-                    path: 'priceWithTax',
-                    added: priceWithTax,
-                    removed: orginalPriceWithTax,
-                    value: undefined,
-                    changed: undefined,
-                  },
-                ],
-              };
-            }),
-        ],
+        existing: changes.linesChanges.filter((change) => !('isNew' in change)),
         new: changes.linesChanges.filter((change) => 'isNew' in change),
       },
     };
-  }, [getOrderChanges, order, modifiedOrder, linePriceChangeInput]);
+  }, [getOrderChanges, order, modifiedOrder]);
 
   const surcharges = useMemo(() => changes.resChanges.filter((ch) => ch.path.startsWith('surcharges')), [changes]);
 
@@ -123,29 +61,23 @@ export const ChangesRegister: React.FC = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {change?.changes
-                      .filter((change: any) => !change.path.includes('attributes'))
-                      .map((propertyChange: any, i: number) => (
-                        <TableRow key={i}>
-                          <TableCell className="text-muted-foreground font-medium">
-                            {givePathForTranslation(propertyChange.path)}
-                          </TableCell>
-                          <TableCell className="text-red-700">
-                            {propertyChange.path.includes('attributes')
-                              ? propertyChange.path.split('.').pop()
-                              : mabeyPriceMabeyAttribute(propertyChange.path, propertyChange.removed)}
-                          </TableCell>
-                          <TableCell className="font-bold text-green-700">
-                            {propertyChange.path.includes('attributes')
-                              ? (propertyChange.value as string)
-                              : mabeyPriceMabeyAttribute(propertyChange.path, propertyChange.added)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                    {change?.changes.map((propertyChange, i) => (
+                      <TableRow key={i}>
+                        <TableCell className="text-muted-foreground font-medium">
+                          {givePathForTranslation(propertyChange.path)}
+                        </TableCell>
+                        <TableCell className="text-red-700">
+                          {mabeyPriceMabeyAttribute(propertyChange.path, propertyChange.removed)}
+                        </TableCell>
+                        <TableCell className="font-bold text-green-700">
+                          {mabeyPriceMabeyAttribute(propertyChange.path, propertyChange.added)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
 
-                {change?.changes.filter((change: any) => change.path.includes('attributes')).length ? (
+                {change?.changes.length ? (
                   <>
                     <div className="bg-muted-foreground my-6 h-[1px] w-full" />
                     <h4>{t('changes.attributesChanges')}</h4>
@@ -158,20 +90,18 @@ export const ChangesRegister: React.FC = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {change.changes
-                          .filter((change: any) => change.path.includes('attributes'))
-                          .map((propertyChange: any, i: number) => (
-                            <TableRow
-                              className={cn(propertyChange.changed === 'removed' ? 'text-red-700' : 'text-green-700')}
-                              key={i}
-                            >
-                              <TableCell className="font-medium">
-                                {propertyChange.changed === 'removed' ? 'Usunięto atrybut' : `Dodano atrybut`}
-                              </TableCell>
-                              <TableCell>{propertyChange.path.split('.').pop()}</TableCell>
-                              <TableCell>{propertyChange.value as string}</TableCell>
-                            </TableRow>
-                          ))}
+                        {change.changes.map((propertyChange, i) => (
+                          <TableRow
+                            className={cn(propertyChange.changed === 'removed' ? 'text-red-700' : 'text-green-700')}
+                            key={i}
+                          >
+                            <TableCell className="font-medium">
+                              {propertyChange.changed === 'removed' ? 'Usunięto atrybut' : `Dodano atrybut`}
+                            </TableCell>
+                            <TableCell>{propertyChange.path.split('.').pop()}</TableCell>
+                            <TableCell>{propertyChange.value as string}</TableCell>
+                          </TableRow>
+                        ))}
                       </TableBody>
                     </Table>
                   </>

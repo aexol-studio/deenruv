@@ -5,27 +5,26 @@ const FacetValueOptionsSelector = Selector('FacetValue')({
     name: true,
     code: true,
     customFields: {
-      hexColor: true,
-      image: {
-        preview: true,
-      },
-      isNew: true,
+        hexColor: true,
+        image: {
+            preview: true,
+        },
+        isNew: true,
     },
-  });
+});
 
 export const FacetListOptionsSelector = Selector('FacetList')({
     items: {
-      id: true,
-      code: true,
-      name: true,
-      customFields: {
-        colorsCollection: true,
-        usedForProductCreations: true,
-      },
-      values: FacetValueOptionsSelector,
+        id: true,
+        code: true,
+        name: true,
+        customFields: {
+            colorsCollection: true,
+            usedForProductCreations: true,
+        },
+        values: FacetValueOptionsSelector,
     },
-  });
+});
 
 export type FacetValueOptionsType = FromSelector<typeof FacetValueOptionsSelector, 'FacetValue'>;
 export type FacetListOptionsType = FromSelector<typeof FacetListOptionsSelector, 'FacetList'>;
-

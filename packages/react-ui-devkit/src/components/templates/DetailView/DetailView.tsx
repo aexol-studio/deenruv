@@ -6,7 +6,6 @@ import { cn } from '@/lib';
 import { usePluginStore } from '@/plugins';
 import { DetailKeys } from '@/types';
 import {
-    Button,
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuContent,
@@ -18,6 +17,7 @@ import {
     TabsContent,
     DetailViewStoreProvider,
     useDetailView,
+    Button,
     SimpleTooltip,
 } from '@/components';
 import { GFFLPFormField, useGFFLP } from '@/hooks';
@@ -89,6 +89,10 @@ interface DetailViewProps<LOCATION extends DetailKeys> {
         hideSidebar?: boolean;
         sidebarReplacement?: React.ReactNode;
     }>;
+    topActions?: {
+        inline?: React.ReactNode[];
+        dropdown?: React.ReactNode[];
+    };
     permissions: Permissions;
 }
 
@@ -98,9 +102,10 @@ export const DetailView = <LOCATION extends DetailKeys>({
     main,
     defaultTabs = [],
     permissions,
+    topActions,
 }: DetailViewProps<LOCATION>) => {
     const [searchParams] = useSearchParams();
-    const { getDetailViewTabs } = usePluginStore();
+    const { getDetailViewTabs, getDetailViewActions } = usePluginStore();
     const form = useGFFLP(main.form.key, ...main.form.keys)(main.form.config);
     const tab = useMemo(() => searchParams.get('tab') || main.name, [searchParams]);
     const tabs = useMemo(() => {
@@ -112,6 +117,8 @@ export const DetailView = <LOCATION extends DetailKeys>({
             })) || []
         );
     }, [locationId]);
+
+    const actions = useMemo(() => getDetailViewActions(locationId), [locationId]);
 
     const currentSidebar = useMemo(() => {
         const currentTab = defaultTabs.find(t => t.name === tab);
@@ -135,14 +142,32 @@ export const DetailView = <LOCATION extends DetailKeys>({
                 onDeleted: main.form.onDeleted,
             }}
         >
-            <DetailTabs permissions={permissions} />
+            <DetailTabs
+                topActions={{
+                    inline: [
+                        ...(topActions?.inline || []),
+                        ...(actions?.inline?.map(({ component }) => React.createElement(component)) || []),
+                    ],
+                    dropdown: [
+                        ...(topActions?.dropdown || []),
+                        ...(actions?.dropdown?.map(({ component }) => React.createElement(component)) || []),
+                    ],
+                }}
+                permissions={permissions}
+            />
         </DetailViewStoreProvider>
     );
 };
 
-const DetailTabs = ({ permissions }: { permissions: Permissions }) => {
+const DetailTabs = ({
+    topActions,
+    permissions,
+}: {
+    topActions?: { inline?: React.ReactNode[]; dropdown?: React.ReactNode[] };
+    permissions: Permissions;
+}) => {
     const { t } = useTranslation('common');
-    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges, form } =
+    const { entity, actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges, form } =
         useDetailView();
 
     const [, setSearchParams] = useSearchParams();
@@ -195,54 +220,66 @@ const DetailTabs = ({ permissions }: { permissions: Permissions }) => {
                         )}
                     </div>
                     <div className="flex items-center justify-end gap-2">
-                        {showEditButton && (
-                            <SimpleTooltip
-                                content={
-                                    buttonDisabled
-                                        ? form.base.haveValidFields
-                                            ? t('noChangesTooltip')
-                                            : t('buttonDisabledTooltip')
-                                        : undefined
-                                }
-                            >
-                                <Button
-                                    variant="action"
-                                    onClick={() => actionHandler('submit')}
-                                    className="ml-auto justify-self-end"
-                                    disabled={buttonDisabled}
+                        <div className="flex gap-6 items-center">
+                            {topActions?.inline?.map((action, idx) => action)}
+                            {showEditButton && (
+                                <SimpleTooltip
+                                    content={
+                                        buttonDisabled
+                                            ? form.base.haveValidFields
+                                                ? t('noChangesTooltip')
+                                                : t('buttonDisabledTooltip')
+                                            : undefined
+                                    }
                                 >
-                                    {t('update')}
-                                </Button>
-                            </SimpleTooltip>
-                        )}
-
-                        {showCreateButton && (
-                            <SimpleTooltip content={buttonDisabled ? t('buttonDisabledTooltip') : undefined}>
-                                <Button
-                                    variant="action"
-                                    onClick={() => actionHandler('submit')}
-                                    className="ml-auto justify-self-end"
-                                    disabled={buttonDisabled}
-                                >
-                                    {t('create')}
-                                </Button>
-                            </SimpleTooltip>
-                        )}
-                        {isPermittedToDelete && (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild {...(!id && { className: 'invisible' })}>
-                                    <Button variant="secondary" size="icon">
-                                        <EllipsisVerticalIcon />
+                                    <Button
+                                        variant="action"
+                                        onClick={() => actionHandler('submit')}
+                                        className="ml-auto justify-self-end"
+                                        disabled={buttonDisabled}
+                                    >
+                                        {t('update')}
                                     </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="z-[101] mr-4">
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={() => actionHandler('delete')}>
-                                        Delete
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        )}
+                                </SimpleTooltip>
+                            )}
+
+                            {showCreateButton && (
+                                <SimpleTooltip
+                                    content={buttonDisabled ? t('buttonDisabledTooltip') : undefined}
+                                >
+                                    <Button
+                                        variant="action"
+                                        onClick={() => actionHandler('submit')}
+                                        className="ml-auto justify-self-end"
+                                        disabled={buttonDisabled}
+                                    >
+                                        {t('create')}
+                                    </Button>
+                                </SimpleTooltip>
+                            )}
+                            {isPermittedToDelete && (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild {...(!id && { className: 'invisible' })}>
+                                        <Button variant="secondary" size="icon">
+                                            <EllipsisVerticalIcon />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="z-[50] mr-4 min-w-[240px]">
+                                        {topActions?.dropdown?.map((action, idx) => action)}
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuItem asChild>
+                                            <Button
+                                                onClick={() => actionHandler('delete')}
+                                                variant="ghost"
+                                                className="w-full justify-start"
+                                            >
+                                                {t('delete')}
+                                            </Button>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

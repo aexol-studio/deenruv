@@ -5,11 +5,11 @@ import { ReplicateUiPlugin } from '@deenruv/replicate-plugin/plugin-ui';
 // import { UIPlugin as CMSPlugin } from '@deenruv/content-management-plugin/plugin-ui';
 // import { UIPlugin as DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin/plugin-ui';
 // import { BadgesUiPlugin } from '@deenruv/product-badges-plugin/plugin-ui';
-
+import { FacetHarmonicaUiPlugin } from '@deenruv/facet-harmonica-plugin/plugin-ui';
 import { DeenruvLogo } from './DeenruvLogo';
 
 // const plugins: Array<DeenruvUIPlugin> = [ExampleUiPlugin, CMSPlugin, BadgesUiPlugin, DashboardWidgetsPlugin];
-const plugins: Array<DeenruvUIPlugin> = [ReplicateUiPlugin];
+const plugins: Array<DeenruvUIPlugin> = [ReplicateUiPlugin, FacetHarmonicaUiPlugin];
 const settings: DeenruvAdminPanelSettings = {
   branding: {
     name: 'Deenruv',
@@ -18,7 +18,6 @@ const settings: DeenruvAdminPanelSettings = {
       collapsed: <DeenruvLogo isCollapsed={true} />,
     },
   },
-
   api: {
     uri: 'http://localhost:3000',
     authTokenName: 'deenruv-auth-token',

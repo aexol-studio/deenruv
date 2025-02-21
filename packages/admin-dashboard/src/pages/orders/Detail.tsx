@@ -32,7 +32,6 @@ export const OrdersDetailPage = () => {
 
   useEffect(() => {
     if (id) fetchOrder(id);
-    // eslint-disable-next-line
   }, [id]);
 
   const createOrderCopy = async () => {
@@ -211,7 +210,6 @@ export const OrdersDetailPage = () => {
         <TopActions createOrderCopy={createOrderCopy} />
         <OrderSummary />
         <RealizationCard />
-
         {mode === 'update' ? (
           <ModifyOrderPage />
         ) : (

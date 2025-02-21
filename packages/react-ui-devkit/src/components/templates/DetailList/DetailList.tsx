@@ -366,10 +366,12 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             rowActions,
             route,
             refetch,
-            onRemove: items => {
-                setItemsToDelete(items);
-                setDeleteDialogOpened(true);
-            },
+            onRemove: onRemove
+                ? items => {
+                      setItemsToDelete(items);
+                      setDeleteDialogOpened(true);
+                  }
+                : undefined,
             deletePermission,
         },
         state: {

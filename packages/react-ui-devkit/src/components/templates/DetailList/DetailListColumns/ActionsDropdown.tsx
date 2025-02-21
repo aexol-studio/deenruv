@@ -188,7 +188,7 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                                     ))}
                                 </>
                             )}
-                            {isPermittedToDelete && (
+                            {onRemove && isPermittedToDelete && (
                                 <>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem onClick={() => onRemove([row.original])}>

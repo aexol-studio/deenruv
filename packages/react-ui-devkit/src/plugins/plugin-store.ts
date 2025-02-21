@@ -87,6 +87,27 @@ export class PluginStore {
         return Array.from(uniqueMappedComponents.values());
     }
 
+    getModalComponents(location: string) {
+        const uniqueMappedComponents = new Map<string, React.ComponentType>();
+        this.pluginMap.forEach(plugin => {
+            plugin.modals?.forEach(({ component, id }) => {
+                const uniqueUUID = [
+                    id,
+                    plugin.name,
+                    this.getUUID(),
+                    component.displayName && `-${component.displayName}`,
+                ]
+                    .filter(Boolean)
+                    .join('-');
+
+                if (id === location) {
+                    uniqueMappedComponents.set(uniqueUUID, component as any);
+                }
+            });
+        });
+        return Array.from(uniqueMappedComponents.values());
+    }
+
     getTableExtensions(location: ListLocationID) {
         const tables = new Map<string | number, NonNullable<DeenruvUIPlugin['tables']>[number]>();
         this.pluginMap.forEach(plugin => {
@@ -105,6 +126,29 @@ export class PluginStore {
             });
         });
         return Array.from(tabs.values()).filter(tab => tab.id === location);
+    }
+
+    getDetailViewActions(location: DetailLocationID): NonNullable<DeenruvUIPlugin['actions']> {
+        const actionsInline = new Map<
+            string,
+            NonNullable<NonNullable<DeenruvUIPlugin['actions']>['inline']>[number]
+        >();
+        const actionsDropdown = new Map<
+            string,
+            NonNullable<NonNullable<DeenruvUIPlugin['actions']>['dropdown']>[number]
+        >();
+        this.pluginMap.forEach(plugin => {
+            plugin.actions?.inline?.forEach(action => {
+                actionsInline.set(action.id, action);
+            });
+            plugin.actions?.dropdown?.forEach(action => {
+                actionsDropdown.set(action.id, action);
+            });
+        });
+        return {
+            inline: Array.from(actionsInline.values()).filter(action => action.id === location),
+            dropdown: Array.from(actionsDropdown.values()).filter(action => action.id === location),
+        };
     }
 
     get topNavigationComponents() {

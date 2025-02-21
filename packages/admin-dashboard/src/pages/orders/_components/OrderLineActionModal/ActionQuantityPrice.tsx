@@ -1,17 +1,10 @@
-import { Button, DialogFooter, Input, Label, Separator } from '@deenruv/react-ui-devkit';
-import { cn, RadioGroup, RadioGroupItem } from '@deenruv/react-ui-devkit';
+import { cn, Button, DialogFooter, Input } from '@deenruv/react-ui-devkit';
 import { DraftOrderLineType } from '@/graphql/draft_order';
 
-import { priceFormatter } from '@/utils';
-
-import { RotateCcw } from 'lucide-react';
-
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OnPriceQuantityChangeApproveInput } from './types.js';
 import { useOrder } from '@/state/order.js';
-
-type PriceType = 'brutto' | 'netto';
 
 interface ActionQuantityPriceProps {
   line?: DraftOrderLineType;
@@ -22,103 +15,32 @@ interface ActionQuantityPriceProps {
 export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
   line,
   onOpenChange,
-
   onPriceQuantityChangeApprove,
 }) => {
   const { t } = useTranslation('orders');
-  const priceInputRef = useRef<HTMLInputElement | null>(null);
-  const [priceType, setPriceType] = useState<PriceType>('netto');
   const [quantityChange, setQuantityChange] = useState<number | undefined>(line?.quantity);
-  const [initLinePrice, _] = useState<number | undefined>();
-  const [priceChange, setPriceChange] = useState({ netto: 0, brutto: 0 });
-  const TAX_RATE = useMemo(() => (line?.taxRate ? line.taxRate / 100 : 0), [line?.taxRate]);
   const { order } = useOrder();
   const baseOrderLine = useMemo(() => order?.lines.find((l) => l.id === line?.id), [line, order?.lines]);
-
-  const changePriceToQuantity = (newQuantity: number) => {
-    if (!line) return;
-    // const currentNetPriceUnit = line?.linePrice / line?.quantity;
-    // const currentGrossPriceUnit = line?.linePriceWithTax / line?.quantity;
-    // const newNetPriceTotal = currentNetPriceUnit * newQuantity;
-    const newGrossPriceTotal = line.unitPriceWithTax * newQuantity;
-    setPriceChange({ netto: newGrossPriceTotal / (1 + TAX_RATE), brutto: newGrossPriceTotal });
-  };
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.currentTarget.value) setQuantityChange(0);
     const value = parseInt(e.currentTarget.value, 10);
     setQuantityChange(value);
-    changePriceToQuantity(value);
-  };
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.currentTarget.value) {
-      setPriceChange({ netto: 0, brutto: 0 });
-      return;
-    }
-    const value = parseInt(e.currentTarget.value, 10) * 100;
-    if (priceType === 'brutto') setPriceChange({ netto: value / (1 + TAX_RATE), brutto: value });
-    else setPriceChange({ netto: value, brutto: value * (1 + TAX_RATE) });
   };
 
-  const handlePriceTypeChange = (newPriceType: PriceType) => {
-    setPriceType(newPriceType);
-    setPriceChange((prevPrice) => {
-      if (newPriceType === 'brutto') {
-        const newNetto = prevPrice.netto - prevPrice.netto * TAX_RATE;
-        return { netto: newNetto, brutto: prevPrice.netto };
-      } else {
-        const newBrutto = prevPrice.brutto * (1 + TAX_RATE);
-        return { netto: prevPrice.brutto, brutto: newBrutto };
-      }
-    });
-  };
-  const handleSetInitialPrice = () => {
-    if (!initLinePrice) return;
-    if (priceInputRef.current) priceInputRef.current.value = (initLinePrice / 100).toFixed(2);
-    setPriceType('netto');
-    setPriceChange({ netto: initLinePrice, brutto: initLinePrice * (1 + TAX_RATE) });
-  };
   const quantityDelta = useMemo(
     () => (quantityChange ? quantityChange - (baseOrderLine?.quantity ?? 0) : 0),
     [quantityChange, line?.quantity],
-  );
-  const priceDelta = useMemo(
-    () => ({
-      netto: priceChange.netto !== 0 ? priceChange.netto - (line?.linePrice ? line.linePrice / line.quantity : 0) : 0,
-      brutto:
-        priceChange.brutto !== 0
-          ? priceChange.brutto - (line?.linePrice ? (line.linePrice * (1 + TAX_RATE)) / line.quantity : 0)
-          : 0,
-    }),
-    [priceChange, line?.linePrice, TAX_RATE, line?.quantity],
   );
 
   const handleApprove = async () => {
     if (!line?.id) return;
     onPriceQuantityChangeApprove({
       lineID: line.id,
-      priceChange: priceChange.netto,
-      pricewithTaxChange: priceChange.brutto,
       quantityChange: quantityChange,
-      isNettoPrice: priceType === 'netto',
     });
     onOpenChange(false);
   };
-  useEffect(() => {
-    if (!line?.id) return;
-    (async () => {
-      try {
-        // const { getInitialLinePrice } = await apiClient('query')({
-        //   getInitialLinePrice: [{ lineID: line?.id ?? '' }, true],
-        // });
-        // if (getInitialLinePrice) {
-        //   setInitLinePrice(getInitialLinePrice);
-        // }
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, [line?.id]);
 
   return (
     <>
@@ -167,104 +89,14 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <span className="text-right">{(quantityChange ?? 0) > 0 ? quantityChange : line?.quantity}</span>
             </div>
           </div>
-          {/* <Separator orientation="vertical" />
-          <div className="flex w-1/2 flex-col">
-            <h3 className="mb-4 text-lg font-medium">Price</h3>
-            <div className="mb-3 flex h-full w-full flex-col gap-2">
-              <div className="flex justify-between ">
-                <span>{t('orderLineActionModal.newPrice')}</span>
-                <RadioGroup
-                  onValueChange={(priceType) => handlePriceTypeChange(priceType as PriceType)}
-                  value={priceType}
-                  className="flex cursor-pointer"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="netto" id="r1" />
-                    <Label className="cursor-pointer" htmlFor="r1">
-                      Netto
-                    </Label>
-                  </div>
-                  <div className="flex cursor-pointer items-center space-x-2">
-                    <RadioGroupItem value="brutto" id="r2" />
-                    <Label className="cursor-pointer" htmlFor="r2">
-                      Brutto
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              <Input
-                ref={priceInputRef}
-                min={0}
-                onChange={handlePriceChange}
-                className="w-full"
-                type="number"
-                placeholder={t('orderLineActionModal.changePrice')}
-              />
-              <Button
-                onClick={handleSetInitialPrice}
-                className={cn('mt-10  hidden', initLinePrice && 'flex gap-2')}
-                variant="secondary"
-              >
-                <RotateCcw />
-                <span>
-                  {`${t('orderLineActionModal.resetPrice')} (${priceFormatter(initLinePrice ?? 0, line?.productVariant.currencyCode)} netto)`}
-                </span>
-              </Button>
-            </div>
-            <div className="grid shrink-0 grid-cols-3 gap-2 gap-x-5">
-              <span />
-              <span className="text-muted-foreground text-right text-xs">Netto</span>
-              <span className="text-muted-foreground text-right text-xs">{`Brutto (${TAX_RATE * 100}%)`}</span>
-              <span className="min-w-max">{t('orderLineActionModal.actualPrice')}</span>
-              <span className="text-right">
-                {priceFormatter(
-                  line?.linePrice ? line.linePrice / line?.quantity : 0,
-                  line?.productVariant.currencyCode,
-                )}
-              </span>
-              <span className="text-right">
-                {priceFormatter(
-                  line?.linePrice ? (line.linePrice * (1 + TAX_RATE)) / line?.quantity : 0,
-                  line?.productVariant.currencyCode,
-                )}
-              </span>
-              <span className="text-muted-foreground">{t('orderLineActionModal.change')}</span>
-              <span
-                className={cn('text-muted-foreground text-right', {
-                  'text-destructive': priceDelta.netto < 0,
-                  'text-green-500': priceDelta.netto > 0,
-                })}
-              >
-                {priceDelta.brutto > 0
-                  ? `+ ${priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}`
-                  : priceFormatter(priceDelta.netto, line?.productVariant.currencyCode)}
-              </span>{' '}
-              <span
-                className={cn('text-muted-foreground text-right', {
-                  'text-destructive': priceDelta.brutto < 0,
-                  'text-green-500': priceDelta.brutto > 0,
-                })}
-              >
-                {priceDelta.brutto > 0
-                  ? `+ ${priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}`
-                  : priceFormatter(priceDelta.brutto, line?.productVariant.currencyCode)}
-              </span>
-              <span className="bg-secondary col-span-3 h-[1px]"></span>
-              <span className="min-w-max">{t('orderLineActionModal.priceAfter')}</span>
-              <span className="text-right">{priceFormatter(priceChange.netto, line?.productVariant.currencyCode)}</span>
-              <span className="text-right">
-                {priceFormatter(priceChange.brutto, line?.productVariant.currencyCode)}
-              </span>
-            </div>
-          </div> */}
         </div>
-      </div>{' '}
+      </div>
       <DialogFooter className="mt-6">
         <Button onClick={() => onOpenChange(false)} variant="ghost">
           {t('orderLineActionModal.cancel')}
         </Button>
         <Button onClick={handleApprove}>{t('orderLineActionModal.save')}</Button>
-      </DialogFooter>{' '}
+      </DialogFooter>
     </>
   );
 };
