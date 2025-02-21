@@ -30,11 +30,7 @@ export interface ModifyOrderChange {
     current: string;
   };
 }
-type LinePriceInputWithAdministrator = {
-  linesToOverride: any;
-  // linesToOverride: ModelTypes['OverrideLinesPricesInput']['linesToOverride'];
-  activeAdministrator?: string;
-};
+
 export interface ModifyOrderChanges {
   linesChanges: {
     lineID: string;
@@ -63,9 +59,7 @@ interface Order {
   order: DraftOrderType | undefined;
   orderHistory: { loading: boolean; error: boolean; data: OrderHistoryEntryType[] };
   modifiedOrder: DraftOrderType | undefined;
-  linePriceChangeInput: LinePriceInputWithAdministrator | undefined;
   modifyOrderInput: ModifyOrderInput | undefined;
-  currentOrder: DraftOrderType | undefined;
   changes: ModifyOrderChange[];
   newChanges: ModifyOrderChanges;
 }
@@ -83,14 +77,8 @@ interface Actions {
   getObjectsChanges: (object1?: UnknownObject, object2?: UnknownObject) => ModifyOrderChanges;
   addPaymentToOrder: (input: ResolverInputTypes['ManualPaymentInput']) => void;
   settlePayment: (input: { id: string }) => void;
-  // addLinePriceChangeInput: (data: {
-  //   newLine: ModelTypes['OverrideLinesPricesInput']['linesToOverride'][number];
-  //   activeAdministrator?: string;
-  // }) => void;
   cancelPayment: (id: string) => void;
   cancelFulfillment: (id: string) => void;
-  deleteLinePriceChangeInput: (lineID: string) => void;
-  resetLinePriceChangeInput: () => void;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -145,8 +133,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   order: undefined,
   modifiedOrder: undefined,
   modifyOrderInput: undefined,
-  linePriceChangeInput: undefined,
-  currentOrder: undefined,
   orderHistory: {
     loading: true,
     error: false,
@@ -157,9 +143,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
     linesChanges: [],
     resChanges: [],
   },
-  resetLinePriceChangeInput: () => {
-    set({ linePriceChangeInput: undefined });
-  },
   cancelPayment: async (id: string) => {
     const { fetchOrder, order } = get();
     cancelPaymentMutation(id).then(() => fetchOrder(order!.id));
@@ -167,25 +150,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
   cancelFulfillment: async (id: string) => {
     const { fetchOrder, order } = get();
     cancelFulfillmentMutation(id).then(() => fetchOrder(order!.id));
-  },
-  // addLinePriceChangeInput: ({ newLine, activeAdministrator }) => {
-  //   set((state) => ({
-  //     linePriceChangeInput: {
-  //       activeAdministrator,
-  //       linesToOverride: [
-  //         ...(state.linePriceChangeInput?.linesToOverride.filter((line) => line.lineID !== newLine.lineID) || []),
-  //         newLine,
-  //       ],
-  //     },
-  //   }));
-  // },
-  deleteLinePriceChangeInput: (lineID) => {
-    // set((state) => ({
-    //   linePriceChangeInput: {
-    //     ...state.linePriceChangeInput,
-    //     // linesToOverride: (state.linePriceChangeInput?.linesToOverride ?? []).filter((l) => l.lineID !== lineID),
-    //   },
-    // }));
   },
   setOrder: (order) => {
     const mode = !order
@@ -238,8 +202,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       modifiedOrder,
       modifyOrderInput,
       setModifyOrderInput,
-      // linePriceChangeInput,
-      resetLinePriceChangeInput,
       orderHistory,
     } = get();
 
@@ -253,15 +215,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
 
     // const orderState = (latestOrderTransition.data.from as ORDER_STATE) || modifiedOrder?.nextStates?.[0];
     try {
-      // const modifyOrderTotalPrice = linePriceChangeInput?.linessToOverride.reduce((acc, el) => {
-      //   const line = modifiedOrder?.lines.find((l) => l.id === el.lineID);
-
-      //   if (!line) return acc;
-      //   acc += line.quantity * (el.netto ? el.value * (1 + line.taxRate) : el.value);
-      //   return acc;
-      // }, 0);
-      // const orderTotalPrice = order?.subTotalWithTax;
-
       const { modifyOrder } = await apiClient('mutation')({
         modifyOrder: [
           {
@@ -300,94 +253,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       });
 
       if (modifyOrder.__typename !== 'Order') throw new Error(modifyOrder.message);
-      // WE ARE NOT FOR SURE IF IT IS WORKING 100% CORRECTLY, THERE COULD BE SOME BUGS dont judge
-      // const surcharges = modifyOrder.lines.reduce(
-      //   (acc, line) => {
-      //     const activeAdministrator = linePriceChangeInput?.activeAdministrator;
-      //     const orginalLine = order?.lines.find((l) => l.id === line.id);
-      //     const linePriceInput = linePriceChangeInput?.linesToOverride.find(
-      //       (lineInput) => lineInput.lineID === line.id,
-      //     );
-
-      //     const addedSurchargesValue = modifyOrder?.surcharges
-      //       ?.filter((s) => s.sku === line.id)
-      //       .reduce((acc, s) => acc + s.priceWithTax, 0);
-      //     const quantityDelta =
-      //       line.quantity - (orginalLine?.quantity || 0) > 0 ? line.quantity - (orginalLine?.quantity || 0) : 0;
-
-      //     if (linePriceInput && orginalLine) {
-      //       const priceDelta =
-      //         line.quantity *
-      //           (linePriceInput?.netto ? linePriceInput.value * (1 + line.taxRate) : linePriceInput.value) -
-      //         (line.customFields?.modifiedListPrice
-      //           ? line.customFields?.modifiedListPrice * orginalLine.quantity
-      //           : line.linePriceWithTax) -
-      //         quantityDelta * orginalLine.productVariant.priceWithTax;
-
-      //       if (priceDelta > 0) {
-      //         acc.push({
-      //           price: priceDelta,
-      //           sku: line.id,
-      //           // for now we assume that price includes tax
-      //           priceIncludesTax: true,
-      //           description: `[ MODYFIKACJA CENY ]
-      //           SKU: ${line.productVariant.sku}
-      //           Data: ${new Date().toISOString()}
-      //           Zmiana ceny: ${(priceDelta / 100).toFixed(2)}
-      //           Zmieniono przez: ${activeAdministrator}`,
-      //         });
-      //       }
-      //     } else if (orginalLine && orginalLine.quantity !== line.quantity) {
-      //       const priceDelta =
-      //         (line.customFields?.modifiedListPrice
-      //           ? line.customFields?.modifiedListPrice * line.quantity
-      //           : orginalLine.linePriceWithTax) -
-      //         addedSurchargesValue -
-      //         line.quantity * orginalLine.productVariant.priceWithTax;
-
-      //       if (priceDelta > 0) {
-      //         acc.push({
-      //           price: priceDelta,
-      //           sku: line.id,
-      //           // for now we assume that price includes tax
-      //           priceIncludesTax: true,
-      //           description: `[ MODYFIKACJA CENY ]
-      //         SKU: ${line.productVariant.sku}
-      //         Data: ${new Date().toISOString()}
-      //         Zmiana ceny: ${(priceDelta / 100).toFixed(2)}
-      //         Zmieniono przez: ${activeAdministrator}`,
-      //         });
-      //       }
-      //     }
-      //     return acc;
-      //   },
-      //   [] as ModelTypes['SurchargeInput'][],
-      // );
-
-      // if (surcharges?.length) {
-      //   await apiClient('mutation')({
-      //     modifyOrder: [{ input: { dryRun: false, orderId: order.id, surcharges } }, { __typename: true }],
-      //   });
-      // }
-
-      // if (linePriceChangeInput?.linesToOverride.length) {
-      //   const { overrideLinesPrices } = await apiClient('mutation')({
-      //     overrideLinesPrices: [
-      //       {
-      //         input: {
-      //           orderID: order.id,
-      //           linesToOverride: linePriceChangeInput.linesToOverride,
-      //         },
-      //       },
-      //       true,
-      //     ],
-      //   });
-      //   if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
-      // }
-      // const linePriceModification = await apiClient('mutation')({
-      //   setPricesAfterModification: [{ orderID: order.id }, true],
-      // });
-      // if (!linePriceModification.setPricesAfterModification) throw new Error('Failed to set prices after modification');
 
       // if (orderTotalPrice !== modifyOrderTotalPrice) {
       //   const { transitionOrderToState } = await apiClient('mutation')({
@@ -476,7 +341,6 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
       setOrder(finalOrder);
       setModifiedOrder(finalOrder);
       setModifyOrderInput(undefined);
-      resetLinePriceChangeInput();
       onSuccess && onSuccess();
     } catch (e) {
       toast.error(`GlobalError: failed to modify order: ${e instanceof Error ? e.message : e}`);
@@ -561,6 +425,3 @@ export const useOrder = create<Order & Actions>()((set, get) => ({
     fetchOrderHistory();
   },
 }));
-
-// tax jest included czyli zmienić działanie
-// dodać info o zmianie ceny

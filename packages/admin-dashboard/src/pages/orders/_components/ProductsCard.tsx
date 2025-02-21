@@ -62,16 +62,7 @@ export const ProductsCard: React.FC = () => {
     (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
   );
 
-  const {
-    mode,
-    order,
-    setOrder,
-    setModifiedOrder,
-    modifiedOrder,
-    linePriceChangeInput,
-    // addLinePriceChangeInput,
-    fetchOrder,
-  } = useOrder();
+  const { mode, order, setOrder, setModifiedOrder, modifiedOrder, fetchOrder } = useOrder();
   const currentOrder = useMemo(
     () => (mode === 'update' ? (modifiedOrder ? modifiedOrder : order) : order),
     [mode, order, modifiedOrder],
@@ -162,13 +153,7 @@ export const ProductsCard: React.FC = () => {
 
   const onPriceQuantityChangeApprove = async (input: OnPriceQuantityChangeApproveInput) => {
     if (!order) return;
-    const {
-      lineID,
-      priceChange,
-      pricewithTaxChange,
-      quantityChange,
-      // isNettoPrice
-    } = input;
+    const { lineID, quantityChange } = input;
     console.log('QUANTITY CHANGE', quantityChange);
     if (mode === 'update' && modifiedOrder) {
       const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === lineID);
@@ -177,16 +162,6 @@ export const ProductsCard: React.FC = () => {
         ...modifiedOrder.lines[editedLineIdx],
         quantity,
       };
-      if (priceChange && pricewithTaxChange) {
-        // addLinePriceChangeInput({
-        //   activeAdministrator: activeAdministrator?.emailAddress ?? 'Nieznany administrator',
-        //   newLine: {
-        //     lineID: lineID,
-        //     value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-        //     netto: !!isNettoPrice,
-        //   },
-        // });
-      }
       setModifiedOrder({
         ...modifiedOrder,
         lines: modifiedOrder.lines.map((l, i) => (i === editedLineIdx ? editedLine : l)),
@@ -212,59 +187,7 @@ export const ProductsCard: React.FC = () => {
           else setOrder(adjustDraftOrderLine.order);
         }
       }
-      if (priceChange && pricewithTaxChange) {
-        // for now we need to call it twice because of incomprehensible behavior of orderService applyPriceAdjustments,
-        //  we are feeding this function with correct input, but it is returning order in prev state,
-        // so if you set price to 1000 nothing will change,
-        // then if you will set price to 2000, price will be 1000. Need to rewrite this in future
-        // const { overrideLinesPrices } = await apiClient('mutation')({
-        //   overrideLinesPrices: [
-        //     {
-        //       input: {
-        //         orderID: order.id,
-        //         linesToOverride: [
-        //           {
-        //             lineID: lineID,
-        //             value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-        //             netto: !!isNettoPrice,
-        //           },
-        //         ],
-        //       },
-        //     },
-        //     true,
-        //   ],
-        // });
-        // if (!overrideLinesPrices) throw new Error('Failed to override lines prices');
-        // addLinePriceChangeInput({
-        //   activeAdministrator: activeAdministrator?.emailAddress ?? 'Nieznany administrator',
-        //   newLine: {
-        //     lineID: lineID,
-        //     value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-        //     netto: !!isNettoPrice,
-        //   },
-        // });
-        // const { overrideLinesPrices: secondOverrideLinesPrices } = await apiClient('mutation')({
-        //   overrideLinesPrices: [
-        //     {
-        //       input: {
-        //         orderID: order.id,
-        //         linesToOverride: [
-        //           {
-        //             lineID: lineID,
-        //             value: parseInt(isNettoPrice ? priceChange.toFixed(2) : pricewithTaxChange.toFixed(2)),
-        //             netto: !!isNettoPrice,
-        //           },
-        //         ],
-        //       },
-        //     },
-        //     true,
-        //   ],
-        // });
-        // if (!secondOverrideLinesPrices) throw new Error('Failed to override lines prices');
-        // await apiClient('mutation')({
-        //   setPricesAfterModification: [{ orderID: order.id }, true],
-        // });
-      }
+
       fetchOrder(order.id);
     }
   };
@@ -350,47 +273,13 @@ export const ProductsCard: React.FC = () => {
   if (!order) return null;
 
   const maybeChangedValueWithTax = (line: DraftOrderLineType, withTax: boolean) => {
-    const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l: any) => l.lineID === line.id);
-    if (!thisLinePriceChangeInput)
-      // return priceFormatter(
-      //   (withTax ? line.discountedLinePriceWithTax : line.discountedLinePrice) / line.quantity,
-      //   line.productVariant.currencyCode,
-      // );
-      return priceFormatter(
-        withTax ? line.discountedUnitPriceWithTax : line.discountedUnitPrice,
-        line.productVariant.currencyCode,
-      );
-    if (withTax) {
-      const priceValue = thisLinePriceChangeInput.netto
-        ? thisLinePriceChangeInput.value * (line?.taxRate ? 1 + line.taxRate / 100 : 1)
-        : thisLinePriceChangeInput.value;
-      return priceFormatter(priceValue, line.productVariant.currencyCode);
-    } else {
-      return priceFormatter(
-        thisLinePriceChangeInput.netto
-          ? thisLinePriceChangeInput.value
-          : thisLinePriceChangeInput.value -
-              thisLinePriceChangeInput.value * (typeof line?.taxRate !== 'undefined' ? line.taxRate / 100 : 1),
-        line.productVariant.currencyCode,
-      );
-    }
+    return priceFormatter(
+      withTax ? line.discountedUnitPriceWithTax : line.discountedUnitPrice,
+      line.productVariant.currencyCode,
+    );
   };
   const mabeyChangedOverallLinePrice = (line: DraftOrderLineType) => {
-    const thisLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find((l: any) => l.lineID === line.id);
-    if (!thisLinePriceChangeInput)
-      return priceFormatter(line.discountedLinePriceWithTax, line.productVariant.currencyCode);
-
-    // const priceValue =
-    //   (thisLinePriceChangeInput.netto
-    //     ? thisLinePriceChangeInput.value * (line?.taxRate ? 1 + line.taxRate / 100 : 1)
-    //     : thisLinePriceChangeInput.value) * line.quantity;
-
-    const priceValue =
-      (thisLinePriceChangeInput.netto
-        ? thisLinePriceChangeInput.value * (line?.taxRate ? 1 + line.taxRate / 100 : 1)
-        : thisLinePriceChangeInput.value) * line.quantity;
-
-    return priceFormatter(priceValue, line.productVariant.currencyCode);
+    return priceFormatter(line.discountedLinePriceWithTax, line.productVariant.currencyCode);
   };
   const handleNewVariantAdd = async (attributes?: string) => {
     if (orderLineId) {
