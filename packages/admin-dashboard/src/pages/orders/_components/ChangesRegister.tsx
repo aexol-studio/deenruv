@@ -16,7 +16,7 @@ import { useOrder } from '@/state/order';
 
 export const ChangesRegister: React.FC = () => {
   const { t } = useTranslation('orders');
-  const { getObjectsChanges: getOrderChanges, modifiedOrder, order } = useOrder();
+  const { getObjectsChanges: getOrderChanges, linePriceChangeInput, modifiedOrder, order } = useOrder();
   const changes = useMemo(() => {
     const changes = getOrderChanges();
     return {
@@ -26,19 +26,69 @@ export const ChangesRegister: React.FC = () => {
           ...changes.linesChanges
             .filter((change) => !('isNew' in change))
             .map((change) => {
+              const exitingLinePriceChangeInput = linePriceChangeInput?.linesToOverride.find(
+                (l: any) => l.lineID === change.lineID,
+              );
+              const quantity = order?.lines.find((line) => line.id === change.lineID)?.quantity;
               const modifyLine = modifiedOrder?.lines.find((line) => line.id === change.lineID);
-              if (!modifyLine) return change;
-
+              if (!exitingLinePriceChangeInput || !modifyLine) return change;
+              const lineTax = modifyLine?.taxRate;
+              const orginalPrice = modifyLine.discountedLinePrice / (quantity ?? 1);
+              const orginalPriceWithTax = modifyLine.discountedLinePriceWithTax / (quantity ?? 1);
+              const price = exitingLinePriceChangeInput?.netto
+                ? exitingLinePriceChangeInput.value
+                : exitingLinePriceChangeInput.value -
+                  exitingLinePriceChangeInput.value * (typeof lineTax !== 'undefined' ? lineTax / 100 : 1);
+              const priceWithTax = exitingLinePriceChangeInput.netto
+                ? exitingLinePriceChangeInput.value * (lineTax ? 1 + lineTax / 100 : 1)
+                : exitingLinePriceChangeInput.value;
               return {
                 ...change,
-                changes: [...change.changes],
+                changes: [
+                  ...change.changes,
+                  { path: 'price', added: price, removed: orginalPrice, value: undefined, changed: undefined },
+                  {
+                    path: 'priceWithTax',
+                    added: priceWithTax,
+                    removed: orginalPriceWithTax,
+                    value: undefined,
+                    changed: undefined,
+                  },
+                ],
+              };
+            }),
+          ...(linePriceChangeInput?.linesToOverride ?? [])
+            .filter((l: any) => !changes.linesChanges.some((change) => change.lineID === l.lineID))
+            .map((l: any) => {
+              const modifyLine = modifiedOrder?.lines.find((line) => line.id === l.lineID);
+              if (!modifyLine) return null;
+              const lineTax = modifyLine?.taxRate;
+              const orginalPrice = modifyLine.discountedLinePrice / modifyLine?.quantity;
+              const orginalPriceWithTax = modifyLine.discountedLinePriceWithTax / modifyLine?.quantity;
+              const price = l?.netto
+                ? l.value
+                : l.value - l.value * (typeof lineTax !== 'undefined' ? lineTax / 100 : 1);
+              const priceWithTax = l.netto ? l.value * (lineTax ? 1 + lineTax / 100 : 1) : l.value;
+              return {
+                lineID: l.lineID,
+                variantName: modifyLine.productVariant.name,
+                changes: [
+                  { path: 'price', added: price, removed: orginalPrice, value: undefined, changed: undefined },
+                  {
+                    path: 'priceWithTax',
+                    added: priceWithTax,
+                    removed: orginalPriceWithTax,
+                    value: undefined,
+                    changed: undefined,
+                  },
+                ],
               };
             }),
         ],
         new: changes.linesChanges.filter((change) => 'isNew' in change),
       },
     };
-  }, [getOrderChanges, order, modifiedOrder]);
+  }, [getOrderChanges, order, modifiedOrder, linePriceChangeInput]);
 
   const surcharges = useMemo(() => changes.resChanges.filter((ch) => ch.path.startsWith('surcharges')), [changes]);
 
