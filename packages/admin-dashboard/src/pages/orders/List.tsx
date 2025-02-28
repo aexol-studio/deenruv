@@ -46,9 +46,14 @@ export const OrdersListPage = () => {
   const navigate = useNavigate();
   return (
     <DetailList
-      filterFields={[{ key: 'code', operator: 'StringOperators' }]}
+      filterFields={[
+        { key: 'code', operator: 'StringOperators' },
+        { key: 'active', operator: 'BooleanOperators' },
+        { key: 'customerLastName', operator: 'StringOperators' },
+        { key: 'total', operator: 'NumberOperators' },
+      ]}
       detailLinkColumn="id"
-      searchFields={['code']}
+      searchFields={['code', 'customerLastName']}
       entityName="Order"
       type="orders"
       route={{

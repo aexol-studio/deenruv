@@ -1,24 +1,12 @@
 import { useState } from 'react';
-
-import { useTranslation } from 'react-i18next';
 import { FilterInputType } from '../types';
 import { ArrayInput } from './ArrayInput';
-import {
-    Button,
-    Input,
-    Label,
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components';
+import { Input } from '@/components';
 import React from 'react';
+import { OperatorSelect } from '@/components/templates/DetailList/useDetailList/OperatorSelect.js';
 
 type IDOperator = Omit<FilterInputType['IDOperators'], '__typename'>;
 const ARRAY_TYPES = ['in', 'notIn'] as (keyof IDOperator)[];
-const TYPES = ['eq', 'notEq', 'in', 'notIn', 'isNull'] as (keyof IDOperator)[];
 
 type Props<T extends IDOperator> = {
     currentValue?: T;
@@ -26,7 +14,6 @@ type Props<T extends IDOperator> = {
 };
 
 export const IDOperator: React.FC<Props<IDOperator>> = ({ currentValue, onSubmit }) => {
-    const { t } = useTranslation('table');
     const defaultType = currentValue ? (Object.keys(currentValue || {})[0] as keyof IDOperator) : 'eq';
     const [type, setType] = useState(defaultType);
     const [value, setValue] = useState<string | string[] | undefined>(() => {
@@ -36,42 +23,44 @@ export const IDOperator: React.FC<Props<IDOperator>> = ({ currentValue, onSubmit
     });
 
     return (
-        <div className="flex flex-col gap-2">
-            <Label htmlFor="string-input">{t('placeholders.operatorInput')}</Label>
-            <Select value={type as string} onValueChange={e => setType(e as keyof IDOperator)}>
-                <SelectTrigger>
-                    <SelectValue placeholder={t('types.select')} />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        {TYPES.map((i, index) => (
-                            <SelectItem key={index} value={i}>
-                                {t(`operators.${i}`)}
-                            </SelectItem>
-                        ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-            <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
+            <OperatorSelect
+                type="IDOperators"
+                currentValue={type as keyof IDOperator}
+                onChange={e => {
+                    setType(e as keyof IDOperator);
+                    onSubmit({ [e as keyof IDOperator]: value });
+                }}
+            />
+            <div className="flex gap-2">
                 {!ARRAY_TYPES.includes(type) ? (
-                    <Input id="string-input" value={value} onChange={e => setValue(e.currentTarget.value)} />
+                    <Input
+                        id="string-input"
+                        className="h-8 w-full rounded"
+                        disabled={!type}
+                        value={value}
+                        onChange={e => {
+                            setValue(e.currentTarget.value);
+                            onSubmit({ [type as keyof IDOperator]: e.currentTarget.value });
+                        }}
+                    />
                 ) : (
                     <ArrayInput
                         type="number"
                         value={Array.isArray(value) && value.length ? value : []}
+                        className="h-8 w-full rounded"
+                        disabled={!type}
                         onChange={e => {
-                            if (Array.isArray(e)) setValue(e);
-                            else setValue([e.target.value]);
+                            if (Array.isArray(e)) {
+                                setValue(e);
+                                onSubmit({ [type as keyof IDOperator]: e });
+                            } else {
+                                setValue([e.target.value]);
+                                onSubmit({ [type as keyof IDOperator]: e.target.value });
+                            }
                         }}
                     />
                 )}
-                <Button
-                    onClick={() => onSubmit({ [type]: value })}
-                    variant="outline"
-                    className="w-fit self-end"
-                >
-                    {t('buttons.apply')}
-                </Button>
             </div>
         </div>
     );

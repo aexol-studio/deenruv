@@ -10,12 +10,16 @@ import {
 } from '@/components/atoms';
 import { SelectProps } from '@radix-ui/react-select';
 import { ErrorMessage } from '@/components/molecules';
+import { cn } from '@/lib/utils.js';
 
 interface CustomSelectProps extends SelectProps {
     options: Option[] | undefined;
     label?: string;
     size?: 'sm' | 'base';
     errors?: string[];
+    className?: string;
+    wrapperClassName?: string;
+    placeholder?: string;
 }
 
 export const SimpleSelect: React.FC<CustomSelectProps> = ({
@@ -27,9 +31,12 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
     size = 'base',
     errors,
     disabled,
+    className,
+    wrapperClassName,
+    placeholder,
 }) => {
     return (
-        <div className="flex flex-col w-full gap-2">
+        <div className={cn('flex flex-col w-full gap-2 ', wrapperClassName)}>
             {label && <Label>{label}</Label>}
             <Select
                 defaultValue={defaultValue}
@@ -37,8 +44,8 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
                 value={value}
                 disabled={disabled}
             >
-                <SelectTrigger {...(size === 'sm' && { className: 'h-[30px] text-[13px]' })}>
-                    <SelectValue placeholder="Select element" />
+                <SelectTrigger className={cn(className, size === 'sm' && 'h-[30px] text-[13px]')}>
+                    <SelectValue placeholder={placeholder ?? 'Select element'} />
                 </SelectTrigger>
                 <SelectContent>
                     {options?.map(o => (

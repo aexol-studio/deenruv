@@ -1,5 +1,6 @@
-import { Badge, Button, Input, InputProps } from '@/components';
-import { XIcon } from 'lucide-react';
+import { Badge, Button, Input, InputProps, Popover, PopoverContent, PopoverTrigger } from '@/components';
+import { cn } from '@/lib/utils.js';
+import { AppWindowMac, XIcon } from 'lucide-react';
 import React from 'react';
 import { forwardRef, useState } from 'react';
 
@@ -35,35 +36,52 @@ export const ArrayInput = forwardRef<HTMLInputElement, ArrayInputProps>(
                                 addPendingDataPoint();
                             }
                         }}
-                        className="rounded-r-none"
+                        className={cn('rounded-r-none', props.className)}
                         {...props}
                         ref={ref}
                     />
                     <Button
                         type="button"
                         variant="secondary"
-                        className="rounded-l-none border border-l-0"
+                        className="rounded-l-none border border-l-0 h-8"
                         onClick={addPendingDataPoint}
                     >
                         Add
                     </Button>
                 </div>
-                <div className="flex min-h-[2.5rem] flex-wrap items-center gap-2 overflow-y-auto rounded-md border p-2">
-                    {value.map((item, idx) => (
-                        <Badge key={idx} variant="secondary">
-                            {item}
-                            <button
-                                type="button"
-                                className="ml-2 w-3"
-                                onClick={() => {
-                                    onChange(value.filter(i => i !== item));
-                                }}
-                            >
-                                <XIcon className="w-3" />
-                            </button>
-                        </Badge>
-                    ))}
-                </div>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
+                            disabled={!value.length}
+                            size={'icon'}
+                            variant={'outline'}
+                            className={cn(
+                                'text-left font-normal size-8 rounded shrink-0',
+                                !value && 'text-muted-foreground',
+                            )}
+                        >
+                            <AppWindowMac className="size-3.5" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                        <div className="flex flex-wrap items-start gap-2 overflow-y-auto rounded-md border p-2 size-[180px]">
+                            {value.map((item, idx) => (
+                                <Badge key={idx} variant="secondary">
+                                    {item}
+                                    <button
+                                        type="button"
+                                        className="ml-2 w-3"
+                                        onClick={() => {
+                                            onChange(value.filter(i => i !== item));
+                                        }}
+                                    >
+                                        <XIcon className="w-3" />
+                                    </button>
+                                </Badge>
+                            ))}
+                        </div>
+                    </PopoverContent>
+                </Popover>
             </>
         );
     },

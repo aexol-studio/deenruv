@@ -113,5 +113,17 @@
     "copyId": "Copy ID",
     "view": "View",
     "delete": "Delete"
+  },
+  "filterDialog": {
+    "title": "Filters",
+    "apply": "Apply filter",
+    "reset": "Reset filters",
+    "add": "Add filter",
+    "allFiltersApplied": "You have already applied all filters",
+    "where": "where",
+    "noFieldsFound": "No fields found",
+    "searchFields": "Search fields",
+    "noFiltersApplied": "No filters applied",
+    "emptyState": "Add filters to refine your results."
   }
 }

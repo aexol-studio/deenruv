@@ -1,22 +1,14 @@
-import { endOfDay, startOfDay } from 'date-fns';
-import { useState } from 'react';
+import { endOfDay, format, startOfDay } from 'date-fns';
+import { useCallback, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 import { useTranslation } from 'react-i18next';
 import { FilterInputType } from '../types';
-import {
-    Button,
-    Calendar,
-    Checkbox,
-    Label,
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components';
+import { Button, Calendar, Checkbox, Popover, PopoverContent, PopoverTrigger } from '@/components';
 import React from 'react';
+import { OperatorSelect } from '@/components/templates/DetailList/useDetailList/OperatorSelect.js';
+import { cn } from '@/lib/utils.js';
+import { CalendarIcon } from 'lucide-react';
 
 type DateOperator = Omit<FilterInputType['DateOperators'], '__typename'>;
 const TYPES = ['eq', 'before', 'after', 'between', 'isNull'] as (keyof DateOperator)[];
@@ -47,12 +39,32 @@ export const DateOperator: React.FC<Props<DateOperator>> = ({ currentValue, onSu
             return undefined;
         }
     });
+
+    const handleSubmit = useCallback(
+        (value?: Date | DateRange) => {
+            setTimeout(() => {
+                if (type && value && type === 'between' && isDateRange(value) && value.to && value.from) {
+                    onSubmit({
+                        between: { start: startOfDay(value.from), end: endOfDay(value.to) },
+                    });
+                } else if (type && value && !isDateRange(value)) {
+                    onSubmit(
+                        type === 'before'
+                            ? { before: endOfDay(value as Date) }
+                            : { after: startOfDay(value as Date) },
+                    );
+                }
+            });
+        },
+        [type, value, onSubmit],
+    );
+
     return (
-        <div className="flex flex-col gap-2">
-            <Label>{t('types.filter')}</Label>
-            <Select
-                value={type}
-                onValueChange={e => {
+        <div className="flex gap-2">
+            <OperatorSelect
+                type="DateOperators"
+                currentValue={type as keyof DateOperator}
+                onChange={e => {
                     if (e === 'between') {
                         setType(e);
                         setValue({ from: new Date() });
@@ -60,92 +72,70 @@ export const DateOperator: React.FC<Props<DateOperator>> = ({ currentValue, onSu
                         setType(e as keyof DateOperator);
                         setValue(new Date());
                     }
+                    onSubmit({ [e as keyof DateOperator]: value });
                 }}
-            >
-                <SelectTrigger>
-                    <SelectValue placeholder={t('placeholders.operatorInput')} />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        {TYPES.map((i, index) => (
-                            <SelectItem key={index} value={i}>
-                                {t(`operators.${i}`)}
-                            </SelectItem>
-                        ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-            <Label htmlFor="string-input">{t('placeholders.operatorInput')}</Label>
+            />
+
             {type === 'isNull' && typeof value === 'boolean' ? (
-                <>
-                    <Checkbox checked={!!value} onCheckedChange={e => setValue(!!e)}>
-                        {t('operators.isNull')}
-                    </Checkbox>
-                    <Button
-                        disabled={!type || value === undefined}
-                        onClick={() => {
-                            if (!type) return;
-                            onSubmit({ [type]: value });
-                        }}
-                        variant="outline"
-                        className="w-fit self-end"
-                    >
-                        {t('buttons.apply')}
-                    </Button>
-                </>
+                <Checkbox
+                    checked={!!value}
+                    onCheckedChange={e => {
+                        setValue(!!e);
+                        onSubmit({ [type]: !!e });
+                    }}
+                >
+                    {t('operators.isNull')}
+                </Checkbox>
             ) : (
-                <>
-                    {type === 'between' ? (
-                        <Calendar
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button
                             disabled={!type}
-                            mode="range"
-                            numberOfMonths={2}
-                            showOutsideDays={false}
-                            selected={value as DateRange | undefined}
-                            onSelect={setValue}
-                            className="rounded-md border bg-white dark:bg-black"
-                        />
-                    ) : (
-                        <Calendar
-                            disabled={!type}
-                            mode="single"
-                            showOutsideDays={false}
-                            selected={value as Date | undefined}
-                            onSelect={setValue}
-                            className="rounded-md border bg-white dark:bg-black"
-                        />
-                    )}
-                    <Button
-                        disabled={
-                            !type ||
-                            (type === 'between' && isDateRange(value) ? !value.to || !value.from : !value)
-                        }
-                        onClick={() => {
-                            if (
-                                type &&
-                                value &&
-                                type === 'between' &&
-                                isDateRange(value) &&
-                                value.to &&
-                                value.from
-                            ) {
-                                onSubmit({
-                                    between: { start: startOfDay(value.from), end: endOfDay(value.to) },
-                                });
-                            } else if (type && value && !isDateRange(value)) {
-                                onSubmit(
-                                    type === 'before'
-                                        ? { before: endOfDay(value as Date) }
-                                        : { after: startOfDay(value as Date) },
-                                );
-                            }
-                        }}
-                        variant="outline"
-                        className="w-fit self-end"
-                    >
-                        {t('buttons.apply')}
-                    </Button>
-                </>
+                            variant={'outline'}
+                            className={cn(
+                                'w-[182px] pl-3 text-left font-normal h-8 rounded',
+                                !value && 'text-muted-foreground',
+                            )}
+                        >
+                            {!isDateRange(value) && value ? (
+                                format(value as Date, 'PPP')
+                            ) : value ? (
+                                <span>Data range</span>
+                            ) : (
+                                <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                        {type === 'between' ? (
+                            <Calendar
+                                disabled={!type}
+                                mode="range"
+                                numberOfMonths={2}
+                                showOutsideDays={false}
+                                selected={value as DateRange | undefined}
+                                onSelect={e => {
+                                    setValue(e);
+                                    handleSubmit(e);
+                                }}
+                                className="rounded-md border bg-white dark:bg-black"
+                            />
+                        ) : (
+                            <Calendar
+                                disabled={!type}
+                                mode="single"
+                                showOutsideDays={false}
+                                selected={value as Date | undefined}
+                                onSelect={e => {
+                                    setValue(e);
+                                    handleSubmit(e);
+                                }}
+                                className="rounded-md border bg-white dark:bg-black"
+                            />
+                        )}
+                    </PopoverContent>
+                </Popover>
             )}
         </div>
     );

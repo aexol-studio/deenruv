@@ -26,10 +26,10 @@ import { useLocalStorage } from '@/hooks';
 import { Button } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
 import { ListType } from './useDetailList/types';
-import { FiltersButton } from './useDetailList/FiltersButton';
-import { FiltersResult } from './useDetailList/FiltersResult';
 import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailList/constants';
 import { cn } from '@/lib';
+import { FiltersDialog } from '@/components/templates/DetailList/useDetailList/FiltersDialog.js';
+import { ColumnView } from '@/components/templates/DetailList/useDetailList/ColumnView.js';
 
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
@@ -152,6 +152,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         filter: searchParamFilter,
         setFilterField,
         removeFilterField,
+        resetFilterFields,
+        changeFilterField,
     } = useDetailList({
         type,
         fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
@@ -195,7 +197,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             label = columnsTranslations[key as keyof typeof columnsTranslations];
                         }
 
-                        return <div className="whitespace-nowrap">{label}</div>;
+                        return <div className="whitespace-nowrap text-[13px] capitalize">{label}</div>;
                     },
                     cell: ({ row }) => {
                         const value = row.original.customFields[key.split('.')[1]];
@@ -222,7 +224,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         );
                     } else {
                         return (
-                            <div className="whitespace-nowrap">
+                            <div className="whitespace-nowrap text-[13px] capitalize">
                                 {columnsTranslations[key as keyof typeof columnsTranslations] || key}
                             </div>
                         );
@@ -274,7 +276,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         return (
                             <Button
                                 variant="outline"
-                                size="default"
+                                // size="sm"
+                                className="p-0 h-6 px-3"
                                 onClick={() => {
                                     if ('edit' in route) {
                                         route.edit(
@@ -435,6 +438,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         filter: searchParamFilter,
         setFilterField,
         removeFilterField,
+        resetFilterFields,
+        changeFilterField,
     };
 
     return (
@@ -445,13 +450,14 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                 />
             )}
             <div className="page-content-h flex w-full flex-col gap-2">
-                <div className="flex w-full flex-col items-start gap-4">
+                <div className="flex w-full flex-col items-start gap-4 mb-1">
                     <div className="flex w-full items-end justify-between gap-4">
                         <div className="flex items-center gap-2">
-                            <FiltersButton {...filterProperties} />
+                            <FiltersDialog {...filterProperties} />
                             {Search}
                         </div>
                         <div className="flex">
+                            <ColumnView {...table} />
                             {!noCreateButton && isPermittedToCreate && (
                                 <Button
                                     className="flex items-center gap-2"
@@ -466,7 +472,6 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             )}
                         </div>
                     </div>
-                    <FiltersResult {...filterProperties} />
                 </div>
                 <ListTable {...{ columns, isFiltered, table, Paginate }} />
             </div>

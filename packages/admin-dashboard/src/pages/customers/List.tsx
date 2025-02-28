@@ -51,8 +51,15 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 export const CustomersListPage = () => (
   <DetailList
     detailLinkColumn="id"
-    filterFields={[{ key: 'phoneNumber', operator: 'StringOperators' }]}
-    searchFields={['firstName', 'lastName', 'emailAddress']}
+    filterFields={[
+      { key: 'phoneNumber', operator: 'StringOperators' },
+      { key: 'emailAddress', operator: 'StringOperators' },
+      { key: 'firstName', operator: 'StringOperators' },
+      { key: 'lastName', operator: 'StringOperators' },
+      { key: 'postalCode', operator: 'StringOperators' },
+      { key: 'title', operator: 'StringOperators' },
+    ]}
+    searchFields={['firstName', 'lastName', 'emailAddress', 'postalCode']}
     hideColumns={['customFields', 'user', 'title']}
     additionalColumns={[
       {

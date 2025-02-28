@@ -55,6 +55,8 @@
   "next": "next",
   "previous": "previous",
   "perPagePlaceholder": "Items per page",
+  "page": "Page {{current}} of {{total}}",
+  "rowsPerPage": "Rows per page",
   "perPage": {
     "10perPage": "10 per page",
     "25perPage": "25 per page",
