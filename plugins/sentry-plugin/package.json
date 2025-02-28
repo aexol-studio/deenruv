@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/sentry-plugin",
-    "version": "0.0.71",
+    "version": "0.0.72",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
