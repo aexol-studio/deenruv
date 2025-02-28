@@ -1,6 +1,7 @@
 import { Selector } from '@deenruv/admin-types';
 import { FromSelectorWithScalars } from './scalars.js';
 import { paymentSelector } from './orders.js';
+import { OrderDetailSelector } from '@deenruv/react-ui-devkit';
 
 export const eligibleShippingMethodsSelector = Selector('ShippingMethodQuote')({
   id: true,
@@ -235,11 +236,11 @@ export const modifyOrderSelector = Selector('ModifyOrderResult')({
 });
 export const updateOrderItemsSelector = Selector('UpdateOrderItemsResult')({
   __typename: true,
-  '...on Order': draftOrderSelector,
+  '...on Order': OrderDetailSelector,
   '...on InsufficientStockError': {
     errorCode: true,
     message: true,
-    order: draftOrderSelector,
+    order: OrderDetailSelector,
     quantityAvailable: true,
   },
   '...on NegativeQuantityError': {
@@ -259,11 +260,11 @@ export const updateOrderItemsSelector = Selector('UpdateOrderItemsResult')({
 
 export const updatedDraftOrderSelector = Selector('UpdateOrderItemsResult')({
   __typename: true,
-  '...on Order': draftOrderSelector,
+  '...on Order': OrderDetailSelector,
   '...on InsufficientStockError': {
     errorCode: true,
     message: true,
-    order: draftOrderSelector,
+    order: OrderDetailSelector,
     quantityAvailable: true,
   },
   '...on NegativeQuantityError': {
@@ -283,7 +284,7 @@ export const updatedDraftOrderSelector = Selector('UpdateOrderItemsResult')({
 
 export const removeOrderItemsResultSelector = Selector('RemoveOrderItemsResult')({
   __typename: true,
-  '...on Order': draftOrderSelector,
+  '...on Order': OrderDetailSelector,
   '...on OrderModificationError': {
     errorCode: true,
     message: true,

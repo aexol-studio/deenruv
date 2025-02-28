@@ -1,10 +1,9 @@
-import { cn, Button, DialogFooter, Input } from '@deenruv/react-ui-devkit';
+import { useOrder, cn, Button, DialogFooter, Input } from '@deenruv/react-ui-devkit';
 import { DraftOrderLineType } from '@/graphql/draft_order';
 
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OnPriceQuantityChangeApproveInput } from './types.js';
-import { useOrder } from '@/state/order.js';
 
 interface ActionQuantityPriceProps {
   line?: DraftOrderLineType;

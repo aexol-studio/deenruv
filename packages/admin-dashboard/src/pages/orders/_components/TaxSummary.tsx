@@ -9,8 +9,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
-import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

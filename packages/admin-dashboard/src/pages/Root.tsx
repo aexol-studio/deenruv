@@ -6,6 +6,7 @@ import {
   countrySelector,
   apiClient,
   fetchAndSetChannels,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -69,6 +70,7 @@ export const Root = () => {
   const setLanguage = useSettings((p) => p.setLanguage);
   const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
   const [loaded, setLoaded] = useState(false);
+  const { initializeOrderCustomFields } = useOrder();
 
   useEffect(() => {
     const init = async () => {
@@ -107,6 +109,8 @@ export const Root = () => {
       if (serverConfigResponse.status === 'rejected') {
         toast.error(t('setup.failedServer'));
       } else {
+        if (serverConfigResponse.value.globalSettings.serverConfig)
+          initializeOrderCustomFields(serverConfigResponse.value.globalSettings.serverConfig);
         setServerConfig(serverConfigResponse.value.globalSettings.serverConfig);
         setAvailableLanguages(serverConfigResponse.value.globalSettings.availableLanguages);
         // const socket = serverConfigResponse.value.globalSettings.serverConfig.plugins?.find(

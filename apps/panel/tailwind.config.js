@@ -10,6 +10,9 @@ export default {
     '../../node_modules/@deenruv/replicate-plugin/dist/**/*.js',
     '../node_modules/@deenruv/replicate-plugin/dist/**/*.js',
     './node_modules/@deenruv/replicate-plugin/dist/**/*.js',
+    '../../node_modules/@deenruv/order-attributes-plugin/dist/**/*.js',
+    '../node_modules/@deenruv/order-attributes-plugin/dist/**/*.js',
+    './node_modules/@deenruv/order-attributes-plugin/dist/**/*.js',
   ],
   plugins: [tailwindCssAnimate, tailwindCssTypography],
 };

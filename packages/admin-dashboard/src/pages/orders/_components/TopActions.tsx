@@ -18,6 +18,9 @@ import {
   OrderStateBadge,
   useServer,
   apiClient,
+  usePluginStore,
+  useOrder,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
@@ -29,22 +32,18 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { useOrder } from '@/state/order';
 import { ORDER_STATE } from '@/graphql/base';
 import { addFulfillmentToOrderResultSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { ModifyAcceptModal } from './index.js';
+import React from 'react';
 
 const COMPLETE_ORDER_STATES = [ORDER_STATE.DELIVERED];
-export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({ createOrderCopy }) => {
-  const { fetchOrderHistory, setOrder, order } = useOrder();
+export const TopActions: React.FC = () => {
+  const { currentPossibilities, manualChange, setManualChange, fetchOrderHistory, setOrder, order } = useOrder();
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
-  const serverConfig = useServer((p) => p.serverConfig);
-
-  const [manualChange, setManualChange] = useState<{ state: boolean; toAction?: string }>({ state: false });
-  const currentPossibilities = useMemo(() => {
-    return serverConfig?.orderProcess?.find((state) => state.name === order?.state);
-  }, [serverConfig, order]);
+  const { getDetailViewActions } = usePluginStore();
+  const actions = useMemo(() => getDetailViewActions('orders-detail-view'), []);
 
   const isOrderValid = useMemo(() => {
     const isVariantValid = !!order?.lines.every((line) => line.productVariant);
@@ -65,7 +64,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         { id: order.id, state: ORDER_STATE.MODIFYING },
         {
           __typename: true,
-          '...on Order': draftOrderSelector,
+          '...on Order': OrderDetailSelector,
           '...on OrderStateTransitionError': {
             errorCode: true,
             message: true,
@@ -94,7 +93,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         { id: order.id, state: ORDER_STATE.ARRANGING_PAYMENT },
         {
           __typename: true,
-          '...on Order': draftOrderSelector,
+          '...on Order': OrderDetailSelector,
           '...on OrderStateTransitionError': {
             errorCode: true,
             message: true,
@@ -143,7 +142,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         ],
       });
       if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-        const resp = await apiClient('query')({ order: [{ id: order.id }, draftOrderSelector] });
+        const resp = await apiClient('query')({ order: [{ id: order.id }, OrderDetailSelector] });
         if (resp.order) setOrder(resp.order);
         fetchOrderHistory();
         toast.success(t('topActions.fulfillmentAdded'), { position: 'top-center' });
@@ -163,7 +162,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
           { input: { orderId: order.id } },
           {
             __typename: true,
-            '...on Order': draftOrderSelector,
+            '...on Order': OrderDetailSelector,
             '...on EmptyOrderLineSelectionError': {
               errorCode: true,
               message: true,
@@ -214,7 +213,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
       transitionOrderToState: [
         { id: order.id, state: newState },
         {
-          '...on Order': draftOrderSelector,
+          '...on Order': OrderDetailSelector,
           '...on OrderStateTransitionError': {
             errorCode: true,
             message: true,
@@ -257,6 +256,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
         <ManualOrderChangeModal
           open={manualChange.state}
           setOpen={setManualChange}
+          wantedState={manualChange.toAction}
           order={order}
           currentPossibilities={currentPossibilities}
           onConfirm={changeOrderStatus}
@@ -283,6 +283,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
       </h1>
       <OrderStateBadge state={order?.state} />
       <div className="hidden items-center gap-2 md:ml-auto md:flex">
+        {actions?.inline?.map(({ component }) => React.createElement(component)) || null}
         {order?.state === ORDER_STATE.DRAFT ? (
           <Button size="sm" onClick={onSubmit} disabled={!isOrderValid}>
             {t('create.completeOrderButton')}
@@ -293,26 +294,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
           order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ||
           order?.state === ORDER_STATE.SHIPPED ? (
           <FulfillmentModal draftOrder={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
-        ) : // ) : order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
-        //   order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ? (
-        //   <>
-        //     <Button
-        //       size="sm"
-        //       variant="secondary"
-        //       onClick={() => {
-        //         toast(t('create.leaveToastMessage'), {
-        //           position: 'top-center',
-        //           action: {
-        //             label: t('create.leaveToastButton'),
-        //             onClick: () => navigate(Routes.orders.list),
-        //           },
-        //         });
-        //       }}
-        //     >
-        //       {t('create.realizeOrder')}
-        //     </Button>
-        //   </>
-        order?.state === ORDER_STATE.MODIFYING ? (
+        ) : order?.state === ORDER_STATE.MODIFYING ? (
           <ModifyAcceptModal />
         ) : null}
       </div>
@@ -337,17 +319,7 @@ export const TopActions: React.FC<{ createOrderCopy: () => Promise<void> }> = ({
               </Button>
             </DropdownMenuItem>
           )}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Button
-              onClick={createOrderCopy}
-              variant="ghost"
-              className="w-full cursor-pointer justify-start px-4 py-2 text-blue-400   hover:text-blue-400   focus:text-blue-400 focus-visible:ring-transparent dark:focus-visible:text-blue-400  dark:focus-visible:ring-transparent"
-            >
-              {t('createCopy')}
-            </Button>
-          </DropdownMenuItem>
-          {/* //TO DO: MODIFY ORDER COMPONENT */}
+          {actions?.dropdown?.map(({ component }) => React.createElement(component)) || null}
           {order.state === ORDER_STATE.PARTIALLY_DELIVERED ||
           order.state === ORDER_STATE.SHIPPED ||
           order.state === ORDER_STATE.PAYMENT_SETTLED ||

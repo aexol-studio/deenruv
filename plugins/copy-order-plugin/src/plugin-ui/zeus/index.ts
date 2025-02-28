@@ -894,7 +894,7 @@ export type ScalarCoders = {
 	Upload?: ScalarResolver;
 	Money?: ScalarResolver;
 }
-type ZEUS_UNIONS = GraphQLTypes["CreateAssetResult"] | GraphQLTypes["NativeAuthenticationResult"] | GraphQLTypes["AuthenticationResult"] | GraphQLTypes["CreateChannelResult"] | GraphQLTypes["UpdateChannelResult"] | GraphQLTypes["CreateCustomerResult"] | GraphQLTypes["UpdateCustomerResult"] | GraphQLTypes["DuplicateEntityResult"] | GraphQLTypes["RemoveFacetFromChannelResult"] | GraphQLTypes["UpdateGlobalSettingsResult"] | GraphQLTypes["TransitionOrderToStateResult"] | GraphQLTypes["SettlePaymentResult"] | GraphQLTypes["CancelPaymentResult"] | GraphQLTypes["AddFulfillmentToOrderResult"] | GraphQLTypes["CancelOrderResult"] | GraphQLTypes["RefundOrderResult"] | GraphQLTypes["SettleRefundResult"] | GraphQLTypes["TransitionFulfillmentToStateResult"] | GraphQLTypes["TransitionPaymentToStateResult"] | GraphQLTypes["ModifyOrderResult"] | GraphQLTypes["AddManualPaymentToOrderResult"] | GraphQLTypes["SetCustomerForDraftOrderResult"] | GraphQLTypes["RemoveOptionGroupFromProductResult"] | GraphQLTypes["CreatePromotionResult"] | GraphQLTypes["UpdatePromotionResult"] | GraphQLTypes["StockMovementItem"] | GraphQLTypes["UpdateOrderItemsResult"] | GraphQLTypes["RemoveOrderItemsResult"] | GraphQLTypes["SetOrderShippingMethodResult"] | GraphQLTypes["ApplyCouponCodeResult"] | GraphQLTypes["CustomFieldConfig"] | GraphQLTypes["SearchResultPrice"]
+type ZEUS_UNIONS = GraphQLTypes["CreateAssetResult"] | GraphQLTypes["NativeAuthenticationResult"] | GraphQLTypes["AuthenticationResult"] | GraphQLTypes["CreateChannelResult"] | GraphQLTypes["UpdateChannelResult"] | GraphQLTypes["CreateCustomerResult"] | GraphQLTypes["UpdateCustomerResult"] | GraphQLTypes["DuplicateEntityResult"] | GraphQLTypes["RemoveFacetFromChannelResult"] | GraphQLTypes["UpdateGlobalSettingsResult"] | GraphQLTypes["TransitionOrderToStateResult"] | GraphQLTypes["SettlePaymentResult"] | GraphQLTypes["CancelPaymentResult"] | GraphQLTypes["AddFulfillmentToOrderResult"] | GraphQLTypes["CancelOrderResult"] | GraphQLTypes["RefundOrderResult"] | GraphQLTypes["SettleRefundResult"] | GraphQLTypes["TransitionFulfillmentToStateResult"] | GraphQLTypes["TransitionPaymentToStateResult"] | GraphQLTypes["ModifyOrderResult"] | GraphQLTypes["AddManualPaymentToOrderResult"] | GraphQLTypes["SetCustomerForDraftOrderResult"] | GraphQLTypes["RemoveOptionGroupFromProductResult"] | GraphQLTypes["CreatePromotionResult"] | GraphQLTypes["UpdatePromotionResult"] | GraphQLTypes["StockMovementItem"] | GraphQLTypes["UpdateOrderItemsResult"] | GraphQLTypes["RemoveOrderItemsResult"] | GraphQLTypes["SetOrderShippingMethodResult"] | GraphQLTypes["ApplyCouponCodeResult"] | GraphQLTypes["CustomFieldConfig"] | GraphQLTypes["SearchResultPrice"] | GraphQLTypes["CopyOrderResult"]
 
 export type ValueTypes = {
     ["Query"]: AliasType<{
@@ -970,8 +970,6 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
-chartMetric?: [{	input: ValueTypes["ChartMetricInput"] | Variable<any, string>},ValueTypes["ChartMetrics"]],
-orderSummaryMetric?: [{	input: ValueTypes["OrderSummaryMetricInput"] | Variable<any, string>},ValueTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -1139,6 +1137,7 @@ deleteZone?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse
 deleteZones?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
+copyOrder?: [{	id: string | Variable<any, string>},ValueTypes["CopyOrderResult"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -3347,6 +3346,13 @@ current session. */
 	message?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: AliasType<{
+	errorCode?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	middlewareError?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:unknown;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -3480,6 +3486,7 @@ current session. */
 		['...on OrderModificationError']?: Omit<ValueTypes["OrderModificationError"],keyof ValueTypes["ErrorResult"]>;
 		['...on IneligibleShippingMethodError']?: Omit<ValueTypes["IneligibleShippingMethodError"],keyof ValueTypes["ErrorResult"]>;
 		['...on NoActiveOrderError']?: Omit<ValueTypes["NoActiveOrderError"],keyof ValueTypes["ErrorResult"]>;
+		['...on OrderMiddlewareError']?: Omit<ValueTypes["OrderMiddlewareError"],keyof ValueTypes["ErrorResult"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Adjustment"]: AliasType<{
@@ -3708,11 +3715,13 @@ If an invalid code is passed, the mutation will fail. */
 		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"],
 		["...on OrderLimitError"]?: ValueTypes["OrderLimitError"],
 		["...on NegativeQuantityError"]?: ValueTypes["NegativeQuantityError"],
-		["...on InsufficientStockError"]?: ValueTypes["InsufficientStockError"]
+		["...on InsufficientStockError"]?: ValueTypes["InsufficientStockError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	["RemoveOrderItemsResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
-		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"]
+		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	["SetOrderShippingMethodResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
@@ -3724,7 +3733,8 @@ If an invalid code is passed, the mutation will fail. */
 	["ApplyCouponCodeResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
 		["...on CouponCodeExpiredError"]?: ValueTypes["CouponCodeExpiredError"],
 		["...on CouponCodeInvalidError"]?: ValueTypes["CouponCodeInvalidError"],
-		["...on CouponCodeLimitError"]?: ValueTypes["CouponCodeLimitError"]
+		["...on CouponCodeLimitError"]?: ValueTypes["CouponCodeLimitError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	/** @description
@@ -4512,60 +4522,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["ChartDataType"]: AliasType<{
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ValueTypes["ChartEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartMetrics"]: AliasType<{
-	data?:ValueTypes["ChartDataType"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryMetrics"]: AliasType<{
-	data?:ValueTypes["OrderSummaryDataMetric"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryDataMetric"]: AliasType<{
-	currencyCode?:boolean | `@${string}`,
-	total?:boolean | `@${string}`,
-	totalWithTax?:boolean | `@${string}`,
-	orderCount?:boolean | `@${string}`,
-	averageOrderValue?:boolean | `@${string}`,
-	averageOrderValueWithTax?:boolean | `@${string}`,
-	productCount?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricRangeType"]:MetricRangeType;
-	["MetricIntervalType"]:MetricIntervalType;
-	["ChartMetricType"]:ChartMetricType;
-	["ChartEntryAdditionalData"]: AliasType<{
-	id?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	quantity?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartEntry"]: AliasType<{
-	intervalTick?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-	additionalData?:ValueTypes["ChartEntryAdditionalData"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricRangeInput"]: {
-	start: ValueTypes["DateTime"] | Variable<any, string>,
-	end?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
-};
-	["OrderSummaryMetricInput"]: {
-	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
-	orderStates: Array<string> | Variable<any, string>
-};
-	["ChartMetricInput"]: {
-	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
-	interval: ValueTypes["MetricIntervalType"] | Variable<any, string>,
-	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
-	orderStates: Array<string> | Variable<any, string>,
-	productIDs?: Array<string> | undefined | null | Variable<any, string>
-};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -4585,6 +4541,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<ValueTypes["MetricType"]> | Variable<any, string>,
 	refresh?: boolean | undefined | null | Variable<any, string>
 };
+	["CopyOrderErrorResponse"]: AliasType<{
+	message?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CopyOrderResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
+		["...on CopyOrderErrorResponse"]?: ValueTypes["CopyOrderErrorResponse"]
+		__typename?: boolean | `@${string}`
+}>;
 	["AdministratorFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
 	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
@@ -5136,8 +5100,6 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
-chartMetric?: [{	input: ResolverInputTypes["ChartMetricInput"]},ResolverInputTypes["ChartMetrics"]],
-orderSummaryMetric?: [{	input: ResolverInputTypes["OrderSummaryMetricInput"]},ResolverInputTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -5305,6 +5267,7 @@ deleteZone?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
 deleteZones?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
+copyOrder?: [{	id: string},ResolverInputTypes["CopyOrderResult"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -7539,6 +7502,13 @@ current session. */
 	message?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: AliasType<{
+	errorCode?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	middlewareError?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:unknown;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -7672,6 +7642,7 @@ current session. */
 		['...on OrderModificationError']?: Omit<ResolverInputTypes["OrderModificationError"],keyof ResolverInputTypes["ErrorResult"]>;
 		['...on IneligibleShippingMethodError']?: Omit<ResolverInputTypes["IneligibleShippingMethodError"],keyof ResolverInputTypes["ErrorResult"]>;
 		['...on NoActiveOrderError']?: Omit<ResolverInputTypes["NoActiveOrderError"],keyof ResolverInputTypes["ErrorResult"]>;
+		['...on OrderMiddlewareError']?: Omit<ResolverInputTypes["OrderMiddlewareError"],keyof ResolverInputTypes["ErrorResult"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Adjustment"]: AliasType<{
@@ -7902,11 +7873,13 @@ If an invalid code is passed, the mutation will fail. */
 	OrderLimitError?:ResolverInputTypes["OrderLimitError"],
 	NegativeQuantityError?:ResolverInputTypes["NegativeQuantityError"],
 	InsufficientStockError?:ResolverInputTypes["InsufficientStockError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	["RemoveOrderItemsResult"]: AliasType<{
 	Order?:ResolverInputTypes["Order"],
 	OrderModificationError?:ResolverInputTypes["OrderModificationError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	["SetOrderShippingMethodResult"]: AliasType<{
@@ -7921,6 +7894,7 @@ If an invalid code is passed, the mutation will fail. */
 	CouponCodeExpiredError?:ResolverInputTypes["CouponCodeExpiredError"],
 	CouponCodeInvalidError?:ResolverInputTypes["CouponCodeInvalidError"],
 	CouponCodeLimitError?:ResolverInputTypes["CouponCodeLimitError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	/** @description
@@ -8710,60 +8684,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["ChartDataType"]: AliasType<{
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ResolverInputTypes["ChartEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartMetrics"]: AliasType<{
-	data?:ResolverInputTypes["ChartDataType"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryMetrics"]: AliasType<{
-	data?:ResolverInputTypes["OrderSummaryDataMetric"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryDataMetric"]: AliasType<{
-	currencyCode?:boolean | `@${string}`,
-	total?:boolean | `@${string}`,
-	totalWithTax?:boolean | `@${string}`,
-	orderCount?:boolean | `@${string}`,
-	averageOrderValue?:boolean | `@${string}`,
-	averageOrderValueWithTax?:boolean | `@${string}`,
-	productCount?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricRangeType"]:MetricRangeType;
-	["MetricIntervalType"]:MetricIntervalType;
-	["ChartMetricType"]:ChartMetricType;
-	["ChartEntryAdditionalData"]: AliasType<{
-	id?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	quantity?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartEntry"]: AliasType<{
-	intervalTick?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-	additionalData?:ResolverInputTypes["ChartEntryAdditionalData"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricRangeInput"]: {
-	start: ResolverInputTypes["DateTime"],
-	end?: ResolverInputTypes["DateTime"] | undefined | null
-};
-	["OrderSummaryMetricInput"]: {
-	range: ResolverInputTypes["BetterMetricRangeInput"],
-	orderStates: Array<string>
-};
-	["ChartMetricInput"]: {
-	range: ResolverInputTypes["BetterMetricRangeInput"],
-	interval: ResolverInputTypes["MetricIntervalType"],
-	types: Array<ResolverInputTypes["ChartMetricType"]>,
-	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
-};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -8783,6 +8703,15 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<ResolverInputTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
 };
+	["CopyOrderErrorResponse"]: AliasType<{
+	message?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CopyOrderResult"]: AliasType<{
+	Order?:ResolverInputTypes["Order"],
+	CopyOrderErrorResponse?:ResolverInputTypes["CopyOrderErrorResponse"],
+		__typename?: boolean | `@${string}`
+}>;
 	["AdministratorFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
 	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
@@ -9348,8 +9277,6 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined | null,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined | null,
-	chartMetric: ModelTypes["ChartMetrics"],
-	orderSummaryMetric: ModelTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<ModelTypes["MetricSummary"]>
 };
@@ -9659,7 +9586,8 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Add members to a Zone */
 	addMembersToZone: ModelTypes["Zone"],
 	/** Remove members from a Zone */
-	removeMembersFromZone: ModelTypes["Zone"]
+	removeMembersFromZone: ModelTypes["Zone"],
+	copyOrder: ModelTypes["CopyOrderResult"]
 };
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -11610,6 +11538,12 @@ current session. */
 		errorCode: ModelTypes["ErrorCode"],
 	message: string
 };
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: {
+		errorCode: ModelTypes["ErrorCode"],
+	message: string,
+	middlewareError: string
+};
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:any;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -11620,7 +11554,7 @@ current session. */
 ["Money"]:any;
 	["PaginatedList"]: ModelTypes["AdministratorList"] | ModelTypes["ChannelList"] | ModelTypes["CustomerGroupList"] | ModelTypes["JobList"] | ModelTypes["PaymentMethodList"] | ModelTypes["SellerList"] | ModelTypes["StockLocationList"] | ModelTypes["TaxCategoryList"] | ModelTypes["ZoneList"] | ModelTypes["AssetList"] | ModelTypes["CollectionList"] | ModelTypes["CustomerList"] | ModelTypes["FacetList"] | ModelTypes["FacetValueList"] | ModelTypes["HistoryEntryList"] | ModelTypes["OrderList"] | ModelTypes["ProductList"] | ModelTypes["ProductVariantList"] | ModelTypes["PromotionList"] | ModelTypes["CountryList"] | ModelTypes["ProvinceList"] | ModelTypes["RoleList"] | ModelTypes["ShippingMethodList"] | ModelTypes["TagList"] | ModelTypes["TaxRateList"];
 	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"];
-	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
+	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"] | ModelTypes["OrderMiddlewareError"];
 	["Adjustment"]: {
 		adjustmentSource: string,
 	type: ModelTypes["AdjustmentType"],
@@ -11833,10 +11767,10 @@ If an invalid code is passed, the mutation will fail. */
 	eligibilityMessage?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
-	["UpdateOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"];
-	["RemoveOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"];
+	["UpdateOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["OrderMiddlewareError"];
+	["RemoveOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderMiddlewareError"];
 	["SetOrderShippingMethodResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
-	["ApplyCouponCodeResult"]:ModelTypes["Order"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeLimitError"];
+	["ApplyCouponCodeResult"]:ModelTypes["Order"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderMiddlewareError"];
 	["CurrencyCode"]:CurrencyCode;
 	["CustomField"]: ModelTypes["StringCustomFieldConfig"] | ModelTypes["LocaleStringCustomFieldConfig"] | ModelTypes["IntCustomFieldConfig"] | ModelTypes["FloatCustomFieldConfig"] | ModelTypes["BooleanCustomFieldConfig"] | ModelTypes["DateTimeCustomFieldConfig"] | ModelTypes["RelationCustomFieldConfig"] | ModelTypes["TextCustomFieldConfig"] | ModelTypes["LocaleTextCustomFieldConfig"];
 	["StringCustomFieldConfig"]: {
@@ -12494,54 +12428,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
-	["ChartDataType"]: {
-		type: ModelTypes["ChartMetricType"],
-	title: string,
-	entries: Array<ModelTypes["ChartEntry"]>
-};
-	["ChartMetrics"]: {
-		data: Array<ModelTypes["ChartDataType"]>
-};
-	["OrderSummaryMetrics"]: {
-		data: ModelTypes["OrderSummaryDataMetric"]
-};
-	["OrderSummaryDataMetric"]: {
-		currencyCode: ModelTypes["CurrencyCode"],
-	total: number,
-	totalWithTax: number,
-	orderCount: number,
-	averageOrderValue: number,
-	averageOrderValueWithTax: number,
-	productCount: number
-};
-	["MetricRangeType"]:MetricRangeType;
-	["MetricIntervalType"]:MetricIntervalType;
-	["ChartMetricType"]:ChartMetricType;
-	["ChartEntryAdditionalData"]: {
-		id: string,
-	name: string,
-	quantity: number
-};
-	["ChartEntry"]: {
-		intervalTick: number,
-	value: number,
-	additionalData?: Array<ModelTypes["ChartEntryAdditionalData"]> | undefined | null
-};
-	["BetterMetricRangeInput"]: {
-	start: ModelTypes["DateTime"],
-	end?: ModelTypes["DateTime"] | undefined | null
-};
-	["OrderSummaryMetricInput"]: {
-	range: ModelTypes["BetterMetricRangeInput"],
-	orderStates: Array<string>
-};
-	["ChartMetricInput"]: {
-	range: ModelTypes["BetterMetricRangeInput"],
-	interval: ModelTypes["MetricIntervalType"],
-	types: Array<ModelTypes["ChartMetricType"]>,
-	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
-};
 	["MetricSummary"]: {
 		interval: ModelTypes["MetricInterval"],
 	type: ModelTypes["MetricType"],
@@ -12559,6 +12445,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<ModelTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
 };
+	["CopyOrderErrorResponse"]: {
+		message: string
+};
+	["CopyOrderResult"]:ModelTypes["Order"] | ModelTypes["CopyOrderErrorResponse"];
 	["AdministratorFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
 	createdAt?: ModelTypes["DateOperators"] | undefined | null,
@@ -13122,8 +13012,6 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined | null,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined | null,
-	chartMetric: GraphQLTypes["ChartMetrics"],
-	orderSummaryMetric: GraphQLTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<GraphQLTypes["MetricSummary"]>
 };
@@ -13434,7 +13322,8 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Add members to a Zone */
 	addMembersToZone: GraphQLTypes["Zone"],
 	/** Remove members from a Zone */
-	removeMembersFromZone: GraphQLTypes["Zone"]
+	removeMembersFromZone: GraphQLTypes["Zone"],
+	copyOrder: GraphQLTypes["CopyOrderResult"]
 };
 	["AdministratorListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -15670,6 +15559,13 @@ current session. */
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string
 };
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: {
+	__typename: "OrderMiddlewareError",
+	errorCode: GraphQLTypes["ErrorCode"],
+	message: string,
+	middlewareError: string
+};
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]: "scalar" & { name: "JSON" };
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -15757,7 +15653,7 @@ current session. */
 	['...on Zone']: '__union' & GraphQLTypes["Zone"];
 };
 	["ErrorResult"]: {
-	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError",
+	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError" | "OrderMiddlewareError",
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string
 	['...on MimeTypeError']: '__union' & GraphQLTypes["MimeTypeError"];
@@ -15804,6 +15700,7 @@ current session. */
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
 	['...on IneligibleShippingMethodError']: '__union' & GraphQLTypes["IneligibleShippingMethodError"];
 	['...on NoActiveOrderError']: '__union' & GraphQLTypes["NoActiveOrderError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["Adjustment"]: {
 	__typename: "Adjustment",
@@ -16028,17 +15925,19 @@ If an invalid code is passed, the mutation will fail. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateOrderItemsResult"]:{
-        	__typename:"Order" | "OrderModificationError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError"
+        	__typename:"Order" | "OrderModificationError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
 	['...on OrderLimitError']: '__union' & GraphQLTypes["OrderLimitError"];
 	['...on NegativeQuantityError']: '__union' & GraphQLTypes["NegativeQuantityError"];
 	['...on InsufficientStockError']: '__union' & GraphQLTypes["InsufficientStockError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["RemoveOrderItemsResult"]:{
-        	__typename:"Order" | "OrderModificationError"
+        	__typename:"Order" | "OrderModificationError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["SetOrderShippingMethodResult"]:{
         	__typename:"Order" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError"
@@ -16048,11 +15947,12 @@ If an invalid code is passed, the mutation will fail. */
 	['...on NoActiveOrderError']: '__union' & GraphQLTypes["NoActiveOrderError"];
 };
 	["ApplyCouponCodeResult"]:{
-        	__typename:"Order" | "CouponCodeExpiredError" | "CouponCodeInvalidError" | "CouponCodeLimitError"
+        	__typename:"Order" | "CouponCodeExpiredError" | "CouponCodeInvalidError" | "CouponCodeLimitError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on CouponCodeExpiredError']: '__union' & GraphQLTypes["CouponCodeExpiredError"];
 	['...on CouponCodeInvalidError']: '__union' & GraphQLTypes["CouponCodeInvalidError"];
 	['...on CouponCodeLimitError']: '__union' & GraphQLTypes["CouponCodeLimitError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	/** @description
 ISO 4217 currency code
@@ -16841,60 +16741,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
-	["ChartDataType"]: {
-	__typename: "ChartDataType",
-	type: GraphQLTypes["ChartMetricType"],
-	title: string,
-	entries: Array<GraphQLTypes["ChartEntry"]>
-};
-	["ChartMetrics"]: {
-	__typename: "ChartMetrics",
-	data: Array<GraphQLTypes["ChartDataType"]>
-};
-	["OrderSummaryMetrics"]: {
-	__typename: "OrderSummaryMetrics",
-	data: GraphQLTypes["OrderSummaryDataMetric"]
-};
-	["OrderSummaryDataMetric"]: {
-	__typename: "OrderSummaryDataMetric",
-	currencyCode: GraphQLTypes["CurrencyCode"],
-	total: number,
-	totalWithTax: number,
-	orderCount: number,
-	averageOrderValue: number,
-	averageOrderValueWithTax: number,
-	productCount: number
-};
-	["MetricRangeType"]: MetricRangeType;
-	["MetricIntervalType"]: MetricIntervalType;
-	["ChartMetricType"]: ChartMetricType;
-	["ChartEntryAdditionalData"]: {
-	__typename: "ChartEntryAdditionalData",
-	id: string,
-	name: string,
-	quantity: number
-};
-	["ChartEntry"]: {
-	__typename: "ChartEntry",
-	intervalTick: number,
-	value: number,
-	additionalData?: Array<GraphQLTypes["ChartEntryAdditionalData"]> | undefined | null
-};
-	["BetterMetricRangeInput"]: {
-		start: GraphQLTypes["DateTime"],
-	end?: GraphQLTypes["DateTime"] | undefined | null
-};
-	["OrderSummaryMetricInput"]: {
-		range: GraphQLTypes["BetterMetricRangeInput"],
-	orderStates: Array<string>
-};
-	["ChartMetricInput"]: {
-		range: GraphQLTypes["BetterMetricRangeInput"],
-	interval: GraphQLTypes["MetricIntervalType"],
-	types: Array<GraphQLTypes["ChartMetricType"]>,
-	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
-};
 	["MetricSummary"]: {
 	__typename: "MetricSummary",
 	interval: GraphQLTypes["MetricInterval"],
@@ -16913,6 +16759,15 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 		interval: GraphQLTypes["MetricInterval"],
 	types: Array<GraphQLTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
+};
+	["CopyOrderErrorResponse"]: {
+	__typename: "CopyOrderErrorResponse",
+	message: string
+};
+	["CopyOrderResult"]:{
+        	__typename:"Order" | "CopyOrderErrorResponse"
+        	['...on Order']: '__union' & GraphQLTypes["Order"];
+	['...on CopyOrderErrorResponse']: '__union' & GraphQLTypes["CopyOrderErrorResponse"];
 };
 	["AdministratorFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17603,7 +17458,8 @@ export enum ErrorCode {
 	COUPON_CODE_LIMIT_ERROR = "COUPON_CODE_LIMIT_ERROR",
 	ORDER_MODIFICATION_ERROR = "ORDER_MODIFICATION_ERROR",
 	INELIGIBLE_SHIPPING_METHOD_ERROR = "INELIGIBLE_SHIPPING_METHOD_ERROR",
-	NO_ACTIVE_ORDER_ERROR = "NO_ACTIVE_ORDER_ERROR"
+	NO_ACTIVE_ORDER_ERROR = "NO_ACTIVE_ORDER_ERROR",
+	ORDER_MIDDLEWARE_ERROR = "ORDER_MIDDLEWARE_ERROR"
 }
 export enum LogicalOperator {
 	AND = "AND",
@@ -17970,31 +17826,6 @@ export enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
-export enum MetricRangeType {
-	Today = "Today",
-	Yesterday = "Yesterday",
-	ThisWeek = "ThisWeek",
-	LastWeek = "LastWeek",
-	ThisMonth = "ThisMonth",
-	LastMonth = "LastMonth",
-	ThisYear = "ThisYear",
-	LastYear = "LastYear",
-	FirstQuarter = "FirstQuarter",
-	SecondQuarter = "SecondQuarter",
-	ThirdQuarter = "ThirdQuarter",
-	FourthQuarter = "FourthQuarter",
-	Custom = "Custom"
-}
-export enum MetricIntervalType {
-	Day = "Day",
-	Hour = "Hour"
-}
-export enum ChartMetricType {
-	OrderCount = "OrderCount",
-	OrderTotal = "OrderTotal",
-	AverageOrderValue = "AverageOrderValue",
-	OrderTotalProductsCount = "OrderTotalProductsCount"
-}
 export enum MetricInterval {
 	Daily = "Daily"
 }
@@ -18190,12 +18021,6 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
-	["MetricRangeType"]: ValueTypes["MetricRangeType"];
-	["MetricIntervalType"]: ValueTypes["MetricIntervalType"];
-	["ChartMetricType"]: ValueTypes["ChartMetricType"];
-	["BetterMetricRangeInput"]: ValueTypes["BetterMetricRangeInput"];
-	["OrderSummaryMetricInput"]: ValueTypes["OrderSummaryMetricInput"];
-	["ChartMetricInput"]: ValueTypes["ChartMetricInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];
 	["MetricType"]: ValueTypes["MetricType"];
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];

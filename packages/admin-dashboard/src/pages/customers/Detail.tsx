@@ -7,32 +7,18 @@ import { HistoryTab } from '@/pages/customers/_components/HistoryTab';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { useValidators } from '@/hooks/useValidators.js';
 import { useTranslation } from 'react-i18next';
+import { useMemo } from 'react';
 
 const CreateCustomerMutation = typedGql('mutation', { scalars })({
-  createCustomer: [
-    {
-      input: $('input', 'CreateCustomerInput!'),
-    },
-    { '...on Customer': { id: true } },
-  ],
+  createCustomer: [{ input: $('input', 'CreateCustomerInput!') }, { '...on Customer': { id: true } }],
 });
 
 const UpdateCustomerMutation = typedGql('mutation', { scalars })({
-  updateCustomer: [
-    {
-      input: $('input', 'UpdateCustomerInput!'),
-    },
-    { '...on Customer': { id: true } },
-  ],
+  updateCustomer: [{ input: $('input', 'UpdateCustomerInput!') }, { '...on Customer': { id: true } }],
 });
 
 const RemoveCustomerMutation = typedGql('mutation', { scalars })({
-  deleteCustomer: [
-    {
-      id: $('id', 'ID!'),
-    },
-    { result: true },
-  ],
+  deleteCustomer: [{ id: $('id', 'ID!') }, { result: true }],
 });
 
 export const CustomersDetailPage = () => {
@@ -42,6 +28,15 @@ export const CustomersDetailPage = () => {
   const [update] = useMutation(UpdateCustomerMutation);
   const [remove] = useMutation(RemoveCustomerMutation);
   const { stringValidator, emailValidator } = useValidators();
+
+  const defaultTabs = useMemo(() => {
+    const tabs = [];
+    if (id) {
+      tabs.push({ label: 'Orders', name: 'orders', component: <OrdersTab />, hideSidebar: true });
+      tabs.push({ label: 'History', name: 'history', component: <HistoryTab />, hideSidebar: true });
+    }
+    return tabs;
+  }, [id]);
 
   return (
     <div className="relative flex flex-col gap-y-4">
@@ -61,10 +56,6 @@ export const CustomersDetailPage = () => {
               lastName: stringValidator(t('validation.lastNameRequired')),
               emailAddress: emailValidator,
             },
-            onDeleted: () => {
-              if (!id) return;
-              return remove({ id });
-            },
             onSubmitted: (data) => {
               const sharedInput = {
                 emailAddress: data.emailAddress?.validatedValue,
@@ -73,37 +64,17 @@ export const CustomersDetailPage = () => {
                 phoneNumber: data.phoneNumber?.validatedValue,
                 title: data.title?.validatedValue,
               };
-
               if (!sharedInput.emailAddress || !sharedInput.firstName || !sharedInput.lastName) return;
-
               const input = sharedInput as ExcludeUndefined<typeof sharedInput>;
-
-              return id
-                ? update({ input: { id, ...input } })
-                : create({
-                    input,
-                  });
+              return id ? update({ input: { id, ...input } }) : create({ input });
+            },
+            onDeleted: () => {
+              if (id) return remove({ id });
+              else throw new Error('No id');
             },
           }),
         }}
-        defaultTabs={
-          id
-            ? [
-                {
-                  label: 'Orders',
-                  name: 'orders',
-                  component: <OrdersTab />,
-                  hideSidebar: true,
-                },
-                {
-                  label: 'History',
-                  name: 'history',
-                  component: <HistoryTab />,
-                  hideSidebar: true,
-                },
-              ]
-            : []
-        }
+        defaultTabs={defaultTabs}
         permissions={{
           create: Permission.CreateCustomer,
           edit: Permission.UpdateCustomer,

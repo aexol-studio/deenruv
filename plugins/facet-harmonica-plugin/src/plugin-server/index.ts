@@ -1,14 +1,4 @@
-import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset, OrderProcess } from '@deenruv/core';
-import { StorageService } from './services/storage.service.js';
-import { PDFService } from './services/pdf.service.js';
-import { OrderRegisterService } from './services/order-register.service.js';
-import { FacetHarmonicaPluginOptions, PLUGIN_INIT_OPTIONS } from './consts.js';
-import { OrderRealizationEntity } from './entities/order-realization.entity.js';
-import { ProFormaEntity } from './entities/pro-forma.entity.js';
-import { AdminExtension, ShopExtension } from './extensions/pdf.extension.js';
-import { ShopOrderResolver } from './api/shop-order.resolver.js';
-import { AdminResolver } from './api/admin.resolver.js';
-import { AdminOrderResolver } from './api/admin-order.resolver.js';
+import { PluginCommonModule, DeenruvPlugin, LanguageCode, Asset } from '@deenruv/core';
 
 const FacetCustomFields = [
     {
@@ -24,6 +14,20 @@ const FacetCustomFields = [
         ],
         defaultValue: false,
         public: true,
+    },
+    {
+        name: 'usedForProductCreations',
+        type: 'boolean' as const,
+        ui: { component: 'product-creations-input' },
+        defaultValue: false,
+        label: [
+            { languageCode: LanguageCode.en, value: '' },
+            { languageCode: LanguageCode.pl, value: '' },
+        ],
+        description: [
+            { languageCode: LanguageCode.en, value: '' },
+            { languageCode: LanguageCode.pl, value: '' },
+        ],
     },
     {
         name: 'colorsCollection',
@@ -92,106 +96,19 @@ const FacetValueCustomFields = [
     },
 ];
 
-const OrderLineCustomFields = [
-    {
-        name: 'attributes',
-        type: 'text' as const,
-        label: [
-            { languageCode: LanguageCode.en, value: 'Attributes' },
-            { languageCode: LanguageCode.pl, value: 'Atrybuty' },
-        ],
-        description: [
-            { languageCode: LanguageCode.en, value: 'Attributes' },
-            { languageCode: LanguageCode.pl, value: 'Atrybuty' },
-        ],
-        nullable: true,
-        ui: { component: 'attributes-input' },
-    },
-    {
-        name: 'discountBy',
-        type: 'int' as const,
-        defaultValue: 0,
-        label: [
-            { languageCode: LanguageCode.en, value: 'Discount' },
-            { languageCode: LanguageCode.pl, value: 'Znizka' },
-        ],
-        description: [
-            { languageCode: LanguageCode.en, value: 'Discount amount' },
-            { languageCode: LanguageCode.pl, value: 'Wartość Znizki' },
-        ],
-        nullable: true,
-    },
-    {
-        name: 'selectedImage',
-        type: 'relation' as const,
-        entity: Asset,
-        nullable: true,
-        ui: { component: 'selected-image-input' },
-        label: [
-            { languageCode: LanguageCode.en, value: 'Selected image' },
-            { languageCode: LanguageCode.pl, value: 'Wybrany obrazek' },
-        ],
-        description: [
-            { languageCode: LanguageCode.en, value: 'Selected image' },
-            { languageCode: LanguageCode.pl, value: 'Wybrany obrazek' },
-        ],
-    },
-];
-
-const inRealizationProcess: OrderProcess<'InRealization'> = {
-    transitions: {
-        PaymentSettled: {
-            to: ['InRealization', 'Cancelled', 'Modifying', 'ArrangingAdditionalPayment'],
-            mergeStrategy: 'replace',
-        },
-        InRealization: {
-            to: [
-                'PartiallyDelivered',
-                'Delivered',
-                'PartiallyShipped',
-                'Shipped',
-                'Cancelled',
-                'Modifying',
-                'ArrangingAdditionalPayment',
-            ],
-        },
-    },
-    onTransitionStart: async (from, to, { ctx, order }) => {},
-};
-
 @DeenruvPlugin({
     compatibility: '^0.0.20',
     imports: [PluginCommonModule],
-    providers: [
-        OrderRegisterService,
-        PDFService,
-        StorageService,
-        {
-            provide: PLUGIN_INIT_OPTIONS,
-            useFactory: () => FacetHarmonicaServerPlugin.config,
-        },
-    ],
-    entities: [OrderRealizationEntity, ProFormaEntity],
-    shopApiExtensions: {
-        schema: ShopExtension,
-        resolvers: [ShopOrderResolver],
-    },
-    adminApiExtensions: {
-        schema: AdminExtension,
-        resolvers: [AdminResolver, AdminOrderResolver],
-    },
     configuration: config => {
-        config.orderOptions.process.push(inRealizationProcess);
         config.customFields.Facet.push(...FacetCustomFields);
         config.customFields.FacetValue.push(...FacetValueCustomFields);
-        config.customFields.OrderLine.push(...OrderLineCustomFields);
         return config;
     },
 })
 export class FacetHarmonicaServerPlugin {
-    static config: FacetHarmonicaPluginOptions;
+    static config: {};
 
-    static init(config: FacetHarmonicaPluginOptions) {
+    static init(config: {}) {
         this.config = config;
         return this;
     }

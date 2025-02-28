@@ -23,11 +23,14 @@ export const PossibleOrderStates: React.FC<{
 }> = ({ orderState }) => {
   const { t } = useTranslation('orders');
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
-  console.log(orderProcess);
+
   return (
     <Dialog>
-      <DialogTrigger asChild className="pl-2">
-        <Button variant="ghost" className="w-full justify-start">
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          className="w-full cursor-pointer justify-start px-4 py-2 focus-visible:ring-transparent dark:focus-visible:ring-transparent"
+        >
           {t('orderStates.button')}
         </Button>
       </DialogTrigger>

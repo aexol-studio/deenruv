@@ -22,6 +22,7 @@ export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typena
     setValue: (data: Z) => void;
     label?: string;
     description?: string;
+    additionalData?: K;
 };
 
 export const CustomFieldsContext = React.createContext<

@@ -1,5 +1,4 @@
 import { BooleanCell } from '@/components/Columns/BooleanCell.js';
-import { useOrder } from '@/state/order.js';
 import {
   Separator,
   Table,
@@ -9,6 +8,7 @@ import {
   TableHeader,
   TableRow,
   priceFormatter,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

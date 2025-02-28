@@ -8,7 +8,8 @@ import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-serve
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
 // import { ReplicatePlugin } from '@deenruv/replicate-plugin';
 import { FacetHarmonicaServerPlugin } from '@deenruv/facet-harmonica-plugin';
-
+import { InRealizationPlugin } from '@deenruv/in-realization-plugin';
+import { CopyOrderPlugin } from '@deenruv/copy-order-plugin';
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultLogger,
@@ -22,6 +23,8 @@ import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
 import path from 'path';
 import { s3Client } from 'client-s3.js';
+import { OrderLineAttributesServerPlugin } from '@deenruv/order-line-attributes-plugin';
+import { WFirmaPlugin } from '@deenruv/wfirma-plugin';
 
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { s3Client } from './client-s3';
@@ -167,6 +170,19 @@ export const devConfig: DeenruvConfig = {
         }),
         // FacetHarmonicaServerPlugin.init({
         //     s3: { bucket: 'deenruv-asset-bucket', client: s3Client, expiresIn: 60 * 60 * 24 * 3 },
+        // }),
+        // CopyOrderPlugin,
+        // InRealizationPlugin.init({
+        //     s3: { client: s3Client, bucket: 'deenruv-asset-bucket', expiresIn: 60 * 60 * 24 * 3 },
+        // }),
+        // FacetHarmonicaServerPlugin,
+        // OrderLineAttributesServerPlugin,
+        // WFirmaPlugin.init({
+        //     authorization: {
+        //         accessKey: '0b835d398cfd8078c76e756ac89e08ed',
+        //         appKey: '7ee060de3fa24b643e3143763d700682',
+        //         secretKey: 'a8e42a73cd1d9a44e7e9c0c9a9772fdd',
+        //     },
         // }),
         // DeenruvExamplesServerPlugin,
         // ContentManagementServerPlugin,

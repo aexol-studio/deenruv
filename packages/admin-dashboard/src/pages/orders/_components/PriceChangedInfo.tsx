@@ -1,5 +1,4 @@
-import { useOrder } from '@/state/order.js';
-import { priceFormatter } from '@deenruv/react-ui-devkit';
+import { useOrder, priceFormatter } from '@deenruv/react-ui-devkit';
 import { Info } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';

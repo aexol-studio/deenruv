@@ -3,13 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { InfoIcon } from 'lucide-react';
 import { CF, EntityCustomFields } from '@/components';
 import { useState } from 'react';
+import { DraftOrderType } from '@/graphql/draft_order.js';
 
+type VariantWithQuantity = DraftOrderType['lines'][number]['productVariant'] & { quantity?: number };
 export const CustomComponent = ({
   onVariantAdd,
-  orderLineId,
+  orderLine,
 }: {
   onVariantAdd: (value: CF) => Promise<void>;
-  orderLineId: string;
+  orderLine: VariantWithQuantity;
 }) => {
   const { t } = useTranslation('orders');
   const [customFields, setCustomFields] = useState<CF>({});
@@ -22,11 +24,11 @@ export const CustomComponent = ({
     <div className="flex h-full flex-col">
       <div className="grow overflow-y-auto py-2">
         <EntityCustomFields
-          id={orderLineId}
           entityName="orderLine"
           hideButton
           fetchInitialValues={false}
           onChange={setCustomFields}
+          additionalData={{ product: orderLine.product, variant: orderLine }}
         />
       </div>
 

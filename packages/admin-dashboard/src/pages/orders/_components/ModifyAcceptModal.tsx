@@ -1,9 +1,16 @@
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@deenruv/react-ui-devkit';
+import {
+  useOrder,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@deenruv/react-ui-devkit';
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ModifyingCard } from './ModifyingCard.js';
-import { useOrder } from '@/state/order';
 import { ChangesRegister } from './ChangesRegister';
 
 export const ModifyAcceptModal: React.FC = () => {

@@ -8,11 +8,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  useOrder,
   cn,
 } from '@deenruv/react-ui-devkit';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useOrder } from '@/state/order';
 
 export const ChangesRegister: React.FC = () => {
   const { t } = useTranslation('orders');

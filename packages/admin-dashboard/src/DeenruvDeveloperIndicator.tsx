@@ -83,15 +83,12 @@ const darkMode = {
 
 export const DeenruvDeveloperIndicator = () => {
   const { theme } = useSettings();
-  const { viewMarkers, setViewMarkers } = usePluginStore();
-
+  const { plugins, viewMarkers, setViewMarkers } = usePluginStore();
+  console.log(plugins);
   const [colorVariables, setColorVariables] = useState(theme === 'light' ? lightMode : darkMode);
 
   const updateColor = (key: string, value: string) => {
-    setColorVariables((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setColorVariables((prev) => ({ ...prev, [key]: value }));
   };
 
   const setColors = () => {
@@ -166,6 +163,18 @@ export const DeenruvDeveloperIndicator = () => {
                       </div>
                     );
                   })} */}
+                </div>
+                <div>
+                  {plugins.map((plugin) => (
+                    <div key={plugin.name} className="flex items-center space-x-2">
+                      <label
+                        htmlFor={plugin.name}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {plugin.name} ({plugin.version})
+                      </label>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

@@ -25,6 +25,8 @@
         "@deenruv/asset-server-plugin": "workspace:*",
         "@deenruv/common": "workspace:*",
         "@deenruv/core": "workspace:*",
+        "@deenruv/in-realization-plugin": "workspace:*",
+        "@deenruv/wfirma-plugin": "workspace:*",
         "@deenruv/content-management-plugin": "workspace:*",
         "@deenruv/deenruv-examples-plugin": "workspace:*",
         "@deenruv/seo-plugin": "workspace:*",

@@ -16,6 +16,7 @@ import type { FromSelectorWithScalars, LanguageCode, OrderType } from '@deenruv/
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
+import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -39,10 +40,11 @@ export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
     i18n: any;
 };
 
+type CustomLocations = 'orders-summary';
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
 export type ListLocationID = `${RouteKeys}-list-view`;
-export type DetailLocationID = `${RouteKeys}-detail-view`;
+export type DetailLocationID = `${RouteKeys}-detail-view` | CustomLocations;
 export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 
 export const ListLocations = {
@@ -100,6 +102,14 @@ export const DetailLocations = {
         type: 'Order' as const,
         selector: OrderDetailSelector,
     },
+    'orders-summary': {
+        type: 'Order' as const,
+        selector: OrderDetailSelector,
+    },
+    'globalSettings-detail-view': {
+        type: 'GlobalSettings' as const,
+        selector: globalSettingsSelector,
+    },
 };
 
 export type DetailLocationType = typeof DetailLocations;
@@ -149,7 +159,7 @@ export type ModalLocationsTypes = {
     'manual-order-state': {
         state: string;
         setState: (value: string) => void;
-        setBeforeSubmit: (beforeSubmit?: () => Promise<void>) => void;
+        beforeSubmit: React.MutableRefObject<(() => Promise<void> | undefined) | undefined>;
         order: OrderDetailType;
     };
 };

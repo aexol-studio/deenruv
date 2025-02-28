@@ -7,40 +7,15 @@ import { useValidators } from '@/hooks/useValidators.js';
 import { useTranslation } from 'react-i18next';
 
 const EditPromotionMutation = typedGql('mutation', { scalars })({
-  updatePromotion: [
-    {
-      input: $('input', 'UpdatePromotionInput!'),
-    },
-    {
-      '...on Promotion': {
-        id: true,
-      },
-    },
-  ],
+  updatePromotion: [{ input: $('input', 'UpdatePromotionInput!') }, { '...on Promotion': { id: true } }],
 });
 
 const CreatePromotionMutation = typedGql('mutation', { scalars })({
-  createPromotion: [
-    {
-      input: $('input', 'CreatePromotionInput!'),
-    },
-    {
-      '...on Promotion': {
-        id: true,
-      },
-    },
-  ],
+  createPromotion: [{ input: $('input', 'CreatePromotionInput!') }, { '...on Promotion': { id: true } }],
 });
 
 const DeletePromotionMutation = typedGql('mutation', { scalars })({
-  deletePromotion: [
-    {
-      id: $('id', 'ID!'),
-    },
-    {
-      result: true,
-    },
-  ],
+  deletePromotion: [{ id: $('id', 'ID!') }, { result: true }],
 });
 
 export const PromotionsDetailPage = () => {
@@ -85,7 +60,7 @@ export const PromotionsDetailPage = () => {
             },
             onSubmitted: (data) => {
               if (!data.translations || !data.actions || !data.conditions) throw new Error('Fill required fields.');
-              const sharedInput = {
+              const input = {
                 translations: data.translations?.validatedValue,
                 enabled: data.enabled?.validatedValue || false,
                 actions: data.actions?.validatedValue,
@@ -100,19 +75,10 @@ export const PromotionsDetailPage = () => {
                 usageLimit: data.usageLimit?.validatedValue,
               };
 
-              return id
-                ? update({
-                    input: {
-                      id: id!,
-                      ...sharedInput,
-                    },
-                  })
-                : create({
-                    input: sharedInput,
-                  });
+              return id ? update({ input: { id, ...input } }) : create({ input });
             },
             onDeleted: () => {
-              if (id) return remove({ id: id });
+              if (id) return remove({ id });
               else throw new Error('No id');
             },
           }),

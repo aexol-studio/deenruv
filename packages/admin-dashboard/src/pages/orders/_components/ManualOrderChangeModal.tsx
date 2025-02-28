@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Button,
   Select,
@@ -17,54 +17,52 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 export const ManualOrderChangeModal: React.FC<{
   open: boolean;
   setOpen: (value: { state: boolean; toAction?: string }) => void;
+  wantedState?: string;
   order: DraftOrderType;
   currentPossibilities: { name: string; to: string[] };
-  onConfirm: (to: string) => void;
-}> = ({ currentPossibilities, order, open, setOpen, onConfirm }) => {
+  onConfirm: (to: string) => Promise<void>;
+}> = ({ currentPossibilities, wantedState, order, open, setOpen, onConfirm }) => {
   const [components, setComponents] = useState<JSX.Element[]>([]);
-  const [beforeSubmits, setBeforeSubmits] = useState<(() => Promise<void> | undefined)[]>([]);
+  const beforeSubmit = useRef<() => Promise<void> | undefined>(undefined);
   const { getModalComponents } = usePluginStore();
   const { t } = useTranslation('orders');
   const [value, setValue] = useState<string>(() => {
-    const stateIndex = currentPossibilities.to.indexOf(order.state);
-    return stateIndex === -1 ? currentPossibilities.to[0] : currentPossibilities.to[stateIndex + 1];
+    if (wantedState) {
+      const stateIndex = currentPossibilities.to.indexOf(wantedState);
+      return stateIndex === -1 ? currentPossibilities.to[0] : currentPossibilities.to[stateIndex];
+    } else {
+      const stateIndex = currentPossibilities.to.indexOf(order.state);
+      return stateIndex === -1 ? currentPossibilities.to[0] : currentPossibilities.to[stateIndex + 1];
+    }
   });
 
   const submit = async () => {
-    if (beforeSubmits.length) {
-      for (const beforeSubmit of beforeSubmits) {
-        await beforeSubmit?.();
+    try {
+      if (beforeSubmit.current) {
+        await beforeSubmit.current?.();
       }
+      await onConfirm(value);
+    } catch (e) {
+      toast.error(t('changeStatus.error'));
     }
-    onConfirm(value);
   };
 
   useEffect(() => {
     const stored = getModalComponents('manual-order-state');
     setComponents(
       stored.map((component, index) => {
-        return (
-          <React.Fragment key={index}>
-            {React.createElement(component, {
-              data: {
-                state: value,
-                setState: setValue,
-                order,
-                setBeforeSubmit: (beforeSubmit: () => Promise<void> | undefined) => {
-                  setBeforeSubmits((prev) => {
-                    const newBeforeSubmits = [...prev];
-                    newBeforeSubmits[index] = beforeSubmit;
-                    return newBeforeSubmits;
-                  });
-                },
-              },
-            })}
-          </React.Fragment>
-        );
+        const data = {
+          state: value,
+          setState: setValue,
+          order,
+          beforeSubmit,
+        };
+        return <React.Fragment key={index}>{React.createElement(component, { data })}</React.Fragment>;
       }),
     );
     return () => {

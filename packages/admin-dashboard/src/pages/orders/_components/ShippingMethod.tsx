@@ -17,6 +17,8 @@ import {
   DialogTrigger,
   apiClient,
   cn,
+  useOrder,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import {
   EligibleShippingMethodsType,
@@ -28,7 +30,6 @@ import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useOrder } from '@/state/order';
 
 export const ShippingMethod: React.FC = () => {
   const { mode, order, setOrder, modifiedOrder, setModifiedOrder } = useOrder();
@@ -90,7 +91,7 @@ export const ShippingMethod: React.FC = () => {
         { orderId, shippingMethodId },
         {
           __typename: true,
-          '...on Order': draftOrderSelector,
+          '...on Order': OrderDetailSelector,
           '...on IneligibleShippingMethodError': { message: true, errorCode: true },
           '...on NoActiveOrderError': { message: true, errorCode: true },
           '...on OrderModificationError': { message: true, errorCode: true },

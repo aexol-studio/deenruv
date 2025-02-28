@@ -78,6 +78,7 @@
       "quantity": "Quantity",
       "quantityPlaceholder": "Quantity"
     },
+    "perUnit": "Per unit (TAX)",
     "baseInfoCode": "Code: {{value}}",
     "realizationPlan": "Planned realization: {{value}}",
     "realizationDate": "Realization deadline: {{value}}",

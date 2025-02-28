@@ -41,7 +41,8 @@ const PluginStoreContext = createContext<{
     widgets: Widget[];
     topNavigationComponents: DeenruvUIPlugin['topNavigationComponents'];
     topNavigationActionsMenu: DeenruvUIPlugin['topNavigationActionsMenu'];
-    configs: Record<string, any>;
+    configs: Map<string, any>;
+    plugins: DeenruvUIPlugin[];
 }>({
     channel: undefined,
     language: '',
@@ -60,7 +61,8 @@ const PluginStoreContext = createContext<{
     widgets: [],
     topNavigationComponents: [],
     topNavigationActionsMenu: [],
-    configs: {},
+    configs: new Map(),
+    plugins: [],
 });
 
 export const PluginProvider: FC<
@@ -127,6 +129,7 @@ export const PluginProvider: FC<
                 topNavigationComponents: plugins.topNavigationComponents,
                 topNavigationActionsMenu: plugins.topNavigationActionsMenu,
                 configs: plugins.configs,
+                plugins: Array.from(plugins.pluginMap.values()),
             }}
         >
             <WidgetsStoreProvider context={context} widgets={plugins.widgets}>

@@ -56,6 +56,7 @@ type Props<T extends ViableEntity> = {
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
   fetchInitialValues?: boolean;
+  additionalData?: Record<string, unknown>;
 };
 
 const entityDictionary: Partial<
@@ -127,6 +128,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   hideButton,
   disabled,
   fetchInitialValues = true,
+  additionalData,
 }: Props<T>) {
   const { t } = useTranslation('common');
   const language = useSettings((p) => p.translationsLanguage);
@@ -272,7 +274,7 @@ export function EntityCustomFields<T extends ViableEntity>({
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations?.find((v) => v.languageCode === currentLanguage);
-
+  console.log('additionalData', additionalData);
   return (
     <Card>
       <CardHeader>
@@ -284,6 +286,7 @@ export function EntityCustomFields<T extends ViableEntity>({
           <Spinner />
         ) : (
           <CustomFieldsComponent
+            additionalData={additionalData}
             value={state.customFields?.value}
             translation={currentTranslationValue}
             setValue={(field, data) => {

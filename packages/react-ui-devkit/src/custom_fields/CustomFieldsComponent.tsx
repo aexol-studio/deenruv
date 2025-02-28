@@ -11,11 +11,13 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
     value,
     setValue,
     translation,
+    additionalData,
 }: {
     customFields: CustomFieldConfigType[];
     value: any;
     setValue: (field: any, data: string | number | boolean) => void;
     translation?: K;
+    additionalData?: Record<string, unknown>;
 }) {
     const { getInputComponent } = usePluginStore();
     const [rendered, setRendered] = useState<
@@ -23,7 +25,7 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
     >({});
 
     console.log('CF', customFields);
-
+    console.log('AD', additionalData);
     useEffect(() => {
         const result = generateCustomFields(customFields, getInputComponent).reduce(
             (acc, field) => {
@@ -78,6 +80,7 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
                                     }
                                     value={_value}
                                     setValue={data => setValue(_field, data)}
+                                    additionalData={additionalData}
                                 >
                                     <Suspense fallback={<span>Loading...</span>}>
                                         <div

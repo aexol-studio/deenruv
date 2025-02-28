@@ -26,6 +26,7 @@ import {
   apiClient,
   cn,
   useServer,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
 import {
   DraftOrderLineType,
@@ -40,7 +41,6 @@ import { EllipsisVertical, InfoIcon, Trash2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
 import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types.js';
@@ -62,15 +62,7 @@ export const ProductsCard: React.FC = () => {
     (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
   );
 
-  const {
-    mode,
-    order,
-    setOrder,
-    setModifiedOrder,
-    modifiedOrder,
-    // addLinePriceChangeInput,
-    fetchOrder,
-  } = useOrder();
+  const { mode, order, setOrder, setModifiedOrder, modifiedOrder, fetchOrder } = useOrder();
   const currentOrder = useMemo(
     () => (mode === 'update' ? (modifiedOrder ? modifiedOrder : order) : order),
     [mode, order, modifiedOrder],
@@ -177,7 +169,11 @@ export const ProductsCard: React.FC = () => {
           adjustDraftOrderLine: [
             {
               orderId: order.id,
-              input: { orderLineId: order.lines[editedLineIdx].id, quantity: quantityChange, customFields },
+              input: {
+                orderLineId: order.lines[editedLineIdx].id,
+                quantity: quantityChange,
+                ...(Object.keys(customFields || {}).length > 0 && { customFields }),
+              },
             },
             updateOrderItemsSelector,
           ],
@@ -213,10 +209,12 @@ export const ProductsCard: React.FC = () => {
 
       setOpen(false);
     }
-
     const { adjustDraftOrderLine } = await apiClient('mutation')({
       adjustDraftOrderLine: [
-        { orderId: order.id, input: { orderLineId, quantity, customFields } },
+        {
+          orderId: order.id,
+          input: { orderLineId, quantity, ...(Object.keys(customFields || {}).length > 0 && { customFields }) },
+        },
         updateOrderItemsSelector,
       ],
     });
@@ -274,7 +272,7 @@ export const ProductsCard: React.FC = () => {
                 <div className="flex w-full flex-col items-center gap-2">
                   <div className="flex w-full flex-col">
                     <LineItem noBorder noHover variant={{ ...selectedVariant, quantity: 1 }} />
-                    <CustomComponent onVariantAdd={handleNewVariantAdd} orderLineId={selectedVariant.product.id} />
+                    <CustomComponent onVariantAdd={handleNewVariantAdd} orderLine={selectedVariant} />
                   </div>
                 </div>
               </div>
@@ -316,7 +314,7 @@ export const ProductsCard: React.FC = () => {
                   <TableHead>{t('create.price')}</TableHead>
                   <TableHead>{t('create.priceWithTax')}</TableHead>
                   <TableHead>{t('create.quantity')}</TableHead>
-                  <TableHead>{t('create.totalWithTax')}</TableHead>
+                  <TableHead>{t('create.perUnit')}</TableHead>
                   {mode === 'create' && <TableHead>{t('create.actions')}</TableHead>}
                 </TableRow>
               </TableHeader>
@@ -341,7 +339,12 @@ export const ProductsCard: React.FC = () => {
                         <TableCell>
                           <OrderLineCustomFields line={line} order={currentOrder} />
                         </TableCell>
+                        <TableCell>{priceFormatter(line.linePrice)}</TableCell>
+                        <TableCell>{priceFormatter(line.linePriceWithTax)}</TableCell>
                         <TableCell>{line.quantity}</TableCell>
+                        <TableCell>
+                          {priceFormatter(line.unitPrice)} ({priceFormatter(line.unitPriceWithTax)})
+                        </TableCell>
                         {(mode === 'create' || mode === 'update') && (
                           <TableCell>
                             <div className="flex items-center gap-3">

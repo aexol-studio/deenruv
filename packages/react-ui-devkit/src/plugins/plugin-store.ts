@@ -13,7 +13,7 @@ type I18Next = {
 export class PluginStore {
     private i18next: I18Next;
     private pluginConfig: Map<string, Record<string, any>> = new Map();
-    private pluginMap: Map<string, DeenruvUIPlugin> = new Map();
+    pluginMap: Map<string, DeenruvUIPlugin> = new Map();
     private pluginPages: Array<NonNullable<DeenruvUIPlugin['pages']>[number]> = [];
     private pluginsNavigationDataField: {
         groups: Array<NonNullable<DeenruvUIPlugin['navMenuGroups']>[number]>;
@@ -137,18 +137,25 @@ export class PluginStore {
             string,
             NonNullable<NonNullable<DeenruvUIPlugin['actions']>['dropdown']>[number]
         >();
-        this.pluginMap.forEach(plugin => {
-            plugin.actions?.inline?.forEach(action => {
-                actionsInline.set(action.id, action);
+        this.pluginMap.forEach((plugin, i) => {
+            plugin.actions?.inline?.forEach((action, j) => {
+                actionsInline.set(`${action.id}.${i}.${j}`, action);
             });
-            plugin.actions?.dropdown?.forEach(action => {
-                actionsDropdown.set(action.id, action);
+            plugin.actions?.dropdown?.forEach((action, j) => {
+                actionsDropdown.set(`${action.id}.${j}.${i}`, action);
             });
         });
-        return {
-            inline: Array.from(actionsInline.values()).filter(action => action.id === location),
-            dropdown: Array.from(actionsDropdown.values()).filter(action => action.id === location),
-        };
+        const inline = Array.from(actionsInline.keys()).filter(action => {
+            const [split] = action.split('.');
+            return split === location;
+        });
+        const dropdown = Array.from(actionsDropdown.keys()).filter(action => {
+            const [split] = action.split('.');
+            return split === location;
+        });
+        const inlineComponents = inline.map(action => actionsInline.get(action)!);
+        const dropdownComponents = dropdown.map(action => actionsDropdown.get(action)!);
+        return { inline: inlineComponents, dropdown: dropdownComponents };
     }
 
     get topNavigationComponents() {
