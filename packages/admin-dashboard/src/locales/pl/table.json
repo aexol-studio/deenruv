@@ -113,5 +113,17 @@
         "copyId": "Kopiuj ID",
         "view": "Widok",
         "delete": "Usuń"
+    },
+    "filterDialog": {
+        "title": "Filtry",
+        "apply": "Zastosuj filtr",
+        "reset": "Zresetuj filtry",
+        "add": "Dodaj filtr",
+        "allFiltersApplied": "Wszystkie filtry zostały już zastosowane",
+        "where": "gdzie",
+        "noFieldsFound": "Nie znaleziono pól",
+        "searchFields": "Pola wyszukiwania",
+        "noFiltersApplied": "Nie zastosowano żadnych filtrów",
+        "emptyState": "Dodaj filtry, aby zawęzić wyniki."
     }
 }

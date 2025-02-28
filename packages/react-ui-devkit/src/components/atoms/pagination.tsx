@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ButtonProps } from '@/components/atoms/button';
@@ -37,11 +37,35 @@ type PaginationLinkProps = {
 const PaginationLink = ({ className, isActive, ...props }: PaginationLinkProps) => (
     <a
         aria-current={isActive ? 'page' : undefined}
-        className={cn(isActive ? 'text-primary' : 'cursor-pointer text-muted-foreground', className)}
+        className={cn(
+            'size-8 border-[1px] border-solid border-border flex justify-center items-center rounded-md bg-background',
+            isActive ? 'text-primary' : 'cursor-pointer',
+            className,
+        )}
         {...props}
     />
 );
 PaginationLink.displayName = 'PaginationLink';
+
+const PaginationFirst = ({
+    className,
+    isActive,
+    onClick,
+    ...props
+}: React.ComponentProps<typeof PaginationLink>) => {
+    return (
+        <PaginationLink
+            aria-label="Go to first page"
+            size="default"
+            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
+            onClick={e => isActive && onClick && onClick(e)}
+            {...props}
+        >
+            <ChevronsLeft className="size-4" />
+        </PaginationLink>
+    );
+};
+PaginationFirst.displayName = 'PaginationFirst';
 
 const PaginationPrevious = ({
     className,
@@ -49,17 +73,15 @@ const PaginationPrevious = ({
     onClick,
     ...props
 }: React.ComponentProps<typeof PaginationLink>) => {
-    const { t } = useTranslation('common');
     return (
         <PaginationLink
             aria-label="Go to previous page"
             size="default"
-            className={cn('flex items-center gap-1 pl-2.5', !isActive && 'cursor-not-allowed', className)}
+            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
-            <ChevronLeft className="h-4 w-4" />
-            <span className="capitalize">{t('previous')}</span>
+            <ChevronLeft className="size-4" />
         </PaginationLink>
     );
 };
@@ -71,21 +93,39 @@ const PaginationNext = ({
     onClick,
     ...props
 }: React.ComponentProps<typeof PaginationLink>) => {
-    const { t } = useTranslation('common');
     return (
         <PaginationLink
             aria-label="Go to next page"
             size="default"
-            className={cn('flex items-center gap-1 pr-2.5', !isActive && 'cursor-not-allowed', className)}
+            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
-            <span className="capitalize">{t('next')}</span>
             <ChevronRight className="h-4 w-4" />
         </PaginationLink>
     );
 };
 PaginationNext.displayName = 'PaginationNext';
+
+const PaginationLast = ({
+    className,
+    isActive,
+    onClick,
+    ...props
+}: React.ComponentProps<typeof PaginationLink>) => {
+    return (
+        <PaginationLink
+            aria-label="Go to next page"
+            size="default"
+            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
+            onClick={e => isActive && onClick && onClick(e)}
+            {...props}
+        >
+            <ChevronsRight className="h-4 w-4" />
+        </PaginationLink>
+    );
+};
+PaginationLast.displayName = 'PaginationLast';
 
 const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
     <span aria-hidden className={cn('flex h-9 w-9 items-center justify-center', className)} {...props}>
@@ -101,6 +141,8 @@ export {
     PaginationEllipsis,
     PaginationItem,
     PaginationLink,
+    PaginationFirst,
     PaginationNext,
     PaginationPrevious,
+    PaginationLast,
 };

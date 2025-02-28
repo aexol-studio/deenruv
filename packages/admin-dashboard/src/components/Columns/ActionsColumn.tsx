@@ -34,7 +34,7 @@ export const ActionsColumn = <T extends { id: string }>({
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => (
-      <Stack className="flex justify-end">
+      <Stack className="flex w-12 justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">

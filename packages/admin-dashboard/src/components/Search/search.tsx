@@ -541,7 +541,6 @@ export const Search: React.FC<SearchProps> = ({
           onChange={(e) => setDefaultSearch(e.currentTarget.value)}
         />
       )}
-
       {/* //Old one */}
       {/* {groupedAdvancedParams && (
         <Sheet>

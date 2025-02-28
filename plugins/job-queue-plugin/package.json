@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/job-queue-plugin",
-    "version": "0.0.71",
+    "version": "0.0.72",
     "license": "MIT",
     "main": "package/index.js",
     "types": "package/index.d.ts",

@@ -55,9 +55,17 @@ export const VariantsList = () => {
 
   return (
     <DetailList
-      filterFields={[{ key: 'languageCode', operator: 'StringOperators' }]}
+      filterFields={[
+        { key: 'sku', operator: 'StringOperators' },
+        { key: 'name', operator: 'StringOperators' },
+        { key: 'enabled', operator: 'BooleanOperators' },
+        { key: 'price', operator: 'NumberOperators' },
+        { key: 'priceWithTax', operator: 'NumberOperators' },
+        { key: 'stockOnHand', operator: 'NumberOperators' },
+        { key: 'stockAllocated', operator: 'NumberOperators' },
+      ]}
       detailLinkColumn="id"
-      searchFields={['name']}
+      searchFields={['name', 'sku']}
       hideColumns={['customFields', 'stockOnHand', 'stockAllocated', 'productId']}
       entityName={'ProductVariant'}
       type={'productVariants'}

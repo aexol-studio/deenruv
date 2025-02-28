@@ -51,9 +51,14 @@ export const ProductsList = () => {
 
   return (
     <DetailList
-      filterFields={[{ key: 'languageCode', operator: 'StringOperators' }]}
+      filterFields={[
+        { key: 'slug', operator: 'StringOperators' },
+        { key: 'enabled', operator: 'BooleanOperators' },
+        { key: 'sku', operator: 'StringOperators' },
+        { key: 'name', operator: 'StringOperators' },
+      ]}
       detailLinkColumn="id"
-      searchFields={['name']}
+      searchFields={['name', 'slug', 'sku']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'Product'}
       type={'products'}

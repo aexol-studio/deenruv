@@ -45,6 +45,10 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
 
 export const PromotionsListPage = () => (
   <DetailList
+    filterFields={[
+      { key: 'name', operator: 'StringOperators' },
+      { key: 'enabled', operator: 'BooleanOperators' },
+    ]}
     searchFields={['name']}
     entityName={'Promotion'}
     type={'promotions'}

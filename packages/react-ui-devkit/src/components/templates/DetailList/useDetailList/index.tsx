@@ -2,14 +2,11 @@ import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Paginate } from './Paginate';
 import { Search } from './Search';
-import { FiltersResult } from './FiltersResult';
-import { FiltersButton } from './FiltersButton';
 import React from 'react';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models';
-import { SortButton } from '@/components';
-import { ListType, ListTypeKeys } from './types';
+import { ListType } from './types';
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
-import { FilterInputTypeUnion } from '../_components/types';
+import { SortSelect } from '@/components/templates/DetailList/useDetailList/SortSelect.js';
 
 type LimitKeys =
     | '10perPage'
@@ -70,6 +67,8 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     filter: ModelTypes[ListType[K]] | undefined;
     setFilterField: (field: FIELD, value: VALUE) => void;
     removeFilterField: (field: FIELD) => void;
+    resetFilterFields: () => void;
+    changeFilterField: (index: number, field: FIELD) => void;
 } => {
     const [searchParams, setSearchParams] = useCustomSearchParams();
     const [total, setTotal] = useState(0);
@@ -104,6 +103,21 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         }
     };
 
+    const changeFilterField = (index: number, field: FIELD) => {
+        const filterURL = searchParams.get(SearchParamKey.FILTER);
+        if (!filterURL) return;
+
+        const filterFromParamsJSON = JSON.parse(filterURL) as ModelTypes[ListType[typeof type]];
+        const filterArray = Object.entries(filterFromParamsJSON);
+        filterArray[index][0] = field;
+        filterArray[index][1] = {};
+        const updatedFilter = Object.fromEntries(filterArray);
+        const updatedSearchParams = JSON.stringify(updatedFilter);
+        console.log(filterFromParamsJSON, updatedFilter);
+        searchParams.set(SearchParamKey.FILTER, updatedSearchParams);
+        setSearchParams(searchParams);
+    };
+
     const removeFilterField = (field: FIELD) => {
         try {
             const filterURL = searchParams.get(SearchParamKey.FILTER);
@@ -120,28 +134,32 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         }
     };
 
-    const setSort = (sort: string) => {
+    const resetFilterFields = () => {
+        try {
+            searchParams.delete(SearchParamKey.FILTER);
+            setSearchParams(searchParams);
+        } catch (err) {
+            console.error(`Clearing filter searchParams failed: ${err}`);
+        }
+    };
+
+    const setSort = (key: string, direction: SortOrder | undefined) => {
         const currSort = searchParams.get(SearchParamKey.SORT);
-        const currSortDir = searchParams.get(SearchParamKey.SORT_DIR);
-        if (!currSort || !currSortDir) {
-            searchParams.set(SearchParamKey.SORT, sort);
+
+        if (!direction) {
+            searchParams.delete(SearchParamKey.SORT);
+            searchParams.delete(SearchParamKey.SORT_DIR);
+        } else if (key !== currSort) {
+            searchParams.set(SearchParamKey.SORT, key);
             searchParams.set(SearchParamKey.SORT_DIR, SortOrder.ASC);
         } else {
-            if (sort === currSort) {
-                if (currSortDir === SortOrder.ASC) {
-                    searchParams.set(SearchParamKey.SORT_DIR, SortOrder.DESC);
-                } else if (currSortDir === SortOrder.DESC) {
-                    searchParams.delete(SearchParamKey.SORT);
-                    searchParams.delete(SearchParamKey.SORT_DIR);
-                } else {
-                    searchParams.set(SearchParamKey.SORT, sort);
-                    searchParams.set(SearchParamKey.SORT_DIR, SortOrder.ASC);
-                }
-            } else {
-                searchParams.set(SearchParamKey.SORT, sort);
+            if (direction === SortOrder.DESC) {
+                searchParams.set(SearchParamKey.SORT_DIR, SortOrder.DESC);
+            } else if (direction === SortOrder.ASC) {
                 searchParams.set(SearchParamKey.SORT_DIR, SortOrder.ASC);
             }
         }
+
         setSearchParams(searchParams);
     };
 
@@ -206,6 +224,8 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         filter: searchParamValues.filter,
         setFilterField,
         removeFilterField,
+        resetFilterFields,
+        changeFilterField,
         Search: (
             <Search
                 {...{
@@ -222,13 +242,15 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
             />
         ),
         SortButton: (key, translated) => (
-            <SortButton
+            <SortSelect
                 currSort={searchParamValues.sort}
                 sortKey={key as string}
-                onClick={() => setSort(key as string)}
+                onClick={direction => {
+                    setSort(key as string, direction);
+                }}
             >
                 {translated || (key as string)}
-            </SortButton>
+            </SortSelect>
         ),
         objects,
         searchParamValues,

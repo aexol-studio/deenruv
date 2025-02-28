@@ -1,300 +1,88 @@
-import { Stack } from '@/components/Stack';
-import { useList } from '@/lists/useList';
-import { format } from 'date-fns';
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  VisibilityState,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import { ArrowRight, Check, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Routes, Checkbox, Badge, SortButton, useLocalStorage, ListTable, apiClient } from '@deenruv/react-ui-devkit';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
-import { Permission, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
-import { DeleteDialog, ListButtons, ListColumnDropdown, Search } from '@/components';
-import { ParamFilterFieldTuple, TaxRatesSortOptions, taxCategoriesSortOptionsArray } from '@/lists/types';
-import { TaxRateListSelector, TaxRateListType } from '@/graphql/taxRates';
-import { ActionsColumn, BooleanCell } from '@/components/Columns';
+import { Permission, SortOrder } from '@deenruv/admin-types';
+import { TaxRateListSelector } from '@/graphql/taxRates';
 
-const getTaxRates = async (options: ResolverInputTypes['TaxRateListOptions']) => {
+const fetch = async <T, K>(
+  { page, perPage, filter, filterOperator, sort }: PaginationInput,
+  customFieldsSelector?: T,
+  additionalSelector?: K,
+) => {
+  const selector = deepMerge(deepMerge(TaxRateListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
   const response = await apiClient('query')({
-    taxRates: [{ options }, { items: TaxRateListSelector, totalItems: true }],
+    ['taxRates']: [
+      {
+        options: {
+          take: perPage,
+          skip: (page - 1) * perPage,
+          filterOperator: filterOperator,
+          sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+          ...(filter && { filter }),
+        },
+      },
+      { items: selector, totalItems: true },
+    ],
   });
+  return response['taxRates'];
+};
 
-  return response.taxRates;
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+  try {
+    const ids = items.map((item) => item.id);
+    const { deleteTaxRates } = await apiClient('mutation')({
+      deleteTaxRates: [
+        { ids },
+        {
+          message: true,
+          result: true,
+        },
+      ],
+    });
+    return !!deleteTaxRates.length;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
 };
 
 export const TaxRatesListPage = () => {
   const { t } = useTranslation('taxRates');
-  const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
-    'tax-rates-table-visibility',
-    {
-      id: false,
-      createdAt: false,
-      updatedAt: false,
-      value: true,
-      taxCategory: true,
-      zone: true,
-      customerGroup: false,
-      enabled: true,
-    },
-  );
-
-  const {
-    objects: taxRates,
-    Paginate,
-    setSort,
-    optionInfo,
-    setFilterField,
-    setFilter,
-    removeFilterField,
-    isFilterOn,
-    setFilterLogicalOperator,
-    refetch: refetchTaxRates,
-  } = useList({
-    route: async ({ page, perPage, sort, filter, filterOperator }) => {
-      return getTaxRates({
-        take: perPage,
-        skip: (page - 1) * perPage,
-        filterOperator: filterOperator,
-        sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
-        ...(filter && { filter }),
-      });
-    },
-    listType: 'taxRates',
-  });
-
-  const [taxRatesToDelete, setTaxRatesToDelete] = useState<TaxRateListType[]>([]);
-  const [deleteDialogOpened, setDeleteDialogOpened] = useState(false);
-
-  useEffect(() => {
-    refetchTaxRates();
-  }, []);
-
-  const deleteTaxRatesToDelete = async () => {
-    const resp = await apiClient('mutation')({
-      deleteTaxRates: [{ ids: taxRatesToDelete.map((ch) => ch.id) }, { message: true, result: true }],
-    });
-
-    if (resp.deleteTaxRates) {
-      toast.message(t('toasts.taxRateDeleteSuccess'));
-      refetchTaxRates();
-      setDeleteDialogOpened(false);
-      setTaxRatesToDelete([]);
-    } else toast.error(t('toasts.taxRateDeleteError'));
-  };
-
-  const columns: ColumnDef<TaxRateListType>[] = [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-      enableColumnFilter: false,
-    },
-    {
-      accessorKey: 'id',
-      header: () => <div> {t('table.id')}</div>,
-      cell: ({ row }) => <div>{row.original.id}</div>,
-    },
-    {
-      accessorKey: 'name',
-      enableHiding: true,
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="name" onClick={() => setSort('name')}>
-          {t('table.name')}
-        </SortButton>
-      ),
-      cell: ({ row }) => (
-        <Link to={Routes.taxRates.to(row.original.id)} className="text-primary-600">
-          <Badge variant="outline" className="flex w-full items-center justify-center py-2">
-            {row.original.name}
-            <ArrowRight className="pl-1" size={16} />
-          </Badge>
-        </Link>
-      ),
-    },
-    {
-      accessorKey: 'createdAt',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="createdAt" onClick={() => setSort('createdAt')}>
-          {t('table.createdAt')}
-        </SortButton>
-      ),
-      cell: ({ row }) => (
-        <div className="text-nowrap">{format(new Date(row.original.createdAt), 'dd.MM.yyyy hh:mm')}</div>
-      ),
-    },
-    {
-      accessorKey: 'updatedAt',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="updatedAt" onClick={() => setSort('updatedAt')}>
-          {t('table.updatedAt')}
-        </SortButton>
-      ),
-      cell: ({ row }) => (
-        <div className="text-nowrap">
-          {row.original.updatedAt ? format(new Date(row.original.updatedAt), 'dd.MM.yyyy hh:mm') : ''}
-        </div>
-      ),
-    },
-    {
-      accessorKey: 'taxCategory',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="taxCategory" onClick={() => setSort('taxCategory')}>
-          {t('table.taxCategory')}
-        </SortButton>
-      ),
-      cell: ({ row }) => row.original.category.name,
-    },
-    {
-      accessorKey: 'zone',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="zone" onClick={() => setSort('zone')}>
-          {t('table.zone')}
-        </SortButton>
-      ),
-      cell: ({ row }) => row.original.zone.name,
-    },
-    {
-      accessorKey: 'customerGroup',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="customerGroup" onClick={() => setSort('customerGroup')}>
-          {t('table.customerGroup')}
-        </SortButton>
-      ),
-      cell: ({ row }) => row.original.customerGroup?.name,
-    },
-    {
-      accessorKey: 'value',
-      header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="value" onClick={() => setSort('value')}>
-          {t('table.value')}
-        </SortButton>
-      ),
-      cell: ({ row }) => row.original.value,
-    },
-    {
-      accessorKey: 'enabled',
-      enableColumnFilter: false,
-      header: () => t('table.enabled'),
-      cell: ({ row }) => <BooleanCell value={row.original.enabled} />,
-    },
-    ActionsColumn({
-      viewRoute: Routes.taxRates.to,
-      onDelete: (row) => {
-        setDeleteDialogOpened(true);
-        setTaxRatesToDelete([row.original]);
-      },
-      deletePermission: Permission.DeleteTaxRate,
-    }),
-  ];
-
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [rowSelection, setRowSelection] = useState({});
-
-  const table = useReactTable({
-    data: taxRates || [],
-    manualPagination: true,
-    columns,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnsVisibilityState,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      columnFilters,
-      columnVisibility: columnsVisibilityState,
-      rowSelection,
-      pagination: { pageIndex: optionInfo.page, pageSize: optionInfo.perPage },
-    },
-  });
-
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    let filterObj = {};
-    const filters: Array<ParamFilterFieldTuple<TaxRatesSortOptions>> = [];
-    taxCategoriesSortOptionsArray.forEach((p) => {
-      if (searchParams.has(p)) {
-        const param = searchParams.get(p);
-
-        if (param) {
-          const [paramVal, paramKey] = param.split(',');
-          const paramFilterField = { [paramKey]: paramVal };
-          const paramFilterTuple: ParamFilterFieldTuple<TaxRatesSortOptions> = [p, paramFilterField];
-          filters.push(paramFilterTuple);
-        }
-
-        filterObj = {
-          ...filterObj,
-          [p]: searchParams.get(p),
-        };
-      }
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    filters.forEach((f) => setFilterField(f[0] as any, f[1]));
-  }, [searchParams, setFilterField]);
-
-  useEffect(() => {
-    setRowSelection({});
-    setTaxRatesToDelete([]);
-  }, [taxRates]);
 
   return (
-    <Stack column className="gap-6 px-4 py-2 md:px-8 md:py-4">
-      <div className="page-content-h flex w-full flex-col">
-        <div className="mb-4 flex flex-wrap justify-between gap-4">
-          <ListColumnDropdown table={table} t={t} />
-          <Search
-            filter={optionInfo.filter}
-            type="TaxRateFilterParameter"
-            setFilter={setFilter}
-            setFilterField={setFilterField}
-            removeFilterField={removeFilterField}
-            setFilterLogicalOperator={setFilterLogicalOperator}
-          />
-          <ListButtons
-            selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
-            createLabel={t('create')}
-            createRoute={Routes.taxRates.new}
-            handleClick={() => {
-              setTaxRatesToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
-              setDeleteDialogOpened(true);
-            }}
-            createPermission={Permission.CreateTaxRate}
-            deletePermission={Permission.DeleteTaxRate}
-          />
-        </div>
-
-        <ListTable {...{ columns, isFiltered: isFilterOn, table, Paginate }} />
-        <DeleteDialog
-          title={t('deleteTaxRate.title')}
-          description={t('deleteTaxRate.description')}
-          deletedNames={taxRatesToDelete.map((c) => c.name)}
-          onConfirm={deleteTaxRatesToDelete}
-          open={deleteDialogOpened}
-          onOpenChange={setDeleteDialogOpened}
-        />
-      </div>
-    </Stack>
+    <DetailList
+      filterFields={[
+        { key: 'name', operator: 'StringOperators' },
+        { key: 'enabled', operator: 'BooleanOperators' },
+        { key: 'value', operator: 'NumberOperators' },
+      ]}
+      detailLinkColumn="id"
+      searchFields={['name']}
+      hideColumns={['customFields', 'translations', 'category']}
+      additionalColumns={[
+        {
+          accessorKey: 'taxCategory',
+          header: () => t('table.taxCategory'),
+          cell: ({ row }) => row.original.category.name,
+        },
+        {
+          accessorKey: 'zone',
+          header: () => t('table.zone'),
+          cell: ({ row }) => row.original.zone.name,
+        },
+        {
+          accessorKey: 'customerGroup',
+          header: () => t('table.customerGroup'),
+          cell: ({ row }) => row.original.customerGroup?.name ?? '-',
+        },
+      ]}
+      entityName={'TaxRate'}
+      type={'taxRates'}
+      route={Routes['taxRates']}
+      tableId="taxRates-list-view"
+      fetch={fetch}
+      onRemove={onRemove}
+      createPermission={Permission.CreateTaxRate}
+      deletePermission={Permission.DeleteTaxRate}
+    />
   );
 };

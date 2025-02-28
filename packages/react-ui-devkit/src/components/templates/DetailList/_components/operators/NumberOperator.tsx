@@ -1,24 +1,11 @@
 import { useState } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { FilterInputType } from '../types';
-import {
-    Button,
-    Checkbox,
-    Input,
-    Label,
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components';
+import { Checkbox, Input } from '@/components';
 import React from 'react';
+import { OperatorSelect } from '@/components/templates/DetailList/useDetailList/OperatorSelect.js';
 
 type NumberOperator = Omit<FilterInputType['NumberOperators'], '__typename'>;
-const TYPES = ['eq', 'lt', 'lte', 'gt', 'gte', 'between', 'isNull'] as (keyof NumberOperator)[];
-
 type NumberRange = { start: number; end: number };
 
 function isNumberRange(data: undefined | number | NumberRange | boolean): data is NumberRange {
@@ -54,11 +41,11 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
     });
 
     return (
-        <div className="flex flex-col gap-2">
-            <Label>{t('types.filter')}</Label>
-            <Select
-                value={type}
-                onValueChange={e => {
+        <div className="flex gap-2">
+            <OperatorSelect
+                type="NumberOperators"
+                currentValue={type as keyof NumberOperator}
+                onChange={e => {
                     if (e === 'between') {
                         setType(e);
                         setValue({ start: 0, end: 0 });
@@ -66,24 +53,18 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
                         setType(e as keyof NumberOperator);
                         setValue(0);
                     }
+                    onSubmit({ [e as keyof NumberOperator]: value });
                 }}
-            >
-                <SelectTrigger>
-                    <SelectValue placeholder={t('types.select')} />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        {TYPES.map((i, index) => (
-                            <SelectItem key={index} value={i}>
-                                {t(`operators.${i}`)}
-                            </SelectItem>
-                        ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
+            />
             {type === 'isNull' ? (
                 <>
-                    <Checkbox checked={!!value} onCheckedChange={e => setValue(!!e)}>
+                    <Checkbox
+                        checked={!!value}
+                        onCheckedChange={e => {
+                            setValue(!!e);
+                            onSubmit({ [type]: !!e });
+                        }}
+                    >
                         {t('operators.isNull')}
                     </Checkbox>
                 </>
@@ -91,67 +72,59 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
                 <>
                     {type === 'between' ? (
                         <>
-                            <Label>{t('from')}</Label>
                             <Input
                                 disabled={!type}
+                                className="h-8 w-full rounded"
                                 type="number"
+                                placeholder={t('from')}
                                 value={isNumberRange(value) ? value.start : 0}
-                                onChange={e =>
+                                onChange={e => {
                                     setValue(p => ({
                                         end: isNumberRange(p) ? p.end : 0,
                                         start: parseFloat(e.currentTarget.value),
-                                    }))
-                                }
+                                    }));
+                                    onSubmit({
+                                        [type]: {
+                                            end: isNumberRange(value) ? value.end : 0,
+                                            start: parseFloat(e.currentTarget.value),
+                                        },
+                                    });
+                                }}
                             />
-                            <Label>{t('to')}</Label>
                             <Input
                                 disabled={!type}
+                                className="h-8 w-full rounded"
+                                placeholder={t('to')}
                                 type="number"
                                 value={isNumberRange(value) ? value.end : 0}
-                                onChange={e =>
+                                onChange={e => {
                                     setValue(p => ({
                                         start: isNumberRange(p) ? p.start : 0,
                                         end: parseFloat(e.currentTarget.value),
-                                    }))
-                                }
+                                    }));
+                                    onSubmit({
+                                        [type]: {
+                                            start: isNumberRange(value) ? value.start : 0,
+                                            end: parseFloat(e.currentTarget.value),
+                                        },
+                                    });
+                                }}
                             />
                         </>
                     ) : (
-                        <>
-                            <Label>{t('value')}</Label>
-                            <Input
-                                disabled={!type}
-                                type="number"
-                                value={typeof value === 'number' ? value : 0}
-                                onChange={e => setValue(parseFloat(e.currentTarget.value))}
-                            />
-                        </>
+                        <Input
+                            disabled={!type}
+                            type="number"
+                            className="h-8 w-full rounded"
+                            value={typeof value === 'number' ? value : 0}
+                            onChange={e => {
+                                setValue(parseFloat(e.currentTarget.value));
+                                onSubmit({ [type]: parseFloat(e.currentTarget.value) });
+                            }}
+                        />
                     )}
                 </>
             )}
-            <Button
-                disabled={!type || value === undefined}
-                onClick={() => {
-                    if (type && value !== undefined) {
-                        if (isNumberRange(value)) {
-                            onSubmit({
-                                between: isCurrency
-                                    ? {
-                                          start: Math.round(value.start * 100),
-                                          end: Math.round(value.end * 100),
-                                      }
-                                    : value,
-                            });
-                        } else {
-                            onSubmit({ [type]: isCurrency ? Math.round((value as number) * 100) : value });
-                        }
-                    }
-                }}
-                variant="outline"
-                className="w-fit self-end"
-            >
-                {t('buttons.apply')}
-            </Button>
         </div>
     );
 };

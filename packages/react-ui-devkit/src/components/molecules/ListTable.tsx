@@ -19,17 +19,17 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
     const selectIdColumnWidth = 28;
 
     return {
-        boxShadow: isLastLeftPinnedColumn
-            ? '-4px 0 4px -4px gray inset'
-            : isFirstRightPinnedColumn
-              ? '4px 0 4px -4px gray inset'
-              : undefined,
+        // boxShadow: isLastLeftPinnedColumn
+        //     ? '-4px 0 4px -4px gray inset'
+        //     : isFirstRightPinnedColumn
+        //       ? '4px 0 4px -4px gray inset'
+        //       : undefined,
         left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
         right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.95 : 1,
         position: isPinned ? 'sticky' : 'relative',
         width:
-            column.id === 'select-id' || column.id === 'select' || column.id === 'id'
+            column.id === 'select-id' || column.id === 'select' || column.id === 'id' || 'actions'
                 ? selectIdColumnWidth
                 : column.getSize(),
         zIndex: isPinned ? 1 : 0,
@@ -39,7 +39,7 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
 const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
     const isPinned = column.getIsPinned();
     if (!isPinned) return '';
-    return isPinned ? cn('bg-primary-foreground') : '';
+    return isPinned ? cn('bg-background') : '';
 };
 
 export function ListTable<TData, TValue>({
@@ -70,12 +70,12 @@ export function ListTable<TData, TValue>({
 
     return (
         <>
-            <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border`}>
+            <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border bg-background`}>
                 <Table
                     className="w-full"
                     {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}
                 >
-                    <TableHeader className="bg-primary-foreground sticky top-0 z-20">
+                    <TableHeader className="sticky top-0 z-20">
                         {table.getHeaderGroups().map(headerGroup => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map(header => {
@@ -125,7 +125,7 @@ export function ListTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex items-center justify-end space-x-2 py-2">
                 <div className="text-muted-foreground flex-1 text-sm">
                     {t('selectedValue', {
                         from: table.getFilteredSelectedRowModel().rows.length,
