@@ -22,6 +22,7 @@ import { cache } from '@/lists/cache';
 import { CountryDetailsSelector, CountryDetailsType } from '@/graphql/countries';
 import { Stack } from '@/components';
 import { PageHeader } from '@/pages/countries/_components/PageHeader';
+import { useValidators } from '@/hooks/useValidators.js';
 
 export const CountriesDetailPage = () => {
   const { id } = useParams();
@@ -34,6 +35,7 @@ export const CountriesDetailPage = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const { translationsLanguage: currentTranslationLng } = useSettings();
   useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { translationsValidator, stringValidator } = useValidators();
 
   const fetchCountry = useCallback(async () => {
     if (id) {
@@ -55,7 +57,7 @@ export const CountriesDetailPage = () => {
     fetchCountry();
   }, [id, setLoading, fetchCountry]);
 
-  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+  const { state, setField, checkIfAllFieldsAreValid, haveValidFields } = useGFFLP(
     'CreateCountryInput',
     'translations',
     'code',
@@ -64,16 +66,8 @@ export const CountriesDetailPage = () => {
     enabled: {
       initialValue: true,
     },
-    code: {
-      validate: (v) => {
-        if (!v || v === '') return [t('validation.required')];
-      },
-    },
-    translations: {
-      validate: (v) => {
-        if (!v) return [t('validation.required')];
-      },
-    },
+    code: stringValidator(t('validation.required')),
+    translations: translationsValidator,
   });
 
   const translations = state?.translations?.value || [];
@@ -153,7 +147,7 @@ export const CountriesDetailPage = () => {
       },
     );
 
-    setButtonDisabled(areEqual);
+    setButtonDisabled(!haveValidFields || areEqual);
   }, [state, country, editMode]);
 
   const setTranslationField = useCallback(

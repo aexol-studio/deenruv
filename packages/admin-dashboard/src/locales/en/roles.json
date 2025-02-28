@@ -6,6 +6,8 @@
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
   "defaultChannel": "Default Channel",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",
@@ -48,5 +50,10 @@
     "successMessage": "Role has been deleted.",
     "deleteOrCancel": "Delete/Cancel selected"
   },
-  "selectedValue": "{{from}} of {{to}} row(s) selected"
+  "selectedValue": "{{from}} of {{to}} row(s) selected",
+  "validation": {
+    "nameRequired": "Name is required",
+    "permissionsRequired": "Select at least one permission",
+    "codeRequired": "Code is required"
+  }
 }

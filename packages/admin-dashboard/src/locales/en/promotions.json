@@ -55,5 +55,11 @@
             "Buy amountX of these variants": "Buy amount X of these variants",
             "Get amountY of these variants for free": "Get amount Y of these variants for free"
         }
+    },
+    "validation": {
+        "conditionsCode": "At least one condition is required",
+        "conditionsArgs": "Fill all fields",
+        "actionsCode": "At least one action is required",
+        "actionsArgs": "Fill all fields"
     }
 }

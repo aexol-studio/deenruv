@@ -11,3 +11,4 @@ export * from './StockLocationListSelector';
 export * from './StockLocationDetailSelector';
 export * from './CustomerDetailSelector';
 export * from './CustomerGroupDetailSelector';
+export * from './OrderDetailSelector';

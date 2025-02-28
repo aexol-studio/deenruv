@@ -1,10 +1,12 @@
 {
-  "custom": {
-    "customLabel": "Wartość niestandardowa",
-    "customPlaceholder": "Wartość",
-    "addCustomKey": "Dodaj atrybut niestandardowy",
-    "customKey": "Klucz",
-    "customValue": "Wartość",
-    "customAdditional": "Dodatkowe atrybuty niestandardowe: {{value}}"
-  }
+    "custom": {
+        "customLabel": "Wartość niestandardowa",
+        "customPlaceholder": "Wartość",
+        "addCustomKey": "Dodaj atrybut niestandardowy",
+        "customKey": "Klucz",
+        "customValue": "Wartość",
+        "customAdditional": "Dodatkowe atrybuty niestandardowe: {{value}}",
+        "editAttributes": "Edytuj atrybuty",
+        "editAttributesDescription": "Edytuj atrybuty niestandardowe"
+    }
 }

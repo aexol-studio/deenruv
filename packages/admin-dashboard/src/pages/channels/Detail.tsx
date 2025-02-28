@@ -26,6 +26,7 @@ import { ChannelDetailsSelector, ChannelDetailsType } from '@/graphql/channels';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { SimpleSelect, Stack } from '@/components';
+import { useValidators } from '@/hooks/useValidators.js';
 
 export const ChannelsDetailPage = () => {
   const { id } = useParams();
@@ -40,6 +41,7 @@ export const ChannelsDetailPage = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const availableLanguages = useSettings((p) => p.availableLanguages);
   useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { stringValidator } = useValidators();
 
   const fetchChannel = useCallback(async () => {
     if (id) {
@@ -77,7 +79,7 @@ export const ChannelsDetailPage = () => {
     fetchSellers();
   }, [id, setLoading, fetchChannel, fetchSellers]);
 
-  const { state, setField } = useGFFLP(
+  const { state, setField, haveValidFields } = useGFFLP(
     'UpdateChannelInput',
     'availableCurrencyCodes',
     'availableLanguageCodes',
@@ -93,6 +95,11 @@ export const ChannelsDetailPage = () => {
     pricesIncludeTax: {
       initialValue: false,
     },
+    code: stringValidator(t('validation.codeRequired')),
+    token: stringValidator(t('validation.tokenRequired')),
+    defaultLanguageCode: stringValidator(t('validation.langCodeRequired')),
+    defaultShippingZoneId: stringValidator(t('validation.shippingZoneRequired')),
+    defaultTaxZoneId: stringValidator(t('validation.taxZoneRequired')),
   });
 
   useEffect(() => {
@@ -122,7 +129,7 @@ export const ChannelsDetailPage = () => {
             defaultLanguageCode: state.defaultLanguageCode!.validatedValue!,
             defaultShippingZoneId: state.defaultShippingZoneId!.validatedValue!,
             defaultTaxZoneId: state.defaultTaxZoneId!.validatedValue!,
-            pricesIncludeTax: state.pricesIncludeTax!.validatedValue!,
+            pricesIncludeTax: state.pricesIncludeTax!.value!,
             sellerId: state.sellerId?.validatedValue,
             token: state.token!.validatedValue!,
           },
@@ -160,7 +167,7 @@ export const ChannelsDetailPage = () => {
             defaultLanguageCode: state.defaultLanguageCode?.validatedValue,
             defaultShippingZoneId: state.defaultShippingZoneId?.validatedValue,
             defaultTaxZoneId: state.defaultTaxZoneId?.validatedValue,
-            pricesIncludeTax: state.pricesIncludeTax?.validatedValue,
+            pricesIncludeTax: state.pricesIncludeTax?.value,
             sellerId: state.sellerId?.validatedValue,
             token: state.token?.validatedValue,
           },
@@ -212,7 +219,7 @@ export const ChannelsDetailPage = () => {
       },
     );
 
-    setButtonDisabled(areEqual);
+    setButtonDisabled(!haveValidFields || areEqual);
   }, [state, channel, editMode]);
 
   const languageOptions = useMemo(
@@ -249,12 +256,13 @@ export const ChannelsDetailPage = () => {
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack className="gap-3">
+                <Stack className="items-start gap-3">
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.code')}
                       value={state.code?.value ?? undefined}
                       onChange={(e) => setField('code', e.target.value)}
+                      errors={state.code?.errors}
                       required
                     />
                   </Stack>
@@ -263,6 +271,7 @@ export const ChannelsDetailPage = () => {
                       label={t('details.basic.token')}
                       value={state.token?.value ?? undefined}
                       onChange={(e) => setField('token', e.target.value)}
+                      errors={state.token?.errors}
                       required
                     />
                   </Stack>
@@ -320,6 +329,9 @@ export const ChannelsDetailPage = () => {
             defaultShippingZone={state.defaultShippingZoneId?.value ?? undefined}
             includeTax={state.pricesIncludeTax?.value ?? undefined}
             onIncludeTaxChange={(e) => setField('pricesIncludeTax', e)}
+            defaultLanguageErrors={state.defaultLanguageCode?.errors}
+            defaultShippingZoneErrors={state.defaultShippingZoneId?.errors}
+            defaultTaxZoneErrors={state.defaultTaxZoneId?.errors}
           />
         </Stack>
       </div>

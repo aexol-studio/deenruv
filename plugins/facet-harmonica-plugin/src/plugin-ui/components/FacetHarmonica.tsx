@@ -1,13 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Selector, FromSelector } from '../zeus';
 import { Card, CardContent, CardHeader, CardTitle } from '@deenruv/react-ui-devkit';
 import { translationNS } from '../translation-ns';
 import { FacetListOptionsType } from '../graphql';
 import { CheckboxAccordion } from './CheckboxAccordion';
-
-const BadgeSelector = Selector('Badge')({ id: true, name: true, color: true });
-export type BadgeType = FromSelector<typeof BadgeSelector, 'Badge'>;
 
 interface FacetsAccordionsProps {
     facetsOptions: FacetListOptionsType['items'] | undefined;

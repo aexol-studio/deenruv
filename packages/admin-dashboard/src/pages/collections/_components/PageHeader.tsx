@@ -7,6 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SimpleTooltip,
 } from '@deenruv/react-ui-devkit';
 import { CollectionDetailsType } from '@/graphql/collections';
 import { LanguageCode } from '@deenruv/admin-types';
@@ -60,9 +61,13 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               <SelectItem value={LanguageCode.pl}>{LanguageCode.pl}</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant={'action'} disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
-            {editMode ? t('edit') : t('create')}
-          </Button>
+          <SimpleTooltip
+            content={buttonDisabled ? (editMode ? t('noChangesTooltip') : t('buttonDisabledTooltip')) : undefined}
+          >
+            <Button variant={'action'} disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
+              {editMode ? t('edit') : t('create')}
+            </Button>
+          </SimpleTooltip>
         </Stack>
       </div>
       {editMode && collection && (

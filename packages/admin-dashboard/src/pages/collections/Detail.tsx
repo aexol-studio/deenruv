@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -26,6 +26,7 @@ import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { EntityCustomFields, Stack } from '@/components';
+import { useValidators } from '@/hooks/useValidators.js';
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
@@ -38,6 +39,7 @@ export const CollectionsDetailPage = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
   useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { configurableOperationArrayValidator } = useValidators();
 
   const fetchCollection = useCallback(async () => {
     if (id) {
@@ -75,6 +77,19 @@ export const CollectionsDetailPage = () => {
     inheritFilters: {
       initialValue: true,
     },
+    translations: {
+      validate: (v) => {
+        const error = [t('validation.nameSlugRequired')];
+        if (!v) return error;
+
+        const { name, slug } = v?.[0];
+        if (!name || !slug) return error;
+      },
+    },
+    filters: configurableOperationArrayValidator(
+      t('validation.filtersCodeRequired'),
+      t('validation.filtersArgsRequired'),
+    ),
   });
 
   const translations = state?.translations?.value || [];
@@ -233,12 +248,13 @@ export const CollectionsDetailPage = () => {
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
-                <Stack className="flex w-full flex-wrap items-end gap-4 p-0 pt-4 xl:flex-nowrap">
+                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
                       value={currentTranslationValue?.name ?? undefined}
                       onChange={(e) => setTranslationField('name', e.target.value)}
+                      errors={state.translations?.errors}
                       required
                     />
                   </Stack>
@@ -250,7 +266,7 @@ export const CollectionsDetailPage = () => {
                       required
                     />
                   </Stack>
-                  <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/3">
+                  <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
                     <Switch
                       checked={state.isPrivate?.value ?? undefined}
                       onCheckedChange={(e) => setField('isPrivate', e)}
@@ -280,6 +296,7 @@ export const CollectionsDetailPage = () => {
             onFiltersValueChange={(filters) => setField('filters', filters)}
             inheritValue={state.inheritFilters?.value ?? undefined}
             onInheritChange={(e) => setField('inheritFilters', e)}
+            errors={state.filters?.errors}
           />
           {id && <EntityCustomFields entityName="collection" id={id} />}
           <ContentsCard collectionId={id} />

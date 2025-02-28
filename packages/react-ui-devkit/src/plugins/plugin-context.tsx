@@ -4,6 +4,7 @@ import { PluginStore } from './plugin-store';
 import {
     DeenruvUIPlugin,
     DetailLocationID,
+    ModalLocationsKeys,
     ListLocationID,
     PluginNavigationGroup,
     PluginNavigationLink,
@@ -28,8 +29,10 @@ const PluginStoreContext = createContext<{
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
     getComponents: (position: string) => React.ComponentType<any>[];
+    getModalComponents: (location: ModalLocationsKeys) => React.ComponentType<any>[];
     getInputComponent: (id: string) => React.ComponentType<any> | null;
     getDetailViewTabs: (location: DetailLocationID) => DeenruvUIPlugin['tabs'];
+    getDetailViewActions: (location: DetailLocationID) => DeenruvUIPlugin['actions'];
     getTableExtensions: (location: ListLocationID) => DeenruvUIPlugin['tables'];
     navMenuData: {
         groups: PluginNavigationGroup[];
@@ -38,7 +41,8 @@ const PluginStoreContext = createContext<{
     widgets: Widget[];
     topNavigationComponents: DeenruvUIPlugin['topNavigationComponents'];
     topNavigationActionsMenu: DeenruvUIPlugin['topNavigationActionsMenu'];
-    configs: Record<string, any>;
+    configs: Map<string, any>;
+    plugins: DeenruvUIPlugin[];
 }>({
     channel: undefined,
     language: '',
@@ -48,14 +52,17 @@ const PluginStoreContext = createContext<{
     openDropdown: false,
     setOpenDropdown: () => undefined,
     getComponents: () => [],
+    getModalComponents: () => [],
     getInputComponent: () => () => null,
     getDetailViewTabs: () => [],
+    getDetailViewActions: () => undefined,
     getTableExtensions: () => [],
     navMenuData: { groups: [], links: [] },
     widgets: [],
     topNavigationComponents: [],
     topNavigationActionsMenu: [],
-    configs: {},
+    configs: new Map(),
+    plugins: [],
 });
 
 export const PluginProvider: FC<
@@ -83,6 +90,14 @@ export const PluginProvider: FC<
         return plugins.getDetailViewTabs(location);
     };
 
+    const getDetailViewActions = (location: DetailLocationID) => {
+        return plugins.getDetailViewActions(location);
+    };
+
+    const getModalComponents = (location: ModalLocationsKeys) => {
+        return plugins.getModalComponents(location);
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.ctrlKey && e.key === 'x') {
@@ -104,14 +119,17 @@ export const PluginProvider: FC<
                 openDropdown,
                 setOpenDropdown,
                 getComponents,
+                getModalComponents,
                 getInputComponent,
                 getTableExtensions,
                 getDetailViewTabs,
+                getDetailViewActions,
                 navMenuData: plugins.navMenuData,
                 widgets: plugins.widgets,
                 topNavigationComponents: plugins.topNavigationComponents,
                 topNavigationActionsMenu: plugins.topNavigationActionsMenu,
                 configs: plugins.configs,
+                plugins: Array.from(plugins.pluginMap.values()),
             }}
         >
             <WidgetsStoreProvider context={context} widgets={plugins.widgets}>

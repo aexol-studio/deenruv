@@ -14,6 +14,7 @@ import {
   Separator,
   Option,
   apiClient,
+  ErrorMessage,
 } from '@deenruv/react-ui-devkit';
 import { SimpleSelect, Stack } from '@/components';
 
@@ -28,6 +29,7 @@ interface FiltersCardProps {
   onInheritChange: (checked: boolean) => void;
   currentFiltersValue: ModelTypes['ConfigurableOperationInput'][] | undefined;
   onFiltersValueChange: (checker: ModelTypes['ConfigurableOperationInput'][] | undefined) => void;
+  errors?: string[];
 }
 
 export const FiltersCard: React.FC<FiltersCardProps> = ({
@@ -35,6 +37,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
   onFiltersValueChange,
   inheritValue,
   onInheritChange,
+  errors,
 }) => {
   const { t } = useTranslation('collections');
   const [filters, setFilters] = useState<PaymentMethodHandlerType[]>([]);
@@ -59,7 +62,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
 
   const handleFiltersValueChange = useCallback(
     (index: number, code: string, args?: { name: string; value: string }[]) => {
-      const correspondingFilter = filters.find((h) => h.code === code);
+      const correspondingFilter = filters.find((h) => h?.code === code);
 
       if (correspondingFilter && currentFiltersValue) {
         const newFiltersValue = [...currentFiltersValue];
@@ -109,6 +112,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row justify-between text-base">{t('details.filters.title')}</CardTitle>
+        <ErrorMessage errors={errors} />
       </CardHeader>
       <CardContent className="flex- flex flex-wrap gap-4 xl:flex-nowrap">
         <Stack column className="basis-full gap-4">

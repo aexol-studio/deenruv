@@ -10,13 +10,13 @@ import {
   Button,
   Table,
   apiClient,
+  useOrder,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
-import { draftOrderSelector } from '@/graphql/draft_order';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useOrder } from '@/state/order';
 import { ORDER_STATE } from '@/graphql/base';
 
 export const RealizationCard: React.FC = () => {
@@ -44,7 +44,7 @@ export const RealizationCard: React.FC = () => {
       ],
     });
     if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-      const resp = await apiClient('query')({ order: [{ id: order.id }, draftOrderSelector] });
+      const resp = await apiClient('query')({ order: [{ id: order.id }, OrderDetailSelector] });
       setOrder(resp.order);
       fetchOrderHistory();
       toast.success('Fulfillment marked as delivered', { position: 'top-center' });

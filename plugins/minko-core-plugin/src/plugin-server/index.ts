@@ -726,27 +726,6 @@ export const allProductsCondition = new PromotionCondition({
     },
 });
 
-const inRealizationProcess: OrderProcess<'InRealization'> = {
-    transitions: {
-        PaymentSettled: {
-            to: ['InRealization', 'Cancelled', 'Modifying', 'ArrangingAdditionalPayment'],
-            mergeStrategy: 'replace',
-        },
-        InRealization: {
-            to: [
-                'PartiallyDelivered',
-                'Delivered',
-                'PartiallyShipped',
-                'Shipped',
-                'Cancelled',
-                'Modifying',
-                'ArrangingAdditionalPayment',
-            ],
-        },
-    },
-    onTransitionStart: async (from, to, { ctx, order }) => {},
-};
-
 const empty = {
     label: [
         { languageCode: LanguageCode.en, value: '' },
@@ -1009,7 +988,6 @@ export class SearchResultResolver {
     configuration: config => {
         // config.orderOptions.orderItemPriceCalculationStrategy =
         //   new DiscountByStrategy();
-        config.orderOptions.process.push(inRealizationProcess);
 
         config.promotionOptions.promotionConditions.push(allProductsCondition);
         config.promotionOptions.promotionActions.push(collectionsPercentage);
@@ -1052,10 +1030,7 @@ export class SearchResultResolver {
                 name: 'materials',
                 type: 'localeText',
                 defaultValue: '',
-                ui: {
-                    tab: 'Kolory i wykończenie',
-                    component: 'additional-description-input',
-                },
+                ui: { tab: 'Kolory i wykończenie', component: 'additional-description-input' },
                 ...empty,
             },
             {
@@ -1069,20 +1044,14 @@ export class SearchResultResolver {
                 name: 'delivery',
                 type: 'localeText',
                 defaultValue: '',
-                ui: {
-                    tab: 'Dostawa i użytkowanie',
-                    component: 'additional-description-input',
-                },
+                ui: { tab: 'Dostawa i użytkowanie', component: 'additional-description-input' },
                 ...empty,
             },
             {
                 name: 'realization',
                 type: 'localeText',
                 defaultValue: '',
-                ui: {
-                    tab: 'Termin realizacji',
-                    component: 'additional-description-input',
-                },
+                ui: { tab: 'Termin realizacji', component: 'additional-description-input' },
                 ...empty,
             },
             {
@@ -1094,12 +1063,7 @@ export class SearchResultResolver {
                 nullable: true,
                 eager: true,
                 label: [{ languageCode: LanguageCode.en, value: 'Main Product Image' }],
-                description: [
-                    {
-                        languageCode: LanguageCode.en,
-                        value: 'Recommended size: 1200x630px',
-                    },
-                ],
+                description: [{ languageCode: LanguageCode.en, value: 'Recommended size: 1200x630px' }],
             },
             {
                 name: 'hoverProductImage',
@@ -1110,12 +1074,7 @@ export class SearchResultResolver {
                 eager: true,
                 nullable: true,
                 label: [{ languageCode: LanguageCode.en, value: 'Hover Product Image' }],
-                description: [
-                    {
-                        languageCode: LanguageCode.en,
-                        value: 'Recommended size: 1200x630px',
-                    },
-                ],
+                description: [{ languageCode: LanguageCode.en, value: 'Recommended size: 1200x630px' }],
             },
         );
         //ADD CUSTOM FIELDS TO PRODUCT (SIZES, DELIVERY, REALIZATION, MATERIALS, FINISH) DESCRIPTION
@@ -1327,161 +1286,6 @@ export class SearchResultResolver {
             },
         );
 
-        config.customFields.Facet.push(
-            {
-                name: 'usedForColors',
-                type: 'boolean',
-                ui: { component: 'boolean-form-input' },
-                defaultValue: false,
-                label: [
-                    { languageCode: LanguageCode.en, value: 'Used for colors' },
-                    { languageCode: LanguageCode.pl, value: 'Używany dla kolorów' },
-                ],
-                description: [
-                    { languageCode: LanguageCode.en, value: 'Use this facet for colors' },
-                    {
-                        languageCode: LanguageCode.pl,
-                        value: 'Użyj tego atrybutu dla facetów które są kolorami',
-                    },
-                ],
-            },
-            // TODO: COMEBACK TO THIS
-            // {
-            //   name: "multiSelect",
-            //   type: "boolean",
-            //   ui: { component: "boolean-form-input" },
-            //   defaultValue: false,
-            //   label: [
-            //     {
-            //       languageCode: LanguageCode.en,
-            //       value: "Used for multiselect add to cart ",
-            //     },
-            //     {
-            //       languageCode: LanguageCode.pl,
-            //       value: "Używany dla dodawania wielu wariantów do koszyka",
-            //     },
-            //   ],
-            //   description: [
-            //     {
-            //       languageCode: LanguageCode.en,
-            //       value: "Use this facet for multiselect variant",
-            //     },
-            //     {
-            //       languageCode: LanguageCode.pl,
-            //       value: "Użyj tego atrybutu dla facetów wielokrotnego wyboru",
-            //     },
-            //   ],
-            // },
-            {
-                name: 'usedForProductCreations',
-                type: 'boolean',
-                ui: { component: 'product-creations-input' },
-                defaultValue: false,
-                label: [
-                    { languageCode: LanguageCode.en, value: '' },
-                    { languageCode: LanguageCode.pl, value: '' },
-                ],
-                description: [
-                    { languageCode: LanguageCode.en, value: '' },
-                    { languageCode: LanguageCode.pl, value: '' },
-                ],
-            },
-            {
-                name: 'colorsCollection',
-                type: 'boolean',
-                ui: { component: 'boolean-form-input' },
-                defaultValue: false,
-                label: [
-                    {
-                        languageCode: LanguageCode.en,
-                        value: 'Used when creating colors collection',
-                    },
-                    {
-                        languageCode: LanguageCode.pl,
-                        value: 'Używany przy tworzeniu kolekcji kolorów',
-                    },
-                ],
-                description: [
-                    {
-                        languageCode: LanguageCode.en,
-                        value: 'Use this facet when creating colors collection',
-                    },
-                    {
-                        languageCode: LanguageCode.pl,
-                        value: 'Użyj tego atrybutu przy tworzeniu kolekcji kolorów',
-                    },
-                ],
-            },
-        );
-
-        config.customFields.FacetValue.push(
-            {
-                name: 'image',
-                label: [
-                    { languageCode: LanguageCode.en, value: 'Image' },
-                    { languageCode: LanguageCode.pl, value: 'Obrazek' },
-                ],
-                description: [
-                    { languageCode: LanguageCode.en, value: 'Image for facet value' },
-                    {
-                        languageCode: LanguageCode.pl,
-                        value: 'Obrazek dla wartości atrybutu',
-                    },
-                ],
-                type: 'relation',
-                entity: Asset,
-                nullable: true,
-            },
-            {
-                name: 'hexColor',
-                label: [
-                    { languageCode: LanguageCode.en, value: 'Color' },
-                    { languageCode: LanguageCode.pl, value: 'Kolor' },
-                ],
-                description: [
-                    {
-                        languageCode: LanguageCode.en,
-                        value: 'Color for facet value (hex)',
-                    },
-                    {
-                        languageCode: LanguageCode.pl,
-                        value: 'Kolor dla wartości atrybutu (hex)',
-                    },
-                ],
-                type: 'string',
-                defaultValue: '---',
-                nullable: true,
-                ui: { component: 'color-picker-input' },
-            },
-            {
-                name: 'isNew',
-                label: [
-                    { languageCode: LanguageCode.en, value: 'New' },
-                    { languageCode: LanguageCode.pl, value: 'Nowy' },
-                ],
-                description: [
-                    { languageCode: LanguageCode.en, value: 'Set as new' },
-                    { languageCode: LanguageCode.pl, value: 'Ustaw jako nowy' },
-                ],
-                type: 'boolean',
-                defaultValue: false,
-                ui: { component: 'boolean-form-input' },
-            },
-            {
-                name: 'isHidden',
-                label: [
-                    { languageCode: LanguageCode.en, value: 'Hidden' },
-                    { languageCode: LanguageCode.pl, value: 'Ukryty' },
-                ],
-                description: [
-                    { languageCode: LanguageCode.en, value: 'Set as hidden' },
-                    { languageCode: LanguageCode.pl, value: 'Ukryj' },
-                ],
-                type: 'boolean',
-                defaultValue: false,
-                ui: { component: 'boolean-form-input' },
-            },
-        );
         return config;
     },
 })

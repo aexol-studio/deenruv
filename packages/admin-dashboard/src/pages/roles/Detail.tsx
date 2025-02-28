@@ -25,6 +25,7 @@ import { PageHeader } from '@/pages/roles/_components/PageHeader';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 import { Stack } from '@/components';
 import { Permission } from '@deenruv/admin-types';
+import { useValidators } from '@/hooks/useValidators.js';
 
 const DEFAULT_VALUES = {
   permissions: [Permission.Authenticated],
@@ -42,6 +43,7 @@ export const RolesDetailPage = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [allChannelOptions, setAllChannelOptions] = useState<Option[]>([]);
   useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { nameValidator } = useValidators();
 
   const fetchRole = useCallback(async () => {
     if (id) {
@@ -84,26 +86,21 @@ export const RolesDetailPage = () => {
     fetchChannels();
   }, [id, setLoading, fetchRole, fetchChannels]);
 
-  const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+  const { state, setField, checkIfAllFieldsAreValid, haveValidFields } = useGFFLP(
     'UpdateRoleInput',
     'code',
     'description',
     'channelIds',
     'permissions',
   )({
-    channelIds: {
-      validate: (v) => (!v || !v.length ? ['Field required'] : undefined),
-    },
     code: {
-      validate: (v) => (!v || v === '' ? ['Field required'] : undefined),
+      validate: (v) => (!v || v === '' ? [t('validation.codeRequired')] : undefined),
     },
     permissions: {
-      initialValue: DEFAULT_VALUES.permissions,
-      validate: (v) => (!v || !v.length ? ['Field required'] : undefined),
+      // initialValue: DEFAULT_VALUES.permissions,
+      validate: (v) => (!v || !v.length ? [t('validation.permissionsRequired')] : undefined),
     },
-    description: {
-      initialValue: DEFAULT_VALUES.description,
-    },
+    description: nameValidator,
   });
 
   const currentChannelOptions = useMemo((): Option[] | undefined => {
@@ -134,7 +131,7 @@ export const RolesDetailPage = () => {
             input: {
               code: state.code!.validatedValue!,
               description: state.description!.validatedValue!,
-              channelIds: state.channelIds!.validatedValue!,
+              channelIds: state.channelIds?.validatedValue ?? undefined,
               permissions: state.permissions?.validatedValue!,
             },
           },
@@ -192,7 +189,7 @@ export const RolesDetailPage = () => {
       },
     );
 
-    setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual || !haveValidFields);
   }, [state, role, editMode]);
 
   return loading ? (
@@ -223,6 +220,7 @@ export const RolesDetailPage = () => {
                     label={t('details.basic.description')}
                     value={state.description?.value ?? undefined}
                     onChange={(e) => setField('description', e.target.value)}
+                    errors={state.description?.errors}
                     required
                   />
                 </Stack>
@@ -231,6 +229,7 @@ export const RolesDetailPage = () => {
                     label={t('details.basic.code')}
                     value={state.code?.value ?? undefined}
                     onChange={(e) => setField('code', e.target.value)}
+                    errors={state.code?.errors}
                     required
                   />
                 </Stack>
@@ -255,6 +254,7 @@ export const RolesDetailPage = () => {
           <PermissionsCard
             currentPermissions={state.permissions?.value ?? undefined}
             onPermissionsChange={(e) => setField('permissions', e)}
+            errors={state.permissions?.errors}
           />
         </Stack>
       </div>

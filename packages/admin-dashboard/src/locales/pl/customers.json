@@ -99,5 +99,10 @@
         "inputStreet2Placeholder": "Street Line 2",
         "inputTaxLabel": "Identyfikator podatkowy firmy",
         "inputTaxPlaceholder": "Company Tax ID"
+    },
+    "validation": {
+        "firstNameRequired": "Imię jest wymagane",
+        "lastNameRequired": "Nazwisko jest wymagane",
+        "emailRequired": "Adres e-mail jest wymagany"
     }
 }

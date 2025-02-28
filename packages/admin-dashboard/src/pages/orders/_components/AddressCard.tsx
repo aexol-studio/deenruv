@@ -26,7 +26,9 @@ import {
   DialogTrigger,
   useServer,
   apiClient,
+  useOrder,
   cn,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import { AddressBaseType, addressBaseSelector, draftOrderSelector } from '@/graphql/draft_order';
 import { useGFFLP } from '@/lists/useGflp';
@@ -35,7 +37,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ResolverInputTypes } from '@deenruv/admin-types';
-import { useOrder } from '@/state/order';
 
 type DefaultAddress = AddressBaseType & {
   id?: string | null;
@@ -191,8 +192,8 @@ export const AddressCard: React.FC<{
 
     const { setDraftOrderShippingAddress, setDraftOrderBillingAddress } = await apiClient('mutation')(
       type === 'shipping'
-        ? { setDraftOrderShippingAddress: [{ orderId: order.id, input: newAddress }, draftOrderSelector] }
-        : { setDraftOrderBillingAddress: [{ orderId: order.id, input: newAddress }, draftOrderSelector] },
+        ? { setDraftOrderShippingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] }
+        : { setDraftOrderBillingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] },
     );
     if (setDraftOrderShippingAddress || setDraftOrderBillingAddress) {
       setModifiedOrder(type === 'shipping' ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);

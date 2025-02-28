@@ -1,11 +1,22 @@
 import type { FC, SVGProps } from 'react';
 import { Routes } from '../routes';
 import { ColumnDef } from '@tanstack/react-table';
-import { ProductDetailSelector, ProductListSelector, PromotionDetailSelector, StockLocationDetailSelector, StockLocationListSelector, TaxCategoryDetailSelector, CustomerGroupDetailSelector } from '../selectors';
-import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
+import {
+    ProductDetailSelector,
+    ProductListSelector,
+    PromotionDetailSelector,
+    StockLocationDetailSelector,
+    StockLocationListSelector,
+    TaxCategoryDetailSelector,
+    CustomerGroupDetailSelector,
+    OrderDetailSelector,
+    OrderDetailType,
+} from '../selectors';
+import type { FromSelectorWithScalars, LanguageCode, OrderType } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
+import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -29,10 +40,11 @@ export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
     i18n: any;
 };
 
+type CustomLocations = 'orders-summary';
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
 export type ListLocationID = `${RouteKeys}-list-view`;
-export type DetailLocationID = `${RouteKeys}-detail-view`;
+export type DetailLocationID = `${RouteKeys}-detail-view` | CustomLocations;
 export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 
 export const ListLocations = {
@@ -86,8 +98,20 @@ export const DetailLocations = {
         type: 'CustomerGroup' as const,
         selector: CustomerGroupDetailSelector,
     },
-
+    'orders-detail-view': {
+        type: 'Order' as const,
+        selector: OrderDetailSelector,
+    },
+    'orders-summary': {
+        type: 'Order' as const,
+        selector: OrderDetailSelector,
+    },
+    'globalSettings-detail-view': {
+        type: 'GlobalSettings' as const,
+        selector: globalSettingsSelector,
+    },
 };
+
 export type DetailLocationType = typeof DetailLocations;
 export type DetailKeys = keyof DetailLocationType;
 
@@ -124,6 +148,32 @@ type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
     component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
 };
 
+export const ModalLocations = {
+    'manual-order-state': {
+        type: 'Order' as const,
+        selector: OrderDetailSelector,
+    },
+};
+
+export type ModalLocationsTypes = {
+    'manual-order-state': {
+        state: string;
+        setState: (value: string) => void;
+        beforeSubmit: React.MutableRefObject<(() => Promise<void> | undefined) | undefined>;
+        order: OrderDetailType;
+    };
+};
+
+type ModalLocationType<KEY extends keyof typeof ModalLocations> = ModalLocationsTypes[KEY];
+type DeenruvUIModalComponent<KEY extends keyof typeof ModalLocations> = {
+    /** Used as localization */
+    id: KEY;
+    /** Modal component */
+    component: React.ComponentType<{ data: ModalLocationType<KEY> }>;
+};
+
+export type ModalLocationsKeys = keyof typeof ModalLocations;
+
 export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
     /** Used as localization */
     id: KEY;
@@ -149,10 +199,17 @@ export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
     tables?: Array<DeenruvUITable<LocationKeys>>;
     /** Applied on the detail views (pages) */
     tabs?: Array<DeenruvTabs<DetailKeys>>;
+    /** Action applied on the detail view (pages) */
+    actions?: {
+        inline?: Array<DeenruvUIDetailComponent<DetailKeys>>;
+        dropdown?: Array<DeenruvUIDetailComponent<DetailKeys>>;
+    };
     /** Inputs allow to override the default components from custom fields */
     inputs?: Array<PluginComponent>;
     /** Applied on the detail views (pages) */
     components?: Array<DeenruvUIDetailComponent<DetailKeys>>;
+    /** Applied on the modals */
+    modals?: Array<DeenruvUIModalComponent<ModalLocationsKeys>>;
     /** Applied on the dashboard */
     widgets?: Array<Widget<T>>;
     /** Applied on the navigation */

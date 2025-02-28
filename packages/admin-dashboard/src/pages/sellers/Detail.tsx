@@ -19,6 +19,7 @@ import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/sellers/_components/PageHeader';
 import { SellerListSelector, SellerListType } from '@/graphql/sellers';
 import { Stack } from '@/components';
+import { useValidators } from '@/hooks/useValidators.js';
 
 export const SellersDetailPage = () => {
   const { id } = useParams();
@@ -30,6 +31,7 @@ export const SellersDetailPage = () => {
   const [seller, setSeller] = useState<SellerListType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { nameValidator } = useValidators();
 
   const fetchSeller = useCallback(async () => {
     if (id) {
@@ -51,7 +53,12 @@ export const SellersDetailPage = () => {
     fetchSeller();
   }, [id, setLoading, fetchSeller]);
 
-  const { state, setField } = useGFFLP('CreateSellerInput', 'name')({});
+  const { state, setField, haveValidFields } = useGFFLP(
+    'CreateSellerInput',
+    'name',
+  )({
+    name: nameValidator,
+  });
 
   useEffect(() => {
     if (!seller) return;
@@ -111,7 +118,7 @@ export const SellersDetailPage = () => {
       },
     );
 
-    setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual || !haveValidFields);
   }, [state, seller, editMode]);
 
   return loading ? (
@@ -143,6 +150,7 @@ export const SellersDetailPage = () => {
                     label={t('details.basic.name')}
                     value={state.name?.value}
                     onChange={(e) => setField('name', e.target.value)}
+                    errors={state.name?.errors}
                     required
                   />
                 </Stack>

@@ -8,6 +8,7 @@ import {
   CardTitle,
   CardContent,
   apiClient,
+  ErrorMessage,
 } from '@deenruv/react-ui-devkit';
 
 import { RoleSelector, RoleType } from '@/graphql/roles';
@@ -16,9 +17,10 @@ import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
 interface RolesCardProps {
   adminRoleIds: string[] | undefined;
   onRolesChange: (roleIds: string[]) => void;
+  errors?: string[];
 }
 
-export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChange }) => {
+export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChange, errors }) => {
   const { t } = useTranslation('admins');
   const [allRoles, setAllRoles] = useState<RoleType[]>([]);
   console.log('IDS', adminRoleIds, allRoles);
@@ -59,6 +61,7 @@ export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChang
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row justify-between text-base">{t('details.roles.title')}</CardTitle>
+        <ErrorMessage errors={errors} />
       </CardHeader>
       <CardContent>
         <MultipleSelector

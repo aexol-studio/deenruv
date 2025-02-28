@@ -138,6 +138,7 @@ export const DetailViewStoreProvider = <
 
     const fetchEntity = async () => {
         const entityGraphQL = DetailLocations[locationId as keyof typeof DetailLocations];
+        console.log(locationId);
         const name = (entityGraphQL['type'].charAt(0).toLowerCase() +
             entityGraphQL['type'].slice(1)) as keyof ValueTypes['Query'];
         const selector = entityGraphQL['selector'];

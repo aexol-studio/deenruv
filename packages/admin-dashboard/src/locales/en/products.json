@@ -179,5 +179,8 @@
     "selectOption": "Select option",
     "createBasic": "Basic data",
     "createOptions": "Options"
+  },
+  "validation": {
+    "nameSlugRequired": "Both name and slug fields are required"
   }
 }

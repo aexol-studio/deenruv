@@ -1,5 +1,4 @@
 import { SurchargeTable } from './';
-import { useOrder } from '@/state/order.js';
 import {
   Button,
   Card,
@@ -12,6 +11,7 @@ import {
   Input,
   Label,
   useGFFLP,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';

@@ -5,6 +5,8 @@
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
+    "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "name": "Nazwa",
@@ -38,5 +40,8 @@
         "description": "Czy na pewno chcesz usunąć tę kategorię podatkową?",
         "successMessage": "Kategoria podatkowa została usunięta.",
         "deleteOrCancel": "Usuń/Anuluj zaznaczone"
+    },
+    "validation": {
+        "nameRequired": "Nazwa jest wymagana"
     }
 }

@@ -1,5 +1,4 @@
-import { Label } from '@deenruv/react-ui-devkit';
-import { useOrder } from '@/state/order';
+import { useOrder, Label, usePluginStore, Renderer } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
 import React from 'react';
@@ -25,6 +24,7 @@ export const OrderSummary: React.FC = () => {
       <Label className="text-muted-foreground">
         {t('create.baseInfoUpdated', { value: format(new Date(order.updatedAt), 'dd.MM.yyyy hh:mm') })}
       </Label>
+      <Renderer position="orders-summary" />
       {/* {order.getRealization && (
         <div className="ml-auto flex flex-row gap-x-4 gap-y-2">
           <Label className="text-muted-foreground text-yellow-600">

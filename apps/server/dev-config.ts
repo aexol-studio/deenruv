@@ -6,8 +6,10 @@ import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-serve
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
-import { ReplicatePlugin } from '@deenruv/replicate-plugin';
-
+// import { ReplicatePlugin } from '@deenruv/replicate-plugin';
+import { FacetHarmonicaServerPlugin } from '@deenruv/facet-harmonica-plugin';
+import { InRealizationPlugin } from '@deenruv/in-realization-plugin';
+import { CopyOrderPlugin } from '@deenruv/copy-order-plugin';
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultLogger,
@@ -20,6 +22,9 @@ import {
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
 import path from 'path';
+import { s3Client } from 'client-s3.js';
+import { OrderLineAttributesServerPlugin } from '@deenruv/order-line-attributes-plugin';
+import { WFirmaPlugin } from '@deenruv/wfirma-plugin';
 
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { s3Client } from './client-s3';
@@ -52,6 +57,10 @@ export const devConfig: DeenruvConfig = {
         disableAuth: false,
         tokenMethod: ['bearer', 'cookie'] as const,
         requireVerification: true,
+        superadminCredentials: {
+            identifier: process.env.SUPERADMIN_IDENTIFIER || 'superadmin',
+            password: process.env.SUPERADMIN_PASSWORD || 'superpassword',
+        },
         customPermissions: [],
         cookieOptions: {
             secret: 'abc',
@@ -159,6 +168,22 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
+        // FacetHarmonicaServerPlugin.init({
+        //     s3: { bucket: 'deenruv-asset-bucket', client: s3Client, expiresIn: 60 * 60 * 24 * 3 },
+        // }),
+        // CopyOrderPlugin,
+        // InRealizationPlugin.init({
+        //     s3: { client: s3Client, bucket: 'deenruv-asset-bucket', expiresIn: 60 * 60 * 24 * 3 },
+        // }),
+        // FacetHarmonicaServerPlugin,
+        // OrderLineAttributesServerPlugin,
+        // WFirmaPlugin.init({
+        //     authorization: {
+        //         accessKey: '0b835d398cfd8078c76e756ac89e08ed',
+        //         appKey: '7ee060de3fa24b643e3143763d700682',
+        //         secretKey: 'a8e42a73cd1d9a44e7e9c0c9a9772fdd',
+        //     },
+        // }),
         // DeenruvExamplesServerPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({
@@ -166,12 +191,12 @@ export const devConfig: DeenruvConfig = {
         //     expiresIn: 60 * 60 * 24 * 3,
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
-        ReplicatePlugin.init({
-            deploymentName: process.env.REPLICATE_DEPLOYMENT_NAME || '',
-            url: process.env.REPLICATE_URL || '',
-            login: process.env.REPLICATE_LOGIN || '',
-            password: process.env.REPLICATE_PASSWORD || '',
-            apiToken: process.env.REPLICATE_API_TOKEN || '',
-        }),
+        // ReplicatePlugin.init({
+        //     deploymentName: process.env.REPLICATE_DEPLOYMENT_NAME || '',
+        //     url: process.env.REPLICATE_URL || '',
+        //     login: process.env.REPLICATE_LOGIN || '',
+        //     password: process.env.REPLICATE_PASSWORD || '',
+        //     apiToken: process.env.REPLICATE_API_TOKEN || '',
+        // }),
     ],
 };

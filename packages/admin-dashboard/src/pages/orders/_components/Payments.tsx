@@ -1,4 +1,5 @@
 import {
+  useOrder,
   Button,
   Card,
   CardDescription,
@@ -20,7 +21,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@deenruv/react-ui-devkit';
-import { useOrder } from '@/state/order';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
 import { InfoIcon } from 'lucide-react';

@@ -20,6 +20,7 @@ import { PageHeader } from '@/pages/admins/_components/PageHeader';
 import { AdminDetailsSelector, AdminDetailsType } from '@/graphql/admins';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 import { Stack } from '@/components';
+import { useValidators } from '@/hooks/useValidators.js';
 
 export const AdminsDetailPage = () => {
   const { id } = useParams();
@@ -31,6 +32,7 @@ export const AdminsDetailPage = () => {
   const [admin, setAdmin] = useState<AdminDetailsType>();
   const [buttonDisabled, setButtonDisabled] = useState(false);
   useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { emailValidator, stringValidator, arrayValidator } = useValidators();
 
   const fetchAdmin = useCallback(async () => {
     if (id) {
@@ -52,14 +54,20 @@ export const AdminsDetailPage = () => {
     fetchAdmin();
   }, [id, setLoading, fetchAdmin]);
 
-  const { state, setField } = useGFFLP(
+  const { state, setField, haveValidFields } = useGFFLP(
     'UpdateAdministratorInput',
     'firstName',
     'lastName',
     'emailAddress',
     'password',
     'roleIds',
-  )({});
+  )({
+    emailAddress: emailValidator,
+    firstName: stringValidator(t('validation.firstNameRequired')),
+    lastName: stringValidator(t('validation.lastNameRequired')),
+    password: !editMode ? stringValidator(t('validation.passwordRequired')) : undefined,
+    roleIds: arrayValidator(t('validation.rolesRequired')),
+  });
 
   useEffect(() => {
     if (!admin) return;
@@ -142,7 +150,7 @@ export const AdminsDetailPage = () => {
         roleIds: admin?.user.roles.map((r) => r.id),
       },
     );
-    setButtonDisabled(areEqual);
+    setButtonDisabled(!haveValidFields || areEqual);
   }, [state, admin, editMode]);
 
   return loading ? (
@@ -167,12 +175,13 @@ export const AdminsDetailPage = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex gap-4 p-0 pt-4">
+              <CardContent className="flex items-start gap-4 p-0 pt-4">
                 <Input
                   wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
                   label={t('details.basic.firstName')}
                   value={state.firstName?.value ?? undefined}
                   onChange={(e) => setField('firstName', e.target.value)}
+                  errors={state.firstName?.errors}
                   required
                 />
                 <Input
@@ -180,6 +189,7 @@ export const AdminsDetailPage = () => {
                   label={t('details.basic.lastName')}
                   value={state.lastName?.value ?? undefined}
                   onChange={(e) => setField('lastName', e.target.value)}
+                  errors={state.lastName?.errors}
                   required
                 />
                 <Input
@@ -187,6 +197,7 @@ export const AdminsDetailPage = () => {
                   label={t('details.basic.emailAddress')}
                   value={state.emailAddress?.value ?? undefined}
                   onChange={(e) => setField('emailAddress', e.target.value)}
+                  errors={state.emailAddress?.errors}
                   required
                 />
                 <Input
@@ -194,12 +205,17 @@ export const AdminsDetailPage = () => {
                   label={t('details.basic.password')}
                   value={state.password?.value ?? undefined}
                   onChange={(e) => setField('password', e.target.value)}
+                  errors={state.password?.errors}
                   required={!editMode}
                 />
               </CardContent>
             </CardHeader>
           </Card>
-          <RolesCard adminRoleIds={state.roleIds?.value ?? undefined} onRolesChange={(e) => setField('roleIds', e)} />
+          <RolesCard
+            adminRoleIds={state.roleIds?.value ?? undefined}
+            onRolesChange={(e) => setField('roleIds', e)}
+            errors={state.roleIds?.errors}
+          />
         </Stack>
       </div>
     </main>

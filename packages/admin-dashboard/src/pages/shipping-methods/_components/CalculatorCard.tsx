@@ -12,6 +12,7 @@ import {
   CardContent,
   Option,
   apiClient,
+  ErrorMessage,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -21,9 +22,14 @@ import { SimpleSelect, Stack } from '@/components';
 interface CalculatorCardProps {
   currentCalculatorValue: ModelTypes['ConfigurableOperationInput'] | undefined;
   onCalculatorValueChange: (checker: ModelTypes['ConfigurableOperationInput'] | undefined) => void;
+  errors?: string[];
 }
 
-export const CalculatorCard: React.FC<CalculatorCardProps> = ({ currentCalculatorValue, onCalculatorValueChange }) => {
+export const CalculatorCard: React.FC<CalculatorCardProps> = ({
+  currentCalculatorValue,
+  onCalculatorValueChange,
+  errors,
+}) => {
   const { t } = useTranslation('shippingMethods');
   const [calculators, setCalculators] = useState<PaymentMethodHandlerType[]>([]);
   const [allCalculatorsOptions, setAllCalculatorsOptions] = useState<Option[]>([]);
@@ -48,6 +54,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({ currentCalculato
   const handleCalculatorValueChange = useCallback(
     (code: string, args?: { name: string; value: string }[]) => {
       const correspondingCalculator = calculators.find((h) => h.code === code);
+      console.log('args', args);
 
       if (correspondingCalculator)
         onCalculatorValueChange({
@@ -136,6 +143,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({ currentCalculato
               );
             })}
           </Stack>
+          <ErrorMessage errors={errors} />
         </Stack>
       </CardContent>
     </Card>

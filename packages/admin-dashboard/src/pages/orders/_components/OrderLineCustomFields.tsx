@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
   line: DraftOrderType['lines'][number];
-  order: DraftOrderType;
+  order?: DraftOrderType;
 };
 
 export const OrderLineCustomFields = ({ line, order }: Props) => {
@@ -25,6 +25,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
   );
   const { t } = useTranslation('common');
 
+  if (!order) return null;
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,6 +39,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
         <DialogTitle>{line.productVariant.name}</DialogTitle>
         <ScrollArea className="max-h-[90vh]">
           <EntityCustomFields
+            additionalData={{ product: line.productVariant.product, variant: line.productVariant }}
             entityName="orderLine"
             id={line.id}
             disabled={order.state !== ORDER_STATE.DRAFT && !order?.nextStates.includes(ORDER_STATE.MODIFYING)}
@@ -84,11 +86,7 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
                       adjustOrderLines: [{ orderLineId: line.id, quantity: line.quantity, customFields }],
                     },
                   },
-                  {
-                    '...on Order': {
-                      id: true,
-                    },
-                  },
+                  { '...on Order': { id: true } },
                 ],
               });
 

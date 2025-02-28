@@ -5,6 +5,8 @@
   "baseInfoId": "Id: {{value}}",
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",
@@ -48,5 +50,10 @@
     "title": "Delete payment method",
     "description": "Are you sure you want to delete this payment method?",
     "successMessage": "Payment method has been deleted."
+  },
+  "validation": {
+    "codeRequired": "Code is required",
+    "handlerCodeRequired": "Payment handler is required",
+    "handlerArgsRequired": "Fill all the fields"
   }
 }

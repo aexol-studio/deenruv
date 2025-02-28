@@ -12,6 +12,7 @@ import {
   CardContent,
   Option,
   apiClient,
+  ErrorMessage,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -21,9 +22,10 @@ import { SimpleSelect, Stack } from '@/components';
 interface CheckerCardProps {
   currentCheckerValue: ModelTypes['ConfigurableOperationInput'] | undefined;
   onCheckerValueChange: (checker: ModelTypes['ConfigurableOperationInput'] | undefined) => void;
+  errors?: string[];
 }
 
-export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, onCheckerValueChange }) => {
+export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, onCheckerValueChange, errors }) => {
   const { t } = useTranslation('shippingMethods');
   const [checkers, setCheckers] = useState<PaymentMethodHandlerType[]>([]);
   const [allCheckersOptions, setAllCheckersOptions] = useState<Option[]>([]);
@@ -122,6 +124,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
               );
             })}
           </Stack>
+          <ErrorMessage errors={errors} />
         </Stack>
       </CardContent>
     </Card>

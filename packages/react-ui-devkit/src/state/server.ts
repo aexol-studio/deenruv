@@ -62,5 +62,5 @@ export const useServer = create<Server & Actions>()(set => ({
     setActiveClients: activeClients => set({ activeClients }),
     setPaymentMethodsType: paymentMethodsType => set({ paymentMethodsType }),
     setFulfillmentHandlers: fulfillmentHandlers => set({ fulfillmentHandlers }),
-    setUserPermissions: userPermissions => set ({userPermissions})
+    setUserPermissions: userPermissions => set({ userPermissions }),
 }));

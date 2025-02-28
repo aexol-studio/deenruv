@@ -83,7 +83,7 @@ export const SelectIDColumn = <T extends { id: string }>(): ColumnDef<T> => {
                                                 const data = table
                                                     .getSelectedRowModel()
                                                     .flatRows.map(row => row.original);
-                                                onRemove(data);
+                                                onRemove?.(data);
                                             }}
                                         >
                                             <div className="flex items-center gap-2 text-red-400 hover:text-red-400 dark:hover:text-red-400">

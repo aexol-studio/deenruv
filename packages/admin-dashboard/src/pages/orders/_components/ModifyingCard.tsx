@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useOrder } from '@/state/order';
 import { useGFFLP } from '@/lists/useGflp';
 import {
+  useOrder,
   Button,
   Card,
   CardContent,
@@ -39,8 +39,16 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
       });
     }
   }, [state, modifiedOrder, setModifyOrderInput]);
-  const acceptModifiedChanges = async () =>
-    modifyOrder(() => toast.message(t('modifySuccess'))).then(() => onNoteModified && onNoteModified(false));
+  const acceptModifiedChanges = async () => {
+    try {
+      await modifyOrder();
+      toast.message(t('modifySuccess'));
+      onNoteModified && onNoteModified(false);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : t('modifyError');
+      toast.error(message);
+    }
+  };
   return (
     <form className="h-full">
       <Card className="bg-accent/20 flex h-full flex-col">

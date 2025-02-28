@@ -17,6 +17,7 @@ import {
   Separator,
   Checkbox,
   cn,
+  ErrorMessage,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
@@ -34,9 +35,10 @@ export const ActionsQuery = typedGql('query', { scalars })({
 interface ActionsCardCardProps {
   value: ModelTypes['ConfigurableOperationInput'][] | undefined;
   onChange: (field: 'actions', value: ModelTypes['ConfigurableOperationInput'][]) => void;
+  errors?: string[];
 }
 
-export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange }) => {
+export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, errors }) => {
   const { t } = useTranslation('promotions');
   const { data } = useQuery(ActionsQuery);
 
@@ -81,7 +83,10 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange })
     (action: PromotionConditionAndActionType) => {
       const newValue = [
         ...(value || []),
-        { code: action.code, arguments: action.args.map((a) => ({ name: a.name, value: a.defaultValue })) },
+        {
+          code: action.code,
+          arguments: action.args.map((a) => ({ name: a.name, value: a.type === 'boolean' ? 'false' : a.defaultValue })),
+        },
       ];
       onChange('actions', newValue);
     },
@@ -92,6 +97,7 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange })
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-row justify-between text-base">{t('actions.header')}</CardTitle>
+        <ErrorMessage errors={errors} />
       </CardHeader>
       <CardContent>
         <Stack column className="flex-1 gap-y-4">

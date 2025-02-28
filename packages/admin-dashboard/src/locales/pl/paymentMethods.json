@@ -5,6 +5,8 @@
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
+    "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "name": "Nazwa",
@@ -48,5 +50,10 @@
         "title": "Usuń metodę płatności",
         "description": "Czy na pewno chcesz usunąć tę metodę płatności?",
         "successMessage": "Metoda płatności została usunięta."
+    },
+    "validation": {
+        "codeRequired": "Kod jest wymagany",
+        "handlerCodeRequired": "Wymagana jest obsługa płatności",
+        "handlerArgsRequired": "Wypełnij wszystkie pola"
     }
 }

@@ -99,5 +99,10 @@
         "inputStreet2Placeholder": "Street Line 2",
         "inputTaxLabel": "Company Tax ID",
         "inputTaxPlaceholder": "Company Tax ID"
+    },
+    "validation": {
+        "firstNameRequired": "First name is required",
+        "lastNameRequired": "Last name is required",
+        "emailRequired": "Email address is required"
     }
 }

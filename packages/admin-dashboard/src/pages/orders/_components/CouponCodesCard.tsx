@@ -8,13 +8,13 @@ import {
   MultipleSelector,
   Option,
   useLazyQuery,
+  useOrder,
   useMutation,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
-import { useOrder } from '@/state/order.js';
 import { toast } from 'sonner';
-import { draftOrderSelector } from '@/graphql/draft_order.js';
 
 const PromotionCodesQuery = typedGql('query', { scalars })({
   promotions: [
@@ -26,14 +26,14 @@ const PromotionCodesQuery = typedGql('query', { scalars })({
 const ApplyCouponCodeMutation = typedGql('mutation', { scalars })({
   applyCouponCodeToDraftOrder: [
     { orderId: $('orderId', 'ID!'), couponCode: $('couponCode', 'String!') },
-    { '...on CouponCodeExpiredError': { message: true }, __typename: true, '...on Order': draftOrderSelector },
+    { '...on CouponCodeExpiredError': { message: true }, __typename: true, '...on Order': OrderDetailSelector },
   ],
 });
 
 const RemoveCouponCodeMutation = typedGql('mutation', { scalars })({
   removeCouponCodeFromDraftOrder: [
     { orderId: $('orderId', 'ID!'), couponCode: $('couponCode', 'String!') },
-    draftOrderSelector,
+    OrderDetailSelector,
   ],
 });
 

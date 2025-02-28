@@ -1,9 +1,17 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, apiClient, cn } from '@deenruv/react-ui-devkit';
+import {
+  useOrder,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  apiClient,
+  cn,
+} from '@deenruv/react-ui-devkit';
 
 import { DeletionResult, ModelTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
-import { useOrder } from '@/state/order';
 import { History } from '@/components';
 
 export const OrderHistory: React.FC = () => {

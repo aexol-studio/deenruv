@@ -19,6 +19,7 @@ import {
   PaginationInput,
   useGFFLP,
   useRouteGuard,
+  SimpleTooltip,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields } from '@/components';
 import { ChevronLeft } from 'lucide-react';
@@ -28,6 +29,7 @@ import { DeletionResult, LanguageCode, Permission, SortOrder } from '@deenruv/ad
 import { toast } from 'sonner';
 import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
+import { useValidators } from '@/hooks/useValidators.js';
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
   try {
@@ -54,6 +56,7 @@ export const FacetsDetailPage = () => {
   const [facetValueIdInModal, setFacetValueIdInModal] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   useRouteGuard({ shouldBlock: facetChanged });
+  const { stringValidator, nameValidator } = useValidators();
 
   const fetchFacetValues = useCallback(
     async <T, K>(
@@ -107,18 +110,15 @@ export const FacetsDetailPage = () => {
     } else setLoading(false);
   }, [id]);
 
-  const { state, setField } = useGFFLP(
+  const { state, setField, haveValidFields } = useGFFLP(
     'Facet',
     'name',
     'code',
     'isPrivate',
     'customFields',
   )({
-    code: {
-      validate: (v) => {
-        if (!v || v === '') return [t('facets:requiredError')];
-      },
-    },
+    code: stringValidator(t('facets:requiredError')),
+    name: nameValidator,
   });
 
   useEffect(() => {
@@ -270,9 +270,23 @@ export const FacetsDetailPage = () => {
               {facet?.name}
             </h1>
           </div>
-          <Button variant={'action'} disabled={!facetChanged} onClick={editMode ? saveChanges : createFacet}>
-            {editMode ? 'Edit' : 'Create'}
-          </Button>
+          <SimpleTooltip
+            content={
+              !haveValidFields || !facetChanged
+                ? !facetChanged
+                  ? t('noChangesTooltip')
+                  : t('buttonDisabledTooltip')
+                : undefined
+            }
+          >
+            <Button
+              variant={'action'}
+              disabled={!haveValidFields || !facetChanged}
+              onClick={editMode ? saveChanges : createFacet}
+            >
+              {editMode ? 'Edit' : 'Create'}
+            </Button>
+          </SimpleTooltip>
         </div>
         {editMode && facet && (
           <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">
@@ -293,12 +307,22 @@ export const FacetsDetailPage = () => {
               <CardTitle className="flex flex-row justify-between text-base">{t('facets:details.basicInfo')}</CardTitle>
               <CardContent className="flex gap-8 p-0 pt-2">
                 <div className="basis-full md:basis-1/2 xl:basis-1/3">
-                  <Label>{t('facets:table.name')}</Label>
-                  <Input value={state.name?.value} onChange={(e) => setField('name', e.target.value)} />
+                  <Input
+                    label={t('facets:table.name')}
+                    value={state.name?.value}
+                    onChange={(e) => setField('name', e.target.value)}
+                    errors={state.name?.errors}
+                    required
+                  />
                 </div>
                 <div className="basis-full md:basis-1/2 xl:basis-1/3">
-                  <Label>{t('facets:table.code')}</Label>
-                  <Input value={state.code?.value} onChange={(e) => setField('code', e.target.value)} />
+                  <Input
+                    label={t('facets:table.code')}
+                    value={state.code?.value}
+                    onChange={(e) => setField('code', e.target.value)}
+                    errors={state.code?.errors}
+                    required
+                  />
                 </div>
                 <div className="basis-full md:basis-1/2 xl:basis-1/3">
                   <Label>{t('facets:table.isPrivate')}</Label>

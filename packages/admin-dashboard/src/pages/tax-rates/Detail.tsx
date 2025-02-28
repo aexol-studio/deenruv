@@ -14,6 +14,7 @@ import {
   Option,
   apiClient,
   useRouteGuard,
+  SimpleSelect,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
@@ -21,7 +22,7 @@ import { areObjectsEqual } from '@/utils/deepEqual';
 import { cache } from '@/lists/cache';
 import { PageHeader } from '@/pages/tax-rates/_components/PageHeader';
 import { TaxRateDetailsSelector, TaxRateDetailsType } from '@/graphql/taxRates';
-import { SimpleSelect, Stack } from '@/components';
+import { Stack } from '@/components';
 
 export const TaxRatesDetailPage = () => {
   const { id } = useParams();
@@ -82,7 +83,7 @@ export const TaxRatesDetailPage = () => {
     fetchItemsForOptions();
   }, [id, setLoading, fetchTaxRate, fetchItemsForOptions]);
 
-  const { state, setField } = useGFFLP(
+  const { state, setField, haveValidFields } = useGFFLP(
     'UpdateTaxRateInput',
     'name',
     'categoryId',
@@ -93,6 +94,26 @@ export const TaxRatesDetailPage = () => {
   )({
     enabled: {
       initialValue: false,
+    },
+    categoryId: {
+      validate: (v) => {
+        if (!v) return [t('validation.taxCategoryRequired')];
+      },
+    },
+    name: {
+      validate: (v) => {
+        if (!v || v === '') return [t('validation.nameRequired')];
+      },
+    },
+    value: {
+      validate: (v) => {
+        if (v === undefined) return [t('validation.valueRequired')];
+      },
+    },
+    zoneId: {
+      validate: (v) => {
+        if (v === undefined) return [t('validation.zoneRequired')];
+      },
     },
   });
 
@@ -113,7 +134,7 @@ export const TaxRatesDetailPage = () => {
         {
           input: {
             name: state.name!.validatedValue!,
-            enabled: state.enabled!.validatedValue!,
+            enabled: state.enabled!.value!,
             categoryId: state.categoryId!.validatedValue!,
             value: state.value!.validatedValue!,
             zoneId: state.zoneId!.validatedValue!,
@@ -179,7 +200,7 @@ export const TaxRatesDetailPage = () => {
       },
     );
 
-    setButtonDisabled(areEqual);
+    setButtonDisabled(areEqual || !haveValidFields);
   }, [state, taxRate, editMode]);
 
   return loading ? (
@@ -205,12 +226,13 @@ export const TaxRatesDetailPage = () => {
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack className="items-end gap-4">
+                <Stack className="items-start gap-4">
                   <Stack className="basis-full md:basis-1/2">
                     <Input
                       label={t('details.basic.name')}
                       value={state.name?.value ?? undefined}
                       onChange={(e) => setField('name', e.target.value)}
+                      errors={state.name?.errors}
                       required
                     />
                   </Stack>
@@ -220,6 +242,10 @@ export const TaxRatesDetailPage = () => {
                       label={t('details.basic.value')}
                       value={state.value?.value ?? undefined}
                       onChange={(e) => setField('value', +e.target.value)}
+                      errors={state.value?.errors}
+                      endAdornment={'%'}
+                      min={0}
+                      max={100}
                       required
                     />
                   </Stack>
@@ -231,6 +257,7 @@ export const TaxRatesDetailPage = () => {
                       value={state.categoryId?.value ?? undefined}
                       onValueChange={(e) => setField('categoryId', e)}
                       options={taxCategoriesOptions}
+                      errors={state.categoryId?.errors}
                       required
                     />
                   </Stack>
@@ -240,6 +267,7 @@ export const TaxRatesDetailPage = () => {
                       value={state.zoneId?.value ?? undefined}
                       onValueChange={(e) => setField('zoneId', e)}
                       options={zonesOptions}
+                      errors={state.zoneId?.errors}
                       required
                     />
                   </Stack>

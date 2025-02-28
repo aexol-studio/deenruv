@@ -1,4 +1,4 @@
-import { Routes, Button, Label } from '@deenruv/react-ui-devkit';
+import { Routes, Button, Label, SimpleTooltip } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import React from 'react';
@@ -31,11 +31,15 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ country, editMode, butto
             {editMode ? country?.name : t('create')}
           </h1>
         </div>
-        <CreateEditButton
-          createPermission={Permission.CreateCountry}
-          editPermission={Permission.UpdateCountry}
-          {...{ buttonDisabled, editMode, onCreate, onEdit }}
-        />
+        <SimpleTooltip
+          content={buttonDisabled ? (editMode ? t('noChangesTooltip') : t('buttonDisabledTooltip')) : undefined}
+        >
+          <CreateEditButton
+            createPermission={Permission.CreateCountry}
+            editPermission={Permission.UpdateCountry}
+            {...{ buttonDisabled, editMode, onCreate, onEdit }}
+          />
+        </SimpleTooltip>
       </div>
       {editMode && country && (
         <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">

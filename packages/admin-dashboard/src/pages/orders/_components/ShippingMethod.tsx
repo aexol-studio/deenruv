@@ -17,6 +17,8 @@ import {
   DialogTrigger,
   apiClient,
   cn,
+  useOrder,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import {
   EligibleShippingMethodsType,
@@ -28,7 +30,6 @@ import { Edit } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useOrder } from '@/state/order';
 
 export const ShippingMethod: React.FC = () => {
   const { mode, order, setOrder, modifiedOrder, setModifiedOrder } = useOrder();
@@ -90,7 +91,7 @@ export const ShippingMethod: React.FC = () => {
         { orderId, shippingMethodId },
         {
           __typename: true,
-          '...on Order': draftOrderSelector,
+          '...on Order': OrderDetailSelector,
           '...on IneligibleShippingMethodError': { message: true, errorCode: true },
           '...on NoActiveOrderError': { message: true, errorCode: true },
           '...on OrderModificationError': { message: true, errorCode: true },
@@ -155,11 +156,13 @@ export const ShippingMethod: React.FC = () => {
                           </div>
                           <div className="flex flex-col items-start">
                             <h3 className="text-sm">Price without tax</h3>
-                            <p className="text-sm">{priceFormatter(shippingMethod.price)}</p>
+                            <p className="text-sm">{priceFormatter(shippingMethod.price, order?.currencyCode)}</p>
                           </div>
                           <div className="flex flex-col items-start">
                             <h3 className="text-sm">Price with tax</h3>
-                            <p className="text-sm">{priceFormatter(shippingMethod.priceWithTax)}</p>
+                            <p className="text-sm">
+                              {priceFormatter(shippingMethod.priceWithTax, order?.currencyCode)}
+                            </p>
                           </div>
                         </button>
                       </div>
@@ -192,7 +195,9 @@ export const ShippingMethod: React.FC = () => {
               <>
                 <Label className="text-muted-foreground text-sm">{selectedShipping.name}</Label>
                 <Label className="text-muted-foreground text-sm">{selectedShipping.code}</Label>
-                <Label className="text-muted-foreground text-sm">{priceFormatter(order?.shipping || 0)}</Label>
+                <Label className="text-muted-foreground text-sm">
+                  {priceFormatter(order?.shipping || 0, order?.currencyCode)}
+                </Label>
               </>
             ) : (
               <Label className="text-muted-foreground text-sm">{t('selectShipmentMethod.noSelected')}</Label>

@@ -5,6 +5,8 @@
   "baseInfoId": "Id: {{value}}",
   "baseInfoCreated": "Created: {{value}}",
   "baseInfoUpdated": "Updated: {{value}}",
+  "buttonDisabledTooltip": "Fill all required fields",
+  "noChangesTooltip": "You have not made any changes",
   "table": {
     "id": "Id",
     "name": "Name",
@@ -66,8 +68,13 @@
     "shippingMethodDeleteError": "Failed to delete shipping method"
   },
   "validation": {
-    "checkerRequired": "Shipping eligibility checker is required",
-    "calculatorRequired": "Shipping calculator is required"
+    "checkerCodeRequired": "Shipping eligibility checker code is required",
+    "checkerArgsRequired": "Shipping eligibility checker arguments are required",
+    "calculatorCodeRequired": "Shipping calculator code is required",
+    "calculatorArgsRequired": "Shipping calculator arguments are required",
+    "required": "Field is required",
+    "fulfillmentHandlerRequired": "Fulfillment Handler is required",
+    "nameRequired": "Name is required"
   },
   "deleteShippingMethod": {
     "title": "Delete shipping method",

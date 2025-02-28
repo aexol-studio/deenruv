@@ -3,6 +3,7 @@ import { DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-de
 import { TaxCategoryDetailView } from './_components/TaxCategoryDetailView';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CreateTaxCategoryMutation = typedGql('mutation', { scalars })({
   createTaxCategory: [
@@ -33,6 +34,7 @@ const DeleteTaxCategoryMutation = typedGql('mutation', { scalars })({
 
 export const TaxCategoriesDetailPage = () => {
   const { id } = useParams();
+  const { t } = useTranslation('taxCategories');
   const [update] = useMutation(EditTaxCategoryMutation);
   const [remove] = useMutation(DeleteTaxCategoryMutation);
   const [create] = useMutation(CreateTaxCategoryMutation);
@@ -57,7 +59,13 @@ export const TaxCategoriesDetailPage = () => {
           form: createDeenruvForm({
             key: 'CreateTaxCategoryInput',
             keys: ['isDefault', 'name'],
-            config: {},
+            config: {
+              name: {
+                validate: (v) => {
+                  if (!v || v === '') return [t('validation.nameRequired')];
+                },
+              },
+            },
             onSubmitted: (data) => {
               if (!data.name?.validatedValue) {
                 throw new Error('Name is required.');
@@ -65,6 +73,7 @@ export const TaxCategoriesDetailPage = () => {
 
               const inputData = {
                 name: data.name.validatedValue,
+                // @ts-ignore
                 isDefault: data.isDefault?.validatedValue,
               };
 

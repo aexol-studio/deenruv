@@ -121,17 +121,21 @@ export const PromotionDetailView = () => {
   ) : (
     <div>
       <form className="flex flex-col gap-4">
-        <BasicFieldsCard currentTranslationValue={currentTranslationValue ?? undefined } onChange={setTranslationField} />
+        <BasicFieldsCard
+          currentTranslationValue={currentTranslationValue ?? undefined}
+          onChange={setTranslationField}
+          errors={state.translations?.errors}
+        />
         <OptionsCard
           endsAt={state.endsAt?.value}
           startsAt={state.startsAt?.value}
-          couponCode={state.couponCode?.value ?? undefined }
-          usageLimit={state.usageLimit?.value ?? undefined }
-          perCustomerUsageLimit={state.perCustomerUsageLimit?.value ?? undefined }
+          couponCode={state.couponCode?.value ?? undefined}
+          usageLimit={state.usageLimit?.value ?? undefined}
+          perCustomerUsageLimit={state.perCustomerUsageLimit?.value ?? undefined}
           setField={setField}
         />
-        <ConditionsCard value={state.conditions?.value} onChange={setField} />
-        <ActionsCard value={state.actions?.value} onChange={setField} />
+        <ConditionsCard value={state.conditions?.value} onChange={setField} errors={state.conditions?.errors} />
+        <ActionsCard value={state.actions?.value} onChange={setField} errors={state.actions?.errors} />
         <DetailViewMarker position={'promotions-detail-view'} />
       </form>
     </div>

@@ -9,11 +9,11 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
-    devTranslatePlugin({
-      apiKey: '4404413a.b16aaa6',
-      folderName: 'en',
-      localeDir: '../../packages/admin-dashboard/src/locales',
-      lang: Languages.ENUS,
-    }),
+    // devTranslatePlugin({
+    //   apiKey: '4404413a.b16aaa6',
+    //   folderName: 'en',
+    //   localeDir: '../../packages/admin-dashboard/src/locales',
+    //   lang: Languages.ENUS,
+    // }),
   ],
 });

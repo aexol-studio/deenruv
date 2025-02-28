@@ -13,10 +13,10 @@ import {
   SelectItem,
   Textarea,
   cn,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
 
 import { DraftOrderType } from '@/graphql/draft_order';
-import { useOrder } from '@/state/order';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';

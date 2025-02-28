@@ -17,7 +17,9 @@ import {
   DialogTitle,
   DialogTrigger,
   apiClient,
+  useOrder,
   cn,
+  OrderDetailSelector,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import { SearchCustomerType, draftOrderSelector } from '@/graphql/draft_order';
@@ -26,7 +28,6 @@ import { useTranslation } from 'react-i18next';
 import { useGFFLP } from '@/lists/useGflp';
 import { toast } from 'sonner';
 import { Edit } from 'lucide-react';
-import { useOrder } from '@/state/order';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
@@ -113,7 +114,7 @@ export const CustomerSelectCard: React.FC = () => {
             },
             {
               __typename: true,
-              '...on Order': draftOrderSelector,
+              '...on Order': OrderDetailSelector,
               '...on EmailAddressConflictError': { errorCode: true, message: true },
             },
           ],
@@ -164,7 +165,7 @@ export const CustomerSelectCard: React.FC = () => {
                     <Input
                       label={t('create.selectCustomer.titleLabel')}
                       name="title"
-                      value={state.title?.value ?? undefined }
+                      value={state.title?.value ?? undefined}
                       onChange={(e) => setField('title', e.target.value)}
                     />
                     <p className="text-destructive mb-2 mt-1 min-h-5 border-orange-800 text-sm font-medium">
@@ -200,7 +201,7 @@ export const CustomerSelectCard: React.FC = () => {
                     <Input
                       label={t('create.selectCustomer.phoneNumberLabel')}
                       name="phoneNumber"
-                      value={state.phoneNumber?.value ?? undefined }
+                      value={state.phoneNumber?.value ?? undefined}
                       onChange={(e) => setField('phoneNumber', e.target.value)}
                     />
                     <p className="text-destructive mt-1 min-h-5 border-orange-800 text-sm font-medium">

@@ -1,0 +1,5 @@
+{
+    "copy-order": "Copy order",
+    "copy-order-error": "Error copying order",
+    "copy-order-success": "Order copied successfully"
+}

@@ -1,37 +1,19 @@
 import { PluginCommonModule, DeenruvPlugin, Asset, LanguageCode } from '@deenruv/core';
 
-const FacetCustomFields = [
-    {
-        name: 'usedForProductCreations',
-        type: 'boolean' as const,
-        public: true
-    },
-];
-
-const FacetValueCustomFields = [
-    {
-        name: 'hexColor',
-        type: 'string' as const,
-        public: true
-    },
-    {
-        name: 'image',
-        type: 'relation' as const,
-        entity: Asset,
-        public: true,
-    },
-];
-
 const OrderLineCustomFields = [
     {
-        name: 'attributes',
-        type: 'string' as const, // parsed object, eg. '{"kolor-blatkorpus":"lilly","kolor-stelaza-nogi":"vee-white-metalowy"}'
-        public: true,
+        name: 'discountBy',
+        type: 'int' as const,
+        defaultValue: 0,
         label: [
-            { languageCode: LanguageCode.en, value: 'Attributes' },
-            { languageCode: LanguageCode.pl, value: 'Attrybuty' },
+            { languageCode: LanguageCode.en, value: 'Discount' },
+            { languageCode: LanguageCode.pl, value: 'Znizka' },
         ],
-        ui: { component: 'attributes-input', fullWidth: true },
+        description: [
+            { languageCode: LanguageCode.en, value: 'Discount amount' },
+            { languageCode: LanguageCode.pl, value: 'Wartość Znizki' },
+        ],
+        nullable: true,
     },
     {
         name: 'modifiedListPrice',
@@ -43,22 +25,32 @@ const OrderLineCustomFields = [
         ],
     },
     {
-        name: 'discountBy',
-        type: 'string' as const,
-        public: true,
+        name: 'attributes',
+        type: 'text' as const,
         label: [
-            { languageCode: LanguageCode.en, value: 'Discount by' },
-            { languageCode: LanguageCode.pl, value: 'Obniżka o' },
+            { languageCode: LanguageCode.en, value: 'Attributes' },
+            { languageCode: LanguageCode.pl, value: 'Atrybuty' },
         ],
+        description: [
+            { languageCode: LanguageCode.en, value: 'Attributes' },
+            { languageCode: LanguageCode.pl, value: 'Atrybuty' },
+        ],
+        nullable: true,
+        ui: { component: 'attributes-input' },
     },
     {
         name: 'selectedImage',
         type: 'relation' as const,
         entity: Asset,
-        public: true,
+        nullable: true,
+        ui: { component: 'selected-image-input' },
         label: [
-            { languageCode: LanguageCode.en, value: 'Image' },
-            { languageCode: LanguageCode.pl, value: 'Obrazek' },
+            { languageCode: LanguageCode.en, value: 'Selected image' },
+            { languageCode: LanguageCode.pl, value: 'Wybrany obrazek' },
+        ],
+        description: [
+            { languageCode: LanguageCode.en, value: 'Selected image' },
+            { languageCode: LanguageCode.pl, value: 'Wybrany obrazek' },
         ],
     },
 ];
@@ -68,8 +60,6 @@ const OrderLineCustomFields = [
     imports: [PluginCommonModule],
     configuration: config => {
         config.customFields.OrderLine.push(...OrderLineCustomFields);
-        config.customFields.FacetValue.push(...FacetValueCustomFields);
-        config.customFields.Facet.push(...FacetCustomFields);
 
         return config;
     },

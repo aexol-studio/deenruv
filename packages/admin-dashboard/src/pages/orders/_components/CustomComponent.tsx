@@ -1,23 +1,23 @@
 import { Button } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { InfoIcon } from 'lucide-react';
-import { EntityCustomFields } from '@/components';
+import { CF, EntityCustomFields } from '@/components';
 import { useState } from 'react';
+import { DraftOrderType } from '@/graphql/draft_order.js';
 
+type VariantWithQuantity = DraftOrderType['lines'][number]['productVariant'] & { quantity?: number };
 export const CustomComponent = ({
   onVariantAdd,
-  orderLineId,
+  orderLine,
 }: {
-  value: string | null;
-  setValue: (value: string) => void;
-  onVariantAdd: (attributes?: string) => Promise<void>;
-  orderLineId?: string;
+  onVariantAdd: (value: CF) => Promise<void>;
+  orderLine: VariantWithQuantity;
 }) => {
   const { t } = useTranslation('orders');
-  const [json, setJson] = useState<Record<string, unknown>>({ attributes: '' });
+  const [customFields, setCustomFields] = useState<CF>({});
 
-  const finalAdd = async () => {
-    await onVariantAdd(json.attributes as any);
+  const onSubmit = async () => {
+    await onVariantAdd(customFields);
   };
 
   return (
@@ -25,12 +25,10 @@ export const CustomComponent = ({
       <div className="grow overflow-y-auto py-2">
         <EntityCustomFields
           entityName="orderLine"
-          id={orderLineId}
-          onChange={(e) => {
-            setJson(e);
-            console.log('CHANGE', e);
-          }}
           hideButton
+          fetchInitialValues={false}
+          onChange={setCustomFields}
+          additionalData={{ product: orderLine.product, variant: orderLine }}
         />
       </div>
 
@@ -41,7 +39,7 @@ export const CustomComponent = ({
             Modyfikacja ceny nowo dodanej linii zamówienia będzie możliwa dopiero po zapisaniu zmian zamówienia
           </span>
         </div>
-        <Button onClick={finalAdd}>{t('create.add')}</Button>
+        <Button onClick={onSubmit}>{t('create.add')}</Button>
       </div>
     </div>
   );

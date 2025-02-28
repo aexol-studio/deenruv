@@ -13,7 +13,7 @@ type I18Next = {
 export class PluginStore {
     private i18next: I18Next;
     private pluginConfig: Map<string, Record<string, any>> = new Map();
-    private pluginMap: Map<string, DeenruvUIPlugin> = new Map();
+    pluginMap: Map<string, DeenruvUIPlugin> = new Map();
     private pluginPages: Array<NonNullable<DeenruvUIPlugin['pages']>[number]> = [];
     private pluginsNavigationDataField: {
         groups: Array<NonNullable<DeenruvUIPlugin['navMenuGroups']>[number]>;
@@ -87,6 +87,27 @@ export class PluginStore {
         return Array.from(uniqueMappedComponents.values());
     }
 
+    getModalComponents(location: string) {
+        const uniqueMappedComponents = new Map<string, React.ComponentType>();
+        this.pluginMap.forEach(plugin => {
+            plugin.modals?.forEach(({ component, id }) => {
+                const uniqueUUID = [
+                    id,
+                    plugin.name,
+                    this.getUUID(),
+                    component.displayName && `-${component.displayName}`,
+                ]
+                    .filter(Boolean)
+                    .join('-');
+
+                if (id === location) {
+                    uniqueMappedComponents.set(uniqueUUID, component as any);
+                }
+            });
+        });
+        return Array.from(uniqueMappedComponents.values());
+    }
+
     getTableExtensions(location: ListLocationID) {
         const tables = new Map<string | number, NonNullable<DeenruvUIPlugin['tables']>[number]>();
         this.pluginMap.forEach(plugin => {
@@ -105,6 +126,36 @@ export class PluginStore {
             });
         });
         return Array.from(tabs.values()).filter(tab => tab.id === location);
+    }
+
+    getDetailViewActions(location: DetailLocationID): NonNullable<DeenruvUIPlugin['actions']> {
+        const actionsInline = new Map<
+            string,
+            NonNullable<NonNullable<DeenruvUIPlugin['actions']>['inline']>[number]
+        >();
+        const actionsDropdown = new Map<
+            string,
+            NonNullable<NonNullable<DeenruvUIPlugin['actions']>['dropdown']>[number]
+        >();
+        this.pluginMap.forEach((plugin, i) => {
+            plugin.actions?.inline?.forEach((action, j) => {
+                actionsInline.set(`${action.id}.${i}.${j}`, action);
+            });
+            plugin.actions?.dropdown?.forEach((action, j) => {
+                actionsDropdown.set(`${action.id}.${j}.${i}`, action);
+            });
+        });
+        const inline = Array.from(actionsInline.keys()).filter(action => {
+            const [split] = action.split('.');
+            return split === location;
+        });
+        const dropdown = Array.from(actionsDropdown.keys()).filter(action => {
+            const [split] = action.split('.');
+            return split === location;
+        });
+        const inlineComponents = inline.map(action => actionsInline.get(action)!);
+        const dropdownComponents = dropdown.map(action => actionsDropdown.get(action)!);
+        return { inline: inlineComponents, dropdown: dropdownComponents };
     }
 
     get topNavigationComponents() {
