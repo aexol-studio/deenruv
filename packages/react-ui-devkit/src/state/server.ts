@@ -17,6 +17,8 @@ export type SystemStatus = {
     details: { [key: string]: { status: string } };
 };
 
+export type JobQueue = { name: string; running: boolean };
+
 type ActiveClient = {
     id: string;
     emailAddress: string;
@@ -38,7 +40,7 @@ interface Server {
     isConnected: boolean;
     activeClients: ActiveClient[];
     status: { data: SystemStatus; loading: boolean; lastUpdated: Date | null };
-    pendingJobs: number;
+    jobQueues: Array<JobQueue>;
 }
 
 interface Actions {
@@ -84,7 +86,7 @@ export const useServer = create<Server & Actions>()(set => ({
         loading: false,
         lastUpdated: null,
     },
-    pendingJobs: 0,
+    jobQueues: [],
     setServerConfig: serverConfig => set({ serverConfig }),
     setActiveAdministrator: activeAdministrator => set({ activeAdministrator }),
     setChannels: channels => set({ channels }),
@@ -105,7 +107,6 @@ export const useServer = create<Server & Actions>()(set => ({
     },
     fetchPendingJobs: async () => {
         const { jobQueues } = await apiClient('query')({ jobQueues: { name: true, running: true } });
-        const activeJobs = jobQueues.reduce((acc, queue) => acc + (queue.running ? 1 : 0), 0);
-        set({ pendingJobs: activeJobs });
+        set({ jobQueues });
     },
 }));

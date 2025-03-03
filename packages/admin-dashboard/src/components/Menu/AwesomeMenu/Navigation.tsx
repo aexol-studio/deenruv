@@ -11,7 +11,6 @@ import {
   TooltipContent,
   TooltipTrigger,
   useServer,
-  useSettings,
 } from '@deenruv/react-ui-devkit';
 import {
   BarChart,

@@ -3,15 +3,15 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "requiredError": "Ta wartość jest wymagana",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "name": "Nazwa",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "code": "Kod",
         "isPrivate": "Prywatny",
         "public": "Publiczny",
@@ -42,9 +42,9 @@
         "title": "Usuń aspekt",
         "description": "Czy na pewno chcesz usunąć ten aspekt?",
         "successMessage": "Aspekt został usunięty.",
-        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
+        "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
     },
-    "selectedValue": "{{from}} z {{to}} wybranych wierszy",
+    "selectedValue": "wybrano {{from}} z {{to}} wierszy",
     "details": {
         "basicInfo": "Dane podstawowe",
         "customFields": "Pola niestandardowe",

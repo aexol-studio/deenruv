@@ -40,8 +40,8 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
             {label && <Label>{label}</Label>}
             <Select
                 defaultValue={defaultValue}
-                onValueChange={onValueChange}
-                value={value}
+                onValueChange={val => onValueChange?.(val === 'undefined' ? '' : val)}
+                value={value ?? ''}
                 disabled={disabled}
             >
                 <SelectTrigger className={cn(className, size === 'sm' && 'h-[30px] text-[13px]')}>
@@ -49,7 +49,7 @@ export const SimpleSelect: React.FC<CustomSelectProps> = ({
                 </SelectTrigger>
                 <SelectContent>
                     {options?.map(o => (
-                        <SelectItem key={o.value} value={o.value}>
+                        <SelectItem key={o.value} value={o.value as string} style={{ color: o.color }}>
                             {o.label}
                         </SelectItem>
                     ))}

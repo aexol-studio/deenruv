@@ -21,6 +21,7 @@ import paymentMethods from '../locales/en/paymentMethods.json';
 import shippingMethods from '../locales/en/shippingMethods.json';
 import promotions from '../locales/en/shippingMethods.json';
 import table from '../locales/en/table.json';
+import system from '../locales/en/system.json';
 
 const resources = {
   collections,
@@ -45,7 +46,8 @@ const resources = {
   paymentMethods,
   shippingMethods,
   table,
-  promotions
+  promotions,
+  system,
 } as const;
 
 export default resources;

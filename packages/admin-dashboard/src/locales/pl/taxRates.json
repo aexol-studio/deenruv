@@ -4,7 +4,7 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
@@ -15,8 +15,8 @@
         "zone": "Strefa",
         "value": "Stawka",
         "customerGroup": "Grupa klientów",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewTaxRate": "Wyświetl stawkę podatku",
@@ -36,7 +36,7 @@
         "taxRateLoadingError": "Nie udało się załadować stawki podatku o identyfikatorze {{value}}",
         "taxRateUpdateSuccess": "Stawka podatku została pomyślnie zaktualizowana",
         "taxRateUpdateError": "Wystąpił błąd:",
-        "taxRateCreatedSuccess": "Stawka podatku została utworzona pomyślnie",
+        "taxRateCreatedSuccess": "Stawka podatku została pomyślnie utworzona",
         "taxRateCreatedError": "Nie udało się utworzyć stawki podatku",
         "taxRateDeleteSuccess": "Stawka podatku została pomyślnie usunięta",
         "taxRateDeleteError": "Nie udało się usunąć stawki podatku"
@@ -45,7 +45,7 @@
         "title": "Usuń stawkę podatku",
         "description": "Czy na pewno chcesz usunąć tę stawkę podatku?",
         "successMessage": "Stawka podatku została usunięta.",
-        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
+        "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
     },
     "validation": {
         "taxCategoryRequired": "Kategoria podatkowa jest wymagana",

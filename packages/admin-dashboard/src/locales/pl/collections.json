@@ -1,10 +1,10 @@
 {
     "create": "Utwórz kolekcję",
-    "edit": "Edycja kolekcji",
+    "edit": "Edytuj kolekcję",
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
@@ -12,8 +12,8 @@
         "name": "Nazwa",
         "isPrivate": "Prywatny",
         "subCollections": "Kolekcje",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "columns": "Kolumny",
         "featuredAsset": "Obraz",
         "breadcrumb": "Breadcrumb",
@@ -22,7 +22,7 @@
         "collections": "W kolekcjach",
         "actions": "Działania",
         "copyId": "Kopiowanie identyfikatora produktu",
-        "products": "# produktów",
+        "products": "# liczba produktów",
         "delete": "Usuń kolekcję"
     },
     "details": {
@@ -36,7 +36,7 @@
         "filters": {
             "title": "Filtry",
             "inherit": "Dziedziczenie filtrów",
-            "condition": "Warunek",
+            "condition": "Stan",
             "addCondition": "Dodaj warunek",
             "addFacets": "Dodawanie wartości aspektów"
         },
@@ -49,10 +49,10 @@
         "private": "Private"
     },
     "toasts": {
-        "collectionLoadingError": "Nie udało się załadować kolekcji o id {{value}}",
+        "collectionLoadingError": "Nie udało się załadować kolekcji o identyfikatorze {{value}}",
         "collectionUpdateSuccess": "Kolekcja została pomyślnie zaktualizowana",
         "collectionUpdateError": "Wystąpił błąd:",
-        "collectionCreatedSuccess": "Kolekcja została utworzona pomyślnie",
+        "collectionCreatedSuccess": "Kolekcja została pomyślnie utworzona",
         "collectionCreatedError": "Nie udało się utworzyć kolekcji",
         "collectionDeleteSuccess": "Kolekcja została pomyślnie usunięta",
         "collectionDeleteError": "Nie udało się usunąć kolekcji",
@@ -64,15 +64,15 @@
         "title": "Delete collection",
         "description": "Czy na pewno chcesz usunąć tę kolekcję?",
         "successMessage": "Kolekcja została usunięta.",
-        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
+        "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
     },
     "editCollection": "Edit collection",
     "withSelected": "Z wybranym {{collections}}",
     "columns": "Columns",
     "rowsSelected": "{{selected}} z {{all}} wybranych wierszy",
-    "duplicateCollection": "Na pewno chcesz zduplikować te kolekcje?",
+    "duplicateCollection": "Na pewno chcesz powielić te kolekcje?",
     "collectionActions": {
-        "move": "Przeprowadzka",
+        "move": "Przenieś",
         "copy": "Duplikat",
         "assign": "Przypisz do kanału",
         "deleteFromChannel": "Usuń z bieżącego kanału"
@@ -98,7 +98,7 @@
     },
     "deleteCollectionDialog": {
         "button": "Delete collection",
-        "title": "Jesteś pewien?",
+        "title": "Czy na pewno?",
         "description": "Kolekcja zostanie trwale usunięta.",
         "confirm": "Usuń kolekcję",
         "cancel": "Anuluj"
@@ -107,11 +107,11 @@
         "areYouSure": "Czy na pewno chcesz usunąć te kolekcje z {{ channel }} ?",
         "removeCollection": "Usuń kolekcję",
         "cancel": "Cancel",
-        "removeSuccess": "Kolekcje usunięte",
+        "removeSuccess": "Usunięte kolekcje",
         "removeError": "Nie można usunąć kolekcji z kanału"
     },
     "moveCollectionsToChannels": {
-        "moveCollections": "Przenieś kolekcje",
+        "moveCollections": "Przenoszenie kolekcji",
         "move": "Move",
         "selected": "Wybrany",
         "availableChannels": "Dostępne kanały",

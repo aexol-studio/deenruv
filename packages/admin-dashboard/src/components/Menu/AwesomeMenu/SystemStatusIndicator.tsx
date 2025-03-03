@@ -1,15 +1,17 @@
-import { useServer } from '@deenruv/react-ui-devkit';
-import React, { useEffect } from 'react';
+import { cn, SimpleTooltip, useServer } from '@deenruv/react-ui-devkit';
+import React, { useEffect, useMemo } from 'react';
 
 export const SystemStatusIndicator = () => {
-  const { status, pendingJobs, fetchStatus, fetchPendingJobs } = useServer(
-    ({ status, pendingJobs, fetchPendingJobs, fetchStatus }) => ({
+  const { status, jobQueues, fetchStatus, fetchPendingJobs } = useServer(
+    ({ status, jobQueues, fetchPendingJobs, fetchStatus }) => ({
       fetchPendingJobs,
       fetchStatus,
       status,
-      pendingJobs,
+      jobQueues,
     }),
   );
+
+  const runningJobQueues = useMemo(() => jobQueues.filter((jQ) => jQ.running), [jobQueues]);
 
   useEffect(() => {
     fetchStatus();
@@ -23,5 +25,25 @@ export const SystemStatusIndicator = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <div></div>;
+  const colorClass = useMemo(() => {
+    switch (status.data.status) {
+      case 'ok':
+        return 'bg-green-600';
+      default:
+        return 'bg-red-500';
+    }
+  }, [status]);
+
+  return (
+    <div className="flex">
+      <SimpleTooltip content={`Status: ${status.data.status}`}>
+        <div className={cn('ml-2 size-2 rounded-full', colorClass)}></div>
+      </SimpleTooltip>
+      {runningJobQueues.length > 0 && (
+        <SimpleTooltip content={`Job Queues: ${runningJobQueues.length}`}>
+          <div className={cn('ml-2 size-2 animate-pulse rounded-full bg-blue-500')}></div>
+        </SimpleTooltip>
+      )}
+    </div>
+  );
 };

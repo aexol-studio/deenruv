@@ -96,7 +96,8 @@
     "shippingMethods": "shipping methods",
     "taxCategories": "tax categories",
     "taxRates": "tax rates",
-    "logOut": "log out"
+    "logOut": "log out",
+    "systemStatus": "system status"
   },
   "noFilterField": "None",
   "draft": "Draft",

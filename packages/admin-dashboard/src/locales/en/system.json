@@ -1,0 +1,40 @@
+{
+    "health": {
+        "title": "System Status",
+        "updated": "Last updated: ",
+        "status": "Overall Status: ",
+        "details": "Service Details",
+        "refresh": "Refresh",
+        "refreshing": "Refreshing",
+        "error": {
+            "title": "Unable to fetch status",
+            "description": "There was a problem connecting to the status service.",
+            "button": "Try Again"
+        }
+    },
+    "jobs": {
+        "title": "Jobs",
+        "live": "Live update",
+        "allStates": "All states",
+        "allNames": "All names",
+        "states": {
+            "pending": "Pending",
+            "running": "Running",
+            "completed": "Completed",
+            "retrying": "Retrying",
+            "failed": "Failed",
+            "cancelled": "Cancelled"
+        },
+        "table": {
+            "queueName": "Queue name",
+            "status": "Status",
+            "created": "Created",
+            "started": "Started",
+            "settled": "Completed",
+            "duration": "Duration",
+            "jobData": "Job data",
+            "jobResult": "Job result",
+            "remove": "Remove job"
+        }
+    }
+}

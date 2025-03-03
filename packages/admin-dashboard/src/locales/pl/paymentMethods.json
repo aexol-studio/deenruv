@@ -4,7 +4,7 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
@@ -13,8 +13,8 @@
         "code": "Kod",
         "enabled": "Włączone",
         "modalTitle": "Tytuł modalny",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "columns": "Kolumny"
     },
     "details": {
@@ -41,7 +41,7 @@
         "paymentMethodLoadingError": "Nie udało się załadować metody płatności o identyfikatorze {{value}}",
         "paymentMethodUpdateSuccess": "Metoda płatności została pomyślnie zaktualizowana",
         "paymentMethodUpdateError": "Wystąpił błąd:",
-        "paymentMethodCreatedSuccess": "Metoda płatności została utworzona pomyślnie",
+        "paymentMethodCreatedSuccess": "Metoda płatności została pomyślnie utworzona",
         "paymentMethodCreatedError": "Nie udało się utworzyć metody płatności",
         "paymentMethodDeleteSuccess": "Metoda płatności została pomyślnie usunięta",
         "paymentMethodDeleteError": "Nie udało się usunąć metody płatności"
@@ -53,7 +53,7 @@
     },
     "validation": {
         "codeRequired": "Kod jest wymagany",
-        "handlerCodeRequired": "Wymagana jest obsługa płatności",
+        "handlerCodeRequired": "Obsługa płatności jest wymagana",
         "handlerArgsRequired": "Wypełnij wszystkie pola"
     }
 }

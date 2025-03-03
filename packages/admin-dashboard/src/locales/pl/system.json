@@ -1,0 +1,40 @@
+{
+    "health": {
+        "title": "Status systemu",
+        "updated": "Ostatnia aktualizacja:",
+        "status": "Status ogólny:",
+        "details": "Szczegóły usługi",
+        "refresh": "Odświeżanie",
+        "refreshing": "Odświeżanie",
+        "error": {
+            "title": "Nie można pobrać stanu",
+            "description": "Wystąpił problem z połączeniem z usługą statusu.",
+            "button": "Spróbuj ponownie"
+        }
+    },
+    "jobs": {
+        "title": "Praca",
+        "live": "Aktualizacja na żywo",
+        "allStates": "Wszystkie stany",
+        "allNames": "Wszystkie nazwy",
+        "states": {
+            "pending": "W toku",
+            "running": "W toku",
+            "completed": "Ukończono",
+            "retrying": "Ponowna próba",
+            "failed": "Nie powiodło się",
+            "cancelled": "Anulowane"
+        },
+        "table": {
+            "queueName": "Nazwa kolejki",
+            "status": "Status",
+            "created": "Utworzony",
+            "started": "Rozpoczęty",
+            "settled": "Ukończono",
+            "duration": "Czas trwania",
+            "jobData": "Dane dotyczące pracy",
+            "jobResult": "Wynik zadania",
+            "remove": "Usuń zadanie"
+        }
+    }
+}

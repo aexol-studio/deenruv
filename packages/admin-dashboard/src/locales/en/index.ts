@@ -22,6 +22,7 @@ import customers from './customers.json';
 import customerGroups from './customerGroups.json';
 import globalSettings from './globalSettings.json';
 import promotions from './promotions.json';
+import system from './system.json';
 
 export default {
   admins,
@@ -48,4 +49,5 @@ export default {
   customers,
   customerGroups,
   globalSettings,
+  system,
 };

@@ -1,5 +1,7 @@
 import { FromSelectorWithScalars } from '@/graphql/scalars.js';
-import { JobState, scalars, Selector } from '@deenruv/admin-types';
+import { JsonPopup } from '@/pages/status/_components/JsonPopup.js';
+import { FilterToolbar } from '@/pages/status/_components/FilterToolbar.js';
+import { JobState, Selector } from '@deenruv/admin-types';
 import {
   apiClient,
   Badge,
@@ -8,6 +10,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  ColumnView,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -17,8 +20,10 @@ import {
   useDetailList,
 } from '@deenruv/react-ui-devkit';
 import { ColumnDef, useReactTable, getCoreRowModel } from '@tanstack/react-table';
-import { AlertCircle, CheckCircle, CheckCircle2, Clock, MoreHorizontal, Play, RefreshCw, XCircle } from 'lucide-react';
-import React, { useEffect, useMemo } from 'react';
+import { AlertCircle, CheckCircle, Clock, MoreHorizontal, Play, RefreshCw, XCircle } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { JobResultPopover } from '@/pages/status/_components/JobResultPopover.js';
+import { useTranslation } from 'react-i18next';
 
 const JobSelector = Selector('Job')({
   id: true,
@@ -49,41 +54,42 @@ const calculateDuration = (startedAt: string | null | undefined, settledAt: stri
 };
 
 const JobStateBadge = ({ state }: { state: JobState }) => {
+  const { t } = useTranslation('system');
   switch (state) {
     case JobState.PENDING:
       return (
-        <Badge variant="outline" className="flex items-center gap-1">
-          <Clock className="h-3 w-3" /> Pending
+        <Badge variant="outline" className="gap-1">
+          <Clock className="h-3 w-3" /> {t('jobs.states.pending')}
         </Badge>
       );
     case JobState.RUNNING:
       return (
-        <Badge variant="secondary" className="flex items-center gap-1">
-          <Play className="h-3 w-3" /> Running
+        <Badge variant="secondary" className="gap-1">
+          <Play className="h-3 w-3" /> {t('jobs.states.running')}
         </Badge>
       );
     case JobState.COMPLETED:
       return (
-        <Badge className="flex items-center gap-1 bg-green-100 text-green-800">
-          <CheckCircle className="h-3 w-3" /> Completed
+        <Badge className="gap-1 bg-green-100 text-green-800">
+          <CheckCircle className="h-3 w-3" /> {t('jobs.states.completed')}
         </Badge>
       );
     case JobState.RETRYING:
       return (
-        <Badge className="flex items-center gap-1 bg-yellow-100 text-yellow-800">
-          <RefreshCw className="h-3 w-3" /> Retrying
+        <Badge className="gap-1 bg-yellow-100 text-yellow-800">
+          <RefreshCw className="h-3 w-3" /> {t('jobs.states.retrying')}
         </Badge>
       );
     case JobState.FAILED:
       return (
-        <Badge variant="destructive" className="flex items-center gap-1">
-          <XCircle className="h-3 w-3" /> Failed
+        <Badge variant="destructive" className="gap-1">
+          <XCircle className="h-3 w-3" /> {t('jobs.states.failed')}
         </Badge>
       );
     case JobState.CANCELLED:
       return (
-        <Badge variant="outline" className="flex items-center gap-1 bg-gray-100 text-gray-800">
-          <AlertCircle className="h-3 w-3" /> Cancelled
+        <Badge variant="outline" className="gap-1 bg-gray-100 text-gray-800">
+          <AlertCircle className="h-3 w-3" /> {t('jobs.states.cancelled')}
         </Badge>
       );
     default:
@@ -92,11 +98,28 @@ const JobStateBadge = ({ state }: { state: JobState }) => {
 };
 
 export const Jobs = () => {
-  const { objects, refetch, Paginate, Search, SortButton } = useDetailList({
+  const { t } = useTranslation('system');
+  const [liveUpdate, setLiveUpdate] = useState(true);
+  const [stateFilter, setStateFilter] = useState<JobState | undefined>();
+  const [jobQueueFilter, setJobQueueFilter] = useState<string>();
+  const filterObj = useMemo(
+    () => ({
+      state: { eq: stateFilter },
+      queueName: { eq: jobQueueFilter },
+    }),
+    [stateFilter, jobQueueFilter],
+  );
+  const {
+    objects,
+    refetch,
+    Paginate,
+    Search,
+    filter: filter2,
+  } = useDetailList({
     type: 'jobs',
     entityName: 'Job',
-    searchFields: ['type'],
-    fetch: async ({ page, perPage, filter, filterOperator, sort }) => {
+    searchFields: ['queueName'],
+    fetch: async ({ page, perPage, filter, filterOperator }) => {
       const { jobs } = await apiClient('query')({
         jobs: [
           {
@@ -105,6 +128,9 @@ export const Jobs = () => {
               skip: (page - 1) * perPage,
               // ONLY THIS WORKS (SO WE CAN FILTER ONLY BY SELECTED FULL QUEUE NAME)
               // filter: { queueName: { eq: '' } },
+              filter: {
+                ...filter,
+              },
               filterOperator,
             },
           },
@@ -116,11 +142,16 @@ export const Jobs = () => {
   });
 
   useEffect(() => {
+    refetch(filterObj);
+
+    if (!liveUpdate) return () => clearInterval(0);
+
     const interval = setInterval(() => {
-      refetch();
+      refetch(filterObj);
     }, 5000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [filterObj, liveUpdate]);
 
   const handleRemoveJob = async (jobId: string) => {
     await apiClient('mutation')({ cancelJob: [{ jobId }, {}] });
@@ -139,63 +170,56 @@ export const Jobs = () => {
       },
       {
         accessorKey: 'queueName',
-        header: 'Queue',
+        header: t('jobs.table.queueName'),
         cell: ({ row }) => <div className="font-medium">{row.original.queueName}</div>,
       },
       {
         accessorKey: 'state',
-        header: 'Status',
+        header: t('jobs.table.status'),
         cell: ({ row }) => {
           const state = row.original.state;
           return <JobStateBadge state={state} />;
         },
       },
       {
-        accessorKey: 'progress',
-        header: 'Progress',
-        cell: ({ row }) => {
-          const progress = row.original.progress || 0;
-          return (
-            <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
-              <div
-                className="h-2.5 rounded-full bg-blue-600"
-                style={{ width: `${progress}%` }}
-                title={`${progress}%`}
-              ></div>
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: 'attempts',
-        header: 'Attempts',
-        cell: ({ row }) => (
-          <div className="text-center">
-            {row.original.attempts}/{row.original.retries + 1}
-          </div>
-        ),
-      },
-      {
         accessorKey: 'createdAt',
-        header: 'Created',
+        header: t('jobs.table.created'),
         cell: ({ row }) => formatDate(row.original.createdAt),
       },
       {
         accessorKey: 'startedAt',
-        header: 'Started',
+        header: t('jobs.table.started'),
         cell: ({ row }) => formatDate(row.original.startedAt || ''),
       },
       {
         accessorKey: 'settledAt',
-        header: 'Completed',
+        header: t('jobs.table.settled'),
         cell: ({ row }) => formatDate(row.original.settledAt || ''),
       },
       {
+        accessorKey: 'jobData',
+        header: t('jobs.table.jobData'),
+        cell: ({ row }) => {
+          return JsonPopup({
+            data: row.original.data,
+          });
+        },
+      },
+      {
         accessorKey: 'duration',
-        header: 'Duration',
+        header: t('jobs.table.duration'),
         cell: ({ row }) => {
           const duration = calculateDuration(row.original.startedAt, row.original.settledAt);
-          return <div className="text-center">{duration}</div>;
+          return <div>{duration}</div>;
+        },
+      },
+      {
+        accessorKey: 'jobResult',
+        header: t('jobs.table.jobResult'),
+        cell: ({ row }) => {
+          return JobResultPopover({
+            result: row.original.result,
+          });
         },
       },
       {
@@ -206,14 +230,13 @@ export const Jobs = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => handleRemoveJob(job.id)} className="text-red-600">
                   <XCircle className="mr-2 h-4 w-4" />
-                  Remove Job
+                  {t('jobs.table.removeJob')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -235,8 +258,13 @@ export const Jobs = () => {
     <Card>
       <CardHeader>
         <div className="flex justify-between">
-          <CardTitle>Jobs</CardTitle>
-          {Search}
+          <CardTitle>{t('jobs.title')}</CardTitle>
+          <div className="flex items-center gap-2">
+            <FilterToolbar
+              {...{ Search, setStateFilter, stateFilter, jobQueueFilter, setJobQueueFilter, liveUpdate, setLiveUpdate }}
+            />
+            <ColumnView {...table} />
+          </div>
         </div>
       </CardHeader>
       <CardContent>

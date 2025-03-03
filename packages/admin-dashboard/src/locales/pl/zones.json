@@ -4,18 +4,18 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "name": "Nazwa",
         "members": "Członkowie",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
-        "viewZone": "Wyświetl strefę",
+        "viewZone": "Strefa widoku",
         "columns": "Kolumny"
     },
     "details": {
@@ -30,7 +30,7 @@
         "zoneLoadingError": "Nie udało się załadować strefy o identyfikatorze {{value}}",
         "zoneUpdateSuccess": "Strefa została pomyślnie zaktualizowana",
         "zoneUpdateError": "Wystąpił błąd:",
-        "zoneCreatedSuccess": "Strefa została utworzona pomyślnie",
+        "zoneCreatedSuccess": "Strefa została pomyślnie utworzona",
         "zoneCreatedError": "Nie udało się utworzyć strefy",
         "zoneDeleteSuccess": "Strefa została pomyślnie usunięta",
         "zoneDeleteError": "Nie udało się usunąć strefy"
@@ -39,7 +39,7 @@
         "title": "Usuń strefę",
         "description": "Czy na pewno chcesz usunąć tę strefę?",
         "successMessage": "Strefa została usunięta.",
-        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
+        "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
     },
     "validation": {
         "nameRequired": "Nazwa strefy jest wymagana"

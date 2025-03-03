@@ -15,7 +15,7 @@
     "bulk": {
         "delete": {
             "title": "Czy na pewno chcesz usunąć te rekordy?",
-            "description": "Tej akcji nie można cofnąć.",
+            "description": "Tej czynności nie można cofnąć.",
             "cancel": "Anuluj",
             "confirm": "Usuń {{amount}} rekordów"
         }
@@ -24,14 +24,14 @@
         "active": "Aktywny",
         "additionalInformation": "Dodatkowe informacje",
         "code": "Kod",
-        "createdAt": "Utworzono w",
+        "createdAt": "Utworzona w",
         "currencyCode": "Kod waluty",
         "customerLastName": "Nazwisko klienta",
         "id": "Id",
         "orderPlacedAt": "Zamówienie złożone pod adresem",
         "shipping": "Wysyłka",
         "shippingWithTax": "Wysyłka z podatkiem",
-        "state": "Państwo",
+        "state": "Stan",
         "subTotal": "Suma cząstkowa",
         "subTotalWithTax": "Suma częściowa z podatkiem",
         "token": "Token",
@@ -40,7 +40,7 @@
         "totalWithTax": "Razem z podatkiem",
         "transactionId": "Identyfikator transakcji",
         "type": "Typ",
-        "updatedAt": "Zaktualizowano w",
+        "updatedAt": "Zaktualizowano o",
         "aggregateOrderId": "Zagregowany identyfikator zamówienia",
         "getProforma": "Pobierz proformę",
         "registeredOnCheckout": "Zarejestrowany przy kasie",
@@ -78,7 +78,7 @@
         "in": "W",
         "notIn": "Nie w",
         "isNull": "Is null",
-        "notEq": "Nie równy",
+        "notEq": "Nie jest równa",
         "contains": "Zawiera",
         "notContains": "Nie zawiera",
         "before": "Przed",

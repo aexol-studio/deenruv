@@ -28,7 +28,7 @@
         "description": "Przyznaje uprawnienia do kolekcji"
     },
     "Country": {
-        "title": "Country",
+        "title": "Kraj",
         "description": "Przyznaje uprawnienia na kraj"
     },
     "Customer": {

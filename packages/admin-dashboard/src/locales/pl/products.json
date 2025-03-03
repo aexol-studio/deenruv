@@ -3,7 +3,7 @@
     "assets": "Aktywa",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "facetPlaceholder": "Dodaj aspekty",
     "group": "Grupa",
     "image": "Obraz",
@@ -60,7 +60,7 @@
         "featuredAsset": "Image",
         "id": "ID",
         "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano o",
+        "updatedAt": "Zaktualizowano w",
         "name": "Name",
         "slug": "Slug",
         "variants": "# Liczba wariantów",
@@ -76,7 +76,7 @@
     },
     "deleteProductDialog": {
         "button": "Delete product",
-        "title": "Jesteś pewien?",
+        "title": "Czy na pewno?",
         "description": "Produkt zostanie trwale usunięty.",
         "confirm": "Delete Product",
         "cancel": "Anuluj"

@@ -321,7 +321,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             }) as ColumnDef<AwaitedReturnType<T>['items']>[];
 
         return resultColumns;
-    }, [objects]);
+    }, [objects, navigate]);
 
     useEffect(() => {
         setColumnsVisibilityState(prev => {

@@ -4,16 +4,16 @@
     "baseInfoCode": "Kod: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
-    "baseInfoUpdated": "Aktualizacja: {{value}}",
-    "defaultChannel": "Domyślny kanał",
+    "baseInfoUpdated": "Zaktualizowano: {{value}}",
+    "defaultChannel": "Kanał domyślny",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
         "id": "Id",
         "code": "Kod",
         "token": "Token",
-        "createdAt": "Utworzono w",
-        "updatedAt": "Zaktualizowano w",
+        "createdAt": "Utworzona w",
+        "updatedAt": "Zaktualizowano o",
         "openMenu": "Otwórz menu",
         "copyId": "Kopiuj identyfikator",
         "viewChannel": "Wyświetl kanał",
@@ -43,7 +43,7 @@
         "channelLoadingError": "Nie udało się załadować kanału o identyfikatorze {{value}}",
         "channelUpdateSuccess": "Kanał został pomyślnie zaktualizowany",
         "channelUpdateError": "Wystąpił błąd:",
-        "channelCreatedSuccess": "Kanał został utworzony pomyślnie",
+        "channelCreatedSuccess": "Kanał został pomyślnie utworzony",
         "channelCreatedError": "Nie udało się utworzyć kanału",
         "channelDeleteSuccess": "Kanał został pomyślnie usunięty",
         "channelDeleteError": "Nie udało się usunąć kanału"
@@ -52,14 +52,14 @@
         "title": "Usuń kanał",
         "description": "Czy na pewno chcesz usunąć ten kanał?",
         "successMessage": "Kanał został usunięty.",
-        "deleteOrCancel": "Usuń/Anuluj zaznaczone"
+        "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
     },
-    "selectedValue": "{{from}} z {{to}} wybranych wierszy",
+    "selectedValue": "wybrano {{from}} z {{to}} wierszy",
     "validation": {
         "codeRequired": "Kod jest wymagany",
         "tokenRequired": "Token jest wymagany",
         "langCodeRequired": "Wymagany jest domyślny kod języka",
-        "shippingZoneRequired": "Wymagana jest domyślna strefa wysyłki",
+        "shippingZoneRequired": "Domyślna strefa wysyłki jest wymagana",
         "taxZoneRequired": "Domyślna strefa podatkowa jest wymagana"
     }
 }

@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 import { useDebounce } from '@/hooks';
 
 interface Option {
-    value: string;
+    value: string | 'undefined';
     label: string;
     disable?: boolean;
     /** fixed option that can't be removed. */
