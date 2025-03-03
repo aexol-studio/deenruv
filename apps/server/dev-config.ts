@@ -10,6 +10,7 @@ import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-serve
 import { FacetHarmonicaServerPlugin } from '@deenruv/facet-harmonica-plugin';
 import { InRealizationPlugin } from '@deenruv/in-realization-plugin';
 import { CopyOrderPlugin } from '@deenruv/copy-order-plugin';
+import { Przelewy24Plugin } from '@deenruv/przelewy24-plugin';
 import { ADMIN_API_PATH, API_PORT, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
     DefaultLogger,
@@ -18,6 +19,8 @@ import {
     LogLevel,
     DeenruvConfig,
     DefaultAssetNamingStrategy,
+    PaymentMethod,
+    LanguageCode,
 } from '@deenruv/core';
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
@@ -81,7 +84,6 @@ export const devConfig: DeenruvConfig = {
     paymentOptions: {
         paymentMethodHandlers: [dummyPaymentHandler],
     },
-
     logger: new DefaultLogger({ level: LogLevel.Verbose }),
     importExportOptions: {
         importAssetsDir: path.join(__dirname, 'import-assets'),
@@ -168,22 +170,29 @@ export const devConfig: DeenruvConfig = {
                 removeOnFail: { count: 1000, age: 1000 * 60 * 60 * 24 * 7 },
             },
         }),
+        Przelewy24Plugin.init({
+            'pl-channel': {
+                PRZELEWY24_CLIENT_SECRET: '6e780d6c4af9ff9efa1f426297ad0bf2',
+                PRZELEWY24_CRC: '63e53dd6d1cc4dd5',
+                PRZELEWY24_POS_ID: '268888',
+            },
+        }),
         // FacetHarmonicaServerPlugin.init({
         //     s3: { bucket: 'deenruv-asset-bucket', client: s3Client, expiresIn: 60 * 60 * 24 * 3 },
         // }),
-        // CopyOrderPlugin,
-        // InRealizationPlugin.init({
-        //     s3: { client: s3Client, bucket: 'deenruv-asset-bucket', expiresIn: 60 * 60 * 24 * 3 },
-        // }),
-        // FacetHarmonicaServerPlugin,
-        // OrderLineAttributesServerPlugin,
-        // WFirmaPlugin.init({
-        //     authorization: {
-        //         accessKey: '0b835d398cfd8078c76e756ac89e08ed',
-        //         appKey: '7ee060de3fa24b643e3143763d700682',
-        //         secretKey: 'a8e42a73cd1d9a44e7e9c0c9a9772fdd',
-        //     },
-        // }),
+        CopyOrderPlugin,
+        InRealizationPlugin.init({
+            s3: { client: s3Client, bucket: 'deenruv-asset-bucket', expiresIn: 60 * 60 * 24 * 3 },
+        }),
+        FacetHarmonicaServerPlugin,
+        OrderLineAttributesServerPlugin,
+        WFirmaPlugin.init({
+            authorization: {
+                accessKey: '0b835d398cfd8078c76e756ac89e08ed',
+                appKey: '7ee060de3fa24b643e3143763d700682',
+                secretKey: 'a8e42a73cd1d9a44e7e9c0c9a9772fdd',
+            },
+        }),
         // DeenruvExamplesServerPlugin,
         // ContentManagementServerPlugin,
         // MinkoCorePlugin.init({

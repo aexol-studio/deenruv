@@ -171,7 +171,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         const sortDir = searchParams.get(SearchParamKey.SORT_DIR);
         const filter = searchParams.get(SearchParamKey.FILTER);
 
-        const searchFilter = (searchFields as string[])?.reduce(
+        const searchFilter = ((searchFields as string[]) || []).reduce(
             (acc, field) => {
                 if (search) acc[field] = { contains: search };
                 return acc;
@@ -211,7 +211,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
             setObjects(items);
             setTotal(totalItems);
         });
-    }, [searchParamValues, Object.keys(customFieldsSelector || {}).length]);
+    }, [searchParams, Object.keys(customFieldsSelector || {}).length]);
 
     const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
     const totalPages = useMemo(

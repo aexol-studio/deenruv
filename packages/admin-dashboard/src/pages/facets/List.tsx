@@ -55,7 +55,7 @@ export const FacetsListPage = () => {
         { key: 'code', operator: 'StringOperators' },
         { key: 'isPrivate', operator: 'BooleanOperators' },
       ]}
-      detailLinkColumn="id"
+      detailLinkColumn="code"
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations']}
       entityName={'Facet'}

@@ -1,4 +1,5 @@
-import React from 'react';
+import type React from 'react';
+import { useMemo } from 'react';
 import {
   ScrollArea,
   Dialog,
@@ -15,14 +16,27 @@ import {
   TimelineHeading,
   useServer,
   Button,
+  Badge,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
+import { ArrowRight, Check, CircleDot } from 'lucide-react';
 
 export const PossibleOrderStates: React.FC<{
   orderState: string;
 }> = ({ orderState }) => {
   const { t } = useTranslation('orders');
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
+
+  // Find the current state index and object
+  const currentStateIndex = useMemo(
+    () => orderProcess.findIndex((s) => s.name === orderState),
+    [orderProcess, orderState],
+  );
+
+  const currentStateObj = useMemo(() => orderProcess.find((s) => s.name === orderState), [orderProcess, orderState]);
+
+  // Determine possible next states
+  const possibleNextStates = useMemo(() => currentStateObj?.to || [], [currentStateObj]);
 
   return (
     <Dialog>
@@ -39,18 +53,81 @@ export const PossibleOrderStates: React.FC<{
           <DialogTitle>{t('orderStates.title')}</DialogTitle>
           <DialogDescription>{t('orderStates.description')}</DialogDescription>
         </DialogHeader>
-        <ScrollArea className="h-[80vh]">
+
+        {/* Current state summary */}
+        <div className="bg-muted/50 mb-4 rounded-md border p-4">
+          <h3 className="mb-2 text-sm font-medium">{t('orderStates.currentState')}</h3>
+          <div className="mb-3 flex items-center gap-2">
+            <CircleDot className="text-primary h-5 w-5" />
+            <span className="font-semibold">{orderState}</span>
+          </div>
+
+          {possibleNextStates.length > 0 ? (
+            <>
+              <h4 className="mb-2 text-sm font-medium">{t('orderStates.possibleNextStates')}</h4>
+              <div className="flex flex-wrap gap-2">
+                {possibleNextStates.map((nextState) => (
+                  <Badge key={nextState} variant="outline" className="flex items-center gap-1">
+                    {nextState}
+                    <ArrowRight className="ml-1 h-3 w-3" />
+                  </Badge>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p className="text-muted-foreground text-sm">{t('orderStates.finalState')}</p>
+          )}
+        </div>
+
+        <ScrollArea className="h-[60vh]">
           <Timeline>
-            {orderProcess?.map((state) => {
-              const currentIndex = orderProcess?.findIndex((s) => s.name === orderState);
-              const done = orderProcess?.findIndex((s) => s.name === state.name) < currentIndex;
+            {orderProcess.map((state, index) => {
+              const isPast = index < currentStateIndex;
+              const isCurrent = index === currentStateIndex;
+              const isPossibleNext = possibleNextStates.includes(state.name);
+
               return (
-                <TimelineItem key={state.name} status={done ? 'done' : 'default'}>
-                  <TimelineLine done={done} />
-                  <TimelineDot status={done ? 'done' : 'default'} />
+                <TimelineItem key={state.name} status={isPast ? 'done' : isCurrent ? null : 'default'}>
+                  <TimelineLine done={isPast} />
+                  <TimelineDot
+                    status={isPast ? 'done' : isCurrent ? 'current' : 'default'}
+                    className={isPossibleNext ? 'ring-primary ring-1 ring-offset-1' : ''}
+                  >
+                    {isPast && <Check className="h-4 w-4" />}
+                  </TimelineDot>
                   <TimelineContent>
-                    <TimelineHeading>{state.name}</TimelineHeading>
-                    <p>{state.to.join(', ')}</p>
+                    <TimelineHeading className={isCurrent ? 'text-primary font-bold' : ''}>
+                      {state.name}
+                      {isCurrent && (
+                        <Badge className="ml-2" variant="default">
+                          {t('orderStates.current')}
+                        </Badge>
+                      )}
+                      {isPossibleNext && (
+                        <Badge className="ml-2" variant="outline">
+                          {t('orderStates.possible')}
+                        </Badge>
+                      )}
+                    </TimelineHeading>
+                    {state.to.length > 0 && (
+                      <div className="mt-1">
+                        <p className="text-muted-foreground mb-1 text-sm">{t('orderStates.canTransitionTo')}:</p>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {state.to.map((nextState) => (
+                            <Badge
+                              key={nextState}
+                              variant="outline"
+                              className={`text-xs ${orderState === nextState ? 'bg-primary/10 border-primary' : ''}`}
+                            >
+                              {nextState}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {state.to.length === 0 && (
+                      <p className="text-muted-foreground mt-1 text-sm">{t('orderStates.finalState')}</p>
+                    )}
                   </TimelineContent>
                 </TimelineItem>
               );

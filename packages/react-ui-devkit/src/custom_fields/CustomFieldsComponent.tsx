@@ -24,8 +24,6 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
         Record<string, { name: string; component: React.ReactElement; ui: Record<string, unknown> }[]>
     >({});
 
-    console.log('CF', customFields);
-    console.log('AD', additionalData);
     useEffect(() => {
         const result = generateCustomFields(customFields, getInputComponent).reduce(
             (acc, field) => {

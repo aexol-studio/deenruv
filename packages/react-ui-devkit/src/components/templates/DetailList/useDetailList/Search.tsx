@@ -34,7 +34,7 @@ export const Search = ({
     return (
         <div className="w-[20rem] flex items-center justify-center gap-3">
             <Input
-                className="w-full h-8"
+                className="w-full h-8 pl-4"
                 placeholder={onlyFirstLetterCapitalized(placeholder)}
                 value={searchQuery}
                 onChange={e => setSearchQueryState(e.target.value)}

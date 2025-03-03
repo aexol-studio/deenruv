@@ -10,6 +10,7 @@ import {
   usePluginStore,
   Switch,
   useSettings,
+  ScrollArea,
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
 
@@ -84,7 +85,6 @@ const darkMode = {
 export const DeenruvDeveloperIndicator = () => {
   const { theme } = useSettings();
   const { plugins, viewMarkers, setViewMarkers } = usePluginStore();
-  console.log(plugins);
   const [colorVariables, setColorVariables] = useState(theme === 'light' ? lightMode : darkMode);
 
   const updateColor = (key: string, value: string) => {
@@ -164,30 +164,40 @@ export const DeenruvDeveloperIndicator = () => {
                     );
                   })} */}
                 </div>
-                <div>
-                  {plugins.map((plugin) => (
-                    <div key={plugin.name} className="flex items-center space-x-2">
-                      <label
-                        htmlFor={plugin.name}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {plugin.name} ({plugin.version})
-                      </label>
+                <div className="flex flex-col gap-2">
+                  <ScrollArea className="h-[100px]">
+                    <div className="flex flex-col gap-2">
+                      {plugins.map((plugin) => (
+                        <div key={plugin.name} className="flex items-center space-x-2">
+                          <label
+                            htmlFor={plugin.name}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            {plugin.name} ({plugin.version})
+                          </label>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </ScrollArea>
                 </div>
               </div>
             </div>
             <DrawerFooter>
-              <Button onClick={setColors} variant="action">
-                Apply styles
-              </Button>
-              <Button onClick={copyStylesToClipboard} variant="outline">
-                Copy styles
-              </Button>
-              <Button onClick={() => setColorVariables(theme === 'light' ? lightMode : darkMode)} variant="destructive">
-                Reset styles
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button onClick={setColors} variant="action" className="w-full">
+                  Apply styles
+                </Button>
+                <Button onClick={copyStylesToClipboard} variant="outline" className="w-full">
+                  Copy styles
+                </Button>
+                <Button
+                  onClick={() => setColorVariables(theme === 'light' ? lightMode : darkMode)}
+                  variant="destructive"
+                  className="w-full"
+                >
+                  Reset styles
+                </Button>
+              </div>
               <DrawerClose asChild>
                 <Button variant="outline">Close</Button>
               </DrawerClose>

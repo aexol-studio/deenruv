@@ -33,16 +33,11 @@ export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: 
 
     const getEntities = async (options: ResolverInputTypes['AssetListOptions']) => {
         const responseEntityField = entityName.charAt(0).toLowerCase() + entityName.slice(1) + 's';
-
         const { [responseEntityField]: response } = await apiClient('query')({
             [responseEntityField]: [
                 { options },
-                {
-                    totalItems: true,
-                    items: customFieldSelectors[entityName],
-                },
+                { totalItems: true, items: customFieldSelectors[entityName] },
             ],
-            // eslint-disable-next-line
         } as any);
         return response as { items: CommonFields[]; totalItems: number };
     };
@@ -62,9 +57,7 @@ export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: 
             return { items: entities.items, totalItems: entities.totalItems };
         },
         listType: `modal-assets-list`,
-        options: {
-            skip: !modalOpened,
-        },
+        options: { skip: !modalOpened },
     });
 
     return (

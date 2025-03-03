@@ -86,7 +86,7 @@ export const FulfillmentModal: React.FC<Props> = ({ draftOrder, onSubmitted, dis
           {t('fulfillment.completeOrderButton')}
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex h-[70vh] max-w-[70vw] flex-col">
+      <DialogContent className="flex h-[70vh] max-w-[70vw] flex-col overflow-auto">
         <DialogHeader>
           <DialogTitle>{t('fulfillment.completeDialogTitle')}</DialogTitle>
           <DialogDescription>{t('fulfillment.completeDialogDescription')}</DialogDescription>

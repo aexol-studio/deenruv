@@ -10,6 +10,7 @@ import { UIPlugin as CopyOrderUIPlugin } from '@deenruv/copy-order-plugin/plugin
 import { InRealizationUIPlugin } from '@deenruv/in-realization-plugin/plugin-ui';
 import { OrderLineAttributesUiPlugin } from '@deenruv/order-line-attributes-plugin/plugin-ui';
 import { WFirmaUIPlugin } from '@deenruv/wfirma-plugin/plugin-ui';
+import { Przelewy24UIPlugin } from '@deenruv/przelewy24-plugin/plugin-ui';
 import { DeenruvLogo } from './DeenruvLogo';
 // const plugins: Array<DeenruvUIPlugin> = [ExampleUiPlugin, CMSPlugin, BadgesUiPlugin, DashboardWidgetsPlugin];
 const plugins: Array<DeenruvUIPlugin> = [
@@ -19,6 +20,7 @@ const plugins: Array<DeenruvUIPlugin> = [
   FacetHarmonicaUiPlugin,
   OrderLineAttributesUiPlugin,
   WFirmaUIPlugin,
+  Przelewy24UIPlugin,
 ];
 const settings: DeenruvAdminPanelSettings = {
   branding: {

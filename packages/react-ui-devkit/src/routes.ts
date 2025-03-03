@@ -1,5 +1,7 @@
 export const Routes = {
     dashboard: '/admin-ui',
+    status: '/admin-ui/status',
+    jobs: '/admin-ui/jobs',
     assets: {
         list: '/admin-ui/assets',
     },

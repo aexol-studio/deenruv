@@ -286,7 +286,7 @@
   },
   "orderStates": {
     "button": "Order states",
-    "title": "> Order states",
+    "title": "Order states",
     "description": " Here you can see all possible states for the order, and the current state of the order."
   },
   "fulfillments": {

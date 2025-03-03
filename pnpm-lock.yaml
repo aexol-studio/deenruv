@@ -208,6 +208,9 @@ importers:
       '@deenruv/product-badges-plugin':
         specifier: workspace:*
         version: link:../../plugins/product-badges-plugin
+      '@deenruv/przelewy24-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/przelewy24-plugin
       '@deenruv/react-ui-devkit':
         specifier: workspace:*
         version: link:../../packages/react-ui-devkit
@@ -476,6 +479,9 @@ importers:
       '@deenruv/product-options-fields-plugin':
         specifier: workspace:*
         version: link:../../plugins/product-options-fields-plugin
+      '@deenruv/przelewy24-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/przelewy24-plugin
       '@deenruv/seo-plugin':
         specifier: workspace:*
         version: link:../../plugins/seo-plugin
@@ -2793,6 +2799,25 @@ importers:
         version: 5.3.3
 
   plugins/product-options-fields-plugin:
+    dependencies:
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
+  plugins/przelewy24-plugin:
     dependencies:
       '@deenruv/common':
         specifier: workspace:^

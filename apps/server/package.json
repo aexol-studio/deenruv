@@ -27,6 +27,7 @@
         "@deenruv/core": "workspace:*",
         "@deenruv/in-realization-plugin": "workspace:*",
         "@deenruv/wfirma-plugin": "workspace:*",
+        "@deenruv/przelewy24-plugin": "workspace:*",
         "@deenruv/content-management-plugin": "workspace:*",
         "@deenruv/deenruv-examples-plugin": "workspace:*",
         "@deenruv/seo-plugin": "workspace:*",

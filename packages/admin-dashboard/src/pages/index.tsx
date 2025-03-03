@@ -18,5 +18,6 @@ export * from './customers/index.js';
 export * from './customer-groups/index.js';
 export * from './channels/index.js';
 export * from './countries/index.js';
+export * from './status/index.js';
 export * from './global-settings/index.js';
 // NOTE: do not export Custom404, LoginScreen and Root from here

@@ -62,7 +62,7 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
   const [setAsDefaultShippingAddress] = useMutation(SetAsDefaultShippingAddressMutation);
 
   return (
-    <Card className="flex w-56 flex-col justify-between bg-gray-50">
+    <Card className="bg-secondary text-primary flex w-56 flex-col justify-between">
       <CardContent className="mt-4 flex flex-col gap-1">
         <h5 className="mb-2">{address.streetLine1}</h5>
         <span className="block text-sm">{address?.fullName}</span>
@@ -97,13 +97,13 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
         </div>
         <div className="flex items-center">
           <AddressDialog address={address} customerId={customerId} onActionCompleted={onActionCompleted}>
-            <Button size="sm" variant="ghost">
+            <Button variant="outline" className="h-8 px-8">
               {t('addresses.edit')}
             </Button>
           </AddressDialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="outline" className="h-8 w-8 p-0">
                 <span className="sr-only">{t('selectAddress.more')}</span>
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
@@ -111,7 +111,7 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                disabled={address.defaultBillingAddress ?? undefined }
+                disabled={address.defaultBillingAddress ?? undefined}
                 onClick={() =>
                   setAsDefaultBillingAddress({ addressId: address.id }).then((resp) => {
                     if (resp.updateCustomerAddress.id) {
@@ -126,7 +126,7 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                disabled={address.defaultShippingAddress ?? undefined }
+                disabled={address.defaultShippingAddress ?? undefined}
                 onClick={() =>
                   setAsDefaultShippingAddress({ addressId: address.id }).then((resp) => {
                     if (resp.updateCustomerAddress.id) {

@@ -21,9 +21,8 @@ import { useTranslation } from 'react-i18next';
 
 type CF = CustomFieldSelectorsType;
 
-type CommonFields = {
-    [K in keyof CF]: CF[K];
-}[keyof CF];
+type CommonFields = { [K in keyof CF]: CF[K] }[keyof CF];
+const withAsset = ['Asset', 'Product', 'ProductVariant'];
 
 interface CustomFieldsModal {
     modalOpened: boolean;
@@ -77,27 +76,43 @@ export const CustomFieldsModal: React.FC<CustomFieldsModal> = ({
         <Dialog open={modalOpened} onOpenChange={onOpenChange}>
             <div className="flex flex-col gap-2">
                 <Label>{label || field?.name}</Label>
-                {!value ? (
-                    <ImagePlaceholder />
-                ) : (
-                    <div className="flex flex-wrap gap-3">
-                        <div>
-                            <div className="h-32 w-32 relative">
-                                {!img ? (
-                                    <ImagePlaceholder />
-                                ) : (
-                                    <img src={img} alt={value.name} className="object-fill h-full w-full" />
-                                )}
+                {field && 'entity' in field && withAsset.includes(field?.entity) ? (
+                    <>
+                        {!value ? (
+                            <ImagePlaceholder />
+                        ) : (
+                            <div className="flex flex-wrap gap-3">
+                                <div>
+                                    <div className="h-32 w-32 relative">
+                                        {!img ? (
+                                            <ImagePlaceholder />
+                                        ) : (
+                                            <img
+                                                src={img}
+                                                alt={value.name}
+                                                className="object-fill h-full w-full"
+                                            />
+                                        )}
+                                    </div>
+                                    {isProduct(value) && <span>{value.name}</span>}
+                                    {isProductVariant(value) && (
+                                        <>
+                                            <p>{value.name}</p>
+                                            <p className="text-sm text-muted-foreground">{value.sku}</p>
+                                        </>
+                                    )}
+                                </div>
                             </div>
-                            {isProduct(value) && <span>{value.name}</span>}
-                            {isProductVariant(value) && (
-                                <>
-                                    <p>{value.name}</p>
-                                    <p className="text-sm text-muted-foreground">{value.sku}</p>
-                                </>
-                            )}
-                        </div>
-                    </div>
+                        )}
+                    </>
+                ) : (
+                    <>
+                        {!value ? (
+                            <span>{t('noValue')}</span>
+                        ) : (
+                            <span>{'name' in value ? value.name : `Cannot parse ${entityName} value`}</span>
+                        )}
+                    </>
                 )}
                 {!field?.readonly && (
                     <div className="flex gap-2">
@@ -115,20 +130,19 @@ export const CustomFieldsModal: React.FC<CustomFieldsModal> = ({
                     </div>
                 )}
             </div>
-            <DialogContent className="max-h-[80vh] max-w-[80vw] overflow-auto">
+            <DialogContent className="max-h-[80vh] max-w-[50vw] overflow-auto">
                 <DialogHeader>
                     <DialogTitle>{t(`custom-fields.${entityName.toLowerCase()}.title`)}</DialogTitle>
                     <DialogDescription>
                         {t(`custom-fields.${entityName.toLowerCase()}.description`)}
                     </DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="h-[60vh] p-2">
+                <ScrollArea className="min-h-[40vh] p-2">
                     <SearchInput
                         searchString={searchString}
                         setSearchString={setSearchString}
                         placeholder={t('search.AssetFilterParameter.placeholder')}
                     />
-
                     <div className="flex flex-wrap">
                         {entities?.map(entity => {
                             return (
@@ -140,11 +154,13 @@ export const CustomFieldsModal: React.FC<CustomFieldsModal> = ({
                                     )}
                                     onClick={() => setSelected(entity)}
                                 >
-                                    <img
-                                        src={getImg(entity)}
-                                        alt={entity.name}
-                                        className="h-32 w-full object-contain"
-                                    />
+                                    {withAsset.includes(entityName) && (
+                                        <img
+                                            src={getImg(entity)}
+                                            alt={entity.name}
+                                            className="h-32 w-full object-contain"
+                                        />
+                                    )}
                                     <span>{entity.name}</span>
                                 </div>
                             );

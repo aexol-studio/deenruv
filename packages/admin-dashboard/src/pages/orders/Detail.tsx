@@ -52,15 +52,14 @@ export const OrdersDetailPage = () => {
           <AddressCard type="shipping" />
           <ShippingMethod />
         </div>
+        <ProductsCard />
         {mode === 'update' ? (
           <>
-            <ProductsCard />
             <SurchargeCard />
             <PromotionsList />
           </>
         ) : (
           <>
-            <ProductsCard />
             <EntityCustomFields entityName="order" id={id} />
             <TaxSummary />
             {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}

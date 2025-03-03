@@ -36,6 +36,7 @@ import {
   UsersRound,
 } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
+import { SystemStatusIndicator } from './SystemStatusIndicator.js';
 
 type NavLink = {
   title: string;
@@ -43,6 +44,7 @@ type NavLink = {
   href: string;
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
   requiredPermissions?: Permission[];
+  indicator?: React.ReactNode;
 };
 
 interface NavProps {
@@ -171,6 +173,14 @@ export function Navigation({ isCollapsed }: NavProps) {
             id: 'link-global-settings',
             icon: Cog,
             requiredPermissions: [Permission.ReadSettings],
+          },
+          {
+            title: t('menu.systemStatus'),
+            href: Routes.status,
+            id: 'link-system-status',
+            icon: Cog,
+            requiredPermissions: [Permission.ReadSystem],
+            indicator: <SystemStatusIndicator />,
           },
         ],
       },
@@ -346,6 +356,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                       >
                         <link.icon className="mr-2 h-4 w-4" />
                         {link.title}
+                        {link.indicator}
                         {/* {link.label && (
                         <span
                           className={cn(

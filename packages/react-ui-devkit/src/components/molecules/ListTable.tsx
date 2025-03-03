@@ -72,12 +72,12 @@ export function ListTable<TData, TValue>({
         <>
             <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border bg-background`}>
                 <Table
-                    className="w-full"
+                    className={cn('w-full')}
                     {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}
                 >
-                    <TableHeader className="sticky top-0 z-20">
+                    <TableHeader className="sticky top-0 z-20 bg-background">
                         {table.getHeaderGroups().map(headerGroup => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow noHover key={headerGroup.id}>
                                 {headerGroup.headers.map(header => {
                                     return (
                                         <TableHead

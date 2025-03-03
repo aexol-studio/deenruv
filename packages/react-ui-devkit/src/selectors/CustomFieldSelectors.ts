@@ -33,10 +33,17 @@ export const AssetSelector = Selector('Asset')({
     preview: true,
 });
 
+export const PaymentMethodSelector = Selector('PaymentMethod')({
+    id: true,
+    name: true,
+    code: true,
+});
+
 export const customFieldSelectors = {
     Asset: AssetSelector,
     Product: ProductSelector,
     ProductVariant: ProductVariantSelector,
+    PaymentMethod: PaymentMethodSelector,
 };
 
 export type CustomFieldSelectorsType = {

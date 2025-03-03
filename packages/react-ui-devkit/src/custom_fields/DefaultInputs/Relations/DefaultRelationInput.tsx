@@ -9,6 +9,7 @@ export function DefaultRelationInput() {
     switch (field.entity) {
         case 'Asset':
         case 'Product':
+        case 'PaymentMethod':
         case 'ProductVariant': {
             if (field.list) return <ListRelationInput entityName={field.entity} />;
             return <RelationInput entityName={field.entity} />;

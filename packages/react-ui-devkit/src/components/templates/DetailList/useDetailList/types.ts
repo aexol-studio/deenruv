@@ -68,6 +68,7 @@ export const arrayRange = (start: number, stop: number) =>
 
 export const ListTypeKeys = {
     administrators: 'AdministratorFilterParameter' as const,
+    jobs: 'JobFilterParameter' as const,
     assets: 'AssetFilterParameter' as const,
     channels: 'ChannelFilterParameter' as const,
     collections: 'CollectionFilterParameter' as const,

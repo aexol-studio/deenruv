@@ -456,7 +456,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             <FiltersDialog {...filterProperties} />
                             {Search}
                         </div>
-                        <div className="flex">
+                        <div className="flex gap-2">
                             <ColumnView {...table} />
                             {!noCreateButton && isPermittedToCreate && (
                                 <Button
