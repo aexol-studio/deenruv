@@ -16,7 +16,7 @@ import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 
 interface RolesCardProps {
-  customerId: string | undefined;
+  customerId: string | undefined | null;
   groups: CustomerDetailType['groups'] | undefined;
 }
 

@@ -48,7 +48,7 @@ type EntityWithCF = {
 
 type Props<T extends ViableEntity> = {
   entityName: T;
-  id?: string;
+  id?: string | null;
   currentLanguage?: LanguageCode;
   onChange?: (customFields: CF, translations?: unknown) => void;
   hideButton?: boolean;
