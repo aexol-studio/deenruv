@@ -24,7 +24,7 @@ export interface StoreContextType<
     F extends keyof ModelTypes,
     FK extends keyof ModelTypes[F],
 > {
-    id?: string;
+    id?: string | null;
     loading: boolean;
     entity: E | null;
     error: string;
@@ -76,7 +76,7 @@ export interface DetailViewProviderProps<
     F extends keyof ModelTypes,
     FK extends keyof ModelTypes[F],
 > {
-    id?: string;
+    id?: string | null;
     form: FormType<F, FK>;
     locationId?: T;
     tab: string;

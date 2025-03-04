@@ -159,11 +159,13 @@ export const DetailViewStoreProvider = <
             entityGraphQL['selector'],
             graphQLSchema?.get(name)?.fields || [],
         );
+        if (id === undefined) return;
         setLoading(true);
         try {
-            const query = id
-                ? ({ [name]: [{ id }, selector] } as unknown as ValueTypes['Query'])
-                : ({ [name]: selector } as unknown as ValueTypes['Query']);
+            const query =
+                typeof id === 'string'
+                    ? ({ [name]: [{ id }, selector] } as unknown as ValueTypes['Query'])
+                    : ({ [name]: selector } as unknown as ValueTypes['Query']);
             const data = await apiClient('query')(query);
             const entity = data[name] as EntityType;
             if (data && data[name]) {

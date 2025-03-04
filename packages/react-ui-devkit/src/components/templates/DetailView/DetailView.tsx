@@ -73,7 +73,7 @@ interface Permissions {
 }
 
 interface DetailViewProps<LOCATION extends DetailKeys> {
-    id?: string;
+    id?: string | null;
     locationId: LOCATION;
     main: {
         name: string;
