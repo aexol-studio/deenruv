@@ -5,18 +5,14 @@ import { translationNS } from './translation-ns';
 import { FacetHarmonica } from './components';
 import { tables } from './tables.js';
 import { DedicatedButtons } from './components/DedicatedButtons.js';
+
 export const FacetHarmonicaUiPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'Facet Harmonica',
     components: [
         {
             id: 'products-detail-view',
-            component: FacetHarmonica.bind(null, {
-                // Change when there is a way to communicate plugin with app
-                facetsOptions: [],
-                checkedFacetsIds: [],
-                handleFacetCheckboxChange: () => {},
-            }),
+            component: FacetHarmonica,
         },
     ],
     // FacetsAccordions

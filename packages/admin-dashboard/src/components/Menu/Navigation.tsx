@@ -35,7 +35,8 @@ import {
   UsersRound,
 } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
-import { SystemStatusIndicator } from './SystemStatusIndicator.js';
+import { SystemStatusIndicator } from './Indicators/SystemStatusIndicator.js';
+import { OrdersStatusIndicators } from './Indicators/OrdersStatusIndicators.js';
 
 type NavLink = {
   title: string;
@@ -124,65 +125,11 @@ export function Navigation({ isCollapsed }: NavProps) {
             id: 'link-orders',
             icon: ShoppingCart,
             requiredPermissions: [Permission.ReadOrder],
+            indicator: <OrdersStatusIndicators />,
           },
         ],
       },
-      {
-        label: t('menuGroups.settings'),
-        id: 'settings-group',
-        links: [
-          {
-            title: t('menu.channels'),
-            href: Routes.channels.list,
-            id: 'link-channels',
-            icon: Globe2,
-            requiredPermissions: [Permission.ReadChannel],
-          },
-          {
-            title: t('menu.zones'),
-            href: Routes.zones.list,
-            id: 'link-zones',
-            icon: Globe,
-            requiredPermissions: [Permission.ReadZone],
-          },
-          {
-            title: t('menu.countries'),
-            href: Routes.countries.list,
-            id: 'link-countries',
-            icon: Flag,
-            requiredPermissions: [Permission.ReadCountry],
-          },
-          {
-            title: t('menu.taxCategories'),
-            href: Routes.taxCategories.list,
-            id: 'link-tax-categories',
-            icon: Coins,
-            requiredPermissions: [Permission.ReadTaxCategory],
-          },
-          {
-            title: t('menu.taxRates'),
-            href: Routes.taxRates.list,
-            id: 'link-tax-rates',
-            icon: Percent,
-            requiredPermissions: [Permission.ReadTaxRate],
-          },
-          {
-            title: t('menu.globalSettings'),
-            href: Routes.globalSettings,
-            id: 'link-global-settings',
-            icon: Cog,
-            requiredPermissions: [Permission.ReadSettings],
-          },
-          {
-            title: t('menu.systemStatus'),
-            href: Routes.status,
-            id: 'link-system-status',
-            icon: Cog,
-            requiredPermissions: [Permission.ReadSystem],
-            indicator: <SystemStatusIndicator />,
-          },
-        ],
-      },
+
       {
         label: t('menuGroups.users'),
         id: 'users-group',
@@ -247,6 +194,62 @@ export function Navigation({ isCollapsed }: NavProps) {
             id: 'link-stock',
             icon: MapPin,
             requiredPermissions: [Permission.ReadStockLocation],
+          },
+        ],
+      },
+      {
+        label: t('menuGroups.settings'),
+        id: 'settings-group',
+        links: [
+          {
+            title: t('menu.channels'),
+            href: Routes.channels.list,
+            id: 'link-channels',
+            icon: Globe2,
+            requiredPermissions: [Permission.ReadChannel],
+          },
+          {
+            title: t('menu.zones'),
+            href: Routes.zones.list,
+            id: 'link-zones',
+            icon: Globe,
+            requiredPermissions: [Permission.ReadZone],
+          },
+          {
+            title: t('menu.countries'),
+            href: Routes.countries.list,
+            id: 'link-countries',
+            icon: Flag,
+            requiredPermissions: [Permission.ReadCountry],
+          },
+          {
+            title: t('menu.taxCategories'),
+            href: Routes.taxCategories.list,
+            id: 'link-tax-categories',
+            icon: Coins,
+            requiredPermissions: [Permission.ReadTaxCategory],
+          },
+          {
+            title: t('menu.taxRates'),
+            href: Routes.taxRates.list,
+            id: 'link-tax-rates',
+            icon: Percent,
+            requiredPermissions: [Permission.ReadTaxRate],
+          },
+          {
+            title: t('menu.globalSettings'),
+            href: Routes.globalSettings,
+            id: 'link-global-settings',
+            icon: Cog,
+            requiredPermissions: [Permission.ReadSettings],
+          },
+          {
+            title: t('menu.systemStatus'),
+            href: Routes.status,
+            id: 'link-system-status',
+            icon: Cog,
+            requiredPermissions: [Permission.ReadSystem],
+            indicator: <SystemStatusIndicator />,
           },
         ],
       },

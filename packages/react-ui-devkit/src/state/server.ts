@@ -29,6 +29,15 @@ type ActiveClient = {
     me: boolean;
 };
 
+type GraphQLSchemaFieldBase = {
+    name: string;
+    type: string;
+};
+export type GraphQLSchemaField = GraphQLSchemaFieldBase & {
+    fields: GraphQLSchemaField[];
+    description: string;
+};
+export type GraphQLSchema = Map<string, GraphQLSchemaField>;
 interface Server {
     paymentMethodsType: PaymentMethodsType[];
     fulfillmentHandlers: ConfigurableOperationDefinitionType[];
@@ -40,6 +49,7 @@ interface Server {
     isConnected: boolean;
     activeClients: ActiveClient[];
     status: { data: SystemStatus; loading: boolean; lastUpdated: Date | null };
+    graphQLSchema: GraphQLSchema | null;
     jobQueues: Array<JobQueue>;
 }
 
@@ -55,6 +65,7 @@ interface Actions {
     setActiveClients(activeClients: ActiveClient[]): void;
     fetchStatus: () => Promise<void>;
     fetchPendingJobs: () => Promise<void>;
+    fetchGraphQLSchema: () => Promise<void>;
 }
 
 const getSystemStatus = async () => {
@@ -69,6 +80,38 @@ const getSystemStatus = async () => {
         console.error('Error fetching system status:', error);
         return null;
     }
+};
+
+const buildQuery = (level: number): string => {
+    if (level < 1) return '';
+    const buildTypeField = (currentLevel: number): string => {
+        if (currentLevel <= 0) return 'name';
+
+        return `
+            name
+            ofType {
+                ${buildTypeField(currentLevel - 1)}
+            }
+        `;
+    };
+    return `
+        query IntrospectionQuery {
+            __schema {
+                queryType {
+                    name
+                }
+                types {
+                    name
+                    fields {
+                        name
+                        type {
+                            ${buildTypeField(level)}
+                        }
+                    }
+                }
+            }
+        }
+    `;
 };
 
 export const useServer = create<Server & Actions>()(set => ({
@@ -86,6 +129,7 @@ export const useServer = create<Server & Actions>()(set => ({
         loading: false,
         lastUpdated: null,
     },
+    graphQLSchema: null,
     jobQueues: [],
     setServerConfig: serverConfig => set({ serverConfig }),
     setActiveAdministrator: activeAdministrator => set({ activeAdministrator }),
@@ -109,4 +153,98 @@ export const useServer = create<Server & Actions>()(set => ({
         const { jobQueues } = await apiClient('query')({ jobQueues: { name: true, running: true } });
         set({ jobQueues });
     },
+    fetchGraphQLSchema: async () => {
+        try {
+            const response = await fetch(window.__DEENRUV_SETTINGS__.api.uri + '/admin-api', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ query: buildQuery(6) }),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const { data, errors } = await response.json();
+            if (errors) {
+                throw new Error(errors[0]?.message || 'GraphQL query failed');
+            }
+            if (!data?.__schema) {
+                throw new Error('No schema data received');
+            }
+            const graphQLSchema = new Map<string, GraphQLSchemaField>();
+            bindSchema(graphQLSchema, data.__schema);
+            set({ graphQLSchema });
+        } catch (error) {
+            console.error('Error fetching GraphQL schema:', error);
+            set({ graphQLSchema: null });
+            throw error;
+        }
+    },
 }));
+
+const bindSchema = (
+    schema: GraphQLSchema,
+    fetched: { types: { name: string; fields: { name: string; type: { name: string } }[] }[] },
+) => {
+    const processingStack = new Set<string>();
+    const getFields = (
+        typeObj: { name: string | null; ofType?: any } | null,
+        depth = 0,
+        visited = new Set<string>(),
+    ): GraphQLSchemaField[] => {
+        if (!typeObj || depth > 3) return [];
+
+        let finalType = typeObj;
+        let typeWrapper = '';
+        while (finalType.ofType) {
+            if (finalType.name === 'List') typeWrapper += '[';
+            if (finalType.name === 'NonNull') typeWrapper += '!';
+            finalType = finalType.ofType;
+        }
+        typeWrapper = typeWrapper
+            .split('')
+            .map(() => ']')
+            .join('');
+
+        const typeName = finalType.name;
+        if (!typeName || visited.has(typeName)) return [];
+        if (processingStack.has(typeName)) return [];
+        if (typeName.startsWith('__')) return [];
+        visited.add(typeName);
+        processingStack.add(typeName);
+        const type = fetched.types.find(t => t.name === typeName);
+        if (!type?.fields?.length) {
+            processingStack.delete(typeName);
+            return [];
+        }
+        const fields = type.fields.map(field => {
+            const fieldType = `${field.type.name || ''}${typeWrapper}`;
+            return {
+                name: field.name,
+                type: fieldType,
+                fields: getFields(field.type, depth + 1, new Set(visited)),
+                description: `Field: ${field.name}`,
+            };
+        });
+        processingStack.delete(typeName);
+        return fields;
+    };
+
+    const queries = fetched.types.find(({ name }) => name === 'Query')?.fields || [];
+    queries.forEach(query => {
+        schema.set(query.name, {
+            type: 'Query',
+            description: `Query: ${query.name}`,
+            name: query.name,
+            fields: getFields(query.type),
+        });
+    });
+    // fetched.types.forEach(type => {
+    //     if (type.name && !type.name.startsWith('__')) {
+    //         schema.set(`Type:${type.name}`, {
+    //             fields: getFields({ name: type.name }),
+    //             description: `Type: ${type.name}`,
+    //         });
+    //     }
+    // });
+};

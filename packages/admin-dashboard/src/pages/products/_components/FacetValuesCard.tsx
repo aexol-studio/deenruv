@@ -23,20 +23,7 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
 
   const fetchFacets = useCallback(async () => {
     const response = await apiClient('query')({
-      facets: [
-        {},
-        {
-          items: {
-            values: {
-              id: true,
-              name: true,
-              facet: {
-                name: true,
-              },
-            },
-          },
-        },
-      ],
+      facets: [{}, { items: { values: { id: true, name: true, facet: { name: true } } } }],
     });
 
     const values = response.facets.items.map((i) => i.values).flat();
@@ -44,7 +31,7 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
     setAllFacetOptions(
       values.map((v) => ({
         value: v.id,
-        label: v.name,
+        label: `${v.facet.name.toUpperCase()} ${v.name}`,
         parent: v.facet.name,
         color: generateColorFromString(v.facet.name),
       })),
@@ -58,8 +45,7 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
   const getFacetValueLabel = useCallback(
     (facetValueId: string) => {
       const facetValue = allFacetsOptions.find((f) => f.value === facetValueId);
-
-      return facetValue ? `${(facetValue['parent'] as string).toUpperCase()} ${facetValue.label}` : facetValueId;
+      return facetValue ? facetValue.label : facetValueId;
     },
     [allFacetsOptions],
   );

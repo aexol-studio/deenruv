@@ -66,20 +66,20 @@ export class PluginStore {
         return input?.component;
     }
 
-    getComponents(location: string) {
+    getComponents(location: string, passedTab?: string) {
         const uniqueMappedComponents = new Map<string, React.ComponentType>();
         this.pluginMap.forEach(plugin => {
-            plugin.components?.forEach(({ component, id }) => {
+            plugin.components?.forEach(({ component, tab, id }) => {
                 const uniqueUUID = [
                     id,
                     plugin.name,
                     this.getUUID(),
                     component.displayName && `-${component.displayName}`,
+                    tab && `-${tab}`,
                 ]
                     .filter(Boolean)
                     .join('-');
-
-                if (id === location) {
+                if (id === location && (!passedTab || tab === passedTab)) {
                     uniqueMappedComponents.set(uniqueUUID, component as any);
                 }
             });

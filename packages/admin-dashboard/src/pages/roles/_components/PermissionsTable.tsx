@@ -62,7 +62,7 @@ export const PermissionsTable: React.FC<PermissionsTableProps> = ({ currentPermi
         {groupedPermissions &&
           Object.entries(groupedPermissions).map(([key, values]) => (
             <TableRow key={key}>
-              <TableCell className="bg-slate-50 px-4">
+              <TableCell className="dark:bg-secondary bg-slate-50 px-4 py-2" colSpan={values.length + 1}>
                 <Stack column className="gap-1">
                   <p className="text-base font-semibold">{t(`${key as keyof typeof permissionsJson}.title`)}</p>
                   <p className="text-xs">{t(`${key as keyof typeof permissionsJson}.description`)}</p>

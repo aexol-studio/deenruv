@@ -88,6 +88,7 @@ export const devConfig: DeenruvConfig = {
     importExportOptions: {
         importAssetsDir: path.join(__dirname, 'import-assets'),
     },
+    customFields: {},
     plugins: [
         // DashboardWidgetsPlugin,
         // MultivendorPlugin.init({

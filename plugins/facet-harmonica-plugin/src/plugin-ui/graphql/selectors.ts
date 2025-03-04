@@ -1,30 +1,29 @@
 import { FromSelector, Selector } from '../zeus';
 
-const FacetValueOptionsSelector = Selector('FacetValue')({
+const FacetValueSelector = Selector('FacetValue')({
     id: true,
     name: true,
     code: true,
     customFields: {
         hexColor: true,
-        image: {
-            preview: true,
-        },
+        image: { id: true, preview: true },
+        isHidden: true,
         isNew: true,
     },
 });
 
-export const FacetListOptionsSelector = Selector('FacetList')({
-    items: {
-        id: true,
-        code: true,
-        name: true,
-        customFields: {
-            colorsCollection: true,
-            usedForProductCreations: true,
-        },
-        values: FacetValueOptionsSelector,
-    },
+const FacetSelector = Selector('Facet')({
+    id: true,
+    name: true,
+    code: true,
+    customFields: { colorsCollection: true, usedForColors: true, usedForProductCreations: true },
+    values: FacetValueSelector,
 });
 
-export type FacetValueOptionsType = FromSelector<typeof FacetValueOptionsSelector, 'FacetValue'>;
-export type FacetListOptionsType = FromSelector<typeof FacetListOptionsSelector, 'FacetList'>;
+export const FacetListOptionsSelector = Selector('FacetList')({
+    items: FacetSelector,
+    totalItems: true,
+});
+
+export type FacetValue = FromSelector<typeof FacetValueSelector, 'FacetValue'>;
+export type Facet = FromSelector<typeof FacetSelector, 'Facet'>;

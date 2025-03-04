@@ -274,7 +274,7 @@ export function EntityCustomFields<T extends ViableEntity>({
 
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations?.find((v) => v.languageCode === currentLanguage);
-  console.log('additionalData', additionalData);
+
   return (
     <Card>
       <CardHeader>

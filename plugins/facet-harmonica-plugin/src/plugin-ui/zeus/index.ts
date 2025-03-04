@@ -894,7 +894,7 @@ export type ScalarCoders = {
 	Upload?: ScalarResolver;
 	Money?: ScalarResolver;
 }
-type ZEUS_UNIONS = GraphQLTypes["CreateAssetResult"] | GraphQLTypes["NativeAuthenticationResult"] | GraphQLTypes["AuthenticationResult"] | GraphQLTypes["CreateChannelResult"] | GraphQLTypes["UpdateChannelResult"] | GraphQLTypes["CreateCustomerResult"] | GraphQLTypes["UpdateCustomerResult"] | GraphQLTypes["DuplicateEntityResult"] | GraphQLTypes["RemoveFacetFromChannelResult"] | GraphQLTypes["UpdateGlobalSettingsResult"] | GraphQLTypes["TransitionOrderToStateResult"] | GraphQLTypes["SettlePaymentResult"] | GraphQLTypes["CancelPaymentResult"] | GraphQLTypes["AddFulfillmentToOrderResult"] | GraphQLTypes["CancelOrderResult"] | GraphQLTypes["RefundOrderResult"] | GraphQLTypes["SettleRefundResult"] | GraphQLTypes["TransitionFulfillmentToStateResult"] | GraphQLTypes["TransitionPaymentToStateResult"] | GraphQLTypes["ModifyOrderResult"] | GraphQLTypes["AddManualPaymentToOrderResult"] | GraphQLTypes["SetCustomerForDraftOrderResult"] | GraphQLTypes["RemoveOptionGroupFromProductResult"] | GraphQLTypes["CreatePromotionResult"] | GraphQLTypes["UpdatePromotionResult"] | GraphQLTypes["StockMovementItem"] | GraphQLTypes["UpdateOrderItemsResult"] | GraphQLTypes["RemoveOrderItemsResult"] | GraphQLTypes["SetOrderShippingMethodResult"] | GraphQLTypes["ApplyCouponCodeResult"] | GraphQLTypes["CustomFieldConfig"] | GraphQLTypes["SearchResultPrice"]
+type ZEUS_UNIONS = GraphQLTypes["CreateAssetResult"] | GraphQLTypes["NativeAuthenticationResult"] | GraphQLTypes["AuthenticationResult"] | GraphQLTypes["CreateChannelResult"] | GraphQLTypes["UpdateChannelResult"] | GraphQLTypes["CreateCustomerResult"] | GraphQLTypes["UpdateCustomerResult"] | GraphQLTypes["DuplicateEntityResult"] | GraphQLTypes["RemoveFacetFromChannelResult"] | GraphQLTypes["UpdateGlobalSettingsResult"] | GraphQLTypes["TransitionOrderToStateResult"] | GraphQLTypes["SettlePaymentResult"] | GraphQLTypes["CancelPaymentResult"] | GraphQLTypes["AddFulfillmentToOrderResult"] | GraphQLTypes["CancelOrderResult"] | GraphQLTypes["RefundOrderResult"] | GraphQLTypes["SettleRefundResult"] | GraphQLTypes["TransitionFulfillmentToStateResult"] | GraphQLTypes["TransitionPaymentToStateResult"] | GraphQLTypes["ModifyOrderResult"] | GraphQLTypes["AddManualPaymentToOrderResult"] | GraphQLTypes["SetCustomerForDraftOrderResult"] | GraphQLTypes["RemoveOptionGroupFromProductResult"] | GraphQLTypes["CreatePromotionResult"] | GraphQLTypes["UpdatePromotionResult"] | GraphQLTypes["StockMovementItem"] | GraphQLTypes["UpdateOrderItemsResult"] | GraphQLTypes["RemoveOrderItemsResult"] | GraphQLTypes["SetOrderShippingMethodResult"] | GraphQLTypes["ApplyCouponCodeResult"] | GraphQLTypes["CustomFieldConfig"] | GraphQLTypes["SearchResultPrice"] | GraphQLTypes["CopyOrderResult"]
 
 export type ValueTypes = {
     ["Query"]: AliasType<{
@@ -971,8 +971,8 @@ taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
+remindPrzelewy24?: [{	orderId: string | Variable<any, string>},boolean | `@${string}`],
 getRealizationURL?: [{	orderID: string | Variable<any, string>},boolean | `@${string}`],
-getProformaURL?: [{	orderID: string | Variable<any, string>},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -1139,8 +1139,9 @@ deleteZone?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse
 deleteZones?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
+copyOrder?: [{	id: string | Variable<any, string>},ValueTypes["CopyOrderResult"]],
 registerRealization?: [{	input: ValueTypes["OrderRealizationInput"] | Variable<any, string>},ValueTypes["OrderRealization"]],
-registerProforma?: [{	input: ValueTypes["RegisterProformaInput"] | Variable<any, string>},boolean | `@${string}`],
+sendInvoiceToWFirma?: [{	input: ValueTypes["SendInvoiceToWFirmaInput"] | Variable<any, string>},ValueTypes["WFirmaResponse"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -1829,8 +1830,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	taxSummary?:ValueTypes["OrderTaxSummary"],
 history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null | Variable<any, string>},ValueTypes["HistoryEntryList"]],
 	getRealization?:ValueTypes["OrderRealization"],
-	getProforma?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["OrderCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Fulfillment"]: AliasType<{
@@ -1901,7 +1901,6 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	shippingWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	total?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	totalWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
-	getProforma?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
 	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>
 };
@@ -1922,7 +1921,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	shippingWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	total?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	getProforma?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	selectedPaymentMethod?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -1943,7 +1942,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 };
 	["UpdateOrderInput"]: {
 	id: string | Variable<any, string>,
-	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["UpdateOrderCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ValueTypes["OrderLineInput"]> | Variable<any, string>,
@@ -2032,7 +2031,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ValueTypes["ModifyOrderOptions"] | undefined | null | Variable<any, string>,
 	couponCodes?: Array<string> | undefined | null | Variable<any, string>,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null | Variable<any, string>
+	shippingMethodIds?: Array<string> | undefined | null | Variable<any, string>,
+	customFields?: ValueTypes["UpdateOrderCustomFieldsInput"] | undefined | null | Variable<any, string>
 };
 	["AddItemInput"]: {
 	productVariantId: string | Variable<any, string>,
@@ -4552,6 +4552,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<ValueTypes["MetricType"]> | Variable<any, string>,
 	refresh?: boolean | undefined | null | Variable<any, string>
 };
+	["CopyOrderErrorResponse"]: AliasType<{
+	message?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CopyOrderResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
+		["...on CopyOrderErrorResponse"]?: ValueTypes["CopyOrderErrorResponse"]
+		__typename?: boolean | `@${string}`
+}>;
 	["OrderRealization"]: AliasType<{
 	orderID?:boolean | `@${string}`,
 	assetID?:boolean | `@${string}`,
@@ -4561,18 +4569,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	color?:boolean | `@${string}`,
 	key?:boolean | `@${string}`,
 	url?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["DiscountedPriceMetadata"]: AliasType<{
-	price?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	description?:boolean | `@${string}`,
-	isCustomerGroup?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["DiscountedPrice"]: AliasType<{
-	value?:boolean | `@${string}`,
-	metadata?:ValueTypes["DiscountedPriceMetadata"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ShopOrderRealization"]: AliasType<{
@@ -4594,8 +4590,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	note: string | Variable<any, string>,
 	color: string | Variable<any, string>
 };
-	["RegisterProformaInput"]: {
-	orderID: string | Variable<any, string>
+	["WFirmaResponse"]: AliasType<{
+	url?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SendInvoiceToWFirmaInput"]: {
+	orderID: string | Variable<any, string>,
+	invoiceType: string | Variable<any, string>
 };
 	["AdministratorFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4761,6 +4762,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	_and?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>,
 	_or?: Array<ValueTypes["FacetFilterParameter"]> | undefined | null | Variable<any, string>,
 	usedForColors?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
+	usedForProductCreations?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
 	colorsCollection?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>
 };
 	["FacetSortParameter"]: {
@@ -4770,6 +4772,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	code?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	usedForColors?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	usedForProductCreations?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	colorsCollection?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["FacetValueFilterParameter"]: {
@@ -5043,15 +5046,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["FacetCustomFields"]: AliasType<{
 	usedForColors?:boolean | `@${string}`,
+	usedForProductCreations?:boolean | `@${string}`,
 	colorsCollection?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CreateFacetCustomFieldsInput"]: {
 	usedForColors?: boolean | undefined | null | Variable<any, string>,
+	usedForProductCreations?: boolean | undefined | null | Variable<any, string>,
 	colorsCollection?: boolean | undefined | null | Variable<any, string>
 };
 	["UpdateFacetCustomFieldsInput"]: {
 	usedForColors?: boolean | undefined | null | Variable<any, string>,
+	usedForProductCreations?: boolean | undefined | null | Variable<any, string>,
 	colorsCollection?: boolean | undefined | null | Variable<any, string>
 };
 	["FacetValueCustomFields"]: AliasType<{
@@ -5073,15 +5079,24 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	isHidden?: boolean | undefined | null | Variable<any, string>,
 	imageId?: string | undefined | null | Variable<any, string>
 };
+	["OrderCustomFields"]: AliasType<{
+	selectedPaymentMethod?:ValueTypes["PaymentMethod"],
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateOrderCustomFieldsInput"]: {
+	selectedPaymentMethodId?: string | undefined | null | Variable<any, string>
+};
 	["OrderLineCustomFields"]: AliasType<{
-	attributes?:boolean | `@${string}`,
 	discountBy?:boolean | `@${string}`,
+	modifiedListPrice?:boolean | `@${string}`,
+	attributes?:boolean | `@${string}`,
 	selectedImage?:ValueTypes["Asset"],
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderLineCustomFieldsInput"]: {
-	attributes?: string | undefined | null | Variable<any, string>,
 	discountBy?: number | undefined | null | Variable<any, string>,
+	modifiedListPrice?: string | undefined | null | Variable<any, string>,
+	attributes?: string | undefined | null | Variable<any, string>,
 	selectedImageId?: string | undefined | null | Variable<any, string>
 };
 	["NativeAuthInput"]: {
@@ -5203,8 +5218,8 @@ taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
+remindPrzelewy24?: [{	orderId: string},boolean | `@${string}`],
 getRealizationURL?: [{	orderID: string},boolean | `@${string}`],
-getProformaURL?: [{	orderID: string},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -5371,8 +5386,9 @@ deleteZone?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
 deleteZones?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
 addMembersToZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
+copyOrder?: [{	id: string},ResolverInputTypes["CopyOrderResult"]],
 registerRealization?: [{	input: ResolverInputTypes["OrderRealizationInput"]},ResolverInputTypes["OrderRealization"]],
-registerProforma?: [{	input: ResolverInputTypes["RegisterProformaInput"]},boolean | `@${string}`],
+sendInvoiceToWFirma?: [{	input: ResolverInputTypes["SendInvoiceToWFirmaInput"]},ResolverInputTypes["WFirmaResponse"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -6071,8 +6087,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	taxSummary?:ResolverInputTypes["OrderTaxSummary"],
 history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined | null},ResolverInputTypes["HistoryEntryList"]],
 	getRealization?:ResolverInputTypes["OrderRealization"],
-	getProforma?:boolean | `@${string}`,
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["OrderCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Fulfillment"]: AliasType<{
@@ -6143,7 +6158,6 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	shippingWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	total?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
-	getProforma?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null
 };
@@ -6164,7 +6178,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	shippingWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
 	total?: ResolverInputTypes["SortOrder"] | undefined | null,
 	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	getProforma?: ResolverInputTypes["SortOrder"] | undefined | null
+	selectedPaymentMethod?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6185,7 +6199,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 };
 	["UpdateOrderInput"]: {
 	id: string,
-	customFields?: ResolverInputTypes["JSON"] | undefined | null
+	customFields?: ResolverInputTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ResolverInputTypes["OrderLineInput"]>,
@@ -6274,7 +6288,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ResolverInputTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<string> | undefined | null,
+	customFields?: ResolverInputTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 	productVariantId: string,
@@ -8816,6 +8831,15 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<ResolverInputTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
 };
+	["CopyOrderErrorResponse"]: AliasType<{
+	message?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["CopyOrderResult"]: AliasType<{
+	Order?:ResolverInputTypes["Order"],
+	CopyOrderErrorResponse?:ResolverInputTypes["CopyOrderErrorResponse"],
+		__typename?: boolean | `@${string}`
+}>;
 	["OrderRealization"]: AliasType<{
 	orderID?:boolean | `@${string}`,
 	assetID?:boolean | `@${string}`,
@@ -8825,18 +8849,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	color?:boolean | `@${string}`,
 	key?:boolean | `@${string}`,
 	url?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["DiscountedPriceMetadata"]: AliasType<{
-	price?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	description?:boolean | `@${string}`,
-	isCustomerGroup?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["DiscountedPrice"]: AliasType<{
-	value?:boolean | `@${string}`,
-	metadata?:ResolverInputTypes["DiscountedPriceMetadata"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ShopOrderRealization"]: AliasType<{
@@ -8858,8 +8870,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	note: string,
 	color: string
 };
-	["RegisterProformaInput"]: {
-	orderID: string
+	["WFirmaResponse"]: AliasType<{
+	url?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SendInvoiceToWFirmaInput"]: {
+	orderID: string,
+	invoiceType: string
 };
 	["AdministratorFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9025,6 +9042,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	_and?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null,
 	_or?: Array<ResolverInputTypes["FacetFilterParameter"]> | undefined | null,
 	usedForColors?: ResolverInputTypes["BooleanOperators"] | undefined | null,
+	usedForProductCreations?: ResolverInputTypes["BooleanOperators"] | undefined | null,
 	colorsCollection?: ResolverInputTypes["BooleanOperators"] | undefined | null
 };
 	["FacetSortParameter"]: {
@@ -9034,6 +9052,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	code?: ResolverInputTypes["SortOrder"] | undefined | null,
 	usedForColors?: ResolverInputTypes["SortOrder"] | undefined | null,
+	usedForProductCreations?: ResolverInputTypes["SortOrder"] | undefined | null,
 	colorsCollection?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
@@ -9307,15 +9326,18 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["FacetCustomFields"]: AliasType<{
 	usedForColors?:boolean | `@${string}`,
+	usedForProductCreations?:boolean | `@${string}`,
 	colorsCollection?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CreateFacetCustomFieldsInput"]: {
 	usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["UpdateFacetCustomFieldsInput"]: {
 	usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["FacetValueCustomFields"]: AliasType<{
@@ -9337,15 +9359,24 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	isHidden?: boolean | undefined | null,
 	imageId?: string | undefined | null
 };
+	["OrderCustomFields"]: AliasType<{
+	selectedPaymentMethod?:ResolverInputTypes["PaymentMethod"],
+		__typename?: boolean | `@${string}`
+}>;
+	["UpdateOrderCustomFieldsInput"]: {
+	selectedPaymentMethodId?: string | undefined | null
+};
 	["OrderLineCustomFields"]: AliasType<{
-	attributes?:boolean | `@${string}`,
 	discountBy?:boolean | `@${string}`,
+	modifiedListPrice?:boolean | `@${string}`,
+	attributes?:boolean | `@${string}`,
 	selectedImage?:ResolverInputTypes["Asset"],
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderLineCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
 	discountBy?: number | undefined | null,
+	modifiedListPrice?: string | undefined | null,
+	attributes?: string | undefined | null,
 	selectedImageId?: string | undefined | null
 };
 	["NativeAuthInput"]: {
@@ -9482,8 +9513,8 @@ export type ModelTypes = {
 	zone?: ModelTypes["Zone"] | undefined | null,
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<ModelTypes["MetricSummary"]>,
-	getRealizationURL?: string | undefined | null,
-	getProformaURL?: string | undefined | null
+	remindPrzelewy24?: boolean | undefined | null,
+	getRealizationURL?: string | undefined | null
 };
 	["Mutation"]: {
 		/** Create a new Administrator */
@@ -9792,8 +9823,9 @@ as well as removing any of the group's options from the Product's ProductVariant
 	addMembersToZone: ModelTypes["Zone"],
 	/** Remove members from a Zone */
 	removeMembersFromZone: ModelTypes["Zone"],
+	copyOrder: ModelTypes["CopyOrderResult"],
 	registerRealization?: ModelTypes["OrderRealization"] | undefined | null,
-	registerProforma?: string | undefined | null
+	sendInvoiceToWFirma?: ModelTypes["WFirmaResponse"] | undefined | null
 };
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10423,8 +10455,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	taxSummary: Array<ModelTypes["OrderTaxSummary"]>,
 	history: ModelTypes["HistoryEntryList"],
 	getRealization?: ModelTypes["OrderRealization"] | undefined | null,
-	getProforma?: string | undefined | null,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["OrderCustomFields"] | undefined | null
 };
 	["Fulfillment"]: {
 		nextStates: Array<string>,
@@ -10490,7 +10521,6 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: ModelTypes["NumberOperators"] | undefined | null,
 	total?: ModelTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: ModelTypes["NumberOperators"] | undefined | null,
-	getProforma?: ModelTypes["StringOperators"] | undefined | null,
 	_and?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined | null
 };
@@ -10511,7 +10541,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: ModelTypes["SortOrder"] | undefined | null,
 	total?: ModelTypes["SortOrder"] | undefined | null,
 	totalWithTax?: ModelTypes["SortOrder"] | undefined | null,
-	getProforma?: ModelTypes["SortOrder"] | undefined | null
+	selectedPaymentMethod?: ModelTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10532,7 +10562,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["UpdateOrderInput"]: {
 	id: string,
-	customFields?: ModelTypes["JSON"] | undefined | null
+	customFields?: ModelTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 	lines: Array<ModelTypes["OrderLineInput"]>,
@@ -10621,7 +10651,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ModelTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<string> | undefined | null,
+	customFields?: ModelTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 	productVariantId: string,
@@ -12659,6 +12690,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<ModelTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
 };
+	["CopyOrderErrorResponse"]: {
+		message: string
+};
+	["CopyOrderResult"]:ModelTypes["Order"] | ModelTypes["CopyOrderErrorResponse"];
 	["OrderRealization"]: {
 		orderID: string,
 	assetID: string,
@@ -12668,16 +12703,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	color: string,
 	key?: string | undefined | null,
 	url?: string | undefined | null
-};
-	["DiscountedPriceMetadata"]: {
-		price?: number | undefined | null,
-	name?: string | undefined | null,
-	description?: string | undefined | null,
-	isCustomerGroup?: boolean | undefined | null
-};
-	["DiscountedPrice"]: {
-		value?: number | undefined | null,
-	metadata?: Array<ModelTypes["DiscountedPriceMetadata"] | undefined | null> | undefined | null
 };
 	["ShopOrderRealization"]: {
 		note?: string | undefined | null,
@@ -12697,8 +12722,12 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	note: string,
 	color: string
 };
-	["RegisterProformaInput"]: {
-	orderID: string
+	["WFirmaResponse"]: {
+		url: string
+};
+	["SendInvoiceToWFirmaInput"]: {
+	orderID: string,
+	invoiceType: string
 };
 	["AdministratorFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -12864,6 +12893,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	_and?: Array<ModelTypes["FacetFilterParameter"]> | undefined | null,
 	_or?: Array<ModelTypes["FacetFilterParameter"]> | undefined | null,
 	usedForColors?: ModelTypes["BooleanOperators"] | undefined | null,
+	usedForProductCreations?: ModelTypes["BooleanOperators"] | undefined | null,
 	colorsCollection?: ModelTypes["BooleanOperators"] | undefined | null
 };
 	["FacetSortParameter"]: {
@@ -12873,6 +12903,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["SortOrder"] | undefined | null,
 	code?: ModelTypes["SortOrder"] | undefined | null,
 	usedForColors?: ModelTypes["SortOrder"] | undefined | null,
+	usedForProductCreations?: ModelTypes["SortOrder"] | undefined | null,
 	colorsCollection?: ModelTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
@@ -13146,14 +13177,17 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["FacetCustomFields"]: {
 		usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["CreateFacetCustomFieldsInput"]: {
 	usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["UpdateFacetCustomFieldsInput"]: {
 	usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["FacetValueCustomFields"]: {
@@ -13174,14 +13208,22 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	isHidden?: boolean | undefined | null,
 	imageId?: string | undefined | null
 };
+	["OrderCustomFields"]: {
+		selectedPaymentMethod?: ModelTypes["PaymentMethod"] | undefined | null
+};
+	["UpdateOrderCustomFieldsInput"]: {
+	selectedPaymentMethodId?: string | undefined | null
+};
 	["OrderLineCustomFields"]: {
-		attributes?: string | undefined | null,
-	discountBy?: number | undefined | null,
+		discountBy?: number | undefined | null,
+	modifiedListPrice?: string | undefined | null,
+	attributes?: string | undefined | null,
 	selectedImage?: ModelTypes["Asset"] | undefined | null
 };
 	["OrderLineCustomFieldsInput"]: {
-	attributes?: string | undefined | null,
 	discountBy?: number | undefined | null,
+	modifiedListPrice?: string | undefined | null,
+	attributes?: string | undefined | null,
 	selectedImageId?: string | undefined | null
 };
 	["NativeAuthInput"]: {
@@ -13316,8 +13358,8 @@ export type GraphQLTypes = {
 	zone?: GraphQLTypes["Zone"] | undefined | null,
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<GraphQLTypes["MetricSummary"]>,
-	getRealizationURL?: string | undefined | null,
-	getProformaURL?: string | undefined | null
+	remindPrzelewy24?: boolean | undefined | null,
+	getRealizationURL?: string | undefined | null
 };
 	["Mutation"]: {
 	__typename: "Mutation",
@@ -13627,8 +13669,9 @@ as well as removing any of the group's options from the Product's ProductVariant
 	addMembersToZone: GraphQLTypes["Zone"],
 	/** Remove members from a Zone */
 	removeMembersFromZone: GraphQLTypes["Zone"],
+	copyOrder: GraphQLTypes["CopyOrderResult"],
 	registerRealization?: GraphQLTypes["OrderRealization"] | undefined | null,
-	registerProforma?: string | undefined | null
+	sendInvoiceToWFirma?: GraphQLTypes["WFirmaResponse"] | undefined | null
 };
 	["AdministratorListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14328,8 +14371,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	taxSummary: Array<GraphQLTypes["OrderTaxSummary"]>,
 	history: GraphQLTypes["HistoryEntryList"],
 	getRealization?: GraphQLTypes["OrderRealization"] | undefined | null,
-	getProforma?: string | undefined | null,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["OrderCustomFields"] | undefined | null
 };
 	["Fulfillment"]: {
 	__typename: "Fulfillment",
@@ -14399,7 +14441,6 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: GraphQLTypes["NumberOperators"] | undefined | null,
 	total?: GraphQLTypes["NumberOperators"] | undefined | null,
 	totalWithTax?: GraphQLTypes["NumberOperators"] | undefined | null,
-	getProforma?: GraphQLTypes["StringOperators"] | undefined | null,
 	_and?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined | null
 };
@@ -14420,7 +14461,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
 	total?: GraphQLTypes["SortOrder"] | undefined | null,
 	totalWithTax?: GraphQLTypes["SortOrder"] | undefined | null,
-	getProforma?: GraphQLTypes["SortOrder"] | undefined | null
+	selectedPaymentMethod?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14441,7 +14482,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["UpdateOrderInput"]: {
 		id: string,
-	customFields?: GraphQLTypes["JSON"] | undefined | null
+	customFields?: GraphQLTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["FulfillOrderInput"]: {
 		lines: Array<GraphQLTypes["OrderLineInput"]>,
@@ -14530,7 +14571,8 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: GraphQLTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<string> | undefined | null,
+	customFields?: GraphQLTypes["UpdateOrderCustomFieldsInput"] | undefined | null
 };
 	["AddItemInput"]: {
 		productVariantId: string,
@@ -17073,6 +17115,15 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	types: Array<GraphQLTypes["MetricType"]>,
 	refresh?: boolean | undefined | null
 };
+	["CopyOrderErrorResponse"]: {
+	__typename: "CopyOrderErrorResponse",
+	message: string
+};
+	["CopyOrderResult"]:{
+        	__typename:"Order" | "CopyOrderErrorResponse"
+        	['...on Order']: '__union' & GraphQLTypes["Order"];
+	['...on CopyOrderErrorResponse']: '__union' & GraphQLTypes["CopyOrderErrorResponse"];
+};
 	["OrderRealization"]: {
 	__typename: "OrderRealization",
 	orderID: string,
@@ -17083,18 +17134,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	color: string,
 	key?: string | undefined | null,
 	url?: string | undefined | null
-};
-	["DiscountedPriceMetadata"]: {
-	__typename: "DiscountedPriceMetadata",
-	price?: number | undefined | null,
-	name?: string | undefined | null,
-	description?: string | undefined | null,
-	isCustomerGroup?: boolean | undefined | null
-};
-	["DiscountedPrice"]: {
-	__typename: "DiscountedPrice",
-	value?: number | undefined | null,
-	metadata?: Array<GraphQLTypes["DiscountedPriceMetadata"] | undefined | null> | undefined | null
 };
 	["ShopOrderRealization"]: {
 	__typename: "ShopOrderRealization",
@@ -17115,8 +17154,13 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	note: string,
 	color: string
 };
-	["RegisterProformaInput"]: {
-		orderID: string
+	["WFirmaResponse"]: {
+	__typename: "WFirmaResponse",
+	url: string
+};
+	["SendInvoiceToWFirmaInput"]: {
+		orderID: string,
+	invoiceType: string
 };
 	["AdministratorFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined | null,
@@ -17282,6 +17326,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	_and?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined | null,
 	_or?: Array<GraphQLTypes["FacetFilterParameter"]> | undefined | null,
 	usedForColors?: GraphQLTypes["BooleanOperators"] | undefined | null,
+	usedForProductCreations?: GraphQLTypes["BooleanOperators"] | undefined | null,
 	colorsCollection?: GraphQLTypes["BooleanOperators"] | undefined | null
 };
 	["FacetSortParameter"]: {
@@ -17291,6 +17336,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["SortOrder"] | undefined | null,
 	code?: GraphQLTypes["SortOrder"] | undefined | null,
 	usedForColors?: GraphQLTypes["SortOrder"] | undefined | null,
+	usedForProductCreations?: GraphQLTypes["SortOrder"] | undefined | null,
 	colorsCollection?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["FacetValueFilterParameter"]: {
@@ -17565,14 +17611,17 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["FacetCustomFields"]: {
 	__typename: "FacetCustomFields",
 	usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["CreateFacetCustomFieldsInput"]: {
 		usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["UpdateFacetCustomFieldsInput"]: {
 		usedForColors?: boolean | undefined | null,
+	usedForProductCreations?: boolean | undefined | null,
 	colorsCollection?: boolean | undefined | null
 };
 	["FacetValueCustomFields"]: {
@@ -17594,15 +17643,24 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	isHidden?: boolean | undefined | null,
 	imageId?: string | undefined | null
 };
+	["OrderCustomFields"]: {
+	__typename: "OrderCustomFields",
+	selectedPaymentMethod?: GraphQLTypes["PaymentMethod"] | undefined | null
+};
+	["UpdateOrderCustomFieldsInput"]: {
+		selectedPaymentMethodId?: string | undefined | null
+};
 	["OrderLineCustomFields"]: {
 	__typename: "OrderLineCustomFields",
-	attributes?: string | undefined | null,
 	discountBy?: number | undefined | null,
+	modifiedListPrice?: string | undefined | null,
+	attributes?: string | undefined | null,
 	selectedImage?: GraphQLTypes["Asset"] | undefined | null
 };
 	["OrderLineCustomFieldsInput"]: {
-		attributes?: string | undefined | null,
-	discountBy?: number | undefined | null,
+		discountBy?: number | undefined | null,
+	modifiedListPrice?: string | undefined | null,
+	attributes?: string | undefined | null,
 	selectedImageId?: string | undefined | null
 };
 	["NativeAuthInput"]: {
@@ -18429,7 +18487,7 @@ type ZEUS_VARIABLES = {
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];
 	["RealizationAssetInput"]: ValueTypes["RealizationAssetInput"];
 	["OrderRealizationInput"]: ValueTypes["OrderRealizationInput"];
-	["RegisterProformaInput"]: ValueTypes["RegisterProformaInput"];
+	["SendInvoiceToWFirmaInput"]: ValueTypes["SendInvoiceToWFirmaInput"];
 	["AdministratorFilterParameter"]: ValueTypes["AdministratorFilterParameter"];
 	["AdministratorSortParameter"]: ValueTypes["AdministratorSortParameter"];
 	["AssetFilterParameter"]: ValueTypes["AssetFilterParameter"];
@@ -18479,6 +18537,7 @@ type ZEUS_VARIABLES = {
 	["UpdateFacetCustomFieldsInput"]: ValueTypes["UpdateFacetCustomFieldsInput"];
 	["CreateFacetValueCustomFieldsInput"]: ValueTypes["CreateFacetValueCustomFieldsInput"];
 	["UpdateFacetValueCustomFieldsInput"]: ValueTypes["UpdateFacetValueCustomFieldsInput"];
+	["UpdateOrderCustomFieldsInput"]: ValueTypes["UpdateOrderCustomFieldsInput"];
 	["OrderLineCustomFieldsInput"]: ValueTypes["OrderLineCustomFieldsInput"];
 	["NativeAuthInput"]: ValueTypes["NativeAuthInput"];
 }

@@ -288,7 +288,7 @@ export const ReplicateInput = () => {
 
     return (
         <FormProvider {...methods}>
-            <div className="flex w-full gap-8 justify-beetwen p-16">
+            <div className="w-full px-4 py-2 md:px-8 md:py-4 flex gap-4">
                 <Card className="w-full">
                     <CardHeader>
                         <div className="flex justify-between items-start">
@@ -329,7 +329,7 @@ export const ReplicateInput = () => {
                         <div className="flex justify-between items-start">
                             <div className="flex flex-col gap-2">
                                 <CardTitle>{t('The most promising customers')}</CardTitle>
-                                <CardDescription>{t('customer emails:')}</CardDescription>
+                                <CardDescription>{t('Customer emails:')}</CardDescription>
                             </div>
                         </div>
                     </CardHeader>

@@ -90,6 +90,7 @@ interface DetailViewProps<LOCATION extends DetailKeys> {
         sidebarReplacement?: React.ReactNode;
     }>;
     topActions?: {
+        texts?: { submitButton?: string; deleteButton?: string };
         inline?: React.ReactNode[];
         dropdown?: React.ReactNode[];
     };
@@ -154,6 +155,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
                     ],
                 }}
                 permissions={permissions}
+                texts={topActions?.texts}
             />
         </DetailViewStoreProvider>
     );
@@ -162,12 +164,14 @@ export const DetailView = <LOCATION extends DetailKeys>({
 const DetailTabs = ({
     topActions,
     permissions,
+    texts,
 }: {
     topActions?: { inline?: React.ReactNode[]; dropdown?: React.ReactNode[] };
     permissions: Permissions;
+    texts?: { submitButton?: string; deleteButton?: string };
 }) => {
     const { t } = useTranslation('common');
-    const { entity, actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges, form } =
+    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges, form } =
         useDetailView();
 
     const [, setSearchParams] = useSearchParams();
@@ -242,7 +246,6 @@ const DetailTabs = ({
                                     </Button>
                                 </SimpleTooltip>
                             )}
-
                             {showCreateButton && (
                                 <SimpleTooltip
                                     content={buttonDisabled ? t('buttonDisabledTooltip') : undefined}
@@ -253,7 +256,7 @@ const DetailTabs = ({
                                         className="ml-auto justify-self-end"
                                         disabled={buttonDisabled}
                                     >
-                                        {t('create')}
+                                        {texts?.submitButton || t('create')}
                                     </Button>
                                 </SimpleTooltip>
                             )}
@@ -273,7 +276,7 @@ const DetailTabs = ({
                                                 variant="ghost"
                                                 className="w-full justify-start"
                                             >
-                                                {t('delete')}
+                                                {texts?.deleteButton || t('delete')}
                                             </Button>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>

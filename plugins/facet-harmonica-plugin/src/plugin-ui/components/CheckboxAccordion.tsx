@@ -7,11 +7,11 @@ import {
     Checkbox,
     Label,
 } from '@deenruv/react-ui-devkit';
-import { FacetListOptionsType, FacetValueOptionsType } from '../graphql';
+import { FacetValue } from '../graphql';
 interface CheckboxAccordionProps {
     checkedFacetsIds?: string[];
     title: string | undefined;
-    allFacets: FacetValueOptionsType[] | undefined;
+    allFacets: FacetValue[] | undefined;
     onChange: (itemId: string, checked: boolean) => void;
 }
 

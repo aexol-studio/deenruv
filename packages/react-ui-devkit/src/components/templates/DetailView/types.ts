@@ -1,4 +1,5 @@
 import type { useFFLP } from '@/hooks';
+import { ServerConfigType } from '@/selectors/BaseSelectors.js';
 import type { DeenruvTabs, DetailKeys, ExternalDetailLocationSelector } from '@/types';
 import type { ModelTypes } from '@deenruv/admin-types';
 

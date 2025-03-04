@@ -183,6 +183,7 @@ export const ProductDetailSelector = Selector('Product')({
   enabled: true,
   createdAt: true,
   updatedAt: true,
+
   channels: {
     id: true,
     code: true,
@@ -209,7 +210,11 @@ export const ProductDetailSelector = Selector('Product')({
     preview: true,
     id: true,
   },
-  collections: { slug: true, name: true, parent: { slug: true } },
+  collections: {
+    slug: true,
+    name: true,
+    parent: { slug: true },
+  },
   // customFields: {
   //   delivery: true,
   //   discountBy: true,

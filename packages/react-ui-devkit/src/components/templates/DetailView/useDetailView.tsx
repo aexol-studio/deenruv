@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { createContext, useContext } from 'react';
-import { DeletionResult, ModelTypes, ValueTypes } from '@deenruv/admin-types';
+import {
+    AllTypesProps,
+    DeletionResult,
+    fields,
+    ModelTypes,
+    ReturnTypes,
+    ValueTypes,
+} from '@deenruv/admin-types';
 
 import { type DetailKeys, DetailLocations, type ExternalDetailLocationSelector } from '@/types';
 import { DetailViewMarker, checkUnsavedChanges } from '@/components';
@@ -10,6 +17,13 @@ import { useNavigate } from 'react-router-dom';
 import { GraphQLError } from 'graphql';
 import type { EntityType, PropsType, StoreContextType } from './types';
 import { useRouteGuard } from '@/hooks';
+import { useServer } from '@/state/server.js';
+import { customFieldsForQuery } from '@/zeus_client/customFieldsForQuery.js';
+interface Field {
+    name: string;
+    type?: string;
+    fields?: Field[];
+}
 
 const handleError = (resp: { response: { errors: GraphQLError[] } }) => {
     const code = resp.response?.errors?.[0]?.extensions.code as string;
@@ -64,6 +78,7 @@ export const DetailViewStoreProvider = <
     ...props
 }: React.PropsWithChildren<PropsType<T, F, FK>>) => {
     const { form, id, locationId, sidebar: _sidebar, tabs, tab: _tab } = props;
+    const graphQLSchema = useServer(p => p.graphQLSchema);
 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -133,20 +148,22 @@ export const DetailViewStoreProvider = <
 
     const getMarker = () => {
         if (!locationId) return null;
-        return <DetailViewMarker position={locationId} />;
+        return <DetailViewMarker position={locationId} tab={tab} />;
     };
 
-    const fetchEntity = async () => {
+    const fetchEntity = useCallback(async () => {
         const entityGraphQL = DetailLocations[locationId as keyof typeof DetailLocations];
-        console.log(locationId);
         const name = (entityGraphQL['type'].charAt(0).toLowerCase() +
             entityGraphQL['type'].slice(1)) as keyof ValueTypes['Query'];
-        const selector = entityGraphQL['selector'];
-        if (!id) return;
-
+        const selector = customFieldsForQuery(
+            entityGraphQL['selector'],
+            graphQLSchema?.get(name)?.fields || [],
+        );
         setLoading(true);
         try {
-            const query = { [name]: [{ id }, selector] } as unknown as ValueTypes['Query'];
+            const query = id
+                ? ({ [name]: [{ id }, selector] } as unknown as ValueTypes['Query'])
+                : ({ [name]: selector } as unknown as ValueTypes['Query']);
             const data = await apiClient('query')(query);
             const entity = data[name] as EntityType;
             if (data && data[name]) {
@@ -160,7 +177,7 @@ export const DetailViewStoreProvider = <
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, locationId, graphQLSchema]);
 
     return (
         <DetailViewStoreContext.Provider

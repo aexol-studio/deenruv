@@ -1,11 +1,18 @@
+'use client';
+
 import {
   Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Input,
   ScrollArea,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -13,16 +20,17 @@ import {
   Tooltip,
   apiClient,
 } from '@deenruv/react-ui-devkit';
-import { AssetType, assetsSelector } from '@/graphql/base';
-
+import { type AssetType, assetsSelector } from '@/graphql/base';
 import { DeletionResult } from '@deenruv/admin-types';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { TooltipContent, TooltipTrigger } from '@radix-ui/react-tooltip';
 import { format } from 'date-fns';
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { EntityCustomFields, Stack } from '@/components';
+import { Copy, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
 interface AssetProps {
   asset: {
@@ -34,34 +42,35 @@ interface AssetProps {
 }
 
 export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
-  const { t } = useTranslation('assets');
+  const { t } = useTranslation(['common', 'assets']);
   const [open, setOpen] = useState(false);
   const [assetDetails, setAssetDetails] = useState<AssetType>();
   const [assetName, setAssetName] = useState(asset.name);
+  const [isLoading, setIsLoading] = useState(true);
 
   const tableData = [
     {
-      header: t('detailsTable.id'),
+      header: t('assets:detailsTable.id', 'ID'),
       render: assetDetails?.id,
     },
     {
-      header: t('detailsTable.name'),
+      header: t('assets:detailsTable.name', 'Name'),
       render: <Input value={assetName} onChange={(e) => setAssetName(e.target.value)} />,
     },
     {
-      header: t('detailsTable.fileSize'),
+      header: t('assets:detailsTable.fileSize', 'File Size'),
       render: assetDetails?.fileSize && assetDetails.fileSize / 1000 + 'kB',
     },
     {
-      header: t('detailsTable.createdAt'),
+      header: t('assets:detailsTable.createdAt', 'Created At'),
       render: assetDetails?.createdAt && format(new Date(assetDetails.createdAt), 'yyyy-MM-dd, HH:ss'),
     },
     {
-      header: t('detailsTable.size'),
-      render: assetDetails?.width + 'px x ' + assetDetails?.height + 'px',
+      header: t('assets:detailsTable.size', 'Dimensions'),
+      render: assetDetails?.width && assetDetails?.height ? `${assetDetails.width}px x ${assetDetails.height}px` : '-',
     },
     {
-      header: t('detailsTable.source'),
+      header: t('assets:detailsTable.source', 'Source'),
       render: assetDetails?.source,
     },
   ];
@@ -76,22 +85,22 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
       updateAsset: [{ input: { id: asset.id, name: assetName } }, { name: true }],
     });
     if (updateAsset.name) {
-      toast.message(t('editSuccess'));
+      toast.success(t('assets:editSuccess', 'Asset updated successfully'));
       onAssetChange();
       onClose();
-    } else toast.error(t('editFail'));
-  }, [assetName, asset.id, onAssetChange, t]);
+    } else toast.error(t('assets:editFail', 'Failed to update asset'));
+  }, [assetName, asset.id, onAssetChange, onClose, t]);
 
   const onDelete = useCallback(async () => {
     const { deleteAsset } = await apiClient('mutation')({
       deleteAsset: [{ input: { assetId: asset.id } }, { message: true, result: true }],
     });
     if (deleteAsset.result === DeletionResult.DELETED) {
-      toast.message(t('deleteSuccess'));
+      toast.success(t('assets:deleteSuccess', 'Asset deleted successfully'));
       onAssetChange();
       onClose();
-    } else toast.error(t('deleteFail') + ': ' + deleteAsset.message);
-  }, [asset.id, onAssetChange, t]);
+    } else toast.error(t('assets:deleteFail', 'Failed to delete asset') + ': ' + deleteAsset.message);
+  }, [asset.id, onAssetChange, onClose, t]);
 
   const getAsset = async () => {
     const response = await apiClient('query')({
@@ -106,31 +115,102 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
     if (response.asset) setAssetDetails(response.asset);
   };
 
+  const copyAssetUrl = () => {
+    navigator.clipboard.writeText(asset.preview);
+    toast.success(t('assets:urlCopied', 'Asset URL copied to clipboard'));
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild onClick={() => getAsset()}>
-        <div className="flex h-fit cursor-pointer flex-col items-center justify-between border border-solid border-gray-300 text-center dark:border-gray-700">
-          <div className="relative h-28 w-28">
-            <img className="absolute left-0 top-0 h-full w-full" src={asset.preview + '?preset=tiny'} />
+      <DialogTrigger asChild>
+        <div
+          className="bg-background group relative overflow-hidden rounded-lg border transition-all hover:shadow-md"
+          onClick={() => getAsset()}
+        >
+          <div className="absolute right-2 top-2 z-10">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="bg-background/80 h-8 w-8 rounded-full p-0 opacity-0 shadow-sm backdrop-blur-sm group-hover:opacity-100"
+                >
+                  <MoreHorizontal size={16} />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    copyAssetUrl();
+                  }}
+                  className="gap-2"
+                >
+                  <Copy size={14} />
+                  <span>{t('common:copy', 'Copy URL')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    getAsset();
+                    setOpen(true);
+                  }}
+                  className="gap-2"
+                >
+                  <Pencil size={14} />
+                  <span>{t('common:edit', 'Edit')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    getAsset();
+                    onDelete();
+                  }}
+                  className="text-destructive gap-2"
+                >
+                  <Trash size={14} />
+                  <span>{t('common:delete', 'Delete')}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
+
+          <div className="bg-muted/50 aspect-square">
+            {isLoading && <Skeleton className="h-full w-full" />}
+            <img
+              src={`${asset.preview}?preset=tile`}
+              alt={asset.name}
+              className="h-full w-full object-cover transition-opacity"
+              style={{ opacity: isLoading ? 0 : 1 }}
+              onLoad={() => setIsLoading(false)}
+              onError={() => setIsLoading(false)}
+            />
+          </div>
+
           <Tooltip>
-            <TooltipTrigger className="w-full whitespace-nowrap bg-gray-100 p-1 text-sm dark:bg-gray-800">
-              <div className="truncate">{asset.name}</div>
+            <TooltipTrigger className="block w-full truncate p-2 text-left text-xs font-medium" title={asset.name}>
+              {asset.name}
             </TooltipTrigger>
-            <TooltipContent className="z-50 m-2 border border-solid border-gray-200 bg-gray-50 px-2 py-1 text-black">
+            <TooltipContent className="bg-popover text-popover-foreground z-50 rounded-md border px-3 py-1.5 text-sm shadow-md">
               {asset.name}
             </TooltipContent>
           </Tooltip>
         </div>
       </DialogTrigger>
+
       <DialogContent className="max-w-[70vw]">
         <DialogHeader>
           <DialogTitle>{asset.name}</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="h-[40vh]">
+        <ScrollArea className="h-[60vh]">
           <Stack className="h-full">
-            <div className="w-1/2 border border-solid border-gray-300 p-2 shadow">
-              <img src={assetDetails?.source + '?preset=medium'} />
+            <div className="w-1/2 overflow-hidden rounded-md border p-2 shadow">
+              <img
+                src={assetDetails?.source ? `${assetDetails.source}?preset=medium` : asset.preview}
+                alt={asset.name}
+                className="h-full w-full object-contain"
+              />
             </div>
             <Stack column className="w-1/2 gap-4 pl-8 pr-2">
               <div>
@@ -151,13 +231,13 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
         </ScrollArea>
         <div className="flex justify-between">
           <Button variant={'destructive'} onClick={() => onDelete()}>
-            {t('delete')}
+            {t('assets:delete', 'Delete')}
           </Button>
           <div className="flex gap-3">
             <Button variant={'outline'} onClick={() => onEditName()}>
-              {t('edit')}
+              {t('assets:edit', 'Edit')}
             </Button>
-            <Button onClick={() => onClose()}>{t('close')}</Button>
+            <Button onClick={() => onClose()}>{t('assets:close', 'Close')}</Button>
           </div>
         </div>
       </DialogContent>

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Button,
   Drawer,
@@ -9,103 +11,68 @@ import {
   DrawerClose,
   usePluginStore,
   Switch,
-  useSettings,
   ScrollArea,
+  useServer,
+  type GraphQLSchemaField,
+  type GraphQLSchema,
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
 
-const lightMode = {
-  '--background': '0 0% 100%',
-  '--foreground': '240 10% 3.9%',
+const SchemaField = ({ field, depth = 0 }: { field: GraphQLSchemaField; depth?: number }) => {
+  const [expanded, setExpanded] = useState(depth < 2);
+  const hasFields = field.fields && field.fields.length > 0;
+  const indent = Array(depth).fill('  ').join('');
 
-  '--card': '0 0% 100%',
-  '--card-foreground': '240 10% 3.9%',
-
-  '--popover': '0 0% 100%',
-  '--popover-foreground': '240 10% 3.9%',
-
-  '--primary': '240 5.9% 10%',
-  '--primary-foreground': '0 0% 98%',
-
-  '--secondary': '240 4.8% 95.9%',
-  '--secondary-foreground': '240 5.9% 10%',
-
-  '--muted': '240 4.8% 95.9%',
-  '--muted-foreground': '240 3.8% 46.1%',
-
-  '--accent': '240 4.8% 95.9%',
-  '--accent-foreground': '240 5.9% 10%',
-
-  '--destructive': '0 84.2% 60.2%',
-  '--destructive-foreground': '0 0% 98%',
-
-  '--border': '240 5.9% 90%',
-  '--input': '240 5.9% 90%',
-  '--ring': '240 10% 3.9%',
-
-  '--radius': '0.5rem',
-
-  '--warning': '38 92% 50%',
-  '--warning-foreground': '48 96% 89%',
+  return (
+    <div className="font-mono">
+      <div className="flex items-start">
+        <button
+          onClick={() => hasFields && setExpanded(!expanded)}
+          className={`mr-1 ${hasFields ? 'cursor-pointer' : 'cursor-default'} text-xs`}
+        >
+          {hasFields ? (expanded ? '▼' : '►') : '•'}
+        </button>
+        <div>
+          <span className="text-blue-600 dark:text-blue-400">{field.name}</span>
+          <span className="text-gray-600 dark:text-gray-400">: </span>
+          <span className="text-green-600 dark:text-green-400">{field.type}</span>
+          {field.description && (
+            <span className="ml-2 text-xs italic text-gray-500 dark:text-gray-400">// {field.description}</span>
+          )}
+        </div>
+      </div>
+      {expanded && hasFields && (
+        <div className="ml-4">
+          {field.fields.map((subField, index) => (
+            <SchemaField key={`${subField.name}-${index}`} field={subField} depth={depth + 1} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
-const darkMode = {
-  '--background': '240 10% 3.9%',
-  '--foreground': '0 0% 98%',
+const SchemaViewer = ({ schema }: { schema: GraphQLSchema | undefined }) => {
+  if (!schema || schema.size === 0) {
+    return <div className="text-gray-500">No schema available</div>;
+  }
 
-  '--card': '240 10% 3.9%',
-  '--card-foreground': '0 0% 98%',
-
-  '--popover': '240 10% 3.9%',
-  '--popover-foreground': '0 0% 98%',
-
-  '--primary': '0 0% 98%',
-  '--primary-foreground': '240 5.9% 10%',
-
-  '--secondary': '240 3.7% 15.9%',
-  '--secondary-foreground': '0 0% 98%',
-
-  '--muted': '240 3.7% 15.9%',
-  '--muted-foreground': '240 5% 64.9%',
-
-  '--accent': '240 3.7% 15.9%',
-  '--accent-foreground': '0 0% 98%',
-
-  '--destructive': '0 62.8% 30.6%',
-  '--destructive-foreground': '0 0% 98%',
-
-  '--border': '240 3.7% 15.9%',
-  '--input': '240 3.7% 15.9%',
-  '--ring': '240 4.9% 83.9%',
-
-  '--warning': '48 96% 89%',
-  '--warning-foreground': '38 92% 50%',
+  return (
+    <div className="space-y-2">
+      {Array.from(schema.entries()).map(([key, field]) => (
+        <div key={key} className="border-b pb-2 last:border-b-0">
+          <div className="mb-1 text-sm font-semibold">{key}</div>
+          <SchemaField field={field} />
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export const DeenruvDeveloperIndicator = () => {
-  const { theme } = useSettings();
+  const { graphQLSchema } = useServer(({ graphQLSchema }) => ({ graphQLSchema }));
   const { plugins, viewMarkers, setViewMarkers } = usePluginStore();
-  const [colorVariables, setColorVariables] = useState(theme === 'light' ? lightMode : darkMode);
-
-  const updateColor = (key: string, value: string) => {
-    setColorVariables((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const setColors = () => {
-    const root = document.documentElement;
-    Object.entries(colorVariables).forEach(([key, value]) => {
-      root.style.setProperty(key, value);
-    });
-  };
-
-  const copyStylesToClipboard = () => {
-    const cssVariables = Object.entries(colorVariables)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('\n');
-    navigator.clipboard.writeText(cssVariables).then(() => {
-      alert('CSS Variables copied to clipboard!');
-    });
-  };
+  const [showSchema, setShowSchema] = useState(false);
 
   return (
     <div className="fixed bottom-4 right-4">
@@ -118,86 +85,89 @@ export const DeenruvDeveloperIndicator = () => {
             DDP
           </Button>
         </DrawerTrigger>
-        <DrawerContent>
-          <div className="mx-auto w-full max-w-xl">
+        <DrawerContent className="w-full max-w-5xl place-self-end">
+          <div className="w-full">
             <DrawerHeader>
               <DrawerTitle>DDP - Deenruv Developer Panel</DrawerTitle>
             </DrawerHeader>
             <div className="p-4 pb-0">
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center space-x-2">
-                  <Switch id="markers" checked={viewMarkers} onCheckedChange={setViewMarkers} />
-                  <label
-                    htmlFor="markers"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Show markers (ctrl + x)
-                  </label>
-                </div>
-                <div className="grid grid-cols-4 gap-4 md:grid-cols-5 lg:grid-cols-6">
-                  {/* {Object.entries(colorVariables).map(([key, value]) => {
-                    const [h, s, l] = value.split(' ').map(Number);
-                    const hexValue = `#${[h, s, l]
-                      .map((v, i) => (i === 0 ? v : Math.round(v)))
-                      .map((v) => v.toString(16).padStart(2, '0'))
-                      .join('')}`;
-
-                    return (
-                      <div key={key} className="flex flex-col items-center gap-2">
-                        <label className="text-center text-sm font-medium capitalize">
-                          {key.replace('--', '').replace(/-/g, ' ')}
+              <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+                <div className="space-y-4 md:w-1/4">
+                  <div className="rounded-md border p-3">
+                    <h3 className="mb-2 text-sm font-medium">Controls</h3>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-2">
+                        <Switch id="markers" checked={viewMarkers} onCheckedChange={setViewMarkers} />
+                        <label
+                          htmlFor="markers"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Show markers (ctrl + x)
                         </label>
-                        <input
-                          type="color"
-                          value={hexValue}
-                          onChange={(e) => {
-                            const hex = e.target.value;
-                            const r = parseInt(hex.slice(1, 3), 16);
-                            const g = parseInt(hex.slice(3, 5), 16);
-                            const b = parseInt(hex.slice(5, 7), 16);
-                            const hsl = `${r} ${g}% ${b}%`;
-                            updateColor(key, hsl);
-                          }}
-                          className="h-10 w-10 rounded border"
-                        />
                       </div>
-                    );
-                  })} */}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <ScrollArea className="h-[100px]">
-                    <div className="flex flex-col gap-2">
-                      {plugins.map((plugin) => (
-                        <div key={plugin.name} className="flex items-center space-x-2">
-                          <label
-                            htmlFor={plugin.name}
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            {plugin.name} ({plugin.version})
-                          </label>
-                        </div>
-                      ))}
+
+                      <div className="flex items-center space-x-2">
+                        <Switch id="schema" checked={showSchema} onCheckedChange={setShowSchema} />
+                        <label
+                          htmlFor="schema"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Show GraphQL Schema
+                        </label>
+                      </div>
                     </div>
-                  </ScrollArea>
+                  </div>
+
+                  <div className="rounded-md border p-3">
+                    <div className="mb-1 flex items-center gap-2">
+                      <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                      <h3 className="text-sm font-medium">Plugins</h3>
+                    </div>
+                    <ScrollArea className="mt-2 h-[250px]">
+                      <div className="grid gap-2 pr-2">
+                        {plugins.map((plugin) => (
+                          <div
+                            key={plugin.name}
+                            className="dark:hover:bg-gray-750 flex items-center rounded-md border border-gray-200 bg-gray-50 p-2 transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800"
+                          >
+                            <div className="flex-1">
+                              <div className="text-sm font-medium">{plugin.name}</div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400">v{plugin.version}</div>
+                            </div>
+                            <div className="mr-1 h-2 w-2 rounded-full bg-green-500" title="Active"></div>
+                          </div>
+                        ))}
+                        {plugins.length === 0 && (
+                          <div className="py-4 text-center text-sm italic text-gray-500 dark:text-gray-400">
+                            No plugins installed
+                          </div>
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                </div>
+
+                <div className="md:w-3/4">
+                  {showSchema && graphQLSchema ? (
+                    <div className="h-full rounded-md border p-3">
+                      <h3 className="mb-2 text-sm font-medium">GraphQL Schema</h3>
+                      <ScrollArea className="h-[350px]">
+                        <div className="rounded bg-gray-50 p-2 text-xs dark:bg-gray-800">
+                          <SchemaViewer schema={graphQLSchema} />
+                        </div>
+                      </ScrollArea>
+                    </div>
+                  ) : (
+                    <div className="flex h-full items-center justify-center rounded-md border p-3">
+                      <p className="text-center text-gray-500">
+                        {showSchema ? 'No schema available' : "Enable 'Show GraphQL Schema' to view the schema here"}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
             <DrawerFooter>
-              <div className="flex items-center gap-2">
-                <Button onClick={setColors} variant="action" className="w-full">
-                  Apply styles
-                </Button>
-                <Button onClick={copyStylesToClipboard} variant="outline" className="w-full">
-                  Copy styles
-                </Button>
-                <Button
-                  onClick={() => setColorVariables(theme === 'light' ? lightMode : darkMode)}
-                  variant="destructive"
-                  className="w-full"
-                >
-                  Reset styles
-                </Button>
-              </div>
               <DrawerClose asChild>
                 <Button variant="outline">Close</Button>
               </DrawerClose>

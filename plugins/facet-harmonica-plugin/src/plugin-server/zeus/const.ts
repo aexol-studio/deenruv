@@ -174,10 +174,10 @@ export const AllTypesProps: Record<string,any> = {
 		metricSummary:{
 			input:"MetricSummaryInput"
 		},
-		getRealizationURL:{
+		remindPrzelewy24:{
 
 		},
-		getProformaURL:{
+		getRealizationURL:{
 
 		}
 	},
@@ -656,11 +656,14 @@ export const AllTypesProps: Record<string,any> = {
 		removeMembersFromZone:{
 
 		},
+		copyOrder:{
+
+		},
 		registerRealization:{
 			input:"OrderRealizationInput"
 		},
-		registerProforma:{
-			input:"RegisterProformaInput"
+		sendInvoiceToWFirma:{
+			input:"SendInvoiceToWFirmaInput"
 		}
 	},
 	AdministratorListOptions:{
@@ -910,7 +913,6 @@ export const AllTypesProps: Record<string,any> = {
 		shippingWithTax:"NumberOperators",
 		total:"NumberOperators",
 		totalWithTax:"NumberOperators",
-		getProforma:"StringOperators",
 		_and:"OrderFilterParameter",
 		_or:"OrderFilterParameter"
 	},
@@ -931,7 +933,7 @@ export const AllTypesProps: Record<string,any> = {
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
 		totalWithTax:"SortOrder",
-		getProforma:"SortOrder"
+		selectedPaymentMethod:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -942,7 +944,7 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	UpdateOrderInput:{
-		customFields:"JSON"
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	FulfillOrderInput:{
 		lines:"OrderLineInput",
@@ -989,7 +991,8 @@ export const AllTypesProps: Record<string,any> = {
 		updateBillingAddress:"UpdateOrderAddressInput",
 		refund:"AdministratorRefundInput",
 		refunds:"AdministratorRefundInput",
-		options:"ModifyOrderOptions"
+		options:"ModifyOrderOptions",
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	AddItemInput:{
 		customFields:"OrderLineCustomFieldsInput"
@@ -1457,7 +1460,7 @@ export const AllTypesProps: Record<string,any> = {
 	OrderRealizationInput:{
 		assets:"RealizationAssetInput"
 	},
-	RegisterProformaInput:{
+	SendInvoiceToWFirmaInput:{
 
 	},
 	AdministratorFilterParameter:{
@@ -1624,6 +1627,7 @@ export const AllTypesProps: Record<string,any> = {
 		_and:"FacetFilterParameter",
 		_or:"FacetFilterParameter",
 		usedForColors:"BooleanOperators",
+		usedForProductCreations:"BooleanOperators",
 		colorsCollection:"BooleanOperators"
 	},
 	FacetSortParameter:{
@@ -1633,6 +1637,7 @@ export const AllTypesProps: Record<string,any> = {
 		name:"SortOrder",
 		code:"SortOrder",
 		usedForColors:"SortOrder",
+		usedForProductCreations:"SortOrder",
 		colorsCollection:"SortOrder"
 	},
 	FacetValueFilterParameter:{
@@ -1916,6 +1921,9 @@ export const AllTypesProps: Record<string,any> = {
 	UpdateFacetValueCustomFieldsInput:{
 
 	},
+	UpdateOrderCustomFieldsInput:{
+
+	},
 	OrderLineCustomFieldsInput:{
 
 	},
@@ -1998,8 +2006,8 @@ export const ReturnTypes: Record<string,any> = {
 		zones:"ZoneList",
 		zone:"Zone",
 		metricSummary:"MetricSummary",
-		getRealizationURL:"String",
-		getProformaURL:"String"
+		remindPrzelewy24:"Boolean",
+		getRealizationURL:"String"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2164,8 +2172,9 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
 		removeMembersFromZone:"Zone",
+		copyOrder:"CopyOrderResult",
 		registerRealization:"OrderRealization",
-		registerProforma:"String"
+		sendInvoiceToWFirma:"WFirmaResponse"
 	},
 	Administrator:{
 		id:"ID",
@@ -2426,8 +2435,7 @@ export const ReturnTypes: Record<string,any> = {
 		taxSummary:"OrderTaxSummary",
 		history:"HistoryEntryList",
 		getRealization:"OrderRealization",
-		getProforma:"String",
-		customFields:"JSON"
+		customFields:"OrderCustomFields"
 	},
 	Fulfillment:{
 		nextStates:"String",
@@ -3901,6 +3909,13 @@ export const ReturnTypes: Record<string,any> = {
 		label:"String",
 		value:"Float"
 	},
+	CopyOrderErrorResponse:{
+		message:"String"
+	},
+	CopyOrderResult:{
+		"...on Order":"Order",
+		"...on CopyOrderErrorResponse":"CopyOrderErrorResponse"
+	},
 	OrderRealization:{
 		orderID:"ID",
 		assetID:"ID",
@@ -3911,23 +3926,17 @@ export const ReturnTypes: Record<string,any> = {
 		key:"String",
 		url:"String"
 	},
-	DiscountedPriceMetadata:{
-		price:"Int",
-		name:"String",
-		description:"String",
-		isCustomerGroup:"Boolean"
-	},
-	DiscountedPrice:{
-		value:"Int",
-		metadata:"DiscountedPriceMetadata"
-	},
 	ShopOrderRealization:{
 		note:"String",
 		plannedAt:"String",
 		finalPlannedAt:"String"
 	},
+	WFirmaResponse:{
+		url:"String"
+	},
 	FacetCustomFields:{
 		usedForColors:"Boolean",
+		usedForProductCreations:"Boolean",
 		colorsCollection:"Boolean"
 	},
 	FacetValueCustomFields:{
@@ -3936,9 +3945,13 @@ export const ReturnTypes: Record<string,any> = {
 		isHidden:"Boolean",
 		image:"Asset"
 	},
+	OrderCustomFields:{
+		selectedPaymentMethod:"PaymentMethod"
+	},
 	OrderLineCustomFields:{
-		attributes:"String",
 		discountBy:"Int",
+		modifiedListPrice:"String",
+		attributes:"String",
 		selectedImage:"Asset"
 	},
 	CustomFields:{

@@ -7,12 +7,13 @@ import { Button } from '@/components';
 import { toast } from 'sonner';
 import { CopyIcon, PlugZap } from 'lucide-react';
 
-export const DetailViewMarker = ({ position }: { position?: DetailLocationID }) => {
+export const DetailViewMarker = ({ position, tab }: { position?: DetailLocationID; tab?: string }) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
 
     const code = `const DeenruvUIPlugin = createPlugin({
     components: [{
         id: "${position}",
+        tab: "${tab}",
         component: YourComponent,
     }],
 });`;
@@ -63,7 +64,7 @@ export const DetailViewMarker = ({ position }: { position?: DetailLocationID }) 
                     </div>
                 </div>
             )}
-            <Renderer position={position} />
+            <Renderer position={position} tab={tab} />
         </div>
     );
 };

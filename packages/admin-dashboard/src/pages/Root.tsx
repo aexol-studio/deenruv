@@ -69,9 +69,9 @@ export const Root = () => {
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
   const setLanguage = useSettings((p) => p.setLanguage);
   const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
+  const fetchGraphQLSchema = useServer((p) => p.fetchGraphQLSchema);
   const [loaded, setLoaded] = useState(false);
   const { initializeOrderCustomFields } = useOrder();
-
   useEffect(() => {
     const init = async () => {
       const activeAdministratorResponse = await apiClient('query')({
@@ -87,9 +87,7 @@ export const Root = () => {
             new Set(activeAdministratorResponse.activeAdministrator.user.roles.flatMap((role) => role.permissions)),
           ),
         );
-
         await fetchAndSetChannels();
-
         setLoaded(true);
       }
       if (window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode) {
@@ -134,7 +132,10 @@ export const Root = () => {
         setFulfillmentHandlers(fulfillmentsResponse.value.fulfillmentHandlers);
       }
     };
-    init();
+    fetchGraphQLSchema().then(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await init();
+    });
   }, []);
 
   return (

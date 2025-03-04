@@ -29,12 +29,12 @@ import {
 import { Bell, GripVertical, LogOutIcon, MenuIcon, Moon, Slash, Sun, Trash2Icon, SunMoon } from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 
-import { Navigation } from './AwesomeMenu/Navigation.js';
+import { Navigation } from './Navigation.js';
 import { NavLink, useMatches, useNavigate } from 'react-router-dom';
-import { ChannelSwitcher } from './AwesomeMenu/ChannelSwitcher.js';
+import { ChannelSwitcher } from './ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
 import { BrandLogo } from '@/components/BrandLogo.js';
-import { LanguagesDropdown } from './AwesomeMenu/LanguagesDropdown.js';
+import { LanguagesDropdown } from './LanguagesDropdown.js';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup

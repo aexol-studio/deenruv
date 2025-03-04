@@ -20,6 +20,8 @@ export function generateCustomFields(
     for (const field of customFields) {
         const ui = 'ui' in field ? (field.ui as unknown as Record<string, unknown>) : undefined;
         const tab = ((ui && 'tab' in ui && ui?.tab) || 'General') as string;
+        const hidden = ui && 'hidden' in ui && ui.hidden;
+        if (hidden) continue;
         const Registered = ui && 'component' in ui && getInputComponent(ui.component as string);
         if (Registered) {
             fields.push({ ...field, tab, component: <Registered /> });

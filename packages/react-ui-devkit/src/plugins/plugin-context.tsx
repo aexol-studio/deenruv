@@ -28,7 +28,7 @@ const PluginStoreContext = createContext<{
     setViewMarkers: (view: boolean) => void;
     openDropdown: boolean;
     setOpenDropdown: (open: boolean) => void;
-    getComponents: (position: string) => React.ComponentType<any>[];
+    getComponents: (position: string, tab?: string) => React.ComponentType<any>[];
     getModalComponents: (location: ModalLocationsKeys) => React.ComponentType<any>[];
     getInputComponent: (id: string) => React.ComponentType<any> | null;
     getDetailViewTabs: (location: DetailLocationID) => DeenruvUIPlugin['tabs'];
@@ -74,8 +74,8 @@ export const PluginProvider: FC<
     const [viewMarkers, setViewMarkers] = useState(false);
     const [openDropdown, setOpenDropdown] = useState(false);
 
-    const getComponents = (position: string) => {
-        return plugins.getComponents(position) || [];
+    const getComponents = (position: string, tab?: string) => {
+        return plugins.getComponents(position, tab) || [];
     };
 
     const getInputComponent = (id: string) => {

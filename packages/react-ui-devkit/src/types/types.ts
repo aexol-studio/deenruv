@@ -25,6 +25,9 @@ export type DeenruvAdminPanelSettings = {
         defaultChannelCode?: string;
         defaultLanguageCode?: LanguageCode;
         defaultTranslationLanguageCode?: LanguageCode;
+        extras?: {
+            orderObservableStates?: string[];
+        };
     };
     branding: {
         name: string;
@@ -144,6 +147,8 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
 type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
     /** Used as localization */
     id: KEY;
+    /** Tab */
+    tab?: string;
     /** Detail view component */
     component: React.ComponentType<{ data: DetailLocationsType<KEY> }>;
 };
