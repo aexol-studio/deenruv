@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { createContext, useContext } from 'react';
-import {
-    AllTypesProps,
-    DeletionResult,
-    fields,
-    ModelTypes,
-    ReturnTypes,
-    ValueTypes,
-} from '@deenruv/admin-types';
+import { DeletionResult, ModelTypes, ValueTypes } from '@deenruv/admin-types';
 
 import { type DetailKeys, DetailLocations, type ExternalDetailLocationSelector } from '@/types';
 import { DetailViewMarker, checkUnsavedChanges } from '@/components';
@@ -67,6 +60,8 @@ export const DetailViewStoreContext = createContext<
     setActiveTab: () => {},
     getMarker: () => null,
     hasUnsavedChanges: false,
+    setAdditionalData: () => null,
+    additionalData: {},
 });
 
 export const DetailViewStoreProvider = <
@@ -87,6 +82,7 @@ export const DetailViewStoreProvider = <
     const [tab, setTab] = useState(_tab);
     const [sidebar, _setSidebar] = useState(_sidebar);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+    const [additionalData, setAdditionalData] = useState<Record<string, unknown>>();
     useRouteGuard({ shouldBlock: hasUnsavedChanges });
 
     useEffect(() => {
@@ -127,8 +123,10 @@ export const DetailViewStoreProvider = <
         (type: 'submit' | 'delete') => {
             const { onDeleted, onSubmitted, base } = form || {};
 
-            if (type === 'submit') onSubmitted?.(base?.state)?.then(handleSuccess).catch(handleError);
-            if (type === 'delete') onDeleted?.(base?.state)?.then(handleSuccess).catch(handleError);
+            if (type === 'submit')
+                onSubmitted?.(base?.state, additionalData)?.then(handleSuccess).catch(handleError);
+            if (type === 'delete')
+                onDeleted?.(base?.state, additionalData)?.then(handleSuccess).catch(handleError);
         },
         [props.form, handleSuccess],
     );
@@ -199,6 +197,8 @@ export const DetailViewStoreProvider = <
                 setActiveTab: setTab,
                 getMarker,
                 hasUnsavedChanges,
+                setAdditionalData,
+                additionalData,
             }}
         >
             {children}

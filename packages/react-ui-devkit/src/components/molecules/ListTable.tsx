@@ -14,9 +14,11 @@ interface ListTableProps<TData, TValue> {
 
 const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
     const isPinned = column.getIsPinned();
-    const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
-    const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
-    const selectIdColumnWidth = 28;
+    // const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
+    // const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
+    const narrowColumnWidth = 28;
+    const isNarrowColumn = ['select-id', 'select', 'actions'].includes(column.id);
+    const columnWidth = isNarrowColumn ? narrowColumnWidth : column.getSize();
 
     return {
         // boxShadow: isLastLeftPinnedColumn
@@ -28,10 +30,9 @@ const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
         right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.95 : 1,
         position: isPinned ? 'sticky' : 'relative',
-        width:
-            column.id === 'select-id' || column.id === 'select' || column.id === 'id' || 'actions'
-                ? selectIdColumnWidth
-                : column.getSize(),
+        minWidth: columnWidth,
+        maxWidth: columnWidth,
+        width: columnWidth,
         zIndex: isPinned ? 1 : 0,
     };
 };
@@ -42,6 +43,9 @@ const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
     return isPinned ? cn('bg-background') : '';
 };
 
+const TABLE_HEADER_HEIGHT = 48;
+const MINIMUM_ROW_HEIGHT = 30;
+
 export function ListTable<TData, TValue>({
     table,
     columns,
@@ -49,7 +53,20 @@ export function ListTable<TData, TValue>({
     Paginate,
 }: ListTableProps<TData, TValue>) {
     const tableWrapperRef = useRef<HTMLDivElement>(null);
+    const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
     const { t } = useTranslation('common');
+
+    useEffect(() => {
+        if (rowRefs.current.length && tableWrapperRef.current) {
+            const tbodyHeight = tableWrapperRef.current?.clientHeight - TABLE_HEADER_HEIGHT;
+            const rowHeight = tbodyHeight / 10;
+            const finalRowHeight = rowHeight >= MINIMUM_ROW_HEIGHT ? rowHeight : MINIMUM_ROW_HEIGHT;
+
+            rowRefs.current.forEach(row => {
+                if (row) row.style.height = `${finalRowHeight}px`;
+            });
+        }
+    }, [table.getRowModel().rows.length]);
 
     useEffect(() => {
         const PADDING_X_VALUE = 64;
@@ -72,7 +89,8 @@ export function ListTable<TData, TValue>({
         <>
             <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border bg-background`}>
                 <Table
-                    className={cn('w-full')}
+                    className={cn('w-full table-fixed')}
+                    style={{ tableLayout: 'fixed' }}
                     {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}
                 >
                     <TableHeader className="sticky top-0 z-20 bg-background">
@@ -99,8 +117,12 @@ export function ListTable<TData, TValue>({
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map(row => (
-                                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                            table.getRowModel().rows.map((row, idx) => (
+                                <TableRow
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && 'selected'}
+                                    ref={el => (rowRefs.current[idx] = el)}
+                                >
                                     {row.getVisibleCells().map(cell => (
                                         <TableCell
                                             key={cell.id}

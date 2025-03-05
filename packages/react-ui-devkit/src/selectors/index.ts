@@ -12,3 +12,8 @@ export * from './StockLocationDetailSelector';
 export * from './CustomerDetailSelector';
 export * from './CustomerGroupDetailSelector';
 export * from './OrderDetailSelector';
+export * from './TaxRateSelector';
+export * from './ZoneDetailSelector';
+export * from './SellerDetailSelector';
+export * from './CountryDetailSelector';
+export * from './ChannelDetailSelector';

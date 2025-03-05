@@ -26,7 +26,7 @@ export const SelectIDColumn = <T extends { id: string }>(): ColumnDef<T> => {
             const amount = table.getSelectedRowModel().flatRows.length;
 
             return (
-                <div className="relative flex gap-2">
+                <div className="relative flex gap-2 w-12">
                     <Checkbox
                         checked={checked}
                         onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
@@ -105,5 +105,11 @@ export const SelectIDColumn = <T extends { id: string }>(): ColumnDef<T> => {
         enableSorting: false,
         enableHiding: false,
         enableColumnFilter: false,
+        size: 28,
+        minSize: 28,
+        maxSize: 28,
+        meta: {
+            isFixedWidth: true,
+        },
     };
 };

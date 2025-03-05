@@ -1,164 +1,80 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-
-import {
-  Routes,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Input,
-  apiClient,
-  useRouteGuard,
-} from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-import { useGFFLP } from '@/lists/useGflp';
-import { areObjectsEqual } from '@/utils/deepEqual';
-import { cache } from '@/lists/cache';
-import { PageHeader } from '@/pages/sellers/_components/PageHeader';
-import { SellerListSelector, SellerListType } from '@/graphql/sellers';
-import { Stack } from '@/components';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { getMutation, GFFLPFormField, useMutation, DetailView, createDeenruvForm } from '@deenruv/react-ui-devkit';
 import { useValidators } from '@/hooks/useValidators.js';
+import { ModelTypes } from '@deenruv/admin-types';
+import { SellerDetailView } from '@/pages/sellers/_components/SellerDetailView.js';
+
+const CreateSellerMutation = getMutation('createSeller');
+const EditSellerMutation = getMutation('updateSeller');
+const DeleteSellerMutation = getMutation('deleteSeller');
+
+type CreateSellerInput = ModelTypes['CreateSellerInput'];
+type FormDataType = Partial<{
+  name: GFFLPFormField<CreateSellerInput['name']>;
+}>;
 
 export const SellersDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const editMode = useMemo(() => !!id, [id]);
-  const { resetCache } = cache('sellers');
-  const { t } = useTranslation('sellers');
-  const [loading, setLoading] = useState(id ? true : false);
-  const [seller, setSeller] = useState<SellerListType>();
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  useRouteGuard({ shouldBlock: !buttonDisabled });
+  const [update] = useMutation(EditSellerMutation);
+  const [create] = useMutation(CreateSellerMutation);
+  const [remove] = useMutation(DeleteSellerMutation);
   const { nameValidator } = useValidators();
 
-  const fetchSeller = useCallback(async () => {
-    if (id) {
-      const response = await apiClient('query')({
-        seller: [
-          {
+  const onSubmitHandler = useCallback(
+    (data: FormDataType) => {
+      if (!data.name?.validatedValue) {
+        throw new Error('Name is required.');
+      }
+
+      const inputData = {
+        name: data.name.validatedValue,
+      };
+
+      if (id) {
+        return update({
+          input: {
             id,
+            ...inputData,
           },
-          SellerListSelector,
-        ],
-      });
-      setSeller(response.seller);
-      setLoading(false);
-    } else setLoading(false);
-  }, [id]);
+        });
+      } else {
+        return create({
+          input: inputData,
+        });
+      }
+    },
+    [id, update, create],
+  );
 
-  useEffect(() => {
-    setLoading(true);
-    fetchSeller();
-  }, [id, setLoading, fetchSeller]);
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
 
-  const { state, setField, haveValidFields } = useGFFLP(
-    'CreateSellerInput',
-    'name',
-  )({
-    name: nameValidator,
-  });
+    return remove({ input: { id } });
+  }, [remove, id]);
 
-  useEffect(() => {
-    if (!seller) return;
-    setField('name', seller.name);
-  }, [seller]);
-
-  const createSeller = useCallback(() => {
-    setButtonDisabled(true);
-    apiClient('mutation')({
-      createSeller: [
-        {
-          input: {
-            name: state.name!.validatedValue!,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then((resp) => {
-        toast.message(t('toasts.sellerCreatedSuccess'));
-        navigate(Routes.sellers.to(resp.createSeller.id));
-      })
-      .catch(() => toast.error(t('toasts.sellerCreatedError')));
-  }, [state, t, navigate]);
-
-  const updateSeller = useCallback(() => {
-    apiClient('mutation')({
-      updateSeller: [
-        {
-          input: {
-            id: id!,
-            name: state.name?.validatedValue,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then(() => {
-        toast.message(t('toasts.sellerUpdateSuccess'));
-        fetchSeller();
-        resetCache();
-      })
-      .catch(() => toast.error(t('toasts.sellerUpdateError')));
-  }, [state, resetCache, fetchSeller, id, t]);
-
-  useEffect(() => {
-    const areEqual = areObjectsEqual(
-      {
-        name: state.name?.value,
-      },
-      {
-        name: seller?.name,
-      },
-    );
-
-    setButtonDisabled(areEqual || !haveValidFields);
-  }, [state, seller, editMode]);
-
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="sellers-detail-view"
+        main={{
+          name: 'seller',
+          label: 'Seller',
+          component: <SellerDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateSellerInput',
+            keys: ['name'],
+            config: {
+              name: nameValidator,
+            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+      />
     </div>
-  ) : !seller && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.sellerLoadingError', { value: id })}
-    </div>
-  ) : (
-    <main className="my-4 min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <PageHeader
-          seller={seller}
-          editMode={editMode}
-          buttonDisabled={buttonDisabled}
-          onCreate={createSeller}
-          onEdit={updateSeller}
-        />
-        <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack column className="gap-3">
-                  <Input
-                    className="w-1/2"
-                    label={t('details.basic.name')}
-                    value={state.name?.value}
-                    onChange={(e) => setField('name', e.target.value)}
-                    errors={state.name?.errors}
-                    required
-                  />
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
-        </Stack>
-      </div>
-    </main>
   );
 };

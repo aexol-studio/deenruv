@@ -23,6 +23,8 @@ import {
 import { GFFLPFormField, useGFFLP } from '@/hooks';
 import { useServer } from '@/state/server.js';
 import { useTranslation } from 'react-i18next';
+import { getPermissions } from '@/utils/getPermissions.js';
+import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter.js';
 interface DetailViewFormProps<
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
@@ -40,11 +42,13 @@ interface DetailViewFormProps<
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
+        additionalData: Record<string, unknown> | undefined,
     ) => Promise<Record<string, unknown>> | undefined;
     onDeleted?: (
         data: Partial<{
             [P in keyof Z]: GFFLPFormField<Z[P]>;
         }>,
+        additionalData: Record<string, unknown> | undefined,
     ) => Promise<Record<string, unknown>> | undefined;
 }
 
@@ -94,7 +98,7 @@ interface DetailViewProps<LOCATION extends DetailKeys> {
         inline?: React.ReactNode[];
         dropdown?: React.ReactNode[];
     };
-    permissions: Permissions;
+    permissions?: Permissions;
 }
 
 export const DetailView = <LOCATION extends DetailKeys>({
@@ -120,6 +124,10 @@ export const DetailView = <LOCATION extends DetailKeys>({
     }, [locationId]);
 
     const actions = useMemo(() => getDetailViewActions(locationId), [locationId]);
+    const permissionsObj = useMemo(
+        () => permissions || getPermissions(main.name.charAt(0).toUpperCase() + main.name.slice(1)),
+        [permissions],
+    );
 
     const currentSidebar = useMemo(() => {
         const currentTab = defaultTabs.find(t => t.name === tab);
@@ -154,7 +162,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
                         ...(actions?.dropdown?.map(({ component }) => React.createElement(component)) || []),
                     ],
                 }}
-                permissions={permissions}
+                permissions={permissionsObj}
                 texts={topActions?.texts}
             />
         </DetailViewStoreProvider>

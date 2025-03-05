@@ -143,6 +143,12 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
       enableSorting: false,
       enableHiding: false,
       enableColumnFilter: false,
+      size: 28,
+      minSize: 28,
+      maxSize: 28,
+      meta: {
+        isFixedWidth: true,
+      },
     },
     ...columns,
   ];

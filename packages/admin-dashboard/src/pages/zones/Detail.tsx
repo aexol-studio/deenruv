@@ -1,240 +1,137 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Routes,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
-  MultipleSelector,
-  Option,
-  useServer,
   apiClient,
-  useRouteGuard,
+  useMutation,
+  DetailView,
+  getMutation,
+  createDeenruvForm,
+  GFFLPFormField,
 } from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-import { useGFFLP } from '@/lists/useGflp';
-import { areObjectsEqual } from '@/utils/deepEqual';
-import { cache } from '@/lists/cache';
-import { PageHeader } from '@/pages/zones/_components/PageHeader';
-import { ZoneDetailsSelector, ZoneDetailsType } from '@/graphql/zones';
-import { Stack } from '@/components';
+import { ZoneDetailView } from '@/pages/zones/_components/ZoneDetailView.js';
+import { useValidators } from '@/hooks/useValidators.js';
+import { ModelTypes } from '@deenruv/admin-types';
+
+const CreateZoneMutation = getMutation('createZone');
+const EditZoneMutation = getMutation('updateZone');
+const DeleteZoneMutation = getMutation('deleteZone');
+
+type CreateZoneInput = ModelTypes['CreateZoneInput'];
+type FormDataType = Partial<{
+  name: GFFLPFormField<CreateZoneInput['name']>;
+  memberIds: GFFLPFormField<CreateZoneInput['memberIds']>;
+}>;
 
 export const ZonesDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const editMode = useMemo(() => !!id, [id]);
-  const { resetCache } = cache('zones');
+  const [update] = useMutation(EditZoneMutation);
+  const [create] = useMutation(CreateZoneMutation);
+  const [remove] = useMutation(DeleteZoneMutation);
+  const { nameValidator } = useValidators();
   const { t } = useTranslation('zones');
-  const [loading, setLoading] = useState(id ? true : false);
-  const [zone, setZone] = useState<ZoneDetailsType>();
-  const [countriesOptions, setCountriesOptions] = useState<Option[]>();
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [countriesIdsToRemove, setCountriesIdsToRemove] = useState<string[]>([]);
-  const [countriesIdsToAdd, setCountriesIdsToAdd] = useState<string[]>([]);
-  const countries = useServer((p) => p.countries);
-  useRouteGuard({ shouldBlock: !buttonDisabled });
 
-  const fetchZone = useCallback(async () => {
-    if (id) {
-      const response = await apiClient('query')({
-        zone: [
-          {
-            id,
-          },
-          ZoneDetailsSelector,
-        ],
-      });
-      setZone(response.zone);
-      setLoading(false);
-    } else setLoading(false);
-  }, [id]);
-
-  useEffect(() => {
-    setCountriesOptions(countries.map((c) => ({ label: c.name, value: c.id })));
-  }, [countries]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchZone();
-  }, [id, setLoading, fetchZone]);
-
-  const { state, setField, haveValidFields } = useGFFLP(
-    'CreateZoneInput',
-    'name',
-    'memberIds',
-  )({
-    name: {
-      validate: (v) => {
-        if (!v || v === '') return [t('validation.nameRequired')];
-      },
-    },
-  });
-
-  useEffect(() => {
-    if (!zone) return;
-    setField('name', zone.name);
-    setField(
-      'memberIds',
-      zone.members.map((m) => m.id),
-    );
-  }, [zone]);
-
-  const createZone = useCallback(() => {
-    setButtonDisabled(true);
-
-    apiClient('mutation')({
-      createZone: [
-        {
-          input: {
-            name: state.name!.validatedValue!,
-            memberIds: state.memberIds ? state.memberIds.validatedValue : undefined,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then((resp) => {
-        toast.message(t('toasts.zoneCreatedSuccess'));
-        navigate(Routes.zones.to(resp.createZone.id));
-      })
-      .catch(() => toast.error(t('toasts.zoneCreatedError')));
-  }, [state, t, navigate]);
-
-  const updateZone = useCallback(() => {
-    apiClient('mutation')({
-      updateZone: [
-        {
-          input: {
-            id: id!,
-            name: state.name?.validatedValue,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-      removeMembersFromZone: [
-        {
-          zoneId: id!,
-          memberIds: countriesIdsToRemove,
-        },
-        {
-          id: true,
-        },
-      ],
-      addMembersToZone: [
-        {
-          zoneId: id!,
-          memberIds: countriesIdsToAdd,
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then(() => {
-        toast.message(t('toasts.zoneUpdateSuccess'));
-        fetchZone();
-        resetCache();
-      })
-      .catch(() => toast.error(t('toasts.zoneUpdateError')));
-  }, [state, resetCache, fetchZone, id, t, countriesIdsToAdd, countriesIdsToRemove]);
-
-  useEffect(() => {
-    const areEqual = areObjectsEqual(
-      {
-        name: state.name?.value,
-        memberIds: state.memberIds?.value,
-      },
-      {
-        name: zone?.name,
-        memberIds: zone?.members.map((m) => m.id),
-      },
-    );
-
-    setButtonDisabled(areEqual || !haveValidFields);
-  }, [state, zone, editMode]);
-
-  const handleChange = useCallback(
-    (options: Option[]) => {
-      setField(
-        'memberIds',
-        options.map((o) => o.value),
-      );
-
-      if (editMode && zone) {
-        const backendMembersIds = zone.members.map((m) => m.id);
-        const optionValues = options.map((o) => o.value);
-
-        // if BE doesn't include option ids, add them
-        setCountriesIdsToAdd(optionValues.filter((v) => !backendMembersIds?.includes(v)));
-
-        // if currentState doesn't include BE ids, remove them
-        setCountriesIdsToRemove(backendMembersIds?.filter((id) => !optionValues.includes(id)));
+  const updateMembers = useCallback(
+    (toAdd?: string[], toRemove?: string[]) => {
+      if ((!toAdd || toAdd.length === 0) && (!toRemove || toRemove.length === 0)) {
+        return Promise.resolve();
       }
+
+      return apiClient('mutation')({
+        ...(toRemove && toRemove.length > 0
+          ? {
+              removeMembersFromZone: [
+                {
+                  zoneId: id!,
+                  memberIds: toRemove,
+                },
+                { id: true },
+              ],
+            }
+          : {}),
+        ...(toAdd && toAdd.length > 0
+          ? {
+              addMembersToZone: [
+                {
+                  zoneId: id!,
+                  memberIds: toAdd,
+                },
+                { id: true },
+              ],
+            }
+          : {}),
+      });
     },
-    [editMode, setField, zone],
+    [id, t],
   );
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
+  const onSubmitHandler = useCallback(
+    (data: FormDataType, additionalData: Record<string, unknown> | undefined) => {
+      if (!data.name?.validatedValue) {
+        throw new Error('Name is required.');
+      }
+
+      const { membersIdsToRemove = [], membersIdsToAdd = [] } =
+        additionalData && 'membersIdsToRemove' in additionalData && 'membersIdsToAdd' in additionalData
+          ? (additionalData as { membersIdsToRemove: string[]; membersIdsToAdd: string[] })
+          : {};
+
+      const inputData = {
+        name: data.name.validatedValue,
+      };
+
+      if (id) {
+        return Promise.all([
+          update({
+            input: {
+              id,
+              ...inputData,
+            },
+          }),
+          updateMembers(membersIdsToAdd, membersIdsToRemove),
+        ]).then(([res]) => res);
+      } else {
+        console.log('ELS');
+        return create({
+          input: {
+            ...inputData,
+            memberIds: data.memberIds?.validatedValue,
+          },
+        });
+      }
+    },
+    [id, update, create],
+  );
+
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
+
+    return remove({ input: { id } });
+  }, [remove, id]);
+
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="zones-detail-view"
+        main={{
+          name: 'zone',
+          label: 'Zone',
+          component: <ZoneDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateZoneInput',
+            keys: ['name', 'memberIds'],
+            config: {
+              name: nameValidator,
+            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+      />
     </div>
-  ) : !zone && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.zoneLoadingError', { value: id })}
-    </div>
-  ) : (
-    <main className="my-4 min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <PageHeader
-          zone={zone}
-          editMode={editMode}
-          buttonDisabled={buttonDisabled}
-          onCreate={createZone}
-          onEdit={updateZone}
-        />
-        <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack className="gap-3">
-                  <Stack className="basis-full md:basis-1/2">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={state.name?.value}
-                      onChange={(e) => setField('name', e.target.value)}
-                      errors={state.name?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack column className="basis-full md:basis-1/2">
-                    <Label className="mb-2">{t('details.basic.members')}</Label>
-                    <MultipleSelector
-                      options={countriesOptions}
-                      value={state?.memberIds?.value?.map((id) => ({
-                        label: countriesOptions?.find((o) => o.value === id)?.label || id,
-                        value: id,
-                      }))}
-                      placeholder={t('details.basic.memberPlaceholder')}
-                      onChange={handleChange}
-                      hideClearAllButton
-                    />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
-        </Stack>
-      </div>
-    </main>
   );
 };

@@ -5,3 +5,5 @@ export * from './zeus-utils';
 export * from './utils';
 export * from './deepSortArray';
 export * from './capitalizeFirstLetter.js';
+export * from './getPermissions.js';
+export * from './getMutation.js';

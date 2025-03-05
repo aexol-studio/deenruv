@@ -16,6 +16,12 @@ export const useValidators = () => {
     },
   });
 
+  const numberValidator = (requiredMessage?: string) => ({
+    validate: (v: number | null | undefined) => {
+      if (v === null || v === undefined) return [requiredMessage ?? t('validation.fieldRequired')];
+    },
+  });
+
   const emailValidator = {
     validate: (v: string | null | undefined) => {
       const errors: string[] = [];
@@ -28,13 +34,16 @@ export const useValidators = () => {
 
   const translationsValidator = {
     validate: (
-      v?: {
-        id?: string | null | undefined;
-        languageCode: LanguageCode | null | undefined;
-        name?: string | null | undefined;
-        description?: string | null | undefined;
-        customFields?: any;
-      }[] | null | undefined,
+      v?:
+        | {
+            id?: string | null | undefined;
+            languageCode: LanguageCode | null | undefined;
+            name?: string | null | undefined;
+            description?: string | null | undefined;
+            customFields?: any;
+          }[]
+        | null
+        | undefined,
     ) => {
       if (!v) return [t('validation.nameRequired')];
       const { name } = v[0];
@@ -57,7 +66,7 @@ export const useValidators = () => {
 
   const configurableOperationArrayValidator = (requiredCodeMessage?: string, requiredArgsMessage?: string) => ({
     validate: (v?: Array<ModelTypes['ConfigurableOperationInput']> | null | undefined) => {
-        if (!v) return [requiredCodeMessage ?? t('validation.configurableCodeRequired')]
+      if (!v) return [requiredCodeMessage ?? t('validation.configurableCodeRequired')];
       const hasCode = !!v?.[0]?.code;
       const hasInvalidArguments = v.some((op) =>
         // op.arguments.some(a => !a.value || a.value === 'false')
@@ -80,6 +89,7 @@ export const useValidators = () => {
   return {
     nameValidator,
     stringValidator,
+    numberValidator,
     emailValidator,
     arrayValidator,
     translationsValidator,

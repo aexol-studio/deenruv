@@ -95,6 +95,12 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                 </div>
             );
         },
+        size: 28,
+        minSize: 28,
+        maxSize: 28,
+        meta: {
+            isFixedWidth: true,
+        },
     };
 };
 

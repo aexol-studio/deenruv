@@ -242,6 +242,12 @@ export const Jobs = () => {
             </DropdownMenu>
           );
         },
+        size: 28,
+        minSize: 28,
+        maxSize: 28,
+        meta: {
+          isFixedWidth: true,
+        },
       },
     ],
     [],

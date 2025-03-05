@@ -1,291 +1,101 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Routes,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
-  Switch,
-  Option,
-  apiClient,
-  useRouteGuard,
-  SimpleSelect,
-} from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-import { useGFFLP } from '@/lists/useGflp';
-import { areObjectsEqual } from '@/utils/deepEqual';
-import { cache } from '@/lists/cache';
-import { PageHeader } from '@/pages/tax-rates/_components/PageHeader';
-import { TaxRateDetailsSelector, TaxRateDetailsType } from '@/graphql/taxRates';
-import { Stack } from '@/components';
+import { DetailView, createDeenruvForm, GFFLPFormField, getMutation, useMutation } from '@deenruv/react-ui-devkit';
+import { TaxRateDetailView } from '@/pages/tax-rates/_components/TaxRateDetailView.js';
+import { useValidators } from '@/hooks/useValidators.js';
+import { ModelTypes } from '@deenruv/admin-types';
+
+type CreateTaxRateInput = ModelTypes['CreateTaxRateInput'];
+type FormDataType = Partial<{
+  name: GFFLPFormField<CreateTaxRateInput['name']>;
+  categoryId: GFFLPFormField<CreateTaxRateInput['categoryId']>;
+  customerGroupId: GFFLPFormField<CreateTaxRateInput['customerGroupId']>;
+  enabled: GFFLPFormField<CreateTaxRateInput['enabled']>;
+  value: GFFLPFormField<CreateTaxRateInput['value']>;
+  zoneId: GFFLPFormField<CreateTaxRateInput['zoneId']>;
+}>;
+
+const CreateTaxRateMutation = getMutation('createTaxRate');
+const EditTaxRateMutation = getMutation('updateTaxRate');
+const DeleteTaxRateMutation = getMutation('deleteTaxRate');
 
 export const TaxRatesDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const editMode = useMemo(() => !!id, [id]);
-  const { resetCache } = cache('taxRates');
+  const [update] = useMutation(EditTaxRateMutation);
+  const [create] = useMutation(CreateTaxRateMutation);
+  const [remove] = useMutation(DeleteTaxRateMutation);
   const { t } = useTranslation('taxRates');
-  const [loading, setLoading] = useState(id ? true : false);
-  const [taxRate, setTaxRate] = useState<TaxRateDetailsType>();
-  const [taxCategoriesOptions, setTaxCategoriesOptions] = useState<Option[]>([]);
-  const [zonesOptions, setZonesOptions] = useState<Option[]>([]);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  useRouteGuard({ shouldBlock: !buttonDisabled });
+  const { nameValidator, stringValidator, numberValidator } = useValidators();
 
-  const fetchTaxRate = useCallback(async () => {
-    if (id) {
-      const response = await apiClient('query')({
-        taxRate: [
-          {
+  const onSubmitHandler = useCallback(
+    (data: FormDataType) => {
+      if (!data.name?.validatedValue) {
+        throw new Error('Name is required.');
+      }
+
+      const inputData = {
+        name: data.name!.validatedValue!,
+        enabled: data.enabled!.value!,
+        categoryId: data.categoryId!.validatedValue!,
+        value: data.value?.validatedValue || data.value?.initialValue,
+        zoneId: data.zoneId!.validatedValue!,
+        customerGroupId: data.customerGroupId?.validatedValue,
+      };
+
+      if (id) {
+        return update({
+          input: {
             id,
+            ...inputData,
           },
-          TaxRateDetailsSelector,
-        ],
-      });
-      setTaxRate(response.taxRate);
-      setLoading(false);
-    } else setLoading(false);
-  }, [id]);
-
-  const fetchItemsForOptions = useCallback(async () => {
-    const response = await apiClient('query')({
-      taxCategories: [
-        {},
-        {
-          items: {
-            id: true,
-            name: true,
-          },
-        },
-      ],
-      zones: [
-        {},
-        {
-          items: {
-            id: true,
-            name: true,
-          },
-        },
-      ],
-    });
-    setTaxCategoriesOptions(response.taxCategories.items.map((c) => ({ label: c.name, value: c.id })));
-    setZonesOptions(response.zones.items.map((z) => ({ label: z.name, value: z.id })));
-  }, [setTaxCategoriesOptions, setZonesOptions]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchTaxRate();
-    fetchItemsForOptions();
-  }, [id, setLoading, fetchTaxRate, fetchItemsForOptions]);
-
-  const { state, setField, haveValidFields } = useGFFLP(
-    'UpdateTaxRateInput',
-    'name',
-    'categoryId',
-    'customerGroupId',
-    'enabled',
-    'value',
-    'zoneId',
-  )({
-    enabled: {
-      initialValue: false,
-    },
-    categoryId: {
-      validate: (v) => {
-        if (!v) return [t('validation.taxCategoryRequired')];
-      },
-    },
-    name: {
-      validate: (v) => {
-        if (!v || v === '') return [t('validation.nameRequired')];
-      },
-    },
-    value: {
-      validate: (v) => {
-        if (v === undefined) return [t('validation.valueRequired')];
-      },
-    },
-    zoneId: {
-      validate: (v) => {
-        if (v === undefined) return [t('validation.zoneRequired')];
-      },
-    },
-  });
-
-  useEffect(() => {
-    if (!taxRate) return;
-    setField('name', taxRate.name);
-    setField('enabled', taxRate.enabled);
-    setField('categoryId', taxRate.category.id);
-    setField('customerGroupId', taxRate.customerGroup?.id);
-    setField('zoneId', taxRate.zone.id);
-    setField('value', taxRate.value);
-  }, [taxRate]);
-
-  const createTaxRate = useCallback(() => {
-    setButtonDisabled(true);
-    apiClient('mutation')({
-      createTaxRate: [
-        {
+        });
+      } else {
+        return create({
           input: {
-            name: state.name!.validatedValue!,
-            enabled: state.enabled!.value!,
-            categoryId: state.categoryId!.validatedValue!,
-            value: state.value!.validatedValue!,
-            zoneId: state.zoneId!.validatedValue!,
-            customerGroupId: state.customerGroupId?.validatedValue,
+            ...inputData,
           },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then((resp) => {
-        toast.message(t('toasts.taxRateCreatedSuccess'));
-        navigate(Routes.taxRates.to(resp.createTaxRate.id));
-      })
-      .catch(() => toast.error(t('toasts.taxRateCreatedError')));
-  }, [state, t, navigate]);
+        });
+      }
+    },
+    [id, update, create],
+  );
 
-  const updateTaxRate = useCallback(() => {
-    apiClient('mutation')({
-      updateTaxRate: [
-        {
-          input: {
-            id: id!,
-            name: state.name?.validatedValue,
-            enabled: state.enabled?.validatedValue,
-            categoryId: state.categoryId?.validatedValue,
-            value: state.value?.validatedValue,
-            zoneId: state.zoneId?.initialValue,
-            customerGroupId: state.customerGroupId?.validatedValue,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then(() => {
-        toast.message(t('toasts.taxRateUpdateSuccess'));
-        fetchTaxRate();
-        resetCache();
-      })
-      .catch(() => toast.error(t('toasts.taxRateUpdateError')));
-  }, [state, resetCache, fetchTaxRate, id, t]);
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
 
-  useEffect(() => {
-    const areEqual = areObjectsEqual(
-      {
-        name: state.name?.value,
-        enabled: state.enabled?.validatedValue,
-        categoryId: state.categoryId?.validatedValue,
-        value: state.value?.validatedValue,
-        zoneId: state.zoneId?.validatedValue,
-        customerGroupId: state.customerGroupId?.validatedValue,
-      },
-      {
-        name: taxRate?.name,
-        enabled: taxRate?.enabled,
-        categoryId: taxRate?.category.id,
-        value: taxRate?.value,
-        zoneId: taxRate?.zone.id,
-        customerGroupId: taxRate?.customerGroup?.id,
-      },
-    );
+    return remove({ input: { id } });
+  }, [remove, id]);
 
-    setButtonDisabled(areEqual || !haveValidFields);
-  }, [state, taxRate, editMode]);
-
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="taxRates-detail-view"
+        main={{
+          name: 'taxRate',
+          label: 'Tax Rate',
+          component: <TaxRateDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateTaxRateInput',
+            keys: ['name', 'categoryId', 'customerGroupId', 'enabled', 'value', 'zoneId'],
+            config: {
+              name: nameValidator,
+              categoryId: stringValidator(t('validation.taxCategoryRequired')),
+              value: numberValidator(t('validation.valueRequired')),
+              zoneId: stringValidator(t('validation.zoneRequired')),
+              enabled: {
+                initialValue: true,
+              },
+            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+      />
     </div>
-  ) : !taxRate && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.taxRateLoadingError', { value: id })}
-    </div>
-  ) : (
-    <main className="my-4 min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <PageHeader
-          taxRate={taxRate}
-          editMode={editMode}
-          buttonDisabled={buttonDisabled}
-          onCreate={createTaxRate}
-          onEdit={updateTaxRate}
-        />
-        <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack className="items-start gap-4">
-                  <Stack className="basis-full md:basis-1/2">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={state.name?.value ?? undefined}
-                      onChange={(e) => setField('name', e.target.value)}
-                      errors={state.name?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/2">
-                    <Input
-                      type="number"
-                      label={t('details.basic.value')}
-                      value={state.value?.value ?? undefined}
-                      onChange={(e) => setField('value', +e.target.value)}
-                      errors={state.value?.errors}
-                      endAdornment={'%'}
-                      min={0}
-                      max={100}
-                      required
-                    />
-                  </Stack>
-                </Stack>
-                <Stack className="items-end gap-4">
-                  <Stack className="basis-full md:basis-1/2">
-                    <SimpleSelect
-                      label={t('details.basic.taxCategory')}
-                      value={state.categoryId?.value ?? undefined}
-                      onValueChange={(e) => setField('categoryId', e)}
-                      options={taxCategoriesOptions}
-                      errors={state.categoryId?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/2">
-                    <SimpleSelect
-                      label={t('details.basic.zone')}
-                      value={state.zoneId?.value ?? undefined}
-                      onValueChange={(e) => setField('zoneId', e)}
-                      options={zonesOptions}
-                      errors={state.zoneId?.errors}
-                      required
-                    />
-                  </Stack>
-                </Stack>
-                <Stack className="items-end gap-4">
-                  <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/2">
-                    <Switch
-                      checked={state.enabled?.value ?? undefined}
-                      onCheckedChange={(e) => setField('enabled', e)}
-                    />
-                    <Label>{t('details.basic.enabled')}</Label>
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
-        </Stack>
-      </div>
-    </main>
   );
 };

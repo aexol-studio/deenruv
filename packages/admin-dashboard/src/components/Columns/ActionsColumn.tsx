@@ -69,5 +69,11 @@ export const ActionsColumn = <T extends { id: string }>({
         </DropdownMenu>
       </Stack>
     ),
+    size: 28,
+    minSize: 28,
+    maxSize: 28,
+    meta: {
+      isFixedWidth: true,
+    },
   };
 };

@@ -1,7 +1,7 @@
 import type { useFFLP } from '@/hooks';
-import { ServerConfigType } from '@/selectors/BaseSelectors.js';
 import type { DeenruvTabs, DetailKeys, ExternalDetailLocationSelector } from '@/types';
 import type { ModelTypes } from '@deenruv/admin-types';
+import { Dispatch, SetStateAction } from 'react';
 
 export type FormKey = keyof ModelTypes;
 export type FormKeys = keyof ModelTypes['Query'];
@@ -12,10 +12,18 @@ export type PropsType<
     FK extends keyof ModelTypes[F],
 > = DetailViewProviderProps<T, F, FK>;
 
+export type AdditionalData = Record<string, unknown> | undefined;
+
 export interface FormType<F extends keyof ModelTypes, FK extends keyof ModelTypes[F]> {
     base: ReturnType<typeof useFFLP<Pick<ModelTypes[F], FK>>>;
-    onSubmitted: (data: ModelTypes[FormKey]) => Promise<Record<string, unknown>> | undefined;
-    onDeleted?: (data: ModelTypes[FormKey]) => Promise<Record<string, unknown>> | undefined;
+    onSubmitted: (
+        data: ModelTypes[FormKey],
+        additionalData: AdditionalData,
+    ) => Promise<Record<string, unknown>> | undefined;
+    onDeleted?: (
+        data: ModelTypes[FormKey],
+        additionalData: AdditionalData,
+    ) => Promise<Record<string, unknown>> | undefined;
 }
 
 export interface StoreContextType<
@@ -46,6 +54,8 @@ export interface StoreContextType<
     setActiveTab: (tab: string) => void;
     getMarker: () => React.ReactNode;
     hasUnsavedChanges: boolean;
+    setAdditionalData: Dispatch<SetStateAction<AdditionalData>>;
+    additionalData: AdditionalData;
 }
 
 export interface DetailViewProps<

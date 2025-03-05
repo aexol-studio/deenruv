@@ -1,12 +1,13 @@
-import { EntityType } from "@/components/templates/DetailView/types";
-import { GFFLPFormField } from "@/hooks";
-import { deepSortArray } from "@/utils";
+import { EntityType } from '@/components/templates/DetailView/types';
+import { GFFLPFormField } from '@/hooks';
+import { deepSortArray } from '@/utils';
 
 // Some fields between entity and form state differs and need to be normalized in order to compare
 const normalizeEntityValues = (entityValues: EntityType) => {
     const normalizedEntityValues = { ...entityValues } as {
         assetIds?: string[];
         facetValueIds?: string[];
+        memberIds?: string[];
         [key: string]: any;
     };
 
@@ -27,13 +28,50 @@ const normalizeEntityValues = (entityValues: EntityType) => {
         delete normalizedEntityValues.featuredAsset;
     }
 
-    return normalizedEntityValues
-}
+    if ('members' in normalizedEntityValues) {
+        normalizedEntityValues.memberIds = normalizedEntityValues['members'].map((m: { id: string }) => m.id);
+        delete normalizedEntityValues.members;
+    }
+
+    if ('category' in normalizedEntityValues) {
+        normalizedEntityValues.categoryId = normalizedEntityValues['category']?.id;
+        delete normalizedEntityValues.category;
+    }
+
+    if ('customerGroup' in normalizedEntityValues) {
+        normalizedEntityValues.customerGroupId = normalizedEntityValues['customerGroup']?.id;
+        delete normalizedEntityValues.customerGroup;
+    }
+
+    if ('zone' in normalizedEntityValues) {
+        normalizedEntityValues.zoneId = normalizedEntityValues['zone']?.id;
+        delete normalizedEntityValues.zone;
+    }
+
+    if ('defaultShippingZone' in normalizedEntityValues) {
+        normalizedEntityValues.defaultShippingZoneId = normalizedEntityValues['defaultShippingZone']?.id;
+        delete normalizedEntityValues.defaultShippingZone;
+    }
+
+    if ('defaultTaxZone' in normalizedEntityValues) {
+        normalizedEntityValues.defaultTaxZoneId = normalizedEntityValues['defaultTaxZone']?.id;
+        delete normalizedEntityValues.defaultTaxZone;
+    }
+
+    if ('seller' in normalizedEntityValues) {
+        normalizedEntityValues.sellerId = normalizedEntityValues['seller']?.id;
+        delete normalizedEntityValues.seller;
+    }
+
+    return normalizedEntityValues;
+};
 
 export const checkUnsavedChanges = (
     formStateValues: Record<string, GFFLPFormField<any> | undefined>,
     entityValues: EntityType | null,
 ): boolean => {
+    console.log(formStateValues, entityValues);
+
     if (entityValues === null) {
         for (const key in formStateValues) {
             if (formStateValues[key]?.value !== null && formStateValues[key]?.value !== '') {

@@ -28,7 +28,7 @@ export const ManualOrderChangeModal: React.FC<{
   onConfirm: (to: string) => Promise<void>;
 }> = ({ currentPossibilities, wantedState, order, open, setOpen, onConfirm }) => {
   const [components, setComponents] = useState<JSX.Element[]>([]);
-  const beforeSubmit = useRef<() => Promise<void> | undefined>(undefined);
+  const beforeSubmit = useRef<() => Promise<void> | undefined>();
   const { getModalComponents } = usePluginStore();
   const { t } = useTranslation('orders');
   const [value, setValue] = useState<string>(() => {

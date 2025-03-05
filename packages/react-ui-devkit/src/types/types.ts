@@ -11,12 +11,17 @@ import {
     CustomerGroupDetailSelector,
     OrderDetailSelector,
     OrderDetailType,
+    TaxRateDetailsSelector,
+    SellerDetailSelector,
+    CountryDetailSelector,
+    ChannelDetailsSelector,
 } from '../selectors';
-import type { FromSelectorWithScalars, LanguageCode, OrderType } from '@deenruv/admin-types';
+import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
 import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
+import { ZoneDetailsSelector } from '@/selectors/ZoneDetailSelector.js';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -81,13 +86,25 @@ export const DetailLocations = {
         type: 'Promotion' as const,
         selector: PromotionDetailSelector,
     },
+    'channels-detail-view': {
+        type: 'Channel' as const,
+        selector: ChannelDetailsSelector,
+    },
     'collections-detail-view': {
         type: 'Collection' as const,
         selector: ProductDetailSelector,
     },
+    'countries-detail-view': {
+        type: 'Country' as const,
+        selector: CountryDetailSelector,
+    },
     'taxCategories-detail-view': {
         type: 'TaxCategory' as const,
         selector: TaxCategoryDetailSelector,
+    },
+    'taxRates-detail-view': {
+        type: 'TaxRate' as const,
+        selector: TaxRateDetailsSelector,
     },
     'stockLocations-detail-view': {
         type: 'StockLocation' as const,
@@ -112,6 +129,14 @@ export const DetailLocations = {
     'globalSettings-detail-view': {
         type: 'GlobalSettings' as const,
         selector: globalSettingsSelector,
+    },
+    'zones-detail-view': {
+        type: 'Zone' as const,
+        selector: ZoneDetailsSelector,
+    },
+    'sellers-detail-view': {
+        type: 'Seller' as const,
+        selector: SellerDetailSelector,
     },
 };
 
