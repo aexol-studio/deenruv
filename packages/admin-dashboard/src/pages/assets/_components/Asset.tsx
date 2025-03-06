@@ -11,7 +11,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Input,
-  ScrollArea,
   Skeleton,
   Table,
   TableBody,
@@ -19,6 +18,10 @@ import {
   TableRow,
   Tooltip,
   apiClient,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from '@deenruv/react-ui-devkit';
 import { type AssetType, assetsSelector } from '@/graphql/base';
 import { DeletionResult } from '@deenruv/admin-types';
@@ -29,8 +32,8 @@ import type React from 'react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { EntityCustomFields, Stack } from '@/components';
-import { Copy, MoreHorizontal, Pencil, Trash } from 'lucide-react';
+import { EntityCustomFields } from '@/components';
+import { Copy, Download, ExternalLink, Info, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
 interface AssetProps {
   asset: {
@@ -47,6 +50,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
   const [assetDetails, setAssetDetails] = useState<AssetType>();
   const [assetName, setAssetName] = useState(asset.name);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('preview');
 
   const tableData = [
     {
@@ -127,6 +131,8 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
           className="bg-background group relative overflow-hidden rounded-lg border transition-all hover:shadow-md"
           onClick={() => getAsset()}
         >
+          <div className="absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/5" />
+
           <div className="absolute right-2 top-2 z-10">
             <DropdownMenu>
               <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
@@ -149,6 +155,16 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
                 >
                   <Copy size={14} />
                   <span>{t('common:copy', 'Copy URL')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(asset.preview, '_blank');
+                  }}
+                  className="gap-2"
+                >
+                  <ExternalLink size={14} />
+                  <span>{t('common:open', 'Open')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={(e) => {
@@ -176,12 +192,12 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
             </DropdownMenu>
           </div>
 
-          <div className="bg-muted/50 aspect-square">
+          <div className="bg-muted/30 aspect-square">
             {isLoading && <Skeleton className="h-full w-full" />}
             <img
               src={`${asset.preview}?preset=tile`}
               alt={asset.name}
-              className="h-full w-full object-cover transition-opacity"
+              className="h-full w-full object-cover transition-all duration-300"
               style={{ opacity: isLoading ? 0 : 1 }}
               onLoad={() => setIsLoading(false)}
               onError={() => setIsLoading(false)}
@@ -189,7 +205,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
           </div>
 
           <Tooltip>
-            <TooltipTrigger className="block w-full truncate p-2 text-left text-xs font-medium" title={asset.name}>
+            <TooltipTrigger className="block w-full truncate p-3 text-left text-sm font-medium" title={asset.name}>
               {asset.name}
             </TooltipTrigger>
             <TooltipContent className="bg-popover text-popover-foreground z-50 rounded-md border px-3 py-1.5 text-sm shadow-md">
@@ -199,45 +215,87 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="max-w-[70vw]">
+      <DialogContent className="max-w-5xl">
         <DialogHeader>
-          <DialogTitle>{asset.name}</DialogTitle>
+          <DialogTitle className="text-xl">{asset.name}</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="h-[60vh]">
-          <Stack className="h-full">
-            <div className="w-1/2 overflow-hidden rounded-md border p-2 shadow">
+
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-2">
+          <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsTrigger value="preview">Preview</TabsTrigger>
+            <TabsTrigger value="details">Details</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="preview" className="mt-4">
+            <div className="bg-muted/20 flex h-[500px] items-center justify-center rounded-lg p-4">
               <img
                 src={assetDetails?.source ? `${assetDetails.source}?preset=medium` : asset.preview}
                 alt={asset.name}
-                className="h-full w-full object-contain"
+                className="max-h-full max-w-full rounded object-contain shadow-sm"
               />
             </div>
-            <Stack column className="w-1/2 gap-4 pl-8 pr-2">
+
+            <div className="mt-4 flex justify-between">
+              <Button variant="outline" size="sm" onClick={copyAssetUrl} className="gap-1.5">
+                <Copy size={16} />
+                {t('common:copyUrl', 'Copy URL')}
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open(asset.preview, '_blank')}
+                className="gap-1.5"
+              >
+                <Download size={16} />
+                {t('common:download', 'Download')}
+              </Button>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="details" className="mt-4">
+            <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <Table containerClassName="w-full">
-                  <TableBody className="w-full text-base">
-                    {tableData.map((d, i) => (
-                      <TableRow key={i}>
-                        <TableCell className="font-medium">{d.header}</TableCell>
-                        <TableCell className="break-all">{d.render}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <h3 className="mb-3 flex items-center gap-2 text-lg font-medium">
+                  <Info size={16} />
+                  Asset Information
+                </h3>
+                <div className="overflow-hidden rounded-lg border">
+                  <Table>
+                    <TableBody>
+                      {tableData.map((d, i) => (
+                        <TableRow key={i} className={i % 2 === 0 ? 'bg-muted/30' : ''}>
+                          <TableCell className="w-1/3 font-medium">{d.header}</TableCell>
+                          <TableCell className="break-all">{d.render}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </div>
-              <EntityCustomFields entityName="asset" id={asset?.id} />
-            </Stack>
-          </Stack>
-        </ScrollArea>
-        <div className="flex justify-between">
-          <Button variant={'destructive'} onClick={() => onDelete()}>
+
+              <div>
+                <h3 className="mb-3 flex items-center gap-2 text-lg font-medium">
+                  <Pencil size={16} />
+                  Custom Fields
+                </h3>
+                <div className="rounded-lg border p-4">
+                  <EntityCustomFields entityName="asset" id={asset?.id} />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="mt-4 flex justify-between">
+          <Button variant="destructive" onClick={() => onDelete()}>
             {t('assets:delete', 'Delete')}
           </Button>
           <div className="flex gap-3">
-            <Button variant={'outline'} onClick={() => onEditName()}>
-              {t('assets:edit', 'Edit')}
+            <Button variant="outline" onClick={() => onClose()}>
+              {t('common:cancel', 'Cancel')}
             </Button>
-            <Button onClick={() => onClose()}>{t('assets:close', 'Close')}</Button>
+            <Button onClick={() => onEditName()}>{t('common:save', 'Save')}</Button>
           </div>
         </div>
       </DialogContent>

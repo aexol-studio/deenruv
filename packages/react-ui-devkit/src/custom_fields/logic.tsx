@@ -11,54 +11,51 @@ import {
 } from './DefaultInputs';
 import React from 'react';
 import { DefaultSimpleListInput } from './DefaultInputs/DefaultSimpleListInput';
+import { Field } from './context.js';
 
-export function generateCustomFields(
-    customFields: CustomFieldConfigType[],
+export function generateInputComponents<T extends Field = CustomFieldConfigType>(
+    fields: T[],
     getInputComponent: (id: string) => React.ComponentType<object> | null,
 ) {
-    const fields: (any & { tab: string; component: React.ReactElement })[] = [];
-    for (const field of customFields) {
+    const result: (T & { component: React.ReactElement })[] = [];
+    for (const field of fields) {
         const ui = 'ui' in field ? (field.ui as unknown as Record<string, unknown>) : undefined;
         const tab = ((ui && 'tab' in ui && ui?.tab) || 'General') as string;
         const hidden = ui && 'hidden' in ui && ui.hidden;
         if (hidden) continue;
         const Registered = ui && 'component' in ui && getInputComponent(ui.component as string);
         if (Registered) {
-            fields.push({ ...field, tab, component: <Registered /> });
-        } else fields.push({ ...field, ...generateSingleFields({ field }), tab });
+            result.push({ ...field, tab, component: <Registered /> });
+        } else {
+            result.push({ ...field, ...generateSingleFields({ field }), tab });
+        }
     }
-    return fields;
+    return result as (T & { component: React.ReactElement })[];
 }
 
-function generateSingleFields({ field }: { field: CustomFieldConfigType }) {
-    const simpleListable: Array<CustomFieldConfigType['__typename']> = [
-        'FloatCustomFieldConfig',
-        'IntCustomFieldConfig',
-        'StringCustomFieldConfig',
-        'TextCustomFieldConfig',
-        'LocaleStringCustomFieldConfig',
-        'LocaleTextCustomFieldConfig',
-    ];
-
-    if (simpleListable.includes(field?.__typename) && field.list)
+function generateSingleFields<T extends { type: string; list?: boolean; ui?: Record<string, unknown> }>({
+    field,
+}: {
+    field: T;
+}) {
+    const simpleListable = ['float', 'int', 'string', 'text'];
+    if (simpleListable.includes(field?.type) && field.list)
         return { ...field, component: <DefaultSimpleListInput /> };
 
-    switch (field.__typename) {
-        case 'BooleanCustomFieldConfig':
+    switch (field.type) {
+        case 'boolean':
             return { ...field, component: <DefaultCheckbox /> };
-        case 'DateTimeCustomFieldConfig':
+        case 'date-time':
             return { ...field, component: <DefaultTimeSelect /> };
-        case 'FloatCustomFieldConfig':
+        case 'float':
             return { ...field, component: <DefaultFloatInput /> };
-        case 'IntCustomFieldConfig':
+        case 'int':
             return { ...field, component: <DefaultIntInput /> };
-        case 'StringCustomFieldConfig':
-        case 'LocaleStringCustomFieldConfig':
+        case 'string':
             return { ...field, component: <DefaultTextInput /> };
-        case 'TextCustomFieldConfig':
-        case 'LocaleTextCustomFieldConfig':
+        case 'text':
             return { ...field, component: field?.ui?.richText ? <DefaultRichText /> : <DefaultTextarea /> };
-        case 'RelationCustomFieldConfig':
+        case 'relation':
             return { ...field, component: <DefaultRelationInput /> };
         default:
             //TODO: Implement other field types

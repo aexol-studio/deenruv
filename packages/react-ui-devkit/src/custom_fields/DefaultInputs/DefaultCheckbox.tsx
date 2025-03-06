@@ -3,14 +3,14 @@ import { CardDescription, Checkbox, Label } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
 
 export const DefaultCheckbox = () => {
-    const { field, value, label, description, setValue } = useCustomFields<'BooleanCustomFieldConfig'>();
+    const { field, value, label, description, setValue, disabled } = useCustomFields<boolean>();
     return (
         <>
             <div className="flex items-center space-x-2">
                 <Checkbox
                     id={field?.name}
-                    disabled={field?.readonly ?? undefined}
-                    checked={value as boolean}
+                    disabled={disabled ?? field?.readonly ?? undefined}
+                    checked={value}
                     onCheckedChange={setValue}
                 />
                 <Label htmlFor={field?.name}>{label || field?.name}</Label>

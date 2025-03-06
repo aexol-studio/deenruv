@@ -293,7 +293,7 @@ export const TopActions: React.FC = () => {
           order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
           order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ||
           order?.state === ORDER_STATE.SHIPPED ? (
-          <FulfillmentModal draftOrder={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
+          <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
         ) : order?.state === ORDER_STATE.MODIFYING ? (
           <ModifyAcceptModal />
         ) : null}

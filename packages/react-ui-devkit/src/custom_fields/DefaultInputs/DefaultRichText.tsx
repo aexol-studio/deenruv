@@ -4,7 +4,7 @@ import { useCustomFields } from '@/custom_fields/context';
 import { RichTextEditor } from '@/components/molecules';
 
 export function DefaultRichText() {
-    const { field, value, setValue, label, description } = useCustomFields<'StringCustomFieldConfig'>();
+    const { field, value, setValue, label, description, disabled } = useCustomFields<string>();
 
     return (
         <div className="flex flex-col gap-1">
@@ -13,7 +13,7 @@ export function DefaultRichText() {
             <RichTextEditor
                 content={value as string}
                 onContentChanged={e => setValue(e)}
-                disabled={field?.readonly ?? undefined}
+                disabled={disabled ?? field?.readonly ?? undefined}
             />
         </div>
     );

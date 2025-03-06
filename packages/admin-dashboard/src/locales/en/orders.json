@@ -132,6 +132,7 @@
     "continue": "Continue",
     "cancelOrderMessage": "After canceling order no action will be allowed",
     "selectCustomer": {
+      "noCustomer": "No customer",
       "titleLabel": "Title*",
       "firstNameLabel": "First Name*",
       "lastNameLabel": "Last Name",
@@ -180,6 +181,8 @@
     "lastNameError": "Last Name is required"
   },
   "selectAddress": {
+    "noShippingAddress": "No shipping address",
+    "noBillingAddress": "No billing address",
     "nameRequired": "Full Name is required",
     "streetRequired": "Street Line 1 is required",
     "cityRequired": "City name is required",

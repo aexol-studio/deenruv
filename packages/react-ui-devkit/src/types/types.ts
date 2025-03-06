@@ -234,6 +234,8 @@ export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
         inline?: Array<DeenruvUIDetailComponent<DetailKeys>>;
         dropdown?: Array<DeenruvUIDetailComponent<DetailKeys>>;
     };
+    /** Operations allow to override everything with 'ConfigurableOperationDefinition' type */
+    operations?: Array<PluginComponent>;
     /** Inputs allow to override the default components from custom fields */
     inputs?: Array<PluginComponent>;
     /** Applied on the detail views (pages) */

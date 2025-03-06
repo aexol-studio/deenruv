@@ -6,141 +6,119 @@ export type FormField<T> = {
   value: T;
 } & ({ errors: never; validatedValue: T } | { errors: string[]; validatedValue: never });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const useGFFLP = <T extends keyof MT, Z extends keyof MT[T], MT = DefaultModelTypes>(key: T, ...pick: Z[]) =>
   useFFLP<Pick<MT[T], Z>>;
 
-export const useFFLP = <T>(config: {
+export const useFFLP = <T extends Record<string, any>>(config: {
   [P in keyof T]?: {
     validate?: (o: T[P]) => string[] | void;
     initialValue?: T[P];
   };
 }) => {
-  const [state, _setState] = useState<
-    Partial<{
-      [P in keyof T]: FormField<T[P]>;
-    }>
-  >({
-    ...(Object.fromEntries(
-      Object.keys(config).map((v) => [
-        v,
-        { value: config[v as keyof T]?.initialValue as T[keyof T], ...config[v as keyof T] },
-      ]),
-    ) as Partial<{
-      [P in keyof T]: FormField<T[P]>;
-    }>),
-  });
+  type StateType = Partial<{ [P in keyof T]: FormField<T[P]> }>;
+  const initializeState = useCallback(
+    (): StateType =>
+      Object.fromEntries(
+        Object.entries(config).map(([key, value]) => [
+          key,
+          {
+            value: value?.initialValue as T[keyof T],
+            initialValue: value?.initialValue as T[keyof T],
+          },
+        ]),
+      ) as StateType,
+    [config],
+  );
+
+  const [state, setStateInternal] = useState<StateType>(initializeState);
+
   const setField = useCallback(
     <F extends keyof T>(field: F, value: T[F]) => {
-      const isToBeValidated = !!config[field]?.validate;
-      const invalid = config[field]?.validate?.(value);
-      state[field] =
-        isToBeValidated && invalid && invalid.length > 0
-          ? ({ value: value, initialValue: state[field]?.initialValue, errors: invalid } as FormField<T[F]>)
-          : ({ value: value, initialValue: state[field]?.initialValue, validatedValue: value } as FormField<T[F]>);
-      _setState(JSON.parse(JSON.stringify(state)));
+      setStateInternal((prevState) => {
+        const validate = config[field]?.validate;
+        const errors = validate ? (validate(value) ?? []) : [];
+        return {
+          ...prevState,
+          [field]: {
+            value,
+            initialValue: prevState[field]?.initialValue,
+            ...(errors.length ? { errors } : { validatedValue: value }),
+          } as FormField<T[F]>,
+        };
+      });
     },
-    [config, state],
+    [config],
   );
 
-  const checkIfAllFieldsAreValid: () => boolean = useCallback(() => {
-    let newState = { ...state };
-    Object.keys(config).forEach((field) => {
-      const fieldKey = field as keyof T;
-      const fieldValue = newState[fieldKey];
-      if (fieldValue && fieldKey) {
-        const isToBeValidated = !!config[fieldKey]?.validate;
-        const isInvalid = config[fieldKey]?.validate?.(fieldValue.value);
-        newState = {
-          ...newState,
-          [fieldKey]:
-            isToBeValidated && isInvalid && isInvalid.length > 0
-              ? {
-                  initialValue: fieldValue.initialValue,
-                  value: fieldValue.value,
-                  errors: isInvalid,
-                }
-              : {
-                  initialValue: fieldValue.initialValue,
-                  value: fieldValue.value,
-                  validatedValue: fieldValue.value,
-                },
-        };
-      }
+  const checkIfAllFieldsAreValid = useCallback(() => {
+    let allValid = true;
+    setStateInternal((prevState) => {
+      const newState = Object.keys(config).reduce(
+        (acc, key) => {
+          const field = key as keyof T;
+          const value = prevState[field]?.value;
+          const validate = config[field]?.validate;
+          const errors = validate ? (validate(value as T[keyof T]) ?? []) : [];
+
+          acc[field] = {
+            value,
+            initialValue: prevState[field]?.initialValue,
+            ...(errors.length ? { errors } : { validatedValue: value }),
+          } as FormField<T[keyof T]>;
+
+          if (errors.length) allValid = false;
+          return acc;
+        },
+        { ...prevState },
+      );
+      return newState;
     });
-    _setState(newState);
-    return !Object.keys(config).some(
-      (field) => config[field as keyof T]?.validate && !newState[field as keyof T]?.validatedValue,
-    );
-  }, [config, state]);
+    return allValid;
+  }, [config]);
 
   const haveValidFields = useMemo(
-    () =>
-      !Object.keys(config).some(
-        (field) =>
-          config[field as keyof T]?.validate &&
-          state[field as keyof T]?.validatedValue == null,
-      ),
-    [config, state],
+    () => Object.values(state).every((field) => field && 'validatedValue' in field),
+    [state],
   );
 
-  const setState = (value: T) => {
-    _setState((prevState) => {
-      let newState = { ...prevState };
-      Object.keys(config).forEach((field) => {
-        const fieldKey = field as keyof T;
-        const fieldValue = newState[fieldKey];
+  const setState = useCallback(
+    (values: T) => {
+      setStateInternal((prevState) =>
+        Object.keys(config).reduce(
+          (newState, key) => {
+            const field = key as keyof T;
+            const value = values[field];
+            const validate = config[field]?.validate;
+            const errors = validate ? (validate(value) ?? []) : [];
 
-        if (fieldValue && fieldKey) {
-          const isToBeValidated = !!config[fieldKey]?.validate;
-          const isInvalid = config[fieldKey]?.validate?.(value[fieldKey]);
-          newState = {
-            ...newState,
-            [fieldKey]:
-              isToBeValidated && isInvalid && isInvalid.length > 0
-                ? {
-                    initialValue: fieldValue.initialValue,
-                    value: value[fieldKey],
-                    errors: isInvalid,
-                  }
-                : {
-                    initialValue: fieldValue.initialValue,
-                    value: value[fieldKey],
-                    validatedValue: value[fieldKey],
-                  },
-          };
-        }
-      });
-      return newState;
-    });
-  };
-
-  const clearErrors = () =>
-    _setState((prevState) => {
-      let newState = { ...prevState };
-      Object.keys(config).forEach((field) => {
-        const fieldKey = field as keyof T;
-        const fieldValue = prevState[fieldKey];
-
-        newState = {
-          ...newState,
-          [fieldKey]: {
-            initialValue: fieldValue?.initialValue,
-            value: fieldValue?.value,
-            errors: [],
+            newState[field] = {
+              value,
+              initialValue: prevState[field]?.initialValue,
+              ...(errors.length ? { errors } : { validatedValue: value }),
+            } as FormField<T[keyof T]>;
+            return newState;
           },
-        };
-      });
-      return newState;
-    });
-  return {
-    state,
-    setState,
-    setField,
-    checkIfAllFieldsAreValid,
-    haveValidFields,
-    clearErrors,
-  };
+          { ...prevState },
+        ),
+      );
+    },
+    [config],
+  );
+
+  const clearErrors = useCallback(() => {
+    setStateInternal((prevState) =>
+      Object.keys(prevState).reduce(
+        (newState, key) => {
+          const field = key as keyof T;
+          newState[field] = { ...prevState[field], errors: [] } as FormField<T[keyof T]>;
+          return newState;
+        },
+        { ...prevState },
+      ),
+    );
+  }, []);
+
+  return { state, setState, setField, checkIfAllFieldsAreValid, haveValidFields, clearErrors };
 };
 
 export const setInArrayBy = <T>(list: T[], fn: (x: T) => boolean, element: T) => {

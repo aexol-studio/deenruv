@@ -1,5 +1,6 @@
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -10,47 +11,95 @@ import {
   TableHeader,
   TableRow,
   useOrder,
+  ScrollArea,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
-import React from 'react';
+import type React from 'react';
 import { useTranslation } from 'react-i18next';
+import { ReceiptText, Percent, Calculator, AlertCircle } from 'lucide-react';
 
 export const TaxSummary: React.FC = () => {
   const { order } = useOrder();
   const { t } = useTranslation('orders');
   if (!order) return null;
+  const totalTax = order.taxSummary.reduce((sum, { taxTotal }) => sum + taxTotal, 0);
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t('taxSummary.title')}</CardTitle>
-        <CardDescription>{t('taxSummary.subTitle')}</CardDescription>
-        <Table>
-          <TableHeader>
-            <TableRow noHover>
-              <TableHead>{t('taxSummary.description')}</TableHead>
-              <TableHead>{t('taxSummary.taxRate')}</TableHead>
-              <TableHead>{t('taxSummary.taxBase')}</TableHead>
-              <TableHead>{t('taxSummary.taxTotal')}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {order.taxSummary.length ? (
-              order.taxSummary.map(({ description, taxRate, taxBase, taxTotal }) => (
-                <TableRow key={description} noHover>
-                  <TableCell className="capitalize">{description}</TableCell>
-                  <TableCell>{taxRate}%</TableCell>
-                  <TableCell>{priceFormatter(taxBase, order.currencyCode)}</TableCell>
-                  <TableCell>{priceFormatter(taxTotal, order.currencyCode)}</TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow noHover>
-                <TableCell colSpan={4}>{t('taxSummary.noTaxSummary')}</TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+    <Card className="border-l-4 border-l-indigo-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-indigo-400">
+      <CardHeader className="pb-2">
+        <div className="flex items-center gap-2">
+          <ReceiptText className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+          <CardTitle>{t('taxSummary.title', 'Tax Summary')}</CardTitle>
+        </div>
+        <CardDescription>{t('taxSummary.subTitle', 'Breakdown of taxes applied to this order')}</CardDescription>
       </CardHeader>
+      <CardContent className="p-0">
+        <ScrollArea className="max-h-[350px] px-6 pb-6">
+          <Table>
+            <TableHeader>
+              <TableRow noHover className="border-border border-b">
+                <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
+                <TableHead className="py-3">{t('taxSummary.taxRate')}</TableHead>
+                <TableHead className="py-3">{t('taxSummary.taxBase')}</TableHead>
+                <TableHead className="py-3">{t('taxSummary.taxTotal')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {order.taxSummary.length ? (
+                <>
+                  {order.taxSummary.map(({ description, taxRate, taxBase, taxTotal }) => (
+                    <TableRow key={description} noHover className="group">
+                      <TableCell className="py-3 font-medium">
+                        <div className="flex items-center gap-2">
+                          <Calculator className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
+                          <span className="capitalize">{description}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-3">
+                        <div className="flex items-center gap-1">
+                          <Percent className="text-muted-foreground h-3.5 w-3.5" />
+                          <span className="font-medium">{taxRate}%</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-3 font-mono text-sm">
+                        {priceFormatter(taxBase, order.currencyCode)}
+                      </TableCell>
+                      <TableCell className="py-3 font-mono text-sm font-medium">
+                        {priceFormatter(taxTotal, order.currencyCode)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow noHover className="border-border bg-muted/30 border-t">
+                    <TableCell colSpan={3} className="py-3 text-right font-medium">
+                      {t('taxSummary.totalTax', 'Total Tax')}
+                    </TableCell>
+                    <TableCell className="py-3 font-mono text-sm font-bold">
+                      {priceFormatter(totalTax, order.currencyCode)}
+                    </TableCell>
+                  </TableRow>
+                </>
+              ) : (
+                <TableRow noHover>
+                  <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="rounded-full bg-indigo-100 p-3 dark:bg-indigo-900/30">
+                        <AlertCircle className="h-6 w-6 text-indigo-500 dark:text-indigo-400" />
+                      </div>
+                      <p>{t('taxSummary.noTaxSummary', 'No tax information available')}</p>
+                      <p className="text-muted-foreground text-xs">
+                        {t(
+                          'taxSummary.noTaxSummaryHint',
+                          'Tax information will appear here when taxes are applied to the order',
+                        )}
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+      </CardContent>
     </Card>
   );
 };

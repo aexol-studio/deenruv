@@ -1,3 +1,7 @@
+'use client';
+
+import type React from 'react';
+
 import {
   Card,
   CardHeader,
@@ -29,35 +33,31 @@ import {
   useOrder,
 } from '@deenruv/react-ui-devkit';
 import {
-  DraftOrderLineType,
-  ProductVariantType,
+  type DraftOrderLineType,
+  type ProductVariantType,
   removeOrderItemsResultSelector,
   updateOrderItemsSelector,
   updatedDraftOrderSelector,
 } from '@/graphql/draft_order';
-import { LineItem } from '@/pages/orders/_components/LineItem';
-import { EllipsisVertical, InfoIcon, Trash2 } from 'lucide-react';
+import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit } from 'lucide-react';
 
 import { useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
-import { OnPriceQuantityChangeApproveInput, OrderLineActions } from './OrderLineActionModal/types.js';
+import type { OnPriceQuantityChangeApproveInput } from './OrderLineActionModal/types.js';
 import { OrderLineActionModal } from './OrderLineActionModal/index.js';
-// import { useServer } from '@/state';
 import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
-import { CF, ImageWithPreview, ProductVariantSearch } from '@/components';
-import { useSearchParams } from 'react-router-dom';
-// import { CustomFieldsComponent } from '@deenruv/react-ui-devkit';
+import { type CF, ImageWithPreview, ProductVariantSearch } from '@/components';
+import { SpecialLineItem } from './SpecialLineItem.js';
 
 type AddItemCustomFieldsType = any;
 type ProductVariantCustomFields = any;
 
 export const ProductsCard: React.FC = () => {
   const { t } = useTranslation('orders');
-  // const activeAdministrator = useServer((p) => p.activeAdministrator);
   const orderLineCustomFields = useServer(
     (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
   );
@@ -82,145 +82,185 @@ export const ProductsCard: React.FC = () => {
   ) => {
     if (!order) return;
 
-    if (mode === 'update' && modifiedOrder) {
-      const mockLine = {
-        id: productVariant.id,
-        quantity,
-        discountedLinePrice: productVariant.price * quantity,
-        unitPrice: productVariant.price,
-        unitPriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
-        linePrice: productVariant.price,
-        linePriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
-        discountedLinePriceWithTax: productVariant.priceWithTax * quantity,
-        discountedUnitPrice: productVariant.price,
-        discountedUnitPriceWithTax: productVariant.priceWithTax,
-        productVariant,
-        taxRate: order.taxSummary[0].taxRate,
-        ...(customFields && { customFields }),
-      };
+    try {
+      if (mode === 'update' && modifiedOrder) {
+        const mockLine = {
+          id: productVariant.id,
+          quantity,
+          discountedLinePrice: productVariant.price * quantity,
+          unitPrice: productVariant.price,
+          unitPriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
+          linePrice: productVariant.price,
+          linePriceWithTax: Math.round(productVariant.price * (1 + order.taxSummary[0].taxRate / 100)),
+          discountedLinePriceWithTax: productVariant.priceWithTax * quantity,
+          discountedUnitPrice: productVariant.price,
+          discountedUnitPriceWithTax: productVariant.priceWithTax,
+          productVariant,
+          taxRate: order.taxSummary[0].taxRate,
+          ...(customFields && { customFields }),
+        };
+        setModifiedOrder({
+          ...modifiedOrder,
+          lines: [...modifiedOrder.lines, mockLine],
+        });
+        toast.success(t('create.productAdded', 'Product added to order'));
+        return;
+      }
 
-      setModifiedOrder({
-        ...modifiedOrder,
-        lines: [...modifiedOrder.lines, mockLine],
+      const { addItemToDraftOrder } = await apiClient('mutation')({
+        addItemToDraftOrder: [
+          {
+            input: {
+              productVariantId: productVariant.id,
+              quantity,
+              ...(customFields && { customFields }),
+            },
+            orderId: order.id,
+          },
+          updatedDraftOrderSelector,
+        ],
       });
 
-      return;
-    }
-
-    const { addItemToDraftOrder } = await apiClient('mutation')({
-      addItemToDraftOrder: [
-        {
-          input: {
-            productVariantId: productVariant.id,
-            quantity,
-            ...(customFields && { customFields }),
-          },
-          orderId: order.id,
-        },
-        updatedDraftOrderSelector,
-      ],
-    });
-    if (addItemToDraftOrder.__typename === 'Order' || addItemToDraftOrder.__typename === 'InsufficientStockError') {
-      if (addItemToDraftOrder.__typename === 'Order') {
-        setOrder(addItemToDraftOrder);
-      } else {
-        setOrder(addItemToDraftOrder.order);
-        toast.error(t('toasts.insufficientStockError', { value: productVariant }));
+      if (addItemToDraftOrder.__typename === 'Order' || addItemToDraftOrder.__typename === 'InsufficientStockError') {
+        if (addItemToDraftOrder.__typename === 'Order') {
+          setOrder(addItemToDraftOrder);
+          toast.success(t('create.productAdded', 'Product added to order'));
+        } else {
+          setOrder(addItemToDraftOrder.order);
+          toast.error(t('toasts.insufficientStockError', { value: productVariant.product.name }));
+        }
+        closeAddVariantDialog();
       }
-      closeAddVariantDialog();
+    } catch (error) {
+      toast.error(t('create.addError', 'Failed to add product'));
     }
   };
 
   const removeLineItem = async (orderLineId: string) => {
     if (!order) return;
 
-    if (mode === 'update' && modifiedOrder) {
-      setModifiedOrder({
-        ...modifiedOrder,
-        lines: modifiedOrder.lines.filter((l) => l.id !== orderLineId),
-      });
-      return;
-    }
+    try {
+      if (mode === 'update' && modifiedOrder) {
+        setModifiedOrder({
+          ...modifiedOrder,
+          lines: modifiedOrder.lines.filter((l) => l.id !== orderLineId),
+        });
+        toast.success(t('create.productRemoved', 'Product removed from order'));
+        return;
+      }
 
-    const { removeDraftOrderLine } = await apiClient('mutation')({
-      removeDraftOrderLine: [{ orderId: order.id, orderLineId }, removeOrderItemsResultSelector],
-    });
-    if (removeDraftOrderLine.__typename === 'Order') setOrder(removeDraftOrderLine);
+      const { removeDraftOrderLine } = await apiClient('mutation')({
+        removeDraftOrderLine: [{ orderId: order.id, orderLineId }, removeOrderItemsResultSelector],
+      });
+
+      if (removeDraftOrderLine.__typename === 'Order') {
+        setOrder(removeDraftOrderLine);
+        toast.success(t('create.productRemoved', 'Product removed from order'));
+      }
+    } catch (error) {
+      toast.error(t('create.removeError', 'Failed to remove product'));
+    }
   };
 
   const onPriceQuantityChangeApprove = async (input: OnPriceQuantityChangeApproveInput) => {
     if (!order) return;
     const { lineID, quantityChange } = input;
-    if (mode === 'update' && modifiedOrder) {
-      const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === lineID);
-      const quantity = quantityChange ? quantityChange : modifiedOrder.lines[editedLineIdx].quantity;
-      const editedLine = {
-        ...modifiedOrder.lines[editedLineIdx],
-        quantity,
-      };
-      setModifiedOrder({
-        ...modifiedOrder,
-        lines: modifiedOrder.lines.map((l, i) => (i === editedLineIdx ? editedLine : l)),
-      });
-    } else if (mode === 'create') {
-      const editedLineIdx = order.lines.findIndex((l) => l.id === lineID);
-      if (quantityChange) {
-        const { adjustDraftOrderLine } = await apiClient('mutation')({
-          adjustDraftOrderLine: [
-            {
-              orderId: order.id,
-              input: {
-                orderLineId: order.lines[editedLineIdx].id,
-                quantity: quantityChange,
-                ...(Object.keys(customFields || {}).length > 0 && { customFields }),
-              },
-            },
-            updateOrderItemsSelector,
-          ],
-        });
 
-        if (
-          adjustDraftOrderLine.__typename === 'Order' ||
-          adjustDraftOrderLine.__typename === 'InsufficientStockError'
-        ) {
-          if (adjustDraftOrderLine.__typename === 'Order') setOrder(adjustDraftOrderLine);
-          else setOrder(adjustDraftOrderLine.order);
+    try {
+      if (mode === 'update' && modifiedOrder) {
+        const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === lineID);
+        const quantity = quantityChange ? quantityChange : modifiedOrder.lines[editedLineIdx].quantity;
+        const editedLine = {
+          ...modifiedOrder.lines[editedLineIdx],
+          quantity,
+        };
+        setModifiedOrder({
+          ...modifiedOrder,
+          lines: modifiedOrder.lines.map((l, i) => (i === editedLineIdx ? editedLine : l)),
+        });
+        toast.success(t('create.productUpdated', 'Product updated'));
+      } else if (mode === 'create') {
+        const editedLineIdx = order.lines.findIndex((l) => l.id === lineID);
+        if (quantityChange) {
+          const { adjustDraftOrderLine } = await apiClient('mutation')({
+            adjustDraftOrderLine: [
+              {
+                orderId: order.id,
+                input: {
+                  orderLineId: order.lines[editedLineIdx].id,
+                  quantity: quantityChange,
+                  ...(Object.keys(customFields || {}).length > 0 && { customFields }),
+                },
+              },
+              updateOrderItemsSelector,
+            ],
+          });
+
+          if (
+            adjustDraftOrderLine.__typename === 'Order' ||
+            adjustDraftOrderLine.__typename === 'InsufficientStockError'
+          ) {
+            if (adjustDraftOrderLine.__typename === 'Order') {
+              setOrder(adjustDraftOrderLine);
+              toast.success(t('create.productUpdated', 'Product updated'));
+            } else {
+              setOrder(adjustDraftOrderLine.order);
+              toast.error(
+                t('toasts.insufficientStockError', { value: order.lines[editedLineIdx].productVariant.product.name }),
+              );
+            }
+          }
         }
+        fetchOrder(order.id);
       }
-      fetchOrder(order.id);
+    } catch (error) {
+      toast.error(t('create.updateError', 'Failed to update product'));
     }
   };
 
   const adjustLineItem = async (orderLineId: string, quantity: number, customFields: AddItemCustomFieldsType) => {
     if (!order) return;
 
-    if (mode === 'update' && modifiedOrder) {
-      const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === orderLineId);
-      const editedLine = {
-        ...modifiedOrder.lines[editedLineIdx],
-        quantity,
-        customFields,
-      };
+    try {
+      if (mode === 'update' && modifiedOrder) {
+        const editedLineIdx = modifiedOrder.lines.findIndex((l) => l.id === orderLineId);
+        const editedLine = {
+          ...modifiedOrder.lines[editedLineIdx],
+          quantity,
+          customFields,
+        };
 
-      setModifiedOrder({
-        ...modifiedOrder,
-        lines: modifiedOrder.lines.map((l, i) => (i === editedLineIdx ? editedLine : l)),
+        setModifiedOrder({
+          ...modifiedOrder,
+          lines: modifiedOrder.lines.map((l, i) => (i === editedLineIdx ? editedLine : l)),
+        });
+
+        setOpen(false);
+        toast.success(t('create.productUpdated', 'Product updated'));
+        return;
+      }
+
+      const { adjustDraftOrderLine } = await apiClient('mutation')({
+        adjustDraftOrderLine: [
+          {
+            orderId: order.id,
+            input: { orderLineId, quantity, ...(Object.keys(customFields || {}).length > 0 && { customFields }) },
+          },
+          updateOrderItemsSelector,
+        ],
       });
 
-      setOpen(false);
-    }
-    const { adjustDraftOrderLine } = await apiClient('mutation')({
-      adjustDraftOrderLine: [
-        {
-          orderId: order.id,
-          input: { orderLineId, quantity, ...(Object.keys(customFields || {}).length > 0 && { customFields }) },
-        },
-        updateOrderItemsSelector,
-      ],
-    });
-    if (adjustDraftOrderLine.__typename === 'Order' || adjustDraftOrderLine.__typename === 'InsufficientStockError') {
-      if (adjustDraftOrderLine.__typename === 'Order') setOrder(adjustDraftOrderLine);
-      else setOrder(adjustDraftOrderLine.order);
+      if (adjustDraftOrderLine.__typename === 'Order' || adjustDraftOrderLine.__typename === 'InsufficientStockError') {
+        if (adjustDraftOrderLine.__typename === 'Order') {
+          setOrder(adjustDraftOrderLine);
+          toast.success(t('create.productUpdated', 'Product updated'));
+        } else {
+          setOrder(adjustDraftOrderLine.order);
+          toast.error(t('toasts.insufficientStockError', { value: 'product' }));
+        }
+      }
+    } catch (error) {
+      toast.error(t('create.updateError', 'Failed to update product'));
     }
   };
 
@@ -250,7 +290,6 @@ export const ProductsCard: React.FC = () => {
     if (isOpen) return;
     setOrderLineAction(undefined);
   };
-  if (!order) return null;
 
   const handleNewVariantAdd = async (customFields?: CF) => {
     if (orderLineId) {
@@ -262,162 +301,234 @@ export const ProductsCard: React.FC = () => {
     closeAddVariantDialog();
   };
 
+  if (!order) return null;
+
   return (
     <>
       <Dialog open={open} onOpenChange={(e) => (!e ? closeAddVariantDialog() : setOpen(true))}>
-        <DialogContent className="max-h-[90vh] min-h-[60vh] max-w-[50vw] overflow-auto">
+        <DialogContent className="bg-background max-h-[90vh] min-h-[60vh] max-w-[65vw] overflow-auto">
           {selectedVariant ? (
             <div className="flex h-full w-full flex-col justify-between">
+              <h3 className="text-primary pb-4 text-xl font-semibold">{t('create.addVariant')}</h3>
               <div className="flex h-full flex-col gap-8">
-                <div className="flex w-full flex-col items-center gap-2">
-                  <div className="flex w-full flex-col">
-                    <LineItem noBorder noHover variant={{ ...selectedVariant, quantity: 1 }} />
+                <div className="flex h-full w-full flex-col items-center gap-2">
+                  <div className="flex h-full w-full justify-between gap-4">
+                    <SpecialLineItem variant={{ ...selectedVariant, quantity: 1 }} />
                     <CustomComponent onVariantAdd={handleNewVariantAdd} orderLine={selectedVariant} />
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div>{t('create.somethingWrong')}</div>
+            <div className="text-muted-foreground flex items-center justify-center p-8">
+              {t('create.somethingWrong')}
+            </div>
           )}
         </DialogContent>
       </Dialog>
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {t(mode === 'view' ? 'create.viewTitle' : mode === 'update' ? 'create.editTitle' : 'create.addTitle')}
-          </CardTitle>
-          <CardDescription>
-            {t(mode === 'view' ? 'create.viewHeader' : mode === 'update' ? 'create.editHeader' : 'create.addHeader')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6">
-            {mode !== 'view' ? (
-              <>
-                <div>
-                  <Label htmlFor="product">{t('create.searchPlaceholder')}</Label>
-                  <ProductVariantSearch
-                    onSelectItem={(i) =>
-                      orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
-                    }
-                  />
-                </div>
-              </>
-            ) : null}
-            <Table>
-              <TableHeader className="text-nowrap">
-                <TableRow noHover>
-                  <TableHead>{t('create.product')}</TableHead>
-                  <TableHead>{t('create.sku')}</TableHead>
-                  <TableHead>{t('create.customFields')}</TableHead>
-                  <TableHead>{t('create.price')}</TableHead>
-                  <TableHead>{t('create.priceWithTax')}</TableHead>
-                  <TableHead>{t('create.quantity')}</TableHead>
-                  <TableHead>{t('create.perUnit')}</TableHead>
-                  {mode === 'create' && <TableHead>{t('create.actions')}</TableHead>}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {currentOrder!.lines.length ? (
-                  <>
-                    {currentOrder!.lines.map((line) => (
-                      <TableRow key={line.id}>
-                        <TableCell>
-                          <div className="flex w-max items-center gap-2">
-                            <ImageWithPreview
-                              imageClassName="aspect-square w-10 rounded-md object-cover w-[40px] h-[40px]"
-                              src={
-                                line.productVariant.featuredAsset?.preview ||
-                                line.productVariant.product?.featuredAsset?.preview
-                              }
-                            />
-                            <div className="font-semibold">{line.productVariant.product.name}</div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="min-w-[200px]">{line.productVariant.sku}</TableCell>
-                        <TableCell>
-                          <OrderLineCustomFields line={line} order={currentOrder} />
-                        </TableCell>
-                        <TableCell>{priceFormatter(line.linePrice)}</TableCell>
-                        <TableCell>{priceFormatter(line.linePriceWithTax)}</TableCell>
-                        <TableCell>{line.quantity}</TableCell>
-                        <TableCell>
-                          {priceFormatter(line.unitPrice)} ({priceFormatter(line.unitPriceWithTax)})
-                        </TableCell>
-                        {(mode === 'create' || mode === 'update') && (
-                          <TableCell>
-                            <div className="flex items-center gap-3">
-                              <DropdownMenu>
-                                <DropdownMenuTrigger>
-                                  <EllipsisVertical />
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                  <DropdownMenuLabel>Edytuj</DropdownMenuLabel>
-                                  <DropdownMenuSeparator />
-                                  <DropdownMenuItem
-                                    disabled={isLineAddedInModify(line.id)}
-                                    onClick={() => !isLineAddedInModify(line.id) && setOrderLineAction({ line })}
-                                    className={cn('flex cursor-pointer justify-between', {
-                                      'text-muted-foreground': isLineAddedInModify(line.id),
-                                    })}
-                                  >
-                                    <span>{t('orderLineActionModal.actionType.quantity-price')}</span>
-                                    {isLineAddedInModify(line.id) && (
-                                      <TooltipProvider>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <InfoIcon />
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <p>{t('modify.disclaimer')}</p>
-                                          </TooltipContent>
-                                        </Tooltip>
-                                      </TooltipProvider>
-                                    )}
-                                  </DropdownMenuItem>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
 
-                              {(mode === 'create' || isLineAddedInModify(line.id)) && (
-                                <Trash2
-                                  size={20}
-                                  className="cursor-pointer text-red-400"
-                                  onClick={() => removeLineItem(line.id)}
-                                />
-                              )}
+      <Card className="border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-blue-400">
+        <CardHeader className="pb-4">
+          <div className="flex items-center gap-2">
+            <ShoppingCart className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+            <div>
+              <CardTitle className="text-xl font-semibold">
+                {t(
+                  mode === 'view' ? 'create.viewTitle' : mode === 'update' ? 'create.editTitle' : 'create.addTitle',
+                  'Order Products',
+                )}
+              </CardTitle>
+              <CardDescription>
+                {t(
+                  mode === 'view' ? 'create.viewHeader' : mode === 'update' ? 'create.editHeader' : 'create.addHeader',
+                  'Manage products in this order',
+                )}
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="p-6 pt-0">
+          <div className="grid gap-6">
+            {mode !== 'view' && (
+              <div className="border-border bg-card rounded-lg border p-4 shadow-sm">
+                <Label className="mb-2 block text-sm font-medium">
+                  {t('create.searchLabel', 'Search for products to add')}
+                </Label>
+                <ProductVariantSearch
+                  onSelectItem={(i) =>
+                    orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
+                  }
+                />
+              </div>
+            )}
+
+            <div className="border-border rounded-lg border shadow-sm">
+              <Table>
+                <TableHeader className="bg-muted/30">
+                  <TableRow noHover className="hover:bg-transparent">
+                    <TableHead className="py-3 font-semibold">{t('create.product', 'Product')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('create.sku', 'SKU')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('create.customFields', 'Custom Fields')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('create.price', 'Price')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('create.priceWithTax', 'Price with Tax')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('create.quantity', 'Quantity')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('create.perUnit', 'Per Unit')}</TableHead>
+                    {(mode === 'create' || mode === 'update') && (
+                      <TableHead className="py-3 text-right font-semibold">{t('create.actions', 'Actions')}</TableHead>
+                    )}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {currentOrder!.lines.length ? (
+                    <>
+                      {currentOrder!.lines.map((line) => (
+                        <TableRow key={line.id} className="hover:bg-muted/20">
+                          <TableCell className="py-3">
+                            <div className="flex w-max items-center gap-3">
+                              <ImageWithPreview
+                                imageClassName="aspect-square w-12 h-12 rounded-md object-cover border border-border"
+                                src={
+                                  line.productVariant.featuredAsset?.preview ||
+                                  line.productVariant.product?.featuredAsset?.preview ||
+                                  '/placeholder.svg' ||
+                                  '/placeholder.svg'
+                                }
+                              />
+                              <div className="text-primary font-medium">{line.productVariant.product.name}</div>
                             </div>
                           </TableCell>
-                        )}
-                      </TableRow>
-                    ))}
-                    {currentOrder?.surcharges.map((surcharge) => (
-                      <TableRow key={surcharge.sku}>
-                        <TableCell className="font-medium">{surcharge.description}</TableCell>
-                        <TableCell className="min-w-[200px]">{surcharge.sku}</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell className="text-nowrap">
-                          {priceFormatter(surcharge.price, order.currencyCode)}
-                        </TableCell>
-                        <TableCell className="text-nowrap">
-                          {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
-                        </TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>{priceFormatter(surcharge.priceWithTax, order.currencyCode)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </>
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={8}>
-                      <div className="mt-4 flex items-center justify-center">
-                        <span>{t('create.noItems')}</span>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                          <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+                            <div className="flex items-center gap-2">
+                              <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                              {line.productVariant.sku}
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3">
+                            <OrderLineCustomFields line={line} order={currentOrder} />
+                          </TableCell>
+                          <TableCell className="py-3 font-medium">{priceFormatter(line.linePrice)}</TableCell>
+                          <TableCell className="py-3 font-medium">{priceFormatter(line.linePriceWithTax)}</TableCell>
+                          <TableCell className="py-3 text-center font-semibold">{line.quantity}</TableCell>
+                          <TableCell className="py-3">
+                            <div className="flex flex-col">
+                              <span>{priceFormatter(line.unitPrice)}</span>
+                              <span className="text-muted-foreground text-sm">
+                                ({priceFormatter(line.unitPriceWithTax)})
+                              </span>
+                            </div>
+                          </TableCell>
+                          {(mode === 'create' || mode === 'update') && (
+                            <TableCell className="py-3 text-right">
+                              <div className="flex items-center justify-end gap-3">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger className="hover:bg-muted flex h-8 w-8 items-center justify-center rounded-md">
+                                    <EllipsisVertical className="h-5 w-5" />
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuLabel>
+                                      <div className="flex items-center gap-2">
+                                        <Edit className="h-4 w-4 text-blue-500" />
+                                        {t('create.editOptions', 'Edit Options')}
+                                      </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                      disabled={isLineAddedInModify(line.id)}
+                                      onClick={() => !isLineAddedInModify(line.id) && setOrderLineAction({ line })}
+                                      className={cn('flex cursor-pointer justify-between', {
+                                        'text-muted-foreground': isLineAddedInModify(line.id),
+                                      })}
+                                    >
+                                      <span>
+                                        {t('orderLineActionModal.actionType.quantity-price', 'Adjust Quantity & Price')}
+                                      </span>
+                                      {isLineAddedInModify(line.id) && (
+                                        <TooltipProvider>
+                                          <Tooltip>
+                                            <TooltipTrigger asChild>
+                                              <InfoIcon className="text-muted-foreground h-4 w-4" />
+                                            </TooltipTrigger>
+                                            <TooltipContent>
+                                              <p>
+                                                {t(
+                                                  'modify.disclaimer',
+                                                  'Cannot modify items added in previous sessions',
+                                                )}
+                                              </p>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+
+                                {(mode === 'create' || isLineAddedInModify(line.id)) && (
+                                  <button
+                                    className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
+                                    onClick={() => removeLineItem(line.id)}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                )}
+                              </div>
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      ))}
+
+                      {currentOrder?.surcharges.map((surcharge) => (
+                        <TableRow key={surcharge.sku} className="bg-muted/10 hover:bg-muted/20">
+                          <TableCell className="text-primary py-3 font-medium">
+                            <div className="flex items-center gap-2">
+                              <Package className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                              {surcharge.description}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+                            <div className="flex items-center gap-2">
+                              <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                              {surcharge.sku}
+                            </div>
+                          </TableCell>
+                          <TableCell className="py-3"></TableCell>
+                          <TableCell className="text-nowrap py-3 font-medium">
+                            {priceFormatter(surcharge.price, order.currencyCode)}
+                          </TableCell>
+                          <TableCell className="text-nowrap py-3 font-medium">
+                            {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
+                          </TableCell>
+                          <TableCell className="py-3"></TableCell>
+                          <TableCell className="py-3 font-medium">
+                            {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
+                          </TableCell>
+                          {(mode === 'create' || mode === 'update') && <TableCell className="py-3"></TableCell>}
+                        </TableRow>
+                      ))}
+                    </>
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={8}>
+                        <div className="flex flex-col items-center justify-center py-12 text-center">
+                          <div className="mb-4 rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
+                            <ShoppingCart className="h-6 w-6 text-blue-500 dark:text-blue-400" />
+                          </div>
+                          <span className="text-muted-foreground text-lg font-medium">
+                            {t('create.noItems', 'No products in this order')}
+                          </span>
+                          {mode !== 'view' && (
+                            <span className="text-muted-foreground mt-2 text-sm">
+                              {t('create.searchPlaceholder', 'Use the search above to add products')}
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
             <OrderLineActionModal
               onPriceQuantityChangeApprove={onPriceQuantityChangeApprove}
               onOpenChange={onOrderLineActionModalOpenChange}

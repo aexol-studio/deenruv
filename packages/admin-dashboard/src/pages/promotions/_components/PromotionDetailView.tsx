@@ -4,6 +4,7 @@ import {
   useSettings,
   DetailViewMarker,
   PromotionDetailSelector,
+  useQuery,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useMemo } from 'react';
 import { setInArrayBy } from '@/lists/useGflp';
@@ -13,36 +14,10 @@ import { OptionsCard } from '@/pages/promotions/_components/OptionsCard';
 import { ConditionsCard } from '@/pages/promotions/_components/ConditionsCard';
 import { ActionsCard } from '@/pages/promotions/_components/ActionsCard';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
+import { PromotionConditionAndActionSelector } from '@/graphql/promotions.js';
 
-const FormSchema = z.object({
-  enabled: z.boolean(),
-  startsAt: z.date().optional(),
-  endsAt: z.date().optional(),
-  couponCode: z.string().optional(),
-  perCustomerUsageLimit: z.number().optional(),
-  usageLimit: z.number().optional(),
-  conditions: z.array(
-    z.object({
-      code: z.string(),
-      arguments: z.array(z.object({ name: z.string(), value: z.string() })),
-    }),
-  ),
-  actions: z.array(
-    z.object({
-      code: z.string(),
-      arguments: z.array(z.object({ name: z.string(), value: z.string() })),
-    }),
-  ),
-  translations: z.array(
-    z.object({
-      id: z.string().optional(),
-      languageCode: z.string(),
-      name: z.string().optional(),
-      description: z.string().optional(),
-      customFields: z.record(z.unknown()).optional(),
-    }),
-  ),
-  customFields: z.record(z.unknown()).optional(),
+export const ConditionsQuery = typedGql('query', { scalars })({
+  promotionConditions: PromotionConditionAndActionSelector,
 });
 
 const PROMOTION_FORM_KEYS = [
@@ -64,12 +39,15 @@ export const PromotionQuery = typedGql('query', { scalars })({
 
 export const PromotionDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-
   const { form, loading, fetchEntity } = useDetailView('promotions-detail-view', ...PROMOTION_FORM_KEYS);
-
   const {
     base: { setField, state },
   } = form;
+  const { data } = useQuery(ConditionsQuery);
+
+  const availableConditions = useMemo(() => {
+    return data?.promotionConditions.filter((c) => !state.conditions?.value?.some((v) => v.code === c.code)) || [];
+  }, [data, state.conditions?.value]);
 
   useEffect(() => {
     (async () => {

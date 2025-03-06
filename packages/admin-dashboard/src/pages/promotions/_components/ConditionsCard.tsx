@@ -18,6 +18,8 @@ import {
   Checkbox,
   cn,
   ErrorMessage,
+  generateInputComponents,
+  usePluginStore,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
@@ -42,6 +44,7 @@ interface ConditionsCardProps {
 export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange, errors }) => {
   const { t } = useTranslation('promotions');
   const { data } = useQuery(ConditionsQuery);
+  const { getInputComponent } = usePluginStore();
 
   const availableConditions = useMemo(() => {
     return data?.promotionConditions.filter((c) => !value?.some((v) => v.code === c.code)) || [];
@@ -135,78 +138,26 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
                     {condition?.arguments.map((e, i) => {
                       const _condition = data?.promotionConditions.find((f) => f.code === condition.code);
                       const argument = _condition?.args.find((a) => a.name === e.name);
-
-                      return argument?.ui?.component === 'facet-value-form-input' ? (
-                        <FacetsSelector
-                          key={i}
-                          value={JSON.parse(condition?.arguments[i].value)}
-                          onChange={(e) => {
-                            condition.arguments[i] = { name: argument?.name || '', value: JSON.stringify(e) };
-                            handleConditionsValueChange(index, condition?.code, condition.arguments);
-                          }}
-                        />
-                      ) : argument?.ui?.component === 'product-selector-form-input' ? (
-                        <VariantsSelector
-                          key={i}
-                          type={argument?.ui?.selectionMode as 'variant' | 'product'}
-                          label={argument?.label || t(`conditions.labels.${argument.name}`)}
-                          value={JSON.parse(condition?.arguments[i].value)}
-                          onChange={(e) => {
-                            condition.arguments[i] = { name: argument?.name || '', value: JSON.stringify(e) };
-                            handleConditionsValueChange(index, condition?.code, condition.arguments);
-                          }}
-                          singleSelection
-                        />
-                      ) : argument?.ui?.component === 'customer-group-form-input' ? (
-                        <CustomerGroupsSelector
-                          key={i}
-                          label={argument?.label || t(`conditions.labels.${argument.name}`)}
-                          value={condition?.arguments[i].value}
-                          onChange={(e) => {
-                            condition.arguments[i] = { name: argument?.name || '', value: e };
-                            handleConditionsValueChange(index, condition?.code, condition.arguments);
-                          }}
-                        />
-                      ) : argument?.type === 'int' ? (
-                        <Stack className="basis-full" key={i}>
-                          <Input
-                            type="number"
-                            step={0.01}
-                            label={argument?.label || t(`conditions.labels.${argument.name}`)}
-                            value={condition?.arguments[i].value}
-                            onChange={(e) => {
-                              condition.arguments[i] = { name: argument?.name || '', value: e.target.value };
-                              handleConditionsValueChange(index, condition?.code, condition.arguments);
-                            }}
-                            required
-                          />
-                        </Stack>
-                      ) : argument?.type === 'boolean' ? (
-                        <Stack className="mb-3 basis-full items-center gap-3" key={i}>
-                          <Label>{argument?.label || t(`conditions.labels.${argument.name}`)}</Label>
-                          <Checkbox
-                            checked={condition?.arguments[i].value === 'true' ? true : false}
-                            onCheckedChange={(e) => {
-                              condition.arguments[i] = { name: argument?.name || '', value: e ? 'true' : 'false' };
-                              handleConditionsValueChange(index, condition?.code, condition.arguments);
-                            }}
-                          />
-                        </Stack>
-                      ) : (
-                        <Stack className="basis-full" key={i}>
-                          <Input
-                            type="number"
-                            step={0.01}
-                            label={argument?.label || t(`conditions.labels.${argument?.name}`)}
-                            value={condition?.arguments[i].value}
-                            onChange={(e) => {
-                              condition.arguments[i] = { name: argument?.name || '', value: e.target.value };
-                              handleConditionsValueChange(index, condition?.code, condition.arguments);
-                            }}
-                            required
-                          />
-                        </Stack>
-                      );
+                      if (!argument) return null;
+                      return generateInputComponents(
+                        [
+                          {
+                            ...argument,
+                            label: [{ languageCode: 'en', value: argument.label || argument.name }],
+                            description: [{ languageCode: 'en', value: argument.description || '' }],
+                          },
+                        ],
+                        getInputComponent,
+                      ).map((field) => {
+                        return (
+                          <div key={field.name}>
+                            <div>
+                              <Label>{field.name}</Label>
+                            </div>
+                            {field.component}
+                          </div>
+                        );
+                      });
                     })}
                   </Stack>
                   <Separator className="my-4" />

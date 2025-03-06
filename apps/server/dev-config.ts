@@ -21,6 +21,7 @@ import {
     DefaultAssetNamingStrategy,
     PaymentMethod,
     LanguageCode,
+    FulfillmentHandler,
 } from '@deenruv/core';
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
@@ -37,6 +38,56 @@ import { WFirmaPlugin } from '@deenruv/wfirma-plugin';
 
 export const IS_DEV = process.env.APP_ENV === 'LOCAL';
 export const HOST = process.env.APP_ENV === 'LOCAL' ? 'http://localhost:3000' : '';
+
+const handler = new FulfillmentHandler({
+    code: 'dpd-fulfillment-handler',
+    description: [
+        {
+            languageCode: LanguageCode.en,
+            value: 'Dpd courier',
+        },
+    ],
+    args: {
+        width: {
+            type: 'int',
+            required: true,
+            label: [{ languageCode: LanguageCode.pl, value: 'Szerokość(cm)* max 80' }],
+            ui: {
+                component: 'DUPA',
+            },
+        },
+        height: {
+            type: 'int',
+            required: true,
+            label: [{ languageCode: LanguageCode.pl, value: 'Wysokość(cm)* max 120' }],
+        },
+        depth: {
+            type: 'int',
+            required: true,
+            label: [{ languageCode: LanguageCode.pl, value: 'Głebokość(cm)* max 180' }],
+        },
+        weight: {
+            type: 'float',
+            required: true,
+            label: [{ languageCode: LanguageCode.pl, value: 'Waga*' }],
+        },
+        isInsured: {
+            type: 'boolean',
+            required: true,
+            defaultValue: true,
+            label: [
+                {
+                    languageCode: LanguageCode.pl,
+                    value: 'Ubezpiecz paczkę na wartość przesyłki',
+                },
+            ],
+        },
+    },
+    init(injector) {},
+    createFulfillment: async (ctx, orders, _, args) => {
+        return {};
+    },
+});
 
 export const devConfig: DeenruvConfig = {
     apiOptions: {
@@ -88,6 +139,7 @@ export const devConfig: DeenruvConfig = {
     importExportOptions: {
         importAssetsDir: path.join(__dirname, 'import-assets'),
     },
+    shippingOptions: { fulfillmentHandlers: [handler] },
     customFields: {},
     plugins: [
         // DashboardWidgetsPlugin,

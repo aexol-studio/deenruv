@@ -2,7 +2,7 @@ import { Input, Label, useCustomFields, CardDescription } from '@deenruv/react-u
 import React from 'react';
 
 export const CustomInput = () => {
-    const { setValue, description, label, value } = useCustomFields();
+    const { setValue, description, label, value } = useCustomFields<string>();
 
     return (
         <div>

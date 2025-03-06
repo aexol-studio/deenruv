@@ -113,7 +113,6 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         filterArray[index][1] = {};
         const updatedFilter = Object.fromEntries(filterArray);
         const updatedSearchParams = JSON.stringify(updatedFilter);
-        console.log(filterFromParamsJSON, updatedFilter);
         searchParams.set(SearchParamKey.FILTER, updatedSearchParams);
         setSearchParams(searchParams);
     };

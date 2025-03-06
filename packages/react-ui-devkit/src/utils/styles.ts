@@ -6,18 +6,18 @@ export const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    'bg-stone-900 text-stone-50 hover:bg-stone-900/90 dark:bg-stone-50 dark:text-stone-900 dark:hover:bg-stone-50/90',
+                    'bg-stone-900 text-white hover:bg-stone-800 focus:ring-2 focus:ring-stone-600 dark:bg-stone-50 dark:text-stone-900 dark:hover:bg-stone-200',
                 destructive:
-                    'bg-red-500 text-stone-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-stone-50 dark:hover:bg-red-900/90',
-                action: 'bg-blue-600 text-stone-50 hover:brightness-125 dark:bg-blue-600 dark:text-stone-50 dark:hover:brightness-125',
+                    'bg-red-500 text-white hover:bg-red-600 focus:ring-2 focus:ring-red-400 dark:bg-red-900 dark:text-white dark:hover:bg-red-800',
+                action: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-600',
                 outline:
-                    'border border-stone-200 bg-white hover:bg-stone-100 hover:text-stone-900 dark:border-stone-800 dark:bg-stone-950 dark:hover:bg-stone-800 dark:hover:text-stone-50',
+                    'border border-stone-300 bg-white text-stone-900 hover:bg-stone-100 focus:ring-2 focus:ring-stone-400 dark:border-stone-700 dark:bg-transparent dark:text-stone-50 dark:hover:bg-stone-800',
                 secondary:
-                    'bg-stone-100 text-stone-900 hover:bg-stone-100/80 dark:bg-stone-800 dark:text-stone-50 dark:hover:bg-stone-800/80',
-                ghost: 'hover:bg-stone-100 hover:text-stone-900 dark:hover:bg-stone-800 dark:hover:text-stone-50',
+                    'bg-stone-100 text-stone-900 hover:bg-stone-200 focus:ring-2 focus:ring-stone-300 dark:bg-stone-800 dark:text-stone-50 dark:hover:bg-stone-700',
+                ghost: 'text-stone-900 hover:bg-stone-100 focus:ring-2 focus:ring-stone-300 dark:text-stone-50 dark:hover:bg-stone-800',
                 'navigation-link':
-                    'text-navigation-link opacity-50 dark:opacity-70 hover:bg-navigation-link/20 dark:hover:opacity-100 hover:opacity-100 dark:hover:bg-navigation-link/20 hover:text-navigation-link',
-                link: 'text-stone-900 underline-offset-4 hover:underline dark:text-stone-50',
+                    'text-navigation-link opacity-70 hover:opacity-100 focus:opacity-100 focus:ring-2 focus:ring-navigation-link/50 dark:opacity-80 dark:hover:opacity-100 dark:focus:ring-navigation-link/50',
+                link: 'text-stone-900 underline-offset-4 hover:underline focus:ring-2 focus:ring-stone-400 dark:text-stone-50',
             },
             size: {
                 default: 'h-10 px-4 py-2',

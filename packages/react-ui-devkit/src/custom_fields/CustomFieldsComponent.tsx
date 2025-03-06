@@ -1,10 +1,9 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components';
-import type { GraphQLTypes, ModelTypes, CustomFieldConfigType } from '@deenruv/admin-types';
+import type { ModelTypes, CustomFieldConfigType } from '@deenruv/admin-types';
 import { usePluginStore } from '@/plugins';
-import { CustomFieldsProvider } from '@/custom_fields/context';
-import { generateCustomFields } from '@/custom_fields/logic';
-import { cn } from '@/lib';
+import { generateInputComponents } from '@/custom_fields/logic';
+import { InputFieldComponent } from './InputFieldComponent.js';
 
 export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSON'] | undefined }>({
     customFields,
@@ -12,28 +11,31 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
     setValue,
     translation,
     additionalData,
+    disabled,
 }: {
     customFields: CustomFieldConfigType[];
     value: any;
     setValue: (field: any, data: string | number | boolean) => void;
     translation?: K;
     additionalData?: Record<string, unknown>;
+    disabled?: boolean;
 }) {
     const { getInputComponent } = usePluginStore();
     const [rendered, setRendered] = useState<
-        Record<string, { name: string; component: React.ReactElement; ui: Record<string, unknown> }[]>
+        Record<string, { name: string; component: React.ReactElement; ui?: Record<string, unknown> }[]>
     >({});
 
     useEffect(() => {
-        const result = generateCustomFields(customFields, getInputComponent).reduce(
+        const result = generateInputComponents(customFields, getInputComponent).reduce(
             (acc, field) => {
-                if (!acc[field.tab]) acc[field.tab] = [];
-                acc[field.tab].push(field);
+                const tab = field.ui?.tab || 'General';
+                if (!acc[tab]) acc[tab] = [];
+                acc[tab].push(field);
                 return acc;
             },
             {} as Record<
                 string,
-                { name: string; component: React.ReactElement; ui: Record<string, unknown> }[]
+                { name: string; component: React.ReactElement; ui?: Record<string, unknown> }[]
             >,
         );
         setRendered(result);
@@ -53,11 +55,11 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
             {Object.entries(rendered).map(([tab, fields]) => (
                 <TabsContent key={tab} value={tab}>
                     <div className="flex flex-wrap gap-4">
-                        {fields.map(field => {
-                            const _field = customFields?.find(f => 'name' in f && f.name === field.name);
+                        {fields.map(_f => {
+                            const _field = customFields?.find(f => 'name' in f && f.name === _f.name);
                             if (!_field) return null;
+                            const field = { ..._field, component: _f.component };
                             let _value = undefined;
-
                             if (
                                 ['LocaleStringCustomFieldConfig', 'LocaleTextCustomFieldConfig'].includes(
                                     _field.__typename,
@@ -71,26 +73,14 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
                             }
 
                             return (
-                                <CustomFieldsProvider
+                                <InputFieldComponent
                                     key={field.name}
-                                    field={
-                                        _field as unknown as GraphQLTypes['CustomFieldConfig'][`...on ${typeof _field.__typename}`]
-                                    }
+                                    field={field}
                                     value={_value}
-                                    setValue={data => setValue(_field, data)}
+                                    setValue={data => setValue(_field, data as string | number | boolean)}
                                     additionalData={additionalData}
-                                >
-                                    <Suspense fallback={<span>Loading...</span>}>
-                                        <div
-                                            className={cn(
-                                                `flex-1 min-w-[250px] basis-1/3`,
-                                                !!field.ui?.fullWidth && `basis-full`,
-                                            )}
-                                        >
-                                            {field.component}
-                                        </div>
-                                    </Suspense>
-                                </CustomFieldsProvider>
+                                    disabled={disabled}
+                                />
                             );
                         })}
                     </div>

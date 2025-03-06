@@ -9,19 +9,19 @@ import { CustomFieldSelectorsType, customFieldSelectors } from '@/selectors';
 import { useDebounce } from '@/hooks';
 
 type CF = CustomFieldSelectorsType;
-
 type CommonFields = {
     [K in keyof CF]: CF[K];
 }[keyof CF];
 
 export const RelationInput = <K extends keyof CF>({ entityName }: { entityName: K }) => {
-    const { value } = useCustomFields<'RelationCustomFieldConfig', CommonFields | undefined>();
+    const { value } = useCustomFields<CommonFields>();
     const [modalOpened, setModalOpened] = useState(false);
     const [searchString, setSearchString] = useState<string>('');
     const debouncedSearch = useDebounce(searchString, 500);
 
     useEffect(() => {
-        setFilterField('name', { contains: searchString });
+        if (debouncedSearch.length < 1) return;
+        setFilterField('name', { contains: debouncedSearch });
     }, [debouncedSearch]);
 
     const [selected, setSelected] = useState<typeof value>();

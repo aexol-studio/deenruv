@@ -3,7 +3,7 @@ import { CardDescription, Input, Label } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
 
 export const DefaultFloatInput: React.FC = () => {
-    const { field, value, label, description, setValue } = useCustomFields<'FloatCustomFieldConfig'>();
+    const { field, value, label, description, setValue, disabled } = useCustomFields<string>();
     return (
         <div className="flex flex-col gap-1">
             <Label htmlFor={field?.name}>{label || field?.name}</Label>
@@ -11,9 +11,12 @@ export const DefaultFloatInput: React.FC = () => {
             <Input
                 id={field?.name}
                 type="number"
-                disabled={field?.readonly ?? undefined}
+                disabled={disabled ?? field?.readonly ?? undefined}
                 value={value as string}
-                onChange={e => setValue(parseFloat(e.target.value || '0'))}
+                onChange={e => {
+                    const float = parseFloat(e.target.value || '0');
+                    setValue(float.toString());
+                }}
             />
         </div>
     );

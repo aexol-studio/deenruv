@@ -1,39 +1,34 @@
-import type { GraphQLTypes } from '@deenruv/admin-types';
 import React, { PropsWithChildren, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type CustomFieldConfigMap = {
-    BooleanCustomFieldConfig: {
-        data: boolean;
-    };
-    StringCustomFieldConfig: {};
-    LocaleStringCustomFieldConfig: {};
-    IntCustomFieldConfig: {};
-    FloatCustomFieldConfig: {};
-    DateTimeCustomFieldConfig: {};
-    RelationCustomFieldConfig: {};
-    TextCustomFieldConfig: {};
-    LocaleTextCustomFieldConfig: {};
+export type Field = {
+    name: string;
+    type: string;
+    list?: boolean;
+    readonly?: boolean | null;
+    ui?: Record<string, unknown>;
+    label?: { languageCode: string; value: string }[] | null;
+    description?: { languageCode: string; value: string }[] | null;
+    entity?: string;
 };
 
-export type DynamicContext<T extends GraphQLTypes['CustomFieldConfig']['__typename'], K, Z = any> = {
-    field?: GraphQLTypes['CustomFieldConfig'][`...on ${T}`];
+export type DynamicContext<T extends Field, Z, K = Record<string, unknown>> = {
+    field?: T | undefined;
     value?: Z;
     setValue: (data: Z) => void;
     label?: string;
     description?: string;
     additionalData?: K;
+    disabled?: boolean;
 };
 
-export const CustomFieldsContext = React.createContext<
-    DynamicContext<GraphQLTypes['CustomFieldConfig']['__typename'], unknown>
->({
+export const CustomFieldsContext = React.createContext<DynamicContext<Field, unknown>>({
     field: undefined,
     value: undefined,
     setValue: () => console.error('setValue not implemented'),
 });
 export const CustomFieldsProvider: React.FC<
-    PropsWithChildren<DynamicContext<GraphQLTypes['CustomFieldConfig']['__typename'], unknown>>
+    PropsWithChildren<Omit<DynamicContext<Field, unknown>, 'label' | 'description'>>
 > = ({ children, ..._value }) => {
     const {
         i18n: { language },
@@ -47,25 +42,14 @@ export const CustomFieldsProvider: React.FC<
         [language, _value?.field?.label, _value?.field?.description],
     );
 
-    const value = useMemo(
-        () => ({
-            ..._value,
-            ...translated,
-        }),
-        [_value, translated],
-    );
+    const value = useMemo(() => ({ ..._value, ...translated }), [_value, translated]);
 
     return <CustomFieldsContext.Provider value={value}>{children}</CustomFieldsContext.Provider>;
 };
 
-export function useCustomFields<Z extends keyof CustomFieldConfigMap, T = any>() {
-    type FieldType = CustomFieldConfigMap[Z];
+export function useCustomFields<T, Z extends Field = Field>() {
     if (!React.useContext(CustomFieldsContext)) {
         throw new Error('useCustomFields must be used within a CustomFieldsProvider');
     }
-    return React.useContext(CustomFieldsContext) as DynamicContext<
-        GraphQLTypes['CustomFieldConfig']['__typename'],
-        FieldType,
-        T
-    >;
+    return React.useContext(CustomFieldsContext) as DynamicContext<Z, T, any>;
 }

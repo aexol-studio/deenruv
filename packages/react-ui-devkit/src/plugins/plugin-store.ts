@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { DeenruvUIPlugin, DetailLocationID, ListLocationID } from '../types/types';
+import { defaultInputComponents } from './default-input-components.js';
 
 const pagePathPrefix = 'admin-ui/extensions/';
 
@@ -60,10 +61,13 @@ export class PluginStore {
     }
 
     getInputComponent(id: string) {
+        let component = null;
         const input = Array.from(this.pluginMap.values())
             .map(plugin => plugin.inputs?.find(input => input.id === id))
             .find(Boolean);
-        return input?.component;
+        if (input?.component) component = input.component;
+        else component = defaultInputComponents[id as keyof typeof defaultInputComponents];
+        return component;
     }
 
     getComponents(location: string, passedTab?: string) {

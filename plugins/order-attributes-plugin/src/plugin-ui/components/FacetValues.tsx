@@ -22,8 +22,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface FacetsAccordionsProps {
     setValue: (value: string) => void;
-    value: string | null;
+    value?: string | null;
     additionalData?: Record<string, unknown>;
+    disabled?: boolean;
 }
 
 const match = (facetValues?: FacetValueType[]) => {
@@ -53,7 +54,12 @@ const match = (facetValues?: FacetValueType[]) => {
     return facets;
 };
 
-export const FacetValues: React.FC<FacetsAccordionsProps> = ({ additionalData, setValue, value }) => {
+export const FacetValues: React.FC<FacetsAccordionsProps> = ({
+    disabled,
+    additionalData,
+    setValue,
+    value,
+}) => {
     const { t } = useTranslation(translationNS);
     const [fetchFacetValues] = useLazyQuery(ProductFacetValuesQuery);
     const id =
@@ -122,7 +128,9 @@ export const FacetValues: React.FC<FacetsAccordionsProps> = ({ additionalData, s
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">{t('custom.editAttributes')}</Button>
+                <Button disabled={disabled} variant="outline">
+                    {t('custom.editAttributes')}
+                </Button>
             </DialogTrigger>
             <DialogContent className="w-[800px] max-w-[800px]">
                 <DialogHeader>

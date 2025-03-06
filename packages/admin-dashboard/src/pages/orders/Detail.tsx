@@ -21,17 +21,12 @@ import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 export const OrdersDetailPage = () => {
   const { id } = useParams();
   const { t } = useTranslation('orders');
-  const { order, mode, loading, fetchOrder } = useOrder();
+  const { order, mode, fetchOrder } = useOrder();
+
   useEffect(() => {
     if (id) fetchOrder(id);
   }, [id]);
-  // if (loading) {
-  //   return (
-  //     <div className="flex min-h-[80vh] w-full items-center justify-center">
-  //       <div className="customSpinner" />
-  //     </div>
-  //   );
-  // }
+
   if (!order || !mode) {
     return (
       <div className="flex min-h-[80vh] w-full items-center justify-center">
@@ -60,10 +55,10 @@ export const OrdersDetailPage = () => {
           </>
         ) : (
           <>
-            <EntityCustomFields entityName="order" id={id} />
             <TaxSummary />
-            {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
             {order.state !== ORDER_STATE.DRAFT && <Payments />}
+            {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
+            <EntityCustomFields entityName="order" id={id} />
             <OrderHistory />
           </>
         )}

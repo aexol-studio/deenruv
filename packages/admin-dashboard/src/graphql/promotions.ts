@@ -14,6 +14,7 @@ export type PromotionsListType = FromSelectorWithScalars<typeof PromotionsListSe
 
 export const PromotionConditionAndActionSelector = Selector('ConfigurableOperationDefinition')({
   code: true,
+  description: true,
   args: {
     defaultValue: true,
     description: true,

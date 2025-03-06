@@ -3,7 +3,7 @@ import { CardDescription, Label, Textarea } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
 
 export function DefaultTextarea() {
-    const { field, value, setValue, label, description } = useCustomFields<'StringCustomFieldConfig'>();
+    const { field, value, setValue, label, description, disabled } = useCustomFields<string>();
 
     return (
         <div className="flex flex-col gap-1">
@@ -12,7 +12,7 @@ export function DefaultTextarea() {
             <Textarea
                 id={field?.name}
                 value={value as string}
-                disabled={field?.readonly ?? undefined}
+                disabled={disabled ?? field?.readonly ?? undefined}
                 onChange={e => setValue(e.target.value)}
             />
         </div>

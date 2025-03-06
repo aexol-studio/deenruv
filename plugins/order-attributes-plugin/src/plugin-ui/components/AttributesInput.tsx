@@ -18,7 +18,7 @@ export type Data = {
 };
 
 export const AttributesInput: React.FC = () => {
-    const { setValue, value, additionalData } = useCustomFields();
+    const { disabled, setValue, value, additionalData } = useCustomFields<string>();
     const parsedValues = useMemo(() => {
         if (!value || value === '') return null;
         try {
@@ -31,7 +31,12 @@ export const AttributesInput: React.FC = () => {
     }, [value]);
     return (
         <div className="flex flex-col gap-4">
-            <FacetValues value={value} setValue={setValue} additionalData={additionalData} />
+            <FacetValues
+                disabled={disabled}
+                value={value}
+                setValue={setValue}
+                additionalData={additionalData}
+            />
             <div className="flex flex-col gap-2">
                 {parsedValues ? (
                     Object.entries(parsedValues).map(([key, value]) => (

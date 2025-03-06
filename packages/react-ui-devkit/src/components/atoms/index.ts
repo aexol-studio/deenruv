@@ -39,3 +39,4 @@ export * from './multiple-selector';
 export * from './drawer';
 export * from './language-picker';
 export * from './faceted-filter';
+export * from './progress.js';

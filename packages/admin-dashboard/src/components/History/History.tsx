@@ -1,8 +1,12 @@
+'use client';
+
+import type React from 'react';
+
 import { useState } from 'react';
-import { CardContent } from '@deenruv/react-ui-devkit';
-import { OrderHistoryEntryType } from '@/graphql/draft_order';
-import { ModelTypes } from '@deenruv/admin-types';
+import type { OrderHistoryEntryType } from '@/graphql/draft_order';
+import type { ModelTypes } from '@deenruv/admin-types';
 import { AddEntryForm, DeleteEntryDialog, EditEntryDialog, Timeline } from '@/components/History';
+import { ClipboardList } from 'lucide-react';
 
 interface HistoryProps {
   data: OrderHistoryEntryType[] | undefined;
@@ -19,7 +23,7 @@ export const History: React.FC<HistoryProps> = ({ data, onNoteAdd, onNoteEdit, o
   const [selectedNote, setSelectedNote] = useState<OrderHistoryEntryType | undefined>();
 
   return (
-    <>
+    <div className="space-y-6">
       <AddEntryForm
         isPrivate={isPrivate}
         newNote={newNote}
@@ -27,18 +31,33 @@ export const History: React.FC<HistoryProps> = ({ data, onNoteAdd, onNoteEdit, o
         setIsPrivate={setIsPrivate}
         setNewNote={setNewNote}
       />
-      <Timeline
-        setIsDeleteOpen={setIsDeleteOpen}
-        setIsEditOpen={setIsEditOpen}
-        setSelectedNote={setSelectedNote}
-        data={data}
-      />
+
+      {data && data.length > 0 ? (
+        <Timeline
+          setIsDeleteOpen={setIsDeleteOpen}
+          setIsEditOpen={setIsEditOpen}
+          setSelectedNote={setSelectedNote}
+          data={data}
+        />
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
+          <div className="rounded-full bg-amber-100 p-3 dark:bg-amber-900/30">
+            <ClipboardList className="h-6 w-6 text-amber-500 dark:text-amber-400" />
+          </div>
+          <div>
+            <p className="font-medium">No history entries yet</p>
+            <p className="text-muted-foreground mt-1 text-sm">Add a note above to start building the order history</p>
+          </div>
+        </div>
+      )}
+
       <DeleteEntryDialog
         isOpen={isDeleteOpen}
         setIsOpen={setIsDeleteOpen}
         selectedNote={selectedNote}
         onConfirm={onNoteDelete}
       />
+
       <EditEntryDialog
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
@@ -46,6 +65,6 @@ export const History: React.FC<HistoryProps> = ({ data, onNoteAdd, onNoteEdit, o
         setSelectedNote={setSelectedNote}
         onConfirm={onNoteEdit}
       />
-    </>
+    </div>
   );
 };

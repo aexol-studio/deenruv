@@ -1,4 +1,7 @@
-import React, { useCallback, useState } from 'react';
+'use client';
+
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -6,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
   MultipleSelector,
-  Option,
+  type Option,
   useLazyQuery,
   useOrder,
   useMutation,
@@ -15,6 +18,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { toast } from 'sonner';
+import { Ticket, X, Search, Tag } from 'lucide-react';
 
 const PromotionCodesQuery = typedGql('query', { scalars })({
   promotions: [
@@ -39,58 +43,113 @@ const RemoveCouponCodeMutation = typedGql('mutation', { scalars })({
 
 export const CouponCodesCard: React.FC<{}> = () => {
   const { t } = useTranslation('orders');
-  const { order, setOrder, fetchOrder } = useOrder();
+  const { order, setOrder } = useOrder();
   const [fetchPromotionCodes] = useLazyQuery(PromotionCodesQuery);
   const [applyCoupon] = useMutation(ApplyCouponCodeMutation);
   const [removeCoupon] = useMutation(RemoveCouponCodeMutation);
   const [currentValue, setCurrentValue] = useState<Option[]>(
     order?.couponCodes.map((c) => ({ label: c, value: c })) || [],
   );
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleChange = useCallback(
     (e: Option[]) => {
       if (!order) return;
       const currentState = currentValue.map((v) => v.value) || [];
       if (e.length > currentState?.length) {
-        applyCoupon({ couponCode: e[e.length - 1].value, orderId: order.id }).then((resp) => {
-          if (resp.applyCouponCodeToDraftOrder.__typename === 'Order') setOrder(resp.applyCouponCodeToDraftOrder);
-          toast.success(t('couponCodes.addToastSuccess'));
-          setCurrentValue((prev) => [...prev, e[e.length - 1]]);
-        });
+        const newCoupon = e[e.length - 1];
+        toast.promise(
+          applyCoupon({ couponCode: newCoupon.value, orderId: order.id }).then((resp) => {
+            if (resp.applyCouponCodeToDraftOrder.__typename === 'Order') {
+              setOrder(resp.applyCouponCodeToDraftOrder);
+              setCurrentValue((prev) => [...prev, newCoupon]);
+              return true;
+            } else {
+              throw new Error('Failed to apply coupon');
+            }
+          }),
+          {
+            loading: t('couponCodes.addingCoupon', 'Applying coupon code...'),
+            success: t('couponCodes.addToastSuccess', 'Coupon code applied successfully'),
+            error: (err) => err.message,
+          },
+        );
       } else {
         const couponToRemove = currentState.find((c) => !e.map((i) => i.value).includes(c));
-        if (couponToRemove)
-          removeCoupon({ couponCode: couponToRemove, orderId: order.id }).then((resp) => {
-            if (resp.removeCouponCodeFromDraftOrder?.id) setOrder(resp.removeCouponCodeFromDraftOrder);
-            toast.success(t('couponCodes.removeToastSuccess'));
-            setCurrentValue((prev) => prev.filter((i) => i.value !== couponToRemove));
-          });
+        if (couponToRemove) {
+          toast.promise(
+            removeCoupon({ couponCode: couponToRemove, orderId: order.id }).then((resp) => {
+              if (resp.removeCouponCodeFromDraftOrder?.id) {
+                setOrder(resp.removeCouponCodeFromDraftOrder);
+                setCurrentValue((prev) => prev.filter((i) => i.value !== couponToRemove));
+                return true;
+              }
+              return false;
+            }),
+            {
+              loading: t('couponCodes.removingCoupon', 'Removing coupon code...'),
+              success: t('couponCodes.removeToastSuccess', 'Coupon code removed successfully'),
+              error: t('couponCodes.removeToastError', 'Failed to remove coupon code'),
+            },
+          );
+        }
       }
     },
-    [order?.couponCodes],
+    [order, currentValue, applyCoupon, removeCoupon, setOrder, t],
   );
 
   return (
-    <Card className="col-span-1 h-full">
-      <CardHeader>
-        <CardTitle>{t('couponCodes.title')}</CardTitle>
-        <CardDescription>{t('couponCodes.description')}</CardDescription>
+    <Card className="h-full border-l-4 border-l-purple-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-purple-400">
+      <CardHeader className="pb-2">
+        <div className="flex items-center gap-2">
+          <Ticket className="h-5 w-5 text-purple-500 dark:text-purple-400" />
+          <CardTitle>{t('couponCodes.title', 'Coupon Codes')}</CardTitle>
+        </div>
+        <CardDescription>{t('couponCodes.description', 'Apply coupon codes to this order')}</CardDescription>
       </CardHeader>
       <CardContent>
-        <MultipleSelector
-          hideClearAllButton
-          placeholder={t('couponCodes.placeholder')}
-          value={currentValue}
-          onChange={handleChange}
-          onSearch={(searchString) =>
-            fetchPromotionCodes({ code: searchString }).then((resp) =>
-              resp.promotions.items
-                .filter((i) => i.couponCode)
-                .map((i) => ({ value: i.couponCode!, label: `${i.couponCode}` || '' })),
-            )
-          }
-          delay={500}
-        />
+        <div className="relative">
+          <MultipleSelector
+            hideClearAllButton
+            placeholder={t('couponCodes.placeholder', 'Search for coupon codes...')}
+            value={currentValue}
+            onChange={handleChange}
+            onSearch={(searchString) => {
+              setIsSearching(true);
+              return fetchPromotionCodes({ code: searchString })
+                .then((resp) =>
+                  resp.promotions.items
+                    .filter((i) => i.couponCode)
+                    .map((i) => ({
+                      value: i.couponCode!,
+                      label: i.couponCode!,
+                      description: i.name,
+                    })),
+                )
+                .finally(() => setIsSearching(false));
+            }}
+            delay={500}
+          />
+          <div className="text-muted-foreground absolute right-3 top-2.5">
+            {isSearching ? (
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            ) : (
+              <Search className="h-4 w-4" />
+            )}
+          </div>
+        </div>
+
+        {currentValue.length === 0 && (
+          <div className="border-muted mt-4 flex flex-col items-center justify-center rounded-md border border-dashed p-6 text-center">
+            <div className="mb-3 rounded-full bg-purple-100 p-3 dark:bg-purple-900/30">
+              <Ticket className="h-6 w-6 text-purple-500 dark:text-purple-400" />
+            </div>
+            <h3 className="text-sm font-medium">{t('couponCodes.noCoupons', 'No coupon codes applied')}</h3>
+            <p className="text-muted-foreground mt-1 text-xs">
+              {t('couponCodes.searchToAdd', 'Search above to find and apply coupon codes')}
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

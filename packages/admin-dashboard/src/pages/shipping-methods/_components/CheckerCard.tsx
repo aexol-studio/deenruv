@@ -13,6 +13,8 @@ import {
   Option,
   apiClient,
   ErrorMessage,
+  generateInputComponents,
+  usePluginStore,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -29,6 +31,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
   const { t } = useTranslation('shippingMethods');
   const [checkers, setCheckers] = useState<PaymentMethodHandlerType[]>([]);
   const [allCheckersOptions, setAllCheckersOptions] = useState<Option[]>([]);
+  const { getInputComponent } = usePluginStore();
 
   const fetchOptions = useCallback(async () => {
     const response = await apiClient('query')({
@@ -93,35 +96,26 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
             {currentCheckerValue?.arguments.map((e, i) => {
               const checker = checkers?.find((ch) => ch.code === currentCheckerValue.code);
               const argument = checker?.args.find((a) => a.name === a.name);
-
-              return argument?.type === 'int' ? (
-                <Stack className="basis-full">
-                  <Input
-                    type="number"
-                    step={0.01}
-                    label={argument?.label ?? undefined}
-                    value={currentCheckerValue?.arguments[i].value}
-                    onChange={(e) =>
-                      handleCheckerValueChange(currentCheckerValue?.code, [
-                        { name: argument?.name || '', value: e.target.value },
-                      ])
-                    }
-                    required
-                  />
-                </Stack>
-              ) : (
-                <Stack className="mb-2 basis-full items-center gap-3" key={e.name}>
-                  <Checkbox
-                    checked={currentCheckerValue?.arguments[i].value === 'true' ? true : false}
-                    onCheckedChange={(e) =>
-                      handleCheckerValueChange(currentCheckerValue?.code, [
-                        { name: argument?.name || '', value: e ? 'true' : 'false' },
-                      ])
-                    }
-                  />
-                  <Label>{argument?.label}</Label>
-                </Stack>
-              );
+              if (!argument) return null;
+              return generateInputComponents(
+                [
+                  {
+                    ...argument,
+                    label: [{ languageCode: 'en', value: argument.label || argument.name }],
+                    description: [{ languageCode: 'en', value: argument.description || '' }],
+                  },
+                ],
+                getInputComponent,
+              ).map((field) => {
+                return (
+                  <div key={field.name}>
+                    <div>
+                      <Label>{field.name}</Label>
+                    </div>
+                    {field.component}
+                  </div>
+                );
+              });
             })}
           </Stack>
           <ErrorMessage errors={errors} />

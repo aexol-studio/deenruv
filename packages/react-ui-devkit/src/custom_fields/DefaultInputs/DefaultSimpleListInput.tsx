@@ -15,7 +15,8 @@ import { PlusIcon, X } from 'lucide-react';
 // }
 
 export function DefaultSimpleListInput() {
-    const { field, value, label, description, setValue } = useCustomFields<'TextCustomFieldConfig'>();
+    const { field, value, label, description, setValue, disabled } =
+        useCustomFields<Array<string | number>>();
     const [inputValue, setInputValue] = useState<string | number>('');
 
     const isNumber = field?.type === 'int' || field?.type === 'float';
@@ -50,7 +51,7 @@ export function DefaultSimpleListInput() {
                         id={field?.name}
                         rows={2}
                         value={inputValue}
-                        disabled={field?.readonly ?? undefined}
+                        disabled={disabled ?? field?.readonly ?? undefined}
                         onChange={e => setInputValue(e.target.value)}
                     />
                 ) : (
@@ -58,7 +59,7 @@ export function DefaultSimpleListInput() {
                         id={field?.name}
                         type="text"
                         value={inputValue}
-                        disabled={field?.readonly ?? undefined}
+                        disabled={disabled ?? field?.readonly ?? undefined}
                         onChange={e => {
                             const val = e.target.value;
 
@@ -74,7 +75,7 @@ export function DefaultSimpleListInput() {
                 <Button
                     size="icon"
                     variant="secondary"
-                    disabled={field?.readonly ?? undefined}
+                    disabled={disabled ?? field?.readonly ?? undefined}
                     onClick={() => {
                         setValue([...(value || []), isNumber ? Number(inputValue) : inputValue]);
                         setInputValue('');

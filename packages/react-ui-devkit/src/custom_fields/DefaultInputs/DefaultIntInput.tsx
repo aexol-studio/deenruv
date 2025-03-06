@@ -3,7 +3,7 @@ import { CardDescription, Input, Label } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
 
 export const DefaultIntInput: React.FC = () => {
-    const { field, value, label, description, setValue } = useCustomFields<'IntCustomFieldConfig'>();
+    const { field, value, label, description, setValue, disabled } = useCustomFields<number>();
     return (
         <div className="flex flex-col gap-1">
             <Label htmlFor={field?.name}>{label || field?.name}</Label>
@@ -11,8 +11,8 @@ export const DefaultIntInput: React.FC = () => {
             <Input
                 id={field?.name}
                 type="number"
-                disabled={field?.readonly ?? undefined}
-                value={value as string}
+                disabled={disabled ?? field?.readonly ?? undefined}
+                value={value}
                 onChange={e => {
                     setValue(parseInt(e.target.value || '0', 10));
                 }}

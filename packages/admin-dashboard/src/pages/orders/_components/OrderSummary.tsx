@@ -1,5 +1,4 @@
 import { useOrder, Label, usePluginStore, Renderer } from '@deenruv/react-ui-devkit';
-import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,10 +10,6 @@ export const OrderSummary: React.FC = () => {
 
   return (
     <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">
-      <Label className="text-muted-foreground font-bold">
-        {t('create.finalAmount', { value: priceFormatter(order.totalWithTax, order.currencyCode) })}
-      </Label>
-      <Label className="text-muted-foreground">|</Label>
       <Label className="text-muted-foreground">{t('create.baseInfoCode', { value: order.code })}</Label>
       <Label className="text-muted-foreground">|</Label>
       <Label className="text-muted-foreground">
@@ -25,17 +20,6 @@ export const OrderSummary: React.FC = () => {
         {t('create.baseInfoUpdated', { value: format(new Date(order.updatedAt), 'dd.MM.yyyy hh:mm') })}
       </Label>
       <Renderer position="orders-summary" />
-      {/* {order.getRealization && (
-        <div className="ml-auto flex flex-row gap-x-4 gap-y-2">
-          <Label className="text-muted-foreground text-yellow-600">
-            {t('create.realizationPlan', { value: order.getRealization.plannedAt })}
-          </Label>
-          <Label className="text-muted-foreground">|</Label>
-          <Label className="text-muted-foreground text-yellow-600">
-            {t('create.realizationDate', { value: order.getRealization.finalPlannedAt })}
-          </Label>
-        </div>
-      )} */}
     </div>
   );
 };

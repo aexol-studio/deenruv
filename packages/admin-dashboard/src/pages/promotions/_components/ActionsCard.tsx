@@ -18,9 +18,14 @@ import {
   Checkbox,
   cn,
   ErrorMessage,
+  generateInputComponents,
+  usePluginStore,
+  CustomFieldsProvider,
+  useSettings,
+  InputFieldComponent,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@/components';
 import { Percent, X } from 'lucide-react';
@@ -41,6 +46,8 @@ interface ActionsCardCardProps {
 export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, errors }) => {
   const { t } = useTranslation('promotions');
   const { data } = useQuery(ActionsQuery);
+  const { getInputComponent } = usePluginStore();
+  const { language } = useSettings(({ language }) => ({ language }));
 
   const availableActions = useMemo(() => {
     return data?.promotionActions.filter((a) => !value?.some((v) => v.code === a.code)) || [];
@@ -130,66 +137,35 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, e
                       {action?.arguments.map((e, i) => {
                         const _action = data?.promotionActions.find((f) => f.code === action.code);
                         const argument = _action?.args.find((a) => a.name === e.name);
-
-                        return argument?.ui?.component === 'facet-value-form-input' ? (
-                          <FacetsSelector
-                            value={JSON.parse(action?.arguments[i].value)}
-                            onChange={(e) => {
-                              action.arguments[i] = { name: argument?.name || '', value: JSON.stringify(e) };
-                              handleActionsValueChange(index, action?.code, action.arguments);
-                            }}
-                          />
-                        ) : argument?.ui?.component === 'product-selector-form-input' ? (
-                          <VariantsSelector
-                            type={argument?.ui?.selectionMode as 'variant' | 'product'}
-                            label={argument?.label || t(`actions.labels.${argument.name}`)}
-                            value={JSON.parse(action?.arguments[i].value)}
-                            onChange={(e) => {
-                              action.arguments[i] = { name: argument?.name || '', value: JSON.stringify(e) };
-                              handleActionsValueChange(index, action?.code, action.arguments);
-                            }}
-                            singleSelection
-                          />
-                        ) : argument?.type === 'int' ? (
-                          <Stack className="basis-full" key={i}>
-                            <Input
-                              type="number"
-                              step={0.01}
-                              label={argument?.label || t(`actions.labels.${argument.name}`)}
-                              value={action?.arguments[i].value}
-                              onChange={(e) => {
-                                action.arguments[i] = { name: argument?.name || '', value: e.target.value };
-                                handleActionsValueChange(index, action?.code, action.arguments);
-                              }}
-                              required
-                            />
-                          </Stack>
-                        ) : argument?.type === 'boolean' ? (
-                          <Stack className="mb-3 basis-full items-center gap-3" key={e.name}>
-                            <Label>{argument?.label || t(`actions.labels.${argument.name}`)}</Label>
-                            <Checkbox
-                              checked={action?.arguments[i].value === 'true' ? true : false}
-                              onCheckedChange={(e) => {
-                                action.arguments[i] = { name: argument?.name || '', value: e ? 'true' : 'false' };
-                                handleActionsValueChange(index, action?.code, action.arguments);
-                              }}
-                            />
-                          </Stack>
-                        ) : (
-                          <Stack className="basis-full" key={i}>
-                            <Input
-                              type="number"
-                              step={0.01}
-                              label={argument?.label || t(`actions.labels.${argument?.name}`)}
-                              {...(action.code.includes('percentage') && { endAdornment: <Percent size={20} /> })}
-                              value={action?.arguments[i].value}
-                              onChange={(e) => {
-                                action.arguments[i] = { name: argument?.name || '', value: e.target.value };
-                                handleActionsValueChange(index, action?.code, action.arguments);
-                              }}
-                              required
-                            />
-                          </Stack>
+                        if (!argument) return null;
+                        const label = [{ languageCode: language, value: argument.label || argument.name || '' }];
+                        const description = [{ languageCode: language, value: argument.description || '' }];
+                        return generateInputComponents([{ ...argument, label, description }], getInputComponent).map(
+                          (field) => {
+                            let value = '';
+                            try {
+                              value = JSON.parse(e.value);
+                            } catch {}
+                            const setValue = (data: unknown) => {
+                              try {
+                                const value = JSON.stringify(data);
+                                action.arguments[i] = { name: field.name, value };
+                                handleActionsValueChange(index, action.code, action.arguments);
+                              } catch {
+                                console.error('Error setting value');
+                              }
+                            };
+                            return (
+                              <InputFieldComponent
+                                key={field.name}
+                                field={field}
+                                value={value}
+                                setValue={setValue}
+                                additionalData={{}}
+                                disabled={false}
+                              />
+                            );
+                          },
                         );
                       })}
                     </Stack>

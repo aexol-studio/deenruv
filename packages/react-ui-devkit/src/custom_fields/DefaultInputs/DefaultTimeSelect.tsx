@@ -8,7 +8,7 @@ import { useCustomFields } from '@/custom_fields/context';
 import React from 'react';
 
 export const DefaultTimeSelect: React.FC = () => {
-    const { value, field, label, description, setValue } = useCustomFields<'DateTimeCustomFieldConfig'>();
+    const { disabled, value, field, label, description, setValue } = useCustomFields<string>();
     const date = value ? new Date(value as string) : undefined;
     const setDate = (date: Date | undefined) => {
         if (date) setValue(date.toISOString());
@@ -22,7 +22,7 @@ export const DefaultTimeSelect: React.FC = () => {
                 <PopoverTrigger asChild>
                     <Button
                         variant={'outline'}
-                        disabled={field?.readonly ?? undefined}
+                        disabled={disabled ?? field?.readonly ?? undefined}
                         className={cn(
                             'w-[280px] justify-start text-left font-normal',
                             !date && 'text-muted-foreground',
@@ -33,7 +33,13 @@ export const DefaultTimeSelect: React.FC = () => {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                    <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                    <Calendar
+                        disabled={disabled ?? field?.readonly ?? undefined}
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                    />
                 </PopoverContent>
             </Popover>
         </div>

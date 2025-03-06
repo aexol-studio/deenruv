@@ -127,7 +127,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
               >
                 <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b')}>
                   <div
-                    className={`flex h-full ${!isCollapsed && 'w-full'} cursor-pointer`}
+                    className={`flex h-full items-center justify-center ${!isCollapsed && 'w-full'} cursor-pointer`}
                     onClick={() => navigate(Routes.dashboard)}
                   >
                     <BrandLogo isCollapsed={isCollapsed} />
