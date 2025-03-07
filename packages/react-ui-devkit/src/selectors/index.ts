@@ -17,3 +17,8 @@ export * from './ZoneDetailSelector';
 export * from './SellerDetailSelector';
 export * from './CountryDetailSelector';
 export * from './ChannelDetailSelector';
+export * from './FacetDetailSelector';
+export * from './RoleDetailSelector';
+export * from './AdminDetailSelector';
+export * from './PaymentMethodDetailSelector';
+export * from './ShippingMethodDetailSelector';

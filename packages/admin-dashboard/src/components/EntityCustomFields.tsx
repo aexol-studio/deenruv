@@ -39,6 +39,17 @@ type ViableEntity = Uncapitalize<
     | 'FacetValue'
     | 'ProductOption'
     | 'TaxCategory'
+    | 'TaxRate'
+    | 'Channel'
+    | 'Country'
+    | 'Seller'
+    | 'Zone'
+    | 'Administrator'
+    | 'Role'
+    | 'StockLocation'
+    | 'Promotion'
+    | 'Customer'
+    | 'CustomerGroup'
   >
 >;
 export type CF = Record<string, unknown>;

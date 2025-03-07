@@ -13,8 +13,9 @@ import {
   Option,
   useServer,
   useDetailView,
+  DetailViewMarker,
 } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 
 const STOCK_LOCATION_FORM_KEYS = ['CreateZoneInput', 'name', 'memberIds'] as const;
 
@@ -125,6 +126,8 @@ export const ZoneDetailView = () => {
               </CardContent>
             </CardHeader>
           </Card>
+          <DetailViewMarker position={'zones-detail-view'} />
+          {id && <EntityCustomFields entityName="zone" id={id} />}
         </Stack>
       </div>
     </main>

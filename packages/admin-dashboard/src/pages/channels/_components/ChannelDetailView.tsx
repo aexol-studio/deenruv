@@ -13,10 +13,11 @@ import {
   apiClient,
   useSettings,
   useDetailView,
+  DetailViewMarker,
 } from '@deenruv/react-ui-devkit';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
-import { SimpleSelect, Stack } from '@/components';
+import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
 
 export const ChannelDetailView = () => {
   const { id } = useParams();
@@ -175,6 +176,8 @@ export const ChannelDetailView = () => {
               </CardContent>
             </CardHeader>
           </Card>
+          <DetailViewMarker position={'channels-detail-view'} />
+          {id && <EntityCustomFields entityName="channel" id={id} />}
           <DefaultsCard
             availableLanguages={state.availableLanguageCodes?.value ?? undefined}
             availableCurrencies={state.availableCurrencyCodes?.value ?? undefined}

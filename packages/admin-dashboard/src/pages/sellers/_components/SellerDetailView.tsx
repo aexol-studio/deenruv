@@ -1,8 +1,16 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle, Input, useDetailView } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  DetailViewMarker,
+  Input,
+  useDetailView,
+} from '@deenruv/react-ui-devkit';
+import { EntityCustomFields, Stack } from '@/components';
 
 export const SellerDetailView = () => {
   const { form, loading, fetchEntity, entity } = useDetailView('sellers-detail-view', 'CreateSellerInput', 'name');
@@ -54,6 +62,8 @@ export const SellerDetailView = () => {
               </CardContent>
             </CardHeader>
           </Card>
+          <DetailViewMarker position={'sellers-detail-view'} />
+          {id && <EntityCustomFields entityName="seller" id={id} />}
         </Stack>
       </div>
     </main>

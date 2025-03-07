@@ -1,263 +1,105 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
-  MultipleSelector,
-  type Option,
-  Routes,
-  DEFAULT_CHANNEL_CODE,
-  apiClient,
-  useRouteGuard,
-} from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-import { useGFFLP } from '@/lists/useGflp';
-import { areObjectsEqual } from '@/utils/deepEqual';
-import { cache } from '@/lists/cache';
-import { RoleDetailsSelector, RoleDetailsType } from '@/graphql/roles';
-import { PageHeader } from '@/pages/roles/_components/PageHeader';
-import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
-import { Stack } from '@/components';
-import { Permission } from '@deenruv/admin-types';
+import { DetailView, createDeenruvForm, getMutation, useMutation, GFFLPFormField } from '@deenruv/react-ui-devkit';
+import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { useValidators } from '@/hooks/useValidators.js';
+import { RoleDetailView } from '@/pages/roles/_components/RoleDetailView.js';
 
-const DEFAULT_VALUES = {
-  permissions: [Permission.Authenticated],
-  description: '',
-};
+// const DEFAULT_VALUES = {
+//   permissions: [Permission.Authenticated],
+//   description: '',
+// };
+
+type CreateRoleInput = ModelTypes['CreateRoleInput'];
+type FormDataType = Partial<{
+  code: GFFLPFormField<CreateRoleInput['code']>;
+  channelIds: GFFLPFormField<CreateRoleInput['channelIds']>;
+  description: GFFLPFormField<CreateRoleInput['description']>;
+  permissions: GFFLPFormField<CreateRoleInput['permissions']>;
+}>;
+
+const CreateRoleMutation = getMutation('createRole');
+const EditRoleMutation = getMutation('updateRole');
+const DeleteRoleMutation = getMutation('deleteRole');
 
 export const RolesDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const editMode = useMemo(() => !!id, [id]);
-  const { resetCache } = cache('roles');
+  const [update] = useMutation(EditRoleMutation);
+  const [create] = useMutation(CreateRoleMutation);
+  const [remove] = useMutation(DeleteRoleMutation);
   const { t } = useTranslation('roles');
-  const [loading, setLoading] = useState(id ? true : false);
-  const [role, setRole] = useState<RoleDetailsType>();
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [allChannelOptions, setAllChannelOptions] = useState<Option[]>([]);
-  useRouteGuard({ shouldBlock: !buttonDisabled });
   const { nameValidator } = useValidators();
 
-  const fetchRole = useCallback(async () => {
-    if (id) {
-      const response = await apiClient('query')({
-        role: [
-          {
-            id,
-          },
-          RoleDetailsSelector,
-        ],
-      });
-      setRole(response.role);
-      setLoading(false);
-    } else setLoading(false);
-  }, [id]);
+  const onSubmitHandler = useCallback(
+    (data: FormDataType) => {
+      if (!data.code?.validatedValue) {
+        throw new Error('Name is required.');
+      }
 
-  const fetchChannels = useCallback(async () => {
-    const response = await apiClient('query')({
-      channels: [
-        {},
-        {
-          items: {
-            code: true,
-            id: true,
-          },
-        },
-      ],
-    });
-    setAllChannelOptions(
-      response.channels.items.map((ch) => ({
-        value: ch.id,
-        label: ch.code === DEFAULT_CHANNEL_CODE ? t('defaultChannel') : ch.code,
-      })),
-    );
-  }, [setAllChannelOptions, t]);
+      const inputData = {
+        code: data.code.validatedValue,
+        channelIds: data.channelIds?.validatedValue,
+        description: data.description?.validatedValue,
+        permissions: data.permissions?.validatedValue,
+      };
 
-  useEffect(() => {
-    setLoading(true);
-    fetchRole();
-    fetchChannels();
-  }, [id, setLoading, fetchRole, fetchChannels]);
-
-  const { state, setField, checkIfAllFieldsAreValid, haveValidFields } = useGFFLP(
-    'UpdateRoleInput',
-    'code',
-    'description',
-    'channelIds',
-    'permissions',
-  )({
-    code: {
-      validate: (v) => (!v || v === '' ? [t('validation.codeRequired')] : undefined),
-    },
-    permissions: {
-      // initialValue: DEFAULT_VALUES.permissions,
-      validate: (v) => (!v || !v.length ? [t('validation.permissionsRequired')] : undefined),
-    },
-    description: nameValidator,
-  });
-
-  const currentChannelOptions = useMemo((): Option[] | undefined => {
-    if (!allChannelOptions) return undefined;
-    else
-      return state.channelIds?.value?.map(
-        (id) => allChannelOptions.find((o) => o.value === id) || { value: id, label: id },
-      );
-  }, [allChannelOptions, state.channelIds?.value]);
-
-  useEffect(() => {
-    if (!role) return;
-
-    setField('code', role.code);
-    setField('description', role.description);
-    setField(
-      'channelIds',
-      role.channels.map((ch) => ch.id),
-    );
-    setField('permissions', role.permissions);
-  }, [role]);
-
-  const createRole = useCallback(() => {
-    if (checkIfAllFieldsAreValid())
-      apiClient('mutation')({
-        createRole: [
-          {
-            input: {
-              code: state.code!.validatedValue!,
-              description: state.description!.validatedValue!,
-              channelIds: state.channelIds?.validatedValue ?? undefined,
-              permissions: state.permissions?.validatedValue!,
-            },
-          },
-          {
-            id: true,
-          },
-        ],
-      })
-        .then((resp) => {
-          setButtonDisabled(true);
-          toast.message(t('toasts.roleCreatedSuccess'));
-          setTimeout(() => navigate(Routes.roles.to(resp.createRole.id), { viewTransition: true }));
-        })
-        .catch(() => toast.error(t('toasts.roleCreatedError')));
-  }, [state, t, navigate]);
-
-  const updateRole = useCallback(() => {
-    apiClient('mutation')({
-      updateRole: [
-        {
+      if (id) {
+        return update({
           input: {
-            id: id!,
-            code: state.code?.validatedValue,
-            channelIds: state.channelIds?.validatedValue,
-            description: state.description?.validatedValue,
-            permissions: state.permissions?.validatedValue,
+            id,
+            ...inputData,
           },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then(() => {
-        toast.message(t('toasts.roleUpdateSuccess'));
-        fetchRole();
-        resetCache();
-      })
-      .catch(() => toast.error(t('toasts.roleUpdateError')));
-  }, [state, resetCache, fetchRole, id, t]);
+        });
+      } else {
+        return create({
+          input: inputData,
+        });
+      }
+    },
+    [id, update, create],
+  );
 
-  useEffect(() => {
-    const areEqual = areObjectsEqual(
-      {
-        code: state.code?.value,
-        description: state.description?.value,
-        channelIds: state.channelIds?.value,
-        permissions: state.permissions?.value,
-      },
-      {
-        code: role?.code,
-        description: editMode ? role?.description : DEFAULT_VALUES.description,
-        channelIds: role?.channels.map((ch) => ch.id),
-        permissions: editMode ? role?.permissions : DEFAULT_VALUES.permissions,
-      },
-    );
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
 
-    setButtonDisabled(areEqual || !haveValidFields);
-  }, [state, role, editMode]);
+    return remove({ input: { id } });
+  }, [remove, id]);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="roles-detail-view"
+        main={{
+          name: 'role',
+          label: 'Role',
+          component: <RoleDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateRoleInput',
+            keys: ['code', 'description', 'channelIds', 'permissions'],
+            config: {
+              code: {
+                validate: (v) => (!v || v === '' ? [t('validation.codeRequired')] : undefined),
+              },
+              permissions: {
+                // initialValue: DEFAULT_VALUES.permissions,
+                validate: (v) => (!v || !v.length ? [t('validation.permissionsRequired')] : undefined),
+              },
+              description: nameValidator,
+            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+        permissions={{
+          create: Permission.CreateAdministrator,
+          delete: Permission.DeleteAdministrator,
+          edit: Permission.UpdateAdministrator,
+        }}
+      />
     </div>
-  ) : !role && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.roleLoadingError', { value: id })}
-    </div>
-  ) : (
-    <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <PageHeader
-          role={role}
-          editMode={editMode}
-          buttonDisabled={buttonDisabled}
-          onCreate={createRole}
-          onEdit={updateRole}
-        />
-        <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
-                  <Input
-                    label={t('details.basic.description')}
-                    value={state.description?.value ?? undefined}
-                    onChange={(e) => setField('description', e.target.value)}
-                    errors={state.description?.errors}
-                    required
-                  />
-                </Stack>
-                <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
-                  <Input
-                    label={t('details.basic.code')}
-                    value={state.code?.value ?? undefined}
-                    onChange={(e) => setField('code', e.target.value)}
-                    errors={state.code?.errors}
-                    required
-                  />
-                </Stack>
-                <Stack column className="basis-full gap-[6px] xl:basis-1/2">
-                  <Label>{t('details.basic.channels')}</Label>
-                  <MultipleSelector
-                    options={allChannelOptions}
-                    value={currentChannelOptions}
-                    placeholder={t('details.basic.channelsPlaceholder')}
-                    onChange={(channelsOptions) =>
-                      setField(
-                        'channelIds',
-                        channelsOptions.map((o) => o.value),
-                      )
-                    }
-                    hideClearAllButton
-                  />
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
-          <PermissionsCard
-            currentPermissions={state.permissions?.value ?? undefined}
-            onPermissionsChange={(e) => setField('permissions', e)}
-            errors={state.permissions?.errors}
-          />
-        </Stack>
-      </div>
-    </main>
   );
 };

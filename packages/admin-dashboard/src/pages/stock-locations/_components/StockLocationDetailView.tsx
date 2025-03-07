@@ -9,13 +9,16 @@ import {
   Label,
   useSettings,
   useDetailView,
+  DetailViewMarker,
 } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
+import { useParams } from 'react-router-dom';
 
 const STOCK_LOCATION_FORM_KEYS = ['CreateStockLocationInput', 'name', 'description'] as const;
 
 export const StockLocationDetailView = () => {
+  const { id } = useParams();
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('stockLocations');
 
@@ -67,6 +70,8 @@ export const StockLocationDetailView = () => {
               </CardContent>
             </CardHeader>
           </Card>
+          <DetailViewMarker position={'stockLocations-detail-view'} />
+          {id && <EntityCustomFields entityName="stockLocation" id={id} />}
         </Stack>
       </div>
     </main>

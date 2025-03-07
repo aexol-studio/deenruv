@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useSettings, useDetailView, CustomerDetailType } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
+import { useSettings, useDetailView, CustomerDetailType, DetailViewMarker } from '@deenruv/react-ui-devkit';
+import { EntityCustomFields, Stack } from '@/components';
 import { PersonalDataCard } from '@/pages/customers/_components/PersonalDataCard';
 import { AddressesCard } from '@/pages/customers/_components/AddressesCard';
 
@@ -46,6 +46,8 @@ export const CustomerDetailView = () => {
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
           <PersonalDataCard setField={setField} state={state} />
+          <DetailViewMarker position={'customers-detail-view'} />
+          {id && <EntityCustomFields entityName="customer" id={id} />}
           {id && <AddressesCard addresses={addresses} customerId={id} onActionCompleted={fetchEntity} />}
         </Stack>
       </div>

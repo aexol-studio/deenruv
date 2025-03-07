@@ -7,47 +7,61 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  DetailViewMarker,
   Input,
   Label,
   Switch,
-  useSettings,
   useDetailView,
-  DetailViewMarker,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { setInArrayBy } from '@/lists/useGflp';
+import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
+import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
 import { EntityCustomFields, Stack } from '@/components';
 
-export const CountryDetailView = () => {
+const PAYMENT_METHOD_FORM_KEYS = [
+  'CreatePaymentMethodInput',
+  'code',
+  'enabled',
+  'translations',
+  'handler',
+  'checker',
+] as const;
+
+export const PaymentMethodDetailView = () => {
   const { id } = useParams();
   const { form, loading, fetchEntity, entity } = useDetailView(
-    'countries-detail-view',
-    'CreateCountryInput',
-    'code',
-    'enabled',
-    'translations',
+    'paymentMethods-detail-view',
+    ...PAYMENT_METHOD_FORM_KEYS,
   );
-
   const {
     base: { setField, state },
   } = form;
   const editMode = useMemo(() => !!id, [id]);
-  const { t } = useTranslation('countries');
+  const { t } = useTranslation('paymentMethods');
   const { translationsLanguage: currentTranslationLng } = useSettings();
-
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
   useEffect(() => {
     (async () => {
-      const resp = await fetchEntity();
+      const res = await fetchEntity();
+      if (!res) return;
 
-      if (!resp) return;
-
-      setField('code', resp.code);
-      setField('translations', resp.translations);
-      setField('enabled', resp.enabled);
+      setField('code', res.code);
+      setField('enabled', res.enabled);
+      setField('translations', res.translations);
+      setField('handler', {
+        arguments: res.handler.args,
+        code: res.handler.code,
+      });
+      setField('checker', {
+        arguments: res.checker?.args || [],
+        code: res.checker?.code || '',
+      });
     })();
   }, []);
+
+  const translations = state?.translations?.value || [];
+  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
@@ -69,17 +83,17 @@ export const CountryDetailView = () => {
     </div>
   ) : !entity && editMode ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.countryLoadingError', { value: id })}
+      {t('toasts.paymentMethodLoadingError', { value: id })}
     </div>
   ) : (
-    <main className="min-h-96">
-      <div className="mx-auto mt-2 flex w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
+    <main className="my-4">
+      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
           <Card>
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-6 p-0 pt-4">
-                <Stack className="items-start gap-3">
+              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
+                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.name')}
@@ -92,22 +106,39 @@ export const CountryDetailView = () => {
                   <Stack className="basis-full md:basis-1/3">
                     <Input
                       label={t('details.basic.code')}
-                      value={state.code?.value}
+                      value={state.code?.value ?? undefined}
                       onChange={(e) => setField('code', e.target.value)}
                       errors={state.code?.errors}
                       required
                     />
                   </Stack>
                   <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
+                    <Switch
+                      checked={state.enabled?.value ?? undefined}
+                      onCheckedChange={(e) => setField('enabled', e)}
+                    />
                     <Label>{t('details.basic.enabled')}</Label>
                   </Stack>
+                </Stack>
+                <Stack column className="basis-full">
+                  <Label className="mb-2">{t('details.basic.description')}</Label>
+                  <RichTextEditor
+                    content={currentTranslationValue?.description ?? undefined}
+                    onContentChanged={(e) => setTranslationField('description', e)}
+                  />
                 </Stack>
               </CardContent>
             </CardHeader>
           </Card>
-          <DetailViewMarker position={'countries-detail-view'} />
-          {id && <EntityCustomFields entityName="country" id={id} />}
+          <DetailViewMarker position={'paymentMethods-detail-view'} />
+          {id && <EntityCustomFields entityName="paymentMethod" id={id} />}
+          <OptionsCard
+            currentHandlerValue={state.handler?.value ?? undefined}
+            currentCheckerValue={state.checker?.value ?? undefined}
+            onHandlerValueChange={(handler) => setField('handler', handler)}
+            onCheckerValueChange={(checker) => setField('checker', checker)}
+            handlerErrors={state.handler?.errors}
+          />
         </Stack>
       </div>
     </main>

@@ -8,6 +8,7 @@ const normalizeEntityValues = (entityValues: EntityType) => {
         assetIds?: string[];
         facetValueIds?: string[];
         memberIds?: string[];
+        channelIds?: string[];
         [key: string]: any;
     };
 
@@ -61,6 +62,31 @@ const normalizeEntityValues = (entityValues: EntityType) => {
     if ('seller' in normalizedEntityValues) {
         normalizedEntityValues.sellerId = normalizedEntityValues['seller']?.id;
         delete normalizedEntityValues.seller;
+    }
+
+    if ('channels' in normalizedEntityValues) {
+        normalizedEntityValues.channelIds = normalizedEntityValues['channels']?.map(
+            (ch: { id: string }) => ch.id,
+        );
+        delete normalizedEntityValues.channels;
+    }
+
+    if (
+        'user' in normalizedEntityValues &&
+        'emailAddress' in normalizedEntityValues &&
+        'firstName' in normalizedEntityValues &&
+        'lastName' in normalizedEntityValues
+    ) {
+        normalizedEntityValues.roleIds = normalizedEntityValues['user']?.roles.map(
+            (r: { id: string }) => r.id,
+        );
+        delete normalizedEntityValues.user;
+        normalizedEntityValues.password = '';
+    }
+
+    if ('fulfillmentHandler' in normalizedEntityValues) {
+        normalizedEntityValues.fulfillmentHandlerCode = normalizedEntityValues['fulfillmentHandler'].code;
+        delete normalizedEntityValues.fulfillmentHandler;
     }
 
     return normalizedEntityValues;

@@ -15,13 +15,18 @@ import {
     SellerDetailSelector,
     CountryDetailSelector,
     ChannelDetailsSelector,
+    FacetDetailSelector,
+    RoleDetailsSelector,
+    PaymentMethodDetailsSelector,
+    ShippingMethodDetailsSelector,
+    AdminDetailSelector,
+    ZoneDetailsSelector,
 } from '../selectors';
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
 import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
-import { ZoneDetailsSelector } from '@/selectors/ZoneDetailSelector.js';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -78,9 +83,17 @@ type ListLocationsType<KEY extends keyof typeof ListLocations> = FromSelectorWit
 >;
 
 export const DetailLocations = {
+    'admins-detail-view': {
+        type: 'Administrator' as const,
+        selector: AdminDetailSelector,
+    },
     'products-detail-view': {
         type: 'Product' as const,
         selector: ProductDetailSelector,
+    },
+    'paymentMethods-detail-view': {
+        type: 'PaymentMethod' as const,
+        selector: PaymentMethodDetailsSelector,
     },
     'promotions-detail-view': {
         type: 'Promotion' as const,
@@ -98,6 +111,10 @@ export const DetailLocations = {
         type: 'Country' as const,
         selector: CountryDetailSelector,
     },
+    'facets-detail-view': {
+        type: 'Facet' as const,
+        selector: FacetDetailSelector,
+    },
     'taxCategories-detail-view': {
         type: 'TaxCategory' as const,
         selector: TaxCategoryDetailSelector,
@@ -105,6 +122,10 @@ export const DetailLocations = {
     'taxRates-detail-view': {
         type: 'TaxRate' as const,
         selector: TaxRateDetailsSelector,
+    },
+    'shippingMethods-detail-view': {
+        type: 'ShippingMethod' as const,
+        selector: ShippingMethodDetailsSelector,
     },
     'stockLocations-detail-view': {
         type: 'StockLocation' as const,
@@ -133,6 +154,10 @@ export const DetailLocations = {
     'zones-detail-view': {
         type: 'Zone' as const,
         selector: ZoneDetailsSelector,
+    },
+    'roles-detail-view': {
+        type: 'Role' as const,
+        selector: RoleDetailsSelector,
     },
     'sellers-detail-view': {
         type: 'Seller' as const,

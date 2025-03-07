@@ -15,6 +15,8 @@ import { ConditionsCard } from '@/pages/promotions/_components/ConditionsCard';
 import { ActionsCard } from '@/pages/promotions/_components/ActionsCard';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { PromotionConditionAndActionSelector } from '@/graphql/promotions.js';
+import { EntityCustomFields } from '@/components/EntityCustomFields.js';
+import { useParams } from 'react-router-dom';
 
 export const ConditionsQuery = typedGql('query', { scalars })({
   promotionConditions: PromotionConditionAndActionSelector,
@@ -38,6 +40,7 @@ export const PromotionQuery = typedGql('query', { scalars })({
 });
 
 export const PromotionDetailView = () => {
+  const { id } = useParams();
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { form, loading, fetchEntity } = useDetailView('promotions-detail-view', ...PROMOTION_FORM_KEYS);
   const {
@@ -115,6 +118,7 @@ export const PromotionDetailView = () => {
         <ConditionsCard value={state.conditions?.value} onChange={setField} errors={state.conditions?.errors} />
         <ActionsCard value={state.actions?.value} onChange={setField} errors={state.actions?.errors} />
         <DetailViewMarker position={'promotions-detail-view'} />
+        {id && <EntityCustomFields entityName="promotion" id={id} />}
       </form>
     </div>
   );

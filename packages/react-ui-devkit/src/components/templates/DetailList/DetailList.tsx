@@ -285,7 +285,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                                             'productId' in row.original ? row.original.productId : undefined,
                                         );
                                     } else {
-                                        navigate(route.to(row.original.id));
+                                        navigate(route.to(row.original.id), { viewTransition: true });
                                     }
                                 }}
                             >

@@ -13,8 +13,9 @@ import {
   apiClient,
   SimpleSelect,
   useDetailView,
+  DetailViewMarker,
 } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 
 const TAX_RATES_FORM_KEYS = [
   'CreateTaxRateInput',
@@ -157,6 +158,8 @@ export const TaxRateDetailView = () => {
               </CardContent>
             </CardHeader>
           </Card>
+          <DetailViewMarker position={'taxRates-detail-view'} />
+          {id && <EntityCustomFields entityName="taxRate" id={id} />}
         </Stack>
       </div>
     </main>

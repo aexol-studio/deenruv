@@ -1,325 +1,126 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { DetailView, createDeenruvForm, GFFLPFormField, getMutation, useMutation } from '@deenruv/react-ui-devkit';
+import { ModelTypes } from '@deenruv/admin-types';
+import { ShippingMethodDetailView } from '@/pages/shipping-methods/_components/ShippingMethodDetailView.js';
 
-import {
-  Routes,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
-  Option,
-  apiClient,
-  useRouteGuard,
-  SimpleSelect,
-  RichTextEditor,
-} from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { areObjectsEqual } from '@/utils/deepEqual';
-import { cache } from '@/lists/cache';
-import { PageHeader } from '@/pages/shipping-methods/_components/PageHeader';
-import { ShippingMethodDetailsSelector, ShippingMethodDetailsType } from '@/graphql/shippingMethods';
-import { LanguageCode } from '@deenruv/admin-types';
-import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
-import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
-import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
-import { EntityCustomFields, Stack } from '@/components';
+type CreateShippingMethodInput = ModelTypes['CreateShippingMethodInput'];
+type FormDataType = Partial<{
+  code: GFFLPFormField<CreateShippingMethodInput['code']>;
+  calculator: GFFLPFormField<CreateShippingMethodInput['calculator']>;
+  translations: GFFLPFormField<CreateShippingMethodInput['translations']>;
+  fulfillmentHandler: GFFLPFormField<CreateShippingMethodInput['fulfillmentHandler']>;
+  checker: GFFLPFormField<CreateShippingMethodInput['checker']>;
+}>;
+
+const CreateShippingMethodMutation = getMutation('createShippingMethod');
+const EditShippingMethodMutation = getMutation('updateShippingMethod');
+const DeleteShippingMethodMutation = getMutation('deleteShippingMethod');
 
 export const ShippingMethodsDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const editMode = useMemo(() => !!id, [id]);
-  const { resetCache } = cache('shippingMethods');
+  const [update] = useMutation(EditShippingMethodMutation);
+  const [create] = useMutation(CreateShippingMethodMutation);
+  const [remove] = useMutation(DeleteShippingMethodMutation);
   const { t } = useTranslation('shippingMethods');
-  const [loading, setLoading] = useState(id ? true : false);
-  const [shippingMethod, setShippingMethod] = useState<ShippingMethodDetailsType>();
-  const [fulfillmentHandlersOptions, setFulfillmentHandlersOptions] = useState<Option[]>();
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  useRouteGuard({ shouldBlock: hasUnsavedChanges });
 
-  const fetchShippingMethod = useCallback(async () => {
-    if (id) {
-      const response = await apiClient('query')({
-        shippingMethod: [
-          {
+  const onSubmitHandler = useCallback(
+    (data: FormDataType) => {
+      if (!data.code?.validatedValue) {
+        throw new Error('Name is required.');
+      }
+
+      const inputData = {
+        code: data.code?.validatedValue,
+        calculator: data.calculator?.validatedValue,
+        fulfillmentHandler: data.fulfillmentHandler?.validatedValue,
+        translations: data.translations!.validatedValue!,
+        checker: data.checker?.validatedValue,
+      };
+
+      if (id) {
+        return update({
+          input: {
             id,
+            ...inputData,
+            checker: data.checker?.validatedValue?.code !== '' ? data.checker?.validatedValue : undefined,
           },
-          ShippingMethodDetailsSelector,
-        ],
-      });
-      setShippingMethod(response.shippingMethod);
-      setLoading(false);
-    } else setLoading(false);
-  }, [id]);
-
-  const fetchFulfillmentHandlers = useCallback(async () => {
-    const response = await apiClient('query')({
-      fulfillmentHandlers: { code: true, description: true },
-    });
-
-    setFulfillmentHandlersOptions(
-      response.fulfillmentHandlers.map((h) => ({
-        label: h.description,
-        value: h.code,
-      })),
-    );
-  }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchShippingMethod();
-    fetchFulfillmentHandlers();
-  }, [id, setLoading, fetchShippingMethod, fetchFulfillmentHandlers]);
-
-  const { state, setField, haveValidFields, checkIfAllFieldsAreValid } = useGFFLP(
-    'UpdateShippingMethodInput',
-    'code',
-    'customFields',
-    'translations',
-    'checker',
-    'calculator',
-    'fulfillmentHandler',
-  )({
-    fulfillmentHandler: {
-      validate: (v) => {
-        if (!v) return [t('validation.fulfillmentHandlerRequired')];
-      },
+        });
+      } else {
+        return create({
+          input: inputData,
+        });
+      }
     },
-    checker: {
-      validate: (v) => {
-        const hasCode = !!v?.code;
-        const hasArguments = v?.arguments.filter((a) => a.value).length;
-        const errors = [];
-        if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
-        if (!hasArguments) errors.push(t('validation.checkerArgsRequired'));
-        return errors;
-      },
-    },
-    calculator: {
-      validate: (v) => {
-        const hasCode = !!v?.code;
-        const hasInvalidArguments = v?.arguments.filter((a) => !a.value || a.value === 'false').length; // args have 'false' value by default
-        const errors = [];
-        console.log(v?.arguments);
-        if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
-        if (hasInvalidArguments) errors.push(t('validation.checkerArgsRequired'));
-        return errors;
-      },
-    },
-    code: {
-      validate: (v) => {
-        if (!v || v === '') return [t('validation.required')];
-      },
-    },
-    translations: {
-      validate: (v) => {
-        const { name } = v[0];
-
-        if (!name) return [t('validation.nameRequired')];
-      },
-    },
-  });
-
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
-
-  useEffect(() => {
-    if (!shippingMethod) return;
-
-    setField('code', shippingMethod.code);
-    setField('translations', shippingMethod.translations);
-    setField('checker', {
-      arguments: shippingMethod.checker?.args || [],
-      code: shippingMethod.checker?.code || '',
-    });
-    setField('calculator', {
-      arguments: shippingMethod.calculator?.args || [],
-      code: shippingMethod.calculator?.code || '',
-    });
-    setField('fulfillmentHandler', shippingMethod.fulfillmentHandlerCode);
-  }, [shippingMethod]);
-
-  const createShippingMethod = useCallback(() => {
-    const valid = checkIfAllFieldsAreValid();
-    if (!valid) return;
-
-    apiClient('mutation')({
-      createShippingMethod: [
-        {
-          input: {
-            calculator: state.calculator!.validatedValue!,
-            fulfillmentHandler: state.fulfillmentHandler!.validatedValue!,
-            code: state.code!.validatedValue!,
-            translations: state.translations!.validatedValue!,
-            checker: state.checker!.validatedValue!,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then((resp) => {
-        toast.message(t('toasts.shippingMethodCreatedSuccess'));
-        setHasUnsavedChanges(false);
-        setTimeout(() => navigate(Routes.shippingMethods.to(resp.createShippingMethod.id), { viewTransition: true }));
-      })
-      .catch(() => toast.error(t('toasts.shippingMethodCreatedError')));
-  }, [state, t, navigate]);
-
-  const updateShippingMethod = useCallback(() => {
-    apiClient('mutation')({
-      updateShippingMethod: [
-        {
-          input: {
-            id: id!,
-            code: state.code?.validatedValue,
-            calculator: state.calculator?.validatedValue,
-            fulfillmentHandler: state.fulfillmentHandler?.validatedValue,
-            translations: state.translations!.validatedValue!,
-            customFields: state.customFields?.validatedValue,
-            checker: state.checker?.validatedValue,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then(() => {
-        toast.message(t('toasts.shippingMethodUpdateSuccess'));
-        fetchShippingMethod();
-        resetCache();
-      })
-      .catch(() => toast.error(t('toasts.shippingMethodUpdateError')));
-  }, [state, resetCache, fetchShippingMethod, id, t]);
-
-  useEffect(() => {
-    const areEqual = areObjectsEqual(
-      {
-        code: state.code?.value,
-        calculator: state.calculator?.value,
-        fulfillmentHandler: state.fulfillmentHandler?.value,
-        translations: state.translations?.value,
-        // customFields: state.customFields?.value,
-      },
-      {
-        code: shippingMethod?.code,
-        calculator: shippingMethod?.calculator && {
-          code: shippingMethod?.calculator.code,
-          arguments: shippingMethod?.calculator.args,
-        },
-        fulfillmentHandler: shippingMethod?.fulfillmentHandlerCode,
-        translations: shippingMethod?.translations,
-        // customFields: shippingMethod?.customFields,
-      },
-    );
-
-    setHasUnsavedChanges(!areEqual);
-
-    const disabled = areEqual || !haveValidFields;
-
-    setButtonDisabled(disabled);
-  }, [state, shippingMethod]);
-
-  const setTranslationField = useCallback(
-    (field: string, e: string) => {
-      setField(
-        'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
-          [field]: e,
-          languageCode: currentTranslationLng,
-        }),
-      );
-    },
-    [currentTranslationLng, translations],
+    [id, update, create],
   );
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
+
+    return remove({ input: { id } });
+  }, [remove, id]);
+
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="shippingMethods-detail-view"
+        main={{
+          name: 'shippingMethod',
+          label: 'Shipping method',
+          component: <ShippingMethodDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateShippingMethodInput',
+            keys: ['code', 'translations', 'checker', 'calculator', 'fulfillmentHandler'],
+            config: {
+              fulfillmentHandler: {
+                validate: (v) => {
+                  if (!v) return [t('validation.fulfillmentHandlerRequired')];
+                },
+              },
+              checker: {
+                validate: (v) => {
+                  const hasCode = !!v?.code;
+                  const hasArguments = v?.arguments.filter((a) => a.value).length;
+                  const errors = [];
+                  if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
+                  if (!hasArguments) errors.push(t('validation.checkerArgsRequired'));
+                  return errors;
+                },
+              },
+              calculator: {
+                validate: (v) => {
+                  const hasCode = !!v?.code;
+                  const hasInvalidArguments = v?.arguments.filter((a) => !a.value || a.value === 'false').length; // args have 'false' value by default
+                  const errors = [];
+                  console.log(v?.arguments);
+                  if (!hasCode) errors.push(t('validation.checkerCodeRequired'));
+                  if (hasInvalidArguments) errors.push(t('validation.checkerArgsRequired'));
+                  return errors;
+                },
+              },
+              code: {
+                validate: (v) => {
+                  if (!v || v === '') return [t('validation.required')];
+                },
+              },
+              translations: {
+                validate: (v) => {
+                  const { name } = v[0];
+
+                  if (!name) return [t('validation.nameRequired')];
+                },
+              },
+            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+      />
     </div>
-  ) : !shippingMethod && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.shippingMethodLoadingError', { value: id })}
-    </div>
-  ) : (
-    <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <PageHeader
-          currentTranslationLng={currentTranslationLng}
-          onCurrentLanguageChange={(e) => {
-            setCurrentTranslationLng(e as LanguageCode);
-          }}
-          shippingMethod={shippingMethod}
-          editMode={editMode}
-          buttonDisabled={buttonDisabled}
-          onCreate={createShippingMethod}
-          onEdit={updateShippingMethod}
-        />
-        <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
-                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={currentTranslationValue?.name ?? undefined}
-                      onChange={(e) => setTranslationField('name', e.target.value)}
-                      errors={state.translations?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.code')}
-                      value={state.code?.value ?? undefined}
-                      onChange={(e) => setField('code', e.target.value)}
-                      errors={state.code?.errors}
-                      required
-                    />
-                  </Stack>
-                </Stack>
-                <Stack column className="basis-full">
-                  <Label className="mb-2">{t('details.basic.description')}</Label>
-                  <RichTextEditor
-                    content={currentTranslationValue?.description ?? undefined}
-                    onContentChanged={(e) => setTranslationField('description', e)}
-                  />
-                </Stack>
-                <Stack className="basis-full">
-                  <SimpleSelect
-                    label={t('details.basic.fulfillmentHandler')}
-                    value={state.fulfillmentHandler?.value ?? undefined}
-                    onValueChange={(e) => setField('fulfillmentHandler', e)}
-                    options={fulfillmentHandlersOptions}
-                    errors={state.fulfillmentHandler?.errors}
-                  />
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
-          {id && <EntityCustomFields entityName="shippingMethod" id={id} />}
-          <CheckerCard
-            currentCheckerValue={state.checker?.value ?? undefined}
-            onCheckerValueChange={(checker) => setField('checker', checker)}
-            errors={state.checker?.errors}
-          />
-          <CalculatorCard
-            currentCalculatorValue={state.calculator?.value ?? undefined}
-            onCalculatorValueChange={(calculator) => setField('calculator', calculator)}
-            errors={state.calculator?.errors}
-          />
-          <TestCard calculator={state.calculator?.value ?? undefined} checker={state.checker?.value ?? undefined} />
-        </Stack>
-      </div>
-    </main>
   );
 };
