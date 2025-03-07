@@ -34,12 +34,13 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { type AddressBaseType, addressBaseSelector } from '@/graphql/draft_order';
 import { useGFFLP } from '@/lists/useGflp';
-import { Edit, MapPin, Home, Building, Check } from 'lucide-react';
+import { Edit, MapPin, Building, Check, Loader2, User, Phone, Globe } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
+import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 type DefaultAddress = AddressBaseType & {
   id?: string | null;
@@ -59,9 +60,7 @@ export const AddressCard: React.FC<{
   );
   const { t } = useTranslation('orders');
   const countries = useServer((p) => p.countries);
-
   const [createForCustomer, setCreateForCustomer] = useState(false);
-  // const [createAsDefault, setCreateAsDefault] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -135,13 +134,12 @@ export const AddressCard: React.FC<{
       },
     },
     province: { initialValue: '' },
+    customFields: { initialValue: {} },
   });
 
   const submitAddress = async () => {
     if (!order) return;
     if (tab === 'select' && !selectedAddress) return;
-    const isValid = checkIfAllFieldsAreValid();
-    if (tab === 'create' && !isValid) return;
 
     if (mode === 'update' && selectedAddress && modifiedOrder) {
       const addressTypeKey = type === 'shipping' ? 'shippingAddress' : 'billingAddress';
@@ -161,66 +159,83 @@ export const AddressCard: React.FC<{
         },
       });
 
+      toast.success(t('selectAddress.addressUpdated', 'Address updated successfully'));
       setOpen(false);
       return;
     }
 
     setSubmitting(true);
-    const newAddress: ResolverInputTypes['CreateAddressInput'] =
-      tab === 'select' && selectedAddress
-        ? {
-            fullName: selectedAddress.fullName,
-            company: selectedAddress.company,
-            streetLine1: selectedAddress.streetLine1,
-            streetLine2: selectedAddress.streetLine2,
-            countryCode: selectedAddress.country?.code || '',
-            city: selectedAddress.city,
-            phoneNumber: selectedAddress.phoneNumber,
-            postalCode: selectedAddress.postalCode,
-            province: selectedAddress.province,
-          }
-        : {
-            fullName: state.fullName?.validatedValue,
-            company: state.company?.validatedValue,
-            streetLine1: state.streetLine1?.validatedValue || '',
-            streetLine2: state.streetLine2?.validatedValue,
-            postalCode: state.postalCode?.validatedValue,
-            countryCode: state.countryCode?.validatedValue || '',
-            phoneNumber: state.phoneNumber?.validatedValue,
-            city: state.city?.validatedValue,
-            province: state.province?.validatedValue,
-          };
+    try {
+      const newAddress: ResolverInputTypes['CreateAddressInput'] =
+        tab === 'select' && selectedAddress
+          ? {
+              fullName: selectedAddress.fullName,
+              company: selectedAddress.company,
+              streetLine1: selectedAddress.streetLine1,
+              streetLine2: selectedAddress.streetLine2,
+              countryCode: selectedAddress.country?.code || '',
+              city: selectedAddress.city,
+              phoneNumber: selectedAddress.phoneNumber,
+              postalCode: selectedAddress.postalCode,
+              province: selectedAddress.province,
+              ...('customFields' in selectedAddress ? { customFields: selectedAddress.customFields } : {}),
+            }
+          : {
+              fullName: state.fullName?.validatedValue,
+              company: state.company?.validatedValue,
+              streetLine1: state.streetLine1?.validatedValue || '',
+              streetLine2: state.streetLine2?.validatedValue,
+              postalCode: state.postalCode?.validatedValue,
+              countryCode: state.countryCode?.validatedValue || '',
+              phoneNumber: state.phoneNumber?.validatedValue,
+              city: state.city?.validatedValue,
+              province: state.province?.validatedValue,
+              ...('customFields' in state ? { customFields: (state.customFields as any).value } : {}),
+            };
 
-    const { setDraftOrderShippingAddress, setDraftOrderBillingAddress } = await apiClient('mutation')(
-      type === 'shipping'
-        ? { setDraftOrderShippingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] }
-        : { setDraftOrderBillingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] },
-    );
-    if (setDraftOrderShippingAddress || setDraftOrderBillingAddress) {
-      setModifiedOrder(type === 'shipping' ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
-      toast(
-        t(tab === 'create' ? 'selectAddress.addressSuccessCreateToast' : 'selectAddress.addressSuccessSelectToast'),
+      const { setDraftOrderShippingAddress, setDraftOrderBillingAddress } = await apiClient('mutation')(
+        type === 'shipping'
+          ? { setDraftOrderShippingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] }
+          : { setDraftOrderBillingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] },
       );
-      setSubmitting(false);
-      setOrder(setDraftOrderShippingAddress ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
-      setOpen(false);
-    } else {
-      toast.error(
-        t(tab === 'create' ? 'selectAddress.addressFailedCreateToast' : 'selectAddress.addressFailedSelectToast'),
-      );
-    }
-    if (tab === 'create' && createForCustomer && order.customer?.id) {
-      const { createCustomerAddress } = await apiClient('mutation')({
-        createCustomerAddress: [{ customerId: order.customer.id, input: newAddress }, addressBaseSelector],
-      });
-      if (createCustomerAddress.streetLine1) {
-        toast.success(t('selectAddress.newAddress', { address: createCustomerAddress.streetLine1 }));
-        setSelectedAddress(createCustomerAddress);
-        setTab('select');
-        setCreateForCustomer(false);
+
+      if (setDraftOrderShippingAddress || setDraftOrderBillingAddress) {
+        setModifiedOrder(type === 'shipping' ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
+        toast.success(
+          t(
+            tab === 'create' ? 'selectAddress.addressSuccessCreateToast' : 'selectAddress.addressSuccessSelectToast',
+            'Address updated successfully',
+          ),
+        );
+        setOrder(setDraftOrderShippingAddress ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
+        setOpen(false);
       } else {
-        toast.error(t('selectAddress.addressAddFailed'));
+        toast.error(
+          t(
+            tab === 'create' ? 'selectAddress.addressFailedCreateToast' : 'selectAddress.addressFailedSelectToast',
+            'Failed to update address',
+          ),
+        );
       }
+
+      if (tab === 'create' && createForCustomer && order.customer?.id) {
+        const { createCustomerAddress } = await apiClient('mutation')({
+          createCustomerAddress: [{ customerId: order.customer.id, input: newAddress }, addressBaseSelector],
+        });
+
+        if (createCustomerAddress.streetLine1) {
+          toast.success(t('selectAddress.newAddress', { address: createCustomerAddress.streetLine1 }));
+          setSelectedAddress(createCustomerAddress);
+          setTab('select');
+          setCreateForCustomer(false);
+        } else {
+          toast.error(t('selectAddress.addressAddFailed', 'Failed to add address to customer'));
+        }
+      }
+    } catch (error) {
+      toast.error(t('selectAddress.addressError', 'An error occurred while updating the address'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -258,63 +273,73 @@ export const AddressCard: React.FC<{
     } else {
       setTab('create');
       setSelectedAddress(undefined);
-      currentAddress &&
+      if (currentAddress) {
         setState({
           ...currentAddress,
           countryCode: currentAddress.countryCode || '',
           streetLine1: currentAddress.streetLine1 || '',
         });
+      }
     }
+    return () => {
+      setTab('select');
+      setSelectedAddress(undefined);
+    };
   }, [currentAddress, order, type]);
 
-  const cardBorderColor = useMemo(() => {
-    if (mode !== 'create') return 'border-primary';
-    return currentAddress?.streetLine1 ? 'border-green-500' : 'border-orange-500';
-  }, [mode, currentAddress?.streetLine1]);
-
-  const StatusIcon = useMemo(() => {
-    return currentAddress?.streetLine1 ? Check : isShipping ? MapPin : Building;
-  }, [currentAddress?.streetLine1, isShipping]);
-
-  const statusColor = useMemo(() => {
-    return currentAddress?.streetLine1 ? 'text-green-500' : 'text-orange-500';
-  }, [currentAddress?.streetLine1]);
+  const borderColor = isShipping
+    ? 'border-l-purple-500 dark:border-l-purple-400'
+    : 'border-l-cyan-500 dark:border-l-cyan-400';
+  const iconColor = isShipping ? 'text-purple-500 dark:text-purple-400' : 'text-cyan-500 dark:text-cyan-400';
 
   return (
-    <Card className={cn('shadow-sm transition-all duration-200 hover:shadow-md', cardBorderColor)}>
+    <Card className={`border-l-4 ${borderColor} shadow-sm transition-shadow duration-200 hover:shadow`}>
       <CardHeader className="pb-4">
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {isShipping ? <MapPin className="text-primary h-5 w-5" /> : <Building className="text-primary h-5 w-5" />}
+            {isShipping ? (
+              <MapPin className={`h-5 w-5 ${iconColor}`} />
+            ) : (
+              <Building className={`h-5 w-5 ${iconColor}`} />
+            )}
             <CardTitle className="text-base font-semibold">
-              {t(isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader')}
+              {t(
+                isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader',
+                isShipping ? 'Shipping Address' : 'Billing Address',
+              )}
             </CardTitle>
           </div>
           {mode !== 'view' && (
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
-                <div className="bg-primary/10 hover:bg-primary/20 cursor-pointer rounded-full p-1.5 transition-colors">
-                  <Edit size={16} className="text-primary" onClick={() => setOpen(true)} />
-                </div>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Edit size={16} className={iconColor} />
+                </Button>
               </DialogTrigger>
               <DialogContent className="flex h-[80vh] max-h-[80vh] min-h-[80vh] flex-col">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
                     {isShipping ? (
-                      <MapPin className="text-primary h-5 w-5" />
+                      <MapPin className={`h-5 w-5 ${iconColor}`} />
                     ) : (
-                      <Building className="text-primary h-5 w-5" />
+                      <Building className={`h-5 w-5 ${iconColor}`} />
                     )}
-                    {t('selectAddress.selectAddress')}
+                    {t('selectAddress.selectAddress', 'Select Address')}
                   </DialogTitle>
                   <DialogDescription className="text-muted-foreground mt-2">
                     {isShipping
                       ? order?.customer?.addresses?.length
-                        ? t('selectAddress.selectShippingAddress')
-                        : t('selectAddress.createShippingAddress')
+                        ? t(
+                            'selectAddress.selectShippingAddress',
+                            'Choose a shipping address from saved addresses or create a new one',
+                          )
+                        : t('selectAddress.createShippingAddress', 'Create a new shipping address')
                       : order?.customer?.addresses?.length
-                        ? t('selectAddress.selectBillingAddress')
-                        : t('selectAddress.createBillingAddress')}
+                        ? t(
+                            'selectAddress.selectBillingAddress',
+                            'Choose a billing address from saved addresses or create a new one',
+                          )
+                        : t('selectAddress.createBillingAddress', 'Create a new billing address')}
                   </DialogDescription>
                 </DialogHeader>
                 <Tabs
@@ -326,10 +351,10 @@ export const AddressCard: React.FC<{
                   {order?.customer?.addresses?.length ? (
                     <TabsList className="my-4 grid w-full grid-cols-2">
                       <TabsTrigger className="w-full" value="select">
-                        {t('selectAddress.selectAddress')}
+                        {t('selectAddress.selectAddress', 'Select Address')}
                       </TabsTrigger>
                       <TabsTrigger className="w-full" value="create" onClick={() => setSelectedAddress(undefined)}>
-                        {t('selectAddress.editAddress')}
+                        {t('selectAddress.editAddress', 'Create/Edit Address')}
                       </TabsTrigger>
                     </TabsList>
                   ) : null}
@@ -356,11 +381,11 @@ export const AddressCard: React.FC<{
                           >
                             <div className="flex-1">
                               <div className="mb-1 flex items-center gap-2">
-                                <Home className="text-primary h-4 w-4" />
+                                <User className={`h-4 w-4 ${iconColor}`} />
                                 <p className="font-medium">{address.fullName}</p>
                                 {selectedAddress?.id === address.id && (
                                   <div className="ml-auto">
-                                    <Check className="text-primary h-4 w-4" />
+                                    <Check className="h-4 w-4 text-green-500" />
                                   </div>
                                 )}
                               </div>
@@ -371,31 +396,33 @@ export const AddressCard: React.FC<{
                                 {`${address.postalCode} ${address.city} ${address.country?.name || address.country?.code}`}
                               </CardDescription>
                               <CardDescription className="text-sm">
-                                {`${t('selectAddress.phoneNumberShort', { value: address.phoneNumber })} ${address.company} `}
+                                {`${t('selectAddress.phoneNumberShort', { value: address.phoneNumber })} ${address.company ? '• ' + address.company : ''} `}
                               </CardDescription>
                               <div className="mt-2 flex gap-2">
                                 {address.defaultBillingAddress && (
-                                  <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs">
-                                    {t('selectAddress.isDefaultBilling')}
+                                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-xs text-cyan-800 dark:bg-cyan-900/50 dark:text-cyan-300">
+                                    {t('selectAddress.isDefaultBilling', 'Default Billing')}
                                   </span>
                                 )}
                                 {address.defaultShippingAddress && (
-                                  <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs">
-                                    {t('selectAddress.isDefaultShipping')}
+                                  <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
+                                    {t('selectAddress.isDefaultShipping', 'Default Shipping')}
                                   </span>
                                 )}
                               </div>
                             </div>
-                            <div
-                              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1.5 transition-colors"
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setState({ countryCode: address.country?.code || '', ...address });
                                 setTab('create');
                               }}
                             >
-                              <Edit size={16} className="text-primary" />
-                            </div>
+                              <Edit size={16} className={iconColor} />
+                            </Button>
                           </Card>
                         ))}
                       </div>
@@ -412,11 +439,11 @@ export const AddressCard: React.FC<{
                       <div className="space-y-4 px-1">
                         <div className="space-y-1">
                           <Label htmlFor="fullName" className="text-sm font-medium">
-                            {t('selectAddress.inputNameLabel')} <span className="text-red-500">*</span>
+                            {t('selectAddress.inputNameLabel', 'Full Name')} <span className="text-red-500">*</span>
                           </Label>
                           <Input
                             id="fullName"
-                            placeholder={t('selectAddress.inputNamePlaceholder')}
+                            placeholder={t('selectAddress.inputNamePlaceholder', 'Enter full name')}
                             value={state.fullName?.value ?? undefined}
                             defaultValue={state?.fullName?.value ?? undefined}
                             onChange={(e) => setField('fullName', e.target.value)}
@@ -427,11 +454,12 @@ export const AddressCard: React.FC<{
                         </div>
                         <div className="space-y-1">
                           <Label htmlFor="streetLine1" className="text-sm font-medium">
-                            {t('selectAddress.inputStreetLabel')} <span className="text-red-500">*</span>
+                            {t('selectAddress.inputStreetLabel', 'Street Address')}{' '}
+                            <span className="text-red-500">*</span>
                           </Label>
                           <Input
                             id="streetLine1"
-                            placeholder={t('selectAddress.inputStreetPlaceholder')}
+                            placeholder={t('selectAddress.inputStreetPlaceholder', 'Enter street address')}
                             value={state.streetLine1?.value}
                             defaultValue={state?.streetLine1?.value}
                             onChange={(e) => setField('streetLine1', e.target.value)}
@@ -442,11 +470,14 @@ export const AddressCard: React.FC<{
                         </div>
                         <div className="space-y-1">
                           <Label htmlFor="streetLine2" className="text-sm font-medium">
-                            {t('selectAddress.inputStreet2Label')}
+                            {t('selectAddress.inputStreet2Label', 'Street Address 2')}
                           </Label>
                           <Input
                             id="streetLine2"
-                            placeholder={t('selectAddress.inputStreet2Placeholder')}
+                            placeholder={t(
+                              'selectAddress.inputStreet2Placeholder',
+                              'Apartment, suite, etc. (optional)',
+                            )}
                             value={state.streetLine2?.value ?? undefined}
                             defaultValue={state?.streetLine2?.value ?? undefined}
                             onChange={(e) => setField('streetLine2', e.target.value)}
@@ -455,11 +486,11 @@ export const AddressCard: React.FC<{
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1">
                             <Label htmlFor="city" className="text-sm font-medium">
-                              {t('selectAddress.inputCityLabel')} <span className="text-red-500">*</span>
+                              {t('selectAddress.inputCityLabel', 'City')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                               id="city"
-                              placeholder={t('selectAddress.inputCityPlaceholder')}
+                              placeholder={t('selectAddress.inputCityPlaceholder', 'Enter city')}
                               defaultValue={currentAddress?.city ?? undefined}
                               onChange={(e) => setField('city', e.target.value)}
                               className={cn(state.city?.errors?.length && 'border-red-300')}
@@ -469,11 +500,11 @@ export const AddressCard: React.FC<{
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="province" className="text-sm font-medium">
-                              {t('selectAddress.inputProvinceLabel')}
+                              {t('selectAddress.inputProvinceLabel', 'State/Province')}
                             </Label>
                             <Input
                               id="province"
-                              placeholder={t('selectAddress.inputProvincePlaceholder')}
+                              placeholder={t('selectAddress.inputProvincePlaceholder', 'Enter state/province')}
                               defaultValue={currentAddress?.province ?? undefined}
                               onChange={(e) => setField('province', e.target.value)}
                             />
@@ -482,11 +513,12 @@ export const AddressCard: React.FC<{
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1">
                             <Label htmlFor="postalCode" className="text-sm font-medium">
-                              {t('selectAddress.inputPostalLabel')} <span className="text-red-500">*</span>
+                              {t('selectAddress.inputPostalLabel', 'Postal/ZIP Code')}{' '}
+                              <span className="text-red-500">*</span>
                             </Label>
                             <Input
                               id="postalCode"
-                              placeholder={t('selectAddress.inputPostalPlaceholder')}
+                              placeholder={t('selectAddress.inputPostalPlaceholder', 'Enter postal/ZIP code')}
                               value={state.postalCode?.value ?? undefined}
                               defaultValue={state?.postalCode?.value ?? undefined}
                               onChange={(e) => setField('postalCode', e.target.value)}
@@ -497,11 +529,12 @@ export const AddressCard: React.FC<{
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="phoneNumber" className="text-sm font-medium">
-                              {t('selectAddress.inputPhoneLabel')} <span className="text-red-500">*</span>
+                              {t('selectAddress.inputPhoneLabel', 'Phone Number')}{' '}
+                              <span className="text-red-500">*</span>
                             </Label>
                             <Input
                               id="phoneNumber"
-                              placeholder={t('selectAddress.inputPhonePlaceholder')}
+                              placeholder={t('selectAddress.inputPhonePlaceholder', 'Enter phone number')}
                               value={state.phoneNumber?.value ?? undefined}
                               defaultValue={state?.phoneNumber?.value ?? undefined}
                               onChange={(e) => setField('phoneNumber', e.target.value)}
@@ -512,8 +545,20 @@ export const AddressCard: React.FC<{
                           </div>
                         </div>
                         <div className="space-y-1">
+                          <Label htmlFor="company" className="text-sm font-medium">
+                            {t('selectAddress.inputCompanyLabel', 'Company')}
+                          </Label>
+                          <Input
+                            id="company"
+                            placeholder={t('selectAddress.inputCompanyPlaceholder', 'Enter company name (optional)')}
+                            value={state.company?.value ?? undefined}
+                            defaultValue={state?.company?.value ?? undefined}
+                            onChange={(e) => setField('company', e.target.value)}
+                          />
+                        </div>
+                        <div className="space-y-1">
                           <Label htmlFor="country" className="text-sm font-medium">
-                            {t('selectAddress.countrySelectLabel')} <span className="text-red-500">*</span>
+                            {t('selectAddress.countrySelectLabel', 'Country')} <span className="text-red-500">*</span>
                           </Label>
                           <Select
                             value={state.countryCode?.value}
@@ -521,7 +566,9 @@ export const AddressCard: React.FC<{
                             required
                           >
                             <SelectTrigger id="country" className="w-full">
-                              <SelectValue placeholder="Select country" />
+                              <SelectValue
+                                placeholder={t('selectAddress.countrySelectPlaceholder', 'Select country')}
+                              />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup>
@@ -539,32 +586,61 @@ export const AddressCard: React.FC<{
                             </p>
                           )}
                         </div>
-                        <div className="flex items-center space-x-2 py-2">
-                          <Checkbox
-                            id="createForCustomer"
-                            checked={createForCustomer}
-                            onCheckedChange={() => setCreateForCustomer((p) => !p)}
-                          />
-                          <Label
-                            htmlFor="createForCustomer"
-                            className="cursor-pointer text-sm font-medium leading-none"
-                          >
-                            {t('selectAddress.createForCustomer')}
-                          </Label>
-                        </div>
+                        <EntityCustomFields
+                          id={selectedAddress?.id}
+                          entityName="address"
+                          hideButton
+                          fetchInitialValues={false}
+                          initialValues={{
+                            customFields: 'customFields' in state ? (state.customFields as any).value : {},
+                          }}
+                          onChange={(cf, value) => {
+                            setField('customFields', cf);
+                          }}
+                          additionalData={{}}
+                        />
+                        {!order?.customer?.addresses?.length ? (
+                          <div className="flex items-center space-x-2 py-2">
+                            <Checkbox
+                              id="createForCustomer"
+                              checked={createForCustomer}
+                              onCheckedChange={() => setCreateForCustomer((p) => !p)}
+                            />
+                            <Label
+                              htmlFor="createForCustomer"
+                              className="cursor-pointer text-sm font-medium leading-none"
+                            >
+                              {t('selectAddress.createForCustomer', 'Save this address to customer profile')}
+                            </Label>
+                          </div>
+                        ) : null}
                       </div>
                     </ScrollArea>
                   </TabsContent>
                 </Tabs>
-                <div className="mt-4 flex justify-end">
+                <div className="mt-4 flex justify-end gap-2">
+                  <Button variant="outline" onClick={() => setOpen(false)} disabled={submitting}>
+                    {t('common.cancel', 'Cancel')}
+                  </Button>
                   <Button
-                    className="px-6"
+                    className="gap-2"
                     disabled={submitting || (tab === 'select' && !selectedAddress)}
                     onClick={submitAddress}
                   >
-                    {submitting
-                      ? t('common.submitting')
-                      : t(tab === 'select' ? 'selectAddress.selectAddress' : 'selectAddress.editAddress')}
+                    {submitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        {t('common.submitting', 'Submitting...')}
+                      </>
+                    ) : (
+                      <>
+                        <Check className="h-4 w-4" />
+                        {t(
+                          tab === 'select' ? 'selectAddress.selectAddress' : 'selectAddress.editAddress',
+                          tab === 'select' ? 'Select Address' : 'Save Address',
+                        )}
+                      </>
+                    )}
                   </Button>
                 </div>
               </DialogContent>
@@ -572,35 +648,82 @@ export const AddressCard: React.FC<{
           )}
         </div>
         <CardDescription className="text-muted-foreground mb-3 text-sm">
-          {t(isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription')}
+          {t(
+            isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription',
+            isShipping ? 'Where the order will be delivered' : 'Address for billing purposes',
+          )}
         </CardDescription>
-        <div className="bg-muted/50 border-border mt-2 rounded-lg border p-3">
+        <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
           <div className="flex items-start gap-3">
-            <StatusIcon className={cn('mt-0.5 h-5 w-5', statusColor)} />
-            <div className="flex-1">
-              {!currentAddress ? (
-                <p className="text-muted-foreground text-sm italic">
-                  {t(isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress')}
-                </p>
-              ) : (
-                <div className="space-y-1">
-                  <p className="text-sm font-medium">{currentAddress?.fullName}</p>
-                  <p className="text-sm">
-                    {currentAddress.streetLine1} {currentAddress?.streetLine2}
+            {!currentAddress ? (
+              <>
+                <div
+                  className={`mt-0.5 flex h-8 w-8 items-center justify-center rounded-full ${isShipping ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-cyan-100 dark:bg-cyan-900/30'}`}
+                >
+                  {isShipping ? (
+                    <MapPin className={`h-4 w-4 ${iconColor}`} />
+                  ) : (
+                    <Building className={`h-4 w-4 ${iconColor}`} />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="text-muted-foreground text-sm italic">
+                    {t(
+                      isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress',
+                      isShipping ? 'No shipping address set' : 'No billing address set',
+                    )}
                   </p>
-                  <p className="text-sm">
-                    {currentAddress.city} {currentAddress.postalCode} {currentAddress.province} {currentAddress.country}
-                  </p>
-                  <div className="border-border mt-1 flex items-center justify-between border-t pt-1">
-                    <span className="text-muted-foreground text-sm">
-                      {currentAddress.company && `${currentAddress.company} • `}
-                      {currentAddress.phoneNumber &&
-                        t('selectAddress.phoneNumberShort', { value: currentAddress.phoneNumber })}
-                    </span>
+                  {mode !== 'view' && (
+                    <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
+                      <Edit className="h-3.5 w-3.5" />
+                      {t('selectAddress.addAddress', 'Add Address')}
+                    </Button>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex-1">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <User className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                      <p className="text-sm font-medium">{currentAddress?.fullName}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                      <p className="text-sm">
+                        {currentAddress.streetLine1} {currentAddress?.streetLine2}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Globe className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                      <p className="text-sm">
+                        {currentAddress.city} {currentAddress.postalCode} {currentAddress.province}{' '}
+                        {currentAddress.country}
+                      </p>
+                    </div>
+                    <div className="border-border mt-1 flex items-center justify-between border-t pt-1">
+                      <div className="flex items-center gap-2">
+                        {currentAddress.company && (
+                          <div className="flex items-center gap-1">
+                            <Building className="text-muted-foreground h-4 w-4" />
+                            <span className="text-muted-foreground text-sm">{currentAddress.company}</span>
+                          </div>
+                        )}
+                        {currentAddress.phoneNumber && (
+                          <div className="flex items-center gap-1">
+                            <Phone className="text-muted-foreground h-4 w-4" />
+                            <span className="text-muted-foreground text-sm">
+                              {t('selectAddress.phoneNumberShort', { value: currentAddress.phoneNumber })}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
         </div>
       </CardHeader>

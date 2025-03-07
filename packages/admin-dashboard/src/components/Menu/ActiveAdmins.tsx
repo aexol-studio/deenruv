@@ -44,7 +44,7 @@ export const ActiveAdmins = () => {
                   </div>
                   <span className="text-muted-foreground text-sm">{formatTimeAgo(client.lastActive)}</span>
                   {!client.me && (
-                    <NavLink to={client.location} className="text-muted-foreground text-sm">
+                    <NavLink to={client.location} className="text-muted-foreground text-sm" viewTransition>
                       {client.location.replace(window.location.origin, '')}
                     </NavLink>
                   )}

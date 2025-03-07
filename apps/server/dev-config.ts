@@ -140,7 +140,48 @@ export const devConfig: DeenruvConfig = {
         importAssetsDir: path.join(__dirname, 'import-assets'),
     },
     shippingOptions: { fulfillmentHandlers: [handler] },
-    customFields: {},
+    customFields: {
+        Order: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Address: [
+            {
+                name: 'companyName',
+                type: 'string',
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Company Name',
+                    },
+                    {
+                        languageCode: LanguageCode.pl,
+                        value: 'Nazwa firmy',
+                    },
+                ],
+            },
+            {
+                name: 'companyTaxId',
+                type: 'string',
+                label: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Company Tax ID',
+                    },
+                    {
+                        languageCode: LanguageCode.pl,
+                        value: 'NIP',
+                    },
+                ],
+            },
+        ],
+    },
     plugins: [
         // DashboardWidgetsPlugin,
         // MultivendorPlugin.init({

@@ -1,6 +1,17 @@
-import { useSettings } from '@/state';
+import { GraphQLSchema, useSettings } from '@/state';
 import { DeenruvSettingsWindowType } from '@/types';
 import { GraphQLResponse, GraphQLError, Thunder, scalars, ResolverInputTypes } from '@deenruv/admin-types';
+import {
+    parse,
+    print,
+    visit,
+    DocumentNode,
+    FieldNode,
+    SelectionSetNode,
+    Kind,
+    SelectionNode,
+    ASTNode,
+} from 'graphql';
 
 // * We can think about caching the response in the future
 // ! TODO: Add pattern of authToken from dashboard so we need `useSettings` here
@@ -13,23 +24,112 @@ import { GraphQLResponse, GraphQLError, Thunder, scalars, ResolverInputTypes } f
 declare global {
     interface Window {
         __DEENRUV_SETTINGS__: DeenruvSettingsWindowType;
+        __DEENRUV_SCHEMA__: GraphQLSchema | null;
     }
 }
 type CallOptions = { type: 'standard' | 'upload' };
+
+const getCustomFieldPaths = (fields: any[], basePath: string, depth: number): string[] => {
+    if (!fields || depth <= 0) return [];
+
+    let paths: Set<string> = new Set();
+
+    for (const field of fields) {
+        const fieldPath = `${basePath}.${field.name}`;
+
+        if (field.name === 'customFields') {
+            paths.add(fieldPath);
+        } else if (field.fields && field.fields.length > 0) {
+            getCustomFieldPaths(field.fields, fieldPath, depth - 1).forEach(p => paths.add(p));
+        }
+    }
+
+    return Array.from(paths);
+};
+
+function traverseUntilBeforeCustomFields(
+    selectionSet: SelectionSetNode | undefined,
+    pathParts: string[],
+): FieldNode | null {
+    if (!selectionSet || pathParts.length === 0) return null;
+
+    let currentSelectionSet = selectionSet;
+    let lastValidNode: FieldNode | null = null;
+
+    for (const part of pathParts) {
+        const matchingSelection = currentSelectionSet.selections.find(
+            (s: SelectionNode) => (s as FieldNode).name.value === part,
+        ) as FieldNode | undefined;
+
+        if (!matchingSelection) {
+            console.log(
+                `Stopping at "${lastValidNode?.name.value || 'root'}" - Need to add .customFields here.`,
+            );
+            return lastValidNode;
+        }
+
+        lastValidNode = matchingSelection;
+        if (!matchingSelection.selectionSet) {
+            console.log(`"${matchingSelection.name.value}" has no selectionSet.`);
+            return lastValidNode;
+        }
+
+        currentSelectionSet = matchingSelection.selectionSet;
+    }
+
+    return lastValidNode;
+}
+
+const modifyQuery = (query: string): string => {
+    const ast: DocumentNode = parse(query);
+    const schema = window.__DEENRUV_SCHEMA__;
+    if (!schema) return query;
+
+    const modifiedAst = visit(ast, {
+        Field: {
+            enter(node, key, parent, path, ancestors) {
+                const fieldName = node.name.value;
+                const parentType = ancestors.length > 0 ? ancestors[ancestors.length - 1] : null;
+                let queryInSchema: any = null;
+                if (parentType && !Array.isArray(parentType) && (parentType as FieldNode).kind === 'Field') {
+                    const parentName = (parentType as FieldNode).name.value;
+                    const parentSchema = schema.get(parentName);
+                    if (parentSchema && parentSchema.fields) {
+                        queryInSchema = parentSchema.fields.find((f: any) => f.name === fieldName);
+                    }
+                } else {
+                    queryInSchema = schema.get(fieldName);
+                }
+                if (!queryInSchema || !queryInSchema.fields) return node;
+                const customFieldPaths = getCustomFieldPaths(queryInSchema.fields, fieldName, 3);
+
+                for (const path of customFieldPaths) {
+                    const pathParts = path.split('.'); // Break path into parts
+                    const stopBefore = pathParts.slice(1, -1); // All parts except "customFields"
+                    const lastValidNode = traverseUntilBeforeCustomFields(node.selectionSet, stopBefore);
+
+                    if (lastValidNode) {
+                        console.log(`Stop at "${lastValidNode.name.value}", need to add .customFields here.`);
+                    }
+                }
+            },
+        },
+    });
+
+    return print(modifiedAst);
+};
+
 export const deenruvAPICall = (options?: CallOptions) => {
     return async (
-        query: string,
+        _query: string,
         variables: Record<string, unknown> = {},
         customParams?: Record<string, string>,
     ) => {
+        const query = modifyQuery(_query);
         const { translationsLanguage, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
         const { type } = options || {};
-
-        const defaultParams = {
-            languageCode: translationsLanguage,
-        };
-
+        const defaultParams = { languageCode: translationsLanguage };
         const params = new URLSearchParams(customParams || defaultParams).toString();
 
         let body: RequestInit['body'];
@@ -43,7 +143,7 @@ export const deenruvAPICall = (options?: CallOptions) => {
 
         if (type === 'upload') {
             const formData = new FormData();
-            formData.append('operations', JSON.stringify({ query, variables }));
+            formData.append('operations', JSON.stringify({ query: _query, variables }));
             const mapData: Record<string, string[]> = {};
             const files = variables.input as ResolverInputTypes['CreateAssetInput'][];
             files.forEach((_, index) => {
@@ -62,7 +162,6 @@ export const deenruvAPICall = (options?: CallOptions) => {
         }
 
         const url = `${uri}/admin-api?${params}`;
-
         return fetch(url, {
             body,
             headers,

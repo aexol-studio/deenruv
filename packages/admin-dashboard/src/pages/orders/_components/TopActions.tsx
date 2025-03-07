@@ -270,9 +270,12 @@ export const TopActions: React.FC = () => {
           if (order?.state === ORDER_STATE.DRAFT) {
             toast.error(t('create.leaveToastMessage'), {
               position: 'top-center',
-              action: { label: t('create.leaveToastButton'), onClick: () => navigate(Routes.orders.list) },
+              action: {
+                label: t('create.leaveToastButton'),
+                onClick: () => navigate(Routes.orders.list, { viewTransition: true }),
+              },
             });
-          } else navigate(Routes.orders.list);
+          } else navigate(Routes.orders.list, { viewTransition: true });
         }}
       >
         <ChevronLeft className="h-4 w-4" />

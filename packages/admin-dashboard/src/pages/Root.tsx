@@ -7,6 +7,7 @@ import {
   apiClient,
   fetchAndSetChannels,
   useOrder,
+  GraphQLSchema,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -73,7 +74,7 @@ export const Root = () => {
   const [loaded, setLoaded] = useState(false);
   const { initializeOrderCustomFields } = useOrder();
   useEffect(() => {
-    const init = async () => {
+    const init = async (schema: GraphQLSchema | null) => {
       const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
       });
@@ -88,7 +89,6 @@ export const Root = () => {
           ),
         );
         await fetchAndSetChannels();
-        setLoaded(true);
       }
       if (window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode) {
         window?.__DEENRUV_SETTINGS__.i18n.changeLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
@@ -97,20 +97,22 @@ export const Root = () => {
       if (window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode) {
         setTranslationLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode);
       }
-      const [serverConfigResponse, countriesResponse, paymentsResponse, fulfillmentsResponse] =
-        await Promise.allSettled([
-          apiClient('query')({ globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true } }),
-          getAllPaginatedCountries(),
-          getAllPaymentMethods(),
-          apiClient('query')({ fulfillmentHandlers: configurableOperationDefinitionSelector }),
-        ]);
-      if (serverConfigResponse.status === 'rejected') {
+      const { globalSettings } = await apiClient('query')({
+        globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true },
+      });
+      initializeOrderCustomFields(schema, globalSettings.serverConfig);
+      setLoaded(true);
+
+      const [countriesResponse, paymentsResponse, fulfillmentsResponse] = await Promise.allSettled([
+        getAllPaginatedCountries(),
+        getAllPaymentMethods(),
+        apiClient('query')({ fulfillmentHandlers: configurableOperationDefinitionSelector }),
+      ]);
+      if (countriesResponse.status === 'rejected') {
         toast.error(t('setup.failedServer'));
       } else {
-        if (serverConfigResponse.value.globalSettings.serverConfig)
-          initializeOrderCustomFields(serverConfigResponse.value.globalSettings.serverConfig);
-        setServerConfig(serverConfigResponse.value.globalSettings.serverConfig);
-        setAvailableLanguages(serverConfigResponse.value.globalSettings.availableLanguages);
+        setServerConfig(globalSettings.serverConfig);
+        setAvailableLanguages(globalSettings.availableLanguages);
         // const socket = serverConfigResponse.value.globalSettings.serverConfig.plugins?.find(
         //   (plugin) => plugin.name === 'AexolAdminsPlugin',
         // );
@@ -132,9 +134,10 @@ export const Root = () => {
         setFulfillmentHandlers(fulfillmentsResponse.value.fulfillmentHandlers);
       }
     };
-    fetchGraphQLSchema().then(async () => {
+    fetchGraphQLSchema().then(async (schema) => {
+      window.__DEENRUV_SCHEMA__ = schema;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      await init();
+      await init(schema);
     });
   }, []);
 

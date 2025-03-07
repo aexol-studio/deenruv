@@ -133,11 +133,11 @@
     "cancelOrderMessage": "Po anulowaniu zamówienia żadne działanie nie będzie dozwolone",
     "selectCustomer": {
       "noCustomer": "Brak klienta",
-      "titleLabel": "Tytuł*",
-      "firstNameLabel": "Imię*",
+      "titleLabel": "Tytuł",
+      "firstNameLabel": "Imię",
       "lastNameLabel": "Last Name",
-      "emailLabel": "E-mail*",
-      "phoneNumberLabel": "Numer telefonu*",
+      "emailLabel": "E-mail",
+      "phoneNumberLabel": "Numer telefonu",
       "select": "Klient",
       "selectButton": "Wybierz klienta",
       "change": "Zmień klienta",
@@ -163,6 +163,7 @@
       "noResults": "Nie znaleziono klienta o określonej wartości"
     },
     "buttonAddPayment": "Dodaj płatność do zamówienia {{value}}",
+    "notEnoughPayment": "Nie wystarczająca kwota płatności",
     "addPaymentTitle": "Dodaj płatność do zamówienia",
     "addPaymentDescription": "Wybierz metodę płatności, aby sfinalizować zamówienie."
   },

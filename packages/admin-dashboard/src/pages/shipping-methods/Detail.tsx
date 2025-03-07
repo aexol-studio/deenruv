@@ -167,7 +167,7 @@ export const ShippingMethodsDetailPage = () => {
       .then((resp) => {
         toast.message(t('toasts.shippingMethodCreatedSuccess'));
         setHasUnsavedChanges(false);
-        setTimeout(() => navigate(Routes.shippingMethods.to(resp.createShippingMethod.id)));
+        setTimeout(() => navigate(Routes.shippingMethods.to(resp.createShippingMethod.id), { viewTransition: true }));
       })
       .catch(() => toast.error(t('toasts.shippingMethodCreatedError')));
   }, [state, t, navigate]);

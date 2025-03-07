@@ -109,7 +109,7 @@ export const DetailViewStoreProvider = <
 
             if (mutationName.startsWith('create') || mutationName.startsWith('delete')) {
                 setHasUnsavedChanges(false);
-                setTimeout(() => navigate(listPath));
+                setTimeout(() => navigate(listPath, { viewTransition: true }));
             } else {
                 fetchEntity();
             }

@@ -35,7 +35,9 @@ export const ListButtons = ({
       ) : null}
       {isPermittedToCreate && (
         <Button>
-          <NavLink to={createRoute}>{createLabel}</NavLink>
+          <NavLink to={createRoute} viewTransition>
+            {createLabel}
+          </NavLink>
         </Button>
       )}
     </div>

@@ -24,6 +24,7 @@ import { RefreshCw, Save, Database, Globe, AlertCircle } from 'lucide-react';
 type ViableEntity = Uncapitalize<
   keyof Pick<
     ModelTypes,
+    | 'Address'
     | 'Product'
     | 'ProductVariant'
     | 'Order'
@@ -57,8 +58,15 @@ type Props<T extends ViableEntity> = {
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
   fetchInitialValues?: boolean;
+  initialValues?: CF;
   additionalData?: Record<string, unknown>;
-};
+} & (
+  | {
+      fetchInitialValues: false;
+      initialValues: { customFields: CF; translations?: Array<{ customFields: CF; languageCode: LanguageCode }> };
+    }
+  | { fetchInitialValues?: true }
+);
 
 const entityDictionary: Partial<
   Record<ViableEntity, { inputName: keyof ModelTypes; mutationName: keyof ModelTypes['Mutation'] }>
@@ -107,6 +115,10 @@ const entityDictionary: Partial<
     inputName: 'UpdateProductOptionInput',
     mutationName: 'updateProductOption',
   },
+  address: {
+    inputName: 'CreateAddressInput',
+    mutationName: 'createCustomerAddress',
+  },
 };
 
 const typeWithCommonCustomFields: keyof Pick<ModelTypes, 'UpdateProductOptionInput'> = 'UpdateProductOptionInput';
@@ -121,6 +133,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   disabled,
   fetchInitialValues = true,
   additionalData,
+  initialValues,
 }: Props<T>) {
   const { t } = useTranslation('common');
   const language = useSettings((p) => p.translationsLanguage);
@@ -197,7 +210,7 @@ export function EntityCustomFields<T extends ViableEntity>({
     () => mergeSelectorWithCustomFields({}, capitalizedEntityName, entityCustomFields),
     [entityCustomFields, capitalizedEntityName],
   );
-
+  console.log('render test');
   const fetchEntity = useCallback(
     async (showLoading = true) => {
       if (!id) return;
@@ -232,7 +245,7 @@ export function EntityCustomFields<T extends ViableEntity>({
         if (showLoading) setIsRefreshing(false);
       }
     },
-    [runtimeSelector, entityName, id, fetch, setField, t],
+    [runtimeSelector, entityName, id],
   );
 
   const updateEntity = useCallback(async () => {
@@ -270,15 +283,17 @@ export function EntityCustomFields<T extends ViableEntity>({
   }, [state, entityName, id, mutation, prepareCustomFields, t]);
 
   useEffect(() => {
-    if (!entityCustomFields?.length || !fetchInitialValues) return;
+    if (!entityCustomFields?.length || !fetchInitialValues) {
+      setField('customFields', initialValues?.customFields || {});
+      return;
+    }
     try {
       setLoading(true);
       fetchEntity(false);
     } finally {
       setLoading(false);
     }
-  }, [entityCustomFields, fetchInitialValues, fetchEntity]); // Removed 'id' from dependencies
-
+  }, [entityCustomFields, fetchInitialValues]);
   if (!entityCustomFields?.length) return null;
 
   const translations = state?.translations?.value || [];
@@ -336,7 +351,7 @@ export function EntityCustomFields<T extends ViableEntity>({
             <p className="text-muted-foreground text-sm">{t('custom-fields.loading', 'Loading custom fields...')}</p>
           </div>
         ) : entityCustomFields?.length ? (
-          <div className="space-y-6 p-6">
+          <div className="space-y-6 p-6 pt-0">
             <CustomFieldsComponent
               additionalData={additionalData}
               value={state.customFields?.value}

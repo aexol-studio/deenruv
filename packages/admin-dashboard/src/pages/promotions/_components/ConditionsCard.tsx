@@ -20,6 +20,7 @@ import {
   ErrorMessage,
   generateInputComponents,
   usePluginStore,
+  ArgumentFieldsComponent,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
@@ -132,34 +133,17 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
                       </>
                     )}
                   </Stack>
-                  <Stack
-                    className={cn('items-end justify-center gap-4', condition?.arguments.length > 2 && 'flex-wrap')}
-                  >
-                    {condition?.arguments.map((e, i) => {
-                      const _condition = data?.promotionConditions.find((f) => f.code === condition.code);
-                      const argument = _condition?.args.find((a) => a.name === e.name);
-                      if (!argument) return null;
-                      return generateInputComponents(
-                        [
-                          {
-                            ...argument,
-                            label: [{ languageCode: 'en', value: argument.label || argument.name }],
-                            description: [{ languageCode: 'en', value: argument.description || '' }],
-                          },
-                        ],
-                        getInputComponent,
-                      ).map((field) => {
-                        return (
-                          <div key={field.name}>
-                            <div>
-                              <Label>{field.name}</Label>
-                            </div>
-                            {field.component}
-                          </div>
-                        );
+                  <ArgumentFieldsComponent
+                    actions={data?.promotionConditions}
+                    args={condition.arguments}
+                    setArg={(argument, data) => {
+                      const newArgs = condition.arguments.map((arg) => {
+                        if (arg.name === argument.name) return { ...arg, value: data.value };
+                        return arg;
                       });
-                    })}
-                  </Stack>
+                      handleConditionsValueChange(index, condition.code, newArgs);
+                    }}
+                  />
                   <Separator className="my-4" />
                 </Stack>
               );

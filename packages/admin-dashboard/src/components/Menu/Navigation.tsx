@@ -325,7 +325,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                     <Tooltip key={index} delayDuration={0}>
                       <TooltipTrigger asChild>
                         <div>
-                          <NavLink to={link.href}>
+                          <NavLink to={link.href} viewTransition>
                             <div
                               className={cn(
                                 buttonVariants({ variant: 'navigation-link', size: 'icon' }),
@@ -346,7 +346,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                       </TooltipContent>
                     </Tooltip>
                   ) : (
-                    <NavLink to={link.href}>
+                    <NavLink to={link.href} viewTransition>
                       <div
                         id={link.id}
                         className={cn(

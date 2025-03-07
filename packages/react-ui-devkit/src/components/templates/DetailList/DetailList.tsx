@@ -463,7 +463,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                                     className="flex items-center gap-2"
                                     onClick={() => {
                                         if ('create' in route) route.create();
-                                        else navigate((route as RouteBase).new);
+                                        else navigate((route as RouteBase).new, { viewTransition: true });
                                     }}
                                 >
                                     <PlusCircleIcon size={16} />

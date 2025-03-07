@@ -116,7 +116,7 @@ export const PaymentMethodsDetailPage = () => {
     })
       .then((resp) => {
         toast.message(t('toasts.paymentMethodCreatedSuccess'));
-        navigate(Routes.paymentMethods.to(resp.createPaymentMethod.id));
+        navigate(Routes.paymentMethods.to(resp.createPaymentMethod.id), { viewTransition: true });
       })
       .catch(() => toast.error(t('toasts.paymentMethodCreatedError')));
   }, [state, t, navigate]);

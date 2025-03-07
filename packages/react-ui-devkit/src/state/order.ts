@@ -11,6 +11,8 @@ import { toast } from 'sonner';
 import { create } from 'zustand';
 import { mergeSelectorWithCustomFields, deepMerge } from '@/utils/zeus-utils.js';
 import { ServerConfigType } from '@/selectors/BaseSelectors.js';
+import { customFieldsForQuery } from '@/zeus_client/customFieldsForQuery.js';
+import { GraphQLSchema } from './server.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type UnknownObject = Record<string, any>;
@@ -64,6 +66,7 @@ interface Order {
     manualChange: { state: boolean; toAction?: string };
     currentPossibilities: { name: string; to: Array<string> } | undefined;
     orderProcess: { name: string; to: Array<string> }[] | undefined;
+    graphQLSchema: GraphQLSchema | null;
 }
 
 interface Actions {
@@ -81,7 +84,7 @@ interface Actions {
     settlePayment: (input: { id: string }) => void;
     cancelPayment: (id: string) => void;
     cancelFulfillment: (id: string) => void;
-    initializeOrderCustomFields(serverConfig: ServerConfigType): void;
+    initializeOrderCustomFields(graphQLSchema: GraphQLSchema | null, serverConfig: ServerConfigType): void;
     setManualChange(value: { state: boolean; toAction?: string }): void;
     setCurrentPossibilities(value: { name: string; to: Array<string> }): void;
 }
@@ -147,6 +150,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         manualChange: { state: false, toAction: undefined },
         currentPossibilities: undefined,
         orderProcess: undefined,
+        graphQLSchema: null,
         setCurrentPossibilities: value => set({ currentPossibilities: value }),
         setManualChange: manualChange => set({ manualChange }),
         cancelPayment: async (id: string) => {
@@ -175,17 +179,13 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             }
             set({ mode, order });
         },
-        initializeOrderCustomFields: (serverConfig: ServerConfigType) => {
+        initializeOrderCustomFields: (graphQLSchema: GraphQLSchema, serverConfig: ServerConfigType) => {
             const { order } = get();
-            const orderCustomFields = serverConfig.entityCustomFields.find(
-                field => field.entityName === 'Order',
-            )?.customFields;
-            const customFieldsSelector = mergeSelectorWithCustomFields({}, 'Order', orderCustomFields);
             if (order) {
                 const currentPossibilities = serverConfig.orderProcess?.find(el => el.name === order.state);
                 if (currentPossibilities) set({ currentPossibilities });
             }
-            set({ customFieldsSelector, orderProcess: serverConfig.orderProcess });
+            set({ graphQLSchema, orderProcess: serverConfig.orderProcess });
         },
         fetchOrder: async (id: string) => {
             const {
@@ -194,25 +194,26 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 setOrder,
                 fetchOrderHistory,
                 setModifiedOrder,
-                customFieldsSelector,
+                graphQLSchema,
             } = get();
             set({ loading: true });
             try {
-                const selector = customFieldsSelector
-                    ? deepMerge(OrderDetailSelector, customFieldsSelector)
-                    : OrderDetailSelector;
+                const selector = customFieldsForQuery(
+                    OrderDetailSelector,
+                    graphQLSchema?.get('order')?.fields || [],
+                );
                 const { order } = await apiClient('query')({ order: [{ id }, selector] });
                 if (!order) {
                     toast.error(`Failed to load order with id ${id}`);
                     throw new Error(`Failed to load order with id ${id}`);
                 }
-                setOrder(order);
+                setOrder(order as OrderDetailType);
                 set({ modifiedOrder: undefined });
-                if (order) setModifiedOrder(Object.assign({}, { ...order }));
+                if (order) setModifiedOrder(Object.assign({}, { ...order }) as OrderDetailType);
                 fetchOrderHistory();
                 const currentPossibilities = orderProcess?.find(el => el.name === order?.state);
                 if (currentPossibilities) setCurrentPossibilities(currentPossibilities);
-                return order;
+                return order as OrderDetailType;
             } catch (e) {
                 const message = e instanceof Error ? e.message : `Failed to load order with id ${id}`;
                 toast.error(message);

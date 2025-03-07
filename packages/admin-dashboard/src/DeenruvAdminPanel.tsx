@@ -12,6 +12,7 @@ import {
   useSettings,
   GlobalStoreProvider,
   DEFAULT_CHANNEL_CODE,
+  GraphQLSchema,
 } from '@deenruv/react-ui-devkit';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
@@ -27,6 +28,7 @@ import { LanguageCode } from '@deenruv/admin-types';
 declare global {
   interface Window {
     __DEENRUV_SETTINGS__: DeenruvSettingsWindowType;
+    __DEENRUV_SCHEMA__: GraphQLSchema | null;
   }
 }
 

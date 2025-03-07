@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardHeader,
@@ -12,100 +14,201 @@ import {
   apiClient,
   useOrder,
   OrderDetailSelector,
+  CardDescription,
+  Badge,
+  ScrollArea,
 } from '@deenruv/react-ui-devkit';
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
+import { Package, Truck, CheckCircle, XCircle, AlertCircle, Loader2, ClipboardCheck } from 'lucide-react';
 
 export const RealizationCard: React.FC = () => {
   const { order, setOrder, fetchOrderHistory, cancelFulfillment } = useOrder();
   const { t } = useTranslation('orders');
+  const [processingFulfillments, setProcessingFulfillments] = useState<Record<string, boolean>>({});
 
   const markAsDelivered = async (fulfillmentId: string) => {
     if (!order) return;
-    const { transitionFulfillmentToState } = await apiClient('mutation')({
-      transitionFulfillmentToState: [
-        { id: fulfillmentId, state: 'Delivered' },
-        {
-          __typename: true,
-          '...on Fulfillment': {
-            id: true,
+
+    setProcessingFulfillments((prev) => ({ ...prev, [fulfillmentId]: true }));
+
+    try {
+      const { transitionFulfillmentToState } = await apiClient('mutation')({
+        transitionFulfillmentToState: [
+          { id: fulfillmentId, state: 'Delivered' },
+          {
+            __typename: true,
+            '...on Fulfillment': {
+              id: true,
+            },
+            '...on FulfillmentStateTransitionError': {
+              errorCode: true,
+              fromState: true,
+              message: true,
+              toState: true,
+              transitionError: true,
+            },
           },
-          '...on FulfillmentStateTransitionError': {
-            errorCode: true,
-            fromState: true,
-            message: true,
-            toState: true,
-            transitionError: true,
-          },
-        },
-      ],
-    });
-    if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-      const resp = await apiClient('query')({ order: [{ id: order.id }, OrderDetailSelector] });
-      setOrder(resp.order);
-      fetchOrderHistory();
-      toast.success('Fulfillment marked as delivered', { position: 'top-center' });
-    } else {
-      const errorMessage = `
-        ${transitionFulfillmentToState?.message || 'Something went wrong'}
-      `;
-      toast.error(errorMessage, { position: 'top-center' });
+        ],
+      });
+
+      if (transitionFulfillmentToState.__typename === 'Fulfillment') {
+        const resp = await apiClient('query')({ order: [{ id: order.id }, OrderDetailSelector] });
+        setOrder(resp.order);
+        fetchOrderHistory();
+        toast.success(t('fulfillments.deliveredSuccess', 'Fulfillment marked as delivered'));
+      } else {
+        const errorMessage = transitionFulfillmentToState?.message || t('fulfillments.error', 'Something went wrong');
+        toast.error(errorMessage);
+      }
+    } catch (error) {
+      toast.error(t('fulfillments.error', 'Something went wrong'));
+    } finally {
+      setProcessingFulfillments((prev) => ({ ...prev, [fulfillmentId]: false }));
     }
   };
+
+  const handleCancelFulfillment = async (fulfillmentId: string) => {
+    if (!order) return;
+    setProcessingFulfillments((prev) => ({ ...prev, [fulfillmentId]: true }));
+    try {
+      cancelFulfillment(fulfillmentId);
+    } finally {
+      setProcessingFulfillments((prev) => ({ ...prev, [fulfillmentId]: false }));
+    }
+  };
+
+  const getFulfillmentStateBadge = (state: string) => {
+    switch (state) {
+      case ORDER_STATE.CREATED:
+        return { variant: 'secondary' as const, icon: <Package className="mr-1 h-3.5 w-3.5" /> };
+      case ORDER_STATE.SHIPPED:
+        return { variant: 'outline' as const, icon: <Truck className="mr-1 h-3.5 w-3.5 text-blue-500" /> };
+      case ORDER_STATE.DELIVERED:
+        return { variant: 'success' as const, icon: <CheckCircle className="mr-1 h-3.5 w-3.5" /> };
+      case ORDER_STATE.CANCELLED:
+        return { variant: 'destructive' as const, icon: <XCircle className="mr-1 h-3.5 w-3.5" /> };
+      default:
+        return { variant: 'outline' as const, icon: <AlertCircle className="mr-1 h-3.5 w-3.5" /> };
+    }
+  };
+
   if (!order) return null;
+
+  if (!order.fulfillments?.length) return null;
+
   return (
     <AnimatePresence>
-      {order.fulfillments?.length ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4, ease: 'easeInOut' }}
-        >
-          <Card className="border-primary">
-            <CardHeader>
-              <CardTitle className="text-base">{t('fulfillments.title')}</CardTitle>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4, ease: 'easeInOut' }}
+      >
+        <Card className="border-l-4 border-l-green-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-green-400">
+          <CardHeader className="pb-4">
+            <div className="mb-2 flex items-center gap-2">
+              <ClipboardCheck className="h-5 w-5 text-green-500 dark:text-green-400" />
+              <CardTitle>{t('fulfillments.title', 'Order Fulfillments')}</CardTitle>
+            </div>
+            <CardDescription className="mb-3">
+              {t('fulfillments.description', 'Track and manage the delivery status of this order')}
+            </CardDescription>
+
+            <ScrollArea className="max-h-[350px]">
               <Table>
-                <TableHeader>
-                  <TableRow noHover>
-                    <TableHead>{t('fulfillments.method')}</TableHead>
-                    <TableHead>{t('fulfillments.state')}</TableHead>
-                    <TableHead>{t('fulfillments.trackingCode')}</TableHead>
-                    <TableHead className="text-right">{t('fulfillments.actions')}</TableHead>
+                <TableHeader className="bg-muted/30">
+                  <TableRow noHover className="hover:bg-transparent">
+                    <TableHead className="py-3 font-semibold">{t('fulfillments.method', 'Method')}</TableHead>
+                    <TableHead className="py-3 font-semibold">{t('fulfillments.state', 'Status')}</TableHead>
+                    <TableHead className="py-3 font-semibold">
+                      {t('fulfillments.trackingCode', 'Tracking Code')}
+                    </TableHead>
+                    <TableHead className="py-3 text-right font-semibold">
+                      {t('fulfillments.actions', 'Actions')}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {order.fulfillments.map((fulfillment) => (
-                    <React.Fragment key={fulfillment.id}>
-                      <TableRow>
-                        <TableCell>{fulfillment.method}</TableCell>
-                        <TableCell>{fulfillment.state}</TableCell>
-                        <TableCell>{fulfillment.trackingCode}</TableCell>
-                        <TableCell className="flex justify-end gap-3 text-right">
-                          {fulfillment.state === ORDER_STATE.SHIPPED && (
-                            <Button size="sm" variant="outline" onClick={() => markAsDelivered(fulfillment.id)}>
-                              {t('fulfillments.markAsDelivered')}
-                            </Button>
-                          )}
-                          {(fulfillment.state === ORDER_STATE.DELIVERED ||
-                            fulfillment.state === ORDER_STATE.SHIPPED) && (
-                            <Button size="sm" variant="destructive" onClick={() => cancelFulfillment(fulfillment.id)}>
-                              {t('fulfillments.cancel')}
-                            </Button>
+                  {order.fulfillments.map((fulfillment) => {
+                    const stateBadge = getFulfillmentStateBadge(fulfillment.state);
+                    const isProcessing = processingFulfillments[fulfillment.id];
+
+                    return (
+                      <TableRow key={fulfillment.id} className="hover:bg-muted/20">
+                        <TableCell className="py-3">
+                          <div className="flex items-center gap-2">
+                            <Truck className="h-4 w-4 text-green-500 dark:text-green-400" />
+                            <span className="font-medium">{fulfillment.method}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-3">
+                          <Badge variant={stateBadge.variant} className="flex w-fit items-center gap-1">
+                            {stateBadge.icon}
+                            {fulfillment.state}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="py-3">
+                          {fulfillment.trackingCode ? (
+                            <div className="flex items-center gap-2">
+                              <code className="bg-muted rounded px-2 py-1 font-mono text-xs">
+                                {fulfillment.trackingCode}
+                              </code>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
                           )}
                         </TableCell>
+                        <TableCell className="py-3 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            {fulfillment.state === ORDER_STATE.SHIPPED && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => markAsDelivered(fulfillment.id)}
+                                disabled={isProcessing}
+                                className="gap-1"
+                              >
+                                {isProcessing ? (
+                                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                ) : (
+                                  <CheckCircle className="h-3.5 w-3.5 text-green-500" />
+                                )}
+                                {t('fulfillments.markAsDelivered', 'Mark as Delivered')}
+                              </Button>
+                            )}
+                            {(fulfillment.state === ORDER_STATE.DELIVERED ||
+                              fulfillment.state === ORDER_STATE.SHIPPED) && (
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleCancelFulfillment(fulfillment.id)}
+                                disabled={isProcessing}
+                                className="gap-1"
+                              >
+                                {isProcessing ? (
+                                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                ) : (
+                                  <XCircle className="h-3.5 w-3.5" />
+                                )}
+                                {t('fulfillments.cancel', 'Cancel')}
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
                       </TableRow>
-                    </React.Fragment>
-                  ))}
+                    );
+                  })}
                 </TableBody>
               </Table>
-            </CardHeader>
-          </Card>
-        </motion.div>
-      ) : null}
+            </ScrollArea>
+          </CardHeader>
+        </Card>
+      </motion.div>
     </AnimatePresence>
   );
 };

@@ -1,10 +1,8 @@
 import {
-  Input,
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-  Label,
   CardFooter,
   DropdownMenu,
   DropdownMenuContent,
@@ -15,22 +13,15 @@ import {
   Button,
   useQuery,
   Separator,
-  Checkbox,
-  cn,
   ErrorMessage,
-  generateInputComponents,
-  usePluginStore,
-  CustomFieldsProvider,
-  useSettings,
-  InputFieldComponent,
+  ArgumentFieldsComponent,
 } from '@deenruv/react-ui-devkit';
-import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ModelTypes, typedGql, scalars } from '@deenruv/admin-types';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@/components';
-import { Percent, X } from 'lucide-react';
-import { FacetsSelector } from '@/pages/collections/_components/FacetsSelector';
-import { VariantsSelector } from '@/pages/collections/_components/VariantsSelector';
+import { X } from 'lucide-react';
+
 import { PromotionConditionAndActionSelector, PromotionConditionAndActionType } from '@/graphql/promotions';
 
 export const ActionsQuery = typedGql('query', { scalars })({
@@ -46,8 +37,6 @@ interface ActionsCardCardProps {
 export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, errors }) => {
   const { t } = useTranslation('promotions');
   const { data } = useQuery(ActionsQuery);
-  const { getInputComponent } = usePluginStore();
-  const { language } = useSettings(({ language }) => ({ language }));
 
   const availableActions = useMemo(() => {
     return data?.promotionActions.filter((a) => !value?.some((v) => v.code === a.code)) || [];
@@ -132,44 +121,17 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, e
                       </>
                     )}
                   </Stack>
-                  {!!action.arguments.length && (
-                    <Stack className={cn('items-end justify-center gap-4', action.arguments.length > 2 && 'flex-wrap')}>
-                      {action?.arguments.map((e, i) => {
-                        const _action = data?.promotionActions.find((f) => f.code === action.code);
-                        const argument = _action?.args.find((a) => a.name === e.name);
-                        if (!argument) return null;
-                        const label = [{ languageCode: language, value: argument.label || argument.name || '' }];
-                        const description = [{ languageCode: language, value: argument.description || '' }];
-                        return generateInputComponents([{ ...argument, label, description }], getInputComponent).map(
-                          (field) => {
-                            let value = '';
-                            try {
-                              value = JSON.parse(e.value);
-                            } catch {}
-                            const setValue = (data: unknown) => {
-                              try {
-                                const value = JSON.stringify(data);
-                                action.arguments[i] = { name: field.name, value };
-                                handleActionsValueChange(index, action.code, action.arguments);
-                              } catch {
-                                console.error('Error setting value');
-                              }
-                            };
-                            return (
-                              <InputFieldComponent
-                                key={field.name}
-                                field={field}
-                                value={value}
-                                setValue={setValue}
-                                additionalData={{}}
-                                disabled={false}
-                              />
-                            );
-                          },
-                        );
-                      })}
-                    </Stack>
-                  )}
+                  <ArgumentFieldsComponent
+                    actions={data?.promotionActions}
+                    args={action.arguments}
+                    setArg={(argument, data) => {
+                      const newArgs = action.arguments.map((arg) => {
+                        if (arg.name === argument.name) return { ...arg, value: data.value };
+                        return arg;
+                      });
+                      handleActionsValueChange(index, action.code, newArgs);
+                    }}
+                  />
                   <Separator className="my-4" />
                 </Stack>
               );

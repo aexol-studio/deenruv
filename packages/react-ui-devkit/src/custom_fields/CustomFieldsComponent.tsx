@@ -39,6 +39,9 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
             >,
         );
         setRendered(result);
+        return () => {
+            setRendered({});
+        };
     }, []);
 
     return (

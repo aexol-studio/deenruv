@@ -65,7 +65,7 @@ interface Actions {
     setActiveClients(activeClients: ActiveClient[]): void;
     fetchStatus: () => Promise<void>;
     fetchPendingJobs: () => Promise<void>;
-    fetchGraphQLSchema: () => Promise<void>;
+    fetchGraphQLSchema: () => Promise<GraphQLSchema | null>;
 }
 
 const getSystemStatus = async () => {
@@ -174,6 +174,7 @@ export const useServer = create<Server & Actions>()(set => ({
             const graphQLSchema = new Map<string, GraphQLSchemaField>();
             bindSchema(graphQLSchema, data.__schema);
             set({ graphQLSchema });
+            return graphQLSchema;
         } catch (error) {
             console.error('Error fetching GraphQL schema:', error);
             set({ graphQLSchema: null });

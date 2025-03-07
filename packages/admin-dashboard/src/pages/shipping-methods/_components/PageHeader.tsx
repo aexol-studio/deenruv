@@ -48,7 +48,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             variant="outline"
             size="icon"
             className="h-7 w-7"
-            onClick={() => navigate(Routes.shippingMethods.list)}
+            onClick={() => navigate(Routes.shippingMethods.list, { viewTransition: true })}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>

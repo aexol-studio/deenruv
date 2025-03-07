@@ -75,7 +75,11 @@ export const CustomersListPage = () => (
         cell: ({ row }) => {
           const navigate = useNavigate();
           return (
-            <Button variant="outline" size="default" onClick={() => navigate(Routes['customers'].to(row.original.id))}>
+            <Button
+              variant="outline"
+              size="default"
+              onClick={() => navigate(Routes['customers'].to(row.original.id), { viewTransition: true })}
+            >
               {`${row.original.firstName} ${row.original.lastName}`}
               <ArrowRight className="pl-1" size={16} />
             </Button>

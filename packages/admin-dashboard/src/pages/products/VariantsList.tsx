@@ -71,7 +71,7 @@ export const VariantsList = () => {
       type={'productVariants'}
       route={{
         edit: (variantId, productId) => {
-          navigate(`/admin-ui/products/${productId}?tab=variants&variantId=${variantId}`);
+          navigate(`/admin-ui/products/${productId}?tab=variants&variantId=${variantId}`, { viewTransition: true });
         },
       }}
       noCreateButton

@@ -133,11 +133,11 @@
     "cancelOrderMessage": "After canceling order no action will be allowed",
     "selectCustomer": {
       "noCustomer": "No customer",
-      "titleLabel": "Title*",
-      "firstNameLabel": "First Name*",
+      "titleLabel": "Title",
+      "firstNameLabel": "First Name",
       "lastNameLabel": "Last Name",
-      "emailLabel": "Email*",
-      "phoneNumberLabel": "Phone Number*",
+      "emailLabel": "Email",
+      "phoneNumberLabel": "Phone Number",
       "select": "Customer",
       "selectButton": "Select Customer",
       "change": "Change Customer",
@@ -162,6 +162,7 @@
       "error": "Failed to add customer to order",
       "noResults": "No customer of specified value found"
     },
+    "notEnoughPayment": "No payment needed",
     "buttonAddPayment": "Add payment to order {{value}}",
     "addPaymentTitle": "Add payment to order",
     "addPaymentDescription": "Please select a payment method to complete the order."

@@ -61,11 +61,11 @@ export const OrdersListPage = () => {
           createDraftOrder()
             .then((id) => {
               if (!id) toast.error('Failed to create draft order');
-              navigate(Routes.orders.to(id));
+              navigate(Routes.orders.to(id), { viewTransition: true });
             })
             .catch(() => toast.error('Failed to create draft order'));
         },
-        edit: (id) => navigate(Routes.orders.to(id)),
+        edit: (id) => navigate(Routes.orders.to(id), { viewTransition: true }),
       }}
       tableId="orders-list-view"
       fetch={fetch}

@@ -143,7 +143,7 @@ export const RolesDetailPage = () => {
         .then((resp) => {
           setButtonDisabled(true);
           toast.message(t('toasts.roleCreatedSuccess'));
-          setTimeout(() => navigate(Routes.roles.to(resp.createRole.id)));
+          setTimeout(() => navigate(Routes.roles.to(resp.createRole.id), { viewTransition: true }));
         })
         .catch(() => toast.error(t('toasts.roleCreatedError')));
   }, [state, t, navigate]);

@@ -148,7 +148,7 @@ export const CollectionsDetailPage = () => {
       .then((resp) => {
         if (resp.createCollection) {
           toast.message(t('toasts.collectionCreatedSuccess'));
-          navigate(Routes.collections.to(resp.createCollection.id));
+          navigate(Routes.collections.to(resp.createCollection.id), { viewTransition: true });
         }
       })
       .catch(() => toast.error(t('toasts.collectionCreatedError')));

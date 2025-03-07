@@ -102,7 +102,7 @@ export const AdminsDetailPage = () => {
     })
       .then((resp) => {
         toast.message(t('toasts.adminCreatedSuccess'));
-        navigate(Routes.admins.to(resp.createAdministrator.id));
+        navigate(Routes.admins.to(resp.createAdministrator.id), { viewTransition: true });
       })
       .catch(() => toast.error(t('toasts.adminCreatedError')));
   }, [state, t, navigate]);

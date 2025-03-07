@@ -128,7 +128,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b')}>
                   <div
                     className={`flex h-full items-center justify-center ${!isCollapsed && 'w-full'} cursor-pointer`}
-                    onClick={() => navigate(Routes.dashboard)}
+                    onClick={() => navigate(Routes.dashboard, { viewTransition: true })}
                   >
                     <BrandLogo isCollapsed={isCollapsed} />
                   </div>
@@ -156,7 +156,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                             return (
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
-                                  <NavLink to={'/admin-ui/' + linkPath.join('/')}>
+                                  <NavLink to={'/admin-ui/' + linkPath.join('/')} viewTransition>
                                     <p className="text-foreground text-2xl font-bold capitalize">{c}</p>
                                   </NavLink>
                                 </BreadcrumbItem>
@@ -170,7 +170,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           })
                         ) : (
                           <BreadcrumbItem>
-                            <NavLink to={Routes.dashboard}>
+                            <NavLink to={Routes.dashboard} viewTransition>
                               <p className="text-foreground text-2xl font-bold">{t('dashboard')}</p>
                             </NavLink>
                           </BreadcrumbItem>

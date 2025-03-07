@@ -198,7 +198,7 @@ export const FacetsDetailPage = () => {
       .then((res) => {
         toast.message(t('facets:toasts.facetUpdateSuccess'));
         resetCache();
-        navigate(Routes.facets.to(res.createFacet.id));
+        navigate(Routes.facets.to(res.createFacet.id), { viewTransition: true });
       })
       .catch(() => {
         toast.error(t('facets:toasts.facetUpdateError'));
@@ -262,7 +262,12 @@ export const FacetsDetailPage = () => {
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => navigate(Routes.facets.list)}>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-7 w-7"
+              onClick={() => navigate(Routes.facets.list, { viewTransition: true })}
+            >
               <ChevronLeft className="h-4 w-4" />
               <span className="sr-only">{t('common:back')}</span>
             </Button>

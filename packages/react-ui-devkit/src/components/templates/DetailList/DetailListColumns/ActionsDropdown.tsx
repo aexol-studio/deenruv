@@ -49,7 +49,7 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                                 onClick={() => {
                                     if ('edit' in route) {
                                         route.edit(row.original.id);
-                                    } else navigate(route.to(row.original.id));
+                                    } else navigate(route.to(row.original.id), { viewTransition: true });
                                 }}
                             >
                                 {t('actionsMenu.view')}
