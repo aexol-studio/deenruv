@@ -6,15 +6,18 @@ type MappedType = { [key: string]: { selector: Selector } };
 
 const MAPPED_TYPES: MappedType = {
     Asset: { selector: { id: true, preview: true, source: true } },
+    PaymentMethod: { selector: { id: true, name: true } },
 };
 
-const processCustomFields = (fields: GraphQLSchemaField[]): Selector => {
-    return fields.reduce<Selector>((acc, { name, type, fields }) => {
+const processCustomFields = (fields: GraphQLSchemaField[]): Selector | null => {
+    const result = fields.reduce<Selector>((acc, { name, type, fields }) => {
         if (SKIPPED_FIELDS.has(name)) return acc;
         if (fields.length > 0) acc[name] = MAPPED_TYPES[type]?.selector ?? processCustomFields(fields);
         else acc[name] = true;
         return acc;
     }, {});
+    if (Object.keys(result).length === 0) return null;
+    return result;
 };
 
 const SKIPPED_FIELDS = new Set(['checker', 'handler']);
@@ -38,13 +41,13 @@ export function customFieldsForQuery<T extends Record<string, any>>(
 
             const fieldCustomFields = field.fields.find(f => f.name === 'customFields');
             const hasFieldCustomFields = fieldCustomFields && fieldCustomFields.type !== 'JSON';
-
             if (hasFieldCustomFields) {
+                const CF = processCustomFields(fieldCustomFields.fields);
                 acc[key] = {
                     ...(typeof value === 'object'
                         ? customFieldsForQuery(value as Selector, field.fields)
                         : {}),
-                    customFields: processCustomFields(fieldCustomFields.fields),
+                    ...(CF && { customFields: CF }),
                 };
             } else if (typeof value === 'object' && value !== null) {
                 acc[key] = customFieldsForQuery(value as Selector, field.fields);
@@ -62,7 +65,8 @@ export function customFieldsForQuery<T extends Record<string, any>>(
     };
 
     if (hasCustomFields) {
-        return { ...processedSelector, customFields: processCustomFields(customFields.fields) } as Return;
+        const CF = processCustomFields(customFields.fields);
+        return { ...processedSelector, ...(CF && { customFields: CF }) } as Return;
     }
 
     return processedSelector as Return;

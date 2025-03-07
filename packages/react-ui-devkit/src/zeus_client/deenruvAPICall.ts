@@ -84,39 +84,7 @@ const modifyQuery = (query: string): string => {
     const ast: DocumentNode = parse(query);
     const schema = window.__DEENRUV_SCHEMA__;
     if (!schema) return query;
-
-    const modifiedAst = visit(ast, {
-        Field: {
-            enter(node, key, parent, path, ancestors) {
-                const fieldName = node.name.value;
-                const parentType = ancestors.length > 0 ? ancestors[ancestors.length - 1] : null;
-                let queryInSchema: any = null;
-                if (parentType && !Array.isArray(parentType) && (parentType as FieldNode).kind === 'Field') {
-                    const parentName = (parentType as FieldNode).name.value;
-                    const parentSchema = schema.get(parentName);
-                    if (parentSchema && parentSchema.fields) {
-                        queryInSchema = parentSchema.fields.find((f: any) => f.name === fieldName);
-                    }
-                } else {
-                    queryInSchema = schema.get(fieldName);
-                }
-                if (!queryInSchema || !queryInSchema.fields) return node;
-                const customFieldPaths = getCustomFieldPaths(queryInSchema.fields, fieldName, 3);
-
-                for (const path of customFieldPaths) {
-                    const pathParts = path.split('.'); // Break path into parts
-                    const stopBefore = pathParts.slice(1, -1); // All parts except "customFields"
-                    const lastValidNode = traverseUntilBeforeCustomFields(node.selectionSet, stopBefore);
-
-                    if (lastValidNode) {
-                        console.log(`Stop at "${lastValidNode.name.value}", need to add .customFields here.`);
-                    }
-                }
-            },
-        },
-    });
-
-    return print(modifiedAst);
+    return query;
 };
 
 export const deenruvAPICall = (options?: CallOptions) => {
