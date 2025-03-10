@@ -4,7 +4,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  HistorySelector,
   useDetailView,
+  useLazyQuery,
   useMutation,
   useSettings,
 } from '@deenruv/react-ui-devkit';
@@ -14,6 +16,10 @@ import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 
 const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
+
+const CustomerGroupsQuery = typedGql('query', { scalars })({
+  customer: [{ id: $('id', 'ID!') }, { history: [{}, HistorySelector] }],
+});
 
 const AddNoteToCustomerMutation = typedGql('mutation', { scalars })({
   addNoteToCustomer: [
@@ -44,12 +50,13 @@ const DeleteStockLocationMutation = typedGql('mutation', { scalars })({
 
 export const HistoryTab: React.FC = () => {
   const { t } = useTranslation('customers');
+  const [getHistory, { data }] = useLazyQuery(CustomerGroupsQuery);
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { entity, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
+  const { id } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
   useEffect(() => {
-    fetchEntity();
-  }, [contentLng]);
+    if (id) getHistory({ id });
+  }, [id, contentLng]);
 
   const [edit] = useMutation(EditCustomerNoteMutation);
   const [add] = useMutation(AddNoteToCustomerMutation);
@@ -60,13 +67,13 @@ export const HistoryTab: React.FC = () => {
       method
         .then(() => {
           toast.success(t('history.toastSuccess'));
-          fetchEntity();
+          if (id) getHistory({ id });
         })
         .catch(() => {
           toast.error(t('history.toastError'));
         });
     },
-    [fetchEntity],
+    [getHistory],
   );
 
   return (
@@ -76,11 +83,15 @@ export const HistoryTab: React.FC = () => {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <History
-          data={entity?.history.items.reverse()}
+          data={data?.customer?.history.items.reverse()}
           onNoteAdd={(input) => handle(add({ input }))}
           onNoteDelete={(id) => handle(remove({ id }))}
           onNoteEdit={(input) =>
-            handle(edit({ input: { note: input.note || '', noteId: input.noteId } }).then(() => fetchEntity()))
+            handle(
+              edit({ input: { note: input.note || '', noteId: input.noteId } }).then(() => {
+                if (id) getHistory({ id });
+              }),
+            )
           }
         />
       </CardContent>

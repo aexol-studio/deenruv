@@ -25,7 +25,7 @@ const fetch = async <T, K>(
   return response['countries'];
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteCountries } = await apiClient('mutation')({
@@ -39,8 +39,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteCountries.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 

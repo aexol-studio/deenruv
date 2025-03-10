@@ -1,22 +1,4 @@
-import { Stack } from '@/components/Stack';
-import {
-  GenericReturn,
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationInput,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PromisePaginated,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  cn,
-} from '@deenruv/react-ui-devkit';
+import { GenericReturn, Paginate, PaginationInput, PromisePaginated, cn } from '@deenruv/react-ui-devkit';
 import { cache } from '@/lists/cache';
 import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -288,73 +270,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
   );
 
   return {
-    Paginate: (
-      <Stack className="gap-4">
-        <div className="m-auto whitespace-nowrap text-center">
-          {(searchParamValues.page - 1) * searchParamValues.perPage + 1} -{' '}
-          {searchParamValues.page * searchParamValues.perPage} of {total}
-        </div>
-        <div className="mx-auto">
-          <Select
-            value={itemsPerPage.find((i) => i.value === searchParamValues.perPage)?.value.toString()}
-            onValueChange={(e) => {
-              searchParams.set(SearchParamKey.PER_PAGE, e);
-              searchParams.set(SearchParamKey.PAGE, '1');
-              setSearchParams(searchParams);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder={t('perPagePlaceholder')} />
-            </SelectTrigger>
-            <SelectContent>
-              {itemsPerPage.map((i) => (
-                <SelectItem key={i.name} value={i.value.toString()}>
-                  {t(`perPage.${i.name}`)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationPrevious
-              isActive={searchParamValues.page !== 1}
-              onClick={() => {
-                searchParams.set(SearchParamKey.PAGE, (searchParamValues.page - 1).toString());
-                setSearchParams(searchParams);
-              }}
-            />
-            {pagesToShow.map((i, index) => (
-              <PaginationItem
-                key={index}
-                className={cn('hidden', i !== (searchParamValues.page - 1).toString() && 'md:block')}
-              >
-                {i === 'ellipsis' ? (
-                  <PaginationEllipsis />
-                ) : (
-                  <PaginationLink
-                    isActive={i === searchParamValues.page}
-                    onClick={() => {
-                      searchParams.set(SearchParamKey.PAGE, i.toString());
-                      setSearchParams(searchParams);
-                    }}
-                  >
-                    {i}
-                  </PaginationLink>
-                )}
-              </PaginationItem>
-            ))}
-            <PaginationNext
-              isActive={searchParamValues.page !== totalPages}
-              onClick={() => {
-                searchParams.set(SearchParamKey.PAGE, (searchParamValues.page + 1).toString());
-                setSearchParams(searchParams);
-              }}
-            />
-          </PaginationContent>
-        </Pagination>
-      </Stack>
-    ),
+    Paginate: Paginate({ itemsPerPage, searchParams, searchParamValues, setSearchParams, total, totalPages }),
     total,
     objects,
     setSort,

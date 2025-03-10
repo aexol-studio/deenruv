@@ -1,5 +1,5 @@
-import { BooleanCell } from '@/components/Columns/BooleanCell.js';
 import {
+  BooleanCell,
   Separator,
   Table,
   TableBody,

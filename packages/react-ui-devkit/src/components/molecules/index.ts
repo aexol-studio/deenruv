@@ -12,3 +12,4 @@ export * from './CustomFieldsModal';
 export * from './ImageWithPreview.js';
 export * from './AssetsModalInput';
 export * from './ErrorMessage';
+export * from './ListBadge';

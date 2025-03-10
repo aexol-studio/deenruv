@@ -586,5 +586,9 @@
     "emailPattern": "Type correct email",
     "configurableCodeRequired": "Option is required",
     "configurableArgsRequired": "Fill all fields"
+  },
+  "globalErrors": {
+    "foreignKeyError": "You cannot delete an object from table {{parentTable}} because there is a dependency in table {{dependentTable}}. First, delete the related records or update their reference.",
+    "defaultError": "There was an unexpected error"
   }
 }

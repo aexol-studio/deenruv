@@ -1,7 +1,14 @@
 import { Stack } from '@/components/Stack';
 import { Row } from '@tanstack/react-table';
 import { useCallback } from 'react';
-import { apiClient, DetailList, deepMerge, PaginationInput, DEFAULT_CHANNEL_CODE } from '@deenruv/react-ui-devkit';
+import {
+  apiClient,
+  DetailList,
+  deepMerge,
+  PaginationInput,
+  DEFAULT_CHANNEL_CODE,
+  ListBadge,
+} from '@deenruv/react-ui-devkit';
 import { Routes, Badge } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
@@ -34,7 +41,7 @@ const fetch = async <T, K>(
   return response.roles;
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteRoles } = await apiClient('mutation')({
@@ -42,8 +49,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteRoles.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 
@@ -55,19 +61,11 @@ export const RolesListPage = () => {
     const elementsRemain = elements.length - LIMIT_TO;
     const renderedElements = elements
       .filter((_e, i) => i + 1 <= LIMIT_TO)
-      .map((e) => (
-        <Badge key={e} variant="outline" className="py-1">
-          {e}
-        </Badge>
-      ));
+      .map((e) => <ListBadge key={e}>{e}</ListBadge>);
     return (
       <>
         {renderedElements}
-        {elementsRemain > 0 && (
-          <Badge key={'plus'} variant="secondary" className="py-1">
-            +{elementsRemain}
-          </Badge>
-        )}
+        {elementsRemain > 0 && <ListBadge key={'plus'}>+{elementsRemain}</ListBadge>}
       </>
     );
   }, []);
@@ -110,9 +108,9 @@ export const RolesListPage = () => {
               {isDefaultRole(row)
                 ? ''
                 : row.original.channels.map((ch) => (
-                    <Badge key={ch.code} variant="outline" className="py-1">
+                    <ListBadge key={ch.code}>
                       {ch.code === DEFAULT_CHANNEL_CODE ? t('defaultChannel') : ch.code}
-                    </Badge>
+                    </ListBadge>
                   ))}
             </Stack>
           ),

@@ -124,7 +124,32 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
             <LoginScreen />
           )}
         </AnimatePresence>
-        <Toaster theme={theme} richColors toastOptions={{ closeButton: true, className: 'border' }} />
+        <Toaster
+          theme={theme as 'light' | 'dark' | 'system'}
+          className="toaster group"
+          richColors
+          expand
+          position="bottom-right"
+          toastOptions={{
+            classNames: {
+              toast:
+                'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:rounded-lg group-[.toaster]:p-4',
+              title: 'group-[.toast]:font-semibold group-[.toast]:text-foreground',
+              description: 'group-[.toast]:text-muted-foreground group-[.toast]:text-sm',
+              actionButton:
+                'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground group-[.toast]:rounded-md group-[.toast]:px-3 group-[.toast]:text-xs group-[.toast]:h-8 group-[.toast]:font-medium',
+              cancelButton:
+                'group-[.toast]:bg-muted group-[.toast]:text-muted-foreground group-[.toast]:rounded-md group-[.toast]:px-3 group-[.toast]:text-xs group-[.toast]:h-8 group-[.toast]:font-medium',
+              closeButton:
+                'group-[.toast]:text-foreground/50 group-[.toast]:hover:text-foreground group-[.toast]:rounded-md',
+              success: 'group-[.toast]:border-l-4 group-[.toast]:border-l-green-500',
+              error: 'group-[.toast]:border-l-4 group-[.toast]:border-l-red-500',
+              warning: 'group-[.toast]:border-l-4 group-[.toast]:border-l-yellow-500',
+              info: 'group-[.toast]:border-l-4 group-[.toast]:border-l-blue-500',
+              loading: 'group-[.toast]:border-l-4 group-[.toast]:border-l-purple-500',
+            },
+          }}
+        />
       </I18nextProvider>
     </GlobalStoreProvider>
   );

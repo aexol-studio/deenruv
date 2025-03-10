@@ -30,7 +30,7 @@ const fetch = async <T,>(
   return response['promotions'];
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deletePromotions } = await apiClient('mutation')({
@@ -38,8 +38,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deletePromotions.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 

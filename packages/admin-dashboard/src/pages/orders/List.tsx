@@ -8,7 +8,9 @@ import {
   PaginationInput,
   OrderStateBadge,
   priceFormatter,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -43,6 +45,7 @@ const fetch = async <T, K>(
 };
 
 export const OrdersListPage = () => {
+  const { t } = useTranslation('table');
   const navigate = useNavigate();
   return (
     <DetailList
@@ -71,16 +74,16 @@ export const OrdersListPage = () => {
       fetch={fetch}
       createPermission={Permission.CreateOrder}
       deletePermission={Permission.DeleteOrder}
-      hideColumns={['active', 'totalQuantity', 'currencyCode']}
+      hideColumns={['active', 'totalQuantity', 'currencyCode', 'customFields_TEST']}
       additionalColumns={[
         {
           accessorKey: 'payments',
-          header: 'Payments',
+          header: () => <TableLabel>{t('columns.payments')}</TableLabel>,
           accessorFn: (order) => order.payments?.map((payment) => payment.method).join(', '),
         },
         {
           accessorKey: 'shippingAddress',
-          header: 'Shipping Address',
+          header: () => <TableLabel>{t('columns.shippingAddress')}</TableLabel>,
           accessorFn: (order) => {
             if (!order.shippingAddress) return '';
             return order.shippingAddress.fullName;
@@ -88,23 +91,23 @@ export const OrdersListPage = () => {
         },
         {
           accessorKey: 'customer',
-          header: 'Customer',
+          header: () => <TableLabel>{t('columns.customer')}</TableLabel>,
           accessorFn: (order) => order.customer?.emailAddress,
         },
         {
           accessorKey: 'state',
-          header: 'State',
+          header: () => <TableLabel>{t('columns.state')}</TableLabel>,
           accessorFn: (order) => order?.state,
           cell: ({ row }) => <OrderStateBadge state={row.original.state} />,
         },
         {
           accessorKey: 'totalWithTax',
-          header: 'Total',
+          header: () => <TableLabel>{t('columns.total')}</TableLabel>,
           accessorFn: (order) => priceFormatter(order.totalWithTax, order.currencyCode),
         },
         {
           accessorKey: 'code',
-          header: 'Code',
+          header: () => <TableLabel>{t('columns.code')}</TableLabel>,
           accessorFn: (order) => order.code,
         },
       ]}

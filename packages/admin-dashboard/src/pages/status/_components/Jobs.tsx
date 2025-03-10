@@ -161,7 +161,7 @@ export const Jobs = () => {
     () => [
       {
         accessorKey: 'id',
-        header: 'ID',
+        header: t('jobs.table.id'),
         cell: ({ row }) => (
           <div className="max-w-[120px] truncate font-mono text-xs" title={row.original.id}>
             {row.original.id}

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Row } from '@tanstack/react-table';
-import { SortButton, TimeColumnProps } from '@deenruv/react-ui-devkit';
+import { SortSelect, TimeColumnProps } from '@deenruv/react-ui-devkit';
 
 const UpdatedAtColumn = <T extends { updatedAt?: string }>({ currSort, setSort }: TimeColumnProps): ColumnDef<T> => {
   const { t } = useTranslation();
@@ -10,9 +10,9 @@ const UpdatedAtColumn = <T extends { updatedAt?: string }>({ currSort, setSort }
   return {
     accessorKey: 'updatedAt',
     header: () => (
-      <SortButton currSort={currSort} sortKey="updatedAt" onClick={() => setSort('updatedAt')}>
+      <SortSelect currSort={currSort} sortKey="updatedAt" onClick={() => setSort('updatedAt')}>
         {t('search.filterLabels.updatedAt')}
-      </SortButton>
+      </SortSelect>
     ),
     cell: ({ row }: { row: Row<T> }) => (
       <div className="text-nowrap">

@@ -20,7 +20,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
   useLocalStorage,
-  Badge,
   Button,
   Checkbox,
   Dialog,
@@ -47,9 +46,12 @@ import {
   Routes,
   EmptyState,
   useSettings,
-  SortButton,
   TranslationSelect,
   apiClient,
+  ListBadge,
+  SortSelect,
+  ColumnView,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { ImageWithPreview, ListButtons, Search, Stack } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -233,37 +235,37 @@ export const CollectionsListPage = () => {
       enableHiding: false,
       enableColumnFilter: false,
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('id')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="code" onClick={() => setSort('id')}>
           {t('table.id')}
-        </SortButton>
+        </SortSelect>
       ),
       cell: ({ row }) => (
         <Link to={Routes.collections.to(row.original.id)} className="text-primary-600">
-          <Badge variant="outline" className="flex w-full items-center justify-center">
+          <ListBadge>
             {row.original.id}
             <ArrowRight className="pl-1" size={16} />
-          </Badge>
+          </ListBadge>
         </Link>
       ),
     },
     {
       accessorKey: 'featuredAsset',
-      header: t('table.featuredAsset'),
+      header: () => <TableLabel>{t('table.featuredAsset')}</TableLabel>,
       cell: ({ row }) => <ImageWithPreview src={row.original.featuredAsset?.preview} alt={row.original.name} />,
     },
     {
       accessorKey: 'name',
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="name" onClick={() => setSort('name')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="name" onClick={() => setSort('name')}>
           {t('table.name')}
-        </SortButton>
+        </SortSelect>
       ),
       cell: ({ row }) => (
         <Link to={Routes.collections.to(row.original.id)} className="text-primary-600">
-          <Badge variant="outline" className="flex w-full items-center justify-center py-2">
+          <ListBadge>
             {row.original.name}
             <ArrowRight className="pl-1" size={16} />
-          </Badge>
+          </ListBadge>
         </Link>
       ),
     },
@@ -271,9 +273,9 @@ export const CollectionsListPage = () => {
       accessorKey: 'breadcrumbs',
       // in future we can add here link to desired url storefront collection e.g https://www.storefront.com/collections/breadrumb
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="breadcrumbs" onClick={() => setSort('breadcrumbs')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="breadcrumbs" onClick={() => setSort('breadcrumbs')}>
           {t('table.breadcrumb')}
-        </SortButton>
+        </SortSelect>
       ),
       accessorFn: (row) =>
         row.breadcrumbs
@@ -283,9 +285,9 @@ export const CollectionsListPage = () => {
     {
       accessorKey: 'slug',
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="slug" onClick={() => setSort('slug')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="slug" onClick={() => setSort('slug')}>
           {t('table.slug')}
-        </SortButton>
+        </SortSelect>
       ),
     },
     {
@@ -294,9 +296,8 @@ export const CollectionsListPage = () => {
       accessorFn: (row) => row.children?.length ?? 0,
       cell: (row) => (
         <div>
-          <Badge
-            variant="outline"
-            className="flex w-full cursor-pointer select-none items-center justify-center"
+          <ListBadge
+            className="cursor-pointer"
             onClick={async () => {
               const parentRow = row.cell.row.original;
 
@@ -325,24 +326,22 @@ export const CollectionsListPage = () => {
           >
             {row.getValue<number>()}
             <ArrowRight className="pl-1" size={16} />
-          </Badge>
+          </ListBadge>
         </div>
       ),
     },
     {
       accessorKey: 'productVariants.totalItems',
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="state" onClick={() => setSort('state')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="state" onClick={() => setSort('state')}>
           {t('table.products')}
-        </SortButton>
+        </SortSelect>
       ),
       cell: ({ row, getValue }) => (
         <>
           {getValue<number>() ? (
             <DrawerTrigger className="w-full">
-              <Badge
-                variant="outline"
-                className="flex w-full cursor-pointer select-none items-center justify-center"
+              <ListBadge
                 onClick={() => {
                   setDrawerData({
                     collectionId: row.original.id,
@@ -353,13 +352,13 @@ export const CollectionsListPage = () => {
               >
                 {getValue<number>()}
                 <ArrowRight className="pl-1" size={16} />
-              </Badge>
+              </ListBadge>
             </DrawerTrigger>
           ) : (
-            <Badge variant="outline" className="flex w-full cursor-pointer select-none items-center justify-center">
+            <ListBadge>
               {getValue<number>()}
               <ArrowRight className="pl-1" size={16} />
-            </Badge>
+            </ListBadge>
           )}
         </>
       ),
@@ -367,9 +366,9 @@ export const CollectionsListPage = () => {
     {
       accessorKey: 'createdAt',
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="createdAt" onClick={() => setSort('createdAt')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="createdAt" onClick={() => setSort('createdAt')}>
           {t('table.createdAt')}
-        </SortButton>
+        </SortSelect>
       ),
       cell: ({ row }) => (
         <div className="text-nowrap">
@@ -380,9 +379,9 @@ export const CollectionsListPage = () => {
     {
       accessorKey: 'updatedAt',
       header: () => (
-        <SortButton currSort={optionInfo.sort} sortKey="updatedAt" onClick={() => setSort('updatedAt')}>
+        <SortSelect currSort={optionInfo.sort} sortKey="updatedAt" onClick={() => setSort('updatedAt')}>
           {t('table.updatedAt')}
-        </SortButton>
+        </SortSelect>
       ),
       cell: ({ row }) => (
         <div className="text-nowrap">
@@ -512,79 +511,61 @@ export const CollectionsListPage = () => {
       <CollectionProductVariantsDrawer {...drawerData}>
         <div className="page-content-h flex w-full flex-col">
           <div className="mb-4 flex flex-wrap justify-between gap-4">
-            <TranslationSelect />
-            {table.getSelectedRowModel().flatRows.length ? (
-              <DropdownMenu open={selectedDropDown} onOpenChange={setSelectedDropdown}>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="action">
-                    {t('withSelected', { collections: table.getSelectedRowModel().flatRows.length })}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {collectionsActions.map((action) => (
-                    <DropdownMenuItem
-                      className="cursor-pointer"
-                      key={action.value}
-                      onClick={() => {
-                        setSelectedDropdown(false);
-                        setCollectionAction(action.value);
-                      }}
-                    >
-                      {action.label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : null}
+            <div className="flex w-full items-end justify-between gap-4">
+              <div>
+                {/* {table.getSelectedRowModel().flatRows.length ? (
+                  <DropdownMenu open={selectedDropDown} onOpenChange={setSelectedDropdown}>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="action">
+                        {t('withSelected', { collections: table.getSelectedRowModel().flatRows.length })}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      {collectionsActions.map((action) => (
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          key={action.value}
+                          onClick={() => {
+                            setSelectedDropdown(false);
+                            setCollectionAction(action.value);
+                          }}
+                        >
+                          {action.label}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : null} */}
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  {t('columns')} <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                      >
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Search
-              filter={optionInfo.filter}
-              type="CollectionFilterParameter"
-              setFilter={setFilter}
-              setFilterField={setFilterField}
-              removeFilterField={removeFilterField}
-              setFilterLogicalOperator={setFilterLogicalOperator}
-            />
-            <ListButtons
-              selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
-              createLabel={t('create')}
-              createRoute={Routes.collections.new}
-              handleClick={() => {
-                setCollectionsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
-                setDeleteDialogOpened(true);
-              }}
-              createPermission={Permission.CreateCollection}
-              deletePermission={Permission.DeleteCollection}
-            />
+                <Search
+                  filter={optionInfo.filter}
+                  type="CollectionFilterParameter"
+                  setFilter={setFilter}
+                  setFilterField={setFilterField}
+                  removeFilterField={removeFilterField}
+                  setFilterLogicalOperator={setFilterLogicalOperator}
+                />
+              </div>
+              <div className="flex gap-2">
+                <ColumnView {...table} />
+                <ListButtons
+                  selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
+                  createLabel={t('create')}
+                  createRoute={Routes.collections.new}
+                  handleClick={() => {
+                    setCollectionsToDelete(table.getFilteredSelectedRowModel().rows.map((i) => i.original));
+                    setDeleteDialogOpened(true);
+                  }}
+                  createPermission={Permission.CreateCollection}
+                  deletePermission={Permission.DeleteCollection}
+                />
+              </div>
+            </div>
           </div>
 
-          <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border`}>
+          <div ref={tableWrapperRef} className={`bg-background h-full overflow-auto rounded-md border`}>
             <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
-              <TableHeader className="bg-primary-foreground sticky top-0">
+              <TableHeader className="bg-primary-foreground bg-background sticky top-0">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {

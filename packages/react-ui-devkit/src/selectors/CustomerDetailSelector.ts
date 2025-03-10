@@ -15,25 +15,25 @@ const AddressSelector = Selector('Address')({
         code: true,
     },
     defaultBillingAddress: true,
-    defaultShippingAddress: true
-})
+    defaultShippingAddress: true,
+});
 
-const HistorySelector = Selector('HistoryEntryList')({
+export const HistorySelector = Selector('HistoryEntryList')({
     items: {
         administrator: {
             id: true,
             firstName: true,
-            lastName: true
+            lastName: true,
         },
         createdAt: true,
         id: true,
         isPublic: true,
         type: true,
         updatedAt: true,
-        data: true
+        data: true,
     },
-    totalItems: true
-})
+    totalItems: true,
+});
 
 export const CustomerDetailOrderSelector = Selector('Order')({
     type: true,
@@ -47,7 +47,7 @@ export const CustomerDetailOrderSelector = Selector('Order')({
     totalQuantity: true,
     code: true,
     id: true,
-})
+});
 
 export const CustomerDetailSelector = Selector('Customer')({
     addresses: AddressSelector,
@@ -56,7 +56,7 @@ export const CustomerDetailSelector = Selector('Customer')({
     firstName: true,
     groups: {
         id: true,
-        name: true
+        name: true,
     },
     id: true,
     lastName: true,
@@ -66,7 +66,6 @@ export const CustomerDetailSelector = Selector('Customer')({
     user: {
         verified: true,
     },
-    history: [{}, HistorySelector]
 });
 
 export type CustomerAddressType = FromSelectorWithScalars<typeof AddressSelector, 'Address'>;

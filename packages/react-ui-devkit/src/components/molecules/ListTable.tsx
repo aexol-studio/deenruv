@@ -14,25 +14,26 @@ interface ListTableProps<TData, TValue> {
 
 const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
     const isPinned = column.getIsPinned();
-    // const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
-    // const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
-    const narrowColumnWidth = 28;
+    const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
+    const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
+    const narrowColumnWidth = 35;
+    const idColumnMaxWidth = 100;
     const isNarrowColumn = ['select-id', 'select', 'actions'].includes(column.id);
-    const columnWidth = isNarrowColumn ? narrowColumnWidth : column.getSize();
+    const columnWidth = isNarrowColumn ? narrowColumnWidth : undefined;
 
     return {
-        // boxShadow: isLastLeftPinnedColumn
-        //     ? '-4px 0 4px -4px gray inset'
-        //     : isFirstRightPinnedColumn
-        //       ? '4px 0 4px -4px gray inset'
-        //       : undefined,
+        boxShadow: isLastLeftPinnedColumn
+            ? '-4px 0 4px -4px gray inset'
+            : isFirstRightPinnedColumn
+              ? '4px 0 4px -4px gray inset'
+              : undefined,
         left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
         right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.95 : 1,
         position: isPinned ? 'sticky' : 'relative',
         minWidth: columnWidth,
-        maxWidth: columnWidth,
-        width: columnWidth,
+        maxWidth: column.id === 'id' ? idColumnMaxWidth : columnWidth,
+        width: column.id === 'id' ? idColumnMaxWidth : columnWidth,
         zIndex: isPinned ? 1 : 0,
     };
 };
@@ -89,8 +90,7 @@ export function ListTable<TData, TValue>({
         <>
             <div ref={tableWrapperRef} className={`h-full overflow-auto rounded-md border bg-background`}>
                 <Table
-                    className={cn('w-full table-fixed')}
-                    style={{ tableLayout: 'fixed' }}
+                    className={cn('w-full')}
                     {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}
                 >
                     <TableHeader className="sticky top-0 z-20 bg-background">

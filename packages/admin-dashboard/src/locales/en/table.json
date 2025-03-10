@@ -105,7 +105,15 @@
     "enabled": "Enabled",
     "sku": "SKU",
     "price": "Price",
-    "priceWithTax": "Price with tax"
+    "priceWithTax": "Price with tax",
+    "verified": "Verified",
+    "fullName": "Full name",
+    "payments": "Payments",
+    "shippingAddress": "Shipping address",
+    "customer": "Customer",
+    "state": "State",
+    "totalWithTax": "Total",
+    "code": "Code"
   },
   "actionsMenu": {
     "title": "Actions",

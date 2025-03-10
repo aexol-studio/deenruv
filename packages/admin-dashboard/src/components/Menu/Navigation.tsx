@@ -1,16 +1,19 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   cn,
   buttonVariants,
   Routes,
   usePluginStore,
-  Separator,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   useServer,
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
 } from '@deenruv/react-ui-devkit';
 import {
   BarChart,
@@ -33,6 +36,7 @@ import {
   Truck,
   Cog,
   UsersRound,
+  Server,
 } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
 import { SystemStatusIndicator } from './Indicators/SystemStatusIndicator.js';
@@ -78,11 +82,12 @@ export function Navigation({ isCollapsed }: NavProps) {
         links: [
           { title: t('menu.dashboard'), href: Routes.dashboard, id: 'link-dashboard', icon: BarChart },
           {
-            title: t('menu.assets'),
-            href: Routes.assets.list,
-            id: 'link-assets',
-            icon: Images,
-            requiredPermissions: [Permission.ReadAsset, Permission.ReadCatalog],
+            title: t('menu.orders'),
+            href: Routes.orders.list,
+            id: 'link-orders',
+            icon: ShoppingCart,
+            requiredPermissions: [Permission.ReadOrder],
+            indicator: <OrdersStatusIndicators />,
           },
           {
             title: t('menu.products'),
@@ -90,6 +95,13 @@ export function Navigation({ isCollapsed }: NavProps) {
             id: 'link-products',
             icon: Barcode,
             requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.collections'),
+            href: Routes.collections.list,
+            id: 'link-collections',
+            icon: Folder,
+            requiredPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
           },
           {
             title: t('menu.customers'),
@@ -106,13 +118,6 @@ export function Navigation({ isCollapsed }: NavProps) {
             requiredPermissions: [Permission.ReadCustomerGroup],
           },
           {
-            title: t('menu.collections'),
-            href: Routes.collections.list,
-            id: 'link-collections',
-            icon: Folder,
-            requiredPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
-          },
-          {
             title: t('menu.facets'),
             href: Routes.facets.list,
             id: 'link-facets',
@@ -120,16 +125,14 @@ export function Navigation({ isCollapsed }: NavProps) {
             requiredPermissions: [Permission.ReadFacet, Permission.ReadCatalog],
           },
           {
-            title: t('menu.orders'),
-            href: Routes.orders.list,
-            id: 'link-orders',
-            icon: ShoppingCart,
-            requiredPermissions: [Permission.ReadOrder],
-            indicator: <OrdersStatusIndicators />,
+            title: t('menu.assets'),
+            href: Routes.assets.list,
+            id: 'link-assets',
+            icon: Images,
+            requiredPermissions: [Permission.ReadAsset, Permission.ReadCatalog],
           },
         ],
       },
-
       {
         label: t('menuGroups.users'),
         id: 'users-group',
@@ -247,7 +250,7 @@ export function Navigation({ isCollapsed }: NavProps) {
             title: t('menu.systemStatus'),
             href: Routes.status,
             id: 'link-system-status',
-            icon: Cog,
+            icon: Server,
             requiredPermissions: [Permission.ReadSystem],
             indicator: <SystemStatusIndicator />,
           },
@@ -312,72 +315,70 @@ export function Navigation({ isCollapsed }: NavProps) {
         data-collapsed={isCollapsed}
         className="group flex h-[calc(100%-70px)] flex-col gap-4 py-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"
       >
-        {permittedNavigationGroups.map((group) => (
-          <React.Fragment key={group.id}>
-            {!isCollapsed && <h4 className="px-6 text-xs font-bold uppercase">{group.label}</h4>}
-            <nav
-              id={group.id}
-              className="text-muted-foreground grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
-            >
-              {group.links.map((link, index) => (
-                <React.Fragment key={link.id}>
-                  {isCollapsed ? (
-                    <Tooltip key={index} delayDuration={0}>
-                      <TooltipTrigger asChild>
-                        <div>
+        <Accordion type="multiple" className="w-full" defaultValue={permittedNavigationGroups.map((g) => g.id)}>
+          {permittedNavigationGroups.map((group) => (
+            <AccordionItem value={group.id}>
+              <React.Fragment key={group.id}>
+                {!isCollapsed && (
+                  <AccordionTrigger className={cn('pr-3')}>
+                    <h4 className="px-6 text-xs font-bold uppercase">{group.label}</h4>
+                  </AccordionTrigger>
+                )}
+                <AccordionContent>
+                  <nav
+                    id={group.id}
+                    className="text-muted-foreground grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"
+                  >
+                    {group.links.map((link, index) => (
+                      <React.Fragment key={link.id}>
+                        {isCollapsed ? (
+                          <Tooltip key={index} delayDuration={0}>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <NavLink to={link.href} viewTransition>
+                                  <div
+                                    className={cn(
+                                      buttonVariants({ variant: 'navigation-link', size: 'icon' }),
+                                      'h-9 w-9',
+                                      location.pathname === link.href &&
+                                        'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted opacity-100',
+                                    )}
+                                  >
+                                    <link.icon className="h-6 w-6" />
+                                    <span className="sr-only">{link.title}</span>
+                                  </div>
+                                </NavLink>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="flex items-center gap-4 capitalize">
+                              {link.title}
+                            </TooltipContent>
+                          </Tooltip>
+                        ) : (
                           <NavLink to={link.href} viewTransition>
                             <div
+                              id={link.id}
                               className={cn(
-                                buttonVariants({ variant: 'navigation-link', size: 'icon' }),
-                                'h-9 w-9',
+                                buttonVariants({ variant: 'navigation-link', size: 'sm' }),
+                                'justify-start capitalize',
                                 location.pathname === link.href &&
-                                  'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted opacity-100',
+                                  'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold opacity-100',
                               )}
                             >
-                              <link.icon className="h-6 w-6" />
-                              <span className="sr-only">{link.title}</span>
+                              <link.icon className="mr-2 h-4 w-4" />
+                              {link.title}
+                              {link.indicator}
                             </div>
                           </NavLink>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="right" className="flex items-center gap-4 capitalize">
-                        {link.title}
-                        {/* {link.label && <span className="ml-auto text-muted-foreground">{link.label}</span>} */}
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <NavLink to={link.href} viewTransition>
-                      <div
-                        id={link.id}
-                        className={cn(
-                          buttonVariants({ variant: 'navigation-link', size: 'sm' }),
-                          'justify-start capitalize',
-                          location.pathname === link.href &&
-                            'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold opacity-100',
                         )}
-                      >
-                        <link.icon className="mr-2 h-4 w-4" />
-                        {link.title}
-                        {link.indicator}
-                        {/* {link.label && (
-                        <span
-                          className={cn(
-                            'ml-auto',
-                            location.pathname === link.href && 'text-background dark:text-white',
-                          )}
-                        >
-                          {link.label}
-                        </span>
-                      )} */}
-                      </div>
-                    </NavLink>
-                  )}
-                </React.Fragment>
-              ))}
-            </nav>
-            <Separator orientation="horizontal" />
-          </React.Fragment>
-        ))}
+                      </React.Fragment>
+                    ))}
+                  </nav>
+                </AccordionContent>
+              </React.Fragment>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </div>
     </div>
   );

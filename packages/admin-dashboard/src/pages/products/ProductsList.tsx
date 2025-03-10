@@ -4,6 +4,7 @@ import {
   Badge,
   deepMerge,
   DetailList,
+  ListBadge,
   PaginationInput,
   ProductListSelector,
   Routes,
@@ -33,7 +34,7 @@ const fetch = async <T, K>(
   return response['products'];
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteProducts } = await apiClient('mutation')({
@@ -41,8 +42,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteProducts.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 
@@ -90,9 +90,9 @@ export const ProductsList = () => {
             );
 
             return (
-              <Badge variant={'outline'}>
+              <ListBadge>
                 {stockOnHandTotal} ({stockAllocatedTotal} {t('table.allocated')})
-              </Badge>
+              </ListBadge>
             );
           },
         },

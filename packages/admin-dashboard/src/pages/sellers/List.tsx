@@ -1,5 +1,5 @@
 import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
-import { Permission, SortOrder } from '@deenruv/admin-types';
+import { GraphQLResponse, Permission, SortOrder } from '@deenruv/admin-types';
 import { SellerListSelector } from '@/graphql/sellers';
 
 const fetch = async <T, K>(
@@ -25,7 +25,7 @@ const fetch = async <T, K>(
   return response['sellers'];
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteSellers } = await apiClient('mutation')({
@@ -33,8 +33,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteSellers.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 

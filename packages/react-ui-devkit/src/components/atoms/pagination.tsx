@@ -3,7 +3,6 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal 
 
 import { cn } from '@/lib/utils';
 import { ButtonProps } from '@/components/atoms/button';
-import { useTranslation } from 'react-i18next';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
     <nav
@@ -39,7 +38,7 @@ const PaginationLink = ({ className, isActive, ...props }: PaginationLinkProps) 
         aria-current={isActive ? 'page' : undefined}
         className={cn(
             'size-8 border-[1px] border-solid border-border flex justify-center items-center rounded-md bg-background',
-            isActive ? 'text-primary' : 'cursor-pointer',
+            isActive ? 'text-primary border-primary' : 'cursor-pointer text-muted-foreground',
             className,
         )}
         {...props}

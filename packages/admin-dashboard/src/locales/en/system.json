@@ -26,6 +26,7 @@
             "cancelled": "Cancelled"
         },
         "table": {
+            "id": "ID",
             "queueName": "Queue name",
             "status": "Status",
             "created": "Created",

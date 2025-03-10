@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
-import { EllipsisVerticalIcon } from 'lucide-react';
+import { EllipsisVerticalIcon, Trash, Trash2 } from 'lucide-react';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { cn } from '@/lib';
 import { usePluginStore } from '@/plugins';
@@ -214,16 +214,20 @@ const DetailTabs = ({
             }}
         >
             <div className="bg-muted sticky top-0 z-[51] w-full items-center justify-start shadow-xl">
-                <div className="flex w-full items-center justify-between px-4 py-2">
+                <div className="flex w-full items-center justify-between px-4 pt-1">
                     <div className="flex w-full flex-1">
                         {tabs.length > 1 && (
-                            <TabsList className="bg-card z-50 h-12 w-full items-center justify-start gap-4 rounded-sm px-4 shadow-xl">
+                            <TabsList className="h-12 bg-transparent justify-start gap-2 p-0">
                                 {tabs.map((t, idx) => (
                                     <TabsTrigger
                                         key={idx}
                                         disabled={t.disabled}
                                         value={t.name}
-                                        className={cn('px-8', 'data-[state=active]:bg-secondary bg-card')}
+                                        className={cn(
+                                            'px-8 py-2 rounded-md data-[state=active]:bg-background data-[state=active]:shadow-none',
+                                            'transition-all duration-200',
+                                            'data-[state=inactive]:bg-muted/50 data-[state=inactive]:hover:bg-muted',
+                                        )}
                                     >
                                         {t.label}
                                     </TabsTrigger>
@@ -246,6 +250,7 @@ const DetailTabs = ({
                                 >
                                     <Button
                                         variant="action"
+                                        size="sm"
                                         onClick={() => actionHandler('submit')}
                                         className="ml-auto justify-self-end"
                                         disabled={buttonDisabled}
@@ -260,6 +265,7 @@ const DetailTabs = ({
                                 >
                                     <Button
                                         variant="action"
+                                        size="sm"
                                         onClick={() => actionHandler('submit')}
                                         className="ml-auto justify-self-end"
                                         disabled={buttonDisabled}
@@ -271,20 +277,25 @@ const DetailTabs = ({
                             {isPermittedToDelete && (
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild {...(!id && { className: 'invisible' })}>
-                                        <Button variant="secondary" size="icon">
-                                            <EllipsisVerticalIcon />
+                                        <Button variant="secondary" size="icon" className="size-9">
+                                            <EllipsisVerticalIcon size={20} />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="z-[50] mr-4 min-w-[240px]">
-                                        {topActions?.dropdown?.map((action, idx) => action)}
-                                        <DropdownMenuSeparator />
+                                    <DropdownMenuContent className="z-[52] mr-4 min-w-[240px]">
+                                        {!!topActions?.dropdown?.length && (
+                                            <>
+                                                {topActions?.dropdown?.map((action, idx) => action)}
+                                                <DropdownMenuSeparator />
+                                            </>
+                                        )}
                                         <DropdownMenuItem asChild>
                                             <Button
                                                 onClick={() => actionHandler('delete')}
                                                 variant="ghost"
-                                                className="w-full justify-start"
+                                                className="w-full justify-start gap-2"
                                             >
-                                                {texts?.deleteButton || t('delete')}
+                                                <Trash2 size={20} />
+                                                {texts?.deleteButton || t('actionsMenu.delete')}
                                             </Button>
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>

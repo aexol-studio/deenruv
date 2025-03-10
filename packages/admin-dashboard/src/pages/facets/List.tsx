@@ -1,5 +1,14 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { Badge, Routes, apiClient, DetailList, PaginationInput, deepMerge } from '@deenruv/react-ui-devkit';
+import {
+  Badge,
+  Routes,
+  apiClient,
+  DetailList,
+  PaginationInput,
+  deepMerge,
+  ListBadge,
+  TableLabel,
+} from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { FacetListSelector } from '@/graphql/facets';
 
@@ -26,7 +35,7 @@ const fetch = async <T, K>(
   return response.facets;
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteFacets } = await apiClient('mutation')({
@@ -40,8 +49,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteFacets.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 
@@ -65,24 +73,21 @@ export const FacetsListPage = () => {
           accessorKey: 'values',
           enableHiding: true,
           enableColumnFilter: false,
-          header: t('table.values'),
-          cell: ({ row }) => <Badge variant={'secondary'}>{row.original.values.length}</Badge>,
+          header: () => <TableLabel>{t('table.values')}</TableLabel>,
+          cell: ({ row }) => <ListBadge>{row.original.values.length}</ListBadge>,
         },
         {
           accessorKey: 'isPrivate',
-          header: t('table.isPrivate'),
+          header: () => <TableLabel>{t('table.isPrivate')}</TableLabel>,
           cell: ({ row }) =>
             row.original.isPrivate ? (
-              <Badge
-                variant={'outline'}
-                className="flex items-center justify-center border-orange-200 bg-orange-200 text-orange-800"
-              >
+              <ListBadge className="flex items-center justify-center border-orange-200 bg-orange-200 text-orange-800">
                 {t('visibility.private')}
-              </Badge>
+              </ListBadge>
             ) : (
-              <Badge className="flex items-center justify-center border-green-200 bg-green-200 text-green-800">
+              <ListBadge className="flex items-center justify-center border-green-200 bg-green-200 text-green-800">
                 {t('visibility.public')}
-              </Badge>
+              </ListBadge>
             ),
         },
       ]}

@@ -22,6 +22,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { type AssetType, assetsSelector } from '@/graphql/base';
 import { DeletionResult } from '@deenruv/admin-types';
@@ -51,6 +52,11 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
   const [assetName, setAssetName] = useState(asset.name);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('preview');
+  const hasEntityCustomFields = !!useServer((p) =>
+    p.serverConfig?.entityCustomFields?.find(
+      (el) => el.entityName.charAt(0).toLowerCase() + el.entityName.slice(1) === 'asset',
+    ),
+  )?.customFields.length;
 
   const tableData = [
     {
@@ -226,30 +232,29 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
             <TabsTrigger value="details">Details</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="preview" className="mt-4">
-            <div className="bg-muted/20 flex h-[500px] items-center justify-center rounded-lg p-4">
+          <TabsContent value="preview" className="space-y-4">
+            <div className="relative flex h-[500px] items-center justify-center overflow-hidden rounded-lg p-4">
+              <div
+                className="absolute inset-0 bg-[#f0f0f0]"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(45deg, #e0e0e0 25%, transparent 25%),
+                    linear-gradient(-45deg, #e0e0e0 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, #e0e0e0 75%),
+                    linear-gradient(-45deg, transparent 75%, #e0e0e0 75%)
+                  `,
+                  backgroundSize: '20px 20px',
+                  backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px',
+                }}
+              />
+
+              <div className="border-border pointer-events-none absolute inset-0 rounded-lg border" />
+
               <img
                 src={assetDetails?.source ? `${assetDetails.source}?preset=medium` : asset.preview}
                 alt={asset.name}
-                className="max-h-full max-w-full rounded object-contain shadow-sm"
+                className="relative z-10 max-h-full max-w-full rounded object-contain shadow-md"
               />
-            </div>
-
-            <div className="mt-4 flex justify-between">
-              <Button variant="outline" size="sm" onClick={copyAssetUrl} className="gap-1.5">
-                <Copy size={16} />
-                {t('common:copyUrl', 'Copy URL')}
-              </Button>
-
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.open(asset.preview, '_blank')}
-                className="gap-1.5"
-              >
-                <Download size={16} />
-                {t('common:download', 'Download')}
-              </Button>
             </div>
           </TabsContent>
 
@@ -274,15 +279,17 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
                 </div>
               </div>
 
-              <div>
-                <h3 className="mb-3 flex items-center gap-2 text-lg font-medium">
-                  <Pencil size={16} />
-                  Custom Fields
-                </h3>
-                <div className="rounded-lg border p-4">
-                  <EntityCustomFields entityName="asset" id={asset?.id} />
+              {hasEntityCustomFields && (
+                <div>
+                  <h3 className="mb-3 flex items-center gap-2 text-lg font-medium">
+                    <Pencil size={16} />
+                    Custom Fields
+                  </h3>
+                  <div className="rounded-lg border p-4">
+                    <EntityCustomFields entityName="asset" id={asset?.id} />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>

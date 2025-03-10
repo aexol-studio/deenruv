@@ -19,6 +19,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
+  ListBadge,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { FileUp, ImageOff, Trash2, Upload, X, Filter, LayoutGrid, List } from 'lucide-react';
@@ -330,9 +331,9 @@ export function AssetsListPage() {
                       <div className="p-6">
                         <div className="mb-4 flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className="px-3 py-1.5">
+                            <ListBadge variant="secondary">
                               {assetsToUpload.length} {t('assets:filesSelected', 'files selected')}
-                            </Badge>
+                            </ListBadge>
                           </div>
                           <div className="flex items-center gap-2">
                             <Button variant="outline" size="sm" onClick={clearAssets} className="gap-1.5">

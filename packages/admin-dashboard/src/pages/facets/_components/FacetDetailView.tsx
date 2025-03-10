@@ -24,7 +24,7 @@ import { EntityCustomFields } from '@/components';
 import { AddFacetValueDialog } from './AddFacetValueDialog.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteFacetValues } = await apiClient('mutation')({
@@ -32,8 +32,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteFacetValues.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 

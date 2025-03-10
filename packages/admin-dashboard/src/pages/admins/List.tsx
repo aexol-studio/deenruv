@@ -1,4 +1,4 @@
-import { Routes, Badge, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListBadge } from '@deenruv/react-ui-devkit';
 import { AdminListSelector } from '@/graphql/admins';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ const fetch = async <T, K>(
   return response.administrators;
 };
 
-const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> => {
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
     const ids = items.map((item) => item.id);
     const { deleteAdministrators } = await apiClient('mutation')({
@@ -40,8 +40,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean> 
     });
     return !!deleteAdministrators.length;
   } catch (error) {
-    console.error(error);
-    return false;
+    return error;
   }
 };
 
@@ -67,13 +66,7 @@ export const AdminsListPage = () => {
           cell: ({ row }) => (
             <div className="flex gap-1">
               {row.original.user.roles.map((r) => (
-                <Badge
-                  key={r.description}
-                  variant="outline"
-                  className="flex items-center justify-center whitespace-nowrap py-2"
-                >
-                  {r.description}
-                </Badge>
+                <ListBadge key={r.description}>{r.description}</ListBadge>
               ))}
             </div>
           ),

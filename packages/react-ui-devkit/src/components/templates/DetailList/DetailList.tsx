@@ -13,8 +13,8 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Circle, CircleCheck, ImageOff, PlusCircleIcon } from 'lucide-react';
-import { SelectIDColumn, ActionsDropdown } from './DetailListColumns';
+import { ArrowRight, ImageOff, PlusCircleIcon } from 'lucide-react';
+import { SelectIDColumn, ActionsDropdown, BooleanCell } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer } from '@/state';
 import { ModelTypes, Permission, ValueTypes } from '@deenruv/admin-types';
@@ -22,8 +22,8 @@ import React from 'react';
 import { deepMerge, mergeSelectorWithCustomFields } from '@/utils';
 import { usePluginStore } from '@/plugins';
 import { ListLocationID, PromisePaginated } from '@/types';
-import { useLocalStorage } from '@/hooks';
-import { Button } from '@/components';
+import { useErrorHandler, useLocalStorage } from '@/hooks';
+import { Button, TableLabel } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
 import { ListType } from './useDetailList/types';
 import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailList/constants';
@@ -140,6 +140,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     );
     const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
     const columnsTranslations = t('columns', { returnObjects: true });
+    const { handleError } = useErrorHandler();
+    const hiddenColumns = useMemo(() => [...(hideColumns ?? []), 'customFields'], [hideColumns]);
 
     const {
         objects,
@@ -197,7 +199,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             label = columnsTranslations[key as keyof typeof columnsTranslations];
                         }
 
-                        return <div className="whitespace-nowrap text-[13px] capitalize">{label}</div>;
+                        return <TableLabel>{label}</TableLabel>;
                     },
                     cell: ({ row }) => {
                         const value = row.original.customFields[key.split('.')[1]];
@@ -224,9 +226,9 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         );
                     } else {
                         return (
-                            <div className="whitespace-nowrap text-[13px] capitalize">
+                            <TableLabel>
                                 {columnsTranslations[key as keyof typeof columnsTranslations] || key}
-                            </div>
+                            </TableLabel>
                         );
                     }
                 },
@@ -241,12 +243,11 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         );
                     }
 
-                    if (!value) return JSON.stringify(value);
-
                     if (typeof value === 'boolean') {
-                        if (value) return <CircleCheck size={20} className="text-primary-600" />;
-                        else return <Circle size={20} className="text-gray-400" />;
+                        return <BooleanCell value={value} />;
                     }
+
+                    if (!value) return JSON.stringify(value);
 
                     if (typeof value === 'object') {
                         if ('__typename' in value) {
@@ -276,8 +277,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         return (
                             <Button
                                 variant="outline"
-                                // size="sm"
-                                className="p-0 h-6 px-3"
+                                className="p-0 h-6 px-3 border border-gray-500 hover:border-gray-600 text-gray-800 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
                                 onClick={() => {
                                     if ('edit' in route) {
                                         route.edit(
@@ -313,7 +313,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             [] as ColumnDef<AwaitedReturnType<T>['items']>[],
         );
         const resultColumns = mergedAndReplacedColumns
-            .filter(column => !hideColumns?.includes(getAccessorKey(column) as string))
+            .filter(column => !hiddenColumns?.includes(getAccessorKey(column) as string))
             .sort((a, b) => {
                 const keyA = getAccessorKey(a) as string;
                 const keyB = getAccessorKey(b) as string;
@@ -332,7 +332,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     const customFields = 'customFields' in objects[0] ? objects[0].customFields : {};
                     const customFieldsKeys = Object.keys(customFields).map(key => `customFields.${key}`);
                     for (const customKey of customFieldsKeys) {
-                        if (hideColumns?.includes(customKey)) {
+                        if (hiddenColumns?.includes(customKey)) {
                             newVisibility[customKey] = false;
                         } else if (prev[customKey] === undefined) {
                             newVisibility[customKey] = true;
@@ -340,7 +340,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     }
                 }
 
-                if (hideColumns?.includes(key)) {
+                if (hiddenColumns?.includes(key)) {
                     newVisibility[key] = false;
                 } else if (prev[key] === undefined) {
                     newVisibility[key] = true;
@@ -381,7 +381,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             ...((columnsOrderState || []).filter(Boolean).length > 0 && {
                 columnOrder: ['select-id', ...columnsOrderState, 'actions'],
             }),
-            columnPinning: { right: ['actions'] },
+            columnPinning: { right: ['actions'], left: ['select-id'] },
             columnVisibility: columnsVisibilityState,
             pagination: { pageIndex: page, pageSize: perPage },
             rowSelection,
@@ -409,7 +409,12 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     const onConfirmDelete = async () => {
         try {
             const result = await onRemove?.(itemsToDelete);
-            if (!result) return;
+
+            if ((result as any)?.response?.errors) {
+                handleError((result as any).response.errors);
+                return;
+            }
+
             refetch();
             table.toggleAllRowsSelected(false);
             setItemsToDelete([]);

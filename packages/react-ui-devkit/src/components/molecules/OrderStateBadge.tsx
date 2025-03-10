@@ -1,4 +1,4 @@
-import { Badge } from '..';
+import ListBadge from '@/components/molecules/ListBadge.js';
 import { cn } from '@/lib/utils';
 import { ORDER_STATE } from '@/types';
 import React, { useMemo } from 'react';
@@ -64,7 +64,7 @@ export const OrderStateBadge: React.FC<{ fullWidth?: boolean; state?: string; cl
     }, [t, state]);
 
     return (
-        <Badge
+        <ListBadge
             noHover
             className={cn(
                 'text-nowrap text-center',
@@ -74,6 +74,6 @@ export const OrderStateBadge: React.FC<{ fullWidth?: boolean; state?: string; cl
             )}
         >
             {labelAndStyles.label}
-        </Badge>
+        </ListBadge>
     );
 };

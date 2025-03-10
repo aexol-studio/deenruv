@@ -1,4 +1,3 @@
 export * from './ActionsColumn.js';
 export * from './CreatedAtColumn.js';
 export * from './UpdatedAtColumn.js';
-export * from './BooleanCell.js';
