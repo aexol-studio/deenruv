@@ -16,30 +16,31 @@ import {
   DropdownMenuSeparator,
   Routes,
   OrderStateBadge,
-  useServer,
   apiClient,
   usePluginStore,
   useOrder,
-  OrderDetailSelector,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
 import { PossibleOrderStates } from '@/pages/orders/_components/PossibleOrderStates';
-import { DeletionResult, ResolverInputTypes } from '@deenruv/admin-types';
+import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/admin-types';
 
-import { ChevronLeft, EllipsisVerticalIcon, Printer, NotepadText } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { ChevronLeft, EllipsisVerticalIcon } from 'lucide-react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
-import { addFulfillmentToOrderResultSelector, draftOrderSelector } from '@/graphql/draft_order';
+import { addFulfillmentToOrderResultSelector } from '@/graphql/draft_order';
 import { ModifyAcceptModal } from './index.js';
 import React from 'react';
 
 const COMPLETE_ORDER_STATES = [ORDER_STATE.DELIVERED];
 export const TopActions: React.FC = () => {
-  const { currentPossibilities, manualChange, setManualChange, fetchOrderHistory, setOrder, order } = useOrder();
+  const { currentPossibilities, manualChange, setManualChange, fetchOrderHistory, fetchOrder, order } = useOrder();
+  const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
+  console.log(orderProcess);
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
   const { getDetailViewActions } = usePluginStore();
@@ -51,6 +52,14 @@ export const TopActions: React.FC = () => {
     const isBillingAddressValid = !!order?.billingAddress?.streetLine1;
     const isShippingAddressValid = !!order?.shippingAddress?.streetLine1;
     const isShippingMethodValid = !!order?.shippingLines?.length;
+
+    if (order?.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) {
+      const settledPaymentsAmount =
+        order.payments
+          ?.filter((payment) => payment.state === ORDER_STATE.PAYMENT_SETTLED)
+          .reduce((acc, payment) => acc + payment.amount, 0) || 0;
+      return settledPaymentsAmount < order.totalWithTax;
+    }
 
     return (
       isVariantValid && isCustomerValid && isBillingAddressValid && isShippingAddressValid && isShippingMethodValid
@@ -64,7 +73,7 @@ export const TopActions: React.FC = () => {
         { id: order.id, state: ORDER_STATE.MODIFYING },
         {
           __typename: true,
-          '...on Order': OrderDetailSelector,
+          '...on Order': { id: true },
           '...on OrderStateTransitionError': {
             errorCode: true,
             message: true,
@@ -76,7 +85,7 @@ export const TopActions: React.FC = () => {
       ],
     });
     if (transitionOrderToState?.__typename === 'Order') {
-      setOrder(transitionOrderToState);
+      fetchOrder(transitionOrderToState.id);
       fetchOrderHistory();
     } else {
       toast.error(`${transitionOrderToState?.message}`, { position: 'top-center' });
@@ -88,12 +97,22 @@ export const TopActions: React.FC = () => {
       toast.error(t('topActions.fillAll'), { position: 'top-center', closeButton: true });
       return;
     }
+    const history = await fetchOrderHistory();
+    let state = ORDER_STATE.ARRANGING_PAYMENT;
+    if (history && order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) {
+      const previousState = history
+        .filter((h) => h.type === HistoryEntryType.ORDER_STATE_TRANSITION)
+        .find((h) => h.data.to === ORDER_STATE.MODIFYING);
+      if (previousState) {
+        state = previousState.data.from;
+      }
+    }
     const { transitionOrderToState } = await apiClient('mutation')({
       transitionOrderToState: [
-        { id: order.id, state: ORDER_STATE.ARRANGING_PAYMENT },
+        { id: order.id, state },
         {
           __typename: true,
-          '...on Order': OrderDetailSelector,
+          '...on Order': { id: true },
           '...on OrderStateTransitionError': {
             errorCode: true,
             message: true,
@@ -106,7 +125,7 @@ export const TopActions: React.FC = () => {
     });
 
     if (transitionOrderToState?.__typename === 'Order') {
-      setOrder(transitionOrderToState);
+      fetchOrder(transitionOrderToState.id);
       fetchOrderHistory();
     } else {
       const errorMessage = `
@@ -142,8 +161,7 @@ export const TopActions: React.FC = () => {
         ],
       });
       if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-        const resp = await apiClient('query')({ order: [{ id: order.id }, OrderDetailSelector] });
-        if (resp.order) setOrder(resp.order);
+        fetchOrder(order.id);
         fetchOrderHistory();
         toast.success(t('topActions.fulfillmentAdded'), { position: 'top-center' });
         return;
@@ -162,7 +180,7 @@ export const TopActions: React.FC = () => {
           { input: { orderId: order.id } },
           {
             __typename: true,
-            '...on Order': OrderDetailSelector,
+            '...on Order': { id: true },
             '...on EmptyOrderLineSelectionError': {
               errorCode: true,
               message: true,
@@ -187,7 +205,7 @@ export const TopActions: React.FC = () => {
         ],
       });
       if (cancelOrder.__typename === 'Order') {
-        setOrder(cancelOrder);
+        fetchOrder(cancelOrder.id);
         toast.info(t('topActions.orderCanceledSuccessfully'));
       } else {
         toast.error(t('topActions.orderCancelError', { value: cancelOrder.message }), { position: 'top-center' });
@@ -213,7 +231,7 @@ export const TopActions: React.FC = () => {
       transitionOrderToState: [
         { id: order.id, state: newState },
         {
-          '...on Order': OrderDetailSelector,
+          '...on Order': { id: true },
           '...on OrderStateTransitionError': {
             errorCode: true,
             message: true,
@@ -226,7 +244,7 @@ export const TopActions: React.FC = () => {
       ],
     });
     if (transitionOrderToState?.__typename === 'Order') {
-      setOrder(transitionOrderToState);
+      fetchOrder(transitionOrderToState.id);
       fetchOrderHistory();
     } else {
       toast.error(
@@ -249,7 +267,6 @@ export const TopActions: React.FC = () => {
   }, [order, currentPossibilities]);
 
   if (!order) return null;
-
   return (
     <div className="flex items-center gap-4 ">
       {currentPossibilities && (
@@ -287,17 +304,19 @@ export const TopActions: React.FC = () => {
       <OrderStateBadge state={order?.state} />
       <div className="hidden items-center gap-2 md:ml-auto md:flex">
         {actions?.inline?.map(({ component }) => React.createElement(component)) || null}
-        {order?.state === ORDER_STATE.DRAFT ? (
+        {[ORDER_STATE.DRAFT, ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT].includes(order?.state as ORDER_STATE) ? (
           <Button size="sm" onClick={onSubmit} disabled={!isOrderValid}>
-            {t('create.completeOrderButton')}
+            {order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT
+              ? t('create.addPaymentButton')
+              : t('create.completeOrderButton')}
           </Button>
-        ) : order?.state === ORDER_STATE.IN_REALIZATION ||
-          order?.state === ORDER_STATE.PAYMENT_SETTLED ||
-          order?.state === ORDER_STATE.ARRANGING_PAYMENT ||
-          order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT ||
-          order?.state === ORDER_STATE.SHIPPED ? (
+        ) : [
+            ORDER_STATE.PAYMENT_SETTLED,
+            ORDER_STATE.ARRANGING_PAYMENT,
+            ...(window.__DEENRUV_SETTINGS__.ui?.extras?.orderObservableStates || []),
+          ].includes(order?.state as ORDER_STATE) ? (
           <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
-        ) : order?.state === ORDER_STATE.MODIFYING ? (
+        ) : [ORDER_STATE.MODIFYING].includes(order?.state as ORDER_STATE) ? (
           <ModifyAcceptModal />
         ) : null}
       </div>
@@ -316,7 +335,7 @@ export const TopActions: React.FC = () => {
               <Button
                 onClick={() => setManualChange({ state: true, toAction: undefined })}
                 variant="ghost"
-                className="w-full cursor-pointer justify-start px-4 py-2 focus-visible:ring-transparent dark:focus-visible:ring-transparent"
+                className="w-full cursor-pointer justify-start px-4 py-2 text-orange-400 hover:text-orange-400 focus-visible:ring-transparent dark:text-orange-400 dark:hover:text-orange-400 dark:focus-visible:ring-transparent"
               >
                 {t('topActions.manualChangeStatus')}
               </Button>
@@ -331,7 +350,7 @@ export const TopActions: React.FC = () => {
             <DropdownMenuItem asChild>
               <Button
                 variant="ghost"
-                className="w-full cursor-pointer justify-start px-4  py-2 text-blue-400 hover:text-blue-400 dark:hover:text-blue-400"
+                className="w-full cursor-pointer justify-start px-4 py-2 text-blue-400 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-400"
                 onClick={transitionOrderToModify}
               >
                 {t('create.modifyOrder')}
@@ -347,7 +366,7 @@ export const TopActions: React.FC = () => {
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="w-full justify-start px-4 py-2  text-red-400 hover:text-red-400 dark:hover:text-red-400"
+                      className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:text-red-400 dark:hover:text-red-400"
                     >
                       {t('create.cancelOrder')}
                     </Button>

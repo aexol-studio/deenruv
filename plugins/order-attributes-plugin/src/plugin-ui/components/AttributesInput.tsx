@@ -20,13 +20,13 @@ export type Data = {
 export const AttributesInput: React.FC = () => {
     const { disabled, setValue, value, additionalData } = useCustomFields<string>();
     const parsedValues = useMemo(() => {
-        if (!value || value === '') return null;
+        if (!value || value === '') return undefined;
         try {
             const parsed = JSON.parse(value);
-            if (Object.keys(parsed).length === 0) return null;
+            if (Object.keys(parsed).length === 0) return undefined;
             return parsed as Record<string, string>;
         } catch (e) {
-            return null;
+            return undefined;
         }
     }, [value]);
     return (

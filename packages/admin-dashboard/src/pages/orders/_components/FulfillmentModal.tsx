@@ -105,8 +105,6 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
     }
   };
 
-  console.log(state.handler?.value);
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

@@ -158,6 +158,8 @@ export const OrderListSelector = Selector('Order')({
   id: true,
   payments: {
     method: true,
+    createdAt: true,
+    state: true,
   },
   shippingAddress: {
     fullName: true,

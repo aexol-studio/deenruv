@@ -37,10 +37,11 @@ export const OrdersDetailPage = () => {
 
   return (
     <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-8 2xl:px-8">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 2xl:px-8">
         <TopActions />
         <OrderSummary />
         <RealizationCard />
+        {order.state !== ORDER_STATE.DRAFT && <Payments />}
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           <CustomerSelectCard />
           <AddressCard type="billing" />
@@ -48,20 +49,11 @@ export const OrdersDetailPage = () => {
           <ShippingMethod />
         </div>
         <ProductsCard />
-        {mode === 'update' ? (
-          <>
-            <SurchargeCard />
-            <PromotionsList />
-          </>
-        ) : (
-          <>
-            <TaxSummary />
-            {order.state !== ORDER_STATE.DRAFT && <Payments />}
-            {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
-            <EntityCustomFields entityName="order" id={id} />
-            <OrderHistory />
-          </>
-        )}
+        <TaxSummary />
+        <EntityCustomFields entityName="order" id={id} />
+        {order.state !== ORDER_STATE.DRAFT && <SurchargeCard />}
+        {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
+        {order.state !== ORDER_STATE.DRAFT && <OrderHistory />}
       </div>
     </main>
   );

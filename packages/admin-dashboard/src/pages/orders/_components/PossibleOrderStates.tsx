@@ -26,16 +26,47 @@ export const PossibleOrderStates: React.FC<{
 }> = ({ orderState }) => {
   const { t } = useTranslation('orders');
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
+  const statesAfterCancelled = useMemo(() => {
+    const cancelledIndex = orderProcess.findIndex((s) => s.name === 'Cancelled');
+    if (cancelledIndex === -1) return null;
+    return orderProcess.slice(cancelledIndex + 1);
+  }, [orderProcess]);
+  const sortedOrderProcess = useMemo(() => {
+    if (!statesAfterCancelled) return orderProcess;
+    const sorted = [];
+    let i = 0;
+    while (i < orderProcess.length) {
+      const state = orderProcess[i];
+      const firstPossibleNextState = state.to.length > 0 ? state.to[0] : null;
+      if (firstPossibleNextState) {
+        const stateAfterCancelled = statesAfterCancelled.find((s) => s.name === firstPossibleNextState);
+        if (stateAfterCancelled) {
+          sorted.push(state);
+          sorted.push(stateAfterCancelled);
+          i++;
+        } else {
+          sorted.push(state);
+        }
+      } else {
+        sorted.push(state);
+      }
+      i++;
+    }
+    const cancelledIndex = sorted.findIndex((s) => s.name === 'Cancelled');
+    if (cancelledIndex !== -1) {
+      return sorted.slice(0, cancelledIndex + 1);
+    }
+    return sorted;
+  }, [orderProcess, statesAfterCancelled]);
 
-  // Find the current state index and object
   const currentStateIndex = useMemo(
-    () => orderProcess.findIndex((s) => s.name === orderState),
-    [orderProcess, orderState],
+    () => sortedOrderProcess.findIndex((s) => s.name === orderState),
+    [sortedOrderProcess, orderState],
   );
-
-  const currentStateObj = useMemo(() => orderProcess.find((s) => s.name === orderState), [orderProcess, orderState]);
-
-  // Determine possible next states
+  const currentStateObj = useMemo(
+    () => sortedOrderProcess.find((s) => s.name === orderState),
+    [sortedOrderProcess, orderState],
+  );
   const possibleNextStates = useMemo(() => currentStateObj?.to || [], [currentStateObj]);
 
   return (
@@ -81,7 +112,7 @@ export const PossibleOrderStates: React.FC<{
 
         <ScrollArea className="h-[60vh]">
           <Timeline>
-            {orderProcess.map((state, index) => {
+            {sortedOrderProcess.map((state, index) => {
               const isPast = index < currentStateIndex;
               const isCurrent = index === currentStateIndex;
               const isPossibleNext = possibleNextStates.includes(state.name);

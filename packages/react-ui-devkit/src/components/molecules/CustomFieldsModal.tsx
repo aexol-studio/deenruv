@@ -134,17 +134,21 @@ export const CustomFieldsModal: React.FC<CustomFieldsModal> = ({
                 {!field?.readonly && (
                     <div className="flex gap-2">
                         {!value ? (
-                            <DialogTrigger asChild>
-                                <Button
-                                    disabled={disabled}
-                                    variant="secondary"
-                                    size="sm"
-                                    onClick={() => setModalOpened(true)}
-                                    className="transition-all hover:bg-gray-200 dark:hover:bg-gray-700"
-                                >
-                                    {t(`custom-fields.${entityName.toLowerCase()}.pick`)}
-                                </Button>
-                            </DialogTrigger>
+                            <>
+                                {!disabled ? (
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            disabled={disabled}
+                                            variant="secondary"
+                                            size="sm"
+                                            onClick={() => setModalOpened(true)}
+                                            className="transition-all hover:bg-gray-200 dark:hover:bg-gray-700"
+                                        >
+                                            {t(`custom-fields.${entityName.toLowerCase()}.pick`)}
+                                        </Button>
+                                    </DialogTrigger>
+                                ) : null}
+                            </>
                         ) : (
                             <Button
                                 disabled={disabled}

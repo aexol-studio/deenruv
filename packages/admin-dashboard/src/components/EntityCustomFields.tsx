@@ -1,6 +1,6 @@
 'use client';
 
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
+import { setInArrayBy } from '@/lists/useGflp.js';
 import {
   Button,
   Card,
@@ -12,6 +12,7 @@ import {
   CardContent,
   useServer,
   apiClient,
+  useGFFLP,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import type { LanguageCode, ModelTypes } from '@deenruv/admin-types';
@@ -71,14 +72,8 @@ type Props<T extends ViableEntity> = {
   fetchInitialValues?: boolean;
   initialValues?: CF;
   additionalData?: Record<string, unknown>;
-} & (
-  | {
-      fetchInitialValues: false;
-      initialValues: { customFields: CF; translations?: Array<{ customFields: CF; languageCode: LanguageCode }> };
-    }
-  | { fetchInitialValues?: true }
-);
-
+  withoutCard?: boolean;
+};
 const entityDictionary: Partial<
   Record<ViableEntity, { inputName: keyof ModelTypes; mutationName: keyof ModelTypes['Mutation'] }>
 > = {
@@ -144,7 +139,7 @@ export function EntityCustomFields<T extends ViableEntity>({
   disabled,
   fetchInitialValues = true,
   additionalData,
-  initialValues,
+  withoutCard,
 }: Props<T>) {
   const { t } = useTranslation('common');
   const language = useSettings((p) => p.translationsLanguage);
@@ -158,6 +153,7 @@ export function EntityCustomFields<T extends ViableEntity>({
 
   const [loading, setLoading] = useState(fetchInitialValues);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
+
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(
       (el) => el.entityName.charAt(0).toLowerCase() + el.entityName.slice(1) === entityName,
@@ -183,14 +179,10 @@ export function EntityCustomFields<T extends ViableEntity>({
     [entityCustomFields],
   );
 
-  const prepareCustomFields = useCallback(
-    (props?: { filterReadonly: boolean }) => {
-      const { filterReadonly } = props || {};
-
-      return Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
+  useEffect(() => {
+    if (onChange) {
+      const newCustomFields = Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
         (acc, [key, val]) => {
-          if (filterReadonly && readOnlyFieldsDict[key]) return acc;
-
           if (relationFields?.includes(key)) {
             const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
             acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
@@ -200,17 +192,14 @@ export function EntityCustomFields<T extends ViableEntity>({
         },
         {} as CF,
       );
-    },
-    [state, relationFields, readOnlyFieldsDict],
-  );
-
-  useEffect(() => {
-    // TODO Add debounce
-    if (onChange) {
-      const preparedCustomFields = prepareCustomFields();
-      onChange(preparedCustomFields, state?.translations?.validatedValue);
+      if (
+        JSON.stringify(newCustomFields) !== JSON.stringify(state.customFields?.validatedValue) ||
+        JSON.stringify(state?.translations?.validatedValue) !== JSON.stringify(newCustomFields.translations)
+      ) {
+        onChange(newCustomFields, state?.translations?.validatedValue);
+      }
     }
-  }, [state, prepareCustomFields, onChange]);
+  }, [state.customFields, state.translations]);
 
   const capitalizedEntityName = useMemo(
     () => (entityName.charAt(0).toUpperCase() + entityName.slice(1)) as Capitalize<T>,
@@ -221,46 +210,51 @@ export function EntityCustomFields<T extends ViableEntity>({
     () => mergeSelectorWithCustomFields({}, capitalizedEntityName, entityCustomFields),
     [entityCustomFields, capitalizedEntityName],
   );
-  console.log('render test');
-  const fetchEntity = useCallback(
-    async (showLoading = true) => {
-      if (!id) return;
-      try {
-        if (showLoading) setIsRefreshing(true);
 
-        let response;
-
-        if (fetch) {
-          response = await fetch(runtimeSelector);
-        } else {
-          const { [entityName]: genericResponse } = (await apiClient('query')({
-            [entityName]: [{ id }, runtimeSelector],
-          } as any)) as Record<T, EntityWithCF>;
-          response = genericResponse;
-        }
-
-        if (!response) {
-          toast.error(t('toasts.error.fetch'));
-          return;
-        }
-
-        setField('customFields', response?.customFields);
-        setField('translations', response?.translations);
-
-        if (showLoading) {
-          toast.success(t('custom-fields.refreshSuccess', 'Custom fields refreshed successfully'));
-        }
-      } catch (err) {
-        toast.error(getGqlError(err) || t('toasts.error.fetch'));
-      } finally {
-        if (showLoading) setIsRefreshing(false);
+  const fetchEntity = async (showLoading = true) => {
+    if (!id) return;
+    try {
+      if (showLoading) setIsRefreshing(true);
+      let response;
+      if (fetch) {
+        response = await fetch(runtimeSelector);
+      } else {
+        const { [entityName]: genericResponse } = (await apiClient('query')({
+          [entityName]: [{ id }, runtimeSelector],
+        } as any)) as Record<T, EntityWithCF>;
+        response = genericResponse;
       }
-    },
-    [runtimeSelector, entityName, id],
-  );
 
-  const updateEntity = useCallback(async () => {
-    const preparedCustomFields = prepareCustomFields({ filterReadonly: true });
+      if (!response) {
+        toast.error(t('toasts.error.fetch'));
+        return;
+      }
+      setField('customFields', response?.customFields);
+      setField('translations', response?.translations);
+
+      if (showLoading) {
+        toast.success(t('custom-fields.refreshSuccess', 'Custom fields refreshed successfully'));
+      }
+    } catch (err) {
+      toast.error(getGqlError(err) || t('toasts.error.fetch'));
+    } finally {
+      if (showLoading) setIsRefreshing(false);
+    }
+  };
+
+  const updateEntity = async () => {
+    const preparedCustomFields = Object.entries(
+      (state.customFields?.validatedValue || {}) as Record<string, any>,
+    ).reduce((acc, [key, val]) => {
+      if (readOnlyFieldsDict[key]) return acc;
+
+      if (relationFields?.includes(key)) {
+        const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+        acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
+      } else acc[key] = val;
+
+      return acc;
+    }, {} as CF);
 
     try {
       setIsUpdating(true);
@@ -291,13 +285,10 @@ export function EntityCustomFields<T extends ViableEntity>({
     } finally {
       setIsUpdating(false);
     }
-  }, [state, entityName, id, mutation, prepareCustomFields, t]);
+  };
 
   useEffect(() => {
-    if (!entityCustomFields?.length || !fetchInitialValues) {
-      setField('customFields', initialValues?.customFields || {});
-      return;
-    }
+    if (!Object.keys(entityCustomFields || {}).length || !fetchInitialValues) return;
     try {
       setLoading(true);
       fetchEntity(false);
@@ -305,8 +296,8 @@ export function EntityCustomFields<T extends ViableEntity>({
       setLoading(false);
     }
   }, [entityCustomFields, fetchInitialValues]);
-  if (!entityCustomFields?.length) return null;
 
+  if (!entityCustomFields?.length) return null;
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations?.find((v) => v.languageCode === currentLanguage);
 
@@ -330,7 +321,7 @@ export function EntityCustomFields<T extends ViableEntity>({
               </CardDescription>
             </div>
           </div>
-          {id && fetchInitialValues && (
+          {/* {id && fetchInitialValues && (
             <Button
               variant="outline"
               size="sm"
@@ -341,7 +332,7 @@ export function EntityCustomFields<T extends ViableEntity>({
               <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
               {t('refresh', 'Refresh')}
             </Button>
-          )}
+          )} */}
         </div>
 
         {currentLanguage && translations?.length > 0 && (
@@ -371,7 +362,6 @@ export function EntityCustomFields<T extends ViableEntity>({
               disabled={disabled}
               setValue={(field, data) => {
                 const translatable = field.type === 'localeText' || field.type === 'localeString';
-
                 if (translatable && currentLanguage) {
                   setField(
                     'translations',

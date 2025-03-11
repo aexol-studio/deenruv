@@ -103,6 +103,7 @@
   "draft": "Draft",
   "addingItems": "Adding Items",
   "arrangingPayment": "Arranging Payment",
+  "arrangingAdditionalPayment": "Arranging Additional Payment",
   "paymentAuthorized": "Payment Authorized",
   "paymentSettled": "Payment Settled",
   "shipped": "Shipped",

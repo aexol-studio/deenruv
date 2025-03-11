@@ -103,7 +103,7 @@ export const Paginate = ({
                         <PaginationItem
                             key={index}
                             className={cn(
-                                'hidden',
+                                'hidden select-none',
                                 i !== (searchParamValues.page - 1).toString() && 'md:block',
                             )}
                         >

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useGFFLP } from '@/lists/useGflp';
+'use client';
+
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { useGFFLP } from '@/lists/useGflp.js';
 import {
   useOrder,
   Button,
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -15,18 +19,21 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  Separator,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { Stack } from '@/components';
 import { PriceChangedInfo } from '@/pages/orders/_components/PriceChangedInfo.js';
+import { FileEdit, Truck, Tag, CreditCard, AlertCircle, Save, Loader2, RefreshCw, ShieldCheck } from 'lucide-react';
 
 export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> = ({ onNoteModified }) => {
   const { t } = useTranslation('orders');
   const { modifiedOrder, setModifyOrderInput, modifyOrder, modifyOrderInput } = useOrder();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { state, setField } = useGFFLP('ModifyOrderInput')({});
   const [noteAdded, setNoteAdded] = useState(false);
+
   useEffect(() => setNoteAdded(!!state.note?.value), [state.note?.value]);
 
   useEffect(() => {
@@ -38,134 +45,221 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
         refund: state.refund?.value,
       });
     }
-  }, [state, modifiedOrder, setModifyOrderInput]);
+  }, [state, modifiedOrder]);
+
   const acceptModifiedChanges = async () => {
+    if (!noteAdded) return;
+
+    setIsSubmitting(true);
     try {
       await modifyOrder();
-      toast.message(t('modifySuccess'));
+      toast.success(t('modifySuccess', 'Order modifications applied successfully'));
       onNoteModified && onNoteModified(false);
     } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : t('modifyError');
+      const message = e instanceof Error ? e.message : t('modifyError', 'Failed to apply order modifications');
       toast.error(message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   return (
-    <form className="h-full">
-      <Card className="bg-accent/20 flex h-full flex-col">
-        <CardHeader>
-          <CardTitle className="text-base">{t('note')}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex-1">
-          <Stack column className="items-start gap-8">
-            <div className="w-full items-center">
-              <Textarea
-                rows={10}
-                id="note"
-                placeholder="Note"
-                value={state.note?.value ?? undefined}
-                onChange={(e) => setField('note', e.target.value)}
-              />
+    <form className="h-full max-h-[calc(100vh-200px)]">
+      <Card className="flex h-full flex-col border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-blue-400">
+        <CardHeader className="pb-4">
+          <div className="flex items-center gap-2">
+            <FileEdit className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+            <div>
+              <CardTitle>{t('orderModification', 'Order Modification')}</CardTitle>
+              <CardDescription className="mt-1">
+                {t('orderModificationDescription', 'Modify order details and apply changes')}
+              </CardDescription>
             </div>
-            <div className="flex gap-4">
-              <div className="flex w-full flex-col gap-4">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="recalculateShipping"
-                    checked={state.options?.value?.recalculateShipping ?? undefined}
-                    onCheckedChange={(e) =>
-                      setField('options', {
-                        freezePromotions: state?.options?.value?.freezePromotions || false,
-                        recalculateShipping: !!e,
-                      })
-                    }
-                  />
-                  <Label
-                    htmlFor="recalculateShipping"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Recalculate Shipping
-                  </Label>
+          </div>
+        </CardHeader>
+
+        <CardContent className="flex-1 space-y-6 overflow-y-auto">
+          <div className="space-y-3">
+            <Label htmlFor="note" className="text-sm font-medium">
+              {t('note', 'Modification Note')} <span className="text-red-500">*</span>
+            </Label>
+            <div className="relative">
+              <Textarea
+                id="note"
+                placeholder={t('notePlaceholder', 'Enter a note explaining the reason for these modifications...')}
+                value={state.note?.value ?? ''}
+                onChange={(e) => setField('note', e.target.value)}
+                className="min-h-[80px] resize-y"
+              />
+              {!state.note?.value && (
+                <div className="absolute right-3 top-3 text-amber-500">
+                  <AlertCircle className="h-4 w-4" />
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="freezePromotions"
-                    checked={state.options?.value?.freezePromotions ?? undefined}
-                    onCheckedChange={(e) =>
-                      setField('options', {
-                        freezePromotions: !!e,
-                        recalculateShipping: state?.options?.value?.recalculateShipping || false,
-                      })
-                    }
-                  />
-                  <Label
-                    htmlFor="freezePromotions"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Freeze Promotions
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="refund"
-                    checked={state.refund?.value !== undefined}
-                    onCheckedChange={(e) => setField('refund', e ? { paymentId: '', reason: '' } : undefined)}
-                  />
-                  <Label
-                    htmlFor="refund"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Refund
-                  </Label>
-                </div>
-              </div>
-              {state.refund?.value && (
-                <div className="flex w-full flex-col gap-4 border-l-[1px] border-solid border-gray-200 pl-6">
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="paymentId">Payment ID</Label>
-                    <Input
-                      type="paymentId"
-                      id="paymentId"
-                      placeholder="Payment ID"
-                      value={state.refund.value?.paymentId}
-                      onChange={(e) => setField('refund', { paymentId: e.target.value })}
-                    />
+              )}
+            </div>
+            <p className="text-muted-foreground text-xs">
+              {t('noteRequired', 'A note is required to explain why these changes are being made')}
+            </p>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-4">
+            <h3 className="text-muted-foreground text-sm font-medium">
+              {t('modificationOptions', 'Modification Options')}
+            </h3>
+
+            <div className="flex flex-col space-y-4">
+              <div className="border-border bg-muted/20 space-y-4 rounded-md border p-4">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                    <RefreshCw className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                   </div>
-                  <div className="grid w-full max-w-sm items-center gap-1.5">
-                    <Label htmlFor="reason">Reason</Label>
-                    <Input
-                      type="reason"
-                      id="reason"
-                      placeholder="Reason"
-                      value={state.refund.value?.reason ?? undefined}
-                      onChange={(e) =>
-                        setField('refund', {
-                          paymentId: state?.refund?.value?.paymentId || '',
-                          reason: e.target.value,
+                  <h4 className="font-medium">{t('processingOptions', 'Processing Options')}</h4>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="recalculateShipping"
+                      checked={state.options?.value?.recalculateShipping ?? false}
+                      onCheckedChange={(e) =>
+                        setField('options', {
+                          freezePromotions: state?.options?.value?.freezePromotions || false,
+                          recalculateShipping: !!e,
                         })
                       }
                     />
+                    <Label
+                      htmlFor="recalculateShipping"
+                      className="flex cursor-pointer items-center gap-2 text-sm font-medium"
+                    >
+                      <Truck className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                      {t('recalculateShipping', 'Recalculate Shipping')}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="freezePromotions"
+                      checked={state.options?.value?.freezePromotions ?? false}
+                      onCheckedChange={(e) =>
+                        setField('options', {
+                          freezePromotions: !!e,
+                          recalculateShipping: state?.options?.value?.recalculateShipping || false,
+                        })
+                      }
+                    />
+                    <Label
+                      htmlFor="freezePromotions"
+                      className="flex cursor-pointer items-center gap-2 text-sm font-medium"
+                    >
+                      <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                      {t('freezePromotions', 'Freeze Promotions')}
+                    </Label>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="refund"
+                      checked={state.refund?.value !== undefined}
+                      onCheckedChange={(e) => setField('refund', e ? { paymentId: '', reason: '' } : undefined)}
+                    />
+                    <Label htmlFor="refund" className="flex cursor-pointer items-center gap-2 text-sm font-medium">
+                      <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                      {t('refund', 'Process Refund')}
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              {state.refund?.value && (
+                <div className="border-border bg-muted/20 space-y-4 rounded-md border p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                      <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                    </div>
+                    <h4 className="font-medium">{t('refundDetails', 'Refund Details')}</h4>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="paymentId" className="text-sm font-medium">
+                        {t('paymentId', 'Payment ID')} <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        id="paymentId"
+                        placeholder={t('paymentIdPlaceholder', 'Enter payment ID')}
+                        value={state.refund.value?.paymentId || ''}
+                        onChange={(e) =>
+                          setField('refund', {
+                            paymentId: e.target.value,
+                            reason: state.refund?.value?.reason || '',
+                          })
+                        }
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="reason" className="text-sm font-medium">
+                        {t('reason', 'Refund Reason')} <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        id="reason"
+                        placeholder={t('reasonPlaceholder', 'Enter refund reason')}
+                        value={state.refund.value?.reason || ''}
+                        onChange={(e) =>
+                          setField('refund', {
+                            paymentId: state?.refund?.value?.paymentId || '',
+                            reason: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
               )}
             </div>
+          </div>
 
-            <div className="flex w-full justify-end">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span tabIndex={0}>
-                    <Button onClick={acceptModifiedChanges} disabled={!noteAdded} type="button">
-                      {t('applyChanges')}
-                    </Button>
-                  </span>
-                </TooltipTrigger>
-                {!noteAdded && <TooltipContent className="pb-1 pl-6">{t('disabledBtnTooltip')}</TooltipContent>}
-              </Tooltip>
-            </div>
-          </Stack>
+          <div className="flex justify-end pt-4">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span tabIndex={0}>
+                  <Button
+                    onClick={acceptModifiedChanges}
+                    disabled={!noteAdded || isSubmitting}
+                    type="button"
+                    className="gap-2"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        {t('processing', 'Processing...')}
+                      </>
+                    ) : (
+                      <>
+                        <Save className="h-4 w-4" />
+                        {t('applyChanges', 'Apply Changes')}
+                      </>
+                    )}
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              {!noteAdded && (
+                <TooltipContent className="border border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800 dark:bg-amber-900/50 dark:text-amber-200">
+                  <div className="flex items-center gap-2 px-1">
+                    <AlertCircle className="h-4 w-4" />
+                    {t('disabledBtnTooltip', 'A note is required to apply changes')}
+                  </div>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          </div>
         </CardContent>
-        <CardFooter>
-          <PriceChangedInfo />
-        </CardFooter>
+        <PriceChangedInfo />
       </Card>
     </form>
   );

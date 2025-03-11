@@ -89,9 +89,8 @@ export const useFFLP = <X>(config: {
     const haveValidFields = useMemo(
         () =>
             !Object.keys(config).some(
-                field => 
-                    config[field as keyof X]?.validate &&
-                    state[field as keyof X]?.validatedValue == null,
+                field =>
+                    config[field as keyof X]?.validate && state[field as keyof X]?.validatedValue == null,
             ),
         [config, state],
     );

@@ -302,7 +302,6 @@ export const ProductsCard: React.FC = () => {
   };
 
   if (!order) return null;
-
   return (
     <>
       <Dialog open={open} onOpenChange={(e) => (!e ? closeAddVariantDialog() : setOpen(true))}>
@@ -391,7 +390,6 @@ export const ProductsCard: React.FC = () => {
                                 src={
                                   line.productVariant.featuredAsset?.preview ||
                                   line.productVariant.product?.featuredAsset?.preview ||
-                                  '/placeholder.svg' ||
                                   '/placeholder.svg'
                                 }
                               />
@@ -405,16 +403,20 @@ export const ProductsCard: React.FC = () => {
                             </div>
                           </TableCell>
                           <TableCell className="py-3">
-                            <OrderLineCustomFields line={line} order={currentOrder} />
+                            <OrderLineCustomFields line={line} order={currentOrder} mode={mode} />
                           </TableCell>
-                          <TableCell className="py-3 font-medium">{priceFormatter(line.linePrice)}</TableCell>
-                          <TableCell className="py-3 font-medium">{priceFormatter(line.linePriceWithTax)}</TableCell>
+                          <TableCell className="py-3 font-medium">
+                            {priceFormatter(line.linePrice, line.productVariant.currencyCode)}
+                          </TableCell>
+                          <TableCell className="py-3 font-medium">
+                            {priceFormatter(line.linePriceWithTax, line.productVariant.currencyCode)}
+                          </TableCell>
                           <TableCell className="py-3 text-center font-semibold">{line.quantity}</TableCell>
                           <TableCell className="py-3">
                             <div className="flex flex-col">
-                              <span>{priceFormatter(line.unitPrice)}</span>
+                              <span>{priceFormatter(line.unitPrice, line.productVariant.currencyCode)}</span>
                               <span className="text-muted-foreground text-sm">
-                                ({priceFormatter(line.unitPriceWithTax)})
+                                ({priceFormatter(line.unitPriceWithTax, line.productVariant.currencyCode)})
                               </span>
                             </div>
                           </TableCell>
@@ -528,6 +530,26 @@ export const ProductsCard: React.FC = () => {
                   )}
                 </TableBody>
               </Table>
+            </div>
+            <div className="mt-6 border-t pt-4">
+              <div className="bg-card rounded-lg border p-4 shadow-sm">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-base font-semibold">Total</span>
+                    <span className="text-primary text-base font-bold">
+                      {priceFormatter(currentOrder?.totalWithTax || 0, currentOrder?.currencyCode)}
+                    </span>
+                  </div>
+                  <div className="text-muted-foreground mt-2 text-xs">
+                    <div className="flex items-center gap-1">
+                      <InfoIcon className="h-3 w-3" />
+                      <span>
+                        Total includes {currentOrder?.lines.reduce((acc, line) => acc + line.quantity, 0) || 0} items
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <OrderLineActionModal
               onPriceQuantityChangeApprove={onPriceQuantityChangeApprove}

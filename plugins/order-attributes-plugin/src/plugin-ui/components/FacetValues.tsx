@@ -61,7 +61,7 @@ export const FacetValues: React.FC<FacetsAccordionsProps> = ({
     value,
 }) => {
     const { t } = useTranslation(translationNS);
-    const [fetchFacetValues] = useLazyQuery(ProductFacetValuesQuery);
+    const [fetchFacetValues, { loading }] = useLazyQuery(ProductFacetValuesQuery);
     const id =
         additionalData?.product &&
         typeof additionalData.product === 'object' &&
@@ -78,49 +78,56 @@ export const FacetValues: React.FC<FacetsAccordionsProps> = ({
     const [custom, setCustom] = useState<{ id: string; key: string; value: string }[]>([]);
 
     useEffect(() => {
-        const newSelectedValues: Record<string, string> = {
-            ...defined,
-            ...custom.reduce<Record<string, string>>((acc, { key, value }) => ({ ...acc, [key]: value }), {}),
-        };
-        const json = JSON.stringify(newSelectedValues);
-        setValue(json);
-    }, [defined, custom]);
-
-    useEffect(() => {
-        if (id)
-            fetchFacetValues({ productId: id }).then(resp => {
+        if (!id || facets.length) return;
+        fetchFacetValues({ productId: id })
+            .then(resp => {
                 setFacets(match(resp.product?.facetValues));
-                return resp;
-            });
+            })
+            .catch();
     }, [id]);
 
     useEffect(() => {
-        if (facets) {
-            setDefined(
-                Object.keys(currentValue)
-                    .filter(i => facets.some(a => a.code === i))
-                    .reduce((acc, val) => ({ ...acc, [val]: currentValue[val] }), {}),
-            );
-            setCustom(
-                Object.keys(currentValue)
-                    .filter(i => !facets.some(a => a.code === i))
-                    .map(i => ({
-                        id: uuidv4(),
-                        value: currentValue[i],
-                        key: i,
-                    })),
-            );
-        }
+        if (!facets) return;
+        const defined = Object.keys(currentValue)
+            .filter(i => facets.some(a => a.code === i))
+            .reduce((acc, val) => ({ ...acc, [val]: currentValue[val] }), {});
+        setDefined(defined);
+        const custom = Object.keys(currentValue)
+            .filter(i => !facets.some(a => a.code === i))
+            .map(i => ({ id: uuidv4(), value: currentValue[i], key: i }));
+        setCustom(custom);
     }, [facets, currentValue]);
 
-    const onDefinedChange = (key: string, value: string) => {
-        const newSelectedValues = { ...defined };
-        if (newSelectedValues[key] === value || value === '') {
-            delete newSelectedValues[key];
-        } else {
-            newSelectedValues[key] = value;
+    const onCustomChange = (id?: string, key?: string, value?: string) => {
+        if (!id) return;
+        const newCustomValues = custom.filter(i => i.id !== id);
+        if (key && value) {
+            newCustomValues.push({ id, key, value });
         }
-        setDefined(newSelectedValues);
+        setCustom(newCustomValues);
+        setValue(
+            JSON.stringify({
+                ...defined,
+                ...newCustomValues.reduce<Record<string, string>>(
+                    (acc, { key, value }) => ({ ...acc, [key]: value }),
+                    {},
+                ),
+            }),
+        );
+    };
+
+    const onDefinedChange = (key: string, value: string) => {
+        const newDefined = { ...defined, [key]: value };
+        setDefined(newDefined);
+        setValue(
+            JSON.stringify({
+                ...newDefined,
+                ...custom.reduce<Record<string, string>>(
+                    (acc, { key, value }) => ({ ...acc, [key]: value }),
+                    {},
+                ),
+            }),
+        );
     };
 
     if (!facets.length) return null;
@@ -142,7 +149,7 @@ export const FacetValues: React.FC<FacetsAccordionsProps> = ({
                         <Button
                             variant="secondary"
                             className="w-min"
-                            onClick={() => setCustom(p => [...p, { key: '', value: '', id: uuidv4() }])}
+                            onClick={() => onCustomChange(uuidv4())}
                         >
                             {t('custom.addCustomKey')}
                         </Button>
@@ -156,32 +163,21 @@ export const FacetValues: React.FC<FacetsAccordionsProps> = ({
                                         <Input
                                             label={t('custom.customKey')}
                                             value={i.key}
-                                            onChange={e =>
-                                                setCustom(p => {
-                                                    const copy = [...p];
-                                                    const index = copy.findIndex(c => c.id === i.id);
-                                                    if (index !== -1) copy[index].key = e.currentTarget.value;
-                                                    return copy;
-                                                })
-                                            }
+                                            onChange={e => {
+                                                onCustomChange(i.id, e.currentTarget.value, i.value);
+                                            }}
                                         />
                                         <Input
                                             label={t('custom.customValue')}
                                             value={i.value}
-                                            onChange={e =>
-                                                setCustom(p => {
-                                                    const copy = [...p];
-                                                    const index = copy.findIndex(c => c.id === i.id);
-                                                    if (index !== -1)
-                                                        copy[index].value = e.currentTarget.value;
-                                                    return copy;
-                                                })
-                                            }
+                                            onChange={e => {
+                                                onCustomChange(i.id, i.key, e.currentTarget.value);
+                                            }}
                                         />
                                         <Trash
                                             className="mt-[20px] shrink-0 cursor-pointer text-red-600"
                                             onClick={() => {
-                                                setCustom(p => p.filter(a => a.id !== i.id));
+                                                onCustomChange(i.id);
                                             }}
                                         />
                                     </div>

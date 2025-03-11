@@ -36,6 +36,7 @@ import {
   Package,
   User,
 } from 'lucide-react';
+import { ModifyHistoryInfo } from './ModifyHistoryInfo.js';
 
 interface DeleteEntryDialogProps {
   data: OrderHistoryEntryType[] | undefined;
@@ -176,6 +177,8 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
+                    ) : 'modificationId' in history.data ? (
+                      <ModifyHistoryInfo modificationId={history.data.modificationId} />
                     ) : (
                       'from' in history.data &&
                       'to' in history.data && (

@@ -67,15 +67,16 @@ interface Order {
     currentPossibilities: { name: string; to: Array<string> } | undefined;
     orderProcess: { name: string; to: Array<string> }[] | undefined;
     graphQLSchema: GraphQLSchema | null;
+    orderLineCustomFields: CustomFieldConfigType[] | null;
 }
 
 interface Actions {
     fetchOrder(id: string): Promise<OrderDetailType | undefined>;
     setOrder(order: OrderDetailType | undefined): void;
-    fetchOrderHistory(): Promise<void>;
+    fetchOrderHistory(): Promise<OrderHistoryEntryType[] | undefined>;
     setModifyOrderInput(modifiedOrder: ModifyOrderInput | undefined): void;
     setModifiedOrder(modifiedOrder: OrderDetailType): void;
-    checkModifyOrder(): Promise<OrderDetailType | undefined>;
+    checkModifyOrder(input: ResolverInputTypes['ModifyOrderInput']): Promise<OrderDetailType | undefined>;
     modifyOrder(onSuccess?: () => void): Promise<void>;
     isOrderModified: () => boolean;
     setChanges: (changes: ModifyOrderChange[]) => void;
@@ -151,6 +152,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         currentPossibilities: undefined,
         orderProcess: undefined,
         graphQLSchema: null,
+        orderLineCustomFields: null,
         setCurrentPossibilities: value => set({ currentPossibilities: value }),
         setManualChange: manualChange => set({ manualChange }),
         cancelPayment: async (id: string) => {
@@ -177,6 +179,11 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 const currentPossibilities = orderProcess?.find(el => el.name === order?.state);
                 if (currentPossibilities) set({ currentPossibilities });
             }
+            if (order?.state === ORDER_STATE.MODIFYING) {
+                const modifiedOrder = Object.assign({}, { ...order });
+                set({ modifiedOrder });
+            }
+
             set({ mode, order });
         },
         initializeOrderCustomFields: (graphQLSchema: GraphQLSchema, serverConfig: ServerConfigType) => {
@@ -185,7 +192,10 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 const currentPossibilities = serverConfig.orderProcess?.find(el => el.name === order.state);
                 if (currentPossibilities) set({ currentPossibilities });
             }
-            set({ graphQLSchema, orderProcess: serverConfig.orderProcess });
+            const orderLineCustomFields = serverConfig.entityCustomFields?.find(
+                el => el.entityName === 'OrderLine',
+            )?.customFields;
+            set({ graphQLSchema, orderLineCustomFields, orderProcess: serverConfig.orderProcess });
         },
         fetchOrder: async (id: string) => {
             const {
@@ -204,7 +214,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 );
                 const { order } = await apiClient('query')({ order: [{ id }, selector] });
                 if (!order) {
-                    toast.error(`Failed to load order with id ${id}`);
                     throw new Error(`Failed to load order with id ${id}`);
                 }
                 setOrder(order as OrderDetailType);
@@ -221,24 +230,16 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 set({ loading: false });
             }
         },
-        checkModifyOrder: async () => {
-            const { order, modifiedOrder } = get();
-            const { surcharges, ...restInput } = modifiedOrder ?? {};
-            if (order?.id) {
-                try {
-                    const { modifyOrder } = await apiClient('mutation')({
-                        modifyOrder: [
-                            { input: { orderId: order.id, dryRun: true, ...restInput } },
-                            modifyOrderSelector,
-                        ],
-                    });
-
-                    if (modifyOrder.__typename === 'Order') {
-                        return modifyOrder;
-                    }
-                } catch {
-                    toast.error(`GlobalError: failed to check modify order`);
+        checkModifyOrder: async input => {
+            try {
+                const { modifyOrder } = await apiClient('mutation')({
+                    modifyOrder: [{ input: { ...input, dryRun: true } }, modifyOrderSelector],
+                });
+                if (modifyOrder.__typename === 'Order') {
+                    return modifyOrder;
                 }
+            } catch {
+                toast.error(`GlobalError: failed to check modify order`);
             }
         },
         modifyOrder: async onSuccess => {
@@ -250,6 +251,8 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 modifyOrderInput,
                 setModifyOrderInput,
                 orderHistory,
+                orderLineCustomFields,
+                checkModifyOrder,
             } = get();
 
             delete modifiedOrder?.billingAddress?.country;
@@ -258,68 +261,93 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             const latestOrderTransition = orderHistory?.data?.find(
                 el => el.type === HistoryEntryType.ORDER_STATE_TRANSITION,
             );
+            console.log(orderHistory);
             if (!latestOrderTransition) throw new Error('No state transition history entry found');
-            const orderState =
+            let orderState =
                 (latestOrderTransition.data.from as ORDER_STATE) || modifiedOrder?.nextStates?.[0];
-            try {
-                const { modifyOrder } = await apiClient('mutation')({
-                    modifyOrder: [
-                        {
-                            input: {
-                                orderId: order.id,
-                                dryRun: false,
-                                adjustOrderLines: modifiedOrder?.lines
-                                    .filter(l => order.lines.findIndex(ol => ol.id === l.id) >= 0)
-                                    .map(ol => {
-                                        if ('customFields' in ol && ol.customFields) {
-                                            return {
-                                                orderLineId: ol.id,
-                                                quantity: ol.quantity,
-                                                customFields: ol.customFields,
-                                            };
-                                        }
-                                        return { orderLineId: ol.id, quantity: ol.quantity };
-                                    }),
-                                surcharges: modifyOrderInput?.surcharges,
-                                updateBillingAddress: modifiedOrder?.billingAddress,
-                                updateShippingAddress: modifiedOrder?.shippingAddress,
-                                addItems: modifiedOrder?.lines
-                                    .filter(
-                                        modifiedLine =>
-                                            !order.lines.some(
-                                                originalLine => originalLine.id === modifiedLine.id,
-                                            ),
-                                    )
-                                    .map(l => {
-                                        if ('customFields' in l && l.customFields) {
-                                            return {
-                                                productVariantId: l.productVariant.id,
-                                                quantity: l.quantity,
-                                                customFields: l.customFields,
-                                            };
-                                        }
-                                        return {
-                                            productVariantId: l.productVariant.id,
-                                            quantity: l.quantity,
-                                        };
-                                    }),
-                                shippingMethodIds: modifiedOrder?.shippingLines.map(
-                                    el => el.shippingMethod?.id,
-                                ),
-                                ...modifyOrderInput,
-                            },
-                        },
-                        modifyOrderSelector,
-                    ],
-                });
 
+            // if (result) {
+            //     const isPriceChanged = result?.total !== order?.total;
+            //     const isShippingChanged = result?.shipping !== order?.shipping;
+            //     if (isPriceChanged || isShippingChanged) {
+            //         orderState = ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT;
+            //     }
+            // }
+
+            const convertCustomFields = (customFields: object) => {
+                if (!orderLineCustomFields) return customFields;
+                const newCustomFields: Record<string, unknown> = {};
+                for (const [key, value] of Object.entries(customFields)) {
+                    const customField = orderLineCustomFields.find(el => el.name === key);
+                    if (!customField || customField.readonly) continue;
+                    if (customField?.type === 'relation') {
+                        if (value) {
+                            const modifiedKey = `${key}${customField.list ? 'Ids' : 'Id'}`;
+                            if (Array.isArray(value))
+                                newCustomFields[modifiedKey] = value.map((el: { id: string }) => el.id);
+                            if (typeof value === 'object') newCustomFields[modifiedKey] = value.id;
+                        }
+                    } else newCustomFields[key] = value;
+                }
+                return newCustomFields;
+            };
+
+            try {
+                const input = {
+                    orderId: order.id,
+                    dryRun: false,
+                    adjustOrderLines: modifiedOrder?.lines
+                        .filter(l => order.lines.findIndex(ol => ol.id === l.id) >= 0)
+                        .map(ol => {
+                            if ('customFields' in ol && ol.customFields) {
+                                return {
+                                    orderLineId: ol.id,
+                                    quantity: ol.quantity,
+                                    customFields: convertCustomFields(ol.customFields),
+                                };
+                            }
+                            return { orderLineId: ol.id, quantity: ol.quantity };
+                        }),
+                    surcharges: modifyOrderInput?.surcharges,
+                    updateBillingAddress: modifiedOrder?.billingAddress,
+                    updateShippingAddress: modifiedOrder?.shippingAddress,
+                    addItems: modifiedOrder?.lines
+                        .filter(
+                            modifiedLine =>
+                                !order.lines.some(originalLine => originalLine.id === modifiedLine.id),
+                        )
+                        .map(l => {
+                            if ('customFields' in l && l.customFields) {
+                                return {
+                                    productVariantId: l.productVariant.id,
+                                    quantity: l.quantity,
+                                    customFields: convertCustomFields(l.customFields),
+                                };
+                            }
+                            return {
+                                productVariantId: l.productVariant.id,
+                                quantity: l.quantity,
+                            };
+                        }),
+                    shippingMethodIds: modifiedOrder?.shippingLines.map(el => el.shippingMethod?.id),
+                    ...modifyOrderInput,
+                };
+
+                const data = await checkModifyOrder(input);
+                const isPriceChanged = data?.total !== order?.total;
+                if (isPriceChanged) {
+                    orderState = ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT;
+                }
+                const { modifyOrder } = await apiClient('mutation')({
+                    modifyOrder: [{ input }, { __typename: true }],
+                });
                 if (modifyOrder?.__typename === 'Order') {
                     const { transitionOrderToState } = await apiClient('mutation')({
                         transitionOrderToState: [
                             { id: order.id, state: orderState },
                             {
                                 __typename: true,
-                                '...on Order': OrderDetailSelector,
+                                '...on Order': { id: true },
                                 '...on OrderStateTransitionError': {
                                     errorCode: true,
                                     message: true,
@@ -351,9 +379,11 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             try {
                 const { history } = await getAllOrderHistory(order.id);
                 set({ orderHistory: { data: history, error: false, loading: false } });
+                return history;
             } catch {
                 toast.error(`Failed to load order history with id ${order.id}`);
                 set({ orderHistory: { data: [], error: true, loading: false } });
+                return [];
             }
         },
         isOrderModified: () => {
@@ -378,6 +408,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         },
         addPaymentToOrder: async input => {
             const { setOrder, fetchOrderHistory } = get();
+
             const { addManualPaymentToOrder } = await apiClient('mutation')({
                 addManualPaymentToOrder: [
                     { input },

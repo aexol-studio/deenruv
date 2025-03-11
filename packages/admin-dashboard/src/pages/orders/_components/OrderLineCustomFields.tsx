@@ -1,26 +1,29 @@
-import { EntityCustomFields } from '@/components';
+import { CF, EntityCustomFields } from '@/components';
 import { ORDER_STATE } from '@/graphql/base';
 
-import { DraftOrderType } from '@/graphql/draft_order';
 import {
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogTrigger,
+  Mode,
+  OrderDetailType,
   ScrollArea,
   apiClient,
+  useOrder,
   useServer,
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  line: DraftOrderType['lines'][number];
-  order?: DraftOrderType;
+  line: OrderDetailType['lines'][number];
+  order?: OrderDetailType;
+  mode?: Mode;
 };
 
-export const OrderLineCustomFields = ({ line, order }: Props) => {
+export const OrderLineCustomFields = ({ line, order, mode }: Props) => {
+  const { setModifiedOrder } = useOrder(({ setModifiedOrder }) => ({ setModifiedOrder }));
   const orderLineCustomFields = useServer(
     (p) => p.serverConfig?.entityCustomFields?.find((el) => el.entityName === 'OrderLine')?.customFields || [],
   );
@@ -43,62 +46,23 @@ export const OrderLineCustomFields = ({ line, order }: Props) => {
               additionalData={{ product: line.productVariant.product, variant: line.productVariant }}
               entityName="orderLine"
               id={line.id}
-              hideButton={order.state !== ORDER_STATE.DRAFT && order.state !== ORDER_STATE.MODIFYING}
-              disabled={order.state !== ORDER_STATE.DRAFT && order.state !== ORDER_STATE.MODIFYING}
+              hideButton={mode === 'create' || mode === 'view'}
+              disabled={mode === 'view'}
               fetch={async (runtimeSelector) => {
-                const { order: orderResponse } = await apiClient('query')({
-                  order: [{ id: order.id }, { lines: { id: true, ...runtimeSelector } }],
-                });
-                const foundLine = orderResponse?.lines?.find((el) => el.id === line.id);
-                return { customFields: foundLine?.customFields as any };
+                const orderLine = order.lines.find((l) => l.id === line.id);
+                return orderLine && 'customFields' in orderLine
+                  ? { customFields: orderLine.customFields as CF }
+                  : { customFields: {} };
               }}
               mutation={async (customFields) => {
-                const currentState = order.state;
-                const orderId = order.id;
-
-                if (currentState === ORDER_STATE.DRAFT) {
-                  const { adjustDraftOrderLine } = await apiClient('mutation')({
-                    adjustDraftOrderLine: [
-                      {
-                        orderId,
-                        input: { orderLineId: line.id, quantity: line.quantity, customFields },
-                      },
-                      { '...on Order': { id: true } },
-                    ],
+                console.log(mode, customFields);
+                if (mode === 'update') {
+                  setModifiedOrder({
+                    ...order,
+                    lines: order.lines.map((l) => (l.id === line.id ? { ...l, customFields } : l)),
                   });
-                  if (!adjustDraftOrderLine?.id) throw new Error();
                   setOpen(false);
-                  return;
                 }
-
-                if (!order?.nextStates.includes(ORDER_STATE.MODIFYING)) throw new Error("Order can't be edited.");
-
-                await apiClient('mutation')({
-                  transitionOrderToState: [
-                    { id: orderId, state: ORDER_STATE.MODIFYING },
-                    { '...on Order': { id: true } },
-                  ],
-                });
-
-                const { modifyOrder } = await apiClient('mutation')({
-                  modifyOrder: [
-                    {
-                      input: {
-                        orderId: orderId,
-                        dryRun: false,
-                        adjustOrderLines: [{ orderLineId: line.id, quantity: line.quantity, customFields }],
-                      },
-                    },
-                    { '...on Order': { id: true } },
-                  ],
-                });
-
-                const { transitionOrderToState } = await apiClient('mutation')({
-                  transitionOrderToState: [{ id: orderId, state: currentState }, { '...on Order': { id: true } }],
-                });
-
-                if (!modifyOrder?.id || !transitionOrderToState?.id) throw new Error();
-                setOpen(false);
               }}
             />
           </ScrollArea>

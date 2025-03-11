@@ -1,7 +1,10 @@
+'use client';
+
 import {
   Card,
   CardContent,
   CardHeader,
+  CardTitle,
   Table,
   TableBody,
   TableCell,
@@ -9,202 +12,258 @@ import {
   TableHeader,
   TableRow,
   useOrder,
-  cn,
+  Badge,
+  ScrollArea,
 } from '@deenruv/react-ui-devkit';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ArrowRight, Plus, DollarSign, Package, Tag, FileText } from 'lucide-react';
 
-export const ChangesRegister: React.FC = () => {
+export const ChangesRegister = () => {
   const { t } = useTranslation('orders');
-  const { getObjectsChanges: getOrderChanges, modifiedOrder, order } = useOrder();
+  const { getObjectsChanges, modifiedOrder, order } = useOrder();
+
   const changes = useMemo(() => {
-    const changes = getOrderChanges();
+    if (!getObjectsChanges || !order || !modifiedOrder) return null;
+    const rawChanges = getObjectsChanges();
+
     return {
-      ...changes,
-      linesChanges: {
-        existing: changes.linesChanges.filter((change) => !('isNew' in change)),
-        new: changes.linesChanges.filter((change) => 'isNew' in change),
-      },
+      existingLines: rawChanges.linesChanges.filter((change) => !change.isNew),
+      newLines: rawChanges.linesChanges.filter((change) => change.isNew),
+      surcharges: rawChanges.resChanges.filter((change) => change.path.startsWith('surcharges')),
     };
-  }, [getOrderChanges, order, modifiedOrder]);
+  }, [getObjectsChanges, order, modifiedOrder]);
 
-  const surcharges = useMemo(() => changes.resChanges.filter((ch) => ch.path.startsWith('surcharges')), [changes]);
-
-  const mabeyPriceMabeyAttribute = (fieldName: string, value: string | number) => {
-    if (fieldName.includes('price') && !isNaN(Number(value))) return (Number(value) / 100).toFixed(2);
-    return value;
+  const formatPrice = (value: string | number | undefined) => {
+    if (value === undefined) return '-';
+    const numValue = Number(value);
+    return isNaN(numValue) ? value : (numValue / 100).toFixed(2);
   };
 
-  const givePathForTranslation = (path: string): string => t(`changes.keys.${path.split('.').pop()}`, '');
+  const getFieldName = (path: string) => {
+    const fieldKey = path.split('.').pop() || '';
+    return t(`changes.keys.${fieldKey}`, fieldKey);
+  };
+
+  if (!changes || (!changes.existingLines.length && !changes.newLines.length && !changes.surcharges.length)) {
+    return (
+      <Card className="border-l-4 border-l-gray-300 dark:border-l-gray-600">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-gray-500" />
+            {t('changes.noChanges', 'No Changes')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">
+            {t('changes.noChangesDescription', 'No modifications have been made to this order.')}
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <div className="flex flex-col gap-4 pb-8">
-      {changes.linesChanges.existing.length ? (
-        <div className="flex flex-col gap-2">
-          <h3 className="text-base">Zmiany w liniach zamówienia</h3>
-          {changes.linesChanges.existing.map((change) => (
-            <Card className="border-warning-foreground" key={change?.lineID}>
-              <CardHeader>
-                <div className="flex flex-col  gap-2">
-                  <h4 className="text-muted-foreground">{`ID linii zamówienia: ${change?.lineID}`}</h4>
-                  <h4 className="text-muted-foreground">{`Nazwa wariantu: ${change?.variantName}`}</h4>{' '}
+    <div className="space-y-6">
+      {changes.existingLines.length > 0 && (
+        <Card className="border-l-4 border-l-amber-500 shadow-sm dark:border-l-amber-400">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ArrowRight className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+              {t('changes.existingLines', 'Changes to Existing Items')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {changes.existingLines.map((change) => (
+              <div key={change.lineID} className="rounded-md border p-4">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                  <h4 className="font-medium">{change.variantName}</h4>
+                  <Badge variant="outline" className="font-mono text-xs">
+                    {change.lineID}
+                  </Badge>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <h4>{t('changes.mainChanges')}</h4>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>{t('searchProduct.name')}</TableHead>
-                      <TableHead>{t('previous')}</TableHead>
-                      <TableHead>{t('current')}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {change?.changes.map((propertyChange, i) => (
-                      <TableRow key={i}>
-                        <TableCell className="text-muted-foreground font-medium">
-                          {givePathForTranslation(propertyChange.path)}
-                        </TableCell>
-                        <TableCell className="text-red-700">
-                          {mabeyPriceMabeyAttribute(propertyChange.path, propertyChange.removed)}
-                        </TableCell>
-                        <TableCell className="font-bold text-green-700">
-                          {mabeyPriceMabeyAttribute(propertyChange.path, propertyChange.added)}
-                        </TableCell>
+                <ScrollArea className="max-h-[300px]">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-1/3">{t('changes.property', 'Property')}</TableHead>
+                        <TableHead className="w-1/3">{t('changes.previous', 'Previous')}</TableHead>
+                        <TableHead className="w-1/3">{t('changes.current', 'Current')}</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-
-                {change?.changes.length ? (
-                  <>
-                    <div className="bg-muted-foreground my-6 h-[1px] w-full" />
-                    <h4>{t('changes.attributesChanges')}</h4>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>{t('changes.change')}</TableHead>
-                          <TableHead>{t('changes.key')}</TableHead>
-                          <TableHead>{t('changes.value')}</TableHead>
+                    </TableHeader>
+                    <TableBody>
+                      {change.changes.map((propertyChange, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">{getFieldName(propertyChange.path)}</TableCell>
+                          <TableCell className="text-red-600 dark:text-red-400">
+                            {propertyChange.path.includes('price') ? (
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="h-3.5 w-3.5" />
+                                {formatPrice(propertyChange.removed)}
+                              </span>
+                            ) : (
+                              propertyChange.removed
+                            )}
+                          </TableCell>
+                          <TableCell className="font-medium text-green-600 dark:text-green-400">
+                            {propertyChange.path.includes('price') ? (
+                              <span className="flex items-center gap-1">
+                                <DollarSign className="h-3.5 w-3.5" />
+                                {formatPrice(propertyChange.added)}
+                              </span>
+                            ) : (
+                              propertyChange.added
+                            )}
+                          </TableCell>
                         </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {change.changes.map((propertyChange, i) => (
-                          <TableRow
-                            className={cn(propertyChange.changed === 'removed' ? 'text-red-700' : 'text-green-700')}
-                            key={i}
-                          >
-                            <TableCell className="font-medium">
-                              {propertyChange.changed === 'removed' ? 'Usunięto atrybut' : `Dodano atrybut`}
-                            </TableCell>
-                            <TableCell>{propertyChange.path.split('.').pop()}</TableCell>
-                            <TableCell>{propertyChange.value as string}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </>
-                ) : null}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : null}
-
-      {changes.linesChanges.new.length ? (
-        <div className="flex flex-col gap-2">
-          <Card className="border-green-700">
-            <CardHeader>
-              <h3 className="text-base">{t('changes.newAddedLines')}</h3>
-            </CardHeader>
-            <CardContent>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </ScrollArea>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+      {changes.newLines.length > 0 && (
+        <Card className="border-l-4 border-l-green-500 shadow-sm dark:border-l-green-400">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Plus className="h-5 w-5 text-green-500 dark:text-green-400" />
+              {t('changes.newLines', 'Newly Added Items')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-[300px]">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t('changes.variant')}</TableHead>
-                    <TableHead>{t('changes.keys.price')}</TableHead>
-                    <TableHead>{t('changes.keys.priceWithTax')}</TableHead>
-                    <TableHead>{t('changes.keys.quantity')}</TableHead>
-                    <TableHead>{t('changes.keys.overallPriceWithTax')}</TableHead>
+                    <TableHead>{t('changes.product', 'Product')}</TableHead>
+                    <TableHead>{t('changes.unitPrice', 'Unit Price')}</TableHead>
+                    <TableHead>{t('changes.unitPriceWithTax', 'Unit Price (with Tax)')}</TableHead>
+                    <TableHead>{t('changes.quantity', 'Quantity')}</TableHead>
+                    <TableHead>{t('changes.total', 'Total')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {changes.linesChanges.new.map(({ changes }) =>
-                    changes.map((propertyChange, i) => (
-                      <TableRow key={i}>
-                        <TableCell className="text-muted-foreground font-medium">
-                          {(propertyChange.value as Record<string, Record<string, string>>).productVariant.name}
+                  {changes.newLines
+                    .flatMap((lineChange) => {
+                      const productChange = lineChange.changes.find(
+                        (change) =>
+                          typeof change.value === 'object' && change.value !== null && 'productVariant' in change.value,
+                      );
+                      if (!productChange || typeof productChange.value !== 'object') {
+                        return null;
+                      }
+                      const item = productChange.value as Record<string, any>;
+                      const variant = item.productVariant || {};
+                      const quantityChange = lineChange.changes.find((change) => change.path.includes('quantity'));
+                      const linePriceChange = lineChange.changes.find(
+                        (change) => change.path.includes('linePrice') && !change.path.includes('WithTax'),
+                      );
+
+                      const linePriceWithTaxChange = lineChange.changes.find((change) =>
+                        change.path.includes('linePriceWithTax'),
+                      );
+
+                      const quantity = quantityChange ? Number(quantityChange.added) : 1;
+                      const linePrice = linePriceChange ? Number(linePriceChange.added) : 0;
+                      const linePriceWithTax = linePriceWithTaxChange ? Number(linePriceWithTaxChange.added) : 0;
+
+                      return (
+                        <TableRow key={lineChange.lineID}>
+                          <TableCell className="font-medium">
+                            <div className="flex items-center gap-2">
+                              <Package className="h-4 w-4 text-green-500 dark:text-green-400" />
+                              {variant.name || lineChange.variantName || t('changes.unknownProduct', 'Unknown Product')}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <span className="flex items-center gap-1">
+                              <DollarSign className="text-muted-foreground h-3.5 w-3.5" />
+                              {formatPrice(linePrice)}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <span className="flex items-center gap-1">
+                              <DollarSign className="text-muted-foreground h-3.5 w-3.5" />
+                              {formatPrice(linePriceWithTax)}
+                            </span>
+                          </TableCell>
+                          <TableCell className="font-medium">{quantity}</TableCell>
+                          <TableCell className="font-medium">
+                            <span className="flex items-center gap-1 text-green-600 dark:text-green-400">
+                              <DollarSign className="h-3.5 w-3.5" />
+                              {formatPrice(quantity * linePriceWithTax)}
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                    .filter(Boolean)}
+                </TableBody>
+              </Table>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
+      {changes.surcharges.length > 0 && (
+        <Card className="border-l-4 border-l-blue-500 shadow-sm dark:border-l-blue-400">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Plus className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+              {t('changes.surcharges', 'Added Surcharges')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-[300px]">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('changes.description', 'Description')}</TableHead>
+                    <TableHead>{t('changes.sku', 'SKU')}</TableHead>
+                    <TableHead>{t('changes.price', 'Price')}</TableHead>
+                    <TableHead>{t('changes.priceWithTax', 'Price with Tax')}</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {changes.surcharges.map((surcharge, index) => {
+                    const item = surcharge.value || {};
+                    return (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            {item.description || t('changes.unnamedSurcharge', 'Unnamed Surcharge')}
+                          </div>
                         </TableCell>
                         <TableCell>
-                          {mabeyPriceMabeyAttribute(
-                            'price',
-                            (propertyChange.value as Record<string, string>).linePrice,
-                          )}
+                          <div className="flex items-center gap-2">
+                            <Tag className="text-muted-foreground h-4 w-4" />
+                            <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{item.sku || '-'}</code>
+                          </div>
                         </TableCell>
-                        <TableCell className="font-bold ">
-                          {mabeyPriceMabeyAttribute(
-                            'price',
-                            (propertyChange.value as Record<string, string>).linePriceWithTax,
-                          )}
+                        <TableCell>
+                          <span className="flex items-center gap-1">
+                            <DollarSign className="text-muted-foreground h-3.5 w-3.5" />
+                            {formatPrice(item.price)}
+                          </span>
                         </TableCell>
-                        <TableCell className="font-bold ">
-                          {(propertyChange.value as Record<string, number>).quantity}
-                        </TableCell>
-                        <TableCell className="font-bold ">
-                          {mabeyPriceMabeyAttribute(
-                            'price',
-                            (propertyChange.value as Record<string, number>).quantity *
-                              (propertyChange.value as Record<string, number>).linePriceWithTax,
-                          )}
+                        <TableCell className="font-medium">
+                          <span className="flex items-center gap-1 text-blue-600 dark:text-blue-400">
+                            <DollarSign className="h-3.5 w-3.5" />
+                            {formatPrice(item.priceWithTax)}
+                          </span>
                         </TableCell>
                       </TableRow>
-                    )),
-                  )}
+                    );
+                  })}
                 </TableBody>
               </Table>
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
-
-      {surcharges.length ? (
-        <div className="flex flex-col gap-2">
-          <Card className="border-green-700">
-            <CardHeader>
-              <h3 className="text-base">{t('changes.surcharges')}</h3>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{t('changes.keys.sku')}</TableHead>
-                    <TableHead>{t('changes.keys.price')}</TableHead>
-                    <TableHead>{t('changes.keys.priceWithTax')}</TableHead>
-                    <TableHead>{t('changes.keys.quantity')}</TableHead>
-                    <TableHead>{t('changes.keys.overallPriceWithTax')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {surcharges.map((surcharge, i) => (
-                    <TableRow key={i}>
-                      <TableCell className="text-muted-foreground font-medium">{surcharge.value?.sku}</TableCell>
-                      <TableCell>{mabeyPriceMabeyAttribute('price', surcharge.value?.price)}</TableCell>
-                      <TableCell className="font-bold ">
-                        {mabeyPriceMabeyAttribute('price', surcharge.value?.priceWithTax)}
-                      </TableCell>
-                      <TableCell className="font-bold ">-</TableCell>
-                      <TableCell className="font-bold ">
-                        {mabeyPriceMabeyAttribute('price', surcharge.value?.priceWithTax)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

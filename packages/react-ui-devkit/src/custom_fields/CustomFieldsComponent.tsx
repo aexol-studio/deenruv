@@ -43,7 +43,6 @@ export function CustomFieldsComponent<K extends { customFields?: ModelTypes['JSO
             setRendered({});
         };
     }, []);
-
     return (
         <Tabs className="w-full" defaultValue="General">
             {Object.keys(rendered).length > 1 && (

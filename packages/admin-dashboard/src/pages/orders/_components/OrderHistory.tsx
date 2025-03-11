@@ -144,5 +144,3 @@ export const OrderHistory: React.FC = () => {
     </Card>
   );
 };
-
-OrderHistory.displayName = 'OrderHistory';

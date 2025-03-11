@@ -70,10 +70,6 @@ export const OrderDetailSelector = Selector('Order')({
         price: true,
         taxRate: true,
     },
-    // getRealization: {
-    //   finalPlannedAt: true,
-    //   plannedAt: true,
-    // },
     couponCodes: true,
     promotions: {
         name: true,

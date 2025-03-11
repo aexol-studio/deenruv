@@ -48,7 +48,6 @@ export const ShippingMethod: React.FC = () => {
     () => shippingMethods.find((method) => method.id === currentOrder?.shippingLines?.[0]?.shippingMethod.id),
     [shippingMethods, currentOrder],
   );
-
   useEffect(() => {
     const fetch = async () => {
       if (order && order.id) {
@@ -73,11 +72,8 @@ export const ShippingMethod: React.FC = () => {
         }
       }
     };
-
-    if (open) {
-      fetch();
-    }
-  }, [order, t, open, currentOrder]);
+    fetch();
+  }, [t, currentOrder]);
 
   const selectShippingMethod = async (orderId: string, shippingMethodId: string) => {
     setIsSubmitting(true);

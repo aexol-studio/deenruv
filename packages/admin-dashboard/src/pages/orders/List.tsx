@@ -79,7 +79,14 @@ export const OrdersListPage = () => {
         {
           accessorKey: 'payments',
           header: () => <TableLabel>{t('columns.payments')}</TableLabel>,
-          accessorFn: (order) => order.payments?.map((payment) => payment.method).join(', '),
+          accessorFn: (order) => {
+            const sorted = order.payments
+              ?.sort((a, b) => {
+                return a.createdAt > b.createdAt ? -1 : 1;
+              })
+              .filter((payment) => payment.state === 'Settled');
+            return sorted?.at(0)?.method;
+          },
         },
         {
           accessorKey: 'shippingAddress',

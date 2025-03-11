@@ -84,6 +84,10 @@ const modifyQuery = (query: string): string => {
     const ast: DocumentNode = parse(query);
     const schema = window.__DEENRUV_SCHEMA__;
     if (!schema) return query;
+
+    // our ast is source of truth,
+    // we need to check all selections and add customFields when founded in the path
+
     return query;
 };
 

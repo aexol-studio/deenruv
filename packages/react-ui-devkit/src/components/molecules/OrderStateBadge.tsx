@@ -17,10 +17,14 @@ export const OrderStateBadge: React.FC<{ fullWidth?: boolean; state?: string; cl
             case ORDER_STATE.ADDING_ITEMS:
                 return { className: 'border-blue-600 bg-blue-100 text-blue-600', label: t('addingItems') };
             case ORDER_STATE.ARRANGING_PAYMENT:
-            case ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT:
                 return {
                     className: 'border-blue-600 bg-blue-600 text-blue-100',
                     label: t('arrangingPayment'),
+                };
+            case ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT:
+                return {
+                    className: 'border-blue-800 bg-blue-800 text-blue-2 00',
+                    label: t('arrangingAdditionalPayment'),
                 };
             case ORDER_STATE.PAYMENT_AUTHORIZED:
                 return {

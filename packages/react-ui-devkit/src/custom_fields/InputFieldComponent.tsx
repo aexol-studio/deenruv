@@ -34,6 +34,7 @@ export const InputFieldComponent = <T extends Field & { component: React.ReactNo
 }) => {
     return (
         <CustomFieldsProvider
+            key={field.name}
             field={field}
             value={value}
             setValue={setValue}
