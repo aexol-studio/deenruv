@@ -1,364 +1,428 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { format, set } from 'date-fns';
-import { Check, CalendarIcon } from 'lucide-react';
-import { cn } from '@deenruv/react-ui-devkit';
-import { DateRange } from 'react-day-picker';
+import { useState, useEffect, useRef } from "react"
+import { useTranslation } from "react-i18next"
+import { CircleUser, ArrowRight } from "lucide-react"
+import { cn, Routes, ScrollArea } from "@deenruv/react-ui-devkit"
 import {
-    Button,
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-    Input,
-    Label,
-    useLazyQuery,
-    useMutation,
-} from '@deenruv/react-ui-devkit';
-import { translationNS } from '../translation-ns';
-import { useForm, useFormContext, FormProvider } from 'react-hook-form';
-import { startOrderExportToReplicateMutation } from '../graphql/mutations.js';
-import { getPredictionQuery, getPredictionIDQuery } from '../graphql/queries.js';
-import { PredictionStatus, PredictionType } from '../zeus/index.js';
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  useLazyQuery,
+  useMutation,
+  Badge,
+} from "@deenruv/react-ui-devkit"
+import { translationNS } from "../translation-ns"
+import { useForm, FormProvider } from "react-hook-form"
+import { startOrderExportToReplicateMutation } from "../graphql/mutations.js"
 import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-    Calendar,
-} from '@deenruv/react-ui-devkit';
+  getPredictionIDQuery,
+  getReplicatePredictionsQuery,
+  getPredictionItemQuery,
+} from "../graphql/queries.js"
+import { PredictionStatus, PredictionType, SortOrder } from "../zeus/index.js"
+import type { ReplicateEntityListType, ReplicatePredictionListType } from "../graphql/selectors.js"
+import { DatePickerWithRange, copyToClipboard, exportToCsv } from "./ReplicateUtilities.js"
+import { useLocation, useNavigate } from "react-router-dom"
+import React from "react"
 
 type Formvalues = {
-    num_last_order: number;
-    start_date: string;
-    end_date: string;
-    predict_type: PredictionType;
-    show_metrics: boolean;
-};
-
-const predictionTypes = [
-    {
-        value: PredictionType.RFM_SCORE,
-        label: 'RFM Score',
-    },
-    {
-        value: PredictionType.SEGMENTATION,
-        label: 'Segmentation',
-    },
-];
-
-export function PredictionTypeCombobox() {
-    const { setValue, watch } = useFormContext<Formvalues>();
-    const [open, setOpen] = React.useState(false);
-    const value = watch('predict_type');
-
-    return (
-        <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-                <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-[200px] justify-between"
-                >
-                    {value ? predictionTypes.find(pt => pt.value === value)?.label : 'Select prediction type'}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-                <Command>
-                    <CommandInput placeholder="Search prediction type..." />
-                    <CommandList>
-                        <CommandEmpty>No prediction type found.</CommandEmpty>
-                        <CommandGroup>
-                            {predictionTypes.map(prediction_type => (
-                                <CommandItem
-                                    key={prediction_type.value}
-                                    value={prediction_type.value}
-                                    onSelect={currentValue => {
-                                        setValue('predict_type', currentValue as PredictionType);
-                                        setOpen(false);
-                                    }}
-                                >
-                                    <Check
-                                        className={cn(
-                                            'mr-2 h-4 w-4',
-                                            value === prediction_type.value ? 'opacity-100' : 'opacity-0',
-                                        )}
-                                    />
-                                    {prediction_type.label}
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
-                    </CommandList>
-                </Command>
-            </PopoverContent>
-        </Popover>
-    );
+  num_prospects: number
+  start_date: string
+  end_date: string
+  predict_type: PredictionType
+  show_metrics: boolean
 }
 
-function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivElement>) {
-    const { setValue, watch } = useFormContext<Formvalues>();
-    const [date, setDate] = React.useState<DateRange | undefined>(undefined);
+const PredictionStatusTypes = [
+  {
+    value: PredictionStatus.starting,
+    label: "In progress",
+  },
+  {
+    value: PredictionStatus.succeeded,
+    label: "Completed",
+  },
+  {
+    value: PredictionStatus.failed,
+    label: "Failed",
+  },
+]
 
-    useEffect(() => {
-        if (date?.from) {
-            setValue('start_date', format(date.from, 'yyyy-MM-dd'));
-        }
-        if (date?.to) {
-            setValue('end_date', format(date.to, 'yyyy-MM-dd'));
-        }
-    }, [date, setValue]);
+const MAX_RETRIES = 25
 
-    const startDate = watch('start_date');
-    const endDate = watch('end_date');
-
-    useEffect(() => {
-        if (startDate || endDate) {
-            setDate({
-                from: startDate ? new Date(startDate) : undefined,
-                to: endDate ? new Date(endDate) : undefined,
-            });
-        }
-    }, [startDate, endDate]);
-
-    return (
-        <div className={cn('grid gap-2', className)}>
-            <Popover>
-                <PopoverTrigger asChild>
-                    <Button
-                        id="date"
-                        variant={'outline'}
-                        className={cn(
-                            'w-[300px] justify-start text-left font-normal',
-                            !date && 'text-muted-foreground',
-                        )}
-                    >
-                        <CalendarIcon />
-                        {date?.from ? (
-                            date.to ? (
-                                <>
-                                    {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
-                                </>
-                            ) : (
-                                format(date.from, 'LLL dd, y')
-                            )
-                        ) : (
-                            <span>Pick a date</span>
-                        )}
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                        initialFocus
-                        mode="range"
-                        defaultMonth={date?.from}
-                        selected={date}
-                        onSelect={setDate}
-                        numberOfMonths={2}
-                    />
-                </PopoverContent>
-            </Popover>
-        </div>
-    );
-}
-
-const MAX_RETRIES = 25;
-const MAX_RETRIES_PREDICTION = 50;
 export const ReplicateInput = () => {
-    const { t } = useTranslation(translationNS);
-    const methods = useForm<Formvalues>({
-        defaultValues: {
-            num_last_order: 10000,
-            start_date: '',
-            end_date: '',
-            predict_type: PredictionType.RFM_SCORE,
-            show_metrics: true,
-        },
-    });
-    const { register, handleSubmit } = methods;
-    const [startOrderExportToReplicate] = useMutation(startOrderExportToReplicateMutation);
-    const [getData, { data }] = useLazyQuery(getPredictionQuery);
-    const [getPredictionID] = useLazyQuery(getPredictionIDQuery);
-    const [predictionID, setPredictionID] = useState<string | null>(null);
+  const { t } = useTranslation(translationNS)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const methods = useForm<Formvalues>({
+    defaultValues: {
+      num_prospects: 100,
+      start_date: "",
+      end_date: "",
+      predict_type: PredictionType.RFM_SCORE,
+      show_metrics: true,
+    },
+  })
 
-    const [loading, setLoading] = useState(false);
-    const [predictionEntityID, setPredictionEntityID] = useState<string | null>(null);
-    const [isPolling, setIsPolling] = useState(true);
-    const retryCountRef = useRef(0);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
-    useEffect(() => {
-        if (!predictionEntityID || !isPolling) return;
+  const getQueryParams = (query: string) => {
+    if (!query || query === "") return {}
+    const [key, value] = query.substring(1).split("=")
+    return key && value ? { [key]: value } : {}
+}
 
-        intervalRef.current = setInterval(() => {
-            if (retryCountRef.current >= MAX_RETRIES) {
-                console.warn('Max retries reached. Stopping polling.');
-                clearInterval(intervalRef.current as NodeJS.Timeout);
-                setIsPolling(false);
-                return;
+const queryParams = getQueryParams(location.search)
+const replicateId = queryParams.replicateId
+
+  const [items, setItems] = useState<ReplicateEntityListType["items"]>([])
+  const [totalItems, setTotalItems] = useState<ReplicateEntityListType["totalItems"]>(0)
+  const [predictions, setPredictions] = useState<ReplicatePredictionListType["predictions"]>([])
+  const { register, handleSubmit } = methods
+  const [startOrderExportToReplicate] = useMutation(startOrderExportToReplicateMutation)
+  const [getPredictionID] = useLazyQuery(getPredictionIDQuery)
+  const [getReplicatePredictions] = useLazyQuery(getReplicatePredictionsQuery)
+  const [getPredictionItem] = useLazyQuery(getPredictionItemQuery)
+  const [predictionID, setPredictionID] = useState<string | null>(null)
+
+  const [loading, setLoading] = useState(false)
+  const [predictionEntityID, setPredictionEntityID] = useState<string | null>(null)
+  const [activePredictionId, setActivePredictionId] = useState<string | null>(replicateId || null)
+  const [shouldStartPolling, setShouldStartPolling] = useState(false)
+  const [isPolling, setIsPolling] = useState(true)
+  const retryCountRef = useRef(0)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const retryPredictionCountRef = useRef(0)
+
+  useEffect(() => {
+    if (activePredictionId) {
+      const newUrl = `${location.pathname}?replicateId=${activePredictionId}`
+      navigate(newUrl, { replace: true })
+    }
+  }, [activePredictionId, navigate, location.pathname])
+  
+  useEffect(() => {
+    if (replicateId) {
+      setActivePredictionId(replicateId)
+      fetchPrediction(replicateId)
+    }
+  }, [predictions])
+
+  useEffect(() => {
+    if (!predictionEntityID || !isPolling) return
+
+    intervalRef.current = setInterval(() => {
+      if (retryCountRef.current >= MAX_RETRIES) {
+        console.warn("Max retries reached. Stopping polling.")
+        clearInterval(intervalRef.current as NodeJS.Timeout)
+        setIsPolling(false)
+        return
+      }
+
+      getPredictionID({
+        prediction_entity_id: predictionEntityID,
+      })
+        .then((response) => {
+          if (response?.getPredictionID) {
+            clearInterval(intervalRef.current as NodeJS.Timeout)
+            setIsPolling(false)
+            setPredictionID(response.getPredictionID)
+
+            setActivePredictionId(response.getPredictionID)
+          } else {
+            retryCountRef.current += 1
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching prediction:", error)
+          retryCountRef.current += 1
+        })
+    }, 5000)
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+  }, [predictionEntityID, isPolling])
+
+  function fetchList() {
+    getReplicatePredictions({
+      options: { sort: { finishedAt: SortOrder.DESC } },
+    }).then((response) => {
+      if (response?.getReplicatePredictions) {
+        const predictions = response.getReplicatePredictions.items
+        setItems(predictions)
+        setTotalItems(response.getReplicatePredictions.totalItems)
+
+        const startingPredictions = predictions.filter((item) => item.status === PredictionStatus.starting)
+        startingPredictions.forEach((prediction) => {
+          getPredictionItem({
+            id: prediction.id,
+          }).then((response) => {
+            if (response?.getPredictionItem) {
+              fetchList()
             }
+          })
+        })
+      }
+    })
+  }
 
-            getPredictionID({
-                prediction_entity_id: predictionEntityID,
-            })
-                .then(response => {
-                    if (response?.getPredictionID) {
-                        clearInterval(intervalRef.current as NodeJS.Timeout);
-                        setIsPolling(false);
-                        setPredictionID(response.getPredictionID);
-                    } else {
-                        retryCountRef.current += 1;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching prediction:', error);
-                    retryCountRef.current += 1;
-                });
-        }, 5000);
+  useEffect(() => {
+    fetchList()
+  }, [])
 
-        return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-        };
-    }, [predictionEntityID, isPolling]);
+  useEffect(() => {
+    if (!shouldStartPolling) return
 
-    const retryPredictionCountRef = useRef(0);
-    const intervalPredictionRef = useRef<NodeJS.Timeout | null>(null);
-    useEffect(() => {
-        if (!predictionID) return;
-        intervalPredictionRef.current = setInterval(() => {
-            if (retryPredictionCountRef.current >= MAX_RETRIES_PREDICTION) {
-                console.warn('Max retries reached. Stopping polling.');
-                clearInterval(intervalPredictionRef.current as NodeJS.Timeout);
-                return;
-            }
-            getData({
-                prediction_id: predictionID,
-            })
-                .then(response => {
-                    if (response?.getPrediction.status === PredictionStatus.succeeded) {
-                        clearInterval(intervalPredictionRef.current as NodeJS.Timeout);
-                        setLoading(false);
-                    } else if (response?.getPrediction.status === PredictionStatus.failed) {
-                        clearInterval(intervalPredictionRef.current as NodeJS.Timeout);
-                        setLoading(false);
-                        setPredictionID(null);
-                    } else {
-                        retryPredictionCountRef.current += 1;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching prediction:', error);
-                    retryPredictionCountRef.current += 1;
-                });
-        }, 5000);
-        return () => {
-            if (intervalPredictionRef.current) clearInterval(intervalPredictionRef.current);
-        };
-    }, [predictionID]);
+    const pollInterval = 2000
+    const maxRetries = 40
+    let retryCount = 0
 
-    const submit = async (data: Formvalues) => {
-        try {
-            setPredictionID(null);
-            setPredictionEntityID(null);
-            setIsPolling(true);
-            retryCountRef.current = 0;
-            retryPredictionCountRef.current = 0;
-            setLoading(true);
+    const intervalId = setInterval(() => {
+      if (retryCount >= maxRetries) {
+        clearInterval(intervalId)
+        setShouldStartPolling(false)
+        return
+      }
+      getReplicatePredictions({
+        options: { sort: { finishedAt: SortOrder.DESC } },
+      }).then((response) => {
+        if (response?.getReplicatePredictions) {
+          const predictions = response.getReplicatePredictions.items
+          setItems(predictions)
+          setTotalItems(response.getReplicatePredictions.totalItems)
 
-            const response = await startOrderExportToReplicate({
-                input: {
-                    numLastOrder: Number(data.num_last_order),
-                    startDate: new Date(data.start_date),
-                    endDate: new Date(data.end_date),
-                    predictType: data.predict_type,
-                    showMetrics: data.show_metrics,
-                },
-            });
+          const startingPrediction = predictions.find((item) => item.status === PredictionStatus.starting)
+          if (startingPrediction) {
+            setActivePredictionId(startingPrediction.id)
+          }
 
-            setPredictionEntityID(response.startOrderExportToReplicate);
-        } catch (error) {
-            console.log(error);
+          if (!predictions.some((item) => item.status === PredictionStatus.starting)) {
+            clearInterval(intervalId)
+            setShouldStartPolling(false)
+          }
         }
-    };
+      })
 
-    return (
-        <FormProvider {...methods}>
-            <div className="w-full px-4 py-2 md:px-8 md:py-4 flex gap-4">
-                <Card className="w-full">
-                    <CardHeader>
-                        <div className="flex justify-between items-start">
-                            <div className="flex flex-col gap-2">
-                                <CardTitle>{t('Set up your model')}</CardTitle>
-                                <CardDescription>
-                                    {t('model parametes:\n Set number of latest orders or orders data range')}
-                                </CardDescription>
+      retryCount++
+    }, pollInterval)
+
+    return () => clearInterval(intervalId)
+  }, [shouldStartPolling])
+
+  function fetchPrediction(predictionID: string) {
+    if (!predictionID) return
+
+    setActivePredictionId(predictionID)
+
+    getPredictionItem({
+      id: predictionID,
+    })
+      .then((response) => {
+        if (response?.getPredictionItem) {
+          if (response.getPredictionItem.status === PredictionStatus.succeeded) {
+            setPredictions(response.getPredictionItem.predictions)
+            setLoading(false)
+          } else if (response.getPredictionItem.status === PredictionStatus.failed) {
+            setPredictions([])
+            setLoading(false)
+          } else if (response.getPredictionItem.status === PredictionStatus.starting) {
+            setPredictionID(predictionID)
+            retryPredictionCountRef.current = 0
+          }
+        } else {
+          setLoading(false)
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching prediction:", error)
+        setLoading(false)
+      })
+  }
+
+  const submit = async (data: Formvalues) => {
+    try {
+      setPredictionID(null)
+      setPredictionEntityID(null)
+      setIsPolling(true)
+      retryCountRef.current = 0
+      retryPredictionCountRef.current = 0
+      setLoading(true)
+      setShouldStartPolling(true)
+
+      const response = await startOrderExportToReplicate({
+        input: {
+          startDate: new Date(data.start_date),
+          endDate: new Date(data.end_date),
+          predictType: data.predict_type,
+          showMetrics: data.show_metrics,
+        },
+      })
+
+      setPredictionEntityID(response.startOrderExportToReplicate)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case PredictionStatus.succeeded:
+        return "bg-green-500"
+      case PredictionStatus.failed:
+        return "bg-red-500"
+      case PredictionStatus.starting:
+        return "bg-blue-500"
+      default:
+        return "bg-gray-500"
+    }
+  }
+
+  return (
+    <FormProvider {...methods}>
+      <div className="w-full h-screen px-4 py-2 md:px-8 md:py-4 flex gap-4">
+        <div className="w-1/3 flex flex-col gap-4">
+          <Card className="w-full">
+            <CardHeader>
+              <div className="flex justify-between items-center w-full">
+                <div className="flex flex-col gap-2">
+                  <CardTitle>{t("Set up your model")}</CardTitle>
+                </div>
+                <Button onClick={handleSubmit((data) => submit(data))}>{t("Run model")}</Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-row gap-4 items-start">
+                <div className="flex flex-col gap-1">
+                  <Label>{t("Show X the best prospects:")}</Label>
+                  <Input className="w-[175px]" {...register("num_prospects")} />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label>{t("Orders data range:")}</Label>
+                  <DatePickerWithRange />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="w-full h-[calc(100vh-288px)]">
+            <CardHeader>
+              <CardTitle>{t("Previous model runs")}</CardTitle>
+            </CardHeader>
+            <CardContent className="h-[calc(100%-64px)]">
+              <ScrollArea className="h-full">
+                <div className="flex flex-col gap-3">
+                  {items.map((item, index) => (
+                    <Card
+                      key={index}
+                      className={cn(
+                        "border hover:border-primary transition-colors",
+                        activePredictionId === item.id ? "border-black border-2" : "",
+                      )}
+                      onClick={() => fetchPrediction(item.id)}
+                    >
+                      <CardContent className="py-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className="text-sm font-medium truncate max-w-[200px]">#{item.id}</span>
+                              <Badge variant="outline" className={cn("text-xs", getStatusColor(item.status))}>
+                                {PredictionStatusTypes.find((status) => status.value === item.status)?.label}
+                              </Badge>
+                              <span className="text-sm font-medium truncate max-w-[200px]">
+                                {item.finishedAt ? new Date(item.finishedAt as string).toLocaleString() : " "}
+                              </span>
                             </div>
+                          </div>
+                          {item.status === PredictionStatus.succeeded && (
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              className="h-8 w-8"
+                              onClick={() => fetchPrediction(item.id)}
+                              title={t("Fetch predictions")}
+                            >
+                              <ArrowRight className="h-4 w-4" />
+                            </Button>
+                          )}
                         </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-1 mt-2">
-                                <Label>{t('Number of latest orders:')}</Label>
-                                <Input {...register('num_last_order')} />
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-1 mt-2">
-                                <Label>{t('Orders data range:')}</Label>
-                                <DatePickerWithRange />
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-col gap-1 mt-2">
-                                <Label>{t('Prediction type:')}</Label>
-                                <PredictionTypeCombobox />
-                            </div>
-                        </div>
-                        <div className="flex justify-end mt-4">
-                            <Button onClick={handleSubmit(data => submit(data))}>{t('Run model')}</Button>
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card className="w-full">
-                    <CardHeader>
-                        <div className="flex justify-between items-start">
-                            <div className="flex flex-col gap-2">
-                                <CardTitle>{t('The most promising customers')}</CardTitle>
-                                <CardDescription>{t('Customer emails:')}</CardDescription>
-                            </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        {loading ? (
-                            <div>{t('loading')}</div>
-                        ) : (
-                            <div className="flex flex-col gap-2">
-                                {data?.getPrediction.predictions && (
-                                    <div>
-                                        [
-                                        {(data.getPrediction.predictions ?? [])
-                                            .filter((prediction: any) => prediction.email !== 'no-email')
-                                            .map((prediction: any, index: number) => (
-                                                <span key={prediction.id}>
-                                                    {prediction.email}
-                                                    {index <
-                                                        (data.getPrediction.predictions ?? []).length - 1 &&
-                                                        ', '}
-                                                </span>
-                                            ))}
-                                        ]
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </CardContent>
-                </Card>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="w-2/3 h-[calc(100vh-100px)]">
+          <CardHeader>
+            <div className="flex justify-between items-center w-full">
+              <div className="flex flex-col gap-2">
+                <CardTitle>{t("The most promising customers")}</CardTitle>
+                <CardDescription>
+                  {loading}
+                </CardDescription>
+              </div>
+              {predictions?.length != 0 && (
+                <div className="flex gap-1">
+                  <Button
+                    onClick={() =>
+                      predictions &&
+                      copyToClipboard(
+                        "[" + predictions.map((predictions) => predictions.customer?.emailAddress).join(", ") + "]",
+                      )
+                    }
+                  >
+                    {t("Copy to clipboard")}
+                  </Button>
+                  <Button onClick={() => exportToCsv(predictions)}>{t("Export to CSV")}</Button>
+                </div>
+              )}
             </div>
-        </FormProvider>
-    );
-};
+          </CardHeader>
+          <CardContent className="h-[calc(100%-100px)]">
+            {loading ? (
+                <div>{t("loading")}</div>
+            ) : (
+              <div className="flex flex-col gap-2 h-full">
+                {predictions && (
+                  <ScrollArea className="h-full">
+                    <div className="flex flex-col gap-3">
+                      {(predictions ?? []).slice(0, methods.watch("num_prospects")).map((prediction) => (
+                        <Card key={prediction.customer?.id || Math.random().toString()}>
+                          <CardContent className="py-3">
+                            <div className="flex items-center justify-between">
+                              <span className="flex items-center">
+                                <CircleUser className="mr-2" />
+                                {prediction.customer?.firstName} {prediction.customer?.lastName}
+                                <span className="ml-2 text-muted-foreground">
+                                  ({prediction.customer?.emailAddress})
+                                </span>
+                              </span>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                className="h-8 w-8"
+                                onClick={() => window.open(Routes.customers.to(prediction.customer?.id || ""))}
+                                title={t("Go to customer profile")}
+                              >
+                                <ArrowRight className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </FormProvider>
+  )
+}

@@ -14,7 +14,6 @@ export interface ModelTrainingQueueType {
 
 export interface OrderExportQueueType {
     serializedContext: SerializedRequestContext;
-    numLastOrder: number;
     startDate: string;
     endDate: string;
     predictType: string;

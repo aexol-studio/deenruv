@@ -13,7 +13,7 @@ export const ReplicateUiPlugin = createDeenruvUIPlugin({
     navMenuLinks: [
         {
             groupId: 'promotions-group',
-            href: 'newsletter-model',
+            href: 'newsletter-model/',
             id: 'newsletter-model',
             labelId: 'Newsletter Model',
             icon: NotebookPenIcon,

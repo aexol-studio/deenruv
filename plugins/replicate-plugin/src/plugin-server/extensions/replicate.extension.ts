@@ -40,19 +40,33 @@ export const AdminExtension = gql`
         failed
     }
 
+    type Prediction {
+        id: String!
+        score: Float!
+        customer: Customer
+    }
+
     type PredictionResult {
         status: PredictionStatus!
         predictions: [Prediction!]
     }
 
+    input ReplicateEntityListOptions
+
     extend type Query {
-        getPrediction(input: GetPredictionInput!): PredictionResult!
         getPredictionID(input: GetPredictionEntityInput!): String
+        getReplicatePredictions(options: ReplicateEntityListOptions): ReplicateEntityList!
+        getPredictionItem(id: String!): PredictionResult!
     }
 
-    type Prediction {
-        id: String!
-        score: Float!
-        email: String!
+    type ReplicateEntity implements Node {
+        id: ID!
+        status: PredictionStatus!
+        finishedAt: DateTime
+    }
+
+    type ReplicateEntityList implements PaginatedList {
+        items: [ReplicateEntity!]!
+        totalItems: Int!
     }
 `;

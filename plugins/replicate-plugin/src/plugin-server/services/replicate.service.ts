@@ -14,6 +14,8 @@ import {
     TransactionalConnection,
     ID,
     Customer,
+    ListQueryBuilder,
+    ListQueryOptions,
 } from '@deenruv/core';
 import fs from 'fs';
 import path from 'path';
@@ -40,24 +42,23 @@ export class ReplicateService implements OnModuleInit {
         @Inject(JobQueueService) private readonly jobQueueService: JobQueueService,
         @Inject(OrderService) private readonly orderService: OrderService,
         @Inject(CustomerService) private readonly customerService: CustomerService,
+        @Inject(ListQueryBuilder) private readonly listQueryBuilder: ListQueryBuilder,
     ) {}
 
     async processModelTrainingJob(job: Job<ModelTrainingQueueType>) {
         Logger.info('initializing model training', LOGGER_CTX);
-        const { serializedContext, numLastOrder, startDate, endDate } = job.data;
+        const { serializedContext, startDate, endDate } = job.data;
         const ctx = RequestContext.deserialize(serializedContext);
-        await this.startModelTraining(ctx, { numLastOrder, startDate, endDate });
+        await this.startModelTraining(ctx, { startDate, endDate });
         this.jobQueueService.start();
     }
 
     async processOrderExportJob(job: Job<OrderExportQueueType>) {
         Logger.info('initializing order export', LOGGER_CTX);
-        const { replicateEntityID, serializedContext, numLastOrder, startDate, endDate, showMetrics } =
-            job.data;
+        const { replicateEntityID, serializedContext, startDate, endDate, showMetrics } = job.data;
         const ctx = RequestContext.deserialize(serializedContext);
         await this.startOrderExportJob(ctx, {
             replicateEntityID,
-            numLastOrder,
             startDate,
             endDate,
             showMetrics,
@@ -87,7 +88,6 @@ export class ReplicateService implements OnModuleInit {
         await this.orderExportQueue.add({
             replicateEntityID: entity.id,
             serializedContext,
-            numLastOrder: input.numLastOrder ?? 30000,
             startDate: input.startDate ?? '',
             endDate: input.endDate ?? '',
             predictType: input.predictType ?? PredictionType.RFM_SCORE,
@@ -175,8 +175,7 @@ export class ReplicateService implements OnModuleInit {
         ctx: RequestContext,
         input: StartOrderExportToReplicateInput & { replicateEntityID: ID },
     ) {
-        let { numLastOrder, startDate, endDate, predictType, showMetrics, replicateEntityID } = input;
-        numLastOrder = numLastOrder || 30000;
+        let { startDate, endDate, predictType, showMetrics, replicateEntityID } = input;
         startDate = startDate || null;
         endDate = endDate || null;
         predictType = predictType ?? PredictionType.RFM_SCORE;
@@ -184,9 +183,25 @@ export class ReplicateService implements OnModuleInit {
         const columnNames = ['InvoiceNo', 'InvoiceDate', 'Total', 'CustomerId', 'Products'];
         const csv = [columnNames.join(',')];
 
+        const LatestOrders = await this.orderService.findAll(ctx, {
+            filter: {
+                orderPlacedAt:
+                    startDate && endDate
+                        ? {
+                              between: {
+                                  start: new Date(startDate),
+                                  end: new Date(endDate),
+                              },
+                          }
+                        : { isNull: false },
+            },
+        });
+
+        const numLatestOrders = LatestOrders.totalItems;
+
         let batch = 1;
-        if (numLastOrder > 1000) {
-            batch = Math.ceil(numLastOrder / 1000);
+        if (numLatestOrders > 1000) {
+            batch = Math.ceil(numLatestOrders / 1000);
         }
 
         for (let i = 0; i < batch; i++) {
@@ -219,12 +234,17 @@ export class ReplicateService implements OnModuleInit {
         fs.writeFileSync(filePath, csvString);
         Logger.info('order export completed', LOGGER_CTX);
 
-        const prediction_id = await this.triggerPredictApi(filePath, predictType, showMetrics || false);
-        await rm(tmp, { recursive: true, force: true });
+        const result = await this.triggerPredictApi(filePath, predictType, showMetrics || false);
+        if (!result) {
+            throw new Error('Failed to trigger predict API');
+        }
+        const { prediction_id, status } = result;
 
         await this.connection
             .getRepository(ctx, ReplicateEntity)
-            .update({ id: replicateEntityID }, { prediction_id });
+            .update({ id: replicateEntityID, status: status }, { prediction_id, status });
+
+        await rm(tmp, { recursive: true, force: true });
     }
 
     private async randomDate(start: Date, end: Date, startHour: number, endHour: number) {
@@ -287,29 +307,38 @@ export class ReplicateService implements OnModuleInit {
                 },
             );
 
-            return response.data.id;
+            return { prediction_id: response.data.id, status: response.data.status };
         } catch (error) {
             Logger.error('API call to replicate failed', LOGGER_CTX);
             console.error('Error:', error);
         }
     }
 
-    async getPrediction(ctx: RequestContext, prediction_id: string) {
+    async checkAndUpdatePredictionStatus(ctx: RequestContext, prediction_id: string) {
         try {
-            const response = await axios.get<{ status: string; output: string }>(
-                `https://api.replicate.com/v1/predictions/${prediction_id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.options.apiToken}`,
-                        'Content-Type': 'application/json',
-                    },
+            const response = await axios.get<{
+                status: string;
+                output: string;
+                completed_at: string;
+                error: string;
+            }>(`https://api.replicate.com/v1/predictions/${prediction_id}`, {
+                headers: {
+                    Authorization: `Bearer ${this.options.apiToken}`,
+                    'Content-Type': 'application/json',
                 },
-            );
+            });
 
             const status = response.data.status;
             let outputDict: { [key: string]: number } = {};
-            if (!response?.data?.output) {
-                return { predictions: [], status };
+
+            if (response?.data?.error) {
+                await this.connection
+                    .getRepository(ctx, ReplicateEntity)
+                    .update(
+                        { prediction_id },
+                        { status: PredictionStatus.failed, finishedAt: response.data.completed_at },
+                    );
+                return { predictions: [], status: PredictionStatus.failed };
             }
 
             try {
@@ -326,7 +355,7 @@ export class ReplicateService implements OnModuleInit {
             data.sort(([_1, ascore], [_2, bscore]) => bscore - ascore);
 
             const predictions: {
-                email: string;
+                customer: Customer | undefined;
                 id: string;
                 score: number;
             }[] = [];
@@ -339,19 +368,81 @@ export class ReplicateService implements OnModuleInit {
                 });
 
                 predictions.push(
-                    ...view.map(([id, score]) => ({
-                        id,
-                        score,
-                        email: res.find(r => +r.id === +id)?.emailAddress || '',
-                    })),
+                    ...view
+                        .map(([id, score]) => {
+                            const customer = res.find(r => +r.id === +id);
+                            if (!customer?.emailAddress) {
+                                return null;
+                            }
+                            return {
+                                id,
+                                score,
+                                customer: res.find(r => +r.id === +id),
+                            };
+                        })
+                        .filter((x): x is { customer: Customer; id: string; score: number } => !!x),
                 );
             }
 
-            return { predictions, status };
+            const output = predictions.map(({ customer, score }) => ({
+                customerId: customer?.id,
+                score,
+                customer,
+            }));
+
+            if (status !== 'starting' && response.data.output) {
+                await this.connection.getRepository(ctx, ReplicateEntity).update(
+                    { prediction_id },
+                    {
+                        output: output,
+                        status: status,
+                        finishedAt: response.data.completed_at,
+                    },
+                );
+            }
         } catch (error) {
-            Logger.error('API call to get prediction failed', LOGGER_CTX);
+            Logger.error('API call to check and update prediction status failed', LOGGER_CTX);
             console.error('Error:', error);
-            return { predictions: [], status: PredictionStatus.failed };
         }
+    }
+
+    async getPredictionItems(
+        ctx: RequestContext,
+        options?: ListQueryOptions<ReplicateEntity>,
+    ): Promise<PaginatedList<ReplicateEntity>> {
+        const qb = this.listQueryBuilder.build(ReplicateEntity, options, { ctx });
+        const [items, totalItems] = await qb.getManyAndCount();
+        return { items, totalItems };
+    }
+
+    async getPredictionItem(ctx: RequestContext, id: string) {
+        const prediction = await this.connection
+            .getRepository(ctx, ReplicateEntity)
+            .findOne({ where: { id } });
+        if (!prediction) {
+            throw new Error('Prediction not found');
+        }
+
+        if (prediction.status === PredictionStatus.starting) {
+            await this.checkAndUpdatePredictionStatus(ctx, prediction.prediction_id.toString());
+        }
+
+        if (prediction.output) {
+            const output = await Promise.all(
+                prediction.output.map(async ({ customerId, score }) => {
+                    const customer = await this.connection
+                        .getRepository(ctx, Customer)
+                        .findOne({ where: { id: customerId } });
+                    return {
+                        id: customerId,
+                        score,
+                        customer,
+                    };
+                }),
+            );
+
+            return { status: prediction.status, predictions: output };
+        }
+        return { status: prediction.status, predictions: [] };
     }
 }

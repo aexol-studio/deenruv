@@ -6,7 +6,7 @@ import { AssetServerPlugin, configureS3AssetStorage } from '@deenruv/asset-serve
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
-// import { ReplicatePlugin } from '@deenruv/replicate-plugin';
+import { ReplicatePlugin } from '@deenruv/replicate-plugin';
 import { FacetHarmonicaServerPlugin } from '@deenruv/facet-harmonica-plugin';
 import { InRealizationPlugin } from '@deenruv/in-realization-plugin';
 import { CopyOrderPlugin } from '@deenruv/copy-order-plugin';
@@ -324,12 +324,12 @@ export const devConfig: DeenruvConfig = {
         //     expiresIn: 60 * 60 * 24 * 3,
         //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
         // }),
-        // ReplicatePlugin.init({
-        //     deploymentName: process.env.REPLICATE_DEPLOYMENT_NAME || '',
-        //     url: process.env.REPLICATE_URL || '',
-        //     login: process.env.REPLICATE_LOGIN || '',
-        //     password: process.env.REPLICATE_PASSWORD || '',
-        //     apiToken: process.env.REPLICATE_API_TOKEN || '',
-        // }),
+        ReplicatePlugin.init({
+            deploymentName: process.env.REPLICATE_DEPLOYMENT_NAME || '',
+            url: process.env.REPLICATE_URL || '',
+            login: process.env.REPLICATE_LOGIN || '',
+            password: process.env.REPLICATE_PASSWORD || '',
+            apiToken: process.env.REPLICATE_API_TOKEN || '',
+        }),
     ],
 };

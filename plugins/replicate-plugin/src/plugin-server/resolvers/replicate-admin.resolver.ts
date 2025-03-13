@@ -1,6 +1,6 @@
 import { Resolver, Args, Mutation, Query } from '@nestjs/graphql';
 import { ReplicateService } from '../services/replicate.service.js';
-import { Ctx, RequestContext } from '@deenruv/core';
+import { Ctx, RequestContext, Customer } from '@deenruv/core';
 import { StartOrderExportToReplicateInput } from '../graphql/generated-admin-types.js';
 
 @Resolver()
@@ -33,14 +33,12 @@ export class ReplicateAdminResolver {
     }
 
     @Query()
-    async getPrediction(
-        @Args() { input }: { input: { prediction_id: string } },
-        @Ctx() ctx: RequestContext,
-    ): Promise<{ status: string; predictions: any[] }> {
-        const predictionData = await this.replicateService.getPrediction(ctx, input.prediction_id);
-        return {
-            status: predictionData.status,
-            predictions: predictionData.predictions,
-        };
+    async getReplicatePredictions(@Ctx() ctx: RequestContext, @Args() { options }: { options: any }) {
+        return this.replicateService.getPredictionItems(ctx, options);
+    }
+
+    @Query()
+    async getPredictionItem(@Ctx() ctx: RequestContext, @Args() { id }: { id: string }) {
+        return this.replicateService.getPredictionItem(ctx, id);
     }
 }

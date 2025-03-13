@@ -1,18 +1,8 @@
 import { typedGql } from '../zeus/typedDocumentNode';
 import { $ } from '../zeus';
 import { scalars } from '@deenruv/admin-types';
-import { PredictionSelector } from './selectors';
+import { PredictionSelector, ReplicateEntityListSelector } from './selectors';
 
-export const getPredictionQuery = typedGql('query', { scalars })({
-    getPrediction: [
-        {
-            input: {
-                prediction_id: $('prediction_id', 'String!'),
-            },
-        },
-        PredictionSelector,
-    ],
-});
 export const getPredictionIDQuery = typedGql('query', { scalars })({
     getPredictionID: [
         {
@@ -21,5 +11,21 @@ export const getPredictionIDQuery = typedGql('query', { scalars })({
             },
         },
         true,
+    ],
+});
+export const getReplicatePredictionsQuery = typedGql('query', { scalars })({
+    getReplicatePredictions: [
+        {
+            options: $('options', 'ReplicateEntityListOptions'),
+        },
+        ReplicateEntityListSelector,
+    ],
+});
+export const getPredictionItemQuery = typedGql('query', { scalars })({
+    getPredictionItem: [
+        {
+            id: $('id', 'String!'),
+        },
+        PredictionSelector,
     ],
 });

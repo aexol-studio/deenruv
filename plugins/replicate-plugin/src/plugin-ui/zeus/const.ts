@@ -174,11 +174,23 @@ export const AllTypesProps: Record<string,any> = {
 		metricSummary:{
 			input:"MetricSummaryInput"
 		},
+		remindPrzelewy24:{
+
+		},
+		getRealizationURL:{
+
+		},
 		getPrediction:{
 			input:"GetPredictionInput"
 		},
 		getPredictionID:{
 			input:"GetPredictionEntityInput"
+		},
+		getReplicatePredictions:{
+			options:"ReplicateEntityListOptions"
+		},
+		getPredictionItem:{
+
 		}
 	},
 	Mutation:{
@@ -656,6 +668,15 @@ export const AllTypesProps: Record<string,any> = {
 		removeMembersFromZone:{
 
 		},
+		copyOrder:{
+
+		},
+		registerRealization:{
+			input:"OrderRealizationInput"
+		},
+		sendInvoiceToWFirma:{
+			input:"SendInvoiceToWFirmaInput"
+		},
 		startOrderExportToReplicate:{
 			input:"StartOrderExportToReplicateInput"
 		},
@@ -848,11 +869,11 @@ export const AllTypesProps: Record<string,any> = {
 	CreateFacetInput:{
 		translations:"FacetTranslationInput",
 		values:"CreateFacetValueWithFacetInput",
-		customFields:"JSON"
+		customFields:"CreateFacetCustomFieldsInput"
 	},
 	UpdateFacetInput:{
 		translations:"FacetTranslationInput",
-		customFields:"JSON"
+		customFields:"UpdateFacetCustomFieldsInput"
 	},
 	FacetValueTranslationInput:{
 		languageCode:"LanguageCode",
@@ -863,11 +884,11 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateFacetValueInput:{
 		translations:"FacetValueTranslationInput",
-		customFields:"JSON"
+		customFields:"CreateFacetValueCustomFieldsInput"
 	},
 	UpdateFacetValueInput:{
 		translations:"FacetValueTranslationInput",
-		customFields:"JSON"
+		customFields:"UpdateFacetValueCustomFieldsInput"
 	},
 	AssignFacetsToChannelInput:{
 
@@ -929,7 +950,8 @@ export const AllTypesProps: Record<string,any> = {
 		shipping:"SortOrder",
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
-		totalWithTax:"SortOrder"
+		totalWithTax:"SortOrder",
+		selectedPaymentMethod:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -940,7 +962,7 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	UpdateOrderInput:{
-		customFields:"JSON"
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	FulfillOrderInput:{
 		lines:"OrderLineInput",
@@ -956,7 +978,7 @@ export const AllTypesProps: Record<string,any> = {
 		amount:"Money"
 	},
 	OrderLineInput:{
-
+		customFields:"OrderLineCustomFieldsInput"
 	},
 	SettleRefundInput:{
 
@@ -987,10 +1009,11 @@ export const AllTypesProps: Record<string,any> = {
 		updateBillingAddress:"UpdateOrderAddressInput",
 		refund:"AdministratorRefundInput",
 		refunds:"AdministratorRefundInput",
-		options:"ModifyOrderOptions"
+		options:"ModifyOrderOptions",
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	AddItemInput:{
-
+		customFields:"OrderLineCustomFieldsInput"
 	},
 	SurchargeInput:{
 		price:"Money"
@@ -999,10 +1022,10 @@ export const AllTypesProps: Record<string,any> = {
 		metadata:"JSON"
 	},
 	AddItemToDraftOrderInput:{
-
+		customFields:"OrderLineCustomFieldsInput"
 	},
 	AdjustDraftOrderLineInput:{
-
+		customFields:"OrderLineCustomFieldsInput"
 	},
 	PaymentMethodListOptions:{
 		sort:"PaymentMethodSortParameter",
@@ -1449,6 +1472,15 @@ export const AllTypesProps: Record<string,any> = {
 		interval:"MetricInterval",
 		types:"MetricType"
 	},
+	RealizationAssetInput:{
+
+	},
+	OrderRealizationInput:{
+		assets:"RealizationAssetInput"
+	},
+	SendInvoiceToWFirmaInput:{
+
+	},
 	PredictionType: "enum" as const,
 	StartOrderExportToReplicateInput:{
 		startDate:"DateTime",
@@ -1466,6 +1498,11 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	PredictionStatus: "enum" as const,
+	ReplicateEntityListOptions:{
+		sort:"ReplicateEntitySortParameter",
+		filter:"ReplicateEntityFilterParameter",
+		filterOperator:"LogicalOperator"
+	},
 	AdministratorFilterParameter:{
 		id:"IDOperators",
 		createdAt:"DateOperators",
@@ -1628,14 +1665,20 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetFilterParameter",
-		_or:"FacetFilterParameter"
+		_or:"FacetFilterParameter",
+		usedForColors:"BooleanOperators",
+		usedForProductCreations:"BooleanOperators",
+		colorsCollection:"BooleanOperators"
 	},
 	FacetSortParameter:{
 		id:"SortOrder",
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder"
+		code:"SortOrder",
+		usedForColors:"SortOrder",
+		usedForProductCreations:"SortOrder",
+		colorsCollection:"SortOrder"
 	},
 	FacetValueFilterParameter:{
 		id:"IDOperators",
@@ -1646,7 +1689,10 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetValueFilterParameter",
-		_or:"FacetValueFilterParameter"
+		_or:"FacetValueFilterParameter",
+		hexColor:"StringOperators",
+		isNew:"BooleanOperators",
+		isHidden:"BooleanOperators"
 	},
 	FacetValueSortParameter:{
 		id:"SortOrder",
@@ -1654,7 +1700,11 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		facetId:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder"
+		code:"SortOrder",
+		hexColor:"SortOrder",
+		isNew:"SortOrder",
+		isHidden:"SortOrder",
+		image:"SortOrder"
 	},
 	JobFilterParameter:{
 		id:"IDOperators",
@@ -1885,6 +1935,17 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		name:"SortOrder"
 	},
+	ReplicateEntityFilterParameter:{
+		id:"IDOperators",
+		status:"StringOperators",
+		finishedAt:"DateOperators",
+		_and:"ReplicateEntityFilterParameter",
+		_or:"ReplicateEntityFilterParameter"
+	},
+	ReplicateEntitySortParameter:{
+		id:"SortOrder",
+		finishedAt:"SortOrder"
+	},
 	HistoryEntryFilterParameter:{
 		isPublic:"BooleanOperators",
 		id:"IDOperators",
@@ -1898,6 +1959,24 @@ export const AllTypesProps: Record<string,any> = {
 		id:"SortOrder",
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder"
+	},
+	CreateFacetCustomFieldsInput:{
+
+	},
+	UpdateFacetCustomFieldsInput:{
+
+	},
+	CreateFacetValueCustomFieldsInput:{
+
+	},
+	UpdateFacetValueCustomFieldsInput:{
+
+	},
+	UpdateOrderCustomFieldsInput:{
+
+	},
+	OrderLineCustomFieldsInput:{
+
 	},
 	NativeAuthInput:{
 
@@ -1978,8 +2057,12 @@ export const ReturnTypes: Record<string,any> = {
 		zones:"ZoneList",
 		zone:"Zone",
 		metricSummary:"MetricSummary",
+		remindPrzelewy24:"Boolean",
+		getRealizationURL:"String",
 		getPrediction:"PredictionResult",
-		getPredictionID:"String"
+		getPredictionID:"String",
+		getReplicatePredictions:"ReplicateEntityList",
+		getPredictionItem:"PredictionResult"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2144,6 +2227,9 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
 		removeMembersFromZone:"Zone",
+		copyOrder:"CopyOrderResult",
+		registerRealization:"OrderRealization",
+		sendInvoiceToWFirma:"WFirmaResponse",
 		startOrderExportToReplicate:"String",
 		startModelTraining:"String"
 	},
@@ -2277,7 +2363,7 @@ export const ReturnTypes: Record<string,any> = {
 		values:"FacetValue",
 		valueList:"FacetValueList",
 		translations:"FacetTranslation",
-		customFields:"JSON"
+		customFields:"FacetCustomFields"
 	},
 	FacetInUseError:{
 		errorCode:"ErrorCode",
@@ -2405,7 +2491,8 @@ export const ReturnTypes: Record<string,any> = {
 		totalWithTax:"Money",
 		taxSummary:"OrderTaxSummary",
 		history:"HistoryEntryList",
-		customFields:"JSON"
+		getRealization:"OrderRealization",
+		customFields:"OrderCustomFields"
 	},
 	Fulfillment:{
 		nextStates:"String",
@@ -3053,6 +3140,7 @@ export const ReturnTypes: Record<string,any> = {
 		"...on ShippingMethodList": "ShippingMethodList",
 		"...on TagList": "TagList",
 		"...on TaxRateList": "TaxRateList",
+		"...on ReplicateEntityList": "ReplicateEntityList",
 		items:"Node",
 		totalItems:"Int"
 	},
@@ -3101,6 +3189,7 @@ export const ReturnTypes: Record<string,any> = {
 		"...on User": "User",
 		"...on AuthenticationMethod": "AuthenticationMethod",
 		"...on Zone": "Zone",
+		"...on ReplicateEntity": "ReplicateEntity",
 		id:"ID"
 	},
 	ErrorResult:{
@@ -3424,7 +3513,7 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		code:"String",
 		translations:"FacetValueTranslation",
-		customFields:"JSON"
+		customFields:"FacetValueCustomFields"
 	},
 	FacetValueTranslation:{
 		id:"ID",
@@ -3519,7 +3608,7 @@ export const ReturnTypes: Record<string,any> = {
 		taxLines:"TaxLine",
 		order:"Order",
 		fulfillmentLines:"FulfillmentLine",
-		customFields:"JSON"
+		customFields:"OrderLineCustomFields"
 	},
 	RefundLine:{
 		orderLine:"OrderLine",
@@ -3879,14 +3968,68 @@ export const ReturnTypes: Record<string,any> = {
 		label:"String",
 		value:"Float"
 	},
-	PredictionResult:{
-		status:"PredictionStatus",
-		predictions:"Prediction"
+	CopyOrderErrorResponse:{
+		message:"String"
+	},
+	CopyOrderResult:{
+		"...on Order":"Order",
+		"...on CopyOrderErrorResponse":"CopyOrderErrorResponse"
+	},
+	OrderRealization:{
+		orderID:"ID",
+		assetID:"ID",
+		plannedAt:"String",
+		finalPlannedAt:"String",
+		note:"String",
+		color:"String",
+		key:"String",
+		url:"String"
+	},
+	ShopOrderRealization:{
+		note:"String",
+		plannedAt:"String",
+		finalPlannedAt:"String"
+	},
+	WFirmaResponse:{
+		url:"String"
 	},
 	Prediction:{
 		id:"String",
 		score:"Float",
-		email:"String"
+		customer:"Customer"
+	},
+	PredictionResult:{
+		status:"PredictionStatus",
+		predictions:"Prediction"
+	},
+	ReplicateEntity:{
+		id:"ID",
+		status:"PredictionStatus",
+		finishedAt:"DateTime"
+	},
+	ReplicateEntityList:{
+		items:"ReplicateEntity",
+		totalItems:"Int"
+	},
+	FacetCustomFields:{
+		usedForColors:"Boolean",
+		usedForProductCreations:"Boolean",
+		colorsCollection:"Boolean"
+	},
+	FacetValueCustomFields:{
+		hexColor:"String",
+		isNew:"Boolean",
+		isHidden:"Boolean",
+		image:"Asset"
+	},
+	OrderCustomFields:{
+		selectedPaymentMethod:"PaymentMethod"
+	},
+	OrderLineCustomFields:{
+		discountBy:"Int",
+		modifiedListPrice:"String",
+		attributes:"String",
+		selectedImage:"Asset"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",
