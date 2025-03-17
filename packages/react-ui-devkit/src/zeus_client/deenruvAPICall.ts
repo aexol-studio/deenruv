@@ -1,4 +1,4 @@
-import { GraphQLSchema, useSettings } from '@/state';
+import { GraphQLSchema, GraphQLSchemaField, useSettings } from '@/state';
 import { DeenruvSettingsWindowType } from '@/types';
 import { GraphQLResponse, GraphQLError, Thunder, scalars, ResolverInputTypes } from '@deenruv/admin-types';
 import {
@@ -29,75 +29,97 @@ declare global {
 }
 type CallOptions = { type: 'standard' | 'upload' };
 
-const getCustomFieldPaths = (fields: any[], basePath: string, depth: number): string[] => {
-    if (!fields || depth <= 0) return [];
-
-    let paths: Set<string> = new Set();
-
-    for (const field of fields) {
-        const fieldPath = `${basePath}.${field.name}`;
-
-        if (field.name === 'customFields') {
-            paths.add(fieldPath);
-        } else if (field.fields && field.fields.length > 0) {
-            getCustomFieldPaths(field.fields, fieldPath, depth - 1).forEach(p => paths.add(p));
-        }
-    }
-
-    return Array.from(paths);
+const CUSTOM_MAP = {
+    Asset: ['id', 'source', 'preview'],
+    PaymentMethod: ['id'],
 };
 
-function traverseUntilBeforeCustomFields(
-    selectionSet: SelectionSetNode | undefined,
-    pathParts: string[],
-): FieldNode | null {
-    if (!selectionSet || pathParts.length === 0) return null;
+const processSelections = (selections: readonly SelectionNode[], parentQuery: GraphQLSchemaField): any => {
+    return selections.map(selection => {
+        if (selection.kind !== 'Field') return selection;
+        const founded = parentQuery.fields.find(field => field.name === selection.name.value);
+        if (!founded) return selection;
+        const nestedSelections =
+            selection.selectionSet?.selections &&
+            processSelections(selection.selectionSet.selections, founded);
+        const updatedSelection = {
+            ...selection,
+            selectionSet: nestedSelections
+                ? { kind: 'SelectionSet', selections: nestedSelections }
+                : undefined,
+        };
+        const foundedCustomFields = founded.fields?.find(
+            field => field.name === 'customFields' && field.type !== 'JSON',
+        );
 
-    let currentSelectionSet = selectionSet;
-    let lastValidNode: FieldNode | null = null;
-
-    for (const part of pathParts) {
-        const matchingSelection = currentSelectionSet.selections.find(
-            (s: SelectionNode) => (s as FieldNode).name.value === part,
-        ) as FieldNode | undefined;
-
-        if (!matchingSelection) {
-            console.log(
-                `Stopping at "${lastValidNode?.name.value || 'root'}" - Need to add .customFields here.`,
-            );
-            return lastValidNode;
+        if (foundedCustomFields && foundedCustomFields.fields.length) {
+            updatedSelection.selectionSet = {
+                kind: 'SelectionSet',
+                selections: [
+                    ...(updatedSelection.selectionSet?.selections || []),
+                    {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customFields' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: foundedCustomFields.fields.map(field => {
+                                if (field?.fields?.length || Object.keys(CUSTOM_MAP).includes(field.type)) {
+                                    const fields =
+                                        CUSTOM_MAP[field.type as keyof typeof CUSTOM_MAP] ||
+                                        field.fields.map(field => field.name);
+                                    const index = fields.indexOf('customFields');
+                                    if (index > -1) fields.splice(index, 1);
+                                    return {
+                                        kind: 'Field',
+                                        name: { kind: 'Name', value: field.name },
+                                        selectionSet: {
+                                            kind: 'SelectionSet',
+                                            selections: fields.map(field => ({
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: field },
+                                            })),
+                                        },
+                                    };
+                                } else {
+                                    return {
+                                        kind: 'Field',
+                                        name: { kind: 'Name', value: field.name },
+                                    };
+                                }
+                            }),
+                        },
+                    },
+                ],
+            };
         }
+        return updatedSelection;
+    });
+};
 
-        lastValidNode = matchingSelection;
-        if (!matchingSelection.selectionSet) {
-            console.log(`"${matchingSelection.name.value}" has no selectionSet.`);
-            return lastValidNode;
-        }
-
-        currentSelectionSet = matchingSelection.selectionSet;
-    }
-
-    return lastValidNode;
-}
-
-const modifyQuery = (query: string): string => {
+const modifyQuery = (query: string, variables: Record<string, unknown>) => {
     const ast: DocumentNode = parse(query);
     const schema = window.__DEENRUV_SCHEMA__;
-    if (!schema) return query;
-
-    // our ast is source of truth,
-    // we need to check all selections and add customFields when founded in the path
-
-    return query;
+    if (!schema) return { query, variables };
+    const result = visit(ast, {
+        Field: {
+            enter(node) {
+                const data = schema.get(node.name.value);
+                if (!data) return node;
+                const selections = processSelections(node.selectionSet?.selections || [], data);
+                return { ...node, selectionSet: { kind: 'SelectionSet', selections } };
+            },
+        },
+    });
+    return { query: print(result), variables };
 };
 
 export const deenruvAPICall = (options?: CallOptions) => {
     return async (
         _query: string,
-        variables: Record<string, unknown> = {},
+        _variables: Record<string, unknown> = {},
         customParams?: Record<string, string>,
     ) => {
-        const query = modifyQuery(_query);
+        const { query, variables } = modifyQuery(_query, _variables);
         const { translationsLanguage, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
         const { type } = options || {};
@@ -115,9 +137,9 @@ export const deenruvAPICall = (options?: CallOptions) => {
 
         if (type === 'upload') {
             const formData = new FormData();
-            formData.append('operations', JSON.stringify({ query: _query, variables }));
+            formData.append('operations', JSON.stringify({ query: _query, variables: _variables }));
             const mapData: Record<string, string[]> = {};
-            const files = variables.input as ResolverInputTypes['CreateAssetInput'][];
+            const files = _variables.input as ResolverInputTypes['CreateAssetInput'][];
             files.forEach((_, index) => {
                 mapData[(index + 1).toString()] = ['variables.input.' + index + '.file'];
             });

@@ -315,7 +315,12 @@ export function Navigation({ isCollapsed }: NavProps) {
         data-collapsed={isCollapsed}
         className="group flex h-[calc(100%-70px)] flex-col gap-4 py-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"
       >
-        <Accordion type="multiple" className="w-full" defaultValue={permittedNavigationGroups.map((g) => g.id)}>
+        <Accordion
+          type="multiple"
+          className="w-full"
+          defaultValue={permittedNavigationGroups.map((g) => g.id)}
+          value={isCollapsed ? permittedNavigationGroups.map((g) => g.id) : undefined}
+        >
           {permittedNavigationGroups.map((group) => (
             <AccordionItem value={group.id}>
               <React.Fragment key={group.id}>
@@ -324,7 +329,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                     <h4 className="px-6 text-xs font-bold uppercase">{group.label}</h4>
                   </AccordionTrigger>
                 )}
-                <AccordionContent>
+                <AccordionContent className={cn(isCollapsed ? 'py-2' : 'pb-4')}>
                   <nav
                     id={group.id}
                     className="text-muted-foreground grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2"

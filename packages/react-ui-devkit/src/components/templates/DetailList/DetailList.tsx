@@ -16,14 +16,14 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ImageOff, PlusCircleIcon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown, BooleanCell } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
-import { useServer } from '@/state';
+import { useServer, useSettings } from '@/state';
 import { ModelTypes, Permission, ValueTypes } from '@deenruv/admin-types';
 import React from 'react';
 import { deepMerge, mergeSelectorWithCustomFields } from '@/utils';
 import { usePluginStore } from '@/plugins';
 import { ListLocationID, PromisePaginated } from '@/types';
 import { useErrorHandler, useLocalStorage } from '@/hooks';
-import { Button, TableLabel } from '@/components';
+import { Button, TableLabel, useDetailView } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
 import { ListType } from './useDetailList/types';
 import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailList/constants';
@@ -92,16 +92,11 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     createPermission: Permission;
     deletePermission: Permission;
 } & (
-    | {
-          noCreateButton: true;
-          route: RouteBase | RouteWithoutCreate;
-      }
-    | {
-          noCreateButton?: false;
-          route: RouteBase | RouteWithCreate;
-      }
+    | { noCreateButton: true; route: RouteBase | RouteWithoutCreate }
+    | { noCreateButton?: false; route: RouteBase | RouteWithCreate }
 )) {
     const { t } = useTranslation('table');
+
     const { userPermissions } = useServer();
     const isPermittedToCreate = useMemo(() => userPermissions.includes(createPermission), [userPermissions]);
     const getPriority = (key: string): number => {

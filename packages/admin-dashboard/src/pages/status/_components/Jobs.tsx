@@ -18,6 +18,7 @@ import {
   formatDate,
   ListTable,
   useDetailList,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { ColumnDef, useReactTable, getCoreRowModel } from '@tanstack/react-table';
 import { AlertCircle, CheckCircle, Clock, MoreHorizontal, Play, RefreshCw, XCircle } from 'lucide-react';
@@ -109,13 +110,7 @@ export const Jobs = () => {
     }),
     [stateFilter, jobQueueFilter],
   );
-  const {
-    objects,
-    refetch,
-    Paginate,
-    Search,
-    filter: filter2,
-  } = useDetailList({
+  const { objects, refetch, Paginate, Search } = useDetailList({
     type: 'jobs',
     entityName: 'Job',
     searchFields: ['queueName'],
@@ -126,11 +121,7 @@ export const Jobs = () => {
             options: {
               take: perPage,
               skip: (page - 1) * perPage,
-              // ONLY THIS WORKS (SO WE CAN FILTER ONLY BY SELECTED FULL QUEUE NAME)
-              // filter: { queueName: { eq: '' } },
-              filter: {
-                ...filter,
-              },
+              filter: { ...filter },
               filterOperator,
             },
           },

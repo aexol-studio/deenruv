@@ -1,7 +1,7 @@
 import { ChannelType } from '@/selectors';
 import { LanguageCode } from '@deenruv/admin-types';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist, PersistStorage, StateStorage } from 'zustand/middleware';
 
 export const SETTINGS_LOCAL_STORAGE_KEY = 'deenruv-admin-panel-storage';
 type ThemeType = 'dark' | 'light' | 'system';
@@ -26,6 +26,18 @@ interface Actions {
     setAvailableLanguages(languages: LanguageCode[]): void;
 }
 
+const storage = {
+    getItem: (name: string) => {
+        const str = localStorage.getItem(name);
+        if (!str) return null;
+        return JSON.parse(str);
+    },
+    setItem: (name: string, value: unknown) => {
+        localStorage.setItem(name, JSON.stringify(value));
+    },
+    removeItem: (name: string) => localStorage.removeItem(name),
+};
+
 export const useSettings = create<Settings & Actions>()(
     persist(
         set => ({
@@ -47,6 +59,6 @@ export const useSettings = create<Settings & Actions>()(
             setTranslationsLanguage: translationsLanguage => set({ translationsLanguage }),
             setAvailableLanguages: availableLanguages => set({ availableLanguages }),
         }),
-        { name: SETTINGS_LOCAL_STORAGE_KEY },
+        { name: SETTINGS_LOCAL_STORAGE_KEY, storage },
     ),
 );

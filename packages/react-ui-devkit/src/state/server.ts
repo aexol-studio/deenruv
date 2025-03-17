@@ -206,9 +206,9 @@ const bindSchema = (
             .split('')
             .map(() => ']')
             .join('');
+        const typeName = finalType.name || 'UnknownType';
 
-        const typeName = finalType.name;
-        if (!typeName || visited.has(typeName)) return [];
+        if (visited.has(typeName)) return [];
         if (processingStack.has(typeName)) return [];
         if (typeName.startsWith('__')) return [];
         visited.add(typeName);
@@ -219,7 +219,19 @@ const bindSchema = (
             return [];
         }
         const fields = type.fields.map(field => {
-            const fieldType = `${field.type.name || ''}${typeWrapper}`;
+            let finalFieldType = field.type as any;
+            let fieldTypeWrapper = '';
+            while (finalFieldType.ofType) {
+                if (finalFieldType.name === 'List') fieldTypeWrapper += '[';
+                if (finalFieldType.name === 'NonNull') fieldTypeWrapper += '!';
+                finalFieldType = finalFieldType.ofType;
+            }
+            fieldTypeWrapper = fieldTypeWrapper
+                .split('')
+                .map(() => ']')
+                .join('');
+            const fieldType = finalFieldType.name || 'UnknownType';
+
             return {
                 name: field.name,
                 type: fieldType,

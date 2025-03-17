@@ -134,7 +134,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div
-          className="bg-background group relative overflow-hidden rounded-lg border transition-all hover:shadow-md"
+          className="bg-background group relative h-52 w-40 overflow-hidden rounded-lg border transition-all hover:shadow-md"
           onClick={() => getAsset()}
         >
           <div className="absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/5" />

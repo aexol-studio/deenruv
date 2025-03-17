@@ -90,13 +90,17 @@ export const Root = () => {
         );
         await fetchAndSetChannels();
       }
+
+      // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
       if (window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode) {
-        window?.__DEENRUV_SETTINGS__.i18n.changeLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
-        setLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
+        // window?.__DEENRUV_SETTINGS__.i18n.changeLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
+        // setLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultLanguageCode);
       }
+      // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
       if (window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode) {
-        setTranslationLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode);
+        // setTranslationLanguage(window?.__DEENRUV_SETTINGS__?.ui?.defaultTranslationLanguageCode);
       }
+
       const { globalSettings } = await apiClient('query')({
         globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true },
       });

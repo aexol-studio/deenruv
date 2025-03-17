@@ -40,16 +40,9 @@ export const FacetsDetailPage = () => {
       };
 
       if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
+        return update({ input: { id, ...inputData } });
       } else {
-        return create({
-          input: inputData,
-        });
+        return create({ input: inputData });
       }
     },
     [id, update, create],
@@ -59,7 +52,6 @@ export const FacetsDetailPage = () => {
     if (!id) {
       throw new Error('Could not find the id.');
     }
-
     return remove({ input: { id } });
   }, [remove, id]);
 
@@ -78,9 +70,7 @@ export const FacetsDetailPage = () => {
             config: {
               code: stringValidator(t('facets:requiredError')),
               translations: translationsValidator,
-              isPrivate: {
-                initialValue: false,
-              },
+              isPrivate: { initialValue: false },
             },
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,

@@ -135,7 +135,8 @@ export const DetailViewStoreProvider = <
     const setSidebar = useCallback(
         (sidebar: React.ReactNode) => {
             if (typeof sidebar === 'undefined') {
-                _setSidebar(sidebar);
+                const tabWithSidebar = tabs.find(t => (t as any).sidebar);
+                _setSidebar(tabWithSidebar ? (tabWithSidebar as any).sidebar : sidebar);
             } else if (sidebar === null) {
                 _setSidebar(null);
             } else {

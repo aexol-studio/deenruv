@@ -131,6 +131,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
 
     const currentSidebar = useMemo(() => {
         const currentTab = defaultTabs.find(t => t.name === tab);
+        if (!currentTab) return main.sidebar;
         return currentTab?.hideSidebar
             ? null
             : currentTab?.sidebarReplacement
@@ -214,7 +215,7 @@ const DetailTabs = ({
             }}
         >
             <div className="bg-muted sticky top-0 z-[51] w-full items-center justify-start shadow-xl">
-                <div className="flex w-full items-center justify-between px-4 pt-1">
+                <div className="flex w-full items-center justify-between px-4 py-2">
                     <div className="flex w-full flex-1">
                         {tabs.length > 1 && (
                             <TabsList className="h-12 bg-transparent justify-start gap-2 p-0">

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -40,7 +40,10 @@ const STOCK_LOCATION_FORM_KEYS = ['CreateFacetInput', 'translations', 'values', 
 
 export const FacetsDetailView = () => {
   const { id } = useParams();
-  const { form, loading, fetchEntity, entity } = useDetailView('facets-detail-view', ...STOCK_LOCATION_FORM_KEYS);
+  const { form, fetchEntity, entity, additionalData, setAdditionalData } = useDetailView(
+    'facets-detail-view',
+    ...STOCK_LOCATION_FORM_KEYS,
+  );
   const {
     base: { setField, state },
   } = form;
@@ -74,7 +77,7 @@ export const FacetsDetailView = () => {
     ) => {
       const selector = deepMerge(
         deepMerge(
-          { id: true, name: true, code: true, customFields: true },
+          { id: true, name: true, code: true },
           customFieldsSelector ?? { hexColor: true, isNew: true, isHidden: true, image: true },
         ),
         additionalSelector ?? {},
@@ -87,12 +90,7 @@ export const FacetsDetailView = () => {
               skip: (page - 1) * perPage,
               filterOperator: filterOperator,
               sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
-              ...(filter && {
-                filter: {
-                  ...filter,
-                  facetId: { eq: id },
-                },
-              }),
+              ...(filter && { filter: { ...filter, facetId: { eq: id } } }),
             },
           },
           { items: selector, totalItems: true },
@@ -106,9 +104,7 @@ export const FacetsDetailView = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchEntity();
-
       if (!res) return;
-
       setField('translations', res.translations);
       setField('code', res.code);
       setField('isPrivate', res.isPrivate);
@@ -121,11 +117,7 @@ export const FacetsDetailView = () => {
     }
   }, [currentTranslationValue?.name, editMode]);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
-  ) : !entity && editMode ? (
+  return !entity && editMode ? (
     <div className="flex min-h-[80vh] w-full items-center justify-center">
       {t('facets:toasts.facetLoadingError', { value: id })}
     </div>
@@ -177,7 +169,10 @@ export const FacetsDetailView = () => {
                     setOpen={setOpen}
                     facetId={entity.id}
                     facetValueId={facetValueIdInModal}
-                    onFacetValueChange={fetchEntity}
+                    onFacetValueChange={() => {
+                      setAdditionalData({ ...additionalData, refetchList: true });
+                      setFacetValueIdInModal(null);
+                    }}
                   />
                 </CardTitle>
                 <CardContent className="flex p-0 pt-0">

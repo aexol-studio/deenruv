@@ -231,7 +231,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                     OrderDetailSelector,
                     graphQLSchema?.get('order')?.fields || [],
                 );
-                const { order } = await apiClient('query')({ order: [{ id }, selector] });
+                const { order } = await apiClient('query')({ order: [{ id }, OrderDetailSelector] });
                 if (!order) {
                     throw new Error(`Failed to load order with id ${id}`);
                 }

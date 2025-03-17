@@ -8,6 +8,7 @@ import {
   Label,
   DialogFooter,
   apiClient,
+  useSettings,
 } from '@deenruv/react-ui-devkit';
 
 import { LanguageCode } from '@deenruv/admin-types';
@@ -22,7 +23,7 @@ interface AddFacetValueDialogProps {
   facetValueId?: string | null;
   onFacetValueChange: () => void;
   open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setOpen: (open: boolean) => void;
 }
 
 export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
@@ -34,7 +35,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
 }) => {
   const editMode = useMemo(() => !!facetValueId, [facetValueId]);
   const { t } = useTranslation('facets');
-
+  const { translationsLanguage: languageCode } = useSettings(({ translationsLanguage }) => ({ translationsLanguage }));
   const { state, setField } = useGFFLP(
     'FacetValue',
     'name',
@@ -59,20 +60,16 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
       apiClient('query')({
         facetValues: [
           { options: { filter: { id: { eq: facetValueId } } } },
-          {
-            items: {
-              code: true,
-              translations: {
-                name: true,
-              },
-            },
-          },
+          { items: { code: true, translations: { languageCode: true, name: true } } },
         ],
       }).then((resp) => {
         setField('code', resp.facetValues.items[0].code);
-        setField('name', resp.facetValues.items[0].translations[0].name);
+        setField(
+          'name',
+          resp.facetValues.items[0].translations.find((t) => t.languageCode === languageCode)?.name || '',
+        );
       }),
-    [facetValueId, t],
+    [facetValueId, t, languageCode],
   );
 
   useEffect(() => {
@@ -99,14 +96,9 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           {
             input: [
               {
-                code: state.code!.value,
-                translations: [
-                  {
-                    languageCode: LanguageCode.pl,
-                    name: state.name?.value,
-                  },
-                ],
                 facetId,
+                code: state.code!.value,
+                translations: [{ languageCode, name: state.name?.value }],
               },
             ],
           },
@@ -118,25 +110,19 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           resetValues();
         })
         .catch((err) => toast.message(t('addValueModal.error') + ': ' + err)),
-    [state, facetId, resetValues, t],
+    [state, languageCode, facetId, resetValues, t],
   );
 
   const updateFacetValue = useCallback(() => {
-    if (!facetId) return;
-
+    if (!facetValueId) return;
     apiClient('mutation')({
       updateFacetValues: [
         {
           input: [
             {
+              id: facetValueId,
               code: state.code!.value,
-              translations: [
-                {
-                  languageCode: LanguageCode.pl,
-                  name: state.name?.value,
-                },
-              ],
-              id: facetId,
+              translations: [{ languageCode, name: state.name?.value }],
             },
           ],
         },
@@ -148,11 +134,11 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
         resetValues();
       })
       .catch((err) => toast.message(t('addValueModal.error') + ': ' + err));
-  }, [state, facetId, resetValues, t]);
+  }, [state, languageCode, facetId, resetValues, t]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{editMode ? t('addValueModal.editTitle') : t('addValueModal.title')}</DialogTitle>
         </DialogHeader>
@@ -176,9 +162,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
                     {
                       items: {
                         code: true,
-                        translations: {
-                          name: true,
-                        },
+                        translations: { name: true },
                         ...runtimeSelector,
                       },
                     },

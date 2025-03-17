@@ -7,6 +7,8 @@ import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models
 import { ListType } from './types';
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
 import { SortSelect } from '@/components/templates/DetailList/useDetailList/SortSelect.js';
+import { useSettings } from '@/state/settings.js';
+import { useDetailView } from '../../DetailView/useDetailView.js';
 
 type LimitKeys =
     | '10perPage'
@@ -70,6 +72,10 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     resetFilterFields: () => void;
     changeFilterField: (index: number, field: FIELD) => void;
 } => {
+    const { additionalData, setAdditionalData } = useDetailView();
+    const { translationsLanguage } = useSettings(({ translationsLanguage }) => ({
+        translationsLanguage,
+    }));
     const [searchParams, setSearchParams] = useCustomSearchParams();
     const [total, setTotal] = useState(0);
     const [objects, setObjects] = useState<GenericReturn<T>>();
@@ -210,7 +216,17 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
             setObjects(items);
             setTotal(totalItems);
         });
-    }, [searchParams, Object.keys(customFieldsSelector || {}).length]);
+    }, [translationsLanguage, searchParams, Object.keys(customFieldsSelector || {}).length]);
+
+    useEffect(() => {
+        if (additionalData && 'refetchList' in additionalData && additionalData.refetchList) {
+            fetch(searchParamValues, customFieldsSelector).then(({ items, totalItems }) => {
+                setObjects(items);
+                setTotal(totalItems);
+            });
+            setAdditionalData({ ...additionalData, refetchList: false });
+        }
+    }, [additionalData, translationsLanguage, searchParams, Object.keys(customFieldsSelector || {}).length]);
 
     const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
     const totalPages = useMemo(

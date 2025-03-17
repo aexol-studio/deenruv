@@ -24,9 +24,21 @@ import {
   useServer,
   usePluginStore,
   cn,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 
-import { Bell, GripVertical, LogOutIcon, MenuIcon, Moon, Slash, Sun, Trash2Icon, SunMoon } from 'lucide-react';
+import {
+  Bell,
+  GripVertical,
+  LogOutIcon,
+  MenuIcon,
+  Moon,
+  Slash,
+  Sun,
+  Trash2Icon,
+  SunMoon,
+  RotateCwSquare,
+} from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 
 import { Navigation } from './Navigation.js';
@@ -35,6 +47,7 @@ import { ChannelSwitcher } from './ChannelSwitcher.js';
 import { clearAllCache } from '@/lists/cache';
 import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
+import { Notifications } from './Notifications.js';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
@@ -83,7 +96,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const { activeAdministrator } = useServer();
+  const { activeAdministrator, fetchPendingJobs } = useServer();
+
+  const rebuildSearchIndex = async () => {};
 
   const matches = useMatches();
   const crumbs = useMemo(
@@ -192,23 +207,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                       <ChannelSwitcher />
                     </div>
                     {/* <ActiveAdmins /> */}
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" size="icon" className="h-10 w-10">
-                          <Bell className="h-4 w-4" />
-                          <span className="sr-only">{t('toggleNotifications')}</span>
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="mr-4">
-                        <div className="flex flex-col gap-4 rounded-md">
-                          <Label className="select-none">{t('notifications')}</Label>
-                          <div className="flex items-center gap-4 border border-dashed p-4">
-                            <Bell className="text-accent h-4 w-4" />
-                            <span className="text-muted-foreground text-sm">{t('noNewNotifications')}</span>
-                          </div>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
+                    <Notifications />
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="icon">
@@ -236,6 +235,13 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="z-[150] mr-6 min-w-40">
                         <DropdownMenuLabel>{activeAdministrator?.emailAddress}</DropdownMenuLabel>
+                        <DropdownMenuItem
+                          className="flex cursor-pointer items-center gap-2 text-nowrap"
+                          onSelect={rebuildSearchIndex}
+                        >
+                          <RotateCwSquare className="h-4 w-4" />
+                          Przebuduj search index
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           className="flex cursor-pointer items-center gap-2 text-nowrap"
