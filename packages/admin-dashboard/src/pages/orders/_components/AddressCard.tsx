@@ -81,7 +81,7 @@ export const AddressCard: React.FC<{
   const [selectedAddress, setSelectedAddress] = useState<DefaultAddress | undefined>(undefined);
   const isShipping = type === 'shipping';
 
-  const { state, setField, checkIfAllFieldsAreValid, setState } = useGFFLP(
+  const { state, setField, setState } = useGFFLP(
     'CreateAddressInput',
     'city',
     'company',
@@ -137,32 +137,47 @@ export const AddressCard: React.FC<{
     customFields: { initialValue: {} },
   });
 
+  useEffect(() => {
+    if (selectedAddress) {
+      setState({
+        ...selectedAddress,
+        countryCode: selectedAddress.country?.code || '',
+        streetLine1: selectedAddress.streetLine1 || '',
+      });
+    }
+  }, [selectedAddress]);
+
   const submitAddress = async () => {
     if (!order) return;
     if (tab === 'select' && !selectedAddress) return;
 
-    if (mode === 'update' && selectedAddress && modifiedOrder) {
+    console.log(mode, selectedAddress, state, modifiedOrder);
+
+    if (mode === 'update' && modifiedOrder) {
       const addressTypeKey = type === 'shipping' ? 'shippingAddress' : 'billingAddress';
 
       setModifiedOrder({
         ...modifiedOrder,
         [addressTypeKey]: {
-          fullName: selectedAddress.fullName,
-          company: selectedAddress.company,
-          streetLine1: selectedAddress.streetLine1,
-          streetLine2: selectedAddress.streetLine2,
-          countryCode: selectedAddress.country?.code || '',
-          city: selectedAddress.city,
-          phoneNumber: selectedAddress.phoneNumber,
-          postalCode: selectedAddress.postalCode,
-          province: selectedAddress.province,
+          fullName: state.fullName?.validatedValue,
+          company: state.company?.validatedValue,
+          streetLine1: state.streetLine1?.validatedValue,
+          streetLine2: state.streetLine2?.validatedValue,
+          countryCode: state.countryCode?.validatedValue || '',
+          city: state.city?.validatedValue,
+          phoneNumber: state.phoneNumber?.validatedValue,
+          postalCode: state.postalCode?.validatedValue,
+          province: state.province?.validatedValue,
         },
       });
 
-      toast.success(t('selectAddress.addressUpdated', 'Address updated successfully'));
+      toast.success(t('selectAddress.addressUpdated'));
       setOpen(false);
+      console.log('ADD', selectedAddress);
       return;
     }
+
+    console.log('NOOO');
 
     setSubmitting(true);
     try {
@@ -202,19 +217,13 @@ export const AddressCard: React.FC<{
       if (setDraftOrderShippingAddress || setDraftOrderBillingAddress) {
         setModifiedOrder(type === 'shipping' ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
         toast.success(
-          t(
-            tab === 'create' ? 'selectAddress.addressSuccessCreateToast' : 'selectAddress.addressSuccessSelectToast',
-            'Address updated successfully',
-          ),
+          t(tab === 'create' ? 'selectAddress.addressSuccessCreateToast' : 'selectAddress.addressSuccessSelectToast'),
         );
         setOrder(setDraftOrderShippingAddress ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
         setOpen(false);
       } else {
         toast.error(
-          t(
-            tab === 'create' ? 'selectAddress.addressFailedCreateToast' : 'selectAddress.addressFailedSelectToast',
-            'Failed to update address',
-          ),
+          t(tab === 'create' ? 'selectAddress.addressFailedCreateToast' : 'selectAddress.addressFailedSelectToast'),
         );
       }
 
@@ -229,11 +238,11 @@ export const AddressCard: React.FC<{
           setTab('select');
           setCreateForCustomer(false);
         } else {
-          toast.error(t('selectAddress.addressAddFailed', 'Failed to add address to customer'));
+          toast.error(t('selectAddress.addressAddFailed'));
         }
       }
     } catch (error) {
-      toast.error(t('selectAddress.addressError', 'An error occurred while updating the address'));
+      toast.error(t('selectAddress.addressError'));
     } finally {
       setSubmitting(false);
     }
@@ -303,10 +312,7 @@ export const AddressCard: React.FC<{
               <Building className={`h-5 w-5 ${iconColor}`} />
             )}
             <CardTitle className="text-base font-semibold">
-              {t(
-                isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader',
-                isShipping ? 'Shipping Address' : 'Billing Address',
-              )}
+              {t(isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader')}
             </CardTitle>
           </div>
           {mode !== 'view' && (
@@ -324,22 +330,16 @@ export const AddressCard: React.FC<{
                     ) : (
                       <Building className={`h-5 w-5 ${iconColor}`} />
                     )}
-                    {t('selectAddress.selectAddress', 'Select Address')}
+                    {t('selectAddress.selectAddress')}
                   </DialogTitle>
                   <DialogDescription className="text-muted-foreground mt-2">
                     {isShipping
                       ? order?.customer?.addresses?.length
-                        ? t(
-                            'selectAddress.selectShippingAddress',
-                            'Choose a shipping address from saved addresses or create a new one',
-                          )
-                        : t('selectAddress.createShippingAddress', 'Create a new shipping address')
+                        ? t('selectAddress.selectShippingAddress')
+                        : t('selectAddress.createShippingAddress')
                       : order?.customer?.addresses?.length
-                        ? t(
-                            'selectAddress.selectBillingAddress',
-                            'Choose a billing address from saved addresses or create a new one',
-                          )
-                        : t('selectAddress.createBillingAddress', 'Create a new billing address')}
+                        ? t('selectAddress.selectBillingAddress')
+                        : t('selectAddress.createBillingAddress')}
                   </DialogDescription>
                 </DialogHeader>
                 <Tabs
@@ -351,10 +351,10 @@ export const AddressCard: React.FC<{
                   {order?.customer?.addresses?.length ? (
                     <TabsList className="my-4 grid w-full grid-cols-2">
                       <TabsTrigger className="w-full" value="select">
-                        {t('selectAddress.selectAddress', 'Select Address')}
+                        {t('selectAddress.selectAddress')}
                       </TabsTrigger>
-                      <TabsTrigger className="w-full" value="create" onClick={() => setSelectedAddress(undefined)}>
-                        {t('selectAddress.editAddress', 'Create/Edit Address')}
+                      <TabsTrigger className="w-full" value="create">
+                        {t('selectAddress.editAddress')}
                       </TabsTrigger>
                     </TabsList>
                   ) : null}
@@ -401,12 +401,12 @@ export const AddressCard: React.FC<{
                               <div className="mt-2 flex gap-2">
                                 {address.defaultBillingAddress && (
                                   <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-xs text-cyan-800 dark:bg-cyan-900/50 dark:text-cyan-300">
-                                    {t('selectAddress.isDefaultBilling', 'Default Billing')}
+                                    {t('selectAddress.isDefaultBilling')}
                                   </span>
                                 )}
                                 {address.defaultShippingAddress && (
                                   <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
-                                    {t('selectAddress.isDefaultShipping', 'Default Shipping')}
+                                    {t('selectAddress.isDefaultShipping')}
                                   </span>
                                 )}
                               </div>
@@ -439,11 +439,11 @@ export const AddressCard: React.FC<{
                       <div className="space-y-4 px-1">
                         <div className="space-y-1">
                           <Label htmlFor="fullName" className="text-sm font-medium">
-                            {t('selectAddress.inputNameLabel', 'Full Name')} <span className="text-red-500">*</span>
+                            {t('selectAddress.inputNameLabel')} <span className="text-red-500">*</span>
                           </Label>
                           <Input
                             id="fullName"
-                            placeholder={t('selectAddress.inputNamePlaceholder', 'Enter full name')}
+                            placeholder={t('selectAddress.inputNamePlaceholder')}
                             value={state.fullName?.value ?? undefined}
                             defaultValue={state?.fullName?.value ?? undefined}
                             onChange={(e) => setField('fullName', e.target.value)}
@@ -454,12 +454,11 @@ export const AddressCard: React.FC<{
                         </div>
                         <div className="space-y-1">
                           <Label htmlFor="streetLine1" className="text-sm font-medium">
-                            {t('selectAddress.inputStreetLabel', 'Street Address')}{' '}
-                            <span className="text-red-500">*</span>
+                            {t('selectAddress.inputStreetLabel')} <span className="text-red-500">*</span>
                           </Label>
                           <Input
                             id="streetLine1"
-                            placeholder={t('selectAddress.inputStreetPlaceholder', 'Enter street address')}
+                            placeholder={t('selectAddress.inputStreetPlaceholder')}
                             value={state.streetLine1?.value}
                             defaultValue={state?.streetLine1?.value}
                             onChange={(e) => setField('streetLine1', e.target.value)}
@@ -470,14 +469,11 @@ export const AddressCard: React.FC<{
                         </div>
                         <div className="space-y-1">
                           <Label htmlFor="streetLine2" className="text-sm font-medium">
-                            {t('selectAddress.inputStreet2Label', 'Street Address 2')}
+                            {t('selectAddress.inputStreet2Label')}
                           </Label>
                           <Input
                             id="streetLine2"
-                            placeholder={t(
-                              'selectAddress.inputStreet2Placeholder',
-                              'Apartment, suite, etc. (optional)',
-                            )}
+                            placeholder={t('selectAddress.inputStreet2Placeholder')}
                             value={state.streetLine2?.value ?? undefined}
                             defaultValue={state?.streetLine2?.value ?? undefined}
                             onChange={(e) => setField('streetLine2', e.target.value)}
@@ -486,11 +482,11 @@ export const AddressCard: React.FC<{
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1">
                             <Label htmlFor="city" className="text-sm font-medium">
-                              {t('selectAddress.inputCityLabel', 'City')} <span className="text-red-500">*</span>
+                              {t('selectAddress.inputCityLabel')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                               id="city"
-                              placeholder={t('selectAddress.inputCityPlaceholder', 'Enter city')}
+                              placeholder={t('selectAddress.inputCityPlaceholder')}
                               defaultValue={currentAddress?.city ?? undefined}
                               onChange={(e) => setField('city', e.target.value)}
                               className={cn(state.city?.errors?.length && 'border-red-300')}
@@ -500,11 +496,11 @@ export const AddressCard: React.FC<{
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="province" className="text-sm font-medium">
-                              {t('selectAddress.inputProvinceLabel', 'State/Province')}
+                              {t('selectAddress.inputProvinceLabel')}
                             </Label>
                             <Input
                               id="province"
-                              placeholder={t('selectAddress.inputProvincePlaceholder', 'Enter state/province')}
+                              placeholder={t('selectAddress.inputProvincePlaceholder')}
                               defaultValue={currentAddress?.province ?? undefined}
                               onChange={(e) => setField('province', e.target.value)}
                             />
@@ -513,12 +509,11 @@ export const AddressCard: React.FC<{
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1">
                             <Label htmlFor="postalCode" className="text-sm font-medium">
-                              {t('selectAddress.inputPostalLabel', 'Postal/ZIP Code')}{' '}
-                              <span className="text-red-500">*</span>
+                              {t('selectAddress.inputPostalLabel')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                               id="postalCode"
-                              placeholder={t('selectAddress.inputPostalPlaceholder', 'Enter postal/ZIP code')}
+                              placeholder={t('selectAddress.inputPostalPlaceholder')}
                               value={state.postalCode?.value ?? undefined}
                               defaultValue={state?.postalCode?.value ?? undefined}
                               onChange={(e) => setField('postalCode', e.target.value)}
@@ -529,12 +524,11 @@ export const AddressCard: React.FC<{
                           </div>
                           <div className="space-y-1">
                             <Label htmlFor="phoneNumber" className="text-sm font-medium">
-                              {t('selectAddress.inputPhoneLabel', 'Phone Number')}{' '}
-                              <span className="text-red-500">*</span>
+                              {t('selectAddress.inputPhoneLabel')} <span className="text-red-500">*</span>
                             </Label>
                             <Input
                               id="phoneNumber"
-                              placeholder={t('selectAddress.inputPhonePlaceholder', 'Enter phone number')}
+                              placeholder={t('selectAddress.inputPhonePlaceholder')}
                               value={state.phoneNumber?.value ?? undefined}
                               defaultValue={state?.phoneNumber?.value ?? undefined}
                               onChange={(e) => setField('phoneNumber', e.target.value)}
@@ -546,11 +540,11 @@ export const AddressCard: React.FC<{
                         </div>
                         <div className="space-y-1">
                           <Label htmlFor="company" className="text-sm font-medium">
-                            {t('selectAddress.inputCompanyLabel', 'Company')}
+                            {t('selectAddress.inputCompanyLabel')}
                           </Label>
                           <Input
                             id="company"
-                            placeholder={t('selectAddress.inputCompanyPlaceholder', 'Enter company name (optional)')}
+                            placeholder={t('selectAddress.inputCompanyPlaceholder')}
                             value={state.company?.value ?? undefined}
                             defaultValue={state?.company?.value ?? undefined}
                             onChange={(e) => setField('company', e.target.value)}
@@ -558,7 +552,7 @@ export const AddressCard: React.FC<{
                         </div>
                         <div className="space-y-1">
                           <Label htmlFor="country" className="text-sm font-medium">
-                            {t('selectAddress.countrySelectLabel', 'Country')} <span className="text-red-500">*</span>
+                            {t('selectAddress.countrySelectLabel')} <span className="text-red-500">*</span>
                           </Label>
                           <Select
                             value={state.countryCode?.value}
@@ -566,9 +560,7 @@ export const AddressCard: React.FC<{
                             required
                           >
                             <SelectTrigger id="country" className="w-full">
-                              <SelectValue
-                                placeholder={t('selectAddress.countrySelectPlaceholder', 'Select country')}
-                              />
+                              <SelectValue placeholder={t('selectAddress.countrySelectPlaceholder')} />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectGroup>
@@ -591,8 +583,9 @@ export const AddressCard: React.FC<{
                           entityName="address"
                           hideButton
                           fetchInitialValues={false}
-                          initialValues={{
-                            customFields: 'customFields' in state ? (state.customFields as any).value : {},
+                          fetch={async (selector) => {
+                            const customFields = 'customFields' in state ? (state.customFields as any).value : {};
+                            return { customFields };
                           }}
                           onChange={(cf, value) => {
                             setField('customFields', cf);
@@ -610,7 +603,7 @@ export const AddressCard: React.FC<{
                               htmlFor="createForCustomer"
                               className="cursor-pointer text-sm font-medium leading-none"
                             >
-                              {t('selectAddress.createForCustomer', 'Save this address to customer profile')}
+                              {t('selectAddress.createForCustomer')}
                             </Label>
                           </div>
                         ) : null}
@@ -630,15 +623,12 @@ export const AddressCard: React.FC<{
                     {submitting ? (
                       <>
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        {t('common.submitting', 'Submitting...')}
+                        {t('common.submitting')}
                       </>
                     ) : (
                       <>
                         <Check className="h-4 w-4" />
-                        {t(
-                          tab === 'select' ? 'selectAddress.selectAddress' : 'selectAddress.editAddress',
-                          tab === 'select' ? 'Select Address' : 'Save Address',
-                        )}
+                        {t(tab === 'select' ? 'selectAddress.selectAddress' : 'selectAddress.editAddress')}
                       </>
                     )}
                   </Button>
@@ -648,10 +638,7 @@ export const AddressCard: React.FC<{
           )}
         </div>
         <CardDescription className="text-muted-foreground mb-3 text-sm">
-          {t(
-            isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription',
-            isShipping ? 'Where the order will be delivered' : 'Address for billing purposes',
-          )}
+          {t(isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription')}
         </CardDescription>
         <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
           <div className="flex items-start gap-3">
@@ -668,10 +655,7 @@ export const AddressCard: React.FC<{
                 </div>
                 <div className="flex-1">
                   <p className="text-muted-foreground text-sm italic">
-                    {t(
-                      isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress',
-                      isShipping ? 'No shipping address set' : 'No billing address set',
-                    )}
+                    {t(isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress')}
                   </p>
                   {mode !== 'view' && (
                     <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>

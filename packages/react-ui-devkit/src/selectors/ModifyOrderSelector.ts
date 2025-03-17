@@ -3,7 +3,7 @@ import { OrderDetailSelector } from './OrderDetailSelector.js';
 
 export const modifyOrderSelector = Selector('ModifyOrderResult')({
     __typename: true,
-    '...on Order': OrderDetailSelector,
+    // '...on Order': OrderDetailSelector,
     '...on CouponCodeExpiredError': {
         errorCode: true,
         message: true,

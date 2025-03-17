@@ -23,7 +23,7 @@ export const OrderStateBadge: React.FC<{ fullWidth?: boolean; state?: string; cl
                 };
             case ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT:
                 return {
-                    className: 'border-blue-800 bg-blue-800 text-blue-2 00',
+                    className: 'border-blue-800 bg-blue-800 text-white 00',
                     label: t('arrangingAdditionalPayment'),
                 };
             case ORDER_STATE.PAYMENT_AUTHORIZED:

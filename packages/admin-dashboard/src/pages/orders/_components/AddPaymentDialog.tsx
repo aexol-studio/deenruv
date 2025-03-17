@@ -25,7 +25,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { CheckCircle, CreditCard, DollarSign, FileText } from 'lucide-react';
-import { CurrencyCode, ResolverInputTypes } from '@deenruv/admin-types';
+import { ResolverInputTypes } from '@deenruv/admin-types';
 
 interface Props {
   order: DraftOrderType;
@@ -63,9 +63,10 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
     () => order.totalWithTax - paidAmount || 0,
     [order.totalWithTax, paidAmount, order?.currencyCode],
   );
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
         <Button
           variant="action"
@@ -79,6 +80,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
             ].includes(order.state as ORDER_STATE) || !needsPayment
           }
           className="gap-2"
+          onClick={setOpen.bind(null, true)}
         >
           <DollarSign className="h-4 w-4" />
           {paymentAmount > 0
@@ -107,6 +109,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
             }
             onSubmit({ ...form, orderId: order.id, metadata: {} });
             setForm({ method: '', transactionId: '' });
+            setOpen(false);
           }}
         >
           <div className="space-y-1">

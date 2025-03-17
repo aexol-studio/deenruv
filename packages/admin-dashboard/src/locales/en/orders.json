@@ -519,10 +519,22 @@
     "attributesChanges": "Attributes changes",
     "newAddedLines": "New added order lines",
     "surcharges": "Surcharges",
-    "change": "Zmiana",
+    "billingAddress": "Billing address",
+    "shippingAddress": "Shipping address",
+    "shippingMethod": "Shipping method",
+    "rest": "Rest",
+    "change": "Change",
     "key": "Key",
     "value": "Value",
     "variant": "Variant",
+    "loading": {
+      "title": "Checking for Changes",
+      "description": "Order changes are being checked. This may take a moment..."
+    },
+    "emptyState": {
+      "title": "No Changes",
+      "description": "No modifications have been made to this order."
+    },
     "keys": {
       "quantity": "Quantity",
       "price": "Price",
@@ -532,7 +544,29 @@
       "attributes": "Attributes",
       "taxRate": "Tax rate",
       "attributeAdded": "Attribute added",
-      "attributeRemoved": "Attribute removed"
+      "attributeRemoved": "Attribute removed",
+      "discountedLinePrice": "Final line price (net)",
+      "discountedLinePriceWithTax": "Final line price (gross)",
+      "shippingLines.discountedPrice": "Shipping price (net)",
+      "shippingLines.discountedPriceWithTax": "Shipping price (gross)",
+      "shippingLines.shippingMethod.name": "Method name",
+      "fullName": "Full Name",
+      "company": "Firma",
+      "streetLine1": "Street Line 1",
+      "streetLine2": "Street Line 2",
+      "city": "City",
+      "postalCode": "Postal Code",
+      "country": "Country",
+      "phoneNumber": "Phone Number",
+      "province": "Province"
     }
+  },
+  "refund": {
+    "details": "Refund Details",
+    "note": "Refund Note",
+    "method": "Payment method",
+    "id": "Transaction ID",
+    "amount": "Payment amount",
+    "refund": "Refund amount"
   }
 }

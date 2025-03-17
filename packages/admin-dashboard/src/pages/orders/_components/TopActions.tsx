@@ -40,7 +40,6 @@ const COMPLETE_ORDER_STATES = [ORDER_STATE.DELIVERED];
 export const TopActions: React.FC = () => {
   const { currentPossibilities, manualChange, setManualChange, fetchOrderHistory, fetchOrder, order } = useOrder();
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
-  console.log(orderProcess);
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
   const { getDetailViewActions } = usePluginStore();
@@ -266,6 +265,23 @@ export const TopActions: React.FC = () => {
     );
   }, [order, currentPossibilities]);
 
+  const needFulfillment = useMemo(() => {
+    const statesNotFromDeenruv = orderProcess.filter(
+      (state) => !Object.values(ORDER_STATE).includes(state.name as ORDER_STATE),
+    );
+    const states = [ORDER_STATE.PARTIALLY_DELIVERED, ORDER_STATE.SHIPPED, ORDER_STATE.PAYMENT_SETTLED];
+    const doExternalStatesNeedFulfillment = statesNotFromDeenruv.filter((state) =>
+      state.to.some((s) => states.includes(s as ORDER_STATE)),
+    );
+    states.push(...doExternalStatesNeedFulfillment.map((state) => state.name as ORDER_STATE));
+    return states.includes(order?.state as ORDER_STATE);
+  }, [order, currentPossibilities]);
+  const inModifyState = useMemo(() => order?.state === ORDER_STATE.MODIFYING, [order]);
+  const exitingModifyStates = useMemo(
+    () => [ORDER_STATE.DRAFT, ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT].includes(order?.state as ORDER_STATE),
+    [order],
+  );
+
   if (!order) return null;
   return (
     <div className="flex items-center gap-4 ">
@@ -304,19 +320,15 @@ export const TopActions: React.FC = () => {
       <OrderStateBadge state={order?.state} />
       <div className="hidden items-center gap-2 md:ml-auto md:flex">
         {actions?.inline?.map(({ component }) => React.createElement(component)) || null}
-        {[ORDER_STATE.DRAFT, ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT].includes(order?.state as ORDER_STATE) ? (
+        {exitingModifyStates ? (
           <Button size="sm" onClick={onSubmit} disabled={!isOrderValid}>
             {order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT
               ? t('create.addPaymentButton')
               : t('create.completeOrderButton')}
           </Button>
-        ) : [
-            ORDER_STATE.PAYMENT_SETTLED,
-            ORDER_STATE.ARRANGING_PAYMENT,
-            ...(window.__DEENRUV_SETTINGS__.ui?.extras?.orderObservableStates || []),
-          ].includes(order?.state as ORDER_STATE) ? (
+        ) : needFulfillment ? (
           <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
-        ) : [ORDER_STATE.MODIFYING].includes(order?.state as ORDER_STATE) ? (
+        ) : inModifyState ? (
           <ModifyAcceptModal />
         ) : null}
       </div>

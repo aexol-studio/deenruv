@@ -144,6 +144,17 @@ export const useFFLP = <X>(config: {
             });
             return newState;
         });
+
+    const clearAllForm = () => {
+        const clearForm = Object.fromEntries(
+            Object.keys(config).map(v => [
+                v,
+                { value: config[v as keyof X]?.initialValue as X[keyof X], ...config[v as keyof X] },
+            ]),
+        ) as Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }>;
+        _setState(clearForm);
+    };
+
     return {
         state,
         setState,
@@ -151,6 +162,7 @@ export const useFFLP = <X>(config: {
         checkIfAllFieldsAreValid,
         haveValidFields,
         clearErrors,
+        clearAllForm,
     };
 };
 

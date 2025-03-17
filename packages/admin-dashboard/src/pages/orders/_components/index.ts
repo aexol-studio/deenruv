@@ -20,3 +20,4 @@ export * from './CouponCodesCard.js';
 export * from './SurchargeCard.js';
 export * from './SurchargeTable.js';
 export * from './PriceChangedInfo.js';
+export * from './ChangesRegisterTable.js';

@@ -9,13 +9,12 @@ import { apiClient } from '@/zeus_client/deenruvAPICall.js';
 import { CustomFieldConfigType, HistoryEntryType, ResolverInputTypes, SortOrder } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { create } from 'zustand';
-import { mergeSelectorWithCustomFields, deepMerge } from '@/utils/zeus-utils.js';
 import { ServerConfigType } from '@/selectors/BaseSelectors.js';
 import { customFieldsForQuery } from '@/zeus_client/customFieldsForQuery.js';
 import { GraphQLSchema } from './server.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type UnknownObject = Record<string, any>;
+export type UnknownObject = Record<string, any>;
 
 export type ModifyOrderInput = Omit<ResolverInputTypes['ModifyOrderInput'], 'dryRun' | 'orderId'>;
 export type OrderLineActions = 'quantity-price' | 'attributes';
@@ -30,28 +29,46 @@ export interface ModifyOrderChange {
     };
 }
 
-export interface ModifyOrderChanges {
-    linesChanges: {
-        lineID: string;
-        isNew?: boolean;
-        variantName: string;
-        changes: {
-            path: string;
-            changed: ChangesTypeKey;
-            removed: string | number;
-            added: string | number;
-            value?: Record<string, unknown> | string | number;
-        }[];
-    }[];
-    resChanges: {
+export interface LineChange {
+    lineID: string;
+    isNew?: boolean;
+    variantName: string;
+    changes: {
         path: string;
         changed: ChangesTypeKey;
         removed: string | number;
         added: string | number;
-        value?: Record<string, any>;
+        value?: Record<string, unknown> | string | number;
     }[];
 }
 
+export interface RestChange {
+    path: string;
+    changed: ChangesTypeKey;
+    removed: string | number;
+    added: string | number;
+    value?: Record<string, any>;
+}
+
+export interface ModifyOrderChanges {
+    linesChanges: LineChange[];
+    resChanges: RestChange[];
+}
+
+export interface ChangesRegistry {
+    existingLines: LineChange[];
+    newLines: LineChange[];
+    surcharges: RestChange[];
+    shippingAddress: RestChange[];
+    billingAddress: RestChange[];
+    shippingMethod: RestChange[];
+    rest: RestChange[];
+}
+
+export interface DryRunOptions {
+    recalculateShipping: boolean;
+    freezePromotions: boolean;
+}
 interface Order {
     mode: Mode | undefined;
     loading: boolean;
@@ -88,6 +105,7 @@ interface Actions {
     initializeOrderCustomFields(graphQLSchema: GraphQLSchema | null, serverConfig: ServerConfigType): void;
     setManualChange(value: { state: boolean; toAction?: string }): void;
     setCurrentPossibilities(value: { name: string; to: Array<string> }): void;
+    getChangesRegistry: (options?: DryRunOptions) => Promise<ChangesRegistry>;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -136,6 +154,7 @@ const getAllOrderHistory = async (id: string) => {
     return { history };
 };
 
+// @ts-ignore
 export const useOrder = create<Order & Actions>()((set, get) => {
     return {
         mode: undefined,
@@ -231,9 +250,16 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             }
         },
         checkModifyOrder: async input => {
+            const { graphQLSchema } = get();
+            const selectorWithCF = customFieldsForQuery(
+                OrderDetailSelector,
+                graphQLSchema?.get('order')?.fields || [],
+            );
+            const selector = { ...modifyOrderSelector, '...on Order': selectorWithCF };
+
             try {
                 const { modifyOrder } = await apiClient('mutation')({
-                    modifyOrder: [{ input: { ...input, dryRun: true } }, modifyOrderSelector],
+                    modifyOrder: [{ input: { ...input, dryRun: true } }, selector],
                 });
                 if (modifyOrder.__typename === 'Order') {
                     return modifyOrder;
@@ -265,14 +291,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             if (!latestOrderTransition) throw new Error('No state transition history entry found');
             let orderState =
                 (latestOrderTransition.data.from as ORDER_STATE) || modifiedOrder?.nextStates?.[0];
-
-            // if (result) {
-            //     const isPriceChanged = result?.total !== order?.total;
-            //     const isShippingChanged = result?.shipping !== order?.shipping;
-            //     if (isPriceChanged || isShippingChanged) {
-            //         orderState = ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT;
-            //     }
-            // }
 
             const convertCustomFields = (customFields: object) => {
                 if (!orderLineCustomFields) return customFields;
@@ -405,6 +423,117 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 'preview',
             ]);
             return modificationInfo;
+        },
+        getChangesRegistry: async (options?: DryRunOptions) => {
+            const { checkModifyOrder, modifyOrderInput, modifiedOrder, order } = get();
+            if (!order)
+                return {
+                    existingLines: [],
+                    newLines: [],
+                    surcharges: [],
+                    shippingAddress: [],
+                    billingAddress: [],
+                    rest: [],
+                };
+
+            const { country: _, ...shippingAddress } = modifiedOrder?.shippingAddress ?? {};
+            const { country: __, ...billingAddress } = modifiedOrder?.billingAddress ?? {};
+
+            const dryRunOrder = await checkModifyOrder({
+                orderId: order.id,
+                dryRun: true,
+                adjustOrderLines: modifiedOrder?.lines
+                    .filter(l => order.lines.findIndex(ol => ol.id === l.id) >= 0)
+                    .map(ol => {
+                        if ('customFields' in ol && ol.customFields) {
+                            return {
+                                orderLineId: ol.id,
+                                quantity: ol.quantity,
+                                // customFields: convertCustomFields(ol.customFields),
+                            };
+                        }
+                        return { orderLineId: ol.id, quantity: ol.quantity };
+                    }),
+                surcharges: modifyOrderInput?.surcharges,
+                updateBillingAddress: billingAddress,
+                updateShippingAddress: shippingAddress,
+                addItems: modifiedOrder?.lines
+                    .filter(
+                        modifiedLine =>
+                            !order.lines.some(originalLine => originalLine.id === modifiedLine.id),
+                    )
+                    .map(l => {
+                        if ('customFields' in l && l.customFields) {
+                            return {
+                                productVariantId: l.productVariant.id,
+                                quantity: l.quantity,
+                                // customFields: convertCustomFields(l.customFields),
+                            };
+                        }
+                        return {
+                            productVariantId: l.productVariant.id,
+                            quantity: l.quantity,
+                        };
+                    }),
+                shippingMethodIds: modifiedOrder?.shippingLines.map(el => el.shippingMethod?.id),
+                ...modifyOrderInput,
+                options,
+            });
+
+            const rawChanges = giveModificationInfo(order, dryRunOrder, [
+                'selectedImage',
+                'id',
+                'preview',
+                'linePrice',
+                'linePriceWithTax',
+                'shippingLines.0.priceWithTax',
+                'shippingLines.0.price',
+                '__typename',
+            ]);
+
+            const latestShippingLinesIndex = Math.max(
+                ...rawChanges.resChanges
+                    .map((change: RestChange) => change.path.match(/^shippingLines\.(\d+)\./)?.[1])
+                    .filter(Boolean)
+                    .map(Number),
+            );
+
+            return {
+                existingLines: rawChanges.linesChanges.filter((change: LineChange) => !change.isNew),
+                newLines: rawChanges.linesChanges.filter((change: LineChange) => change.isNew),
+                surcharges: rawChanges.resChanges.filter((change: RestChange) =>
+                    change.path.startsWith('surcharges'),
+                ),
+                billingAddress: rawChanges.resChanges.filter((change: RestChange) =>
+                    change.path.startsWith('billingAddress'),
+                ),
+                shippingAddress: rawChanges.resChanges.filter((change: RestChange) =>
+                    change.path.startsWith('shippingAddress'),
+                ),
+                shippingMethod: rawChanges.resChanges
+                    .filter((change: RestChange) => change.path.startsWith('shippingLines'))
+                    .filter((change: RestChange) => {
+                        const match = change.path.match(/^shippingLines\.(\d+)\./);
+                        const index = match ? Number(match[1]) : null;
+                        return (
+                            index === latestShippingLinesIndex &&
+                            change.path !== `shippingLines.${latestShippingLinesIndex}.price` &&
+                            change.path !== `shippingLines.${latestShippingLinesIndex}.priceWithTax` &&
+                            change.path !== `shippingLines.${latestShippingLinesIndex}.shippingMethod.code`
+                        );
+                    })
+                    .map((change: RestChange) => ({
+                        ...change,
+                        path: change.path.replace(/^shippingLines\.\d+\./, 'shippingLines.'),
+                    })),
+                rest: rawChanges.resChanges.filter(
+                    (change: RestChange) =>
+                        !change.path.startsWith('shippingAddress') &&
+                        !change.path.startsWith('billingAddress') &&
+                        !change.path.startsWith('shippingLines') &&
+                        !change.path.startsWith('surcharges'),
+                ),
+            };
         },
         addPaymentToOrder: async input => {
             const { setOrder, fetchOrderHistory } = get();

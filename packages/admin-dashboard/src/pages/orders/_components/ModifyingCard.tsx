@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useGFFLP } from '@/lists/useGflp.js';
 import {
   useOrder,
@@ -9,30 +9,52 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
   Checkbox,
-  Input,
   Label,
   Textarea,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   Separator,
+  DryRunOptions,
+  ChangesRegistry,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { PriceChangedInfo } from '@/pages/orders/_components/PriceChangedInfo.js';
-import { FileEdit, Truck, Tag, CreditCard, AlertCircle, Save, Loader2, RefreshCw, ShieldCheck } from 'lucide-react';
+import { FileEdit, Truck, Tag, CreditCard, AlertCircle, Save, Loader2, RefreshCw } from 'lucide-react';
+import { RefundCard } from '@/pages/orders/_components/RefundCard.js';
 
-export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> = ({ onNoteModified }) => {
+interface ModifyingCardProps {
+  onNoteModified?: (e: boolean) => void;
+  onOptionsChange: (options: DryRunOptions) => void;
+  changes: ChangesRegistry | undefined;
+}
+
+export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, onOptionsChange, changes }) => {
   const { t } = useTranslation('orders');
   const { modifiedOrder, setModifyOrderInput, modifyOrder, modifyOrderInput } = useOrder();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { state, setField } = useGFFLP('ModifyOrderInput')({});
   const [noteAdded, setNoteAdded] = useState(false);
+  const [sendRefund, setSendRefund] = useState(false);
+  const [refundReason, setRefundReason] = useState('');
+
+  const priceDifference = useMemo(() => {
+    const totalWithTaxChange = changes?.rest.find((ch) => ch.path === 'totalWithTax');
+    if (!totalWithTaxChange) return 0;
+
+    return +totalWithTaxChange.added - +totalWithTaxChange.removed;
+  }, [changes]);
+
+  const currentPayment = modifiedOrder?.payments?.[0];
+
+  useEffect(() => {
+    if (priceDifference < 0) setSendRefund(true);
+  }, [priceDifference]);
 
   useEffect(() => setNoteAdded(!!state.note?.value), [state.note?.value]);
 
@@ -42,7 +64,14 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
         ...modifyOrderInput,
         note: state.note?.value,
         options: state.options?.value,
-        refund: state.refund?.value,
+        refund:
+          sendRefund && currentPayment?.transactionId
+            ? {
+                paymentId: currentPayment.transactionId,
+                amount: priceDifference,
+                reason: refundReason,
+              }
+            : undefined,
       });
     }
   }, [state, modifiedOrder]);
@@ -89,7 +118,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                 placeholder={t('notePlaceholder', 'Enter a note explaining the reason for these modifications...')}
                 value={state.note?.value ?? ''}
                 onChange={(e) => setField('note', e.target.value)}
-                className="min-h-[80px] resize-y"
+                className="min-h-[60px] resize-y"
               />
               {!state.note?.value && (
                 <div className="absolute right-3 top-3 text-amber-500">
@@ -104,7 +133,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
 
           <Separator />
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             <h3 className="text-muted-foreground text-sm font-medium">
               {t('modificationOptions', 'Modification Options')}
             </h3>
@@ -123,12 +152,14 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                     <Checkbox
                       id="recalculateShipping"
                       checked={state.options?.value?.recalculateShipping ?? false}
-                      onCheckedChange={(e) =>
-                        setField('options', {
+                      onCheckedChange={(e) => {
+                        const optionsObj = {
                           freezePromotions: state?.options?.value?.freezePromotions || false,
                           recalculateShipping: !!e,
-                        })
-                      }
+                        };
+                        setField('options', optionsObj);
+                        onOptionsChange(optionsObj);
+                      }}
                     />
                     <Label
                       htmlFor="recalculateShipping"
@@ -143,12 +174,14 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                     <Checkbox
                       id="freezePromotions"
                       checked={state.options?.value?.freezePromotions ?? false}
-                      onCheckedChange={(e) =>
-                        setField('options', {
+                      onCheckedChange={(e) => {
+                        const optionsObj = {
                           freezePromotions: !!e,
                           recalculateShipping: state?.options?.value?.recalculateShipping || false,
-                        })
-                      }
+                        };
+                        setField('options', optionsObj);
+                        onOptionsChange(optionsObj);
+                      }}
                     />
                     <Label
                       htmlFor="freezePromotions"
@@ -159,72 +192,29 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
                     </Label>
                   </div>
 
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="refund"
-                      checked={state.refund?.value !== undefined}
-                      onCheckedChange={(e) => setField('refund', e ? { paymentId: '', reason: '' } : undefined)}
-                    />
-                    <Label htmlFor="refund" className="flex cursor-pointer items-center gap-2 text-sm font-medium">
-                      <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                      {t('refund', 'Process Refund')}
-                    </Label>
-                  </div>
+                  {!!priceDifference && (
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="refund" checked={sendRefund} onCheckedChange={(e) => setSendRefund(e as boolean)} />
+                      <Label htmlFor="refund" className="flex cursor-pointer items-center gap-2 text-sm font-medium">
+                        <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                        {t('refund', 'Process Refund')}
+                      </Label>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {state.refund?.value && (
-                <div className="border-border bg-muted/20 space-y-4 rounded-md border p-4">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                      <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                    </div>
-                    <h4 className="font-medium">{t('refundDetails', 'Refund Details')}</h4>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="paymentId" className="text-sm font-medium">
-                        {t('paymentId', 'Payment ID')} <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        type="text"
-                        id="paymentId"
-                        placeholder={t('paymentIdPlaceholder', 'Enter payment ID')}
-                        value={state.refund.value?.paymentId || ''}
-                        onChange={(e) =>
-                          setField('refund', {
-                            paymentId: e.target.value,
-                            reason: state.refund?.value?.reason || '',
-                          })
-                        }
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="reason" className="text-sm font-medium">
-                        {t('reason', 'Refund Reason')} <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        type="text"
-                        id="reason"
-                        placeholder={t('reasonPlaceholder', 'Enter refund reason')}
-                        value={state.refund.value?.reason || ''}
-                        onChange={(e) =>
-                          setField('refund', {
-                            paymentId: state?.refund?.value?.paymentId || '',
-                            reason: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
+              {sendRefund && (
+                <RefundCard
+                  priceDifference={priceDifference}
+                  refundReason={refundReason}
+                  setRefundReason={setRefundReason}
+                />
               )}
             </div>
           </div>
 
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-end">
             <Tooltip>
               <TooltipTrigger asChild>
                 <span tabIndex={0}>
@@ -259,7 +249,7 @@ export const ModifyingCard: React.FC<{ onNoteModified?: (e: boolean) => void }> 
             </Tooltip>
           </div>
         </CardContent>
-        <PriceChangedInfo />
+        <PriceChangedInfo {...{ changes }} />
       </Card>
     </form>
   );

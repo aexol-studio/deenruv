@@ -181,6 +181,16 @@ export const devConfig: DeenruvConfig = {
                 ],
             },
         ],
+        Customer: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
         Address: [
             {
                 name: 'companyName',

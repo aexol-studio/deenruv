@@ -39,9 +39,9 @@ import {
   updateOrderItemsSelector,
   updatedDraftOrderSelector,
 } from '@/graphql/draft_order';
-import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit } from 'lucide-react';
+import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit, CircleOff } from 'lucide-react';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { priceFormatter } from '@/utils';
@@ -75,6 +75,9 @@ export const ProductsCard: React.FC = () => {
   const [orderLineAction, setOrderLineAction] = useState<{ line: DraftOrderLineType | undefined }>();
   const isLineAddedInModify = (lineId: string) => order?.lines.findIndex((l) => l.id === lineId) === -1;
 
+  const serializeCustomFields = (customFields: any) =>
+    JSON.stringify(Object.fromEntries(Object.entries(customFields).sort(([a], [b]) => a.localeCompare(b))));
+
   const addToOrder = async (
     productVariant: ProductVariantType,
     quantity: number,
@@ -99,9 +102,30 @@ export const ProductsCard: React.FC = () => {
           taxRate: order.taxSummary[0].taxRate,
           ...(customFields && { customFields }),
         };
+        const existingLineIndex = modifiedOrder.lines.findIndex((line) => {
+          const sameId = line.id === mockLine.id;
+
+          // if (!customFields) {
+          return sameId;
+          // }
+
+          // @ts-ignore
+          // return sameId && serializeCustomFields(line.customFields) === serializeCustomFields(customFields);
+        });
+
+        let newLines;
+
+        if (existingLineIndex !== -1) {
+          newLines = modifiedOrder.lines.map((line, index) =>
+            index === existingLineIndex ? { ...line, quantity: line.quantity + 1 } : line,
+          );
+        } else {
+          newLines = [...modifiedOrder.lines, mockLine];
+        }
+
         setModifiedOrder({
           ...modifiedOrder,
-          lines: [...modifiedOrder.lines, mockLine],
+          lines: newLines,
         });
         toast.success(t('create.productAdded', 'Product added to order'));
         return;
@@ -135,6 +159,18 @@ export const ProductsCard: React.FC = () => {
       toast.error(t('create.addError', 'Failed to add product'));
     }
   };
+
+  const setQuantityTo0 = useCallback(
+    (orderLineId: string) => {
+      const lineIdx = modifiedOrder?.lines.findIndex((l) => l.id === orderLineId);
+
+      if (lineIdx && modifiedOrder) {
+        modifiedOrder.lines[lineIdx].quantity = 0;
+        setModifiedOrder(modifiedOrder);
+      }
+    },
+    [modifiedOrder],
+  );
 
   const removeLineItem = async (orderLineId: string) => {
     if (!order) return;
@@ -472,6 +508,14 @@ export const ProductsCard: React.FC = () => {
                                     onClick={() => removeLineItem(line.id)}
                                   >
                                     <Trash2 className="h-4 w-4" />
+                                  </button>
+                                )}
+                                {mode === 'update' && !isLineAddedInModify(line.id) && (
+                                  <button
+                                    className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
+                                    onClick={() => setQuantityTo0(line.id)}
+                                  >
+                                    <CircleOff className="h-4 w-4" />
                                   </button>
                                 )}
                               </div>

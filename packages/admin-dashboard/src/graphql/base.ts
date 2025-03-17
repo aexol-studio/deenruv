@@ -17,13 +17,12 @@ export enum ORDER_STATE {
   MODIFYING = 'Modifying',
   ARRANGING_ADDITIONAL_PAYMENT = 'ArrangingAdditionalPayment',
   CANCELLED = 'Cancelled',
-  IN_REALIZATION = 'InRealization',
 }
 
 export enum PAYMENT_STATE {
   AUTHORIZED = 'Authorized',
   SETTLED = 'Settled',
-  CANCELLED = 'Cancelled'
+  CANCELLED = 'Cancelled',
 }
 
 export type OrderStateType = `${ORDER_STATE}`;

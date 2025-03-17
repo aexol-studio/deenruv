@@ -23,15 +23,16 @@ import {
   cn,
   OrderDetailSelector,
   Label,
+  useGFFLP,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGFFLP } from '@/lists/useGflp';
 import { toast } from 'sonner';
 import { Edit, User, Check, Mail, Phone, Loader2, UserPlus, Search, AlertCircle } from 'lucide-react';
+import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
@@ -44,13 +45,14 @@ export const CustomerSelectCard: React.FC = () => {
     () => (mode === 'update' ? (modifiedOrder ? modifiedOrder : order) : order),
     [mode, order, modifiedOrder],
   );
-  const { state, checkIfAllFieldsAreValid, setField } = useGFFLP(
+  const { state, checkIfAllFieldsAreValid, setField, clearAllForm } = useGFFLP(
     'CreateCustomerInput',
     'firstName',
     'lastName',
     'title',
     'phoneNumber',
     'emailAddress',
+    'customFields',
   )({
     firstName: {
       initialValue: '',
@@ -77,9 +79,16 @@ export const CustomerSelectCard: React.FC = () => {
         if (!v || v === '') return [t('form.requiredError')];
       },
     },
+    customFields: {
+      initialValue: {},
+    },
   });
 
   useEffect(() => setSelected(order?.customer), [order]);
+
+  useEffect(() => {
+    if (tab === 'create') clearAllForm();
+  }, [tab]);
 
   const validateAndSubmitIfCorrect = async () => {
     if (!order?.id) return;
@@ -140,7 +149,7 @@ export const CustomerSelectCard: React.FC = () => {
               {t('create.selectCustomer.select', 'Customer Information')}
             </CardTitle>
           </div>
-          {mode !== 'view' && (
+          {mode !== 'view' && mode !== 'update' && (
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -260,6 +269,20 @@ export const CustomerSelectCard: React.FC = () => {
                           errors={state.phoneNumber?.errors}
                         />
                       </div>
+                      <EntityCustomFields
+                        id={selected?.id}
+                        entityName="customer"
+                        hideButton
+                        fetchInitialValues={false}
+                        fetch={async (selector) => {
+                          const customFields = 'customFields' in state && state.customFields ? state.customFields : {};
+                          return { customFields };
+                        }}
+                        onChange={(cf, value) => {
+                          setField('customFields', cf);
+                        }}
+                        additionalData={{}}
+                      />
                     </div>
                   </TabsContent>
                 </Tabs>

@@ -26,11 +26,12 @@
             "cancelled": "Anulowane"
         },
         "table": {
+            "id": "ID",
             "queueName": "Nazwa kolejki",
             "status": "Status",
             "created": "Utworzony",
             "started": "Rozpoczęty",
-            "settled": "Ukończono",
+            "settled": "Completed",
             "duration": "Czas trwania",
             "jobData": "Dane dotyczące pracy",
             "jobResult": "Wynik zadania",

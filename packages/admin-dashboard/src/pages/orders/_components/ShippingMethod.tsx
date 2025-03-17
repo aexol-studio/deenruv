@@ -343,7 +343,7 @@ export const ShippingMethod: React.FC = () => {
                     <div className="border-border mt-1 flex items-center justify-between border-t pt-2">
                       <Label className="text-sm font-medium">Price:</Label>
                       <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                        {priceFormatter(order?.shipping || 0, order?.currencyCode)}
+                        {priceFormatter(selectedShipping?.priceWithTax || 0, currentOrder?.currencyCode)}
                       </span>
                     </div>
                   </div>

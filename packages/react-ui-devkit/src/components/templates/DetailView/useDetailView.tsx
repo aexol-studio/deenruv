@@ -49,6 +49,7 @@ export const DetailViewStoreContext = createContext<
             clearErrors: () => {},
             haveValidFields: true,
             setState: () => {},
+            clearAllForm: () => {},
         },
         onSubmitted: () => Promise.resolve({}),
         onDeleted: () => Promise.resolve({}),

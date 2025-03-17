@@ -70,7 +70,6 @@ type Props<T extends ViableEntity> = {
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
   fetchInitialValues?: boolean;
-  initialValues?: CF;
   additionalData?: Record<string, unknown>;
   withoutCard?: boolean;
 };
