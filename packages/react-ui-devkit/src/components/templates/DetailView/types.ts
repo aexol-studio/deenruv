@@ -56,6 +56,7 @@ export interface StoreContextType<
     hasUnsavedChanges: boolean;
     setAdditionalData: Dispatch<SetStateAction<AdditionalData>>;
     additionalData: AdditionalData;
+    addToQueue: (key: string, fn: () => Promise<void>) => void;
 }
 
 export interface DetailViewProps<

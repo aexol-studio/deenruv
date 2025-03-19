@@ -63,6 +63,7 @@ export const DetailViewStoreContext = createContext<
     hasUnsavedChanges: false,
     setAdditionalData: () => null,
     additionalData: {},
+    addToQueue: () => {},
 });
 
 export const DetailViewStoreProvider = <
@@ -73,6 +74,17 @@ export const DetailViewStoreProvider = <
     children,
     ...props
 }: React.PropsWithChildren<PropsType<T, F, FK>>) => {
+    const [queue, setQueue] = useState<Record<string, { callback: () => Promise<void> }>>({});
+    const addToQueue = useCallback((key: string, callback: () => Promise<void>) => {
+        setQueue(prev => ({ ...prev, [key]: { callback } }));
+    }, []);
+    const removeFromQueue = useCallback((key: string) => {
+        setQueue(prev => {
+            const { [key]: _, ...rest } = prev;
+            return rest;
+        });
+    }, []);
+
     const { form, id, locationId, sidebar: _sidebar, tabs, tab: _tab } = props;
     const graphQLSchema = useServer(p => p.graphQLSchema);
 
@@ -123,11 +135,14 @@ export const DetailViewStoreProvider = <
     const actionHandler = useCallback(
         (type: 'submit' | 'delete') => {
             const { onDeleted, onSubmitted, base } = form || {};
-
+            Object.entries(queue).forEach(([key, { callback }]) => {
+                callback().then(() => removeFromQueue(key));
+            });
             if (type === 'submit')
                 onSubmitted?.(base?.state, additionalData)?.then(handleSuccess).catch(handleError);
             if (type === 'delete')
                 onDeleted?.(base?.state, additionalData)?.then(handleSuccess).catch(handleError);
+            Object.keys(queue).forEach(removeFromQueue);
         },
         [props.form, handleSuccess],
     );
@@ -193,6 +208,7 @@ export const DetailViewStoreProvider = <
                 sidebar,
                 tabs,
                 actionHandler,
+                addToQueue,
                 fetchEntity,
                 setEntity,
                 setSidebar,

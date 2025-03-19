@@ -21,6 +21,7 @@ import {
     ShippingMethodDetailsSelector,
     AdminDetailSelector,
     ZoneDetailsSelector,
+    OrderListSelector,
 } from '../selectors';
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
@@ -64,6 +65,10 @@ export const ListLocations = {
     'products-list-view': {
         type: 'Product' as const,
         selector: ProductListSelector,
+    },
+    'orders-list-view': {
+        type: 'Order' as const,
+        selector: OrderListSelector,
     },
     'facet-values-list': {
         type: 'FacetValue' as const,
