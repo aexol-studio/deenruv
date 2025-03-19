@@ -61,11 +61,7 @@ export const ProductDetailView = () => {
     [state.assetIds?.value, setField],
   );
 
-  return loading ? (
-    <div>
-      <Spinner height={'80vh'} />
-    </div>
-  ) : (
+  return (
     <div>
       <div className="flex w-full flex-col gap-4">
         <BasicFieldsCard
