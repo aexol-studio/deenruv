@@ -53,7 +53,6 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
   useEffect(() => {
     const options = facetValuesIds?.map((f) => ({
       label: getFacetValueLabel(f),
-      color: allFacetsOptions.find((e) => e.value === f)?.color,
       value: f,
     }));
     if (options) setCurrentFacetOptions(options);

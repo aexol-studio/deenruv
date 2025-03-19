@@ -137,7 +137,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
   }, [state, languageCode, facetId, resetValues, t]);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={resetValues}>
       <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{editMode ? t('addValueModal.editTitle') : t('addValueModal.title')}</DialogTitle>

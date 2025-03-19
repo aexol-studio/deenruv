@@ -27,15 +27,16 @@ export const ProductDetailSelector = Selector('Product')({
     updatedAt: true,
     channels: { id: true, code: true },
     translations: {
+        id: true,
         languageCode: true,
         name: true,
         slug: true,
         description: true,
-        id: true,
     },
     assets: { source: true, preview: true, id: true },
     collections: { slug: true, name: true, parent: { slug: true } },
     featuredAsset: { source: true, preview: true, id: true },
+    optionGroups: { id: true, name: true, code: true },
     facetValues: ProductDetailsFacetSelector,
 });
 
