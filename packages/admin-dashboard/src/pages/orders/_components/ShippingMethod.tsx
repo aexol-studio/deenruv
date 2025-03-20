@@ -331,17 +331,17 @@ export const ShippingMethod: React.FC = () => {
                 <div className="flex-1">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <Label className="text-sm font-medium">Method:</Label>
+                      <Label className="text-sm font-medium">{t('selectShipmentMethod.method')}</Label>
                       <span className="text-sm font-medium">{selectedShipping.name}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <Label className="text-sm font-medium">Code:</Label>
+                      <Label className="text-sm font-medium">{t('selectShipmentMethod.code')}</Label>
                       <Badge variant="outline" className="text-xs">
                         {selectedShipping.code}
                       </Badge>
                     </div>
                     <div className="border-border mt-1 flex items-center justify-between border-t pt-2">
-                      <Label className="text-sm font-medium">Price:</Label>
+                      <Label className="text-sm font-medium">{t('selectShipmentMethod.price')}</Label>
                       <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
                         {priceFormatter(selectedShipping?.priceWithTax || 0, currentOrder?.currencyCode)}
                       </span>

@@ -1,50 +1,50 @@
 {
-  "create": "Create country",
-  "edit": "Edit country",
-  "baseInfoCode": "Code: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Created: {{value}}",
-  "baseInfoUpdated": "Updated: {{value}}",
-  "defaultCountry": "Default Country",
-  "buttonDisabledTooltip": "Fill all required fields",
-  "noChangesTooltip": "You have not made any changes",
-  "table": {
-    "id": "Id",
-    "code": "Code",
-    "name": "Name",
-    "enabled": "Enabled",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "openMenu": "Open menu",
-    "copyId": "Copy id",
-    "viewCountry": "View country",
-    "columns": "Columns"
-  },
-  "details": {
-    "basic": {
-      "title": "Basic info",
-      "code": "Code",
-      "name": "Name",
-      "enabled": "Enabled"
-    }
-  },
-  "validation": {
-    "required": "Code is required"
-  },
-  "toasts": {
-    "countryLoadingError": "Failed to load country with id {{value}}",
-    "countryUpdateSuccess": "Country updated successfully",
-    "countryUpdateError": "Error occurred: ",
-    "countryCreatedSuccess": "Country has been created successfully",
-    "countryCreatedError": "Failed to create country",
-    "countryDeleteSuccess": "Country deleted successfully",
-    "countryDeleteError": "Failed to delete country"
-  },
-  "deleteCountry": {
-    "title": "Delete country",
-    "description": "Are you sure you want to delete this country?",
-    "successMessage": "Country has been deleted.",
-    "deleteOrCancel": "Delete/Cancel selected"
-  },
-  "selectedValue": "{{from}} of {{to}} row(s) selected"
+    "create": "Create a country",
+    "edit": "Edit country",
+    "baseInfoCode": "Code: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Created: {{value}}",
+    "baseInfoUpdated": "Updated: {{value}}",
+    "defaultCountry": "Default country",
+    "buttonDisabledTooltip": "Fill in all required fields",
+    "noChangesTooltip": "No changes have been made",
+    "table": {
+        "id": "Id",
+        "code": "Code",
+        "name": "Name",
+        "enabled": "Enabled",
+        "createdAt": "Created in",
+        "updatedAt": "Updated by",
+        "openMenu": "Open menu",
+        "copyId": "Copy ID",
+        "viewCountry": "Display country",
+        "columns": "Columns"
+    },
+    "details": {
+        "basic": {
+            "title": "Basic information",
+            "code": "Code",
+            "name": "Name",
+            "enabled": "Enabled"
+        }
+    },
+    "validation": {
+        "required": "Code required"
+    },
+    "toasts": {
+        "countryLoadingError": "Failed to load country with identifier {{value}}",
+        "countryUpdateSuccess": "Country has been successfully updated",
+        "countryUpdateError": "An error occurred:",
+        "countryCreatedSuccess": "Country was successfully created",
+        "countryCreatedError": "Country could not be created",
+        "countryDeleteSuccess": "Country successfully deleted",
+        "countryDeleteError": "Country could not be deleted successfully"
+    },
+    "deleteCountry": {
+        "title": "Delete country",
+        "description": "Are you sure you want to delete this country?",
+        "successMessage": "The country has been removed.",
+        "deleteOrCancel": "Delete/Cancel option selected"
+    },
+    "selectedValue": "{{from}} of {{to}} lines was selected"
 }

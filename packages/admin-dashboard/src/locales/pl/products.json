@@ -52,33 +52,33 @@
     },
     "variantsTab": {
         "emptyState": {
-            "title": "Nothing here",
+            "title": "Nic tutaj nie ma",
             "description": "Nie ma jeszcze żadnych wariantów. Użyj przycisku powyżej, aby je dodać, pod warunkiem, że dodałeś już jakieś opcje. Jeśli nie, utwórz je najpierw w zakładce Opcje."
         }
     },
     "table": {
-        "featuredAsset": "Image",
+        "featuredAsset": "Obraz",
         "id": "ID",
         "createdAt": "Utworzono w",
         "updatedAt": "Zaktualizowano w",
-        "name": "Name",
-        "slug": "Slug",
+        "name": "Nazwa",
+        "slug": "Ślimak",
         "variants": "# Liczba wariantów",
         "collections": "W kolekcjach",
         "inValueCollections": "W kolekcjach {{value}}",
         "openMenu": "Otwórz menu",
         "actions": "Działania",
-        "copyId": "Kopiowanie identyfikatora produktu",
+        "copyId": "Kopiuj id",
         "delete": "Usuń produkt",
         "allVariantsStock": "Zapasy wszystkich wariantów",
         "allocated": "przydzielony",
         "stock": "Akcje"
     },
     "deleteProductDialog": {
-        "button": "Delete product",
+        "button": "Usuń produkt",
         "title": "Czy na pewno?",
         "description": "Produkt zostanie trwale usunięty.",
-        "confirm": "Delete Product",
+        "confirm": "Usuń produkt",
         "cancel": "Anuluj"
     },
     "columns": "Kolumny",
@@ -113,7 +113,7 @@
         "basicInfo": "Podstawowe informacje",
         "customFields": "Pola niestandardowe",
         "facetValues": "Wartość aspektu",
-        "image": "Image",
+        "image": "Obraz",
         "price": "Cena",
         "featuredAsset": "Polecane aktywa",
         "otherAssets": "Inne aktywa",
@@ -164,21 +164,21 @@
     },
     "addOptionGroupDialog": {
         "title": "Dodaj grupę opcji",
-        "name": "Name",
+        "name": "Nazwa",
         "code": "Kod",
-        "cancel": "Cancel",
+        "cancel": "Anuluj",
         "add": "Dodaj"
     },
     "addVariantDialog": {
         "title": "Dodaj wariant produktu",
-        "name": "Name",
+        "name": "Nazwa",
         "sku": "SKU",
-        "cancel": "Cancel",
+        "cancel": "Anuluj",
         "add": "Dodaj wariant",
         "new": "Nowy wariant",
         "selectOption": "Wybierz opcję",
         "createBasic": "Dane podstawowe",
-        "createOptions": "Options"
+        "createOptions": "Opcje"
     },
     "validation": {
         "nameSlugRequired": "Pola nazwy i slug są wymagane"

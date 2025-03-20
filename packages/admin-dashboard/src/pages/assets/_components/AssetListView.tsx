@@ -60,9 +60,9 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
   return (
     <div className="overflow-hidden rounded-lg border">
       <div className="bg-muted/30 grid grid-cols-[auto_1fr_auto] gap-4 p-3 text-sm font-medium">
-        <div className="w-16 text-center">Preview</div>
-        <div>Name</div>
-        <div className="w-24 text-center">Actions</div>
+        <div className="w-16 text-center">{t('assets:preview')}</div>
+        <div>{t('assets:name')}</div>
+        <div className="w-24 text-center">{t('assets:actions')}</div>
       </div>
 
       <div className="divide-y">
@@ -82,7 +82,7 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
             <div className="flex items-center gap-1">
               <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => copyAssetUrl(asset.preview)}>
                 <Copy size={16} />
-                <span className="sr-only">Copy URL</span>
+                <span className="sr-only">{t('assets:copyURL')}</span>
               </Button>
 
               <Button
@@ -92,7 +92,7 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
                 onClick={() => window.open(asset.preview, '_blank')}
               >
                 <ExternalLink size={16} />
-                <span className="sr-only">Open</span>
+                <span className="sr-only">{t('assets:open')}</span>
               </Button>
 
               <DropdownMenu>
@@ -105,15 +105,15 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
                 <DropdownMenuContent align="end" className="w-[160px]">
                   <DropdownMenuItem onClick={() => copyAssetUrl(asset.preview)} className="gap-2">
                     <Copy size={14} />
-                    <span>{t('common:copy', 'Copy URL')}</span>
+                    <span>{t('assets:copyURL', 'Copy URL')}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => window.open(asset.preview, '_blank')} className="gap-2">
                     <ExternalLink size={14} />
-                    <span>{t('common:open', 'Open')}</span>
+                    <span>{t('assets:open', 'Open')}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onDelete(asset.id)} className="text-destructive gap-2">
                     <Trash size={14} />
-                    <span>{t('common:delete', 'Delete')}</span>
+                    <span>{t('assets:delete', 'Delete')}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

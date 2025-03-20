@@ -13,22 +13,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Label,
   ScrollArea,
   TooltipProvider,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Routes,
   useSettings,
   useServer,
   usePluginStore,
   cn,
-  apiClient,
+  dashToCamelCase,
 } from '@deenruv/react-ui-devkit';
 
 import {
-  Bell,
   GripVertical,
   LogOutIcon,
   MenuIcon,
@@ -172,7 +167,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
                                   <NavLink to={'/admin-ui/' + linkPath.join('/')} viewTransition>
-                                    <p className="text-foreground text-2xl font-bold capitalize">{c}</p>
+                                    <p className="text-foreground text-2xl font-bold capitalize">
+                                      {i === 0 ? t('menu.' + dashToCamelCase(c)) : c}
+                                    </p>
                                   </NavLink>
                                 </BreadcrumbItem>
                                 {i !== crumbs.length - 1 && (

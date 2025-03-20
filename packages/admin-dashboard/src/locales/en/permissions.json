@@ -1,94 +1,94 @@
 {
-  "GlobalSettings": {
-    "title": "Global settings",
-    "description": "Grants permissions on GlobalSettings"
-  },
-  "Catalog": {
-    "title": "Catalog",
-    "description": "Grants permissions on Products, Facets, Assets, Collections"
-  },
-  "Settings": {
-    "title": "Settings",
-    "description": "Grants permissions on PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System & GlobalSettings"
-  },
-  "Administrator": {
-    "title": "Administrator",
-    "description": "Grants permissions on Administrator"
-  },
-  "Asset": {
-    "title": "Asset",
-    "description": "Grants permissions on Asset"
-  },
-  "Channel": {
-    "title": "Channel",
-    "description": "Grants permissions on Channel"
-  },
-  "Collection": {
-    "title": "Collection",
-    "description": "Grants permissions on Collection"
-  },
-  "Country": {
-    "title": "Country",
-    "description": "Grants permissions on Country"
-  },
-  "Customer": {
-    "title": "Customer",
-    "description": "Grants permissions on Customer"
-  },
-  "CustomerGroup": {
-    "title": "CustomerGroup",
-    "description": "Grants permissions on CustomerGroup"
-  },
-  "Facet": {
-    "title": "Facet",
-    "description": "Grants permissions on Facet"
-  },
-  "Order": {
-    "title": "Order",
-    "description": "Grants permissions on Order"
-  },
-  "PaymentMethod": {
-    "title": "PaymentMethod",
-    "description": "Grants permissions on PaymentMethod"
-  },
-  "Product": {
-    "title": "Product",
-    "description": "Grants permissions on Product"
-  },
-  "Promotion": {
-    "title": "Promotion",
-    "description": "Grants permissions on Promotion"
-  },
-  "ShippingMethod": {
-    "title": "ShippingMethod",
-    "description": "Grants permissions on ShippingMethod"
-  },
-  "Tag": {
-    "title": "Tag",
-    "description": "Grants permissions on Tag"
-  },
-  "TaxCategory": {
-    "title": "TaxCategory",
-    "description": "Grants permissions on TaxCategory"
-  },
-  "TaxRate": {
-    "title": "TaxRate",
-    "description": "Grants permissions on TaxRate"
-  },
-  "Seller": {
-    "title": "Seller",
-    "description": "Grants permissions on Seller"
-  },
-  "StockLocation": {
-    "title": "StockLocation",
-    "description": "Grants permissions on StockLocation"
-  },
-  "System": {
-    "title": "System",
-    "description": "Grants permissions on System"
-  },
-  "Zone": {
-    "title": "Zone",
-    "description": "Grants permissions on Zone"
-  }
+    "GlobalSettings": {
+        "title": "Global settings",
+        "description": "Grants rights to GlobalSettings"
+    },
+    "Catalog": {
+        "title": "Catalogue",
+        "description": "Grants rights to products, aspects, resources, collections"
+    },
+    "Settings": {
+        "title": "Settings",
+        "description": "Grants rights to PaymentMethods, ShippingMethods, TaxCategories, TaxRates, Zones, Countries, System and GlobalSettings"
+    },
+    "Administrator": {
+        "title": "Administrator",
+        "description": "Grants administrator privileges"
+    },
+    "Asset": {
+        "title": "Assets",
+        "description": "Grants rights to an asset"
+    },
+    "Channel": {
+        "title": "Channel",
+        "description": "Grants channel rights"
+    },
+    "Collection": {
+        "title": "Collection",
+        "description": "Grants rights to collections"
+    },
+    "Country": {
+        "title": "Country",
+        "description": "Grants country entitlements"
+    },
+    "Customer": {
+        "title": "Customer",
+        "description": "Grants entitlement to client"
+    },
+    "CustomerGroup": {
+        "title": "CustomerGroup",
+        "description": "Grants rights to CustomerGroup"
+    },
+    "Facet": {
+        "title": "Guy",
+        "description": "Grants authority to Facet"
+    },
+    "Order": {
+        "title": "Ordering",
+        "description": "Grants entitlement to order"
+    },
+    "PaymentMethod": {
+        "title": "PaymentMethod",
+        "description": "Grants rights to PaymentMethod"
+    },
+    "Product": {
+        "title": "Product",
+        "description": "Grants product entitlement"
+    },
+    "Promotion": {
+        "title": "Promotion",
+        "description": "Granting of promotion authorisations"
+    },
+    "ShippingMethod": {
+        "title": "ShippingMethod",
+        "description": "Grants permissions to ShippingMethod"
+    },
+    "Tag": {
+        "title": "Tag",
+        "description": "Grants rights to the tag"
+    },
+    "TaxCategory": {
+        "title": "TaxCategory",
+        "description": "Grants rights to TaxCategory"
+    },
+    "TaxRate": {
+        "title": "TaxRate",
+        "description": "Grants rights on TaxRate"
+    },
+    "Seller": {
+        "title": "Seller",
+        "description": "Grants powers to the vendor"
+    },
+    "StockLocation": {
+        "title": "StockLocation",
+        "description": "Grants rights to StockLocation"
+    },
+    "System": {
+        "title": "System",
+        "description": "Grants rights to the System"
+    },
+    "Zone": {
+        "title": "Zone",
+        "description": "Grants zone entitlement"
+    }
 }

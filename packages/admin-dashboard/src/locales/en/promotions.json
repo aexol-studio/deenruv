@@ -6,60 +6,60 @@
     },
     "options": {
         "header": "Options",
-        "pickDate": "Pick a date",
+        "pickDate": "Select date",
         "startsAt": "Start date",
         "endsAt": "End date",
-        "couponCode": "Coupon code",
-        "usageLimit": "Usage limit",
-        "perCustomerUsageLimit": "Per customer usage limit"
+        "couponCode": "Voucher code",
+        "usageLimit": "Use limit",
+        "perCustomerUsageLimit": "Usage limit per customer"
     },
     "conditions": {
         "header": "Conditions",
-        "add": "Add new condition",
+        "add": "Add a new condition",
         "emptyState": "There are no conditions yet. Add some.",
         "codes": {
-            "customer_group": "Customer is a member of the specified group",
-            "minimum_order_amount": "If order total is greater than X",
-            "at_least_n_with_facets": "Buy at least X products with the given facets",
-            "contains_products": "Buy at least X of the specified products",
-            "buy_x_get_y_free": "Buy X products, get Y products free"
+            "customer_group": "The customer is a member of a specific group",
+            "minimum_order_amount": "If the order total is greater than X",
+            "at_least_n_with_facets": "Buy at least X products with the specified aspects",
+            "contains_products": "Buy at least X specified products",
+            "buy_x_get_y_free": "Buy X products, get Y products for free"
         },
         "labels": {
             "amount": "Amount",
-            "taxInclusive": "Tax inclusive",
+            "taxInclusive": "Including tax",
             "minimum": "Minimum",
             "amountX": "Amount X",
             "amountY": "Amount Y",
-            "Buy amountX of these variants": "Buy amount X of these variants",
-            "Get amountY of these variants for free": "Get amount Y of these variants for free"
+            "Buy amountX of these variants": "Buy X amount of these variants",
+            "Get amountY of these variants for free": "Get Y quantity of these variants for free"
         }
     },
     "actions": {
-        "header": "Actions",
-        "add": "Add new action",
+        "header": "Activities",
+        "add": "Add a new activity",
         "emptyState": "There are no actions yet. Add some.",
         "codes": {
             "free_shipping": "Free shipping",
-            "order_fixed_discount": "Discount order by fixed amount",
-            "order_percentage_discount": "Discount order by X%",
-            "facet_based_discount": "Discount products with these facets by X%",
-            "products_percentage_discount": "Discount specified products by X%",
+            "order_fixed_discount": "Order discount according to set amount",
+            "order_percentage_discount": "Order discount by X%",
+            "facet_based_discount": "Discount on products with these aspects by X%",
+            "products_percentage_discount": "Discount on certain products by X%",
             "buy_x_get_y_free": "Buy X products, get Y products free"
         },
         "labels": {
             "discount": "Discount",
-            "taxInclusive": "Tax inclusive",
+            "taxInclusive": "Including tax",
             "minimum": "Minimum",
             "amountX": "Amount X",
             "amountY": "Amount Y",
-            "Buy amountX of these variants": "Buy amount X of these variants",
-            "Get amountY of these variants for free": "Get amount Y of these variants for free"
+            "Buy amountX of these variants": "Buy X amount of these variants",
+            "Get amountY of these variants for free": "Get Y quantity of these variants for free"
         }
     },
     "validation": {
         "conditionsCode": "At least one condition is required",
-        "conditionsArgs": "Fill all fields",
-        "actionsCode": "At least one action is required",
-        "actionsArgs": "Fill all fields"
+        "conditionsArgs": "Fill in all fields",
+        "actionsCode": "At least one action required",
+        "actionsArgs": "Fill in all fields"
     }
 }

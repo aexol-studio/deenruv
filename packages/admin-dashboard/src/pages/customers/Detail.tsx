@@ -32,8 +32,8 @@ export const CustomersDetailPage = () => {
   const defaultTabs = useMemo(() => {
     const tabs = [];
     if (id) {
-      tabs.push({ label: 'Orders', name: 'orders', component: <OrdersTab />, hideSidebar: true });
-      tabs.push({ label: 'History', name: 'history', component: <HistoryTab />, hideSidebar: true });
+      tabs.push({ label: t('orders.header'), name: 'orders', component: <OrdersTab />, hideSidebar: true });
+      tabs.push({ label: t('history.header'), name: 'history', component: <HistoryTab />, hideSidebar: true });
     }
     return tabs;
   }, [id]);
@@ -45,7 +45,7 @@ export const CustomersDetailPage = () => {
         locationId="customers-detail-view"
         main={{
           name: 'customer',
-          label: 'Customer',
+          label: t('customer'),
           component: <CustomerDetailView />,
           sidebar: <CustomerDetailSidebar />,
           form: createDeenruvForm({

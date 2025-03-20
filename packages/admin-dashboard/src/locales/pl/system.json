@@ -31,7 +31,7 @@
             "status": "Status",
             "created": "Utworzony",
             "started": "Rozpoczęty",
-            "settled": "Completed",
+            "settled": "Ukończono",
             "duration": "Czas trwania",
             "jobData": "Dane dotyczące pracy",
             "jobResult": "Wynik zadania",

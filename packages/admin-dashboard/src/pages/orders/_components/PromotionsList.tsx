@@ -29,141 +29,128 @@ export const PromotionsList: React.FC = () => {
   if (!order) return null;
 
   return (
-    <Card className="w-full border-l-4 border-l-zinc-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-zinc-400">
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-amber-500" />
-          <CardTitle>{t('promotions.title', 'Order Benefits')}</CardTitle>
-        </div>
-        <CardDescription>
-          {t('promotions.description', 'View and manage all promotions and discounts applied to this order.')}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="p-6 pt-0">
-        <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-6 lg:grid-cols-12">
-          <div className="col-span-1 md:col-span-2 lg:col-span-3">
-            <CouponCodesCard />
+    <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-6 lg:grid-cols-12">
+      <div className="col-span-1 md:col-span-2 lg:col-span-3">
+        <CouponCodesCard />
+      </div>
+
+      <Card className="col-span-1 h-full border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow md:col-span-2 lg:col-span-3 dark:border-l-blue-400">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <Gift className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+            <CardTitle>{t('promotions.title', 'Promotions')}</CardTitle>
           </div>
-
-          <Card className="col-span-1 h-full border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow md:col-span-2 lg:col-span-3 dark:border-l-blue-400">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <Gift className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-                <CardTitle>{t('promotions.title', 'Promotions')}</CardTitle>
-              </div>
-              <CardDescription>{t('promotions.description', 'Active order promotions')}</CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ScrollArea className="h-[280px] px-6 pb-6">
-                <Table>
-                  <TableHeader>
-                    <TableRow noHover className="border-border border-b">
-                      <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
-                      <TableHead className="py-3">{t('couponCodes.title')}</TableHead>
+          <CardDescription>{t('promotions.description', 'Active order promotions')}</CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <ScrollArea className="h-[280px] px-6 pb-6">
+            <Table>
+              <TableHeader>
+                <TableRow noHover className="border-border border-b">
+                  <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
+                  <TableHead className="py-3">{t('couponCodes.title')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {order.promotions.length ? (
+                  order.promotions.map(({ name, couponCode }) => (
+                    <TableRow key={name} noHover className="group">
+                      <TableCell className="py-3 font-medium">
+                        <div className="flex items-center gap-2">
+                          <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                          <span className="capitalize">{name}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-3">
+                        {couponCode ? (
+                          <Badge variant="outline" className="font-mono text-xs">
+                            {couponCode}
+                          </Badge>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {order.promotions.length ? (
-                      order.promotions.map(({ name, couponCode }) => (
-                        <TableRow key={name} noHover className="group">
-                          <TableCell className="py-3 font-medium">
-                            <div className="flex items-center gap-2">
-                              <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                              <span className="capitalize">{name}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="py-3">
-                            {couponCode ? (
-                              <Badge variant="outline" className="font-mono text-xs">
-                                {couponCode}
-                              </Badge>
-                            ) : (
-                              <span className="text-muted-foreground">—</span>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow noHover>
-                        <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
-                          <div className="flex flex-col items-center justify-center gap-2">
-                            <Gift className="text-muted-foreground/50 h-10 w-10" />
-                            <p>{t('taxSummary.noTaxSummary', 'No promotions applied')}</p>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </ScrollArea>
-            </CardContent>
-          </Card>
+                  ))
+                ) : (
+                  <TableRow noHover>
+                    <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <Gift className="text-muted-foreground/50 h-10 w-10" />
+                        <p>{t('promotions.noPromotions', 'No promotions applied')}</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </CardContent>
+      </Card>
 
-          <Card className="col-span-1 h-full border-l-4 border-l-green-500 shadow-sm transition-shadow duration-200 hover:shadow md:col-span-2 lg:col-span-6 dark:border-l-green-400">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <BadgePercent className="h-5 w-5 text-green-500 dark:text-green-400" />
-                <CardTitle>{t('discounts.title', 'Discounts')}</CardTitle>
-              </div>
-              <CardDescription>{t('discounts.description', 'Applied order discounts')}</CardDescription>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ScrollArea className="h-[280px] px-6 pb-6">
-                <Table>
-                  <TableHeader>
-                    <TableRow noHover className="border-border border-b">
-                      <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
-                      <TableHead className="py-3">{t('taxSummary.taxRate', 'Type')}</TableHead>
-                      <TableHead className="py-3">{t('taxSummary.taxBase', 'Amount')}</TableHead>
-                      <TableHead className="py-3">{t('taxSummary.taxTotal', 'With Tax')}</TableHead>
-                      <TableHead className="py-3">{t('discounts.source', 'Source')}</TableHead>
+      <Card className="col-span-1 h-full border-l-4 border-l-green-500 shadow-sm transition-shadow duration-200 hover:shadow md:col-span-2 lg:col-span-6 dark:border-l-green-400">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <BadgePercent className="h-5 w-5 text-green-500 dark:text-green-400" />
+            <CardTitle>{t('discounts.title', 'Discounts')}</CardTitle>
+          </div>
+          <CardDescription>{t('discounts.description', 'Applied order discounts')}</CardDescription>
+        </CardHeader>
+        <CardContent className="p-0">
+          <ScrollArea className="h-[280px] px-6 pb-6">
+            <Table>
+              <TableHeader>
+                <TableRow noHover className="border-border border-b">
+                  <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
+                  <TableHead className="py-3">{t('taxSummary.taxRate', 'Type')}</TableHead>
+                  <TableHead className="py-3">{t('taxSummary.taxBase', 'Amount')}</TableHead>
+                  <TableHead className="py-3">{t('taxSummary.taxTotal', 'With Tax')}</TableHead>
+                  <TableHead className="py-3">{t('discounts.source', 'Source')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {order.discounts.length ? (
+                  order.discounts.map(({ adjustmentSource, amount, amountWithTax, description, type }, index) => (
+                    <TableRow key={index} noHover className="group">
+                      <TableCell className="py-3 font-medium">
+                        <div className="flex items-center gap-2">
+                          <CreditCard className="h-4 w-4 text-green-500 dark:text-green-400" />
+                          <span className="capitalize">{description}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-3">
+                        <Badge variant="secondary" className="font-medium">
+                          {type}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="py-3 font-mono text-sm">
+                        {priceFormatter(amount, order.currencyCode)}
+                      </TableCell>
+                      <TableCell className="py-3 font-mono text-sm">
+                        {priceFormatter(amountWithTax, order.currencyCode)}
+                      </TableCell>
+                      <TableCell className="py-3">
+                        <Badge variant="outline" className="capitalize">
+                          {adjustmentSource}
+                        </Badge>
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {order.discounts.length ? (
-                      order.discounts.map(({ adjustmentSource, amount, amountWithTax, description, type }, index) => (
-                        <TableRow key={index} noHover className="group">
-                          <TableCell className="py-3 font-medium">
-                            <div className="flex items-center gap-2">
-                              <CreditCard className="h-4 w-4 text-green-500 dark:text-green-400" />
-                              <span className="capitalize">{description}</span>
-                            </div>
-                          </TableCell>
-                          <TableCell className="py-3">
-                            <Badge variant="secondary" className="font-medium">
-                              {type}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="py-3 font-mono text-sm">
-                            {priceFormatter(amount, order.currencyCode)}
-                          </TableCell>
-                          <TableCell className="py-3 font-mono text-sm">
-                            {priceFormatter(amountWithTax, order.currencyCode)}
-                          </TableCell>
-                          <TableCell className="py-3">
-                            <Badge variant="outline" className="capitalize">
-                              {adjustmentSource}
-                            </Badge>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow noHover>
-                        <TableCell colSpan={5} className="text-muted-foreground py-6 text-center">
-                          <div className="flex flex-col items-center justify-center gap-2">
-                            <BadgePercent className="text-muted-foreground/50 h-10 w-10" />
-                            <p>{t('discounts.emptyState', 'No discounts applied')}</p>
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </ScrollArea>
-            </CardContent>
-          </Card>
-        </div>
-      </CardContent>
-    </Card>
+                  ))
+                ) : (
+                  <TableRow noHover>
+                    <TableCell colSpan={5} className="text-muted-foreground py-6 text-center">
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <BadgePercent className="text-muted-foreground/50 h-10 w-10" />
+                        <p>{t('discounts.emptyState', 'No discounts applied')}</p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

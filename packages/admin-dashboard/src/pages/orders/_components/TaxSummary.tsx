@@ -71,7 +71,7 @@ export const TaxSummary: React.FC = () => {
                   ))}
                   <TableRow noHover className="border-border bg-muted/30 border-t">
                     <TableCell colSpan={3} className="py-3 text-right font-medium">
-                      {t('taxSummary.totalTax', 'Total Tax')}
+                      {t('taxSummary.taxTotal', 'Total Tax')}
                     </TableCell>
                     <TableCell className="py-3 font-mono text-sm font-bold">
                       {priceFormatter(totalTax, order.currencyCode)}

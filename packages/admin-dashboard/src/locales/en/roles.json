@@ -1,59 +1,59 @@
 {
-  "create": "Create role",
-  "edit": "Edit role",
-  "baseInfoCode": "Code: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Created: {{value}}",
-  "baseInfoUpdated": "Updated: {{value}}",
-  "defaultChannel": "Default Channel",
-  "buttonDisabledTooltip": "Fill all required fields",
-  "noChangesTooltip": "You have not made any changes",
-  "table": {
-    "id": "Id",
-    "name": "Name",
-    "description": "Description",
-    "code": "Code",
-    "permissions": "Permissions",
-    "channels": "Channels",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "openMenu": "Open menu",
-    "copyId": "Copy id",
-    "viewRole": "View role",
-    "columns": "Columns",
-    "defaultRoleInfo": "This is a default Role and cannot be modified"
-  },
-  "details": {
-    "basic": {
-      "title": "Basic info",
-      "description": "Name",
-      "code": "Code",
-      "channels": "Channels",
-      "channelsPlaceholder": "Add channel"
+    "create": "Create a role",
+    "edit": "Edit the role",
+    "baseInfoCode": "Code: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Created: {{value}}",
+    "baseInfoUpdated": "Updated: {{value}}",
+    "defaultChannel": "Default channel",
+    "buttonDisabledTooltip": "Fill in all required fields",
+    "noChangesTooltip": "No changes have been made",
+    "table": {
+        "id": "Id",
+        "name": "Name",
+        "description": "Description",
+        "code": "Code",
+        "permissions": "Entitlements",
+        "channels": "Channels",
+        "createdAt": "Created in",
+        "updatedAt": "Updated by",
+        "openMenu": "Open menu",
+        "copyId": "Copy ID",
+        "viewRole": "Display role",
+        "columns": "Columns",
+        "defaultRoleInfo": "This is the default role and cannot be modified"
     },
-    "permissions": {
-      "title": "Permissions"
+    "details": {
+        "basic": {
+            "title": "Basic information",
+            "description": "Name",
+            "code": "Code",
+            "channels": "Channels",
+            "channelsPlaceholder": "Add channel"
+        },
+        "permissions": {
+            "title": "Entitlements"
+        }
+    },
+    "toasts": {
+        "roleLoadingError": "Failed to load role with ID {{value}}",
+        "roleUpdateSuccess": "The role has been successfully updated",
+        "roleUpdateError": "An error occurred:",
+        "roleCreatedSuccess": "The role was successfully created",
+        "roleCreatedError": "Failed to create role",
+        "roleDeleteSuccess": "The role was successfully deleted",
+        "roleDeleteError": "Role could not be deleted"
+    },
+    "deleteRole": {
+        "title": "Delete role",
+        "description": "Are you sure you want to delete this role?",
+        "successMessage": "The role has been removed.",
+        "deleteOrCancel": "Delete/Cancel option selected"
+    },
+    "selectedValue": "{{from}} of {{to}} lines was selected",
+    "validation": {
+        "nameRequired": "Name is required",
+        "permissionsRequired": "Select at least one entitlement",
+        "codeRequired": "The code is required"
     }
-  },
-  "toasts": {
-    "roleLoadingError": "Failed to load role with id {{value}}",
-    "roleUpdateSuccess": "Role updated successfully",
-    "roleUpdateError": "Error occurred: ",
-    "roleCreatedSuccess": "Role has been created successfully",
-    "roleCreatedError": "Failed to create role",
-    "roleDeleteSuccess": "Role deleted successfully",
-    "roleDeleteError": "Failed to delete role"
-  },
-  "deleteRole": {
-    "title": "Delete role",
-    "description": "Are you sure you want to delete this role?",
-    "successMessage": "Role has been deleted.",
-    "deleteOrCancel": "Delete/Cancel selected"
-  },
-  "selectedValue": "{{from}} of {{to}} row(s) selected",
-  "validation": {
-    "nameRequired": "Name is required",
-    "permissionsRequired": "Select at least one permission",
-    "codeRequired": "Code is required"
-  }
 }

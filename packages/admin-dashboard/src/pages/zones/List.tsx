@@ -1,4 +1,4 @@
-import { DetailList, PaginationInput, apiClient, deepMerge } from '@deenruv/react-ui-devkit';
+import { DetailList, PaginationInput, TableLabel, apiClient, deepMerge } from '@deenruv/react-ui-devkit';
 import { Routes } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
@@ -58,7 +58,7 @@ export const ZonesListPage = () => {
         {
           accessorKey: 'members',
           enableColumnFilter: false,
-          header: () => t('table.members'),
+          header: () => <TableLabel>{t('table.members')}</TableLabel>,
           cell: ({ row }) => row.original.members.length,
         },
       ]}

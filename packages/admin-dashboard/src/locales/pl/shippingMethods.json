@@ -19,21 +19,21 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Name",
+            "name": "Nazwa",
             "description": "Opis",
-            "code": "Code",
+            "code": "Kod",
             "enabled": "Włączone",
             "fulfillmentHandler": "Obsługa realizacji"
         },
         "modal": {
             "title": "Modalny",
-            "name": "Modal title",
+            "name": "Tytuł modalny",
             "description": "Opis modułu",
             "additionalDescription": "Modalny opis dodatkowy"
         },
         "options": {
             "title": "Narzędzie do sprawdzania kwalifikowalności wysyłki",
-            "checker": "Shipping eligibility checker"
+            "checker": "Narzędzie do sprawdzania kwalifikowalności wysyłki"
         },
         "calculator": {
             "title": "Kalkulator wysyłki",

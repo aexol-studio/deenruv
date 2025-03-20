@@ -1,5 +1,5 @@
 import { OrderListSelector } from '@/graphql/orders';
-import { Permission, SortOrder } from '@deenruv/admin-types';
+import { Permission, SortOrder, typedGql, scalars } from '@deenruv/admin-types';
 import {
   Routes,
   apiClient,
@@ -9,7 +9,9 @@ import {
   OrderStateBadge,
   priceFormatter,
   TableLabel,
+  useQuery,
 } from '@deenruv/react-ui-devkit';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -44,9 +46,24 @@ const fetch = async <T, K>(
   return response['orders'];
 };
 
+const PaymentMethodsQuery = typedGql('query', { scalars })({
+  paymentMethods: [{}, { items: { code: true, name: true } }],
+});
+
 export const OrdersListPage = () => {
+  const { data } = useQuery(PaymentMethodsQuery);
   const { t } = useTranslation('table');
   const navigate = useNavigate();
+
+  const getMethodName = useCallback(
+    (code: string | undefined) =>
+      code
+        ? (data?.paymentMethods.items.find((i) => i.code === code)?.name ??
+          code?.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()))
+        : '-',
+    [data],
+  );
+
   return (
     <DetailList
       filterFields={[
@@ -85,7 +102,7 @@ export const OrdersListPage = () => {
                 return a.createdAt > b.createdAt ? -1 : 1;
               })
               .filter((payment) => payment.state === 'Settled');
-            return sorted?.at(0)?.method;
+            return getMethodName(sorted?.at(0)?.method);
           },
         },
         {
@@ -111,6 +128,11 @@ export const OrdersListPage = () => {
           accessorKey: 'totalWithTax',
           header: () => <TableLabel>{t('columns.total')}</TableLabel>,
           accessorFn: (order) => priceFormatter(order.totalWithTax, order.currencyCode),
+        },
+        {
+          accessorKey: 'shipping',
+          header: () => <TableLabel>{t('columns.shipping')}</TableLabel>,
+          accessorFn: (order) => priceFormatter(order.shipping, order.currencyCode),
         },
         {
           accessorKey: 'code',

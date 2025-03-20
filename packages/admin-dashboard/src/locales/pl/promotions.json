@@ -44,16 +44,16 @@
             "order_percentage_discount": "Rabat na zamówienie o X%",
             "facet_based_discount": "Rabat na produkty z tymi aspektami o X%",
             "products_percentage_discount": "Rabat na określone produkty o X%",
-            "buy_x_get_y_free": "Buy X products, get Y products free"
+            "buy_x_get_y_free": "Kup X produktów, otrzymaj Y produktów za darmo"
         },
         "labels": {
             "discount": "Rabat",
-            "taxInclusive": "Tax inclusive",
+            "taxInclusive": "Z uwzględnieniem podatku",
             "minimum": "Minimum",
-            "amountX": "Amount X",
-            "amountY": "Amount Y",
-            "Buy amountX of these variants": "Buy amount X of these variants",
-            "Get amountY of these variants for free": "Get amount Y of these variants for free"
+            "amountX": "Kwota X",
+            "amountY": "Kwota Y",
+            "Buy amountX of these variants": "Kup ilość X tych wariantów",
+            "Get amountY of these variants for free": "Uzyskaj ilość Y tych wariantów za darmo"
         }
     },
     "validation": {

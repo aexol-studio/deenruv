@@ -1,12 +1,8 @@
 import { Button } from '@/components/atoms/button.js';
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from '@/components/atoms/dropdown-menu.js';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/atoms/dropdown-menu.js';
 import {
     DndContext,
+    DragEndEvent,
     KeyboardSensor,
     PointerSensor,
     closestCenter,
@@ -20,26 +16,39 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Grip, PanelsTopLeft } from 'lucide-react';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
-import { NavigateFunction } from 'react-router-dom';
-import { ColumnDef, Table } from '@tanstack/react-table';
+import { Table } from '@tanstack/react-table';
 import { EXCLUDED_COLUMNS } from '@/components/templates/DetailList/useDetailList/constants.js';
+import { Checkbox } from '@/components/atoms/checkbox.js';
+import { camelCaseToSpaces } from '@/utils/camel-case-to-spaces.js';
+import { useServer } from '@/state/server.js';
+import { useSettings } from '@/state/settings.js';
 
-export const ColumnView = <T extends { id: string }>(table: Table<T>) => {
+const CUSTOM_FIELDS_PREFIX = 'customFields_';
+
+export const ColumnView = <T extends { id: string }>({
+    table,
+    entityName,
+}: {
+    table: Table<T>;
+    entityName: string;
+}) => {
     const { t } = useTranslation('table');
+    const { language } = useSettings();
     const columnsTranslations = t('columns', { returnObjects: true });
     const hideColumns = table.options.meta?.hideColumns ?? [];
+    const entityCustomFields = useServer(p =>
+        p.serverConfig?.entityCustomFields?.find(el => el.entityName === entityName),
+    )?.customFields;
 
-    const allColumns = useMemo(() => {
-        return table.getAllColumns().filter(column => {
-            const isHideable = column.getCanHide();
-            const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
-            const isNotHidden = !hideColumns.includes(column.id as keyof T);
-            return isHideable && isNotExcluded && isNotHidden;
-        });
-    }, [table, hideColumns]);
+    const allColumns = table.getAllColumns().filter(column => {
+        const isHideable = column.getCanHide();
+        const isNotExcluded = !EXCLUDED_COLUMNS.includes(column.id);
+        const isNotHidden = !hideColumns.includes(column.id as keyof T);
+        return isHideable && isNotExcluded && isNotHidden;
+    });
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -54,6 +63,14 @@ export const ColumnView = <T extends { id: string }>(table: Table<T>) => {
         return newArray;
     }
 
+    const getCustomFieldLabel = (key: string) => {
+        const field = entityCustomFields?.find(el => el.name === key.split('_')[1]);
+        const fieldTranslation =
+            field?.label?.find(el => el.languageCode === language)?.value || field?.label?.[0]?.value;
+
+        return fieldTranslation || camelCaseToSpaces(key.replace(CUSTOM_FIELDS_PREFIX, ''));
+    };
+
     return (
         <div className="text-right">
             <DropdownMenu>
@@ -63,11 +80,11 @@ export const ColumnView = <T extends { id: string }>(table: Table<T>) => {
                         {t('actionsMenu.view')}
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="max-h-[350px] overflow-y-auto">
+                <DropdownMenuContent align="end" className="max-h-[350px] overflow-y-auto p-2 space-y-2.5">
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
-                        onDragEnd={e => {
+                        onDragEnd={(e: DragEndEvent) => {
                             const { active, over } = e;
                             if (active.id !== over?.id) {
                                 const oldIndex = allColumns.findIndex(column => column.id === active.id);
@@ -93,16 +110,26 @@ export const ColumnView = <T extends { id: string }>(table: Table<T>) => {
                                 .map(column => {
                                     return (
                                         <DraggableMenuItem key={column.id} id={column.id}>
-                                            <DropdownMenuCheckboxItem
-                                                key={column.id}
-                                                className="capitalize"
-                                                checked={column.getIsVisible()}
-                                                onCheckedChange={value => column.toggleVisibility(!!value)}
-                                            >
-                                                {columnsTranslations[
-                                                    column.id as keyof typeof columnsTranslations
-                                                ] ?? column.id}
-                                            </DropdownMenuCheckboxItem>
+                                            <div className="flex gap-3 items-center pr-4">
+                                                <Checkbox
+                                                    id={`checkbox-${column.id}`}
+                                                    checked={column.getIsVisible()}
+                                                    onCheckedChange={value =>
+                                                        column.toggleVisibility(!!value)
+                                                    }
+                                                />
+                                                <label
+                                                    htmlFor={`checkbox-${column.id}`}
+                                                    className="flex-1 cursor-pointer"
+                                                >
+                                                    {columnsTranslations[
+                                                        column.id as keyof typeof columnsTranslations
+                                                    ] ??
+                                                        (column.id.startsWith(CUSTOM_FIELDS_PREFIX)
+                                                            ? getCustomFieldLabel(column.id)
+                                                            : camelCaseToSpaces(column.id))}
+                                                </label>
+                                            </div>
                                         </DraggableMenuItem>
                                     );
                                 })}

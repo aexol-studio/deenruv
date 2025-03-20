@@ -1,15 +1,15 @@
 {
     "available-languages": {
-        "label": "Available Languages",
-        "description": "Sets the languages that are available for all channels. Individual channels can then support a subset of these languages.",
-        "placeholder": "choose languages"
+        "label": "Available languages",
+        "description": "Sets the languages available for all channels. Individual channels can then support a subset of these languages.",
+        "placeholder": "select languages"
     },
     "stock-threshold": {
         "label": "Global out-of-stock threshold",
-        "description": "Sets the stock level at which this a variant is considered to be out of stock. Using a negative value enables backorder support. Can be overridden by product variants."
+        "description": "Sets the stock level at which a variant is considered unavailable. Using a negative value allows backorders to be handled. Can be overridden by product variants."
     },
     "track-inventory": {
-        "label": "Track inventory by default",
-        "description": "When tracked, product variant stock levels will be automatically adjusted when sold"
+        "label": "Default stock tracking",
+        "description": "In case of tracking, stock levels of product variants will be automatically adjusted after sale"
     }
 }

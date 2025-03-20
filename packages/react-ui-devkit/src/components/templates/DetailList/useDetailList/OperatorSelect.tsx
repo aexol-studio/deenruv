@@ -84,7 +84,7 @@ export const OperatorSelect: React.FC<OperatorSelectProps> = ({ type, currentVal
             value={currentValue as string}
             onValueChange={onChange}
             options={options}
-            placeholder="Pick operator"
+            placeholder={t('filterDialog.operatorPlaceholder')}
             wrapperClassName="w-36 max-w-36"
             className="h-8 rounded lowercase"
         />

@@ -25,10 +25,10 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Name",
-            "enabled": "Enabled",
-            "taxCategory": "Tax category",
-            "zone": "Zone",
+            "name": "Nazwa",
+            "enabled": "Włączone",
+            "taxCategory": "Kategoria podatkowa",
+            "zone": "Strefa",
             "value": "Wartość"
         }
     },

@@ -1,84 +1,84 @@
 {
-  "create": "Create shipping method",
-  "edit": "Edit shipping method",
-  "baseInfoCode": "Code: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Created: {{value}}",
-  "baseInfoUpdated": "Updated: {{value}}",
-  "buttonDisabledTooltip": "Fill all required fields",
-  "noChangesTooltip": "You have not made any changes",
-  "table": {
-    "id": "Id",
-    "name": "Name",
-    "code": "Code",
-    "modalTitle": "Modal title",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "columns": "Columns"
-  },
-  "details": {
-    "basic": {
-      "title": "Basic info",
-      "name": "Name",
-      "description": "Description",
-      "code": "Code",
-      "enabled": "Enabled",
-      "fulfillmentHandler": "Fulfillment handler"
+    "create": "Create shipping method",
+    "edit": "Edit shipping method",
+    "baseInfoCode": "Code: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Created: {{value}}",
+    "baseInfoUpdated": "Updated: {{value}}",
+    "buttonDisabledTooltip": "Fill in all required fields",
+    "noChangesTooltip": "No changes have been made",
+    "table": {
+        "id": "Id",
+        "name": "Name",
+        "code": "Code",
+        "modalTitle": "Modal title",
+        "createdAt": "Created in",
+        "updatedAt": "Updated by",
+        "columns": "Columns"
     },
-    "modal": {
-      "title": "Modal",
-      "name": "Modal title",
-      "description": "Modal description",
-      "additionalDescription": "Modal additional description"
+    "details": {
+        "basic": {
+            "title": "Basic information",
+            "name": "Name",
+            "description": "Description",
+            "code": "Code",
+            "enabled": "Enabled",
+            "fulfillmentHandler": "Implementation support"
+        },
+        "modal": {
+            "title": "Modal",
+            "name": "Modal title",
+            "description": "Module description",
+            "additionalDescription": "Modal additional description"
+        },
+        "options": {
+            "title": "Tool to check shipment eligibility",
+            "checker": "Shipping eligibility checker tool"
+        },
+        "calculator": {
+            "title": "Shipping calculator",
+            "type": "Calculator type"
+        },
+        "test": {
+            "title": "Test shipping method",
+            "city": "City",
+            "province": "Province",
+            "postalCode": "Postcode",
+            "country": "Country",
+            "button": "Test",
+            "eligible": "Eligible",
+            "notEligible": "Not eligible"
+        },
+        "lines": {
+            "placeholder": "Product search",
+            "product": "Product",
+            "price": "Price",
+            "quantity": "Quantity",
+            "total": "Total",
+            "noItems": "Add products"
+        }
     },
-    "options": {
-      "title": "Shipping eligibility checker",
-      "checker": "Shipping eligibility checker"
+    "toasts": {
+        "shippingMethodLoadingError": "Failed to load shipping method with identifier {{value}}",
+        "shippingMethodUpdateSuccess": "Dispatch method has been successfully updated",
+        "shippingMethodUpdateError": "An error occurred:",
+        "shippingMethodCreatedSuccess": "The dispatch method was successfully created",
+        "shippingMethodCreatedError": "Failed to create dispatch method",
+        "shippingMethodDeleteSuccess": "Dispatch method was successfully deleted",
+        "shippingMethodDeleteError": "Shipping method could not be deleted"
     },
-    "calculator": {
-      "title": "Shipping calculator",
-      "type": "Calculator type"
+    "validation": {
+        "checkerCodeRequired": "Shipping authorisation check code required",
+        "checkerArgsRequired": "Dispatch eligibility check arguments required",
+        "calculatorCodeRequired": "Shipping calculator code required",
+        "calculatorArgsRequired": "Shipping calculator arguments required",
+        "required": "Field is required",
+        "fulfillmentHandlerRequired": "Fulfillment Handler is required",
+        "nameRequired": "Name is required"
     },
-    "test": {
-      "title": "Test shipping method",
-      "city": "City",
-      "province": "Province",
-      "postalCode": "Postal code",
-      "country": "Country",
-      "button": "Test",
-      "eligible": "Eligible",
-      "notEligible": "Not eligible"
-    },
-    "lines": {
-      "placeholder": "Search for products",
-      "product": "Product",
-      "price": "Price",
-      "quantity": "Quantity",
-      "total": "Total",
-      "noItems": "Add products"
+    "deleteShippingMethod": {
+        "title": "Remove shipping method",
+        "description": "Are you sure you want to delete this shipping method?",
+        "successMessage": "The shipping method has been removed."
     }
-  },
-  "toasts": {
-    "shippingMethodLoadingError": "Failed to load shipping method with id {{value}}",
-    "shippingMethodUpdateSuccess": "Shipping method updated successfully",
-    "shippingMethodUpdateError": "Error occurred: ",
-    "shippingMethodCreatedSuccess": "Shipping method has been created successfully",
-    "shippingMethodCreatedError": "Failed to create shipping method",
-    "shippingMethodDeleteSuccess": "Shipping method deleted successfully",
-    "shippingMethodDeleteError": "Failed to delete shipping method"
-  },
-  "validation": {
-    "checkerCodeRequired": "Shipping eligibility checker code is required",
-    "checkerArgsRequired": "Shipping eligibility checker arguments are required",
-    "calculatorCodeRequired": "Shipping calculator code is required",
-    "calculatorArgsRequired": "Shipping calculator arguments are required",
-    "required": "Field is required",
-    "fulfillmentHandlerRequired": "Fulfillment Handler is required",
-    "nameRequired": "Name is required"
-  },
-  "deleteShippingMethod": {
-    "title": "Delete shipping method",
-    "description": "Are you sure you want to delete this shipping method?",
-    "successMessage": "Shipping method has been deleted."
-  }
 }

@@ -160,18 +160,6 @@ export const ProductsCard: React.FC = () => {
     }
   };
 
-  const setQuantityTo0 = useCallback(
-    (orderLineId: string) => {
-      const lineIdx = modifiedOrder?.lines.findIndex((l) => l.id === orderLineId);
-
-      if (lineIdx && modifiedOrder) {
-        modifiedOrder.lines[lineIdx].quantity = 0;
-        setModifiedOrder(modifiedOrder);
-      }
-    },
-    [modifiedOrder],
-  );
-
   const removeLineItem = async (orderLineId: string) => {
     if (!order) return;
 
@@ -386,16 +374,11 @@ export const ProductsCard: React.FC = () => {
         <CardContent className="p-6 pt-0">
           <div className="grid gap-6">
             {mode !== 'view' && (
-              <div className="border-border bg-card rounded-lg border p-4 shadow-sm">
-                <Label className="mb-2 block text-sm font-medium">
-                  {t('create.searchLabel', 'Search for products to add')}
-                </Label>
-                <ProductVariantSearch
-                  onSelectItem={(i) =>
-                    orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
-                  }
-                />
-              </div>
+              <ProductVariantSearch
+                onSelectItem={(i) =>
+                  orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
+                }
+              />
             )}
 
             <div className="border-border rounded-lg border shadow-sm">
@@ -467,7 +450,7 @@ export const ProductsCard: React.FC = () => {
                                     <DropdownMenuLabel>
                                       <div className="flex items-center gap-2">
                                         <Edit className="h-4 w-4 text-blue-500" />
-                                        {t('create.editOptions', 'Edit Options')}
+                                        {t('editOptions', 'Edit Options')}
                                       </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
@@ -508,14 +491,6 @@ export const ProductsCard: React.FC = () => {
                                     onClick={() => removeLineItem(line.id)}
                                   >
                                     <Trash2 className="h-4 w-4" />
-                                  </button>
-                                )}
-                                {mode === 'update' && !isLineAddedInModify(line.id) && (
-                                  <button
-                                    className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
-                                    onClick={() => setQuantityTo0(line.id)}
-                                  >
-                                    <CircleOff className="h-4 w-4" />
                                   </button>
                                 )}
                               </div>
@@ -579,7 +554,7 @@ export const ProductsCard: React.FC = () => {
               <div className="bg-card rounded-lg border p-4 shadow-sm">
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-base font-semibold">Total</span>
+                    <span className="text-base font-semibold">{t('total')}</span>
                     <span className="text-primary text-base font-bold">
                       {priceFormatter(currentOrder?.totalWithTax || 0, currentOrder?.currencyCode)}
                     </span>
@@ -588,7 +563,9 @@ export const ProductsCard: React.FC = () => {
                     <div className="flex items-center gap-1">
                       <InfoIcon className="h-3 w-3" />
                       <span>
-                        Total includes {currentOrder?.lines.reduce((acc, line) => acc + line.quantity, 0) || 0} items
+                        {t('totalItems', {
+                          value: currentOrder?.lines.reduce((acc, line) => acc + line.quantity, 0) || 0,
+                        })}
                       </span>
                     </div>
                   </div>

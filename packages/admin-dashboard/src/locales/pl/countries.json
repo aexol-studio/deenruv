@@ -23,9 +23,9 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "code": "Code",
-            "name": "Name",
-            "enabled": "Enabled"
+            "code": "Kod",
+            "name": "Nazwa",
+            "enabled": "Włączone"
         }
     },
     "validation": {

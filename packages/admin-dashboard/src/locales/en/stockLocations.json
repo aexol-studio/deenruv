@@ -1,40 +1,40 @@
 {
-  "create": "Create stock location",
-  "edit": "Edit stock location",
-  "baseInfoCode": "Code: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Created: {{value}}",
-  "baseInfoUpdated": "Updated: {{value}}",
-  "table": {
-    "id": "Id",
-    "name": "Name",
-    "description": "Description",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "openMenu": "Open menu",
-    "copyId": "Copy id",
-    "viewStockLocation": "View stock location",
-    "columns": "Columns"
-  },
-  "details": {
-    "basic": {
-      "title": "Basic info",
-      "name": "Name",
-      "description": "Description"
+    "create": "Create a stock location",
+    "edit": "Edit stock location",
+    "baseInfoCode": "Code: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Created: {{value}}",
+    "baseInfoUpdated": "Updated: {{value}}",
+    "table": {
+        "id": "Id",
+        "name": "Name",
+        "description": "Description",
+        "createdAt": "Created in",
+        "updatedAt": "Updated by",
+        "openMenu": "Open menu",
+        "copyId": "Copy ID",
+        "viewStockLocation": "Display stock location",
+        "columns": "Columns"
+    },
+    "details": {
+        "basic": {
+            "title": "Basic information",
+            "name": "Name",
+            "description": "Description"
+        }
+    },
+    "toasts": {
+        "stockLocationLoadingError": "Failed to load storage location with identifier {{value}}",
+        "stockLocationUpdateSuccess": "Stock location successfully updated",
+        "stockLocationUpdateError": "An error occurred:",
+        "stockLocationCreatedSuccess": "Storage location was successfully created",
+        "stockLocationCreatedError": "Creation of storage location failed",
+        "stockLocationDeleteSuccess": "Storage location was successfully deleted",
+        "stockLocationDeleteError": "Warehouse location could not be deleted"
+    },
+    "deleteStockLocation": {
+        "title": "Delete stock location",
+        "description": "Are you sure you want to delete this storage location?",
+        "successMessage": "The storage location has been removed."
     }
-  },
-  "toasts": {
-    "stockLocationLoadingError": "Failed to load stock location with id {{value}}",
-    "stockLocationUpdateSuccess": "Stock location updated successfully",
-    "stockLocationUpdateError": "Error occurred: ",
-    "stockLocationCreatedSuccess": "Stock location has been created successfully",
-    "stockLocationCreatedError": "Failed to create stock location",
-    "stockLocationDeleteSuccess": "Stock location deleted successfully",
-    "stockLocationDeleteError": "Failed to delete stock location"
-  },
-  "deleteStockLocation": {
-    "title": "Delete stock location",
-    "description": "Are you sure you want to delete this stock location?",
-    "successMessage": "Stock location has been deleted."
-  }
 }

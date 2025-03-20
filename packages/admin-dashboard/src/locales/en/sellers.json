@@ -1,41 +1,41 @@
 {
-  "create": "Create seller",
-  "edit": "Edit seller",
-  "baseInfoCode": "Code: {{value}}",
-  "baseInfoId": "Id: {{value}}",
-  "baseInfoCreated": "Created: {{value}}",
-  "baseInfoUpdated": "Updated: {{value}}",
-  "buttonDisabledTooltip": "Fill all required fields",
-  "noChangesTooltip": "You have not made any changes",
-  "table": {
-    "id": "Id",
-    "name": "Name",
-    "createdAt": "Created at",
-    "updatedAt": "Updated at",
-    "openMenu": "Open menu",
-    "copyId": "Copy id",
-    "viewSeller": "View seller",
-    "columns": "Columns"
-  },
-  "details": {
-    "basic": {
-      "title": "Basic info",
-      "name": "Name",
-      "memberPlaceholder": "Add member"
+    "create": "Create vendor",
+    "edit": "Edit vendor",
+    "baseInfoCode": "Code: {{value}}",
+    "baseInfoId": "Id: {{value}}",
+    "baseInfoCreated": "Created: {{value}}",
+    "baseInfoUpdated": "Updated: {{value}}",
+    "buttonDisabledTooltip": "Fill in all required fields",
+    "noChangesTooltip": "No changes have been made",
+    "table": {
+        "id": "Id",
+        "name": "Name",
+        "createdAt": "Created in",
+        "updatedAt": "Updated by",
+        "openMenu": "Open menu",
+        "copyId": "Copy ID",
+        "viewSeller": "Display vendor",
+        "columns": "Columns"
+    },
+    "details": {
+        "basic": {
+            "title": "Basic information",
+            "name": "Name",
+            "memberPlaceholder": "Add a member"
+        }
+    },
+    "toasts": {
+        "sellerLoadingError": "Failed to load vendor with ID {{value}}",
+        "sellerUpdateSuccess": "Vendor has been successfully updated",
+        "sellerUpdateError": "An error occurred:",
+        "sellerCreatedSuccess": "Vendor has been successfully created",
+        "sellerCreatedError": "Failed to create vendor",
+        "sellerDeleteSuccess": "Vendor was successfully deleted",
+        "sellerDeleteError": "Unsuccessful deletion of vendor"
+    },
+    "deleteSeller": {
+        "title": "Delete vendor",
+        "description": "Are you sure you want to delete this vendor?",
+        "successMessage": "The seller has been removed."
     }
-  },
-  "toasts": {
-    "sellerLoadingError": "Failed to load seller with id {{value}}",
-    "sellerUpdateSuccess": "Seller updated successfully",
-    "sellerUpdateError": "Error occurred: ",
-    "sellerCreatedSuccess": "Seller has been created successfully",
-    "sellerCreatedError": "Failed to create seller",
-    "sellerDeleteSuccess": "Seller deleted successfully",
-    "sellerDeleteError": "Failed to delete seller"
-  },
-  "deleteSeller": {
-    "title": "Delete seller",
-    "description": "Are you sure you want to delete this seller?",
-    "successMessage": "Seller has been deleted."
-  }
 }

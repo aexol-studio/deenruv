@@ -2,18 +2,22 @@ import React, { useCallback, useEffect } from 'react';
 import {
   CustomerDetailOrderSelector,
   DetailList,
+  OrderStateBadge,
   PaginationInput,
   Routes,
+  TableLabel,
   apiClient,
   deepMerge,
   useDetailView,
   useSettings,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
+import { useTranslation } from 'react-i18next';
 
 const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 
 export const OrdersTab: React.FC = () => {
+  const { t } = useTranslation('table');
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { id, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
@@ -71,6 +75,14 @@ export const OrdersTab: React.FC = () => {
       noCreateButton
       createPermission={Permission.CreateOrder}
       deletePermission={Permission.DeleteOrder}
+      additionalColumns={[
+        {
+          accessorKey: 'state',
+          header: () => <TableLabel>{t('columns.state')}</TableLabel>,
+          accessorFn: (order) => order?.state,
+          cell: ({ row }) => <OrderStateBadge state={row.original.state} />,
+        },
+      ]}
     />
   );
 };

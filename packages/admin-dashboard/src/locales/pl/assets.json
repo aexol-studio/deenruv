@@ -13,6 +13,13 @@
     "filesSelected": " wybrane pliki",
     "noFilesSelected": "Nie wybrano żadnych plików",
     "invalidFileTypes": "Nieprawidłowe typy plików",
+    "browseAssets": "Przeglądaj zasoby",
+    "uploadAssets": "Wgraj zasób",
+    "preview": "Obraz",
+    "name": "Nazwa",
+    "actions": "Akcje",
+    "copyURL": "Kopiuj URL",
+    "open": "Otwórz",
     "detailsTable": {
         "id": "Id",
         "name": "Nazwa",

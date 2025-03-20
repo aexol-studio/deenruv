@@ -9,10 +9,9 @@ import {
   Routes,
   BooleanCell,
   TableLabel,
+  ListBadge,
 } from '@deenruv/react-ui-devkit';
-import { ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 
 const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
@@ -74,22 +73,11 @@ export const CustomersListPage = () => {
           cell: ({ row }) => <BooleanCell value={!!row.original.user?.verified} />,
         },
         {
-          id: 'full-name',
+          id: 'fullName',
           accessorKey: 'fullName',
           header: () => <TableLabel>{t('columns.fullName')}</TableLabel>,
           cell: ({ row }) => {
-            const navigate = useNavigate();
-            return (
-              <Button
-                variant="outline"
-                // size="default"
-                className="h-6 border border-gray-500 p-0 px-3 text-gray-800 hover:border-gray-600 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
-                onClick={() => navigate(Routes['customers'].to(row.original.id), { viewTransition: true })}
-              >
-                {`${row.original.firstName} ${row.original.lastName}`}
-                <ArrowRight className="pl-1" size={16} />
-              </Button>
-            );
+            return <ListBadge>{`${row.original.firstName} ${row.original.lastName}`}</ListBadge>;
           },
         },
       ]}

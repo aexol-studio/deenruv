@@ -1,6 +1,7 @@
 import { JobState } from '@deenruv/admin-types';
-import { capitalizeFirstLetter, Checkbox, JobQueue, Option, SimpleSelect, useServer } from '@deenruv/react-ui-devkit';
+import { Checkbox, Option, SimpleSelect, useServer } from '@deenruv/react-ui-devkit';
 import React, { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface FilterToolbarProps {
   Search: ReactNode;
@@ -21,11 +22,12 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
   liveUpdate,
   setLiveUpdate,
 }) => {
+  const { t } = useTranslation('system');
   const { jobQueues } = useServer();
   const jobStatesOptions = [
-    { label: 'All states', value: 'undefined' },
+    { label: t('jobs.allStates'), value: 'undefined' },
     ...Object.entries(JobState).map(([key, value]) => ({
-      label: capitalizeFirstLetter(key),
+      label: t('jobs.states.' + key.toLowerCase()),
       value,
       color:
         value === JobState.COMPLETED
@@ -38,7 +40,7 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
     })),
   ];
   const jobQueuesOptions: Option[] = [
-    { label: 'All names', value: 'undefined' },
+    { label: t('jobs.allNames'), value: 'undefined' },
     ...jobQueues.map((q) => ({
       label: q.name,
       value: q.name,
@@ -53,11 +55,11 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
           htmlFor="live-update"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Live update
+          {t('jobs.live')}
         </label>
       </div>
       <SimpleSelect
-        placeholder="All states"
+        placeholder={t('jobs.allStates')}
         options={jobStatesOptions}
         value={stateFilter}
         onValueChange={setStateFilter}
@@ -65,14 +67,13 @@ export const FilterToolbar: React.FC<FilterToolbarProps> = ({
         className="h-8"
       />
       <SimpleSelect
-        placeholder="All names"
+        placeholder={t('jobs.allNames')}
         options={jobQueuesOptions}
         value={jobQueueFilter}
         onValueChange={setJobQueueFilter}
         wrapperClassName="w-[160px]"
         className="h-8"
       />
-      {/* {Search} */}
     </div>
   );
 };

@@ -260,7 +260,7 @@ export const Jobs = () => {
             <FilterToolbar
               {...{ Search, setStateFilter, stateFilter, jobQueueFilter, setJobQueueFilter, liveUpdate, setLiveUpdate }}
             />
-            <ColumnView {...table} />
+            <ColumnView table={table} entityName="Job" />
           </div>
         </div>
       </CardHeader>

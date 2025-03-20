@@ -133,10 +133,35 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         `${type}-table-visibility`,
         { id: true, createdAt: true, updatedAt: true },
     );
+
+    const getTableDefaultOrder = (): string[] => {
+        return table
+            .getAllColumns()
+            .slice()
+            .map(column => column.id)
+            .sort((a, b) => {
+                const isCustomA = a.startsWith('customFields_');
+                const isCustomB = b.startsWith('customFields_');
+
+                if (isCustomA && !isCustomB) return 1;
+                if (!isCustomA && isCustomB) return -1;
+
+                return a.localeCompare(b);
+            });
+    };
+
+    const getTableDefaultVisibility = () => {
+        return table.getAllColumns().reduce<Record<string, boolean>>((acc, column) => {
+            acc[column.id] = column.id.startsWith('customFields_') ? false : true;
+            return acc;
+        }, {});
+    };
+
     const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
     const columnsTranslations = t('columns', { returnObjects: true });
     const { handleError } = useErrorHandler();
     const hiddenColumns = useMemo(() => [...(hideColumns ?? []), 'customFields'], [hideColumns]);
+    const { language } = useSettings();
 
     const {
         objects,
@@ -180,7 +205,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     header: () => {
                         const field = entityCustomFields?.find(el => el.name === key.split('.')[1]);
                         const fieldTranslation =
-                            field?.label?.find(el => el.languageCode === 'en')?.value ||
+                            field?.label?.find(el => el.languageCode === language)?.value ||
                             field?.label?.[0]?.value;
 
                         let label = key;
@@ -198,6 +223,11 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     },
                     cell: ({ row }) => {
                         const value = row.original.customFields[key.split('.')[1]];
+
+                        if (!value) {
+                            return '-';
+                        }
+
                         if (typeof value === 'object') {
                             return JSON.stringify(value);
                         }
@@ -242,6 +272,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         return <BooleanCell value={value} />;
                     }
 
+                    if (!value || value === '' || value === undefined) {
+                        return '-';
+                    }
+
                     if (!value) return JSON.stringify(value);
 
                     if (typeof value === 'object') {
@@ -261,7 +295,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         }
                         return JSON.stringify(value);
                     }
-                    if (key === 'createdAt' || key === 'updatedAt') {
+
+                    if (key === 'createdAt' || key === 'updatedAt' || key === 'orderPlacedAt') {
                         return (
                             <div className="text-nowrap">
                                 {format(new Date(row.original[key]), 'dd.MM.yyyy hh:mm')}
@@ -330,6 +365,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         if (hiddenColumns?.includes(customKey)) {
                             newVisibility[customKey] = false;
                         } else if (prev[customKey] === undefined) {
+                            // customKey.replace(/customFields\.([a-zA-Z0-9_]+)/g, 'customFields_$1')
                             newVisibility[customKey] = true;
                         }
                     }
@@ -383,6 +419,13 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             columnFilters,
         },
     });
+
+    useEffect(() => {
+        if (!columnsOrderState.length) setColumnsOrderState(getTableDefaultOrder());
+        if (!columnsVisibilityState || !Object.keys(columnsVisibilityState).length)
+            console.log('VISIBILITY', getTableDefaultVisibility());
+        setColumnsVisibilityState(getTableDefaultVisibility());
+    }, [table]);
 
     const isFiltered = useMemo(() => {
         let isFiltered = false;
@@ -457,7 +500,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             {Search}
                         </div>
                         <div className="flex gap-2">
-                            <ColumnView {...table} />
+                            <ColumnView table={table} entityName={entityName} />
                             {!noCreateButton && isPermittedToCreate && (
                                 <Button
                                     className="flex items-center gap-2"

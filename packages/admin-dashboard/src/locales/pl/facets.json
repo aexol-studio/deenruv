@@ -35,8 +35,8 @@
         "facetCreatedSuccess": "Facet został utworzony pomyślnie"
     },
     "visibility": {
-        "public": "Public",
-        "private": "Private"
+        "public": "Publiczny",
+        "private": "Prywatny"
     },
     "deleteFacet": {
         "title": "Usuń aspekt",
@@ -62,14 +62,14 @@
         "editTitle": "Edytuj wartość aspektu",
         "nameLabel": "Nazwa wartości aspektu",
         "codeLabel": "Kod wartości aspektu",
-        "isNew": "New",
+        "isNew": "Nowość",
         "hidden": "Ukryty",
-        "color": "Color",
+        "color": "Kolor",
         "success": "Wartość dodana aspektu z powodzeniem",
         "editSuccess": "Pomyślnie zaktualizowano wartość aspektu",
         "error": "Wystąpił błąd",
         "options": "Opcje",
-        "image": "Image"
+        "image": "Obraz"
     },
     "buttons": {
         "deleteValue": "Usuń wartość",

@@ -21,8 +21,8 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Name",
-            "members": "Members",
+            "name": "Nazwa",
+            "members": "Członkowie",
             "memberPlaceholder": "Dodaj członka"
         }
     },

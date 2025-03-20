@@ -1,27 +1,27 @@
 {
     "health": {
-        "title": "System Status",
-        "updated": "Last updated: ",
-        "status": "Overall Status: ",
-        "details": "Service Details",
+        "title": "System status",
+        "updated": "Last update:",
+        "status": "General status:",
+        "details": "Service details",
         "refresh": "Refresh",
-        "refreshing": "Refreshing",
+        "refreshing": "Refresh",
         "error": {
-            "title": "Unable to fetch status",
+            "title": "Unable to retrieve status",
             "description": "There was a problem connecting to the status service.",
-            "button": "Try Again"
+            "button": "Try again"
         }
     },
     "jobs": {
-        "title": "Jobs",
+        "title": "Work",
         "live": "Live update",
         "allStates": "All states",
         "allNames": "All names",
         "states": {
-            "pending": "Pending",
-            "running": "Running",
+            "pending": "In progress",
+            "running": "In progress",
             "completed": "Completed",
-            "retrying": "Retrying",
+            "retrying": "Re-attempt",
             "failed": "Failed",
             "cancelled": "Cancelled"
         },
@@ -33,9 +33,9 @@
             "started": "Started",
             "settled": "Completed",
             "duration": "Duration",
-            "jobData": "Job data",
-            "jobResult": "Job result",
-            "remove": "Remove job"
+            "jobData": "Work data",
+            "jobResult": "Job outcome",
+            "remove": "Delete task"
         }
     }
 }

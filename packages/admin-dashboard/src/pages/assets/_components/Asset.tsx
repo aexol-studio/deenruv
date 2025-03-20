@@ -160,7 +160,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
                   className="gap-2"
                 >
                   <Copy size={14} />
-                  <span>{t('common:copy', 'Copy URL')}</span>
+                  <span>{t('common:copyURL', 'Copy URL')}</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={(e) => {
@@ -228,8 +228,8 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mt-2">
           <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="preview">Preview</TabsTrigger>
-            <TabsTrigger value="details">Details</TabsTrigger>
+            <TabsTrigger value="preview">{t('common:preview')}</TabsTrigger>
+            <TabsTrigger value="details">{t('common:details')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="preview" className="space-y-4">
@@ -259,31 +259,25 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
           </TabsContent>
 
           <TabsContent value="details" className="mt-4">
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <h3 className="mb-3 flex items-center gap-2 text-lg font-medium">
-                  <Info size={16} />
-                  Asset Information
-                </h3>
-                <div className="overflow-hidden rounded-lg border">
-                  <Table>
-                    <TableBody>
-                      {tableData.map((d, i) => (
-                        <TableRow key={i} className={i % 2 === 0 ? 'bg-muted/30' : ''}>
-                          <TableCell className="w-1/3 font-medium">{d.header}</TableCell>
-                          <TableCell className="break-all">{d.render}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+            <div className="grid h-[492px] gap-6  md:grid-cols-2">
+              <div className="overflow-hidden rounded-lg border">
+                <Table>
+                  <TableBody>
+                    {tableData.map((d, i) => (
+                      <TableRow key={i} className={i % 2 === 0 ? 'bg-muted/30' : ''}>
+                        <TableCell className="w-1/3 font-medium">{d.header}</TableCell>
+                        <TableCell className="break-all">{d.render}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
 
               {hasEntityCustomFields && (
                 <div>
                   <h3 className="mb-3 flex items-center gap-2 text-lg font-medium">
                     <Pencil size={16} />
-                    Custom Fields
+                    {t('common:customFields')}
                   </h3>
                   <div className="rounded-lg border p-4">
                     <EntityCustomFields entityName="asset" id={asset?.id} />

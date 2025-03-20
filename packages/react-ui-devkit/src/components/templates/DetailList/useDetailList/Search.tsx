@@ -27,7 +27,7 @@ export const Search = ({
 
     const placeholder = t('placeholders.search', {
         entity: entityName,
-        fields: searchFields?.join(', '),
+        fields: searchFields?.map(f => t('columns.' + f.toString())).join(', '),
     }).toLowerCase();
     const onlyFirstLetterCapitalized = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 

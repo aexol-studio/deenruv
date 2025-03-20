@@ -21,8 +21,8 @@ const FacetCustomFields = [
         ui: { component: 'product-creations-input' },
         defaultValue: false,
         label: [
-            { languageCode: LanguageCode.en, value: '' },
-            { languageCode: LanguageCode.pl, value: '' },
+            { languageCode: LanguageCode.en, value: 'Used for product creations' },
+            { languageCode: LanguageCode.pl, value: 'Używany przy kreacji' },
         ],
         description: [
             { languageCode: LanguageCode.en, value: '' },

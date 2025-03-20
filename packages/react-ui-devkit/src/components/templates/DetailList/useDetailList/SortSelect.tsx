@@ -5,6 +5,7 @@ import { PaginationInput } from '@/types/models';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '../../../atoms';
 import { SelectIcon } from '@radix-ui/react-select';
 import { cn } from '@/lib/utils.js';
+import { TABLE_LABEL_STYLES } from '@/components/templates/DetailList/_components/TableLabel.js';
 
 const DEFAULT_SORT = 'default';
 
@@ -27,7 +28,12 @@ export const SortSelect: React.FC<
                     onClick(direction === DEFAULT_SORT ? undefined : (direction as SortOrder));
                 }}
             >
-                <SelectTrigger className="-ml-3 h-8 w-fit border-none text-xs hover:bg-accent hover:text-accent-foreground data-[state=open]:bg-accent [&>svg:last-child]:hidden">
+                <SelectTrigger
+                    className={cn(
+                        '-ml-3 h-8 w-fit border-none text-xs hover:bg-accent data-[state=open]:bg-accent [&>svg:last-child]:hidden',
+                        TABLE_LABEL_STYLES,
+                    )}
+                >
                     {children}
                     <SelectIcon asChild>
                         {!isCurrentSort ? (

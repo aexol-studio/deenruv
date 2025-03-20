@@ -30,7 +30,7 @@ export const GlobalSettings = () => {
     <DetailView
       id={null}
       locationId="globalSettings-detail-view"
-      topActions={{ texts: { submitButton: t('common:buttons.save') } }}
+      topActions={{ texts: { submitButton: t('common:save') } }}
       permissions={{
         create: Permission.UpdateGlobalSettings,
         delete: Permission.UpdateGlobalSettings,

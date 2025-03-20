@@ -20,14 +20,14 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Name",
+            "name": "Nazwa",
             "description": "Opis",
-            "code": "Code",
-            "enabled": "Enabled"
+            "code": "Kod",
+            "enabled": "Włączone"
         },
         "modal": {
             "title": "Modalny",
-            "name": "Modal title",
+            "name": "Tytuł modalny",
             "description": "Opis modułu",
             "additionalDescription": "Modalny opis dodatkowy"
         },

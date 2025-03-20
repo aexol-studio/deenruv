@@ -8,3 +8,4 @@ export * from './capitalizeFirstLetter.js';
 export * from './getPermissions.js';
 export * from './getMutation.js';
 export * from './formatPrice.js';
+export * from './dashCaseToCamelCase.js';

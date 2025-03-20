@@ -16,20 +16,20 @@
         "updatedAt": "Zaktualizowano o",
         "columns": "Kolumny",
         "featuredAsset": "Obraz",
-        "breadcrumb": "Breadcrumb",
+        "breadcrumb": "Ścieżka",
         "slug": "Ślimak",
         "children": "# Liczba dzieci",
         "collections": "W kolekcjach",
         "actions": "Działania",
-        "copyId": "Kopiowanie identyfikatora produktu",
+        "copyId": "Kopiuj id",
         "products": "# liczba produktów",
         "delete": "Usuń kolekcję"
     },
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Name",
-            "slug": "Slug",
+            "name": "Nazwa",
+            "slug": "Ślimak",
             "isPrivate": "Jest prywatny",
             "description": "Opis"
         },
@@ -46,7 +46,7 @@
     },
     "visibility": {
         "public": "Publiczny",
-        "private": "Private"
+        "private": "Prywatny"
     },
     "toasts": {
         "collectionLoadingError": "Nie udało się załadować kolekcji o identyfikatorze {{value}}",
@@ -56,19 +56,19 @@
         "collectionCreatedError": "Nie udało się utworzyć kolekcji",
         "collectionDeleteSuccess": "Kolekcja została pomyślnie usunięta",
         "collectionDeleteError": "Nie udało się usunąć kolekcji",
-        "deletionCollectionErrorToast": "Failed to delete collection",
+        "deletionCollectionErrorToast": "Nie udało się usunąć kolekcji",
         "deletionCollectionSuccessToast": "Kolekcje zostały pomyślnie usunięte",
         "noCollectionChildrens": "kolekcja {{collection}} nie ma żadnych dzieci"
     },
     "deleteCollection": {
-        "title": "Delete collection",
+        "title": "Usuń kolekcję",
         "description": "Czy na pewno chcesz usunąć tę kolekcję?",
         "successMessage": "Kolekcja została usunięta.",
         "deleteOrCancel": "Wybrano opcję Usuń/Anuluj"
     },
-    "editCollection": "Edit collection",
+    "editCollection": "Edytuj kolekcję",
     "withSelected": "Z wybranym {{collections}}",
-    "columns": "Columns",
+    "columns": "Kolumny",
     "rowsSelected": "{{selected}} z {{all}} wybranych wierszy",
     "duplicateCollection": "Na pewno chcesz powielić te kolekcje?",
     "collectionActions": {
@@ -97,7 +97,7 @@
         }
     },
     "deleteCollectionDialog": {
-        "button": "Delete collection",
+        "button": "Usuń kolekcję",
         "title": "Czy na pewno?",
         "description": "Kolekcja zostanie trwale usunięta.",
         "confirm": "Usuń kolekcję",
@@ -106,13 +106,13 @@
     "deleteCollectionsFromChannel": {
         "areYouSure": "Czy na pewno chcesz usunąć te kolekcje z {{ channel }} ?",
         "removeCollection": "Usuń kolekcję",
-        "cancel": "Cancel",
+        "cancel": "Anuluj",
         "removeSuccess": "Usunięte kolekcje",
         "removeError": "Nie można usunąć kolekcji z kanału"
     },
     "moveCollectionsToChannels": {
         "moveCollections": "Przenoszenie kolekcji",
-        "move": "Move",
+        "move": "Przenieś",
         "selected": "Wybrany",
         "availableChannels": "Dostępne kanały",
         "searchByCode": "Szukaj według kodu",
@@ -129,12 +129,12 @@
     "moveCollectionsToCollections": {
         "targetCollection": "Kolekcja docelowa",
         "searchByName": "Wyszukiwanie według nazwy...",
-        "move": "Move",
-        "selected": "Selected",
-        "moveCollections": "Move collections",
-        "movedAllCollections": "Moved all collections",
-        "movedPartOfCollections": "Moved part of collections",
-        "moveError": "Couldn't move collections"
+        "move": "Przenieś",
+        "selected": "Wybrany",
+        "moveCollections": "Przenoszenie kolekcji",
+        "movedAllCollections": "Przeniesiono wszystkie kolekcje",
+        "movedPartOfCollections": "Przeniesiono część kolekcji",
+        "moveError": "Nie można przenieść kolekcji"
     },
     "errors": {
         "generic": "Coś było nie tak",

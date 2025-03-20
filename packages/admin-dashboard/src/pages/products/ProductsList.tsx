@@ -8,6 +8,7 @@ import {
   PaginationInput,
   ProductListSelector,
   Routes,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
@@ -72,13 +73,13 @@ export const ProductsList = () => {
         {
           id: 'variants',
           accessorKey: 'variants',
-          header: () => t('table.variants'),
+          header: () => <TableLabel>{t('table.variants')}</TableLabel>,
           cell: ({ row }) => row.original.variantList.totalItems,
         },
         {
           id: 'allVariantsStock',
           accessorKey: 'allVariantsStock',
-          header: () => t('table.allVariantsStock'),
+          header: () => <TableLabel>{t('table.allVariantsStock')}</TableLabel>,
           cell: ({ row }) => {
             const { stockOnHandTotal, stockAllocatedTotal } = row.original.variantList.items.reduce(
               (totals, item) => {

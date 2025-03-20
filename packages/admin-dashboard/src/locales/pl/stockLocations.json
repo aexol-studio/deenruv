@@ -19,8 +19,8 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "name": "Name",
-            "description": "Description"
+            "name": "Nazwa",
+            "description": "Opis"
         }
     },
     "toasts": {

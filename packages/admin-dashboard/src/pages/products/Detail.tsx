@@ -30,8 +30,8 @@ export const ProductsDetailPage = () => {
   const defaultTabs = useMemo(() => {
     const tabs = [];
     if (id) {
-      tabs.push({ label: 'Options', name: 'options', component: <OptionsTab />, hideSidebar: true });
-      tabs.push({ label: 'Variants', name: 'variants', component: <VariantsTab />, hideSidebar: true });
+      tabs.push({ label: t('options'), name: 'options', component: <OptionsTab />, hideSidebar: true });
+      tabs.push({ label: t('variants'), name: 'variants', component: <VariantsTab />, hideSidebar: true });
     }
     return tabs;
   }, [id]);
@@ -43,7 +43,7 @@ export const ProductsDetailPage = () => {
         locationId="products-detail-view"
         main={{
           name: 'product',
-          label: 'Product',
+          label: t('product'),
           component: <ProductDetailView />,
           sidebar: <ProductDetailSidebar />,
           form: createDeenruvForm({

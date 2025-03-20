@@ -195,7 +195,7 @@ export function AssetsListPage() {
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="gap-1.5">
                 <Filter size={16} />
-                {t('common:filters', 'Filters')}
+                {t('common:filters')}
               </Button>
 
               <div className="flex rounded-md border p-0.5">
@@ -223,8 +223,8 @@ export function AssetsListPage() {
 
           <Tabs defaultValue="browse">
             <TabsList className="grid w-full max-w-md grid-cols-2">
-              <TabsTrigger value="browse">Browse Assets</TabsTrigger>
-              <TabsTrigger value="upload">Upload Assets</TabsTrigger>
+              <TabsTrigger value="browse">{t('assets:browseAssets')}</TabsTrigger>
+              <TabsTrigger value="upload">{t('assets:uploadAssets')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="browse" className="mt-4">

@@ -137,8 +137,6 @@ export const SurchargeCard: React.FC<{}> = () => {
         <SurchargeTable />
 
         <div>
-          <h3 className="mb-4 text-base font-medium">{t('surcharge.addNew', 'Add New Surcharge')}</h3>
-
           <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="space-y-2">
               <Label htmlFor="surcharge-description" className="text-sm font-medium">
@@ -201,12 +199,6 @@ export const SurchargeCard: React.FC<{}> = () => {
             </div>
           </div>
 
-          <Separator className="my-4" />
-
-          <h4 className="text-muted-foreground mb-3 text-sm font-medium">
-            {t('surcharge.taxSection', 'Tax Information')}
-          </h4>
-
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="space-y-2">
               <Label htmlFor="surcharge-tax-included" className="text-sm font-medium">
@@ -219,7 +211,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   onCheckedChange={(e) => setField('priceIncludesTax', Boolean(e))}
                 />
                 <Label htmlFor="surcharge-tax-included" className="cursor-pointer text-sm">
-                  {t('surcharge.taxIncluded', 'Tax is included in the price')}
+                  {t('surcharge.placeholders.taxIncluded', 'Tax is included in the price')}
                 </Label>
               </div>
             </div>

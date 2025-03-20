@@ -14,19 +14,12 @@ interface ListTableProps<TData, TValue> {
 
 const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
     const isPinned = column.getIsPinned();
-    const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
-    const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
     const narrowColumnWidth = 35;
     const idColumnMaxWidth = 100;
     const isNarrowColumn = ['select-id', 'select', 'actions'].includes(column.id);
     const columnWidth = isNarrowColumn ? narrowColumnWidth : undefined;
 
     return {
-        boxShadow: isLastLeftPinnedColumn
-            ? '-4px 0 4px -4px gray inset'
-            : isFirstRightPinnedColumn
-              ? '4px 0 4px -4px gray inset'
-              : undefined,
         left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
         right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
         opacity: isPinned ? 0.95 : 1,
@@ -46,6 +39,7 @@ const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
 
 const TABLE_HEADER_HEIGHT = 48;
 const MINIMUM_ROW_HEIGHT = 30;
+const WIDTH_TRUNCATE_BREAKPOINT = 200;
 
 export function ListTable<TData, TValue>({
     table,
@@ -123,15 +117,23 @@ export function ListTable<TData, TValue>({
                                     data-state={row.getIsSelected() && 'selected'}
                                     ref={el => (rowRefs.current[idx] = el)}
                                 >
-                                    {row.getVisibleCells().map(cell => (
-                                        <TableCell
-                                            key={cell.id}
-                                            className={getCommonClassNameStyles(cell.column)}
-                                            style={{ ...getCommonPinningStyles(cell.column) }}
-                                        >
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
+                                    {row.getVisibleCells().map(cell => {
+                                        const columnWidth = cell.column.getSize();
+
+                                        return (
+                                            <TableCell
+                                                key={cell.id}
+                                                className={cn(
+                                                    'whitespace-nowrap',
+                                                    columnWidth > WIDTH_TRUNCATE_BREAKPOINT && 'truncate',
+                                                    getCommonClassNameStyles(cell.column),
+                                                )}
+                                                style={{ ...getCommonPinningStyles(cell.column) }}
+                                            >
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+                                        );
+                                    })}
                                 </TableRow>
                             ))
                         ) : (

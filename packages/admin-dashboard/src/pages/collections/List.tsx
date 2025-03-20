@@ -30,10 +30,8 @@ import {
   DialogHeader,
   DialogTitle,
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
   DrawerTrigger,
   Skeleton,
@@ -46,16 +44,16 @@ import {
   Routes,
   EmptyState,
   useSettings,
-  TranslationSelect,
   apiClient,
   ListBadge,
   SortSelect,
   ColumnView,
   TableLabel,
+  DropdownMenuSeparator,
 } from '@deenruv/react-ui-devkit';
 import { ImageWithPreview, ListButtons, Search, Stack } from '@/components';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowRight, MoreHorizontal } from 'lucide-react';
 import { format } from 'date-fns';
 import { CollectionsSortOptions, collectionsSortOptionsArray } from '@/lists/types';
 
@@ -292,7 +290,7 @@ export const CollectionsListPage = () => {
     },
     {
       accessorKey: 'children',
-      header: () => t('table.children'),
+      header: () => <TableLabel>{t('table.children')}</TableLabel>,
       accessorFn: (row) => row.children?.length ?? 0,
       cell: (row) => (
         <div>
@@ -389,14 +387,6 @@ export const CollectionsListPage = () => {
         </div>
       ),
     },
-    ActionsColumn({
-      viewRoute: Routes.collections.to,
-      onDelete: (row) => {
-        setDeleteDialogOpened(true);
-        setCollectionsToDelete([row.original]);
-      },
-      deletePermission: Permission.DeleteCollection,
-    }),
     {
       id: 'actions',
       enableHiding: false,
@@ -411,10 +401,13 @@ export const CollectionsListPage = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{t('table.actions')}</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
               {t('table.copyId')}
             </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to={Routes.collections.to(row.original.id)}>{t('editCollection')}</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
                 setRowsActionsState({ [row.original.id]: false });
@@ -422,10 +415,7 @@ export const CollectionsListPage = () => {
                 setCollectionsToDelete([row.original]);
               }}
             >
-              {t('table.delete')}
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={Routes.collections.to(row.original.id)}>{t('editCollection')}</Link>
+              <div className=" text-red-400 hover:text-red-400 dark:hover:text-red-400">{t('table.delete')}</div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -547,7 +537,7 @@ export const CollectionsListPage = () => {
                 />
               </div>
               <div className="flex gap-2">
-                <ColumnView {...table} />
+                <ColumnView table={table} entityName="Collection" />
                 <ListButtons
                   selected={!!table.getFilteredSelectedRowModel().rows.map((i) => i.original).length}
                   createLabel={t('create')}

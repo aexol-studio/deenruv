@@ -1,4 +1,4 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, TableLabel } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { TaxRateListSelector } from '@/graphql/taxRates';
@@ -60,17 +60,17 @@ export const TaxRatesListPage = () => {
       additionalColumns={[
         {
           accessorKey: 'taxCategory',
-          header: () => t('table.taxCategory'),
+          header: () => <TableLabel>{t('table.taxCategory')}</TableLabel>,
           cell: ({ row }) => row.original.category.name,
         },
         {
           accessorKey: 'zone',
-          header: () => t('table.zone'),
+          header: () => <TableLabel>{t('table.zone')}</TableLabel>,
           cell: ({ row }) => row.original.zone.name,
         },
         {
           accessorKey: 'customerGroup',
-          header: () => t('table.customerGroup'),
+          header: () => <TableLabel>{t('table.customerGroup')}</TableLabel>,
           cell: ({ row }) => row.original.customerGroup?.name ?? '-',
         },
       ]}

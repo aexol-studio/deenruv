@@ -26,13 +26,13 @@
     "details": {
         "basic": {
             "title": "Podstawowe informacje",
-            "description": "Name",
-            "code": "Code",
-            "channels": "Channels",
+            "description": "Nazwa",
+            "code": "Kod",
+            "channels": "Kanały",
             "channelsPlaceholder": "Dodaj kanał"
         },
         "permissions": {
-            "title": "Permissions"
+            "title": "Uprawnienia"
         }
     },
     "toasts": {
