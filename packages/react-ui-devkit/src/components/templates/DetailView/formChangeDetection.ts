@@ -75,7 +75,9 @@ const normalizeEntityValues = (entityValues: EntityType) => {
         'user' in normalizedEntityValues &&
         'emailAddress' in normalizedEntityValues &&
         'firstName' in normalizedEntityValues &&
-        'lastName' in normalizedEntityValues
+        'lastName' in normalizedEntityValues &&
+        'roles' in normalizedEntityValues['user'] &&
+        Array.isArray(normalizedEntityValues['user']?.roles)
     ) {
         normalizedEntityValues.roleIds = normalizedEntityValues['user']?.roles.map(
             (r: { id: string }) => r.id,
