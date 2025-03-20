@@ -64,6 +64,7 @@ export const DetailViewStoreContext = createContext<
     setAdditionalData: () => null,
     additionalData: {},
     addToQueue: () => {},
+    markAsDirty: () => {},
 });
 
 export const DetailViewStoreProvider = <
@@ -96,12 +97,20 @@ export const DetailViewStoreProvider = <
     const [sidebar, _setSidebar] = useState(_sidebar);
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [additionalData, setAdditionalData] = useState<Record<string, unknown>>();
+    const [markedAsDirty, setMarkedAsDirty] = useState(false);
     useRouteGuard({ shouldBlock: hasUnsavedChanges });
 
+    const markAsDirty = useCallback(() => {
+        setMarkedAsDirty(true);
+    }, []);
     useEffect(() => {
         const _hasUnsavedChanges = checkUnsavedChanges(form.base.state, entity);
-        setHasUnsavedChanges(_hasUnsavedChanges);
-    }, [form.base.state, entity]);
+        if (markedAsDirty) {
+            setHasUnsavedChanges(true);
+        } else {
+            setHasUnsavedChanges(_hasUnsavedChanges);
+        }
+    }, [form.base.state, entity, markedAsDirty]);
 
     const handleSuccess = useCallback(
         (resp: Record<string, unknown>) => {
@@ -217,6 +226,7 @@ export const DetailViewStoreProvider = <
                 hasUnsavedChanges,
                 setAdditionalData,
                 additionalData,
+                markAsDirty,
             }}
         >
             {children}

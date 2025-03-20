@@ -57,6 +57,7 @@ export interface StoreContextType<
     setAdditionalData: Dispatch<SetStateAction<AdditionalData>>;
     additionalData: AdditionalData;
     addToQueue: (key: string, fn: () => Promise<void>) => void;
+    markAsDirty: () => void;
 }
 
 export interface DetailViewProps<
