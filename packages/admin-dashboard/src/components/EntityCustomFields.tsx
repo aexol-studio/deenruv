@@ -73,7 +73,6 @@ type Props<T extends ViableEntity> = {
   fetchInitialValues?: boolean;
   additionalData?: Record<string, unknown>;
   withoutCard?: boolean;
-  queue?: boolean;
 };
 const entityDictionary: Partial<
   Record<ViableEntity, { inputName: keyof ModelTypes; mutationName: keyof ModelTypes['Mutation'] }>
@@ -141,7 +140,6 @@ export function EntityCustomFields<T extends ViableEntity>({
   fetchInitialValues = true,
   additionalData,
   withoutCard,
-  queue,
 }: Props<T>) {
   const { t } = useTranslation('common');
   const language = useSettings((p) => p.translationsLanguage);
@@ -291,11 +289,6 @@ export function EntityCustomFields<T extends ViableEntity>({
   };
 
   useEffect(() => {
-    if (!hideButton) return;
-    addToQueue('customFields', updateEntity);
-  }, [state]);
-
-  useEffect(() => {
     if (!Object.keys(entityCustomFields || {}).length || !fetchInitialValues) return;
     try {
       setLoading(true);
@@ -390,28 +383,22 @@ export function EntityCustomFields<T extends ViableEntity>({
                 }
               }}
             />
-            {queue ? (
-              <></>
-            ) : (
-              <>
-                {!hideButton && (
-                  <div className="mt-6 flex justify-end border-t pt-4">
-                    <Button disabled={disabled || isUpdating} onClick={updateEntity} className="gap-2">
-                      {isUpdating ? (
-                        <>
-                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
-                          {t('processing', 'Processing...')}
-                        </>
-                      ) : (
-                        <>
-                          <Save className="h-4 w-4" />
-                          {t('update', 'Save Changes')}
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </>
+            {!hideButton && (
+              <div className="mt-6 flex justify-end border-t pt-4">
+                <Button disabled={disabled || isUpdating} onClick={updateEntity} className="gap-2">
+                  {isUpdating ? (
+                    <>
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                      {t('processing', 'Processing...')}
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      {t('update', 'Save Changes')}
+                    </>
+                  )}
+                </Button>
+              </div>
             )}
           </div>
         ) : (

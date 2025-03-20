@@ -70,7 +70,7 @@ export const ProductDetailView = () => {
           errors={state.translations?.errors}
         />
         <DetailViewMarker position={'products-detail-view'} />
-        <EntityCustomFields entityName="product" id={id} currentLanguage={contentLng} queue />
+        <EntityCustomFields entityName="product" id={id} currentLanguage={contentLng} />
         <AssetsCard
           onAddAsset={handleAddAsset}
           featuredAssetId={state.featuredAssetId?.value}
