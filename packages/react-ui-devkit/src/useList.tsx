@@ -69,6 +69,27 @@ export type ListType = {
     zones: 'ZoneFilterParameter';
 };
 
+function useFakeSearchParams(initialParams?: Record<string, string>) {
+    const [params, setParams] = useState(() => new URLSearchParams(initialParams));
+    const setSearchParams = useCallback((newParams: URLSearchParams | Record<string, string>) => {
+        setParams(prev => {
+            const nextParams = new URLSearchParams(prev);
+            if (newParams instanceof URLSearchParams) {
+                return new URLSearchParams(newParams);
+            } else {
+                Object.entries(newParams).forEach(([key, value]) => {
+                    if (value === undefined || value === null) {
+                        nextParams.delete(key);
+                    } else {
+                        nextParams.set(key, value);
+                    }
+                });
+                return nextParams;
+            }
+        });
+    }, []);
+    return [params, setSearchParams] as const;
+}
 export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     route,
     listType,
@@ -78,7 +99,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     route: T;
     listType: K;
     customItemsPerPage?: ItemsPerPageType;
-    options?: { skip?: boolean };
+    options?: { skip?: boolean; noSearchParams?: boolean };
 }): {
     Paginate: JSX.Element;
     objects: GenericReturn<T> | undefined;
@@ -98,7 +119,10 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
 } => {
     const { skip } = options || {};
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = options?.noSearchParams
+        ? useFakeSearchParams()
+        : useSearchParams();
+    console.log(searchParams.values());
     const [total, setTotal] = useState(0);
     const [objects, setObjects] = useState<GenericReturn<T>>();
     const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
@@ -164,7 +188,6 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
         searchParams.delete(SearchParamKey.FILTER);
         setSearchParams(searchParams);
     };
-
     const searchParamValues: PaginationInput = useMemo(() => {
         const page = searchParams.get(SearchParamKey.PAGE);
         const perPage = searchParams.get(SearchParamKey.PER_PAGE);

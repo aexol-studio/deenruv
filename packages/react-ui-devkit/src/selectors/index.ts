@@ -23,3 +23,4 @@ export * from './AdminDetailSelector.js';
 export * from './PaymentMethodDetailSelector.js';
 export * from './ShippingMethodDetailSelector.js';
 export * from './OrderListSelector.js';
+export * from './DialogProductPickerSelector.js';

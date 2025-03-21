@@ -13,3 +13,4 @@ export * from './zeus_client';
 export * from './consts';
 export * from './tailwind.config';
 export * from './fetchers';
+export * from './universal_components';

@@ -1,4 +1,4 @@
-import { useDetailView, DetailViewMarker, Spinner, useSettings } from '@deenruv/react-ui-devkit';
+import { useDetailView, DetailViewMarker, useSettings } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useState } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { CF, EntityCustomFields } from '@/components';
@@ -81,12 +81,14 @@ export const ProductDetailView = () => {
           hideButton
           onChange={(customFields, translations) => {
             setField('customFields', customFields);
-            setField(
-              'translations',
-              setInArrayBy(state.translations?.value || [], (t) => t.languageCode !== contentLng, {
-                ...(translations as any),
-              }),
-            );
+            if (translations) {
+              setField(
+                'translations',
+                setInArrayBy(state.translations?.value || [], (t) => t.languageCode !== contentLng, {
+                  ...(translations as any)[0],
+                }),
+              );
+            }
           }}
           fetch={async () => {
             return entity && 'customFields' in entity
