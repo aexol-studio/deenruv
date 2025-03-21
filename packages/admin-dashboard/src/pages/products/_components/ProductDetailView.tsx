@@ -27,17 +27,6 @@ export const ProductDetailView = () => {
   } = form;
 
   useEffect(() => {
-    if (!fields) return;
-    setField('customFields', fields.customFields);
-    setField(
-      'translations',
-      setInArrayBy(state.translations?.value || [], (t) => t.languageCode !== contentLng, {
-        ...(fields.translations as any),
-      }),
-    );
-  }, [fields, contentLng]);
-
-  useEffect(() => {
     (async () => {
       const res = await fetchEntity();
 
@@ -91,11 +80,17 @@ export const ProductDetailView = () => {
           currentLanguage={contentLng}
           hideButton
           onChange={(customFields, translations) => {
-            setFields({ customFields, translations });
+            setField('customFields', customFields);
+            setField(
+              'translations',
+              setInArrayBy(state.translations?.value || [], (t) => t.languageCode !== contentLng, {
+                ...(translations as any),
+              }),
+            );
           }}
           fetch={async () => {
             return entity && 'customFields' in entity
-              ? { customFields: entity.customFields as CF }
+              ? { customFields: entity.customFields as CF, translations: entity.translations as any }
               : { customFields: {} };
           }}
         />
