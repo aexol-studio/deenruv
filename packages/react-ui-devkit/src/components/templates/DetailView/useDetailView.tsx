@@ -103,6 +103,11 @@ export const DetailViewStoreProvider = <
     const markAsDirty = useCallback(() => {
         setMarkedAsDirty(true);
     }, []);
+
+    useEffect(() => {
+        if (id !== undefined) fetchEntity();
+    }, []);
+
     useEffect(() => {
         const _hasUnsavedChanges = checkUnsavedChanges(form.base.state, entity);
         if (markedAsDirty) {

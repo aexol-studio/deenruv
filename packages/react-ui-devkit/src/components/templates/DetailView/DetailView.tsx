@@ -115,9 +115,8 @@ export const DetailView = <LOCATION extends DetailKeys>({
     const tab = useMemo(() => searchParams.get('tab') || main.name, [searchParams]);
     const tabs = useMemo(() => {
         return (
-            getDetailViewTabs(locationId)?.map(({ name, label, component }) => ({
-                name,
-                label,
+            getDetailViewTabs(locationId)?.map(({ component, ...rest }) => ({
+                ...rest,
                 component: <React.Fragment>{component}</React.Fragment>,
             })) || []
         );
@@ -130,14 +129,14 @@ export const DetailView = <LOCATION extends DetailKeys>({
     );
 
     const currentSidebar = useMemo(() => {
-        const currentTab = defaultTabs.find(t => t.name === tab);
+        const currentTab = [...defaultTabs, ...tabs].find(t => t.name === tab);
         if (!currentTab) return main.sidebar;
         return currentTab?.hideSidebar
             ? null
             : currentTab?.sidebarReplacement
               ? currentTab.sidebarReplacement
               : main.sidebar;
-    }, [defaultTabs, tab]);
+    }, [defaultTabs, tab, tabs]);
 
     return (
         <DetailViewStoreProvider
