@@ -1,7 +1,7 @@
 import { useDetailView, DetailViewMarker, Spinner, useSettings } from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
-import { EntityCustomFields } from '@/components';
+import { CF, EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
 import { setInArrayBy } from '@/lists/useGflp';
 
@@ -12,15 +12,30 @@ export const PRODUCT_FORM_KEYS = [
   'featuredAssetId',
   'facetValueIds',
   'enabled',
+  'customFields',
 ] as const;
 
 export const ProductDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id, form, loading, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
-
+  const { entity, id, form, loading, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
+  const [fields, setFields] = useState<{
+    customFields: CF;
+    translations: unknown;
+  }>();
   const {
     base: { setField, state },
   } = form;
+
+  useEffect(() => {
+    if (!fields) return;
+    setField('customFields', fields.customFields);
+    setField(
+      'translations',
+      setInArrayBy(state.translations?.value || [], (t) => t.languageCode !== contentLng, {
+        ...(fields.translations as any),
+      }),
+    );
+  }, [fields, contentLng]);
 
   useEffect(() => {
     (async () => {
@@ -70,7 +85,20 @@ export const ProductDetailView = () => {
           errors={state.translations?.errors}
         />
         <DetailViewMarker position={'products-detail-view'} />
-        <EntityCustomFields entityName="product" id={id} currentLanguage={contentLng} />
+        <EntityCustomFields
+          entityName="product"
+          id={id}
+          currentLanguage={contentLng}
+          hideButton
+          onChange={(customFields, translations) => {
+            setFields({ customFields, translations });
+          }}
+          fetch={async () => {
+            return entity && 'customFields' in entity
+              ? { customFields: entity.customFields as CF }
+              : { customFields: {} };
+          }}
+        />
         <AssetsCard
           onAddAsset={handleAddAsset}
           featuredAssetId={state.featuredAssetId?.value}

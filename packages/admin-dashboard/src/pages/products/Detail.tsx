@@ -48,7 +48,7 @@ export const ProductsDetailPage = () => {
           sidebar: <ProductDetailSidebar />,
           form: createDeenruvForm({
             key: 'CreateProductInput',
-            keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds'],
+            keys: ['translations', 'featuredAssetId', 'enabled', 'assetIds', 'facetValueIds', 'customFields'],
             config: {
               translations: {
                 validate: (v) => {
@@ -65,6 +65,7 @@ export const ProductsDetailPage = () => {
                 featuredAssetId: data.featuredAssetId?.validatedValue,
                 facetValueIds: data.facetValueIds?.validatedValue,
                 enabled: data.enabled?.validatedValue,
+                ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
               };
               return id ? update({ input: { id, ...input } }) : create({ input });
             },

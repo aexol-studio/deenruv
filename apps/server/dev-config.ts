@@ -22,6 +22,7 @@ import {
     PaymentMethod,
     LanguageCode,
     FulfillmentHandler,
+    Asset,
 } from '@deenruv/core';
 import { BullMQJobQueuePlugin } from '@deenruv/job-queue-plugin/package/bullmq';
 import 'dotenv/config';
@@ -88,6 +89,17 @@ const handler = new FulfillmentHandler({
         return {};
     },
 });
+
+const empty = {
+    label: [
+        { languageCode: LanguageCode.en, value: '' },
+        { languageCode: LanguageCode.pl, value: '' },
+    ],
+    description: [
+        { languageCode: LanguageCode.en, value: '' },
+        { languageCode: LanguageCode.pl, value: '' },
+    ],
+};
 
 export const devConfig: DeenruvConfig = {
     apiOptions: {
@@ -158,6 +170,109 @@ export const devConfig: DeenruvConfig = {
                 label: [
                     { languageCode: LanguageCode.en, value: 'TEST' },
                     { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+            {
+                name: 'sizes',
+                type: 'localeText',
+                defaultValue: '',
+                ui: { tab: 'Wymiary', component: 'additional-description-input' },
+                ...empty,
+            },
+            {
+                name: 'finish',
+                type: 'localeText',
+                defaultValue: '',
+                ui: { tab: 'Wypos.', component: 'additional-description-input' },
+                ...empty,
+            },
+            {
+                name: 'materials',
+                type: 'localeText',
+                defaultValue: '',
+                ui: {
+                    tab: 'Kolory',
+                    component: 'additional-description-input',
+                },
+                ...empty,
+            },
+            {
+                name: 'payment',
+                type: 'localeText',
+                defaultValue: '',
+                ui: { tab: 'Płatność', component: 'additional-description-input' },
+                ...empty,
+            },
+            {
+                name: 'delivery',
+                type: 'localeText',
+                defaultValue: '',
+                ui: {
+                    tab: 'Dostawa',
+                    component: 'additional-description-input',
+                },
+                ...empty,
+            },
+            {
+                name: 'realization',
+                type: 'localeText',
+                defaultValue: '',
+                ui: {
+                    tab: 'Termin realizacji',
+                    component: 'additional-description-input',
+                },
+                ...empty,
+            },
+            {
+                name: 'safety',
+                type: 'localeText',
+                defaultValue: '',
+                ui: {
+                    tab: 'Bezp.',
+                    component: 'additional-description-input',
+                },
+                ...empty,
+            },
+            {
+                name: 'manuals',
+                type: 'localeText',
+                defaultValue: '',
+                ui: {
+                    tab: 'Instrukcje',
+                    component: 'additional-description-input',
+                },
+                ...empty,
+            },
+            {
+                name: 'mainProductImage',
+                type: 'relation',
+                graphQLType: 'Asset',
+                entity: Asset,
+                public: true,
+                nullable: true,
+                eager: true,
+                label: [{ languageCode: LanguageCode.en, value: 'Main Product Image' }],
+                description: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Recommended size: 1200x630px',
+                    },
+                ],
+            },
+            {
+                name: 'hoverProductImage',
+                type: 'relation',
+                graphQLType: 'Asset',
+                entity: Asset,
+                public: true,
+                eager: true,
+                nullable: true,
+                label: [{ languageCode: LanguageCode.en, value: 'Hover Product Image' }],
+                description: [
+                    {
+                        languageCode: LanguageCode.en,
+                        value: 'Recommended size: 1200x630px',
+                    },
                 ],
             },
         ],
@@ -336,9 +451,9 @@ export const devConfig: DeenruvConfig = {
         // }),
         ReplicatePlugin.init({
             deploymentName: process.env.REPLICATE_DEPLOYMENT_NAME || '',
-            url: process.env.REPLICATE_URL || '',
-            login: process.env.REPLICATE_LOGIN || '',
-            password: process.env.REPLICATE_PASSWORD || '',
+            // url: process.env.REPLICATE_URL || '',
+            // login: process.env.REPLICATE_LOGIN || '',
+            // password: process.env.REPLICATE_PASSWORD || '',
             apiToken: process.env.REPLICATE_API_TOKEN || '',
         }),
     ],

@@ -180,15 +180,29 @@ export function EntityCustomFields<T extends ViableEntity>({
     [entityCustomFields],
   );
 
+  const translatableFieldsDict = useMemo(
+    () =>
+      entityCustomFields?.reduce(
+        (acc, el) => {
+          if (el.type === 'localeText' || el.type === 'localeString') {
+            acc[el.name] = true;
+          }
+          return acc;
+        },
+        {} as Record<string, boolean>,
+      ) || {},
+    [entityCustomFields],
+  );
+
   useEffect(() => {
     if (onChange) {
       const newCustomFields = Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
         (acc, [key, val]) => {
+          if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
           if (relationFields?.includes(key)) {
             const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
             acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
           } else acc[key] = val;
-
           return acc;
         },
         {} as CF,

@@ -132,17 +132,18 @@ export const Jobs = () => {
     },
   });
 
-  useEffect(() => {
-    refetch(filterObj);
+  //TODO: FIXME (PAGINATION BUG)
+  // useEffect(() => {
+  //   refetch(filterObj);
 
-    if (!liveUpdate) return () => clearInterval(0);
+  //   if (!liveUpdate) return () => clearInterval(0);
 
-    const interval = setInterval(() => {
-      refetch(filterObj);
-    }, 5000);
+  //   const interval = setInterval(() => {
+  //     refetch(filterObj);
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, [filterObj, liveUpdate]);
+  //   return () => clearInterval(interval);
+  // }, [filterObj, liveUpdate]);
 
   const handleRemoveJob = async (jobId: string) => {
     await apiClient('mutation')({ cancelJob: [{ jobId }, {}] });
