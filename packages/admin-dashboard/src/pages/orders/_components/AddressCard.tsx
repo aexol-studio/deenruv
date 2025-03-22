@@ -582,11 +582,11 @@ export const AddressCard: React.FC<{
                           id={selectedAddress?.id}
                           entityName="address"
                           hideButton
-                          fetchInitialValues={false}
-                          fetch={async (selector) => {
-                            const customFields = 'customFields' in state ? (state.customFields as any).value : {};
-                            return { customFields };
-                          }}
+                          initialValues={
+                            selectedAddress && 'customFields' in selectedAddress
+                              ? { customFields: selectedAddress.customFields as any }
+                              : { customFields: {} }
+                          }
                           onChange={(cf, value) => {
                             setField('customFields', cf);
                           }}

@@ -33,7 +33,7 @@ export const CustomComponent = ({
         <EntityCustomFields
           entityName="orderLine"
           hideButton
-          fetchInitialValues={false}
+          initialValues={{ customFields: {} }}
           onChange={setCustomFields}
           additionalData={{ product: orderLine.product, variant: orderLine }}
         />

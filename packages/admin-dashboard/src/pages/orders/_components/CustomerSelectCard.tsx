@@ -273,13 +273,13 @@ export const CustomerSelectCard: React.FC = () => {
                         id={selected?.id}
                         entityName="customer"
                         hideButton
-                        fetchInitialValues={false}
-                        fetch={async (selector) => {
-                          const customFields = 'customFields' in state && state.customFields ? state.customFields : {};
-                          return { customFields };
-                        }}
-                        onChange={(cf, value) => {
-                          setField('customFields', cf);
+                        initialValues={
+                          selected && 'customFields' in selected
+                            ? { customFields: selected.customFields as any }
+                            : { customFields: {} }
+                        }
+                        onChange={(customFields, translations) => {
+                          setField('customFields', customFields);
                         }}
                         additionalData={{}}
                       />

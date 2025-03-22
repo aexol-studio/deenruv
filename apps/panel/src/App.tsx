@@ -1,4 +1,5 @@
 import { DeenruvAdminPanel, DeenruvAdminPanelSettings, DeenruvUIPlugin } from '@deenruv/admin-dashboard';
+import '@deenruv/admin-dashboard/dist/index.css';
 
 // import { UIPlugin as ExampleUiPlugin } from '@deenruv/deenruv-examples-plugin/plugin-ui';
 import { ReplicateUiPlugin } from '@deenruv/replicate-plugin/plugin-ui';

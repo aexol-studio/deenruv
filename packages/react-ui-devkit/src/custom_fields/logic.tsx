@@ -41,7 +41,6 @@ function generateSingleFields<T extends { type: string; list?: boolean; ui?: Rec
     const simpleListable = ['float', 'int', 'string', 'text'];
     if (simpleListable.includes(field?.type) && field.list)
         return { ...field, component: <DefaultSimpleListInput /> };
-
     switch (field.type) {
         case 'boolean':
             return { ...field, component: <DefaultCheckbox /> };
@@ -52,8 +51,10 @@ function generateSingleFields<T extends { type: string; list?: boolean; ui?: Rec
         case 'int':
             return { ...field, component: <DefaultIntInput /> };
         case 'string':
+        case 'localeString':
             return { ...field, component: <DefaultTextInput /> };
         case 'text':
+        case 'localeText':
             return { ...field, component: field?.ui?.richText ? <DefaultRichText /> : <DefaultTextarea /> };
         case 'relation':
             return { ...field, component: <DefaultRelationInput /> };

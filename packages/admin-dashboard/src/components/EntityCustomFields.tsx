@@ -14,14 +14,15 @@ import {
   apiClient,
   useGFFLP,
   useDetailView,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import type { LanguageCode, ModelTypes } from '@deenruv/admin-types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 import { useSettings } from '@deenruv/react-ui-devkit';
-import { RefreshCw, Save, Database, Globe, AlertCircle } from 'lucide-react';
+import { Save, Database, Globe, AlertCircle } from 'lucide-react';
 
 type ViableEntity = Uncapitalize<
   keyof Pick<
@@ -71,8 +72,9 @@ type Props<T extends ViableEntity> = {
   mutation?: (customFields: unknown, translations?: unknown) => Promise<void>;
   disabled?: boolean;
   fetchInitialValues?: boolean;
+  initialValues?: EntityWithCF;
   additionalData?: Record<string, unknown>;
-  withoutCard?: boolean;
+  withoutBorder?: boolean;
 };
 const entityDictionary: Partial<
   Record<ViableEntity, { inputName: keyof ModelTypes; mutationName: keyof ModelTypes['Mutation'] }>
@@ -131,28 +133,20 @@ const typeWithCommonCustomFields: keyof Pick<ModelTypes, 'UpdateProductOptionInp
 export function EntityCustomFields<T extends ViableEntity>({
   id,
   entityName,
-  currentLanguage: _currentLanguage,
   mutation,
   fetch,
   onChange,
   hideButton,
   disabled,
-  fetchInitialValues = true,
+  initialValues,
   additionalData,
-  withoutCard,
+  withoutBorder,
 }: Props<T>) {
   const { t } = useTranslation('common');
-  const language = useSettings((p) => p.translationsLanguage);
+  const currentLanguage = useSettings((p) => p.translationsLanguage);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const { addToQueue } = useDetailView();
 
-  const currentLanguage = useMemo(
-    () => _currentLanguage || language || 'en',
-    [_currentLanguage, language],
-  ) as LanguageCode;
-
-  const [loading, setLoading] = useState(fetchInitialValues);
+  const [loading, setLoading] = useState(false);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
 
   const entityCustomFields = useServer((p) =>
@@ -226,12 +220,13 @@ export function EntityCustomFields<T extends ViableEntity>({
     [entityCustomFields, capitalizedEntityName],
   );
 
-  const fetchEntity = async (showLoading = true) => {
+  const fetchEntity = async () => {
     if (!id) return;
     try {
-      if (showLoading) setIsRefreshing(true);
       let response;
-      if (fetch) {
+      if (initialValues) {
+        response = initialValues;
+      } else if (fetch) {
         response = await fetch(runtimeSelector);
       } else {
         const { [entityName]: genericResponse } = (await apiClient('query')({
@@ -246,14 +241,8 @@ export function EntityCustomFields<T extends ViableEntity>({
       }
       setField('customFields', response?.customFields);
       setField('translations', response?.translations);
-
-      if (showLoading) {
-        toast.success(t('custom-fields.refreshSuccess', 'Custom fields refreshed successfully'));
-      }
     } catch (err) {
       toast.error(getGqlError(err) || t('toasts.error.fetch'));
-    } finally {
-      if (showLoading) setIsRefreshing(false);
     }
   };
 
@@ -303,28 +292,31 @@ export function EntityCustomFields<T extends ViableEntity>({
   };
 
   useEffect(() => {
-    if (!Object.keys(entityCustomFields || {}).length || !fetchInitialValues) return;
+    if (!Object.keys(entityCustomFields || {}).length) return;
     try {
       setLoading(true);
-      fetchEntity(false);
+      fetchEntity();
     } finally {
       setLoading(false);
     }
-  }, [entityCustomFields, fetchInitialValues]);
+  }, [initialValues, entityCustomFields]);
 
   if (!entityCustomFields?.length) return null;
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations?.find((v) => v.languageCode === currentLanguage);
 
-  // Get entity display name for the header
   const getEntityDisplayName = () => {
     const name = capitalizedEntityName;
-    // Add spaces before capital letters and trim
     return name.replace(/([A-Z])/g, ' $1').trim();
   };
 
   return (
-    <Card className="border-l-4 border-l-rose-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-rose-400">
+    <Card
+      className={cn({
+        'border-l-4 border-l-rose-500 dark:border-l-rose-400': !withoutBorder,
+        'shadow-sm transition-shadow duration-200 hover:shadow': !disabled && !isUpdating,
+      })}
+    >
       <CardHeader className="pb-4">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-2">
@@ -336,29 +328,7 @@ export function EntityCustomFields<T extends ViableEntity>({
               </CardDescription>
             </div>
           </div>
-          {/* {id && fetchInitialValues && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => fetchEntity()}
-              disabled={isRefreshing}
-              className="h-8 gap-1"
-            >
-              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              {t('refresh', 'Refresh')}
-            </Button>
-          )} */}
         </div>
-
-        {currentLanguage && translations?.length > 0 && (
-          <div className="bg-muted/50 mt-2 flex items-center gap-2 rounded-md px-3 py-2 text-sm">
-            <Globe className="h-4 w-4 text-rose-500" />
-            <span>
-              {t('custom-fields.currentLanguage', 'Current language')}:
-              <span className="ml-1 font-medium">{currentLanguage.toUpperCase()}</span>
-            </span>
-          </div>
-        )}
       </CardHeader>
 
       <CardContent className="p-0">

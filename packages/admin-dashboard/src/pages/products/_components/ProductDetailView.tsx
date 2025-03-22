@@ -77,24 +77,16 @@ export const ProductDetailView = () => {
         <EntityCustomFields
           entityName="product"
           id={id}
-          currentLanguage={contentLng}
           hideButton
           onChange={(customFields, translations) => {
             setField('customFields', customFields);
-            if (translations) {
-              setField(
-                'translations',
-                setInArrayBy(state.translations?.value || [], (t) => t.languageCode !== contentLng, {
-                  ...(translations as any)[0],
-                }),
-              );
-            }
+            if (translations) setField('translations', translations as any);
           }}
-          fetch={async () => {
-            return entity && 'customFields' in entity
+          initialValues={
+            entity && 'customFields' in entity
               ? { customFields: entity.customFields as CF, translations: entity.translations as any }
-              : { customFields: {} };
-          }}
+              : { customFields: {} }
+          }
         />
         <AssetsCard
           onAddAsset={handleAddAsset}
