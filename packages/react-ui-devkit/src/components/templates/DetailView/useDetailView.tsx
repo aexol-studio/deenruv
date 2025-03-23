@@ -161,19 +161,16 @@ export const DetailViewStoreProvider = <
         [props.form, handleSuccess],
     );
 
-    const setSidebar = useCallback(
-        (sidebar: React.ReactNode) => {
-            if (typeof sidebar === 'undefined') {
-                const tabWithSidebar = tabs.find(t => (t as any).sidebar);
-                _setSidebar(tabWithSidebar ? (tabWithSidebar as any).sidebar : sidebar);
-            } else if (sidebar === null) {
-                _setSidebar(null);
-            } else {
-                _setSidebar(sidebar);
-            }
-        },
-        [props.form, handleSuccess],
-    );
+    const setSidebar = useCallback((sidebar: React.ReactNode) => {
+        if (typeof sidebar === 'undefined') {
+            const tabWithSidebar = tabs.find(t => (t as any).sidebar);
+            _setSidebar(tabWithSidebar ? (tabWithSidebar as any).sidebar : sidebar);
+        } else if (sidebar === null) {
+            _setSidebar(null);
+        } else {
+            _setSidebar(sidebar);
+        }
+    }, []);
 
     const getMarker = () => {
         if (!locationId) return null;

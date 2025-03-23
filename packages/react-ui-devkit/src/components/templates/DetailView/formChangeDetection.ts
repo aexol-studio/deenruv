@@ -98,8 +98,6 @@ export const checkUnsavedChanges = (
     formStateValues: Record<string, GFFLPFormField<any> | undefined>,
     entityValues: EntityType | null,
 ): boolean => {
-    console.log(formStateValues, entityValues);
-
     if (entityValues === null) {
         for (const key in formStateValues) {
             if (formStateValues[key]?.value !== null && formStateValues[key]?.value !== '') {

@@ -145,9 +145,9 @@ export function EntityCustomFields<T extends ViableEntity>({
   const { t } = useTranslation('common');
   const currentLanguage = useSettings((p) => p.translationsLanguage);
   const [isUpdating, setIsUpdating] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
+  const [isInitialized, setInitialized] = useState(false);
 
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(
@@ -188,28 +188,6 @@ export function EntityCustomFields<T extends ViableEntity>({
     [entityCustomFields],
   );
 
-  useEffect(() => {
-    if (onChange) {
-      const newCustomFields = Object.entries((state.customFields?.validatedValue || {}) as Record<string, any>).reduce(
-        (acc, [key, val]) => {
-          if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
-          if (relationFields?.includes(key)) {
-            const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
-            acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : val?.id || null;
-          } else acc[key] = val;
-          return acc;
-        },
-        {} as CF,
-      );
-      if (
-        JSON.stringify(newCustomFields) !== JSON.stringify(state.customFields?.validatedValue) ||
-        JSON.stringify(state?.translations?.validatedValue) !== JSON.stringify(newCustomFields.translations)
-      ) {
-        onChange(newCustomFields, state?.translations?.validatedValue);
-      }
-    }
-  }, [state.customFields, state.translations]);
-
   const capitalizedEntityName = useMemo(
     () => (entityName.charAt(0).toUpperCase() + entityName.slice(1)) as Capitalize<T>,
     [entityName],
@@ -221,12 +199,10 @@ export function EntityCustomFields<T extends ViableEntity>({
   );
 
   const fetchEntity = async () => {
+    let response;
     if (!id) return;
     try {
-      let response;
-      if (initialValues) {
-        response = initialValues;
-      } else if (fetch) {
+      if (fetch) {
         response = await fetch(runtimeSelector);
       } else {
         const { [entityName]: genericResponse } = (await apiClient('query')({
@@ -234,7 +210,6 @@ export function EntityCustomFields<T extends ViableEntity>({
         } as any)) as Record<T, EntityWithCF>;
         response = genericResponse;
       }
-
       if (!response) {
         toast.error(t('toasts.error.fetch'));
         return;
@@ -292,14 +267,26 @@ export function EntityCustomFields<T extends ViableEntity>({
   };
 
   useEffect(() => {
-    if (!Object.keys(entityCustomFields || {}).length) return;
+    if (
+      !Object.keys(entityCustomFields || {}).length ||
+      Object.keys(initialValues?.customFields || {}).length === 0 ||
+      isInitialized
+    )
+      return;
     try {
       setLoading(true);
-      fetchEntity();
+      if (initialValues) {
+        console.log('initialValues', initialValues);
+        setField('customFields', initialValues.customFields);
+        setField('translations', initialValues.translations);
+        setInitialized(true);
+      } else {
+        fetchEntity().then(() => setInitialized(true));
+      }
     } finally {
       setLoading(false);
     }
-  }, [initialValues, entityCustomFields]);
+  }, [initialValues, entityCustomFields, isInitialized]);
 
   if (!entityCustomFields?.length) return null;
   const translations = state?.translations?.value || [];
@@ -348,20 +335,43 @@ export function EntityCustomFields<T extends ViableEntity>({
               setValue={(field, data) => {
                 const translatable = field.type === 'localeText' || field.type === 'localeString';
                 if (translatable && currentLanguage) {
-                  setField(
-                    'translations',
-                    setInArrayBy(translations, (t) => t.languageCode !== currentLanguage, {
+                  const customFieldsTranslations = setInArrayBy(
+                    translations,
+                    (t) => t.languageCode !== currentLanguage,
+                    {
                       customFields: {
                         ...translations.find((t) => t.languageCode === currentLanguage)?.customFields,
                         [field.name]: data,
                       },
                       languageCode: currentLanguage,
-                    }),
+                    },
                   );
+                  const newCustomFields = Object.entries(state.customFields?.value || {}).reduce((acc, [key, val]) => {
+                    if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
+                    if (relationFields?.includes(key)) {
+                      const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+                      acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : (val as any)?.id || null;
+                    } else acc[key] = val;
+                    return acc;
+                  }, {} as CF);
+                  onChange?.(newCustomFields, customFieldsTranslations);
+                  setField('translations', customFieldsTranslations);
                   return;
                 }
 
                 if (!translatable) {
+                  const newCustomFields = Object.entries({ ...state.customFields?.value, [field.name]: data }).reduce(
+                    (acc, [key, val]) => {
+                      if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
+                      if (relationFields?.includes(key)) {
+                        const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+                        acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : (val as any)?.id || null;
+                      } else acc[key] = val;
+                      return acc;
+                    },
+                    {} as CF,
+                  );
+                  onChange?.(newCustomFields, state.translations?.value);
                   setField('customFields', { ...state.customFields?.value, [field.name]: data });
                   return;
                 }

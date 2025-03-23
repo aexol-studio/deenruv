@@ -122,7 +122,6 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
     const [searchParams, setSearchParams] = options?.noSearchParams
         ? useFakeSearchParams()
         : useSearchParams();
-    console.log(searchParams.values());
     const [total, setTotal] = useState(0);
     const [objects, setObjects] = useState<GenericReturn<T>>();
     const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);

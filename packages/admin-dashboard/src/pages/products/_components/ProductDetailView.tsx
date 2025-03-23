@@ -18,10 +18,6 @@ export const PRODUCT_FORM_KEYS = [
 export const ProductDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { entity, id, form, loading, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
-  const [fields, setFields] = useState<{
-    customFields: CF;
-    translations: unknown;
-  }>();
   const {
     base: { setField, state },
   } = form;
@@ -29,7 +25,6 @@ export const ProductDetailView = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchEntity();
-
       if (!res) return;
       setField('translations', res.translations);
       setField(
@@ -47,6 +42,7 @@ export const ProductDetailView = () => {
       setField(
         'translations',
         setInArrayBy(translations, (t) => t.languageCode !== contentLng, {
+          ...currentTranslationValue,
           [field]: e,
           languageCode: contentLng,
         }),
@@ -75,8 +71,8 @@ export const ProductDetailView = () => {
         />
         <DetailViewMarker position={'products-detail-view'} />
         <EntityCustomFields
-          entityName="product"
           id={id}
+          entityName="product"
           hideButton
           onChange={(customFields, translations) => {
             setField('customFields', customFields);

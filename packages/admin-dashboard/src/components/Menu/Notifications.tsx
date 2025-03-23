@@ -22,7 +22,6 @@ export const Notifications = () => {
   const { jobQueues } = useServer(({ jobQueues }) => ({ jobQueues }));
   const { t } = useTranslation('common');
   useEffect(() => {
-    console.log(jobQueues);
     if (jobQueues.length > 0) {
       const anyNewJobs = jobQueues.some((queue) => queue.running);
       if (anyNewJobs) {

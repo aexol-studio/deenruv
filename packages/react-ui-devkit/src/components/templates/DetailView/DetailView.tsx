@@ -112,6 +112,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
     const [searchParams] = useSearchParams();
     const { getDetailViewTabs, getDetailViewActions } = usePluginStore();
     const form = useGFFLP(main.form.key, ...main.form.keys)(main.form.config);
+
     const tab = useMemo(() => searchParams.get('tab') || main.name, [searchParams]);
     const tabs = useMemo(() => {
         return (
@@ -152,6 +153,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
             }}
         >
             <DetailTabs
+                key={tab}
                 topActions={{
                     inline: [
                         ...(topActions?.inline || []),
@@ -198,8 +200,18 @@ const DetailTabs = ({
 
     const showEditButton = id && isPermittedToUpdate;
     const showCreateButton = !id && isPermittedToCreate;
-
     const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
+
+    const memoizedTabs = useMemo(() => {
+        return tabs.map((tab, idx) => (
+            <TabsContent key={idx} value={tab.name}>
+                <div className={cn(sidebar ? 'grid grid-cols-[minmax(0,1fr)_400px] gap-4' : 'w-full')}>
+                    {tab.component ? tab.component : <div>Missing component</div>}
+                    {sidebar}
+                </div>
+            </TabsContent>
+        ));
+    }, [tabs]);
 
     return (
         <Tabs
