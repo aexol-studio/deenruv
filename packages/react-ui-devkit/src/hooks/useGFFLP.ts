@@ -23,36 +23,25 @@ export const useFFLP = <X>(config: {
         ...(Object.fromEntries(
             Object.keys(config).map(v => [
                 v,
-                {
-                    value: config[v as keyof X]?.initialValue as X[keyof X],
-                    ...config[v as keyof X],
-                },
+                { value: config[v as keyof X]?.initialValue as X[keyof X], ...config[v as keyof X] },
             ]),
-        ) as Partial<{
-            [K in keyof X]: GFFLPFormField<X[K]>;
-        }>),
+        ) as Partial<{ [K in keyof X]: GFFLPFormField<X[K]> }>),
     });
+
     const setField = useCallback(
         <F extends keyof X>(field: F, value: X[F]) => {
-            const isToBeValidated = !!config[field]?.validate;
-            const invalid = config[field]?.validate?.(value);
-            const updatedField =
-                isToBeValidated && invalid && invalid.length > 0
-                    ? ({
-                          value,
-                          initialValue: state[field]?.initialValue,
-                          errors: invalid,
-                      } as GFFLPFormField<X[F]>)
-                    : ({
-                          value,
-                          initialValue: state[field]?.initialValue,
-                          validatedValue: value,
-                      } as GFFLPFormField<X[F]>);
-
-            state[field] = updatedField;
-            _setState(JSON.parse(JSON.stringify(state)));
+            _setState(prevState => {
+                const isToBeValidated = !!config[field]?.validate;
+                const errors = config[field]?.validate?.(value);
+                const initialValue = prevState[field]?.initialValue;
+                const updatedField =
+                    isToBeValidated && errors && errors.length > 0
+                        ? ({ value, initialValue, errors } as GFFLPFormField<X[F]>)
+                        : ({ value, initialValue, validatedValue: value } as GFFLPFormField<X[F]>);
+                return { ...prevState, [field]: updatedField };
+            });
         },
-        [config, state],
+        [config],
     );
 
     const checkIfAllFieldsAreValid: () => boolean = useCallback(() => {
@@ -63,20 +52,14 @@ export const useFFLP = <X>(config: {
             if (fieldValue && fieldKey) {
                 const isToBeValidated = !!config[fieldKey]?.validate;
                 const isInvalid = config[fieldKey]?.validate?.(fieldValue.value);
+                const initialValue = fieldValue.initialValue;
+                const value = fieldValue.value;
                 newState = {
                     ...newState,
                     [fieldKey]:
                         isToBeValidated && isInvalid && isInvalid.length > 0
-                            ? {
-                                  initialValue: fieldValue.initialValue,
-                                  value: fieldValue.value,
-                                  errors: isInvalid,
-                              }
-                            : {
-                                  initialValue: fieldValue.initialValue,
-                                  value: fieldValue.value,
-                                  validatedValue: fieldValue.value,
-                              },
+                            ? { initialValue, value, errors: isInvalid }
+                            : { initialValue, value, validatedValue: value },
                 };
             }
         });
@@ -105,20 +88,13 @@ export const useFFLP = <X>(config: {
                 if (fieldValue && fieldKey) {
                     const isToBeValidated = !!config[fieldKey]?.validate;
                     const isInvalid = config[fieldKey]?.validate?.(value[fieldKey]);
+                    const initialValue = fieldValue.initialValue;
                     newState = {
                         ...newState,
                         [fieldKey]:
                             isToBeValidated && isInvalid && isInvalid.length > 0
-                                ? {
-                                      initialValue: fieldValue.initialValue,
-                                      value: value[fieldKey],
-                                      errors: isInvalid,
-                                  }
-                                : {
-                                      initialValue: fieldValue.initialValue,
-                                      value: value[fieldKey],
-                                      validatedValue: value[fieldKey],
-                                  },
+                                ? { initialValue, value: value[fieldKey], errors: isInvalid }
+                                : { initialValue, value: value[fieldKey], validatedValue: value[fieldKey] },
                     };
                 }
             });
@@ -168,10 +144,5 @@ export const useFFLP = <X>(config: {
 
 export const setInArrayBy = <T>(list: T[], fn: (x: T) => boolean, element: T) => {
     const ll = list.find(e => !fn(e));
-    return list
-        .filter(e => fn(e))
-        .concat({
-            ...ll,
-            ...element,
-        });
+    return list.filter(e => fn(e)).concat({ ...ll, ...element });
 };
