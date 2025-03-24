@@ -64,10 +64,13 @@ export const ColumnView = <T extends { id: string }>({
     }
 
     const getCustomFieldLabel = (key: string) => {
-        const field = entityCustomFields?.find(el => el.name === key.split('_')[1]);
+        const fromTable = table.getColumn(key);
+        if (fromTable && 'label' in fromTable) {
+            return fromTable.label;
+        }
+        const field = entityCustomFields?.find(el => el.name === key.split('.')[1]);
         const fieldTranslation =
             field?.label?.find(el => el.languageCode === language)?.value || field?.label?.[0]?.value;
-
         return fieldTranslation || camelCaseToSpaces(key.replace(CUSTOM_FIELDS_PREFIX, ''));
     };
 

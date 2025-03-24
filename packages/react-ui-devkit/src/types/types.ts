@@ -196,7 +196,8 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     externalSelector?: ExternalListLocationSelector[KEY];
     rowActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['rowActions'];
     bulkActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['bulkActions'];
-    columns?: Array<ColumnDef<ListLocationsType<KEY>>>;
+    columns?: Array<ColumnDef<ListLocationsType<KEY>> & { label?: string }>;
+    hideColumns?: Array<keyof ListLocationsType<KEY>>;
 };
 
 type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
@@ -264,8 +265,6 @@ export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
         inline?: Array<DeenruvUIDetailComponent<DetailKeys>>;
         dropdown?: Array<DeenruvUIDetailComponent<DetailKeys>>;
     };
-    /** Operations allow to override everything with 'ConfigurableOperationDefinition' type */
-    operations?: Array<PluginComponent>;
     /** Inputs allow to override the default components from custom fields */
     inputs?: Array<PluginComponent>;
     /** Applied on the detail views (pages) */

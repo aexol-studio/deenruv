@@ -117,6 +117,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     const customColumns = (tableExtensions?.flatMap(table => table.columns) || []) as ColumnDef<
         AwaitedReturnType<T>['items']
     >[];
+    const customHideColumns = tableExtensions?.flatMap(table => table.hideColumns || []);
 
     const entityCustomFields = useServer(p =>
         p.serverConfig?.entityCustomFields?.find(el => el.entityName === entityName),
@@ -160,7 +161,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
     const columnsTranslations = t('columns', { returnObjects: true });
     const { handleError } = useErrorHandler();
-    const hiddenColumns = useMemo(() => [...(hideColumns ?? []), 'customFields'], [hideColumns]);
+    const hiddenColumns = useMemo(
+        () => [...(hideColumns ?? []), 'customFields'].concat(customHideColumns ?? []),
+        [hideColumns, customHideColumns],
+    );
     const { language } = useSettings();
 
     const {
@@ -395,7 +399,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         onColumnFiltersChange: setColumnFilters,
         onColumnOrderChange: setColumnsOrderState,
         meta: {
-            hideColumns,
+            hideColumns: hiddenColumns,
             bulkActions,
             rowActions,
             route,
