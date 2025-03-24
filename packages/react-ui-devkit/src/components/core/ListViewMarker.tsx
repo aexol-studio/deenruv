@@ -18,7 +18,7 @@ export const ListViewMarker = ({
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
     const code = `const DeenruvUIPlugin = createPlugin({
     tables: [{
-        id: ${position},
+        id: "${position}",
         bulkActions: [],
         columns: [{
             id: "${column.id}",
