@@ -1,15 +1,32 @@
 import { Column, ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, EmptyState } from '@/components';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+    EmptyState,
+    Button,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    ListViewMarker,
+} from '@/components';
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { cn } from '@/lib';
+import { usePluginStore } from '@/plugins/plugin-context.js';
+import { PlugZap } from 'lucide-react';
+import { ListLocationID } from '@/types/types.js';
 
 interface ListTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     isFiltered: boolean;
     table: ReactTable<TData>;
     Paginate: ReactNode;
+    tableId: ListLocationID;
 }
 
 const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
@@ -46,7 +63,9 @@ export function ListTable<TData, TValue>({
     columns,
     isFiltered,
     Paginate,
+    tableId,
 }: ListTableProps<TData, TValue>) {
+    const { viewMarkers } = usePluginStore();
     const tableWrapperRef = useRef<HTMLDivElement>(null);
     const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
     const { t } = useTranslation('common');
@@ -94,15 +113,26 @@ export function ListTable<TData, TValue>({
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className={getCommonClassNameStyles(header.column)}
+                                            className={cn(
+                                                'relative',
+                                                getCommonClassNameStyles(header.column),
+                                            )}
                                             style={{ ...getCommonPinningStyles(header.column) }}
                                         >
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                      header.column.columnDef.header,
-                                                      header.getContext(),
-                                                  )}
+                                            <div className="flex items-center justify-between gap-2">
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(
+                                                          header.column.columnDef.header,
+                                                          header.getContext(),
+                                                      )}
+                                                
+                                                    <ListViewMarker
+                                                        column={header.column}
+                                                        position={tableId}
+                                                    />
+                                               
+                                            </div>
                                         </TableHead>
                                     );
                                 })}

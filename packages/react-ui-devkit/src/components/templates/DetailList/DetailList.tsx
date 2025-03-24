@@ -516,7 +516,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         </div>
                     </div>
                 </div>
-                <ListTable {...{ columns, isFiltered, table, Paginate }} />
+                <ListTable {...{ columns, isFiltered, table, Paginate, tableId }} />
             </div>
         </div>
     );
