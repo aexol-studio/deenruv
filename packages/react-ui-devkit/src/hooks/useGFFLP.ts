@@ -31,17 +31,34 @@ export const useFFLP = <X>(config: {
     const setField = useCallback(
         <F extends keyof X>(field: F, value: X[F]) => {
             _setState(prevState => {
-                const isToBeValidated = !!config[field]?.validate;
-                const errors = config[field]?.validate?.(value);
-                const initialValue = prevState[field]?.initialValue;
-                const updatedField =
-                    isToBeValidated && errors && errors.length > 0
-                        ? ({ value, initialValue, errors } as GFFLPFormField<X[F]>)
-                        : ({ value, initialValue, validatedValue: value } as GFFLPFormField<X[F]>);
-                return { ...prevState, [field]: updatedField };
+                const fullPath = (field as string).split('.');
+                if (fullPath.length > 1) {
+                    const [parentField, childField] = fullPath;
+                    const parentValue = prevState && prevState[parentField as keyof X]?.value;
+                    const parentInitialValue = prevState && prevState[parentField as keyof X]?.initialValue;
+                    const parentErrors = prevState && prevState[parentField as keyof X]?.errors;
+                    const parentValidatedValue =
+                        prevState && prevState[parentField as keyof X]?.validatedValue;
+                    const updatedParentField = {
+                        value: { ...parentValue, [childField]: { value } },
+                        initialValue: { ...parentInitialValue, [childField]: value },
+                        errors: parentErrors,
+                        validatedValue: { ...parentValidatedValue, [childField]: value },
+                    };
+                    return { ...prevState, [parentField]: updatedParentField };
+                } else {
+                    const isToBeValidated = !!config[field]?.validate;
+                    const errors = config[field]?.validate?.(value);
+                    const initialValue = prevState[field]?.initialValue;
+                    const updatedField =
+                        isToBeValidated && errors && errors.length > 0
+                            ? ({ value, initialValue, errors } as GFFLPFormField<X[F]>)
+                            : ({ value, initialValue, validatedValue: value } as GFFLPFormField<X[F]>);
+                    return { ...prevState, [field]: updatedField };
+                }
             });
         },
-        [config],
+        [state, config],
     );
 
     const checkIfAllFieldsAreValid: () => boolean = useCallback(() => {
