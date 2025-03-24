@@ -50,10 +50,21 @@ export const useFFLP = <X>(config: {
                     const isToBeValidated = !!config[field]?.validate;
                     const errors = config[field]?.validate?.(value);
                     const initialValue = prevState[field]?.initialValue;
+
+                    let updatedValue = value;
+                    if (field === ('customFields' as F)) {
+                        const existingValue = prevState[field]?.value || {};
+                        updatedValue = { ...existingValue, ...value } as X[F];
+                    }
+
                     const updatedField =
                         isToBeValidated && errors && errors.length > 0
-                            ? ({ value, initialValue, errors } as GFFLPFormField<X[F]>)
-                            : ({ value, initialValue, validatedValue: value } as GFFLPFormField<X[F]>);
+                            ? ({ value: updatedValue, initialValue, errors } as GFFLPFormField<X[F]>)
+                            : ({
+                                  value: updatedValue,
+                                  initialValue,
+                                  validatedValue: updatedValue,
+                              } as GFFLPFormField<X[F]>);
                     return { ...prevState, [field]: updatedField };
                 }
             });
