@@ -26,7 +26,7 @@ import { camelCaseToSpaces } from '@/utils/camel-case-to-spaces.js';
 import { useServer } from '@/state/server.js';
 import { useSettings } from '@/state/settings.js';
 
-const CUSTOM_FIELDS_PREFIX = 'customFields_';
+const CUSTOM_FIELDS_PREFIX = 'customFields.';
 
 export const ColumnView = <T extends { id: string }>({
     table,

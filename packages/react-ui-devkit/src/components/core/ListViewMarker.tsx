@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { usePluginStore } from '@/plugins/plugin-context';
 import { ListLocationID } from '@/types';
@@ -16,12 +16,13 @@ export const ListViewMarker = ({
     position: ListLocationID;
 }) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
+
     const code = `const DeenruvUIPlugin = createPlugin({
     tables: [{
         id: "${position}",
         bulkActions: [],
         columns: [{
-            id: "${column.id}",
+            id: "${column.id?.includes('customFields') ? column.id?.replace('_', '.') : column.id}",
         }],
     }],
 });`;
@@ -29,7 +30,6 @@ export const ListViewMarker = ({
         /(id: )([^,]*)/g,
         `$1<span class="text-green-500 font-bold">$2</span>`,
     );
-
     const copyCode = () => {
         try {
             navigator.clipboard.writeText(code);
@@ -38,9 +38,7 @@ export const ListViewMarker = ({
             console.error('Failed to copy: ', err);
         }
     };
-    if (!viewMarkers) return null;
-    if (column.id && ['actions', 'select-id'].includes(column.id)) return null;
-
+    if (!viewMarkers || (column.id && ['actions', 'select-id'].includes(column.id))) return null;
     return (
         <Popover>
             <PopoverTrigger asChild>

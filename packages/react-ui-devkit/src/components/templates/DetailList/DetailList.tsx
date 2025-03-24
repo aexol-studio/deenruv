@@ -140,8 +140,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
             .slice()
             .map(column => column.id)
             .sort((a, b) => {
-                const isCustomA = a.startsWith('customFields_');
-                const isCustomB = b.startsWith('customFields_');
+                const isCustomA = a.startsWith('customFields.');
+                const isCustomB = b.startsWith('customFields.');
 
                 if (isCustomA && !isCustomB) return 1;
                 if (!isCustomA && isCustomB) return -1;
@@ -152,7 +152,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
     const getTableDefaultVisibility = () => {
         return table.getAllColumns().reduce<Record<string, boolean>>((acc, column) => {
-            acc[column.id] = column.id.startsWith('customFields_') ? false : true;
+            acc[column.id] = column.id.startsWith('customFields.') ? false : true;
             return acc;
         }, {});
     };
@@ -365,7 +365,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         if (hiddenColumns?.includes(customKey)) {
                             newVisibility[customKey] = false;
                         } else if (prev[customKey] === undefined) {
-                            // customKey.replace(/customFields\.([a-zA-Z0-9_]+)/g, 'customFields_$1')
+                            // customKey.replace(/customFields\.([a-zA-Z0-9_]+)/g, 'customFields.$1')
                             newVisibility[customKey] = true;
                         }
                     }
@@ -422,9 +422,9 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
     useEffect(() => {
         if (!columnsOrderState.length) setColumnsOrderState(getTableDefaultOrder());
-        if (!columnsVisibilityState || !Object.keys(columnsVisibilityState).length)
-            console.log('VISIBILITY', getTableDefaultVisibility());
-        setColumnsVisibilityState(getTableDefaultVisibility());
+        if (!columnsVisibilityState || !Object.keys(columnsVisibilityState).length) {
+            setColumnsVisibilityState(getTableDefaultVisibility());
+        }
     }, [table]);
 
     const isFiltered = useMemo(() => {
