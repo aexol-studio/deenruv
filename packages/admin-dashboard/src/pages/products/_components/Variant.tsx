@@ -1,5 +1,5 @@
-import { Button, Input, apiClient } from '@deenruv/react-ui-devkit';
-import { ConfirmationDialog, EntityCustomFields, Stack } from '@/components';
+import { Button, ConfirmationDialog, Input, apiClient } from '@deenruv/react-ui-devkit';
+import { EntityCustomFields, Stack } from '@/components';
 
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';

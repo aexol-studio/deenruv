@@ -15,3 +15,5 @@ export * from './ErrorMessage';
 export * from './ListBadge';
 export * from './CustomCardHeader';
 export * from './CustomCard';
+export * from './ContextMenu';
+export * from './ConfirmationDialog';

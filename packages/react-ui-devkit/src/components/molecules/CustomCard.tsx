@@ -3,7 +3,7 @@ import { CustomCardHeader } from '@/components/molecules';
 import { cn } from '@/lib/utils.js';
 import React, { cloneElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
 
-type TailwindColor =
+export type TailwindColor =
     | 'slate'
     | 'gray'
     | 'zinc'

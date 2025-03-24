@@ -6,8 +6,6 @@ export * from './ImageWithPreview.js';
 export * from './AutoComplete/ProductVariantSearch.js';
 export * from './AssetsModalInput.js';
 export * from './PaymentMethodImage.js';
-export * from './ContextMenu.js';
-export * from './ConfirmationDialog.js';
 export * from './RichTextEditor/RichTextEditor.js';
 export * from './SimpleSelect.js';
 export * from './DeleteDialog.js';

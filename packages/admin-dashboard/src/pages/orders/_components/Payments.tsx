@@ -5,9 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Dialog,
   DialogClose,
   DialogContent,
@@ -21,12 +18,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
   ScrollArea,
   Badge,
   CustomCardHeader,
+  DropdownMenuItem,
+  ContextMenu,
+  ConfirmationDialog,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -38,9 +35,7 @@ import {
   Clock,
   AlertCircle,
   Wallet,
-  DollarSign,
   Receipt,
-  FileText,
   CheckCircle,
   Ban,
 } from 'lucide-react';
@@ -136,7 +131,7 @@ export const Payments: React.FC = () => {
                 <TableHead className="py-3">{t('payments.status')}</TableHead>
                 <TableHead className="py-3">{t('payments.amount')}</TableHead>
                 <TableHead className="py-3 text-center">{t('payments.extra')}</TableHead>
-                <TableHead className="py-3">{t('payments.actions')}</TableHead>
+                <TableHead className="ml-auto py-3"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -171,26 +166,31 @@ export const Payments: React.FC = () => {
                       <TableCell className="flex items-center justify-center">
                         <MetadataDisplay metadata={metadata} />
                       </TableCell>
-                      <TableCell className="py-3">
-                        <div className="flex items-center gap-2">
+                      <TableCell className="py-3 text-end">
+                        <ContextMenu>
                           {state !== PAYMENT_STATE.SETTLED && state !== PAYMENT_STATE.CANCELLED && (
-                            <Button
-                              variant="outline"
-                              size="sm"
+                            <DropdownMenuItem
+                              key={'set'}
                               onClick={() => setPaymentToBeSettled(id)}
-                              className="gap-1"
+                              className="flex cursor-pointer items-center gap-2"
                             >
-                              <CheckCircle2 className="h-3.5 w-3.5" />
+                              <CheckCircle2 size={16} />
                               {t('payments.settle.settle', 'Settle')}
-                            </Button>
+                            </DropdownMenuItem>
                           )}
                           {state !== PAYMENT_STATE.CANCELLED && (
-                            <Button variant="destructive" size="sm" onClick={() => cancelPayment(id)} className="gap-1">
-                              <XCircle className="h-3.5 w-3.5" />
-                              {t('payments.cancel', 'Cancel')}
-                            </Button>
+                            <ConfirmationDialog onConfirm={() => cancelPayment(id)}>
+                              <DropdownMenuItem
+                                key={'cancel'}
+                                className="flex cursor-pointer items-center gap-2 text-red-500"
+                                onSelect={(e) => e.preventDefault()}
+                              >
+                                <XCircle size={16} />
+                                {t('payments.cancel', 'Cancel')}
+                              </DropdownMenuItem>
+                            </ConfirmationDialog>
                           )}
-                        </div>
+                        </ContextMenu>
                       </TableCell>
                     </TableRow>
                   );

@@ -13,6 +13,7 @@ import {
   Badge,
   ScrollArea,
   CustomCardHeader,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import type React from 'react';
@@ -69,14 +70,13 @@ export const PromotionsList: React.FC = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow noHover>
-                    <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
-                      <div className="flex flex-col items-center justify-center gap-2">
-                        <Gift className="text-muted-foreground/50 h-10 w-10" />
-                        <p>{t('promotions.noPromotions', 'No promotions applied')}</p>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                  <EmptyState
+                    columnsLength={2}
+                    title={t('promotions.noPromotions', 'No promotions applied')}
+                    color="blue"
+                    icon={<Gift />}
+                    small
+                  />
                 )}
               </TableBody>
             </Table>
@@ -131,14 +131,13 @@ export const PromotionsList: React.FC = () => {
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow noHover>
-                    <TableCell colSpan={5} className="text-muted-foreground py-6 text-center">
-                      <div className="flex flex-col items-center justify-center gap-2">
-                        <BadgePercent className="text-muted-foreground/50 h-10 w-10" />
-                        <p>{t('discounts.emptyState', 'No discounts applied')}</p>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                  <EmptyState
+                    columnsLength={5}
+                    title={t('discounts.emptyState')}
+                    color="green"
+                    icon={<BadgePercent />}
+                    small
+                  />
                 )}
               </TableBody>
             </Table>

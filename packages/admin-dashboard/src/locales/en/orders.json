@@ -324,7 +324,7 @@
         "status": "Status",
         "method": "Method",
         "created": "Created",
-        "cancel": "Cancel",
+        "cancel": "Cancel payment",
         "amount": "Amount",
         "extra": "Additional",
         "actions": "Activities",

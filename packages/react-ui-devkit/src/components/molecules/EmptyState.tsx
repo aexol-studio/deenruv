@@ -1,30 +1,78 @@
-import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, TableCell, TableRow } from '..';
+import React, { ReactNode } from 'react';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    TableCell,
+    TableRow,
+    TailwindColor,
+} from '..';
 import { CircleOff, SearchX } from 'lucide-react';
+import { cn } from '@/lib/utils.js';
 
 interface Props {
     columnsLength: number;
     filtered?: boolean;
     title: string;
-    description: string;
+    description?: string;
+    icon?: ReactNode;
+    color?: TailwindColor;
+    small?: true;
 }
 
-export const EmptyState: React.FC<Props> = ({ columnsLength, filtered, title, description }) => {
+export const EmptyState: React.FC<Props> = ({
+    columnsLength,
+    filtered,
+    title,
+    description,
+    icon,
+    color,
+    small,
+}) => {
+    const iconWrapperColorClass = `bg-${color}-100 dark:bg-${color}-900/30`;
+    const iconColorClass = `text-${color}-500 dark:text-${color}-400`;
+    const _icon = icon ? (
+        React.isValidElement<{ className?: string }>(icon) ? (
+            React.cloneElement(icon, {
+                className: cn(icon.props.className, 'h-6 w-6', color ? iconColorClass : ''),
+            })
+        ) : (
+            icon
+        )
+    ) : (
+        <CircleOff className={cn('h-6 w-6', color ? iconColorClass : '')} />
+    );
+
     return (
         <TableRow noHover>
             <TableCell colSpan={columnsLength} className="h-24 text-center">
-                <Card className="flex h-full flex-col items-center justify-center p-2">
+                <Card
+                    className={cn(
+                        'flex h-full flex-col items-center justify-center p-2',
+                        small && 'border-0 shadow-none p-0',
+                    )}
+                >
                     <CardHeader className="flex flex-col items-center">
                         {filtered ? (
-                            <SearchX size={30} className="mb-4" />
+                            <div className={cn('mb-3 rounded-full p-3', color ? iconWrapperColorClass : '')}>
+                                <SearchX className={cn('h-6 w-6', color ? iconColorClass : '')} />
+                            </div>
                         ) : (
-                            <CircleOff size={30} className="mb-4" />
+                            <div className={cn('mb-3 rounded-full p-3', color ? iconWrapperColorClass : '')}>
+                                {_icon}
+                            </div>
                         )}
-                        <CardTitle>{title}</CardTitle>
+                        <CardTitle {...(small && { className: 'text-base' })}>{title}</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <CardDescription>{description}</CardDescription>
-                    </CardContent>
+                    {description && (
+                        <CardContent>
+                            <CardDescription {...(small && { className: 'text-sm' })}>
+                                {description}
+                            </CardDescription>
+                        </CardContent>
+                    )}
                 </Card>
             </TableCell>
         </TableRow>

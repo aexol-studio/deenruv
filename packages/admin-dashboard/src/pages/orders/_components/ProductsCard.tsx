@@ -370,9 +370,9 @@ export const ProductsCard: React.FC = () => {
               />
             )}
 
-            <div className="border-border rounded-lg border shadow-sm">
+            <div className="border-border rounded-lg border-0 shadow-sm">
               <Table>
-                <TableHeader className="bg-muted/30">
+                <TableHeader>
                   <TableRow noHover className="hover:bg-transparent">
                     <TableHead className="py-3 font-semibold">{t('create.product', 'Product')}</TableHead>
                     <TableHead className="py-3 font-semibold">{t('create.sku', 'SKU')}</TableHead>

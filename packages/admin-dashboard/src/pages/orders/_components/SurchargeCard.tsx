@@ -135,7 +135,7 @@ export const SurchargeCard: React.FC<{}> = () => {
         <SurchargeTable />
 
         <div>
-          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
             <div className="space-y-2">
               <Label htmlFor="surcharge-description" className="text-sm font-medium">
                 {t('surcharge.labels.description', 'Description')} <span className="text-red-500">*</span>
@@ -195,24 +195,6 @@ export const SurchargeCard: React.FC<{}> = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div className="space-y-2">
-              <Label htmlFor="surcharge-tax-included" className="text-sm font-medium">
-                {t('surcharge.labels.includesTax', { value: state.taxRate?.value })}
-              </Label>
-              <div className="flex items-center gap-2 pt-2">
-                <Checkbox
-                  id="surcharge-tax-included"
-                  checked={state.priceIncludesTax?.value || false}
-                  onCheckedChange={(e) => setField('priceIncludesTax', Boolean(e))}
-                />
-                <Label htmlFor="surcharge-tax-included" className="cursor-pointer text-sm">
-                  {t('surcharge.placeholders.taxIncluded', 'Tax is included in the price')}
-                </Label>
-              </div>
-            </div>
 
             <div className="space-y-2">
               <Label htmlFor="surcharge-tax-rate" className="text-sm font-medium">
@@ -234,7 +216,6 @@ export const SurchargeCard: React.FC<{}> = () => {
                 </div>
               </div>
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="surcharge-tax-description" className="text-sm font-medium">
                 {t('surcharge.labels.taxDescription', 'Tax Description')}
@@ -252,6 +233,21 @@ export const SurchargeCard: React.FC<{}> = () => {
                 </div>
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="surcharge-tax-included" className="text-sm font-medium">
+                {t('surcharge.labels.includesTax', { value: state.taxRate?.value })}
+              </Label>
+              <div className="flex items-center gap-2 pt-2">
+                <Checkbox
+                  id="surcharge-tax-included"
+                  checked={state.priceIncludesTax?.value || false}
+                  onCheckedChange={(e) => setField('priceIncludesTax', Boolean(e))}
+                />
+                <Label htmlFor="surcharge-tax-included" className="cursor-pointer text-sm">
+                  {t('surcharge.placeholders.taxIncluded', 'Tax is included in the price')}
+                </Label>
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>
@@ -266,7 +262,7 @@ export const SurchargeCard: React.FC<{}> = () => {
             !state.price?.value ||
             state.price?.value <= 0
           }
-          className="gap-2"
+          className="ml-auto gap-2"
         >
           {isSubmitting ? (
             <>

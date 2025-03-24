@@ -12,6 +12,7 @@ import {
   useMutation,
   OrderDetailSelector,
   CustomCardHeader,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
@@ -136,15 +137,14 @@ export const CouponCodesCard: React.FC<{}> = () => {
         </div>
 
         {currentValue.length === 0 && (
-          <div className="border-muted mt-4 flex flex-col items-center justify-center rounded-md border border-dashed p-6 text-center">
-            <div className="mb-3 rounded-full bg-purple-100 p-3 dark:bg-purple-900/30">
-              <Ticket className="h-6 w-6 text-purple-500 dark:text-purple-400" />
-            </div>
-            <h3 className="text-sm font-medium">{t('couponCodes.noCoupons', 'No coupon codes applied')}</h3>
-            <p className="text-muted-foreground mt-1 text-xs">
-              {t('couponCodes.searchToAdd', 'Search above to find and apply coupon codes')}
-            </p>
-          </div>
+          <EmptyState
+            columnsLength={2}
+            title={t('couponCodes.noCoupons', 'No coupon codes applied')}
+            description={t('couponCodes.searchToAdd', 'Search above to find and apply coupon codes')}
+            color="purple"
+            icon={<Ticket />}
+            small
+          />
         )}
       </CardContent>
     </Card>
