@@ -24,6 +24,8 @@ import {
   OrderDetailSelector,
   Label,
   useGFFLP,
+  CardContent,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
@@ -141,185 +143,180 @@ export const CustomerSelectCard: React.FC = () => {
 
   return (
     <Card className="border-l-4 border-l-indigo-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-indigo-400">
-      <CardHeader className="pb-4">
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <User className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-            <CardTitle className="text-base font-semibold">
-              {t('create.selectCustomer.select', 'Customer Information')}
-            </CardTitle>
-          </div>
-          {mode !== 'view' && mode !== 'update' && (
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
-                  <Edit size={16} className="text-indigo-500 dark:text-indigo-400" />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="min-w-max">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2 text-xl">
-                    <User className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                    {t('create.selectCustomer.label', 'Select Customer')}
-                  </DialogTitle>
-                  <DialogDescription className="text-muted-foreground mt-2">
-                    {t(
-                      'create.selectCustomer.description',
-                      'Choose an existing customer or create a new one for this order',
-                    )}
-                  </DialogDescription>
-                </DialogHeader>
-                <Tabs value={tab} onValueChange={(e) => setTab(e as 'create' | 'select')}>
-                  <TabsList className="my-4 grid w-full grid-cols-2">
-                    <TabsTrigger className="w-full" value="select">
-                      <div className="flex items-center gap-2">
-                        <Search className="h-4 w-4" />
-                        {t('create.selectCustomer.selectTab', 'Find Customer')}
-                      </div>
-                    </TabsTrigger>
-                    <TabsTrigger className="w-full" value="create">
-                      <div className="flex items-center gap-2">
-                        <UserPlus className="h-4 w-4" />
-                        {t('create.selectCustomer.createTab', 'Create New')}
-                      </div>
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent className="focus-visible:ring-transparent" value="select">
-                    <CustomerSearch selectedCustomer={selected} onSelect={(selected) => setSelected(selected)} />
-                  </TabsContent>
-                  <TabsContent value="create" className="h-fit max-h-[calc(80vh-230px)] overflow-y-auto pt-2">
-                    <div className="space-y-4 px-1">
-                      <div className="space-y-1">
-                        <Label htmlFor="title" className="text-sm font-medium">
-                          {t('create.selectCustomer.titleLabel', 'Title')}
-                        </Label>
-                        <Input
-                          id="title"
-                          name="title"
-                          placeholder={t('create.selectCustomer.titlePlaceholder', 'Mr., Mrs., Dr., etc.')}
-                          value={state.title?.value ?? undefined}
-                          onChange={(e) => setField('title', e.target.value)}
-                          errors={state.title?.errors}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <Label htmlFor="firstName" className="text-sm font-medium">
-                            {t('create.selectCustomer.firstNameLabel', 'First Name')}{' '}
-                            <span className="text-red-500">*</span>
-                          </Label>
-                          <Input
-                            id="firstName"
-                            name="firstName"
-                            placeholder={t('create.selectCustomer.firstNamePlaceholder', 'Enter first name')}
-                            value={state.firstName?.value}
-                            onChange={(e) => setField('firstName', e.target.value)}
-                            className={cn(state.firstName?.errors?.length && 'border-red-300')}
-                            required
-                            errors={state.firstName?.errors}
-                          />
-                        </div>
-                        <div className="space-y-1">
-                          <Label htmlFor="lastName" className="text-sm font-medium">
-                            {t('create.selectCustomer.lastNameLabel', 'Last Name')}{' '}
-                            <span className="text-red-500">*</span>
-                          </Label>
-                          <Input
-                            id="lastName"
-                            name="lastName"
-                            placeholder={t('create.selectCustomer.lastNamePlaceholder', 'Enter last name')}
-                            value={state.lastName?.value}
-                            onChange={(e) => setField('lastName', e.target.value)}
-                            className={cn(state.lastName?.errors?.length && 'border-red-300')}
-                            required
-                            errors={state.lastName?.errors}
-                          />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="email" className="text-sm font-medium">
-                          {t('create.selectCustomer.emailLabel', 'Email Address')}{' '}
-                          <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="email"
-                          name="emailAddress"
-                          type="email"
-                          placeholder={t('create.selectCustomer.emailPlaceholder', 'Enter email address')}
-                          value={state.emailAddress?.value}
-                          onChange={(e) => setField('emailAddress', e.target.value)}
-                          className={cn(state.emailAddress?.errors?.length && 'border-red-300')}
-                          required
-                          errors={state.emailAddress?.errors}
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <Label htmlFor="phone" className="text-sm font-medium">
-                          {t('create.selectCustomer.phoneNumberLabel', 'Phone Number')}{' '}
-                          <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                          id="phone"
-                          name="phoneNumber"
-                          placeholder={t('create.selectCustomer.phonePlaceholder', 'Enter phone number')}
-                          value={state.phoneNumber?.value ?? undefined}
-                          onChange={(e) => setField('phoneNumber', e.target.value)}
-                          className={cn(state.phoneNumber?.errors?.length && 'border-red-300')}
-                          required
-                          errors={state.phoneNumber?.errors}
-                        />
-                      </div>
-                      <EntityCustomFields
-                        id={selected?.id}
-                        entityName="customer"
-                        hideButton
-                        initialValues={
-                          selected && 'customFields' in selected
-                            ? { customFields: selected.customFields as any }
-                            : { customFields: {} }
-                        }
-                        onChange={(customFields, translations) => {
-                          setField('customFields', customFields);
-                        }}
-                        additionalData={{}}
+      <CustomCardHeader
+        description={t(
+          'create.selectCustomer.description',
+          'Choose an existing customer or create a new one for this order',
+        )}
+        title={t('create.selectCustomer.select', 'Customer Information')}
+        icon={<User className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />}
+      >
+        {mode !== 'view' && mode !== 'update' && (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Edit size={16} className="text-indigo-500 dark:text-indigo-400" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="min-w-max">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2 text-xl">
+                  <User className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                  {t('create.selectCustomer.label', 'Select Customer')}
+                </DialogTitle>
+                <DialogDescription className="text-muted-foreground mt-2">
+                  {t(
+                    'create.selectCustomer.description',
+                    'Choose an existing customer or create a new one for this order',
+                  )}
+                </DialogDescription>
+              </DialogHeader>
+              <Tabs value={tab} onValueChange={(e) => setTab(e as 'create' | 'select')}>
+                <TabsList className="my-4 grid w-full grid-cols-2">
+                  <TabsTrigger className="w-full" value="select">
+                    <div className="flex items-center gap-2">
+                      <Search className="h-4 w-4" />
+                      {t('create.selectCustomer.selectTab', 'Find Customer')}
+                    </div>
+                  </TabsTrigger>
+                  <TabsTrigger className="w-full" value="create">
+                    <div className="flex items-center gap-2">
+                      <UserPlus className="h-4 w-4" />
+                      {t('create.selectCustomer.createTab', 'Create New')}
+                    </div>
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent className="focus-visible:ring-transparent" value="select">
+                  <CustomerSearch selectedCustomer={selected} onSelect={(selected) => setSelected(selected)} />
+                </TabsContent>
+                <TabsContent value="create" className="h-fit max-h-[calc(80vh-230px)] overflow-y-auto pt-2">
+                  <div className="space-y-4 px-1">
+                    <div className="space-y-1">
+                      <Label htmlFor="title" className="text-sm font-medium">
+                        {t('create.selectCustomer.titleLabel', 'Title')}
+                      </Label>
+                      <Input
+                        id="title"
+                        name="title"
+                        placeholder={t('create.selectCustomer.titlePlaceholder', 'Mr., Mrs., Dr., etc.')}
+                        value={state.title?.value ?? undefined}
+                        onChange={(e) => setField('title', e.target.value)}
+                        errors={state.title?.errors}
                       />
                     </div>
-                  </TabsContent>
-                </Tabs>
-                <DialogFooter className="gap-2">
-                  <Button variant="outline" onClick={() => setOpen(false)} disabled={isSubmitting}>
-                    {t('common.cancel', 'Cancel')}
-                  </Button>
-                  <Button
-                    disabled={(tab === 'select' && !selected) || isSubmitting}
-                    className="gap-2"
-                    onClick={validateAndSubmitIfCorrect}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        {t('common.processing', 'Processing...')}
-                      </>
-                    ) : (
-                      <>
-                        <Check className="h-4 w-4" />
-                        {t(
-                          tab === 'create' ? 'create.selectCustomer.create' : 'create.selectCustomer.selectButton',
-                          tab === 'create' ? 'Create Customer' : 'Select Customer',
-                        )}
-                      </>
-                    )}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
-
-        <CardDescription className="text-muted-foreground mb-3 text-sm">
-          {t('create.selectCustomer.description', 'Choose an existing customer or create a new one for this order')}
-        </CardDescription>
-
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <Label htmlFor="firstName" className="text-sm font-medium">
+                          {t('create.selectCustomer.firstNameLabel', 'First Name')}{' '}
+                          <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          id="firstName"
+                          name="firstName"
+                          placeholder={t('create.selectCustomer.firstNamePlaceholder', 'Enter first name')}
+                          value={state.firstName?.value}
+                          onChange={(e) => setField('firstName', e.target.value)}
+                          className={cn(state.firstName?.errors?.length && 'border-red-300')}
+                          required
+                          errors={state.firstName?.errors}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label htmlFor="lastName" className="text-sm font-medium">
+                          {t('create.selectCustomer.lastNameLabel', 'Last Name')}{' '}
+                          <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                          id="lastName"
+                          name="lastName"
+                          placeholder={t('create.selectCustomer.lastNamePlaceholder', 'Enter last name')}
+                          value={state.lastName?.value}
+                          onChange={(e) => setField('lastName', e.target.value)}
+                          className={cn(state.lastName?.errors?.length && 'border-red-300')}
+                          required
+                          errors={state.lastName?.errors}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="email" className="text-sm font-medium">
+                        {t('create.selectCustomer.emailLabel', 'Email Address')} <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="email"
+                        name="emailAddress"
+                        type="email"
+                        placeholder={t('create.selectCustomer.emailPlaceholder', 'Enter email address')}
+                        value={state.emailAddress?.value}
+                        onChange={(e) => setField('emailAddress', e.target.value)}
+                        className={cn(state.emailAddress?.errors?.length && 'border-red-300')}
+                        required
+                        errors={state.emailAddress?.errors}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label htmlFor="phone" className="text-sm font-medium">
+                        {t('create.selectCustomer.phoneNumberLabel', 'Phone Number')}{' '}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        id="phone"
+                        name="phoneNumber"
+                        placeholder={t('create.selectCustomer.phonePlaceholder', 'Enter phone number')}
+                        value={state.phoneNumber?.value ?? undefined}
+                        onChange={(e) => setField('phoneNumber', e.target.value)}
+                        className={cn(state.phoneNumber?.errors?.length && 'border-red-300')}
+                        required
+                        errors={state.phoneNumber?.errors}
+                      />
+                    </div>
+                    <EntityCustomFields
+                      id={selected?.id}
+                      entityName="customer"
+                      hideButton
+                      initialValues={
+                        selected && 'customFields' in selected
+                          ? { customFields: selected.customFields as any }
+                          : { customFields: {} }
+                      }
+                      onChange={(customFields, translations) => {
+                        setField('customFields', customFields);
+                      }}
+                      additionalData={{}}
+                    />
+                  </div>
+                </TabsContent>
+              </Tabs>
+              <DialogFooter className="gap-2">
+                <Button variant="outline" onClick={() => setOpen(false)} disabled={isSubmitting}>
+                  {t('common.cancel', 'Cancel')}
+                </Button>
+                <Button
+                  disabled={(tab === 'select' && !selected) || isSubmitting}
+                  className="gap-2"
+                  onClick={validateAndSubmitIfCorrect}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {t('common.processing', 'Processing...')}
+                    </>
+                  ) : (
+                    <>
+                      <Check className="h-4 w-4" />
+                      {t(
+                        tab === 'create' ? 'create.selectCustomer.create' : 'create.selectCustomer.selectButton',
+                        tab === 'create' ? 'Create Customer' : 'Select Customer',
+                      )}
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )}
+      </CustomCardHeader>
+      <CardContent>
         <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
           <div className="flex items-start gap-3">
             {!currentOrder?.customer ? (
@@ -368,7 +365,7 @@ export const CustomerSelectCard: React.FC = () => {
             )}
           </div>
         </div>
-      </CardHeader>
+      </CardContent>
     </Card>
   );
 };

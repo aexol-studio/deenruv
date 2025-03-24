@@ -23,7 +23,7 @@ PaginationContent.displayName = 'PaginationContent';
 
 const PaginationItem = React.forwardRef<HTMLLIElement, React.ComponentProps<'li'>>(
     ({ className, ...props }, ref) => (
-        <li ref={ref} className={cn('w-8 text-center', className)} {...props} />
+        <li ref={ref} className={cn('min-w-8 text-center', className)} {...props} />
     ),
 );
 PaginationItem.displayName = 'PaginationItem';
@@ -37,7 +37,7 @@ const PaginationLink = ({ className, isActive, ...props }: PaginationLinkProps) 
     <a
         aria-current={isActive ? 'page' : undefined}
         className={cn(
-            'size-8 border-[1px] border-solid border-border flex justify-center items-center rounded-md bg-background',
+            'h-8 min-w-8 px-2.5 border-[1px] border-solid border-border flex justify-center items-center rounded-md bg-background',
             isActive ? 'text-primary border-primary' : 'cursor-pointer text-muted-foreground',
             className,
         )}
@@ -56,7 +56,7 @@ const PaginationFirst = ({
         <PaginationLink
             aria-label="Go to first page"
             size="default"
-            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
+            className={cn('flex items-center gap-1 px-0', !isActive && 'cursor-not-allowed', className)}
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
@@ -76,7 +76,7 @@ const PaginationPrevious = ({
         <PaginationLink
             aria-label="Go to previous page"
             size="default"
-            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
+            className={cn('flex items-center gap-1 px-0', !isActive && 'cursor-not-allowed', className)}
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
@@ -96,7 +96,7 @@ const PaginationNext = ({
         <PaginationLink
             aria-label="Go to next page"
             size="default"
-            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
+            className={cn('flex items-center gap-1 px-0', !isActive && 'cursor-not-allowed', className)}
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
@@ -116,7 +116,7 @@ const PaginationLast = ({
         <PaginationLink
             aria-label="Go to next page"
             size="default"
-            className={cn('flex items-center gap-1', !isActive && 'cursor-not-allowed', className)}
+            className={cn('flex items-center gap-1 px-0', !isActive && 'cursor-not-allowed', className)}
             onClick={e => isActive && onClick && onClick(e)}
             {...props}
         >
@@ -127,7 +127,7 @@ const PaginationLast = ({
 PaginationLast.displayName = 'PaginationLast';
 
 const PaginationEllipsis = ({ className, ...props }: React.ComponentProps<'span'>) => (
-    <span aria-hidden className={cn('flex h-9 w-9 items-center justify-center', className)} {...props}>
+    <span aria-hidden className={cn('flex h-9 w-9 items-center justify-center px-0', className)} {...props}>
         <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
         <span className="sr-only">More pages</span>
     </span>

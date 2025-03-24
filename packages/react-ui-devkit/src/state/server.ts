@@ -252,12 +252,14 @@ const bindSchema = (
             fields: getFields(query.type),
         });
     });
-    // fetched.types.forEach(type => {
-    //     if (type.name && !type.name.startsWith('__')) {
-    //         schema.set(`Type:${type.name}`, {
-    //             fields: getFields({ name: type.name }),
-    //             description: `Type: ${type.name}`,
-    //         });
-    //     }
-    // });
+    fetched.types.forEach(type => {
+        if (type.name && !type.name.startsWith('__')) {
+            schema.set(`Type:${type.name}`, {
+                name: type.name,
+                type: 'any',
+                fields: getFields({ name: type.name }),
+                description: `Type: ${type.name}`,
+            });
+        }
+    });
 };

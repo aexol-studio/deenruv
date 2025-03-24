@@ -6,7 +6,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  TableLabel,
   apiClient,
+  DropdownMenuSeparator,
 } from '@deenruv/react-ui-devkit';
 import { DeletionResult } from '@deenruv/admin-types';
 import type React from 'react';
@@ -58,11 +60,14 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
   }
 
   return (
-    <div className="overflow-hidden rounded-lg border">
-      <div className="bg-muted/30 grid grid-cols-[auto_1fr_auto] gap-4 p-3 text-sm font-medium">
-        <div className="w-16 text-center">{t('assets:preview')}</div>
-        <div>{t('assets:name')}</div>
-        <div className="w-24 text-center">{t('assets:actions')}</div>
+    <div className="bg-background overflow-hidden rounded-lg border">
+      <div className="grid grid-cols-[auto_1fr_auto] gap-4 border-b border-stone-200 p-3 text-sm font-medium">
+        <div className="w-16 text-center">
+          <TableLabel>{t('assets:preview')}</TableLabel>
+        </div>
+        <div>
+          <TableLabel>{t('assets:name')}</TableLabel>
+        </div>
       </div>
 
       <div className="divide-y">
@@ -75,26 +80,11 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
               <img src={`${asset.preview}?preset=tile`} alt={asset.name} className="h-full w-full object-cover" />
             </div>
 
-            <div className="truncate font-medium" title={asset.name}>
+            <div className="text-muted-foreground truncate text-sm" title={asset.name}>
               {asset.name}
             </div>
 
             <div className="flex items-center gap-1">
-              <Button size="sm" variant="ghost" className="h-8 w-8 p-0" onClick={() => copyAssetUrl(asset.preview)}>
-                <Copy size={16} />
-                <span className="sr-only">{t('assets:copyURL')}</span>
-              </Button>
-
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                onClick={() => window.open(asset.preview, '_blank')}
-              >
-                <ExternalLink size={16} />
-                <span className="sr-only">{t('assets:open')}</span>
-              </Button>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
@@ -102,7 +92,7 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
                     <span className="sr-only">More options</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-[160px]">
+                <DropdownMenuContent align="end">
                   <DropdownMenuItem onClick={() => copyAssetUrl(asset.preview)} className="gap-2">
                     <Copy size={14} />
                     <span>{t('assets:copyURL', 'Copy URL')}</span>
@@ -111,6 +101,7 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
                     <ExternalLink size={14} />
                     <span>{t('assets:open', 'Open')}</span>
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => onDelete(asset.id)} className="text-destructive gap-2">
                     <Trash size={14} />
                     <span>{t('assets:delete', 'Delete')}</span>

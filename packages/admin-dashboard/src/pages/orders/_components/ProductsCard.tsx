@@ -31,6 +31,7 @@ import {
   cn,
   useServer,
   useOrder,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import {
   type DraftOrderLineType,
@@ -351,25 +352,13 @@ export const ProductsCard: React.FC = () => {
       </Dialog>
 
       <Card className="border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-blue-400">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-2">
-            <ShoppingCart className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-            <div>
-              <CardTitle className="text-xl font-semibold">
-                {t(
-                  mode === 'view' ? 'create.viewTitle' : mode === 'update' ? 'create.editTitle' : 'create.addTitle',
-                  'Order Products',
-                )}
-              </CardTitle>
-              <CardDescription>
-                {t(
-                  mode === 'view' ? 'create.viewHeader' : mode === 'update' ? 'create.editHeader' : 'create.addHeader',
-                  'Manage products in this order',
-                )}
-              </CardDescription>
-            </div>
-          </div>
-        </CardHeader>
+        <CustomCardHeader
+          description={t(
+            mode === 'view' ? 'create.viewHeader' : mode === 'update' ? 'create.editHeader' : 'create.addHeader',
+          )}
+          title={t(mode === 'view' ? 'create.viewTitle' : mode === 'update' ? 'create.editTitle' : 'create.addTitle')}
+          icon={<ShoppingCart className="h-5 w-5 text-blue-500 dark:text-blue-400" />}
+        />
 
         <CardContent className="p-6 pt-0">
           <div className="grid gap-6">

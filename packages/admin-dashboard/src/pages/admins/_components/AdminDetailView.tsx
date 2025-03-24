@@ -6,12 +6,14 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CustomCardHeader,
   DetailViewMarker,
   Input,
   useDetailView,
 } from '@deenruv/react-ui-devkit';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 import { EntityCustomFields, Stack } from '@/components';
+import { Info } from 'lucide-react';
 
 const ADMIN_FORM_KEYS = [
   'CreateAdministratorInput',
@@ -62,43 +64,41 @@ export const AdminDetailView = () => {
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex items-start gap-4 p-0 pt-4">
-                <Input
-                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                  label={t('details.basic.firstName')}
-                  value={state.firstName?.value ?? undefined}
-                  onChange={(e) => setField('firstName', e.target.value)}
-                  errors={state.firstName?.errors}
-                  required
-                />
-                <Input
-                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                  label={t('details.basic.lastName')}
-                  value={state.lastName?.value ?? undefined}
-                  onChange={(e) => setField('lastName', e.target.value)}
-                  errors={state.lastName?.errors}
-                  required
-                />
-                <Input
-                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                  label={t('details.basic.emailAddress')}
-                  value={state.emailAddress?.value ?? undefined}
-                  onChange={(e) => setField('emailAddress', e.target.value)}
-                  errors={state.emailAddress?.errors}
-                  required
-                />
-                <Input
-                  wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                  label={t('details.basic.password')}
-                  value={state.password?.value ?? undefined}
-                  onChange={(e) => setField('password', e.target.value)}
-                  errors={state.password?.errors}
-                  required={!editMode}
-                />
-              </CardContent>
-            </CardHeader>
+            <CustomCardHeader title={t('details.basic.title')} icon={<Info className="h-5 w-5" />} />
+            <CardContent className="flex items-start gap-4">
+              <Input
+                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+                label={t('details.basic.firstName')}
+                value={state.firstName?.value ?? undefined}
+                onChange={(e) => setField('firstName', e.target.value)}
+                errors={state.firstName?.errors}
+                required
+              />
+              <Input
+                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+                label={t('details.basic.lastName')}
+                value={state.lastName?.value ?? undefined}
+                onChange={(e) => setField('lastName', e.target.value)}
+                errors={state.lastName?.errors}
+                required
+              />
+              <Input
+                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+                label={t('details.basic.emailAddress')}
+                value={state.emailAddress?.value ?? undefined}
+                onChange={(e) => setField('emailAddress', e.target.value)}
+                errors={state.emailAddress?.errors}
+                required
+              />
+              <Input
+                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+                label={t('details.basic.password')}
+                value={state.password?.value ?? undefined}
+                onChange={(e) => setField('password', e.target.value)}
+                errors={state.password?.errors}
+                required={!editMode}
+              />
+            </CardContent>
           </Card>
           <DetailViewMarker position={'admins-detail-view'} />
           {id && <EntityCustomFields entityName="administrator" id={id} />}

@@ -15,6 +15,7 @@ import {
   useGFFLP,
   useOrder,
   Separator,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import type React from 'react';
 import { useCallback, useState } from 'react';
@@ -125,14 +126,11 @@ export const SurchargeCard: React.FC<{}> = () => {
 
   return (
     <Card className="border-l-4 border-l-yellow-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-yellow-400">
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <Receipt className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
-          <CardTitle>{t('surcharge.title', 'Order Surcharges')}</CardTitle>
-        </div>
-        <CardDescription>{t('surcharge.description', 'Add additional fees or charges to this order')}</CardDescription>
-      </CardHeader>
-
+      <CustomCardHeader
+        description={t('surcharge.description', 'Add additional fees or charges to this order')}
+        title={t('surcharge.title', 'Order Surcharges')}
+        icon={<Receipt className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />}
+      />
       <CardContent className="space-y-6">
         <SurchargeTable />
 

@@ -1,9 +1,6 @@
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Table,
   TableBody,
   TableCell,
@@ -12,6 +9,7 @@ import {
   TableRow,
   useOrder,
   ScrollArea,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import type React from 'react';
@@ -26,13 +24,11 @@ export const TaxSummary: React.FC = () => {
 
   return (
     <Card className="border-l-4 border-l-indigo-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-indigo-400">
-      <CardHeader className="pb-2">
-        <div className="flex items-center gap-2">
-          <ReceiptText className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-          <CardTitle>{t('taxSummary.title', 'Tax Summary')}</CardTitle>
-        </div>
-        <CardDescription>{t('taxSummary.subTitle', 'Breakdown of taxes applied to this order')}</CardDescription>
-      </CardHeader>
+      <CustomCardHeader
+        description={t('taxSummary.subTitle', 'Breakdown of taxes applied to this order')}
+        title={t('taxSummary.title')}
+        icon={<ReceiptText className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />}
+      />
       <CardContent className="p-0">
         <ScrollArea className="max-h-[350px] px-6 pb-6">
           <Table>

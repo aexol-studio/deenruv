@@ -26,13 +26,13 @@ export const Search = ({
     }, [debouncedSearch]);
 
     const placeholder = t('placeholders.search', {
-        entity: entityName,
+        entity: t(`entities.${entityName.charAt(0).toLowerCase() + entityName.slice(1)}`),
         fields: searchFields?.map(f => t('columns.' + f.toString())).join(', '),
     }).toLowerCase();
     const onlyFirstLetterCapitalized = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
     return (
-        <div className="w-[20rem] flex items-center justify-center gap-3">
+        <div className="w-[38rem] flex items-center justify-center gap-3">
             <Input
                 className="w-full h-8 pl-4"
                 placeholder={onlyFirstLetterCapitalized(placeholder)}

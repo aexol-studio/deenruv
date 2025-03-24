@@ -18,11 +18,11 @@
         "featuredAsset": "Obraz",
         "breadcrumb": "Ścieżka",
         "slug": "Ślimak",
-        "children": "# Liczba dzieci",
+        "children": "Liczba dzieci",
         "collections": "W kolekcjach",
         "actions": "Działania",
         "copyId": "Kopiuj id",
-        "products": "# liczba produktów",
+        "products": "liczba produktów",
         "delete": "Usuń kolekcję"
     },
     "details": {

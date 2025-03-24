@@ -2,7 +2,7 @@ import { Button } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { InfoIcon } from 'lucide-react';
 import { CF, EntityCustomFields } from '@/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DraftOrderType } from '@/graphql/draft_order.js';
 
 type VariantWithQuantity = DraftOrderType['lines'][number]['productVariant'] & { quantity?: number };
@@ -17,6 +17,10 @@ export const CustomComponent = ({
   const { t } = useTranslation('orders');
   const [customFields, setCustomFields] = useState<CF>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    console.log('KUSTOM', customFields);
+  }, []);
 
   const onSubmit = async () => {
     try {

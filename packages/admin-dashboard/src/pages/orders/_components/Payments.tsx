@@ -26,6 +26,7 @@ import {
   TooltipTrigger,
   ScrollArea,
   Badge,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -117,20 +118,13 @@ export const Payments: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-2">
-            <Wallet className="h-5 w-5 text-teal-500 dark:text-teal-400" />
-            <div>
-              <CardTitle>{t('payments.title', 'Payments')}</CardTitle>
-              <CardDescription className="mt-1">
-                {t('payments.subTitle', 'Manage payments for this order')}
-              </CardDescription>
-            </div>
-          </div>
-          <AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />
-        </div>
-      </CardHeader>
+      <CustomCardHeader
+        description={t('payments.subTitle')}
+        title={t('payments.title')}
+        icon={<Wallet className="h-5 w-5 text-teal-500 dark:text-teal-400" />}
+      >
+        <AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />
+      </CustomCardHeader>
       <CardContent className="p-0">
         <ScrollArea className="max-h-[400px] px-6 pb-6">
           <Table>

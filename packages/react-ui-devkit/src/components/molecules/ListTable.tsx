@@ -63,22 +63,22 @@ export function ListTable<TData, TValue>({
         }
     }, [table.getRowModel().rows.length]);
 
-    useEffect(() => {
-        const PADDING_X_VALUE = 64;
-        const updateSize = () => {
-            setTimeout(() => {
-                if (tableWrapperRef.current) {
-                    const wrapperWidth = document.getElementById('scrollArea')?.getBoundingClientRect().width;
-                    if (wrapperWidth)
-                        tableWrapperRef.current.style.maxWidth = wrapperWidth - PADDING_X_VALUE + 'px';
-                }
-            }, 0);
-        };
+    // useEffect(() => {
+    //     const PADDING_X_VALUE = 64;
+    //     const updateSize = () => {
+    //         setTimeout(() => {
+    //             if (tableWrapperRef.current) {
+    //                 const wrapperWidth = document.getElementById('scrollArea')?.getBoundingClientRect().width;
+    //                 if (wrapperWidth)
+    //                     tableWrapperRef.current.style.maxWidth = wrapperWidth - PADDING_X_VALUE + 'px';
+    //             }
+    //         }, 0);
+    //     };
 
-        window.addEventListener('resize', updateSize);
-        updateSize();
-        return () => window.removeEventListener('resize', updateSize);
-    }, [tableWrapperRef]);
+    //     window.addEventListener('resize', updateSize);
+    //     updateSize();
+    //     return () => window.removeEventListener('resize', updateSize);
+    // }, [tableWrapperRef]);
 
     return (
         <>

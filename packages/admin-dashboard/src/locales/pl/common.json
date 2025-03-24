@@ -66,13 +66,13 @@
     "page": "Strona {{current}} z {{total}}",
     "rowsPerPage": "Wiersze na stronę",
     "perPage": {
-        "10perPage": "10 na stronę",
-        "25perPage": "25 za stronę",
-        "32perPage": "32 za stronę",
-        "48perPage": "48 za stronę",
-        "50perPage": "50 za stronę",
-        "64perPage": "64 za stronę",
-        "100perPage": "100 za stronę"
+        "10perPage": "10",
+        "25perPage": "25",
+        "32perPage": "32",
+        "48perPage": "48",
+        "50perPage": "50",
+        "64perPage": "64",
+        "100perPage": "100"
     },
     "menuGroups": {
         "shop": "Mój sklep",
@@ -102,6 +102,7 @@
         "countries": "kraje",
         "paymentMethods": "metody płatności",
         "shippingMethods": "metody wysyłki",
+        "stockLocations": "lokacje magazynów",
         "taxCategories": "kategorie podatkowe",
         "taxRates": "stawki podatkowe",
         "logOut": "wylogowanie",

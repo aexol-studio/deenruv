@@ -4,9 +4,6 @@ import {
   useOrder,
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +12,7 @@ import {
   TableRow,
   Badge,
   ScrollArea,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import type React from 'react';
@@ -35,13 +33,11 @@ export const PromotionsList: React.FC = () => {
       </div>
 
       <Card className="col-span-1 h-full border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow md:col-span-2 lg:col-span-3 dark:border-l-blue-400">
-        <CardHeader className="pb-2">
-          <div className="flex items-center gap-2">
-            <Gift className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-            <CardTitle>{t('promotions.title', 'Promotions')}</CardTitle>
-          </div>
-          <CardDescription>{t('promotions.description', 'Active order promotions')}</CardDescription>
-        </CardHeader>
+        <CustomCardHeader
+          description={t('promotions.description', 'Active order promotions')}
+          title={t('promotions.title', 'Promotions')}
+          icon={<Gift className="h-5 w-5 text-blue-500 dark:text-blue-400" />}
+        />
         <CardContent className="p-0">
           <ScrollArea className="h-[280px] px-6 pb-6">
             <Table>
@@ -89,13 +85,11 @@ export const PromotionsList: React.FC = () => {
       </Card>
 
       <Card className="col-span-1 h-full border-l-4 border-l-green-500 shadow-sm transition-shadow duration-200 hover:shadow md:col-span-2 lg:col-span-6 dark:border-l-green-400">
-        <CardHeader className="pb-2">
-          <div className="flex items-center gap-2">
-            <BadgePercent className="h-5 w-5 text-green-500 dark:text-green-400" />
-            <CardTitle>{t('discounts.title', 'Discounts')}</CardTitle>
-          </div>
-          <CardDescription>{t('discounts.description', 'Applied order discounts')}</CardDescription>
-        </CardHeader>
+        <CustomCardHeader
+          description={t('discounts.description', 'Applied order discounts')}
+          title={t('discounts.title', 'Discounts')}
+          icon={<BadgePercent className="h-5 w-5 text-green-500 dark:text-green-400" />}
+        />
         <CardContent className="p-0">
           <ScrollArea className="h-[280px] px-6 pb-6">
             <Table>

@@ -3,9 +3,6 @@
 import {
   Button,
   Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   Label,
   Tooltip,
   TooltipContent,
@@ -22,6 +19,8 @@ import {
   useOrder,
   OrderDetailSelector,
   Badge,
+  CardContent,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { type EligibleShippingMethodsType, eligibleShippingMethodsSelector } from '@/graphql/draft_order';
 import { priceFormatter } from '@/utils';
@@ -136,158 +135,154 @@ export const ShippingMethod: React.FC = () => {
 
   return (
     <Card className="border-l-4 border-l-orange-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-orange-400">
-      <CardHeader className="pb-4">
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Truck className="h-5 w-5 text-orange-500 dark:text-orange-400" />
-            <CardTitle className="text-base font-semibold">
-              {t('selectShipmentMethod.cardTitle', 'Shipping Method')}
-            </CardTitle>
-          </div>
-          {mode !== 'view' && (
-            <Dialog open={open} onOpenChange={setOpen} defaultOpen={false}>
-              {!order?.lines.length ? (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 cursor-not-allowed opacity-50">
-                        <Edit size={16} className="text-muted-foreground" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent align="end" className="border border-red-200 bg-red-50">
-                      <p className="text-xs text-red-500">
-                        {t('selectShipmentMethod.noSelectedTip', 'Add products to the order first')}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ) : (
-                <DialogTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
-                    <Edit size={16} className="text-orange-500 dark:text-orange-400" />
-                  </Button>
-                </DialogTrigger>
-              )}
-              <DialogContent className="max-w-[70vw] p-6">
-                <div className="flex flex-col gap-6">
-                  <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-xl">
-                      <Truck className="h-5 w-5 text-orange-500 dark:text-orange-400" />
-                      {t('selectShipmentMethod.setMethodTitle', 'Select Shipping Method')}
-                    </DialogTitle>
-                    <DialogDescription className="text-muted-foreground mt-2">
-                      {t('selectShipmentMethod.setMethodDescription', 'Choose how this order will be delivered')}
-                    </DialogDescription>
-                  </DialogHeader>
+      <CustomCardHeader
+        description={t(
+          'selectShipmentMethod.cardDescription',
+          'Choose how this order will be delivered to the customer',
+        )}
+        title={t('selectShipmentMethod.cardTitle', 'Shipping Method')}
+        icon={<Truck className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
+      >
+        {mode !== 'view' && (
+          <Dialog open={open} onOpenChange={setOpen} defaultOpen={false}>
+            {!order?.lines.length ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 cursor-not-allowed opacity-50">
+                      <Edit size={16} className="text-muted-foreground" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent align="end" className="border border-red-200 bg-red-50">
+                    <p className="text-xs text-red-500">
+                      {t('selectShipmentMethod.noSelectedTip', 'Add products to the order first')}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Edit size={16} className="text-orange-500 dark:text-orange-400" />
+                </Button>
+              </DialogTrigger>
+            )}
+            <DialogContent className="max-w-[70vw] p-6">
+              <div className="flex flex-col gap-6">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-xl">
+                    <Truck className="h-5 w-5 text-orange-500 dark:text-orange-400" />
+                    {t('selectShipmentMethod.setMethodTitle', 'Select Shipping Method')}
+                  </DialogTitle>
+                  <DialogDescription className="text-muted-foreground mt-2">
+                    {t('selectShipmentMethod.setMethodDescription', 'Choose how this order will be delivered')}
+                  </DialogDescription>
+                </DialogHeader>
 
-                  {isLoading ? (
-                    <div className="flex flex-col items-center justify-center py-12">
-                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-orange-200 border-t-orange-500"></div>
-                      <p className="text-muted-foreground mt-4 text-sm">
-                        {t('selectShipmentMethod.loading', 'Loading shipping methods...')}
-                      </p>
-                    </div>
+                {isLoading ? (
+                  <div className="flex flex-col items-center justify-center py-12">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-orange-200 border-t-orange-500"></div>
+                    <p className="text-muted-foreground mt-4 text-sm">
+                      {t('selectShipmentMethod.loading', 'Loading shipping methods...')}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {shippingMethods.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
+                        <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900/30">
+                          <AlertCircle className="h-6 w-6 text-orange-500 dark:text-orange-400" />
+                        </div>
+                        <div>
+                          <p className="font-medium">
+                            {t('selectShipmentMethod.noMethods', 'No shipping methods available')}
+                          </p>
+                          <p className="text-muted-foreground mt-1 text-sm">
+                            {t(
+                              'selectShipmentMethod.noMethodsHint',
+                              'Make sure the order has products and a shipping address',
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                        {shippingMethods.map((shippingMethod) => (
+                          <div key={shippingMethod.id} className="w-full">
+                            <button
+                              onClick={() => setLocalSelectedShippingMethod(shippingMethod.id)}
+                              className={cn(
+                                'relative flex w-full flex-col gap-2 rounded-lg border p-4 transition-all',
+                                'hover:border-orange-500/70 hover:shadow-sm',
+                                localSelectedShippingMethod === shippingMethod.id
+                                  ? 'border-orange-500 bg-orange-50 shadow-sm dark:border-orange-400 dark:bg-orange-900/10'
+                                  : 'border-border',
+                              )}
+                            >
+                              {localSelectedShippingMethod === shippingMethod.id && (
+                                <div className="absolute right-2 top-2">
+                                  <Check className="h-4 w-4 text-green-500" />
+                                </div>
+                              )}
+                              <div className="mb-1 flex items-center gap-2">
+                                <Package className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                                <h3 className="text-base font-medium">{shippingMethod.name}</h3>
+                              </div>
+                              <Badge variant="outline" className="w-fit text-xs">
+                                {shippingMethod.code}
+                              </Badge>
+                              <div className="border-border mt-2 w-full border-t pt-2">
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-muted-foreground text-xs">Base price: </span>
+                                  <span className="text-sm font-medium">
+                                    {priceFormatter(shippingMethod.price, order?.currencyCode)}
+                                  </span>
+                                </div>
+                                <div className="mt-1 flex items-center justify-between gap-2">
+                                  <span className="text-muted-foreground text-xs">With tax: </span>
+                                  <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
+                                    {priceFormatter(shippingMethod.priceWithTax, order?.currencyCode)}
+                                  </span>
+                                </div>
+                              </div>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="mt-4 flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setOpen(false)} disabled={isSubmitting}>
+                  {t('common.cancel', 'Cancel')}
+                </Button>
+                <Button
+                  disabled={!localSelectedShippingMethod || !order?.id || isSubmitting || isLoading}
+                  className="gap-2"
+                  onClick={async () => {
+                    const method = shippingMethods.find((method) => method.id === localSelectedShippingMethod);
+                    if (method && order?.id) await selectShippingMethod(order.id, method.id);
+                  }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {t('common.processing', 'Processing...')}
+                    </>
                   ) : (
                     <>
-                      {shippingMethods.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
-                          <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900/30">
-                            <AlertCircle className="h-6 w-6 text-orange-500 dark:text-orange-400" />
-                          </div>
-                          <div>
-                            <p className="font-medium">
-                              {t('selectShipmentMethod.noMethods', 'No shipping methods available')}
-                            </p>
-                            <p className="text-muted-foreground mt-1 text-sm">
-                              {t(
-                                'selectShipmentMethod.noMethodsHint',
-                                'Make sure the order has products and a shipping address',
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                          {shippingMethods.map((shippingMethod) => (
-                            <div key={shippingMethod.id} className="w-full">
-                              <button
-                                onClick={() => setLocalSelectedShippingMethod(shippingMethod.id)}
-                                className={cn(
-                                  'relative flex w-full flex-col gap-2 rounded-lg border p-4 transition-all',
-                                  'hover:border-orange-500/70 hover:shadow-sm',
-                                  localSelectedShippingMethod === shippingMethod.id
-                                    ? 'border-orange-500 bg-orange-50 shadow-sm dark:border-orange-400 dark:bg-orange-900/10'
-                                    : 'border-border',
-                                )}
-                              >
-                                {localSelectedShippingMethod === shippingMethod.id && (
-                                  <div className="absolute right-2 top-2">
-                                    <Check className="h-4 w-4 text-green-500" />
-                                  </div>
-                                )}
-                                <div className="mb-1 flex items-center gap-2">
-                                  <Package className="h-4 w-4 text-orange-500 dark:text-orange-400" />
-                                  <h3 className="text-base font-medium">{shippingMethod.name}</h3>
-                                </div>
-                                <Badge variant="outline" className="w-fit text-xs">
-                                  {shippingMethod.code}
-                                </Badge>
-                                <div className="border-border mt-2 w-full border-t pt-2">
-                                  <div className="flex items-center justify-between gap-2">
-                                    <span className="text-muted-foreground text-xs">Base price: </span>
-                                    <span className="text-sm font-medium">
-                                      {priceFormatter(shippingMethod.price, order?.currencyCode)}
-                                    </span>
-                                  </div>
-                                  <div className="mt-1 flex items-center justify-between gap-2">
-                                    <span className="text-muted-foreground text-xs">With tax: </span>
-                                    <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
-                                      {priceFormatter(shippingMethod.priceWithTax, order?.currencyCode)}
-                                    </span>
-                                  </div>
-                                </div>
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <Check className="h-4 w-4" />
+                      {t('selectShipmentMethod.save', 'Save Shipping Method')}
                     </>
                   )}
-                </div>
-                <div className="mt-4 flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setOpen(false)} disabled={isSubmitting}>
-                    {t('common.cancel', 'Cancel')}
-                  </Button>
-                  <Button
-                    disabled={!localSelectedShippingMethod || !order?.id || isSubmitting || isLoading}
-                    className="gap-2"
-                    onClick={async () => {
-                      const method = shippingMethods.find((method) => method.id === localSelectedShippingMethod);
-                      if (method && order?.id) await selectShippingMethod(order.id, method.id);
-                    }}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        {t('common.processing', 'Processing...')}
-                      </>
-                    ) : (
-                      <>
-                        <Check className="h-4 w-4" />
-                        {t('selectShipmentMethod.save', 'Save Shipping Method')}
-                      </>
-                    )}
-                  </Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
-
-        <CardDescription className="text-muted-foreground mb-3 text-sm">
-          {t('selectShipmentMethod.cardDescription', 'Choose how this order will be delivered to the customer')}
-        </CardDescription>
-
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
+      </CustomCardHeader>
+      <CardContent>
         <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
           <div className="flex items-start gap-3">
             {!order?.lines.length ? (
@@ -352,7 +347,7 @@ export const ShippingMethod: React.FC = () => {
             )}
           </div>
         </div>
-      </CardHeader>
+      </CardContent>
     </Card>
   );
 };

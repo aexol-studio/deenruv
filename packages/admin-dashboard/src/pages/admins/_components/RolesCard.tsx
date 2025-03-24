@@ -9,10 +9,12 @@ import {
   CardContent,
   apiClient,
   ErrorMessage,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 
 import { RoleSelector, RoleType } from '@/graphql/roles';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
+import { Shield } from 'lucide-react';
 
 interface RolesCardProps {
   adminRoleIds: string[] | undefined;
@@ -59,10 +61,9 @@ export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChang
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.roles.title')}</CardTitle>
+      <CustomCardHeader title={t('details.roles.title')} icon={<Shield className="h-5 w-5" />}>
         <ErrorMessage errors={errors} />
-      </CardHeader>
+      </CustomCardHeader>
       <CardContent>
         <MultipleSelector
           options={rolesToOptions(allRoles)}

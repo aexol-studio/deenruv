@@ -4,21 +4,18 @@ import { setInArrayBy } from '@/lists/useGflp.js';
 import {
   Button,
   Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   CustomFieldsComponent,
   mergeSelectorWithCustomFields,
   CardContent,
   useServer,
   apiClient,
   useGFFLP,
-  useDetailView,
   cn,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import type { LanguageCode, ModelTypes } from '@deenruv/admin-types';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { getGqlError } from '@/utils';
 import { useSettings } from '@deenruv/react-ui-devkit';
@@ -146,8 +143,8 @@ export function EntityCustomFields<T extends ViableEntity>({
   const currentLanguage = useSettings((p) => p.translationsLanguage);
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { state, setField } = useGFFLP(typeWithCommonCustomFields, 'customFields', 'translations')({});
   const [isInitialized, setInitialized] = useState(false);
+  const { graphQLSchema } = useServer();
 
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(
@@ -155,10 +152,50 @@ export function EntityCustomFields<T extends ViableEntity>({
     ),
   )?.customFields;
 
+  const entityTypeCustomFields = graphQLSchema
+    ?.get(`Type:${entityName.charAt(0).toUpperCase() + entityName.slice(1)}`)
+    ?.fields.find((cF) => cF.name === 'customFields')?.fields;
+
   const relationFields = useMemo(
     () => entityCustomFields?.filter((el) => el.__typename === 'RelationCustomFieldConfig').map((el) => el.name),
     [entityCustomFields],
   );
+
+  const generateCustomFieldsInitialValues = useCallback(
+    (customFieldsSchema: { description: string; name: string; type: string; fields: any[] }[] | undefined) => {
+      if (!customFieldsSchema) return {};
+
+      const initialValues: Record<string, null | 1> = {};
+
+      customFieldsSchema.forEach((cF) => {
+        console.log('INIT', cF.name);
+        // const key = cF.name.replace(/(Id|Ids)$/, '');
+        initialValues[cF.name] = cF.type === 'Int' ? 1 : null;
+      });
+
+      console.log('INIT', initialValues);
+
+      return initialValues;
+    },
+    [entityCustomFields, relationFields],
+  );
+
+  useEffect(() => {
+    if (entityName === 'orderLine') {
+      console.log('SETTING', generateCustomFieldsInitialValues(entityTypeCustomFields));
+      setField('customFields', generateCustomFieldsInitialValues(entityTypeCustomFields));
+    }
+  }, []);
+
+  const { state, setField } = useGFFLP(
+    typeWithCommonCustomFields,
+    'customFields',
+    'translations',
+  )({
+    customFields: {
+      initialValue: entityName === 'orderLine' ? generateCustomFieldsInitialValues(entityTypeCustomFields) : {},
+    },
+  });
 
   const readOnlyFieldsDict = useMemo(
     () =>
@@ -304,19 +341,21 @@ export function EntityCustomFields<T extends ViableEntity>({
         'shadow-sm transition-shadow duration-200 hover:shadow': !disabled && !isUpdating,
       })}
     >
-      <CardHeader className="pb-4">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-2">
-            <Database className="h-5 w-5 text-rose-500 dark:text-rose-400" />
-            <div>
-              <CardTitle>{t('custom-fields.title', 'Custom Fields')}</CardTitle>
-              <CardDescription className="mt-1">
-                {t('custom-fields.description', `Manage custom fields for this ${getEntityDisplayName()}`)}
-              </CardDescription>
-            </div>
+      <CustomCardHeader
+        description={t('custom-fields.description', `Manage custom fields for this ${getEntityDisplayName()}`)}
+        title={t('custom-fields.title', 'Custom Fields')}
+        icon={<Database className="h-5 w-5 text-rose-500 dark:text-rose-400" />}
+      >
+        {currentLanguage && translations?.length > 0 && (
+          <div className="bg-muted/50 mt-2 flex items-center gap-2 rounded-md px-3 py-2 text-sm">
+            <Globe className="h-4 w-4 text-rose-500" />
+            <span>
+              {t('custom-fields.currentLanguage', 'Current language')}:
+              <span className="ml-1 font-medium">{currentLanguage.toUpperCase()}</span>
+            </span>
           </div>
-        </div>
-      </CardHeader>
+        )}
+      </CustomCardHeader>
 
       <CardContent className="p-0">
         {loading ? (

@@ -8,7 +8,7 @@ import {
     DropdownMenuItem,
     DropdownMenuSeparator,
 } from '@/components';
-import { Grip, MoreHorizontal } from 'lucide-react';
+import { Copy, ExternalLink, Grip, MoreHorizontal, Trash } from 'lucide-react';
 import { toast } from 'sonner';
 import { NavigateFunction } from 'react-router-dom';
 import React, { useMemo } from 'react';
@@ -43,7 +43,10 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(row.original.id)}>
-                                {t('actionsMenu.copyId')}
+                                <div className="flex items-center gap-2">
+                                    <Copy size={14} />
+                                    {t('actionsMenu.copyId')}
+                                </div>
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => {
@@ -52,7 +55,10 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                                     } else navigate(route.to(row.original.id), { viewTransition: true });
                                 }}
                             >
-                                {t('actionsMenu.view')}
+                                <div className="flex items-center gap-2">
+                                    <ExternalLink size={14} />
+                                    {t('actionsMenu.view')}
+                                </div>
                             </DropdownMenuItem>
                             {rowActions && rowActions?.length > 0 && (
                                 <>
@@ -84,7 +90,8 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                                 <>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem onClick={() => onRemove([row.original])}>
-                                        <div className="text-red-400 hover:text-red-400 dark:hover:text-red-400">
+                                        <div className="text-destructive flex items-center gap-2">
+                                            <Trash size={14} />
                                             {t('actionsMenu.delete')}
                                         </div>
                                     </DropdownMenuItem>

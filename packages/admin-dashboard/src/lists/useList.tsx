@@ -1,4 +1,4 @@
-import { GenericReturn, Paginate, PaginationInput, PromisePaginated, cn } from '@deenruv/react-ui-devkit';
+import { GenericReturn, Paginate, PaginationInput, PromisePaginated } from '@deenruv/react-ui-devkit';
 import { cache } from '@/lists/cache';
 import { LogicalOperator, ModelTypes, SortOrder } from '@deenruv/admin-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';

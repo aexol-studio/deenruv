@@ -136,7 +136,9 @@
         "zone": "Strefa",
         "active": "Aktywny",
         "currencyCode": "Waluta",
-        "totalQuantity": "Liczba"
+        "totalQuantity": "Liczba",
+        "postalCode": "Kod pocztowy",
+        "image": "Obraz"
     },
     "actionsMenu": {
         "title": "Działania",
@@ -153,9 +155,35 @@
         "allFiltersApplied": "Wszystkie filtry zostały już zastosowane",
         "where": "gdzie",
         "noFieldsFound": "Nie znaleziono pól",
-        "searchFields": "Pola wyszukiwania",
+        "searchFields": "Wyszukaj",
         "noFiltersApplied": "Nie zastosowano żadnych filtrów",
         "emptyState": "Dodaj filtry, aby zawęzić wyniki.",
         "operatorPlaceholder": "Operator wyboru"
+    },
+    "entities": {
+        "administrator": "administrator",
+        "product": "produkty",
+        "customer": "klienci",
+        "customerGroup": "grupy klientów",
+        "customerGroupList": "grupy klientów",
+        "productVariant": "warianty produktów",
+        "collection": "kolekcje",
+        "order": "zamówienia",
+        "facet": "aspekty",
+        "channel": "kanały",
+        "globalSettings": "ustawienia globalne",
+        "role": "role",
+        "admin": "administratorzy",
+        "stock": "lokalizacje magazynowe",
+        "seller": "sprzedawcy",
+        "asset": "aktywa",
+        "zone": "strefy",
+        "promotion": "promocje",
+        "country": "kraje",
+        "paymentMethod": "metody płatności",
+        "shippingMethod": "metody wysyłki",
+        "taxCategory": "kategorie podatkowe",
+        "taxRate": "stawki podatkowe",
+        "stockLocation": "lokacje magazynowe"
     }
 }

@@ -5,20 +5,18 @@ import { useCallback, useState } from 'react';
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   MultipleSelector,
   type Option,
   useLazyQuery,
   useOrder,
   useMutation,
   OrderDetailSelector,
+  CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { toast } from 'sonner';
-import { Ticket, X, Search, Tag } from 'lucide-react';
+import { Ticket, X, Search } from 'lucide-react';
 
 const PromotionCodesQuery = typedGql('query', { scalars })({
   promotions: [
@@ -100,13 +98,11 @@ export const CouponCodesCard: React.FC<{}> = () => {
 
   return (
     <Card className="h-full border-l-4 border-l-purple-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-purple-400">
-      <CardHeader className="pb-2">
-        <div className="flex items-center gap-2">
-          <Ticket className="h-5 w-5 text-purple-500 dark:text-purple-400" />
-          <CardTitle>{t('couponCodes.title', 'Coupon Codes')}</CardTitle>
-        </div>
-        <CardDescription>{t('couponCodes.description', 'Apply coupon codes to this order')}</CardDescription>
-      </CardHeader>
+      <CustomCardHeader
+        description={t('couponCodes.description', 'Apply coupon codes to this order')}
+        title={t('couponCodes.title', 'Coupon Codes')}
+        icon={<Ticket className="h-5 w-5 text-purple-500 dark:text-purple-400" />}
+      />
       <CardContent>
         <div className="relative">
           <MultipleSelector

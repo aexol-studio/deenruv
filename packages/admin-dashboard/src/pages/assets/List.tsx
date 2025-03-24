@@ -185,47 +185,43 @@ export function AssetsListPage() {
   };
 
   return (
-    <main className="bg-background min-h-screen w-full">
+    <main className="min-h-screen w-full">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col space-y-6">
-          {/* Header */}
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-            <h1 className="text-3xl font-bold tracking-tight">{t('assets:title', 'Assets')}</h1>
-
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="gap-1.5">
-                <Filter size={16} />
-                {t('common:filters')}
-              </Button>
-
-              <div className="flex rounded-md border p-0.5">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
-                  className="h-8 w-8 p-0"
-                >
-                  <LayoutGrid size={16} />
-                  <span className="sr-only">Grid view</span>
+          <Tabs defaultValue="browse">
+            <div className="flex flex-col items-start justify-between gap-4 sm:flex-row">
+              <TabsList className="w-full max-w-md grid-cols-2">
+                <TabsTrigger value="browse">{t('assets:browseAssets')}</TabsTrigger>
+                <TabsTrigger value="upload">{t('assets:uploadAssets')}</TabsTrigger>
+              </TabsList>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={() => setShowFilters(!showFilters)} className="gap-1.5">
+                  <Filter size={16} />
+                  {t('common:filters')}
                 </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                  className="h-8 w-8 p-0"
-                >
-                  <List size={16} />
-                  <span className="sr-only">List view</span>
-                </Button>
+
+                <div className="flex rounded-md border p-0.5">
+                  <Button
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('grid')}
+                    className="h-8 w-8 p-0"
+                  >
+                    <LayoutGrid size={16} />
+                    <span className="sr-only">Grid view</span>
+                  </Button>
+                  <Button
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    size="sm"
+                    onClick={() => setViewMode('list')}
+                    className="h-8 w-8 p-0"
+                  >
+                    <List size={16} />
+                    <span className="sr-only">List view</span>
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-
-          <Tabs defaultValue="browse">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
-              <TabsTrigger value="browse">{t('assets:browseAssets')}</TabsTrigger>
-              <TabsTrigger value="upload">{t('assets:uploadAssets')}</TabsTrigger>
-            </TabsList>
 
             <TabsContent value="browse" className="mt-4">
               <AnimatePresence>
@@ -280,7 +276,10 @@ export function AssetsListPage() {
               </motion.div>
 
               {/* Pagination */}
-              <div className="mt-8">{Paginate}</div>
+              <div className="flex items-center justify-end space-x-2 py-4">
+                <div className="text-muted-foreground flex-1 text-sm"></div>
+                <div className="space-x-2">{Paginate}</div>
+              </div>
             </TabsContent>
 
             <TabsContent value="upload" className="mt-4">

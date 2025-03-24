@@ -2,10 +2,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Label,
   MultipleSelector,
@@ -14,10 +10,13 @@ import {
   useSettings,
   useDetailView,
   DetailViewMarker,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
+import { Info } from 'lucide-react';
 
 export const ChannelDetailView = () => {
   const { id } = useParams();
@@ -109,73 +108,70 @@ export const ChannelDetailView = () => {
     <main>
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack className="items-start gap-3">
-                  <Stack className="basis-full md:basis-1/2">
-                    <Input
-                      label={t('details.basic.code')}
-                      value={state.code?.value ?? undefined}
-                      onChange={(e) => setField('code', e.target.value)}
-                      errors={state.code?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/2">
-                    <Input
-                      label={t('details.basic.token')}
-                      value={state.token?.value ?? undefined}
-                      onChange={(e) => setField('token', e.target.value)}
-                      errors={state.token?.errors}
-                      required
-                    />
-                  </Stack>
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
+            <div className="flex flex-col gap-4">
+              <Stack className="items-start gap-3">
+                <Stack className="basis-full md:basis-1/2">
+                  <Input
+                    label={t('details.basic.code')}
+                    value={state.code?.value ?? undefined}
+                    onChange={(e) => setField('code', e.target.value)}
+                    errors={state.code?.errors}
+                    required
+                  />
                 </Stack>
-                <Stack className="gap-3">
-                  <Stack className="basis-full md:basis-1/3">
-                    <SimpleSelect
-                      label={t('details.basic.seller')}
-                      value={state?.sellerId?.value ?? undefined}
-                      onValueChange={(e) => setField('sellerId', e)}
-                      options={sellersOptions}
-                    />
-                  </Stack>
-                  <Stack column className="basis-full md:basis-1/3">
-                    <Label className="mb-2">{t('details.basic.languages')}</Label>
-                    <MultipleSelector
-                      options={languageOptions}
-                      value={state?.availableLanguageCodes?.value?.map((l) => ({ label: l, value: l }))}
-                      placeholder={t('details.basic.languagePlaceholder')}
-                      onChange={(options) => {
-                        setField(
-                          'availableLanguageCodes',
-                          options.map((o) => o.value as LanguageCode),
-                        );
-                      }}
-                      hideClearAllButton
-                    />
-                  </Stack>
-                  <Stack column className="basis-full md:basis-1/3">
-                    <Label className="mb-2">{t('details.basic.currencies')}</Label>
-                    <MultipleSelector
-                      options={currencyOptions}
-                      value={state?.availableCurrencyCodes?.value?.map((c) => ({ label: c, value: c }))}
-                      placeholder={t('details.basic.currencyPlaceholder')}
-                      onChange={(options) => {
-                        setField(
-                          'availableCurrencyCodes',
-                          options.map((o) => o.value as CurrencyCode),
-                        );
-                      }}
-                      hideClearAllButton
-                    />
-                  </Stack>
+                <Stack className="basis-full md:basis-1/2">
+                  <Input
+                    label={t('details.basic.token')}
+                    value={state.token?.value ?? undefined}
+                    onChange={(e) => setField('token', e.target.value)}
+                    errors={state.token?.errors}
+                    required
+                  />
                 </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+              </Stack>
+              <Stack className="gap-3">
+                <Stack className="basis-full md:basis-1/3">
+                  <SimpleSelect
+                    label={t('details.basic.seller')}
+                    value={state?.sellerId?.value ?? undefined}
+                    onValueChange={(e) => setField('sellerId', e)}
+                    options={sellersOptions}
+                  />
+                </Stack>
+                <Stack column className="basis-full md:basis-1/3">
+                  <Label className="mb-2">{t('details.basic.languages')}</Label>
+                  <MultipleSelector
+                    options={languageOptions}
+                    value={state?.availableLanguageCodes?.value?.map((l) => ({ label: l, value: l }))}
+                    placeholder={t('details.basic.languagePlaceholder')}
+                    onChange={(options) => {
+                      setField(
+                        'availableLanguageCodes',
+                        options.map((o) => o.value as LanguageCode),
+                      );
+                    }}
+                    hideClearAllButton
+                  />
+                </Stack>
+                <Stack column className="basis-full md:basis-1/3">
+                  <Label className="mb-2">{t('details.basic.currencies')}</Label>
+                  <MultipleSelector
+                    options={currencyOptions}
+                    value={state?.availableCurrencyCodes?.value?.map((c) => ({ label: c, value: c }))}
+                    placeholder={t('details.basic.currencyPlaceholder')}
+                    onChange={(options) => {
+                      setField(
+                        'availableCurrencyCodes',
+                        options.map((o) => o.value as CurrencyCode),
+                      );
+                    }}
+                    hideClearAllButton
+                  />
+                </Stack>
+              </Stack>
+            </div>
+          </CustomCard>
           <DetailViewMarker position={'channels-detail-view'} />
           {id && <EntityCustomFields entityName="channel" id={id} />}
           <DefaultsCard

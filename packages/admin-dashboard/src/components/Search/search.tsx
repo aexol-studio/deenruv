@@ -17,7 +17,7 @@ import { LogicalOperator, ModelTypes } from '@deenruv/admin-types';
 
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from 'use-debounce';
-import { ChevronDown, CircleX } from 'lucide-react';
+import { ChevronDown, CircleX, SearchIcon } from 'lucide-react';
 import { StringOperator } from '@/components/Search/StringOperator';
 import {
   SearchProps,
@@ -202,14 +202,14 @@ export const Search: React.FC<SearchProps> = ({
   }, [filter, type]);
   return (
     <div className="flex min-h-10 flex-1 gap-4 ">
-      {type !== 'AssetFilterParameter' && (
+      {/* {type !== 'AssetFilterParameter' && (
         <div className="flex h-[40px] items-center gap-2">
           <Switch className="border-foreground/20" id="advanceSearch" checked={isAdvanced} onClick={toggleAdvanced} />
           <Label className="text-nowrap" htmlFor="advanceSearch">
             {t(isAdvanced ? 'search.advanceToggle' : 'search.basicToggle')}
           </Label>
         </div>
-      )}
+      )} */}
       {isAdvanced ? (
         <div className="flex  gap-4">
           <DropdownMenu>
@@ -534,12 +534,16 @@ export const Search: React.FC<SearchProps> = ({
           </div>
         </div>
       ) : (
-        <Input
-          className="max-w-[400px]"
-          placeholder={t(`search.${type}.placeholder`)}
-          value={defaultSearch}
-          onChange={(e) => setDefaultSearch(e.currentTarget.value)}
-        />
+        <div className="flex w-[38rem] items-center justify-center gap-3">
+          <Input
+            className="h-8 w-full pl-4"
+            placeholder={t(`search.${type}.placeholder`)}
+            value={defaultSearch}
+            onChange={(e) => setDefaultSearch(e.currentTarget.value)}
+            startAdornment={<SearchIcon size={20} />}
+            adornmentPlain
+          />
+        </div>
       )}
       {/* //Old one */}
       {/* {groupedAdvancedParams && (

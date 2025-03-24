@@ -63,7 +63,7 @@
         "updatedAt": "Zaktualizowano w",
         "name": "Nazwa",
         "slug": "Ślimak",
-        "variants": "# Liczba wariantów",
+        "variants": "Liczba wariantów",
         "collections": "W kolekcjach",
         "inValueCollections": "W kolekcjach {{value}}",
         "openMenu": "Otwórz menu",

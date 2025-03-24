@@ -8,6 +8,8 @@ import {
   type Option,
   apiClient,
   SimpleSelect,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { Stack } from '@/components';
 
@@ -70,57 +72,54 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
   }, [fetchZones]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.defaults.title')}</CardTitle>
-        <CardContent className="flex flex-col gap-4 p-0 pt-4">
-          <Stack className="gap-3">
-            <Stack className="basis-full md:basis-1/2">
-              <SimpleSelect
-                label={t('details.defaults.defaultLanguage')}
-                value={defaultLanguage}
-                onValueChange={(e) => onFieldChange('defaultLanguageCode', e)}
-                options={availableLanguages?.map((l) => ({ label: l, value: l }))}
-                errors={defaultLanguageErrors}
-                disabled={!availableLanguages?.length}
-              />
-            </Stack>
-            <Stack className="basis-full md:basis-1/2">
-              <SimpleSelect
-                label={t('details.defaults.defaultCurrency')}
-                value={defaultCurrency}
-                onValueChange={(e) => onFieldChange('defaultCurrencyCode', e)}
-                options={availableCurrencies?.map((c) => ({ label: c, value: c }))}
-                disabled={!availableCurrencies?.length}
-              />
-            </Stack>
+    <CustomCard title={t('details.defaults.title')} icon={<CardIcons.default />}>
+      <div className="flex flex-col gap-4">
+        <Stack className="gap-3">
+          <Stack className="basis-full md:basis-1/2">
+            <SimpleSelect
+              label={t('details.defaults.defaultLanguage')}
+              value={defaultLanguage}
+              onValueChange={(e) => onFieldChange('defaultLanguageCode', e)}
+              options={availableLanguages?.map((l) => ({ label: l, value: l }))}
+              errors={defaultLanguageErrors}
+              disabled={!availableLanguages?.length}
+            />
           </Stack>
-          <Stack className="gap-3">
-            <Stack className="basis-full md:basis-1/2">
-              <SimpleSelect
-                label={t('details.defaults.defaultTaxZone')}
-                value={defaultTaxZone}
-                onValueChange={(e) => onFieldChange('defaultTaxZoneId', e)}
-                options={zonesOptions}
-                errors={defaultTaxZoneErrors}
-              />
-            </Stack>
-            <Stack className="basis-full md:basis-1/2">
-              <SimpleSelect
-                label={t('details.defaults.defaultShippingZone')}
-                value={defaultShippingZone}
-                onValueChange={(e) => onFieldChange('defaultShippingZoneId', e)}
-                options={zonesOptions}
-                errors={defaultShippingZoneErrors}
-              />
-            </Stack>
+          <Stack className="basis-full md:basis-1/2">
+            <SimpleSelect
+              label={t('details.defaults.defaultCurrency')}
+              value={defaultCurrency}
+              onValueChange={(e) => onFieldChange('defaultCurrencyCode', e)}
+              options={availableCurrencies?.map((c) => ({ label: c, value: c }))}
+              disabled={!availableCurrencies?.length}
+            />
           </Stack>
-          <Stack className="gap-3">
-            <Switch checked={includeTax} onCheckedChange={onIncludeTaxChange} />
-            <Label>{t('details.defaults.includeTax')}</Label>
+        </Stack>
+        <Stack className="gap-3">
+          <Stack className="basis-full md:basis-1/2">
+            <SimpleSelect
+              label={t('details.defaults.defaultTaxZone')}
+              value={defaultTaxZone}
+              onValueChange={(e) => onFieldChange('defaultTaxZoneId', e)}
+              options={zonesOptions}
+              errors={defaultTaxZoneErrors}
+            />
           </Stack>
-        </CardContent>
-      </CardHeader>
-    </Card>
+          <Stack className="basis-full md:basis-1/2">
+            <SimpleSelect
+              label={t('details.defaults.defaultShippingZone')}
+              value={defaultShippingZone}
+              onValueChange={(e) => onFieldChange('defaultShippingZoneId', e)}
+              options={zonesOptions}
+              errors={defaultShippingZoneErrors}
+            />
+          </Stack>
+        </Stack>
+        <Stack className="gap-3">
+          <Switch checked={includeTax} onCheckedChange={onIncludeTaxChange} />
+          <Label>{t('details.defaults.includeTax')}</Label>
+        </Stack>
+      </div>
+    </CustomCard>
   );
 };
