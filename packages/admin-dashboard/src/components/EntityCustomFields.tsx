@@ -306,14 +306,14 @@ export function EntityCustomFields<T extends ViableEntity>({
   useEffect(() => {
     if (
       !Object.keys(entityCustomFields || {}).length ||
-      Object.keys(initialValues?.customFields || {}).length === 0 ||
+      (initialValues?.customFields ? Object.keys(initialValues.customFields).length === 0 : false) ||
       isInitialized
-    )
+    ) {
       return;
+    }
     try {
       setLoading(true);
       if (initialValues) {
-        console.log('initialValues', initialValues);
         setField('customFields', initialValues.customFields);
         setField('translations', initialValues.translations);
         setInitialized(true);
