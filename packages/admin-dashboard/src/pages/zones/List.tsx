@@ -63,13 +63,12 @@ export const ZonesListPage = () => {
         },
       ]}
       entityName={'Zone'}
-      type={'zones'}
       route={Routes['zones']}
       tableId="zones-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateZone}
-      deletePermission={Permission.DeleteZone}
+      createPermissions={[Permission.CreateZone]}
+      deletePermissions={[Permission.DeleteZone]}
     />
   );
 };

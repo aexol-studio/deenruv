@@ -54,13 +54,12 @@ export const ChannelsListPage = () => {
       searchFields={['code', 'token']}
       hideColumns={['customFields', 'translations']}
       entityName={'Channel'}
-      type={'channels'}
       route={Routes['channels']}
       tableId="channels-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateChannel}
-      deletePermission={Permission.DeleteChannel}
+      createPermissions={[Permission.CreateChannel]}
+      deletePermissions={[Permission.DeleteChannel]}
     />
   );
 };

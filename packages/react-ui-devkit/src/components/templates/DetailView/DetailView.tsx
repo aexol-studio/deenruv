@@ -181,8 +181,18 @@ const DetailTabs = ({
     texts?: { submitButton?: string; deleteButton?: string };
 }) => {
     const { t } = useTranslation('common');
-    const { actionHandler, setActiveTab, tab, tabs, sidebar, setSidebar, hasUnsavedChanges, form } =
-        useDetailView();
+    const {
+        entity,
+        loading,
+        actionHandler,
+        setActiveTab,
+        tab,
+        tabs,
+        sidebar,
+        setSidebar,
+        hasUnsavedChanges,
+        form,
+    } = useDetailView();
 
     const [, setSearchParams] = useSearchParams();
     const { id } = useParams();
@@ -317,7 +327,16 @@ const DetailTabs = ({
                     </div>
                 </div>
             </div>
-            <div className="px-4 py-2 md:px-8 md:py-4">
+            <div className="px-4 py-2 md:px-8 md:py-4 relative">
+                {loading ? (
+                    <div className="flex min-h-[80vh] w-full items-center justify-center">
+                        <div className="customSpinner" />
+                    </div>
+                ) : !entity && !!id ? (
+                    <div className="flex min-h-[80vh] w-full items-center justify-center">
+                        {t('toasts.roleLoadingError', { value: id })}
+                    </div>
+                ) : null}
                 {tabs.map((tab, idx) => (
                     <TabsContent key={idx} value={tab.name}>
                         <div

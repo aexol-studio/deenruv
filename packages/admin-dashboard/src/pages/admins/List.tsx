@@ -73,13 +73,12 @@ export const AdminsListPage = () => {
         },
       ]}
       entityName={'Administrator'}
-      type={'administrators'}
       route={Routes['admins']}
       tableId="admins-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateAdministrator}
-      deletePermission={Permission.DeleteAdministrator}
+      createPermissions={[Permission.CreateAdministrator]}
+      deletePermissions={[Permission.DeleteAdministrator]}
     />
   );
 };

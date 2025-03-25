@@ -56,12 +56,11 @@ export const StockLocationsListPage = () => (
     searchFields={['name']}
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'StockLocation'}
-    type={'stockLocations'}
     route={Routes['stockLocations']}
     tableId="stockLocations-list-view"
     fetch={fetch}
     onRemove={onRemove}
-    createPermission={Permission.CreateStockLocation}
-    deletePermission={Permission.DeleteStockLocation}
+    createPermissions={[Permission.CreateStockLocation]}
+    deletePermissions={[Permission.DeleteStockLocation]}
   />
 );

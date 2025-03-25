@@ -67,7 +67,6 @@ export const VariantsList = () => {
       searchFields={['name', 'sku']}
       hideColumns={['customFields', 'stockOnHand', 'stockAllocated', 'productId']}
       entityName={'ProductVariant'}
-      type={'productVariants'}
       route={{
         edit: (variantId, productId) => {
           navigate(`/admin-ui/products/${productId}?tab=variants&variantId=${variantId}`, { viewTransition: true });
@@ -77,8 +76,8 @@ export const VariantsList = () => {
       tableId="productVariants-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateProduct}
-      deletePermission={Permission.DeleteProduct}
+      createPermissions={[Permission.CreateProduct]}
+      deletePermissions={[Permission.DeleteProduct]}
       additionalColumns={[
         {
           id: 'stock',

@@ -75,13 +75,12 @@ export const TaxRatesListPage = () => {
         },
       ]}
       entityName={'TaxRate'}
-      type={'taxRates'}
       route={Routes['taxRates']}
       tableId="taxRates-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateTaxRate}
-      deletePermission={Permission.DeleteTaxRate}
+      createPermissions={[Permission.CreateTaxRate]}
+      deletePermissions={[Permission.DeleteTaxRate]}
     />
   );
 };

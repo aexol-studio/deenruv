@@ -52,13 +52,12 @@ export const PaymentMethodsListPage = () => {
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'PaymentMethod'}
-      type={'paymentMethods'}
       route={Routes['paymentMethods']}
       tableId="paymentMethods-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreatePaymentMethod}
-      deletePermission={Permission.DeletePaymentMethod}
+      createPermissions={[Permission.CreatePaymentMethod]}
+      deletePermissions={[Permission.DeletePaymentMethod]}
     />
   );
 };

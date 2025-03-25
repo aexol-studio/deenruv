@@ -68,13 +68,12 @@ export const OrdersTab: React.FC = () => {
       searchFields={['code']}
       hideColumns={['customFields', 'user', 'title']}
       entityName={'Order'}
-      type={'orders'}
       route={Routes['orders']}
       tableId="orders-list-view"
       fetch={fetch}
       noCreateButton
-      createPermission={Permission.CreateOrder}
-      deletePermission={Permission.DeleteOrder}
+      createPermissions={[Permission.CreateOrder]}
+      deletePermissions={[Permission.DeleteOrder]}
       additionalColumns={[
         {
           accessorKey: 'state',

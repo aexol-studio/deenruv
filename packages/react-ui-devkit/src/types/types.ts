@@ -57,7 +57,7 @@ export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
 type CustomLocations = 'orders-summary';
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
-export type ListLocationID = `${RouteKeys}-list-view`;
+export type ListLocationID = `${RouteKeys}-list-view` | string;
 export type DetailLocationID = `${RouteKeys}-detail-view` | CustomLocations;
 export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 

@@ -29,10 +29,10 @@ export type GenericListContextType<T> = {
     route: RouteConfig;
     onRemove?: (items: T[]) => void;
     refetch: () => void;
-    deletePermission: Permission;
     hideColumns?: (keyof T)[];
     rowActions?: ActionDefinition<RowActionProps<T>>[];
     bulkActions?: ActionDefinition<BulkActionProps<T>>[];
+    deletePermissions: Permission[];
 };
 
 export type LimitKeys =

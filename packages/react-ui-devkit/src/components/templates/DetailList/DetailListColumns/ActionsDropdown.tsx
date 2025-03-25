@@ -23,11 +23,11 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
         enablePinning: true,
         cell: ({ table, row }) => {
             if (!table.options.meta) return null;
-            const { route, refetch, onRemove, rowActions, deletePermission } = table.options.meta;
+            const { route, refetch, onRemove, rowActions, deletePermissions } = table.options.meta;
 
             const { userPermissions } = useServer();
             const isPermittedToDelete = useMemo(
-                () => userPermissions.includes(deletePermission),
+                () => deletePermissions.every(permission => userPermissions.includes(permission)),
                 [userPermissions],
             );
 

@@ -43,18 +43,12 @@ type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
 
 export const useDetailList = <T extends PromisePaginated, K extends keyof ListType, S>({
     fetch,
-    type,
-    entityName,
     customItemsPerPage,
     searchFields,
-    customFieldsSelector,
 }: {
     fetch: T;
-    type: K;
-    entityName: keyof ModelTypes;
     customItemsPerPage?: ItemsPerPageType;
     searchFields?: (keyof Awaited<ReturnType<PromisePaginated>>['items'][number])[];
-    customFieldsSelector?: S;
 }): {
     Paginate: JSX.Element;
     Search: JSX.Element;
@@ -65,7 +59,6 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     objects: GenericReturn<T> | undefined;
     searchParamValues: PaginationInput;
     refetch: (initialFilterState?: ModelTypes[ListType[K]] | undefined) => void;
-    type: K;
     filter: ModelTypes[ListType[K]] | undefined;
     setFilterField: (field: FIELD, value: VALUE) => void;
     removeFilterField: (field: FIELD) => void;
@@ -94,7 +87,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         try {
             const filterURL = searchParams.get(SearchParamKey.FILTER);
             if (filterURL) {
-                const filterFromParamsJSON = JSON.parse(filterURL) as ModelTypes[ListType[typeof type]];
+                const filterFromParamsJSON = JSON.parse(filterURL);
                 searchParams.set(
                     SearchParamKey.FILTER,
                     JSON.stringify({ ...filterFromParamsJSON, [field]: value }),
@@ -113,7 +106,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         const filterURL = searchParams.get(SearchParamKey.FILTER);
         if (!filterURL) return;
 
-        const filterFromParamsJSON = JSON.parse(filterURL) as ModelTypes[ListType[typeof type]];
+        const filterFromParamsJSON = JSON.parse(filterURL);
         const filterArray = Object.entries(filterFromParamsJSON);
         filterArray[index][0] = field;
         filterArray[index][1] = {};
@@ -126,7 +119,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     const removeFilterField = (field: FIELD) => {
         try {
             const filterURL = searchParams.get(SearchParamKey.FILTER);
-            const filterFromParamsJSON = JSON.parse(filterURL || '') as ModelTypes[ListType[typeof type]];
+            const filterFromParamsJSON = JSON.parse(filterURL || '');
             delete filterFromParamsJSON[field];
             if (Object.keys(filterFromParamsJSON).length === 0) {
                 searchParams.delete(SearchParamKey.FILTER);
@@ -183,7 +176,7 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
             },
             {} as Record<string, { contains: string }>,
         );
-        const filters = filter ? (JSON.parse(filter) as ModelTypes[ListType[typeof type]]) : undefined;
+        const filters = filter ? JSON.parse(filter) : undefined;
         const mergedFilters = { ...filters, ...searchFilter };
         try {
             return {
@@ -196,37 +189,37 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
         } catch (err) {
             throw new Error(`Parsing filter searchParams Key to JSON failed: ${err}`);
         }
-    }, [searchParams, type, searchFields]);
+    }, [searchParams, searchFields]);
 
     const refetch = useCallback(
         (initialFilterState?: ModelTypes[ListType[K]] | undefined) => {
             const page = searchParams.get(SearchParamKey.PAGE);
             if (page) searchParamValues.page = +page;
             searchParamValues.filter = initialFilterState;
-            fetch(searchParamValues, customFieldsSelector).then(({ items, totalItems }) => {
+            fetch(searchParamValues).then(({ items, totalItems }) => {
                 setObjects(items);
                 setTotal(totalItems);
             });
         },
-        [searchParams, type, searchParamValues, Object.keys(customFieldsSelector || {}).length],
+        [searchParams, searchParamValues],
     );
 
     useEffect(() => {
-        fetch(searchParamValues, customFieldsSelector).then(({ items, totalItems }) => {
+        fetch(searchParamValues).then(({ items, totalItems }) => {
             setObjects(items);
             setTotal(totalItems);
         });
-    }, [translationsLanguage, searchParams, Object.keys(customFieldsSelector || {}).length]);
+    }, [translationsLanguage, searchParams]);
 
     useEffect(() => {
         if (additionalData && 'refetchList' in additionalData && additionalData.refetchList) {
-            fetch(searchParamValues, customFieldsSelector).then(({ items, totalItems }) => {
+            fetch(searchParamValues).then(({ items, totalItems }) => {
                 setObjects(items);
                 setTotal(totalItems);
             });
             setAdditionalData({ ...additionalData, refetchList: false });
         }
-    }, [additionalData, translationsLanguage, searchParams, Object.keys(customFieldsSelector || {}).length]);
+    }, [additionalData, translationsLanguage, searchParams]);
 
     const itemsPerPage = useMemo(() => customItemsPerPage || ITEMS_PER_PAGE, [customItemsPerPage]);
     const totalPages = useMemo(
@@ -235,7 +228,6 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
     );
 
     return {
-        type,
         filter: searchParamValues.filter,
         setFilterField,
         removeFilterField,
@@ -247,7 +239,6 @@ export const useDetailList = <T extends PromisePaginated, K extends keyof ListTy
                     initialSearchQuery: searchParams.get(SearchParamKey.SEARCH),
                     setSearchQuery,
                     searchFields,
-                    entityName,
                 }}
             />
         ),

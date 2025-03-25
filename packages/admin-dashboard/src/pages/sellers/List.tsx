@@ -45,13 +45,12 @@ export const SellersListPage = () => {
       searchFields={['name']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'Seller'}
-      type={'sellers'}
       route={Routes['sellers']}
       tableId="sellers-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateSeller}
-      deletePermission={Permission.DeleteSeller}
+      createPermissions={[Permission.CreateSeller]}
+      deletePermissions={[Permission.DeleteSeller]}
     />
   );
 };

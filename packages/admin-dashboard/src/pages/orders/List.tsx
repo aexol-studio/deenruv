@@ -75,7 +75,6 @@ export const OrdersListPage = () => {
       detailLinkColumn="id"
       searchFields={['code', 'customerLastName']}
       entityName="Order"
-      type="orders"
       route={{
         create: () => {
           createDraftOrder()
@@ -89,8 +88,8 @@ export const OrdersListPage = () => {
       }}
       tableId="orders-list-view"
       fetch={fetch}
-      createPermission={Permission.CreateOrder}
-      deletePermission={Permission.DeleteOrder}
+      createPermissions={[Permission.CreateOrder]}
+      deletePermissions={[Permission.DeleteOrder]}
       hideColumns={['active', 'totalQuantity', 'currencyCode', 'customFields_TEST']}
       additionalColumns={[
         {

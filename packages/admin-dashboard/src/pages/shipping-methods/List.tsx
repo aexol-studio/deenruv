@@ -51,13 +51,12 @@ export const ShippingMethodsListPage = () => {
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'ShippingMethod'}
-      type={'shippingMethods'}
       route={Routes['shippingMethods']}
       tableId="shippingMethods-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateShippingMethod}
-      deletePermission={Permission.DeleteShippingMethod}
+      createPermissions={[Permission.CreateShippingMethod]}
+      deletePermissions={[Permission.DeleteShippingMethod]}
     />
   );
 };

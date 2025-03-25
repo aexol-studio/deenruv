@@ -34,7 +34,6 @@ export const FiltersDialog = <T extends keyof ListType>({
     resetFilterFields,
 }: {
     filterLabels: { name: string | number | symbol; type: string }[];
-    type: T;
     filter: ModelTypes[(typeof ListTypeKeys)[T]] | undefined;
     setFilterField: (
         field: keyof ModelTypes[(typeof ListTypeKeys)[T]],

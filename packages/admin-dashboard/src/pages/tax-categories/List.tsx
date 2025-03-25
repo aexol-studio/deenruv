@@ -54,13 +54,12 @@ export const TaxCategoriesListPage = () => {
       searchFields={['name']}
       hideColumns={['customFields', 'translations']}
       entityName={'TaxCategory'}
-      type={'taxCategories'}
       route={Routes['taxCategories']}
       tableId="taxCategories-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateTaxCategory}
-      deletePermission={Permission.DeleteTaxCategory}
+      createPermissions={[Permission.CreateTaxCategory]}
+      deletePermissions={[Permission.DeleteTaxCategory]}
     />
   );
 };

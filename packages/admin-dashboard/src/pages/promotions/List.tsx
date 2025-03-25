@@ -50,13 +50,12 @@ export const PromotionsListPage = () => (
     ]}
     searchFields={['name']}
     entityName={'Promotion'}
-    type={'promotions'}
     route={Routes['promotions']}
     tableId="promotions-list-view"
     fetch={fetch}
     onRemove={onRemove}
     detailLinkColumn="id"
-    createPermission={Permission.CreatePromotion}
-    deletePermission={Permission.DeletePromotion}
+    createPermissions={[Permission.CreatePromotion]}
+    deletePermissions={[Permission.DeletePromotion]}
   />
 );

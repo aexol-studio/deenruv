@@ -192,11 +192,10 @@ export const FacetsDetailView = () => {
                       },
                     }}
                     searchFields={['name']}
-                    tableId={'facet-values-list' as any}
-                    type={'facetValues' as any}
+                    tableId={'facet-values-list'}
                     noPaddings
-                    createPermission={Permission.CreateFacet}
-                    deletePermission={Permission.DeleteFacet}
+                    createPermissions={[Permission.CreateFacet]}
+                    deletePermissions={[Permission.DeleteFacet]}
                   />
                 </CardContent>
               </CardHeader>

@@ -62,13 +62,12 @@ export const ProductsList = () => {
       searchFields={['name', 'slug', 'sku']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'Product'}
-      type={'products'}
       route={Routes['products']}
       tableId="products-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateProduct}
-      deletePermission={Permission.DeleteProduct}
+      createPermissions={[Permission.CreateProduct]}
+      deletePermissions={[Permission.DeleteProduct]}
       additionalColumns={[
         {
           id: 'variants',

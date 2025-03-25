@@ -55,13 +55,12 @@ export const CountriesListPage = () => {
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations']}
       entityName={'Country'}
-      type={'countries-list'}
       route={Routes['countries']}
       tableId="countries-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateCountry}
-      deletePermission={Permission.DeleteCountry}
+      createPermissions={[Permission.CreateCountry]}
+      deletePermissions={[Permission.DeleteCountry]}
     />
   );
 };

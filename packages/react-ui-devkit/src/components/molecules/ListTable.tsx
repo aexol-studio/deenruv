@@ -126,12 +126,8 @@ export function ListTable<TData, TValue>({
                                                           header.column.columnDef.header,
                                                           header.getContext(),
                                                       )}
-                                                
-                                                    <ListViewMarker
-                                                        column={header.column}
-                                                        position={tableId}
-                                                    />
-                                               
+
+                                                <ListViewMarker column={header.column} position={tableId} />
                                             </div>
                                         </TableHead>
                                     );

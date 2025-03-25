@@ -67,7 +67,6 @@ export const FacetsListPage = () => {
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations']}
       entityName={'Facet'}
-      type={'facets'}
       additionalColumns={[
         {
           accessorKey: 'values',
@@ -95,8 +94,8 @@ export const FacetsListPage = () => {
       tableId="facets-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateFacet}
-      deletePermission={Permission.DeleteFacet}
+      createPermissions={[Permission.CreateFacet]}
+      deletePermissions={[Permission.DeleteFacet]}
     />
   );
 };

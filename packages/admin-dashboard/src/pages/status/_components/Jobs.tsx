@@ -111,8 +111,6 @@ export const Jobs = () => {
     [stateFilter, jobQueueFilter],
   );
   const { objects, refetch, Paginate, Search } = useDetailList({
-    type: 'jobs',
-    entityName: 'Job',
     searchFields: ['queueName'],
     fetch: async ({ page, perPage, filter, filterOperator }) => {
       const { jobs } = await apiClient('query')({

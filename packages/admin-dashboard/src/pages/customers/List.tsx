@@ -82,13 +82,12 @@ export const CustomersListPage = () => {
         },
       ]}
       entityName={'Customer'}
-      type={'customers'}
       route={Routes['customers']}
       tableId="customers-list-view"
       fetch={fetch}
       onRemove={onRemove}
-      createPermission={Permission.CreateCustomer}
-      deletePermission={Permission.DeleteCustomer}
+      createPermissions={[Permission.CreateCustomer]}
+      deletePermissions={[Permission.DeleteCustomer]}
     />
   );
 };

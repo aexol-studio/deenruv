@@ -41,7 +41,7 @@ type FIELDS<T extends PromisePaginated> = Array<
 type CheckIfInModelTypes<T extends string> = T extends keyof ModelTypes ? T : never;
 
 type FilterField<ENTITY extends keyof ModelTypes> = {
-    key: Exclude<keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>], '_or' | '_and'>;
+    key: Exclude<keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>], '_or' | '_and'> | string;
     // TODO: infer operator based on the type of the field
     operator:
         | 'StringOperators'
@@ -64,7 +64,6 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     fetch,
     route,
     onRemove,
-    type,
     tableId,
     entityName,
     searchFields,
@@ -74,14 +73,13 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     filterFields,
     noPaddings,
     noCreateButton,
-    createPermission,
-    deletePermission,
+    createPermissions,
+    deletePermissions,
 }: {
     fetch: T;
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
-    type: keyof ListType;
-    tableId: ListLocationID;
-    entityName: ENTITY;
+    tableId: ListLocationID | string;
+    entityName: ENTITY | string;
     searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
     hideColumns?: FIELDS<T>;
     additionalColumns?: ColumnDef<AwaitedReturnType<T>['items'][number]>[];
@@ -89,8 +87,8 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     filterFields?: FilterField<ENTITY>[];
     noPaddings?: boolean;
     noCreateButton?: boolean;
-    createPermission: Permission;
-    deletePermission: Permission;
+    createPermissions: Array<Permission>;
+    deletePermissions: Array<Permission>;
 } & (
     | { noCreateButton: true; route: RouteBase | RouteWithoutCreate }
     | { noCreateButton?: false; route: RouteBase | RouteWithCreate }
@@ -98,7 +96,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     const { t } = useTranslation('table');
 
     const { userPermissions } = useServer();
-    const isPermittedToCreate = useMemo(() => userPermissions.includes(createPermission), [userPermissions]);
+    const isPermittedToCreate = useMemo(() => {
+        if (!createPermissions) return true;
+        return createPermissions.some(permission => userPermissions.includes(permission));
+    }, [userPermissions]);
     const getPriority = (key: string): number => {
         // TODO: Here we probably need to add a check for custom columns
         // (or add a custom priority for them)
@@ -107,7 +108,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
     const navigate = useNavigate();
     const { getTableExtensions } = usePluginStore();
-    const tableExtensions = getTableExtensions(tableId);
+    const tableExtensions = getTableExtensions(tableId as any);
     const mergedSelectors = tableExtensions?.reduce(
         (acc, table) => deepMerge(acc, table.externalSelector || {}),
         {},
@@ -118,20 +119,16 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         AwaitedReturnType<T>['items']
     >[];
     const customHideColumns = tableExtensions?.flatMap(table => table.hideColumns || []);
-
     const entityCustomFields = useServer(p =>
         p.serverConfig?.entityCustomFields?.find(el => el.entityName === entityName),
     )?.customFields;
-    const customFieldsSelector = useMemo(
-        () => mergeSelectorWithCustomFields({}, entityName, entityCustomFields),
-        [entityCustomFields],
-    );
+
     const [itemsToDelete, setItemsToDelete] = useState<AwaitedReturnType<T>['items']>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [rowSelection, setRowSelection] = useState({});
     const [deleteDialogOpened, setDeleteDialogOpened] = useState(false);
     const [columnsVisibilityState, setColumnsVisibilityState] = useLocalStorage<VisibilityState>(
-        `${type}-table-visibility`,
+        `${tableId}-table-visibility`,
         { id: true, createdAt: true, updatedAt: true },
     );
 
@@ -158,7 +155,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         }, {});
     };
 
-    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${type}-table-order`, []);
+    const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${tableId}-table-order`, []);
     const columnsTranslations = t('columns', { returnObjects: true });
     const { handleError } = useErrorHandler();
     const hiddenColumns = useMemo(
@@ -174,18 +171,14 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         SortButton,
         Paginate,
         Search,
-        type: searchParamType,
         filter: searchParamFilter,
         setFilterField,
         removeFilterField,
         resetFilterFields,
         changeFilterField,
     } = useDetailList({
-        type,
         fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
         searchFields,
-        customFieldsSelector,
-        entityName,
     });
 
     const columns = useMemo(() => {
@@ -410,7 +403,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                       setDeleteDialogOpened(true);
                   }
                 : undefined,
-            deletePermission,
+            deletePermissions,
         },
         state: {
             ...((columnsOrderState || []).filter(Boolean).length > 0 && {
@@ -481,7 +474,6 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                 name: key,
                 type: operator,
             })) || [],
-        type: searchParamType,
         filter: searchParamFilter,
         setFilterField,
         removeFilterField,

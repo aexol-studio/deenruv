@@ -53,12 +53,11 @@ export const CustomerGroupsListPage = () => (
     searchFields={['name']}
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'CustomerGroupList'}
-    type={'customerGroups'}
     route={Routes['customerGroups']}
     tableId="customerGroups-list-view"
     fetch={fetch}
     onRemove={onRemove}
-    createPermission={Permission.CreateCustomerGroup}
-    deletePermission={Permission.DeleteCustomerGroup}
+    createPermissions={[Permission.CreateCustomerGroup]}
+    deletePermissions={[Permission.DeleteCustomerGroup]}
   />
 );
