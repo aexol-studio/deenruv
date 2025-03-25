@@ -12,10 +12,11 @@ const extensions = [StarterKit, Document, Paragraph, Text, Heading];
 
 interface RichTextEditorProps {
   content: string | undefined;
+  placeholder?: string;
   onContentChanged: (content: string) => void;
 }
 
-const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onContentChanged }) => {
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ placeholder, content, onContentChanged }) => {
   const editor = useEditor({
     extensions: extensions,
     content: content,
@@ -33,6 +34,12 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ content, onContentChang
   useEffect(() => {
     if (editor && content && content !== editor.getHTML()) {
       editor.commands.setContent(content);
+    } else if (
+      editor &&
+      (content === '' || content === undefined || typeof content === 'undefined') &&
+      editor.getHTML() !== ''
+    ) {
+      editor.commands.setContent(placeholder || '');
     }
   }, [content, editor]);
 

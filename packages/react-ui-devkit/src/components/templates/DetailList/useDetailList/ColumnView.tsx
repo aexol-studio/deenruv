@@ -65,9 +65,11 @@ export const ColumnView = <T extends { id: string }>({
 
     const getCustomFieldLabel = (key: string) => {
         const fromTable = table.getColumn(key);
+        console.log('key', key, 'fromTable', fromTable);
         if (fromTable && 'label' in fromTable) {
             return fromTable.label;
         }
+
         const field = entityCustomFields?.find(el => el.name === key.split('.')[1]);
         const fieldTranslation =
             field?.label?.find(el => el.languageCode === language)?.value || field?.label?.[0]?.value;

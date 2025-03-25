@@ -196,7 +196,7 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     externalSelector?: ExternalListLocationSelector[KEY];
     rowActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['rowActions'];
     bulkActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['bulkActions'];
-    columns?: Array<ColumnDef<ListLocationsType<KEY>> & { label?: string }>;
+    columns?: Array<ColumnDef<ListLocationsType<KEY>> & { label?: React.JSX.Element }>;
     hideColumns?: Array<keyof ListLocationsType<KEY>>;
 };
 
