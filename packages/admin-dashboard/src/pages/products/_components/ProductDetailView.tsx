@@ -1,5 +1,5 @@
 import { useDetailView, DetailViewMarker, useSettings } from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { CF, EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
@@ -36,7 +36,10 @@ export const ProductDetailView = () => {
   }, [contentLng]);
 
   const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
+  const currentTranslationValue = useMemo(() => {
+    return translations.find((v) => v.languageCode === contentLng);
+  }, [translations, contentLng]);
+
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(

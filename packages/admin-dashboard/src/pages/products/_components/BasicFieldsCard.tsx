@@ -29,19 +29,19 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
             <Input
               label={t('name')}
               placeholder={t('name')}
-              value={currentTranslationValue?.name ?? undefined}
+              value={currentTranslationValue?.name ?? ''}
               onChange={(e) => onChange('name', e.target.value)}
               errors={errors}
             />
             <Input
-              value={currentTranslationValue?.slug ?? undefined}
+              value={currentTranslationValue?.slug ?? ''}
               label={t('slug')}
               placeholder={t('slug')}
               onChange={(e) => onChange('slug', e.target.value)}
             />
           </Stack>
           <RichTextEditor
-            content={currentTranslationValue?.description ?? undefined}
+            content={currentTranslationValue?.description ?? ''}
             onContentChanged={(value) => onChange('description', value)}
           />
         </Stack>
