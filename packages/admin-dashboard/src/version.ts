@@ -1,1 +1,1 @@
-export const ADMIN_DASHBOARD_VERSION = '0.0.95';
+export const ADMIN_DASHBOARD_VERSION = '0.0.96';

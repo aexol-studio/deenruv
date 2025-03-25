@@ -106,6 +106,51 @@ const modifyQuery = (query: string, variables: Record<string, unknown>) => {
                 const data = schema.get(node.name.value);
                 if (!data) return node;
                 const selections = processSelections(node.selectionSet?.selections || [], data);
+                const haveCustomFields = data.fields.find(field => field.name === 'customFields');
+                if (
+                    data.fields.length &&
+                    haveCustomFields &&
+                    haveCustomFields.type !== 'JSON' &&
+                    haveCustomFields.fields.length
+                ) {
+                    selections.push({
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'customFields' },
+                        selectionSet: {
+                            kind: 'SelectionSet',
+                            selections: data.fields
+                                .find(field => field.name === 'customFields')
+                                ?.fields.map(field => {
+                                    if (
+                                        field?.fields?.length ||
+                                        Object.keys(CUSTOM_MAP).includes(field.type)
+                                    ) {
+                                        const fields =
+                                            CUSTOM_MAP[field.type as keyof typeof CUSTOM_MAP] ||
+                                            field.fields.map(field => field.name);
+                                        const index = fields.indexOf('customFields');
+                                        if (index > -1) fields.splice(index, 1);
+                                        return {
+                                            kind: 'Field',
+                                            name: { kind: 'Name', value: field.name },
+                                            selectionSet: {
+                                                kind: 'SelectionSet',
+                                                selections: fields.map(field => ({
+                                                    kind: 'Field',
+                                                    name: { kind: 'Name', value: field },
+                                                })),
+                                            },
+                                        };
+                                    }
+                                    return {
+                                        kind: 'Field',
+                                        name: { kind: 'Name', value: field.name },
+                                    };
+                                }),
+                        },
+                    });
+                }
+
                 return { ...node, selectionSet: { kind: 'SelectionSet', selections } };
             },
         },
