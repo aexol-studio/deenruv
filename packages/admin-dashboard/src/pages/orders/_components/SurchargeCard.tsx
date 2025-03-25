@@ -5,16 +5,12 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
   Checkbox,
   Input,
   Label,
   useGFFLP,
   useOrder,
-  Separator,
   CustomCardHeader,
 } from '@deenruv/react-ui-devkit';
 import type React from 'react';
@@ -26,6 +22,8 @@ export const SurchargeCard: React.FC<{}> = () => {
   const { t } = useTranslation('orders');
   const { setModifyOrderInput, modifyOrderInput, setModifiedOrder, modifiedOrder } = useOrder();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  console.log('C', modifiedOrder?.currencyCode);
 
   const { state, setField } = useGFFLP(
     'SurchargeInput',
@@ -181,7 +179,8 @@ export const SurchargeCard: React.FC<{}> = () => {
               <div className="relative">
                 <Input
                   id="surcharge-price"
-                  type="number"
+                  type="currency"
+                  endAdornment={modifiedOrder?.currencyCode}
                   step="0.01"
                   min="0"
                   placeholder={t('surcharge.placeholders.price', 'Enter price')}

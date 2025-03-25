@@ -95,18 +95,17 @@ export const PriceCard: React.FC<PriceCardProps> = ({
       </CardHeader>
       <CardContent>
         <Stack column className="gap-y-4">
-          <Stack className="items-center gap-x-4">
+          <Stack className="items-center gap-x-2">
             <Input
-              type="number"
+              type="currency"
               placeholder={t('price')}
               value={priceValue}
               onChange={onPriceChange}
               step={0.01}
-              className="w-2/5"
+              endAdornment={currencyCode}
             />
-            <Badge>{currencyCode}</Badge>
             <Select value={taxRateValue} onValueChange={(id) => onTaxRateChange(id)}>
-              <SelectTrigger className="w-2/5">
+              <SelectTrigger>
                 <SelectValue placeholder="Tax rate" />
               </SelectTrigger>
               <SelectContent>

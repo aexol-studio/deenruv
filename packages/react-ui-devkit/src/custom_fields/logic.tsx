@@ -12,6 +12,7 @@ import {
 import React from 'react';
 import { DefaultSimpleListInput } from './DefaultInputs/DefaultSimpleListInput';
 import { Field } from './context.js';
+import { DefaultCurrencyInput } from '@/custom_fields/DefaultInputs/DefaultCurrencyInput.js';
 
 export function generateInputComponents<T extends Field = CustomFieldConfigType>(
     fields: T[],
@@ -38,6 +39,7 @@ function generateSingleFields<T extends { type: string; list?: boolean; ui?: Rec
 }: {
     field: T;
 }) {
+    console.log('FIELD', field);
     const simpleListable = ['float', 'int', 'string', 'text'];
     if (simpleListable.includes(field?.type) && field.list)
         return { ...field, component: <DefaultSimpleListInput /> };
@@ -49,7 +51,15 @@ function generateSingleFields<T extends { type: string; list?: boolean; ui?: Rec
         case 'float':
             return { ...field, component: <DefaultFloatInput /> };
         case 'int':
-            return { ...field, component: <DefaultIntInput /> };
+            return {
+                ...field,
+                component:
+                    field?.ui?.component === 'currency-form-input' ? (
+                        <DefaultCurrencyInput />
+                    ) : (
+                        <DefaultIntInput />
+                    ),
+            };
         case 'string':
         case 'localeString':
             return { ...field, component: <DefaultTextInput /> };
