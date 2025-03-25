@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, CircleX } from 'lucide-react';
-import { ImageWithPreview } from './ImageWithPreview';
 import { apiClient } from '@/zeus_client/deenruvAPICall.js';
 import { cn } from '@/lib/utils.js';
 import React from 'react';
@@ -13,19 +12,21 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '../atoms/dialog.js';
-import { Button } from '../atoms/button.js';
-import { Input } from '../atoms/input.js';
-import {
+    Button,
+    Input,
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '../atoms/dropdown-menu.js';
-import { Label } from '../atoms/label.js';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '../atoms/hover-card.js';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../atoms/select.js';
-import {
+    Label,
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
     Pagination,
     PaginationContent,
     PaginationEllipsis,
@@ -33,9 +34,13 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from '../atoms/index.js';
+    ImageWithPreview,
+} from '@/components';
+
 import { assetsSelector, AssetType } from '@/selectors/AssetsSelector.js';
 import { ASSETS_ITEMS_PER_PAGE, ASSETS_PER_PAGE, useAssets } from '@/hooks/useAssets.js';
+const arrayRange = (start: number, stop: number) =>
+    Array.from({ length: stop - start + 1 }, (_, index) => start + index);
 
 export interface AssetsModalChangeType {
     id: string;
@@ -43,9 +48,12 @@ export interface AssetsModalChangeType {
     source: string;
 }
 
-const arrayRange = (start: number, stop: number) =>
-    Array.from({ length: stop - start + 1 }, (_, index) => start + index);
-
+/**
+ * A modal that allows the user to select an asset from a list of available assets.
+ *
+ * @param {AssetsModalChangeType} value - The currently selected asset.
+ * @param {(value?: AssetsModalChangeType) => void} setValue - Callback invoked whenever the selected asset changes.
+ */
 export function AssetsModalInput({
     value,
     setValue,

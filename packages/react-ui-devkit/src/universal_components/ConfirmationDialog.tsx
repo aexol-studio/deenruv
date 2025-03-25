@@ -16,6 +16,14 @@ interface ConfirmationDialogProps {
     description?: string;
 }
 
+/**
+ * A modal that asks the user to confirm an action.
+ *
+ * @param {() => void} onConfirm - Callback invoked when the user confirms the action.
+ * @param {string} title - The title of the dialog.
+ * @param {string} description - The description of the dialog.
+ * @param {ReactNode} children - The trigger element that opens the dialog.
+ */
 export const ConfirmationDialog: React.FC<PropsWithChildren<ConfirmationDialogProps>> = ({
     children,
     onConfirm,

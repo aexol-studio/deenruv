@@ -37,6 +37,15 @@ type DialogProductPickerProps = {
       }
 );
 
+/**
+ * Dialog component for selecting products or product variants.
+ *
+ * @param {'product' | 'variant'} mode - Specifies whether the picker is for products or product variants.
+ * @param {boolean} [multiple=false] - Determines if multiple selections are allowed. Defaults to false.
+ * @param {string | string[]} initialValue - Initial selected value(s). Array of IDs if `multiple` is true; single ID otherwise.
+ * @param {(value: DialogProductPickerType | DialogProductPickerType[]) => void} onSubmit - Callback triggered on selection confirmation.
+ * @param {() => void} [onCancel] - Optional callback triggered when the selection is canceled.
+ */
 export const DialogProductPicker = ({
     mode,
     multiple,

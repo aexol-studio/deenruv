@@ -1,7 +1,7 @@
 import React from 'react';
 import { CardDescription, Label } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
-import { RichTextEditor } from '@/components/molecules';
+import { RichTextEditor } from '@/universal_components/index.js';
 
 export function DefaultRichText() {
     const { field, value, setValue, label, description, disabled } = useCustomFields<string>();

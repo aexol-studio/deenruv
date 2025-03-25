@@ -5,8 +5,8 @@ import Paragraph from '@tiptap/extension-paragraph';
 import Text from '@tiptap/extension-text';
 import Heading from '@tiptap/extension-heading';
 import { useEffect } from 'react';
-import { EditorToolbar } from './EditorToolbar';
-import { cn } from '@/lib/utils';
+import { EditorToolbar } from './EditorToolbar.js';
+import { cn } from '@/lib/utils.js';
 import React from 'react';
 import { ErrorMessage } from '@/components/molecules';
 
@@ -19,6 +19,14 @@ interface RichTextEditorProps {
     disabled?: boolean;
 }
 
+/**
+ * Rich text editor component that handles content input and validation.
+ *
+ * @param {string | undefined} content - The initial content of the editor.
+ * @param {(content: string) => void} onContentChanged - Callback invoked whenever the editor content changes.
+ * @param {string[]} [errors] - Optional list of error messages to display.
+ * @param {boolean} [disabled=false] - Whether the editor is in a disabled state.
+ */
 export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     content,
     onContentChanged,

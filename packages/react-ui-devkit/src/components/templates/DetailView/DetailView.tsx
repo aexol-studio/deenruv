@@ -19,6 +19,7 @@ import {
     useDetailView,
     Button,
     SimpleTooltip,
+    DetailViewMarker,
 } from '@/components';
 import { GFFLPFormField, useGFFLP } from '@/hooks';
 import { useServer } from '@/state/server.js';
@@ -154,6 +155,7 @@ export const DetailView = <LOCATION extends DetailKeys>({
         >
             <DetailTabs
                 key={tab}
+                locationId={locationId}
                 topActions={{
                     inline: [
                         ...(topActions?.inline || []),
@@ -175,10 +177,12 @@ const DetailTabs = ({
     topActions,
     permissions,
     texts,
+    locationId,
 }: {
     topActions?: { inline?: React.ReactNode[]; dropdown?: React.ReactNode[] };
     permissions: Permissions;
     texts?: { submitButton?: string; deleteButton?: string };
+    locationId: DetailKeys;
 }) => {
     const { t } = useTranslation('common');
     const {
@@ -343,7 +347,10 @@ const DetailTabs = ({
                             className={cn(sidebar ? 'grid grid-cols-[minmax(0,1fr)_400px] gap-4' : 'w-full')}
                         >
                             {tab.component ? tab.component : <div>Missing component</div>}
-                            {sidebar}
+                            <div className="flex flex-col gap-2">
+                                {sidebar}
+                                <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
+                            </div>
                         </div>
                     </TabsContent>
                 ))}

@@ -54,11 +54,12 @@ export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
     i18n: any;
 };
 
-type CustomLocations = 'orders-summary';
+type CustomDetailLocations = 'orders-summary' | string;
+type CustomListLocations = string;
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
-export type ListLocationID = `${RouteKeys}-list-view` | string;
-export type DetailLocationID = `${RouteKeys}-detail-view` | CustomLocations;
+export type ListLocationID = `${RouteKeys}-list-view` | CustomListLocations;
+export type DetailLocationID = `${RouteKeys}-detail-view` | CustomDetailLocations;
 export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 
 export const ListLocations = {
@@ -178,13 +179,15 @@ type DetailLocationsType<KEY extends keyof typeof DetailLocations> = FromSelecto
     (typeof DetailLocations)[KEY]['type']
 >;
 
-export type ExternalDetailLocationSelector = {
+export interface AdditionalDetailLocationSelector {}
+export type ExternalDetailLocationSelector = AdditionalDetailLocationSelector & {
     [K in DetailKeys]: FromSelectorWithScalars<
         DetailLocationType[K]['selector'],
         DetailLocationType[K]['type']
     >;
 };
-export type ExternalListLocationSelector = {
+export interface AdditionalListLocationSelector {}
+export type ExternalListLocationSelector = AdditionalListLocationSelector & {
     [K in LocationKeys]: FromSelectorWithScalars<
         ListLocationType[K]['selector'],
         ListLocationType[K]['type']

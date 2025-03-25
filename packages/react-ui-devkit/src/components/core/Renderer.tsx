@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 import { usePluginStore } from '@/plugins/plugin-context';
-import { DetailLocationID } from '@/types';
+import { DetailLocationID, DetailLocationSidebarID } from '@/types';
 
-export const Renderer: React.FC<{ position: DetailLocationID; tab?: string }> = ({ position, tab }) => {
+export const Renderer: React.FC<{ position: DetailLocationID | DetailLocationSidebarID; tab?: string }> = ({
+    position,
+    tab,
+}) => {
     const { getComponents } = usePluginStore();
     const [components, setComponents] = useState<JSX.Element[]>([]);
 

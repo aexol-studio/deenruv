@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { usePluginStore } from '@/plugins/plugin-context';
 import { ListLocationID } from '@/types';
@@ -15,7 +15,7 @@ export const ListViewMarker = ({
     column: ColumnDef<any, any>;
     position: ListLocationID;
 }) => {
-    const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
+    const { viewMarkers } = usePluginStore();
 
     const code = `const DeenruvUIPlugin = createPlugin({
     tables: [{

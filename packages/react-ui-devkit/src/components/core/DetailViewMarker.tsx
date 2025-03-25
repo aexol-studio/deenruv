@@ -2,12 +2,18 @@ import React from 'react';
 
 import { usePluginStore } from '@/plugins/plugin-context';
 import { Renderer } from '@/components/core';
-import { DetailLocationID } from '@/types';
+import { DetailLocationID, DetailLocationSidebarID } from '@/types';
 import { Button } from '@/components';
 import { toast } from 'sonner';
 import { CopyIcon, PlugZap } from 'lucide-react';
 
-export const DetailViewMarker = ({ position, tab }: { position?: DetailLocationID; tab?: string }) => {
+export const DetailViewMarker = ({
+    position,
+    tab,
+}: {
+    position?: DetailLocationID | DetailLocationSidebarID;
+    tab?: string;
+}) => {
     const { viewMarkers, openDropdown, setOpenDropdown } = usePluginStore();
 
     const code = `const DeenruvUIPlugin = createPlugin({
