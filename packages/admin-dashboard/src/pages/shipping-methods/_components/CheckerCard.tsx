@@ -13,6 +13,7 @@ import {
   ErrorMessage,
   generateInputComponents,
   usePluginStore,
+  CustomFieldsProvider,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -105,13 +106,43 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
                 ],
                 getInputComponent,
               ).map((field) => {
+                const value = e.value;
+                const setValue = (data: unknown) => {
+                  try {
+                    onCheckerValueChange({
+                      code: currentCheckerValue.code,
+                      arguments: currentCheckerValue.arguments.map((a) => {
+                        try {
+                          if (a.name === field.name) {
+                            return { name: field.name, value: JSON.stringify(data) };
+                          }
+                        } catch {
+                          return a;
+                        }
+                        return a;
+                      }),
+                    });
+                  } catch {
+                    console.error('Error setting value');
+                  }
+                };
+
                 return (
-                  <div key={field.name}>
-                    <div>
-                      <Label>{field.name}</Label>
+                  <CustomFieldsProvider
+                    key={field.name}
+                    field={field}
+                    value={value}
+                    setValue={setValue}
+                    additionalData={{}}
+                    // disabled={disabled}
+                  >
+                    <div key={field.name}>
+                      <div>
+                        <Label>{field.name}</Label>
+                      </div>
+                      {field.component}
                     </div>
-                    {field.component}
-                  </div>
+                  </CustomFieldsProvider>
                 );
               });
             })}

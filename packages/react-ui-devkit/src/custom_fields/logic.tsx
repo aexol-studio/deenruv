@@ -12,7 +12,6 @@ import {
 import React from 'react';
 import { DefaultSimpleListInput } from './DefaultInputs/DefaultSimpleListInput';
 import { Field } from './context.js';
-import { DefaultCurrencyInput } from '@/custom_fields/DefaultInputs/DefaultCurrencyInput.js';
 
 export function generateInputComponents<T extends Field = CustomFieldConfigType>(
     fields: T[],
@@ -26,7 +25,11 @@ export function generateInputComponents<T extends Field = CustomFieldConfigType>
         if (hidden) continue;
         const Registered = ui && 'component' in ui && getInputComponent(ui.component as string);
         if (Registered) {
-            result.push({ ...field, tab, component: <Registered /> });
+            result.push({
+                ...field,
+                tab,
+                component: typeof Registered === 'function' ? <Registered /> : Registered,
+            });
         } else {
             result.push({ ...field, ...generateSingleFields({ field }), tab });
         }
@@ -39,7 +42,6 @@ function generateSingleFields<T extends { type: string; list?: boolean; ui?: Rec
 }: {
     field: T;
 }) {
-    console.log('FIELD', field);
     const simpleListable = ['float', 'int', 'string', 'text'];
     if (simpleListable.includes(field?.type) && field.list)
         return { ...field, component: <DefaultSimpleListInput /> };
@@ -51,15 +53,7 @@ function generateSingleFields<T extends { type: string; list?: boolean; ui?: Rec
         case 'float':
             return { ...field, component: <DefaultFloatInput /> };
         case 'int':
-            return {
-                ...field,
-                component:
-                    field?.ui?.component === 'currency-form-input' ? (
-                        <DefaultCurrencyInput />
-                    ) : (
-                        <DefaultIntInput />
-                    ),
-            };
+            return { ...field, component: <DefaultIntInput /> };
         case 'string':
         case 'localeString':
             return { ...field, component: <DefaultTextInput /> };

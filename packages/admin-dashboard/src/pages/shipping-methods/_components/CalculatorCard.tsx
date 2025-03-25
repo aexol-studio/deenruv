@@ -13,6 +13,9 @@ import {
   Option,
   apiClient,
   ErrorMessage,
+  generateInputComponents,
+  usePluginStore,
+  CustomFieldsProvider,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -33,6 +36,7 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
   const { t } = useTranslation('shippingMethods');
   const [calculators, setCalculators] = useState<PaymentMethodHandlerType[]>([]);
   const [allCalculatorsOptions, setAllCalculatorsOptions] = useState<Option[]>([]);
+  const { getInputComponent } = usePluginStore();
 
   const fetchOptions = useCallback(async () => {
     const response = await apiClient('query')({
@@ -98,49 +102,59 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
             {currentCalculatorValue?.arguments.map((e, i) => {
               const calculator = calculators?.find((ch) => ch.code === currentCalculatorValue.code);
               const argument = calculator?.args.find((a) => a.name === e.name);
-
-              return argument?.type === 'int' ? (
-                <Stack className="basis-full" key={i}>
-                  <Input
-                    type="number"
-                    step={0.01}
-                    label={argument?.label ?? undefined}
-                    value={currentCalculatorValue?.arguments[i].value}
-                    onChange={(e) => {
-                      currentCalculatorValue.arguments[i] = { name: argument?.name || '', value: e.target.value };
-                      handleCalculatorValueChange(currentCalculatorValue?.code, currentCalculatorValue.arguments);
-                    }}
-                    required
-                  />
-                </Stack>
-              ) : argument?.type === 'string' ? (
-                <SimpleSelect
-                  key={i}
-                  label={argument?.label ?? undefined}
-                  value={currentCalculatorValue?.arguments[i].value}
-                  onValueChange={(e) => {
-                    currentCalculatorValue.arguments[i] = { name: argument?.name || '', value: e };
-                    handleCalculatorValueChange(currentCalculatorValue?.code, currentCalculatorValue.arguments);
-                  }}
-                  options={
-                    ((argument?.ui?.options as { value: string }[]).map((o) => ({
-                      label: o.value,
-                      value: o.value,
-                    })) as Option[]) || []
+              if (!argument) return null;
+              return generateInputComponents(
+                [
+                  {
+                    ...argument,
+                    label: [{ languageCode: 'en', value: argument.label || argument.name }],
+                    description: [{ languageCode: 'en', value: argument.description || '' }],
+                  },
+                ],
+                getInputComponent,
+              ).map((field) => {
+                const value = e.value;
+                const setValue = (data: unknown) => {
+                  try {
+                    onCalculatorValueChange({
+                      code: currentCalculatorValue.code,
+                      arguments: currentCalculatorValue.arguments.map((a) => {
+                        try {
+                          if (a.name === field.name) {
+                            return {
+                              name: a.name,
+                              value: JSON.stringify(data),
+                            };
+                          }
+                        } catch {
+                          return a;
+                        }
+                        return a;
+                      }),
+                    });
+                  } catch {
+                    console.error('Error setting value');
                   }
-                />
-              ) : (
-                <Stack className="mb-2 basis-full items-center gap-3" key={e.name}>
-                  <Checkbox
-                    checked={currentCalculatorValue?.arguments[i].value === 'true' ? true : false}
-                    onCheckedChange={(e) => {
-                      currentCalculatorValue.arguments[i] = { name: argument?.name || '', value: e ? 'true' : 'false' };
-                      handleCalculatorValueChange(currentCalculatorValue?.code, currentCalculatorValue.arguments);
-                    }}
-                  />
-                  <Label>{argument?.label}</Label>
-                </Stack>
-              );
+                };
+
+                return (
+                  <CustomFieldsProvider
+                    key={field.name}
+                    field={field}
+                    value={value}
+                    setValue={setValue}
+                    additionalData={{}}
+                    // disabled={disabled}
+                  >
+                    <div key={field.name}>
+                      <div>
+                        <Label>{field.name}</Label>
+                      </div>
+                      {field.component}
+                    </div>
+                  </CustomFieldsProvider>
+                );
+              });
             })}
           </Stack>
           <ErrorMessage errors={errors} />
