@@ -538,7 +538,8 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         addPaymentToOrder: async input => {
             const { setOrder, fetchOrderHistory } = get();
 
-            const { addManualPaymentToOrder } = await apiClient('mutation')({
+            console.log('ADDING');
+            apiClient('mutation')({
                 addManualPaymentToOrder: [
                     { input },
                     {
@@ -547,13 +548,16 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                         '...on ManualPaymentStateError': { message: true, errorCode: true },
                     },
                 ],
-            });
-            if (addManualPaymentToOrder.__typename !== 'Order') {
-                toast.error(`${addManualPaymentToOrder.message}`, { position: 'top-center' });
-                return;
-            }
-            setOrder(addManualPaymentToOrder);
-            fetchOrderHistory();
+            })
+                .then(res => {
+                    if (res.addManualPaymentToOrder.__typename === 'Order') {
+                        setOrder(res.addManualPaymentToOrder);
+                        fetchOrderHistory();
+                    }
+                })
+                .catch(err => {
+                    toast.error(`${err.response.errors[0].message}`);
+                });
         },
         settlePayment: async input => {
             const { order, fetchOrder, fetchOrderHistory } = get();
@@ -571,10 +575,10 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 ],
             });
 
-            if (settlePayment.__typename !== 'Payment') {
-                toast.error(`${settlePayment.message}`, { position: 'top-center' });
-                return;
-            }
+            // if (settlePayment.__typename !== 'Payment') {
+            //     toast.error(`${settlePayment.message}`, { position: 'top-center' });
+            //     return;
+            // }
 
             fetchOrder(order.id);
             fetchOrderHistory();

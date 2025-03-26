@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/atoms/card.js';
+import { Card, CardContent, CardFooter } from '@/components/atoms/card.js';
 import { CustomCardHeader } from '@/components/molecules';
 import { cn } from '@/lib/utils.js';
 import React, { cloneElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
@@ -32,6 +32,7 @@ interface OrderCardTitleProps {
     title: string;
     description?: string;
     upperRight?: ReactNode;
+    bottomRight?: ReactNode;
     color?: TailwindColor;
 }
 
@@ -41,6 +42,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     description,
     title,
     upperRight,
+    bottomRight,
     color,
 }) => {
     const textColor = color ? `text-${color}-500 dark:text-${color}-400` : '';
@@ -60,6 +62,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
                 {upperRight}
             </CustomCardHeader>
             <CardContent>{children}</CardContent>
+            {bottomRight && <CardFooter className="justify-end">{bottomRight}</CardFooter>}
         </Card>
     );
 };

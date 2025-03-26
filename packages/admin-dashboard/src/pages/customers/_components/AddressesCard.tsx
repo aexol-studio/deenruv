@@ -5,7 +5,9 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
+  CardIcons,
   CardTitle,
+  CustomCard,
   CustomerDetailType,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
@@ -23,27 +25,28 @@ export const AddressesCard: React.FC<RolesCardProps> = ({ addresses, customerId,
   const { t } = useTranslation('customers');
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('addresses.header')}</CardTitle>
-        <CardContent className="flex gap-4 p-0 pt-4">
-          {addresses?.length ? (
-            addresses?.map((a) => <Address onActionCompleted={onActionCompleted} address={a} customerId={customerId} />)
-          ) : (
-            <p className="w-full text-center">{t(customerId ? 'addresses.empty' : 'addresses.createCustomerFirst')}</p>
-          )}
-        </CardContent>
-      </CardHeader>
-      <CardFooter className="justify-end">
-        {customerId && (
+    <CustomCard
+      title={t('addresses.header')}
+      icon={<CardIcons.address />}
+      color="green"
+      bottomRight={
+        customerId && (
           <AddressDialog customerId={customerId} onActionCompleted={onActionCompleted}>
             <Button variant="secondary" className="flex items-center gap-2">
               <PlusCircle />
               {t('addresses.addBtn')}
             </Button>
           </AddressDialog>
+        )
+      }
+    >
+      <div className="flex gap-4">
+        {addresses?.length ? (
+          addresses?.map((a) => <Address onActionCompleted={onActionCompleted} address={a} customerId={customerId} />)
+        ) : (
+          <p className="w-full text-center">{t(customerId ? 'addresses.empty' : 'addresses.createCustomerFirst')}</p>
         )}
-      </CardFooter>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

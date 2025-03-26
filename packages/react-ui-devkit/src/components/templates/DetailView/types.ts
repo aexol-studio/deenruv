@@ -55,6 +55,7 @@ export interface StoreContextType<
     getMarker: () => React.ReactNode;
     hasUnsavedChanges: boolean;
     setAdditionalData: Dispatch<SetStateAction<AdditionalData>>;
+    setLoading: Dispatch<SetStateAction<boolean>>;
     additionalData: AdditionalData;
     addToQueue: (key: string, fn: () => Promise<void>) => void;
     markAsDirty: () => void;

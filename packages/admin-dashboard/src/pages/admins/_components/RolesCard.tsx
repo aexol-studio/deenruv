@@ -1,20 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Option,
-  MultipleSelector,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  apiClient,
-  ErrorMessage,
-  CustomCardHeader,
-} from '@deenruv/react-ui-devkit';
-
+import { Option, MultipleSelector, apiClient, ErrorMessage, CardIcons, CustomCard } from '@deenruv/react-ui-devkit';
 import { RoleSelector, RoleType } from '@/graphql/roles';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
-import { Shield } from 'lucide-react';
 
 interface RolesCardProps {
   adminRoleIds: string[] | undefined;
@@ -25,7 +13,6 @@ interface RolesCardProps {
 export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChange, errors }) => {
   const { t } = useTranslation('admins');
   const [allRoles, setAllRoles] = useState<RoleType[]>([]);
-  console.log('IDS', adminRoleIds, allRoles);
 
   const currentPermissions = useMemo(() => {
     if (!allRoles.length) return;
@@ -60,22 +47,21 @@ export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChang
   }, [allRoles, adminRoleIds]);
 
   return (
-    <Card>
-      <CustomCardHeader title={t('details.roles.title')} icon={<Shield className="h-5 w-5" />}>
-        <ErrorMessage errors={errors} />
-      </CustomCardHeader>
-      <CardContent>
-        <MultipleSelector
-          options={rolesToOptions(allRoles)}
-          value={currentRolesOptions}
-          placeholder={t('details.roles.placeholder')}
-          onChange={(options) => onRolesChange(options.map((o) => o.value))}
-          hideClearAllButton
-        />
-        <div className="mt-4">
-          <PermissionsTable currentPermissions={currentPermissions} />
-        </div>
-      </CardContent>
-    </Card>
+    <CustomCard
+      title={t('details.basic.title')}
+      icon={<CardIcons.permissions />}
+      upperRight={<ErrorMessage errors={errors} />}
+    >
+      <MultipleSelector
+        options={rolesToOptions(allRoles)}
+        value={currentRolesOptions}
+        placeholder={t('details.roles.placeholder')}
+        onChange={(options) => onRolesChange(options.map((o) => o.value))}
+        hideClearAllButton
+      />
+      <div className="mt-4">
+        <PermissionsTable currentPermissions={currentPermissions} />
+      </div>
+    </CustomCard>
   );
 };

@@ -39,11 +39,7 @@ export const StockLocationDetailView = () => {
     })();
   }, [contentLng]);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
-  ) : (
+  return (
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">

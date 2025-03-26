@@ -602,5 +602,6 @@
         "foreignKeyError": "Nie można usunąć obiektu z tabeli {{parentTable}}, ponieważ istnieje zależność w tabeli {{dependentTable}}. Najpierw usuń powiązane rekordy lub zaktualizuj ich odniesienia.",
         "defaultError": "Wystąpił nieoczekiwany błąd"
     },
-    "filters": "Filtry"
+    "filters": "Filtry",
+    "loading": "Ładowanie..."
 }

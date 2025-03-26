@@ -175,7 +175,6 @@ export const AddressCard: React.FC<{
 
       toast.success(t('selectAddress.addressUpdated'));
       setOpen(false);
-      console.log('ADD', selectedAddress);
       return;
     }
 

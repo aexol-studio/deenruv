@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { FacetDetailsType } from '@/graphql/facets';
 import {
   Card,
   CardContent,
@@ -117,11 +116,7 @@ export const FacetsDetailView = () => {
     }
   }, [currentTranslationValue?.name, editMode]);
 
-  return !entity && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('facets:toasts.facetLoadingError', { value: id })}
-    </div>
-  ) : (
+  return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <div className="flex flex-col gap-3">

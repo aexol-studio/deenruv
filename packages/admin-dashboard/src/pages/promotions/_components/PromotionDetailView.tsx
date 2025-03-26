@@ -95,11 +95,7 @@ export const PromotionDetailView = () => {
     [contentLng, translations],
   );
 
-  return loading ? (
-    <div>
-      <Spinner height={'80vh'} />
-    </div>
-  ) : (
+  return (
     <div>
       <form className="flex flex-col gap-4">
         <BasicFieldsCard

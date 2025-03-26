@@ -9,6 +9,8 @@ import {
   useSettings,
   useDetailView,
   DetailViewMarker,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields, Stack } from '@/components';
 
@@ -33,31 +35,20 @@ export const CustomerGroupsDetailView = () => {
     })();
   }, [contentLng]);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
-  ) : (
+  return (
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('basic.header')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack column className="gap-3">
-                  <Input
-                    className="w-1/2"
-                    label={t('basic.name')}
-                    value={state.name?.value}
-                    onChange={(e) => setField('name', e.target.value)}
-                    errors={state.name?.errors}
-                    required
-                  />
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <CustomCard title={t('basic.header')} icon={<CardIcons.basic />}>
+            <Input
+              className="w-1/2"
+              label={t('basic.name')}
+              value={state.name?.value}
+              onChange={(e) => setField('name', e.target.value)}
+              errors={state.name?.errors}
+              required
+            />
+          </CustomCard>
           <DetailViewMarker position={'customerGroups-detail-view'} />
           {id && <EntityCustomFields entityName="customerGroup" id={id} />}
         </Stack>

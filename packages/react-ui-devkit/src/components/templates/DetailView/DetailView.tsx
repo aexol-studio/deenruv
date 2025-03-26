@@ -25,8 +25,8 @@ import { GFFLPFormField, useGFFLP } from '@/hooks';
 import { useServer } from '@/state/server.js';
 import { useTranslation } from 'react-i18next';
 import { getPermissions } from '@/utils/getPermissions.js';
-import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter.js';
 import { PageBlock } from '@/universal_components/PageBlock.js';
+import { LoadingMask } from '@/components/templates/DetailView/_components/LoadingMask.js';
 interface DetailViewFormProps<
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
@@ -217,22 +217,20 @@ const DetailTabs = ({
     const showCreateButton = !id && isPermittedToCreate;
     const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
 
-    const memoized = useMemo(() => {
-        return tabs.map((tab, idx) => (
-            <TabsContent key={idx} value={tab.name}>
-                <PageBlock
-                    sidebar={
-                        <div className="flex flex-col gap-2">
-                            {sidebar}
-                            <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
-                        </div>
-                    }
-                >
-                    {tab.component ? tab.component : <div>Missing component</div>}
-                </PageBlock>
-            </TabsContent>
-        ));
-    }, [tabs]);
+    const tabsWithMarker = tabs.map((tab, idx) => (
+        <TabsContent key={idx} value={tab.name}>
+            <PageBlock
+                sidebar={
+                    <div className="flex flex-col gap-2">
+                        {sidebar}
+                        <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
+                    </div>
+                }
+            >
+                {tab.component ? tab.component : <div>Missing component</div>}
+            </PageBlock>
+        </TabsContent>
+    ));
 
     return (
         <Tabs
@@ -340,15 +338,13 @@ const DetailTabs = ({
             </div>
             <div className="px-4 py-2 md:px-8 md:py-4 relative">
                 {loading ? (
-                    <div className="flex min-h-[80vh] w-full items-center justify-center">
-                        <div className="customSpinner" />
-                    </div>
+                    <LoadingMask />
                 ) : !entity && !!id ? (
                     <div className="flex min-h-[80vh] w-full items-center justify-center">
                         {t('toasts.roleLoadingError', { value: id })}
                     </div>
                 ) : null}
-                {memoized}
+                {tabsWithMarker}
             </div>
         </Tabs>
     );

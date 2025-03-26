@@ -33,20 +33,7 @@ import { useGFFLP } from '@/lists/useGflp';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import {
-  Package,
-  Truck,
-  MapPin,
-  User,
-  Building,
-  Phone,
-  Box,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Tag,
-} from 'lucide-react';
-import { toast } from 'sonner';
+import { Package, Truck, MapPin, User, Building, Phone, Box, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 interface Props {
   disabled?: boolean;
@@ -95,11 +82,9 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
     setIsSubmitting(true);
     try {
       await onSubmitted({ lines, handler: state.handler?.value });
-      toast.success(t('fulfillment.successMessage', 'Order fulfilled successfully'));
       setOpen(false);
     } catch (error) {
       console.error(error);
-      toast.error(t('fulfillment.errorMessage', 'Failed to fulfill order'));
     } finally {
       setIsSubmitting(false);
     }

@@ -1,19 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CustomCardHeader,
-  DetailViewMarker,
-  Input,
-  useDetailView,
-} from '@deenruv/react-ui-devkit';
+import { CardIcons, CustomCard, DetailViewMarker, Input, useDetailView } from '@deenruv/react-ui-devkit';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 import { EntityCustomFields, Stack } from '@/components';
-import { Info } from 'lucide-react';
 
 const ADMIN_FORM_KEYS = [
   'CreateAdministratorInput',
@@ -26,7 +16,7 @@ const ADMIN_FORM_KEYS = [
 
 export const AdminDetailView = () => {
   const { id } = useParams();
-  const { form, loading, fetchEntity, entity } = useDetailView('admins-detail-view', ...ADMIN_FORM_KEYS);
+  const { form, fetchEntity } = useDetailView('admins-detail-view', ...ADMIN_FORM_KEYS);
 
   const {
     base: { setField, state },
@@ -51,21 +41,12 @@ export const AdminDetailView = () => {
     })();
   }, []);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
-  ) : !entity && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.adminLoadingError', { value: id })}
-    </div>
-  ) : (
+  return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CustomCardHeader title={t('details.basic.title')} icon={<Info className="h-5 w-5" />} />
-            <CardContent className="flex items-start gap-4">
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
+            <div className="flex items-start gap-4">
               <Input
                 wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
                 label={t('details.basic.firstName')}
@@ -98,8 +79,8 @@ export const AdminDetailView = () => {
                 errors={state.password?.errors}
                 required={!editMode}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </CustomCard>
           <DetailViewMarker position={'admins-detail-view'} />
           {id && <EntityCustomFields entityName="administrator" id={id} />}
           <RolesCard

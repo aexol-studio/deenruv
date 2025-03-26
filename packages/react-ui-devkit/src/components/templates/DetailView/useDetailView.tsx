@@ -65,6 +65,7 @@ export const DetailViewStoreContext = createContext<
     additionalData: {},
     addToQueue: () => {},
     markAsDirty: () => {},
+    setLoading: () => null,
 });
 
 export const DetailViewStoreProvider = <
@@ -227,6 +228,7 @@ export const DetailViewStoreProvider = <
                 getMarker,
                 hasUnsavedChanges,
                 setAdditionalData,
+                setLoading,
                 additionalData,
                 markAsDirty,
             }}

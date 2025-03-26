@@ -68,6 +68,7 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
   );
 
   const clearInput = useCallback(() => {
+    console.log('CLICK');
     onCheckerValueChange(undefined);
   }, [onCheckerValueChange]);
 

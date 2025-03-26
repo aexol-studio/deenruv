@@ -80,15 +80,7 @@ export const RoleDetailView = () => {
     })();
   }, []);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
-  ) : !entity && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.roleLoadingError', { value: id })}
-    </div>
-  ) : (
+  return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">

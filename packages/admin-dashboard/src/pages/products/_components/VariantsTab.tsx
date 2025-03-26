@@ -21,7 +21,7 @@ const NEW_VARIANT_TAB_VALUE = 'new';
 
 export const VariantsTab = () => {
   const contentLanguage = useSettings((p) => p.translationsLanguage);
-  const { id, getMarker } = useDetailView('products-detail-view', 'CreateProductInput');
+  const { id, getMarker, setLoading } = useDetailView('products-detail-view', 'CreateProductInput');
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
   const { t } = useTranslation('products');
   const [searchParams, setSearchParams] = useSearchParams();
@@ -39,7 +39,6 @@ export const VariantsTab = () => {
   }, []);
 
   const [variants, setVariants] = useState<ProductVariantType[]>();
-  const [loading, setLoading] = useState<boolean>();
 
   const fetchData = useCallback(async () => {
     if (id) {
@@ -62,52 +61,46 @@ export const VariantsTab = () => {
   return (
     <div className="flex flex-col">
       {getMarker()}
-      {loading ? (
-        <div className="flex w-full items-center justify-center">
-          <div className="customSpinner" />
-        </div>
-      ) : (
-        <Stack column className="items-end gap-4">
-          <Tabs defaultValue={variants?.[0]?.id} className="w-full" value={activeTab} onValueChange={handleTabChange}>
-            <TabsList className="h-auto flex-wrap justify-start">
-              <TabsTrigger key={'new-variant'} value={NEW_VARIANT_TAB_VALUE} className="text-blue-600">
-                <PlusCircle size={16} className="mr-2 translate-y-[1px]" />
-                {t('addVariantDialog.new')}
+      <Stack column className="items-end gap-4">
+        <Tabs defaultValue={variants?.[0]?.id} className="w-full" value={activeTab} onValueChange={handleTabChange}>
+          <TabsList className="h-auto flex-wrap justify-start">
+            <TabsTrigger key={'new-variant'} value={NEW_VARIANT_TAB_VALUE} className="text-blue-600">
+              <PlusCircle size={16} className="mr-2 translate-y-[1px]" />
+              {t('addVariantDialog.new')}
+            </TabsTrigger>
+            {variants?.map((v) => (
+              <TabsTrigger key={v.id + '-trigger'} value={v.id}>
+                {v.name}
               </TabsTrigger>
-              {variants?.map((v) => (
-                <TabsTrigger key={v.id + '-trigger'} value={v.id}>
-                  {v.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <TabsContent value={NEW_VARIANT_TAB_VALUE} key={'new-variant-content'}>
-              {id && <Variant currentTranslationLng={contentLanguage} onActionCompleted={fetchData} productId={id} />}
-            </TabsContent>
-            {id && variants?.length ? (
-              variants?.map((v) => (
-                <TabsContent value={v.id} key={v.id + '-content'}>
-                  <Variant
-                    currentTranslationLng={contentLanguage}
-                    variant={v}
-                    onActionCompleted={fetchData}
-                    productId={id}
-                  />
-                </TabsContent>
-              ))
-            ) : (
-              <Stack className="w-full items-center justify-center">
-                {activeTab !== NEW_VARIANT_TAB_VALUE && (
-                  <EmptyState
-                    columnsLength={1}
-                    title={t('variantsTab.emptyState.title')}
-                    description={t('variantsTab.emptyState.description')}
-                  />
-                )}
-              </Stack>
-            )}
-          </Tabs>
-        </Stack>
-      )}
+            ))}
+          </TabsList>
+          <TabsContent value={NEW_VARIANT_TAB_VALUE} key={'new-variant-content'}>
+            {id && <Variant currentTranslationLng={contentLanguage} onActionCompleted={fetchData} productId={id} />}
+          </TabsContent>
+          {id && variants?.length ? (
+            variants?.map((v) => (
+              <TabsContent value={v.id} key={v.id + '-content'}>
+                <Variant
+                  currentTranslationLng={contentLanguage}
+                  variant={v}
+                  onActionCompleted={fetchData}
+                  productId={id}
+                />
+              </TabsContent>
+            ))
+          ) : (
+            <Stack className="w-full items-center justify-center">
+              {activeTab !== NEW_VARIANT_TAB_VALUE && (
+                <EmptyState
+                  columnsLength={1}
+                  title={t('variantsTab.emptyState.title')}
+                  description={t('variantsTab.emptyState.description')}
+                />
+              )}
+            </Stack>
+          )}
+        </Tabs>
+      </Stack>
     </div>
   );
 };

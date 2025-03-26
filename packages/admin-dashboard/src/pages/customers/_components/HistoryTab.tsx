@@ -50,9 +50,13 @@ const DeleteStockLocationMutation = typedGql('mutation', { scalars })({
 
 export const HistoryTab: React.FC = () => {
   const { t } = useTranslation('customers');
-  const [getHistory, { data }] = useLazyQuery(CustomerGroupsQuery);
+  const [getHistory, { data, loading }] = useLazyQuery(CustomerGroupsQuery);
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
+  const { id, setLoading } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
+
+  useEffect(() => {
+    setLoading(loading);
+  }, [loading]);
 
   useEffect(() => {
     if (id) getHistory({ id });

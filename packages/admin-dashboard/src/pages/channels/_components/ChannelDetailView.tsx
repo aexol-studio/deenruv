@@ -96,15 +96,7 @@ export const ChannelDetailView = () => {
     return currencyArray.map((l) => ({ label: l, value: l }));
   }, []);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
-    </div>
-  ) : !entity && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.channelLoadingError', { value: id })}
-    </div>
-  ) : (
+  return (
     <main>
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">

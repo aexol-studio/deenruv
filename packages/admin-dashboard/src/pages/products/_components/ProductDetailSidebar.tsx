@@ -1,5 +1,5 @@
-import { useDetailView } from '@deenruv/react-ui-devkit';
-import { useEffect } from 'react';
+import { DetailViewMarker, useDetailView } from '@deenruv/react-ui-devkit';
+import { ReactNode, useEffect } from 'react';
 
 import { SettingsCard } from './SettingsCard';
 import { ChannelsCard } from '@/pages/products/_components/ChannelsCard';
@@ -15,7 +15,7 @@ const PRODUCT_FORM_KEYS = [
   'enabled',
 ] as const;
 
-export const ProductDetailSidebar = () => {
+export const ProductDetailSidebar: React.FC<{ marker?: ReactNode }> = ({ marker }) => {
   const { form, entity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
   const {
     base: { state, setField },

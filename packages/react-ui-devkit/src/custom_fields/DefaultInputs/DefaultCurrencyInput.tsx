@@ -17,6 +17,7 @@ export const DefaultCurrencyInput: React.FC = () => {
                 disabled={disabled ?? field?.readonly ?? undefined}
                 value={value}
                 onChange={e => {
+                    console.log('E', e);
                     setValue(parseInt(e.target.value || '0', 10));
                 }}
                 endAdornment={selectedChannel?.currencyCode}
