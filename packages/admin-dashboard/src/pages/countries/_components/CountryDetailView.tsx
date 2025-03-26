@@ -63,36 +63,34 @@ export const CountryDetailView = () => {
   return (
     <main className="min-h-96">
       <div className="mx-auto mt-2 flex w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
-            <Stack className="items-start gap-3">
-              <Stack className="basis-full md:basis-1/3">
-                <Input
-                  label={t('details.basic.name')}
-                  value={currentTranslationValue?.name ?? undefined}
-                  onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={state.translations?.errors}
-                  required
-                />
-              </Stack>
-              <Stack className="basis-full md:basis-1/3">
-                <Input
-                  label={t('details.basic.code')}
-                  value={state.code?.value}
-                  onChange={(e) => setField('code', e.target.value)}
-                  errors={state.code?.errors}
-                  required
-                />
-              </Stack>
-              <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
-                <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
-                <Label>{t('details.basic.enabled')}</Label>
-              </Stack>
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+          <Stack className="items-start gap-3">
+            <Stack className="basis-full md:basis-1/3">
+              <Input
+                label={t('details.basic.name')}
+                value={currentTranslationValue?.name ?? undefined}
+                onChange={(e) => setTranslationField('name', e.target.value)}
+                errors={state.translations?.errors}
+                required
+              />
             </Stack>
-          </CustomCard>
-          <DetailViewMarker position={'countries-detail-view'} />
-          {id && <EntityCustomFields entityName="country" id={id} />}
-        </Stack>
+            <Stack className="basis-full md:basis-1/3">
+              <Input
+                label={t('details.basic.code')}
+                value={state.code?.value}
+                onChange={(e) => setField('code', e.target.value)}
+                errors={state.code?.errors}
+                required
+              />
+            </Stack>
+            <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
+              <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
+              <Label>{t('details.basic.enabled')}</Label>
+            </Stack>
+          </Stack>
+        </CustomCard>
+        <DetailViewMarker position={'countries-detail-view'} />
+        {id && <EntityCustomFields entityName="country" id={id} />}
       </div>
     </main>
   );

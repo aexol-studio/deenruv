@@ -11,6 +11,8 @@ import {
   type Option,
   apiClient,
   ErrorMessage,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -99,11 +101,8 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.options.title')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-wrap gap-4 xl:flex-nowrap">
+    <CustomCard title={t('details.options.title')} icon={<CardIcons.options />} color="teal">
+      <div className="flex flex-wrap gap-4 xl:flex-nowrap">
         <Stack column className="basis-full gap-3 md:basis-1/2">
           <SimpleSelect
             label={t('details.options.handler')}
@@ -141,7 +140,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
             options={allCheckersOptions}
           />
         </Stack>
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

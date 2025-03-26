@@ -6,7 +6,9 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CardIcons,
   CardTitle,
+  CustomCard,
   DetailViewMarker,
   Input,
   Label,
@@ -81,47 +83,42 @@ export const PaymentMethodDetailView = () => {
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
-                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={currentTranslationValue?.name ?? undefined}
-                      onChange={(e) => setTranslationField('name', e.target.value)}
-                      errors={state.translations?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.code')}
-                      value={state.code?.value ?? undefined}
-                      onChange={(e) => setField('code', e.target.value)}
-                      errors={state.code?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch
-                      checked={state.enabled?.value ?? undefined}
-                      onCheckedChange={(e) => setField('enabled', e)}
-                    />
-                    <Label>{t('details.basic.enabled')}</Label>
-                  </Stack>
-                </Stack>
-                <Stack column className="basis-full">
-                  <Label className="mb-2">{t('details.basic.description')}</Label>
-                  <RichTextEditor
-                    content={currentTranslationValue?.description ?? undefined}
-                    onContentChanged={(e) => setTranslationField('description', e)}
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+            <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
+              <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+                <Stack className="basis-full md:basis-1/3">
+                  <Input
+                    label={t('details.basic.name')}
+                    value={currentTranslationValue?.name ?? undefined}
+                    onChange={(e) => setTranslationField('name', e.target.value)}
+                    errors={state.translations?.errors}
+                    required
                   />
                 </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+                <Stack className="basis-full md:basis-1/3">
+                  <Input
+                    label={t('details.basic.code')}
+                    value={state.code?.value ?? undefined}
+                    onChange={(e) => setField('code', e.target.value)}
+                    errors={state.code?.errors}
+                    required
+                  />
+                </Stack>
+                <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
+                  <Switch checked={state.enabled?.value ?? undefined} onCheckedChange={(e) => setField('enabled', e)} />
+                  <Label>{t('details.basic.enabled')}</Label>
+                </Stack>
+              </Stack>
+              <Stack column className="basis-full">
+                <Label className="mb-2">{t('details.basic.description')}</Label>
+                <RichTextEditor
+                  content={currentTranslationValue?.description ?? undefined}
+                  onContentChanged={(e) => setTranslationField('description', e)}
+                />
+              </Stack>
+            </div>
+          </CustomCard>
+
           <DetailViewMarker position={'paymentMethods-detail-view'} />
           {id && <EntityCustomFields entityName="paymentMethod" id={id} />}
           <OptionsCard

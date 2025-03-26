@@ -7,7 +7,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(ChannelListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(ChannelListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     channels: [
       {

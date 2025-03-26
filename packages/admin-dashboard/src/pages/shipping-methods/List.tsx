@@ -7,10 +7,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(
-    deepMerge(ShippingMethodListSelector, customFieldsSelector ?? {}),
-    additionalSelector ?? {},
-  );
+  const selector = deepMerge(ShippingMethodListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     shippingMethods: [
       {

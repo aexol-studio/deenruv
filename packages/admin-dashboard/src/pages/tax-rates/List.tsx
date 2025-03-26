@@ -8,7 +8,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(TaxRateListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(TaxRateListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     ['taxRates']: [
       {

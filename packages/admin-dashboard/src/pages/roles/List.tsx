@@ -9,7 +9,7 @@ import {
   DEFAULT_CHANNEL_CODE,
   ListBadge,
 } from '@deenruv/react-ui-devkit';
-import { Routes, Badge } from '@deenruv/react-ui-devkit';
+import { Routes } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { RoleListSelector, RoleListType } from '@/graphql/roles';
@@ -23,7 +23,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(RoleListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(RoleListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     roles: [
       {

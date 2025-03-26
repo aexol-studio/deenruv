@@ -1,7 +1,13 @@
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/atoms/accordion.js';
 import { Card, CardContent, CardFooter } from '@/components/atoms/card.js';
 import { CustomCardHeader } from '@/components/molecules';
 import { cn } from '@/lib/utils.js';
-import React, { cloneElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import React, { cloneElement, PropsWithChildren, ReactElement, ReactNode, useState } from 'react';
 
 export type TailwindColor =
     | 'slate'
@@ -56,13 +62,40 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
               })
             : icon;
 
+    const [openItem, setOpenItem] = useState(title);
+
     return (
-        <Card className={cn('shadow-sm transition-shadow duration-200 hover:shadow', borderColor)}>
-            <CustomCardHeader {...{ description, title }} icon={iconWithClassName}>
-                {upperRight}
-            </CustomCardHeader>
-            <CardContent>{children}</CardContent>
-            {bottomRight && <CardFooter className="justify-end">{bottomRight}</CardFooter>}
-        </Card>
+        <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            defaultValue={title}
+            onValueChange={setOpenItem}
+        >
+            <AccordionItem value={title}>
+                <Card className={cn('shadow-sm transition-shadow duration-200 hover:shadow', borderColor)}>
+                    <AccordionTrigger className={cn('p-0 pr-6 w-full')}>
+                        <CustomCardHeader
+                            {...{ description, title }}
+                            icon={iconWithClassName}
+                            isCollapsed={!openItem}
+                        >
+                            <div
+                                onClick={e => e.stopPropagation()}
+                                className="cursor-auto hover:no-underline"
+                            >
+                                {upperRight}
+                            </div>
+                        </CustomCardHeader>
+                    </AccordionTrigger>
+                    <AccordionContent>
+                        <div>
+                            <CardContent>{children}</CardContent>
+                            {bottomRight && <CardFooter className="justify-end">{bottomRight}</CardFooter>}
+                        </div>
+                    </AccordionContent>
+                </Card>
+            </AccordionItem>
+        </Accordion>
     );
 };

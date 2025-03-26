@@ -1,14 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  Button,
-  Input,
-  Separator,
-  useServer,
-  apiClient,
-} from '@deenruv/react-ui-devkit';
+import { Button, Input, Separator, useServer, apiClient, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -85,17 +75,22 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
         ],
       });
 
-      console.log('RES', resp.testShippingMethod);
       setTestResult(resp.testShippingMethod);
     }
   }, [state]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.test.title')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+    <CustomCard
+      title={t('details.test.title')}
+      icon={<CardIcons.shipping />}
+      color="cyan"
+      bottomRight={
+        <Button className="w-48" variant={'action'} onClick={testShippingMethod}>
+          {t('details.test.button')}
+        </Button>
+      }
+    >
+      <div className="flex flex-col gap-4">
         <Stack className="flex-wrap gap-3">
           <Stack className="flex-1 basis-full md:basis-1/3">
             <Input
@@ -160,10 +155,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
             </div>
           </Stack>
         )}
-        <Button className="w-48" variant={'action'} onClick={testShippingMethod}>
-          {t('details.test.button')}
-        </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

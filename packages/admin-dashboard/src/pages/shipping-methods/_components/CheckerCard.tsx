@@ -14,6 +14,8 @@ import {
   generateInputComponents,
   usePluginStore,
   CustomFieldsProvider,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
@@ -73,84 +75,83 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
   }, [onCheckerValueChange]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.options.title')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-wrap gap-4 xl:flex-nowrap">
-        <Stack column className="basis-full gap-3 md:basis-1/2">
-          <Stack className="items-end gap-1">
-            <SimpleSelect
-              label={t('details.options.checker')}
-              value={currentCheckerValue ? currentCheckerValue.code : ''}
-              onValueChange={handleCheckerValueChange}
-              options={allCheckersOptions}
-            />
-            {currentCheckerValue?.code && (
-              <Button variant={'secondary'} className="p-2" onClick={clearInput}>
-                <X size={20} />
-              </Button>
-            )}
-          </Stack>
-          <Stack>
-            {currentCheckerValue?.arguments.map((e, i) => {
-              const checker = checkers?.find((ch) => ch.code === currentCheckerValue.code);
-              const argument = checker?.args.find((a) => a.name === a.name);
-              if (!argument) return null;
-              return generateInputComponents(
-                [
-                  {
-                    ...argument,
-                    label: [{ languageCode: 'en', value: argument.label || argument.name }],
-                    description: [{ languageCode: 'en', value: argument.description || '' }],
-                  },
-                ],
-                getInputComponent,
-              ).map((field) => {
-                const value = e.value;
-                const setValue = (data: unknown) => {
-                  try {
-                    onCheckerValueChange({
-                      code: currentCheckerValue.code,
-                      arguments: currentCheckerValue.arguments.map((a) => {
-                        try {
-                          if (a.name === field.name) {
-                            return { name: field.name, value: JSON.stringify(data) };
-                          }
-                        } catch {
-                          return a;
-                        }
-                        return a;
-                      }),
-                    });
-                  } catch {
-                    console.error('Error setting value');
-                  }
-                };
-
-                return (
-                  <CustomFieldsProvider
-                    key={field.name}
-                    field={field}
-                    value={value}
-                    setValue={setValue}
-                    additionalData={{}}
-                    // disabled={disabled}
-                  >
-                    <div key={field.name}>
-                      <div>
-                        <Label>{field.name}</Label>
-                      </div>
-                      {field.component}
-                    </div>
-                  </CustomFieldsProvider>
-                );
-              });
-            })}
-          </Stack>
-          <ErrorMessage errors={errors} />
+    <CustomCard
+      title={t('details.options.title')}
+      icon={<CardIcons.check />}
+      color="teal"
+      upperRight={<ErrorMessage errors={errors} />}
+    >
+      <Stack column className="basis-full gap-3 md:basis-1/2">
+        <Stack className="items-end gap-1">
+          <SimpleSelect
+            label={t('details.options.checker')}
+            value={currentCheckerValue ? currentCheckerValue.code : ''}
+            onValueChange={handleCheckerValueChange}
+            options={allCheckersOptions}
+          />
+          {currentCheckerValue?.code && (
+            <Button variant={'secondary'} className="p-2" onClick={clearInput}>
+              <X size={20} />
+            </Button>
+          )}
         </Stack>
-      </CardContent>
-    </Card>
+        <Stack>
+          {currentCheckerValue?.arguments.map((e, i) => {
+            const checker = checkers?.find((ch) => ch.code === currentCheckerValue.code);
+            const argument = checker?.args.find((a) => a.name === a.name);
+            if (!argument) return null;
+            return generateInputComponents(
+              [
+                {
+                  ...argument,
+                  label: [{ languageCode: 'en', value: argument.label || argument.name }],
+                  description: [{ languageCode: 'en', value: argument.description || '' }],
+                },
+              ],
+              getInputComponent,
+            ).map((field) => {
+              const value = e.value;
+              const setValue = (data: unknown) => {
+                try {
+                  onCheckerValueChange({
+                    code: currentCheckerValue.code,
+                    arguments: currentCheckerValue.arguments.map((a) => {
+                      try {
+                        if (a.name === field.name) {
+                          return { name: field.name, value: JSON.stringify(data) };
+                        }
+                      } catch {
+                        return a;
+                      }
+                      return a;
+                    }),
+                  });
+                } catch {
+                  console.error('Error setting value');
+                }
+              };
+
+              return (
+                <CustomFieldsProvider
+                  key={field.name}
+                  field={field}
+                  value={value}
+                  setValue={setValue}
+                  additionalData={{}}
+                  // disabled={disabled}
+                >
+                  <div key={field.name}>
+                    <div>
+                      <Label>{field.name}</Label>
+                    </div>
+                    {field.component}
+                  </div>
+                </CustomFieldsProvider>
+              );
+            });
+          })}
+        </Stack>
+      </Stack>
+    </CustomCard>
   );
 };

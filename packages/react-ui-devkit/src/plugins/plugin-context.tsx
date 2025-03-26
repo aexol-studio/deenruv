@@ -100,7 +100,7 @@ export const PluginProvider: FC<
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.ctrlKey && e.key === 'x') {
+            if (e.ctrlKey && e.key === 'q') {
                 setViewMarkers(prev => !prev);
             }
         };

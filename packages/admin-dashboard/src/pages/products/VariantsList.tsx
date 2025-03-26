@@ -15,10 +15,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(
-    deepMerge(ProductVariantListSelector, customFieldsSelector ?? {}),
-    additionalSelector ?? {},
-  );
+  const selector = deepMerge(ProductVariantListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     productVariants: [
       {

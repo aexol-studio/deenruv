@@ -3,10 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Label,
   MultipleSelector,
@@ -14,13 +10,15 @@ import {
   useServer,
   useDetailView,
   DetailViewMarker,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields, Stack } from '@/components';
 
 const STOCK_LOCATION_FORM_KEYS = ['CreateZoneInput', 'name', 'memberIds'] as const;
 
 export const ZoneDetailView = () => {
-  const { form, loading, fetchEntity, entity, setAdditionalData } = useDetailView(
+  const { form, fetchEntity, entity, setAdditionalData } = useDetailView(
     'zones-detail-view',
     ...STOCK_LOCATION_FORM_KEYS,
   );
@@ -87,37 +85,32 @@ export const ZoneDetailView = () => {
     <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack className="gap-3">
-                  <Stack className="basis-full md:basis-1/2">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={state.name?.value}
-                      onChange={(e) => setField('name', e.target.value)}
-                      errors={state.name?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack column className="basis-full md:basis-1/2">
-                    <Label className="mb-2">{t('details.basic.members')}</Label>
-                    <MultipleSelector
-                      options={countriesOptions}
-                      value={state?.memberIds?.value?.map((id) => ({
-                        label: countriesOptions?.find((o) => o.value === id)?.label || id,
-                        value: id,
-                      }))}
-                      placeholder={t('details.basic.memberPlaceholder')}
-                      onChange={handleChange}
-                      hideClearAllButton
-                    />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+            <Stack className="gap-3">
+              <Stack className="basis-full md:basis-1/2">
+                <Input
+                  label={t('details.basic.name')}
+                  value={state.name?.value}
+                  onChange={(e) => setField('name', e.target.value)}
+                  errors={state.name?.errors}
+                  required
+                />
+              </Stack>
+              <Stack column className="basis-full md:basis-1/2">
+                <Label className="mb-2">{t('details.basic.members')}</Label>
+                <MultipleSelector
+                  options={countriesOptions}
+                  value={state?.memberIds?.value?.map((id) => ({
+                    label: countriesOptions?.find((o) => o.value === id)?.label || id,
+                    value: id,
+                  }))}
+                  placeholder={t('details.basic.memberPlaceholder')}
+                  onChange={handleChange}
+                  hideClearAllButton
+                />
+              </Stack>
+            </Stack>
+          </CustomCard>
           <DetailViewMarker position={'zones-detail-view'} />
           {id && <EntityCustomFields entityName="zone" id={id} />}
         </Stack>

@@ -3,10 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Label,
   Option,
@@ -16,6 +12,8 @@ import {
   useSettings,
   useDetailView,
   DetailViewMarker,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { setInArrayBy } from '@/lists/useGflp';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
@@ -34,14 +32,10 @@ const SHIPPING_METHOD_FORM_KEYS = [
 
 export const ShippingMethodDetailView = () => {
   const { id } = useParams();
-  const { form, loading, fetchEntity, entity } = useDetailView(
-    'shippingMethods-detail-view',
-    ...SHIPPING_METHOD_FORM_KEYS,
-  );
+  const { form, fetchEntity } = useDetailView('shippingMethods-detail-view', ...SHIPPING_METHOD_FORM_KEYS);
   const {
     base: { setField, state },
   } = form;
-  const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('shippingMethods');
   const [fulfillmentHandlersOptions, setFulfillmentHandlersOptions] = useState<Option[]>();
   const { translationsLanguage: currentTranslationLng } = useSettings();
@@ -102,49 +96,46 @@ export const ShippingMethodDetailView = () => {
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
-                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={currentTranslationValue?.name ?? undefined}
-                      onChange={(e) => setTranslationField('name', e.target.value)}
-                      errors={state.translations?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.code')}
-                      value={state.code?.value ?? undefined}
-                      onChange={(e) => setField('code', e.target.value)}
-                      errors={state.code?.errors}
-                      required
-                    />
-                  </Stack>
-                </Stack>
-                <Stack column className="basis-full">
-                  <Label className="mb-2">{t('details.basic.description')}</Label>
-                  <RichTextEditor
-                    content={currentTranslationValue?.description ?? undefined}
-                    onContentChanged={(e) => setTranslationField('description', e)}
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+            <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
+              <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+                <Stack className="basis-full md:basis-1/3">
+                  <Input
+                    label={t('details.basic.name')}
+                    value={currentTranslationValue?.name ?? undefined}
+                    onChange={(e) => setTranslationField('name', e.target.value)}
+                    errors={state.translations?.errors}
+                    required
                   />
                 </Stack>
-                <Stack className="basis-full">
-                  <SimpleSelect
-                    label={t('details.basic.fulfillmentHandler')}
-                    value={state.fulfillmentHandler?.value ?? undefined}
-                    onValueChange={(e) => setField('fulfillmentHandler', e)}
-                    options={fulfillmentHandlersOptions}
-                    errors={state.fulfillmentHandler?.errors}
+                <Stack className="basis-full md:basis-1/3">
+                  <Input
+                    label={t('details.basic.code')}
+                    value={state.code?.value ?? undefined}
+                    onChange={(e) => setField('code', e.target.value)}
+                    errors={state.code?.errors}
+                    required
                   />
                 </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+              </Stack>
+              <Stack column className="basis-full">
+                <Label className="mb-2">{t('details.basic.description')}</Label>
+                <RichTextEditor
+                  content={currentTranslationValue?.description ?? undefined}
+                  onContentChanged={(e) => setTranslationField('description', e)}
+                />
+              </Stack>
+              <Stack className="basis-full">
+                <SimpleSelect
+                  label={t('details.basic.fulfillmentHandler')}
+                  value={state.fulfillmentHandler?.value ?? undefined}
+                  onValueChange={(e) => setField('fulfillmentHandler', e)}
+                  options={fulfillmentHandlersOptions}
+                  errors={state.fulfillmentHandler?.errors}
+                />
+              </Stack>
+            </div>
+          </CustomCard>
           <DetailViewMarker position={'shippingMethods-detail-view'} />
           {id && <EntityCustomFields entityName="shippingMethod" id={id} />}
           <CheckerCard

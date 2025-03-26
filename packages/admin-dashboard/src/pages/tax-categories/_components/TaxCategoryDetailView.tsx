@@ -1,15 +1,12 @@
 import {
   useDetailView,
   DetailViewMarker,
-  Spinner,
   useSettings,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Switch,
   Label,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { useEffect } from 'react';
 import { EntityCustomFields, Stack } from '@/components';
@@ -19,7 +16,7 @@ const TAX_CATEGORY_FORM_KEYS = ['CreateTaxCategoryInput', 'name', 'isDefault'] a
 
 export const TaxCategoryDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id, form, loading, fetchEntity } = useDetailView('taxCategories-detail-view', ...TAX_CATEGORY_FORM_KEYS);
+  const { id, form, fetchEntity } = useDetailView('taxCategories-detail-view', ...TAX_CATEGORY_FORM_KEYS);
   const { t } = useTranslation('taxCategories');
 
   const {
@@ -40,33 +37,25 @@ export const TaxCategoryDetailView = () => {
   return (
     <div>
       <div className="flex w-full flex-col gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-            <CardContent className="flex flex-col gap-4 p-0 pt-4">
-              <Stack className="items-start gap-4">
-                <Stack className="basis-full md:basis-1/2">
-                  <Input
-                    label={t('details.basic.name')}
-                    value={state.name?.value}
-                    required
-                    onChange={(e) => {
-                      setField('name', e.target.value);
-                    }}
-                    errors={state.name?.errors}
-                  />
-                </Stack>
-                <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/2">
-                  <Switch
-                    checked={state.isDefault?.value ?? undefined}
-                    onCheckedChange={(e) => setField('isDefault', e)}
-                  />
-                  <Label>{t('details.basic.isDefault')}</Label>
-                </Stack>
-              </Stack>
-            </CardContent>
-          </CardHeader>
-        </Card>
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+          <Stack className="items-start gap-4">
+            <Stack className="basis-full md:basis-1/2">
+              <Input
+                label={t('details.basic.name')}
+                value={state.name?.value}
+                required
+                onChange={(e) => {
+                  setField('name', e.target.value);
+                }}
+                errors={state.name?.errors}
+              />
+            </Stack>
+            <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/2">
+              <Switch checked={state.isDefault?.value ?? undefined} onCheckedChange={(e) => setField('isDefault', e)} />
+              <Label>{t('details.basic.isDefault')}</Label>
+            </Stack>
+          </Stack>
+        </CustomCard>
         <DetailViewMarker position={'taxCategories-detail-view'} />
         <EntityCustomFields entityName="taxCategory" id={id} currentLanguage={contentLng} />
       </div>

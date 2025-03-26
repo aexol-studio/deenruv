@@ -39,19 +39,17 @@ export const DetailViewMarker = ({
     };
 
     if (!position) return null;
-    return (
+    return viewMarkers ? (
         <div className="relative z-50 flex flex-col gap-4">
-            {viewMarkers && (
-                <Button
-                    className="rounded-md"
-                    size="icon"
-                    variant="outline"
-                    onClick={() => setOpenDropdown(!openDropdown)}
-                >
-                    <PlugZap size={16} />
-                </Button>
-            )}
-            {viewMarkers && openDropdown && (
+            <Button
+                className="rounded-md"
+                size="icon"
+                variant="outline"
+                onClick={() => setOpenDropdown(!openDropdown)}
+            >
+                <PlugZap size={16} />
+            </Button>
+            {openDropdown && (
                 <div className="absolute top-8 left-8 flex flex-col gap-2 bg-secondary p-4 rounded-md min-w-96 shadow-2xl">
                     <p className="max-w-sm text-sm">Create a new component using following code</p>
                     <div className="relative p-4 rounded-md bg-card">
@@ -72,5 +70,5 @@ export const DetailViewMarker = ({
             )}
             <Renderer position={position} tab={tab} />
         </div>
-    );
+    ) : null;
 };

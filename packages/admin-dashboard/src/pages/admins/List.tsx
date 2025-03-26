@@ -8,7 +8,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(AdminListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(AdminListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     administrators: [
       {

@@ -15,6 +15,8 @@ import {
   apiClient,
   useDetailView,
   DetailViewMarker,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 import { EntityCustomFields, Stack } from '@/components';
@@ -84,46 +86,44 @@ export const RoleDetailView = () => {
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
-                  <Input
-                    label={t('details.basic.description')}
-                    value={state.description?.value ?? undefined}
-                    onChange={(e) => setField('description', e.target.value)}
-                    errors={state.description?.errors}
-                    required
-                  />
-                </Stack>
-                <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
-                  <Input
-                    label={t('details.basic.code')}
-                    value={state.code?.value ?? undefined}
-                    onChange={(e) => setField('code', e.target.value)}
-                    errors={state.code?.errors}
-                    required
-                  />
-                </Stack>
-                <Stack column className="basis-full gap-[6px] xl:basis-1/2">
-                  <Label>{t('details.basic.channels')}</Label>
-                  <MultipleSelector
-                    options={allChannelOptions}
-                    value={currentChannelOptions}
-                    placeholder={t('details.basic.channelsPlaceholder')}
-                    onChange={(channelsOptions) =>
-                      setField(
-                        'channelIds',
-                        channelsOptions.map((o) => o.value),
-                      )
-                    }
-                    hideClearAllButton
-                  />
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+            <div className="flex flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+              <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
+                <Input
+                  label={t('details.basic.description')}
+                  value={state.description?.value ?? undefined}
+                  onChange={(e) => setField('description', e.target.value)}
+                  errors={state.description?.errors}
+                  required
+                />
+              </Stack>
+              <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
+                <Input
+                  label={t('details.basic.code')}
+                  value={state.code?.value ?? undefined}
+                  onChange={(e) => setField('code', e.target.value)}
+                  errors={state.code?.errors}
+                  required
+                />
+              </Stack>
+              <Stack column className="basis-full gap-[6px] xl:basis-1/2">
+                <Label>{t('details.basic.channels')}</Label>
+                <MultipleSelector
+                  options={allChannelOptions}
+                  value={currentChannelOptions}
+                  placeholder={t('details.basic.channelsPlaceholder')}
+                  onChange={(channelsOptions) =>
+                    setField(
+                      'channelIds',
+                      channelsOptions.map((o) => o.value),
+                    )
+                  }
+                  hideClearAllButton
+                />
+              </Stack>
+            </div>
+          </CustomCard>
+
           <DetailViewMarker position={'roles-detail-view'} />
           {id && <EntityCustomFields entityName="role" id={id} />}
           <PermissionsCard

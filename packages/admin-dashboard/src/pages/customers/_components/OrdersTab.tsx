@@ -31,10 +31,7 @@ export const OrdersTab: React.FC = () => {
       customFieldsSelector?: T,
       additionalSelector?: K,
     ) => {
-      const selector = deepMerge(
-        deepMerge(CustomerDetailOrderSelector, customFieldsSelector ?? {}),
-        additionalSelector ?? {},
-      );
+      const selector = deepMerge(CustomerDetailOrderSelector, additionalSelector ?? {});
       const response = await apiClient('query')({
         customer: [
           { id: id! },

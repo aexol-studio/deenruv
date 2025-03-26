@@ -10,6 +10,8 @@ import {
   useSettings,
   useDetailView,
   DetailViewMarker,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { EntityCustomFields, Stack } from '@/components';
@@ -43,29 +45,24 @@ export const StockLocationDetailView = () => {
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack column className="gap-3">
-                  <Input
-                    label={t('details.basic.name')}
-                    value={state.name?.value}
-                    onChange={(e) => setField('name', e.target.value)}
-                    errors={state.name?.errors}
-                    required
-                  />
-                  <Stack column className="basis-full">
-                    <Label className="mb-2">{t('details.basic.description')}</Label>
-                    <RichTextEditor
-                      content={state.description?.value ?? undefined}
-                      onContentChanged={(e) => setField('description', e)}
-                    />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+            <Stack column className="gap-3">
+              <Input
+                label={t('details.basic.name')}
+                value={state.name?.value}
+                onChange={(e) => setField('name', e.target.value)}
+                errors={state.name?.errors}
+                required
+              />
+              <Stack column className="basis-full">
+                <Label className="mb-2">{t('details.basic.description')}</Label>
+                <RichTextEditor
+                  content={state.description?.value ?? undefined}
+                  onContentChanged={(e) => setField('description', e)}
+                />
+              </Stack>
+            </Stack>
+          </CustomCard>
           <DetailViewMarker position={'stockLocations-detail-view'} />
           {id && <EntityCustomFields entityName="stockLocation" id={id} />}
         </Stack>

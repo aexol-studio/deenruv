@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+  CardIcons,
+  CustomCard,
   HistorySelector,
   useDetailView,
   useLazyQuery,
@@ -81,11 +79,8 @@ export const HistoryTab: React.FC = () => {
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('history.header')}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-4">
+    <CustomCard title={t('history.header')} icon={<CardIcons.history />} color="indigo">
+      <div className="flex flex-col gap-4">
         <History
           data={data?.customer?.history.items.reverse()}
           onNoteAdd={(input) => handle(add({ input }))}
@@ -98,7 +93,7 @@ export const HistoryTab: React.FC = () => {
             )
           }
         />
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

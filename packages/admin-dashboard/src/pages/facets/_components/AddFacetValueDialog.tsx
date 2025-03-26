@@ -11,12 +11,12 @@ import {
   useSettings,
 } from '@deenruv/react-ui-devkit';
 
-import { LanguageCode } from '@deenruv/admin-types';
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useGFFLP } from '@/lists/useGflp';
 import { Stack, EntityCustomFields } from '@/components';
+import { DialogTrigger } from '@radix-ui/react-dialog';
 
 interface AddFacetValueDialogProps {
   facetId: string;
@@ -138,6 +138,15 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={resetValues}>
+      <DialogTrigger>
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Create
+        </Button>
+      </DialogTrigger>
       <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{editMode ? t('addValueModal.editTitle') : t('addValueModal.title')}</DialogTitle>

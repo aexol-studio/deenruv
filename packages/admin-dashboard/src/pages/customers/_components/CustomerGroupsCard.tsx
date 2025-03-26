@@ -1,9 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+  CardIcons,
+  CustomCard,
   CustomerDetailType,
   MultipleSelector,
   Option,
@@ -70,26 +68,23 @@ export const CustomerGroupsCard: React.FC<RolesCardProps> = ({ groups, customerI
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('customerGroups.header')}</CardTitle>
-        <CardContent className="flex flex-col gap-4 p-0 pt-4">
-          {customerId ? (
-            <Stack className="gap-2">
-              <MultipleSelector
-                options={options}
-                value={value}
-                placeholder={t('customerGroups.placeholder')}
-                onChange={handleChange}
-                hideClearAllButton
-                className="h-24"
-              />
-            </Stack>
-          ) : (
-            <p>{t('customerGroups.createCustomerFirst')}</p>
-          )}
-        </CardContent>
-      </CardHeader>
-    </Card>
+    <CustomCard title={t('customerGroups.header')} icon={<CardIcons.users />} color="gray">
+      <div className="flex flex-col gap-4">
+        {customerId ? (
+          <Stack className="gap-2">
+            <MultipleSelector
+              options={options}
+              value={value}
+              placeholder={t('customerGroups.placeholder')}
+              onChange={handleChange}
+              hideClearAllButton
+              className="h-24"
+            />
+          </Stack>
+        ) : (
+          <p>{t('customerGroups.createCustomerFirst')}</p>
+        )}
+      </div>
+    </CustomCard>
   );
 };

@@ -17,7 +17,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(FacetListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(FacetListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     facets: [
       {

@@ -9,7 +9,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(ZoneListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(ZoneListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     ['zones']: [
       {

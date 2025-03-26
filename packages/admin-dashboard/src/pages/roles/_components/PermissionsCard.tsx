@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, ErrorMessage } from '@deenruv/react-ui-devkit';
+import { ErrorMessage, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Permission } from '@deenruv/admin-types';
@@ -18,14 +18,13 @@ export const PermissionsCard: React.FC<PermissionsCardProps> = ({
   const { t } = useTranslation('roles');
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.permissions.title')}</CardTitle>
-        <ErrorMessage errors={errors} />
-      </CardHeader>
-      <CardContent>
-        <PermissionsTable currentPermissions={currentPermissions} onPermissionsChange={onPermissionsChange} />
-      </CardContent>
-    </Card>
+    <CustomCard
+      title={t('details.permissions.title')}
+      icon={<CardIcons.permissions />}
+      color="teal"
+      upperRight={<ErrorMessage errors={errors} />}
+    >
+      <PermissionsTable currentPermissions={currentPermissions} onPermissionsChange={onPermissionsChange} />
+    </CustomCard>
   );
 };

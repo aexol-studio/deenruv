@@ -18,7 +18,7 @@ const fetch = async <T, K>(
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(deepMerge(CustomerListSelector, customFieldsSelector ?? {}), additionalSelector ?? {});
+  const selector = deepMerge(CustomerListSelector, additionalSelector ?? {});
 
   const response = await apiClient('query')({
     customers: [

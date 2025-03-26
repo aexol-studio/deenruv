@@ -5,6 +5,7 @@ interface OrderCardTitleProps {
     icon?: ReactNode;
     title: string;
     description?: string;
+    isCollapsed?: boolean;
 }
 
 export const CustomCardHeader: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
@@ -12,17 +13,24 @@ export const CustomCardHeader: React.FC<PropsWithChildren<OrderCardTitleProps>> 
     icon,
     description,
     title,
+    isCollapsed,
 }) => (
-    <CardHeader>
-        <div className="flex items-start justify-between">
-            <div className="flex items-center gap-4">
-                {icon && <span className="flex-1">{icon}</span>}
-                <div>
+    <CardHeader className="w-[90%] flex-1">
+        <div className="flex items-start justify-between w-full">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
+                {icon && <span className="flex-shrink-0">{icon}</span>}
+                <div className="text-start min-w-0 flex-1">
                     <CardTitle className="text-lg">{title}</CardTitle>
-                    {description && <CardDescription className="mt-1">{description}</CardDescription>}
+                    {description && (
+                        <CardDescription
+                            className={`mt-1 ${isCollapsed ? 'truncate overflow-hidden text-ellipsis whitespace-nowrap w-[95%]' : ''}`}
+                        >
+                            {description}
+                        </CardDescription>
+                    )}
                 </div>
             </div>
-            {children}
+            <div className="flex-shrink-0">{children}</div>
         </div>
     </CardHeader>
 );

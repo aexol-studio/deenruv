@@ -1,18 +1,8 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import {
-  apiClient,
-  deepMerge,
-  DetailList,
-  PaginationInput,
-  PromotionListSelector,
-  Routes,
-} from '@deenruv/react-ui-devkit';
+import { apiClient, DetailList, PaginationInput, PromotionListSelector, Routes } from '@deenruv/react-ui-devkit';
 
-const fetch = async <T,>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-) => {
-  const selector = deepMerge(PromotionListSelector, customFieldsSelector ?? {});
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput) => {
+  const selector = PromotionListSelector;
   const response = await apiClient('query')({
     ['promotions']: [
       {
