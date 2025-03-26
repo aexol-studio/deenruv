@@ -238,7 +238,9 @@ type DeenruvUIModalComponent<KEY extends keyof typeof ModalLocations> = {
 
 export type ModalLocationsKeys = keyof typeof ModalLocations;
 
-export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
+export type DeenruvTabs<
+    KEY extends keyof typeof DetailLocations | `${keyof typeof DetailLocations}-sidebar`,
+> = {
     /** Used as localization */
     id: KEY;
     /** Label used as readable value */
