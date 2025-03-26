@@ -16,8 +16,8 @@ export const UIPlugin = createDeenruvUIPlugin({
     pages: [{ path: 'locale-test', element: <LocaleTest /> }],
     inputs: [{ id: 'string-custom-field-input', component: CustomInput }],
     components: [
-        { component: TestComponent, id: 'products-detail-view' as const },
-        { component: TestComponent, id: 'product-detail-view-sidebar' as const },
+        { component: TestComponent, id: 'products-detail-view' },
+        { component: TestComponent, id: 'products-detail-view-sidebar', tab: 'product' },
     ],
     tables,
     tabs,

@@ -205,7 +205,7 @@ type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
 
 type DeenruvUIDetailComponent<KEY extends keyof typeof DetailLocations> = {
     /** Used as localization */
-    id: KEY;
+    id: KEY | `${KEY}-sidebar`;
     /** Tab */
     tab?: string;
     /** Detail view component */
@@ -238,9 +238,7 @@ type DeenruvUIModalComponent<KEY extends keyof typeof ModalLocations> = {
 
 export type ModalLocationsKeys = keyof typeof ModalLocations;
 
-export type DeenruvTabs<
-    KEY extends keyof typeof DetailLocations | `${keyof typeof DetailLocations}-sidebar`,
-> = {
+export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
     /** Used as localization */
     id: KEY;
     /** Label used as readable value */
