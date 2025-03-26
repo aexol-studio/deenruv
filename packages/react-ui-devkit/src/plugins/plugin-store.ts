@@ -3,9 +3,9 @@ import React from 'react';
 import { DeenruvUIPlugin, DetailLocationID, ListLocationID } from '../types/types';
 import { defaultInputComponents } from './default-input-components.js';
 
-const pagePathPrefix = 'admin-ui/extensions/';
+const pagePathPrefix = 'admin-ui/extensions';
 
-const getExtensionsPath = (path: string) => pagePathPrefix + path;
+const getExtensionsPath = (pluginName: string, path: string) => [pagePathPrefix, pluginName, path].join('/');
 
 type I18Next = {
     addResourceBundle: (lng: string, ns: string, trans: object) => void;
@@ -33,14 +33,18 @@ export class PluginStore {
             }
         });
         this.pluginPages = plugins.flatMap(
-            el => el.pages?.map(route => ({ ...route, path: getExtensionsPath(route.path) })) || [],
+            el =>
+                el.pages?.map(route => ({
+                    ...route,
+                    path: getExtensionsPath(el.name, route.path),
+                })) || [],
         );
         this.pluginsNavigationDataField.links = plugins.flatMap(el => {
             if (!el.navMenuLinks) return [];
             return el.navMenuLinks.map(linkEl => ({
                 ...linkEl,
                 labelId: `${el.translations?.ns}.${linkEl.labelId}`,
-                href: getExtensionsPath(linkEl.href),
+                href: getExtensionsPath(el.name, linkEl.href),
             }));
         });
         this.pluginsNavigationDataField.groups = plugins
