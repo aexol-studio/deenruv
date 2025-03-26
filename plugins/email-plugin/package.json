@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/email-plugin",
-    "version": "0.0.101",
+    "version": "0.0.102",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
