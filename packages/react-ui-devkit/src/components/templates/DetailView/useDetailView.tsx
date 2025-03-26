@@ -182,17 +182,14 @@ export const DetailViewStoreProvider = <
         const entityGraphQL = DetailLocations[locationId as keyof typeof DetailLocations];
         const name = (entityGraphQL['type'].charAt(0).toLowerCase() +
             entityGraphQL['type'].slice(1)) as keyof ValueTypes['Query'];
-        const selector = customFieldsForQuery(
-            entityGraphQL['selector'],
-            graphQLSchema?.get(name)?.fields || [],
-        );
+
         if (id === undefined) return;
         setLoading(true);
         try {
             const query =
                 typeof id === 'string'
-                    ? ({ [name]: [{ id }, selector] } as unknown as ValueTypes['Query'])
-                    : ({ [name]: selector } as unknown as ValueTypes['Query']);
+                    ? ({ [name]: [{ id }, entityGraphQL['selector']] } as unknown as ValueTypes['Query'])
+                    : ({ [name]: entityGraphQL['selector'] } as unknown as ValueTypes['Query']);
             const data = await apiClient('query')(query);
             const entity = data[name] as EntityType;
             if (data && data[name]) {

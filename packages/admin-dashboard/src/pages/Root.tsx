@@ -104,7 +104,7 @@ export const Root = () => {
       const { globalSettings } = await apiClient('query')({
         globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true },
       });
-      initializeOrderCustomFields(schema, globalSettings.serverConfig);
+      initializeOrderCustomFields(globalSettings.serverConfig);
       setLoaded(true);
 
       const [countriesResponse, paymentsResponse, fulfillmentsResponse] = await Promise.allSettled([

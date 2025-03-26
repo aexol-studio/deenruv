@@ -28,138 +28,96 @@ declare global {
     }
 }
 type CallOptions = { type: 'standard' | 'upload' };
-
 const CUSTOM_MAP = {
+    Administrator: ['id'],
+    Channel: ['id'],
+    Collection: ['id'],
+    Country: ['id'],
+    Facet: ['id'],
     Asset: ['id', 'source', 'preview'],
     PaymentMethod: ['id'],
+    Job: ['id'],
 };
-
-const processSelections = (selections: readonly SelectionNode[], parentQuery: GraphQLSchemaField): any => {
-    return selections.map(selection => {
-        if (selection.kind !== 'Field') return selection;
-        const founded = parentQuery.fields.find(field => field.name === selection.name.value);
-        if (!founded) return selection;
-        const nestedSelections =
-            selection.selectionSet?.selections &&
-            processSelections(selection.selectionSet.selections, founded);
-        const updatedSelection = {
-            ...selection,
-            selectionSet: nestedSelections
-                ? { kind: 'SelectionSet', selections: nestedSelections }
-                : undefined,
-        };
-        const foundedCustomFields = founded.fields?.find(
-            field => field.name === 'customFields' && field.type !== 'JSON' && field.fields.length,
-        );
-
-        if (foundedCustomFields && foundedCustomFields.fields.length) {
-            updatedSelection.selectionSet = {
-                kind: 'SelectionSet',
-                selections: [
-                    ...(updatedSelection.selectionSet?.selections || []),
-                    {
+const buildSelectionSet = (lookup: string, depth: number): any => {
+    if (depth) {
+        const selections = Object.entries(window.__DEENRUV_SCHEMA__?.fieldLookup[lookup] || {})
+            .map(([field, tp]) => {
+                const selectionSet = buildSelectionSet(tp, depth - 1);
+                if (!window.__DEENRUV_SCHEMA__?.fieldLookup[tp] || selectionSet?.selections.length) {
+                    const selections = CUSTOM_MAP[tp as keyof typeof CUSTOM_MAP]?.map(field => ({
                         kind: 'Field',
-                        name: { kind: 'Name', value: 'customFields' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: foundedCustomFields.fields.map(field => {
-                                if (field?.fields?.length || Object.keys(CUSTOM_MAP).includes(field.type)) {
-                                    const fields =
-                                        CUSTOM_MAP[field.type as keyof typeof CUSTOM_MAP] ||
-                                        field.fields.map(field => field.name);
-                                    const index = fields.indexOf('customFields');
-                                    if (index > -1) fields.splice(index, 1);
-                                    return {
-                                        kind: 'Field',
-                                        name: { kind: 'Name', value: field.name },
-                                        selectionSet: {
-                                            kind: 'SelectionSet',
-                                            selections: fields.map(field => ({
-                                                kind: 'Field',
-                                                name: { kind: 'Name', value: field },
-                                            })),
-                                        },
-                                    };
-                                } else return { kind: 'Field', name: { kind: 'Name', value: field.name } };
-                            }),
-                        },
-                    },
-                ],
-            };
-        }
-        return updatedSelection;
-    });
+                        name: { kind: 'Name', value: field },
+                    }));
+                    return {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: field },
+                        selectionSet: selections?.length ? { ...selectionSet, selections } : selectionSet,
+                    };
+                }
+            })
+            .filter(v => v !== undefined);
+        if (selections.length) return { kind: 'SelectionSet', selections };
+    }
 };
+const findType = (rootType: string, path: string[]) =>
+    path.reduce((pv, cv) => window.__DEENRUV_SCHEMA__?.fieldLookup[pv]?.[cv]!, rootType);
 
-const modifyQuery = (query: string, variables: Record<string, unknown>) => {
-    const ast: DocumentNode = parse(query);
-    const schema = window.__DEENRUV_SCHEMA__;
-    if (!schema) return { query, variables };
+const addCustomQuery = (query: string) => {
+    if (!window.__DEENRUV_SCHEMA__) return query;
+    const { mutationType, queryType, fieldLookup } = window.__DEENRUV_SCHEMA__;
+    const ast = parse(query);
+    const path: string[] = [];
+    let operation = '';
+
     const result = visit(ast, {
+        OperationDefinition: {
+            enter(node) {
+                operation = node.operation;
+            },
+        },
         Field: {
             enter(node) {
-                const data = schema.get(node.name.value);
-                if (!data) return node;
-                const selections = processSelections(node.selectionSet?.selections || [], data);
-                const haveCustomFields = data.fields.find(field => field.name === 'customFields');
-                if (
-                    data.fields.length &&
-                    haveCustomFields &&
-                    haveCustomFields.type !== 'JSON' &&
-                    haveCustomFields.fields.length
-                ) {
-                    selections.push({
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'customFields' },
-                        selectionSet: {
-                            kind: 'SelectionSet',
-                            selections: data.fields
-                                .find(field => field.name === 'customFields')
-                                ?.fields.map(field => {
-                                    if (
-                                        field?.fields?.length ||
-                                        Object.keys(CUSTOM_MAP).includes(field.type)
-                                    ) {
-                                        const fields =
-                                            CUSTOM_MAP[field.type as keyof typeof CUSTOM_MAP] ||
-                                            field.fields.map(field => field.name);
-                                        const index = fields.indexOf('customFields');
-                                        if (index > -1) fields.splice(index, 1);
-                                        return {
-                                            kind: 'Field',
-                                            name: { kind: 'Name', value: field.name },
-                                            selectionSet: {
-                                                kind: 'SelectionSet',
-                                                selections: fields.map(field => ({
-                                                    kind: 'Field',
-                                                    name: { kind: 'Name', value: field },
-                                                })),
-                                            },
-                                        };
-                                    }
-                                    return {
+                path.push(node.name.value);
+                const type = findType(operation === 'query' ? queryType : mutationType, path);
+                const fields = fieldLookup[type];
+                if (fields && 'customFields' in fields && !path.includes('customFields')) {
+                    const selectionSet = buildSelectionSet(fields['customFields'], 3);
+                    if (selectionSet) {
+                        return {
+                            ...node,
+                            selectionSet: {
+                                ...node.selectionSet,
+                                selections: [
+                                    ...(node.selectionSet?.selections || []),
+                                    {
                                         kind: 'Field',
-                                        name: { kind: 'Name', value: field.name },
-                                    };
-                                }),
-                        },
-                    });
+                                        name: { kind: 'Name', value: 'customFields' },
+                                        selectionSet,
+                                    },
+                                ],
+                            },
+                        };
+                    }
                 }
-                return { ...node, selectionSet: { kind: 'SelectionSet', selections } };
+                return node;
+            },
+            leave(node) {
+                path.pop();
+                return node;
             },
         },
     });
-    return { query: print(result), variables };
+    return print(result);
 };
 
 export const deenruvAPICall = (options?: CallOptions) => {
     return async (
         _query: string,
-        _variables: Record<string, unknown> = {},
+        variables: Record<string, unknown> = {},
         customParams?: Record<string, string>,
     ) => {
-        const { query, variables } = modifyQuery(_query, _variables);
-        console.log(query);
+        const query = addCustomQuery(_query);
+        console.log('QUERY', query);
         const { translationsLanguage, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
         const { type } = options || {};
@@ -177,9 +135,9 @@ export const deenruvAPICall = (options?: CallOptions) => {
 
         if (type === 'upload') {
             const formData = new FormData();
-            formData.append('operations', JSON.stringify({ query: _query, variables: _variables }));
+            formData.append('operations', JSON.stringify({ query: _query, variables }));
             const mapData: Record<string, string[]> = {};
-            const files = _variables.input as ResolverInputTypes['CreateAssetInput'][];
+            const files = variables.input as ResolverInputTypes['CreateAssetInput'][];
             files.forEach((_, index) => {
                 mapData[(index + 1).toString()] = ['variables.input.' + index + '.file'];
             });

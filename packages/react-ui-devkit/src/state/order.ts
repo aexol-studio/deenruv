@@ -83,7 +83,6 @@ interface Order {
     manualChange: { state: boolean; toAction?: string };
     currentPossibilities: { name: string; to: Array<string> } | undefined;
     orderProcess: { name: string; to: Array<string> }[] | undefined;
-    graphQLSchema: GraphQLSchema | null;
     orderLineCustomFields: CustomFieldConfigType[] | null;
 }
 
@@ -102,7 +101,7 @@ interface Actions {
     settlePayment: (input: { id: string }) => void;
     cancelPayment: (id: string) => void;
     cancelFulfillment: (id: string) => void;
-    initializeOrderCustomFields(graphQLSchema: GraphQLSchema | null, serverConfig: ServerConfigType): void;
+    initializeOrderCustomFields(serverConfig: ServerConfigType): void;
     setManualChange(value: { state: boolean; toAction?: string }): void;
     setCurrentPossibilities(value: { name: string; to: Array<string> }): void;
     getChangesRegistry: (options?: DryRunOptions) => Promise<ChangesRegistry>;
@@ -170,7 +169,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         manualChange: { state: false, toAction: undefined },
         currentPossibilities: undefined,
         orderProcess: undefined,
-        graphQLSchema: null,
         orderLineCustomFields: null,
         setCurrentPossibilities: value => set({ currentPossibilities: value }),
         setManualChange: manualChange => set({ manualChange }),
@@ -205,7 +203,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
 
             set({ mode, order });
         },
-        initializeOrderCustomFields: (graphQLSchema: GraphQLSchema, serverConfig: ServerConfigType) => {
+        initializeOrderCustomFields: (serverConfig: ServerConfigType) => {
             const { order } = get();
             if (order) {
                 const currentPossibilities = serverConfig.orderProcess?.find(el => el.name === order.state);
@@ -214,23 +212,13 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             const orderLineCustomFields = serverConfig.entityCustomFields?.find(
                 el => el.entityName === 'OrderLine',
             )?.customFields;
-            set({ graphQLSchema, orderLineCustomFields, orderProcess: serverConfig.orderProcess });
+            set({ orderLineCustomFields, orderProcess: serverConfig.orderProcess });
         },
         fetchOrder: async (id: string) => {
-            const {
-                orderProcess,
-                setCurrentPossibilities,
-                setOrder,
-                fetchOrderHistory,
-                setModifiedOrder,
-                graphQLSchema,
-            } = get();
+            const { orderProcess, setCurrentPossibilities, setOrder, fetchOrderHistory, setModifiedOrder } =
+                get();
             set({ loading: true });
             try {
-                const selector = customFieldsForQuery(
-                    OrderDetailSelector,
-                    graphQLSchema?.get('order')?.fields || [],
-                );
                 const { order } = await apiClient('query')({ order: [{ id }, OrderDetailSelector] });
                 if (!order) {
                     throw new Error(`Failed to load order with id ${id}`);

@@ -18,56 +18,56 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
 
-const SchemaField = ({ field, depth = 0 }: { field: GraphQLSchemaField; depth?: number }) => {
-  const [expanded, setExpanded] = useState(depth < 2);
-  const hasFields = field.fields && field.fields.length > 0;
-  const indent = Array(depth).fill('  ').join('');
+// const SchemaField = ({ field, depth = 0 }: { field: GraphQLSchemaField; depth?: number }) => {
+//   const [expanded, setExpanded] = useState(depth < 2);
+//   const hasFields = field.fields && field.fields.length > 0;
+//   const indent = Array(depth).fill('  ').join('');
 
-  return (
-    <div className="font-mono">
-      <div className="flex items-start">
-        <button
-          onClick={() => hasFields && setExpanded(!expanded)}
-          className={`mr-1 ${hasFields ? 'cursor-pointer' : 'cursor-default'} text-xs`}
-        >
-          {hasFields ? (expanded ? '▼' : '►') : '•'}
-        </button>
-        <div>
-          <span className="text-blue-600 dark:text-blue-400">{field.name}</span>
-          <span className="text-gray-600 dark:text-gray-400">: </span>
-          <span className="text-green-600 dark:text-green-400">{field.type}</span>
-          {field.description && (
-            <span className="ml-2 text-xs italic text-gray-500 dark:text-gray-400">// {field.description}</span>
-          )}
-        </div>
-      </div>
-      {expanded && hasFields && (
-        <div className="ml-4">
-          {field.fields.map((subField, index) => (
-            <SchemaField key={`${subField.name}-${index}`} field={subField} depth={depth + 1} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+//   return (
+//     <div className="font-mono">
+//       <div className="flex items-start">
+//         <button
+//           onClick={() => hasFields && setExpanded(!expanded)}
+//           className={`mr-1 ${hasFields ? 'cursor-pointer' : 'cursor-default'} text-xs`}
+//         >
+//           {hasFields ? (expanded ? '▼' : '►') : '•'}
+//         </button>
+//         <div>
+//           <span className="text-blue-600 dark:text-blue-400">{field.name}</span>
+//           <span className="text-gray-600 dark:text-gray-400">: </span>
+//           <span className="text-green-600 dark:text-green-400">{field.type}</span>
+//           {field.description && (
+//             <span className="ml-2 text-xs italic text-gray-500 dark:text-gray-400">// {field.description}</span>
+//           )}
+//         </div>
+//       </div>
+//       {expanded && hasFields && (
+//         <div className="ml-4">
+//           {field.fields.map((subField, index) => (
+//             <SchemaField key={`${subField.name}-${index}`} field={subField} depth={depth + 1} />
+//           ))}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
 
-const SchemaViewer = ({ schema }: { schema: GraphQLSchema | undefined }) => {
-  if (!schema || schema.size === 0) {
-    return <div className="text-gray-500">No schema available</div>;
-  }
+// const SchemaViewer = ({ schema }: { schema: GraphQLSchema | undefined }) => {
+//   if (!schema || schema.size === 0) {
+//     return <div className="text-gray-500">No schema available</div>;
+//   }
 
-  return (
-    <div className="space-y-2">
-      {Array.from(schema.entries()).map(([key, field]) => (
-        <div key={key} className="border-b pb-2 last:border-b-0">
-          <div className="mb-1 text-sm font-semibold">{key}</div>
-          <SchemaField field={field} />
-        </div>
-      ))}
-    </div>
-  );
-};
+//   return (
+//     <div className="space-y-2">
+//       {Array.from(schema.entries()).map(([key, field]) => (
+//         <div key={key} className="border-b pb-2 last:border-b-0">
+//           <div className="mb-1 text-sm font-semibold">{key}</div>
+//           <SchemaField field={field} />
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
 
 export const DeenruvDeveloperIndicator = () => {
   const { graphQLSchema } = useServer(({ graphQLSchema }) => ({ graphQLSchema }));
@@ -148,7 +148,7 @@ export const DeenruvDeveloperIndicator = () => {
                 </div>
 
                 <div className="md:w-3/4">
-                  {showSchema && graphQLSchema ? (
+                  {/* {showSchema && graphQLSchema ? (
                     <div className="h-full rounded-md border p-3">
                       <h3 className="mb-2 text-sm font-medium">GraphQL Schema</h3>
                       <ScrollArea className="h-[350px]">
@@ -163,7 +163,7 @@ export const DeenruvDeveloperIndicator = () => {
                         {showSchema ? 'No schema available' : "Enable 'Show GraphQL Schema' to view the schema here"}
                       </p>
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

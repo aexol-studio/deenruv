@@ -144,7 +144,6 @@ export function EntityCustomFields<T extends ViableEntity>({
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isInitialized, setInitialized] = useState(false);
-  const { graphQLSchema } = useServer();
 
   const entityCustomFields = useServer((p) =>
     p.serverConfig?.entityCustomFields?.find(
@@ -152,40 +151,10 @@ export function EntityCustomFields<T extends ViableEntity>({
     ),
   )?.customFields;
 
-  const entityTypeCustomFields = graphQLSchema
-    ?.get(`Type:${entityName.charAt(0).toUpperCase() + entityName.slice(1)}`)
-    ?.fields.find((cF) => cF.name === 'customFields')?.fields;
-
   const relationFields = useMemo(
     () => entityCustomFields?.filter((el) => el.__typename === 'RelationCustomFieldConfig').map((el) => el.name),
     [entityCustomFields],
   );
-
-  const generateCustomFieldsInitialValues = useCallback(
-    (customFieldsSchema: { description: string; name: string; type: string; fields: any[] }[] | undefined) => {
-      if (!customFieldsSchema) return {};
-
-      const initialValues: Record<string, null | 1> = {};
-
-      customFieldsSchema.forEach((cF) => {
-        console.log('INIT', cF.name);
-        // const key = cF.name.replace(/(Id|Ids)$/, '');
-        initialValues[cF.name] = cF.type === 'Int' ? 1 : null;
-      });
-
-      console.log('INIT', initialValues);
-
-      return initialValues;
-    },
-    [entityCustomFields, relationFields],
-  );
-
-  useEffect(() => {
-    if (entityName === 'orderLine') {
-      console.log('SETTING', generateCustomFieldsInitialValues(entityTypeCustomFields));
-      setField('customFields', generateCustomFieldsInitialValues(entityTypeCustomFields));
-    }
-  }, []);
 
   const { state, setField } = useGFFLP(
     typeWithCommonCustomFields,
@@ -193,7 +162,7 @@ export function EntityCustomFields<T extends ViableEntity>({
     'translations',
   )({
     customFields: {
-      initialValue: entityName === 'orderLine' ? generateCustomFieldsInitialValues(entityTypeCustomFields) : {},
+      initialValue: {},
     },
   });
 
