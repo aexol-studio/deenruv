@@ -49,7 +49,7 @@ const processSelections = (selections: readonly SelectionNode[], parentQuery: Gr
                 : undefined,
         };
         const foundedCustomFields = founded.fields?.find(
-            field => field.name === 'customFields' && field.type !== 'JSON',
+            field => field.name === 'customFields' && field.type !== 'JSON' && field.fields.length,
         );
 
         if (foundedCustomFields && foundedCustomFields.fields.length) {
@@ -145,7 +145,6 @@ const modifyQuery = (query: string, variables: Record<string, unknown>) => {
                         },
                     });
                 }
-
                 return { ...node, selectionSet: { kind: 'SelectionSet', selections } };
             },
         },
