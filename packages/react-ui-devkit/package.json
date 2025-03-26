@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/react-ui-devkit",
-    "version": "0.0.99",
+    "version": "0.0.100",
     "homepage": "https://www.deenruv.io/",
     "license": "MIT",
     "publishConfig": {
@@ -18,7 +18,8 @@
     "scripts": {
         "build": "rimraf dist && tspc --build",
         "watch": "tspc --watch",
-        "lint": "eslint --fix ."
+        "lint": "eslint --fix .",
+        "docs": "tsx generate-docs.ts"
     },
     "bugs": {
         "url": "https://github.com/deenruv-ecommerce/deenruv/issues"

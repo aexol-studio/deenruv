@@ -26,6 +26,7 @@ import { useServer } from '@/state/server.js';
 import { useTranslation } from 'react-i18next';
 import { getPermissions } from '@/utils/getPermissions.js';
 import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter.js';
+import { PageBlock } from '@/universal_components/PageBlock.js';
 interface DetailViewFormProps<
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
@@ -216,13 +217,19 @@ const DetailTabs = ({
     const showCreateButton = !id && isPermittedToCreate;
     const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
 
-    const memoizedTabs = useMemo(() => {
+    const memoized = useMemo(() => {
         return tabs.map((tab, idx) => (
             <TabsContent key={idx} value={tab.name}>
-                <div className={cn(sidebar ? 'grid grid-cols-[minmax(0,1fr)_400px] gap-4' : 'w-full')}>
+                <PageBlock
+                    sidebar={
+                        <div className="flex flex-col gap-2">
+                            {sidebar}
+                            <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
+                        </div>
+                    }
+                >
                     {tab.component ? tab.component : <div>Missing component</div>}
-                    {sidebar}
-                </div>
+                </PageBlock>
             </TabsContent>
         ));
     }, [tabs]);
@@ -341,19 +348,7 @@ const DetailTabs = ({
                         {t('toasts.roleLoadingError', { value: id })}
                     </div>
                 ) : null}
-                {tabs.map((tab, idx) => (
-                    <TabsContent key={idx} value={tab.name}>
-                        <div
-                            className={cn(sidebar ? 'grid grid-cols-[minmax(0,1fr)_400px] gap-4' : 'w-full')}
-                        >
-                            {tab.component ? tab.component : <div>Missing component</div>}
-                            <div className="flex flex-col gap-2">
-                                {sidebar}
-                                <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
-                            </div>
-                        </div>
-                    </TabsContent>
-                ))}
+                {memoized}
             </div>
         </Tabs>
     );
