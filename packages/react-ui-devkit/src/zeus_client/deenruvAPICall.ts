@@ -80,12 +80,7 @@ const processSelections = (selections: readonly SelectionNode[], parentQuery: Gr
                                             })),
                                         },
                                     };
-                                } else {
-                                    return {
-                                        kind: 'Field',
-                                        name: { kind: 'Name', value: field.name },
-                                    };
-                                }
+                                } else return { kind: 'Field', name: { kind: 'Name', value: field.name } };
                             }),
                         },
                     },
@@ -165,6 +160,7 @@ export const deenruvAPICall = (options?: CallOptions) => {
         customParams?: Record<string, string>,
     ) => {
         const { query, variables } = modifyQuery(_query, _variables);
+        console.log(query);
         const { translationsLanguage, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
         const { type } = options || {};

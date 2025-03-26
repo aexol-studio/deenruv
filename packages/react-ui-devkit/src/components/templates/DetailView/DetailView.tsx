@@ -221,10 +221,12 @@ const DetailTabs = ({
         <TabsContent key={idx} value={tab.name}>
             <PageBlock
                 sidebar={
-                    <div className="flex flex-col gap-2">
-                        {sidebar}
-                        <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
-                    </div>
+                    sidebar ? (
+                        <div className="flex flex-col gap-2">
+                            {sidebar}
+                            <DetailViewMarker position={`${locationId}-sidebar`} tab={tab.name} />
+                        </div>
+                    ) : undefined
                 }
             >
                 {tab.component ? tab.component : <div>Missing component</div>}
