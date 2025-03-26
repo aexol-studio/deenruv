@@ -29,5 +29,5 @@
             }
         ]
     },
-    "exclude": ["dist", "node_modules"]
+    "exclude": ["dist", "node_modules", "docs", "generate-docs.ts"]
 }
