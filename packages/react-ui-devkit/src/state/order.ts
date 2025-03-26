@@ -250,16 +250,9 @@ export const useOrder = create<Order & Actions>()((set, get) => {
             }
         },
         checkModifyOrder: async input => {
-            const { graphQLSchema } = get();
-            const selectorWithCF = customFieldsForQuery(
-                OrderDetailSelector,
-                graphQLSchema?.get('order')?.fields || [],
-            );
-            const selector = { ...modifyOrderSelector, '...on Order': selectorWithCF };
-
             try {
                 const { modifyOrder } = await apiClient('mutation')({
-                    modifyOrder: [{ input: { ...input, dryRun: true } }, selector],
+                    modifyOrder: [{ input: { ...input, dryRun: true } }, modifyOrderSelector],
                 });
                 if (modifyOrder.__typename === 'Order') {
                     return modifyOrder;
