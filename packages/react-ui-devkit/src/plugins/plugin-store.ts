@@ -5,7 +5,8 @@ import { defaultInputComponents } from './default-input-components.js';
 
 const pagePathPrefix = 'admin-ui/extensions';
 
-const getExtensionsPath = (pluginName: string, path: string) => [pagePathPrefix, pluginName, path].join('/');
+const getExtensionsPath = (pluginName: string, path: string) =>
+    [pagePathPrefix, pluginName.toLowerCase().replace(' ', '-'), path].join('/');
 
 type I18Next = {
     addResourceBundle: (lng: string, ns: string, trans: object) => void;
@@ -36,7 +37,7 @@ export class PluginStore {
             el =>
                 el.pages?.map(route => ({
                     ...route,
-                    path: getExtensionsPath(el.name.toLowerCase().replace(' ', '-'), route.path),
+                    path: getExtensionsPath(el.name, route.path),
                 })) || [],
         );
         this.pluginsNavigationDataField.links = plugins.flatMap(el => {
@@ -44,7 +45,7 @@ export class PluginStore {
             return el.navMenuLinks.map(linkEl => ({
                 ...linkEl,
                 labelId: `${el.translations?.ns}.${linkEl.labelId}`,
-                href: getExtensionsPath(el.name.toLowerCase().replace(' ', '-'), linkEl.href),
+                href: getExtensionsPath(el.name, linkEl.href),
             }));
         });
         this.pluginsNavigationDataField.groups = plugins
