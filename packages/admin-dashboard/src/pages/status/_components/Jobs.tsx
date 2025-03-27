@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
   formatDate,
   ListTable,
-  useDetailList,
+  useDetailListHook,
   useSettings,
 } from '@deenruv/react-ui-devkit';
 import { ColumnDef, useReactTable, getCoreRowModel } from '@tanstack/react-table';
@@ -110,7 +110,7 @@ export const Jobs = () => {
     }),
     [stateFilter, jobQueueFilter],
   );
-  const { objects, refetch, Paginate, Search } = useDetailList({
+  const { objects, refetch, Paginate, Search } = useDetailListHook({
     searchFields: ['queueName'],
     fetch: async ({ page, perPage, filter, filterOperator }) => {
       const { jobs } = await apiClient('query')({

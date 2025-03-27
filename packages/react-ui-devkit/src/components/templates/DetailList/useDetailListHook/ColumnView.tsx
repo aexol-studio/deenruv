@@ -20,7 +20,7 @@ import React from 'react';
 import { CSS } from '@dnd-kit/utilities';
 import { useTranslation } from 'react-i18next';
 import { Table } from '@tanstack/react-table';
-import { EXCLUDED_COLUMNS } from '@/components/templates/DetailList/useDetailList/constants.js';
+import { EXCLUDED_COLUMNS } from '@/components/templates/DetailList/useDetailListHook/constants.js';
 import { Checkbox } from '@/components/atoms/checkbox.js';
 import { camelCaseToSpaces } from '@/utils/camel-case-to-spaces.js';
 import { useServer } from '@/state/server.js';

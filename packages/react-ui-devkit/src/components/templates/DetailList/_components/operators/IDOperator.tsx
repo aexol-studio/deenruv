@@ -3,7 +3,7 @@ import { FilterInputType } from '../types';
 import { ArrayInput } from './ArrayInput';
 import { Input } from '@/components';
 import React from 'react';
-import { OperatorSelect } from '@/components/templates/DetailList/useDetailList/OperatorSelect.js';
+import { OperatorSelect } from '@/components/templates/DetailList/useDetailListHook/OperatorSelect.js';
 
 type IDOperator = Omit<FilterInputType['IDOperators'], '__typename'>;
 const ARRAY_TYPES = ['in', 'notIn'] as (keyof IDOperator)[];

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { FilterInputType } from '../types';
 import { Button, Calendar, Checkbox, Popover, PopoverContent, PopoverTrigger } from '@/components';
 import React from 'react';
-import { OperatorSelect } from '@/components/templates/DetailList/useDetailList/OperatorSelect.js';
+import { OperatorSelect } from '@/components/templates/DetailList/useDetailListHook/OperatorSelect.js';
 import { cn } from '@/lib/utils.js';
 import { CalendarIcon } from 'lucide-react';
 

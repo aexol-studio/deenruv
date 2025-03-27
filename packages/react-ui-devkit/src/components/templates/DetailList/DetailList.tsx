@@ -1,4 +1,4 @@
-import { useDetailListHook } from './useDetailList';
+import { useDetailListHook } from './useDetailListHook';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -25,11 +25,11 @@ import { ListLocationID, PromisePaginated } from '@/types';
 import { useErrorHandler, useLocalStorage } from '@/hooks';
 import { Button, TableLabel, useDetailView } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
-import { ListType } from './useDetailList/types';
-import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailList/constants';
+import { ListType } from './useDetailListHook/types';
+import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailListHook/constants';
 import { cn } from '@/lib';
-import { FiltersDialog } from '@/components/templates/DetailList/useDetailList/FiltersDialog.js';
-import { ColumnView } from '@/components/templates/DetailList/useDetailList/ColumnView.js';
+import { FiltersDialog } from '@/components/templates/DetailList/useDetailListHook/FiltersDialog.js';
+import { ColumnView } from '@/components/templates/DetailList/useDetailListHook/ColumnView.js';
 import { DetailListStoreProvider } from './useDetailList.js';
 
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';

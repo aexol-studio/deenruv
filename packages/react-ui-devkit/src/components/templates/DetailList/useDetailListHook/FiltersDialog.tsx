@@ -13,8 +13,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/atoms/popo
 import { SimpleSelect } from '@/components/molecules/SimpleSelect.js';
 import { SimpleTooltip } from '@/components/molecules/SimpleTooltip.js';
 import { FilterInputTypeUnion } from '@/components/templates/DetailList/_components/types.js';
-import { OperatorValue } from '@/components/templates/DetailList/useDetailList/OperatorValue.js';
-import { ListTypeKeys, ListType } from '@/components/templates/DetailList/useDetailList/types.js';
+import { OperatorValue } from '@/components/templates/DetailList/useDetailListHook/OperatorValue.js';
+import { ListTypeKeys, ListType } from '@/components/templates/DetailList/useDetailListHook/types.js';
 import { cn } from '@/lib/utils.js';
 import { ModelTypes } from '@deenruv/admin-types';
 import { Check, ChevronsUpDown, ListFilter, Trash2 } from 'lucide-react';

@@ -6,7 +6,7 @@ import React from 'react';
 import { GenericReturn, PaginationInput, PromisePaginated } from '@/types/models';
 import { ListType } from './types';
 import { useCustomSearchParams } from '@/hooks/useCustomSearchParams';
-import { SortSelect } from '@/components/templates/DetailList/useDetailList/SortSelect.js';
+import { SortSelect } from '@/components/templates/DetailList/useDetailListHook/SortSelect.js';
 import { useSettings } from '@/state/settings.js';
 import { useDetailView } from '../../DetailView/useDetailView.js';
 

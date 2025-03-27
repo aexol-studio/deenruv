@@ -10,7 +10,7 @@ import { FilterInputType, FilterInputTypeUnion } from '../types';
 import { ModelTypes } from '@deenruv/admin-types';
 import React from 'react';
 import { cn } from '@/lib';
-import { ListType, ListTypeKeys } from '../../useDetailList/types';
+import { ListType, ListTypeKeys } from '../../useDetailListHook/types';
 
 type FilterKey<T extends keyof ListType> = keyof ModelTypes[(typeof ListTypeKeys)[T]];
 

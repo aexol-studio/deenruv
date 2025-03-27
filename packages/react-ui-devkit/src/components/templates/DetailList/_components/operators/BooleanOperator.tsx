@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FilterInputType } from '../types';
 import React from 'react';
-import { OperatorSelect } from '@/components/templates/DetailList/useDetailList/OperatorSelect.js';
+import { OperatorSelect } from '@/components/templates/DetailList/useDetailListHook/OperatorSelect.js';
 
 type BooleanOperator = Omit<FilterInputType['BooleanOperators'], '__typename'>;
 type Props<T extends BooleanOperator> = {

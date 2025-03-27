@@ -24,7 +24,7 @@ import {
     OrderListSelector,
 } from '../selectors';
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
-import { GenericListContextType } from '@/components/templates/DetailList/useDetailList/types';
+import { GenericListContextType } from '@/components/templates/DetailList/useDetailListHook/types';
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
 import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
