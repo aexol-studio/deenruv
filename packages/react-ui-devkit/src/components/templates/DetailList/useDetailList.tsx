@@ -3,15 +3,17 @@ import React from 'react';
 import { createContext, useContext } from 'react';
 
 interface DetailListStore {
-    value: { table: Table<any> | null; refetch: () => void };
+    table: Table<any> | null;
+    refetch: () => void;
 }
 
 export const DetailListStoreContext = createContext<DetailListStore>({
-    value: { table: null, refetch: () => {} },
+    table: null,
+    refetch: () => {},
 });
 
-export const DetailListStoreProvider = ({ children, ...props }: React.PropsWithChildren<DetailListStore>) => {
-    return <DetailListStoreContext.Provider value={props}>{children}</DetailListStoreContext.Provider>;
+export const DetailListStoreProvider = ({ children, ...value }: React.PropsWithChildren<DetailListStore>) => {
+    return <DetailListStoreContext.Provider value={value}>{children}</DetailListStoreContext.Provider>;
 };
 
 export function useDetailList() {

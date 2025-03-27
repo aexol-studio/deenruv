@@ -13,6 +13,7 @@ import {
   GlobalStoreProvider,
   DEFAULT_CHANNEL_CODE,
   GraphQLSchema,
+  NotificationProvider,
 } from '@deenruv/react-ui-devkit';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
@@ -118,8 +119,10 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
         <AnimatePresence>
           {isLoggedIn ? (
             <PluginProvider plugins={pluginsStore} context={context}>
-              <RouterProvider router={router} />
-              {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
+              <NotificationProvider notifications={[]}>
+                <RouterProvider router={router} />
+                {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
+              </NotificationProvider>
             </PluginProvider>
           ) : (
             <LoginScreen />

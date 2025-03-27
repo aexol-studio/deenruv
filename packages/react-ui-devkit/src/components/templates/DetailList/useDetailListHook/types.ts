@@ -1,7 +1,7 @@
 import { Permission } from '@deenruv/admin-types';
 import { Table } from '@tanstack/react-table';
 
-type ActionResult = { success: string; error?: never } | { success?: never; error: string };
+export type ActionResult = { success: string; error?: never } | { success?: never; error: string };
 
 type ActionBaseProps<T> = {
     table: Table<T>;

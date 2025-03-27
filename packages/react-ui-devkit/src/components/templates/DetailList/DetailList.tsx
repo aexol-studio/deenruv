@@ -25,7 +25,7 @@ import { ListLocationID, PromisePaginated } from '@/types';
 import { useErrorHandler, useLocalStorage } from '@/hooks';
 import { Button, TableLabel, useDetailView } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
-import { ListType } from './useDetailListHook/types';
+import { ActionResult, ListType } from './useDetailListHook/types';
 import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailListHook/constants';
 import { cn } from '@/lib';
 import { FiltersDialog } from '@/components/templates/DetailList/useDetailListHook/FiltersDialog.js';
@@ -77,6 +77,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     createPermissions,
     deletePermissions,
     additionalButtons,
+    additionalRowActions,
 }: {
     fetch: T;
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
@@ -92,6 +93,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     createPermissions: Array<Permission>;
     deletePermissions: Array<Permission>;
     additionalButtons?: React.ReactNode;
+    additionalRowActions?: Array<{
+        label: string;
+        onClick: (data: AwaitedReturnType<T>['items'][number]) => ActionResult | Promise<ActionResult>;
+    }>;
 } & (
     | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
     | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
@@ -116,7 +121,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         (acc, table) => deepMerge(acc, table.externalSelector || {}),
         {},
     );
-    const rowActions = tableExtensions?.flatMap(table => table.rowActions || []);
+    const rowActions = [
+        ...(tableExtensions?.flatMap(table => table.rowActions || []) || []),
+        ...(additionalRowActions || []),
+    ];
     const bulkActions = tableExtensions?.flatMap(table => table.bulkActions || []);
     const customColumns = (tableExtensions?.flatMap(table => table.columns) || []) as ColumnDef<
         AwaitedReturnType<T>['items']
@@ -485,7 +493,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     };
 
     return (
-        <DetailListStoreProvider value={{ refetch, table }}>
+        <DetailListStoreProvider refetch={refetch} table={table}>
             <div className={cn('w-full', !noPaddings && 'px-4 py-2 md:px-8 md:py-4')}>
                 {onRemove && (
                     <DeleteDialog
