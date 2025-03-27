@@ -20,4 +20,5 @@ export * from './channels/index.js';
 export * from './countries/index.js';
 export * from './status/index.js';
 export * from './global-settings/index.js';
+export * from './extensions/index.js';
 // NOTE: do not export Custom404, LoginScreen and Root from here

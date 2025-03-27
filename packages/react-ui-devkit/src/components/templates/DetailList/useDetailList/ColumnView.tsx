@@ -80,12 +80,12 @@ export const ColumnView = <T extends { id: string }>({
         <div className="text-right">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="default">
-                        <PanelsTopLeft className="mr-2 h-4 w-4" />
+                    <Button variant="outline" size="sm" className="gap-2 h-8 py-0" aria-label="Open filters">
+                        <PanelsTopLeft className="h-4 w-4" aria-hidden="true" />
                         {t('actionsMenu.view')}
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="max-h-[350px] overflow-y-auto p-2 space-y-2.5">
+                <DropdownMenuContent align="start" className="max-h-[350px] overflow-y-auto p-2 space-y-2.5">
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}

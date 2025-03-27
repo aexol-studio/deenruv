@@ -494,19 +494,17 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                 <div className="flex w-full flex-col items-start gap-4 mb-1">
                     <div className="flex w-full items-end justify-between gap-4">
                         <div className="flex items-center gap-2">
-                            <FiltersDialog {...filterProperties} />
+                            <ColumnView table={table} entityName={entityName} />
                             {Search}
+                            <FiltersDialog {...filterProperties} />
                         </div>
                         <div className="flex gap-2">
-                            <ColumnView table={table} entityName={entityName} />
-                            {!noCreateButton && isPermittedToCreate && (
+                            {route && !noCreateButton && isPermittedToCreate && (
                                 <Button
                                     className="flex items-center gap-2"
                                     onClick={() => {
-                                        if (route) {
-                                            if ('create' in route) route.create();
-                                            else navigate((route as RouteBase).new, { viewTransition: true });
-                                        }
+                                        if ('create' in route) route.create();
+                                        else navigate((route as RouteBase).new, { viewTransition: true });
                                     }}
                                 >
                                     <PlusCircleIcon size={16} />

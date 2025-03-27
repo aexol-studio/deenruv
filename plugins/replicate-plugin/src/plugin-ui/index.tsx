@@ -9,11 +9,11 @@ import { NotebookPenIcon } from 'lucide-react';
 export const ReplicateUiPlugin = createDeenruvUIPlugin({
     version: '1.0.0',
     name: 'Replicate Newsletter Plugin',
-    pages: [{ element: <ReplicateInput />, path: 'newsletter-model' }],
+    pages: [{ element: <ReplicateInput />, path: '' }],
     navMenuLinks: [
         {
             groupId: 'promotions-group',
-            href: 'newsletter-model/',
+            href: '',
             id: 'newsletter-model',
             labelId: 'Newsletter Model',
             icon: NotebookPenIcon,

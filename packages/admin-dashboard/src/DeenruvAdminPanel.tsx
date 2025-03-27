@@ -49,6 +49,7 @@ const DeenruvPaths = Object.entries(Pages).flatMap(([key, Component]) => {
   const name = getName(key);
   const path = getRoute(name, key);
   const paths: { path: string; element: JSX.Element }[] = [];
+  console.log(Pages);
   if (path) paths.push({ path, element: <Component /> });
   const route = Routes[name as keyof typeof Routes];
   if (key.includes('DetailPage') && typeof route === 'object' && 'new' in route) {

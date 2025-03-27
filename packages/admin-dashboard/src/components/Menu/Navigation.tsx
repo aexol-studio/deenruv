@@ -37,6 +37,7 @@ import {
   Cog,
   UsersRound,
   Server,
+  Puzzle,
 } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
 import { SystemStatusIndicator } from './Indicators/SystemStatusIndicator.js';
@@ -244,6 +245,13 @@ export function Navigation({ isCollapsed }: NavProps) {
             href: Routes.globalSettings,
             id: 'link-global-settings',
             icon: Cog,
+            requiredPermissions: [Permission.ReadSettings],
+          },
+          {
+            title: t('menu.extensions'),
+            href: Routes.extensions,
+            id: 'Extensions',
+            icon: Puzzle,
             requiredPermissions: [Permission.ReadSettings],
           },
           {

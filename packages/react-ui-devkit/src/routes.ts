@@ -2,6 +2,7 @@ export const Routes = {
     dashboard: '/admin-ui',
     status: '/admin-ui/status',
     jobs: '/admin-ui/jobs',
+    extensions: '/admin-ui/extensions',
     assets: {
         list: '/admin-ui/assets',
     },

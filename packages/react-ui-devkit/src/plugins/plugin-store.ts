@@ -5,8 +5,10 @@ import { defaultInputComponents } from './default-input-components.js';
 
 const pagePathPrefix = 'admin-ui/extensions';
 
+const removeAllSpaces = (str: string) => str.replace(/\s/g, '-');
+
 const getExtensionsPath = (pluginName: string, path: string) =>
-    [pagePathPrefix, pluginName.toLowerCase().replace(' ', '-'), path].join('/');
+    [pagePathPrefix, removeAllSpaces(pluginName.toLowerCase()), path].join('/');
 
 type I18Next = {
     addResourceBundle: (lng: string, ns: string, trans: object) => void;
