@@ -26,7 +26,7 @@ type RouteConfig =
     | { create?: () => void; edit: (id: string, parentId?: string) => void };
 
 export type GenericListContextType<T> = {
-    route: RouteConfig;
+    route?: RouteConfig;
     onRemove?: (items: T[]) => void;
     refetch: () => void;
     hideColumns?: (keyof T)[];

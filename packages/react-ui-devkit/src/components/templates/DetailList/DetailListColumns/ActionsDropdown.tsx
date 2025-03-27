@@ -48,18 +48,20 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                                     {t('actionsMenu.copyId')}
                                 </div>
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                                onClick={() => {
-                                    if ('edit' in route) {
-                                        route.edit(row.original.id);
-                                    } else navigate(route.to(row.original.id), { viewTransition: true });
-                                }}
-                            >
-                                <div className="flex items-center gap-2">
-                                    <ExternalLink size={14} />
-                                    {t('actionsMenu.view')}
-                                </div>
-                            </DropdownMenuItem>
+                            {route ? (
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        if ('edit' in route) {
+                                            route.edit(row.original.id);
+                                        } else navigate(route.to(row.original.id), { viewTransition: true });
+                                    }}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <ExternalLink size={14} />
+                                        {t('actionsMenu.view')}
+                                    </div>
+                                </DropdownMenuItem>
+                            ) : null}
                             {rowActions && rowActions?.length > 0 && (
                                 <>
                                     <DropdownMenuSeparator />

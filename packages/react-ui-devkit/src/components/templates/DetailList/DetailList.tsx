@@ -75,6 +75,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     noCreateButton,
     createPermissions,
     deletePermissions,
+    additionalButtons,
 }: {
     fetch: T;
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
@@ -89,9 +90,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     noCreateButton?: boolean;
     createPermissions: Array<Permission>;
     deletePermissions: Array<Permission>;
+    additionalButtons?: React.ReactNode;
 } & (
-    | { noCreateButton: true; route: RouteBase | RouteWithoutCreate }
-    | { noCreateButton?: false; route: RouteBase | RouteWithCreate }
+    | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
+    | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
 )) {
     const { t } = useTranslation('table');
 
@@ -300,7 +302,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                             </div>
                         );
                     }
-                    if (key === detailLinkColumn) {
+                    if (key === detailLinkColumn && route) {
                         return (
                             <Button
                                 variant="outline"
@@ -501,14 +503,17 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                                 <Button
                                     className="flex items-center gap-2"
                                     onClick={() => {
-                                        if ('create' in route) route.create();
-                                        else navigate((route as RouteBase).new, { viewTransition: true });
+                                        if (route) {
+                                            if ('create' in route) route.create();
+                                            else navigate((route as RouteBase).new, { viewTransition: true });
+                                        }
                                     }}
                                 >
                                     <PlusCircleIcon size={16} />
                                     {t('create')}
                                 </Button>
                             )}
+                            {additionalButtons}
                         </div>
                     </div>
                 </div>

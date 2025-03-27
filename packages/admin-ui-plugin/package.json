@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/admin-ui-plugin",
-    "version": "0.0.107",
+    "version": "0.0.108",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "files": [
