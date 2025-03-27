@@ -21,6 +21,7 @@ import {
   usePluginStore,
   cn,
   dashToCamelCase,
+  apiClient,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -93,7 +94,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const { activeAdministrator, fetchPendingJobs } = useServer();
 
-  const rebuildSearchIndex = async () => {};
+  const rebuildSearchIndex = async () => {
+    await apiClient('mutation')({ reindex: { id: true } }).then(fetchPendingJobs);
+  };
 
   const matches = useMatches();
   const crumbs = useMemo(

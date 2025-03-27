@@ -1,17 +1,7 @@
 import { GraphQLSchema, GraphQLSchemaField, useSettings } from '@/state';
 import { DeenruvSettingsWindowType } from '@/types';
 import { GraphQLResponse, GraphQLError, Thunder, scalars, ResolverInputTypes } from '@deenruv/admin-types';
-import {
-    parse,
-    print,
-    visit,
-    DocumentNode,
-    FieldNode,
-    SelectionSetNode,
-    Kind,
-    SelectionNode,
-    ASTNode,
-} from 'graphql';
+import { parse, print, visit } from 'graphql';
 
 // * We can think about caching the response in the future
 // ! TODO: Add pattern of authToken from dashboard so we need `useSettings` here
@@ -37,6 +27,8 @@ const CUSTOM_MAP = {
     Asset: ['id', 'source', 'preview'],
     PaymentMethod: ['id'],
     Job: ['id'],
+    Product: ['id', 'name', 'slug', 'description'],
+    ProductVariant: ['id', 'sku'],
 };
 const buildSelectionSet = (lookup: string, depth: number): any => {
     if (depth) {
@@ -117,7 +109,6 @@ export const deenruvAPICall = (options?: CallOptions) => {
         customParams?: Record<string, string>,
     ) => {
         const query = addCustomQuery(_query);
-        console.log('QUERY', query);
         const { translationsLanguage, selectedChannel, token, logIn } = useSettings.getState();
         const { authTokenName, channelTokenName, uri } = window.__DEENRUV_SETTINGS__.api;
         const { type } = options || {};

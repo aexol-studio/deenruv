@@ -23,20 +23,7 @@ export const Notifications = () => {
   const { t } = useTranslation('common');
   useEffect(() => {
     if (jobQueues.length > 0) {
-      const anyNewJobs = jobQueues.some((queue) => queue.running);
-      if (anyNewJobs) {
-        setNotifications((notifications) => [
-          ...notifications,
-          {
-            id: 3,
-            title: 'New job',
-            description: 'A new job has been added to the queue',
-            time: 'just now',
-            read: false,
-            icon: <Clock className="h-4 w-4 text-blue-500" />,
-          },
-        ]);
-      }
+      console.log(jobQueues);
     }
   }, [jobQueues]);
 
