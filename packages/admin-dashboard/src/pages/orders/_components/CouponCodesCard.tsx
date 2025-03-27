@@ -3,16 +3,14 @@
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import {
-  Card,
-  CardContent,
   MultipleSelector,
   type Option,
   useLazyQuery,
   useOrder,
   useMutation,
   OrderDetailSelector,
-  CustomCardHeader,
   EmptyState,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
@@ -98,55 +96,54 @@ export const CouponCodesCard: React.FC<{}> = () => {
   );
 
   return (
-    <Card className="h-full border-l-4 border-l-purple-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-purple-400">
-      <CustomCardHeader
-        description={t('couponCodes.description', 'Apply coupon codes to this order')}
-        title={t('couponCodes.title', 'Coupon Codes')}
-        icon={<Ticket className="h-5 w-5 text-purple-500 dark:text-purple-400" />}
-      />
-      <CardContent>
-        <div className="relative">
-          <MultipleSelector
-            hideClearAllButton
-            placeholder={t('couponCodes.placeholder', 'Search for coupon codes...')}
-            value={currentValue}
-            onChange={handleChange}
-            onSearch={(searchString) => {
-              setIsSearching(true);
-              return fetchPromotionCodes({ code: searchString })
-                .then((resp) =>
-                  resp.promotions.items
-                    .filter((i) => i.couponCode)
-                    .map((i) => ({
-                      value: i.couponCode!,
-                      label: i.couponCode!,
-                      description: i.name,
-                    })),
-                )
-                .finally(() => setIsSearching(false));
-            }}
-            delay={500}
-          />
-          <div className="text-muted-foreground absolute right-3 top-2.5">
-            {isSearching ? (
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-            ) : (
-              <Search className="h-4 w-4" />
-            )}
-          </div>
+    <CustomCard
+      notCollapsible
+      color="purple"
+      description={t('couponCodes.description', 'Apply coupon codes to this order')}
+      title={t('couponCodes.title', 'Coupon Codes')}
+      icon={<Ticket />}
+    >
+      <div className="relative">
+        <MultipleSelector
+          hideClearAllButton
+          placeholder={t('couponCodes.placeholder', 'Search for coupon codes...')}
+          value={currentValue}
+          onChange={handleChange}
+          onSearch={(searchString) => {
+            setIsSearching(true);
+            return fetchPromotionCodes({ code: searchString })
+              .then((resp) =>
+                resp.promotions.items
+                  .filter((i) => i.couponCode)
+                  .map((i) => ({
+                    value: i.couponCode!,
+                    label: i.couponCode!,
+                    description: i.name,
+                  })),
+              )
+              .finally(() => setIsSearching(false));
+          }}
+          delay={500}
+        />
+        <div className="text-muted-foreground absolute right-3 top-2.5">
+          {isSearching ? (
+            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          ) : (
+            <Search className="h-4 w-4" />
+          )}
         </div>
+      </div>
 
-        {currentValue.length === 0 && (
-          <EmptyState
-            columnsLength={2}
-            title={t('couponCodes.noCoupons', 'No coupon codes applied')}
-            description={t('couponCodes.searchToAdd', 'Search above to find and apply coupon codes')}
-            color="purple"
-            icon={<Ticket />}
-            small
-          />
-        )}
-      </CardContent>
-    </Card>
+      {currentValue.length === 0 && (
+        <EmptyState
+          columnsLength={2}
+          title={t('couponCodes.noCoupons', 'No coupon codes applied')}
+          description={t('couponCodes.searchToAdd', 'Search above to find and apply coupon codes')}
+          color="purple"
+          icon={<Ticket />}
+          small
+        />
+      )}
+    </CustomCard>
   );
 };

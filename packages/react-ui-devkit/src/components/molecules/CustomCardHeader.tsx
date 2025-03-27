@@ -1,4 +1,5 @@
 import { CardDescription, CardHeader, CardTitle } from '@/components/atoms/card.js';
+import { cn } from '@/lib/utils.js';
 import React, { PropsWithChildren, ReactNode } from 'react';
 
 interface OrderCardTitleProps {
@@ -6,6 +7,7 @@ interface OrderCardTitleProps {
     title: string;
     description?: string;
     isCollapsed?: boolean;
+    fullWidth?: boolean;
 }
 
 export const CustomCardHeader: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
@@ -14,9 +16,10 @@ export const CustomCardHeader: React.FC<PropsWithChildren<OrderCardTitleProps>> 
     description,
     title,
     isCollapsed,
+    fullWidth,
 }) => (
-    <CardHeader className="w-[90%] flex-1">
-        <div className="flex items-start justify-between w-full">
+    <CardHeader className={cn(!fullWidth && 'w-[90%] flex-1')}>
+        <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-4 min-w-0 flex-1">
                 {icon && <span className="flex-shrink-0">{icon}</span>}
                 <div className="text-start min-w-0 flex-1">

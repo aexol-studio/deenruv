@@ -3,17 +3,11 @@
 import type React from 'react';
 
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
   TableHeader,
   TableRow,
   TableHead,
   TableBody,
   TableCell,
-  Label,
   Table,
   DropdownMenu,
   DropdownMenuTrigger,
@@ -31,7 +25,7 @@ import {
   cn,
   useServer,
   useOrder,
-  CustomCardHeader,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import {
   type DraftOrderLineType,
@@ -42,7 +36,7 @@ import {
 } from '@/graphql/draft_order';
 import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit, CircleOff } from 'lucide-react';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { priceFormatter } from '@/utils';
@@ -351,224 +345,218 @@ export const ProductsCard: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      <Card className="border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-blue-400">
-        <CustomCardHeader
-          description={t(
-            mode === 'view' ? 'create.viewHeader' : mode === 'update' ? 'create.editHeader' : 'create.addHeader',
+      <CustomCard
+        color="blue"
+        description={t(
+          mode === 'view' ? 'create.viewHeader' : mode === 'update' ? 'create.editHeader' : 'create.addHeader',
+        )}
+        title={t(mode === 'view' ? 'create.viewTitle' : mode === 'update' ? 'create.editTitle' : 'create.addTitle')}
+        icon={<ShoppingCart />}
+      >
+        <div className="grid gap-6">
+          {mode !== 'view' && (
+            <ProductVariantSearch
+              onSelectItem={(i) =>
+                orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
+              }
+            />
           )}
-          title={t(mode === 'view' ? 'create.viewTitle' : mode === 'update' ? 'create.editTitle' : 'create.addTitle')}
-          icon={<ShoppingCart className="h-5 w-5 text-blue-500 dark:text-blue-400" />}
-        />
 
-        <CardContent className="p-6 pt-0">
-          <div className="grid gap-6">
-            {mode !== 'view' && (
-              <ProductVariantSearch
-                onSelectItem={(i) =>
-                  orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
-                }
-              />
-            )}
-
-            <div className="border-border rounded-lg border-0 shadow-sm">
-              <Table>
-                <TableHeader>
-                  <TableRow noHover className="hover:bg-transparent">
-                    <TableHead className="py-3 font-semibold">{t('create.product', 'Product')}</TableHead>
-                    <TableHead className="py-3 font-semibold">{t('create.sku', 'SKU')}</TableHead>
-                    <TableHead className="py-3 font-semibold">{t('create.customFields', 'Custom Fields')}</TableHead>
-                    <TableHead className="py-3 font-semibold">{t('create.price', 'Price')}</TableHead>
-                    <TableHead className="py-3 font-semibold">{t('create.priceWithTax', 'Price with Tax')}</TableHead>
-                    <TableHead className="py-3 font-semibold">{t('create.quantity', 'Quantity')}</TableHead>
-                    <TableHead className="py-3 font-semibold">{t('create.perUnit', 'Per Unit')}</TableHead>
-                    {(mode === 'create' || mode === 'update') && (
-                      <TableHead className="py-3 text-right font-semibold">{t('create.actions', 'Actions')}</TableHead>
-                    )}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {currentOrder!.lines.length ? (
-                    <>
-                      {currentOrder!.lines.map((line) => (
-                        <TableRow key={line.id} className="hover:bg-muted/20">
-                          <TableCell className="py-3">
-                            <div className="flex w-max items-center gap-3">
-                              <ImageWithPreview
-                                imageClassName="aspect-square w-12 h-12 rounded-md object-cover border border-border"
-                                src={
-                                  line.productVariant.featuredAsset?.preview ||
-                                  line.productVariant.product?.featuredAsset?.preview ||
-                                  '/placeholder.svg'
-                                }
-                              />
-                              <div className="text-primary font-medium">{line.productVariant.product.name}</div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
-                            <div className="flex items-center gap-2">
-                              <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                              {line.productVariant.sku}
-                            </div>
-                          </TableCell>
-                          <TableCell className="py-3">
-                            <OrderLineCustomFields line={line} order={currentOrder} mode={mode} />
-                          </TableCell>
-                          <TableCell className="py-3 font-medium">
-                            {priceFormatter(line.linePrice, line.productVariant.currencyCode)}
-                          </TableCell>
-                          <TableCell className="py-3 font-medium">
-                            {priceFormatter(line.linePriceWithTax, line.productVariant.currencyCode)}
-                          </TableCell>
-                          <TableCell className="py-3 text-center font-semibold">{line.quantity}</TableCell>
-                          <TableCell className="py-3">
-                            <div className="flex flex-col">
-                              <span>{priceFormatter(line.unitPrice, line.productVariant.currencyCode)}</span>
-                              <span className="text-muted-foreground text-sm">
-                                ({priceFormatter(line.unitPriceWithTax, line.productVariant.currencyCode)})
-                              </span>
-                            </div>
-                          </TableCell>
-                          {(mode === 'create' || mode === 'update') && (
-                            <TableCell className="py-3 text-right">
-                              <div className="flex items-center justify-end gap-3">
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger className="hover:bg-muted flex h-8 w-8 items-center justify-center rounded-md">
-                                    <EllipsisVertical className="h-5 w-5" />
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>
-                                      <div className="flex items-center gap-2">
-                                        <Edit className="h-4 w-4 text-blue-500" />
-                                        {t('editOptions', 'Edit Options')}
-                                      </div>
-                                    </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                      disabled={isLineAddedInModify(line.id)}
-                                      onClick={() => !isLineAddedInModify(line.id) && setOrderLineAction({ line })}
-                                      className={cn('flex cursor-pointer justify-between', {
-                                        'text-muted-foreground': isLineAddedInModify(line.id),
-                                      })}
-                                    >
-                                      <span>
-                                        {t('orderLineActionModal.actionType.quantity-price', 'Adjust Quantity & Price')}
-                                      </span>
-                                      {isLineAddedInModify(line.id) && (
-                                        <TooltipProvider>
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <InfoIcon className="text-muted-foreground h-4 w-4" />
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                              <p>
-                                                {t(
-                                                  'modify.disclaimer',
-                                                  'Cannot modify items added in previous sessions',
-                                                )}
-                                              </p>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </TooltipProvider>
-                                      )}
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-
-                                {(mode === 'create' || isLineAddedInModify(line.id)) && (
-                                  <button
-                                    className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
-                                    onClick={() => removeLineItem(line.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                )}
-                              </div>
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      ))}
-
-                      {currentOrder?.surcharges.map((surcharge) => (
-                        <TableRow key={surcharge.sku} className="bg-muted/10 hover:bg-muted/20">
-                          <TableCell className="text-primary py-3 font-medium">
-                            <div className="flex items-center gap-2">
-                              <Package className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                              {surcharge.description}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
-                            <div className="flex items-center gap-2">
-                              <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                              {surcharge.sku}
-                            </div>
-                          </TableCell>
-                          <TableCell className="py-3"></TableCell>
-                          <TableCell className="text-nowrap py-3 font-medium">
-                            {priceFormatter(surcharge.price, order.currencyCode)}
-                          </TableCell>
-                          <TableCell className="text-nowrap py-3 font-medium">
-                            {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
-                          </TableCell>
-                          <TableCell className="py-3"></TableCell>
-                          <TableCell className="py-3 font-medium">
-                            {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
-                          </TableCell>
-                          {(mode === 'create' || mode === 'update') && <TableCell className="py-3"></TableCell>}
-                        </TableRow>
-                      ))}
-                    </>
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={8}>
-                        <div className="flex flex-col items-center justify-center py-12 text-center">
-                          <div className="mb-4 rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
-                            <ShoppingCart className="h-6 w-6 text-blue-500 dark:text-blue-400" />
-                          </div>
-                          <span className="text-muted-foreground text-lg font-medium">
-                            {t('create.noItems', 'No products in this order')}
-                          </span>
-                          {mode !== 'view' && (
-                            <span className="text-muted-foreground mt-2 text-sm">
-                              {t('create.searchPlaceholder', 'Use the search above to add products')}
-                            </span>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
+          <div className="border-border rounded-lg border-0 shadow-sm">
+            <Table>
+              <TableHeader>
+                <TableRow noHover className="hover:bg-transparent">
+                  <TableHead className="py-3 font-semibold">{t('create.product', 'Product')}</TableHead>
+                  <TableHead className="py-3 font-semibold">{t('create.sku', 'SKU')}</TableHead>
+                  <TableHead className="py-3 font-semibold">{t('create.customFields', 'Custom Fields')}</TableHead>
+                  <TableHead className="py-3 font-semibold">{t('create.price', 'Price')}</TableHead>
+                  <TableHead className="py-3 font-semibold">{t('create.priceWithTax', 'Price with Tax')}</TableHead>
+                  <TableHead className="py-3 font-semibold">{t('create.quantity', 'Quantity')}</TableHead>
+                  <TableHead className="py-3 font-semibold">{t('create.perUnit', 'Per Unit')}</TableHead>
+                  {(mode === 'create' || mode === 'update') && (
+                    <TableHead className="py-3 text-right font-semibold">{t('create.actions', 'Actions')}</TableHead>
                   )}
-                </TableBody>
-              </Table>
-            </div>
-            <div className="mt-6 border-t pt-4">
-              <div className="bg-card rounded-lg border p-4 shadow-sm">
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-base font-semibold">{t('total')}</span>
-                    <span className="text-primary text-base font-bold">
-                      {priceFormatter(currentOrder?.totalWithTax || 0, currentOrder?.currencyCode)}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {currentOrder!.lines.length ? (
+                  <>
+                    {currentOrder!.lines.map((line) => (
+                      <TableRow key={line.id} className="hover:bg-muted/20">
+                        <TableCell className="py-3">
+                          <div className="flex w-max items-center gap-3">
+                            <ImageWithPreview
+                              imageClassName="aspect-square w-12 h-12 rounded-md object-cover border border-border"
+                              src={
+                                line.productVariant.featuredAsset?.preview ||
+                                line.productVariant.product?.featuredAsset?.preview ||
+                                '/placeholder.svg'
+                              }
+                            />
+                            <div className="text-primary font-medium">{line.productVariant.product.name}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+                          <div className="flex items-center gap-2">
+                            <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            {line.productVariant.sku}
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-3">
+                          <OrderLineCustomFields line={line} order={currentOrder} mode={mode} />
+                        </TableCell>
+                        <TableCell className="py-3 font-medium">
+                          {priceFormatter(line.linePrice, line.productVariant.currencyCode)}
+                        </TableCell>
+                        <TableCell className="py-3 font-medium">
+                          {priceFormatter(line.linePriceWithTax, line.productVariant.currencyCode)}
+                        </TableCell>
+                        <TableCell className="py-3 text-center font-semibold">{line.quantity}</TableCell>
+                        <TableCell className="py-3">
+                          <div className="flex flex-col">
+                            <span>{priceFormatter(line.unitPrice, line.productVariant.currencyCode)}</span>
+                            <span className="text-muted-foreground text-sm">
+                              ({priceFormatter(line.unitPriceWithTax, line.productVariant.currencyCode)})
+                            </span>
+                          </div>
+                        </TableCell>
+                        {(mode === 'create' || mode === 'update') && (
+                          <TableCell className="py-3 text-right">
+                            <div className="flex items-center justify-end gap-3">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger className="hover:bg-muted flex h-8 w-8 items-center justify-center rounded-md">
+                                  <EllipsisVertical className="h-5 w-5" />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuLabel>
+                                    <div className="flex items-center gap-2">
+                                      <Edit className="h-4 w-4 text-blue-500" />
+                                      {t('editOptions', 'Edit Options')}
+                                    </div>
+                                  </DropdownMenuLabel>
+                                  <DropdownMenuSeparator />
+                                  <DropdownMenuItem
+                                    disabled={isLineAddedInModify(line.id)}
+                                    onClick={() => !isLineAddedInModify(line.id) && setOrderLineAction({ line })}
+                                    className={cn('flex cursor-pointer justify-between', {
+                                      'text-muted-foreground': isLineAddedInModify(line.id),
+                                    })}
+                                  >
+                                    <span>
+                                      {t('orderLineActionModal.actionType.quantity-price', 'Adjust Quantity & Price')}
+                                    </span>
+                                    {isLineAddedInModify(line.id) && (
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <InfoIcon className="text-muted-foreground h-4 w-4" />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>
+                                              {t('modify.disclaimer', 'Cannot modify items added in previous sessions')}
+                                            </p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+                                    )}
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+
+                              {(mode === 'create' || isLineAddedInModify(line.id)) && (
+                                <button
+                                  className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
+                                  onClick={() => removeLineItem(line.id)}
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              )}
+                            </div>
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    ))}
+
+                    {currentOrder?.surcharges.map((surcharge) => (
+                      <TableRow key={surcharge.sku} className="bg-muted/10 hover:bg-muted/20">
+                        <TableCell className="text-primary py-3 font-medium">
+                          <div className="flex items-center gap-2">
+                            <Package className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            {surcharge.description}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
+                          <div className="flex items-center gap-2">
+                            <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            {surcharge.sku}
+                          </div>
+                        </TableCell>
+                        <TableCell className="py-3"></TableCell>
+                        <TableCell className="text-nowrap py-3 font-medium">
+                          {priceFormatter(surcharge.price, order.currencyCode)}
+                        </TableCell>
+                        <TableCell className="text-nowrap py-3 font-medium">
+                          {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
+                        </TableCell>
+                        <TableCell className="py-3"></TableCell>
+                        <TableCell className="py-3 font-medium">
+                          {priceFormatter(surcharge.priceWithTax, order.currencyCode)}
+                        </TableCell>
+                        {(mode === 'create' || mode === 'update') && <TableCell className="py-3"></TableCell>}
+                      </TableRow>
+                    ))}
+                  </>
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={8}>
+                      <div className="flex flex-col items-center justify-center py-12 text-center">
+                        <div className="mb-4 rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
+                          <ShoppingCart className="h-6 w-6 text-blue-500 dark:text-blue-400" />
+                        </div>
+                        <span className="text-muted-foreground text-lg font-medium">
+                          {t('create.noItems', 'No products in this order')}
+                        </span>
+                        {mode !== 'view' && (
+                          <span className="text-muted-foreground mt-2 text-sm">
+                            {t('create.searchPlaceholder', 'Use the search above to add products')}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="mt-6 border-t pt-4">
+            <div className="bg-card rounded-lg border p-4 shadow-sm">
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-base font-semibold">{t('total')}</span>
+                  <span className="text-primary text-base font-bold">
+                    {priceFormatter(currentOrder?.totalWithTax || 0, currentOrder?.currencyCode)}
+                  </span>
+                </div>
+                <div className="text-muted-foreground mt-2 text-xs">
+                  <div className="flex items-center gap-1">
+                    <InfoIcon className="h-3 w-3" />
+                    <span>
+                      {t('totalItems', {
+                        value: currentOrder?.lines.reduce((acc, line) => acc + line.quantity, 0) || 0,
+                      })}
                     </span>
-                  </div>
-                  <div className="text-muted-foreground mt-2 text-xs">
-                    <div className="flex items-center gap-1">
-                      <InfoIcon className="h-3 w-3" />
-                      <span>
-                        {t('totalItems', {
-                          value: currentOrder?.lines.reduce((acc, line) => acc + line.quantity, 0) || 0,
-                        })}
-                      </span>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <OrderLineActionModal
-              onPriceQuantityChangeApprove={onPriceQuantityChangeApprove}
-              onOpenChange={onOrderLineActionModalOpenChange}
-              {...orderLineAction}
-            />
           </div>
-        </CardContent>
-      </Card>
+          <OrderLineActionModal
+            onPriceQuantityChangeApprove={onPriceQuantityChangeApprove}
+            onOpenChange={onOrderLineActionModalOpenChange}
+            {...orderLineAction}
+          />
+        </div>
+      </CustomCard>
     </>
   );
 };

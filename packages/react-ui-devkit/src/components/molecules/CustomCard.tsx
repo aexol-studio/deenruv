@@ -40,6 +40,9 @@ interface OrderCardTitleProps {
     upperRight?: ReactNode;
     bottomRight?: ReactNode;
     color?: TailwindColor;
+    wrapperClassName?: string;
+    collapsed?: boolean;
+    notCollapsible?: boolean;
 }
 
 export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
@@ -50,10 +53,14 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     upperRight,
     bottomRight,
     color,
+    wrapperClassName,
+    collapsed,
+    notCollapsible,
 }) => {
     const textColor = color ? `text-${color}-500 dark:text-${color}-400` : '';
     const borderColor = color ? `border-l-4 border-l-${color}-500 dark:border-l-${color}-400` : '';
     const baseClasses = 'h-5 w-5';
+    const defaultOpen = collapsed ? undefined : title;
 
     const iconWithClassName =
         icon && typeof icon === 'object' && 'type' in icon
@@ -62,36 +69,46 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
               })
             : icon;
 
-    const [openItem, setOpenItem] = useState(title);
+    const [openItem, setOpenItem] = useState(defaultOpen);
+    const HeaderJSX = (
+        <CustomCardHeader
+            {...{ description, title }}
+            icon={iconWithClassName}
+            isCollapsed={!openItem}
+            fullWidth={notCollapsible}
+        >
+            <div onClick={e => e.stopPropagation()} className="cursor-auto hover:no-underline">
+                {upperRight}
+            </div>
+        </CustomCardHeader>
+    );
 
     return (
         <Accordion
             type="single"
             collapsible
-            className="w-full"
-            defaultValue={title}
+            className={cn('w-full', wrapperClassName)}
+            defaultValue={defaultOpen}
             onValueChange={setOpenItem}
         >
-            <AccordionItem value={title}>
-                <Card className={cn('shadow-sm transition-shadow duration-200 hover:shadow', borderColor)}>
-                    <AccordionTrigger className={cn('p-0 pr-6 w-full')}>
-                        <CustomCardHeader
-                            {...{ description, title }}
-                            icon={iconWithClassName}
-                            isCollapsed={!openItem}
-                        >
-                            <div
-                                onClick={e => e.stopPropagation()}
-                                className="cursor-auto hover:no-underline"
-                            >
-                                {upperRight}
-                            </div>
-                        </CustomCardHeader>
-                    </AccordionTrigger>
+            <AccordionItem value={title} className="h-full">
+                <Card
+                    className={cn(
+                        'shadow-sm transition-shadow duration-200 hover:shadow h-full',
+                        borderColor,
+                    )}
+                >
+                    {notCollapsible ? (
+                        HeaderJSX
+                    ) : (
+                        <AccordionTrigger className={cn('p-0 pr-6 w-full')}>{HeaderJSX}</AccordionTrigger>
+                    )}
                     <AccordionContent>
                         <div>
                             <CardContent>{children}</CardContent>
-                            {bottomRight && <CardFooter className="justify-end">{bottomRight}</CardFooter>}
+                            {bottomRight && (
+                                <CardFooter className="justify-end pb-2">{bottomRight}</CardFooter>
+                            )}
                         </div>
                     </AccordionContent>
                 </Card>

@@ -2,8 +2,6 @@
 
 import {
   Card,
-  CardHeader,
-  CardTitle,
   Button,
   Select,
   SelectContent,
@@ -31,8 +29,7 @@ import {
   useOrder,
   cn,
   OrderDetailSelector,
-  CardContent,
-  CustomCardHeader,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import { type AddressBaseType, addressBaseSelector } from '@/graphql/draft_order';
 import { useGFFLP } from '@/lists/useGflp';
@@ -295,21 +292,18 @@ export const AddressCard: React.FC<{
     };
   }, [currentAddress, order, type]);
 
-  const borderColor = isShipping
-    ? 'border-l-purple-500 dark:border-l-purple-400'
-    : 'border-l-cyan-500 dark:border-l-cyan-400';
+  const color = isShipping ? 'purple' : 'cyan';
   const iconColor = isShipping ? 'text-purple-500 dark:text-purple-400' : 'text-cyan-500 dark:text-cyan-400';
 
   return (
-    <Card className={`border-l-4 ${borderColor} shadow-sm transition-shadow duration-200 hover:shadow`}>
-      <CustomCardHeader
-        description={t(isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription')}
-        title={t(isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader')}
-        icon={
-          isShipping ? <MapPin className={`h-5 w-5 ${iconColor}`} /> : <Building className={`h-5 w-5 ${iconColor}`} />
-        }
-      >
-        {mode !== 'view' && (
+    <CustomCard
+      notCollapsible
+      title={t(isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader')}
+      description={t(isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription')}
+      icon={isShipping ? <MapPin /> : <Building />}
+      color={color}
+      upperRight={
+        mode !== 'view' && (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -629,80 +623,79 @@ export const AddressCard: React.FC<{
               </div>
             </DialogContent>
           </Dialog>
-        )}
-      </CustomCardHeader>
-      <CardContent>
-        <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
-          <div className="flex items-start gap-3">
-            {!currentAddress ? (
-              <>
-                <div
-                  className={`mt-0.5 flex h-8 w-8 items-center justify-center rounded-full ${isShipping ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-cyan-100 dark:bg-cyan-900/30'}`}
-                >
-                  {isShipping ? (
-                    <MapPin className={`h-4 w-4 ${iconColor}`} />
-                  ) : (
-                    <Building className={`h-4 w-4 ${iconColor}`} />
-                  )}
-                </div>
-                <div className="flex-1">
-                  <p className="text-muted-foreground text-sm italic">
-                    {t(isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress')}
-                  </p>
-                  {mode !== 'view' && (
-                    <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
-                      <Edit className="h-3.5 w-3.5" />
-                      {t('selectAddress.addAddress', 'Add Address')}
-                    </Button>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="flex-1">
-                  <div className="space-y-1">
+        )
+      }
+    >
+      <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
+        <div className="flex items-start gap-3">
+          {!currentAddress ? (
+            <>
+              <div
+                className={`mt-0.5 flex h-8 w-8 items-center justify-center rounded-full ${isShipping ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-cyan-100 dark:bg-cyan-900/30'}`}
+              >
+                {isShipping ? (
+                  <MapPin className={`h-4 w-4 ${iconColor}`} />
+                ) : (
+                  <Building className={`h-4 w-4 ${iconColor}`} />
+                )}
+              </div>
+              <div className="flex-1">
+                <p className="text-muted-foreground text-sm italic">
+                  {t(isShipping ? 'selectAddress.noShippingAddress' : 'selectAddress.noBillingAddress')}
+                </p>
+                {mode !== 'view' && (
+                  <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
+                    <Edit className="h-3.5 w-3.5" />
+                    {t('selectAddress.addAddress', 'Add Address')}
+                  </Button>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex-1">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <User className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                    <p className="text-sm font-medium">{currentAddress?.fullName}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                    <p className="text-sm">
+                      {currentAddress.streetLine1} {currentAddress?.streetLine2}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Globe className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
+                    <p className="text-sm">
+                      {currentAddress.city} {currentAddress.postalCode} {currentAddress.province}{' '}
+                      {currentAddress.country}
+                    </p>
+                  </div>
+                  <div className="border-border mt-1 flex items-center justify-between border-t pt-1">
                     <div className="flex items-center gap-2">
-                      <User className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
-                      <p className="text-sm font-medium">{currentAddress?.fullName}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
-                      <p className="text-sm">
-                        {currentAddress.streetLine1} {currentAddress?.streetLine2}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Globe className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
-                      <p className="text-sm">
-                        {currentAddress.city} {currentAddress.postalCode} {currentAddress.province}{' '}
-                        {currentAddress.country}
-                      </p>
-                    </div>
-                    <div className="border-border mt-1 flex items-center justify-between border-t pt-1">
-                      <div className="flex items-center gap-2">
-                        {currentAddress.company && (
-                          <div className="flex items-center gap-1">
-                            <Building className="text-muted-foreground h-4 w-4" />
-                            <span className="text-muted-foreground text-sm">{currentAddress.company}</span>
-                          </div>
-                        )}
-                        {currentAddress.phoneNumber && (
-                          <div className="flex items-center gap-1">
-                            <Phone className="text-muted-foreground h-4 w-4" />
-                            <span className="text-muted-foreground text-sm">
-                              {t('selectAddress.phoneNumberShort', { value: currentAddress.phoneNumber })}
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                      {currentAddress.company && (
+                        <div className="flex items-center gap-1">
+                          <Building className="text-muted-foreground h-4 w-4" />
+                          <span className="text-muted-foreground text-sm">{currentAddress.company}</span>
+                        </div>
+                      )}
+                      {currentAddress.phoneNumber && (
+                        <div className="flex items-center gap-1">
+                          <Phone className="text-muted-foreground h-4 w-4" />
+                          <span className="text-muted-foreground text-sm">
+                            {t('selectAddress.phoneNumberShort', { value: currentAddress.phoneNumber })}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

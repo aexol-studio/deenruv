@@ -10,6 +10,7 @@ import {
     Truck,
     ClipboardCheck,
     Calculator,
+    Database,
 } from 'lucide-react';
 
 export const CardIcons = {
@@ -24,4 +25,5 @@ export const CardIcons = {
     shipping: Truck,
     check: ClipboardCheck,
     calc: Calculator,
+    customFields: Database,
 };

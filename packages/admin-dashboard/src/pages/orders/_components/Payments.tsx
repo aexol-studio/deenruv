@@ -3,8 +3,6 @@
 import {
   useOrder,
   Button,
-  Card,
-  CardContent,
   Dialog,
   DialogClose,
   DialogContent,
@@ -20,10 +18,10 @@ import {
   TableRow,
   ScrollArea,
   Badge,
-  CustomCardHeader,
   DropdownMenuItem,
   ContextMenu,
   ConfirmationDialog,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -86,7 +84,13 @@ export const Payments: React.FC = () => {
   };
 
   return (
-    <Card className="border-l-4 border-l-teal-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-teal-400">
+    <CustomCard
+      color="teal"
+      description={t('payments.subTitle')}
+      title={t('payments.title')}
+      icon={<Wallet className="h-5 w-5 text-teal-500 dark:text-teal-400" />}
+      upperRight={<AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />}
+    >
       <Dialog open={!!paymentToBeSettled} onOpenChange={() => setPaymentToBeSettled('')}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -113,107 +117,98 @@ export const Payments: React.FC = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <CustomCardHeader
-        description={t('payments.subTitle')}
-        title={t('payments.title')}
-        icon={<Wallet className="h-5 w-5 text-teal-500 dark:text-teal-400" />}
-      >
-        <AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />
-      </CustomCardHeader>
-      <CardContent className="p-0">
-        <ScrollArea className="max-h-[400px] px-6 pb-6">
-          <Table>
-            <TableHeader>
-              <TableRow noHover className="border-border border-b">
-                <TableHead className="w-[80px] py-3">{t('payments.id')}</TableHead>
-                <TableHead className="py-3">{t('payments.created')}</TableHead>
-                <TableHead className="py-3">{t('payments.method')}</TableHead>
-                <TableHead className="py-3">{t('payments.status')}</TableHead>
-                <TableHead className="py-3">{t('payments.amount')}</TableHead>
-                <TableHead className="py-3 text-center">{t('payments.extra')}</TableHead>
-                <TableHead className="ml-auto py-3"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {payments?.length ? (
-                payments.map(({ amount, id, method, state, createdAt, metadata }) => {
-                  const statusBadge = getStatusBadge(state);
+      <ScrollArea className="max-h-[400px] px-6">
+        <Table>
+          <TableHeader>
+            <TableRow noHover className="border-border border-b">
+              <TableHead className="w-[80px] py-3">{t('payments.id')}</TableHead>
+              <TableHead className="py-3">{t('payments.created')}</TableHead>
+              <TableHead className="py-3">{t('payments.method')}</TableHead>
+              <TableHead className="py-3">{t('payments.status')}</TableHead>
+              <TableHead className="py-3">{t('payments.amount')}</TableHead>
+              <TableHead className="py-3 text-center">{t('payments.extra')}</TableHead>
+              <TableHead className="ml-auto py-3"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {payments?.length ? (
+              payments.map(({ amount, id, method, state, createdAt, metadata }) => {
+                const statusBadge = getStatusBadge(state);
 
-                  return (
-                    <TableRow key={id} noHover className="group">
-                      <TableCell className="text-muted-foreground py-3 font-mono text-xs">{id}</TableCell>
-                      <TableCell className="py-3">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-teal-500 dark:text-teal-400" />
-                          <span>{format(new Date(createdAt), 'dd/LL/Y, kk:mm')}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="py-3">
-                        <div className="flex items-center gap-2">
-                          <CreditCard className="h-4 w-4 text-teal-500 dark:text-teal-400" />
-                          <span className="font-medium">{method}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="py-3">
-                        <Badge variant={statusBadge.variant} className="flex w-fit items-center gap-1">
-                          {statusBadge.icon}
-                          {statusBadge.label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="py-3 font-mono text-sm font-medium">
-                        {priceFormatter(amount, order.currencyCode)}
-                      </TableCell>
-                      <TableCell className="flex items-center justify-center">
-                        <MetadataDisplay metadata={metadata} />
-                      </TableCell>
-                      <TableCell className="py-3 text-end">
-                        <ContextMenu>
-                          {state !== PAYMENT_STATE.SETTLED && state !== PAYMENT_STATE.CANCELLED && (
-                            <DropdownMenuItem
-                              key={'set'}
-                              onClick={() => setPaymentToBeSettled(id)}
-                              className="flex cursor-pointer items-center gap-2"
-                            >
-                              <CheckCircle2 size={16} />
-                              {t('payments.settle.settle', 'Settle')}
-                            </DropdownMenuItem>
-                          )}
-                          {state !== PAYMENT_STATE.CANCELLED && (
-                            <ConfirmationDialog onConfirm={() => cancelPayment(id)}>
-                              <DropdownMenuItem
-                                key={'cancel'}
-                                className="flex cursor-pointer items-center gap-2 text-red-500"
-                                onSelect={(e) => e.preventDefault()}
-                              >
-                                <XCircle size={16} />
-                                {t('payments.cancel', 'Cancel')}
-                              </DropdownMenuItem>
-                            </ConfirmationDialog>
-                          )}
-                        </ContextMenu>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              ) : (
-                <TableRow noHover>
-                  <TableCell colSpan={7} className="text-muted-foreground py-8 text-center">
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <div className="rounded-full bg-teal-100 p-3 dark:bg-teal-900/30">
-                        <Receipt className="h-6 w-6 text-teal-500 dark:text-teal-400" />
+                return (
+                  <TableRow key={id} noHover className="group">
+                    <TableCell className="text-muted-foreground py-3 font-mono text-xs">{id}</TableCell>
+                    <TableCell className="py-3">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-teal-500 dark:text-teal-400" />
+                        <span>{format(new Date(createdAt), 'dd/LL/Y, kk:mm')}</span>
                       </div>
-                      <p>{t('payments.notFound', 'No payments found')}</p>
-                      <p className="text-muted-foreground text-xs">
-                        {t('payments.addPaymentHint', 'Click the "Add Payment" button to add a payment to this order')}
-                      </p>
+                    </TableCell>
+                    <TableCell className="py-3">
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="h-4 w-4 text-teal-500 dark:text-teal-400" />
+                        <span className="font-medium">{method}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-3">
+                      <Badge variant={statusBadge.variant} className="flex w-fit items-center gap-1">
+                        {statusBadge.icon}
+                        {statusBadge.label}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="py-3 font-mono text-sm font-medium">
+                      {priceFormatter(amount, order.currencyCode)}
+                    </TableCell>
+                    <TableCell className="flex items-center justify-center">
+                      <MetadataDisplay metadata={metadata} />
+                    </TableCell>
+                    <TableCell className="py-3 text-end">
+                      <ContextMenu>
+                        {state !== PAYMENT_STATE.SETTLED && state !== PAYMENT_STATE.CANCELLED && (
+                          <DropdownMenuItem
+                            key={'set'}
+                            onClick={() => setPaymentToBeSettled(id)}
+                            className="flex cursor-pointer items-center gap-2"
+                          >
+                            <CheckCircle2 size={16} />
+                            {t('payments.settle.settle', 'Settle')}
+                          </DropdownMenuItem>
+                        )}
+                        {state !== PAYMENT_STATE.CANCELLED && (
+                          <ConfirmationDialog onConfirm={() => cancelPayment(id)}>
+                            <DropdownMenuItem
+                              key={'cancel'}
+                              className="flex cursor-pointer items-center gap-2 text-red-500"
+                              onSelect={(e) => e.preventDefault()}
+                            >
+                              <XCircle size={16} />
+                              {t('payments.cancel', 'Cancel')}
+                            </DropdownMenuItem>
+                          </ConfirmationDialog>
+                        )}
+                      </ContextMenu>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow noHover>
+                <TableCell colSpan={7} className="text-muted-foreground py-8 text-center">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="rounded-full bg-teal-100 p-3 dark:bg-teal-900/30">
+                      <Receipt className="h-6 w-6 text-teal-500 dark:text-teal-400" />
                     </div>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+                    <p>{t('payments.notFound', 'No payments found')}</p>
+                    <p className="text-muted-foreground text-xs">
+                      {t('payments.addPaymentHint', 'Click the "Add Payment" button to add a payment to this order')}
+                    </p>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </ScrollArea>
+    </CustomCard>
   );
 };

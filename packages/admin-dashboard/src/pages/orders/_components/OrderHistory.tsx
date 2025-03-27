@@ -1,14 +1,5 @@
 import type React from 'react';
-import {
-  useOrder,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  apiClient,
-  CustomCardHeader,
-} from '@deenruv/react-ui-devkit';
+import { useOrder, apiClient, CustomCard } from '@deenruv/react-ui-devkit';
 
 import { DeletionResult, type ModelTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
@@ -72,60 +63,40 @@ export const OrderHistory: React.FC = () => {
     }
   };
 
-  const OrderCardHeaderJSX = (
-    <CustomCardHeader
+  return (
+    <CustomCard
+      color="amber"
       description={t('history.description', 'Timeline of order events and notes')}
       title={t('history.title', 'Order History')}
-      icon={<ClipboardList className="h-5 w-5 text-amber-500 dark:text-amber-400" />}
-    />
-  );
-
-  if (loading) {
-    return (
-      <Card className="border-l-4 border-l-amber-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-amber-400">
-        {OrderCardHeaderJSX}
-        <CardContent>
-          <div className="flex flex-col items-center justify-center py-16 text-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500"></div>
-            <p className="text-muted-foreground mt-4 text-sm">{t('history.loading', 'Loading order history...')}</p>
+      icon={<ClipboardList />}
+    >
+      {loading && (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500"></div>
+          <p className="text-muted-foreground mt-4 text-sm">{t('history.loading', 'Loading order history...')}</p>
+        </div>
+      )}
+      {error && (
+        <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+          <div className="rounded-full bg-red-100 p-3 dark:bg-red-900/30">
+            <AlertCircle className="h-6 w-6 text-red-500 dark:text-red-400" />
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card className="border-l-4 border-l-amber-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-amber-400">
-        {OrderCardHeaderJSX}
-        <CardContent>
-          <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-            <div className="rounded-full bg-red-100 p-3 dark:bg-red-900/30">
-              <AlertCircle className="h-6 w-6 text-red-500 dark:text-red-400" />
-            </div>
-            <div>
-              <p className="font-medium text-red-600">{t('toasts.orderHistoryLoadingError', { value: order?.id })}</p>
-              <p className="text-muted-foreground mt-2 text-sm">
-                {t('history.tryAgain', 'Please try refreshing the page')}
-              </p>
-            </div>
+          <div>
+            <p className="font-medium text-red-600">{t('toasts.orderHistoryLoadingError', { value: order?.id })}</p>
+            <p className="text-muted-foreground mt-2 text-sm">
+              {t('history.tryAgain', 'Please try refreshing the page')}
+            </p>
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="border-l-4 border-l-amber-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-amber-400">
-      {OrderCardHeaderJSX}
-      <CardContent>
+        </div>
+      )}
+      {!loading && !error && (
         <History
           data={data}
           onNoteAdd={addMessageToOrder}
           onNoteDelete={deleteMessageFromOrder}
           onNoteEdit={editMessageInOrder}
         />
-      </CardContent>
-    </Card>
+      )}
+    </CustomCard>
   );
 };

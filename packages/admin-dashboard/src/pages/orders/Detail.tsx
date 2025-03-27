@@ -51,7 +51,7 @@ export const OrdersDetailPage = () => {
         <ProductsCard />
         <TaxSummary />
         <EntityCustomFields entityName="order" id={id} />
-        {order.state !== ORDER_STATE.DRAFT && <SurchargeCard />}
+        {mode === 'update' && <SurchargeCard />}
         {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
         {order.state !== ORDER_STATE.DRAFT && <OrderHistory />}
       </div>

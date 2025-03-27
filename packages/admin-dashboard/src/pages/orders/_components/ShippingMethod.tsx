@@ -2,7 +2,6 @@
 
 import {
   Button,
-  Card,
   Label,
   Tooltip,
   TooltipContent,
@@ -19,8 +18,7 @@ import {
   useOrder,
   OrderDetailSelector,
   Badge,
-  CardContent,
-  CustomCardHeader,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import { type EligibleShippingMethodsType, eligibleShippingMethodsSelector } from '@/graphql/draft_order';
 import { priceFormatter } from '@/utils';
@@ -134,16 +132,14 @@ export const ShippingMethod: React.FC = () => {
   };
 
   return (
-    <Card className="border-l-4 border-l-orange-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-orange-400">
-      <CustomCardHeader
-        description={t(
-          'selectShipmentMethod.cardDescription',
-          'Choose how this order will be delivered to the customer',
-        )}
-        title={t('selectShipmentMethod.cardTitle', 'Shipping Method')}
-        icon={<Truck className="h-5 w-5 text-orange-500 dark:text-orange-400" />}
-      >
-        {mode !== 'view' && (
+    <CustomCard
+      notCollapsible
+      color="orange"
+      description={t('selectShipmentMethod.cardDescription', 'Choose how this order will be delivered to the customer')}
+      title={t('selectShipmentMethod.cardTitle', 'Shipping Method')}
+      icon={<Truck />}
+      upperRight={
+        mode !== 'view' && (
           <Dialog open={open} onOpenChange={setOpen} defaultOpen={false}>
             {!order?.lines.length ? (
               <TooltipProvider>
@@ -280,74 +276,73 @@ export const ShippingMethod: React.FC = () => {
               </div>
             </DialogContent>
           </Dialog>
-        )}
-      </CustomCardHeader>
-      <CardContent>
-        <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
-          <div className="flex items-start gap-3">
-            {!order?.lines.length ? (
-              <>
-                <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
-                  <AlertCircle className="h-4 w-4 text-amber-500" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-muted-foreground text-sm italic">
-                    {t('selectShipmentMethod.noSelectedTip', 'Add products to the order first')}
-                  </p>
-                </div>
-              </>
-            ) : !selectedShipping ? (
-              <>
-                <div className="flex-1">
-                  <p className="text-muted-foreground text-sm italic">
-                    {t('selectShipmentMethod.noSelected', 'No shipping method selected')}
-                  </p>
-                  {mode !== 'view' && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2 gap-2"
-                      onClick={() => {
-                        if (order?.lines.length) setOpen(true);
-                      }}
-                      disabled={!order?.lines.length}
-                    >
-                      <Truck className="h-3.5 w-3.5" />
-                      {t('selectShipmentMethod.addMethod', 'Add Shipping Method')}
-                    </Button>
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
-                  <Truck className="h-4 w-4 text-orange-500 dark:text-orange-400" />
-                </div>
-                <div className="flex-1">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm font-medium">{t('selectShipmentMethod.method')}</Label>
-                      <span className="text-sm font-medium">{selectedShipping.name}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm font-medium">{t('selectShipmentMethod.code')}</Label>
-                      <Badge variant="outline" className="text-xs">
-                        {selectedShipping.code}
-                      </Badge>
-                    </div>
-                    <div className="border-border mt-1 flex items-center justify-between border-t pt-2">
-                      <Label className="text-sm font-medium">{t('selectShipmentMethod.price')}</Label>
-                      <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                        {priceFormatter(selectedShipping?.priceWithTax || 0, currentOrder?.currencyCode)}
-                      </span>
-                    </div>
+        )
+      }
+    >
+      <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
+        <div className="flex items-start gap-3">
+          {!order?.lines.length ? (
+            <>
+              <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
+                <AlertCircle className="h-4 w-4 text-amber-500" />
+              </div>
+              <div className="flex-1">
+                <p className="text-muted-foreground text-sm italic">
+                  {t('selectShipmentMethod.noSelectedTip', 'Add products to the order first')}
+                </p>
+              </div>
+            </>
+          ) : !selectedShipping ? (
+            <>
+              <div className="flex-1">
+                <p className="text-muted-foreground text-sm italic">
+                  {t('selectShipmentMethod.noSelected', 'No shipping method selected')}
+                </p>
+                {mode !== 'view' && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2 gap-2"
+                    onClick={() => {
+                      if (order?.lines.length) setOpen(true);
+                    }}
+                    disabled={!order?.lines.length}
+                  >
+                    <Truck className="h-3.5 w-3.5" />
+                    {t('selectShipmentMethod.addMethod', 'Add Shipping Method')}
+                  </Button>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
+                <Truck className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+              </div>
+              <div className="flex-1">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-medium">{t('selectShipmentMethod.method')}</Label>
+                    <span className="text-sm font-medium">{selectedShipping.name}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-medium">{t('selectShipmentMethod.code')}</Label>
+                    <Badge variant="outline" className="text-xs">
+                      {selectedShipping.code}
+                    </Badge>
+                  </div>
+                  <div className="border-border mt-1 flex items-center justify-between border-t pt-2">
+                    <Label className="text-sm font-medium">{t('selectShipmentMethod.price')}</Label>
+                    <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
+                      {priceFormatter(selectedShipping?.priceWithTax || 0, currentOrder?.currencyCode)}
+                    </span>
                   </div>
                 </div>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

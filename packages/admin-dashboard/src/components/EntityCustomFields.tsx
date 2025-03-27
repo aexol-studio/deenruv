@@ -12,6 +12,8 @@ import {
   useGFFLP,
   cn,
   CustomCardHeader,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import type { LanguageCode, ModelTypes } from '@deenruv/admin-types';
@@ -304,18 +306,14 @@ export function EntityCustomFields<T extends ViableEntity>({
   };
 
   return (
-    <Card
-      className={cn({
-        'border-l-4 border-l-rose-500 dark:border-l-rose-400': !withoutBorder,
-        'shadow-sm transition-shadow duration-200 hover:shadow': !disabled && !isUpdating,
-      })}
-    >
-      <CustomCardHeader
-        description={t('custom-fields.description', `Manage custom fields for this ${getEntityDisplayName()}`)}
-        title={t('custom-fields.title', 'Custom Fields')}
-        icon={<Database className="h-5 w-5 text-rose-500 dark:text-rose-400" />}
-      >
-        {currentLanguage && translations?.length > 0 && (
+    <CustomCard
+      title={t('custom-fields.title', 'Custom Fields')}
+      description={t('custom-fields.description', `Manage custom fields for this ${getEntityDisplayName()}`)}
+      color="rose"
+      icon={<CardIcons.customFields />}
+      upperRight={
+        currentLanguage &&
+        translations?.length > 0 && (
           <div className="bg-muted/50 mt-2 flex items-center gap-2 rounded-md px-3 py-2 text-sm">
             <Globe className="h-4 w-4 text-rose-500" />
             <span>
@@ -323,100 +321,92 @@ export function EntityCustomFields<T extends ViableEntity>({
               <span className="ml-1 font-medium">{currentLanguage.toUpperCase()}</span>
             </span>
           </div>
-        )}
-      </CustomCardHeader>
-
-      <CardContent className="p-0">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-200 border-t-rose-500"></div>
-            <p className="text-muted-foreground text-sm">{t('custom-fields.loading', 'Loading custom fields...')}</p>
-          </div>
-        ) : entityCustomFields?.length ? (
-          <div className="space-y-6 p-6 pt-0">
-            <CustomFieldsComponent
-              additionalData={additionalData}
-              value={state.customFields?.value}
-              translation={currentTranslationValue}
-              customFields={entityCustomFields}
-              disabled={disabled}
-              setValue={(field, data) => {
-                const translatable = field.type === 'localeText' || field.type === 'localeString';
-                if (translatable && currentLanguage) {
-                  const customFieldsTranslations = setInArrayBy(
-                    translations,
-                    (t) => t.languageCode !== currentLanguage,
-                    {
-                      customFields: {
-                        ...translations.find((t) => t.languageCode === currentLanguage)?.customFields,
-                        [field.name]: data,
-                      },
-                      languageCode: currentLanguage,
-                    },
-                  );
-                  const newCustomFields = Object.entries(state.customFields?.value || {}).reduce((acc, [key, val]) => {
-                    if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
-                    if (relationFields?.includes(key)) {
-                      const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
-                      acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : (val as any)?.id || null;
-                    } else acc[key] = val;
-                    return acc;
-                  }, {} as CF);
-                  onChange?.(newCustomFields, customFieldsTranslations);
-                  setField('translations', customFieldsTranslations);
-                  return;
-                }
-
-                if (!translatable) {
-                  const newCustomFields = Object.entries({ ...state.customFields?.value, [field.name]: data }).reduce(
-                    (acc, [key, val]) => {
-                      if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
-                      if (relationFields?.includes(key)) {
-                        const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
-                        acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : (val as any)?.id || null;
-                      } else acc[key] = val;
-                      return acc;
-                    },
-                    {} as CF,
-                  );
-                  onChange?.(newCustomFields, state.translations?.value);
-                  setField('customFields', { ...state.customFields?.value, [field.name]: data });
-                  return;
-                }
-              }}
-            />
-            {!hideButton && (
-              <div className="mt-6 flex justify-end border-t pt-4">
-                <Button disabled={disabled || isUpdating} onClick={updateEntity} className="gap-2">
-                  {isUpdating ? (
-                    <>
-                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
-                      {t('processing', 'Processing...')}
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4" />
-                      {t('update', 'Save Changes')}
-                    </>
-                  )}
-                </Button>
-              </div>
+        )
+      }
+      bottomRight={
+        !hideButton && (
+          <Button disabled={disabled || isUpdating} onClick={updateEntity} className="gap-2">
+            {isUpdating ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                {t('processing', 'Processing...')}
+              </>
+            ) : (
+              <>
+                <Save className="h-4 w-4" />
+                {t('update', 'Save Changes')}
+              </>
             )}
+          </Button>
+        )
+      }
+    >
+      {loading ? (
+        <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-rose-200 border-t-rose-500"></div>
+          <p className="text-muted-foreground text-sm">{t('custom-fields.loading', 'Loading custom fields...')}</p>
+        </div>
+      ) : entityCustomFields?.length ? (
+        <CustomFieldsComponent
+          additionalData={additionalData}
+          value={state.customFields?.value}
+          translation={currentTranslationValue}
+          customFields={entityCustomFields}
+          disabled={disabled}
+          setValue={(field, data) => {
+            const translatable = field.type === 'localeText' || field.type === 'localeString';
+            if (translatable && currentLanguage) {
+              const customFieldsTranslations = setInArrayBy(translations, (t) => t.languageCode !== currentLanguage, {
+                customFields: {
+                  ...translations.find((t) => t.languageCode === currentLanguage)?.customFields,
+                  [field.name]: data,
+                },
+                languageCode: currentLanguage,
+              });
+              const newCustomFields = Object.entries(state.customFields?.value || {}).reduce((acc, [key, val]) => {
+                if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
+                if (relationFields?.includes(key)) {
+                  const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+                  acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : (val as any)?.id || null;
+                } else acc[key] = val;
+                return acc;
+              }, {} as CF);
+              onChange?.(newCustomFields, customFieldsTranslations);
+              setField('translations', customFieldsTranslations);
+              return;
+            }
+
+            if (!translatable) {
+              const newCustomFields = Object.entries({ ...state.customFields?.value, [field.name]: data }).reduce(
+                (acc, [key, val]) => {
+                  if (readOnlyFieldsDict[key] || translatableFieldsDict[key]) return acc;
+                  if (relationFields?.includes(key)) {
+                    const newKey = key + (Array.isArray(val) ? 'Ids' : 'Id');
+                    acc[newKey] = Array.isArray(val) ? val?.map((el) => el.id) : (val as any)?.id || null;
+                  } else acc[key] = val;
+                  return acc;
+                },
+                {} as CF,
+              );
+              onChange?.(newCustomFields, state.translations?.value);
+              setField('customFields', { ...state.customFields?.value, [field.name]: data });
+              return;
+            }
+          }}
+        />
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+          <div className="rounded-full bg-rose-100 p-3 dark:bg-rose-900/30">
+            <AlertCircle className="h-6 w-6 text-rose-500 dark:text-rose-400" />
           </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-            <div className="rounded-full bg-rose-100 p-3 dark:bg-rose-900/30">
-              <AlertCircle className="h-6 w-6 text-rose-500 dark:text-rose-400" />
-            </div>
-            <div>
-              <p className="font-medium">{t('custom-fields.noFields', 'No custom fields available')}</p>
-              <p className="text-muted-foreground mt-1 text-sm">
-                {t('custom-fields.noFieldsHint', 'This entity type does not have any custom fields configured')}
-              </p>
-            </div>
+          <div>
+            <p className="font-medium">{t('custom-fields.noFields', 'No custom fields available')}</p>
+            <p className="text-muted-foreground mt-1 text-sm">
+              {t('custom-fields.noFieldsHint', 'This entity type does not have any custom fields configured')}
+            </p>
           </div>
-        )}
-      </CardContent>
-    </Card>
+        </div>
+      )}
+    </CustomCard>
   );
 }

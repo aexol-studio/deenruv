@@ -1,16 +1,12 @@
 'use client';
 
 import {
-  Card,
-  CardHeader,
-  CardTitle,
   Button,
   Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,
   Input,
-  CardDescription,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -24,8 +20,7 @@ import {
   OrderDetailSelector,
   Label,
   useGFFLP,
-  CardContent,
-  CustomCardHeader,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
@@ -142,16 +137,18 @@ export const CustomerSelectCard: React.FC = () => {
   if (!order) return null;
 
   return (
-    <Card className="border-l-4 border-l-indigo-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-indigo-400">
-      <CustomCardHeader
-        description={t(
-          'create.selectCustomer.description',
-          'Choose an existing customer or create a new one for this order',
-        )}
-        title={t('create.selectCustomer.select', 'Customer Information')}
-        icon={<User className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />}
-      >
-        {mode !== 'view' && mode !== 'update' && (
+    <CustomCard
+      notCollapsible
+      color="indigo"
+      description={t(
+        'create.selectCustomer.description',
+        'Choose an existing customer or create a new one for this order',
+      )}
+      title={t('create.selectCustomer.select', 'Customer Information')}
+      icon={<User />}
+      upperRight={
+        mode !== 'view' &&
+        mode !== 'update' && (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -314,58 +311,57 @@ export const CustomerSelectCard: React.FC = () => {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-        )}
-      </CustomCardHeader>
-      <CardContent>
-        <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
-          <div className="flex items-start gap-3">
-            {!currentOrder?.customer ? (
-              <>
-                <div className="bg-secondary mt-0.5 flex h-8 w-8 items-center justify-center rounded-full">
-                  <AlertCircle className="h-4 w-4 text-green-500 dark:text-green-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-muted-foreground text-sm italic">
-                    {t('create.selectCustomer.noCustomer', 'No customer assigned to this order')}
-                  </p>
-                  {mode !== 'view' && (
-                    <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
-                      <UserPlus className="h-3.5 w-3.5" />
-                      {t('create.selectCustomer.addCustomer', 'Add Customer')}
-                    </Button>
+        )
+      }
+    >
+      <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
+        <div className="flex items-start gap-3">
+          {!currentOrder?.customer ? (
+            <>
+              <div className="bg-secondary mt-0.5 flex h-8 w-8 items-center justify-center rounded-full">
+                <AlertCircle className="h-4 w-4 text-green-500 dark:text-green-600" />
+              </div>
+              <div className="flex-1">
+                <p className="text-muted-foreground text-sm italic">
+                  {t('create.selectCustomer.noCustomer', 'No customer assigned to this order')}
+                </p>
+                {mode !== 'view' && (
+                  <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
+                    <UserPlus className="h-3.5 w-3.5" />
+                    {t('create.selectCustomer.addCustomer', 'Add Customer')}
+                  </Button>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex-1">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-medium">
+                      {currentOrder.customer.title && `${currentOrder.customer.title} `}
+                      {currentOrder.customer.firstName} {currentOrder.customer.lastName}
+                    </p>
+                    <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300">
+                      {t('create.selectCustomer.customer', 'Customer')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Mail className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
+                    <span>{currentOrder.customer.emailAddress}</span>
+                  </div>
+                  {currentOrder.customer.phoneNumber && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <Phone className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
+                      <span>{currentOrder.customer.phoneNumber}</span>
+                    </div>
                   )}
                 </div>
-              </>
-            ) : (
-              <>
-                <div className="flex-1">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium">
-                        {currentOrder.customer.title && `${currentOrder.customer.title} `}
-                        {currentOrder.customer.firstName} {currentOrder.customer.lastName}
-                      </p>
-                      <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300">
-                        {t('create.selectCustomer.customer', 'Customer')}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm">
-                      <Mail className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
-                      <span>{currentOrder.customer.emailAddress}</span>
-                    </div>
-                    {currentOrder.customer.phoneNumber && (
-                      <div className="flex items-center gap-2 text-sm">
-                        <Phone className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
-                        <span>{currentOrder.customer.phoneNumber}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+              </div>
+            </>
+          )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

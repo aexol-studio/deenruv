@@ -1,18 +1,7 @@
 'use client';
 
 import { SurchargeTable } from './';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardFooter,
-  Checkbox,
-  Input,
-  Label,
-  useGFFLP,
-  useOrder,
-  CustomCardHeader,
-} from '@deenruv/react-ui-devkit';
+import { Button, Checkbox, Input, Label, useGFFLP, useOrder, CustomCard } from '@deenruv/react-ui-devkit';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -123,13 +112,38 @@ export const SurchargeCard: React.FC<{}> = () => {
   }, [state, modifiedOrder, modifyOrderInput, setModifiedOrder, setModifyOrderInput, setField]);
 
   return (
-    <Card className="border-l-4 border-l-yellow-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-yellow-400">
-      <CustomCardHeader
-        description={t('surcharge.description', 'Add additional fees or charges to this order')}
-        title={t('surcharge.title', 'Order Surcharges')}
-        icon={<Receipt className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />}
-      />
-      <CardContent className="space-y-6">
+    <CustomCard
+      color="yellow"
+      description={t('surcharge.description', 'Add additional fees or charges to this order')}
+      title={t('surcharge.title', 'Order Surcharges')}
+      icon={<Receipt className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />}
+      bottomRight={
+        <Button
+          onClick={handleAddSurcharge}
+          disabled={
+            isSubmitting ||
+            !state.description?.value ||
+            !state.sku?.value ||
+            !state.price?.value ||
+            state.price?.value <= 0
+          }
+          className="ml-auto gap-2"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {t('surcharge.processing', 'Processing...')}
+            </>
+          ) : (
+            <>
+              <PlusCircle className="h-4 w-4" />
+              {t('surcharge.addButton', 'Add Surcharge')}
+            </>
+          )}
+        </Button>
+      }
+    >
+      <div className="space-y-6">
         <SurchargeTable />
 
         <div>
@@ -249,33 +263,7 @@ export const SurchargeCard: React.FC<{}> = () => {
             </div>
           </div>
         </div>
-      </CardContent>
-
-      <CardFooter className="border-t pt-4">
-        <Button
-          onClick={handleAddSurcharge}
-          disabled={
-            isSubmitting ||
-            !state.description?.value ||
-            !state.sku?.value ||
-            !state.price?.value ||
-            state.price?.value <= 0
-          }
-          className="ml-auto gap-2"
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              {t('surcharge.processing', 'Processing...')}
-            </>
-          ) : (
-            <>
-              <PlusCircle className="h-4 w-4" />
-              {t('surcharge.addButton', 'Add Surcharge')}
-            </>
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };
