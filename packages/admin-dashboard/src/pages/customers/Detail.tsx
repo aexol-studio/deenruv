@@ -63,6 +63,9 @@ export const CustomersDetailPage = () => {
                 lastName: data.lastName?.validatedValue,
                 phoneNumber: data.phoneNumber?.validatedValue,
                 title: data.title?.validatedValue,
+                ...('customFields' in data && data.customFields?.validatedValue
+                  ? { customFields: data.customFields.validatedValue }
+                  : {}),
               };
               if (!sharedInput.emailAddress || !sharedInput.firstName || !sharedInput.lastName) return;
               const input = sharedInput as ExcludeUndefined<typeof sharedInput>;
