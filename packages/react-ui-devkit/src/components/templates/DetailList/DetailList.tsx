@@ -1,4 +1,4 @@
-import { useDetailList } from './useDetailList';
+import { useDetailListHook } from './useDetailList';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -30,6 +30,7 @@ import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailList/cons
 import { cn } from '@/lib';
 import { FiltersDialog } from '@/components/templates/DetailList/useDetailList/FiltersDialog.js';
 import { ColumnView } from '@/components/templates/DetailList/useDetailList/ColumnView.js';
+import { DetailListStoreProvider } from './useDetailList.js';
 
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
@@ -178,7 +179,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         removeFilterField,
         resetFilterFields,
         changeFilterField,
-    } = useDetailList({
+    } = useDetailListHook({
         fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
         searchFields,
     });
@@ -484,39 +485,41 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     };
 
     return (
-        <div className={cn('w-full', !noPaddings && 'px-4 py-2 md:px-8 md:py-4')}>
-            {onRemove && (
-                <DeleteDialog
-                    {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
-                />
-            )}
-            <div className="page-content-h flex w-full flex-col gap-2">
-                <div className="flex w-full flex-col items-start gap-4 mb-1">
-                    <div className="flex w-full items-end justify-between gap-4">
-                        <div className="flex items-center gap-2">
-                            <ColumnView table={table} entityName={entityName} />
-                            {Search}
-                            <FiltersDialog {...filterProperties} />
-                        </div>
-                        <div className="flex gap-2">
-                            {route && !noCreateButton && isPermittedToCreate && (
-                                <Button
-                                    className="flex items-center gap-2"
-                                    onClick={() => {
-                                        if ('create' in route) route.create();
-                                        else navigate((route as RouteBase).new, { viewTransition: true });
-                                    }}
-                                >
-                                    <PlusCircleIcon size={16} />
-                                    {t('create')}
-                                </Button>
-                            )}
-                            {additionalButtons}
+        <DetailListStoreProvider value={{ refetch, table }}>
+            <div className={cn('w-full', !noPaddings && 'px-4 py-2 md:px-8 md:py-4')}>
+                {onRemove && (
+                    <DeleteDialog
+                        {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
+                    />
+                )}
+                <div className="page-content-h flex w-full flex-col gap-2">
+                    <div className="flex w-full flex-col items-start gap-4 mb-1">
+                        <div className="flex w-full items-end justify-between gap-4">
+                            <div className="flex items-center gap-2">
+                                <ColumnView table={table} entityName={entityName} />
+                                {Search}
+                                <FiltersDialog {...filterProperties} />
+                            </div>
+                            <div className="flex gap-2">
+                                {route && !noCreateButton && isPermittedToCreate && (
+                                    <Button
+                                        className="flex items-center gap-2"
+                                        onClick={() => {
+                                            if ('create' in route) route.create();
+                                            else navigate((route as RouteBase).new, { viewTransition: true });
+                                        }}
+                                    >
+                                        <PlusCircleIcon size={16} />
+                                        {t('create')}
+                                    </Button>
+                                )}
+                                {additionalButtons}
+                            </div>
                         </div>
                     </div>
+                    <ListTable {...{ columns, isFiltered, table, Paginate, tableId }} />
                 </div>
-                <ListTable {...{ columns, isFiltered, table, Paginate, tableId }} />
             </div>
-        </div>
+        </DetailListStoreProvider>
     );
 }

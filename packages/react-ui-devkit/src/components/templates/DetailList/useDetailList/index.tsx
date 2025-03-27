@@ -41,7 +41,7 @@ const enum SearchParamKey {
 type FIELD = keyof ModelTypes[ListType[keyof ListType]];
 type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
 
-export const useDetailList = <T extends PromisePaginated, K extends keyof ListType, S>({
+export const useDetailListHook = <T extends PromisePaginated, K extends keyof ListType, S>({
     fetch,
     customItemsPerPage,
     searchFields,
