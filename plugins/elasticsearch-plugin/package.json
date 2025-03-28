@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/elasticsearch-plugin",
-    "version": "0.0.114",
+    "version": "0.0.115",
     "license": "MIT",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
