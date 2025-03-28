@@ -10,8 +10,7 @@ import { CustomFieldConfigType, HistoryEntryType, ResolverInputTypes, SortOrder 
 import { toast } from 'sonner';
 import { create } from 'zustand';
 import { ServerConfigType } from '@/selectors/BaseSelectors.js';
-import { customFieldsForQuery } from '@/zeus_client/customFieldsForQuery.js';
-import { GraphQLSchema } from './server.js';
+import { useCallback } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UnknownObject = Record<string, any>;
@@ -105,6 +104,9 @@ interface Actions {
     setManualChange(value: { state: boolean; toAction?: string }): void;
     setCurrentPossibilities(value: { name: string; to: Array<string> }): void;
     getChangesRegistry: (options?: DryRunOptions) => Promise<ChangesRegistry>;
+    setBillingAddress: (input: ResolverInputTypes['CreateAddressInput']) => Promise<OrderDetailType>;
+    setShippingAddress: (input: ResolverInputTypes['CreateAddressInput']) => Promise<OrderDetailType>;
+    setCustomerAndAddressesForDraftOrder: (customerId: string) => Promise<OrderDetailType>;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -155,6 +157,19 @@ const getAllOrderHistory = async (id: string) => {
 
 // @ts-ignore
 export const useOrder = create<Order & Actions>()((set, get) => {
+    const setAddress = (type: 'billing' | 'shipping', input: ResolverInputTypes['CreateAddressInput']) => {
+        const { order } = get();
+        const mutationName =
+            type === 'billing' ? 'setDraftOrderBillingAddress' : 'setDraftOrderShippingAddress';
+        if (order)
+            return apiClient('mutation')({
+                [(mutationName as 'setDraftOrderBillingAddress') || 'setDraftOrderShippingAddress']: [
+                    { orderId: order.id, input },
+                    OrderDetailSelector,
+                ],
+            });
+    };
+
     return {
         mode: undefined,
         loading: true,
@@ -170,6 +185,77 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         currentPossibilities: undefined,
         orderProcess: undefined,
         orderLineCustomFields: null,
+        setBillingAddress: async input => {
+            const { setModifiedOrder, setOrder } = get();
+            return setAddress('billing', input)?.then(resp => {
+                setModifiedOrder(resp.setDraftOrderBillingAddress);
+                setOrder(resp.setDraftOrderBillingAddress);
+            });
+        },
+        setShippingAddress: async input => {
+            const { setModifiedOrder, setOrder } = get();
+            return setAddress('shipping', input)?.then(resp => {
+                // @ts-ignore
+                const newOrder = resp.setDraftOrderShippingAddress;
+                setModifiedOrder(newOrder);
+                setOrder(newOrder);
+                return newOrder;
+            });
+        },
+        setCustomerAndAddressesForDraftOrder: async (id: string) => {
+            const { order, setOrder, setBillingAddress, setShippingAddress } = get();
+            if (!order) return;
+
+            apiClient('mutation')({
+                setCustomerForDraftOrder: [
+                    {
+                        orderId: order.id,
+                        customerId: id,
+                    },
+                    {
+                        __typename: true,
+                        '...on Order': OrderDetailSelector,
+                        '...on EmailAddressConflictError': { errorCode: true, message: true },
+                    },
+                ],
+            }).then(({ setCustomerForDraftOrder }) => {
+                if (setCustomerForDraftOrder.__typename === 'Order') {
+                    const shippingAddress =
+                        setCustomerForDraftOrder.customer?.addresses?.find(a => a.defaultShippingAddress) ??
+                        setCustomerForDraftOrder.customer?.addresses?.[0];
+                    const billingAddress =
+                        setCustomerForDraftOrder.customer?.addresses?.find(a => a.defaultBillingAddress) ??
+                        setCustomerForDraftOrder.customer?.addresses?.[0];
+                    const _updatedOrder: OrderDetailType = {
+                        ...setCustomerForDraftOrder,
+                    };
+                    setOrder(_updatedOrder);
+
+                    if (billingAddress) {
+                        const { id, country, ...rest } = billingAddress;
+                        setBillingAddress({
+                            ...rest,
+                            countryCode: billingAddress?.country.code,
+                            ...('customFields' in billingAddress
+                                ? { customFields: billingAddress.customFields }
+                                : {}),
+                        });
+                    }
+
+                    if (shippingAddress) {
+                        const { id, country, ...rest } = shippingAddress;
+
+                        setShippingAddress({
+                            ...rest,
+                            countryCode: shippingAddress?.country.code,
+                            ...('customFields' in shippingAddress
+                                ? { customFields: shippingAddress.customFields }
+                                : {}),
+                        });
+                    }
+                }
+            });
+        },
         setCurrentPossibilities: value => set({ currentPossibilities: value }),
         setManualChange: manualChange => set({ manualChange }),
         cancelPayment: async (id: string) => {

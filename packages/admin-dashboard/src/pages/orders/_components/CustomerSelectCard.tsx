@@ -21,6 +21,7 @@ import {
   Label,
   useGFFLP,
   CustomCard,
+  OrderDetailType,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
@@ -33,7 +34,7 @@ import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
-  const { order, setOrder, mode, modifiedOrder } = useOrder();
+  const { order, setOrder, mode, modifiedOrder, setCustomerAndAddressesForDraftOrder } = useOrder();
   const [tab, setTab] = useState<'select' | 'create'>('select');
   const [selected, setSelected] = useState<SearchCustomerType | undefined>(order?.customer);
   const [open, setOpen] = useState(false);
@@ -96,36 +97,43 @@ export const CustomerSelectCard: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const { setCustomerForDraftOrder } = await apiClient('mutation')({
-        setCustomerForDraftOrder: [
-          {
-            orderId: order.id,
-            ...(tab === 'select'
-              ? { customerId: selected?.id }
-              : {
-                  input: {
-                    title: state.title?.validatedValue,
-                    firstName: state.firstName?.validatedValue || '',
-                    lastName: state.lastName?.validatedValue || '',
-                    emailAddress: state.emailAddress?.validatedValue || '',
-                    phoneNumber: state.phoneNumber?.validatedValue,
-                  },
-                }),
-          },
-          {
-            __typename: true,
-            '...on Order': OrderDetailSelector,
-            '...on EmailAddressConflictError': { errorCode: true, message: true },
-          },
-        ],
-      });
-
-      if (setCustomerForDraftOrder.__typename === 'Order') {
-        setOrder(setCustomerForDraftOrder);
-        setOpen(false);
-        toast.success(t('create.selectCustomer.success', 'Customer successfully assigned to order'));
+      if (tab === 'select' && selected) {
+        setCustomerAndAddressesForDraftOrder(selected.id).then(() => {
+          setOpen(false);
+          toast.success(t('create.selectCustomer.success', 'Customer successfully assigned to order'));
+          setIsSubmitting(false);
+        });
       } else {
-        toast.error(t('create.selectCustomer.error', 'Failed to assign customer to order'));
+        const { setCustomerForDraftOrder } = await apiClient('mutation')({
+          setCustomerForDraftOrder: [
+            {
+              orderId: order.id,
+              ...(tab === 'select'
+                ? { customerId: selected?.id }
+                : {
+                    input: {
+                      title: state.title?.validatedValue,
+                      firstName: state.firstName?.validatedValue || '',
+                      lastName: state.lastName?.validatedValue || '',
+                      emailAddress: state.emailAddress?.validatedValue || '',
+                      phoneNumber: state.phoneNumber?.validatedValue,
+                    },
+                  }),
+            },
+            {
+              __typename: true,
+              '...on Order': OrderDetailSelector,
+              '...on EmailAddressConflictError': { errorCode: true, message: true },
+            },
+          ],
+        });
+
+        if (setCustomerForDraftOrder.__typename === 'Order') {
+          setOpen(false);
+          toast.success(t('create.selectCustomer.success', 'Customer successfully assigned to order'));
+        } else {
+          toast.error(t('create.selectCustomer.error', 'Failed to assign customer to order'));
+        }
       }
     } catch (error) {
       toast.error(t('create.selectCustomer.error', 'Failed to assign customer to order'));
@@ -139,7 +147,7 @@ export const CustomerSelectCard: React.FC = () => {
   return (
     <CustomCard
       notCollapsible
-      color="indigo"
+      color={currentOrder?.customer ? 'indigo' : 'gray'}
       description={t(
         'create.selectCustomer.description',
         'Choose an existing customer or create a new one for this order',

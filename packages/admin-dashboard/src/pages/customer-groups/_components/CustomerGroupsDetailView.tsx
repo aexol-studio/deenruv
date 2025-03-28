@@ -1,17 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  Input,
-  useSettings,
-  useDetailView,
-  DetailViewMarker,
-  CustomCard,
-  CardIcons,
-} from '@deenruv/react-ui-devkit';
+import { Input, useSettings, useDetailView, DetailViewMarker, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields, Stack } from '@/components';
 
 const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name'] as const;
@@ -19,7 +8,7 @@ const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name'] as const;
 export const CustomerGroupsDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('customerGroups');
-  const { id, form, loading, fetchEntity } = useDetailView('customerGroups-detail-view', ...CUSTOMER_GROUPS_FORM_KEYS);
+  const { id, form, fetchEntity } = useDetailView('customerGroups-detail-view', ...CUSTOMER_GROUPS_FORM_KEYS);
 
   const {
     base: { setField, state },

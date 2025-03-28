@@ -1,16 +1,8 @@
 import React, { ReactNode } from 'react';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-    TableCell,
-    TableRow,
-    TailwindColor,
-} from '..';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, TableCell, TableRow } from '..';
 import { CircleOff, SearchX } from 'lucide-react';
 import { cn } from '@/lib/utils.js';
+import { TailwindColor } from '@/universal_components/CustomCard.js';
 
 interface Props {
     columnsLength: number;

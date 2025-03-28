@@ -5,7 +5,7 @@ import {
     AccordionTrigger,
 } from '@/components/atoms/accordion.js';
 import { Card, CardContent, CardFooter } from '@/components/atoms/card.js';
-import { CustomCardHeader } from '@/components/molecules';
+import { CustomCardHeader } from './CustomCardHeader.js';
 import { cn } from '@/lib/utils.js';
 import React, { cloneElement, PropsWithChildren, ReactElement, ReactNode, useState } from 'react';
 
@@ -45,6 +45,21 @@ interface OrderCardTitleProps {
     notCollapsible?: boolean;
 }
 
+/**
+ * A default Deenruv card component.
+ * This component provides a styled card layout with configurable title, description, icons,
+ * and additional content areas. It supports collapsible behavior and custom styling.
+ * @param {ReactNode} [icon] - An optional icon displayed alongside the title.
+ * @param {string} title - The title of the card.
+ * @param {string} [description] - An optional description displayed below the title.
+ * @param {ReactNode} [upperRight] - An optional element positioned in the upper-right corner.
+ * @param {ReactNode} [bottomRight] - An optional element positioned in the bottom-right footer corner.
+ * @param {TailwindColor} [color] - The color theme of the card.
+ * @param {string} [wrapperClassName] - Additional CSS classes for the card wrapper.
+ * @param {boolean} [collapsed] - If true, the card starts in a collapsed state.
+ * @param {boolean} [notCollapsible] - If true, the card cannot be collapsed.
+ * @param {ReactNode} children - The main content of the card.
+ */
 export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     children,
     icon,
@@ -94,7 +109,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
             <AccordionItem value={title} className="h-full">
                 <Card
                     className={cn(
-                        'shadow-sm transition-shadow duration-200 hover:shadow h-full',
+                        'shadow-sm transition-colors duration-200 hover:shadow h-full',
                         borderColor,
                     )}
                 >

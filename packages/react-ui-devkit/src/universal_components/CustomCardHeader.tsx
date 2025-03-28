@@ -10,6 +10,15 @@ interface OrderCardTitleProps {
     fullWidth?: boolean;
 }
 
+/**
+ * A default Deenruv card header component. In most cases it shouldn't be user separately.
+ * @param {ReactNode} [icon] - An optional icon displayed alongside the title.
+ * @param {string} title - The title of the card.
+ * @param {string} [description] - An optional description displayed below the title.
+ * @param {boolean} [isCollapsed] - If true, the description is truncated.
+ * @param {boolean} [fullWidth] - If true, sets the wrapper to full width.
+ * @param {ReactNode} children - An optional element positioned in the upper-right corner.
+ */
 export const CustomCardHeader: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     children,
     icon,

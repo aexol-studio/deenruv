@@ -28,7 +28,6 @@ import {
   apiClient,
   useOrder,
   cn,
-  OrderDetailSelector,
   CustomCard,
 } from '@deenruv/react-ui-devkit';
 import { type AddressBaseType, addressBaseSelector } from '@/graphql/draft_order';
@@ -52,7 +51,7 @@ export const AddressCard: React.FC<{
   type: 'shipping' | 'billing';
 }> = ({ type }) => {
   const [tab, setTab] = useState<'select' | 'create'>('select');
-  const { mode, order, modifiedOrder, setModifiedOrder, setOrder } = useOrder();
+  const { mode, order, modifiedOrder, setModifiedOrder, setBillingAddress, setShippingAddress } = useOrder();
   const currentOrder = useMemo(
     () => (mode === 'update' ? (modifiedOrder ? modifiedOrder : order) : order),
     [mode, order, modifiedOrder],
@@ -204,24 +203,17 @@ export const AddressCard: React.FC<{
               ...('customFields' in state ? { customFields: (state.customFields as any).value } : {}),
             };
 
-      const { setDraftOrderShippingAddress, setDraftOrderBillingAddress } = await apiClient('mutation')(
-        type === 'shipping'
-          ? { setDraftOrderShippingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] }
-          : { setDraftOrderBillingAddress: [{ orderId: order.id, input: newAddress }, OrderDetailSelector] },
-      );
-
-      if (setDraftOrderShippingAddress || setDraftOrderBillingAddress) {
-        setModifiedOrder(type === 'shipping' ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
-        toast.success(
-          t(tab === 'create' ? 'selectAddress.addressSuccessCreateToast' : 'selectAddress.addressSuccessSelectToast'),
+      const setAddress = type === 'shipping' ? setShippingAddress : setBillingAddress;
+      setAddress(newAddress)
+        .then(() => {
+          toast.success(t('selectAddress.addressSuccessSelectToast'));
+          setOpen(false);
+        })
+        .catch(() =>
+          toast.error(
+            t(tab === 'create' ? 'selectAddress.addressFailedCreateToast' : 'selectAddress.addressFailedSelectToast'),
+          ),
         );
-        setOrder(setDraftOrderShippingAddress ? setDraftOrderShippingAddress : setDraftOrderBillingAddress);
-        setOpen(false);
-      } else {
-        toast.error(
-          t(tab === 'create' ? 'selectAddress.addressFailedCreateToast' : 'selectAddress.addressFailedSelectToast'),
-        );
-      }
 
       if (tab === 'create' && createForCustomer && order.customer?.id) {
         const { createCustomerAddress } = await apiClient('mutation')({
@@ -276,7 +268,6 @@ export const AddressCard: React.FC<{
       setSelectedAddress(sameAddressInSaved);
       setState({ countryCode: sameAddressInSaved.country?.code || '', ...sameAddressInSaved });
     } else {
-      setTab('create');
       setSelectedAddress(undefined);
       if (currentAddress) {
         setState({
@@ -301,7 +292,7 @@ export const AddressCard: React.FC<{
       title={t(isShipping ? 'selectAddress.shippingHeader' : 'selectAddress.billingHeader')}
       description={t(isShipping ? 'selectAddress.shippingDescription' : 'selectAddress.billingDescription')}
       icon={isShipping ? <MapPin /> : <Building />}
-      color={color}
+      color={currentAddress ? color : 'gray'}
       upperRight={
         mode !== 'view' && (
           <Dialog open={open} onOpenChange={setOpen}>
@@ -332,7 +323,7 @@ export const AddressCard: React.FC<{
               </DialogHeader>
               <Tabs
                 value={tab}
-                defaultValue={tab}
+                defaultValue={'select'}
                 onValueChange={(e) => setTab(e as 'select' | 'create')}
                 className="flex flex-1 basis-1 flex-col overflow-hidden"
               >

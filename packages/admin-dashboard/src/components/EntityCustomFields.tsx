@@ -3,15 +3,11 @@
 import { setInArrayBy } from '@/lists/useGflp.js';
 import {
   Button,
-  Card,
   CustomFieldsComponent,
   mergeSelectorWithCustomFields,
-  CardContent,
   useServer,
   apiClient,
   useGFFLP,
-  cn,
-  CustomCardHeader,
   CustomCard,
   CardIcons,
 } from '@deenruv/react-ui-devkit';

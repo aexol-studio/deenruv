@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { EllipsisVerticalIcon, Trash, Trash2 } from 'lucide-react';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { ChevronLeft, EllipsisVerticalIcon, Trash, Trash2 } from 'lucide-react';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { cn } from '@/lib';
 import { usePluginStore } from '@/plugins';
@@ -20,6 +20,7 @@ import {
     Button,
     SimpleTooltip,
     DetailViewMarker,
+    Separator,
 } from '@/components';
 import { GFFLPFormField, useGFFLP } from '@/hooks';
 import { useServer } from '@/state/server.js';
@@ -185,6 +186,7 @@ const DetailTabs = ({
     texts?: { submitButton?: string; deleteButton?: string };
     locationId: DetailKeys;
 }) => {
+    const navigate = useNavigate();
     const { t } = useTranslation('common');
     const {
         entity,
@@ -217,6 +219,9 @@ const DetailTabs = ({
     const showCreateButton = !id && isPermittedToCreate;
     const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
 
+    const currentPath = useLocation().pathname;
+    const listPath = currentPath.slice(0, currentPath.lastIndexOf('/'));
+
     const tabsWithMarker = tabs.map((tab, idx) => (
         <TabsContent key={idx} value={tab.name}>
             <PageBlock
@@ -248,7 +253,19 @@ const DetailTabs = ({
         >
             <div className="bg-muted sticky top-0 z-[51] w-full items-center justify-start shadow-xl">
                 <div className="flex w-full items-center justify-between px-4 py-2">
-                    <div className="flex w-full flex-1">
+                    <div className="flex w-full flex-1 items-center">
+                        <Button
+                            variant="secondary"
+                            size="icon"
+                            className="mb-2"
+                            onClick={() => {
+                                navigate(listPath);
+                            }}
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                            <span className="sr-only">{t('create.back')}</span>
+                        </Button>
+                        <Separator orientation="vertical" className="mx-4" />
                         {tabs.length > 1 && (
                             <TabsList className="h-12 bg-transparent justify-start gap-2 p-0">
                                 {tabs.map((t, idx) => (
