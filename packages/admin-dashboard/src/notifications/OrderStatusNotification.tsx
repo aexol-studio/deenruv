@@ -1,13 +1,4 @@
-import {
-  apiClient,
-  cn,
-  createNotification,
-  Notification,
-  ORDER_STATE,
-  SimpleTooltip,
-  useServer,
-} from '@deenruv/react-ui-devkit';
-import { useEffect, useMemo, useState } from 'react';
+import { apiClient, cn, createNotification, ORDER_STATE, SimpleTooltip } from '@deenruv/react-ui-devkit';
 
 export const ORDER_STATUS_NOTIFICATION = createNotification({
   id: 'order-states',

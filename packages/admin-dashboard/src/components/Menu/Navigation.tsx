@@ -329,8 +329,16 @@ export function Navigation({ isCollapsed }: NavProps) {
             <AccordionItem value={group.id}>
               <React.Fragment key={group.id}>
                 {!isCollapsed && (
-                  <AccordionTrigger className={cn('pr-3')}>
-                    <h4 className="px-6 text-xs font-bold uppercase">{group.label}</h4>
+                  <AccordionTrigger className={cn('flex items-center justify-between pr-3 hover:no-underline')}>
+                    <div className="flex items-center gap-2 px-6">
+                      <h4 className="text-xs font-bold uppercase hover:underline">{group.label}</h4>
+                      {getNavigationNotification(group.id)}
+                      {viewMarkers ? (
+                        <p className="text-muted-foreground dark:text-muted-foreground text-xs font-semibold lowercase">
+                          {group.id}
+                        </p>
+                      ) : null}
+                    </div>
                   </AccordionTrigger>
                 )}
                 <AccordionContent className={cn(isCollapsed ? 'py-2' : 'pb-4')}>
