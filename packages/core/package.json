@@ -42,8 +42,8 @@
     "graphql": "~16.9.0",
     "graphql-fields": "^2.0.3",
     "graphql-scalars": "^1.22.5",
-    "graphql-upload": "^16.0.2",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "graphql-upload": "^16.0.2"
   },
   "dependencies": {
     "@apollo/server": "^4.10.4",
@@ -65,6 +65,7 @@
     "body-parser": "^1.20.2",
     "cookie-session": "^2.1.0",
     "csv-parse": "^5.5.5",
+    "dataloader": "^2.2.3",
     "express": "^4.18.3",
     "fs-extra": "^11.2.0",
     "http-proxy-middleware": "^2.0.6",
@@ -102,7 +103,7 @@
     "better-sqlite3": "^9.4.3",
     "chokidar": "^3.6.0",
     "fs-extra": "^11.2.0",
-    "glob": "^10.3.10",
+    "glob": "^10.4.5",
     "mysql": "^2.18.1",
     "pg": "^8.11.3",
     "rimraf": "^5.0.5",

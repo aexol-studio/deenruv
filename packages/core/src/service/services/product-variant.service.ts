@@ -87,6 +87,108 @@ export class ProductVariantService {
         private translator: TranslatorService,
     ) {}
 
+    private dataloaderKey(key: string) {
+        return `__core_services_product_variant_${key}`;
+    }
+
+    private findByIdsDataloader(ctx: RequestContext, relations?: RelationPaths<ProductVariant>) {
+        return ctx.dataloader(
+            this.dataloaderKey(`find_by_ids_${JSON.stringify(relations)}`),
+            async (keys: readonly ID[]) => {
+                const ids = [...keys];
+                const res = await this.connection.findByIdsInChannel(
+                    ctx,
+                    ProductVariant,
+                    ids,
+                    ctx.channelId,
+                    {
+                        relations: [
+                            ...(relations || ['product', 'featuredAsset', 'product.featuredAsset']),
+                            'taxCategory',
+                        ],
+                        where: { deletedAt: IsNull() },
+                    },
+                );
+                return keys.map(k => res.find(v => v.id === k));
+            },
+        );
+    }
+
+    private findByProductIdsDataloader(
+        ctx: RequestContext,
+        options: ListQueryOptions<ProductVariant> = {},
+        relations?: RelationPaths<ProductVariant>,
+    ) {
+        return ctx.dataloader(
+            this.dataloaderKey(`find_by_ids_product_${JSON.stringify(relations)}_${JSON.stringify(options)}`),
+            async (keys: readonly ID[]) => {
+                const productIds = [...keys];
+                // Should be safe to ignore limit here?
+                // LargePagination for per product id variant fetch is unlikely.
+                const skip = typeof options.skip === 'number' ? options.skip : 0;
+                const take = typeof options.take === 'number' ? options.take : 1000;
+                options.take = undefined;
+                options.skip = undefined;
+                const qb = this.listQueryBuilder
+                    .build(ProductVariant, options, {
+                        relations: [
+                            ...(relations || [
+                                'options',
+                                'facetValues',
+                                'facetValues.facet',
+                                'assets',
+                                'featuredAsset',
+                            ]),
+                            'taxCategory',
+                        ],
+                        orderBy: { id: 'ASC' },
+                        where: { deletedAt: IsNull() },
+                        ctx,
+                    })
+                    .innerJoinAndSelect('productvariant.channels', 'channel', 'channel.id = :channelId', {
+                        channelId: ctx.channelId,
+                    })
+                    .innerJoinAndSelect(
+                        'productvariant.product',
+                        'product',
+                        'product.id IN (:...productIds)',
+                        {
+                            productIds,
+                        },
+                    );
+
+                const countQb = this.listQueryBuilder
+                    .build(ProductVariant, options, {
+                        where: { deletedAt: IsNull() },
+                        ctx,
+                    })
+                    .select('product.id', 'id')
+                    .addSelect('COUNT(productvariant.id)', 'count')
+                    .innerJoin('productvariant.channels', 'channel', 'channel.id = :channelId', {
+                        channelId: ctx.channelId,
+                    })
+                    .innerJoin('productvariant.product', 'product', 'product.id IN (:...productIds)', {
+                        productIds,
+                    })
+                    .groupBy('product.id');
+
+                if (ctx.apiType === 'shop') {
+                    qb.andWhere('productvariant.enabled = :enabled', { enabled: true });
+                    countQb.andWhere('productvariant.enabled = :enabled', { enabled: true });
+                }
+
+                const [variants, count] = await Promise.all([
+                    qb.getMany().then(variants => this.applyPricesAndTranslateVariants(ctx, variants)),
+                    countQb.getRawMany(),
+                ]);
+                return keys.map(k => ({
+                    items: variants.filter(v => v.productId === k).slice(skip, skip + take),
+                    totalItems: (count.find(row => row.id === k)?.count as number) || 0,
+                }));
+            },
+        );
+    }
+
     async findAll(
         ctx: RequestContext,
         options?: ListQueryOptions<ProductVariant>,
@@ -125,14 +227,8 @@ export class ProductVariantService {
         productVariantId: ID,
         relations?: RelationPaths<ProductVariant>,
     ): Promise<Translated<ProductVariant> | undefined> {
-        return this.connection
-            .findOneInChannel(ctx, ProductVariant, productVariantId, ctx.channelId, {
-                relations: [
-                    ...(relations || ['product', 'featuredAsset', 'product.featuredAsset']),
-                    'taxCategory',
-                ],
-                where: { deletedAt: IsNull() },
-            })
+        return this.findByIdsDataloader(ctx, relations)
+            .load(productVariantId)
             .then(async result => {
                 if (result) {
                     return this.translator.translate(await this.applyChannelPriceAndTax(result, ctx), ctx, [
@@ -143,60 +239,26 @@ export class ProductVariantService {
     }
 
     findByIds(ctx: RequestContext, ids: ID[]): Promise<Array<Translated<ProductVariant>>> {
-        return this.connection
-            .findByIdsInChannel(ctx, ProductVariant, ids, ctx.channelId, {
-                relations: [
-                    'options',
-                    'facetValues',
-                    'facetValues.facet',
-                    'taxCategory',
-                    'assets',
-                    'featuredAsset',
-                ],
-            })
-            .then(variants => this.applyPricesAndTranslateVariants(ctx, variants));
+        return this.findByIdsDataloader(ctx)
+            .loadMany(ids)
+            .then(variants => {
+                const variantsWithoutErrors = variants.filter(
+                    (variant): variant is ProductVariant => !(variant instanceof Error),
+                );
+                if (variants.length !== variantsWithoutErrors.length) {
+                    throw variants.find(v => v instanceof Error);
+                }
+                return this.applyPricesAndTranslateVariants(ctx, variantsWithoutErrors);
+            });
     }
 
-    getVariantsByProductId(
+    async getVariantsByProductId(
         ctx: RequestContext,
         productId: ID,
         options: ListQueryOptions<ProductVariant> = {},
         relations?: RelationPaths<ProductVariant>,
     ): Promise<PaginatedList<Translated<ProductVariant>>> {
-        const qb = this.listQueryBuilder
-            .build(ProductVariant, options, {
-                relations: [
-                    ...(relations || [
-                        'options',
-                        'facetValues',
-                        'facetValues.facet',
-                        'assets',
-                        'featuredAsset',
-                    ]),
-                    'taxCategory',
-                ],
-                orderBy: { id: 'ASC' },
-                where: { deletedAt: IsNull() },
-                ctx,
-            })
-            .innerJoinAndSelect('productvariant.channels', 'channel', 'channel.id = :channelId', {
-                channelId: ctx.channelId,
-            })
-            .innerJoinAndSelect('productvariant.product', 'product', 'product.id = :productId', {
-                productId,
-            });
-
-        if (ctx.apiType === 'shop') {
-            qb.andWhere('productvariant.enabled = :enabled', { enabled: true });
-        }
-
-        return qb.getManyAndCount().then(async ([variants, totalItems]) => {
-            const items = await this.applyPricesAndTranslateVariants(ctx, variants);
-            return {
-                items,
-                totalItems,
-            };
-        });
+        return this.findByProductIdsDataloader(ctx, options, relations).load(productId);
     }
 
     /**

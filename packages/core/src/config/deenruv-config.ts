@@ -58,6 +58,7 @@ import { HealthCheckStrategy } from './system/health-check-strategy';
 import { TaxLineCalculationStrategy } from './tax/tax-line-calculation-strategy';
 import { TaxZoneStrategy } from './tax/tax-zone-strategy';
 import { OrderMiddleware } from './order/order-middleware';
+import { RequestContext } from '../api/common/request-context';
 
 /**
  * @description

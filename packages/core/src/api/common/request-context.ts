@@ -9,6 +9,7 @@ import { CachedSession } from '../../config/session-cache/session-cache-strategy
 import { Channel } from '../../entity/channel/channel.entity';
 
 import { ApiType } from './get-api-type';
+import DataLoader from 'dataloader';
 
 export type SerializedRequestContext = {
     _req?: any;
@@ -51,6 +52,7 @@ export class RequestContext {
     private readonly _translationFn: TFunction;
     private readonly _apiType: ApiType;
     private readonly _req?: Request;
+    private readonly _dataloaders: Record<string, DataLoader<unknown, unknown, unknown>>;
 
     /**
      * @internal
@@ -76,6 +78,7 @@ export class RequestContext {
         this._isAuthorized = options.isAuthorized;
         this._authorizedAsOwnerOnly = options.authorizedAsOwnerOnly;
         this._translationFn = translationFn || (((key: string) => key) as any);
+        this._dataloaders = {};
     }
 
     /**
@@ -229,6 +232,22 @@ export class RequestContext {
         } catch (e: any) {
             return `Translation format error: ${JSON.stringify(e.message)}). Original key: ${key}`;
         }
+    }
+
+    /**
+     * @description
+     * Returns a dataloader from context or creates a new one
+     */
+    dataloader<K, V, C = K>(
+        key: string,
+        fetchFunc: DataLoader.BatchLoadFn<K, V>,
+        opts?: DataLoader.Options<K, V, C>,
+    ): DataLoader<K, V, C> {
+        const loader = (this._dataloaders[key] as undefined | DataLoader<K, V, C>) || new DataLoader(fetchFunc, opts);
+        if (!this._dataloaders[key]) {
+            this._dataloaders[key] = loader;
+        }
+        return loader;
     }
 
     /**
