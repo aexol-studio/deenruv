@@ -14,6 +14,8 @@ import {
   DEFAULT_CHANNEL_CODE,
   GraphQLSchema,
   NotificationProvider,
+  apiClient,
+  ORDER_STATE,
 } from '@deenruv/react-ui-devkit';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
@@ -119,7 +121,36 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
         <AnimatePresence>
           {isLoggedIn ? (
             <PluginProvider plugins={pluginsStore} context={context}>
-              <NotificationProvider notifications={[]}>
+              <NotificationProvider
+                notifications={[
+                  {
+                    id: 'order-states',
+                    interval: 60000,
+                    fetch: async () => {
+                      const additionalStates = window.__DEENRUV_SETTINGS__.ui?.extras?.orderObservableStates || [];
+                      const { orders } = await apiClient('query')({
+                        orders: [
+                          {
+                            options: {
+                              filter: {
+                                state: {
+                                  in: [ORDER_STATE.PAYMENT_AUTHORIZED].concat(additionalStates as ORDER_STATE[]),
+                                },
+                              },
+                            },
+                          },
+                          { totalItems: true },
+                        ],
+                      });
+                      return orders.totalItems;
+                    },
+                    placements: {
+                      main: (data) => <>{data}</>,
+                      navigation: [{ id: 'link-orders', component: (data) => <>{data}</> }],
+                    },
+                  },
+                ]}
+              >
                 <RouterProvider router={router} />
                 {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
               </NotificationProvider>

@@ -20,6 +20,7 @@ import {
   TabsList,
   TabsTrigger,
   ListBadge,
+  PageBlock,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { FileUp, ImageOff, Trash2, Upload, X, Filter, LayoutGrid, List } from 'lucide-react';
@@ -185,8 +186,8 @@ export function AssetsListPage() {
   };
 
   return (
-    <main className="min-h-screen w-full">
-      <div className="container mx-auto px-4 py-8">
+    <PageBlock withPadding>
+      <div className="max-w-[1440px] px-4">
         <div className="flex flex-col space-y-6">
           <Tabs defaultValue="browse">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row">
@@ -412,6 +413,6 @@ export function AssetsListPage() {
           </Tabs>
         </div>
       </div>
-    </main>
+    </PageBlock>
   );
 }

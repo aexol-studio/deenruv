@@ -8,6 +8,7 @@ import {
   fetchAndSetChannels,
   useOrder,
   GraphQLSchema,
+  useNotifications,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -73,6 +74,27 @@ export const Root = () => {
   const fetchGraphQLSchema = useServer((p) => p.fetchGraphQLSchema);
   const [loaded, setLoaded] = useState(false);
   const { initializeOrderCustomFields } = useOrder();
+  const setData = useNotifications(({ setData }) => setData);
+  const notifications = useNotifications(({ notifications }) => notifications);
+
+  useEffect(() => {
+    if (!loaded) return;
+    const intervalIds = notifications.map(({ id, fetch, interval }) => {
+      const fetchData = async () => {
+        const data = await fetch();
+        setData(id, data);
+      };
+
+      fetchData();
+      const intervalId = setInterval(fetchData, interval);
+      return intervalId;
+    });
+
+    return () => {
+      intervalIds.forEach(clearInterval);
+    };
+  }, [notifications.map((n) => n.id).join(','), loaded]);
+
   useEffect(() => {
     const init = async (schema: GraphQLSchema | null) => {
       const activeAdministratorResponse = await apiClient('query')({

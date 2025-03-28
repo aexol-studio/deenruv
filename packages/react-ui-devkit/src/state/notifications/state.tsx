@@ -34,10 +34,13 @@ export const createNotificationsStore = <T,>(
                             placement => placement.id === id,
                         ),
                     }))
-                    .filter(notification => notification.placement);
+                    .filter(notification => notification.placement)
+                    .map(notification => notification.placement?.component(notification.data));
             },
             getMainNotification: () => {
-                return get().notifications.filter(notification => notification.placements?.main);
+                return get()
+                    .notifications.filter(notification => notification.placements?.main)
+                    .map(notification => notification.placements?.main(notification.data));
             },
         };
     });
