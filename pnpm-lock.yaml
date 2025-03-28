@@ -2743,6 +2743,28 @@ importers:
         specifier: 5.1.6
         version: 5.1.6
 
+  plugins/phone-number-validation:
+    dependencies:
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+      libphonenumber-js:
+        specifier: ^1.12.6
+        version: 1.12.6
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
   plugins/product-badges-plugin:
     dependencies:
       '@deenruv/admin-types':
@@ -5600,7 +5622,7 @@ packages:
   '@graphql-typed-document-node/core@3.2.0':
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
-      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
+      graphql: ^16
 
   '@grpc/grpc-js@1.6.12':
     resolution: {integrity: sha512-JmvQ03OTSpVd9JTlj/K3IWHSz4Gk/JMLUTtW7Zb0KvO1LcOYGATh5cNuRYzCAeDR3O8wq+q8FZe97eO9MBrkUw==}
@@ -11785,6 +11807,9 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
+
+  libphonenumber-js@1.12.6:
+    resolution: {integrity: sha512-PJiS4ETaUfCOFLpmtKzAbqZQjCCKVu2OhTV4SVNNE7c2nu/dACvtCqj4L0i/KWNnIgRv7yrILvBj5Lonv5Ncxw==}
 
   license-webpack-plugin@4.0.2:
     resolution: {integrity: sha512-771TFWFD70G1wLTC4oU2Cw4qvtmNrIw+wRvBtn+okgHl7slJVi7zfNcdmqDL72BojM30VNJ2UHylr1o77U37Jw==}
@@ -27140,6 +27165,8 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+
+  libphonenumber-js@1.12.6: {}
 
   license-webpack-plugin@4.0.2(webpack@5.94.0(@swc/core@1.9.3(@swc/helpers@0.5.15))(esbuild@0.20.1)):
     dependencies:
