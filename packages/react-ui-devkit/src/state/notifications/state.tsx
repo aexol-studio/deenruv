@@ -7,7 +7,7 @@ export const createNotificationsStore = <T,>(
     const DEFAULT_PROPS: NotificationProps<T> = {
         notifications: [],
     };
-    return createStore<NotificationsState>()((set, get) => {
+    return createStore<NotificationsState<unknown>>()((set, get) => {
         const notifications = (initProps?.notifications ||
             DEFAULT_PROPS.notifications) as Notification<unknown>[];
         return {
@@ -40,7 +40,7 @@ export const createNotificationsStore = <T,>(
             getMainNotification: () => {
                 return get()
                     .notifications.filter(notification => notification.placements?.main)
-                    .map(notification => notification.placements?.main(notification.data));
+                    .map(notification => notification.placements?.main?.(notification.data));
             },
         };
     });

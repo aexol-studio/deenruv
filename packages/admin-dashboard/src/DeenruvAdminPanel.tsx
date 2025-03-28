@@ -14,8 +14,6 @@ import {
   DEFAULT_CHANNEL_CODE,
   GraphQLSchema,
   NotificationProvider,
-  apiClient,
-  ORDER_STATE,
 } from '@deenruv/react-ui-devkit';
 import { ADMIN_DASHBOARD_VERSION } from '@/version';
 
@@ -27,6 +25,8 @@ import { DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
 import * as resources from './locales';
 import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
 import { LanguageCode } from '@deenruv/admin-types';
+import { ORDER_STATUS_NOTIFICATION } from './notifications/OrderStatusNotification.js';
+import { SYSTEM_STATUS_NOTIFICATION } from './notifications/SystemStatusNotification.js';
 
 declare global {
   interface Window {
@@ -122,34 +122,9 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
           {isLoggedIn ? (
             <PluginProvider plugins={pluginsStore} context={context}>
               <NotificationProvider
-                notifications={[
-                  {
-                    id: 'order-states',
-                    interval: 60000,
-                    fetch: async () => {
-                      const additionalStates = window.__DEENRUV_SETTINGS__.ui?.extras?.orderObservableStates || [];
-                      const { orders } = await apiClient('query')({
-                        orders: [
-                          {
-                            options: {
-                              filter: {
-                                state: {
-                                  in: [ORDER_STATE.PAYMENT_AUTHORIZED].concat(additionalStates as ORDER_STATE[]),
-                                },
-                              },
-                            },
-                          },
-                          { totalItems: true },
-                        ],
-                      });
-                      return orders.totalItems;
-                    },
-                    placements: {
-                      main: (data) => <>{data}</>,
-                      navigation: [{ id: 'link-orders', component: (data) => <>{data}</> }],
-                    },
-                  },
-                ]}
+                notifications={[ORDER_STATUS_NOTIFICATION, SYSTEM_STATUS_NOTIFICATION].concat(
+                  pluginsStore.notifications,
+                )}
               >
                 <RouterProvider router={router} />
                 {isLocalhost ? <DeenruvDeveloperIndicator /> : null}

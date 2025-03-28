@@ -28,6 +28,7 @@ import { GenericListContextType } from '@/components/templates/DetailList/useDet
 import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
 import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
+import { Notification } from '@/state/index.js';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -268,6 +269,8 @@ export type DeenruvUIPlugin<T extends Record<string, any> = object> = {
         inline?: Array<DeenruvUIDetailComponent<DetailKeys>>;
         dropdown?: Array<DeenruvUIDetailComponent<DetailKeys>>;
     };
+    /** Notifications are used to display messages to the user */
+    notifications?: Array<Notification<any>>;
     /** Inputs allow to override the default components from custom fields */
     inputs?: Array<PluginComponent>;
     /** Applied on the detail views (pages) */

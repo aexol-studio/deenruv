@@ -72,14 +72,14 @@ interface Actions {
     fetchGraphQLSchema: () => Promise<GraphQLSchema | null>;
 }
 
-const getSystemStatus = async () => {
+export const getSystemStatus = async () => {
     try {
         const response = await fetch(window.__DEENRUV_SETTINGS__.api.uri + '/health');
         if (!response.ok) {
             throw new Error('Failed to fetch system status');
         }
         const data = await response.json();
-        return data;
+        return data as SystemStatus;
     } catch (error) {
         console.error('Error fetching system status:', error);
         return null;

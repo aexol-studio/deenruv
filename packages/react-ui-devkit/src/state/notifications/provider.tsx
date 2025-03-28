@@ -3,7 +3,7 @@ import { NotificationProviderProps, NotificationStore } from './types.js';
 import { createNotificationsStore } from './state.js';
 import { NotificationContext } from './context.js';
 
-export function NotificationProvider<T>({ children, ...props }: NotificationProviderProps<T>) {
+export function NotificationProvider<T>({ children, ...props }: NotificationProviderProps) {
     const storeRef = useRef<NotificationStore>();
     if (!storeRef.current) {
         storeRef.current = createNotificationsStore(props);

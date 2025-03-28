@@ -210,4 +210,14 @@ export class PluginStore {
     get configs() {
         return this.pluginConfig;
     }
+
+    get notifications() {
+        const notifications = new Map<string, NonNullable<DeenruvUIPlugin['notifications']>[number]>();
+        this.pluginMap.forEach(plugin => {
+            plugin.notifications?.forEach(notification => {
+                notifications.set(notification.id, notification);
+            });
+        });
+        return Array.from(notifications.values());
+    }
 }

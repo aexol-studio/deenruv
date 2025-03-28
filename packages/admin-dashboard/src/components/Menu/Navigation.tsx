@@ -41,8 +41,6 @@ import {
   Puzzle,
 } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
-import { SystemStatusIndicator } from './Indicators/SystemStatusIndicator.js';
-import { OrdersStatusIndicators } from './Indicators/OrdersStatusIndicators.js';
 
 type NavLink = {
   title: string;
