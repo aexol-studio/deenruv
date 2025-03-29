@@ -15,8 +15,8 @@ import { phoneNumberValidationProcess } from './phone-number-validation-process.
     },
     providers: [
         {
-          provide: PHONE_NUMBER_VALIDATION_OPTIONS,
-          useFactory: () => PhoneNumberValidationPlugin.options,
+            provide: PHONE_NUMBER_VALIDATION_OPTIONS,
+            useFactory: () => PhoneNumberValidationPlugin.options,
         },
         PhoneNumberValidationService,
     ],
