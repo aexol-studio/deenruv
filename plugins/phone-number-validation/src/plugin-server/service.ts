@@ -23,6 +23,10 @@ export class PhoneNumberValidationService {
         if (!phoneNumber) {
             return requirePhoneNumber ? 'missing required phone number' : undefined;
         }
+        // Try to validate phone number before country hint.
+        if (isValidPhoneNumber(phoneNumber)) {
+            return;
+        }
         const countryCode = await this.getCountryCode(ctx, order);
         if (!countryCode) {
             return 'could not validate phone due to unknown country';
