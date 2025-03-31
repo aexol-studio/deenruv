@@ -498,7 +498,7 @@ importers:
         specifier: ^4.0.2
         version: 4.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.12)(express@4.21.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
       typescript:
         specifier: 5.3.3
@@ -862,7 +862,7 @@ importers:
     devDependencies:
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.4.2)
+        version: 7.0.1(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(encoding@0.1.13)(graphql-ws@5.16.0(graphql@16.9.0))(typescript@5.3.3)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -1366,7 +1366,7 @@ importers:
         specifier: ^7.6.0
         version: 7.6.3
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@18.19.67)(typescript@5.3.3))
     devDependencies:
       '@types/bcrypt':
@@ -1762,7 +1762,7 @@ importers:
         specifier: 1.8.0
         version: 1.8.0
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.8.0)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@deenruv/core':
@@ -2003,7 +2003,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@types/express':
@@ -2076,7 +2076,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@graphql-typed-document-node/core':
@@ -2149,7 +2149,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@graphql-typed-document-node/core':
@@ -2225,7 +2225,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@graphql-typed-document-node/core':
@@ -2274,7 +2274,7 @@ importers:
         specifier: ^7.8.1
         version: 7.8.1
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@deenruv/common':
@@ -2384,7 +2384,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@types/react':
@@ -2458,7 +2458,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@types/react':
@@ -2603,7 +2603,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
       typescript:
         specifier: 5.3.3
@@ -2651,7 +2651,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@types/react':
@@ -2807,7 +2807,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@graphql-typed-document-node/core':
@@ -2909,7 +2909,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@graphql-typed-document-node/core':
@@ -3072,7 +3072,7 @@ importers:
         specifier: ^1.4.41
         version: 1.7.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       typeorm:
-        specifier: 0.3.20
+        specifier: ^0.3.20
         version: 0.3.20(better-sqlite3@9.6.0)(ioredis@5.4.1)(pg@8.13.1)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.9.3(@swc/helpers@0.5.15))(@types/node@20.17.9)(typescript@5.3.3))
     devDependencies:
       '@graphql-typed-document-node/core':
@@ -5622,7 +5622,7 @@ packages:
   '@graphql-typed-document-node/core@3.2.0':
     resolution: {integrity: sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==}
     peerDependencies:
-      graphql: ^16
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
   '@grpc/grpc-js@1.6.12':
     resolution: {integrity: sha512-JmvQ03OTSpVd9JTlj/K3IWHSz4Gk/JMLUTtW7Zb0KvO1LcOYGATh5cNuRYzCAeDR3O8wq+q8FZe97eO9MBrkUw==}
@@ -17179,7 +17179,7 @@ snapshots:
       '@babel/core': 7.24.0
       '@babel/helper-compilation-targets': 7.25.9
       '@babel/helper-plugin-utils': 7.25.9
-      debug: 4.3.7
+      debug: 4.4.0
       lodash.debounce: 4.0.8
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -17190,7 +17190,7 @@ snapshots:
       '@babel/core': 7.24.0
       '@babel/helper-compilation-targets': 7.25.9
       '@babel/helper-plugin-utils': 7.25.9
-      debug: 4.3.7
+      debug: 4.4.0
       lodash.debounce: 4.0.8
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -17201,7 +17201,7 @@ snapshots:
       '@babel/core': 7.26.0
       '@babel/helper-compilation-targets': 7.25.9
       '@babel/helper-plugin-utils': 7.25.9
-      debug: 4.3.7
+      debug: 4.4.0
       lodash.debounce: 4.0.8
       resolve: 1.22.8
     transitivePeerDependencies:
@@ -22651,7 +22651,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 8.16.0(typescript@5.3.3)
       '@typescript-eslint/utils': 8.16.0(eslint@8.57.1)(typescript@5.3.3)
-      debug: 4.3.7
+      debug: 4.4.0
       eslint: 8.57.1
       ts-api-utils: 1.4.3(typescript@5.3.3)
     optionalDependencies:
@@ -22729,7 +22729,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.16.0
       '@typescript-eslint/visitor-keys': 8.16.0
-      debug: 4.3.7
+      debug: 4.4.0
       fast-glob: 3.3.2
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -23078,7 +23078,7 @@ snapshots:
 
   agent-base@7.1.1:
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
 
@@ -26361,7 +26361,7 @@ snapshots:
     dependencies:
       '@tootallnate/once': 1.1.2
       agent-base: 6.0.2
-      debug: 4.3.7
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -30090,7 +30090,7 @@ snapshots:
   socks-proxy-agent@6.2.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.7
+      debug: 4.4.0
       socks: 2.8.3
     transitivePeerDependencies:
       - supports-color
@@ -30099,7 +30099,7 @@ snapshots:
   socks-proxy-agent@8.0.4:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.7
+      debug: 4.4.0
       socks: 2.8.3
     transitivePeerDependencies:
       - supports-color
@@ -30153,7 +30153,7 @@ snapshots:
 
   spdy-transport@3.0.0:
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0
       detect-node: 2.1.0
       hpack.js: 2.1.6
       obuf: 1.1.2
@@ -30164,7 +30164,7 @@ snapshots:
 
   spdy@4.0.2:
     dependencies:
-      debug: 4.3.7
+      debug: 4.4.0
       handle-thing: 2.0.1
       http-deceiver: 1.2.7
       select-hose: 2.0.0
@@ -30810,7 +30810,7 @@ snapshots:
   tuf-js@2.2.1:
     dependencies:
       '@tufjs/models': 2.0.1
-      debug: 4.3.7
+      debug: 4.4.0
       make-fetch-happen: 13.0.1
     transitivePeerDependencies:
       - supports-color
@@ -30899,7 +30899,7 @@ snapshots:
       chalk: 4.1.2
       cli-highlight: 2.1.11
       dayjs: 1.11.13
-      debug: 4.3.7
+      debug: 4.4.0
       dotenv: 16.4.5
       glob: 10.4.5
       mkdirp: 2.1.6
@@ -30926,7 +30926,7 @@ snapshots:
       chalk: 4.1.2
       cli-highlight: 2.1.11
       dayjs: 1.11.13
-      debug: 4.3.7
+      debug: 4.4.0
       dotenv: 16.4.5
       glob: 10.4.5
       mkdirp: 2.1.6
@@ -30953,7 +30953,7 @@ snapshots:
       chalk: 4.1.2
       cli-highlight: 2.1.11
       dayjs: 1.11.13
-      debug: 4.3.7
+      debug: 4.4.0
       dotenv: 16.4.5
       glob: 10.4.5
       mkdirp: 2.1.6
