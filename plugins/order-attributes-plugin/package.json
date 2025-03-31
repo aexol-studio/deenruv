@@ -31,13 +31,16 @@
         "lucide-react": "^0.363.0",
         "sonner": "^1.4.41",
         "@nestjs/common": "^10.3.10",
-        "@nestjs/graphql": "^12.2.0",
-        "typeorm": "^0.3.20"
+        "@nestjs/graphql": "^12.2.0"
     },
     "devDependencies": {
         "rimraf": "^5.0.10",
         "typescript": "5.3.3",
         "@types/react": "^18.2.0",
-        "@types/react-dom": "^18.2.0"
+        "@types/react-dom": "^18.2.0",
+        "typeorm": "^0.3.20"
+    },
+    "peerDependencies": {
+        "typeorm": "^0.3.20"
     }
 }

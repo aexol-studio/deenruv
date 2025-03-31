@@ -46,8 +46,7 @@
         "faker": "^4.1.0",
         "form-data": "^4.0.0",
         "node-fetch": "^2.7.0",
-        "sql.js": "1.8.0",
-        "typeorm": "^0.3.20"
+        "sql.js": "1.8.0"
     },
     "devDependencies": {
         "@deenruv/core": "workspace:*",
@@ -59,6 +58,10 @@
         "mysql": "^2.18.1",
         "pg": "^8.11.3",
         "rimraf": "^5.0.5",
-        "typescript": "5.3.3"
+        "typescript": "5.3.3",
+        "typeorm": "^0.3.20"
+    },
+    "peerDependencies": {
+        "typeorm": "^0.3.20"
     }
 }

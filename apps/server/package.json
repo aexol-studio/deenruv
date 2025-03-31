@@ -45,7 +45,6 @@
         "@nestjs/axios": "^3.0.2",
         "@nestjs/common": "~10.3.10",
         "@nestjs/serve-static": "^4.0.2",
-        "typeorm": "^0.3.20",
         "typescript": "5.3.3"
     },
     "devDependencies": {
@@ -56,6 +55,10 @@
         "csv-stringify": "^6.4.6",
         "dayjs": "^1.11.10",
         "progress": "^2.0.3",
+        "typeorm": "^0.3.20",
         "tsx": "^4.19.1"
+    },
+    "peerDependencies": {
+        "typeorm": "^0.3.20"
     }
 }

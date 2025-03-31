@@ -20,7 +20,8 @@
     },
     "peerDependencies": {
         "graphql": "~16.9.0",
-        "graphql-tag": "^2.12.6"
+        "graphql-tag": "^2.12.6",
+        "typeorm": "^0.3.20"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.583.0",
@@ -46,8 +47,8 @@
         "sonner": "^1.4.41",
         "@nestjs/common": "^10.3.10",
         "@nestjs/graphql": "^12.2.0",
-        "typeorm": "^0.3.20",
         "recharts": "^2.12.7",
-        "@types/mime-types": "^2.1.3"
+        "@types/mime-types": "^2.1.3",
+        "typeorm": "^0.3.20"
     }
 }

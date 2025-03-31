@@ -34,7 +34,6 @@
         "sonner": "^1.4.41",
         "@nestjs/common": "^10.3.10",
         "@nestjs/graphql": "^12.2.0",
-        "typeorm": "^0.3.20",
         "graphql-tag": "^2.12.6",
         "replicate": "1.0.1"
     },
@@ -43,6 +42,10 @@
         "@graphql-typed-document-node/core": "3.2.0",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
-        "rimraf": "^5.0.10"
+        "rimraf": "^5.0.10",
+        "typeorm": "^0.3.20"
+    },
+    "peerDependencies": {
+        "typeorm": "^0.3.20"
     }
 }

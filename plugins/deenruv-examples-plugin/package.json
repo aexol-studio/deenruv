@@ -36,14 +36,17 @@
         "react-i18next": "^14.0.5",
         "react-router-dom": "^6.22.1",
         "recharts": "^2.12.7",
-        "sonner": "^1.4.41",
-        "typeorm": "^0.3.20"
+        "sonner": "^1.4.41"
     },
     "devDependencies": {
         "@graphql-typed-document-node/core": "^3.2.0",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
         "rimraf": "^5.0.10",
-        "typescript": "5.3.3"
+        "typescript": "5.3.3",
+        "typeorm": "^0.3.20"
+    },
+    "peerDependencies": {
+        "typeorm": "^0.3.20"
     }
 }
