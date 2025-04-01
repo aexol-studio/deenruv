@@ -26,6 +26,7 @@ import {
   Badge,
   priceFormatter,
   ArgumentFieldsComponent,
+  CustomCard,
 } from '@deenruv/react-ui-devkit';
 import type { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem.js';
@@ -93,7 +94,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button disabled={disabled} size="sm" className="gap-2">
+        <Button disabled={disabled} variant={'action'} size="sm" className="gap-2">
           <Package className="h-4 w-4" />
           {t('fulfillment.completeOrderButton', 'Fulfill Order')}
         </Button>
@@ -141,8 +142,8 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                       return (
                         <LineItem key={line.id} variant={line.productVariant}>
                           <TableCell className="py-3">
-                            <div className="flex items-center gap-2">
-                              <div className="flex flex-col gap-1">
+                            <div className="flex items-center">
+                              <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
                                   <Input
                                     type="number"
@@ -159,8 +160,8 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                                         setField('lines', value);
                                       }
                                     }}
+                                    endAdornment={<span className="text-sm">/ {line.quantity}</span>}
                                   />
-                                  <span className="text-muted-foreground text-sm">/ {line.quantity}</span>
                                 </div>
 
                                 <div className="flex items-center gap-1">
@@ -176,9 +177,8 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                                     </div>
                                   )}
                                 </div>
-
                                 <p className="text-muted-foreground text-xs">
-                                  {t('fulfillment.onStockValue', { value: onStock })}
+                                  ({t('fulfillment.onStockValue', { value: onStock })})
                                 </p>
                               </div>
                             </div>
@@ -209,136 +209,117 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
           <ScrollArea className="flex h-full md:w-1/2">
             <div className="flex h-full w-full flex-col p-6">
               <form onSubmit={handleSubmit} className="flex h-full flex-col gap-6">
-                <Card className="border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-blue-400">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-                      <CardTitle className="text-lg">{t('fulfillment.shippingAddress', 'Shipping Address')}</CardTitle>
+                <CustomCard title={t('fulfillment.shippingAddress', 'Shipping Address')} color="blue" icon={<MapPin />}>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <User className="text-muted-foreground h-4 w-4" />
+                          <p className="text-muted-foreground text-xs font-medium">{t('fullName', 'Full Name')}</p>
+                        </div>
+                        <p className="text-sm font-medium">{order.shippingAddress?.fullName || '—'}</p>
+                      </div>
+
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Building className="text-muted-foreground h-4 w-4" />
+                          <p className="text-muted-foreground text-xs font-medium">{t('company', 'Company')}</p>
+                        </div>
+                        <p className="text-sm font-medium">{order.shippingAddress?.company || '—'}</p>
+                      </div>
+
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <MapPin className="text-muted-foreground h-4 w-4" />
+                          <p className="text-muted-foreground text-xs font-medium">{t('street1', 'Street Address')}</p>
+                        </div>
+                        <p className="text-sm font-medium">{order.shippingAddress?.streetLine1 || '—'}</p>
+                      </div>
+
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium">{t('street2', 'Street Address 2')}</p>
+                        <p className="text-sm font-medium">{order.shippingAddress?.streetLine2 || '—'}</p>
+                      </div>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <div className="space-y-3">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <User className="text-muted-foreground h-4 w-4" />
-                            <p className="text-muted-foreground text-xs font-medium">{t('fullName', 'Full Name')}</p>
-                          </div>
-                          <p className="text-sm font-medium">{order.shippingAddress?.fullName || '—'}</p>
-                        </div>
 
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <Building className="text-muted-foreground h-4 w-4" />
-                            <p className="text-muted-foreground text-xs font-medium">{t('company', 'Company')}</p>
-                          </div>
-                          <p className="text-sm font-medium">{order.shippingAddress?.company || '—'}</p>
-                        </div>
+                    <div className="space-y-3">
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium">{t('city', 'City')}</p>
+                        <p className="text-sm font-medium">{order.shippingAddress?.city || '—'}</p>
+                      </div>
 
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <MapPin className="text-muted-foreground h-4 w-4" />
-                            <p className="text-muted-foreground text-xs font-medium">
-                              {t('street1', 'Street Address')}
-                            </p>
-                          </div>
-                          <p className="text-sm font-medium">{order.shippingAddress?.streetLine1 || '—'}</p>
-                        </div>
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium">{t('postalCode', 'Postal Code')}</p>
+                        <p className="text-sm font-medium">{order.shippingAddress?.postalCode || '—'}</p>
+                      </div>
 
-                        <div className="space-y-1">
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-xs font-medium">{t('country', 'Country')}</p>
+                        <p className="text-sm font-medium">{order.shippingAddress?.country || '—'}</p>
+                      </div>
+
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Phone className="text-muted-foreground h-4 w-4" />
                           <p className="text-muted-foreground text-xs font-medium">
-                            {t('street2', 'Street Address 2')}
+                            {t('phoneNumber', 'Phone Number')}
                           </p>
-                          <p className="text-sm font-medium">{order.shippingAddress?.streetLine2 || '—'}</p>
                         </div>
-                      </div>
-
-                      <div className="space-y-3">
-                        <div className="space-y-1">
-                          <p className="text-muted-foreground text-xs font-medium">{t('city', 'City')}</p>
-                          <p className="text-sm font-medium">{order.shippingAddress?.city || '—'}</p>
-                        </div>
-
-                        <div className="space-y-1">
-                          <p className="text-muted-foreground text-xs font-medium">{t('postalCode', 'Postal Code')}</p>
-                          <p className="text-sm font-medium">{order.shippingAddress?.postalCode || '—'}</p>
-                        </div>
-
-                        <div className="space-y-1">
-                          <p className="text-muted-foreground text-xs font-medium">{t('country', 'Country')}</p>
-                          <p className="text-sm font-medium">{order.shippingAddress?.country || '—'}</p>
-                        </div>
-
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <Phone className="text-muted-foreground h-4 w-4" />
-                            <p className="text-muted-foreground text-xs font-medium">
-                              {t('phoneNumber', 'Phone Number')}
-                            </p>
-                          </div>
-                          <p className="text-sm font-medium">{order.shippingAddress?.phoneNumber || '—'}</p>
-                        </div>
+                        <p className="text-sm font-medium">{order.shippingAddress?.phoneNumber || '—'}</p>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="mt-4 border-t pt-4">
-                      <p className="text-muted-foreground mb-2 text-xs font-medium">
-                        {t('fulfillment.shippingMethod', 'Shipping Method')}
-                      </p>
-                      {order.shippingLines.map((line) => (
-                        <div key={line.id} className="bg-muted/50 flex items-center justify-between rounded-md p-2">
-                          <div className="flex items-center gap-2">
-                            <Truck className="h-4 w-4 text-blue-500 dark:text-blue-400" />
-                            <span className="font-medium">{line.shippingMethod.name}</span>
-                          </div>
-                          <Badge variant="outline" className="font-mono">
-                            {priceFormatter(line.priceWithTax, order.currencyCode)}
-                          </Badge>
+                  <div className="mt-4 border-t pt-4">
+                    <p className="text-muted-foreground mb-2 text-xs font-medium">
+                      {t('fulfillment.shippingMethod', 'Shipping Method')}
+                    </p>
+                    {order.shippingLines.map((line) => (
+                      <div key={line.id} className="bg-muted/50 flex items-center justify-between rounded-md p-2">
+                        <div className="flex items-center gap-2">
+                          <Truck className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                          <span className="font-medium">{line.shippingMethod.name}</span>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="flex-1 border-l-4 border-l-green-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-green-400">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center gap-2">
-                      <Package className="h-5 w-5 text-green-500 dark:text-green-400" />
-                      <CardTitle className="text-lg">
-                        {t('fulfillment.fulfillmentOptions', 'Fulfillment Options')}
-                      </CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex flex-col gap-4">
-                    <ArgumentFieldsComponent
-                      actions={filteredFulfillmentHandlers}
-                      args={state.handler?.value.arguments || []}
-                      setArg={(argument, data) => {
-                        const newArgs = state.handler?.value.arguments.map((arg) => {
-                          if (arg.name === argument.name) return { ...arg, value: data.value };
-                          return arg;
-                        });
-                        if (!state.handler?.value.code || !newArgs) return;
-                        setField('handler', { code: state.handler?.value.code, arguments: newArgs });
-                      }}
-                    />
-                    <div className="mt-auto border-t pt-4">
-                      <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            {t('fulfillment.processing', 'Processing...')}
-                          </>
-                        ) : (
-                          <>
-                            <CheckCircle2 className="h-4 w-4" />
-                            {t('fulfillment.fulfill', 'Complete Fulfillment')}
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                        <Badge variant="outline" className="font-mono">
+                          {priceFormatter(line.priceWithTax, order.currencyCode)}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CustomCard>
+                <CustomCard
+                  color="green"
+                  title={t('fulfillment.fulfillmentOptions', 'Fulfillment Options')}
+                  icon={<Package />}
+                  bottomRight={
+                    <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          {t('fulfillment.processing', 'Processing...')}
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="h-4 w-4" />
+                          {t('fulfillment.fulfill', 'Complete Fulfillment')}
+                        </>
+                      )}
+                    </Button>
+                  }
+                >
+                  <ArgumentFieldsComponent
+                    actions={filteredFulfillmentHandlers}
+                    args={state.handler?.value.arguments || []}
+                    setArg={(argument, data) => {
+                      const newArgs = state.handler?.value.arguments.map((arg) => {
+                        if (arg.name === argument.name) return { ...arg, value: data.value };
+                        return arg;
+                      });
+                      if (!state.handler?.value.code || !newArgs) return;
+                      setField('handler', { code: state.handler?.value.code, arguments: newArgs });
+                    }}
+                  />
+                </CustomCard>
               </form>
             </div>
           </ScrollArea>

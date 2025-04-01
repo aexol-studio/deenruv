@@ -24,7 +24,7 @@ export const RefreshCacheButton: React.FC<RefreshCacheButtonProps> = ({
                     {t('lastRefresh')}
                     {lastCacheRefreshTime
                         ? lastCacheRefreshTime.replace('T', ' ').replace('Z', '').split('.')[0]
-                        : '-'}
+                        : '—'}
                 </span>
             </span>
             <Button

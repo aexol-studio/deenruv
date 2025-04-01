@@ -26,7 +26,7 @@ import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderCh
 import { PossibleOrderStates } from '@/pages/orders/_components/PossibleOrderStates';
 import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/admin-types';
 
-import { ChevronLeft, EllipsisVerticalIcon } from 'lucide-react';
+import { ChevronLeft, EllipsisVerticalIcon, Info } from 'lucide-react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +38,15 @@ import React from 'react';
 
 const COMPLETE_ORDER_STATES = [ORDER_STATE.DELIVERED];
 export const TopActions: React.FC = () => {
-  const { currentPossibilities, manualChange, setManualChange, fetchOrderHistory, fetchOrder, order } = useOrder();
+  const {
+    currentPossibilities,
+    manualChange,
+    setManualChange,
+    fetchOrderHistory,
+    fetchOrder,
+    order,
+    changeOrderState,
+  } = useOrder();
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
@@ -65,32 +73,6 @@ export const TopActions: React.FC = () => {
     );
   }, [order]);
 
-  const transitionOrderToModify = async () => {
-    if (!order) return;
-    const { transitionOrderToState } = await apiClient('mutation')({
-      transitionOrderToState: [
-        { id: order.id, state: ORDER_STATE.MODIFYING },
-        {
-          __typename: true,
-          '...on Order': { id: true },
-          '...on OrderStateTransitionError': {
-            errorCode: true,
-            message: true,
-            fromState: true,
-            toState: true,
-            transitionError: true,
-          },
-        },
-      ],
-    });
-    if (transitionOrderToState?.__typename === 'Order') {
-      fetchOrder(transitionOrderToState.id);
-      fetchOrderHistory();
-    } else {
-      toast.error(`${transitionOrderToState?.message}`, { position: 'top-center' });
-    }
-  };
-
   const onSubmit = async () => {
     if (!isOrderValid || !order) {
       toast.error(t('topActions.fillAll'), { position: 'top-center', closeButton: true });
@@ -106,33 +88,14 @@ export const TopActions: React.FC = () => {
         state = previousState.data.from;
       }
     }
-    const { transitionOrderToState } = await apiClient('mutation')({
-      transitionOrderToState: [
-        { id: order.id, state },
-        {
-          __typename: true,
-          '...on Order': { id: true },
-          '...on OrderStateTransitionError': {
-            errorCode: true,
-            message: true,
-            fromState: true,
-            toState: true,
-            transitionError: true,
-          },
-        },
-      ],
-    });
 
-    if (transitionOrderToState?.__typename === 'Order') {
-      fetchOrder(transitionOrderToState.id);
-      fetchOrderHistory();
-    } else {
+    changeOrderState(state).catch((err) => {
       const errorMessage = `
-        ${transitionOrderToState?.message || t('topActions.errMsg')}
-        ${transitionOrderToState?.transitionError || ''}
+        ${err?.message || t('topActions.errMsg')}
+        ${err?.transitionError || ''}
       `;
-      toast(errorMessage, { position: 'top-center' });
-    }
+      toast(errorMessage);
+    });
   };
 
   const fulfillOrder = async (input: ResolverInputTypes['FulfillOrderInput']) => {
@@ -160,9 +123,9 @@ export const TopActions: React.FC = () => {
         ],
       });
       if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-        fetchOrder(order.id);
-        fetchOrderHistory();
-        toast.success(t('topActions.fulfillmentAdded'), { position: 'top-center' });
+        changeOrderState(ORDER_STATE.SHIPPED);
+
+        toast.success(t('topActions.fulfillmentAdded'));
         return;
       } else {
         toast.error(`${transitionFulfillmentToState.message}`, { position: 'top-center' });
@@ -224,41 +187,27 @@ export const TopActions: React.FC = () => {
       toast.error(t('topActions.draftDeleteError', { value: deleteDraftOrder.message }), { position: 'top-center' });
     }
   };
-  const changeOrderStatus = async (newState: string) => {
-    if (!order || !newState) return;
-    const { transitionOrderToState } = await apiClient('mutation')({
-      transitionOrderToState: [
-        { id: order.id, state: newState },
-        {
-          '...on Order': { id: true },
-          '...on OrderStateTransitionError': {
-            errorCode: true,
-            message: true,
-            fromState: true,
-            toState: true,
-            transitionError: true,
-          },
-          __typename: true,
-        },
-      ],
-    });
-    if (transitionOrderToState?.__typename === 'Order') {
-      fetchOrder(transitionOrderToState.id);
-      fetchOrderHistory();
-    } else {
+  const changeOrderStatus = async (newState: ORDER_STATE) => {
+    if (!newState) return;
+
+    changeOrderState(newState).catch((err) => {
       toast.error(
-        transitionOrderToState?.message
-          ? t('changeStatus.changeStatusFailedMsg', { value: transitionOrderToState.message })
+        err?.message
+          ? t('changeStatus.changeStatusFailedMsg', { value: err.message })
           : t('changeStatus.changeStatusFailed'),
-        {
-          position: 'top-center',
-        },
       );
-    }
+    });
+
     setManualChange({ state: false });
   };
 
   const canCompleteOrder = useMemo(() => {
+    console.log('OFLF', order?.fulfillments);
+    //     const allFulfillmentLines = (order?.fulfillments ?? [])
+    //     .filter(fulfillment => fulfillment.state !== 'Cancelled')
+    //     .reduce((all, fulfillment) => [...all, ...fulfillment.lines], []);
+    // let allItemsFulfilled = true;
+
     return !!(
       order?.fulfillments?.some((f) => f.state === ORDER_STATE.SHIPPED) ||
       !currentPossibilities?.to.some((state) => COMPLETE_ORDER_STATES.includes(state as ORDER_STATE))
@@ -292,7 +241,7 @@ export const TopActions: React.FC = () => {
           wantedState={manualChange.toAction}
           order={order}
           currentPossibilities={currentPossibilities}
-          onConfirm={changeOrderStatus}
+          onConfirm={(e) => changeOrderStatus(e as ORDER_STATE)}
         />
       )}
       <Button
@@ -327,10 +276,17 @@ export const TopActions: React.FC = () => {
               : t('create.completeOrderButton')}
           </Button>
         ) : needFulfillment ? (
-          <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={canCompleteOrder} />
+          <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={!canCompleteOrder} />
         ) : inModifyState ? (
           <ModifyAcceptModal />
         ) : null}
+        {(order.state === ORDER_STATE.ARRANGING_PAYMENT ||
+          order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) && (
+          <div className="flex items-center gap-2 text-sm">
+            <Info size={20} className="text-blue-500" />
+            <p>{t('addPaymentInfo')}</p>
+          </div>
+        )}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -342,17 +298,19 @@ export const TopActions: React.FC = () => {
           <DropdownMenuItem asChild>
             <PossibleOrderStates orderState={order.state} />
           </DropdownMenuItem>
-          {order.state !== ORDER_STATE.CANCELLED && currentPossibilities?.to.length && (
-            <DropdownMenuItem asChild>
-              <Button
-                onClick={() => setManualChange({ state: true, toAction: undefined })}
-                variant="ghost"
-                className="w-full cursor-pointer justify-start px-4 py-2 text-orange-400 hover:text-orange-400 focus-visible:ring-transparent dark:text-orange-400 dark:hover:text-orange-400 dark:focus-visible:ring-transparent"
-              >
-                {t('topActions.manualChangeStatus')}
-              </Button>
-            </DropdownMenuItem>
-          )}
+          {order.state !== ORDER_STATE.CANCELLED &&
+            order.state !== ORDER_STATE.DRAFT &&
+            currentPossibilities?.to.length && (
+              <DropdownMenuItem asChild>
+                <Button
+                  onClick={() => setManualChange({ state: true, toAction: undefined })}
+                  variant="ghost"
+                  className="w-full cursor-pointer justify-start px-4 py-2 text-orange-400 hover:text-orange-400 focus-visible:ring-transparent dark:text-orange-400 dark:hover:text-orange-400 dark:focus-visible:ring-transparent"
+                >
+                  {t('topActions.manualChangeStatus')}
+                </Button>
+              </DropdownMenuItem>
+            )}
           {actions?.dropdown?.map(({ component }) => React.createElement(component)) || null}
           {order.state === ORDER_STATE.PARTIALLY_DELIVERED ||
           order.state === ORDER_STATE.SHIPPED ||
@@ -363,7 +321,7 @@ export const TopActions: React.FC = () => {
               <Button
                 variant="ghost"
                 className="w-full cursor-pointer justify-start px-4 py-2 text-blue-400 hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-400"
-                onClick={transitionOrderToModify}
+                onClick={changeOrderStatus.bind(null, ORDER_STATE.MODIFYING)}
               >
                 {t('create.modifyOrder')}
               </Button>

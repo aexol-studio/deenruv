@@ -11,9 +11,9 @@
         "id": "Id",
         "name": "Name",
         "code": "Code",
-        "enabled": "Enabled",
+        "enabled": "Included",
         "modalTitle": "Modal title",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "columns": "Columns"
     },
@@ -23,7 +23,7 @@
             "name": "Name",
             "description": "Description",
             "code": "Code",
-            "enabled": "Enabled"
+            "enabled": "Included"
         },
         "modal": {
             "title": "Modal",
@@ -52,7 +52,7 @@
         "successMessage": "The payment method has been deleted."
     },
     "validation": {
-        "codeRequired": "Code required",
+        "codeRequired": "The code is required",
         "handlerCodeRequired": "Payment processing is required",
         "handlerArgsRequired": "Fill in all fields"
     }

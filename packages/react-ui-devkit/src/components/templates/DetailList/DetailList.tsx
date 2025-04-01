@@ -233,7 +233,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         const value = row.original.customFields[key.split('.')[1]];
 
                         if (!value) {
-                            return '-';
+                            return '—';
                         }
 
                         if (typeof value === 'object') {
@@ -281,7 +281,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     }
 
                     if (!value || value === '' || value === undefined) {
-                        return '-';
+                        return '—';
                     }
 
                     if (!value) return JSON.stringify(value);

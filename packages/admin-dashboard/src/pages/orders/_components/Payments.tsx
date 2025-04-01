@@ -22,6 +22,7 @@ import {
   ContextMenu,
   ConfirmationDialog,
   CustomCard,
+  EmptyState,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -192,19 +193,14 @@ export const Payments: React.FC = () => {
                 );
               })
             ) : (
-              <TableRow noHover>
-                <TableCell colSpan={7} className="text-muted-foreground py-8 text-center">
-                  <div className="flex flex-col items-center justify-center gap-2">
-                    <div className="rounded-full bg-teal-100 p-3 dark:bg-teal-900/30">
-                      <Receipt className="h-6 w-6 text-teal-500 dark:text-teal-400" />
-                    </div>
-                    <p>{t('payments.notFound', 'No payments found')}</p>
-                    <p className="text-muted-foreground text-xs">
-                      {t('payments.addPaymentHint', 'Click the "Add Payment" button to add a payment to this order')}
-                    </p>
-                  </div>
-                </TableCell>
-              </TableRow>
+              <EmptyState
+                columnsLength={7}
+                title={t('payments.notFound', 'No payments found')}
+                color="teal"
+                description={t('payments.addPaymentHint')}
+                small
+                icon={<Receipt />}
+              />
             )}
           </TableBody>
         </Table>

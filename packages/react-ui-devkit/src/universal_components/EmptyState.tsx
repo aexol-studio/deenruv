@@ -14,6 +14,16 @@ interface Props {
     small?: true;
 }
 
+/**
+ * This component is used to show messages when there are no elements in a table.
+ * @param {ReactNode} [icon] - An optional icon displayed above the title.
+ * @param {string} title - The title of the card.
+ * @param {number} columnsLength - Necessary for full width display inside tables.
+ * @param {string} [description] - An optional description displayed below the title.
+ * @param {boolean} [filtered] - Used to show different icon and texts when empty state is due to filtering.
+ * @param {TailwindColor} [color] - The color theme of the icon.
+ * @param {boolean} [small] - If true, some different styles are applied to make the component smaller.
+ */
 export const EmptyState: React.FC<Props> = ({
     columnsLength,
     filtered,

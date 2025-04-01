@@ -6,6 +6,7 @@ import { Calendar } from '@/components/atoms/calendar';
 import { format } from 'date-fns';
 import { useCustomFields } from '@/custom_fields/context';
 import React from 'react';
+import { capitalizeFirstLetter, camelCaseToSpaces } from '@/utils';
 
 export const DefaultTimeSelect: React.FC = () => {
     const { disabled, value, field, label, description, setValue } = useCustomFields<string>();
@@ -16,7 +17,9 @@ export const DefaultTimeSelect: React.FC = () => {
 
     return (
         <div className="flex flex-col gap-1">
-            <Label htmlFor={field?.name}>{label || field?.name}</Label>
+            <Label htmlFor={field?.name}>
+                {label || capitalizeFirstLetter(camelCaseToSpaces(field?.name))}
+            </Label>
             <CardDescription>{description}</CardDescription>
             <Popover>
                 <PopoverTrigger asChild>

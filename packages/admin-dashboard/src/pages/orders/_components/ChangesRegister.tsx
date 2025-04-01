@@ -269,7 +269,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
                         <TableCell>
                           <div className="flex items-center gap-2">
                             <Tag className="text-muted-foreground h-4 w-4" />
-                            <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{item.sku || '-'}</code>
+                            <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{item.sku || '—'}</code>
                           </div>
                         </TableCell>
                         <TableCell>{PriceJSX(item.price)}</TableCell>

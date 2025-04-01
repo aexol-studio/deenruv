@@ -12,17 +12,17 @@
         "name": "Name",
         "emailAddress": "Email",
         "role": "Role",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy ID",
+        "copyId": "Copy identifier",
         "viewAdmin": "Display admin",
         "columns": "Columns"
     },
     "details": {
         "basic": {
             "title": "Basic information",
-            "firstName": "First name",
+            "firstName": "Name",
             "lastName": "Surname",
             "emailAddress": "E-mail address",
             "password": "Password"
@@ -47,7 +47,7 @@
         "successMessage": "The administrator has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "selectedValue": "{{from}} of {{to}} lines was selected",
+    "selectedValue": "{{from}} of {{to}} lines selected",
     "validation": {
         "firstNameRequired": "First name is required",
         "lastNameRequired": "Last name is required",

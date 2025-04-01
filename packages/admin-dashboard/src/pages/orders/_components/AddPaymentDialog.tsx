@@ -64,21 +64,24 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
     [order.totalWithTax, paidAmount, order?.currencyCode],
   );
   const [open, setOpen] = useState(false);
+  const disabled = useMemo(
+    () =>
+      ![
+        ORDER_STATE.ARRANGING_PAYMENT,
+        ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT,
+        ORDER_STATE.DRAFT,
+        ORDER_STATE.MODIFYING,
+      ].includes(order.state as ORDER_STATE) || !needsPayment,
+    [needsPayment, order.state],
+  );
 
   return (
     <Dialog open={open}>
       <DialogTrigger asChild>
         <Button
-          variant="action"
+          variant={!disabled ? 'action' : 'ghost'}
           size="sm"
-          disabled={
-            ![
-              ORDER_STATE.ARRANGING_PAYMENT,
-              ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT,
-              ORDER_STATE.DRAFT,
-              ORDER_STATE.MODIFYING,
-            ].includes(order.state as ORDER_STATE) || !needsPayment
-          }
+          disabled={disabled}
           className="gap-2"
           onClick={setOpen.bind(null, true)}
         >
@@ -113,10 +116,10 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
           }}
         >
           <div className="space-y-1">
-            <Label htmlFor="payment-method">{t('Payment method')}</Label>
+            <Label htmlFor="payment-method">{t('table.paymentMethod')}</Label>
             <Select value={form.method} onValueChange={(v) => setForm({ ...form, method: v })}>
               <SelectTrigger id="payment-method" className="w-full">
-                <SelectValue placeholder={t('Select payment method')} />
+                <SelectValue placeholder={t('selectPaymentMethod')} />
               </SelectTrigger>
               <SelectContent>
                 {paymentMethodsType.map((method) => (
@@ -129,31 +132,31 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
           </div>
 
           <div className="space-y-1">
-            <Label htmlFor="transaction-id">{t('Transaction ID')}</Label>
+            <Label htmlFor="transaction-id">{t('filterField.transactionId')}</Label>
             <Input
               id="transaction-id"
               value={form.transactionId || ''}
               onChange={(e) => setForm({ ...form, transactionId: e.currentTarget.value })}
-              placeholder={t('Enter transaction ID')}
+              placeholder={t('enterTransactionId')}
             />
           </div>
 
           <div className="bg-muted/50 mt-2 rounded-md p-3">
             <div className="flex items-center gap-2">
               <FileText className="h-4 w-4 text-teal-500 dark:text-teal-400" />
-              <span className="text-sm font-medium">{t('Payment summary')}</span>
+              <span className="text-sm font-medium">{t('payments.summary')}</span>
             </div>
             <div className="mt-2 space-y-1">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{t('Order total')}:</span>
+                <span className="text-muted-foreground">{t('payments.total')}:</span>
                 <span className="font-medium">{priceFormatter(order.totalWithTax, order.currencyCode)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{t('Already paid')}:</span>
+                <span className="text-muted-foreground">{t('payments.alreadyPaid')}:</span>
                 <span className="font-medium">{priceFormatter(paidAmount, order.currencyCode)}</span>
               </div>
               <div className="flex justify-between border-t pt-1 text-sm font-medium">
-                <span>{t('Amount to pay')}:</span>
+                <span>{t('payments.toPay')}:</span>
                 <span className="text-teal-600 dark:text-teal-400">
                   {priceFormatter(paymentAmount, order.currencyCode)}
                 </span>
@@ -163,11 +166,11 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
 
           <DialogFooter className="mt-4 gap-2">
             <DialogClose asChild>
-              <Button variant="outline">{t('Cancel')}</Button>
+              <Button variant="outline">{t('payments.cancel')}</Button>
             </DialogClose>
             <Button type="submit" disabled={isFormValid.length > 0} className="gap-2">
               <CheckCircle className="h-4 w-4" />
-              {t('Add payment')}
+              {t('payments.add')}
             </Button>
           </DialogFooter>
         </form>

@@ -38,7 +38,7 @@ export const ChangesRegisterTable: React.FC<{ changes: RestChange[] }> = ({ chan
                 <TableCell className="font-medium text-red-600 dark:text-red-400">
                   <div className="flex items-center gap-2">
                     {change.changed === 'added'
-                      ? '-'
+                      ? '—'
                       : change.changed === 'removed'
                         ? (change.value as unknown as string)
                         : change.removed}
@@ -49,7 +49,7 @@ export const ChangesRegisterTable: React.FC<{ changes: RestChange[] }> = ({ chan
                     {change.changed === 'added'
                       ? (change.value as unknown as string)
                       : change.changed === 'removed'
-                        ? '-'
+                        ? '—'
                         : change.added}
                   </div>
                 </TableCell>

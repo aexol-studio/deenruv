@@ -1,5 +1,7 @@
 {
   "add": "Dodaj zamówienie",
+  "selectPaymentMethod": "Wybierz metodę płatności",
+  "enterTransactionId": "Wprowadź id transakcji",
   "applyChanges": "Zastosuj zmiany",
   "reviewChanges": "Przejrzyj zmiany",
   "note": "Dodaj notatkę",
@@ -22,6 +24,7 @@
   "editOptions": "Edytuj opcje",
   "total": "Razem",
   "totalItems": "Łączna cena {{value}} produktów",
+  "addPaymentInfo": "Dodaj płatność, by przejść dalej",
   "deleteDraft": {
     "button": "Usuń wersję roboczą",
     "title": "Czy na pewno?",
@@ -327,15 +330,15 @@
       "pickDate": "Wybierz datę"
     },
     "fulfillment": {
-      "completeOrderButton": "Kompletne zamówienie",
-      "completeDialogTitle": "Kompletne zamówienie",
+      "completeOrderButton": "Finalizuj zamówienie",
+      "completeDialogTitle": "Finalizuj zamówienie",
       "completeDialogDescription": "Wypełnij szczegóły realizacji",
       "product": "Produkt",
       "sku": "SKU",
       "fulfilled": "Zrealizowano",
       "onStockValue": "w magazynie {{value}}",
       "emptyState": "Brak elementów w projekcie zamówienia",
-      "fulfill": "Wypełnij",
+      "fulfill": "Finalizuj",
       "handlers": {
         "manual-fulfillment": {
           "title": "Wypełnianie ręczne",
@@ -380,7 +383,7 @@
     "leaveToastMessage": "Czy na pewno chcesz opuścić tę stronę?",
     "leaveToastButton": "Opuścić",
     "discardButton": "Odrzucić",
-    "completeOrderButton": "Kompletna kolejność draftu",
+    "completeOrderButton": "Zatwierdź projekt zamówienia",
     "addTitle": "Dodaj pozycję do projektu zamówienia",
     "viewTitle": "Pozycje w kolejności",
     "editTitle": "Pozycje w kolejności",
@@ -545,15 +548,21 @@
     "pickDate": "Wybierz datę"
   },
   "fulfillment": {
-    "completeOrderButton": "Kompletne zamówienie",
-    "completeDialogTitle": "Kompletne zamówienie",
+    "completeOrderButton": "Finalizuj zamówienie",
+    "completeDialogTitle": "Finalizuj zamówienie",
     "completeDialogDescription": "Wypełnij szczegóły realizacji",
+    "itemsToFulfill": "Produkty do realizacji",
+    "inStock": "Dużo",
+    "lowStock": "Mało",
     "product": "Produkt",
     "sku": "SKU",
+    "shippingMethod": "Metoda wysyłki",
+    "fulfillmentOptions": "Opcje realizacji",
     "fulfilled": "Zrealizowano",
-    "onStockValue": "w magazynie {{value}}",
+    "onStockValue": "w magazynie: {{value}}",
     "emptyState": "Brak elementów w projekcie zamówienia",
-    "fulfill": "Wypełnij",
+    "fulfill": "Finalizuj",
+    "shippingAddress": "Adres wysyłki",
     "handlers": {
       "manual-fulfillment": {
         "title": "Wypełnianie ręczne",
@@ -565,8 +574,8 @@
   },
   "fullName": "Imię i nazwisko",
   "company": "Firma",
-  "street1": "Street Line 1",
-  "street2": "Street Line 2",
+  "street1": "Adres (1 linia)",
+  "street2": "Adres (2 linia)",
   "city": "Miasto",
   "postalCode": "Kod pocztowy",
   "country": "Kraj",
@@ -582,16 +591,29 @@
   "orderStates": {
     "button": "Stany zamówienia",
     "title": "Stany zamówienia",
-    "description": " W tym miejscu można wyświetlić wszystkie możliwe stany zamówienia oraz bieżący stan zamówienia."
+    "description": " W tym miejscu można wyświetlić wszystkie możliwe stany zamówienia oraz bieżący stan zamówienia.",
+    "currentState": "Obecny stan",
+    "possibleNextStates": "Możliwe kolejne stany",
+    "canTransitionTo": "Może zostać zmieniony na",
+    "current": "Bieżący",
+    "possible": "Możliwy",
+    "finalState": "Ostatni stan"
   },
   "fulfillments": {
     "title": "Realizacja",
+    "description": "Sledź status dostawy zamówienia i zarządzaj nim",
     "method": "Metoda",
     "state": "Stan",
     "trackingCode": "Kod śledzenia",
     "actions": "Działania",
-    "markAsDelivered": " Oznacz jako dostarczony",
-    "cancel": "Anuluj"
+    "markAsDelivered": " Oznacz jako dostarczoną",
+    "cancel": "Anuluj",
+    "states": {
+      "shipped": "Wysłana",
+      "created": "Utworzona",
+      "delivered": "Dostarczona",
+      "cancelled": "Anulowana"
+    }
   },
   "taxSummary": {
     "title": "Podsumowanie podatkowe",
@@ -610,6 +632,7 @@
     "method": "Metoda",
     "created": "Utworzony",
     "cancel": "Anuluj płatność",
+    "add": "Dodaj płatność",
     "amount": "Kwota",
     "extra": "Dodatkowa",
     "actions": "Działania",
@@ -620,7 +643,12 @@
       "confirm": "Potwierdź",
       "cancel": "Anuluj"
     },
-    "notFound": "Nie znaleziono płatności dla tego zamówienia"
+    "notFound": "Nie znaleziono płatności dla tego zamówienia",
+    "addPaymentHint": "Kliknij na przycisk powyżej, aby dodać pierwszą płatność",
+    "summary": "Podsumowanie płatności",
+    "total": "Razem",
+    "alreadyPaid": "Opłacono",
+    "toPay": "Do opłacenia"
   },
   "topActions": {
     "manualChangeStatus": "Zmień status ręcznie",

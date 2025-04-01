@@ -12,7 +12,7 @@
         "name": "Name",
         "code": "Code",
         "modalTitle": "Modal title",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "columns": "Columns"
     },
@@ -22,7 +22,7 @@
             "name": "Name",
             "description": "Description",
             "code": "Code",
-            "enabled": "Enabled",
+            "enabled": "Included",
             "fulfillmentHandler": "Implementation support"
         },
         "modal": {
@@ -33,7 +33,7 @@
         },
         "options": {
             "title": "Tool to check shipment eligibility",
-            "checker": "Shipping eligibility checker tool"
+            "checker": "Tool to check shipment eligibility"
         },
         "calculator": {
             "title": "Shipping calculator",

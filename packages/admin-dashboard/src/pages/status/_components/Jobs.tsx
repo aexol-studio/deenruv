@@ -44,7 +44,7 @@ const JobSelector = Selector('Job')({
 });
 type JobType = FromSelectorWithScalars<typeof JobSelector, 'Job'>;
 const calculateDuration = (startedAt: string | null | undefined, settledAt: string | null | undefined) => {
-  if (!startedAt) return '-';
+  if (!startedAt) return '—';
   const start = new Date(startedAt);
   const end = settledAt ? new Date(settledAt) : new Date();
   const durationMs = end.getTime() - start.getTime();

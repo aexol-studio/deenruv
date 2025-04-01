@@ -313,7 +313,7 @@ function OrderLine({
                             height: 64,
                         }}
                     >
-                        <Text style={{ ...s.smText }}> {shipping?.name || '-'}</Text>
+                        <Text style={{ ...s.smText }}> {shipping?.name || '—'}</Text>
                     </View>
                     <View
                         style={{

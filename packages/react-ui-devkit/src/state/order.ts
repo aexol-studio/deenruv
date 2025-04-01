@@ -107,6 +107,7 @@ interface Actions {
     setBillingAddress: (input: ResolverInputTypes['CreateAddressInput']) => Promise<OrderDetailType>;
     setShippingAddress: (input: ResolverInputTypes['CreateAddressInput']) => Promise<OrderDetailType>;
     setCustomerAndAddressesForDraftOrder: (customerId: string) => Promise<OrderDetailType>;
+    changeOrderState: (newStatus: ORDER_STATE) => Promise<{ id: string }>;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -346,6 +347,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                 orderHistory,
                 orderLineCustomFields,
                 checkModifyOrder,
+                changeOrderState,
             } = get();
 
             delete modifiedOrder?.billingAddress?.country;
@@ -427,24 +429,9 @@ export const useOrder = create<Order & Actions>()((set, get) => {
                     modifyOrder: [{ input }, { __typename: true }],
                 });
                 if (modifyOrder?.__typename === 'Order') {
-                    const { transitionOrderToState } = await apiClient('mutation')({
-                        transitionOrderToState: [
-                            { id: order.id, state: orderState },
-                            {
-                                __typename: true,
-                                '...on Order': { id: true },
-                                '...on OrderStateTransitionError': {
-                                    errorCode: true,
-                                    message: true,
-                                    fromState: true,
-                                    toState: true,
-                                    transitionError: true,
-                                },
-                            },
-                        ],
+                    changeOrderState(orderState).catch(err => {
+                        throw new Error(err?.message);
                     });
-                    if (transitionOrderToState?.__typename !== 'Order')
-                        throw new Error(transitionOrderToState?.message);
                 }
 
                 const result = await fetchOrder(order.id);
@@ -649,6 +636,32 @@ export const useOrder = create<Order & Actions>()((set, get) => {
 
             fetchOrder(order.id);
             fetchOrderHistory();
+        },
+        changeOrderState: async (newState: ORDER_STATE) => {
+            const { order, fetchOrder, fetchOrderHistory } = get();
+            if (!order) return;
+
+            return apiClient('mutation')({
+                transitionOrderToState: [
+                    { id: order.id, state: newState },
+                    {
+                        '...on Order': { id: true },
+                        '...on OrderStateTransitionError': {
+                            errorCode: true,
+                            message: true,
+                            fromState: true,
+                            toState: true,
+                            transitionError: true,
+                        },
+                        __typename: true,
+                    },
+                ],
+            }).then(resp => {
+                if (resp.transitionOrderToState?.__typename === 'Order') {
+                    fetchOrder(resp.transitionOrderToState?.id);
+                    fetchOrderHistory();
+                }
+            });
         },
     };
 });

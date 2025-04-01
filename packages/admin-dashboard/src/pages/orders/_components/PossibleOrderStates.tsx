@@ -25,6 +25,7 @@ export const PossibleOrderStates: React.FC<{
   orderState: string;
 }> = ({ orderState }) => {
   const { t } = useTranslation('orders');
+  const { t: tCommon } = useTranslation('common');
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
   const statesAfterCancelled = useMemo(() => {
     const cancelledIndex = orderProcess.findIndex((s) => s.name === 'Cancelled');
@@ -99,7 +100,7 @@ export const PossibleOrderStates: React.FC<{
               <div className="flex flex-wrap gap-2">
                 {possibleNextStates.map((nextState) => (
                   <Badge key={nextState} variant="outline" className="flex items-center gap-1">
-                    {nextState}
+                    {tCommon('search.inOperator.' + nextState)}
                     <ArrowRight className="ml-1 h-3 w-3" />
                   </Badge>
                 ))}
@@ -128,7 +129,7 @@ export const PossibleOrderStates: React.FC<{
                   </TimelineDot>
                   <TimelineContent>
                     <TimelineHeading className={isCurrent ? 'text-primary font-bold' : ''}>
-                      {state.name}
+                      {tCommon('search.inOperator.' + state.name)}
                       {isCurrent && (
                         <Badge className="ml-2" variant="default">
                           {t('orderStates.current')}
@@ -150,7 +151,7 @@ export const PossibleOrderStates: React.FC<{
                               variant="outline"
                               className={`text-xs ${orderState === nextState ? 'bg-primary/10 border-primary' : ''}`}
                             >
-                              {nextState}
+                              {tCommon('search.inOperator.' + nextState)}
                             </Badge>
                           ))}
                         </div>

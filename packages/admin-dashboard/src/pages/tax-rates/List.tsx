@@ -71,7 +71,7 @@ export const TaxRatesListPage = () => {
         {
           accessorKey: 'customerGroup',
           header: () => <TableLabel>{t('table.customerGroup')}</TableLabel>,
-          cell: ({ row }) => row.original.customerGroup?.name ?? '-',
+          cell: ({ row }) => row.original.customerGroup?.name ?? '—',
         },
       ]}
       entityName={'TaxRate'}

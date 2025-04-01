@@ -37,7 +37,7 @@ export const OrdersDetailPage = () => {
 
   return (
     <main className="my-4">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-8 2xl:px-8">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <TopActions />
         <OrderSummary />
         <RealizationCard />

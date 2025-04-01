@@ -14,7 +14,7 @@
         "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy ID",
+        "copyId": "Copy identifier",
         "viewZone": "View zone",
         "columns": "Columns"
     },
@@ -23,7 +23,7 @@
             "title": "Basic information",
             "name": "Name",
             "members": "Members",
-            "memberPlaceholder": "Add member"
+            "memberPlaceholder": "Add a member"
         }
     },
     "toasts": {

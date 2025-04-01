@@ -1,18 +1,5 @@
 import { Column, ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-    EmptyState,
-    Button,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-    ListViewMarker,
-} from '@/components';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ListViewMarker } from '@/components';
 import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
@@ -20,6 +7,7 @@ import { cn } from '@/lib';
 import { usePluginStore } from '@/plugins/plugin-context.js';
 import { PlugZap } from 'lucide-react';
 import { ListLocationID } from '@/types/types.js';
+import { EmptyState } from '@/universal_components/EmptyState.js';
 
 interface ListTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];

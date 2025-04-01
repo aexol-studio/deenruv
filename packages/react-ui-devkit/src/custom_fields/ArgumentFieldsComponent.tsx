@@ -63,8 +63,8 @@ export const ArgumentFieldsComponent = ({
         const action = actions.find(a => a.code === actionCode);
         if (!action) return null;
         return (
-            <div key={action.code}>
-                <h4>{action.description}</h4>
+            <div key={action.code} className="flex flex-col gap-3">
+                <h4 className="text-lg">{action.description}</h4>
                 {Object.entries(fields).map(([argName, components]) => {
                     const arg = args.find(a => a.name === argName);
                     const field = action.args.find(a => a.name === argName);

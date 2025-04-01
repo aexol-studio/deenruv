@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Badge, Button, CardDescription, Input, Label, Textarea } from '@/components';
 import { useCustomFields } from '@/custom_fields/context';
 import { PlusIcon, X } from 'lucide-react';
+import { capitalizeFirstLetter, camelCaseToSpaces } from '@/utils';
 
 // function generateRandomDarkBgColor() {
 //     // Set hue to any random value (0 to 360) for color variety
@@ -42,7 +43,9 @@ export function DefaultSimpleListInput() {
 
     return (
         <div id={field?.name} className="flex flex-col gap-2">
-            <Label htmlFor={field?.name}>{label || field?.name}</Label>
+            <Label htmlFor={field?.name}>
+                {label || capitalizeFirstLetter(camelCaseToSpaces(field?.name))}
+            </Label>
             <CardDescription>{description}</CardDescription>
             <div className="flex flex-wrap gap-2">{badges}</div>
             <div className="flex gap-1 align-center">

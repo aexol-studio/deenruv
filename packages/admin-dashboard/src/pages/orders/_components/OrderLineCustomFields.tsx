@@ -1,5 +1,4 @@
 import { CF, EntityCustomFields } from '@/components';
-import { ORDER_STATE } from '@/graphql/base';
 
 import {
   Button,
@@ -9,7 +8,6 @@ import {
   Mode,
   OrderDetailType,
   ScrollArea,
-  apiClient,
   useOrder,
   useServer,
 } from '@deenruv/react-ui-devkit';

@@ -44,7 +44,7 @@
         "description": "Grants authority to Facet"
     },
     "Order": {
-        "title": "Ordering",
+        "title": "Order",
         "description": "Grants entitlement to order"
     },
     "PaymentMethod": {

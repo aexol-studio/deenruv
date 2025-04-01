@@ -8,10 +8,14 @@ import {
 import { EllipsisVertical } from 'lucide-react';
 import React, { PropsWithChildren } from 'react';
 
-export const ContextMenu: React.FC<PropsWithChildren> = ({ children }) => {
+interface ContextMenuProps {
+    disabled?: boolean;
+}
+
+export const ContextMenu: React.FC<PropsWithChildren<ContextMenuProps>> = ({ children, disabled }) => {
     return (
         <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
+            <DropdownMenuTrigger asChild disabled={disabled}>
                 <Button variant={'ghost'} className="h-8 w-8 p-0">
                     <EllipsisVertical size={20} className="cursor-pointer" />
                 </Button>

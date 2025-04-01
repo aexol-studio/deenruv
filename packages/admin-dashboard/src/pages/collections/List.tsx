@@ -370,7 +370,7 @@ export const CollectionsListPage = () => {
       ),
       cell: ({ row }) => (
         <div className="text-nowrap">
-          {row.original.createdAt ? format(new Date(row.original.createdAt), 'dd.MM.yyyy hh:mm') : '-'}
+          {row.original.createdAt ? format(new Date(row.original.createdAt), 'dd.MM.yyyy hh:mm') : '—'}
         </div>
       ),
     },
@@ -383,7 +383,7 @@ export const CollectionsListPage = () => {
       ),
       cell: ({ row }) => (
         <div className="text-nowrap">
-          {row.original.updatedAt ? format(new Date(row.original.updatedAt), 'dd.MM.yyyy hh:mm') : '-'}
+          {row.original.updatedAt ? format(new Date(row.original.updatedAt), 'dd.MM.yyyy hh:mm') : '—'}
         </div>
       ),
     },

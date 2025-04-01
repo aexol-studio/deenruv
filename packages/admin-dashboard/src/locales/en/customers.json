@@ -79,8 +79,8 @@
         "phoneNumberShort": "tel.{{value}}",
         "defaultBilling": "Default billing address",
         "defaultShipping": "Default shipping address",
-        "isDefaultBilling": "Customer's default shipping address",
-        "isDefaultShipping": "Default billing address of the customer",
+        "isDefaultBilling": "Default shipping address",
+        "isDefaultShipping": "Default billing address",
         "createForCustomer": "Create for customer",
         "inputNameLabel": "Name",
         "inputNamePlaceholder": "Name",
@@ -99,7 +99,7 @@
         "inputStreet2Label": "Street Line 2",
         "inputStreet2Placeholder": "Street Line 2",
         "inputTaxLabel": "Company tax ID",
-        "inputTaxPlaceholder": "Company tax identifier"
+        "inputTaxPlaceholder": "Company tax ID"
     },
     "validation": {
         "firstNameRequired": "First name is required",

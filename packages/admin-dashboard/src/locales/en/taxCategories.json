@@ -11,10 +11,10 @@
         "id": "Id",
         "name": "Name",
         "isDefault": "Is the default",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy ID",
+        "copyId": "Copy identifier",
         "viewTaxCategory": "Display tax category",
         "columns": "Columns"
     },

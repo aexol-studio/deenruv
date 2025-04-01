@@ -65,7 +65,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
     line?.productVariant?.featuredAsset?.preview || line?.productVariant?.product?.featuredAsset?.preview;
 
   const formatPrice = (amount?: number) => {
-    if (amount === undefined) return '-';
+    if (amount === undefined) return '—';
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: line?.productVariant?.currencyCode || 'USD',
