@@ -1,6 +1,6 @@
 {
     "name": "@deenruv/testing",
-    "version": "0.0.118",
+    "version": "0.0.119",
     "description": "End-to-end testing tools for deenruv projects",
     "keywords": [
         "deenruv",
@@ -34,8 +34,7 @@
         "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
     },
     "peerDependencies": {
-        "graphql": "~16.9.0",
-        "graphql-tag": "^2.12.6"
+        "typeorm": "^0.3.20"
     },
     "dependencies": {
         "@deenruv/common": "workspace:*",
@@ -59,9 +58,6 @@
         "pg": "^8.11.3",
         "rimraf": "^5.0.5",
         "typescript": "5.3.3",
-        "typeorm": "^0.3.20"
-    },
-    "peerDependencies": {
         "typeorm": "^0.3.20"
     }
 }
