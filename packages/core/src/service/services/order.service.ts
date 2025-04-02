@@ -42,7 +42,7 @@ import { ID, PaginatedList } from '@deenruv/common/lib/shared-types';
 import { summate } from '@deenruv/common/lib/shared-utils';
 import { In, IsNull } from 'typeorm';
 import { FindOptionsUtils } from 'typeorm/find-options/FindOptionsUtils';
-
+import { type QueryExpressionMap } from 'typeorm/query-builder/QueryExpressionMap';
 import { RequestContext } from '../../api/common/request-context';
 import { RelationPaths } from '../../api/decorators/relations.decorator';
 import { RequestContextCacheService } from '../../cache/request-context-cache.service';
@@ -128,6 +128,10 @@ import { PaymentService } from './payment.service';
 import { ProductVariantService } from './product-variant.service';
 import { PromotionService } from './promotion.service';
 import { StockLevelService } from './stock-level.service';
+import { ProductVariantTranslation } from '../../entity/product-variant/product-variant-translation.entity';
+import { ShippingMethodTranslation } from '../../entity/shipping-method/shipping-method-translation.entity';
+import { PromotionTranslation } from '../../entity/promotion/promotion-translation.entity';
+import { ProductVariantPrice } from '../../entity/product-variant/product-variant-price.entity';
 
 /**
  * @description
@@ -176,12 +180,50 @@ export class OrderService {
         })) as OrderProcessState[];
     }
 
+    private restrictOrderJoins(ctx: RequestContext, qb: {
+        expressionMap: QueryExpressionMap,
+        getParameters: () => Record<string, unknown>,
+        setParameter: (key: string, value: unknown) => unknown,
+    }): void {
+        if (!qb.getParameters()['languageCode']) {
+            qb.setParameter('languageCode', ctx.languageCode)
+        }
+
+        // fulfillments.lines will cause the exponential growth of response if queried along with
+        // lines relation without additional restrictions. So we intentially modify that relation.
+        // Additionally prevent overfetching of unnecessary translations and prices.
+        qb.expressionMap.joinAttributes.forEach((join) => {
+            if (!join.condition) {
+                const inverseTarget = join.relationCache?.inverseEntityMetadata.target;
+                if (inverseTarget) {
+                    if (!join.condition && [
+                            ProductVariantTranslation,
+                            ShippingMethodTranslation,
+                            PromotionTranslation,
+                        ].find((el) => el === inverseTarget)
+                    ) {
+                        join.condition = `"${join.alias.name}"."languageCode" = :languageCode`
+                    }
+                }
+                if (inverseTarget === ProductVariantPrice) {
+                    join.condition = `"${join.alias.name}"."currencyCode" = "order"."currencyCode" AND "${join.alias.name}"."channelId" = :channelId`
+                }
+                if (inverseTarget === FulfillmentLine) {
+                    const lines = qb.expressionMap.joinAttributes.find((join) => join.relationCache?.inverseEntityMetadata.target === OrderLine);
+                    if (lines) {
+                        join.condition = `"${join.alias.name}"."orderLineId" = "${lines.alias.name}"."id"`;
+                    }
+                }
+            }
+        });
+    }
+
     findAll(
         ctx: RequestContext,
         options?: OrderListOptions,
         relations?: RelationPaths<Order>,
     ): Promise<PaginatedList<Order>> {
-        return this.listQueryBuilder
+        const qb = this.listQueryBuilder
             .build(Order, options, {
                 ctx,
                 relations: relations ?? [
@@ -197,7 +239,10 @@ export class OrderService {
                     customerLastName: 'customer.lastName',
                     transactionId: 'payments.transactionId',
                 },
-            })
+            });
+        this.restrictOrderJoins(ctx, qb);
+
+        return qb
             .getManyAndCount()
             .then(([items, totalItems]) => {
                 return {
@@ -247,6 +292,7 @@ export class OrderService {
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         FindOptionsUtils.joinEagerRelations(qb, qb.alias, qb.expressionMap.mainAlias!.metadata);
+        this.restrictOrderJoins(ctx, qb);
 
         const order = await qb.getOne();
         if (order) {
