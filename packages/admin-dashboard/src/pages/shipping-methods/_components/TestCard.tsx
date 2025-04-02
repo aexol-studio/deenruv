@@ -85,7 +85,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
       icon={<CardIcons.shipping />}
       color="cyan"
       bottomRight={
-        <Button className="w-48" variant={'action'} onClick={testShippingMethod}>
+        <Button className="w-48" onClick={testShippingMethod}>
           {t('details.test.button')}
         </Button>
       }

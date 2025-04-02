@@ -22,6 +22,7 @@ export const ArgumentFieldsComponent = ({
     additionalData?: Record<string, unknown>;
     disabled?: boolean;
 }) => {
+    console.log('ACT', actions);
     const { getInputComponent } = usePluginStore();
     const [rendered, setRendered] = useState<
         Record<
@@ -31,6 +32,7 @@ export const ArgumentFieldsComponent = ({
     >({});
 
     useEffect(() => {
+        console.log('LENG', args, actions);
         if (!args.length || !actions.length) return;
         let result: Record<
             string,
@@ -53,6 +55,7 @@ export const ArgumentFieldsComponent = ({
             if (!result[action.code]) result[action.code] = {};
             result[action.code][arg.name] = components.filter(c => c.name === arg.name);
         }
+        console.log('RES', result);
         setRendered(result);
         return () => {
             setRendered({});
@@ -61,6 +64,7 @@ export const ArgumentFieldsComponent = ({
 
     return Object.entries(rendered).map(([actionCode, fields]) => {
         const action = actions.find(a => a.code === actionCode);
+        console.log('ACTION', action);
         if (!action) return null;
         return (
             <div key={action.code} className="flex flex-col gap-3">

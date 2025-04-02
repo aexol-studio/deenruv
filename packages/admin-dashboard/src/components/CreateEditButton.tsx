@@ -26,7 +26,7 @@ export const CreateEditButton: React.FC<CreateEditButtonProps> = ({
   const isPermittedToUpdate = useMemo(() => userPermissions.includes(editPermission), [userPermissions]);
 
   return (isPermittedToUpdate && editMode) || (isPermittedToCreate && !editMode) ? (
-    <Button className="ml-auto" variant={'action'} disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
+    <Button className="ml-auto" disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
       {editMode ? t('update') : t('create')}
     </Button>
   ) : (

@@ -8,10 +8,6 @@ import {
   TableHead,
   TableBody,
   TableCell,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Button,
   ScrollArea,
   Table,
@@ -48,9 +44,9 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
   const [isSubmitting, setIsSubmitting] = useState(false);
   const neededFulfillmentHandlers = order?.shippingLines?.map((line) => line.shippingMethod.fulfillmentHandlerCode);
 
-  const filteredFulfillmentHandlers = useServer((p) =>
-    p.fulfillmentHandlers.filter((handler) => neededFulfillmentHandlers.includes(handler?.code)),
-  );
+  const filteredFulfillmentHandlers = useServer((p) => {
+    return p.fulfillmentHandlers.filter((handler) => neededFulfillmentHandlers.includes(handler?.code));
+  });
 
   const { state, setField } = useGFFLP('FulfillOrderInput')({
     lines: {
@@ -94,7 +90,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button disabled={disabled} variant={'action'} size="sm" className="gap-2">
+        <Button disabled={disabled} size="sm" className="gap-2">
           <Package className="h-4 w-4" />
           {t('fulfillment.completeOrderButton', 'Fulfill Order')}
         </Button>
@@ -309,7 +305,13 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                 >
                   <ArgumentFieldsComponent
                     actions={filteredFulfillmentHandlers}
-                    args={state.handler?.value.arguments || []}
+                    args={
+                      state.handler?.value.arguments?.length
+                        ? state.handler.value.arguments
+                        : state.handler?.initialValue?.arguments?.length
+                          ? state.handler.initialValue.arguments
+                          : []
+                    }
                     setArg={(argument, data) => {
                       const newArgs = state.handler?.value.arguments.map((arg) => {
                         if (arg.name === argument.name) return { ...arg, value: data.value };

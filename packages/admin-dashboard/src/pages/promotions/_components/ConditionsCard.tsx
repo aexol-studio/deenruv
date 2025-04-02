@@ -1,11 +1,4 @@
 import {
-  Input,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  Label,
-  CardFooter,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -15,21 +8,16 @@ import {
   Button,
   useQuery,
   Separator,
-  Checkbox,
-  cn,
   ErrorMessage,
-  generateInputComponents,
-  usePluginStore,
   ArgumentFieldsComponent,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@/components';
 import { X } from 'lucide-react';
-import { FacetsSelector } from '@/pages/collections/_components/FacetsSelector';
-import { VariantsSelector } from '@/pages/collections/_components/VariantsSelector';
-import { CustomerGroupsSelector } from '@/pages/promotions/_components/CustomerGroupsSelector';
 import { PromotionConditionAndActionSelector, PromotionConditionAndActionType } from '@/graphql/promotions';
 
 export const ConditionsQuery = typedGql('query', { scalars })({
@@ -45,7 +33,6 @@ interface ConditionsCardProps {
 export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange, errors }) => {
   const { t } = useTranslation('promotions');
   const { data } = useQuery(ConditionsQuery);
-  const { getInputComponent } = usePluginStore();
 
   const availableConditions = useMemo(() => {
     return data?.promotionConditions.filter((c) => !value?.some((v) => v.code === c.code)) || [];
@@ -102,56 +89,12 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('conditions.header')}</CardTitle>
-        <ErrorMessage errors={errors} />
-      </CardHeader>
-      <CardContent>
-        <Stack column className="flex-1 gap-y-4">
-          {!value?.length ? (
-            <p>{t('conditions.emptyState')}</p>
-          ) : (
-            value?.map((condition, index) => {
-              return (
-                <Stack column className="gap-4" key={index}>
-                  <Stack className="items-center gap-3">
-                    {condition?.code && (
-                      <>
-                        <Button
-                          variant={'destructive'}
-                          size={'sm'}
-                          className="h-auto p-1"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            removeCondition(condition.code);
-                          }}
-                        >
-                          <X size={16} />
-                        </Button>
-                        <h5>{t(`conditions.codes.${condition.code}`)}</h5>
-                      </>
-                    )}
-                  </Stack>
-                  <ArgumentFieldsComponent
-                    actions={data?.promotionConditions}
-                    args={condition.arguments}
-                    setArg={(argument, data) => {
-                      const newArgs = condition.arguments.map((arg) => {
-                        if (arg.name === argument.name) return { ...arg, value: data.value };
-                        return arg;
-                      });
-                      handleConditionsValueChange(index, condition.code, newArgs);
-                    }}
-                  />
-                  <Separator className="my-4" />
-                </Stack>
-              );
-            })
-          )}
-        </Stack>
-      </CardContent>
-      <CardFooter>
+    <CustomCard
+      title={t('conditions.header')}
+      color="yellow"
+      icon={<CardIcons.check />}
+      upperRight={<ErrorMessage errors={errors} />}
+      bottomRight={
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button disabled={!availableConditions.length}>{t(`conditions.add`)}</Button>
@@ -166,7 +109,50 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      </CardFooter>
-    </Card>
+      }
+    >
+      <Stack column className="flex-1 gap-y-4">
+        {!value?.length ? (
+          <p>{t('conditions.emptyState')}</p>
+        ) : (
+          value?.map((condition, index) => {
+            return (
+              <Stack column className="gap-4" key={index}>
+                <Stack className="items-center gap-3">
+                  {condition?.code && (
+                    <>
+                      <Button
+                        variant={'destructive'}
+                        size={'sm'}
+                        className="h-auto p-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeCondition(condition.code);
+                        }}
+                      >
+                        <X size={16} />
+                      </Button>
+                      <h5>{t(`conditions.codes.${condition.code}`)}</h5>
+                    </>
+                  )}
+                </Stack>
+                <ArgumentFieldsComponent
+                  actions={data?.promotionConditions}
+                  args={condition.arguments}
+                  setArg={(argument, data) => {
+                    const newArgs = condition.arguments.map((arg) => {
+                      if (arg.name === argument.name) return { ...arg, value: data.value };
+                      return arg;
+                    });
+                    handleConditionsValueChange(index, condition.code, newArgs);
+                  }}
+                />
+                <Separator className="my-4" />
+              </Stack>
+            );
+          })
+        )}
+      </Stack>
+    </CustomCard>
   );
 };

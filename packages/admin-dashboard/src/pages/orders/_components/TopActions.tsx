@@ -20,6 +20,9 @@ import {
   usePluginStore,
   useOrder,
   useServer,
+  FulfillmentOrderDetailType,
+  OrderDetailType,
+  PaymentOrderDetailType,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
@@ -123,7 +126,8 @@ export const TopActions: React.FC = () => {
         ],
       });
       if (transitionFulfillmentToState.__typename === 'Fulfillment') {
-        changeOrderState(ORDER_STATE.SHIPPED);
+        fetchOrder(order.id);
+        fetchOrderHistory();
 
         toast.success(t('topActions.fulfillmentAdded'));
         return;
@@ -201,18 +205,53 @@ export const TopActions: React.FC = () => {
     setManualChange({ state: false });
   };
 
-  const canCompleteOrder = useMemo(() => {
-    console.log('OFLF', order?.fulfillments);
-    //     const allFulfillmentLines = (order?.fulfillments ?? [])
-    //     .filter(fulfillment => fulfillment.state !== 'Cancelled')
-    //     .reduce((all, fulfillment) => [...all, ...fulfillment.lines], []);
-    // let allItemsFulfilled = true;
+  const outstandingPaymentAmount = (order: OrderDetailType): number => {
+    const paymentIsValid = (p: PaymentOrderDetailType): boolean =>
+      p?.state !== 'Cancelled' && p.state !== 'Declined' && p.state !== 'Error';
 
-    return !!(
-      order?.fulfillments?.some((f) => f.state === ORDER_STATE.SHIPPED) ||
-      !currentPossibilities?.to.some((state) => COMPLETE_ORDER_STATES.includes(state as ORDER_STATE))
+    let amountCovered = 0;
+    for (const payment of order.payments?.filter(paymentIsValid) ?? []) {
+      const refunds = payment.refunds.filter((r) => r.state !== 'Failed') ?? [];
+      const refundsTotal = (refunds || []).reduce((sum, i) => sum + (i['total'] as unknown as number), 0);
+      amountCovered += payment.amount - refundsTotal;
+    }
+    return order.totalWithTax - amountCovered;
+  };
+
+  const canAddFulfillment = useMemo(() => {
+    if (!order) return false;
+
+    const allFulfillmentLines: FulfillmentOrderDetailType['lines'] = (order.fulfillments ?? [])
+      .filter((fulfillment) => fulfillment.state !== 'Cancelled')
+      .reduce((all, fulfillment) => [...all, ...fulfillment.lines], [] as FulfillmentOrderDetailType['lines']);
+    let allItemsFulfilled = true;
+
+    for (const line of order.lines) {
+      const totalFulfilledCount = allFulfillmentLines
+        .filter((row) => row.orderLineId === line.id)
+        .reduce((sum, row) => sum + row.quantity, 0);
+      console.log('IF', line.quantity, totalFulfilledCount, allFulfillmentLines);
+
+      if (totalFulfilledCount < line.quantity) {
+        allItemsFulfilled = false;
+      }
+    }
+
+    return (
+      !allItemsFulfilled &&
+      outstandingPaymentAmount(order) === 0 &&
+      (order.nextStates.includes('Shipped') ||
+        order.nextStates.includes('PartiallyShipped') ||
+        order.nextStates.includes('Delivered'))
     );
   }, [order, currentPossibilities]);
+
+  // const canCompleteOrder = useMemo(() => {
+  //   return !!(
+  //     order?.fulfillments?.some((f) => f.state === ORDER_STATE.SHIPPED) ||
+  //     !currentPossibilities?.to.some((state) => COMPLETE_ORDER_STATES.includes(state as ORDER_STATE))
+  //   );
+  // }, [order, currentPossibilities]);
 
   const needFulfillment = useMemo(() => {
     const statesNotFromDeenruv = orderProcess.filter(
@@ -223,7 +262,7 @@ export const TopActions: React.FC = () => {
       state.to.some((s) => states.includes(s as ORDER_STATE)),
     );
     states.push(...doExternalStatesNeedFulfillment.map((state) => state.name as ORDER_STATE));
-    return states.includes(order?.state as ORDER_STATE);
+    return states.includes(order?.state as ORDER_STATE) && order?.state !== ORDER_STATE.SHIPPED;
   }, [order, currentPossibilities]);
   const inModifyState = useMemo(() => order?.state === ORDER_STATE.MODIFYING, [order]);
   const exitingModifyStates = useMemo(
@@ -276,7 +315,7 @@ export const TopActions: React.FC = () => {
               : t('create.completeOrderButton')}
           </Button>
         ) : needFulfillment ? (
-          <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={!canCompleteOrder} />
+          <FulfillmentModal order={order} onSubmitted={fulfillOrder} disabled={!canAddFulfillment} />
         ) : inModifyState ? (
           <ModifyAcceptModal />
         ) : null}
@@ -285,6 +324,12 @@ export const TopActions: React.FC = () => {
           <div className="flex items-center gap-2 text-sm">
             <Info size={20} className="text-blue-500" />
             <p>{t('addPaymentInfo')}</p>
+          </div>
+        )}
+        {order.state === ORDER_STATE.SHIPPED && (
+          <div className="flex items-center gap-2 text-sm">
+            <Info size={20} className="text-blue-500" />
+            <p>{t('markFulfillmentInfo')}</p>
           </div>
         )}
       </div>

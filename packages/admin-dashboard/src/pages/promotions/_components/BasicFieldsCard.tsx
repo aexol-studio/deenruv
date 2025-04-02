@@ -1,4 +1,4 @@
-import { Input, Card, CardHeader, CardTitle, CardContent, Label } from '@deenruv/react-ui-devkit';
+import { Input, Label, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { ModelTypes } from '@deenruv/admin-types';
 import React from 'react';
@@ -19,30 +19,25 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
   const { t } = useTranslation('promotions');
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('basicInfo.header')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Stack column className="flex-1 gap-y-4">
-          <Stack className="gap-3">
-            <Input
-              label={t('basicInfo.name')}
-              placeholder={t('basicInfo.name')}
-              value={currentTranslationValue?.name ?? undefined}
-              onChange={(e) => onChange('name', e.target.value)}
-              errors={errors}
-            />
-          </Stack>
-          <Stack column className="basis-full">
-            <Label className="mb-2">{t('basicInfo.description')}</Label>
-            <RichTextEditor
-              content={currentTranslationValue?.description ?? undefined}
-              onContentChanged={(value) => onChange('description', value)}
-            />
-          </Stack>
+    <CustomCard title={t('basicInfo.header')} color="blue" icon={<CardIcons.basic />}>
+      <Stack column className="flex-1 gap-y-4">
+        <Stack className="gap-3">
+          <Input
+            label={t('basicInfo.name')}
+            placeholder={t('basicInfo.name')}
+            value={currentTranslationValue?.name ?? undefined}
+            onChange={(e) => onChange('name', e.target.value)}
+            errors={errors}
+          />
         </Stack>
-      </CardContent>
-    </Card>
+        <Stack column className="basis-full">
+          <Label className="mb-2">{t('basicInfo.description')}</Label>
+          <RichTextEditor
+            content={currentTranslationValue?.description ?? undefined}
+            onContentChanged={(value) => onChange('description', value)}
+          />
+        </Stack>
+      </Stack>
+    </CustomCard>
   );
 };

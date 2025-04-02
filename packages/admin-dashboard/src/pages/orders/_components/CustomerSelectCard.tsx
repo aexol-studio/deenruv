@@ -322,7 +322,7 @@ export const CustomerSelectCard: React.FC = () => {
         )
       }
     >
-      <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
+      <div className="border-border bg-muted/50 rounded-lg border p-3">
         <div className="flex items-start gap-3">
           {!currentOrder?.customer ? (
             <>

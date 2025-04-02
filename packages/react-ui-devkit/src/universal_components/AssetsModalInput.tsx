@@ -270,7 +270,6 @@ export function AssetsModalInput({
                             <DialogClose asChild>
                                 <Button
                                     disabled={!selectedAsset}
-                                    variant="action"
                                     onClick={() => {
                                         if (selectedAsset) setValue(selectedAsset);
                                         else setValue(undefined);

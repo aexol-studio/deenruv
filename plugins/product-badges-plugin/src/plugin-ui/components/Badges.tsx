@@ -91,7 +91,7 @@ export const Badges = () => {
                                 }}
                             >
                                 <DialogTrigger asChild>
-                                    <Button size="sm" className="h-10" variant="action">
+                                    <Button size="sm" className="h-10">
                                         <Plus />
                                     </Button>
                                 </DialogTrigger>

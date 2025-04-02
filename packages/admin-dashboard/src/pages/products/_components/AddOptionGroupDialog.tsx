@@ -78,9 +78,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={'action'} className="self-end">
-          {t('addOptionGroupDialog.title')}
-        </Button>
+        <Button className="self-end">{t('addOptionGroupDialog.title')}</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

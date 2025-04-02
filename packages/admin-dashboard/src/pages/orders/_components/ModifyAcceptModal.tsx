@@ -38,7 +38,7 @@ export const ModifyAcceptModal: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={'destructive'} className="w-full justify-start" disabled={!isOrderModified()}>
+        <Button className="w-full justify-start" disabled={!isOrderModified()}>
           {t('applyChanges')}
         </Button>
       </DialogTrigger>

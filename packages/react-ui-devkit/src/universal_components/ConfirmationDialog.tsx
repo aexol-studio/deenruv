@@ -50,9 +50,7 @@ export const ConfirmationDialog: React.FC<PropsWithChildren<ConfirmationDialogPr
                 </div>
                 <AlertDialogFooter className="mt-2">
                     <Button onClick={() => setOpen(false)}>{t('confirmationDialog.cancelBtn')}</Button>
-                    <Button variant={'action'} onClick={handleConfirm}>
-                        {t('confirmationDialog.confirmBtn')}
-                    </Button>
+                    <Button onClick={handleConfirm}>{t('confirmationDialog.confirmBtn')}</Button>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -617,7 +617,7 @@ export const AddressCard: React.FC<{
         )
       }
     >
-      <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
+      <div className="border-border bg-muted/50 rounded-lg border p-3">
         <div className="flex items-start gap-3">
           {!currentAddress ? (
             <>
@@ -645,7 +645,7 @@ export const AddressCard: React.FC<{
           ) : (
             <>
               <div className="flex-1">
-                <div className="space-y-1">
+                <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <User className={`max-h-4 min-h-4 min-w-4 max-w-4 ${iconColor}`} />
                     <p className="text-sm font-medium">{currentAddress?.fullName}</p>

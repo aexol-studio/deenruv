@@ -6,11 +6,9 @@ import {
   apiClient,
   Badge,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+  CardIcons,
   ColumnView,
+  CustomCard,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -18,7 +16,6 @@ import {
   formatDate,
   ListTable,
   useDetailListHook,
-  useSettings,
 } from '@deenruv/react-ui-devkit';
 import { ColumnDef, useReactTable, getCoreRowModel } from '@tanstack/react-table';
 import { AlertCircle, CheckCircle, Clock, MoreHorizontal, Play, RefreshCw, XCircle } from 'lucide-react';
@@ -251,21 +248,20 @@ export const Jobs = () => {
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between">
-          <CardTitle>{t('jobs.title')}</CardTitle>
-          <div className="flex items-center gap-2">
-            <FilterToolbar
-              {...{ Search, setStateFilter, stateFilter, jobQueueFilter, setJobQueueFilter, liveUpdate, setLiveUpdate }}
-            />
-            <ColumnView table={table} entityName="Job" />
-          </div>
+    <CustomCard
+      title={t('jobs.title')}
+      color="orange"
+      icon={<CardIcons.check />}
+      upperRight={
+        <div className="flex items-center gap-2">
+          <FilterToolbar
+            {...{ Search, setStateFilter, stateFilter, jobQueueFilter, setJobQueueFilter, liveUpdate, setLiveUpdate }}
+          />
+          <ColumnView table={table} entityName="Job" />
         </div>
-      </CardHeader>
-      <CardContent>
-        <ListTable {...{ columns, isFiltered: false, table, Paginate, tableId: 'jobs-list-view' }} />
-      </CardContent>
-    </Card>
+      }
+    >
+      <ListTable {...{ columns, isFiltered: false, table, Paginate, tableId: 'jobs-list-view' }} />
+    </CustomCard>
   );
 };

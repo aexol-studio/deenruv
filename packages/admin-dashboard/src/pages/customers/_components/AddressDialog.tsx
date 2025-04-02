@@ -228,7 +228,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
           />
         </Stack>
         <DialogFooter className="mt-2">
-          <Button variant="action" className="w-min place-self-end" onClick={handleSubmit}>
+          <Button className="w-min place-self-end" onClick={handleSubmit}>
             {t('addresses.save')}
           </Button>
           <Button className="w-min place-self-end" onClick={() => setOpen(false)}>

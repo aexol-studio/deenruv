@@ -74,9 +74,7 @@ export const DuplicateEntity: React.FC<DeleteCollectionsFromChannel> = ({
             {t('deleteCollectionDialog.cancel')}
           </Button>
         </DialogClose>
-        <Button onClick={removeCollectionsFromChannel} variant="action">
-          Duplikuj
-        </Button>
+        <Button onClick={removeCollectionsFromChannel}>Duplikuj</Button>
       </DialogFooter>
     </DialogContent>
   );

@@ -299,7 +299,6 @@ const DetailTabs = ({
                                     }
                                 >
                                     <Button
-                                        variant="action"
                                         size="sm"
                                         onClick={() => actionHandler('submit')}
                                         className="ml-auto justify-self-end"
@@ -314,7 +313,6 @@ const DetailTabs = ({
                                     content={buttonDisabled ? t('buttonDisabledTooltip') : undefined}
                                 >
                                     <Button
-                                        variant="action"
                                         size="sm"
                                         onClick={() => actionHandler('submit')}
                                         className="ml-auto justify-self-end"

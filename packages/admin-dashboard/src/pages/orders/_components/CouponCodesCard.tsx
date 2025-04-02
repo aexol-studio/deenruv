@@ -11,6 +11,7 @@ import {
   OrderDetailSelector,
   EmptyState,
   CustomCard,
+  ORDER_STATE,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
@@ -98,6 +99,7 @@ export const CouponCodesCard: React.FC<{}> = () => {
   return (
     <CustomCard
       notCollapsible
+      wrapperClassName="h-full"
       color="purple"
       description={t('couponCodes.description', 'Apply coupon codes to this order')}
       title={t('couponCodes.title', 'Coupon Codes')}
@@ -109,6 +111,7 @@ export const CouponCodesCard: React.FC<{}> = () => {
           placeholder={t('couponCodes.placeholder', 'Search for coupon codes...')}
           value={currentValue}
           onChange={handleChange}
+          disabled={order?.state === ORDER_STATE.DELIVERED || order?.state === ORDER_STATE.CANCELLED}
           onSearch={(searchString) => {
             setIsSearching(true);
             return fetchPromotionCodes({ code: searchString })
@@ -135,14 +138,15 @@ export const CouponCodesCard: React.FC<{}> = () => {
       </div>
 
       {currentValue.length === 0 && (
-        <EmptyState
-          columnsLength={2}
-          title={t('couponCodes.noCoupons', 'No coupon codes applied')}
-          description={t('couponCodes.searchToAdd', 'Search above to find and apply coupon codes')}
-          color="purple"
-          icon={<Ticket />}
-          small
-        />
+        <div className="flex h-[240px] pt-12">
+          <EmptyState
+            columnsLength={2}
+            title={t('couponCodes.noCoupons', 'No coupon codes applied')}
+            color="purple"
+            icon={<Ticket />}
+            small
+          />
+        </div>
       )}
     </CustomCard>
   );

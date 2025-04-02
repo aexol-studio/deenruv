@@ -1,9 +1,4 @@
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -15,6 +10,8 @@ import {
   Separator,
   ErrorMessage,
   ArgumentFieldsComponent,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
@@ -90,56 +87,12 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, e
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('actions.header')}</CardTitle>
-        <ErrorMessage errors={errors} />
-      </CardHeader>
-      <CardContent>
-        <Stack column className="flex-1 gap-y-4">
-          {!value?.length ? (
-            <p>{t('actions.emptyState')}</p>
-          ) : (
-            value?.map((action, index) => {
-              return (
-                <Stack column className="gap-4" key={index}>
-                  <Stack className="items-center gap-3">
-                    {action?.code && (
-                      <>
-                        <Button
-                          variant={'destructive'}
-                          size={'sm'}
-                          className="h-auto p-1"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            removeAction(action.code);
-                          }}
-                        >
-                          <X size={16} />
-                        </Button>
-                        <h5>{t(`actions.codes.${action.code}`)}</h5>
-                      </>
-                    )}
-                  </Stack>
-                  <ArgumentFieldsComponent
-                    actions={data?.promotionActions}
-                    args={action.arguments}
-                    setArg={(argument, data) => {
-                      const newArgs = action.arguments.map((arg) => {
-                        if (arg.name === argument.name) return { ...arg, value: data.value };
-                        return arg;
-                      });
-                      handleActionsValueChange(index, action.code, newArgs);
-                    }}
-                  />
-                  <Separator className="my-4" />
-                </Stack>
-              );
-            })
-          )}
-        </Stack>
-      </CardContent>
-      <CardFooter>
+    <CustomCard
+      title={t('actions.header')}
+      color="red"
+      icon={<CardIcons.action />}
+      upperRight={<ErrorMessage errors={errors} />}
+      bottomRight={
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button disabled={!availableActions.length}>{t(`actions.add`)}</Button>
@@ -154,7 +107,50 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, e
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-      </CardFooter>
-    </Card>
+      }
+    >
+      <Stack column className="flex-1 gap-y-4">
+        {!value?.length ? (
+          <p>{t('actions.emptyState')}</p>
+        ) : (
+          value?.map((action, index) => {
+            return (
+              <Stack column className="gap-4" key={index}>
+                <Stack className="items-center gap-3">
+                  {action?.code && (
+                    <>
+                      <Button
+                        variant={'destructive'}
+                        size={'sm'}
+                        className="h-auto p-1"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removeAction(action.code);
+                        }}
+                      >
+                        <X size={16} />
+                      </Button>
+                      <h5>{t(`actions.codes.${action.code}`)}</h5>
+                    </>
+                  )}
+                </Stack>
+                <ArgumentFieldsComponent
+                  actions={data?.promotionActions}
+                  args={action.arguments}
+                  setArg={(argument, data) => {
+                    const newArgs = action.arguments.map((arg) => {
+                      if (arg.name === argument.name) return { ...arg, value: data.value };
+                      return arg;
+                    });
+                    handleActionsValueChange(index, action.code, newArgs);
+                  }}
+                />
+                <Separator className="my-4" />
+              </Stack>
+            );
+          })
+        )}
+      </Stack>
+    </CustomCard>
   );
 };

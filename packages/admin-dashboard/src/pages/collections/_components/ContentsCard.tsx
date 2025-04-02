@@ -5,10 +5,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { ContentsTable } from '@/pages/collections/_components/ContentsTable';
 import React, { useMemo, useState } from 'react';
@@ -62,33 +60,28 @@ export const ContentsCard: React.FC<ContentsCardProps> = ({ collectionId }) => {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.contents.title')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Stack className="mb-4 gap-3">
-          <Select
-            value={firstFilterKey}
-            onValueChange={(e) => {
-              setFilter({ [e]: {} });
-            }}
-          >
-            <SelectTrigger className="w-[280px]">
-              <SelectValue placeholder={t('drawer.filter.title')} />
-            </SelectTrigger>
-            <SelectContent>
-              {filterOptions.map((i) => (
-                <SelectItem className="cursor-pointer" key={i} value={i}>
-                  {t(`drawer.filter.labels.${i as keyof typeof collections.drawer.filter.labels}`)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {filter && handleFilterValue(firstFilterKey)}
-        </Stack>
-        <ContentsTable collectionId={collectionId} filter={filter} />
-      </CardContent>
-    </Card>
+    <CustomCard title={t('details.contents.title')} color="green" icon={<CardIcons.group />}>
+      <Stack className="mb-4 gap-3">
+        <Select
+          value={firstFilterKey}
+          onValueChange={(e) => {
+            setFilter({ [e]: {} });
+          }}
+        >
+          <SelectTrigger className="w-[280px]">
+            <SelectValue placeholder={t('drawer.filter.title')} />
+          </SelectTrigger>
+          <SelectContent>
+            {filterOptions.map((i) => (
+              <SelectItem className="cursor-pointer" key={i} value={i}>
+                {t(`drawer.filter.labels.${i as keyof typeof collections.drawer.filter.labels}`)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {filter && handleFilterValue(firstFilterKey)}
+      </Stack>
+      <ContentsTable collectionId={collectionId} filter={filter} />
+    </CustomCard>
   );
 };

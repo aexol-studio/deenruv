@@ -48,8 +48,8 @@ export const EmptyState: React.FC<Props> = ({
     );
 
     return (
-        <TableRow noHover>
-            <TableCell colSpan={columnsLength} className="h-24 text-center">
+        <TableRow noHover className="h-full border-b-0">
+            <TableCell colSpan={columnsLength} className="h-full text-center">
                 <Card
                     className={cn(
                         'flex h-full flex-col items-center justify-center p-2',

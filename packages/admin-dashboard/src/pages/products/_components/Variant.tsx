@@ -1,4 +1,4 @@
-import { Button, ConfirmationDialog, Input, apiClient } from '@deenruv/react-ui-devkit';
+import { Button, CardIcons, ConfirmationDialog, CustomCard, Input, apiClient } from '@deenruv/react-ui-devkit';
 import { EntityCustomFields, Stack } from '@/components';
 
 import { ProductVariantType } from '@/graphql/products';
@@ -6,7 +6,6 @@ import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { resetCache } from '@/lists/cache';
 import { toast } from 'sonner';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard';
@@ -192,14 +191,10 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             <ConfirmationDialog onConfirm={deleteVariant}>
               <Button variant={'destructive'}>{t('forms.removeVariant')}</Button>
             </ConfirmationDialog>
-            <Button variant={'action'} onClick={updateVariant}>
-              {t('forms.updateVariant')}
-            </Button>
+            <Button onClick={updateVariant}>{t('forms.updateVariant')}</Button>
           </>
         ) : (
-          <Button variant={'action'} onClick={createVariant}>
-            {t('addVariantDialog.add')}
-          </Button>
+          <Button onClick={createVariant}>{t('addVariantDialog.add')}</Button>
         )}
       </Stack>
       <Stack className="gap-4">
@@ -229,29 +224,25 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
             onAssetsChange={(ids) => setField('assetIds', ids)}
           />
+          <EntityCustomFields entityName="productVariant" id={variant?.id} />
         </Stack>
         <Stack className="w-1/3 flex-col gap-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('name')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Stack column className="gap-y-4">
-                <Input
-                  label={t('sku')}
-                  placeholder={t('sku')}
-                  value={state?.sku?.value ?? undefined}
-                  onChange={(e) => setField('sku', e.target.value)}
-                />
-                <Input
-                  label={t('name')}
-                  placeholder={t('name')}
-                  value={currentTranslationValue?.name ?? undefined}
-                  onChange={(e) => setTranslationField('name', e)}
-                />
-              </Stack>
-            </CardContent>
-          </Card>
+          <CustomCard title={t('name')} icon={<CardIcons.basic />} color="purple">
+            <Stack column className="gap-y-4">
+              <Input
+                label={t('sku')}
+                placeholder={t('sku')}
+                value={state?.sku?.value ?? undefined}
+                onChange={(e) => setField('sku', e.target.value)}
+              />
+              <Input
+                label={t('name')}
+                placeholder={t('name')}
+                value={currentTranslationValue?.name ?? undefined}
+                onChange={(e) => setTranslationField('name', e)}
+              />
+            </Stack>
+          </CustomCard>
           <OptionsCard
             optionGroups={variant?.options || []}
             productId={productId}
@@ -274,7 +265,6 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
           )}
         </Stack>
       </Stack>
-      <EntityCustomFields entityName="productVariant" id={variant?.id} />
     </Stack>
   );
 };

@@ -1,11 +1,9 @@
 import { Column, ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ListViewMarker } from '@/components';
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { cn } from '@/lib';
-import { usePluginStore } from '@/plugins/plugin-context.js';
-import { PlugZap } from 'lucide-react';
 import { ListLocationID } from '@/types/types.js';
 import { EmptyState } from '@/universal_components/EmptyState.js';
 
@@ -17,23 +15,36 @@ interface ListTableProps<TData, TValue> {
     tableId: ListLocationID;
 }
 
-const getCommonPinningStyles = <T,>(column: Column<T>): CSSProperties => {
+const getCommonPinningStyles = <T,>(column: Column<T>, showPinned: boolean): CSSProperties => {
     const isPinned = column.getIsPinned();
+    const isLastLeftPinnedColumn = isPinned === 'left' && column.getIsLastColumn('left');
+    const isFirstRightPinnedColumn = isPinned === 'right' && column.getIsFirstColumn('right');
     const narrowColumnWidth = 35;
     const idColumnMaxWidth = 100;
     const isNarrowColumn = ['select-id', 'select', 'actions'].includes(column.id);
     const columnWidth = isNarrowColumn ? narrowColumnWidth : undefined;
 
-    return {
-        left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
-        right: isPinned === 'right' ? `${column.getAfter('right')}px` : undefined,
+    const styles = {
+        left: isPinned === 'left' ? `${column.getStart('left')}px` : 'unset',
+        right: isPinned === 'right' ? `${column.getAfter('right')}px` : 'unset',
+        boxShadow: 'unset',
         opacity: isPinned ? 0.95 : 1,
-        position: isPinned ? 'sticky' : 'relative',
+        position: isPinned ? ('sticky' as 'sticky') : ('relative' as 'relative'),
         minWidth: columnWidth,
         maxWidth: column.id === 'id' ? idColumnMaxWidth : columnWidth,
         width: column.id === 'id' ? idColumnMaxWidth : columnWidth,
         zIndex: isPinned ? 1 : 0,
     };
+
+    if (showPinned) {
+        styles.boxShadow = isLastLeftPinnedColumn
+            ? '-1px 0 1px -1px gray inset'
+            : isFirstRightPinnedColumn
+              ? '1px 0 1px -1px gray inset'
+              : 'unset';
+    }
+
+    return styles;
 };
 
 const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
@@ -53,10 +64,40 @@ export function ListTable<TData, TValue>({
     Paginate,
     tableId,
 }: ListTableProps<TData, TValue>) {
-    const { viewMarkers } = usePluginStore();
     const tableWrapperRef = useRef<HTMLDivElement>(null);
     const rowRefs = useRef<(HTMLTableRowElement | null)[]>([]);
     const { t } = useTranslation('common');
+    const [showPinned, setShowPinned] = useState(false);
+
+    useEffect(() => {
+        console.log(showPinned);
+    }, [showPinned]);
+
+    useEffect(() => {
+        const checkScroll = () => {
+            if (!tableWrapperRef.current || !rowRefs.current?.[0]) return;
+
+            const { scrollWidth: wrapperWidth } = tableWrapperRef.current;
+            const { scrollWidth: rowWidth } = rowRefs.current[0];
+
+            setShowPinned(rowWidth > wrapperWidth);
+        };
+
+        const resizeObserver = new ResizeObserver(checkScroll);
+        if (tableWrapperRef.current) {
+            resizeObserver.observe(tableWrapperRef.current);
+            tableWrapperRef.current.addEventListener('scroll', checkScroll);
+        }
+
+        console.log('EFF');
+
+        checkScroll();
+
+        return () => {
+            resizeObserver.disconnect();
+            tableWrapperRef.current?.removeEventListener('scroll', checkScroll);
+        };
+    }, [rowRefs.current.length, tableWrapperRef.current]);
 
     useEffect(() => {
         if (rowRefs.current.length && tableWrapperRef.current) {
@@ -105,7 +146,7 @@ export function ListTable<TData, TValue>({
                                                 'relative',
                                                 getCommonClassNameStyles(header.column),
                                             )}
-                                            style={{ ...getCommonPinningStyles(header.column) }}
+                                            style={{ ...getCommonPinningStyles(header.column, showPinned) }}
                                         >
                                             <div className="flex items-center justify-between gap-2">
                                                 {header.isPlaceholder
@@ -142,7 +183,7 @@ export function ListTable<TData, TValue>({
                                                     columnWidth > WIDTH_TRUNCATE_BREAKPOINT && 'truncate',
                                                     getCommonClassNameStyles(cell.column),
                                                 )}
-                                                style={{ ...getCommonPinningStyles(cell.column) }}
+                                                style={{ ...getCommonPinningStyles(cell.column, showPinned) }}
                                             >
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>

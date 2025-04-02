@@ -279,7 +279,7 @@ export const ShippingMethod: React.FC = () => {
         )
       }
     >
-      <div className="border-border bg-muted/50 mt-2 rounded-lg border p-3">
+      <div className="border-border bg-muted/50 rounded-lg border p-3">
         <div className="flex items-start gap-3">
           {!order?.lines.length ? (
             <>
@@ -315,31 +315,29 @@ export const ShippingMethod: React.FC = () => {
               </div>
             </>
           ) : (
-            <>
-              <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
-                <Truck className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+            <div key={selectedShipping.id} className="relative flex w-full flex-col gap-2">
+              <div className="mb-1 flex items-center gap-2">
+                <Package className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                <Label className="text-sm font-medium">{selectedShipping.name}</Label>
               </div>
-              <div className="flex-1">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-medium">{t('selectShipmentMethod.method')}</Label>
-                    <span className="text-sm font-medium">{selectedShipping.name}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Label className="text-sm font-medium">{t('selectShipmentMethod.code')}</Label>
-                    <Badge variant="outline" className="text-xs">
-                      {selectedShipping.code}
-                    </Badge>
-                  </div>
-                  <div className="border-border mt-1 flex items-center justify-between border-t pt-2">
-                    <Label className="text-sm font-medium">{t('selectShipmentMethod.price')}</Label>
-                    <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                      {priceFormatter(selectedShipping?.priceWithTax || 0, currentOrder?.currencyCode)}
-                    </span>
-                  </div>
+              <Badge variant="outline" className="w-fit text-xs">
+                {selectedShipping.code}
+              </Badge>
+              <div className="border-border mt-2 w-full border-t pt-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-muted-foreground text-xs">Base price: </span>
+                  <span className="text-sm font-medium">
+                    {priceFormatter(selectedShipping.price, order?.currencyCode)}
+                  </span>
+                </div>
+                <div className="mt-1 flex items-center justify-between gap-2">
+                  <span className="text-muted-foreground text-xs">With tax: </span>
+                  <span className="text-sm font-medium text-orange-600 dark:text-orange-400">
+                    {priceFormatter(selectedShipping.priceWithTax, order?.currencyCode)}
+                  </span>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

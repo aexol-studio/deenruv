@@ -140,7 +140,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
               >
                 <div className={cn('flex h-[80px] flex-col items-center justify-center gap-4 border-b')}>
                   <div
-                    className={`flex h-full items-center justify-center ${!isCollapsed && 'w-full'} cursor-pointer`}
+                    className={`flex h-full items-center justify-start ${!isCollapsed && 'w-full'} cursor-pointer p-4`}
                     onClick={() => navigate(Routes.dashboard, { viewTransition: true })}
                   >
                     <BrandLogo isCollapsed={isCollapsed} />
@@ -159,8 +159,8 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel>
-                <div className="flex h-[70px] items-start border-b px-4 py-4 lg:h-[80px] lg:px-6">
-                  <div className="flex flex-col items-start gap-2">
+                <div className="flex h-[70px] items-center border-b px-4 py-4 lg:h-[80px] lg:px-6">
+                  <div className="flex flex-col items-start justify-center">
                     <Breadcrumb>
                       <BreadcrumbList>
                         {crumbs.length ? (

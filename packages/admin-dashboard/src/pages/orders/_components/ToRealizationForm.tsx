@@ -187,7 +187,6 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
           }
           await addRealization();
         }}
-        variant="action"
       >
         {t('changeStatus.button')}
       </Button>

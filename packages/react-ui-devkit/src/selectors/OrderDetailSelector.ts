@@ -48,6 +48,25 @@ const paymentSelector = Selector('Payment')({
     createdAt: true,
     metadata: true,
     transactionId: true,
+    refunds: {
+        state: true,
+        total: true,
+    },
+});
+
+const FulfillmentSelector = Selector('Fulfillment')({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    method: true,
+    nextStates: true,
+    state: true,
+    summary: { fulfillmentId: true, orderLineId: true, quantity: true },
+    trackingCode: true,
+    lines: {
+        orderLineId: true,
+        quantity: true,
+    },
 });
 
 export const OrderDetailSelector = Selector('Order')({
@@ -82,16 +101,7 @@ export const OrderDetailSelector = Selector('Order')({
         amountWithTax: true,
         type: true,
     },
-    fulfillments: {
-        id: true,
-        createdAt: true,
-        updatedAt: true,
-        method: true,
-        nextStates: true,
-        state: true,
-        summary: { fulfillmentId: true, orderLineId: true, quantity: true },
-        trackingCode: true,
-    },
+    fulfillments: FulfillmentSelector,
     taxSummary: {
         description: true,
         taxBase: true,
@@ -140,4 +150,6 @@ export const OrderDetailSelector = Selector('Order')({
     payments: paymentSelector,
 });
 
+export type PaymentOrderDetailType = FromSelectorWithScalars<typeof paymentSelector, 'Payment'>;
+export type FulfillmentOrderDetailType = FromSelectorWithScalars<typeof FulfillmentSelector, 'Fulfillment'>;
 export type OrderDetailType = FromSelectorWithScalars<typeof OrderDetailSelector, 'Order'>;

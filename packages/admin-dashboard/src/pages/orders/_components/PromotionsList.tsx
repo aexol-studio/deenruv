@@ -39,15 +39,15 @@ export const PromotionsList: React.FC = () => {
         wrapperClassName="col-span-1 h-full md:col-span-2 lg:col-span-3"
         icon={<Gift />}
       >
-        <ScrollArea className="h-[280px] px-6 pb-6">
-          <Table>
+        <ScrollArea className="h-[280px]">
+          <Table className="h-full">
             <TableHeader>
               <TableRow noHover className="border-border border-b">
                 <TableHead className="py-3">{t('taxSummary.description')}</TableHead>
                 <TableHead className="py-3">{t('couponCodes.title')}</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="h-[232px]">
               {order.promotions.length ? (
                 order.promotions.map(({ name, couponCode }) => (
                   <TableRow key={name} noHover className="group">
@@ -90,7 +90,7 @@ export const PromotionsList: React.FC = () => {
         wrapperClassName="col-span-1 h-full md:col-span-2 lg:col-span-6"
         color="green"
       >
-        <ScrollArea className="h-[280px] px-6 pb-6">
+        <ScrollArea className="h-[280px]">
           <Table>
             <TableHeader>
               <TableRow noHover className="border-border border-b">
@@ -101,7 +101,7 @@ export const PromotionsList: React.FC = () => {
                 <TableHead className="py-3">{t('discounts.source', 'Source')}</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody className="h-[232px]">
               {order.discounts.length ? (
                 order.discounts.map(({ adjustmentSource, amount, amountWithTax, description, type }, index) => (
                   <TableRow key={index} noHover className="group">

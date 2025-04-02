@@ -33,6 +33,8 @@ export type TailwindColor =
     | 'pink'
     | 'rose';
 
+export type CardVariant = 'group';
+
 interface OrderCardTitleProps {
     icon?: ReactNode;
     title: string;
@@ -43,6 +45,7 @@ interface OrderCardTitleProps {
     wrapperClassName?: string;
     collapsed?: boolean;
     notCollapsible?: boolean;
+    variant?: 'group';
 }
 
 /**
@@ -58,6 +61,7 @@ interface OrderCardTitleProps {
  * @param {string} [wrapperClassName] - Additional CSS classes for the card wrapper.
  * @param {boolean} [collapsed] - If true, the card starts in a collapsed state.
  * @param {boolean} [notCollapsible] - If true, the card cannot be collapsed.
+ * @param {CardVariant} [variant] - Allows to choose different styles applied to the card.
  * @param {ReactNode} children - The main content of the card.
  */
 export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
@@ -71,9 +75,10 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     wrapperClassName,
     collapsed,
     notCollapsible,
+    variant,
 }) => {
-    const textColor = color ? `text-${color}-500 dark:text-${color}-400` : '';
-    const borderColor = color ? `border-l-4 border-l-${color}-500 dark:border-l-${color}-400` : '';
+    const textColor = color ? `text-${color}-500 dark:text-${color}-300` : '';
+    const borderColor = color ? `border-l-4 border-l-${color}-500 dark:border-l-${color}-300` : '';
     const baseClasses = 'h-5 w-5';
     const defaultOpen = collapsed ? undefined : title;
 
@@ -106,25 +111,24 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
             defaultValue={defaultOpen}
             onValueChange={setOpenItem}
         >
-            <AccordionItem value={title} className="h-full">
+            <AccordionItem value={title} className="h-full border-none">
                 <Card
                     className={cn(
                         'shadow-sm transition-colors duration-200 hover:shadow h-full',
+                        variant === 'group' && 'bg-transparent border-dashed border-[2px] shadow-none',
                         borderColor,
                     )}
                 >
                     {notCollapsible ? (
                         HeaderJSX
                     ) : (
-                        <AccordionTrigger className={cn('p-0 pr-6 w-full')}>{HeaderJSX}</AccordionTrigger>
+                        <AccordionTrigger className={cn('p-0 pr-6 w-full hover:no-underline')}>
+                            {HeaderJSX}
+                        </AccordionTrigger>
                     )}
-                    <AccordionContent>
-                        <div>
-                            <CardContent>{children}</CardContent>
-                            {bottomRight && (
-                                <CardFooter className="justify-end pb-2">{bottomRight}</CardFooter>
-                            )}
-                        </div>
+                    <AccordionContent className="pb-0">
+                        <CardContent>{children}</CardContent>
+                        {bottomRight && <CardFooter className="justify-end pb-2">{bottomRight}</CardFooter>}
                     </AccordionContent>
                 </Card>
             </AccordionItem>

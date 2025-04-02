@@ -57,10 +57,10 @@ export const WFirmaButtons = () => {
     if (!order || ILLEGAL_STATES.includes(order.state as ORDER_STATE)) return null;
     return (
         <div className="flex gap-2">
-            <Button className="flex gap-2" variant="action" onClick={addProforma}>
+            <Button className="flex gap-2" onClick={addProforma}>
                 <Printer size={20} /> {t('createProformaInvoice')}
             </Button>
-            <Button className="flex gap-2" variant="action" onClick={addReceipt}>
+            <Button className="flex gap-2" onClick={addReceipt}>
                 <Printer size={20} />
                 {t('createReceipt')}
             </Button>

@@ -1,16 +1,13 @@
 import {
-  Badge,
   Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   apiClient,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 
 import { CurrencyCode } from '@deenruv/admin-types';
@@ -89,39 +86,33 @@ export const PriceCard: React.FC<PriceCardProps> = ({
   }, [fetchTaxRates]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.price')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Stack column className="gap-y-4">
-          <Stack className="items-center gap-x-2">
-            <Input
-              type="currency"
-              placeholder={t('price')}
-              value={priceValue}
-              onChange={onPriceChange}
-              step={0.01}
-              endAdornment={currencyCode}
-            />
-            <Select value={taxRateValue} onValueChange={(id) => onTaxRateChange(id)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Tax rate" />
-              </SelectTrigger>
-              <SelectContent>
-                {taxCategories.map((tR) => (
-                  <SelectItem key={tR.id} value={tR.id.toString()}>
-                    {tR.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Stack>
-
-          {currentTaxCategory?.value !== undefined &&
-            `${t('details.taxRateDescription')} ${currentTaxCategory?.value}%`}
+    <CustomCard title={t('details.price')} color="rose" icon={<CardIcons.calc />}>
+      <Stack column className="gap-y-4">
+        <Stack className="items-center gap-x-2">
+          <Input
+            type="currency"
+            placeholder={t('price')}
+            value={priceValue}
+            onChange={onPriceChange}
+            step={0.01}
+            endAdornment={currencyCode}
+          />
+          <Select value={taxRateValue} onValueChange={(id) => onTaxRateChange(id)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Tax rate" />
+            </SelectTrigger>
+            <SelectContent>
+              {taxCategories.map((tR) => (
+                <SelectItem key={tR.id} value={tR.id.toString()}>
+                  {tR.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Stack>
-      </CardContent>
-    </Card>
+
+        {currentTaxCategory?.value !== undefined && `${t('details.taxRateDescription')} ${currentTaxCategory?.value}%`}
+      </Stack>
+    </CustomCard>
   );
 };

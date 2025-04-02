@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -15,6 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
   apiClient,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import { toast } from 'sonner';
@@ -74,49 +72,44 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('options')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        {!createMode ? (
-          <Table>
-            <TableBody>
-              {options?.map((o) => (
-                <TableRow key={o.name}>
-                  <TableCell className="font-semibold capitalize">{o.group.name}:</TableCell>
-                  <TableCell className="capitalize">{o.name}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        ) : (
-          optionGroups?.map((group, i) => (
-            <Stack key={group.name} className="items-center gap-3">
-              <div className="w-1/3 font-semibold">{group.name}:</div>
-              <div className="w-2/3">
-                <Select
-                  value={optionIds?.[i] || ''}
-                  onValueChange={(e) => {
-                    handleOptionChange(e, i);
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder={t('addVariantDialog.selectOption')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {group.options.map((o) => (
-                      <SelectItem key={o.id} value={o.id} className="capitalize">
-                        {o.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </Stack>
-          ))
-        )}
-      </CardContent>
-    </Card>
+    <CustomCard title={t('options')} icon={<CardIcons.options />} color="orange">
+      {!createMode ? (
+        <Table>
+          <TableBody>
+            {options?.map((o) => (
+              <TableRow key={o.name}>
+                <TableCell className="font-semibold capitalize">{o.group.name}:</TableCell>
+                <TableCell className="capitalize">{o.name}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        optionGroups?.map((group, i) => (
+          <Stack key={group.name} className="items-center gap-3">
+            <div className="w-1/3 font-semibold">{group.name}:</div>
+            <div className="w-2/3">
+              <Select
+                value={optionIds?.[i] || ''}
+                onValueChange={(e) => {
+                  handleOptionChange(e, i);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={t('addVariantDialog.selectOption')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {group.options.map((o) => (
+                    <SelectItem key={o.id} value={o.id} className="capitalize">
+                      {o.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </Stack>
+        ))
+      )}
+    </CustomCard>
   );
 };

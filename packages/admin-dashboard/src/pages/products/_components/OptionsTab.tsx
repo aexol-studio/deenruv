@@ -2,10 +2,6 @@ import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Table,
   TableBody,
   TableHead,
@@ -15,6 +11,9 @@ import {
   apiClient,
   useSettings,
   EmptyState,
+  CustomCard,
+  CardIcons,
+  Separator,
 } from '@deenruv/react-ui-devkit';
 
 import { toast } from 'sonner';
@@ -54,53 +53,58 @@ export const OptionsTab: React.FC = () => {
 
   return (
     <Stack column className="items-end">
-      <Stack className="mb-4 w-fit">
-        <AddOptionGroupDialog currentTranslationLng={contentLng} onSuccess={fetchOptionGroups} productId={id} />
-      </Stack>
       <Stack className="w-full gap-3" column>
         {getMarker()}
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="flex flex-row justify-between text-base">{t('optionGroups')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('optionsTab.groupName')}</TableHead>
-                  <TableHead>{t('optionsTab.values')}</TableHead>
-                  <TableHead></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {id && optionGroups?.length ? (
-                  optionGroups
-                    ?.sort((a, b) => a.id.localeCompare(b.id))
-                    ?.map((group) => (
-                      <OptionGroup
-                        contentLanguage={contentLng}
-                        group={group}
-                        productId={id}
-                        onActionCompleted={fetchOptionGroups}
-                        optionsUsedByVariants={optionsUsedByVariants}
-                      />
-                    ))
-                ) : (
-                  <EmptyState
-                    columnsLength={2}
-                    title={t('optionsTab.emptyState.title')}
-                    description={t('optionsTab.emptyState.description')}
-                  />
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <CustomCard
+          title={t('optionGroups')}
+          color="purple"
+          icon={<CardIcons.group />}
+          upperRight={
+            <AddOptionGroupDialog currentTranslationLng={contentLng} onSuccess={fetchOptionGroups} productId={id} />
+          }
+        >
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{t('optionsTab.groupName')}</TableHead>
+                <TableHead>{t('optionsTab.values')}</TableHead>
+                <TableHead></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {id && optionGroups?.length ? (
+                optionGroups
+                  ?.sort((a, b) => a.id.localeCompare(b.id))
+                  ?.map((group) => (
+                    <OptionGroup
+                      contentLanguage={contentLng}
+                      group={group}
+                      productId={id}
+                      onActionCompleted={fetchOptionGroups}
+                      optionsUsedByVariants={optionsUsedByVariants}
+                    />
+                  ))
+              ) : (
+                <EmptyState
+                  columnsLength={2}
+                  title={t('optionsTab.emptyState.title')}
+                  description={t('optionsTab.emptyState.description')}
+                />
+              )}
+            </TableBody>
+          </Table>
+        </CustomCard>
+        <Separator />
         {optionGroups
           ?.sort((a, b) => a.id.localeCompare(b.id))
           ?.map((oG) => (
-            <Stack column className="gap-2" key={oG.id}>
-              <h4 className="ml-6 text-sm font-semibold text-gray-500">{`${t('group')}: ${oG.name}`}</h4>
+            <CustomCard
+              key={oG.id}
+              variant="group"
+              title={`${t('group')}: ${oG.name}`}
+              icon={<CardIcons.default />}
+              collapsed
+            >
               <div className="grid grid-cols-4 gap-3">
                 {oG.options
                   ?.sort((a, b) => a.id.localeCompare(b.id))
@@ -114,7 +118,7 @@ export const OptionsTab: React.FC = () => {
                     />
                   ))}
               </div>
-            </Stack>
+            </CustomCard>
           ))}
       </Stack>
     </Stack>

@@ -5,7 +5,7 @@
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "facetPlaceholder": "Dodaj aspekty",
-    "group": "Grupa",
+    "group": "Grupa opcji",
     "image": "Obraz",
     "name": "Nazwa",
     "slug": "Ślimak",
@@ -111,6 +111,7 @@
     "details": {
         "addStockLocation": "Dodaj lokalizację zapasów",
         "basicInfo": "Podstawowe informacje",
+        "settings": "Ustawienia",
         "customFields": "Pola niestandardowe",
         "facetValues": "Wartość aspektu",
         "image": "Obraz",

@@ -49,10 +49,10 @@ export const DedicatedButtons = () => {
 
     return (
         <>
-            <Button variant="action" className="flex gap-2" onClick={() => createProforma('proforma')}>
+            <Button className="flex gap-2" onClick={() => createProforma('proforma')}>
                 <Printer size={20} /> {t('invoice.createProformaButton')}
             </Button>
-            <Button variant="action" className="flex gap-2" onClick={() => createProforma('receipt')}>
+            <Button className="flex gap-2" onClick={() => createProforma('receipt')}>
                 <Printer size={20} /> {t('invoice.createReceiptButton')}
             </Button>
             <Dialog>

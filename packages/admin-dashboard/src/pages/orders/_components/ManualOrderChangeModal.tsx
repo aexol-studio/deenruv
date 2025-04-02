@@ -95,7 +95,7 @@ export const ManualOrderChangeModal: React.FC<{
           </SelectContent>
         </Select>
         {components}
-        <Button className="ml-auto w-min" onClick={submit} variant="action">
+        <Button className="ml-auto w-min" onClick={submit}>
           {t('changeStatus.button')}
         </Button>
       </DialogContent>

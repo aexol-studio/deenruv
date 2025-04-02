@@ -103,7 +103,7 @@ export const BadgesModal = ({ onSuccess, closeHandler, productId, badge }: Props
                     <Button variant="secondary" onClick={closeHandler}>
                         {t('modal.cancel')}
                     </Button>
-                    <Button variant="action" disabled={loading} onClick={submitHandler}>
+                    <Button disabled={loading} onClick={submitHandler}>
                         {t(`modal.${mode}.action`)}
                     </Button>
                 </div>

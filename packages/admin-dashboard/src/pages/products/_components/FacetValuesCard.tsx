@@ -1,13 +1,5 @@
 import { generateColorFromString } from '@/utils';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  MultipleSelector,
-  Option,
-  apiClient,
-} from '@deenruv/react-ui-devkit';
+import { CardIcons, CustomCard, MultipleSelector, Option, apiClient } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -59,19 +51,14 @@ export const FacetValuesCard: React.FC<FacetValuesCardProps> = ({ facetValuesIds
   }, [facetValuesIds, allFacetsOptions]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('facets')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <MultipleSelector
-          options={allFacetsOptions}
-          value={currentFacetsOptions}
-          placeholder={t('facetPlaceholder')}
-          onChange={(options) => onChange(options.map((o) => o.value))}
-          hideClearAllButton
-        />
-      </CardContent>
-    </Card>
+    <CustomCard title={t('facets')} color="indigo" icon={<CardIcons.tag />}>
+      <MultipleSelector
+        options={allFacetsOptions}
+        value={currentFacetsOptions}
+        placeholder={t('facetPlaceholder')}
+        onChange={(options) => onChange(options.map((o) => o.value))}
+        hideClearAllButton
+      />
+    </CustomCard>
   );
 };

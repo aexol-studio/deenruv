@@ -7,14 +7,12 @@ import {
   Input,
   Label,
   Switch,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Separator,
   Option,
   apiClient,
   ErrorMessage,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { SimpleSelect, Stack } from '@/components';
 
@@ -109,12 +107,13 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
   }, [onFiltersValueChange, currentFiltersValue]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex flex-row justify-between text-base">{t('details.filters.title')}</CardTitle>
-        <ErrorMessage errors={errors} />
-      </CardHeader>
-      <CardContent className="flex- flex flex-wrap gap-4 xl:flex-nowrap">
+    <CustomCard
+      title={t('details.filters.title')}
+      upperRight={<ErrorMessage errors={errors} />}
+      color="orange"
+      icon={<CardIcons.filter />}
+    >
+      <div className="flex- flex flex-wrap gap-4 xl:flex-nowrap">
         <Stack column className="basis-full gap-4">
           <Stack className="mb-2 basis-full">
             <Stack className=" items-center gap-3">
@@ -255,7 +254,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
             );
           })}
         </Stack>
-      </CardContent>
-    </Card>
+      </div>
+    </CustomCard>
   );
 };

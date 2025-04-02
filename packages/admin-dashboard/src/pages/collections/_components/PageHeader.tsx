@@ -69,7 +69,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           <SimpleTooltip
             content={buttonDisabled ? (editMode ? t('noChangesTooltip') : t('buttonDisabledTooltip')) : undefined}
           >
-            <Button variant={'action'} disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
+            <Button disabled={buttonDisabled} onClick={editMode ? onEdit : onCreate}>
               {editMode ? t('edit') : t('create')}
             </Button>
           </SimpleTooltip>

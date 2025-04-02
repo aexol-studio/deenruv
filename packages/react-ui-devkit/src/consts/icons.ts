@@ -11,9 +11,15 @@ import {
     ClipboardCheck,
     Calculator,
     Database,
+    Image,
+    Group,
+    Layers,
+    Activity,
+    Cone,
 } from 'lucide-react';
 
 export const CardIcons = {
+    asset: Image,
     basic: Info,
     default: Hexagon,
     permissions: Shield,
@@ -26,4 +32,8 @@ export const CardIcons = {
     check: ClipboardCheck,
     calc: Calculator,
     customFields: Database,
+    group: Group,
+    stock: Layers,
+    action: Activity,
+    filter: Cone,
 };

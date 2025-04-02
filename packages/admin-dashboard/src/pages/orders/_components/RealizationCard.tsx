@@ -16,10 +16,11 @@ import {
   ContextMenu,
   DropdownMenuItem,
   ConfirmationDialog,
+  Button,
 } from '@deenruv/react-ui-devkit';
 import { AnimatePresence, motion } from 'framer-motion';
 import type React from 'react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
@@ -81,6 +82,13 @@ export const RealizationCard: React.FC = () => {
     }
   };
 
+  const markAllAsDelivered = useCallback(async () => {
+    const shippedIds = order?.fulfillments?.filter((f) => f.state === ORDER_STATE.SHIPPED).map((f) => f.id);
+    shippedIds?.forEach((id) => {
+      markAsDelivered(id);
+    });
+  }, []);
+
   const getFulfillmentStateBadge = (state: string) => {
     switch (state) {
       case ORDER_STATE.CREATED:
@@ -112,6 +120,21 @@ export const RealizationCard: React.FC = () => {
           title={t('fulfillments.title', 'Order Fulfillments')}
           description={t('fulfillments.description', 'Track and manage the delivery status of this order')}
           icon={<ClipboardCheck />}
+          color="rose"
+          upperRight={
+            <Button
+              variant={order.state === ORDER_STATE.SHIPPED ? 'action' : 'ghost'}
+              size="sm"
+              disabled={order.state !== ORDER_STATE.SHIPPED}
+              className="gap-2"
+              onClick={markAllAsDelivered}
+            >
+              <CheckCircle className="h-4 w-4" />
+              {order?.fulfillments?.filter((f) => f.state === ORDER_STATE.SHIPPED).length > 0
+                ? t('fulfillments.markAllAsDelivered')
+                : t('fulfillments.allDelivered')}
+            </Button>
+          }
         >
           <ScrollArea className="max-h-[350px]">
             <Table>

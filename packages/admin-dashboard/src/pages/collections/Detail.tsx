@@ -4,15 +4,13 @@ import { useTranslation } from 'react-i18next';
 
 import {
   Routes,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Label,
   Switch,
   apiClient,
   useRouteGuard,
+  CustomCard,
+  CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -22,11 +20,12 @@ import { PageHeader } from '@/pages/collections/_components/PageHeader';
 import { CollectionDetailsSelector, CollectionDetailsType } from '@/graphql/collections';
 import { LanguageCode } from '@deenruv/admin-types';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
+// import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { EntityCustomFields, Stack } from '@/components';
 import { useValidators } from '@/hooks/useValidators.js';
+import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
@@ -207,6 +206,15 @@ export const CollectionsDetailPage = () => {
     setButtonDisabled(areEqual);
   }, [state, collection, editMode]);
 
+  const handleAddAsset = useCallback(
+    (newId: string | undefined | null) => {
+      if (!newId) return;
+      const currentIds = state.assetIds?.value || [];
+      setField('assetIds', [...currentIds, newId]);
+    },
+    [state.assetIds?.value, setField],
+  );
+
   const setTranslationField = useCallback(
     (field: string, e: string) => {
       setField(
@@ -244,48 +252,45 @@ export const CollectionsDetailPage = () => {
           onEdit={updateCollection}
         />
         <Stack column className="gap-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
-              <CardContent className="flex flex-wrap items-start gap-4 p-0 pt-4">
-                <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.name')}
-                      value={currentTranslationValue?.name ?? undefined}
-                      onChange={(e) => setTranslationField('name', e.target.value)}
-                      errors={state.translations?.errors}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="basis-full md:basis-1/3">
-                    <Input
-                      label={t('details.basic.slug')}
-                      value={currentTranslationValue?.slug ?? undefined}
-                      onChange={(e) => setTranslationField('slug', e.target.value)}
-                      required
-                    />
-                  </Stack>
-                  <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
-                    <Switch
-                      checked={state.isPrivate?.value ?? undefined}
-                      onCheckedChange={(e) => setField('isPrivate', e)}
-                    />
-                    <Label>{t('details.basic.isPrivate')}</Label>
-                  </Stack>
-                </Stack>
-                <Stack column className="basis-full">
-                  <Label className="mb-2">{t('details.basic.description')}</Label>
-                  <RichTextEditor
-                    content={currentTranslationValue?.description ?? undefined}
-                    onContentChanged={(e) => setTranslationField('description', e)}
+          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="blue">
+            <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
+              <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+                <Stack className="basis-full md:basis-1/3">
+                  <Input
+                    label={t('details.basic.name')}
+                    value={currentTranslationValue?.name ?? undefined}
+                    onChange={(e) => setTranslationField('name', e.target.value)}
+                    errors={state.translations?.errors}
+                    required
                   />
                 </Stack>
-              </CardContent>
-            </CardHeader>
-          </Card>
+                <Stack className="basis-full md:basis-1/3">
+                  <Input
+                    label={t('details.basic.slug')}
+                    value={currentTranslationValue?.slug ?? undefined}
+                    onChange={(e) => setTranslationField('slug', e.target.value)}
+                    required
+                  />
+                </Stack>
+                <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
+                  <Switch
+                    checked={state.isPrivate?.value ?? undefined}
+                    onCheckedChange={(e) => setField('isPrivate', e)}
+                  />
+                  <Label>{t('details.basic.isPrivate')}</Label>
+                </Stack>
+              </Stack>
+              <Stack column className="basis-full">
+                <Label className="mb-2">{t('details.basic.description')}</Label>
+                <RichTextEditor
+                  content={currentTranslationValue?.description ?? undefined}
+                  onContentChanged={(e) => setTranslationField('description', e)}
+                />
+              </Stack>
+            </div>
+          </CustomCard>
           <AssetsCard
-            onAddAsset={(id) => setField('assetIds', [...(state.assetIds?.value || []), id])}
+            onAddAsset={handleAddAsset}
             featuredAssetId={state.featuredAssetId?.value ?? undefined}
             assetsIds={state.assetIds?.value ?? undefined}
             onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
