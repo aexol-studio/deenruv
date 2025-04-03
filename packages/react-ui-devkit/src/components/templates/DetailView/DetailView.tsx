@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, EllipsisVerticalIcon, Trash, Trash2 } from 'lucide-react';
+import { ChevronLeft, EllipsisVerticalIcon, Trash2 } from 'lucide-react';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { cn } from '@/lib';
 import { usePluginStore } from '@/plugins';
@@ -253,7 +253,7 @@ const DetailTabs = ({
                 setSearchParams({ tab: value });
             }}
         >
-            <div className="bg-muted sticky top-0 z-[51] w-full items-center justify-start shadow-xl">
+            <div className="sticky top-0 z-[51] w-full items-center justify-start bg-muted shadow-xl">
                 <div className="flex w-full items-center justify-between px-4 py-2">
                     <div className="flex w-full flex-1 items-center">
                         <Button
@@ -264,12 +264,12 @@ const DetailTabs = ({
                                 navigate(listPath);
                             }}
                         >
-                            <ChevronLeft className="h-4 w-4" />
+                            <ChevronLeft className="size-4" />
                             <span className="sr-only">{t('create.back')}</span>
                         </Button>
                         <Separator orientation="vertical" className="mx-4" />
                         {tabs.length > 1 && (
-                            <TabsList className="h-12 bg-transparent justify-start gap-2 p-0">
+                            <TabsList className="h-12 justify-start gap-2 bg-transparent p-0">
                                 {tabs.map((t, idx) => (
                                     <TabsTrigger
                                         key={idx}
@@ -288,8 +288,8 @@ const DetailTabs = ({
                         )}
                     </div>
                     <div className="flex items-center justify-end gap-2">
-                        <div className="flex gap-6 items-center">
-                            {topActions?.inline?.map((action, idx) => action)}
+                        <div className="flex items-center gap-6">
+                            {topActions?.inline?.map(action => action)}
                             {showEditButton && (
                                 <SimpleTooltip
                                     content={
@@ -334,7 +334,7 @@ const DetailTabs = ({
                                     <DropdownMenuContent className="z-[52] mr-4 min-w-[240px]">
                                         {!!topActions?.dropdown?.length && (
                                             <>
-                                                {topActions?.dropdown?.map((action, idx) => action)}
+                                                {topActions?.dropdown?.map(action => action)}
                                                 <DropdownMenuSeparator />
                                             </>
                                         )}
@@ -355,7 +355,7 @@ const DetailTabs = ({
                     </div>
                 </div>
             </div>
-            <div className="px-4 py-2 md:px-8 md:py-4 relative">
+            <div className="relative px-4 py-2 md:px-8 md:py-4">
                 {loading ? (
                     <LoadingMask />
                 ) : !entity && !!id ? (

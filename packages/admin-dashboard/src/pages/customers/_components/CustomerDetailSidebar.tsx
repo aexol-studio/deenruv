@@ -6,7 +6,7 @@ import { CustomerGroupsCard } from '@/pages/customers/_components/CustomerGroups
 const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 
 export const CustomerDetailSidebar = () => {
-  const { id, loading, entity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
+  const { id, entity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
   return (
     <main className="min-h-96">

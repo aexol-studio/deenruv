@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -13,16 +12,16 @@ import {
   CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { setInArrayBy } from '@/lists/useGflp';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
 export const CountryDetailView = () => {
-  const { id } = useParams();
-  const { form, fetchEntity } = useDetailView(
+  const { form, entity, fetchEntity, id } = useDetailView(
     'countries-detail-view',
     'CreateCountryInput',
     'code',
     'enabled',
     'translations',
+    'customFields',
   );
 
   const {
@@ -90,7 +89,20 @@ export const CountryDetailView = () => {
           </Stack>
         </CustomCard>
         <DetailViewMarker position={'countries-detail-view'} />
-        {id && <EntityCustomFields entityName="country" id={id} />}
+        <EntityCustomFields
+          entityName="country"
+          id={id}
+          hideButton
+          onChange={(customFields, translations) => {
+            setField('customFields', customFields);
+            if (translations) setField('translations', translations);
+          }}
+          initialValues={
+            entity && 'customFields' in entity
+              ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+              : { customFields: {} }
+          }
+        />
       </div>
     </main>
   );

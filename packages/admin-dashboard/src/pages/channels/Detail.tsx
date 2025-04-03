@@ -46,6 +46,7 @@ type FormDataType = Partial<{
   sellerId: GFFLPFormField<CreateChannelInput['sellerId']>;
   token: GFFLPFormField<CreateChannelInput['token']>;
   trackInventory: GFFLPFormField<CreateChannelInput['trackInventory']>;
+  customFields: GFFLPFormField<CreateChannelInput['customFields']>;
 }>;
 
 export const ChannelsDetailPage = () => {
@@ -73,6 +74,7 @@ export const ChannelsDetailPage = () => {
         pricesIncludeTax: data.pricesIncludeTax!.value!,
         sellerId: data.sellerId?.validatedValue,
         token: data.token!.validatedValue!,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {

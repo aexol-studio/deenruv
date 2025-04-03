@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Input,
@@ -13,7 +12,7 @@ import {
   CustomCard,
   CardIcons,
 } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
 const TAX_RATES_FORM_KEYS = [
   'CreateTaxRateInput',
@@ -23,15 +22,15 @@ const TAX_RATES_FORM_KEYS = [
   'categoryId',
   'zoneId',
   'customerGroupId',
+  'customFields',
 ] as const;
 
 export const TaxRateDetailView = () => {
-  const { id } = useParams();
   const { t } = useTranslation('taxRates');
   const [taxCategoriesOptions, setTaxCategoriesOptions] = useState<Option[]>([]);
   const [zonesOptions, setZonesOptions] = useState<Option[]>([]);
 
-  const { form, entity, fetchEntity } = useDetailView('taxRates-detail-view', ...TAX_RATES_FORM_KEYS);
+  const { form, entity, fetchEntity, id } = useDetailView('taxRates-detail-view', ...TAX_RATES_FORM_KEYS);
 
   const {
     base: { setField, state },
@@ -142,7 +141,16 @@ export const TaxRateDetailView = () => {
             </div>
           </CustomCard>
           <DetailViewMarker position={'taxRates-detail-view'} />
-          {id && <EntityCustomFields entityName="taxRate" id={id} />}
+          <EntityCustomFields
+            entityName="taxRate"
+            id={id}
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
         </Stack>
       </div>
     </main>

@@ -7,17 +7,16 @@ import { setInArrayBy } from '@/lists/useGflp';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
 
 export const CollectionsDetailView = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation('collections');
   const contentLng = useSettings((p) => p.translationsLanguage);
   const selectedChannel = useSettings((p) => p.selectedChannel);
 
-  const { form, fetchEntity } = useDetailView(
+  const { form, fetchEntity, entity, id } = useDetailView(
     'collections-detail-view',
     'CreateCollectionInput',
     'translations',
@@ -26,6 +25,7 @@ export const CollectionsDetailView = () => {
     'isPrivate',
     'inheritFilters',
     'filters',
+    'customFields',
   );
 
   const {
@@ -138,8 +138,21 @@ export const CollectionsDetailView = () => {
             onInheritChange={(e) => setField('inheritFilters', e)}
             errors={state.filters?.errors}
           />
-          {id && <EntityCustomFields entityName="collection" id={id} />}
-          <ContentsCard collectionId={id} />
+          <EntityCustomFields
+            entityName="collection"
+            id={id}
+            hideButton
+            onChange={(customFields, translations) => {
+              setField('customFields', customFields);
+              if (translations) setField('translations', translations as any);
+            }}
+            initialValues={
+              entity && 'customFields' in entity
+                ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+                : { customFields: {} }
+            }
+          />
+          {id && <ContentsCard collectionId={id} />}
         </Stack>
       </div>
     </main>

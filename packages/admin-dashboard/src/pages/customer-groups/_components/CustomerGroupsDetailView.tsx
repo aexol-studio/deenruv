@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Input, useSettings, useDetailView, DetailViewMarker, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
-const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name'] as const;
+const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name', 'customFields'] as const;
 
 export const CustomerGroupsDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('customerGroups');
-  const { id, form, fetchEntity } = useDetailView('customerGroups-detail-view', ...CUSTOMER_GROUPS_FORM_KEYS);
+  const { id, form, entity, fetchEntity } = useDetailView('customerGroups-detail-view', ...CUSTOMER_GROUPS_FORM_KEYS);
 
   const {
     base: { setField, state },
@@ -39,7 +39,17 @@ export const CustomerGroupsDetailView = () => {
             />
           </CustomCard>
           <DetailViewMarker position={'customerGroups-detail-view'} />
-          {id && <EntityCustomFields entityName="customerGroup" id={id} />}
+          <EntityCustomFields
+            entityName="customerGroup"
+            id={id}
+            hideButton
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
         </Stack>
       </div>
     </main>

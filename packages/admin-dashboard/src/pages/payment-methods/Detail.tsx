@@ -14,6 +14,7 @@ type FormDataType = Partial<{
   translations: GFFLPFormField<CreatePaymentMethodInput['translations']>;
   handler: GFFLPFormField<CreatePaymentMethodInput['handler']>;
   checker: GFFLPFormField<CreatePaymentMethodInput['checker']>;
+  customFields: GFFLPFormField<CreatePaymentMethodInput['customFields']>;
 }>;
 
 const CreatePaymentMethodMutation = getMutation('createPaymentMethod');
@@ -39,6 +40,7 @@ export const PaymentMethodsDetailPage = () => {
         handler: data.handler?.validatedValue,
         enabled: data.enabled?.validatedValue || data.enabled?.initialValue,
         translations: data.translations?.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
@@ -77,7 +79,7 @@ export const PaymentMethodsDetailPage = () => {
           component: <PaymentMethodDetailView />,
           form: createDeenruvForm({
             key: 'CreatePaymentMethodInput',
-            keys: ['code', 'enabled', 'translations', 'handler', 'checker'],
+            keys: ['code', 'enabled', 'translations', 'handler', 'checker', 'customFields'],
             config: {
               enabled: {
                 initialValue: false,

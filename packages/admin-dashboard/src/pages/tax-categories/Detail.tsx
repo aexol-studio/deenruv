@@ -58,7 +58,7 @@ export const TaxCategoriesDetailPage = () => {
           component: <TaxCategoryDetailView />,
           form: createDeenruvForm({
             key: 'CreateTaxCategoryInput',
-            keys: ['isDefault', 'name'],
+            keys: ['isDefault', 'name', 'customFields'],
             config: {
               name: {
                 validate: (v) => {
@@ -73,8 +73,8 @@ export const TaxCategoriesDetailPage = () => {
 
               const inputData = {
                 name: data.name.validatedValue,
-                // @ts-ignore
                 isDefault: data.isDefault?.validatedValue,
+                ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
               };
 
               return id

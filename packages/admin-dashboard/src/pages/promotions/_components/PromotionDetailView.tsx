@@ -1,22 +1,13 @@
-import {
-  useDetailView,
-  Spinner,
-  useSettings,
-  DetailViewMarker,
-  PromotionDetailSelector,
-  useQuery,
-} from '@deenruv/react-ui-devkit';
+import { useDetailView, useSettings, DetailViewMarker, PromotionDetailSelector } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useMemo } from 'react';
 import { setInArrayBy } from '@/lists/useGflp';
-import { z } from 'zod';
 import { BasicFieldsCard } from '@/pages/promotions/_components/BasicFieldsCard';
 import { OptionsCard } from '@/pages/promotions/_components/OptionsCard';
 import { ConditionsCard } from '@/pages/promotions/_components/ConditionsCard';
 import { ActionsCard } from '@/pages/promotions/_components/ActionsCard';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { PromotionConditionAndActionSelector } from '@/graphql/promotions.js';
-import { EntityCustomFields } from '@/components/EntityCustomFields.js';
-import { useParams } from 'react-router-dom';
+import { CF, EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 export const ConditionsQuery = typedGql('query', { scalars })({
   promotionConditions: PromotionConditionAndActionSelector,
@@ -33,6 +24,7 @@ const PROMOTION_FORM_KEYS = [
   'conditions',
   'actions',
   'translations',
+  'customFields',
 ] as const;
 
 export const PromotionQuery = typedGql('query', { scalars })({
@@ -40,17 +32,16 @@ export const PromotionQuery = typedGql('query', { scalars })({
 });
 
 export const PromotionDetailView = () => {
-  const { id } = useParams();
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { form, loading, fetchEntity } = useDetailView('promotions-detail-view', ...PROMOTION_FORM_KEYS);
+  const { form, entity, fetchEntity, id } = useDetailView('promotions-detail-view', ...PROMOTION_FORM_KEYS);
   const {
     base: { setField, state },
   } = form;
-  const { data } = useQuery(ConditionsQuery);
+  // const { data } = useQuery(ConditionsQuery);
 
-  const availableConditions = useMemo(() => {
-    return data?.promotionConditions.filter((c) => !state.conditions?.value?.some((v) => v.code === c.code)) || [];
-  }, [data, state.conditions?.value]);
+  // const availableConditions = useMemo(() => {
+  //   return data?.promotionConditions.filter((c) => !state.conditions?.value?.some((v) => v.code === c.code)) || [];
+  // }, [data, state.conditions?.value]);
 
   useEffect(() => {
     (async () => {
@@ -111,10 +102,23 @@ export const PromotionDetailView = () => {
           perCustomerUsageLimit={state.perCustomerUsageLimit?.value ?? undefined}
           setField={setField}
         />
+        <DetailViewMarker position={'promotions-detail-view'} />
+        <EntityCustomFields
+          entityName="promotion"
+          id={id}
+          hideButton
+          onChange={(customFields, translations) => {
+            setField('customFields', customFields);
+            if (translations) setField('translations', translations as any);
+          }}
+          initialValues={
+            entity && 'customFields' in entity
+              ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+              : { customFields: {} }
+          }
+        />
         <ConditionsCard value={state.conditions?.value} onChange={setField} errors={state.conditions?.errors} />
         <ActionsCard value={state.actions?.value} onChange={setField} errors={state.actions?.errors} />
-        <DetailViewMarker position={'promotions-detail-view'} />
-        {id && <EntityCustomFields entityName="promotion" id={id} />}
       </form>
     </div>
   );

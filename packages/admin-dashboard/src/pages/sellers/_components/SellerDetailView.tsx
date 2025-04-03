@@ -1,5 +1,4 @@
-import { useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Card,
@@ -10,17 +9,17 @@ import {
   Input,
   useDetailView,
 } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
+
+export const SELLER_FORM_KEYS = ['CreateSellerInput', 'name', 'customFields'] as const;
 
 export const SellerDetailView = () => {
-  const { form, loading, fetchEntity, entity } = useDetailView('sellers-detail-view', 'CreateSellerInput', 'name');
+  const { form, fetchEntity, entity, id } = useDetailView('sellers-detail-view', ...SELLER_FORM_KEYS);
 
   const {
     base: { setField, state },
   } = form;
 
-  const { id } = useParams();
-  const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('sellers');
 
   useEffect(() => {
@@ -55,7 +54,17 @@ export const SellerDetailView = () => {
             </CardHeader>
           </Card>
           <DetailViewMarker position={'sellers-detail-view'} />
-          {id && <EntityCustomFields entityName="seller" id={id} />}
+          <EntityCustomFields
+            entityName="seller"
+            id={id}
+            hideButton
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
         </Stack>
       </div>
     </main>

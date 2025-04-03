@@ -9,14 +9,14 @@ import {
   CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { useEffect } from 'react';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 import { useTranslation } from 'react-i18next';
 
-const TAX_CATEGORY_FORM_KEYS = ['CreateTaxCategoryInput', 'name', 'isDefault'] as const;
+const TAX_CATEGORY_FORM_KEYS = ['CreateTaxCategoryInput', 'name', 'isDefault', 'customFields'] as const;
 
 export const TaxCategoryDetailView = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { id, form, fetchEntity } = useDetailView('taxCategories-detail-view', ...TAX_CATEGORY_FORM_KEYS);
+  const { id, form, entity, fetchEntity } = useDetailView('taxCategories-detail-view', ...TAX_CATEGORY_FORM_KEYS);
   const { t } = useTranslation('taxCategories');
 
   const {
@@ -57,7 +57,17 @@ export const TaxCategoryDetailView = () => {
           </Stack>
         </CustomCard>
         <DetailViewMarker position={'taxCategories-detail-view'} />
-        <EntityCustomFields entityName="taxCategory" id={id} currentLanguage={contentLng} />
+        <EntityCustomFields
+          entityName="taxCategory"
+          id={id}
+          hideButton
+          onChange={(customFields) => {
+            setField('customFields', customFields);
+          }}
+          initialValues={
+            entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+          }
+        />
       </div>
     </div>
   );

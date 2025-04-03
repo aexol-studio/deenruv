@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSettings, useDetailView, CustomerDetailType, DetailViewMarker } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 import { PersonalDataCard } from '@/pages/customers/_components/PersonalDataCard';
 import { AddressesCard } from '@/pages/customers/_components/AddressesCard';
 
@@ -17,7 +17,7 @@ const CUSTOMER_FORM_KEYS = [
 export const CustomerDetailView = () => {
   const [addresses, setAddresses] = useState<CustomerDetailType['addresses']>([]);
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { form, entity, loading, id, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
+  const { form, entity, id, fetchEntity } = useDetailView('customers-detail-view', ...CUSTOMER_FORM_KEYS);
 
   const {
     base: { setField, state },
@@ -54,9 +54,9 @@ export const CustomerDetailView = () => {
             hideButton
             additionalData={{}}
             initialValues={
-              entity && 'customFields' in entity ? { customFields: entity.customFields as any } : { customFields: {} }
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
             }
-            onChange={(cf, value) => {
+            onChange={(cf) => {
               setField('customFields', cf);
             }}
           />

@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Label,
   MultipleSelector,
@@ -19,18 +14,16 @@ import {
   CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
-import { EntityCustomFields, Stack } from '@/components';
+import { Stack } from '@/components';
 
 const ROLE_FORM_KEYS = ['CreateRoleInput', 'code', 'description', 'channelIds', 'permissions'] as const;
 
 export const RoleDetailView = () => {
-  const { id } = useParams();
-  const { form, loading, fetchEntity, entity } = useDetailView('roles-detail-view', ...ROLE_FORM_KEYS);
+  const { form, fetchEntity, id } = useDetailView('roles-detail-view', ...ROLE_FORM_KEYS);
 
   const {
     base: { setField, state },
   } = form;
-  const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('roles');
   const [allChannelOptions, setAllChannelOptions] = useState<Option[]>([]);
 
@@ -123,9 +116,7 @@ export const RoleDetailView = () => {
               </Stack>
             </div>
           </CustomCard>
-
           <DetailViewMarker position={'roles-detail-view'} />
-          {id && <EntityCustomFields entityName="role" id={id} />}
           <PermissionsCard
             currentPermissions={state.permissions?.value ?? undefined}
             onPermissionsChange={(e) => setField('permissions', e)}

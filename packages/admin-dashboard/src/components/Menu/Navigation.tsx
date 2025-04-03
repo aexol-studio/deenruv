@@ -279,7 +279,7 @@ export function Navigation({ isCollapsed }: NavProps) {
       }
     });
 
-    links.forEach(({ groupId, href, labelId, id, icon, placement }, idx) => {
+    links.forEach(({ groupId, href, labelId, id, icon, placement }) => {
       const foundGroupIdx = navData.findIndex((group) => group.id === groupId);
 
       if (foundGroupIdx == -1)
@@ -363,7 +363,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                           'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted opacity-100',
                                       )}
                                     >
-                                      <link.icon className="h-6 w-6" />
+                                      <link.icon className="size-6" />
                                       <span className="sr-only">{link.title}</span>
                                     </div>
                                   </NavLink>
@@ -395,7 +395,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                     {link.id}
                                   </div>
                                 ) : null}
-                                <link.icon className="mr-2 h-4 w-4" />
+                                <link.icon className="mr-2 size-4" />
                                 {link.title}
                                 {notifications}
                               </div>

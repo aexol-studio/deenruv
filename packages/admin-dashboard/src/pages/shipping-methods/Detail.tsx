@@ -12,6 +12,7 @@ type FormDataType = Partial<{
   translations: GFFLPFormField<CreateShippingMethodInput['translations']>;
   fulfillmentHandler: GFFLPFormField<CreateShippingMethodInput['fulfillmentHandler']>;
   checker: GFFLPFormField<CreateShippingMethodInput['checker']>;
+  customFields: GFFLPFormField<CreateShippingMethodInput['customFields']>;
 }>;
 
 const CreateShippingMethodMutation = getMutation('createShippingMethod');
@@ -37,6 +38,7 @@ export const ShippingMethodsDetailPage = () => {
         fulfillmentHandler: data.fulfillmentHandler?.validatedValue,
         translations: data.translations!.validatedValue!,
         checker: data.checker?.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
@@ -75,7 +77,7 @@ export const ShippingMethodsDetailPage = () => {
           component: <ShippingMethodDetailView />,
           form: createDeenruvForm({
             key: 'CreateShippingMethodInput',
-            keys: ['code', 'translations', 'checker', 'calculator', 'fulfillmentHandler'],
+            keys: ['code', 'translations', 'checker', 'calculator', 'fulfillmentHandler', 'customFields'],
             config: {
               fulfillmentHandler: {
                 validate: (v) => {

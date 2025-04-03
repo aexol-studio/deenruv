@@ -16,6 +16,7 @@ type FormDataType = Partial<{
   isPrivate: GFFLPFormField<CreateFacetInput['isPrivate']>;
   translations: GFFLPFormField<CreateFacetInput['translations']>;
   values: GFFLPFormField<CreateFacetInput['values']>;
+  customFields: GFFLPFormField<CreateFacetInput['customFields']>;
 }>;
 
 export const FacetsDetailPage = () => {
@@ -37,6 +38,7 @@ export const FacetsDetailPage = () => {
         isPrivate: data.isPrivate?.value || data.isPrivate?.initialValue,
         translations: data.translations?.validatedValue,
         values: data.values?.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {

@@ -1,6 +1,5 @@
 import { Button } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { InfoIcon } from 'lucide-react';
 import { CF, EntityCustomFields } from '@/components';
 import { useEffect, useState } from 'react';
 import { DraftOrderType } from '@/graphql/draft_order.js';
@@ -47,7 +46,7 @@ export const CustomComponent = ({
           <Button onClick={onSubmit} disabled={isSubmitting} className="min-w-[120px] self-end sm:self-auto">
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                <span className="size-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
                 {t('common:processing')}
               </span>
             ) : (

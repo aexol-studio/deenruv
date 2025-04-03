@@ -16,6 +16,7 @@ type FormDataType = Partial<{
   code: GFFLPFormField<CreateCountryInput['code']>;
   enabled: GFFLPFormField<CreateCountryInput['enabled']>;
   translations: GFFLPFormField<CreateCountryInput['translations']>;
+  customFields: GFFLPFormField<CreateCountryInput['customFields']>;
 }>;
 
 export const CountriesDetailPage = () => {
@@ -36,19 +37,13 @@ export const CountriesDetailPage = () => {
         code: data.code.validatedValue,
         enabled: data.enabled?.validatedValue || data.enabled?.initialValue,
         translations: data.translations?.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
+        return update({ input: { id, ...inputData } });
       } else {
-        return create({
-          input: inputData,
-        });
+        return create({ input: inputData });
       }
     },
     [id, update, create],

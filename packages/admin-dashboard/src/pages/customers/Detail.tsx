@@ -50,7 +50,7 @@ export const CustomersDetailPage = () => {
           sidebar: <CustomerDetailSidebar />,
           form: createDeenruvForm({
             key: 'CreateCustomerInput',
-            keys: ['title', 'phoneNumber', 'firstName', 'lastName', 'emailAddress'],
+            keys: ['title', 'phoneNumber', 'firstName', 'lastName', 'emailAddress', 'customFields'],
             config: {
               firstName: stringValidator(t('validation.firstNameRequired')),
               lastName: stringValidator(t('validation.lastNameRequired')),

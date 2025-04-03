@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -17,7 +16,7 @@ import {
   CustomCard,
   CardIcons,
 } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields } from '@/components';
+import { CF, EntityCustomFields } from '@/components';
 import { AddFacetValueDialog } from './AddFacetValueDialog.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
@@ -33,11 +32,17 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
   }
 };
 
-const STOCK_LOCATION_FORM_KEYS = ['CreateFacetInput', 'translations', 'values', 'code', 'isPrivate'] as const;
+const STOCK_LOCATION_FORM_KEYS = [
+  'CreateFacetInput',
+  'translations',
+  'values',
+  'code',
+  'isPrivate',
+  'customFields',
+] as const;
 
 export const FacetsDetailView = () => {
-  const { id } = useParams();
-  const { form, fetchEntity, entity, additionalData, setAdditionalData } = useDetailView(
+  const { form, fetchEntity, entity, additionalData, setAdditionalData, id } = useDetailView(
     'facets-detail-view',
     ...STOCK_LOCATION_FORM_KEYS,
   );
@@ -142,7 +147,20 @@ export const FacetsDetailView = () => {
             </div>
           </CustomCard>
           <DetailViewMarker position={'facets-detail-view'} />
-          {id && <EntityCustomFields entityName="facet" id={id} />}
+          <EntityCustomFields
+            entityName="facet"
+            id={id}
+            hideButton
+            onChange={(customFields, translations) => {
+              setField('customFields', customFields);
+              if (translations) setField('translations', translations);
+            }}
+            initialValues={
+              entity && 'customFields' in entity
+                ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+                : { customFields: {} }
+            }
+          />
           {entity && editMode && (
             <CustomCard
               title={t('facets:details.facetValues')}

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Input,
@@ -15,16 +14,15 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
-import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
+import { CF, EntityCustomFields, SimpleSelect, Stack } from '@/components';
 
 export const ChannelDetailView = () => {
-  const { id } = useParams();
   const { t } = useTranslation('channels');
   const { t: tCommon } = useTranslation('common');
   const [sellersOptions, setSellersOptions] = useState<Option[]>();
   const availableLanguages = useSettings((p) => p.availableLanguages);
 
-  const { form, fetchEntity } = useDetailView(
+  const { form, fetchEntity, entity, id } = useDetailView(
     'channels-detail-view',
     'CreateChannelInput',
     'code',
@@ -37,6 +35,7 @@ export const ChannelDetailView = () => {
     'defaultTaxZoneId',
     'sellerId',
     'pricesIncludeTax',
+    'customFields',
   );
 
   const {
@@ -163,7 +162,16 @@ export const ChannelDetailView = () => {
             </div>
           </CustomCard>
           <DetailViewMarker position={'channels-detail-view'} />
-          {id && <EntityCustomFields entityName="channel" id={id} />}
+          <EntityCustomFields
+            entityName="channel"
+            id={id}
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
           <DefaultsCard
             availableLanguages={state.availableLanguageCodes?.value ?? undefined}
             availableCurrencies={state.availableCurrencyCodes?.value ?? undefined}

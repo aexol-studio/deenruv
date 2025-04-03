@@ -1,10 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Input,
   Label,
   useSettings,
@@ -14,17 +10,15 @@ import {
   CardIcons,
 } from '@deenruv/react-ui-devkit';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-import { EntityCustomFields, Stack } from '@/components';
-import { useParams } from 'react-router-dom';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
-const STOCK_LOCATION_FORM_KEYS = ['CreateStockLocationInput', 'name', 'description'] as const;
+const STOCK_LOCATION_FORM_KEYS = ['CreateStockLocationInput', 'name', 'description', 'customFields'] as const;
 
 export const StockLocationDetailView = () => {
-  const { id } = useParams();
   const contentLng = useSettings((p) => p.translationsLanguage);
   const { t } = useTranslation('stockLocations');
 
-  const { form, loading, fetchEntity } = useDetailView('stockLocations-detail-view', ...STOCK_LOCATION_FORM_KEYS);
+  const { form, entity, fetchEntity, id } = useDetailView('stockLocations-detail-view', ...STOCK_LOCATION_FORM_KEYS);
 
   const {
     base: { setField, state },
@@ -64,7 +58,17 @@ export const StockLocationDetailView = () => {
             </Stack>
           </CustomCard>
           <DetailViewMarker position={'stockLocations-detail-view'} />
-          {id && <EntityCustomFields entityName="stockLocation" id={id} />}
+          <EntityCustomFields
+            entityName="stockLocation"
+            id={id}
+            hideButton
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
         </Stack>
       </div>
     </main>

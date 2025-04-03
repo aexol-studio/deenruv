@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -13,12 +12,12 @@ import {
   CustomCard,
   CardIcons,
 } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
-const STOCK_LOCATION_FORM_KEYS = ['CreateZoneInput', 'name', 'memberIds'] as const;
+const STOCK_LOCATION_FORM_KEYS = ['CreateZoneInput', 'name', 'memberIds', 'customFields'] as const;
 
 export const ZoneDetailView = () => {
-  const { form, fetchEntity, entity, setAdditionalData } = useDetailView(
+  const { form, fetchEntity, entity, setAdditionalData, id } = useDetailView(
     'zones-detail-view',
     ...STOCK_LOCATION_FORM_KEYS,
   );
@@ -27,12 +26,11 @@ export const ZoneDetailView = () => {
     base: { setField, state },
   } = form;
 
-  const { id } = useParams();
   const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('zones');
   const [countriesOptions, setCountriesOptions] = useState<Option[]>();
-  const [_membersIdsToRemove, setMembersIdsToRemove] = useState<string[]>([]);
-  const [_membersIdsToAdd, setMembersIdsToAdd] = useState<string[]>([]);
+  const [, setMembersIdsToRemove] = useState<string[]>([]);
+  const [, setMembersIdsToAdd] = useState<string[]>([]);
   const countries = useServer((p) => p.countries);
 
   useEffect(() => {
@@ -112,7 +110,17 @@ export const ZoneDetailView = () => {
             </Stack>
           </CustomCard>
           <DetailViewMarker position={'zones-detail-view'} />
-          {id && <EntityCustomFields entityName="zone" id={id} />}
+          <EntityCustomFields
+            entityName="zone"
+            id={id}
+            hideButton
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
         </Stack>
       </div>
     </main>

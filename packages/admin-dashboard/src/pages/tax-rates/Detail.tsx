@@ -15,6 +15,7 @@ type FormDataType = Partial<{
   enabled: GFFLPFormField<CreateTaxRateInput['enabled']>;
   value: GFFLPFormField<CreateTaxRateInput['value']>;
   zoneId: GFFLPFormField<CreateTaxRateInput['zoneId']>;
+  customFields: GFFLPFormField<CreateTaxRateInput['customFields']>;
 }>;
 
 const CreateTaxRateMutation = getMutation('createTaxRate');
@@ -42,21 +43,13 @@ export const TaxRatesDetailPage = () => {
         value: data.value?.validatedValue || data.value?.initialValue,
         zoneId: data.zoneId!.validatedValue!,
         customerGroupId: data.customerGroupId?.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
+        return update({ input: { id, ...inputData } });
       } else {
-        return create({
-          input: {
-            ...inputData,
-          },
-        });
+        return create({ input: { ...inputData } });
       }
     },
     [id, update, create],
@@ -81,7 +74,7 @@ export const TaxRatesDetailPage = () => {
           component: <TaxRateDetailView />,
           form: createDeenruvForm({
             key: 'CreateTaxRateInput',
-            keys: ['name', 'categoryId', 'customerGroupId', 'enabled', 'value', 'zoneId'],
+            keys: ['name', 'categoryId', 'customerGroupId', 'enabled', 'value', 'zoneId', 'customFields'],
             config: {
               name: nameValidator,
               categoryId: stringValidator(t('validation.taxCategoryRequired')),

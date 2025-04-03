@@ -7,7 +7,7 @@ export const LoadingMask: React.FC = () => {
     const { t } = useTranslation('common');
     return (
         <motion.div
-            className="absolute left-0 top-0 w-full h-[100vh] inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm"
+            className="absolute inset-0 z-50 flex h-screen w-full items-center justify-center bg-background/90 backdrop-blur-sm"
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -23,7 +23,7 @@ export const LoadingMask: React.FC = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, ease: 'linear' }}
                 >
-                    <Loader2 className="h-12 w-12 text-primary" />
+                    <Loader2 className="size-12 text-primary" />
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}

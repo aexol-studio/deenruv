@@ -9,6 +9,7 @@ type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
 type FormDataType = Partial<{
   name: GFFLPFormField<CreateStockLocationInput['name']>;
   description: GFFLPFormField<CreateStockLocationInput['description']>;
+  customFields: GFFLPFormField<CreateStockLocationInput['customFields']>;
 }>;
 
 const CreateCustomerGroupMutation = typedGql('mutation', { scalars })({
@@ -53,19 +54,13 @@ export const CustomerGroupsDetailPage = () => {
 
       const inputData: ModelTypes['CreateCustomerGroupInput'] = {
         name: data.name.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
+        return update({ input: { id, ...inputData } });
       } else {
-        return create({
-          input: inputData,
-        });
+        return create({ input: inputData });
       }
     },
     [id, update, create],

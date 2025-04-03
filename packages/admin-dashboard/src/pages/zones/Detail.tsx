@@ -22,6 +22,7 @@ type CreateZoneInput = ModelTypes['CreateZoneInput'];
 type FormDataType = Partial<{
   name: GFFLPFormField<CreateZoneInput['name']>;
   memberIds: GFFLPFormField<CreateZoneInput['memberIds']>;
+  customFields: GFFLPFormField<CreateZoneInput['customFields']>;
 }>;
 
 export const ZonesDetailPage = () => {
@@ -79,26 +80,16 @@ export const ZonesDetailPage = () => {
 
       const inputData = {
         name: data.name.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
         return Promise.all([
-          update({
-            input: {
-              id,
-              ...inputData,
-            },
-          }),
+          update({ input: { id, ...inputData } }),
           updateMembers(membersIdsToAdd, membersIdsToRemove),
         ]).then(([res]) => res);
       } else {
-        console.log('ELS');
-        return create({
-          input: {
-            ...inputData,
-            memberIds: data.memberIds?.validatedValue,
-          },
-        });
+        return create({ input: { ...inputData, memberIds: data.memberIds?.validatedValue } });
       }
     },
     [id, update, create],
@@ -123,7 +114,7 @@ export const ZonesDetailPage = () => {
           component: <ZoneDetailView />,
           form: createDeenruvForm({
             key: 'CreateZoneInput',
-            keys: ['name', 'memberIds'],
+            keys: ['name', 'memberIds', 'customFields'],
             config: {
               name: nameValidator,
             },

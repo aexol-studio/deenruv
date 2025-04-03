@@ -1,5 +1,5 @@
 import { Button, CardIcons, ConfirmationDialog, CustomCard, Input, apiClient } from '@deenruv/react-ui-devkit';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
 import { ProductVariantType } from '@/graphql/products';
 import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
@@ -38,6 +38,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     'trackInventory',
     'facetValueIds',
     'optionIds',
+    'customFields',
   )({});
   const translations = state?.translations?.value || [];
   const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
@@ -90,6 +91,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
                 stockLevels: state.stockLevels?.validatedValue,
                 facetValueIds: state.facetValueIds?.validatedValue,
                 optionIds: state.optionIds?.validatedValue,
+                ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
               },
             ],
           },
@@ -127,6 +129,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               useGlobalOutOfStockThreshold: state.useGlobalOutOfStockThreshold?.validatedValue,
               stockLevels: state.stockLevels?.validatedValue,
               facetValueIds: state.facetValueIds?.validatedValue,
+              ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
             },
           ],
         },
@@ -265,6 +268,20 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
           )}
         </Stack>
       </Stack>
+      <EntityCustomFields
+        entityName="productVariant"
+        id={variant?.id}
+        hideButton
+        onChange={(customFields, translations) => {
+          setField('customFields', customFields);
+          if (translations) setField('translations', translations as any);
+        }}
+        initialValues={
+          variant && 'customFields' in variant
+            ? { customFields: variant.customFields as CF, translations: variant.translations as any }
+            : { customFields: {} }
+        }
+      />
     </Stack>
   );
 };

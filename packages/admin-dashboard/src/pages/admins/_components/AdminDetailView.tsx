@@ -1,9 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CardIcons, CustomCard, DetailViewMarker, Input, useDetailView } from '@deenruv/react-ui-devkit';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
 const ADMIN_FORM_KEYS = [
   'CreateAdministratorInput',
@@ -12,11 +11,11 @@ const ADMIN_FORM_KEYS = [
   'emailAddress',
   'password',
   'roleIds',
+  'customFields',
 ] as const;
 
 export const AdminDetailView = () => {
-  const { id } = useParams();
-  const { form, fetchEntity } = useDetailView('admins-detail-view', ...ADMIN_FORM_KEYS);
+  const { form, entity, fetchEntity, id } = useDetailView('admins-detail-view', ...ADMIN_FORM_KEYS);
 
   const {
     base: { setField, state },
@@ -82,7 +81,17 @@ export const AdminDetailView = () => {
             </div>
           </CustomCard>
           <DetailViewMarker position={'admins-detail-view'} />
-          {id && <EntityCustomFields entityName="administrator" id={id} />}
+          <EntityCustomFields
+            entityName="administrator"
+            id={id}
+            hideButton
+            onChange={(customFields) => {
+              setField('customFields', customFields);
+            }}
+            initialValues={
+              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+            }
+          />
           <RolesCard
             adminRoleIds={state.roleIds?.value ?? undefined}
             onRolesChange={(e) => setField('roleIds', e)}

@@ -1,4 +1,4 @@
-import { DetailViewMarker, useDetailView } from '@deenruv/react-ui-devkit';
+import { useDetailView } from '@deenruv/react-ui-devkit';
 import { ReactNode, useEffect } from 'react';
 
 import { SettingsCard } from './SettingsCard';

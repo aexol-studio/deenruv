@@ -19,7 +19,6 @@ import {
     LogLevel,
     DeenruvConfig,
     DefaultAssetNamingStrategy,
-    PaymentMethod,
     LanguageCode,
     FulfillmentHandler,
     Asset,
@@ -84,8 +83,8 @@ const handler = new FulfillmentHandler({
             ],
         },
     },
-    init(injector) {},
-    createFulfillment: async (ctx, orders, _, args) => {
+    init() {},
+    createFulfillment: async () => {
         return {};
     },
 });
@@ -153,6 +152,226 @@ export const devConfig: DeenruvConfig = {
     },
     shippingOptions: { fulfillmentHandlers: [handler] },
     customFields: {
+        Administrator: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Asset: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Channel: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Collection: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        CustomerGroup: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Facet: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        FacetValue: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Fulfillment: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        GlobalSettings: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        PaymentMethod: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        ProductOption: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        ProductOptionGroup: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        ProductVariantPrice: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Promotion: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Region: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Seller: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        ShippingMethod: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        StockLocation: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        TaxCategory: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        TaxRate: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        User: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
+        Zone: [
+            {
+                name: 'TEST',
+                type: 'string',
+                label: [
+                    { languageCode: LanguageCode.en, value: 'TEST' },
+                    { languageCode: LanguageCode.pl, value: 'TEST' },
+                ],
+            },
+        ],
         Order: [
             {
                 name: 'TEST',

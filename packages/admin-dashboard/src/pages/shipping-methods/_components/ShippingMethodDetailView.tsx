@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -19,7 +18,7 @@ import { setInArrayBy } from '@/lists/useGflp';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
 import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
 const SHIPPING_METHOD_FORM_KEYS = [
   'CreateShippingMethodInput',
@@ -28,11 +27,11 @@ const SHIPPING_METHOD_FORM_KEYS = [
   'checker',
   'calculator',
   'fulfillmentHandler',
+  'customFields',
 ] as const;
 
 export const ShippingMethodDetailView = () => {
-  const { id } = useParams();
-  const { form, fetchEntity } = useDetailView('shippingMethods-detail-view', ...SHIPPING_METHOD_FORM_KEYS);
+  const { form, entity, fetchEntity, id } = useDetailView('shippingMethods-detail-view', ...SHIPPING_METHOD_FORM_KEYS);
   const {
     base: { setField, state },
   } = form;
@@ -137,7 +136,20 @@ export const ShippingMethodDetailView = () => {
             </div>
           </CustomCard>
           <DetailViewMarker position={'shippingMethods-detail-view'} />
-          {id && <EntityCustomFields entityName="shippingMethod" id={id} />}
+          <EntityCustomFields
+            entityName="shippingMethod"
+            id={id}
+            hideButton
+            onChange={(customFields, translations) => {
+              setField('customFields', customFields);
+              if (translations) setField('translations', translations as any);
+            }}
+            initialValues={
+              entity && 'customFields' in entity
+                ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+                : { customFields: {} }
+            }
+          />
           <CheckerCard
             currentCheckerValue={state.checker?.value ?? undefined}
             onCheckerValueChange={(checker) => checker && setField('checker', checker)}

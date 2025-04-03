@@ -12,6 +12,7 @@ const DeleteSellerMutation = getMutation('deleteSeller');
 type CreateSellerInput = ModelTypes['CreateSellerInput'];
 type FormDataType = Partial<{
   name: GFFLPFormField<CreateSellerInput['name']>;
+  customFields: GFFLPFormField<CreateSellerInput['customFields']>;
 }>;
 
 export const SellersDetailPage = () => {
@@ -26,22 +27,15 @@ export const SellersDetailPage = () => {
       if (!data.name?.validatedValue) {
         throw new Error('Name is required.');
       }
-
       const inputData = {
         name: data.name.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
+        return update({ input: { id, ...inputData } });
       } else {
-        return create({
-          input: inputData,
-        });
+        return create({ input: inputData });
       }
     },
     [id, update, create],
@@ -66,10 +60,8 @@ export const SellersDetailPage = () => {
           component: <SellerDetailView />,
           form: createDeenruvForm({
             key: 'CreateSellerInput',
-            keys: ['name'],
-            config: {
-              name: nameValidator,
-            },
+            keys: ['name', 'customFields'],
+            config: { name: nameValidator },
             onSubmitted: onSubmitHandler,
             onDeleted: onDeleteHandler,
           }),

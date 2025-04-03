@@ -49,6 +49,7 @@ export const PromotionsDetailPage = () => {
               'conditions',
               'actions',
               'translations',
+              'customFields',
             ],
             config: {
               translations: translationsValidator,
@@ -73,6 +74,7 @@ export const PromotionsDetailPage = () => {
                 startsAt: data.startsAt?.validatedValue,
                 perCustomerUsageLimit: data.perCustomerUsageLimit?.validatedValue,
                 usageLimit: data.usageLimit?.validatedValue,
+                ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
               };
 
               return id ? update({ input: { id, ...input } }) : create({ input });

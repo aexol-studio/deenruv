@@ -34,7 +34,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { EntityCustomFields } from '@/components';
-import { Copy, Download, ExternalLink, Info, MoreHorizontal, Pencil, Trash } from 'lucide-react';
+import { Copy, ExternalLink, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
 interface AssetProps {
   asset: {
@@ -199,11 +199,11 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
           </div>
 
           <div className="bg-muted/30 aspect-square">
-            {isLoading && <Skeleton className="h-full w-full" />}
+            {isLoading && <Skeleton className="size-full" />}
             <img
               src={`${asset.preview}?preset=tile`}
               alt={asset.name}
-              className="h-full w-full object-cover transition-all duration-300"
+              className="size-full object-cover transition-all duration-300"
               style={{ opacity: isLoading ? 0 : 1 }}
               onLoad={() => setIsLoading(false)}
               onError={() => setIsLoading(false)}

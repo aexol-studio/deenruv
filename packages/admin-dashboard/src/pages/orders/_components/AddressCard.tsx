@@ -229,7 +229,7 @@ export const AddressCard: React.FC<{
           toast.error(t('selectAddress.addressAddFailed'));
         }
       }
-    } catch (error) {
+    } catch {
       toast.error(t('selectAddress.addressError'));
     } finally {
       setSubmitting(false);
@@ -297,7 +297,7 @@ export const AddressCard: React.FC<{
         mode !== 'view' && (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon" className="size-8">
                 <Edit size={16} className={iconColor} />
               </Button>
             </DialogTrigger>
@@ -305,9 +305,9 @@ export const AddressCard: React.FC<{
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2 text-xl">
                   {isShipping ? (
-                    <MapPin className={`h-5 w-5 ${iconColor}`} />
+                    <MapPin className={`size-5 ${iconColor}`} />
                   ) : (
-                    <Building className={`h-5 w-5 ${iconColor}`} />
+                    <Building className={`size-5 ${iconColor}`} />
                   )}
                   {t('selectAddress.selectAddress')}
                 </DialogTitle>
@@ -360,11 +360,11 @@ export const AddressCard: React.FC<{
                         >
                           <div className="flex-1">
                             <div className="mb-1 flex items-center gap-2">
-                              <User className={`h-4 w-4 ${iconColor}`} />
+                              <User className={`size-4 ${iconColor}`} />
                               <p className="font-medium">{address.fullName}</p>
                               {selectedAddress?.id === address.id && (
                                 <div className="ml-auto">
-                                  <Check className="h-4 w-4 text-green-500" />
+                                  <Check className="size-4 text-green-500" />
                                 </div>
                               )}
                             </div>
@@ -393,7 +393,7 @@ export const AddressCard: React.FC<{
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8"
+                            className="size-8"
                             onClick={(e) => {
                               e.stopPropagation();
                               setState({ countryCode: address.country?.code || '', ...address });
@@ -566,7 +566,7 @@ export const AddressCard: React.FC<{
                             ? { customFields: selectedAddress.customFields as any }
                             : { customFields: {} }
                         }
-                        onChange={(cf, value) => {
+                        onChange={(cf) => {
                           setField('customFields', cf);
                         }}
                         additionalData={{}}
@@ -601,12 +601,12 @@ export const AddressCard: React.FC<{
                 >
                   {submitting ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="size-4 animate-spin" />
                       {t('common.submitting')}
                     </>
                   ) : (
                     <>
-                      <Check className="h-4 w-4" />
+                      <Check className="size-4" />
                       {t(tab === 'select' ? 'selectAddress.selectAddress' : 'selectAddress.editAddress')}
                     </>
                   )}
@@ -622,12 +622,12 @@ export const AddressCard: React.FC<{
           {!currentAddress ? (
             <>
               <div
-                className={`mt-0.5 flex h-8 w-8 items-center justify-center rounded-full ${isShipping ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-cyan-100 dark:bg-cyan-900/30'}`}
+                className={`mt-0.5 flex size-8 items-center justify-center rounded-full ${isShipping ? 'bg-purple-100 dark:bg-purple-900/30' : 'bg-cyan-100 dark:bg-cyan-900/30'}`}
               >
                 {isShipping ? (
-                  <MapPin className={`h-4 w-4 ${iconColor}`} />
+                  <MapPin className={`size-4 ${iconColor}`} />
                 ) : (
-                  <Building className={`h-4 w-4 ${iconColor}`} />
+                  <Building className={`size-4 ${iconColor}`} />
                 )}
               </div>
               <div className="flex-1">
@@ -636,7 +636,7 @@ export const AddressCard: React.FC<{
                 </p>
                 {mode !== 'view' && (
                   <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
-                    <Edit className="h-3.5 w-3.5" />
+                    <Edit className="size-3.5" />
                     {t('selectAddress.addAddress', 'Add Address')}
                   </Button>
                 )}
@@ -667,13 +667,13 @@ export const AddressCard: React.FC<{
                     <div className="flex items-center gap-2">
                       {currentAddress.company && (
                         <div className="flex items-center gap-1">
-                          <Building className="text-muted-foreground h-4 w-4" />
+                          <Building className="text-muted-foreground size-4" />
                           <span className="text-muted-foreground text-sm">{currentAddress.company}</span>
                         </div>
                       )}
                       {currentAddress.phoneNumber && (
                         <div className="flex items-center gap-1">
-                          <Phone className="text-muted-foreground h-4 w-4" />
+                          <Phone className="text-muted-foreground size-4" />
                           <span className="text-muted-foreground text-sm">
                             {t('selectAddress.phoneNumberShort', { value: currentAddress.phoneNumber })}
                           </span>

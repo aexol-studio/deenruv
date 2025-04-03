@@ -1,13 +1,8 @@
-import { useCallback, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  Card,
-  CardContent,
-  CardHeader,
   CardIcons,
-  CardTitle,
   CustomCard,
   DetailViewMarker,
   Input,
@@ -19,7 +14,7 @@ import {
 import { setInArrayBy } from '@/lists/useGflp';
 import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
-import { EntityCustomFields, Stack } from '@/components';
+import { CF, EntityCustomFields, Stack } from '@/components';
 
 const PAYMENT_METHOD_FORM_KEYS = [
   'CreatePaymentMethodInput',
@@ -28,18 +23,15 @@ const PAYMENT_METHOD_FORM_KEYS = [
   'translations',
   'handler',
   'checker',
+  'customFields',
 ] as const;
 
 export const PaymentMethodDetailView = () => {
-  const { id } = useParams();
-  const { form, loading, fetchEntity, entity } = useDetailView(
-    'paymentMethods-detail-view',
-    ...PAYMENT_METHOD_FORM_KEYS,
-  );
+  const { form, fetchEntity, entity, id } = useDetailView('paymentMethods-detail-view', ...PAYMENT_METHOD_FORM_KEYS);
   const {
     base: { setField, state },
   } = form;
-  const editMode = useMemo(() => !!id, [id]);
+  // const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('paymentMethods');
   const { translationsLanguage: currentTranslationLng } = useSettings();
 
@@ -120,7 +112,20 @@ export const PaymentMethodDetailView = () => {
           </CustomCard>
 
           <DetailViewMarker position={'paymentMethods-detail-view'} />
-          {id && <EntityCustomFields entityName="paymentMethod" id={id} />}
+          <EntityCustomFields
+            entityName="paymentMethod"
+            id={id}
+            hideButton
+            onChange={(customFields, translations) => {
+              setField('customFields', customFields);
+              if (translations) setField('translations', translations);
+            }}
+            initialValues={
+              entity && 'customFields' in entity
+                ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+                : { customFields: {} }
+            }
+          />
           <OptionsCard
             currentHandlerValue={state.handler?.value ?? undefined}
             currentCheckerValue={state.checker?.value ?? undefined}

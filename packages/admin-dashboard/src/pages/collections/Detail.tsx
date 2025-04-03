@@ -1,7 +1,5 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-
 import { DetailView, createDeenruvForm, getMutation, useMutation, GFFLPFormField } from '@deenruv/react-ui-devkit';
 import { useValidators } from '@/hooks/useValidators.js';
 import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';

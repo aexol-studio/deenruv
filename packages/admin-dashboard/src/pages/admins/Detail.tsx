@@ -13,6 +13,7 @@ type FormDataType = Partial<{
   lastName: GFFLPFormField<CreateAdminInput['lastName']>;
   password: GFFLPFormField<CreateAdminInput['password']>;
   roleIds: GFFLPFormField<CreateAdminInput['roleIds']>;
+  customFields: GFFLPFormField<CreateAdminInput['customFields']>;
 }>;
 
 const CreateAdminMutation = getMutation('createAdministrator');
@@ -40,6 +41,7 @@ export const AdminsDetailPage = () => {
         lastName: data.lastName?.validatedValue,
         password: data.password?.validatedValue ? data.password?.validatedValue : undefined,
         roleIds: data.roleIds?.validatedValue,
+        ...(data.customFields?.validatedValue ? { customFields: data.customFields?.validatedValue } : {}),
       };
 
       if (id) {
@@ -77,7 +79,7 @@ export const AdminsDetailPage = () => {
           component: <AdminDetailView />,
           form: createDeenruvForm({
             key: 'CreateAdministratorInput',
-            keys: ['firstName', 'lastName', 'emailAddress', 'password', 'roleIds'],
+            keys: ['firstName', 'lastName', 'emailAddress', 'password', 'roleIds', 'customFields'],
             config: {
               emailAddress: emailValidator,
               firstName: stringValidator(t('validation.firstNameRequired')),
