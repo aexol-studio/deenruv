@@ -12,10 +12,10 @@
         "id": "Id",
         "code": "Code",
         "token": "Token",
-        "createdAt": "Established in",
+        "createdAt": "Created in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy identifier",
+        "copyId": "Copy ID",
         "viewChannel": "Display channel",
         "columns": "Columns"
     },
@@ -24,7 +24,7 @@
             "title": "Basic information",
             "code": "Code",
             "token": "Token",
-            "seller": "Seller",
+            "seller": "Vendor",
             "languages": "Available languages",
             "languagePlaceholder": "Add language",
             "currencies": "Available currencies",
@@ -54,7 +54,7 @@
         "successMessage": "The channel has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "selectedValue": "{{from}} of {{to}} lines selected",
+    "selectedValue": "{{from}} of {{to}} lines was selected",
     "validation": {
         "codeRequired": "The code is required",
         "tokenRequired": "Token required",

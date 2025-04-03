@@ -1,6 +1,7 @@
 import { Stack } from '@/components';
 import { Label, ToggleGroup, ToggleGroupItem } from '@deenruv/react-ui-devkit';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CombinationModeProps {
   label: string;
@@ -9,15 +10,16 @@ interface CombinationModeProps {
 }
 
 export const CombinationMode: React.FC<CombinationModeProps> = ({ label, value, onChange }) => {
+  const { t } = useTranslation('collections');
   return (
     <Stack column className="basis-full gap-3">
       <Label>{label}</Label>
       <ToggleGroup type="single" value={value} onValueChange={onChange} className=" justify-start">
         <ToggleGroupItem variant={'outline'} size={'sm'} value={'true'}>
-          AND
+          {t('details.filters.labels.arguments.and')}
         </ToggleGroupItem>
         <ToggleGroupItem variant={'outline'} size={'sm'} value={'false'}>
-          OR
+          {t('details.filters.labels.arguments.or')}
         </ToggleGroupItem>
       </ToggleGroup>
     </Stack>

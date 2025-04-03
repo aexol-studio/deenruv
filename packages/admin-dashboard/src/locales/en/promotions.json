@@ -8,7 +8,7 @@
         "header": "Options",
         "pickDate": "Select date",
         "startsAt": "Start date",
-        "endsAt": "Completion date",
+        "endsAt": "End date",
         "couponCode": "Voucher code",
         "usageLimit": "Use limit",
         "perCustomerUsageLimit": "Usage limit per customer"
@@ -44,7 +44,7 @@
             "order_percentage_discount": "Order discount by X%",
             "facet_based_discount": "Discount on products with these aspects by X%",
             "products_percentage_discount": "Discount on certain products by X%",
-            "buy_x_get_y_free": "Buy X products, get Y products for free"
+            "buy_x_get_y_free": "Buy X products, get Y products free"
         },
         "labels": {
             "discount": "Discount",
@@ -59,7 +59,7 @@
     "validation": {
         "conditionsCode": "At least one condition is required",
         "conditionsArgs": "Fill in all fields",
-        "actionsCode": "At least one action required",
+        "actionsCode": "At least one action is required",
         "actionsArgs": "Fill in all fields"
     }
 }

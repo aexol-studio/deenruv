@@ -33,7 +33,7 @@
     },
     "Customer": {
         "title": "Customer",
-        "description": "Grants entitlement to client"
+        "description": "Grants rights to the client"
     },
     "CustomerGroup": {
         "title": "CustomerGroup",

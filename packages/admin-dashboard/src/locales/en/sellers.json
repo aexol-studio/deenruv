@@ -10,10 +10,10 @@
     "table": {
         "id": "Id",
         "name": "Name",
-        "createdAt": "Established in",
+        "createdAt": "Created in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy identifier",
+        "copyId": "Copy ID",
         "viewSeller": "Display vendor",
         "columns": "Columns"
     },

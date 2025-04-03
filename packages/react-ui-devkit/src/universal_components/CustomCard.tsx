@@ -77,7 +77,8 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     notCollapsible,
     variant,
 }) => {
-    const textColor = color ? `text-${color}-500 dark:text-${color}-300` : '';
+    // const textColor = color ? `text-${color}-500 dark:text-${color}-300` : '';
+    const textColor = '';
     const borderColor = color ? `border-l-4 border-l-${color}-500 dark:border-l-${color}-300` : '';
     const baseClasses = 'h-5 w-5';
     const defaultOpen = collapsed ? undefined : title;
@@ -126,7 +127,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
                             {HeaderJSX}
                         </AccordionTrigger>
                     )}
-                    <AccordionContent className="pb-0">
+                    <AccordionContent className="pb-0" wrapperClassName="overflow-visible">
                         <CardContent>{children}</CardContent>
                         {bottomRight && <CardFooter className="justify-end pb-2">{bottomRight}</CardFooter>}
                     </AccordionContent>

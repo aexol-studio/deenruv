@@ -3,7 +3,7 @@
     "personalData": {
         "header": "Personal data",
         "title": "Title",
-        "firstName": "Name",
+        "firstName": "First name",
         "lastName": "Surname",
         "emailAddress": "E-mail address",
         "phoneNumber": "Telephone number"
@@ -99,7 +99,7 @@
         "inputStreet2Label": "Street Line 2",
         "inputStreet2Placeholder": "Street Line 2",
         "inputTaxLabel": "Company tax ID",
-        "inputTaxPlaceholder": "Company tax ID"
+        "inputTaxPlaceholder": "Company tax identifier"
     },
     "validation": {
         "firstNameRequired": "First name is required",

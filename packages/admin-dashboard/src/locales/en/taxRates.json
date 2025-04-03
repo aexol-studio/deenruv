@@ -10,7 +10,7 @@
     "table": {
         "id": "Id",
         "name": "Name",
-        "enabled": "Included",
+        "enabled": "Enabled",
         "taxCategory": "Tax category",
         "zone": "Zone",
         "value": "Rate",
@@ -18,7 +18,7 @@
         "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy identifier",
+        "copyId": "Copy ID",
         "viewTaxRate": "Display tax rate",
         "columns": "Columns"
     },
@@ -26,7 +26,7 @@
         "basic": {
             "title": "Basic information",
             "name": "Name",
-            "enabled": "Included",
+            "enabled": "Enabled",
             "taxCategory": "Tax category",
             "zone": "Zone",
             "value": "Value"

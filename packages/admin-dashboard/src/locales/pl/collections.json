@@ -17,7 +17,7 @@
         "columns": "Kolumny",
         "featuredAsset": "Obraz",
         "breadcrumb": "Ścieżka",
-        "slug": "Ślimak",
+        "slug": "Skrócona nazwa (slug)",
         "children": "Liczba dzieci",
         "collections": "W kolekcjach",
         "actions": "Działania",
@@ -29,16 +29,29 @@
         "basic": {
             "title": "Podstawowe informacje",
             "name": "Nazwa",
-            "slug": "Ślimak",
+            "slug": "Skrócona nazwa (slug)",
             "isPrivate": "Jest prywatny",
             "description": "Opis"
         },
         "filters": {
             "title": "Filtry",
             "inherit": "Dziedziczenie filtrów",
-            "condition": "Stan",
+            "condition": "Warunek",
             "addCondition": "Dodaj warunek",
-            "addFacets": "Dodawanie wartości aspektów"
+            "addFacets": "Dodawanie wartości aspektów",
+            "labels": {
+                "codes": {
+                    "facet-value-filter": "Filtruj przez wartości fasetów",
+                    "variant-name-filter": "Filtruj przez nazwę wariantu produktu",
+                    "variant-id-filter": "Wybierz warianty produktów ręcznie",
+                    "product-id-filter": "Wybierz produkty ręcznie"
+                },
+                "arguments": {
+                    "combination-mode": "Tryb kombinacji",
+                    "and": "I",
+                    "or": "LUB"
+                }
+            }
         },
         "contents": {
             "title": "Zawartość"

@@ -1,312 +1,101 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Routes,
-  Input,
-  Label,
-  Switch,
-  apiClient,
-  useRouteGuard,
-  CustomCard,
-  CardIcons,
-} from '@deenruv/react-ui-devkit';
-import { toast } from 'sonner';
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
-import { areObjectsEqual } from '@/utils/deepEqual';
-import { cache } from '@/lists/cache';
-import { PageHeader } from '@/pages/collections/_components/PageHeader';
-import { CollectionDetailsSelector, CollectionDetailsType } from '@/graphql/collections';
-import { LanguageCode } from '@deenruv/admin-types';
-import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
-// import { AssetsCard } from '@/pages/collections/_components/AssetsCard';
-import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
-import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
-import { EntityCustomFields, Stack } from '@/components';
+import { DetailView, createDeenruvForm, getMutation, useMutation, GFFLPFormField } from '@deenruv/react-ui-devkit';
 import { useValidators } from '@/hooks/useValidators.js';
-import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
+import { CollectionsDetailView } from '@/pages/collections/_components/CollectionDetailView.js';
+import { ModelTypes } from '@deenruv/admin-types';
+
+type CreateCollectionInput = ModelTypes['CreateCollectionInput'];
+type FormDataType = Partial<{
+  assetIds: GFFLPFormField<CreateCollectionInput['assetIds']>;
+  featuredAssetId: GFFLPFormField<CreateCollectionInput['featuredAssetId']>;
+  filters: GFFLPFormField<CreateCollectionInput['filters']>;
+  inheritFilters: GFFLPFormField<CreateCollectionInput['inheritFilters']>;
+  isPrivate: GFFLPFormField<CreateCollectionInput['isPrivate']>;
+  parentId: GFFLPFormField<CreateCollectionInput['parentId']>;
+  translations: GFFLPFormField<CreateCollectionInput['translations']>;
+}>;
+
+const CreateCollectionMutation = getMutation('createCollection');
+const EditCollectionMutation = getMutation('updateCollection');
+const DeleteCollectionMutation = getMutation('deleteCollection');
 
 export const CollectionsDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const editMode = useMemo(() => !!id, [id]);
-  const { resetCache } = cache('collections');
-  const { t } = useTranslation('collections');
-  const [loading, setLoading] = useState(id ? true : false);
-  const [collection, setCollection] = useState<CollectionDetailsType>();
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [currentTranslationLng, setCurrentTranslationLng] = useState(LanguageCode.en);
-  useRouteGuard({ shouldBlock: !buttonDisabled });
-  const { configurableOperationArrayValidator } = useValidators();
+  const [update] = useMutation(EditCollectionMutation);
+  const [create] = useMutation(CreateCollectionMutation);
+  const [remove] = useMutation(DeleteCollectionMutation);
+  const { configurableOperationArrayValidator, translationsValidator } = useValidators();
 
-  const fetchCollection = useCallback(async () => {
-    if (id) {
-      const response = await apiClient('query')({
-        collection: [
-          {
+  const onSubmitHandler = useCallback(
+    (data: FormDataType) => {
+      const inputData = {
+        assetIds: data.assetIds?.validatedValue,
+        featuredAssetId: data.featuredAssetId?.validatedValue,
+        isPrivate: data.isPrivate?.validatedValue,
+        inheritFilters: data.inheritFilters?.validatedValue,
+        filters: data.filters!.validatedValue!,
+        translations: data.translations!.validatedValue!.map((t) => ({
+          description: t.description || '',
+          name: t.name || '',
+          languageCode: t.languageCode,
+          slug: t.slug || '',
+        })),
+      };
+
+      if (id) {
+        return update({
+          input: {
             id,
+            ...inputData,
           },
-          CollectionDetailsSelector,
-        ],
-      });
-      setCollection(response.collection);
-      setLoading(false);
-    } else setLoading(false);
-  }, [id]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetchCollection();
-  }, [id, setLoading, fetchCollection]);
-
-  const { state, setField } = useGFFLP(
-    'UpdateCollectionInput',
-    'translations',
-    'assetIds',
-    'customFields',
-    'featuredAssetId',
-    'isPrivate',
-    'inheritFilters',
-    'filters',
-  )({
-    isPrivate: {
-      initialValue: true,
+        });
+      } else {
+        return create({
+          input: inputData,
+        });
+      }
     },
-    inheritFilters: {
-      initialValue: true,
-    },
-    translations: {
-      validate: (v) => {
-        const error = [t('validation.nameSlugRequired')];
-        if (!v) return error;
-
-        const { name, slug } = v?.[0];
-        if (!name || !slug) return error;
-      },
-    },
-    filters: configurableOperationArrayValidator(
-      t('validation.filtersCodeRequired'),
-      t('validation.filtersArgsRequired'),
-    ),
-  });
-
-  const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
-
-  useEffect(() => {
-    if (!collection) return;
-
-    setField('translations', collection.translations);
-    setField('featuredAssetId', collection.featuredAsset?.id);
-    setField('inheritFilters', collection.inheritFilters);
-    setField('isPrivate', collection.isPrivate);
-    // setField('customFields', {
-    //   facebookImageId: collection.customFields?.facebookImage?.id,
-    //   twitterImageId: collection.customFields?.twitterImage?.id,
-    // });
-    setField(
-      'assetIds',
-      collection.assets.map((a) => a.id),
-    );
-    setField(
-      'filters',
-      collection.filters.map((f) => ({ code: f.code, arguments: f.args })),
-    );
-  }, [collection]);
-
-  const createCollection = useCallback(() => {
-    setButtonDisabled(true);
-    apiClient('mutation')({
-      createCollection: [
-        {
-          input: {
-            assetIds: state.assetIds?.validatedValue,
-            featuredAssetId: state.featuredAssetId?.validatedValue,
-            isPrivate: state.isPrivate?.validatedValue,
-            inheritFilters: state.inheritFilters?.validatedValue,
-            customFields: state.customFields?.validatedValue,
-            filters: state.filters!.validatedValue!,
-            translations: state.translations!.validatedValue!.map((t) => ({
-              description: t.description || '',
-              name: t.name || '',
-              languageCode: t.languageCode,
-              slug: t.slug || '',
-              // customFields: {
-              //   seoDescription: t.customFields?.seoDescription || '',
-              //   seoTitle: t.customFields?.seoTitle || '',
-              // },
-            })),
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then((resp) => {
-        if (resp.createCollection) {
-          toast.message(t('toasts.collectionCreatedSuccess'));
-          navigate(Routes.collections.to(resp.createCollection.id), { viewTransition: true });
-        }
-      })
-      .catch(() => toast.error(t('toasts.collectionCreatedError')));
-  }, [state, t, navigate]);
-
-  const updateCollection = useCallback(() => {
-    apiClient('mutation')({
-      updateCollection: [
-        {
-          input: {
-            id: id!,
-            assetIds: state.assetIds?.validatedValue,
-            featuredAssetId: state.featuredAssetId?.validatedValue,
-            isPrivate: state.isPrivate?.validatedValue,
-            inheritFilters: state.inheritFilters?.validatedValue,
-            customFields: state.customFields?.validatedValue,
-            filters: state.filters?.validatedValue,
-            translations: state.translations?.validatedValue,
-          },
-        },
-        {
-          id: true,
-        },
-      ],
-    })
-      .then(() => {
-        toast.message(t('toasts.collectionUpdateSuccess'));
-        fetchCollection();
-        resetCache();
-      })
-      .catch(() => toast.error(t('toasts.collectionUpdateError')));
-  }, [state, resetCache, fetchCollection, id, t]);
-
-  useEffect(() => {
-    const areEqual = areObjectsEqual(
-      {
-        assetIds: state.assetIds?.value,
-        featuredAssetId: state.featuredAssetId?.value,
-        isPrivate: state.isPrivate?.validatedValue,
-        inheritFilters: state.inheritFilters?.value,
-        // customFields: state.customFields?.value,
-        filters: state.filters?.value,
-        translations: state.translations?.value,
-      },
-      {
-        assetIds: collection?.assets.map((a) => a.id),
-        featuredAssetId: collection?.featuredAsset?.id,
-        isPrivate: collection?.isPrivate,
-        inheritFilters: editMode ? collection?.isPrivate : true,
-        // customFields: collection?.customFields,
-        filters: collection?.filters,
-        translations: collection?.translations,
-      },
-    );
-
-    setButtonDisabled(areEqual);
-  }, [state, collection, editMode]);
-
-  const handleAddAsset = useCallback(
-    (newId: string | undefined | null) => {
-      if (!newId) return;
-      const currentIds = state.assetIds?.value || [];
-      setField('assetIds', [...currentIds, newId]);
-    },
-    [state.assetIds?.value, setField],
+    [id, update, create],
   );
 
-  const setTranslationField = useCallback(
-    (field: string, e: string) => {
-      setField(
-        'translations',
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
-          [field]: e,
-          languageCode: currentTranslationLng,
-        }),
-      );
-    },
+  const onDeleteHandler = useCallback(() => {
+    if (!id) {
+      throw new Error('Could not find the id.');
+    }
 
-    [currentTranslationLng, translations],
-  );
+    return remove({ input: { id } });
+  }, [remove, id]);
 
-  return loading ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      <div className="customSpinner" />
+  return (
+    <div className="relative flex flex-col gap-y-4">
+      <DetailView
+        id={id}
+        locationId="collections-detail-view"
+        main={{
+          name: 'collection',
+          label: 'Collection',
+          component: <CollectionsDetailView />,
+          form: createDeenruvForm({
+            key: 'CreateCollectionInput',
+            keys: ['assetIds', 'featuredAssetId', 'filters', 'inheritFilters', 'isPrivate', 'parentId', 'translations'],
+            config: {
+              isPrivate: {
+                initialValue: false,
+              },
+              inheritFilters: {
+                initialValue: true,
+              },
+              translations: translationsValidator,
+              filters: configurableOperationArrayValidator(),
+            },
+            onSubmitted: onSubmitHandler,
+            onDeleted: onDeleteHandler,
+          }),
+        }}
+      />
     </div>
-  ) : !collection && editMode ? (
-    <div className="flex min-h-[80vh] w-full items-center justify-center">
-      {t('toasts.collectionLoadingError', { value: id })}
-    </div>
-  ) : (
-    <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <PageHeader
-          currentTranslationLng={currentTranslationLng}
-          onCurrentLanguageChange={(e) => {
-            setCurrentTranslationLng(e as LanguageCode);
-          }}
-          collection={collection}
-          editMode={editMode}
-          buttonDisabled={buttonDisabled}
-          onCreate={createCollection}
-          onEdit={updateCollection}
-        />
-        <Stack column className="gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="blue">
-            <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
-              <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                <Stack className="basis-full md:basis-1/3">
-                  <Input
-                    label={t('details.basic.name')}
-                    value={currentTranslationValue?.name ?? undefined}
-                    onChange={(e) => setTranslationField('name', e.target.value)}
-                    errors={state.translations?.errors}
-                    required
-                  />
-                </Stack>
-                <Stack className="basis-full md:basis-1/3">
-                  <Input
-                    label={t('details.basic.slug')}
-                    value={currentTranslationValue?.slug ?? undefined}
-                    onChange={(e) => setTranslationField('slug', e.target.value)}
-                    required
-                  />
-                </Stack>
-                <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
-                  <Switch
-                    checked={state.isPrivate?.value ?? undefined}
-                    onCheckedChange={(e) => setField('isPrivate', e)}
-                  />
-                  <Label>{t('details.basic.isPrivate')}</Label>
-                </Stack>
-              </Stack>
-              <Stack column className="basis-full">
-                <Label className="mb-2">{t('details.basic.description')}</Label>
-                <RichTextEditor
-                  content={currentTranslationValue?.description ?? undefined}
-                  onContentChanged={(e) => setTranslationField('description', e)}
-                />
-              </Stack>
-            </div>
-          </CustomCard>
-          <AssetsCard
-            onAddAsset={handleAddAsset}
-            featuredAssetId={state.featuredAssetId?.value ?? undefined}
-            assetsIds={state.assetIds?.value ?? undefined}
-            onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
-            onAssetsChange={(ids) => setField('assetIds', ids)}
-          />
-          <FiltersCard
-            currentFiltersValue={state.filters?.value ?? undefined}
-            onFiltersValueChange={(filters) => setField('filters', filters)}
-            inheritValue={state.inheritFilters?.value ?? undefined}
-            onInheritChange={(e) => setField('inheritFilters', e)}
-            errors={state.filters?.errors}
-          />
-          {id && <EntityCustomFields entityName="collection" id={id} />}
-          <ContentsCard collectionId={id} />
-        </Stack>
-      </div>
-    </main>
   );
 };

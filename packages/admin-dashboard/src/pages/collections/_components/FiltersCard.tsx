@@ -38,6 +38,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
   errors,
 }) => {
   const { t } = useTranslation('collections');
+  const codesTranslations = t('details.filters.labels.codes', { returnObjects: true });
   const [filters, setFilters] = useState<PaymentMethodHandlerType[]>([]);
   const [allFiltersOptions, setAllFiltersOptions] = useState<Option[]>([]);
 
@@ -48,7 +49,9 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
     setAllFiltersOptions(
       response.collectionFilters.map((c) => ({
         value: c.code,
-        label: c.description,
+        label: codesTranslations[c.code as keyof typeof codesTranslations]
+          ? t('details.filters.labels.codes.' + c.code)
+          : c.description,
       })),
     );
     setFilters(response.collectionFilters);
@@ -179,7 +182,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                       />
                     ) : argument?.ui?.component === 'combination-mode-form-input' ? (
                       <CombinationMode
-                        label={argument?.label || argument.name}
+                        label={t('details.filters.labels.arguments.combination-mode')}
                         value={filter?.arguments[i].value}
                         onChange={(e) => {
                           filter.arguments[i] = { name: argument?.name || '', value: e };

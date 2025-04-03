@@ -9,10 +9,10 @@
         "id": "Id",
         "name": "Name",
         "description": "Description",
-        "createdAt": "Established in",
+        "createdAt": "Created in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy identifier",
+        "copyId": "Copy ID",
         "viewStockLocation": "Display stock location",
         "columns": "Columns"
     },

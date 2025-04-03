@@ -5,10 +5,10 @@
     "baseInfoCreated": "Created: {{value}}",
     "baseInfoUpdated": "Updated: {{value}}",
     "facetPlaceholder": "Add aspects",
-    "group": "Group",
+    "group": "Options group",
     "image": "Image",
     "name": "Name",
-    "slug": "Snail",
+    "slug": "Short name (slug)",
     "product": "Product",
     "variants": "Variants",
     "enabled": "Included",
@@ -38,7 +38,7 @@
         "create": "Create product",
         "update": "Update product",
         "createVariant": "Create variant",
-        "updateVariant": "Update variant",
+        "updateVariant": "Variant update",
         "removeVariant": "Delete variant"
     },
     "optionsTab": {
@@ -53,7 +53,7 @@
     "variantsTab": {
         "emptyState": {
             "title": "There is nothing here",
-            "description": "There are no options available yet. Use the button above to add them, provided you have already added some options. If not, create them first in the Options tab."
+            "description": "There are no options yet. Use the button above to add them, provided you have already added some options. If not, create them first in the Options tab."
         }
     },
     "table": {
@@ -62,8 +62,8 @@
         "createdAt": "Created in",
         "updatedAt": "Updated in",
         "name": "Name",
-        "slug": "Snail",
-        "variants": "Number of options",
+        "slug": "Short name (slug)",
+        "variants": "Number of variants",
         "collections": "In collections",
         "inValueCollections": "In collections {{value}}",
         "openMenu": "Open menu",
@@ -111,7 +111,8 @@
     "details": {
         "addStockLocation": "Add stock location",
         "basicInfo": "Basic information",
-        "customFields": "Non-standard fields",
+        "settings": "Settings",
+        "customFields": "Custom fields",
         "facetValues": "Aspect value",
         "image": "Image",
         "price": "Price",

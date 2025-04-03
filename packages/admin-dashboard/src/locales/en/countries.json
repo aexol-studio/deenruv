@@ -12,11 +12,11 @@
         "id": "Id",
         "code": "Code",
         "name": "Name",
-        "enabled": "Included",
-        "createdAt": "Established in",
+        "enabled": "Enabled",
+        "createdAt": "Created in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy identifier",
+        "copyId": "Copy ID",
         "viewCountry": "Display country",
         "columns": "Columns"
     },
@@ -25,11 +25,11 @@
             "title": "Basic information",
             "code": "Code",
             "name": "Name",
-            "enabled": "Included"
+            "enabled": "Enabled"
         }
     },
     "validation": {
-        "required": "The code is required"
+        "required": "Code required"
     },
     "toasts": {
         "countryLoadingError": "Failed to load country with identifier {{value}}",
@@ -46,5 +46,5 @@
         "successMessage": "The country has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "selectedValue": "{{from}} of {{to}} lines selected"
+    "selectedValue": "{{from}} of {{to}} lines was selected"
 }

@@ -218,7 +218,6 @@ const DetailTabs = ({
     const showEditButton = id && isPermittedToUpdate;
     const showCreateButton = !id && isPermittedToCreate;
     const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
-
     const currentPath = useLocation().pathname;
     const listPath = currentPath.slice(0, currentPath.lastIndexOf('/'));
 

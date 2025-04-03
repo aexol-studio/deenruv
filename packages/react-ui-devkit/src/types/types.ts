@@ -22,6 +22,7 @@ import {
     AdminDetailSelector,
     ZoneDetailsSelector,
     OrderListSelector,
+    CollectionDetailsSelector,
 } from '../selectors';
 import type { FromSelectorWithScalars, LanguageCode } from '@deenruv/admin-types';
 import { GenericListContextType } from '@/components/templates/DetailList/useDetailListHook/types';
@@ -112,7 +113,7 @@ export const DetailLocations = {
     },
     'collections-detail-view': {
         type: 'Collection' as const,
-        selector: ProductDetailSelector,
+        selector: CollectionDetailsSelector,
     },
     'countries-detail-view': {
         type: 'Country' as const,

@@ -16,17 +16,15 @@ import {
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
 import { EntityCustomFields, SimpleSelect, Stack } from '@/components';
-import { Info } from 'lucide-react';
 
 export const ChannelDetailView = () => {
   const { id } = useParams();
-  const editMode = useMemo(() => !!id, [id]);
   const { t } = useTranslation('channels');
   const { t: tCommon } = useTranslation('common');
   const [sellersOptions, setSellersOptions] = useState<Option[]>();
   const availableLanguages = useSettings((p) => p.availableLanguages);
 
-  const { form, loading, fetchEntity, entity } = useDetailView(
+  const { form, fetchEntity } = useDetailView(
     'channels-detail-view',
     'CreateChannelInput',
     'code',

@@ -255,7 +255,7 @@
       "firstName": "Imię",
       "phoneNumber": "Numer telefonu",
       "emailAddress": "Adres e-mail",
-      "slug": "Ślimak",
+      "slug": "Skrócona nazwa (slug)",
       "description": "Opis",
       "isPrivate": "Jest prywatny",
       "inheritFilters": "Dziedziczenie filtrów",
