@@ -60,7 +60,7 @@ type CustomDetailLocations = 'orders-summary' | string;
 type CustomListLocations = string;
 type NotAvailablePages = 'dashboard';
 type RouteKeys = keyof Omit<typeof Routes, NotAvailablePages>;
-export type ListLocationID = `${RouteKeys}-list-view` | CustomListLocations;
+export type ListLocationID = `${RouteKeys}-list-view`;
 export type DetailLocationID = `${RouteKeys}-detail-view` | CustomDetailLocations;
 export type DetailLocationSidebarID = `${DetailLocationID}-sidebar`;
 
@@ -83,7 +83,7 @@ export const ListLocations = {
     },
 };
 type ListLocationType = typeof ListLocations;
-type LocationKeys = keyof ListLocationType;
+export type LocationKeys = keyof ListLocationType;
 
 type ListLocationsType<KEY extends keyof typeof ListLocations> = FromSelectorWithScalars<
     (typeof ListLocations)[KEY]['selector'],
@@ -196,7 +196,7 @@ export type ExternalListLocationSelector = AdditionalListLocationSelector & {
     >;
 };
 
-type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
+export type DeenruvUITable<KEY extends keyof typeof ListLocations> = {
     id: KEY;
     externalSelector?: ExternalListLocationSelector[KEY];
     rowActions?: GenericListContextType<ExternalListLocationSelector[KEY]>['rowActions'];

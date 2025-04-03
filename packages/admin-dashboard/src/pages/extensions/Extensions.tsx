@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
   Input,
   PageBlock,
+  Switch,
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -81,14 +82,12 @@ const getStatusBadge = (status: string) => {
           Inactive
         </Badge>
       );
-    case 'beta':
-      return <Badge className="bg-blue-500 hover:bg-blue-600">Beta</Badge>;
     default:
       return <Badge variant="outline">Unknown</Badge>;
   }
 };
 export const Extensions = () => {
-  const { plugins: _plugins } = usePluginStore();
+  const { plugins: _plugins, changePluginStatus } = usePluginStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -99,7 +98,6 @@ export const Extensions = () => {
       _plugins.map((plugin) => ({
         ...plugin,
         description: 'No description provided',
-        status: 'unknown',
         category: 'unknown',
         author: 'Unknown',
       })),
@@ -405,32 +403,16 @@ export const Extensions = () => {
                     </TooltipProvider>
 
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Settings className="mr-2 h-3 w-3" />
-                        Configure
-                      </Button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <RefreshCw className="mr-2 h-4 w-4" />
-                            Update
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <ExternalLink className="mr-2 h-4 w-4" />
-                            View Documentation
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Uninstall
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <Switch
+                        checked={plugin.status === 'active'}
+                        onCheckedChange={(checked) => {
+                          changePluginStatus(plugin.name, checked ? 'active' : 'inactive');
+                        }}
+                        className="h-6 w-11"
+                      >
+                        <span className="sr-only">Toggle plugin status</span>
+                        <span className="bg-primary absolute left-0 top-0 h-6 w-6 rounded-full transition-transform duration-200 ease-in-out" />
+                      </Switch>
                     </div>
                   </CardFooter>
                 </Card>
@@ -466,28 +448,16 @@ export const Extensions = () => {
                         <Settings className="mr-2 h-3 w-3" />
                         Configure
                       </Button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <RefreshCw className="mr-2 h-4 w-4" />
-                            Update
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <ExternalLink className="mr-2 h-4 w-4" />
-                            View Documentation
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Uninstall
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <Switch
+                        checked={plugin.status === 'active'}
+                        onCheckedChange={(checked) => {
+                          changePluginStatus(plugin.name, checked ? 'active' : 'inactive');
+                        }}
+                        className="h-6 w-11"
+                      >
+                        <span className="sr-only">Toggle plugin status</span>
+                        <span className="bg-primary absolute left-0 top-0 h-6 w-6 rounded-full transition-transform duration-200 ease-in-out" />
+                      </Switch>
                     </div>
                   </div>
                   {index < filteredPlugins.length - 1 && <Separator />}

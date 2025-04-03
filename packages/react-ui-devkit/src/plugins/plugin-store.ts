@@ -14,22 +14,78 @@ type I18Next = {
     addResourceBundle: (lng: string, ns: string, trans: object) => void;
 };
 
+export type DeenruvPluginStored = DeenruvUIPlugin & {
+    status: 'active' | 'inactive';
+};
+
 export class PluginStore {
     private i18next: I18Next;
     private pluginConfig: Map<string, Record<string, any>> = new Map();
-    pluginMap: Map<string, DeenruvUIPlugin> = new Map();
-    private pluginPages: Array<NonNullable<DeenruvUIPlugin['pages']>[number]> = [];
+    pluginMap: Map<string, DeenruvPluginStored> = new Map();
+    private pluginPages: Array<
+        NonNullable<DeenruvUIPlugin['pages']>[number] & { plugin: DeenruvPluginStored }
+    > = [];
     private pluginsNavigationDataField: {
-        groups: Array<NonNullable<DeenruvUIPlugin['navMenuGroups']>[number]>;
-        links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number]>;
+        groups: Array<
+            NonNullable<DeenruvUIPlugin['navMenuGroups']>[number] & { plugin: DeenruvPluginStored }
+        >;
+        links: Array<NonNullable<DeenruvUIPlugin['navMenuLinks']>[number] & { plugin: DeenruvPluginStored }>;
     } = { groups: [], links: [] };
+
+    getPluginMap() {
+        return Array.from(this.pluginMap.values()).filter(plugin => plugin.status === 'active');
+    }
+
+    changePluginStatus(name: string, status: 'active' | 'inactive') {
+        const plugin = this.pluginMap.get(name);
+        if (!plugin) return;
+        this.pluginMap.set(name, { ...plugin, status });
+        if (status === 'inactive') {
+            this.pluginsNavigationDataField.links = this.pluginsNavigationDataField.links.filter(
+                link => link.plugin.name !== name,
+            );
+            this.pluginsNavigationDataField.groups = this.pluginsNavigationDataField.groups.filter(
+                group => group.plugin.name !== name,
+            );
+            this.pluginPages = this.pluginPages.filter(page => page.plugin.name !== name);
+            this.pluginConfig.delete(name);
+        } else {
+            this.pluginsNavigationDataField.links = this.pluginsNavigationDataField.links.map(link => {
+                if (link.plugin.name === name) {
+                    return {
+                        ...link,
+                        plugin: { ...link.plugin, status: 'active' },
+                    };
+                }
+                return link;
+            });
+            this.pluginsNavigationDataField.groups = this.pluginsNavigationDataField.groups.map(group => {
+                if (group.plugin.name === name) {
+                    return {
+                        ...group,
+                        plugin: { ...group.plugin, status: 'active' },
+                    };
+                }
+                return group;
+            });
+            this.pluginPages = this.pluginPages.map(page => {
+                if (page.plugin.name === name) {
+                    return {
+                        ...page,
+                        plugin: { ...page.plugin, status: 'active' },
+                    };
+                }
+                return page;
+            });
+            this.pluginConfig.set(name, plugin.config || {});
+        }
+    }
 
     install(plugins: DeenruvUIPlugin[], i18next: I18Next) {
         this.i18next = i18next;
         plugins.forEach(({ translations, pages, navMenuGroups, navMenuLinks, ...plugin }) => {
-            this.pluginMap.set(plugin.name, plugin);
+            this.pluginMap.set(plugin.name, { ...plugin, status: 'active' });
             this.pluginConfig.set(plugin.name, plugin.config || {});
-
             if (!translations) return;
             for (const [lng, locales] of Object.entries(translations.data)) {
                 locales.forEach(trans => i18next.addResourceBundle(lng, translations.ns, trans));
@@ -39,6 +95,7 @@ export class PluginStore {
             el =>
                 el.pages?.map(route => ({
                     ...route,
+                    plugin: { ...el, status: 'active' },
                     path: getExtensionsPath(el.name, route.path),
                 })) || [],
         );
@@ -46,6 +103,7 @@ export class PluginStore {
             if (!el.navMenuLinks) return [];
             return el.navMenuLinks.map(linkEl => ({
                 ...linkEl,
+                plugin: { ...el, status: 'active' },
                 labelId: `${el.translations?.ns}.${linkEl.labelId}`,
                 href: getExtensionsPath(el.name, linkEl.href),
             }));
@@ -55,6 +113,7 @@ export class PluginStore {
                 el =>
                     el.navMenuGroups?.map(groupEl => ({
                         ...groupEl,
+                        plugin: { ...el, status: 'active' as const },
                         labelId: `${el.translations?.ns}.${groupEl.labelId}`,
                     })) || [],
             )
@@ -69,7 +128,7 @@ export class PluginStore {
 
     getInputComponent(id: string) {
         let component = null;
-        const input = Array.from(this.pluginMap.values())
+        const input = this.getPluginMap()
             .map(plugin => plugin.inputs?.find(input => input.id === id))
             .find(Boolean);
         if (input?.component) component = input.component;
@@ -79,7 +138,7 @@ export class PluginStore {
 
     getComponents(location: string, passedTab?: string) {
         const uniqueMappedComponents = new Map<string, React.ComponentType>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.components?.forEach(({ component, tab, id }) => {
                 const uniqueUUID = [
                     id,
@@ -100,7 +159,7 @@ export class PluginStore {
 
     getModalComponents(location: string) {
         const uniqueMappedComponents = new Map<string, React.ComponentType>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.modals?.forEach(({ component, id }) => {
                 const uniqueUUID = [
                     id,
@@ -121,7 +180,7 @@ export class PluginStore {
 
     getTableExtensions(location: ListLocationID) {
         const tables = new Map<string | number, NonNullable<DeenruvUIPlugin['tables']>[number]>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.tables?.forEach(table => {
                 tables.set(table.id, table);
             });
@@ -131,7 +190,7 @@ export class PluginStore {
 
     getDetailViewTabs(location: DetailLocationID) {
         const tabs = new Map<string | number, NonNullable<DeenruvUIPlugin['tabs']>[number]>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.tabs?.forEach(tab => {
                 tabs.set(tab.id, tab);
             });
@@ -148,7 +207,7 @@ export class PluginStore {
             string,
             NonNullable<NonNullable<DeenruvUIPlugin['actions']>['dropdown']>[number]
         >();
-        this.pluginMap.forEach((plugin, i) => {
+        this.getPluginMap().forEach((plugin, i) => {
             plugin.actions?.inline?.forEach((action, j) => {
                 actionsInline.set(`${action.id}.${i}.${j}`, action);
             });
@@ -171,7 +230,7 @@ export class PluginStore {
 
     get topNavigationComponents() {
         const components = new Map<string, { component: React.ComponentType; id: string }>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.topNavigationComponents?.forEach(({ component, id }) => {
                 components.set(id, { component, id });
             });
@@ -181,7 +240,7 @@ export class PluginStore {
 
     get topNavigationActionsMenu() {
         const actions = new Map<string, NonNullable<DeenruvUIPlugin['topNavigationActionsMenu']>[number]>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.topNavigationActionsMenu?.forEach(action => {
                 actions.set(action.label, action);
             });
@@ -191,7 +250,7 @@ export class PluginStore {
 
     get widgets() {
         const widgets = new Map<string | number, NonNullable<DeenruvUIPlugin['widgets']>[number]>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.widgets?.forEach(widget => {
                 widgets.set(widget.id, { ...widget, plugin });
             });
@@ -213,7 +272,7 @@ export class PluginStore {
 
     get notifications() {
         const notifications = new Map<string, NonNullable<DeenruvUIPlugin['notifications']>[number]>();
-        this.pluginMap.forEach(plugin => {
+        this.getPluginMap().forEach(plugin => {
             plugin.notifications?.forEach(notification => {
                 notifications.set(notification.id, notification);
             });

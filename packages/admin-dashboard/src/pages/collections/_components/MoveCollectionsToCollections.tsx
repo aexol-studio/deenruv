@@ -12,8 +12,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Routes,
   apiClient,
+  DialogComponentProps,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -25,71 +25,47 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-
-import { CollectionListType } from '@/graphql/collections';
-
+import { CollectionListSelector, CollectionListType } from '@/graphql/collections';
 import { toast } from 'sonner';
+import { ModelTypes } from '@deenruv/admin-types';
 
 type SimpleTableData = { name: string; slug: string; id: string; breadcrumbs: { name: string; slug: string }[] };
-interface MoveCollectionsTablesProps {
-  selectedCollections: Row<CollectionListType>[];
-  allCollections: Row<CollectionListType>[];
-  refetchCollections: () => void;
-  onClose: () => void;
-}
-const rootColectionRow = { name: 'Kolejkcja źródłowa', slug: '/', id: '1', breadcrumbs: [{ name: '/', slug: '' }] };
 
-export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> = ({
-  allCollections,
-  refetchCollections,
-  selectedCollections,
-  onClose,
-}) => {
+export const MoveCollectionsToCollections: React.FC<
+  DialogComponentProps<Array<ModelTypes['MoveCollectionInput']>, Row<CollectionListType>[]>
+> = ({ close, reject, resolve, data: selectedCollections }) => {
+  const [allCollections, setAllCollections] = useState<CollectionListType[]>([]);
+
+  useEffect(() => {
+    const fetchCollections = async () => {
+      const response = await apiClient('query')({
+        collections: [{ options: { topLevelOnly: false } }, { items: CollectionListSelector }],
+      });
+      setAllCollections(response.collections.items);
+    };
+    fetchCollections();
+  }, []);
+
+  const selectedTableData = useMemo(() => selectedCollections?.map(({ original }) => original), [selectedCollections]);
   const { t } = useTranslation('collections');
   const [rowSelection, setRowSelection] = useState({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: 'name',
-      value: '',
-    },
-  ]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([{ id: 'name', value: '' }]);
+
   const moveCollection = async () => {
-    try {
-      const response = await Promise.all(
-        selectedTableData
-          .map((t) => t.id)
-          .map(async (collectionId) => {
-            const response = await apiClient('mutation')({
-              moveCollection: [
-                {
-                  input: {
-                    collectionId,
-                    parentId: allCollectionsTable.getSelectedRowModel().rows[0].original.id,
-                    index: 0,
-                  },
-                },
-                { __typename: true },
-              ],
-            });
-            return response.moveCollection.__typename === 'Collection';
-          }),
-      );
-      if (response.filter((r) => Boolean(r)).length === selectedTableData.length) {
-        toast.success(t('moveCollectionsToCollections.movedAllCollections'));
-        refetchCollections();
-        return;
-      }
-      toast.success(t('moveCollectionsToCollections.movedPartOfCollections'));
-      refetchCollections();
-    } catch (e) {
-      console.log(e);
-      toast.success(t('moveCollectionsToCollections.moveError'));
-    } finally {
-      onClose();
+    const selectedCollection = allCollectionsTable.getSelectedRowModel().rows[0].original.id;
+    const payload = selectedTableData?.map((collection) => ({
+      collectionId: collection.id,
+      parentId: selectedCollection,
+      index: 0,
+    }));
+
+    if (!payload) {
+      toast.error(t('moveCollectionsToCollections.selectCollection'));
+      return;
     }
+    resolve(payload);
   };
 
   const columns: ColumnDef<SimpleTableData>[] = [
@@ -100,12 +76,10 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
       header: () => t('table.id'),
       meta: { isPlaceholder: true },
       cell: ({ row }) => (
-        <Link to={Routes.collections.to(row.original?.id ?? row.id)} className="text-primary-600">
-          <Badge variant="outline" className="flex w-full items-center justify-center">
-            {row.original?.id ?? row.id}
-            <ArrowRight className="pl-1" size={16} />
-          </Badge>
-        </Link>
+        <Badge variant="outline" className="flex w-full items-center justify-center">
+          {row.original?.id ?? row.id}
+          <ArrowRight className="pl-1" size={16} />
+        </Badge>
       ),
     },
     {
@@ -137,7 +111,7 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
               table.toggleAllRowsSelected(false);
               row.toggleSelected(!!value);
             }}
-          />{' '}
+          />
         </div>
       ),
       enableSorting: false,
@@ -152,15 +126,9 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
     },
     ...columns,
   ];
-  const selectedTableData = useMemo(() => selectedCollections.map(({ original }) => original), [selectedCollections]);
 
-  const alltableData = useMemo(
-    () =>
-      [rootColectionRow, ...allCollections.map(({ original }) => original)].filter((row) =>
-        selectedTableData.every((selectedRow) => {
-          return selectedRow.id !== row.id;
-        }),
-      ),
+  const allTableData = useMemo(
+    () => allCollections.filter((row) => selectedTableData?.every((selectedRow) => selectedRow.id !== row.id)),
     [allCollections, selectedTableData],
   );
 
@@ -168,11 +136,11 @@ export const MoveCollectionsToCollections: React.FC<MoveCollectionsTablesProps> 
     data: selectedTableData || [],
     manualPagination: true,
     enableExpanding: true,
-    columns: columns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
   const allCollectionsTable = useReactTable({
-    data: alltableData || [],
+    data: allTableData || [],
     manualPagination: true,
     enableExpanding: true,
     columns: allCollectionsColumns,

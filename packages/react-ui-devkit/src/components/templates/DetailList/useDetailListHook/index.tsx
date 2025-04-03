@@ -45,10 +45,12 @@ export const useDetailListHook = <T extends PromisePaginated, K extends keyof Li
     fetch,
     customItemsPerPage,
     searchFields,
+    fakeURLParams,
 }: {
     fetch: T;
     customItemsPerPage?: ItemsPerPageType;
     searchFields?: (keyof Awaited<ReturnType<PromisePaginated>>['items'][number])[];
+    fakeURLParams?: boolean;
 }): {
     Paginate: JSX.Element;
     Search: JSX.Element;
@@ -69,7 +71,9 @@ export const useDetailListHook = <T extends PromisePaginated, K extends keyof Li
     const { translationsLanguage } = useSettings(({ translationsLanguage }) => ({
         translationsLanguage,
     }));
-    const [searchParams, setSearchParams] = useCustomSearchParams();
+    const [searchParams, setSearchParams] = useCustomSearchParams({
+        fakeURLParams,
+    });
     const [total, setTotal] = useState(0);
     const [objects, setObjects] = useState<GenericReturn<T>>();
 

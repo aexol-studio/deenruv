@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Input, Label, Switch, CustomCard, CardIcons, useDetailView, useSettings } from '@deenruv/react-ui-devkit';
@@ -12,8 +12,10 @@ import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
 
 export const CollectionsDetailView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { t } = useTranslation('collections');
-  const { translationsLanguage: currentTranslationLng } = useSettings();
+  const contentLng = useSettings((p) => p.translationsLanguage);
+  const selectedChannel = useSettings((p) => p.selectedChannel);
 
   const { form, fetchEntity } = useDetailView(
     'collections-detail-view',
@@ -33,6 +35,10 @@ export const CollectionsDetailView = () => {
   useEffect(() => {
     (async () => {
       const resp = await fetchEntity();
+      if (resp === undefined) {
+        navigate(-1);
+        return;
+      }
       if (!resp) return;
 
       setField('translations', resp.translations);
@@ -48,10 +54,10 @@ export const CollectionsDetailView = () => {
         resp.filters.map((f) => ({ code: f.code, arguments: f.args })),
       );
     })();
-  }, []);
+  }, [contentLng, selectedChannel?.id]);
 
   const translations = state?.translations?.value || [];
-  const currentTranslationValue = translations.find((v) => v.languageCode === currentTranslationLng);
+  const currentTranslationValue = translations.find((v) => v.languageCode === contentLng);
 
   const handleAddAsset = useCallback(
     (newId: string | undefined | null) => {
@@ -70,11 +76,11 @@ export const CollectionsDetailView = () => {
         setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
           ...currentTranslationValue,
           [field]: e,
-          languageCode: currentTranslationLng,
+          languageCode: contentLng,
         }),
       );
     },
-    [currentTranslationLng, translations],
+    [contentLng, translations],
   );
 
   return (

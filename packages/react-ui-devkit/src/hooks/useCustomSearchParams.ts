@@ -1,12 +1,20 @@
 import { useState, useEffect, useCallback } from 'react';
 
-export const useCustomSearchParams = (): [
+export const useCustomSearchParams = ({
+    fakeURLParams,
+}: {
+    fakeURLParams?: boolean;
+}): [
     URLSearchParams,
     (newParams: URLSearchParams | Record<string, string>, options?: { replace?: boolean }) => void,
 ] => {
-    const [searchParams, setSearchParamsState] = useState(() => new URLSearchParams(window.location.search));
+    const [searchParams, setSearchParamsState] = useState(() =>
+        fakeURLParams ? new URLSearchParams() : new URLSearchParams(window.location.search),
+    );
 
     useEffect(() => {
+        if (fakeURLParams) return;
+
         const handlePopState = () => {
             setSearchParamsState(new URLSearchParams(window.location.search));
         };
@@ -15,7 +23,7 @@ export const useCustomSearchParams = (): [
         return () => {
             window.removeEventListener('popstate', handlePopState);
         };
-    }, []);
+    }, [fakeURLParams]);
 
     const setSearchParams = useCallback(
         (newParams: URLSearchParams | Record<string, string>, options?: { replace?: boolean }) => {
@@ -30,15 +38,18 @@ export const useCustomSearchParams = (): [
                 });
             }
 
-            const newUrl = `${window.location.pathname}?${updatedSearchParams.toString()}`;
-            if (options?.replace) {
-                window.history.replaceState(null, '', newUrl);
-            } else {
-                window.history.pushState(null, '', newUrl);
+            if (!fakeURLParams) {
+                const newUrl = `${window.location.pathname}?${updatedSearchParams.toString()}`;
+                if (options?.replace) {
+                    window.history.replaceState(null, '', newUrl);
+                } else {
+                    window.history.pushState(null, '', newUrl);
+                }
             }
+
             setSearchParamsState(updatedSearchParams);
         },
-        [],
+        [fakeURLParams],
     );
 
     return [searchParams, setSearchParams];

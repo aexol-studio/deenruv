@@ -1,23 +1,28 @@
 import { Permission } from '@deenruv/admin-types';
+import { Row } from '@tanstack/react-table';
 import { Table } from '@tanstack/react-table';
 
 export type ActionResult = { success: string; error?: never } | { success?: never; error: string };
 
 type ActionBaseProps<T> = {
-    table: Table<T>;
     refetch: () => void;
 };
 
 type RowActionProps<T> = ActionBaseProps<T> & {
     data: T;
+    row: Row<T>;
+    table: Table<T>;
 };
 
 type BulkActionProps<T> = ActionBaseProps<T> & {
     data: T[];
+    table: Table<T>;
 };
 
 type ActionDefinition<P> = {
     label: string;
+    icon?: React.ReactNode;
+    canShow?: (props: P) => boolean;
     onClick: (props: P) => Promise<ActionResult> | ActionResult;
 };
 

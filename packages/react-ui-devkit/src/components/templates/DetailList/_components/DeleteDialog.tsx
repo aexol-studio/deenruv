@@ -28,7 +28,11 @@ export function DeleteDialog<T extends { id: string }>({
     return (
         <Dialog open={deleteDialogOpened} onOpenChange={setDeleteDialogOpened}>
             <DialogContent>
-                <DialogTitle>{t('bulk.delete.title')}</DialogTitle>
+                <DialogTitle>
+                    {itemsToDelete.length > 1
+                        ? t('bulk.delete.title.plural')
+                        : t('bulk.delete.title.singular')}
+                </DialogTitle>
                 <div className="flex max-h-[50vh] flex-col gap-2">
                     <DialogDescription className="text-primary text-lg">
                         {t('bulk.delete.description')}

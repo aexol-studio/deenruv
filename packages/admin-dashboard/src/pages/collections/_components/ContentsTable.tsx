@@ -1,17 +1,5 @@
 import {
   Badge,
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -23,11 +11,14 @@ import {
   EmptyState,
   apiClient,
   cn,
+  useDetailListHook,
+  PaginationInput,
+  deepMerge,
 } from '@deenruv/react-ui-devkit';
 
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
 import { ITEMS_PER_PAGE } from '@/lists/useList';
-import { ValueTypes } from '@deenruv/admin-types';
+import { SortOrder, ValueTypes } from '@deenruv/admin-types';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -54,10 +45,42 @@ interface ContentsProps {
 }
 
 export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter }) => {
-  const [variants, setVariants] = useState<{ totalItems: number; items: CollectionProductVariantsType[] }>({
-    totalItems: 0,
-    items: [],
+  const { objects, Paginate, Search, SortButton } = useDetailListHook({
+    fakeURLParams: true,
+    fetch: async <T, K>(
+      { page, perPage, filter: filterValue, filterOperator, sort }: PaginationInput,
+      customFieldsSelector?: T,
+      additionalSelector?: K,
+    ) => {
+      const selector = deepMerge(CollectionProductVariantsSelector, additionalSelector ?? {});
+      const response = await apiClient('query')({
+        collection: [
+          { id: collectionId },
+          {
+            productVariants: [
+              {
+                options: {
+                  take: perPage,
+                  skip: (page - 1) * perPage,
+                  filterOperator: filterOperator,
+                  sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+                  ...(filterValue && { filter: filterValue }),
+                },
+              },
+              { totalItems: true, items: selector },
+            ],
+          },
+        ],
+      });
+      return (
+        response['collection']?.productVariants ?? {
+          items: [],
+          totalItems: 0,
+        }
+      );
+    },
   });
+
   const [tableLoading, setTableLoading] = useState(false);
   const [debouncedFilter] = useDebounce(filter, 500);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -67,39 +90,6 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
     pageSize: 10,
   });
   const { t } = useTranslation(['collections', 'common']);
-  const getCollectionProductVariants = async (collectionId: string) => {
-    setTableLoading(true);
-    try {
-      const response = await apiClient('query')({
-        collection: [
-          { id: collectionId },
-          {
-            productVariants: [
-              {
-                options: {
-                  take: pagination.pageSize,
-                  skip: pagination.pageIndex * pagination.pageSize,
-                  filter: debouncedFilter,
-                },
-              },
-              { totalItems: true, items: CollectionProductVariantsSelector },
-            ],
-          },
-        ],
-      });
-      if (response.collection) setVariants(response.collection.productVariants);
-    } catch {
-      toast.error(t('errors.generic'));
-    } finally {
-      setTableLoading(false);
-    }
-  };
-  useEffect(() => {
-    if (collectionId) getCollectionProductVariants(collectionId);
-  }, [collectionId, pagination, debouncedFilter]);
-
-  const arrayRange = (start: number, stop: number) =>
-    Array.from({ length: stop - start + 1 }, (_, index) => start + index);
 
   const columns = useMemo<ColumnDef<CollectionProductVariantsType>[]>(
     () => [
@@ -151,51 +141,29 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
     [tableLoading],
   );
 
-  const tableData = useMemo(() => (tableLoading ? Array(10).fill({}) : variants.items), [tableLoading, variants]);
+  const tableData = useMemo(() => (tableLoading ? Array(10).fill({}) : objects || []), [tableLoading, objects]);
 
   const table = useReactTable({
     data: tableData || [],
     manualPagination: true,
     enableExpanding: true,
     columns: tableColumns,
-
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnsVisibilityState,
-
     state: {
       columnFilters,
       columnVisibility: columnsVisibilityState,
       pagination,
     },
   });
-  const totalPages = useMemo(
-    () => Math.ceil(variants.totalItems / pagination.pageSize),
-    [variants.totalItems, pagination.pageSize],
-  );
-  const pagesToShow: (number | string)[] = useMemo(
-    () =>
-      totalPages <= 7
-        ? arrayRange(1, totalPages)
-        : pagination.pageIndex < 4
-          ? [...arrayRange(1, 5), 'ellipsis', totalPages]
-          : pagination.pageIndex >= totalPages - 2
-            ? [1, 'ellipsis', ...arrayRange(totalPages - 4, totalPages)]
-            : [
-                1,
-                'ellipsis',
-                ...arrayRange(pagination.pageIndex - 1, pagination.pageIndex + 1),
-                'ellipsis',
-                totalPages,
-              ],
-    [totalPages, pagination.pageIndex],
-  );
 
   return (
     <>
+      {Search}
       <Table className="w-full" {...(!table.getRowModel().rows?.length && { containerClassName: 'flex' })}>
         <TableHeader className="bg-primary-foreground sticky top-0">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -231,50 +199,8 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
             />
           )}
         </TableBody>
-      </Table>{' '}
-      <Pagination className="justify-end px-2 pb-2">
-        <PaginationContent>
-          <PaginationPrevious
-            isActive={pagination.pageIndex !== 1}
-            onClick={() => setPagination((p) => ({ ...p, pageIndex: p.pageIndex - 1 }))}
-          />
-          {pagesToShow.map((i, index) => (
-            <PaginationItem key={index} className={cn('hidden', i !== pagination.pageIndex.toString() && 'md:block')}>
-              {i === 'ellipsis' ? (
-                <PaginationEllipsis />
-              ) : (
-                <PaginationLink
-                  isActive={i === pagination.pageIndex}
-                  onClick={() => setPagination((p) => ({ ...p, pageIndex: Number(i) }))}
-                >
-                  {i}
-                </PaginationLink>
-              )}
-            </PaginationItem>
-          ))}
-          <PaginationNext
-            isActive={pagination.pageIndex !== totalPages}
-            onClick={() => setPagination((p) => ({ ...p, pageIndex: p.pageIndex - 1 }))}
-          />
-        </PaginationContent>
-        <Select
-          value={ITEMS_PER_PAGE.find((i) => i.value === pagination.pageSize)?.value.toString()}
-          onValueChange={(e) => {
-            setPagination({ pageIndex: 1, pageSize: Number(e) });
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={t('common:perPagePlaceholder')} />
-          </SelectTrigger>
-          <SelectContent>
-            {ITEMS_PER_PAGE.map((i) => (
-              <SelectItem key={i.name} value={i.value.toString()}>
-                {t(`common:perPage.${i.name}`)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </Pagination>
+      </Table>
+      {Paginate}
     </>
   );
 };

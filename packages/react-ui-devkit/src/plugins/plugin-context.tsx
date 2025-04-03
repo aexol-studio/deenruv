@@ -1,6 +1,6 @@
-import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import React, { createContext, FC, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
 
-import { PluginStore } from './plugin-store';
+import { DeenruvPluginStored, PluginStore } from './plugin-store';
 import {
     DeenruvUIPlugin,
     DetailLocationID,
@@ -34,6 +34,7 @@ const PluginStoreContext = createContext<{
     getDetailViewTabs: (location: DetailLocationID) => DeenruvUIPlugin['tabs'];
     getDetailViewActions: (location: DetailLocationID) => DeenruvUIPlugin['actions'];
     getTableExtensions: (location: ListLocationID) => DeenruvUIPlugin['tables'];
+    changePluginStatus: (name: string, status: 'active' | 'inactive') => void;
     navMenuData: {
         groups: PluginNavigationGroup[];
         links: PluginNavigationLink[];
@@ -42,7 +43,7 @@ const PluginStoreContext = createContext<{
     topNavigationComponents: DeenruvUIPlugin['topNavigationComponents'];
     topNavigationActionsMenu: DeenruvUIPlugin['topNavigationActionsMenu'];
     configs: Map<string, any>;
-    plugins: DeenruvUIPlugin[];
+    plugins: DeenruvPluginStored[];
 }>({
     channel: undefined,
     language: '',
@@ -57,6 +58,7 @@ const PluginStoreContext = createContext<{
     getDetailViewTabs: () => [],
     getDetailViewActions: () => undefined,
     getTableExtensions: () => [],
+    changePluginStatus: () => undefined,
     navMenuData: { groups: [], links: [] },
     widgets: [],
     topNavigationComponents: [],
@@ -98,6 +100,13 @@ export const PluginProvider: FC<
         return plugins.getModalComponents(location);
     };
 
+    const [_plugins, setPlugins] = useState<DeenruvPluginStored[]>(() => plugins.getPluginMap());
+    const changePluginStatus = (name: string, status: 'active' | 'inactive') => {
+        console.log('changePluginStatus', name, status);
+        plugins.changePluginStatus(name, status);
+        setPlugins(plugins.getPluginMap());
+    };
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.ctrlKey && e.key === 'q') {
@@ -109,6 +118,8 @@ export const PluginProvider: FC<
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, []);
+
+    const navMenuData = useMemo(() => plugins.navMenuData, [_plugins]);
 
     return (
         <PluginStoreContext.Provider
@@ -124,12 +135,13 @@ export const PluginProvider: FC<
                 getTableExtensions,
                 getDetailViewTabs,
                 getDetailViewActions,
-                navMenuData: plugins.navMenuData,
+                changePluginStatus,
+                navMenuData,
                 widgets: plugins.widgets,
                 topNavigationComponents: plugins.topNavigationComponents,
                 topNavigationActionsMenu: plugins.topNavigationActionsMenu,
                 configs: plugins.configs,
-                plugins: Array.from(plugins.pluginMap.values()),
+                plugins: _plugins,
             }}
         >
             <WidgetsStoreProvider context={context} widgets={plugins.widgets}>

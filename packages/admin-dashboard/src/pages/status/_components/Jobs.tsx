@@ -261,7 +261,7 @@ export const Jobs = () => {
         </div>
       }
     >
-      <ListTable {...{ columns, isFiltered: false, table, Paginate, tableId: 'jobs-list-view' }} />
+      <ListTable {...{ columns, isFiltered: false, table, Paginate, tableId: 'jobs-list-view' as any }} />
     </CustomCard>
   );
 };

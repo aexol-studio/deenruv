@@ -2,7 +2,14 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { getMutation, GFFLPFormField, DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  getMutation,
+  GFFLPFormField,
+  DetailView,
+  createDeenruvForm,
+  useMutation,
+  fetchAndSetChannels,
+} from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { useValidators } from '@/hooks/useValidators.js';
 import { ChannelDetailView } from '@/pages/channels/_components/ChannelDetailView.js';
@@ -50,7 +57,7 @@ export const ChannelsDetailPage = () => {
   const { stringValidator } = useValidators();
 
   const onSubmitHandler = useCallback(
-    (data: FormDataType) => {
+    async (data: FormDataType) => {
       if (!data.code?.validatedValue) {
         throw new Error('Code is required.');
       }
@@ -69,16 +76,13 @@ export const ChannelsDetailPage = () => {
       };
 
       if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
+        const response = await update({ input: { id, ...inputData } });
+        await fetchAndSetChannels();
+        return response;
       } else {
-        return create({
-          input: inputData,
-        });
+        const response = await create({ input: inputData });
+        await fetchAndSetChannels();
+        return response;
       }
     },
     [id, update, create],

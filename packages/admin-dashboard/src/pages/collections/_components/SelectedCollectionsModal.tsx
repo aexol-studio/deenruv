@@ -4,7 +4,6 @@ import React from 'react';
 import { CollectionListType } from '@/graphql/collections';
 import { MoveCollectionsToCollections } from './MoveCollectionsToCollections.js';
 import { CollectionAction } from '../consts.js';
-import { MoveCollectionsToChannels } from './MoveCollectionsToChannels.js';
 import { DeleteCollectionsFromChannel } from './DeleteCollectionsFromChannel.js';
 
 import { ValueTypes } from '@deenruv/admin-types';
@@ -30,16 +29,6 @@ export const SelectedCollectionsModalContent: React.FC<SelectedCollectionsModalP
 }) => {
   const { t } = useTranslation('collections');
   switch (collectionAction) {
-    case 'MOVE':
-      return (
-        <MoveCollectionsToCollections
-          onClose={onClose}
-          {...{ allCollections, selectedCollections, refetchCollections }}
-        />
-      );
-
-    case 'ASSING_TO_CHANNGEL':
-      return <MoveCollectionsToChannels onClose={onClose} {...{ selectedCollections, refetchCollections }} />;
     case 'DELETE_FROM_CHANNEL':
       return (
         <DeleteCollectionsFromChannel

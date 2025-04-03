@@ -65,27 +65,42 @@ export const ActionsDropdown = <T extends { id: string }>(navigate: NavigateFunc
                             {rowActions && rowActions?.length > 0 && (
                                 <>
                                     <DropdownMenuSeparator />
-                                    {rowActions?.map(action => (
-                                        <DropdownMenuItem
-                                            key={action.label}
-                                            onClick={async () => {
-                                                const result = await action.onClick({
-                                                    data: row.original,
-                                                    table,
-                                                    refetch,
-                                                });
-                                                if ('success' in result) {
-                                                    //show success message
-                                                    toast.success(result.success);
-                                                } else {
-                                                    // show error message
-                                                    toast.error(result.error);
-                                                }
-                                            }}
-                                        >
-                                            {action.label}
-                                        </DropdownMenuItem>
-                                    ))}
+                                    {rowActions?.map(action => {
+                                        const onClick = async () => {
+                                            const result = await action.onClick({
+                                                data: row.original,
+                                                table,
+                                                refetch,
+                                                row,
+                                            });
+                                            if ('success' in result) {
+                                                //show success message
+                                                toast.success(result.success);
+                                            } else {
+                                                // show error message
+                                                toast.error(result.error);
+                                            }
+                                        };
+                                        const canShow = action.canShow
+                                            ? action.canShow?.({
+                                                  data: row.original,
+                                                  table,
+                                                  refetch,
+                                                  row,
+                                              })
+                                            : true;
+
+                                        return canShow ? (
+                                            <DropdownMenuItem
+                                                key={action.label}
+                                                className="flex items-center gap-2"
+                                                onClick={onClick}
+                                            >
+                                                {action.icon}
+                                                {action.label}
+                                            </DropdownMenuItem>
+                                        ) : null;
+                                    })}
                                 </>
                             )}
                             {onRemove && isPermittedToDelete && (

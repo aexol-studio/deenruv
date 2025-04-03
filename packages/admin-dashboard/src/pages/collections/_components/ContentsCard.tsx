@@ -46,7 +46,12 @@ export const ContentsCard: React.FC<ContentsCardProps> = ({ collectionId }) => {
           },
         ],
       });
-      return response['collection']!.productVariants;
+      return (
+        response['collection']?.productVariants ?? {
+          items: [],
+          totalItems: 0,
+        }
+      );
     },
     [collectionId],
   );

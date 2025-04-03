@@ -11,11 +11,22 @@ export const CollectionListSelector = Selector('Collection')({
   slug: true,
   description: true,
   isPrivate: true,
-  featuredAsset: {
-    preview: true,
-  },
-  children: { id: true },
+  featuredAsset: { __typename: true, preview: true },
   productVariants: [{}, { totalItems: true }],
+  parentId: true,
+  children: {
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    position: true,
+    name: true,
+    slug: true,
+    description: true,
+    isPrivate: true,
+    parentId: true,
+    featuredAsset: { __typename: true, preview: true },
+    productVariants: [{}, { totalItems: true }],
+  },
 });
 
 export const CollectionProductVariantsSelector = Selector('ProductVariant')({

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, EllipsisVerticalIcon, Trash, Trash2 } from 'lucide-react';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
@@ -28,6 +28,8 @@ import { useTranslation } from 'react-i18next';
 import { getPermissions } from '@/utils/getPermissions.js';
 import { PageBlock } from '@/universal_components/PageBlock.js';
 import { LoadingMask } from '@/components/templates/DetailView/_components/LoadingMask.js';
+import { useSettings } from '@/state/settings.js';
+import { toast } from 'sonner';
 interface DetailViewFormProps<
     FORMKEY extends keyof ModelTypes,
     FORMKEYS extends keyof ModelTypes[FORMKEY],
@@ -199,6 +201,7 @@ const DetailTabs = ({
         setSidebar,
         hasUnsavedChanges,
         form,
+        fetchEntity,
     } = useDetailView();
 
     const [, setSearchParams] = useSearchParams();

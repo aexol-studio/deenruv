@@ -14,7 +14,10 @@
   "create": "Utwórz",
   "bulk": {
     "delete": {
-      "title": "Czy na pewno chcesz usunąć te rekordy?",
+      "title": {
+        "plural": "Czy na pewno chcesz usunąć te rekordy?",
+        "singular": "Czy na pewno chcesz usunąć ten rekord?"
+      },
       "description": "Tej czynności nie można cofnąć.",
       "cancel": "Anuluj",
       "confirm": "Usuń {{amount}} rekordów"

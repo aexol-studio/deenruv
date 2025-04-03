@@ -1,10 +1,19 @@
 import { Column, ColumnDef, Table as ReactTable, flexRender } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, ListViewMarker } from '@/components';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+    ListViewMarker,
+    TableLabel,
+} from '@/components';
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { cn } from '@/lib';
-import { ListLocationID } from '@/types/types.js';
+import { LocationKeys } from '@/types/types.js';
 import { EmptyState } from '@/universal_components/EmptyState.js';
 
 interface ListTableProps<TData, TValue> {
@@ -12,7 +21,7 @@ interface ListTableProps<TData, TValue> {
     isFiltered: boolean;
     table: ReactTable<TData>;
     Paginate: ReactNode;
-    tableId: ListLocationID;
+    tableId: any;
 }
 
 const getCommonPinningStyles = <T,>(column: Column<T>, showPinned: boolean): CSSProperties => {
@@ -139,6 +148,12 @@ export function ListTable<TData, TValue>({
                         {table.getHeaderGroups().map(headerGroup => (
                             <TableRow noHover key={headerGroup.id}>
                                 {headerGroup.headers.map(header => {
+                                    const component =
+                                        typeof header.column.columnDef.header === 'string' ? (
+                                            <TableLabel>{header.column.columnDef.header}</TableLabel>
+                                        ) : (
+                                            header.column.columnDef.header
+                                        );
                                     return (
                                         <TableHead
                                             key={header.id}
@@ -151,10 +166,7 @@ export function ListTable<TData, TValue>({
                                             <div className="flex items-center justify-between gap-2">
                                                 {header.isPlaceholder
                                                     ? null
-                                                    : flexRender(
-                                                          header.column.columnDef.header,
-                                                          header.getContext(),
-                                                      )}
+                                                    : flexRender(component, header.getContext())}
 
                                                 <ListViewMarker column={header.column} position={tableId} />
                                             </div>

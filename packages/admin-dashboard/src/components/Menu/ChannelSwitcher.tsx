@@ -39,7 +39,7 @@ export function ChannelSwitcher() {
     const channel = channels.find((channel) => channel.id === id);
     if (!channel) return;
     setSelectedChannel(channel);
-    clearAllCache();
+    // clearAllCache();
   };
 
   const getChannelLabel = useCallback(

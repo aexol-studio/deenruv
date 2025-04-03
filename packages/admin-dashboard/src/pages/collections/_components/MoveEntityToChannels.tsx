@@ -15,6 +15,7 @@ import {
   ChannelType,
   channelSelector,
   apiClient,
+  DialogComponentProps,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -28,68 +29,26 @@ import {
 import { ArrowRight } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-
 import { CollectionListType } from '@/graphql/collections';
-
-import { toast } from 'sonner';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
 type SimpleTableData = { name: string; slug: string; id: string; breadcrumbs: { name: string; slug: string }[] };
-interface MoveCollectionsTablesProps {
-  selectedCollections: Row<CollectionListType>[];
-  refetchCollections: () => void;
-  onClose: () => void;
-}
 
-export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = ({
-  refetchCollections,
-  selectedCollections,
-  onClose,
-}) => {
+export const MoveEntityToChannels: React.FC<
+  DialogComponentProps<{ channelId: string; ids: string[] }, Row<CollectionListType>[]>
+> = ({ close, reject, resolve, data: selectedCollections }) => {
+  const selectedTableData = useMemo(() => selectedCollections?.map(({ original }) => original), [selectedCollections]);
   const { t } = useTranslation('collections');
   const [rowSelection, setRowSelection] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: 'code',
-      value: '',
-    },
-    {
-      id: 'token',
-      value: '',
-    },
+    { id: 'code', value: '' },
+    { id: 'token', value: '' },
   ]);
   const [channels, setChannels] = useState<{ activeChannel?: ChannelType; channels: ChannelType[] }>({ channels: [] });
   const moveCollectionToChannel = async () => {
-    try {
-      const response = await apiClient('mutation')({
-        assignCollectionsToChannel: [
-          {
-            input: {
-              collectionIds: selectedTableData.map((collection) => collection.id),
-              channelId: channelsTable.getSelectedRowModel().rows[0].original.id,
-            },
-          },
-          { __typename: true },
-        ],
-      });
-
-      if (
-        response.assignCollectionsToChannel.filter((r) => r.__typename === 'Collection').length ===
-        selectedTableData.length
-      ) {
-        toast.success(t('moveCollectionsToChannels.movedAllCollections'));
-        refetchCollections();
-        return;
-      }
-      toast.warning(t('moveCollectionsToChannels.movedPartOfCollections'));
-      refetchCollections();
-    } catch (e) {
-      console.log(e);
-      toast.error(t('moveCollectionsToChannels.moveError'));
-    } finally {
-      onClose();
-    }
+    const channelId = channelsTable.getSelectedRowModel().rows[0].original.id;
+    const ids = selectedTableData?.map((collection) => collection.id).filter((id): id is string => !!id) ?? [];
+    resolve({ channelId, ids });
   };
   useEffect(() => {
     (async () => {
@@ -109,12 +68,10 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
       header: () => t('table.id'),
       meta: { isPlaceholder: true },
       cell: ({ row }) => (
-        <Link to={Routes.collections.to(row.original?.id ?? row.id)} className="text-primary-600">
-          <Badge variant="outline" className="flex w-full items-center justify-center">
-            {row.original?.id ?? row.id}
-            <ArrowRight className="pl-1" size={16} />
-          </Badge>
-        </Link>
+        <Badge variant="outline" className="flex w-full items-center justify-center">
+          {row.original?.id ?? row.id}
+          <ArrowRight className="pl-1" size={16} />
+        </Badge>
       ),
     },
     {
@@ -123,7 +80,6 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
     },
     {
       accessorKey: 'breadcrumbs',
-      // in future we can add here link to desired url storefront collection e.g https://www.storefront.com/collections/breadrumb
       header: () => t('table.breadcrumb'),
       accessorFn: (row) =>
         row.breadcrumbs
@@ -179,13 +135,12 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
         ) : null,
     },
   ];
-  const selectedTableData = useMemo(() => selectedCollections.map(({ original }) => original), [selectedCollections]);
 
   const selectedTable = useReactTable({
     data: selectedTableData || [],
     manualPagination: true,
     enableExpanding: true,
-    columns: columns,
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
   const channelsTable = useReactTable({
@@ -207,7 +162,7 @@ export const MoveCollectionsToChannels: React.FC<MoveCollectionsTablesProps> = (
       const filtered = p.filter((filter) => filter.id !== id);
       return [...filtered, { id, value }];
     });
-  useEffect(() => console.log(columnFilters));
+
   return (
     <DialogContent className="flex h-[90dvh] w-[90vw] max-w-full flex-col">
       <DialogHeader>

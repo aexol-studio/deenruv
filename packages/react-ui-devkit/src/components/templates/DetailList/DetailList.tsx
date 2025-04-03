@@ -3,6 +3,7 @@ import {
     ColumnDef,
     ColumnFiltersState,
     getCoreRowModel,
+    getExpandedRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
@@ -13,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ImageOff, PlusCircleIcon } from 'lucide-react';
+import { ArrowRight, EllipsisVertical, ImageOff, PlusCircleIcon, Trash2Icon } from 'lucide-react';
 import { SelectIDColumn, ActionsDropdown, BooleanCell } from './DetailListColumns';
 import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer, useSettings } from '@/state';
@@ -21,9 +22,25 @@ import { ModelTypes, Permission, ValueTypes } from '@deenruv/admin-types';
 import React from 'react';
 import { deepMerge, mergeSelectorWithCustomFields } from '@/utils';
 import { usePluginStore } from '@/plugins';
-import { ListLocationID, PromisePaginated } from '@/types';
+import { DeenruvUITable, ListLocationID, LocationKeys, PromisePaginated } from '@/types';
 import { useErrorHandler, useLocalStorage } from '@/hooks';
-import { Button, TableLabel, useDetailView } from '@/components';
+import {
+    Button,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+    TableLabel,
+    useDetailView,
+} from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
 import { ActionResult, ListType } from './useDetailListHook/types';
 import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailListHook/constants';
@@ -31,6 +48,12 @@ import { cn } from '@/lib';
 import { FiltersDialog } from '@/components/templates/DetailList/useDetailListHook/FiltersDialog.js';
 import { ColumnView } from '@/components/templates/DetailList/useDetailListHook/ColumnView.js';
 import { DetailListStoreProvider } from './useDetailList.js';
+import { ExpandedState } from '@tanstack/react-table';
+import { toast } from 'sonner';
+
+export const isAssetObject = (value: object): boolean => {
+    return Boolean('preview' in value || 'source' in value || (value as any).__typename === 'Asset');
+};
 
 type DISABLED_SEARCH_FIELDS = 'enabled' | 'id' | 'createdAt' | 'updatedAt';
 type AwaitedReturnType<T extends PromisePaginated> = Awaited<ReturnType<T>>;
@@ -61,10 +84,14 @@ type RouteBase = { list: string; new: string; route: string; to: (id: string) =>
 type RouteWithoutCreate = { edit: (id: string, parentId?: string) => void };
 type RouteWithCreate = RouteWithoutCreate & { create: () => void };
 
-export function DetailList<T extends PromisePaginated, ENTITY extends keyof ValueTypes>({
+export function DetailList<
+    KEY extends LocationKeys,
+    T extends PromisePaginated,
+    ENTITY extends keyof ValueTypes,
+>({
     fetch,
     route,
-    onRemove,
+    onRemove: remove,
     tableId,
     entityName,
     searchFields,
@@ -77,11 +104,14 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     createPermissions,
     deletePermissions,
     additionalButtons,
+    getSubRows,
     additionalRowActions,
+    additionalBulkActions,
+    stopRefetchOnChannelChange,
 }: {
     fetch: T;
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
-    tableId: ListLocationID | string;
+    tableId: any;
     entityName: ENTITY | string;
     searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
     hideColumns?: FIELDS<T>;
@@ -93,17 +123,17 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     createPermissions: Array<Permission>;
     deletePermissions: Array<Permission>;
     additionalButtons?: React.ReactNode;
-    additionalRowActions?: Array<{
-        label: string;
-        onClick: (data: AwaitedReturnType<T>['items'][number]) => ActionResult | Promise<ActionResult>;
-    }>;
+    getSubRows?: (row: AwaitedReturnType<T>['items'][number]) => any;
+    additionalRowActions?: DeenruvUITable<KEY>['rowActions'];
+    additionalBulkActions?: DeenruvUITable<KEY>['bulkActions'];
+    stopRefetchOnChannelChange?: boolean;
 } & (
     | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
     | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
 )) {
     const { t } = useTranslation('table');
-
-    const { userPermissions } = useServer();
+    const selectedChannel = useSettings(({ selectedChannel }) => selectedChannel);
+    const userPermissions = useServer(({ userPermissions }) => userPermissions);
     const isPermittedToCreate = useMemo(() => {
         if (!createPermissions) return true;
         return createPermissions.some(permission => userPermissions.includes(permission));
@@ -125,7 +155,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         ...(tableExtensions?.flatMap(table => table.rowActions || []) || []),
         ...(additionalRowActions || []),
     ];
-    const bulkActions = tableExtensions?.flatMap(table => table.bulkActions || []);
+    const bulkActions = [
+        ...(tableExtensions?.flatMap(table => table.bulkActions || []) || []),
+        ...(additionalBulkActions || []),
+    ];
     const customColumns = (tableExtensions?.flatMap(table => table.columns) || []) as ColumnDef<
         AwaitedReturnType<T>['items']
     >[];
@@ -166,6 +199,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         }, {});
     };
 
+    const [expanded, setExpanded] = useState<ExpandedState>({});
     const [columnsOrderState, setColumnsOrderState] = useLocalStorage<string[]>(`${tableId}-table-order`, []);
     const columnsTranslations = t('columns', { returnObjects: true });
     const { handleError } = useErrorHandler();
@@ -191,6 +225,12 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         fetch: (params, customFieldsSelector) => fetch(params, customFieldsSelector, mergedSelectors),
         searchFields,
     });
+
+    useEffect(() => {
+        if (!stopRefetchOnChannelChange) {
+            refetch();
+        }
+    }, [selectedChannel?.id]);
 
     const columns = useMemo(() => {
         const entry = objects?.[0];
@@ -231,8 +271,11 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     },
                     cell: ({ row }) => {
                         const value = row.original.customFields[key.split('.')[1]];
+                        if (typeof value === 'number') {
+                            return value;
+                        }
 
-                        if (!value) {
+                        if (!value || value === '' || value === undefined) {
                             return '—';
                         }
 
@@ -280,6 +323,10 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                         return <BooleanCell value={value} />;
                     }
 
+                    if (typeof value === 'number') {
+                        return value;
+                    }
+
                     if (!value || value === '' || value === undefined) {
                         return '—';
                     }
@@ -287,19 +334,15 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                     if (!value) return JSON.stringify(value);
 
                     if (typeof value === 'object') {
-                        if ('__typename' in value) {
-                            // that means we know this type
-                            // * GOOD TO REMEMBER: Get __typename from nested objects in selector.
-                            if (value.__typename === 'Asset') {
-                                // this is an asset
-                                return (
-                                    <img
-                                        src={value.preview}
-                                        alt={row.original.name}
-                                        className="h-16 w-16 object-cover"
-                                    />
-                                );
-                            }
+                        const isAsset = isAssetObject(value);
+                        if (isAsset) {
+                            return (
+                                <img
+                                    src={value.preview}
+                                    alt={row.original.name}
+                                    className="h-16 w-16 object-cover"
+                                />
+                            );
                         }
                         return JSON.stringify(value);
                     }
@@ -389,6 +432,11 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         });
     }, [objects]);
 
+    const onRemove = (items: AwaitedReturnType<T>['items']) => {
+        setItemsToDelete(items);
+        setDeleteDialogOpened(true);
+    };
+
     const table = useReactTable({
         data: objects || [],
         manualPagination: true,
@@ -402,24 +450,23 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
         onRowSelectionChange: setRowSelection,
         onColumnFiltersChange: setColumnFilters,
         onColumnOrderChange: setColumnsOrderState,
+        getExpandedRowModel: getExpandedRowModel(),
+        onExpandedChange: setExpanded,
+        getSubRows: getSubRows,
         meta: {
             hideColumns: hiddenColumns,
             bulkActions,
             rowActions,
             route,
             refetch,
-            onRemove: onRemove
-                ? items => {
-                      setItemsToDelete(items);
-                      setDeleteDialogOpened(true);
-                  }
-                : undefined,
+            onRemove: remove ? onRemove : undefined,
             deletePermissions,
         },
         state: {
             ...((columnsOrderState || []).filter(Boolean).length > 0 && {
                 columnOrder: ['select-id', ...columnsOrderState, 'actions'],
             }),
+            expanded,
             columnPinning: { right: ['actions'], left: ['select-id'] },
             columnVisibility: columnsVisibilityState,
             pagination: { pageIndex: page, pageSize: perPage },
@@ -454,7 +501,7 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
 
     const onConfirmDelete = async () => {
         try {
-            const result = await onRemove?.(itemsToDelete);
+            const result = await remove?.(itemsToDelete);
 
             if ((result as any)?.response?.errors) {
                 handleError((result as any).response.errors);
@@ -495,11 +542,9 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
     return (
         <DetailListStoreProvider refetch={refetch} table={table}>
             <div className={cn('w-full', !noPaddings && 'px-4 py-2 md:px-8 md:py-4')}>
-                {onRemove && (
-                    <DeleteDialog
-                        {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
-                    />
-                )}
+                <DeleteDialog
+                    {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
+                />
                 <div className="page-content-h flex w-full flex-col gap-2">
                     <div className="flex w-full flex-col items-start gap-4 mb-1">
                         <div className="flex w-full items-end justify-between gap-4">
@@ -508,20 +553,91 @@ export function DetailList<T extends PromisePaginated, ENTITY extends keyof Valu
                                 {Search}
                                 <FiltersDialog {...filterProperties} />
                             </div>
-                            <div className="flex gap-2">
-                                {route && !noCreateButton && isPermittedToCreate && (
-                                    <Button
-                                        className="flex items-center gap-2"
-                                        onClick={() => {
-                                            if ('create' in route) route.create();
-                                            else navigate((route as RouteBase).new, { viewTransition: true });
-                                        }}
-                                    >
-                                        <PlusCircleIcon size={16} />
-                                        {t('create')}
-                                    </Button>
-                                )}
-                                {additionalButtons}
+                            <div className="flex gap-2 items-center">
+                                <div className="flex gap-2">
+                                    {route && !noCreateButton && isPermittedToCreate && (
+                                        <Button
+                                            className="flex items-center gap-2"
+                                            onClick={() => {
+                                                if ('create' in route) route.create();
+                                                else
+                                                    navigate((route as RouteBase).new, {
+                                                        viewTransition: true,
+                                                    });
+                                            }}
+                                        >
+                                            <PlusCircleIcon size={16} />
+                                            {t('create')}
+                                        </Button>
+                                    )}
+                                    {additionalButtons}
+                                </div>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button size="icon" variant="outline">
+                                            <EllipsisVertical />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56 mr-6">
+                                        <DropdownMenuLabel>{t('Operacje masowe')}</DropdownMenuLabel>
+                                        {bulkActions.length > 0 ? (
+                                            <>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuGroup>
+                                                    {bulkActions?.map(action => {
+                                                        const onClick = async () => {
+                                                            try {
+                                                                const { error } = await action.onClick({
+                                                                    table: table as any,
+                                                                    data: objects,
+                                                                    refetch,
+                                                                });
+                                                                if (error) {
+                                                                    throw new Error(error);
+                                                                } else {
+                                                                    refetch();
+                                                                    table.toggleAllRowsSelected(false);
+                                                                }
+                                                            } catch (error) {
+                                                                const message =
+                                                                    error instanceof Error
+                                                                        ? error.message
+                                                                        : 'Unknown error';
+                                                                toast.error(message);
+                                                            }
+                                                        };
+                                                        return (
+                                                            <DropdownMenuItem
+                                                                key={action.label}
+                                                                onClick={onClick}
+                                                                className="flex items-center gap-2"
+                                                            >
+                                                                {action.icon}
+                                                                {action.label}
+                                                            </DropdownMenuItem>
+                                                        );
+                                                    })}
+                                                </DropdownMenuGroup>
+                                            </>
+                                        ) : null}
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuGroup>
+                                            <DropdownMenuItem
+                                                className="text-red-600"
+                                                disabled={!table.getIsSomeRowsSelected()}
+                                                onClick={() => {
+                                                    const selected = table
+                                                        .getSelectedRowModel()
+                                                        .rows.map(row => row.original);
+                                                    onRemove(selected);
+                                                }}
+                                            >
+                                                <Trash2Icon className="mr-2 h-4 w-4" />
+                                                {t('Usuń zacznaczone')}
+                                            </DropdownMenuItem>
+                                        </DropdownMenuGroup>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { usePluginStore } from '@/plugins/plugin-context';
-import { ListLocationID } from '@/types';
+import { LocationKeys } from '@/types';
 import { ColumnDef } from '@tanstack/react-table';
 import { CopyIcon, PlugZap } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../atoms/popover.js';
@@ -13,7 +13,7 @@ export const ListViewMarker = ({
     position,
 }: {
     column: ColumnDef<any, any>;
-    position: ListLocationID;
+    position: LocationKeys;
 }) => {
     const { viewMarkers } = usePluginStore();
 
