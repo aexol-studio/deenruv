@@ -199,6 +199,9 @@ importers:
       '@deenruv/deenruv-examples-plugin':
         specifier: workspace:*
         version: link:../../plugins/deenruv-examples-plugin
+      '@deenruv/facet-harmonica-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/facet-harmonica-plugin
       '@deenruv/in-realization-plugin':
         specifier: workspace:*
         version: link:../../plugins/in-realization-plugin
@@ -2341,6 +2344,9 @@ importers:
 
   plugins/facet-harmonica-plugin:
     dependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
@@ -2415,6 +2421,9 @@ importers:
 
   plugins/in-realization-plugin:
     dependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
@@ -2841,6 +2850,9 @@ importers:
 
   plugins/przelewy24-plugin:
     dependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
@@ -2872,6 +2884,9 @@ importers:
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
+      '@deenruv/testing':
+        specifier: workspace:^
+        version: link:../../packages/testing
       '@nestjs/common':
         specifier: ^10.3.10
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -3035,6 +3050,9 @@ importers:
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
+      '@deenruv/ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)

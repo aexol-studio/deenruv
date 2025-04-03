@@ -24,6 +24,7 @@
         "react": "^18.2.0",
         "@deenruv/common": "workspace:^",
         "@deenruv/core": "workspace:^",
+        "@deenruv/ui-devkit": "workspace:^",
         "@deenruv/react-ui-devkit": "workspace:^",
         "@deenruv/admin-types": "workspace:^",
         "@deenruv/admin-ui": "workspace:^",

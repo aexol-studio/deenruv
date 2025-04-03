@@ -26,6 +26,7 @@
         "@deenruv/core": "workspace:^",
         "@deenruv/react-ui-devkit": "workspace:^",
         "@deenruv/admin-types": "workspace:^",
+        "@deenruv/testing": "workspace:^",
         "react-i18next": "^14.0.5",
         "react-router-dom": "^6.22.1",
         "graphql-zeus": "^7.0.0",

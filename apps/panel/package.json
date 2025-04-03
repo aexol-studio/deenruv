@@ -27,6 +27,7 @@
     "@deenruv/order-line-attributes-plugin": "workspace:*",
     "@deenruv/replicate-plugin": "workspace:*",
     "@deenruv/przelewy24-plugin": "workspace:*",
+    "@deenruv/facet-harmonica-plugin": "workspace:*",
     "@deenruv/wfirma-plugin": "workspace:*",
     "@deenruv/admin-types": "workspace:*",
     "@aexol-studio/hooks": "^0.2.16",

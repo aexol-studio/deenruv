@@ -21,7 +21,8 @@
     "dependencies": {
         "@deenruv/common": "workspace:^",
         "@deenruv/core": "workspace:^",
-        "@deenruv/react-ui-devkit": "workspace:^"
+        "@deenruv/react-ui-devkit": "workspace:^",
+        "@deenruv/admin-types": "workspace:^"
     },
     "devDependencies": {
         "rimraf": "^5.0.10",
