@@ -39,36 +39,40 @@ export const DetailViewMarker = ({
     };
 
     if (!position) return null;
-    return viewMarkers ? (
-        <div className="relative z-50 flex flex-col gap-4">
-            <Button
-                className="rounded-md"
-                size="icon"
-                variant="outline"
-                onClick={() => setOpenDropdown(!openDropdown)}
-            >
-                <PlugZap size={16} />
-            </Button>
-            {openDropdown && (
-                <div className="absolute top-8 left-8 flex flex-col gap-2 bg-secondary p-4 rounded-md min-w-96 shadow-2xl">
-                    <p className="max-w-sm text-sm">Create a new component using following code</p>
-                    <div className="relative p-4 rounded-md bg-card">
-                        <pre
-                            className="text-xs leading-4 whitespace-pre-wrap text-gray-200"
-                            dangerouslySetInnerHTML={{ __html: highlightedCode }}
-                        />
-                        <Button
-                            size="icon"
-                            variant="outline"
-                            onClick={copyCode}
-                            className="absolute top-2 right-2"
-                        >
-                            <CopyIcon size={16} />
-                        </Button>
-                    </div>
+    return (
+        <>
+            {viewMarkers ? (
+                <div className="relative z-50 flex flex-col gap-4">
+                    <Button
+                        className="rounded-md"
+                        size="icon"
+                        variant="outline"
+                        onClick={() => setOpenDropdown(!openDropdown)}
+                    >
+                        <PlugZap size={16} />
+                    </Button>
+                    {openDropdown && (
+                        <div className="absolute left-8 top-8 flex min-w-96 flex-col gap-2 rounded-md bg-secondary p-4 shadow-2xl">
+                            <p className="max-w-sm text-sm">Create a new component using following code</p>
+                            <div className="relative rounded-md bg-card p-4">
+                                <pre
+                                    className="whitespace-pre-wrap text-xs leading-4 text-gray-200"
+                                    dangerouslySetInnerHTML={{ __html: highlightedCode }}
+                                />
+                                <Button
+                                    size="icon"
+                                    variant="outline"
+                                    onClick={copyCode}
+                                    className="absolute right-2 top-2"
+                                >
+                                    <CopyIcon size={16} />
+                                </Button>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            )}
+            ) : null}
             <Renderer position={position} tab={tab} />
-        </div>
-    ) : null;
+        </>
+    );
 };
