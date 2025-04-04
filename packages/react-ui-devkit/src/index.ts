@@ -14,3 +14,5 @@ export * from './consts';
 export * from './tailwind.config';
 export * from './fetchers';
 export * from './universal_components';
+export * from './universal_utils';
+export * from './universal_table_actions';

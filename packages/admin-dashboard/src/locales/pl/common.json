@@ -1,4 +1,17 @@
 {
+  "notificationsBox": {
+    "toggleNotifications": "Przełącz powiadomienia",
+    "notifications": "Powiadomienia",
+    "recentNotifications": "Najświeższe powiadomienia",
+    "markAllAsRead": "Zaznacz wszystkie jako przeczytane",
+    "clearAll": "Wyczyść wszystkie",
+    "emptyStateMessage": "Nie masz jeszcze żadnych powiadomień",
+    "emptyStateDescription": "Powiadomienia będą się pojawiać tutaj, gdy coś się wydarzy",
+    "titleStart": "Job {{name}} rozpoczęty",
+    "descriptionStart": "Kolejka zadań {{name}} rozpoczęła działanie",
+    "titleComplete": "Job {{name}} zakończony",
+    "descriptionComplete": "Zadanie {{name}} zakończone"
+  },
   "update": "Aktualizacja",
   "create": "Utwórz",
   "save": "Zapisz",

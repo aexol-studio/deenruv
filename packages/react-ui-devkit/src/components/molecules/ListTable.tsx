@@ -17,11 +17,11 @@ import { LocationKeys } from '@/types/types.js';
 import { EmptyState } from '@/universal_components/EmptyState.js';
 
 interface ListTableProps<TData, TValue> {
+    tableId: LocationKeys;
     columns: ColumnDef<TData, TValue>[];
     isFiltered: boolean;
     table: ReactTable<TData>;
     Paginate: ReactNode;
-    tableId: any;
 }
 
 const getCommonPinningStyles = <T,>(column: Column<T>, showPinned: boolean): CSSProperties => {

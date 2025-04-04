@@ -20,9 +20,9 @@ import { DeleteDialog } from './_components/DeleteDialog';
 import { useServer, useSettings } from '@/state';
 import { ModelTypes, Permission, ValueTypes } from '@deenruv/admin-types';
 import React from 'react';
-import { deepMerge, mergeSelectorWithCustomFields } from '@/utils';
+import { deepMerge } from '@/utils';
 import { usePluginStore } from '@/plugins';
-import { DeenruvUITable, ListLocationID, LocationKeys, PromisePaginated } from '@/types';
+import { DeenruvUITable, LocationKeys, PromisePaginated } from '@/types';
 import { useErrorHandler, useLocalStorage } from '@/hooks';
 import {
     Button,
@@ -31,18 +31,11 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
     TableLabel,
-    useDetailView,
 } from '@/components';
 import { ListTable } from '@/components/molecules/ListTable';
-import { ActionResult, ListType } from './useDetailListHook/types';
 import { DEFAULT_COLUMN_PRIORITIES, DEFAULT_COLUMNS } from './useDetailListHook/constants';
 import { cn } from '@/lib';
 import { FiltersDialog } from '@/components/templates/DetailList/useDetailListHook/FiltersDialog.js';
@@ -111,7 +104,7 @@ export function DetailList<
 }: {
     fetch: T;
     onRemove?: (items: AwaitedReturnType<T>['items']) => Promise<boolean>;
-    tableId: any;
+    tableId: KEY;
     entityName: ENTITY | string;
     searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
     hideColumns?: FIELDS<T>;
@@ -313,7 +306,7 @@ export function DetailList<
 
                     if (!value && (key.includes('asset') || key.includes('Asset'))) {
                         return (
-                            <div className="flex h-16 w-16 flex-col items-center justify-center gap-2 bg-gray-200 p-3">
+                            <div className="flex size-16 flex-col items-center justify-center gap-2 bg-gray-200 p-3">
                                 <ImageOff size={24} className="text-gray-500" />
                             </div>
                         );
@@ -340,7 +333,7 @@ export function DetailList<
                                 <img
                                     src={value.preview}
                                     alt={row.original.name}
-                                    className="h-16 w-16 object-cover"
+                                    className="size-16 object-cover"
                                 />
                             );
                         }
@@ -358,7 +351,7 @@ export function DetailList<
                         return (
                             <Button
                                 variant="outline"
-                                className="p-0 h-6 px-3 border border-gray-500 hover:border-gray-600 text-gray-800 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
+                                className="h-6 border border-gray-500 p-0 px-3 text-gray-800 hover:border-gray-600 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
                                 onClick={() => {
                                     if ('edit' in route) {
                                         route.edit(
@@ -546,14 +539,14 @@ export function DetailList<
                     {...{ itemsToDelete, deleteDialogOpened, setDeleteDialogOpened, onConfirmDelete }}
                 />
                 <div className="page-content-h flex w-full flex-col gap-2">
-                    <div className="flex w-full flex-col items-start gap-4 mb-1">
+                    <div className="mb-1 flex w-full flex-col items-start gap-4">
                         <div className="flex w-full items-end justify-between gap-4">
                             <div className="flex items-center gap-2">
                                 <ColumnView table={table} entityName={entityName} />
                                 {Search}
                                 <FiltersDialog {...filterProperties} />
                             </div>
-                            <div className="flex gap-2 items-center">
+                            <div className="flex items-center gap-2">
                                 <div className="flex gap-2">
                                     {route && !noCreateButton && isPermittedToCreate && (
                                         <Button
@@ -578,7 +571,7 @@ export function DetailList<
                                             <EllipsisVertical />
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-56 mr-6">
+                                    <DropdownMenuContent className="mr-6 w-56">
                                         <DropdownMenuLabel>{t('Operacje masowe')}</DropdownMenuLabel>
                                         {bulkActions.length > 0 ? (
                                             <>
@@ -632,7 +625,7 @@ export function DetailList<
                                                     onRemove(selected);
                                                 }}
                                             >
-                                                <Trash2Icon className="mr-2 h-4 w-4" />
+                                                <Trash2Icon className="mr-2 size-4" />
                                                 {t('Usuń zacznaczone')}
                                             </DropdownMenuItem>
                                         </DropdownMenuGroup>

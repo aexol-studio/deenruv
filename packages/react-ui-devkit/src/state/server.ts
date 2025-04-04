@@ -70,6 +70,7 @@ interface Actions {
     fetchStatus: () => Promise<void>;
     fetchPendingJobs: () => Promise<void>;
     fetchGraphQLSchema: () => Promise<GraphQLSchema | null>;
+    setJobQueue: (name: string, running: boolean) => void;
 }
 
 export const getSystemStatus = async () => {
@@ -123,7 +124,7 @@ const buildQuery = (level: number): string => {
     `;
 };
 
-export const useServer = create<Server & Actions>()(set => ({
+export const useServer = create<Server & Actions>()((set, get) => ({
     serverConfig: undefined,
     activeAdministrator: undefined,
     channels: [],
@@ -212,6 +213,15 @@ export const useServer = create<Server & Actions>()(set => ({
             set({ graphQLSchema: null });
             throw error;
         }
+    },
+    setJobQueue: (name, running) => {
+        const { fetchPendingJobs } = get();
+        set(state => ({
+            jobQueues: state.jobQueues.map(jobQueue =>
+                jobQueue.name === name ? { ...jobQueue, running } : jobQueue,
+            ),
+        }));
+        fetchPendingJobs();
     },
 }));
 const typeName = (v: { name: string | null; ofType?: any }): string => v && (v.name || typeName(v.ofType));

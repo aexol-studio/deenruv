@@ -92,10 +92,12 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const { activeAdministrator, fetchPendingJobs } = useServer();
+  const { activeAdministrator, setJobQueue } = useServer();
 
   const rebuildSearchIndex = async () => {
-    await apiClient('mutation')({ reindex: { id: true } }).then(fetchPendingJobs);
+    await apiClient('mutation')({ reindex: { id: true, queueName: true, state: true } }).then(({ reindex: { queueName, state } })=> {
+      setJobQueue(queueName, state === 'RUNNING');
+    });
   };
 
   const matches = useMatches();

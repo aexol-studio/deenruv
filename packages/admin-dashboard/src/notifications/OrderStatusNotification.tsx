@@ -22,6 +22,9 @@ export const ORDER_STATUS_NOTIFICATION = createNotification({
     return orders.totalItems;
   },
   placements: {
+    main: () => {
+      return <></>;
+    },
     navigation: [
       {
         id: 'link-orders',

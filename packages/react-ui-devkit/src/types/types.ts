@@ -30,6 +30,7 @@ import { FacetValueSelector } from '@/selectors/FacetValueSelector';
 import { CustomerDetailSelector } from '@/selectors/CustomerDetailSelector';
 import { globalSettingsSelector } from '@/selectors/GlobalSettingsSelector.js';
 import { Notification } from '@/state/index.js';
+import { CollectionListSelector } from '@/selectors/lists/CollectionListSelector.js';
 
 type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
@@ -80,6 +81,78 @@ export const ListLocations = {
     'stockLocations-list': {
         type: 'StockLocation' as const,
         selector: StockLocationListSelector,
+    },
+    'collections-list-view': {
+        type: 'Collection' as const,
+        selector: CollectionListSelector,
+    },
+    'admins-list-view': {
+        type: 'Administrator' as const,
+        selector: AdminDetailSelector,
+    },
+    'paymentMethods-list-view': {
+        type: 'PaymentMethod' as const,
+        selector: PaymentMethodDetailsSelector,
+    },
+    'promotions-list-view': {
+        type: 'Promotion' as const,
+        selector: PromotionDetailSelector,
+    },
+    'channels-list-view': {
+        type: 'Channel' as const,
+        selector: ChannelDetailsSelector,
+    },
+    'countries-list-view': {
+        type: 'Country' as const,
+        selector: CountryDetailSelector,
+    },
+    'facets-list-view': {
+        type: 'Facet' as const,
+        selector: FacetDetailSelector,
+    },
+    'taxCategories-list-view': {
+        type: 'TaxCategory' as const,
+        selector: TaxCategoryDetailSelector,
+    },
+    'taxRates-list-view': {
+        type: 'TaxRate' as const,
+        selector: TaxRateDetailsSelector,
+    },
+    'shippingMethods-list-view': {
+        type: 'ShippingMethod' as const,
+        selector: ShippingMethodDetailsSelector,
+    },
+    'stockLocations-list-view': {
+        type: 'StockLocation' as const,
+        selector: StockLocationDetailSelector,
+    },
+    'customers-list-view': {
+        type: 'Customer' as const,
+        selector: CustomerDetailSelector,
+    },
+    'customerGroups-list-view': {
+        type: 'CustomerGroup' as const,
+        selector: CustomerGroupDetailSelector,
+    },
+    'globalSettings-list-view': {
+        type: 'GlobalSettings' as const,
+        selector: globalSettingsSelector,
+    },
+    'zones-list-view': {
+        type: 'Zone' as const,
+        selector: ZoneDetailsSelector,
+    },
+    'roles-list-view': {
+        type: 'Role' as const,
+        selector: RoleDetailsSelector,
+    },
+    'sellers-list-view': {
+        type: 'Seller' as const,
+        selector: SellerDetailSelector,
+    },
+    'productVariants-list-view': {
+        type: 'ProductVariant' as const,
+        selector: ProductListSelector,
     },
 };
 type ListLocationType = typeof ListLocations;

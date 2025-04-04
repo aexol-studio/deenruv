@@ -1,7 +1,7 @@
 import { ArrowDownSquareIcon, ArrowUpSquareIcon, Folder, FolderOpen, XSquareIcon } from 'lucide-react';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { CollectionProductVariantsDrawer } from './_components/CollectionProductVariantsDrawer.js';
-import { CollectionListSelector, CollectionListType } from '@/graphql/collections';
+import { CollectionListSelector } from '@/graphql/collections';
 import {
   DrawerTrigger,
   Routes,
@@ -10,21 +10,12 @@ import {
   DetailList,
   PaginationInput,
   deepMerge,
-  createDialogFromComponent,
-  DialogComponentProps,
-  Button,
-  DialogFooter,
-  DialogHeader,
+  EntityChannelManagementRowAction,
+  DeenruvUITable,
 } from '@deenruv/react-ui-devkit';
 import { ArrowRight } from 'lucide-react';
-import { MoveCollectionsToCollections } from './_components/MoveCollectionsToCollections.js';
-import { MoveEntityToChannels } from './_components/MoveEntityToChannels.js';
-import { Row } from '@tanstack/react-table';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  additionalSelector?: K,
-) => {
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const selector = deepMerge(CollectionListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     ['collections']: [
@@ -114,7 +105,7 @@ export const CollectionsListPage = () => {
               return { error: 'Nie zaznaczone żadne kolekcji' };
             }
             try {
-              const result = await createDialogFromComponent(MoveCollectionsToCollections, selectedRows);
+              // const result = await createDialogFromComponent(MoveCollectionsToCollections, selectedRows);
             } catch (e) {
               console.log(e);
             }
@@ -130,7 +121,7 @@ export const CollectionsListPage = () => {
               return { error: 'Nie zaznaczone żadne kolekcji' };
             }
             try {
-              const result = await createDialogFromComponent(MoveEntityToChannels, selectedRows);
+              // const result = await createDialogFromComponent(MoveEntityToChannels, selectedRows);
             } catch (e) {
               console.log(e);
             }
@@ -139,37 +130,12 @@ export const CollectionsListPage = () => {
         },
       ]}
       additionalRowActions={[
+        ...EntityChannelManagementRowAction<'collections-list-view'>(),
         {
           icon: <ArrowUpSquareIcon size={16} />,
-          label: 'Przesuń w górę',
-          onClick: async ({ row: _row, refetch }) => {
+          label: 'Przenieś kolekcje',
+          onClick: async ({ row, refetch }) => {
             try {
-              const row = _row as Row<CollectionListType>;
-              await apiClient('mutation')({
-                moveCollection: [
-                  {
-                    input: {
-                      collectionId: row.original.id,
-                      index: row.original.position + 1,
-                      parentId: row.original.parentId,
-                    },
-                  },
-                  { id: true },
-                ],
-              });
-              refetch();
-              return { success: '' };
-            } catch (e) {
-              return { error: '' };
-            }
-          },
-        },
-        {
-          icon: <ArrowDownSquareIcon size={16} />,
-          label: 'Przesuń w dół',
-          onClick: async ({ row: _row, refetch }) => {
-            try {
-              const row = _row as Row<CollectionListType>;
               await apiClient('mutation')({
                 moveCollection: [
                   {
@@ -184,8 +150,31 @@ export const CollectionsListPage = () => {
               });
               refetch();
               return { success: '' };
-            } catch (e) {
-              console.log(e);
+            } catch {
+              return { error: '' };
+            }
+          },
+        },
+        {
+          icon: <ArrowDownSquareIcon size={16} />,
+          label: 'Przenieś kolekcje',
+          onClick: async ({ row, refetch }) => {
+            try {
+              await apiClient('mutation')({
+                moveCollection: [
+                  {
+                    input: {
+                      collectionId: row.original.id,
+                      index: row.original.position + 1,
+                      parentId: row.original.parentId,
+                    },
+                  },
+                  { id: true },
+                ],
+              });
+              refetch();
+              return { success: '' };
+            } catch {
               return { error: '' };
             }
           },
@@ -195,23 +184,11 @@ export const CollectionsListPage = () => {
           label: 'Przenieś kolekcje',
           onClick: async ({ row, refetch }) => {
             try {
-              const result = await createDialogFromComponent(MoveCollectionsToCollections, [row]);
+              // const result = await createDialogFromComponent(MoveCollectionsToCollections, [row]);
             } catch (e) {
               console.log(e);
             }
             return { success: '' };
-          },
-        },
-        {
-          icon: <FolderOpen size={16} />,
-          label: 'Przypisz kolekcje do kanału',
-          onClick: async ({ row, refetch }) => {
-            try {
-              const result = await createDialogFromComponent(MoveEntityToChannels, [row]);
-            } catch (e) {
-              console.log(e);
-            }
-            return { error: '' };
           },
         },
       ]}

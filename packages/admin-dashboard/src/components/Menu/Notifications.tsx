@@ -1,77 +1,142 @@
 'use client';
 
 import type React from 'react';
-import { Bell, Check, Clock, Info, MailOpen } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Bell, Check, Clock, Trash2 } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
 import {
-  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+  CardDescription,
+  CardContent,
   useServer,
+  Button,
+  CardFooter,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
+type Notification = {
+  name: string;
+  running: boolean;
+  id: string;
+  read: boolean;
+  title: string;
+  description: string;
+  time: string;
+  icon: React.ReactNode;
+};
+
+const NOTIFICATIONS_LOCAL_STORAGE_KEY = 'DEENRUV_NOTIFICATIONS';
+
 export const Notifications = () => {
-  const { jobQueues } = useServer(({ jobQueues }) => ({ jobQueues }));
+  const jobQueues = useServer(({ jobQueues }) => jobQueues);
   const { t } = useTranslation('common');
-  useEffect(() => {
-    if (jobQueues.length > 0) {
-      console.log(jobQueues);
-    }
-  }, [jobQueues]);
-
-  const [notifications, setNotifications] = useState<
-    Array<{
-      id: number;
-      title: string;
-      description: string;
-      time: string;
-      read: boolean;
-      icon: React.ReactNode;
-    }>
-  >([]);
-
+  const [notifications, setNotifications] = useState<Array<Notification>>([]);
+  const prevJobQueuesRef = useRef(jobQueues);
   const hasUnread = notifications.some((notification) => !notification.read);
 
+  useEffect(() => {
+    const savedNotifications = localStorage.getItem(NOTIFICATIONS_LOCAL_STORAGE_KEY);
+    if (savedNotifications) {
+      try {
+        const parsedNotifications = JSON.parse(savedNotifications).map((notification: any) => ({
+          ...notification,
+          icon: notification.running ? (
+            <Clock className="size-4 text-blue-500" />
+          ) : (
+            <Check className="size-4 text-green-500" />
+          ),
+        }));
+        setNotifications(parsedNotifications);
+      } catch (error) {
+        console.error('Failed to parse notifications from localStorage', error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (notifications.length > 0) {
+      const serializableNotifications = notifications.map(({ icon: _, ...rest }) => rest);
+      localStorage.setItem(NOTIFICATIONS_LOCAL_STORAGE_KEY, JSON.stringify(serializableNotifications));
+    }
+  }, [notifications]);
+
   const markAllAsRead = () => {
-    setNotifications(notifications.map((notification) => ({ ...notification, read: true })));
+    setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })));
   };
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+    localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE_KEY);
+  };
+
+  useEffect(() => {
+    if (jobQueues.length > 0) {
+      jobQueues.forEach((queue) => {
+        const prevQueue = prevJobQueuesRef.current.find((q) => q.name === queue.name);
+
+        if (queue.running && (!prevQueue || !prevQueue.running)) {
+          const newNotification: Notification = {
+            ...queue,
+            id: `${queue.name}-start-${Date.now()}`,
+            read: false,
+            title: t('notificationsBox.titleStart', { name: queue.name }),
+            description: t('notificationsBox.descriptionStart', { name: queue.name }),
+            time: new Date().toLocaleTimeString(),
+            icon: <Clock className="size-4 text-blue-500" />,
+          };
+          setNotifications((prev) => [newNotification, ...prev].slice(0, 10));
+        }
+
+        if (prevQueue && prevQueue.running && !queue.running) {
+          const newNotification: Notification = {
+            ...queue,
+            id: `${queue.name}-complete-${Date.now()}`,
+            read: false,
+            title: t('notificationsBox.titleComplete', { name: queue.name }),
+            description: t('notificationsBox.descriptionComplete', { name: queue.name }),
+            time: new Date().toLocaleTimeString(),
+            icon: <Check className="size-4 text-green-500" />,
+          };
+          setNotifications((prev) => [newNotification, ...prev].slice(0, 10));
+        }
+      });
+
+      prevJobQueuesRef.current = [...jobQueues];
+    }
+  }, [jobQueues]);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="icon" className="relative h-10 w-10">
-          <Bell className="h-4 w-4" />
+        <Button variant="outline" size="icon" className="relative size-10">
+          <Bell className="size-4" />
           {hasUnread && (
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500">
+            <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-red-500">
               <span className="absolute inset-0 animate-ping rounded-full bg-red-400 opacity-75"></span>
             </span>
           )}
-          <span className="sr-only">{t('toggleNotifications')}</span>
+          <span className="sr-only">{t('notificationsBox.toggleNotifications')}</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="z-[2138] w-80 p-0" align="end">
+      <PopoverContent className="w-md z-[2138] p-0" align="end">
         <Card className="border-0 shadow-none">
           <CardHeader className="bg-muted/30 flex flex-row items-center justify-between space-y-0 px-4 pb-3 pt-4">
             <div>
-              <CardTitle className="text-base">{t('notifications')}</CardTitle>
-              <CardDescription className="mt-1 text-xs">{t('recentNotifications')}</CardDescription>
+              <CardTitle className="text-base">{t('notificationsBox.notifications')}</CardTitle>
+              <CardDescription className="mt-1 text-xs">{t('notificationsBox.recentNotifications')}</CardDescription>
             </div>
-            {hasUnread && (
-              <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={markAllAsRead}>
-                <Check className="mr-1 h-3 w-3" />
-                {t('markAllAsRead')}
+            {notifications.length > 0 && (
+              <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={clearAllNotifications}>
+                <Trash2 className="mr-1 size-3" />
+                {t('notificationsBox.clearAll')}
               </Button>
             )}
           </CardHeader>
-          <CardContent className="max-h-[300px] overflow-auto p-0">
+          <CardContent className="max-h-[400px] overflow-auto p-0">
             {notifications.length > 0 ? (
               <div className="divide-y">
                 {notifications.map((notification) => (
@@ -84,7 +149,7 @@ export const Notifications = () => {
                       <p className="text-sm font-medium leading-none">{notification.title}</p>
                       <p className="text-muted-foreground text-xs">{notification.description}</p>
                       <div className="flex items-center pt-1">
-                        <Clock className="text-muted-foreground mr-1 h-3 w-3" />
+                        <Clock className="text-muted-foreground mr-1 size-3" />
                         <span className="text-muted-foreground text-xs">{notification.time}</span>
                       </div>
                     </div>
@@ -94,13 +159,21 @@ export const Notifications = () => {
             ) : (
               <div className="flex flex-col items-center justify-center px-4 py-8 text-center">
                 <div className="bg-muted mb-3 rounded-full p-3">
-                  <Bell className="text-muted-foreground h-6 w-6" />
+                  <Bell className="text-muted-foreground size-6" />
                 </div>
-                <h3 className="text-sm font-medium">{t('emptyStateMessage')}</h3>
-                <p className="text-muted-foreground mt-1 text-xs">{t('emptyStateDescription')}</p>
+                <h3 className="text-sm font-medium">{t('notificationsBox.emptyStateMessage')}</h3>
+                <p className="text-muted-foreground mt-1 text-xs">{t('notificationsBox.emptyStateDescription')}</p>
               </div>
             )}
           </CardContent>
+          {hasUnread && (
+            <CardFooter className="flex items-center justify-end p-4">
+              <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={markAllAsRead}>
+                <Check className="mr-1 size-3" />
+                {t('notificationsBox.markAllAsRead')}
+              </Button>
+            </CardFooter>
+          )}
         </Card>
       </PopoverContent>
     </Popover>
