@@ -227,7 +227,20 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
             onAssetsChange={(ids) => setField('assetIds', ids)}
           />
-          <EntityCustomFields entityName="productVariant" id={variant?.id} />
+          <EntityCustomFields
+            entityName="productVariant"
+            id={variant?.id}
+            hideButton
+            onChange={(customFields, translations) => {
+              setField('customFields', customFields);
+              if (translations) setField('translations', translations as any);
+            }}
+            initialValues={
+              variant && 'customFields' in variant
+                ? { customFields: variant.customFields as CF, translations: variant.translations as any }
+                : { customFields: {} }
+            }
+          />
         </Stack>
         <Stack className="w-1/3 flex-col gap-4">
           <CustomCard title={t('name')} icon={<CardIcons.basic />} color="purple">
@@ -268,20 +281,6 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
           )}
         </Stack>
       </Stack>
-      <EntityCustomFields
-        entityName="productVariant"
-        id={variant?.id}
-        hideButton
-        onChange={(customFields, translations) => {
-          setField('customFields', customFields);
-          if (translations) setField('translations', translations as any);
-        }}
-        initialValues={
-          variant && 'customFields' in variant
-            ? { customFields: variant.customFields as CF, translations: variant.translations as any }
-            : { customFields: {} }
-        }
-      />
     </Stack>
   );
 };

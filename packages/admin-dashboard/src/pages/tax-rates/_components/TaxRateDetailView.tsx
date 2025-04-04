@@ -150,6 +150,7 @@ export const TaxRateDetailView = () => {
             initialValues={
               entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
             }
+            hideButton
           />
         </Stack>
       </div>

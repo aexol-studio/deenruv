@@ -86,7 +86,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
 
   return (
     <div className="bg-card rounded-md border p-4">
-      <h3 className="mb-4 font-medium">Timeline</h3>
+      <h3 className="mb-4 font-medium">{t('history.timeline')}</h3>
       <TimelineWrapper positions="left" className="w-full">
         {data?.map((history) => {
           const historyData = historyDataToReadableString(history.data);
@@ -113,7 +113,10 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                           </div>
                           <div className="text-muted-foreground text-xs">
                             {format(new Date(history.createdAt), 'MMM d, yyyy • h:mm a')}
-                            {history.createdAt !== history.updatedAt && <span className="ml-1 italic">(edited)</span>}
+                            {Math.floor(new Date(history.createdAt).getTime() / 1000) !==
+                              Math.floor(new Date(history.updatedAt).getTime() / 1000) && (
+                              <span className="ml-1 italic">(edited)</span>
+                            )}
                           </div>
                         </div>
                       </div>

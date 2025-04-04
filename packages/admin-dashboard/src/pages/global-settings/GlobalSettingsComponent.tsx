@@ -1,6 +1,6 @@
+import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 import { LanguageCode } from '@deenruv/admin-types';
 import {
-  Label,
   Switch,
   MultipleSelector,
   Input,
@@ -14,12 +14,13 @@ import { useEffect, useMemo } from 'react';
 
 export const GlobalSettingsComponent = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
-  const { form, fetchEntity } = useDetailView(
+  const { form, fetchEntity, entity } = useDetailView(
     'globalSettings-detail-view',
     'UpdateGlobalSettingsInput',
     'availableLanguages',
     'outOfStockThreshold',
     'trackInventory',
+    'customFields',
   );
   const {
     base: { state, setField },
@@ -37,11 +38,11 @@ export const GlobalSettingsComponent = () => {
         setField('availableLanguages', data.availableLanguages);
         setField('outOfStockThreshold', data.outOfStockThreshold);
         setField('trackInventory', data.trackInventory);
+        if ('customFields' in data) setField('customFields', data.customFields);
       }
     };
     init();
   }, [contentLng]);
-  console.log(state);
 
   return (
     <div className="flex flex-col gap-6 p-4">
@@ -90,6 +91,18 @@ export const GlobalSettingsComponent = () => {
           onCheckedChange={(val) => setField('trackInventory', val)}
         />
       </CustomCard>
+      <EntityCustomFields
+        id={entity?.id}
+        entityName="globalSettings"
+        hideButton
+        initialValues={
+          entity && 'customFields' in entity ? { customFields: entity.customFields as any } : { customFields: {} }
+        }
+        onChange={(cf) => {
+          setField('customFields', cf);
+        }}
+        additionalData={{}}
+      />
     </div>
   );
 };

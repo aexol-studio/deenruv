@@ -570,6 +570,7 @@ export const AddressCard: React.FC<{
                           setField('customFields', cf);
                         }}
                         additionalData={{}}
+                        withoutBorder
                       />
                       {!order?.customer?.addresses?.length ? (
                         <div className="flex items-center space-x-2 py-2">

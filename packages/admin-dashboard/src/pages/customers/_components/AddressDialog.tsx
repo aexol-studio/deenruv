@@ -16,7 +16,7 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $, GraphQLTypes } from '@deenruv/admin-types';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 import { toast } from 'sonner';
 
 interface RolesCardProps {
@@ -60,6 +60,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
     'streetLine1',
     'streetLine2',
     'province',
+    'customFields',
   )({
     fullName: {
       initialValue: address?.fullName,
@@ -116,6 +117,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
       phoneNumber: state.phoneNumber!.validatedValue,
       postalCode: state.postalCode!.validatedValue,
       province: state.province?.validatedValue,
+      ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
     };
 
     isEdit
@@ -225,6 +227,22 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
             onValueChange={(value) => setField('countryCode', value)}
             errors={state.countryCode?.errors}
             required
+          />
+
+          <EntityCustomFields
+            id={address?.id}
+            entityName="address"
+            hideButton
+            initialValues={
+              address && 'customFields' in address
+                ? { customFields: address.customFields as any }
+                : { customFields: {} }
+            }
+            onChange={(cf) => {
+              setField('customFields', cf);
+            }}
+            additionalData={{}}
+            withoutBorder
           />
         </Stack>
         <DialogFooter className="mt-2">

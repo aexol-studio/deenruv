@@ -171,6 +171,7 @@ export const ChannelDetailView = () => {
             initialValues={
               entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
             }
+            hideButton
           />
           <DefaultsCard
             availableLanguages={state.availableLanguageCodes?.value ?? undefined}

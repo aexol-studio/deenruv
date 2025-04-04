@@ -16,7 +16,7 @@ import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
 
 interface AddOptionGroupDialogProps {
   currentTranslationLng: LanguageCode;
@@ -31,7 +31,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
 }) => {
   const { t } = useTranslation('products');
   const [open, setOpen] = useState(false);
-  const { state, setField } = useGFFLP('CreateProductOptionGroupInput', 'code', 'translations')({});
+  const { state, setField } = useGFFLP('CreateProductOptionGroupInput', 'code', 'translations', 'customFields')({});
   const translations = state?.translations?.value || [];
   const [codeEditedManually, setCodeEditedManually] = useState(false);
 
@@ -116,6 +116,15 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
               }}
             />
           </div>
+          <EntityCustomFields
+            id={undefined}
+            entityName="productOptionGroup"
+            hideButton
+            onChange={(cf) => {
+              setField('customFields', cf);
+            }}
+            additionalData={{}}
+          />
         </Stack>
         <DialogFooter className="mt-2">
           <Button onClick={() => setOpen(false)}>{t('addOptionGroupDialog.cancel')}</Button>

@@ -89,20 +89,6 @@ export const CountryDetailView = () => {
           </Stack>
         </CustomCard>
         <DetailViewMarker position={'countries-detail-view'} />
-        <EntityCustomFields
-          entityName="country"
-          id={id}
-          hideButton
-          onChange={(customFields, translations) => {
-            setField('customFields', customFields);
-            if (translations) setField('translations', translations);
-          }}
-          initialValues={
-            entity && 'customFields' in entity
-              ? { customFields: entity.customFields as CF, translations: entity.translations as any }
-              : { customFields: {} }
-          }
-        />
       </div>
     </main>
   );

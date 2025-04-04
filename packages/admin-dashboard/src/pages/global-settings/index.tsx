@@ -60,6 +60,7 @@ export const GlobalSettings = () => {
                 availableLanguages: state.availableLanguages?.value,
                 outOfStockThreshold: state.outOfStockThreshold?.value,
                 trackInventory: state.trackInventory?.value,
+                ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
               },
             });
             if (res.updateGlobalSettings.__typename === 'GlobalSettings') {

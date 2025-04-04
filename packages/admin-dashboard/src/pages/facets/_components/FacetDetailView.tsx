@@ -77,6 +77,7 @@ export const FacetsDetailView = () => {
       customFieldsSelector?: T,
       additionalSelector?: K,
     ) => {
+      // if (!id) return Promise.resolve([]);
       const selector = deepMerge({ id: true, name: true, code: true }, additionalSelector ?? {});
       const response = await apiClient('query')({
         ['facetValues']: [
@@ -104,6 +105,7 @@ export const FacetsDetailView = () => {
       setField('translations', res.translations);
       setField('code', res.code);
       setField('isPrivate', res.isPrivate);
+      if ('customFields' in res) setField('customFields', res.customFields);
     })();
   }, []);
 

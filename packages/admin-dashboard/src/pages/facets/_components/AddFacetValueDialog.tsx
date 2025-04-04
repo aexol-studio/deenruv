@@ -68,6 +68,8 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           'name',
           resp.facetValues.items[0].translations.find((t) => t.languageCode === languageCode)?.name || '',
         );
+        if ('customFields' in resp.facetValues.items[0])
+          setField('customFields', resp.facetValues.items[0].customFields);
       }),
     [facetValueId, t, languageCode],
   );
@@ -81,6 +83,10 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
     const facetCode = state.name?.value.toLowerCase().replace(/\s+/g, '-');
     if (facetCode) setField('code', facetCode);
   }, [state, editMode, setField]);
+
+  useEffect(() => {
+    console.log('ST', state);
+  }, [state]);
 
   const resetValues = useCallback(() => {
     onFacetValueChange();
@@ -99,6 +105,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
                 facetId,
                 code: state.code!.value,
                 translations: [{ languageCode, name: state.name?.value }],
+                ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
               },
             ],
           },
@@ -123,6 +130,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
               id: facetValueId,
               code: state.code!.value,
               translations: [{ languageCode, name: state.name?.value }],
+              ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
             },
           ],
         },
@@ -160,28 +168,20 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
             <Label>{t('addValueModal.codeLabel')}</Label>
             <Input className="mt-1" value={state.code?.value} onChange={(e) => setField('code', e.target.value)} />
           </div>
-          {facetValueId && (
-            <EntityCustomFields
-              entityName="facetValue"
-              id={facetValueId}
-              fetch={async (runtimeSelector) => {
-                const { facetValues: resp } = await apiClient('query')({
-                  facetValues: [
-                    { options: { filter: { id: { eq: facetValueId } } } },
-                    {
-                      items: {
-                        code: true,
-                        translations: { name: true },
-                        ...runtimeSelector,
-                      },
-                    },
-                  ],
-                });
-                const foundValue = resp?.items[0];
-                return { customFields: foundValue?.customFields as any };
-              }}
-            />
-          )}
+          <EntityCustomFields
+            entityName="facetValue"
+            id={facetValueId}
+            hideButton
+            initialValues={
+              state && 'customFields' in state
+                ? { customFields: state.customFields?.validatedValue as any }
+                : { customFields: {} }
+            }
+            onChange={(cf) => {
+              setField('customFields', cf);
+            }}
+            additionalData={{}}
+          />
         </Stack>
         <DialogFooter className="mt-2">
           <Button onClick={editMode ? updateFacetValue : saveFacetValue}>
