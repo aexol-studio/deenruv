@@ -28,5 +28,7 @@ export interface EmailGenerator<T extends string = any, E extends DeenruvEvent =
         subject: string,
         body: string,
         templateVars: { [key: string]: any },
-    ): Pick<EmailDetails, 'from' | 'subject' | 'body'>;
+    ):
+        | Promise<Pick<EmailDetails, 'from' | 'subject' | 'body'>>
+        | Pick<EmailDetails, 'from' | 'subject' | 'body'>;
 }
