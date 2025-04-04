@@ -548,6 +548,7 @@
   },
   "history": {
     "edit": "Edytuj",
+    "edited": "(edytowano)",
     "delete": "Usuń",
     "deleteNoteHeader": "Usunąć notatkę?",
     "editNoteHeader": "Edytuj notatkę",

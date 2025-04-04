@@ -49,6 +49,7 @@ type ViableEntity = Uncapitalize<
     | 'Customer'
     | 'CustomerGroup'
     | 'GlobalSettings'
+    | 'ProductVariantPrice'
   >
 >;
 export type CF = Record<string, unknown>;

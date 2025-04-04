@@ -48,7 +48,8 @@
         "emptyState": {
             "title": "Nic tutaj nie ma",
             "description": "Nie ma jeszcze grup opcji. Użyj przycisku powyżej, aby je dodać."
-        }
+        },
+        "noOptionValues": "Dodaj opcje powyżej, aby znaleźć je tutaj"
     },
     "variantsTab": {
         "emptyState": {

@@ -325,7 +325,8 @@
       "shippingAdded": "Metoda wysyłki została dodana pomyślnie",
       "code": "Kod:",
       "price": "Cena:",
-      "method": "Metoda:"
+      "method": "Metoda:",
+      "addMethod": "Dodaj metodę wysyłki"
     },
     "inputs": {
       "pickDate": "Wybierz datę"
@@ -543,7 +544,8 @@
     "shippingAdded": "Metoda wysyłki została dodana pomyślnie",
     "code": "Kod:",
     "price": "Cena:",
-    "method": "Metoda:"
+    "method": "Metoda:",
+    "addMethod": "Dodaj metodę wysyłki"
   },
   "inputs": {
     "pickDate": "Wybierz datę"

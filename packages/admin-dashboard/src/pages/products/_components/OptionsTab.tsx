@@ -21,6 +21,7 @@ import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGrou
 import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
 import { Stack } from '@/components';
 import { OptionGroup } from '@/pages/products/_components/OptionGroup';
+import { Info } from 'lucide-react';
 
 export const OptionsTab: React.FC = () => {
   const contentLng = useSettings((p) => p.translationsLanguage);
@@ -104,6 +105,15 @@ export const OptionsTab: React.FC = () => {
               title={`${t('group')}: ${oG.name}`}
               icon={<CardIcons.default />}
               collapsed
+              notCollapsible={!oG.options.length}
+              upperRight={
+                !oG.options.length && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Info className="h-4 w-4" />
+                    {t('optionsTab.noOptionValues')}
+                  </div>
+                )
+              }
             >
               <div className="grid grid-cols-4 gap-3">
                 {oG.options

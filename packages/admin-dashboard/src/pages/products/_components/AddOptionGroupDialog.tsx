@@ -44,6 +44,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
               code: state.code?.validatedValue,
               options: [],
               translations: state.translations.validatedValue,
+              ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
             },
           },
           {
@@ -124,6 +125,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
               setField('customFields', cf);
             }}
             additionalData={{}}
+            withoutBorder
           />
         </Stack>
         <DialogFooter className="mt-2">

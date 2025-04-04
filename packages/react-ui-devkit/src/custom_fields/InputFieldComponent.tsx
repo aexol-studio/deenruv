@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 
 const LoadingInputFieldComponent = ({ field }: { field: Field }) => {
     return (
-        <div className={cn(`flex-1 min-w-[250px] basis-1/3`, !!field.ui?.fullWidth && `basis-full`)}>
+        <div className={cn(`flex-1 min-w-[220px] basis-1/3`, !!field.ui?.fullWidth && `basis-full`)}>
             <Loader2 className="animate-spin h-5 w-5 text-blue-500" />
             <div className="flex flex-col gap-1">
                 <span>Loading...</span>
@@ -42,7 +42,7 @@ export const InputFieldComponent = <T extends Field & { component: React.ReactNo
             disabled={disabled}
         >
             <Suspense fallback={<LoadingInputFieldComponent field={field} />}>
-                <div className={cn(`flex-1 min-w-[250px] basis-1/3`, !!field.ui?.fullWidth && `basis-full`)}>
+                <div className={cn(`flex-1 min-w-[220px] basis-1/3`, !!field.ui?.fullWidth && `basis-full`)}>
                     {field.component}
                 </div>
             </Suspense>

@@ -29,10 +29,19 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
   useEffect(() => {
     setField('code', productOption.code);
     setField('translations', productOption.translations);
+    if ('customFields' in productOption) {
+      setField('customFields', productOption.customFields);
+    }
   }, [productOption]);
 
   const editOption = useCallback(() => {
-    if (productOption.id)
+    if (productOption.id) {
+      console.log('INPUT', {
+        id: productOption.id,
+        code: state.code?.validatedValue,
+        customFields: state.customFields?.validatedValue,
+        translations: state.translations?.validatedValue,
+      });
       return apiClient('mutation')({
         updateProductOption: [
           {
@@ -53,6 +62,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
         .catch(() => {
           toast(t('toasts.updateOptionErrorToast'));
         });
+    }
   }, [state, productOption, t, onEdited]);
 
   return (
@@ -83,27 +93,20 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
                 setField('code', e.target.value);
               }}
             />
-          </Stack>
-          <Stack column className="gap-3">
             <EntityCustomFields
               entityName="productOption"
+              withoutBorder
               id={productOption.id}
               currentLanguage={currentTranslationLng}
-              fetch={async (runtimeSelector) => {
-                const { productOptionGroup: resp } = await apiClient('query')({
-                  productOptionGroup: [
-                    { id: optionGroupId },
-                    {
-                      options: {
-                        id: true,
-                        ...runtimeSelector,
-                      },
-                    },
-                  ],
-                });
-                const foundValue = resp?.options.find((o) => o.id === productOption.id);
-                return { customFields: foundValue?.customFields as any };
+              initialValues={
+                state && 'customFields' in state
+                  ? { customFields: state.customFields?.validatedValue as any }
+                  : { customFields: {} }
+              }
+              onChange={(cf) => {
+                setField('customFields', cf);
               }}
+              additionalData={{}}
             />
           </Stack>
         </Stack>

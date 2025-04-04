@@ -10,14 +10,21 @@ import {
   CardIcons,
 } from '@deenruv/react-ui-devkit';
 
-import { CurrencyCode } from '@deenruv/admin-types';
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { CurrencyCode, ModelTypes } from '@deenruv/admin-types';
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@/components';
+import { EntityCustomFields, Stack } from '@/components';
+
+type ProductVariantPrice = {
+  currencyCode: ModelTypes['CurrencyCode'];
+  price: ModelTypes['Money'];
+  delete?: boolean | null;
+  customFields?: any;
+};
 
 interface PriceCardProps {
-  priceValue: number | undefined;
-  onPriceChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  priceValue: ProductVariantPrice[] | null | undefined;
+  onPriceChange: (e: ProductVariantPrice[]) => void;
   taxRateValue: string | undefined;
   onTaxRateChange: (e: string) => void;
   currencyCode: CurrencyCode;
@@ -74,6 +81,36 @@ export const PriceCard: React.FC<PriceCardProps> = ({
     setTaxCategories(categoriesWithRates);
   }, []);
 
+  const currentPrice = useMemo(
+    () => priceValue?.find((p) => p.currencyCode === currencyCode),
+    [priceValue, currencyCode],
+  );
+
+  const handlePriceChange = useCallback(
+    (field: 'price' | 'customFields', value: any) => {
+      if (!priceValue || !currentPrice) return;
+
+      const currentPriceInput = {
+        ...currentPrice,
+      };
+
+      if ('customFields' in currentPrice) {
+        delete currentPriceInput.customFields;
+      }
+
+      const newCurrentPrice = {
+        ...currentPriceInput,
+        [field]: field === 'price' ? +value : value,
+      };
+
+      const currentPriceIdx = priceValue.findIndex((p) => p.currencyCode === currencyCode);
+      priceValue[currentPriceIdx] = newCurrentPrice;
+
+      onPriceChange(priceValue);
+    },
+    [priceValue, currentPrice],
+  );
+
   useEffect(() => {
     if (taxCategories.length) {
       const _currentTaxRate = taxCategories.find((tR) => tR.id === taxRateValue);
@@ -92,8 +129,8 @@ export const PriceCard: React.FC<PriceCardProps> = ({
           <Input
             type="currency"
             placeholder={t('price')}
-            value={priceValue}
-            onChange={onPriceChange}
+            value={currentPrice?.price}
+            onChange={(e) => handlePriceChange('price', e.target.value)}
             step={0.01}
             endAdornment={currencyCode}
           />
@@ -110,6 +147,24 @@ export const PriceCard: React.FC<PriceCardProps> = ({
             </SelectContent>
           </Select>
         </Stack>
+
+        <EntityCustomFields
+          id={undefined}
+          entityName="productVariantPrice"
+          hideButton
+          initialValues={
+            currentPrice && 'customFields' in currentPrice
+              ? { customFields: currentPrice.customFields as any }
+              : { customFields: {} }
+          }
+          disabled
+          // onChange={(cf) => {
+          //   handlePriceChange('customFields', cf);
+          //   console.log('CF', cf);
+          // }}
+          additionalData={{}}
+          withoutBorder
+        />
 
         {currentTaxCategory?.value !== undefined && `${t('details.taxRateDescription')} ${currentTaxCategory?.value}%`}
       </Stack>

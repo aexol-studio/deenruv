@@ -115,7 +115,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                             {format(new Date(history.createdAt), 'MMM d, yyyy • h:mm a')}
                             {Math.floor(new Date(history.createdAt).getTime() / 1000) !==
                               Math.floor(new Date(history.updatedAt).getTime() / 1000) && (
-                              <span className="ml-1 italic">(edited)</span>
+                              <span className="ml-1 italic">{t('history.edited')}</span>
                             )}
                           </div>
                         </div>

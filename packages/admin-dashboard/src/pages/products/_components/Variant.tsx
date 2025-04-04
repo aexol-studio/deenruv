@@ -27,6 +27,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
     'UpdateProductVariantInput',
     'translations',
     'price',
+    'prices',
     'sku',
     'assetIds',
     'featuredAssetId',
@@ -48,6 +49,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
 
     setField('sku', variant.sku);
     setField('price', variant.price);
+    setField('prices', variant.prices);
     setField('translations', variant.translations);
     setField(
       'assetIds',
@@ -79,7 +81,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               {
                 productId,
                 translations: state.translations?.validatedValue,
-                price: +state.price?.validatedValue,
+                // price: +state.price?.validatedValue,
+                prices: state.prices?.validatedValue,
                 sku: state.sku?.validatedValue,
                 assetIds: state.assetIds?.validatedValue,
                 featuredAssetId: state.featuredAssetId?.validatedValue,
@@ -118,7 +121,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             {
               id: variant.id,
               translations: state.translations?.validatedValue,
-              price: +state.price?.validatedValue,
+              // price: +state.price?.validatedValue,
+              prices: state.prices?.validatedValue,
               sku: state.sku?.validatedValue,
               assetIds: state.assetIds?.validatedValue,
               featuredAssetId: state.featuredAssetId?.validatedValue,
@@ -268,8 +272,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
           />
           <PriceCard
             currencyCode={variant?.currencyCode || CurrencyCode.PLN}
-            priceValue={state.price?.value}
-            onPriceChange={(e) => setField('price', e.target.value)}
+            priceValue={state.prices?.value}
+            onPriceChange={(e) => setField('prices', e)}
             taxRateValue={state.taxCategoryId?.value ?? undefined}
             onTaxRateChange={(id) => setField('taxCategoryId', id)}
           />
