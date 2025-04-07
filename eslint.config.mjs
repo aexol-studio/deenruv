@@ -37,7 +37,6 @@ export default tseslint.config(
       "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
       "no-prototype-builtins": "warn",
       "no-case-declarations": "warn",
-      "no-undef": "warn",
       "no-useless-catch": "warn",
       "no-async-promise-executor": "warn",
       "no-empty": "warn",

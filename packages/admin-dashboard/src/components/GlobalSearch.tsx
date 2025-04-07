@@ -10,11 +10,12 @@ import {
   usePluginStore,
   Routes,
   useGlobalSearch,
+  capitalizeFirstLetter,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Search, LayoutDashboard, ListPlus, FileText, Puzzle, Command, ArrowRight } from 'lucide-react';
+import { LayoutDashboard, ListPlus, FileText, Puzzle, ArrowRight } from 'lucide-react';
 
 type Route = {
   name: string;
@@ -53,15 +54,15 @@ export const GlobalSearch = () => {
         const children: Route[] = [];
         if ('new' in value && typeof value.new === 'string') {
           children.push({
-            name: `${key}`,
+            name: capitalizeFirstLetter(t(`menu.${key}`)),
             path: value.new,
             type: 'new',
-            description: `Create a new ${key.toLowerCase()}`,
+            description: t('Utwórz', { value: key.toLowerCase() }),
           });
         }
         if ('list' in value && typeof value.list === 'string') {
           children.push({
-            name: `${key}`,
+            name: capitalizeFirstLetter(t(`menu.${key}`)),
             path: value.list,
             type: 'list',
             description: `View all ${key.toLowerCase()} items`,
@@ -162,7 +163,7 @@ export const GlobalSearch = () => {
   return (
     <CommandDialog open={isOpen} onOpenChange={toggle} modal>
       <CommandInput
-        placeholder={t('Type a command or search...')}
+        placeholder={t('entity.product', { count: 4 })}
         className="placeholder:text-muted-foreground flex-1 bg-transparent text-base outline-none"
       />
       <CommandList className="max-h-[300px] overflow-y-auto py-2">
