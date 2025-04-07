@@ -1,10 +1,10 @@
-import { DocumentNode } from 'graphql';
+import { DocumentNode } from "graphql";
 
-import { RequestContext } from '../../api/common/request-context';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { Order } from '../../entity/order/order.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { Order } from "../../entity/order/order.entity";
 
-export const ACTIVE_ORDER_INPUT_FIELD_NAME = 'activeOrderInput';
+export const ACTIVE_ORDER_INPUT_FIELD_NAME = "activeOrderInput";
 
 /**
  * @description
@@ -124,68 +124,72 @@ export const ACTIVE_ORDER_INPUT_FIELD_NAME = 'activeOrderInput';
  * @since 1.9.0
  * @docsCategory orders
  */
-export interface ActiveOrderStrategy<InputType extends Record<string, any> | void = void>
-    extends InjectableStrategy {
-    /**
-     * @description
-     * The name of the strategy, e.g. "orderByToken", which will also be used as the
-     * field name in the ActiveOrderInput type.
-     */
-    readonly name: string;
+export interface ActiveOrderStrategy<
+  InputType extends Record<string, any> | void = void,
+> extends InjectableStrategy {
+  /**
+   * @description
+   * The name of the strategy, e.g. "orderByToken", which will also be used as the
+   * field name in the ActiveOrderInput type.
+   */
+  readonly name: string;
 
-    /**
-     * @description
-     * Defines the type of the GraphQL Input object expected by the `activeOrderInput`
-     * input argument.
-     *
-     * @example
-     * For example, given the following:
-     *
-     * ```ts
-     * defineInputType() {
-     *   return gql`
-     *      input OrderTokenInput {
-     *        token: String!
-     *      }
-     *   `;
-     * }
-     * ```
-     *
-     * assuming the strategy name is "orderByToken", then the resulting call to `activeOrder` (or any of the other
-     * affected Shop API operations) would look like:
-     *
-     * ```GraphQL
-     * activeOrder(activeOrderInput: {
-     *   orderByToken: {
-     *     token: "foo"
-     *   }
-     * }) {
-     *   # ...
-     * }
-     * ```
-     *
-     * **Note:** if more than one graphql `input` type is being defined (as in a nested input type), then
-     * the _first_ input will be assumed to be the top-level input.
-     */
-    defineInputType?: () => DocumentNode;
+  /**
+   * @description
+   * Defines the type of the GraphQL Input object expected by the `activeOrderInput`
+   * input argument.
+   *
+   * @example
+   * For example, given the following:
+   *
+   * ```ts
+   * defineInputType() {
+   *   return gql`
+   *      input OrderTokenInput {
+   *        token: String!
+   *      }
+   *   `;
+   * }
+   * ```
+   *
+   * assuming the strategy name is "orderByToken", then the resulting call to `activeOrder` (or any of the other
+   * affected Shop API operations) would look like:
+   *
+   * ```GraphQL
+   * activeOrder(activeOrderInput: {
+   *   orderByToken: {
+   *     token: "foo"
+   *   }
+   * }) {
+   *   # ...
+   * }
+   * ```
+   *
+   * **Note:** if more than one graphql `input` type is being defined (as in a nested input type), then
+   * the _first_ input will be assumed to be the top-level input.
+   */
+  defineInputType?: () => DocumentNode;
 
-    /**
-     * @description
-     * Certain mutations such as `addItemToOrder` can automatically create a new Order if one does not exist.
-     * In these cases, this method will be called to create the new Order.
-     *
-     * If automatic creation of an Order does not make sense in your strategy, then leave this method
-     * undefined. You'll then need to take care of creating an order manually by defining a custom mutation.
-     */
-    createActiveOrder?: (ctx: RequestContext, input: InputType) => Promise<Order>;
+  /**
+   * @description
+   * Certain mutations such as `addItemToOrder` can automatically create a new Order if one does not exist.
+   * In these cases, this method will be called to create the new Order.
+   *
+   * If automatic creation of an Order does not make sense in your strategy, then leave this method
+   * undefined. You'll then need to take care of creating an order manually by defining a custom mutation.
+   */
+  createActiveOrder?: (ctx: RequestContext, input: InputType) => Promise<Order>;
 
-    /**
-     * @description
-     * This method is used to determine the active Order based on the current RequestContext in addition to any
-     * input values provided, as defined by the `defineInputType` method of this strategy.
-     *
-     * Note that this method is invoked frequently, so you should aim to keep it efficient. The returned Order,
-     * for example, does not need to have its various relations joined.
-     */
-    determineActiveOrder(ctx: RequestContext, input: InputType): Promise<Order | undefined>;
+  /**
+   * @description
+   * This method is used to determine the active Order based on the current RequestContext in addition to any
+   * input values provided, as defined by the `defineInputType` method of this strategy.
+   *
+   * Note that this method is invoked frequently, so you should aim to keep it efficient. The returned Order,
+   * for example, does not need to have its various relations joined.
+   */
+  determineActiveOrder(
+    ctx: RequestContext,
+    input: InputType,
+  ): Promise<Order | undefined>;
 }

@@ -1,6 +1,6 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Order, OrderLine } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Order, OrderLine } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -11,12 +11,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class OrderLineEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public order: Order,
-        public orderLine: OrderLine,
-        public type: 'created' | 'updated' | 'deleted' | 'cancelled',
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public order: Order,
+    public orderLine: OrderLine,
+    public type: "created" | "updated" | "deleted" | "cancelled",
+  ) {
+    super();
+  }
 }

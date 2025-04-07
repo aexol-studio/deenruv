@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const tryParseJSON = (value: unknown) => {
   if (typeof value === 'string') {
     try {
@@ -10,9 +9,9 @@ const tryParseJSON = (value: unknown) => {
   return null;
 };
 
-export const giveObjectsDiffrence = (
-  orginalObject: any,
-  mabeyModifiedObject: any,
+export const giveObjectsDifference = (
+  originalObject: any,
+  maybeModifiedObject: any,
   excludedProperties?: string[],
   path: string = '',
 ): any => {
@@ -21,98 +20,103 @@ export const giveObjectsDiffrence = (
     resChanges: [] as any[],
   };
 
-  const handleDifference = (key: string, orginalValue: any, mabeyModifiedValue: any, path: string) => {
+  const handleDifference = (key: string, originalValue: any, maybeModifiedValue: any, path: string) => {
     const fullPath = path ? `${path}.${key}` : key;
 
-    const parsedOrginalValue = tryParseJSON(orginalValue);
-    const parsedMabeyModifiedValue = tryParseJSON(mabeyModifiedValue);
+    const parsedOriginalValue = tryParseJSON(originalValue);
+    const parsedMaybeModifiedValue = tryParseJSON(maybeModifiedValue);
 
-    if (parsedOrginalValue && parsedMabeyModifiedValue) {
-      const jsonDiff = giveObjectsDiffrence(parsedOrginalValue, parsedMabeyModifiedValue, excludedProperties, fullPath);
+    if (parsedOriginalValue && parsedMaybeModifiedValue) {
+      const jsonDiff = giveObjectsDifference(
+        parsedOriginalValue,
+        parsedMaybeModifiedValue,
+        excludedProperties,
+        fullPath,
+      );
       if (fullPath.startsWith('lines')) {
         changes.linesChanges.push(...jsonDiff.linesChanges);
       } else {
         changes.resChanges.push(...jsonDiff.resChanges);
       }
-    } else if (parsedOrginalValue || parsedMabeyModifiedValue) {
+    } else if (parsedOriginalValue || parsedMaybeModifiedValue) {
       if (fullPath.startsWith('lines')) {
         changes.linesChanges.push({
           path: fullPath,
           changed: 'primitive-json-change',
-          removed: orginalValue,
-          added: mabeyModifiedValue,
+          removed: originalValue,
+          added: maybeModifiedValue,
         });
       } else {
         changes.resChanges.push({
           path: fullPath,
           changed: 'primitive-json-change',
-          removed: orginalValue,
-          added: mabeyModifiedValue,
+          removed: originalValue,
+          added: maybeModifiedValue,
         });
       }
-    } else if (typeof orginalValue === 'object' && typeof mabeyModifiedValue === 'object') {
-      const objectDiff = giveObjectsDiffrence(orginalValue, mabeyModifiedValue, excludedProperties, fullPath);
+    } else if (typeof originalValue === 'object' && typeof maybeModifiedValue === 'object') {
+      const objectDiff = giveObjectsDifference(originalValue, maybeModifiedValue, excludedProperties, fullPath);
       if (fullPath.startsWith('lines')) {
         changes.linesChanges.push(...objectDiff.linesChanges);
       } else {
         changes.resChanges.push(...objectDiff.resChanges);
       }
-    } else if (orginalValue !== mabeyModifiedValue) {
+    } else if (originalValue !== maybeModifiedValue) {
       if (fullPath.startsWith('lines')) {
         changes.linesChanges.push({
           path: fullPath,
           changed: 'primitive-change',
-          removed: orginalValue,
-          added: mabeyModifiedValue,
+          removed: originalValue,
+          added: maybeModifiedValue,
         });
       } else {
         changes.resChanges.push({
           path: fullPath,
           changed: 'primitive-change',
-          removed: orginalValue,
-          added: mabeyModifiedValue,
+          removed: originalValue,
+          added: maybeModifiedValue,
         });
       }
     }
   };
 
-  for (const key in orginalObject) {
-    if (key in mabeyModifiedObject) {
+  for (const key in originalObject) {
+    if (key in maybeModifiedObject) {
       if (excludedProperties?.includes(key)) {
         continue;
       } else {
-        handleDifference(key, orginalObject[key], mabeyModifiedObject[key], path);
+        handleDifference(key, originalObject[key], maybeModifiedObject[key], path);
       }
     } else if (!excludedProperties?.includes(key)) {
       if (path.startsWith('lines')) {
         changes.linesChanges.push({
           path: path ? `${path}.${key}` : key,
           changed: 'removed',
-          value: orginalObject[key],
+          value: originalObject[key],
         });
       } else {
         changes.resChanges.push({
           path: path ? `${path}.${key}` : key,
           changed: 'removed',
-          value: orginalObject[key],
+          value: originalObject[key],
         });
       }
     }
   }
 
-  for (const key in mabeyModifiedObject) {
-    if (!(key in orginalObject) && !excludedProperties?.includes(key)) {
+  for (const key in maybeModifiedObject) {
+    if (!(key in originalObject) && !excludedProperties?.includes(key)) {
       if (path.startsWith('lines')) {
         changes.linesChanges.push({
           path: path ? `${path}.${key}` : key,
           changed: 'added',
-          value: mabeyModifiedObject[key],
+          value: maybeModifiedObject[key],
         });
       } else {
         changes.resChanges.push({
           path: path ? `${path}.${key}` : key,
           changed: 'added',
-          value: mabeyModifiedObject[key],
+          value: maybeModifiedObject[key],
         });
       }
     }
@@ -122,23 +126,23 @@ export const giveObjectsDiffrence = (
 };
 
 export const giveModificationInfo = (
-  orginalObject: any,
-  mabeyModifiedObject: any,
+  original: any,
+  modified: any,
   excludedProperties?: string[],
   path: string = '',
 ) => {
-  const changes = giveObjectsDiffrence(orginalObject, mabeyModifiedObject, excludedProperties, path);
+  const changes = giveObjectsDifference(original, modified, excludedProperties, path);
   const lineChanges = (changes.linesChanges as any[]).reduce((acc, change) => {
     const [line, index, ...rest] = change.path.split('.');
     let isNew: Record<string, boolean> = {};
-    if (!orginalObject[line][index]) {
+    if (!original[line][index]) {
       isNew = { isNew: true };
     }
-    const lineId = (orginalObject[line][index] ?? mabeyModifiedObject[line][index]).id;
+    const lineId = (original[line][index] ?? modified[line][index]).id;
 
     if (!acc[lineId]) {
       acc[lineId] = {
-        variantName: (orginalObject[line][index] ?? mabeyModifiedObject[line][index]).productVariant.name,
+        variantName: (original[line][index] ?? modified[line][index]).productVariant.name,
         changes: [{ ...change, path: rest.join('.') }],
         ...isNew,
       };

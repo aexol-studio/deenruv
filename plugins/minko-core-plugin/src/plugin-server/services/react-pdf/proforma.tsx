@@ -102,7 +102,7 @@ export const PROFormaPDF = ({ data }: { data: PROFormaType }) => {
                     <Text>{key}: </Text>
                     <Text>{value}</Text>
                   </View>
-                )
+                ),
               )}
             </View>
             <View style={{ ...s.flexCol, fontSize: 10, marginTop: 8 }}>

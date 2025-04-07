@@ -1,9 +1,9 @@
-import { Logger, DeenruvPlugin } from '@deenruv/core';
+import { Logger, DeenruvPlugin } from "@deenruv/core";
 
-import { HARDEN_PLUGIN_OPTIONS, loggerCtx } from './constants';
-import { HideValidationErrorsPlugin } from './middleware/hide-validation-errors-plugin';
-import { QueryComplexityPlugin } from './middleware/query-complexity-plugin';
-import { HardenPluginOptions } from './types';
+import { HARDEN_PLUGIN_OPTIONS, loggerCtx } from "./constants";
+import { HideValidationErrorsPlugin } from "./middleware/hide-validation-errors-plugin";
+import { QueryComplexityPlugin } from "./middleware/query-complexity-plugin";
+import { HardenPluginOptions } from "./types";
 
 /**
  * @description
@@ -144,33 +144,37 @@ import { HardenPluginOptions } from './types';
  * @docsCategory core plugins/HardenPlugin
  */
 @DeenruvPlugin({
-    providers: [
-        {
-            provide: HARDEN_PLUGIN_OPTIONS,
-            useFactory: () => HardenPlugin.options,
-        },
-    ],
-    configuration: config => {
-        if (HardenPlugin.options.hideFieldSuggestions !== false) {
-            Logger.verbose('Configuring HideValidationErrorsPlugin', loggerCtx);
-            config.apiOptions.apolloServerPlugins.push(new HideValidationErrorsPlugin());
-        }
-        config.apiOptions.apolloServerPlugins.push(new QueryComplexityPlugin(HardenPlugin.options));
-        if (HardenPlugin.options.apiMode !== 'dev') {
-            config.apiOptions.adminApiDebug = false;
-            config.apiOptions.shopApiDebug = false;
-            config.apiOptions.introspection = false;
-        }
-
-        return config;
+  providers: [
+    {
+      provide: HARDEN_PLUGIN_OPTIONS,
+      useFactory: () => HardenPlugin.options,
     },
-    compatibility: '^0.0.0',
+  ],
+  configuration: (config) => {
+    if (HardenPlugin.options.hideFieldSuggestions !== false) {
+      Logger.verbose("Configuring HideValidationErrorsPlugin", loggerCtx);
+      config.apiOptions.apolloServerPlugins.push(
+        new HideValidationErrorsPlugin(),
+      );
+    }
+    config.apiOptions.apolloServerPlugins.push(
+      new QueryComplexityPlugin(HardenPlugin.options),
+    );
+    if (HardenPlugin.options.apiMode !== "dev") {
+      config.apiOptions.adminApiDebug = false;
+      config.apiOptions.shopApiDebug = false;
+      config.apiOptions.introspection = false;
+    }
+
+    return config;
+  },
+  compatibility: "^0.0.0",
 })
 export class HardenPlugin {
-    static options: HardenPluginOptions;
+  static options: HardenPluginOptions;
 
-    static init(options: HardenPluginOptions) {
-        this.options = options;
-        return HardenPlugin;
-    }
+  static init(options: HardenPluginOptions) {
+    this.options = options;
+    return HardenPlugin;
+  }
 }

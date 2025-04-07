@@ -116,7 +116,7 @@ export const SurchargeCard: React.FC<{}> = () => {
       color="yellow"
       description={t('surcharge.description', 'Add additional fees or charges to this order')}
       title={t('surcharge.title', 'Order Surcharges')}
-      icon={<Receipt className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />}
+      icon={<Receipt className="size-5 text-yellow-500 dark:text-yellow-400" />}
       bottomRight={
         <Button
           onClick={handleAddSurcharge}
@@ -131,12 +131,12 @@ export const SurchargeCard: React.FC<{}> = () => {
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="size-4 animate-spin" />
               {t('surcharge.processing', 'Processing...')}
             </>
           ) : (
             <>
-              <PlusCircle className="h-4 w-4" />
+              <PlusCircle className="size-4" />
               {t('surcharge.addButton', 'Add Surcharge')}
             </>
           )}
@@ -162,7 +162,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   errors={state.description?.errors}
                 />
                 <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
-                  <FileText className="h-4 w-4" />
+                  <FileText className="size-4" />
                 </div>
               </div>
             </div>
@@ -181,7 +181,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   errors={state.sku?.errors}
                 />
                 <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
-                  <Tag className="h-4 w-4" />
+                  <Tag className="size-4" />
                 </div>
               </div>
             </div>
@@ -204,7 +204,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   errors={state.price?.errors}
                 />
                 <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
-                  <DollarSign className="h-4 w-4" />
+                  <DollarSign className="size-4" />
                 </div>
               </div>
             </div>
@@ -225,7 +225,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   className="pl-9"
                 />
                 <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
-                  <Percent className="h-4 w-4" />
+                  <Percent className="size-4" />
                 </div>
               </div>
             </div>
@@ -242,7 +242,7 @@ export const SurchargeCard: React.FC<{}> = () => {
                   className="pl-9"
                 />
                 <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
-                  <FileText className="h-4 w-4" />
+                  <FileText className="size-4" />
                 </div>
               </div>
             </div>

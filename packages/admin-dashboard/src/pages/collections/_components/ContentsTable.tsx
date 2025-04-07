@@ -14,10 +14,10 @@ import {
   useDetailListHook,
   PaginationInput,
   deepMerge,
+  ImageWithPreview,
 } from '@deenruv/react-ui-devkit';
 
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
-import { ITEMS_PER_PAGE } from '@/lists/useList';
 import { SortOrder, ValueTypes } from '@deenruv/admin-types';
 import {
   ColumnDef,
@@ -32,12 +32,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { toast } from 'sonner';
 import { useDebounce } from 'use-debounce';
-import { ImageWithPreview } from '@/components';
 
 interface ContentsProps {
   collectionId?: string;

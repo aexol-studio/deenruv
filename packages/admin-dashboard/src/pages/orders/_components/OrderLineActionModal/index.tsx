@@ -1,15 +1,15 @@
-import type React from "react"
-import { useTranslation } from "react-i18next"
-import type { OnPriceQuantityChangeApproveInput } from "./types.js"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@deenruv/react-ui-devkit"
-import { ActionQuantityPrice } from "./ActionQuantityPrice.js"
+import type React from 'react';
+import { useTranslation } from 'react-i18next';
+import type { OnPriceQuantityChangeApproveInput } from './types.js';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@deenruv/react-ui-devkit';
+import { ActionQuantityPrice } from './ActionQuantityPrice.js';
 
-import type { DraftOrderLineType } from "@/graphql/draft_order"
+import type { DraftOrderLineType } from '@/graphql/draft_order';
 
 interface OrderLineActonModalProps {
-  line?: DraftOrderLineType
-  onOpenChange: (open: boolean) => void
-  onPriceQuantityChangeApprove: (input: OnPriceQuantityChangeApproveInput) => Promise<void>
+  line?: DraftOrderLineType;
+  onOpenChange: (open: boolean) => void;
+  onPriceQuantityChangeApprove: (input: OnPriceQuantityChangeApproveInput) => Promise<void>;
 }
 
 export const OrderLineActionModal: React.FC<OrderLineActonModalProps> = ({
@@ -17,14 +17,14 @@ export const OrderLineActionModal: React.FC<OrderLineActonModalProps> = ({
   onPriceQuantityChangeApprove,
   line,
 }) => {
-  const { t } = useTranslation("orders")
+  const { t } = useTranslation('orders');
 
   return (
     <Dialog open={!!line} onOpenChange={onOpenChange}>
       <DialogContent className="flex max-w-[90dvw] flex-col rounded-lg border-0 p-0 shadow-lg sm:max-w-[550px] lg:max-w-[650px]">
-        <DialogHeader className="border-b bg-muted/30 p-6">
+        <DialogHeader className="bg-muted/30 border-b p-6">
           <DialogTitle className="text-xl font-semibold">{t(`orderLineActionModal.title.!TODO`)}</DialogTitle>
-          <p className="text-sm text-muted-foreground">{t(`orderLineActionModal.subTitle.!TODO`)}</p>
+          <p className="text-muted-foreground text-sm">{t(`orderLineActionModal.subTitle.!TODO`)}</p>
         </DialogHeader>
         <ActionQuantityPrice
           onPriceQuantityChangeApprove={onPriceQuantityChangeApprove}
@@ -33,6 +33,5 @@ export const OrderLineActionModal: React.FC<OrderLineActonModalProps> = ({
         />
       </DialogContent>
     </Dialog>
-  )
-}
-
+  );
+};

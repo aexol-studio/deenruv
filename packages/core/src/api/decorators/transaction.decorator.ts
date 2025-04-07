@@ -1,8 +1,8 @@
-import { applyDecorators, SetMetadata, UseInterceptors } from '@nestjs/common';
+import { applyDecorators, SetMetadata, UseInterceptors } from "@nestjs/common";
 
-import { TransactionInterceptor } from '../middleware/transaction-interceptor';
+import { TransactionInterceptor } from "../middleware/transaction-interceptor";
 
-export const TRANSACTION_MODE_METADATA_KEY = '__transaction_mode__';
+export const TRANSACTION_MODE_METADATA_KEY = "__transaction_mode__";
 /**
  * @description
  * The Transaction decorator can handle transactions automatically (which is the default) or be set to
@@ -29,9 +29,10 @@ export const TRANSACTION_MODE_METADATA_KEY = '__transaction_mode__';
  * @docsCategory request
  * @docsPage Transaction Decorator
  */
-export type TransactionMode = 'auto' | 'manual';
+export type TransactionMode = "auto" | "manual";
 
-export const TRANSACTION_ISOLATION_LEVEL_METADATA_KEY = '__transaction_isolation_level__';
+export const TRANSACTION_ISOLATION_LEVEL_METADATA_KEY =
+  "__transaction_isolation_level__";
 /**
  * @description
  * Transactions can be run at different isolation levels. The default is undefined, which
@@ -43,10 +44,10 @@ export const TRANSACTION_ISOLATION_LEVEL_METADATA_KEY = '__transaction_isolation
  * @docsPage Transaction Decorator
  */
 export type TransactionIsolationLevel =
-    | 'READ UNCOMMITTED'
-    | 'READ COMMITTED'
-    | 'REPEATABLE READ'
-    | 'SERIALIZABLE';
+  | "READ UNCOMMITTED"
+  | "READ COMMITTED"
+  | "REPEATABLE READ"
+  | "SERIALIZABLE";
 
 /**
  * @description
@@ -79,12 +80,15 @@ export type TransactionIsolationLevel =
  * @docsWeight 0
  */
 export const Transaction = (
-    transactionMode: TransactionMode = 'auto',
-    transactionIsolationLevel?: TransactionIsolationLevel,
+  transactionMode: TransactionMode = "auto",
+  transactionIsolationLevel?: TransactionIsolationLevel,
 ) => {
-    return applyDecorators(
-        SetMetadata(TRANSACTION_MODE_METADATA_KEY, transactionMode),
-        SetMetadata(TRANSACTION_ISOLATION_LEVEL_METADATA_KEY, transactionIsolationLevel),
-        UseInterceptors(TransactionInterceptor),
-    );
+  return applyDecorators(
+    SetMetadata(TRANSACTION_MODE_METADATA_KEY, transactionMode),
+    SetMetadata(
+      TRANSACTION_ISOLATION_LEVEL_METADATA_KEY,
+      transactionIsolationLevel,
+    ),
+    UseInterceptors(TransactionInterceptor),
+  );
 };

@@ -4,19 +4,15 @@ import { ModelTypes } from '@deenruv/admin-types';
 import {
   Checkbox,
   Label,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   type Option,
   apiClient,
   ErrorMessage,
   CustomCard,
   CardIcons,
+  SimpleSelect,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
-import { SimpleSelect, Stack } from '@/components';
 
 interface OptionsCardProps {
   currentHandlerValue: ModelTypes['ConfigurableOperationInput'] | undefined;
@@ -103,20 +99,20 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
   return (
     <CustomCard title={t('details.options.title')} icon={<CardIcons.options />} color="teal">
       <div className="flex flex-wrap gap-4 xl:flex-nowrap">
-        <Stack column className="basis-full gap-3 md:basis-1/2">
+        <div className="flex basis-full flex-col gap-3 md:basis-1/2">
           <SimpleSelect
             label={t('details.options.handler')}
             value={currentHandlerValue?.code}
             onValueChange={handleHandlerValueChange}
             options={allHandlersOptions}
           />
-          <Stack>
+          <div className="flex">
             {currentHandlerValue?.arguments.map((e, i) => {
               const handler = handlers?.find((h) => h.code === currentHandlerValue.code);
               const argument = handler?.args.find((a) => a.name === a.name);
 
               return (
-                <Stack className="mb-2 basis-full items-center gap-3" key={e.name}>
+                <div className="mb-2 flex basis-full items-center gap-3" key={e.name}>
                   <Checkbox
                     checked={currentHandlerValue?.arguments[i].value === 'true' ? true : false}
                     onCheckedChange={(e) =>
@@ -126,20 +122,20 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
                     }
                   />
                   <Label>{argument?.label}</Label>
-                </Stack>
+                </div>
               );
             })}
-          </Stack>
+          </div>
           <ErrorMessage errors={handlerErrors} />
-        </Stack>
-        <Stack className="basis-full md:basis-1/2">
+        </div>
+        <div className="flex basis-full md:basis-1/2">
           <SimpleSelect
             label={t('details.options.checker')}
             value={currentCheckerValue?.code}
             onValueChange={handleCheckerValueChange}
             options={allCheckersOptions}
           />
-        </Stack>
+        </div>
       </div>
     </CustomCard>
   );

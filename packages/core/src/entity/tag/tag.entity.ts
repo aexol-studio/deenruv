@@ -1,7 +1,7 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity } from "typeorm";
 
-import { DeenruvEntity } from '../base/base.entity';
+import { DeenruvEntity } from "../base/base.entity";
 
 /**
  * @description
@@ -12,10 +12,10 @@ import { DeenruvEntity } from '../base/base.entity';
  */
 @Entity()
 export class Tag extends DeenruvEntity {
-    constructor(input?: DeepPartial<Tag>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Tag>) {
+    super(input);
+  }
 
-    @Column()
-    value: string;
+  @Column()
+  value: string;
 }

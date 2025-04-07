@@ -1,4 +1,4 @@
-import { Permission } from '@deenruv/common/lib/generated-types';
+import { Permission } from "@deenruv/common/lib/generated-types";
 
 /**
  * @description
@@ -8,33 +8,33 @@ import { Permission } from '@deenruv/common/lib/generated-types';
  * @docsPage PermissionDefinition
  */
 export interface PermissionDefinitionConfig {
-    /**
-     * @description
-     * The name of the permission. By convention this should be
-     * UpperCamelCased.
-     */
-    name: string;
-    /**
-     * @description
-     * A description of the permission.
-     */
-    description?: string;
-    /**
-     * @description
-     * Whether this permission can be assigned to a Role. In general this
-     * should be left as the default `true` except in special cases.
-     *
-     * @default true
-     */
-    assignable?: boolean;
-    /**
-     * @description
-     * Internal permissions are not exposed via the API and are reserved for
-     * special use-cases such at the `Owner` or `Public` permissions.
-     *
-     * @default false
-     */
-    internal?: boolean;
+  /**
+   * @description
+   * The name of the permission. By convention this should be
+   * UpperCamelCased.
+   */
+  name: string;
+  /**
+   * @description
+   * A description of the permission.
+   */
+  description?: string;
+  /**
+   * @description
+   * Whether this permission can be assigned to a Role. In general this
+   * should be left as the default `true` except in special cases.
+   *
+   * @default true
+   */
+  assignable?: boolean;
+  /**
+   * @description
+   * Internal permissions are not exposed via the API and are reserved for
+   * special use-cases such at the `Owner` or `Public` permissions.
+   *
+   * @default false
+   */
+  internal?: boolean;
 }
 
 /**
@@ -84,29 +84,29 @@ export type PermissionMetadata = Required<PermissionDefinitionConfig>;
  * @docsWeight 0
  */
 export class PermissionDefinition {
-    constructor(protected config: PermissionDefinitionConfig) {}
+  constructor(protected config: PermissionDefinitionConfig) {}
 
-    /** @internal */
-    getMetadata(): PermissionMetadata[] {
-        const { name, description, assignable, internal } = this.config;
-        return [
-            {
-                name,
-                description: description || `Grants permissions on ${name} operations`,
-                assignable: assignable ?? true,
-                internal: internal ?? false,
-            },
-        ];
-    }
+  /** @internal */
+  getMetadata(): PermissionMetadata[] {
+    const { name, description, assignable, internal } = this.config;
+    return [
+      {
+        name,
+        description: description || `Grants permissions on ${name} operations`,
+        assignable: assignable ?? true,
+        internal: internal ?? false,
+      },
+    ];
+  }
 
-    /**
-     * @description
-     * Returns the permission defined by this definition, for use in the
-     * {@link Allow} decorator.
-     */
-    get Permission(): Permission {
-        return this.config.name as Permission;
-    }
+  /**
+   * @description
+   * Returns the permission defined by this definition, for use in the
+   * {@link Allow} decorator.
+   */
+  get Permission(): Permission {
+    return this.config.name as Permission;
+  }
 }
 
 /**
@@ -144,59 +144,61 @@ export class PermissionDefinition {
  * @docsWeight 1
  */
 export class CrudPermissionDefinition extends PermissionDefinition {
-    constructor(
-        name: string,
-        private descriptionFn?: (operation: 'create' | 'read' | 'update' | 'delete') => string,
-    ) {
-        super({ name });
-    }
+  constructor(
+    name: string,
+    private descriptionFn?: (
+      operation: "create" | "read" | "update" | "delete",
+    ) => string,
+  ) {
+    super({ name });
+  }
 
-    /** @internal */
-    getMetadata(): PermissionMetadata[] {
-        return ['Create', 'Read', 'Update', 'Delete'].map(operation => ({
-            name: `${operation}${this.config.name}`,
-            description:
-                typeof this.descriptionFn === 'function'
-                    ? this.descriptionFn(operation.toLocaleLowerCase() as any)
-                    : `Grants permission to ${operation.toLocaleLowerCase()} ${this.config.name}`,
-            assignable: true,
-            internal: false,
-        }));
-    }
+  /** @internal */
+  getMetadata(): PermissionMetadata[] {
+    return ["Create", "Read", "Update", "Delete"].map((operation) => ({
+      name: `${operation}${this.config.name}`,
+      description:
+        typeof this.descriptionFn === "function"
+          ? this.descriptionFn(operation.toLocaleLowerCase() as any)
+          : `Grants permission to ${operation.toLocaleLowerCase()} ${this.config.name}`,
+      assignable: true,
+      internal: false,
+    }));
+  }
 
-    /**
-     * @description
-     * Returns the 'Create' CRUD permission defined by this definition, for use in the
-     * {@link Allow} decorator.
-     */
-    get Create(): Permission {
-        return `Create${this.config.name}` as Permission;
-    }
+  /**
+   * @description
+   * Returns the 'Create' CRUD permission defined by this definition, for use in the
+   * {@link Allow} decorator.
+   */
+  get Create(): Permission {
+    return `Create${this.config.name}` as Permission;
+  }
 
-    /**
-     * @description
-     * Returns the 'Read' CRUD permission defined by this definition, for use in the
-     * {@link Allow} decorator.
-     */
-    get Read(): Permission {
-        return `Read${this.config.name}` as Permission;
-    }
+  /**
+   * @description
+   * Returns the 'Read' CRUD permission defined by this definition, for use in the
+   * {@link Allow} decorator.
+   */
+  get Read(): Permission {
+    return `Read${this.config.name}` as Permission;
+  }
 
-    /**
-     * @description
-     * Returns the 'Update' CRUD permission defined by this definition, for use in the
-     * {@link Allow} decorator.
-     */
-    get Update(): Permission {
-        return `Update${this.config.name}` as Permission;
-    }
+  /**
+   * @description
+   * Returns the 'Update' CRUD permission defined by this definition, for use in the
+   * {@link Allow} decorator.
+   */
+  get Update(): Permission {
+    return `Update${this.config.name}` as Permission;
+  }
 
-    /**
-     * @description
-     * Returns the 'Delete' CRUD permission defined by this definition, for use in the
-     * {@link Allow} decorator.
-     */
-    get Delete(): Permission {
-        return `Delete${this.config.name}` as Permission;
-    }
+  /**
+   * @description
+   * Returns the 'Delete' CRUD permission defined by this definition, for use in the
+   * {@link Allow} decorator.
+   */
+  get Delete(): Permission {
+    return `Delete${this.config.name}` as Permission;
+  }
 }

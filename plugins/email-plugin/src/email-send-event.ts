@@ -1,6 +1,6 @@
-import { RequestContext, DeenruvEvent } from '@deenruv/core';
+import { RequestContext, DeenruvEvent } from "@deenruv/core";
 
-import { EmailDetails } from './types';
+import { EmailDetails } from "./types";
 
 /**
  * @description
@@ -12,12 +12,12 @@ import { EmailDetails } from './types';
  * @since 2.2.0
  */
 export class EmailSendEvent extends DeenruvEvent {
-    constructor(
-        public readonly ctx: RequestContext,
-        public readonly details: EmailDetails,
-        public readonly success: boolean,
-        public readonly error?: Error,
-    ) {
-        super();
-    }
+  constructor(
+    public readonly ctx: RequestContext,
+    public readonly details: EmailDetails,
+    public readonly success: boolean,
+    public readonly error?: Error,
+  ) {
+    super();
+  }
 }

@@ -1,9 +1,12 @@
-import { ConfigurableOperationInput, OrderLineInput } from '@deenruv/common/lib/generated-types';
+import {
+  ConfigurableOperationInput,
+  OrderLineInput,
+} from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api';
-import { Order } from '../../entity';
-import { Fulfillment } from '../../entity/fulfillment/fulfillment.entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { Order } from "../../entity";
+import { Fulfillment } from "../../entity/fulfillment/fulfillment.entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 /**
  * @description
@@ -11,9 +14,9 @@ import { DeenruvEntityEvent } from '../deenruv-entity-event';
  * @since 1.4
  */
 type CreateFulfillmentInput = {
-    orders: Order[];
-    lines: OrderLineInput[];
-    handler: ConfigurableOperationInput;
+  orders: Order[];
+  lines: OrderLineInput[];
+  handler: ConfigurableOperationInput;
 };
 
 /**
@@ -24,8 +27,15 @@ type CreateFulfillmentInput = {
  * @docsPage Event Types
  * @since 1.4
  */
-export class FulfillmentEvent extends DeenruvEntityEvent<Fulfillment, CreateFulfillmentInput> {
-    constructor(ctx: RequestContext, entity: Fulfillment, input?: CreateFulfillmentInput) {
-        super(entity, 'created', ctx, input);
-    }
+export class FulfillmentEvent extends DeenruvEntityEvent<
+  Fulfillment,
+  CreateFulfillmentInput
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: Fulfillment,
+    input?: CreateFulfillmentInput,
+  ) {
+    super(entity, "created", ctx, input);
+  }
 }

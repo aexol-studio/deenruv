@@ -1,10 +1,10 @@
-import { HttpModule } from '@nestjs/axios';
-import { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
-import express from 'express';
-import path from 'path';
+import { HttpModule } from "@nestjs/axios";
+import { MiddlewareConsumer, NestModule } from "@nestjs/common";
+import { PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
+import express from "express";
+import path from "path";
 
-import { KeycloakAuthenticationStrategy } from './keycloak-authentication-strategy';
+import { KeycloakAuthenticationStrategy } from "./keycloak-authentication-strategy";
 
 /**
  * A demo plugin which configures an AuthenticationStrategy for a KeyCloak ID server.
@@ -18,17 +18,19 @@ import { KeycloakAuthenticationStrategy } from './keycloak-authentication-strate
  * Video demo of this: https://youtu.be/Tj4kwjNd2nM
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule, HttpModule],
-    configuration: config => {
-        config.authOptions.adminAuthenticationStrategy = [
-            ...config.authOptions.adminAuthenticationStrategy,
-            new KeycloakAuthenticationStrategy(),
-        ];
-        return config;
-    },
+  imports: [PluginCommonModule, HttpModule],
+  configuration: (config) => {
+    config.authOptions.adminAuthenticationStrategy = [
+      ...config.authOptions.adminAuthenticationStrategy,
+      new KeycloakAuthenticationStrategy(),
+    ];
+    return config;
+  },
 })
 export class KeycloakAuthPlugin implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer.apply(express.static(path.join(__dirname, 'public'))).forRoutes('keycloak-login');
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(express.static(path.join(__dirname, "public")))
+      .forRoutes("keycloak-login");
+  }
 }

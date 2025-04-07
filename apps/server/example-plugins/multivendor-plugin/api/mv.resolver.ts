@@ -1,20 +1,26 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Allow, Ctx, Permission, RequestContext, Transaction } from '@deenruv/core';
+import { Args, Mutation, Resolver } from "@nestjs/graphql";
+import {
+  Allow,
+  Ctx,
+  Permission,
+  RequestContext,
+  Transaction,
+} from "@deenruv/core";
 
-import { MultivendorService } from '../service/mv.service';
-import { CreateSellerInput } from '../types';
+import { MultivendorService } from "../service/mv.service";
+import { CreateSellerInput } from "../types";
 
 @Resolver()
 export class MultivendorResolver {
-    constructor(private multivendorService: MultivendorService) {}
+  constructor(private multivendorService: MultivendorService) {}
 
-    @Mutation()
-    @Transaction()
-    @Allow(Permission.Public)
-    registerNewSeller(
-        @Ctx() ctx: RequestContext,
-        @Args() args: { input: { shopName: string; seller: CreateSellerInput } },
-    ) {
-        return this.multivendorService.registerNewSeller(ctx, args.input);
-    }
+  @Mutation()
+  @Transaction()
+  @Allow(Permission.Public)
+  registerNewSeller(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { input: { shopName: string; seller: CreateSellerInput } },
+  ) {
+    return this.multivendorService.registerNewSeller(ctx, args.input);
+  }
 }

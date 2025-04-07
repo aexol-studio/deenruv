@@ -4,5 +4,7 @@ export type PhoneNumberValidationOptions = {
   disableTransitionValidation?: boolean;
   stateCheck?: OrderState;
   requirePhoneNumber?: boolean;
-  defaultCountryCode?: string | ((ctx: RequestContext, order: Order) => Promise<string> | string);
+  defaultCountryCode?:
+    | string
+    | ((ctx: RequestContext, order: Order) => Promise<string> | string);
 };

@@ -42,7 +42,7 @@ export const History: React.FC<HistoryProps> = ({ data, onNoteAdd, onNoteEdit, o
       ) : (
         <div className="flex flex-col items-center justify-center gap-3 py-8 text-center">
           <div className="rounded-full bg-amber-100 p-3 dark:bg-amber-900/30">
-            <ClipboardList className="h-6 w-6 text-amber-500 dark:text-amber-400" />
+            <ClipboardList className="size-6 text-amber-500 dark:text-amber-400" />
           </div>
           <div>
             <p className="font-medium">No history entries yet</p>

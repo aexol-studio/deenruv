@@ -1,11 +1,17 @@
-import { CreateAdministratorInput, UpdateAdministratorInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateAdministratorInput,
+  UpdateAdministratorInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api';
-import { Administrator } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { Administrator } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
-type AdministratorInputTypes = CreateAdministratorInput | UpdateAdministratorInput | ID;
+type AdministratorInputTypes =
+  | CreateAdministratorInput
+  | UpdateAdministratorInput
+  | ID;
 
 /**
  * @description
@@ -15,13 +21,16 @@ type AdministratorInputTypes = CreateAdministratorInput | UpdateAdministratorInp
  * @docsPage Event Types
  * @since 1.4
  */
-export class AdministratorEvent extends DeenruvEntityEvent<Administrator, AdministratorInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: Administrator,
-        type: 'created' | 'updated' | 'deleted',
-        input?: AdministratorInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class AdministratorEvent extends DeenruvEntityEvent<
+  Administrator,
+  AdministratorInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: Administrator,
+    type: "created" | "updated" | "deleted",
+    input?: AdministratorInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

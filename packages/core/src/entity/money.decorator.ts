@@ -1,15 +1,15 @@
-import { Type } from '@deenruv/common/lib/shared-types';
+import { Type } from "@deenruv/common/lib/shared-types";
 
 interface MoneyColumnOptions {
-    default?: number;
-    /** Whether the field is nullable. Defaults to false */
-    nullable?: boolean;
+  default?: number;
+  /** Whether the field is nullable. Defaults to false */
+  nullable?: boolean;
 }
 
 interface MoneyColumnConfig {
-    name: string;
-    entity: any;
-    options?: MoneyColumnOptions;
+  name: string;
+  entity: any;
+  options?: MoneyColumnOptions;
 }
 
 const moneyColumnRegistry = new Map<any, MoneyColumnConfig[]>();
@@ -24,15 +24,15 @@ const moneyColumnRegistry = new Map<any, MoneyColumnConfig[]>();
  * @since 2.0.0
  */
 export function Money(options?: MoneyColumnOptions) {
-    return (entity: any, propertyName: string) => {
-        const idColumns = moneyColumnRegistry.get(entity);
-        const entry = { name: propertyName, entity, options };
-        if (idColumns) {
-            idColumns.push(entry);
-        } else {
-            moneyColumnRegistry.set(entity, [entry]);
-        }
-    };
+  return (entity: any, propertyName: string) => {
+    const idColumns = moneyColumnRegistry.get(entity);
+    const entry = { name: propertyName, entity, options };
+    if (idColumns) {
+      idColumns.push(entry);
+    } else {
+      moneyColumnRegistry.set(entity, [entry]);
+    }
+  };
 }
 
 /**
@@ -41,8 +41,8 @@ export function Money(options?: MoneyColumnOptions) {
  * decorator.
  */
 export function getMoneyColumnsFor(entityType: Type<any>): MoneyColumnConfig[] {
-    const match = Array.from(moneyColumnRegistry.entries()).find(
-        ([entity, columns]) => entity.constructor === entityType,
-    );
-    return match ? match[1] : [];
+  const match = Array.from(moneyColumnRegistry.entries()).find(
+    ([entity, columns]) => entity.constructor === entityType,
+  );
+  return match ? match[1] : [];
 }

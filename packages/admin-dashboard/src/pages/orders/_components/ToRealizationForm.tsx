@@ -14,6 +14,8 @@ import {
   Textarea,
   cn,
   useOrder,
+  AssetsModalInput,
+  ImageWithPreview,
 } from '@deenruv/react-ui-devkit';
 
 import { DraftOrderType } from '@/graphql/draft_order';
@@ -22,7 +24,6 @@ import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { AssetsModalInput, ImageWithPreview } from '@/components';
 
 const colors = ['BIAŁA', 'ŻÓŁTA', 'POMARAŃCZOWA', 'RÓŻOWA', 'ZIELONA', 'CZERWONA'];
 
@@ -87,7 +88,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
                     !plannedDate && 'text-muted-foreground',
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="mr-2 size-4" />
                   {plannedDate ? format(plannedDate, 'PPP') : <span>{t('changeStatus.datePlaceholder')}</span>}
                 </Button>
               </PopoverTrigger>
@@ -107,7 +108,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
                     !plannedDate && 'text-muted-foreground',
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="mr-2 size-4" />
                   {deadlineDate ? format(deadlineDate, 'PPP') : <span>{t('changeStatus.datePlaceholder')}</span>}
                 </Button>
               </PopoverTrigger>
@@ -142,7 +143,7 @@ export const ToRealizationForm: React.FC<Props> = ({ onRealizationFinished }) =>
               value={note}
               onChange={(e) => setNote(e.currentTarget.value)}
             />
-            <Label className="text-muted-foreground text-xs ">
+            <Label className="text-muted-foreground text-xs">
               {t('changeStatus.charLeft', { value: 64 - note.length })}
             </Label>
           </div>

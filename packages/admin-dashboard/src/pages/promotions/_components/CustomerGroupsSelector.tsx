@@ -1,7 +1,6 @@
 import { Label, apiClient, type Option, SimpleSelect } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Stack } from '@/components';
 
 interface CustomerGroupsSelectorProps {
   label: string;
@@ -33,9 +32,9 @@ export const CustomerGroupsSelector: React.FC<CustomerGroupsSelectorProps> = ({ 
   }, [fetchCustomerGroups]);
 
   return (
-    <Stack column className="basis-full gap-2">
+    <div className="flex basis-full flex-col gap-2">
       <Label>{label}</Label>
       <SimpleSelect options={options} value={valueParsed} onValueChange={(e) => onChange(e)} />
-    </Stack>
+    </div>
   );
 };

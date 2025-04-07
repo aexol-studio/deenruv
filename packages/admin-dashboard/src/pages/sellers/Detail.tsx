@@ -1,7 +1,13 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { getMutation, GFFLPFormField, useMutation, DetailView, createDeenruvForm } from '@deenruv/react-ui-devkit';
-import { useValidators } from '@/hooks/useValidators.js';
+import {
+  useValidators,
+  getMutation,
+  GFFLPFormField,
+  useMutation,
+  DetailView,
+  createDeenruvForm,
+} from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { SellerDetailView } from '@/pages/sellers/_components/SellerDetailView.js';
 

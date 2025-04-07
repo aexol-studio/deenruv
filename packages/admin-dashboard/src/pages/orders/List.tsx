@@ -1,4 +1,3 @@
-import { OrderListSelector } from '@/graphql/orders';
 import { Permission, SortOrder, typedGql, scalars } from '@deenruv/admin-types';
 import {
   Routes,
@@ -10,11 +9,15 @@ import {
   priceFormatter,
   TableLabel,
   useQuery,
+  ListLocations,
 } from '@deenruv/react-ui-devkit';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+
+const tableId = 'orders-list-view';
+const { selector } = ListLocations[tableId];
 
 const createDraftOrder = async () => {
   const response = await apiClient('mutation')({
@@ -23,12 +26,7 @@ const createDraftOrder = async () => {
   return response.createDraftOrder.id;
 };
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(OrderListSelector, additionalSelector ?? {});
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     ['orders']: [
       {
@@ -40,7 +38,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['orders'];
@@ -86,7 +84,7 @@ export const OrdersListPage = () => {
         },
         edit: (id) => navigate(Routes.orders.to(id), { viewTransition: true }),
       }}
-      tableId="orders-list-view"
+      tableId={tableId}
       fetch={fetch}
       createPermissions={[Permission.CreateOrder]}
       deletePermissions={[Permission.DeleteOrder]}

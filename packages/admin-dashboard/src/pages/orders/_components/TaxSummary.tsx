@@ -45,13 +45,13 @@ export const TaxSummary: React.FC = () => {
                   <TableRow key={description} noHover className="group">
                     <TableCell className="py-3 font-medium">
                       <div className="flex items-center gap-2">
-                        <Calculator className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
+                        <Calculator className="size-4 text-indigo-500 dark:text-indigo-400" />
                         <span className="capitalize">{description}</span>
                       </div>
                     </TableCell>
                     <TableCell className="py-3">
                       <div className="flex items-center gap-1">
-                        <Percent className="text-muted-foreground h-3.5 w-3.5" />
+                        <Percent className="text-muted-foreground size-3.5" />
                         <span className="font-medium">{taxRate}%</span>
                       </div>
                     </TableCell>
@@ -77,7 +77,7 @@ export const TaxSummary: React.FC = () => {
                 <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <div className="rounded-full bg-indigo-100 p-3 dark:bg-indigo-900/30">
-                      <AlertCircle className="h-6 w-6 text-indigo-500 dark:text-indigo-400" />
+                      <AlertCircle className="size-6 text-indigo-500 dark:text-indigo-400" />
                     </div>
                     <p>{t('taxSummary.noTaxSummary', 'No tax information available')}</p>
                     <p className="text-muted-foreground text-xs">

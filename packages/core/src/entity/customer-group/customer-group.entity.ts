@@ -1,11 +1,11 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomCustomerGroupFields } from '../custom-entity-fields';
-import { Customer } from '../customer/customer.entity';
-import { TaxRate } from '../tax-rate/tax-rate.entity';
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomCustomerGroupFields } from "../custom-entity-fields";
+import { Customer } from "../customer/customer.entity";
+import { TaxRate } from "../tax-rate/tax-rate.entity";
 
 /**
  * @description
@@ -16,18 +16,18 @@ import { TaxRate } from '../tax-rate/tax-rate.entity';
  */
 @Entity()
 export class CustomerGroup extends DeenruvEntity implements HasCustomFields {
-    constructor(input?: DeepPartial<CustomerGroup>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<CustomerGroup>) {
+    super(input);
+  }
 
-    @Column() name: string;
+  @Column() name: string;
 
-    @ManyToMany(type => Customer, customer => customer.groups)
-    customers: Customer[];
+  @ManyToMany((type) => Customer, (customer) => customer.groups)
+  customers: Customer[];
 
-    @Column(type => CustomCustomerGroupFields)
-    customFields: CustomCustomerGroupFields;
+  @Column((type) => CustomCustomerGroupFields)
+  customFields: CustomCustomerGroupFields;
 
-    @OneToMany(type => TaxRate, taxRate => taxRate.zone)
-    taxRates: TaxRate[];
+  @OneToMany((type) => TaxRate, (taxRate) => taxRate.zone)
+  taxRates: TaxRate[];
 }

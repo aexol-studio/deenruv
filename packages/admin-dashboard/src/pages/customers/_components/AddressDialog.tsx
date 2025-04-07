@@ -13,10 +13,10 @@ import {
   useGFFLP,
   useMutation,
   useServer,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $, GraphQLTypes } from '@deenruv/admin-types';
-import { EntityCustomFields, Stack } from '@/components';
 import { toast } from 'sonner';
 
 interface RolesCardProps {
@@ -144,7 +144,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
         <DialogHeader className="mb-4">
           <DialogTitle>{t(isEdit ? 'selectAddress.editAddress' : 'selectAddress.createAddress')}</DialogTitle>
         </DialogHeader>
-        <Stack column className="gap-3 overflow-auto">
+        <div className="flex flex-col gap-3 overflow-auto">
           <Input
             label={t('selectAddress.inputNameLabel')}
             placeholder={t('selectAddress.inputNamePlaceholder')}
@@ -244,7 +244,7 @@ export const AddressDialog: React.FC<PropsWithChildren<RolesCardProps>> = ({
             additionalData={{}}
             withoutBorder
           />
-        </Stack>
+        </div>
         <DialogFooter className="mt-2">
           <Button className="w-min place-self-end" onClick={handleSubmit}>
             {t('addresses.save')}

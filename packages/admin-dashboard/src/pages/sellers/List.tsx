@@ -1,13 +1,10 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
-import { GraphQLResponse, Permission, SortOrder } from '@deenruv/admin-types';
-import { SellerListSelector } from '@/graphql/sellers';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
+import { Permission, SortOrder } from '@deenruv/admin-types';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(SellerListSelector, additionalSelector ?? {});
+const tableId = 'sellers-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     sellers: [
       {
@@ -19,7 +16,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['sellers'];
@@ -46,7 +43,7 @@ export const SellersListPage = () => {
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'Seller'}
       route={Routes['sellers']}
-      tableId="sellers-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateSeller]}

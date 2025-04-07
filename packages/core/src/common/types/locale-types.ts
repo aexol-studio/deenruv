@@ -1,22 +1,24 @@
-import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { CustomFieldsObject, ID } from '@deenruv/common/lib/shared-types';
+import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { CustomFieldsObject, ID } from "@deenruv/common/lib/shared-types";
 
-import { DeenruvEntity } from '../../entity/base/base.entity';
-import { TranslatableRelationsKeys } from '../../service/helpers/utils/translate-entity';
+import { DeenruvEntity } from "../../entity/base/base.entity";
+import { TranslatableRelationsKeys } from "../../service/helpers/utils/translate-entity";
 
-import { UnwrappedArray } from './common-types';
+import { UnwrappedArray } from "./common-types";
 
 /**
  * This type should be used in any interfaces where the value is to be
  * localized into different languages.
  */
-export type LocaleString = string & { _opaqueType: 'LocaleString' };
+export type LocaleString = string & { _opaqueType: "LocaleString" };
 
-export type TranslatableKeys<T, U = Omit<T, 'translations'>> = {
-    [K in keyof U]: U[K] extends LocaleString ? K : never;
+export type TranslatableKeys<T, U = Omit<T, "translations">> = {
+  [K in keyof U]: U[K] extends LocaleString ? K : never;
 }[keyof U];
 
-export type NonTranslateableKeys<T> = { [K in keyof T]: T[K] extends LocaleString ? never : K }[keyof T];
+export type NonTranslateableKeys<T> = {
+  [K in keyof T]: T[K] extends LocaleString ? never : K;
+}[keyof T];
 
 // prettier-ignore
 /**
@@ -30,7 +32,9 @@ export interface Translatable {
     translations: Array<Translation<DeenruvEntity>>;
 }
 
-export type TranslationCustomFields<T> = { [K in keyof T]: K extends 'customFields' ? K : never }[keyof T];
+export type TranslationCustomFields<T> = {
+  [K in keyof T]: K extends "customFields" ? K : never;
+}[keyof T];
 
 // prettier-ignore
 /**
@@ -50,9 +54,11 @@ export type Translation<T> =
 /**
  * This is the type of a translation object when provided as input to a create or update operation.
  */
-export type TranslationInput<T> = { [K in TranslatableKeys<T>]?: string | null } & {
-    id?: ID | null;
-    languageCode: LanguageCode;
+export type TranslationInput<T> = {
+  [K in TranslatableKeys<T>]?: string | null;
+} & {
+  id?: ID | null;
+  languageCode: LanguageCode;
 };
 
 /**
@@ -60,7 +66,7 @@ export type TranslationInput<T> = { [K in TranslatableKeys<T>]?: string | null }
  * properties.
  */
 export interface TranslatedInput<T> {
-    translations?: Array<TranslationInput<T>> | null;
+  translations?: Array<TranslationInput<T>> | null;
 }
 
 // prettier-ignore

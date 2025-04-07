@@ -1,1 +1,1 @@
-export * from './SquareIcon';
+export * from "./SquareIcon";

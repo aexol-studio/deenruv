@@ -25,8 +25,8 @@ export const RefundCard: React.FC<RefundCardProps> = ({ priceDifference, refundR
           )}
           onClick={() => setActiveTab('details')}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-            <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+            <CreditCard className="size-4 text-blue-500 dark:text-blue-400" />
           </div>
           <h4 className="font-medium">{t('refund.details', 'Refund Details')}</h4>
         </div>
@@ -38,8 +38,8 @@ export const RefundCard: React.FC<RefundCardProps> = ({ priceDifference, refundR
           )}
           onClick={() => setActiveTab('note')}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-            <FileText className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+          <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+            <FileText className="size-4 text-blue-500 dark:text-blue-400" />
           </div>
           <h4 className="font-medium">{t('refund.note', 'Refund Note')}</h4>
         </div>

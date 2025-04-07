@@ -16,7 +16,6 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import { toast } from 'sonner';
-import { Stack } from '@/components';
 
 interface OptionsCardProps {
   productId: string;
@@ -86,7 +85,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
         </Table>
       ) : (
         optionGroups?.map((group, i) => (
-          <Stack key={group.name} className="items-center gap-3">
+          <div key={group.name} className="flex items-center gap-3">
             <div className="w-1/3 font-semibold">{group.name}:</div>
             <div className="w-2/3">
               <Select
@@ -107,7 +106,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
                 </SelectContent>
               </Select>
             </div>
-          </Stack>
+          </div>
         ))
       )}
     </CustomCard>

@@ -1,18 +1,28 @@
-import { CurrencyCode, LanguageCode } from '@deenruv/common/lib/generated-types';
-import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToMany, ManyToOne } from 'typeorm';
+import {
+  CurrencyCode,
+  LanguageCode,
+} from "@deenruv/common/lib/generated-types";
+import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToMany, ManyToOne } from "typeorm";
 
-import { Customer, PaymentMethod, Promotion, Role, ShippingMethod, StockLocation } from '..';
-import { DeenruvEntity } from '../base/base.entity';
-import { Collection } from '../collection/collection.entity';
-import { CustomChannelFields } from '../custom-entity-fields';
-import { EntityId } from '../entity-id.decorator';
-import { Facet } from '../facet/facet.entity';
-import { FacetValue } from '../facet-value/facet-value.entity';
-import { Product } from '../product/product.entity';
-import { ProductVariant } from '../product-variant/product-variant.entity';
-import { Seller } from '../seller/seller.entity';
-import { Zone } from '../zone/zone.entity';
+import {
+  Customer,
+  PaymentMethod,
+  Promotion,
+  Role,
+  ShippingMethod,
+  StockLocation,
+} from "..";
+import { DeenruvEntity } from "../base/base.entity";
+import { Collection } from "../collection/collection.entity";
+import { CustomChannelFields } from "../custom-entity-fields";
+import { EntityId } from "../entity-id.decorator";
+import { Facet } from "../facet/facet.entity";
+import { FacetValue } from "../facet-value/facet-value.entity";
+import { Product } from "../product/product.entity";
+import { ProductVariant } from "../product-variant/product-variant.entity";
+import { Seller } from "../seller/seller.entity";
+import { Zone } from "../zone/zone.entity";
 
 /**
  * @description
@@ -36,114 +46,142 @@ import { Zone } from '../zone/zone.entity';
  */
 @Entity()
 export class Channel extends DeenruvEntity {
-    constructor(input?: DeepPartial<Channel>) {
-        super(input);
-        if (!input || !input.token) {
-            this.token = this.generateToken();
-        }
+  constructor(input?: DeepPartial<Channel>) {
+    super(input);
+    if (!input || !input.token) {
+      this.token = this.generateToken();
     }
+  }
 
-    /**
-     * @description
-     * The name of the Channel. For example "US Webstore" or "German Webstore".
-     */
-    @Column({ unique: true })
-    code: string;
+  /**
+   * @description
+   * The name of the Channel. For example "US Webstore" or "German Webstore".
+   */
+  @Column({ unique: true })
+  code: string;
 
-    /**
-     * @description
-     * A unique token (string) used to identify the Channel in the `deenruv-token` header of the
-     * GraphQL API requests.
-     */
-    @Column({ unique: true })
-    token: string;
+  /**
+   * @description
+   * A unique token (string) used to identify the Channel in the `deenruv-token` header of the
+   * GraphQL API requests.
+   */
+  @Column({ unique: true })
+  token: string;
 
-    @Column({ default: '', nullable: true })
-    description: string;
+  @Column({ default: "", nullable: true })
+  description: string;
 
-    @Index()
-    @ManyToOne(type => Seller, seller => seller.channels)
-    seller?: Seller;
+  @Index()
+  @ManyToOne((type) => Seller, (seller) => seller.channels)
+  seller?: Seller;
 
-    @EntityId({ nullable: true })
-    sellerId?: ID;
+  @EntityId({ nullable: true })
+  sellerId?: ID;
 
-    @Column('varchar') defaultLanguageCode: LanguageCode;
+  @Column("varchar") defaultLanguageCode: LanguageCode;
 
-    @Column({ type: 'simple-array', nullable: true })
-    availableLanguageCodes: LanguageCode[];
+  @Column({ type: "simple-array", nullable: true })
+  availableLanguageCodes: LanguageCode[];
 
-    @Index()
-    @ManyToOne(type => Zone, zone => zone.defaultTaxZoneChannels)
-    defaultTaxZone: Zone;
+  @Index()
+  @ManyToOne((type) => Zone, (zone) => zone.defaultTaxZoneChannels)
+  defaultTaxZone: Zone;
 
-    @Index()
-    @ManyToOne(type => Zone, zone => zone.defaultShippingZoneChannels)
-    defaultShippingZone: Zone;
+  @Index()
+  @ManyToOne((type) => Zone, (zone) => zone.defaultShippingZoneChannels)
+  defaultShippingZone: Zone;
 
-    @Column('varchar')
-    defaultCurrencyCode: CurrencyCode;
+  @Column("varchar")
+  defaultCurrencyCode: CurrencyCode;
 
-    @Column({ type: 'simple-array', nullable: true })
-    availableCurrencyCodes: CurrencyCode[];
+  @Column({ type: "simple-array", nullable: true })
+  availableCurrencyCodes: CurrencyCode[];
 
-    /**
-     * @description
-     * Specifies the default value for inventory tracking for ProductVariants.
-     * Can be overridden per ProductVariant, but this value determines the default
-     * if not otherwise specified.
-     */
-    @Column({ default: true })
-    trackInventory: boolean;
+  /**
+   * @description
+   * Specifies the default value for inventory tracking for ProductVariants.
+   * Can be overridden per ProductVariant, but this value determines the default
+   * if not otherwise specified.
+   */
+  @Column({ default: true })
+  trackInventory: boolean;
 
-    /**
-     * @description
-     * Specifies the value of stockOnHand at which a given ProductVariant is considered
-     * out of stock.
-     */
-    @Column({ default: 0 })
-    outOfStockThreshold: number;
+  /**
+   * @description
+   * Specifies the value of stockOnHand at which a given ProductVariant is considered
+   * out of stock.
+   */
+  @Column({ default: 0 })
+  outOfStockThreshold: number;
 
-    @Column(type => CustomChannelFields)
-    customFields: CustomChannelFields;
+  @Column((type) => CustomChannelFields)
+  customFields: CustomChannelFields;
 
-    @Column() pricesIncludeTax: boolean;
+  @Column() pricesIncludeTax: boolean;
 
-    @ManyToMany(type => Product, product => product.channels, { onDelete: 'CASCADE' })
-    products: Product[];
+  @ManyToMany((type) => Product, (product) => product.channels, {
+    onDelete: "CASCADE",
+  })
+  products: Product[];
 
-    @ManyToMany(type => ProductVariant, productVariant => productVariant.channels, { onDelete: 'CASCADE' })
-    productVariants: ProductVariant[];
+  @ManyToMany(
+    (type) => ProductVariant,
+    (productVariant) => productVariant.channels,
+    { onDelete: "CASCADE" },
+  )
+  productVariants: ProductVariant[];
 
-    @ManyToMany(type => FacetValue, facetValue => facetValue.channels, { onDelete: 'CASCADE' })
-    facetValues: FacetValue[];
+  @ManyToMany((type) => FacetValue, (facetValue) => facetValue.channels, {
+    onDelete: "CASCADE",
+  })
+  facetValues: FacetValue[];
 
-    @ManyToMany(type => Facet, facet => facet.channels, { onDelete: 'CASCADE' })
-    facets: Facet[];
+  @ManyToMany((type) => Facet, (facet) => facet.channels, {
+    onDelete: "CASCADE",
+  })
+  facets: Facet[];
 
-    @ManyToMany(type => Collection, collection => collection.channels, { onDelete: 'CASCADE' })
-    collections: Collection[];
+  @ManyToMany((type) => Collection, (collection) => collection.channels, {
+    onDelete: "CASCADE",
+  })
+  collections: Collection[];
 
-    @ManyToMany(type => Promotion, promotion => promotion.channels, { onDelete: 'CASCADE' })
-    promotions: Promotion[];
+  @ManyToMany((type) => Promotion, (promotion) => promotion.channels, {
+    onDelete: "CASCADE",
+  })
+  promotions: Promotion[];
 
-    @ManyToMany(type => PaymentMethod, paymentMethod => paymentMethod.channels, { onDelete: 'CASCADE' })
-    paymentMethods: PaymentMethod[];
+  @ManyToMany(
+    (type) => PaymentMethod,
+    (paymentMethod) => paymentMethod.channels,
+    { onDelete: "CASCADE" },
+  )
+  paymentMethods: PaymentMethod[];
 
-    @ManyToMany(type => ShippingMethod, shippingMethod => shippingMethod.channels, { onDelete: 'CASCADE' })
-    shippingMethods: ShippingMethod[];
+  @ManyToMany(
+    (type) => ShippingMethod,
+    (shippingMethod) => shippingMethod.channels,
+    { onDelete: "CASCADE" },
+  )
+  shippingMethods: ShippingMethod[];
 
-    @ManyToMany(type => Customer, customer => customer.channels, { onDelete: 'CASCADE' })
-    customers: Customer[];
+  @ManyToMany((type) => Customer, (customer) => customer.channels, {
+    onDelete: "CASCADE",
+  })
+  customers: Customer[];
 
-    @ManyToMany(type => Role, role => role.channels, { onDelete: 'CASCADE' })
-    roles: Role[];
+  @ManyToMany((type) => Role, (role) => role.channels, { onDelete: "CASCADE" })
+  roles: Role[];
 
-    @ManyToMany(type => StockLocation, stockLocation => stockLocation.channels, { onDelete: 'CASCADE' })
-    stockLocations: StockLocation[];
+  @ManyToMany(
+    (type) => StockLocation,
+    (stockLocation) => stockLocation.channels,
+    { onDelete: "CASCADE" },
+  )
+  stockLocations: StockLocation[];
 
-    private generateToken(): string {
-        const randomString = () => Math.random().toString(36).substr(3, 10);
-        return `${randomString()}${randomString()}`;
-    }
+  private generateToken(): string {
+    const randomString = () => Math.random().toString(36).substr(3, 10);
+    return `${randomString()}${randomString()}`;
+  }
 }

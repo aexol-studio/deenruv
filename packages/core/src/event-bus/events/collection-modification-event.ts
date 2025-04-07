@@ -1,8 +1,8 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Collection } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Collection } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -16,11 +16,11 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class CollectionModificationEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public collection: Collection,
-        public productVariantIds: ID[],
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public collection: Collection,
+    public productVariantIds: ID[],
+  ) {
+    super();
+  }
 }

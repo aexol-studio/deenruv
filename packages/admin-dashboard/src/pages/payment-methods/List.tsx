@@ -1,13 +1,10 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
-import { PaymentMethodListSelector } from '@/graphql/paymentMethods';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(PaymentMethodListSelector, additionalSelector ?? {});
+const tableId = 'paymentMethods-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     paymentMethods: [
       {
@@ -19,7 +16,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['paymentMethods'];
@@ -50,7 +47,7 @@ export const PaymentMethodsListPage = () => {
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'PaymentMethod'}
       route={Routes['paymentMethods']}
-      tableId="paymentMethods-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreatePaymentMethod]}

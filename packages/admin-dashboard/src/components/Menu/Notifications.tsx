@@ -2,7 +2,7 @@
 
 import type React from 'react';
 import { Bell, Check, Clock, Trash2 } from 'lucide-react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import {
   Popover,
   PopoverTrigger,
@@ -15,12 +15,20 @@ import {
   useServer,
   Button,
   CardFooter,
+  useNotifications,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  cn,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
 type Notification = {
   name: string;
   running: boolean;
+  isJobQueue: boolean;
+
   id: string;
   read: boolean;
   title: string;
@@ -32,7 +40,10 @@ type Notification = {
 const NOTIFICATIONS_LOCAL_STORAGE_KEY = 'DEENRUV_NOTIFICATIONS';
 
 export const Notifications = () => {
+  const cyclingNotifications = useNotifications(({ notifications }) => notifications);
+  const getMainNotification = useNotifications(({ getMainNotification }) => getMainNotification);
   const jobQueues = useServer(({ jobQueues }) => jobQueues);
+  console.log('jobQueues', jobQueues);
   const { t } = useTranslation('common');
   const [notifications, setNotifications] = useState<Array<Notification>>([]);
   const prevJobQueuesRef = useRef(jobQueues);
@@ -73,6 +84,11 @@ export const Notifications = () => {
     localStorage.removeItem(NOTIFICATIONS_LOCAL_STORAGE_KEY);
   };
 
+  const components = useMemo(
+    () => getMainNotification(notifications.map((notification) => notification.id)),
+    [notifications],
+  );
+
   useEffect(() => {
     if (jobQueues.length > 0) {
       jobQueues.forEach((queue) => {
@@ -87,6 +103,7 @@ export const Notifications = () => {
             description: t('notificationsBox.descriptionStart', { name: queue.name }),
             time: new Date().toLocaleTimeString(),
             icon: <Clock className="size-4 text-blue-500" />,
+            isJobQueue: true,
           };
           setNotifications((prev) => [newNotification, ...prev].slice(0, 10));
         }
@@ -100,6 +117,7 @@ export const Notifications = () => {
             description: t('notificationsBox.descriptionComplete', { name: queue.name }),
             time: new Date().toLocaleTimeString(),
             icon: <Check className="size-4 text-green-500" />,
+            isJobQueue: true,
           };
           setNotifications((prev) => [newNotification, ...prev].slice(0, 10));
         }
@@ -123,58 +141,88 @@ export const Notifications = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-md z-[2138] p-0" align="end">
-        <Card className="border-0 shadow-none">
-          <CardHeader className="bg-muted/30 flex flex-row items-center justify-between space-y-0 px-4 pb-3 pt-4">
-            <div>
-              <CardTitle className="text-base">{t('notificationsBox.notifications')}</CardTitle>
-              <CardDescription className="mt-1 text-xs">{t('notificationsBox.recentNotifications')}</CardDescription>
-            </div>
-            {notifications.length > 0 && (
-              <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={clearAllNotifications}>
-                <Trash2 className="mr-1 size-3" />
-                {t('notificationsBox.clearAll')}
-              </Button>
-            )}
-          </CardHeader>
-          <CardContent className="max-h-[400px] overflow-auto p-0">
-            {notifications.length > 0 ? (
-              <div className="divide-y">
-                {notifications.map((notification) => (
-                  <div
-                    key={notification.id}
-                    className={`flex items-start gap-3 p-4 transition-colors ${notification.read ? 'bg-background' : 'bg-muted/20'}`}
-                  >
-                    <div className="mt-0.5">{notification.icon}</div>
-                    <div className="flex-1 space-y-1">
-                      <p className="text-sm font-medium leading-none">{notification.title}</p>
-                      <p className="text-muted-foreground text-xs">{notification.description}</p>
-                      <div className="flex items-center pt-1">
-                        <Clock className="text-muted-foreground mr-1 size-3" />
-                        <span className="text-muted-foreground text-xs">{notification.time}</span>
+        <Tabs defaultValue="ALL" className="w-full">
+          <Card className="w-full border-0 shadow-none">
+            <CardHeader
+              className={cn(
+                'bg-muted/30 flex w-full flex-col items-start justify-start gap-2 p-0',
+                components.length === 0 && 'pb-3',
+              )}
+            >
+              <div className="h-full flex-1 px-4 pt-3">
+                <CardTitle className="text-base">{t('notificationsBox.notifications')}</CardTitle>
+                <CardDescription className="mt-1 text-xs">{t('notificationsBox.recentNotifications')}</CardDescription>
+              </div>
+              {notifications.length > 0 && (
+                <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={clearAllNotifications}>
+                  <Trash2 className="mr-1 size-3" />
+                  {t('notificationsBox.clearAll')}
+                </Button>
+              )}
+              {components.length !== 0 && (
+                <TabsList className="m-0 w-full rounded-none">
+                  <TabsTrigger value="ALL" className="w-full rounded-none text-left">
+                    {t('notificationsBox.all')}
+                  </TabsTrigger>
+                  {cyclingNotifications.map((notification) => (
+                    <TabsTrigger
+                      key={notification.id}
+                      value={notification.id}
+                      className="w-full rounded-none text-left"
+                    >
+                      {notification.id}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              )}
+            </CardHeader>
+            <CardContent className="max-h-[400px] overflow-auto p-0">
+              <TabsContent value="ALL">
+                {notifications.length > 0 ? (
+                  <div className="divide-y">
+                    {notifications.map((notification) => (
+                      <div
+                        key={notification.id}
+                        className={`flex items-start gap-3 p-4 transition-colors ${notification.read ? 'bg-background' : 'bg-muted/20'}`}
+                      >
+                        <div className="mt-0.5">{notification.icon}</div>
+                        <div className="flex-1 space-y-1">
+                          <p className="text-sm font-medium leading-none">{notification.title}</p>
+                          <p className="text-muted-foreground text-xs">{notification.description}</p>
+                          <div className="flex items-center pt-1">
+                            <Clock className="text-muted-foreground mr-1 size-3" />
+                            <span className="text-muted-foreground text-xs">{notification.time}</span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center px-4 py-8 text-center">
-                <div className="bg-muted mb-3 rounded-full p-3">
-                  <Bell className="text-muted-foreground size-6" />
-                </div>
-                <h3 className="text-sm font-medium">{t('notificationsBox.emptyStateMessage')}</h3>
-                <p className="text-muted-foreground mt-1 text-xs">{t('notificationsBox.emptyStateDescription')}</p>
-              </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center px-4 py-8 text-center">
+                    <div className="bg-muted mb-3 rounded-full p-3">
+                      <Bell className="text-muted-foreground size-6" />
+                    </div>
+                    <h3 className="text-sm font-medium">{t('notificationsBox.emptyStateMessage')}</h3>
+                    <p className="text-muted-foreground mt-1 text-xs">{t('notificationsBox.emptyStateDescription')}</p>
+                  </div>
+                )}
+              </TabsContent>
+              {components.map((notification) => (
+                <TabsContent key={notification.id} value={notification.id}>
+                  {notification.component}
+                </TabsContent>
+              ))}
+            </CardContent>
+            {hasUnread && (
+              <CardFooter className="flex items-center justify-end p-4">
+                <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={markAllAsRead}>
+                  <Check className="mr-1 size-3" />
+                  {t('notificationsBox.markAllAsRead')}
+                </Button>
+              </CardFooter>
             )}
-          </CardContent>
-          {hasUnread && (
-            <CardFooter className="flex items-center justify-end p-4">
-              <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={markAllAsRead}>
-                <Check className="mr-1 size-3" />
-                {t('notificationsBox.markAllAsRead')}
-              </Button>
-            </CardFooter>
-          )}
-        </Card>
+          </Card>
+        </Tabs>
       </PopoverContent>
     </Popover>
   );

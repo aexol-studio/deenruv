@@ -16,7 +16,6 @@ import {
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@/components';
 import { X } from 'lucide-react';
 import { PromotionConditionAndActionSelector, PromotionConditionAndActionType } from '@/graphql/promotions';
 
@@ -111,14 +110,14 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
         </DropdownMenu>
       }
     >
-      <Stack column className="flex-1 gap-y-4">
+      <div className="flex flex-1 flex-col gap-y-4">
         {!value?.length ? (
           <p>{t('conditions.emptyState')}</p>
         ) : (
           value?.map((condition, index) => {
             return (
-              <Stack column className="gap-4" key={index}>
-                <Stack className="items-center gap-3">
+              <div className="flex flex-col gap-4" key={index}>
+                <div className="flex items-center gap-3">
                   {condition?.code && (
                     <>
                       <Button
@@ -135,7 +134,7 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
                       <h5>{t(`conditions.codes.${condition.code}`)}</h5>
                     </>
                   )}
-                </Stack>
+                </div>
                 <ArgumentFieldsComponent
                   actions={data?.promotionConditions}
                   args={condition.arguments}
@@ -148,11 +147,11 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
                   }}
                 />
                 <Separator className="my-4" />
-              </Stack>
+              </div>
             );
           })
         )}
-      </Stack>
+      </div>
     </CustomCard>
   );
 };

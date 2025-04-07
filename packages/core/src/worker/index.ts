@@ -1,2 +1,2 @@
-export * from './deenruv-worker';
-export * from './worker-health.service';
+export * from "./deenruv-worker";
+export * from "./worker-health.service";

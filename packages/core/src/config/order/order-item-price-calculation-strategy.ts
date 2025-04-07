@@ -1,8 +1,8 @@
-import { RequestContext } from '../../api/common/request-context';
-import { PriceCalculationResult } from '../../common/types/common-types';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { Order } from '../../entity/order/order.entity';
-import { ProductVariant } from '../../entity/product-variant/product-variant.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { PriceCalculationResult } from "../../common/types/common-types";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { Order } from "../../entity/order/order.entity";
+import { ProductVariant } from "../../entity/product-variant/product-variant.entity";
 
 /**
  * @description
@@ -58,22 +58,22 @@ import { ProductVariant } from '../../entity/product-variant/product-variant.ent
  * @docsCategory Orders
  */
 export interface OrderItemPriceCalculationStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Receives the ProductVariant to be added to the Order as well as any OrderLine custom fields and returns
-     * the price for a single unit.
-     *
-     * Note: if you have any `relation` type custom fields defined on the OrderLine entity, they will only be
-     * passed in to this method if they are set to `eager: true`. Otherwise, you can use the {@link EntityHydrator}
-     * to join the missing relations.
-     *
-     * Note: the `quantity` argument was added in v2.0.0
-     */
-    calculateUnitPrice(
-        ctx: RequestContext,
-        productVariant: ProductVariant,
-        orderLineCustomFields: { [key: string]: any },
-        order: Order,
-        quantity: number,
-    ): PriceCalculationResult | Promise<PriceCalculationResult>;
+  /**
+   * @description
+   * Receives the ProductVariant to be added to the Order as well as any OrderLine custom fields and returns
+   * the price for a single unit.
+   *
+   * Note: if you have any `relation` type custom fields defined on the OrderLine entity, they will only be
+   * passed in to this method if they are set to `eager: true`. Otherwise, you can use the {@link EntityHydrator}
+   * to join the missing relations.
+   *
+   * Note: the `quantity` argument was added in v2.0.0
+   */
+  calculateUnitPrice(
+    ctx: RequestContext,
+    productVariant: ProductVariant,
+    orderLineCustomFields: { [key: string]: any },
+    order: Order,
+    quantity: number,
+  ): PriceCalculationResult | Promise<PriceCalculationResult>;
 }

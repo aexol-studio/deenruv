@@ -1,7 +1,7 @@
-import { Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
+import { Entity, Index, ManyToOne, TableInheritance } from "typeorm";
 
-import { DeenruvEntity } from '../base/base.entity';
-import { User } from '../user/user.entity';
+import { DeenruvEntity } from "../base/base.entity";
+import { User } from "../user/user.entity";
 
 /**
  * @description
@@ -12,9 +12,9 @@ import { User } from '../user/user.entity';
  * @docsPage AuthenticationMethod
  */
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export abstract class AuthenticationMethod extends DeenruvEntity {
-    @Index()
-    @ManyToOne(type => User, user => user.authenticationMethods)
-    user: User;
+  @Index()
+  @ManyToOne((type) => User, (user) => user.authenticationMethods)
+  user: User;
 }

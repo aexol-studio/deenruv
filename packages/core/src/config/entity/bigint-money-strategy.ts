@@ -1,8 +1,8 @@
-import { ColumnOptions } from 'typeorm';
+import { ColumnOptions } from "typeorm";
 
-import { Logger } from '../logger/deenruv-logger';
+import { Logger } from "../logger/deenruv-logger";
 
-import { MoneyStrategy } from './money-strategy';
+import { MoneyStrategy } from "./money-strategy";
 
 /**
  * @description
@@ -16,30 +16,30 @@ import { MoneyStrategy } from './money-strategy';
  * @since 2.0.0
  */
 export class BigIntMoneyStrategy implements MoneyStrategy {
-    readonly moneyColumnOptions: ColumnOptions = {
-        type: 'bigint',
-        transformer: {
-            to: (entityValue: number) => {
-                return entityValue;
-            },
-            from: (databaseValue: string): number => {
-                if (databaseValue == null) {
-                    return databaseValue;
-                }
-                const intVal = Number.parseInt(databaseValue, 10);
-                if (!Number.isSafeInteger(intVal)) {
-                    Logger.warn(`Monetary value ${databaseValue} is not a safe integer!`);
-                }
-                if (Number.isNaN(intVal)) {
-                    Logger.warn(`Monetary value ${databaseValue} is not a number!`);
-                }
-                return intVal;
-            },
-        },
-    };
-    precision = 2;
+  readonly moneyColumnOptions: ColumnOptions = {
+    type: "bigint",
+    transformer: {
+      to: (entityValue: number) => {
+        return entityValue;
+      },
+      from: (databaseValue: string): number => {
+        if (databaseValue == null) {
+          return databaseValue;
+        }
+        const intVal = Number.parseInt(databaseValue, 10);
+        if (!Number.isSafeInteger(intVal)) {
+          Logger.warn(`Monetary value ${databaseValue} is not a safe integer!`);
+        }
+        if (Number.isNaN(intVal)) {
+          Logger.warn(`Monetary value ${databaseValue} is not a number!`);
+        }
+        return intVal;
+      },
+    },
+  };
+  precision = 2;
 
-    round(value: number, quantity = 1): number {
-        return Math.round(value * quantity);
-    }
+  round(value: number, quantity = 1): number {
+    return Math.round(value * quantity);
+  }
 }

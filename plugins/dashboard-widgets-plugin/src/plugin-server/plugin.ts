@@ -1,38 +1,38 @@
-import { PluginCommonModule, DeenruvPlugin, Type } from '@deenruv/core';
-import { AdminResolver } from './resolvers/admin.resolver';
-import { BetterMetricsService } from './services/metrics.service';
-import gql from 'graphql-tag';
-import { AdminUIController } from './controllers/admin-ui-controller';
-import { PLUGIN_INIT_OPTIONS } from './constants';
-import { DashboardWidgetsPluginOptions } from './types';
-import { OrderSummaryViewEntity } from './materialisedViewEntities/order_summary';
-import { TotalProductsViewEntity } from './materialisedViewEntities/total_products';
-import { OrderSummaryWithStateViewEntity } from './materialisedViewEntities/orders_summary_with_state';
-import { TotalProductsWithStateViewEntity } from './materialisedViewEntities/total_products_with_state';
-import { RefreshViewController } from './controllers/refresh-view-controller';
+import { PluginCommonModule, DeenruvPlugin, Type } from "@deenruv/core";
+import { AdminResolver } from "./resolvers/admin.resolver";
+import { BetterMetricsService } from "./services/metrics.service";
+import gql from "graphql-tag";
+import { AdminUIController } from "./controllers/admin-ui-controller";
+import { PLUGIN_INIT_OPTIONS } from "./constants";
+import { DashboardWidgetsPluginOptions } from "./types";
+import { OrderSummaryViewEntity } from "./materialisedViewEntities/order_summary";
+import { TotalProductsViewEntity } from "./materialisedViewEntities/total_products";
+import { OrderSummaryWithStateViewEntity } from "./materialisedViewEntities/orders_summary_with_state";
+import { TotalProductsWithStateViewEntity } from "./materialisedViewEntities/total_products_with_state";
+import { RefreshViewController } from "./controllers/refresh-view-controller";
 
 @DeenruvPlugin({
-    compatibility: '^0.0.0',
-    imports: [PluginCommonModule],
-    controllers: [AdminUIController, RefreshViewController],
-    entities: [
-        OrderSummaryViewEntity,
-        OrderSummaryWithStateViewEntity,
-        TotalProductsViewEntity,
-        TotalProductsWithStateViewEntity,
-    ],
-    providers: [
-        BetterMetricsService,
-        {
-            provide: PLUGIN_INIT_OPTIONS,
-            useFactory: () => DashboardWidgetsPlugin.options,
-        },
-    ],
-    configuration: config => {
-        return config;
+  compatibility: "^0.0.0",
+  imports: [PluginCommonModule],
+  controllers: [AdminUIController, RefreshViewController],
+  entities: [
+    OrderSummaryViewEntity,
+    OrderSummaryWithStateViewEntity,
+    TotalProductsViewEntity,
+    TotalProductsWithStateViewEntity,
+  ],
+  providers: [
+    BetterMetricsService,
+    {
+      provide: PLUGIN_INIT_OPTIONS,
+      useFactory: () => DashboardWidgetsPlugin.options,
     },
-    adminApiExtensions: {
-        schema: gql`
+  ],
+  configuration: (config) => {
+    return config;
+  },
+  adminApiExtensions: {
+    schema: gql`
       type ChartDataType {
         type: ChartMetricType!
         title: String!
@@ -117,14 +117,16 @@ import { RefreshViewController } from './controllers/refresh-view-controller';
         ): OrderSummaryMetrics!
       }
     `,
-        resolvers: [AdminResolver],
-    },
+    resolvers: [AdminResolver],
+  },
 })
 export class DashboardWidgetsPlugin {
-    private static options?: DashboardWidgetsPluginOptions;
+  private static options?: DashboardWidgetsPluginOptions;
 
-    static init(options: DashboardWidgetsPluginOptions): Type<DashboardWidgetsPlugin> {
-        DashboardWidgetsPlugin.options = options;
-        return this;
-    }
+  static init(
+    options: DashboardWidgetsPluginOptions,
+  ): Type<DashboardWidgetsPlugin> {
+    DashboardWidgetsPlugin.options = options;
+    return this;
+  }
 }

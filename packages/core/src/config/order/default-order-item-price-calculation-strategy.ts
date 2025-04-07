@@ -1,8 +1,8 @@
-import { RequestContext } from '../../api/common/request-context';
-import { PriceCalculationResult } from '../../common/types/common-types';
-import { ProductVariant } from '../../entity/product-variant/product-variant.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { PriceCalculationResult } from "../../common/types/common-types";
+import { ProductVariant } from "../../entity/product-variant/product-variant.entity";
 
-import { OrderItemPriceCalculationStrategy } from './order-item-price-calculation-strategy';
+import { OrderItemPriceCalculationStrategy } from "./order-item-price-calculation-strategy";
 
 /**
  * @description
@@ -11,14 +11,16 @@ import { OrderItemPriceCalculationStrategy } from './order-item-price-calculatio
  *
  * @docsCategory orders
  */
-export class DefaultOrderItemPriceCalculationStrategy implements OrderItemPriceCalculationStrategy {
-    calculateUnitPrice(
-        ctx: RequestContext,
-        productVariant: ProductVariant,
-    ): PriceCalculationResult | Promise<PriceCalculationResult> {
-        return {
-            price: productVariant.listPrice,
-            priceIncludesTax: productVariant.listPriceIncludesTax,
-        };
-    }
+export class DefaultOrderItemPriceCalculationStrategy
+  implements OrderItemPriceCalculationStrategy
+{
+  calculateUnitPrice(
+    ctx: RequestContext,
+    productVariant: ProductVariant,
+  ): PriceCalculationResult | Promise<PriceCalculationResult> {
+    return {
+      price: productVariant.listPrice,
+      priceIncludesTax: productVariant.listPriceIncludesTax,
+    };
+  }
 }

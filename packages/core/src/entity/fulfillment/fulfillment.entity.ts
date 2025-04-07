@@ -1,12 +1,12 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { FulfillmentState } from '../../service/helpers/fulfillment-state-machine/fulfillment-state';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomFulfillmentFields } from '../custom-entity-fields';
-import { Order } from '../order/order.entity';
-import { FulfillmentLine } from '../order-line-reference/fulfillment-line.entity';
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { FulfillmentState } from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomFulfillmentFields } from "../custom-entity-fields";
+import { Order } from "../order/order.entity";
+import { FulfillmentLine } from "../order-line-reference/fulfillment-line.entity";
 
 /**
  * @description
@@ -17,27 +17,30 @@ import { FulfillmentLine } from '../order-line-reference/fulfillment-line.entity
  */
 @Entity()
 export class Fulfillment extends DeenruvEntity implements HasCustomFields {
-    constructor(input?: DeepPartial<Fulfillment>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Fulfillment>) {
+    super(input);
+  }
 
-    @Column('varchar') state: FulfillmentState;
+  @Column("varchar") state: FulfillmentState;
 
-    @Column({ default: '' })
-    trackingCode: string;
+  @Column({ default: "" })
+  trackingCode: string;
 
-    @Column()
-    method: string;
+  @Column()
+  method: string;
 
-    @Column()
-    handlerCode: string;
+  @Column()
+  handlerCode: string;
 
-    @OneToMany(type => FulfillmentLine, fulfillmentLine => fulfillmentLine.fulfillment)
-    lines: FulfillmentLine[];
+  @OneToMany(
+    (type) => FulfillmentLine,
+    (fulfillmentLine) => fulfillmentLine.fulfillment,
+  )
+  lines: FulfillmentLine[];
 
-    @ManyToMany(type => Order, order => order.fulfillments)
-    orders: Order[];
+  @ManyToMany((type) => Order, (order) => order.fulfillments)
+  orders: Order[];
 
-    @Column(type => CustomFulfillmentFields)
-    customFields: CustomFulfillmentFields;
+  @Column((type) => CustomFulfillmentFields)
+  customFields: CustomFulfillmentFields;
 }

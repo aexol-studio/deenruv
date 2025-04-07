@@ -1,8 +1,8 @@
-import { StockMovementType } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { ChildEntity } from 'typeorm';
+import { StockMovementType } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { ChildEntity } from "typeorm";
 
-import { StockMovement } from './stock-movement.entity';
+import { StockMovement } from "./stock-movement.entity";
 
 /**
  * @description
@@ -13,9 +13,9 @@ import { StockMovement } from './stock-movement.entity';
  */
 @ChildEntity()
 export class StockAdjustment extends StockMovement {
-    readonly type = StockMovementType.ADJUSTMENT;
+  readonly type = StockMovementType.ADJUSTMENT;
 
-    constructor(input: DeepPartial<StockAdjustment>) {
-        super(input);
-    }
+  constructor(input: DeepPartial<StockAdjustment>) {
+    super(input);
+  }
 }

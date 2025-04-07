@@ -1,13 +1,13 @@
-import { FromSelectorWithScalars } from '@deenruv/admin-types';
-import { Selector } from '../zeus';
+import { FromSelectorWithScalars } from "@deenruv/admin-types";
+import { Selector } from "../zeus";
 
-export const SummaryOrdersSelector = Selector('Order')({
+export const SummaryOrdersSelector = Selector("Order")({
   total: true,
   totalWithTax: true,
   currencyCode: true,
 });
 
-export const LatestOrderSelector = Selector('Order')({
+export const LatestOrderSelector = Selector("Order")({
   totalWithTax: true,
   state: true,
   createdAt: true,
@@ -24,5 +24,5 @@ export const LatestOrderSelector = Selector('Order')({
 });
 export type LatestOrderListType = FromSelectorWithScalars<
   typeof LatestOrderSelector,
-  'Order'
+  "Order"
 >;

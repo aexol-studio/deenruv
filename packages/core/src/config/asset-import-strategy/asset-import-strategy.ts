@@ -1,6 +1,6 @@
-import { Readable } from 'stream';
+import { Readable } from "stream";
 
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
 
 /**
  * @description
@@ -23,10 +23,10 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  * @docsCategory import-export
  */
 export interface AssetImportStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Given an asset path, this method should return a Stream of file data. This could
-     * e.g. be read from a file system or fetch from a remote location.
-     */
-    getStreamFromPath(assetPath: string): Readable | Promise<Readable>;
+  /**
+   * @description
+   * Given an asset path, this method should return a Stream of file data. This could
+   * e.g. be read from a file system or fetch from a remote location.
+   */
+  getStreamFromPath(assetPath: string): Readable | Promise<Readable>;
 }

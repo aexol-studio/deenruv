@@ -1,27 +1,31 @@
-import { Injectable } from '@nestjs/common';
-import type { ListQueryOptions, PaginatedList, RequestContext } from '@deenruv/core';
-import { ListQueryBuilder } from '@deenruv/core';
-import { SupplierStockInTransit } from '../../entities/supplier-stock-in-transit.entity';
+import { Injectable } from "@nestjs/common";
+import type {
+  ListQueryOptions,
+  PaginatedList,
+  RequestContext,
+} from "@deenruv/core";
+import { ListQueryBuilder } from "@deenruv/core";
+import { SupplierStockInTransit } from "../../entities/supplier-stock-in-transit.entity";
 
 @Injectable()
 export class SupplierStockInTransitService {
-    constructor(private readonly listQueryBuilder: ListQueryBuilder) {}
+  constructor(private readonly listQueryBuilder: ListQueryBuilder) {}
 
-    findAll(
-        ctx: RequestContext,
-        options?: ListQueryOptions<SupplierStockInTransit>,
-    ): Promise<PaginatedList<SupplierStockInTransit>> {
-        return this.listQueryBuilder
-            .build(SupplierStockInTransit, options, {
-                ctx,
-                relations: ['supplierStock', 'supplierStock.productVariant'],
-            })
-            .getManyAndCount()
-            .then(([items, totalItems]) => {
-                return {
-                    items,
-                    totalItems,
-                };
-            });
-    }
+  findAll(
+    ctx: RequestContext,
+    options?: ListQueryOptions<SupplierStockInTransit>,
+  ): Promise<PaginatedList<SupplierStockInTransit>> {
+    return this.listQueryBuilder
+      .build(SupplierStockInTransit, options, {
+        ctx,
+        relations: ["supplierStock", "supplierStock.productVariant"],
+      })
+      .getManyAndCount()
+      .then(([items, totalItems]) => {
+        return {
+          items,
+          totalItems,
+        };
+      });
+  }
 }

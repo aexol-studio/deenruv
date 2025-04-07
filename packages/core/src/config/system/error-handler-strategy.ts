@@ -1,7 +1,7 @@
-import { ArgumentsHost } from '@nestjs/common';
+import { ArgumentsHost } from "@nestjs/common";
 
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { Job } from '../../job-queue/job';
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { Job } from "../../job-queue/job";
 
 /**
  * @description
@@ -58,17 +58,23 @@ import { Job } from '../../job-queue/job';
  * @docsCategory Errors
  */
 export interface ErrorHandlerStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * This method will be invoked for any error thrown during the execution of the
-     * server.
-     */
-    handleServerError(exception: Error, context: { host: ArgumentsHost }): void | Promise<void>;
+  /**
+   * @description
+   * This method will be invoked for any error thrown during the execution of the
+   * server.
+   */
+  handleServerError(
+    exception: Error,
+    context: { host: ArgumentsHost },
+  ): void | Promise<void>;
 
-    /**
-     * @description
-     * This method will be invoked for any error thrown during the execution of a
-     * job on the worker.
-     */
-    handleWorkerError(exception: Error, context: { job: Job }): void | Promise<void>;
+  /**
+   * @description
+   * This method will be invoked for any error thrown during the execution of a
+   * job on the worker.
+   */
+  handleWorkerError(
+    exception: Error,
+    context: { job: Job },
+  ): void | Promise<void>;
 }

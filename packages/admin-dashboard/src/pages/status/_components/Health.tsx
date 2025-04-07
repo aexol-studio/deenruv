@@ -10,7 +10,7 @@ const getStatusBadge = (status: string) => {
         variant="outline"
         className="flex select-none items-center gap-1 border-green-200 bg-green-50 text-green-700"
       >
-        <CheckCircle className="h-3.5 w-3.5" />
+        <CheckCircle className="size-3.5" />
         {status}
       </Badge>
     );
@@ -20,14 +20,14 @@ const getStatusBadge = (status: string) => {
         variant="outline"
         className="flex select-none items-center gap-1 border-amber-200 bg-amber-50 text-amber-700"
       >
-        <AlertCircle className="h-3.5 w-3.5" />
+        <AlertCircle className="size-3.5" />
         {status}
       </Badge>
     );
   } else {
     return (
       <Badge variant="outline" className="flex select-none items-center gap-1 border-red-200 bg-red-50 text-red-700">
-        <XCircle className="h-3.5 w-3.5" />
+        <XCircle className="size-3.5" />
         {status}
       </Badge>
     );
@@ -89,7 +89,7 @@ export const Health = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <AlertCircle className="text-muted-foreground mb-3 h-10 w-10" />
+          <AlertCircle className="text-muted-foreground mb-3 size-10" />
           <h3 className="text-lg font-medium">{t('health.error.title')}</h3>
           <p className="text-muted-foreground mt-1 text-sm">{t('health.error.description')}</p>
           <Button variant="outline" size="sm" onClick={fetchStatus} className="mt-4">

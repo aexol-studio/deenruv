@@ -15,7 +15,7 @@ export const generateSHA384Hash = (sum: string) => {
 
 export const getSessionId = (order: Order) => {
   const przelewy24payments = order.payments.filter(
-    (payment) => payment.method === METHOD_NAME
+    (payment) => payment.method === METHOD_NAME,
   );
   const sessionId = !przelewy24payments.length
     ? `${order.code}`
@@ -50,7 +50,7 @@ export const getAxios = (przelewy24Secrets: Przelewy24SecretsByMarket) => {
     "Basic " +
     Buffer.from(
       `${przelewy24Secrets.PRZELEWY24_POS_ID}:${przelewy24Secrets.PRZELEWY24_CLIENT_SECRET}`,
-      "utf-8"
+      "utf-8",
     ).toString("base64");
 
   const baseURL = process.env.PRZELEWY24_URL || "https://sandbox.przelewy24.pl";

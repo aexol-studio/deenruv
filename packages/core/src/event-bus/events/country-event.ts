@@ -1,9 +1,12 @@
-import { CreateCountryInput, UpdateCountryInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateCountryInput,
+  UpdateCountryInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api';
-import { Country } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { Country } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type CountryInputTypes = CreateCountryInput | UpdateCountryInput | ID;
 
@@ -15,13 +18,16 @@ type CountryInputTypes = CreateCountryInput | UpdateCountryInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class CountryEvent extends DeenruvEntityEvent<Country, CountryInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: Country,
-        type: 'created' | 'updated' | 'deleted',
-        input?: CountryInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class CountryEvent extends DeenruvEntityEvent<
+  Country,
+  CountryInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: Country,
+    type: "created" | "updated" | "deleted",
+    input?: CountryInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

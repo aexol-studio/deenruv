@@ -1,149 +1,164 @@
-import { pick } from '@deenruv/common/lib/pick';
+import { pick } from "@deenruv/common/lib/pick";
 import {
-    defaultShippingEligibilityChecker,
-    LanguageCode,
-    mergeConfig,
-    ShippingEligibilityChecker,
-} from '@deenruv/core';
-import { createTestEnvironment } from '@deenruv/testing';
-import gql from 'graphql-tag';
-import path from 'path';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+  defaultShippingEligibilityChecker,
+  LanguageCode,
+  mergeConfig,
+  ShippingEligibilityChecker,
+} from "@deenruv/core";
+import { createTestEnvironment } from "@deenruv/testing";
+import gql from "graphql-tag";
+import path from "path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
+import { initialData } from "../../../e2e-common/e2e-initial-data";
+import {
+  testConfig,
+  TEST_SETUP_TIMEOUT_MS,
+} from "../../../e2e-common/test-config.js";
 
-import { UpdateShippingMethodMutationVariables } from './graphql/generated-e2e-admin-types';
-import { GetCheckersQuery, UpdateShippingMethodMutation } from './graphql/generated-e2e-admin-types';
-import { UPDATE_SHIPPING_METHOD } from './graphql/shared-definitions';
-import { assertThrowsWithMessage } from './utils/assert-throws-with-message';
+import { UpdateShippingMethodMutationVariables } from "./graphql/generated-e2e-admin-types";
+import {
+  GetCheckersQuery,
+  UpdateShippingMethodMutation,
+} from "./graphql/generated-e2e-admin-types";
+import { UPDATE_SHIPPING_METHOD } from "./graphql/shared-definitions";
+import { assertThrowsWithMessage } from "./utils/assert-throws-with-message";
 
 const testShippingEligibilityChecker = new ShippingEligibilityChecker({
-    code: 'test-checker',
-    description: [{ languageCode: LanguageCode.en, value: 'test checker' }],
-    args: {
-        optional: {
-            label: [
-                { languageCode: LanguageCode.en, value: 'Optional argument' },
-                { languageCode: LanguageCode.de, value: 'Optional eingabe' },
-            ],
-            description: [
-                { languageCode: LanguageCode.en, value: 'This is an optional argument' },
-                { languageCode: LanguageCode.de, value: 'Das ist eine optionale eingabe' },
-            ],
-            required: false,
-            type: 'string',
+  code: "test-checker",
+  description: [{ languageCode: LanguageCode.en, value: "test checker" }],
+  args: {
+    optional: {
+      label: [
+        { languageCode: LanguageCode.en, value: "Optional argument" },
+        { languageCode: LanguageCode.de, value: "Optional eingabe" },
+      ],
+      description: [
+        {
+          languageCode: LanguageCode.en,
+          value: "This is an optional argument",
         },
-        required: {
-            required: true,
-            type: 'string',
-            defaultValue: 'hello',
+        {
+          languageCode: LanguageCode.de,
+          value: "Das ist eine optionale eingabe",
         },
+      ],
+      required: false,
+      type: "string",
     },
-    check: ctx => true,
+    required: {
+      required: true,
+      type: "string",
+      defaultValue: "hello",
+    },
+  },
+  check: (ctx) => true,
 });
 
-describe('Configurable operations', () => {
-    const { server, adminClient, shopClient } = createTestEnvironment(
-        mergeConfig(testConfig(), {
-            shippingOptions: {
-                shippingEligibilityCheckers: [
-                    defaultShippingEligibilityChecker,
-                    testShippingEligibilityChecker,
-                ],
+describe("Configurable operations", () => {
+  const { server, adminClient, shopClient } = createTestEnvironment(
+    mergeConfig(testConfig(), {
+      shippingOptions: {
+        shippingEligibilityCheckers: [
+          defaultShippingEligibilityChecker,
+          testShippingEligibilityChecker,
+        ],
+      },
+    }),
+  );
+
+  beforeAll(async () => {
+    await server.init({
+      initialData,
+      productsCsvPath: path.join(__dirname, "fixtures/e2e-products-full.csv"),
+      customerCount: 1,
+    });
+    await adminClient.asSuperAdmin();
+  }, TEST_SETUP_TIMEOUT_MS);
+
+  afterAll(async () => {
+    await server.destroy();
+  });
+
+  describe("required args", () => {
+    it("allows empty optional arg", async () => {
+      const { updateShippingMethod } = await adminClient.query<
+        UpdateShippingMethodMutation,
+        UpdateShippingMethodMutationVariables
+      >(UPDATE_SHIPPING_METHOD, {
+        input: {
+          id: "T_1",
+          checker: {
+            code: testShippingEligibilityChecker.code,
+            arguments: [
+              { name: "optional", value: "" },
+              { name: "required", value: "foo" },
+            ],
+          },
+          translations: [],
+        },
+      });
+
+      expect(updateShippingMethod.checker.args).toEqual([
+        {
+          name: "optional",
+          value: "",
+        },
+        {
+          name: "required",
+          value: "foo",
+        },
+      ]);
+    });
+
+    it(
+      "throws if a required arg is null",
+      assertThrowsWithMessage(async () => {
+        await adminClient.query<
+          UpdateShippingMethodMutation,
+          UpdateShippingMethodMutationVariables
+        >(UPDATE_SHIPPING_METHOD, {
+          input: {
+            id: "T_1",
+            checker: {
+              code: testShippingEligibilityChecker.code,
+              arguments: [
+                { name: "optional", value: "null" },
+                { name: "required", value: "" },
+              ],
             },
-        }),
+            translations: [],
+          },
+        });
+      }, 'The argument "required" is required'),
     );
+  });
 
-    beforeAll(async () => {
-        await server.init({
-            initialData,
-            productsCsvPath: path.join(__dirname, 'fixtures/e2e-products-full.csv'),
-            customerCount: 1,
-        });
-        await adminClient.asSuperAdmin();
-    }, TEST_SETUP_TIMEOUT_MS);
-
-    afterAll(async () => {
-        await server.destroy();
-    });
-
-    describe('required args', () => {
-        it('allows empty optional arg', async () => {
-            const { updateShippingMethod } = await adminClient.query<
-                UpdateShippingMethodMutation,
-                UpdateShippingMethodMutationVariables
-            >(UPDATE_SHIPPING_METHOD, {
-                input: {
-                    id: 'T_1',
-                    checker: {
-                        code: testShippingEligibilityChecker.code,
-                        arguments: [
-                            { name: 'optional', value: '' },
-                            { name: 'required', value: 'foo' },
-                        ],
-                    },
-                    translations: [],
-                },
-            });
-
-            expect(updateShippingMethod.checker.args).toEqual([
-                {
-                    name: 'optional',
-                    value: '',
-                },
-                {
-                    name: 'required',
-                    value: 'foo',
-                },
-            ]);
-        });
-
-        it(
-            'throws if a required arg is null',
-            assertThrowsWithMessage(async () => {
-                await adminClient.query<UpdateShippingMethodMutation, UpdateShippingMethodMutationVariables>(
-                    UPDATE_SHIPPING_METHOD,
-                    {
-                        input: {
-                            id: 'T_1',
-                            checker: {
-                                code: testShippingEligibilityChecker.code,
-                                arguments: [
-                                    { name: 'optional', value: 'null' },
-                                    { name: 'required', value: '' },
-                                ],
-                            },
-                            translations: [],
-                        },
-                    },
-                );
-            }, 'The argument "required" is required'),
-        );
-    });
-
-    it('defaultValue', async () => {
-        const { shippingEligibilityCheckers } = await adminClient.query<GetCheckersQuery>(GET_CHECKERS);
-        expect(shippingEligibilityCheckers[1].args.map(pick(['name', 'defaultValue']))).toEqual([
-            { name: 'optional', defaultValue: null },
-            { name: 'required', defaultValue: 'hello' },
-        ]);
-    });
+  it("defaultValue", async () => {
+    const { shippingEligibilityCheckers } =
+      await adminClient.query<GetCheckersQuery>(GET_CHECKERS);
+    expect(
+      shippingEligibilityCheckers[1].args.map(pick(["name", "defaultValue"])),
+    ).toEqual([
+      { name: "optional", defaultValue: null },
+      { name: "required", defaultValue: "hello" },
+    ]);
+  });
 });
 
 export const GET_CHECKERS = gql`
-    query GetCheckers {
-        shippingEligibilityCheckers {
-            code
-            args {
-                defaultValue
-                description
-                label
-                list
-                name
-                required
-                type
-            }
-        }
+  query GetCheckers {
+    shippingEligibilityCheckers {
+      code
+      args {
+        defaultValue
+        description
+        label
+        list
+        name
+        required
+        type
+      }
     }
+  }
 `;

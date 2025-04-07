@@ -1,9 +1,9 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { ChildEntity, Index, ManyToOne } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { ChildEntity, Index, ManyToOne } from "typeorm";
 
-import { Order } from '../order/order.entity';
+import { Order } from "../order/order.entity";
 
-import { HistoryEntry } from './history-entry.entity';
+import { HistoryEntry } from "./history-entry.entity";
 
 /**
  * @description
@@ -13,11 +13,11 @@ import { HistoryEntry } from './history-entry.entity';
  */
 @ChildEntity()
 export class OrderHistoryEntry extends HistoryEntry {
-    constructor(input: DeepPartial<OrderHistoryEntry>) {
-        super(input);
-    }
+  constructor(input: DeepPartial<OrderHistoryEntry>) {
+    super(input);
+  }
 
-    @Index()
-    @ManyToOne(type => Order, { onDelete: 'CASCADE' })
-    order: Order;
+  @Index()
+  @ManyToOne((type) => Order, { onDelete: "CASCADE" })
+  order: Order;
 }

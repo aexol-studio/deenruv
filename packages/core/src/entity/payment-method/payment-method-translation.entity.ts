@@ -1,38 +1,40 @@
-import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 
-import { Translation } from '../../common/types/locale-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomPaymentMethodFieldsTranslation } from '../custom-entity-fields';
+import { Translation } from "../../common/types/locale-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomPaymentMethodFieldsTranslation } from "../custom-entity-fields";
 
-import { PaymentMethod } from './payment-method.entity';
+import { PaymentMethod } from "./payment-method.entity";
 
 @Entity()
 export class PaymentMethodTranslation
-    extends DeenruvEntity
-    implements Translation<PaymentMethod>, HasCustomFields
+  extends DeenruvEntity
+  implements Translation<PaymentMethod>, HasCustomFields
 {
-    constructor(input?: DeepPartial<Translation<PaymentMethod>>) {
-        super(input);
-        // This is a workaround for the fact that
-        // MySQL does not support default values on TEXT columns
-        if (this.description === undefined) {
-            this.description = '';
-        }
+  constructor(input?: DeepPartial<Translation<PaymentMethod>>) {
+    super(input);
+    // This is a workaround for the fact that
+    // MySQL does not support default values on TEXT columns
+    if (this.description === undefined) {
+      this.description = "";
     }
+  }
 
-    @Column('varchar') languageCode: LanguageCode;
+  @Column("varchar") languageCode: LanguageCode;
 
-    @Column() name: string;
+  @Column() name: string;
 
-    @Column('text') description: string;
+  @Column("text") description: string;
 
-    @Index()
-    @ManyToOne(type => PaymentMethod, base => base.translations, { onDelete: 'CASCADE' })
-    base: PaymentMethod;
+  @Index()
+  @ManyToOne((type) => PaymentMethod, (base) => base.translations, {
+    onDelete: "CASCADE",
+  })
+  base: PaymentMethod;
 
-    @Column(type => CustomPaymentMethodFieldsTranslation)
-    customFields: CustomPaymentMethodFieldsTranslation;
+  @Column((type) => CustomPaymentMethodFieldsTranslation)
+  customFields: CustomPaymentMethodFieldsTranslation;
 }

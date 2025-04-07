@@ -1,9 +1,7 @@
-import { Input, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
-import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
+import { Input, CustomCard, CardIcons, RichTextEditor } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@/components';
 
 type PartialNull<T> = {
   [P in keyof T]?: T[P] | null;
@@ -20,8 +18,8 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
 
   return (
     <CustomCard title={t('details.basicInfo')} icon={<CardIcons.basic />} color="blue">
-      <Stack column className="flex-1 gap-y-4">
-        <Stack className="items-start gap-3">
+      <div className="flex flex-1 flex-col gap-y-4">
+        <div className="flex items-start gap-3">
           <Input
             label={t('name')}
             placeholder={t('name')}
@@ -35,12 +33,12 @@ export const BasicFieldsCard: React.FC<BasicFieldsCardProps> = ({ currentTransla
             placeholder={t('slug')}
             onChange={(e) => onChange('slug', e.target.value)}
           />
-        </Stack>
+        </div>
         <RichTextEditor
           content={currentTranslationValue?.description ?? ''}
           onContentChanged={(value) => onChange('description', value)}
         />
-      </Stack>
+      </div>
     </CustomCard>
   );
 };

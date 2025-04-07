@@ -1,4 +1,4 @@
-import { EntityIdStrategy } from './entity-id-strategy';
+import { EntityIdStrategy } from "./entity-id-strategy";
 
 /**
  * @description
@@ -22,12 +22,12 @@ import { EntityIdStrategy } from './entity-id-strategy';
  * @docsCategory configuration
  * @docsPage EntityIdStrategy
  */
-export class UuidIdStrategy implements EntityIdStrategy<'uuid'> {
-    readonly primaryKeyType = 'uuid';
-    decodeId(id: string): string {
-        return id;
-    }
-    encodeId(primaryKey: string): string {
-        return primaryKey;
-    }
+export class UuidIdStrategy implements EntityIdStrategy<"uuid"> {
+  readonly primaryKeyType = "uuid";
+  decodeId(id: string): string {
+    return id;
+  }
+  encodeId(primaryKey: string): string {
+    return primaryKey;
+  }
 }

@@ -1,44 +1,51 @@
-import { DeenruvConfig } from '@deenruv/core';
-import path from 'node:path';
-import { register } from 'ts-node';
+import { DeenruvConfig } from "@deenruv/core";
+import path from "node:path";
+import { register } from "ts-node";
 
-import { DeenruvConfigRef } from '../../shared/deenruv-config-ref';
-import { selectTsConfigFile } from '../../utilities/ast-utils';
-import { isRunningInTsNode } from '../../utilities/utils';
+import { DeenruvConfigRef } from "../../shared/deenruv-config-ref";
+import { selectTsConfigFile } from "../../utilities/ast-utils";
+import { isRunningInTsNode } from "../../utilities/utils";
 
 export async function loadDeenruvConfigFile(
-    deenruvConfig: DeenruvConfigRef,
-    providedTsConfigPath?: string,
+  deenruvConfig: DeenruvConfigRef,
+  providedTsConfigPath?: string,
 ): Promise<DeenruvConfig> {
-    await import('dotenv/config');
-    if (!isRunningInTsNode()) {
-        let tsConfigPath: string;
-        if (providedTsConfigPath) {
-            tsConfigPath = providedTsConfigPath;
-        } else {
-            const tsConfigFile = await selectTsConfigFile();
-            tsConfigPath = path.join(process.cwd(), tsConfigFile);
-        }
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const compilerOptions = require(tsConfigPath).compilerOptions;
-        register({
-            compilerOptions: { ...compilerOptions, moduleResolution: 'NodeNext', module: 'NodeNext' },
-            transpileOnly: true,
-        });
-        if (compilerOptions.paths) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const tsConfigPaths = require('tsconfig-paths');
-            tsConfigPaths.register({
-                baseUrl: './',
-                paths: compilerOptions.paths,
-            });
-        }
+  await import("dotenv/config");
+  if (!isRunningInTsNode()) {
+    let tsConfigPath: string;
+    if (providedTsConfigPath) {
+      tsConfigPath = providedTsConfigPath;
+    } else {
+      const tsConfigFile = await selectTsConfigFile();
+      tsConfigPath = path.join(process.cwd(), tsConfigFile);
     }
-    const exportedVarName = deenruvConfig.getConfigObjectVariableName();
-    if (!exportedVarName) {
-        throw new Error('Could not find the exported variable name in the DeenruvConfig file');
+
+    const compilerOptions = require(tsConfigPath).compilerOptions;
+    register({
+      compilerOptions: {
+        ...compilerOptions,
+        moduleResolution: "NodeNext",
+        module: "NodeNext",
+      },
+      transpileOnly: true,
+    });
+    if (compilerOptions.paths) {
+      const tsConfigPaths = require("tsconfig-paths");
+      tsConfigPaths.register({
+        baseUrl: "./",
+        paths: compilerOptions.paths,
+      });
     }
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const config = require(deenruvConfig.sourceFile.getFilePath())[exportedVarName];
-    return config;
+  }
+  const exportedVarName = deenruvConfig.getConfigObjectVariableName();
+  if (!exportedVarName) {
+    throw new Error(
+      "Could not find the exported variable name in the DeenruvConfig file",
+    );
+  }
+
+  const config = require(deenruvConfig.sourceFile.getFilePath())[
+    exportedVarName
+  ];
+  return config;
 }

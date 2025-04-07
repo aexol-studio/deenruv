@@ -1,9 +1,14 @@
-import { AssetType } from '@deenruv/common/lib/generated-types';
-import { AssetPreviewStrategy, getAssetType, Logger, RequestContext } from '@deenruv/core';
-import path from 'path';
-import sharp from 'sharp';
+import { AssetType } from "@deenruv/common/lib/generated-types";
+import {
+  AssetPreviewStrategy,
+  getAssetType,
+  Logger,
+  RequestContext,
+} from "@deenruv/core";
+import path from "path";
+import sharp from "sharp";
 
-import { loggerCtx } from './constants';
+import { loggerCtx } from "./constants";
 
 /**
  * @description
@@ -15,55 +20,55 @@ import { loggerCtx } from './constants';
  * @docsPage SharpAssetPreviewStrategy
  */
 interface SharpAssetPreviewConfig {
-    /**
-     * @description
-     * The max height in pixels of a generated preview image.
-     *
-     * @default 1600
-     */
-    maxHeight?: number;
-    /**
-     * @description
-     * The max width in pixels of a generated preview image.
-     *
-     * @default 1600
-     */
-    maxWidth?: number;
-    /**
-     * @description
-     * Set Sharp's options for encoding jpeg files: https://sharp.pixelplumbing.com/api-output#jpeg
-     *
-     * @since 1.7.0
-     */
-    jpegOptions?: sharp.JpegOptions;
-    /**
-     * @description
-     * Set Sharp's options for encoding png files: https://sharp.pixelplumbing.com/api-output#png
-     *
-     * @since 1.7.0
-     */
-    pngOptions?: sharp.PngOptions;
-    /**
-     * @description
-     * Set Sharp's options for encoding webp files: https://sharp.pixelplumbing.com/api-output#webp
-     *
-     * @since 1.7.0
-     */
-    webpOptions?: sharp.WebpOptions;
-    /**
-     * @description
-     * Set Sharp's options for encoding gif files: https://sharp.pixelplumbing.com/api-output#gif
-     *
-     * @since 1.7.0
-     */
-    gifOptions?: sharp.GifOptions;
-    /**
-     * @description
-     * Set Sharp's options for encoding avif files: https://sharp.pixelplumbing.com/api-output#avif
-     *
-     * @since 1.7.0
-     */
-    avifOptions?: sharp.AvifOptions;
+  /**
+   * @description
+   * The max height in pixels of a generated preview image.
+   *
+   * @default 1600
+   */
+  maxHeight?: number;
+  /**
+   * @description
+   * The max width in pixels of a generated preview image.
+   *
+   * @default 1600
+   */
+  maxWidth?: number;
+  /**
+   * @description
+   * Set Sharp's options for encoding jpeg files: https://sharp.pixelplumbing.com/api-output#jpeg
+   *
+   * @since 1.7.0
+   */
+  jpegOptions?: sharp.JpegOptions;
+  /**
+   * @description
+   * Set Sharp's options for encoding png files: https://sharp.pixelplumbing.com/api-output#png
+   *
+   * @since 1.7.0
+   */
+  pngOptions?: sharp.PngOptions;
+  /**
+   * @description
+   * Set Sharp's options for encoding webp files: https://sharp.pixelplumbing.com/api-output#webp
+   *
+   * @since 1.7.0
+   */
+  webpOptions?: sharp.WebpOptions;
+  /**
+   * @description
+   * Set Sharp's options for encoding gif files: https://sharp.pixelplumbing.com/api-output#gif
+   *
+   * @since 1.7.0
+   */
+  gifOptions?: sharp.GifOptions;
+  /**
+   * @description
+   * Set Sharp's options for encoding avif files: https://sharp.pixelplumbing.com/api-output#avif
+   *
+   * @since 1.7.0
+   */
+  avifOptions?: sharp.AvifOptions;
 }
 
 /**
@@ -93,74 +98,78 @@ interface SharpAssetPreviewConfig {
  * @docsWeight 0
  */
 export class SharpAssetPreviewStrategy implements AssetPreviewStrategy {
-    private readonly defaultConfig: Required<SharpAssetPreviewConfig> = {
-        maxHeight: 1600,
-        maxWidth: 1600,
-        jpegOptions: {},
-        pngOptions: {},
-        webpOptions: {},
-        gifOptions: {},
-        avifOptions: {},
+  private readonly defaultConfig: Required<SharpAssetPreviewConfig> = {
+    maxHeight: 1600,
+    maxWidth: 1600,
+    jpegOptions: {},
+    pngOptions: {},
+    webpOptions: {},
+    gifOptions: {},
+    avifOptions: {},
+  };
+  private readonly config: Required<SharpAssetPreviewConfig>;
+
+  constructor(config?: SharpAssetPreviewConfig) {
+    this.config = {
+      ...this.defaultConfig,
+      ...(config ?? {}),
     };
-    private readonly config: Required<SharpAssetPreviewConfig>;
+  }
 
-    constructor(config?: SharpAssetPreviewConfig) {
-        this.config = {
-            ...this.defaultConfig,
-            ...(config ?? {}),
-        };
-    }
+  async generatePreviewImage(
+    ctx: RequestContext,
+    mimeType: string,
+    data: Buffer,
+  ): Promise<Buffer> {
+    const assetType = getAssetType(mimeType);
 
-    async generatePreviewImage(ctx: RequestContext, mimeType: string, data: Buffer): Promise<Buffer> {
-        const assetType = getAssetType(mimeType);
+    const { maxWidth, maxHeight } = this.config;
 
-        const { maxWidth, maxHeight } = this.config;
-
-        if (assetType === AssetType.IMAGE) {
-            try {
-                const image = sharp(data, { failOn: 'truncated' }).rotate();
-                const metadata = await image.metadata();
-                const width = metadata.width || 0;
-                const height = metadata.height || 0;
-                if (maxWidth < width || maxHeight < height) {
-                    image.resize(maxWidth, maxHeight, { fit: 'inside' });
-                }
-                if (mimeType === 'image/svg+xml') {
-                    // Convert the SVG to a raster for the preview
-                    return image.toBuffer();
-                } else {
-                    switch (metadata.format) {
-                        case 'jpeg':
-                        case 'jpg':
-                            return image.jpeg(this.config.jpegOptions).toBuffer();
-                        case 'png':
-                            return image.png(this.config.pngOptions).toBuffer();
-                        case 'webp':
-                            return image.webp(this.config.webpOptions).toBuffer();
-                        case 'gif':
-                            return image.gif(this.config.jpegOptions).toBuffer();
-                        case 'avif':
-                            return image.avif(this.config.avifOptions).toBuffer();
-                        default:
-                            return image.toBuffer();
-                    }
-                }
-            } catch (err: any) {
-                Logger.error(
-                    `An error occurred when generating preview for image with mimeType ${mimeType}: ${JSON.stringify(
-                        err.message,
-                    )}`,
-                    loggerCtx,
-                );
-                return this.generateBinaryFilePreview(mimeType);
-            }
-        } else {
-            return this.generateBinaryFilePreview(mimeType);
+    if (assetType === AssetType.IMAGE) {
+      try {
+        const image = sharp(data, { failOn: "truncated" }).rotate();
+        const metadata = await image.metadata();
+        const width = metadata.width || 0;
+        const height = metadata.height || 0;
+        if (maxWidth < width || maxHeight < height) {
+          image.resize(maxWidth, maxHeight, { fit: "inside" });
         }
+        if (mimeType === "image/svg+xml") {
+          // Convert the SVG to a raster for the preview
+          return image.toBuffer();
+        } else {
+          switch (metadata.format) {
+            case "jpeg":
+            case "jpg":
+              return image.jpeg(this.config.jpegOptions).toBuffer();
+            case "png":
+              return image.png(this.config.pngOptions).toBuffer();
+            case "webp":
+              return image.webp(this.config.webpOptions).toBuffer();
+            case "gif":
+              return image.gif(this.config.jpegOptions).toBuffer();
+            case "avif":
+              return image.avif(this.config.avifOptions).toBuffer();
+            default:
+              return image.toBuffer();
+          }
+        }
+      } catch (err: any) {
+        Logger.error(
+          `An error occurred when generating preview for image with mimeType ${mimeType}: ${JSON.stringify(
+            err.message,
+          )}`,
+          loggerCtx,
+        );
+        return this.generateBinaryFilePreview(mimeType);
+      }
+    } else {
+      return this.generateBinaryFilePreview(mimeType);
     }
+  }
 
-    private generateMimeTypeOverlay(mimeType: string): Buffer {
-        return Buffer.from(`
+  private generateMimeTypeOverlay(mimeType: string): Buffer {
+    return Buffer.from(`
             <svg xmlns="http://www.w3.org/2000/svg" height="150" width="800">
             <style>
                 text {
@@ -172,17 +181,17 @@ export class SharpAssetPreviewStrategy implements AssetPreviewStrategy {
 
               <text x="400" y="110"  text-anchor="middle" width="800">${mimeType}</text>
             </svg>`);
-    }
+  }
 
-    private generateBinaryFilePreview(mimeType: string): Promise<Buffer> {
-        return sharp(path.join(__dirname, 'file-icon.png'))
-            .resize(800, 800, { fit: 'outside' })
-            .composite([
-                {
-                    input: this.generateMimeTypeOverlay(mimeType),
-                    gravity: sharp.gravity.center,
-                },
-            ])
-            .toBuffer();
-    }
+  private generateBinaryFilePreview(mimeType: string): Promise<Buffer> {
+    return sharp(path.join(__dirname, "file-icon.png"))
+      .resize(800, 800, { fit: "outside" })
+      .composite([
+        {
+          input: this.generateMimeTypeOverlay(mimeType),
+          gravity: sharp.gravity.center,
+        },
+      ])
+      .toBuffer();
+  }
 }

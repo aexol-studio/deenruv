@@ -1,8 +1,8 @@
-import { StockMovementType } from '@deenruv/common/lib/generated-types';
+import { StockMovementType } from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { StockMovement } from '../../entity/stock-movement/stock-movement.entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { StockMovement } from "../../entity/stock-movement/stock-movement.entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -14,13 +14,13 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class StockMovementEvent extends DeenruvEvent {
-    public readonly type: StockMovementType;
+  public readonly type: StockMovementType;
 
-    constructor(
-        public ctx: RequestContext,
-        public stockMovements: StockMovement[],
-    ) {
-        super();
-        this.type = stockMovements[0]?.type;
-    }
+  constructor(
+    public ctx: RequestContext,
+    public stockMovements: StockMovement[],
+  ) {
+    super();
+    this.type = stockMovements[0]?.type;
+  }
 }

@@ -1,8 +1,8 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Administrator, Role } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Administrator, Role } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -14,12 +14,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @since 1.4
  */
 export class RoleChangeEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public admin: Administrator,
-        public roleIds: ID[],
-        public type: 'assigned' | 'removed',
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public admin: Administrator,
+    public roleIds: ID[],
+    public type: "assigned" | "removed",
+  ) {
+    super();
+  }
 }

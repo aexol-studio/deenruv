@@ -8,7 +8,6 @@ import {
   useMutation,
   useQuery,
 } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
 import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { toast } from 'sonner';
@@ -71,7 +70,7 @@ export const CustomerGroupsCard: React.FC<RolesCardProps> = ({ groups, customerI
     <CustomCard title={t('customerGroups.header')} icon={<CardIcons.users />} color="gray">
       <div className="flex flex-col gap-4">
         {customerId ? (
-          <Stack className="gap-2">
+          <div className="flex gap-2">
             <MultipleSelector
               options={options}
               value={value}
@@ -80,7 +79,7 @@ export const CustomerGroupsCard: React.FC<RolesCardProps> = ({ groups, customerI
               hideClearAllButton
               className="h-24"
             />
-          </Stack>
+          </div>
         ) : (
           <p>{t('customerGroups.createCustomerFirst')}</p>
         )}

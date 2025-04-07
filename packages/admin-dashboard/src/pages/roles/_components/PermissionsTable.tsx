@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn, Table, TableBody, TableCell, TableRow, useServer } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
 import { CircleCheckBig } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
 import permissionsJson from '@/locales/en/permissions.json';
@@ -63,10 +62,10 @@ export const PermissionsTable: React.FC<PermissionsTableProps> = ({ currentPermi
           Object.entries(groupedPermissions).map(([key, values]) => (
             <TableRow key={key}>
               <TableCell className="dark:bg-secondary bg-slate-50 px-4 py-2" colSpan={values.length + 1}>
-                <Stack column className="gap-1">
+                <div className="flex flex-col gap-1">
                   <p className="text-base font-semibold">{t(`${key as keyof typeof permissionsJson}.title`)}</p>
                   <p className="text-xs">{t(`${key as keyof typeof permissionsJson}.description`)}</p>
-                </Stack>
+                </div>
               </TableCell>
               {values.map((v) => (
                 <TableCell
@@ -74,15 +73,15 @@ export const PermissionsTable: React.FC<PermissionsTableProps> = ({ currentPermi
                   className={cn('py-4', onPermissionsChange && 'cursor-pointer')}
                   onClick={() => handlePermissionsChange(v)}
                 >
-                  <Stack
+                  <div
                     className={cn(
-                      'items-center gap-2 text-gray-400',
+                      'flex items-center gap-2 text-gray-400',
                       currentPermissions?.includes(v) && 'font-medium text-green-600',
                     )}
                   >
                     <CircleCheckBig size={18} strokeWidth={2.5} />
                     <p>{v}</p>
-                  </Stack>
+                  </div>
                 </TableCell>
               ))}
             </TableRow>

@@ -13,12 +13,13 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  setInArrayBy,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
-import { setInArrayBy } from '@/lists/useGflp';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';
 import { TestCard } from '@/pages/shipping-methods/_components/TestCard';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 const SHIPPING_METHOD_FORM_KEYS = [
   'CreateShippingMethodInput',
@@ -94,11 +95,11 @@ export const ShippingMethodDetailView = () => {
   return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
             <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
-              <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                <Stack className="basis-full md:basis-1/3">
+              <div className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+                <div className="flex basis-full md:basis-1/3">
                   <Input
                     label={t('details.basic.name')}
                     value={currentTranslationValue?.name ?? undefined}
@@ -106,8 +107,8 @@ export const ShippingMethodDetailView = () => {
                     errors={state.translations?.errors}
                     required
                   />
-                </Stack>
-                <Stack className="basis-full md:basis-1/3">
+                </div>
+                <div className="flex basis-full md:basis-1/3">
                   <Input
                     label={t('details.basic.code')}
                     value={state.code?.value ?? undefined}
@@ -115,16 +116,16 @@ export const ShippingMethodDetailView = () => {
                     errors={state.code?.errors}
                     required
                   />
-                </Stack>
-              </Stack>
-              <Stack column className="basis-full">
+                </div>
+              </div>
+              <div className="flex basis-full flex-col">
                 <Label className="mb-2">{t('details.basic.description')}</Label>
                 <RichTextEditor
                   content={currentTranslationValue?.description ?? undefined}
                   onContentChanged={(e) => setTranslationField('description', e)}
                 />
-              </Stack>
-              <Stack className="basis-full">
+              </div>
+              <div className="flex basis-full">
                 <SimpleSelect
                   label={t('details.basic.fulfillmentHandler')}
                   value={state.fulfillmentHandler?.value ?? undefined}
@@ -132,7 +133,7 @@ export const ShippingMethodDetailView = () => {
                   options={fulfillmentHandlersOptions}
                   errors={state.fulfillmentHandler?.errors}
                 />
-              </Stack>
+              </div>
             </div>
           </CustomCard>
           <DetailViewMarker position={'shippingMethods-detail-view'} />
@@ -161,7 +162,7 @@ export const ShippingMethodDetailView = () => {
             errors={state.calculator?.errors}
           />
           <TestCard calculator={state.calculator?.value ?? undefined} checker={state.checker?.value ?? undefined} />
-        </Stack>
+        </div>
       </div>
     </main>
   );

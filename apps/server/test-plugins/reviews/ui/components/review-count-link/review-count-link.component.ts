@@ -1,17 +1,21 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { CustomFieldConfigType, CustomFieldControl, SharedModule } from '@deenruv/admin-ui/core';
+import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import {
+  CustomFieldConfigType,
+  CustomFieldControl,
+  SharedModule,
+} from "@deenruv/admin-ui/core";
 
 @Component({
-    selector: 'review-count-link',
-    template: ` {{ formControl.value }} `,
-    styles: [``],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [SharedModule],
+  selector: "review-count-link",
+  template: ` {{ formControl.value }} `,
+  styles: [``],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [SharedModule],
 })
 export class ReviewCountLinkComponent implements CustomFieldControl {
-    readonly: boolean;
-    config: CustomFieldConfigType;
-    formControl: FormControl;
+  readonly: boolean;
+  config: CustomFieldConfigType;
+  formControl: FormControl;
 }

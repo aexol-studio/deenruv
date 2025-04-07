@@ -1,14 +1,19 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListBadge } from '@deenruv/react-ui-devkit';
-import { AdminListSelector } from '@/graphql/admins';
+import {
+  Routes,
+  apiClient,
+  DetailList,
+  deepMerge,
+  PaginationInput,
+  ListBadge,
+  ListLocations,
+} from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(AdminListSelector, additionalSelector ?? {});
+const tableId = 'admins-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     administrators: [
       {
@@ -20,7 +25,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response.administrators;
@@ -74,7 +79,7 @@ export const AdminsListPage = () => {
       ]}
       entityName={'Administrator'}
       route={Routes['admins']}
-      tableId="admins-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateAdministrator]}

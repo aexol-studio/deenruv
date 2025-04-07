@@ -1,6 +1,5 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
-  Badge,
   Routes,
   apiClient,
   DetailList,
@@ -8,16 +7,14 @@ import {
   deepMerge,
   ListBadge,
   TableLabel,
+  ListLocations,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { FacetListSelector } from '@/graphql/facets';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(FacetListSelector, additionalSelector ?? {});
+const tableId = 'facets-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     facets: [
       {
@@ -29,7 +26,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response.facets;
@@ -91,7 +88,7 @@ export const FacetsListPage = () => {
         },
       ]}
       route={Routes['facets']}
-      tableId="facets-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateFacet]}

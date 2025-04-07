@@ -1,4 +1,4 @@
-import { DeenruvLogger } from '@deenruv/core';
+import { DeenruvLogger } from "@deenruv/core";
 
 /**
  * @description
@@ -52,38 +52,40 @@ import { DeenruvLogger } from '@deenruv/core';
  *
  * @docsCategory testing
  */
-export class TestingLogger<Spy extends (...args: any[]) => any> implements DeenruvLogger {
-    constructor(private createSpyFn: () => Spy) {
-        this.debugSpy = createSpyFn();
-        this.errorSpy = createSpyFn();
-        this.infoSpy = createSpyFn();
-        this.verboseSpy = createSpyFn();
-        this.warnSpy = createSpyFn();
-    }
+export class TestingLogger<Spy extends (...args: any[]) => any>
+  implements DeenruvLogger
+{
+  constructor(private createSpyFn: () => Spy) {
+    this.debugSpy = createSpyFn();
+    this.errorSpy = createSpyFn();
+    this.infoSpy = createSpyFn();
+    this.verboseSpy = createSpyFn();
+    this.warnSpy = createSpyFn();
+  }
 
-    debugSpy: Spy;
-    errorSpy: Spy;
-    infoSpy: Spy;
-    verboseSpy: Spy;
-    warnSpy: Spy;
+  debugSpy: Spy;
+  errorSpy: Spy;
+  infoSpy: Spy;
+  verboseSpy: Spy;
+  warnSpy: Spy;
 
-    debug(message: string, context?: string): void {
-        this.debugSpy(message, context);
-    }
+  debug(message: string, context?: string): void {
+    this.debugSpy(message, context);
+  }
 
-    error(message: string, context?: string, trace?: string): void {
-        this.errorSpy(message, context, trace);
-    }
+  error(message: string, context?: string, trace?: string): void {
+    this.errorSpy(message, context, trace);
+  }
 
-    info(message: string, context?: string): void {
-        this.infoSpy(message, context);
-    }
+  info(message: string, context?: string): void {
+    this.infoSpy(message, context);
+  }
 
-    verbose(message: string, context?: string): void {
-        this.verboseSpy(message, context);
-    }
+  verbose(message: string, context?: string): void {
+    this.verboseSpy(message, context);
+  }
 
-    warn(message: string, context?: string): void {
-        this.warnSpy(message, context);
-    }
+  warn(message: string, context?: string): void {
+    this.warnSpy(message, context);
+  }
 }

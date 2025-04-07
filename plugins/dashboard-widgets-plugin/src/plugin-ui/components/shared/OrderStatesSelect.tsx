@@ -11,10 +11,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@deenruv/react-ui-devkit';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+} from "@deenruv/react-ui-devkit";
+import { Check, ChevronsUpDown } from "lucide-react";
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface OrderStatesSelectProps {
   selectedOrderStates: string[];
@@ -26,7 +26,7 @@ export const OrderStatesSelect: React.FC<OrderStatesSelectProps> = ({
   selectedOrderStates,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const { t } = useTranslation('dashboard-widgets-plugin', {
+  const { t } = useTranslation("dashboard-widgets-plugin", {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });
   return (
@@ -35,24 +35,24 @@ export const OrderStatesSelect: React.FC<OrderStatesSelectProps> = ({
         <Button
           variant="outline"
           role="combobox"
-          className="w-full max-w-[240px] h-[30px] justify-between py-0 font-normal"
+          className="h-[30px] w-full max-w-[240px] justify-between py-0 font-normal"
         >
           {selectedOrderStates.length
-            ? `${t('selectedOrderStates')} (${selectedOrderStates.length})`
-            : t('selectOrderStates')}
+            ? `${t("selectedOrderStates")} (${selectedOrderStates.length})`
+            : t("selectOrderStates")}
           <ChevronsUpDown size={16} className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0 w-max">
+      <PopoverContent className="w-max p-0">
         <Command>
           <div className="relative">
             <CommandInput
               className="border-none"
-              placeholder={t('searchOrderStates')}
+              placeholder={t("searchOrderStates")}
             />
           </div>
           <CommandList>
-            <CommandEmpty>{t('noOrderStatesFound')}</CommandEmpty>
+            <CommandEmpty>{t("noOrderStatesFound")}</CommandEmpty>
             <CommandGroup>
               {Object.values(ORDER_STATE).map((value) => (
                 <CommandItem
@@ -63,10 +63,10 @@ export const OrderStatesSelect: React.FC<OrderStatesSelectProps> = ({
                 >
                   <Check
                     className={cn(
-                      'mr-2 h-4 w-4',
+                      "mr-2 h-4 w-4",
                       selectedOrderStates.includes(value)
-                        ? 'opacity-100'
-                        : 'opacity-0',
+                        ? "opacity-100"
+                        : "opacity-0",
                     )}
                   />
                   <span className="shrink-0">{value}</span>

@@ -2,9 +2,15 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { DetailView, createDeenruvForm, GFFLPFormField, getMutation, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  useValidators,
+  DetailView,
+  createDeenruvForm,
+  GFFLPFormField,
+  getMutation,
+  useMutation,
+} from '@deenruv/react-ui-devkit';
 import { TaxRateDetailView } from '@/pages/tax-rates/_components/TaxRateDetailView.js';
-import { useValidators } from '@/hooks/useValidators.js';
 import { ModelTypes } from '@deenruv/admin-types';
 
 type CreateTaxRateInput = ModelTypes['CreateTaxRateInput'];

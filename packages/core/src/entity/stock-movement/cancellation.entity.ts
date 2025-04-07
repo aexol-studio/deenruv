@@ -1,10 +1,10 @@
-import { StockMovementType } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { ChildEntity, ManyToOne } from 'typeorm';
+import { StockMovementType } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { ChildEntity, ManyToOne } from "typeorm";
 
-import { OrderLine } from '../order-line/order-line.entity';
+import { OrderLine } from "../order-line/order-line.entity";
 
-import { StockMovement } from './stock-movement.entity';
+import { StockMovement } from "./stock-movement.entity";
 
 /**
  * @description
@@ -15,13 +15,13 @@ import { StockMovement } from './stock-movement.entity';
  */
 @ChildEntity()
 export class Cancellation extends StockMovement {
-    readonly type = StockMovementType.CANCELLATION;
+  readonly type = StockMovementType.CANCELLATION;
 
-    constructor(input: DeepPartial<Cancellation>) {
-        super(input);
-    }
+  constructor(input: DeepPartial<Cancellation>) {
+    super(input);
+  }
 
-    // @Index() omitted as it would conflict with the orderLineId index from the Allocation entity
-    @ManyToOne(type => OrderLine, orderLine => orderLine.cancellations)
-    orderLine: OrderLine;
+  // @Index() omitted as it would conflict with the orderLineId index from the Allocation entity
+  @ManyToOne((type) => OrderLine, (orderLine) => orderLine.cancellations)
+  orderLine: OrderLine;
 }

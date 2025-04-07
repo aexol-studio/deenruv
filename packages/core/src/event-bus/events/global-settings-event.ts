@@ -1,8 +1,8 @@
-import { UpdateGlobalSettingsInput } from '@deenruv/common/lib/generated-types';
+import { UpdateGlobalSettingsInput } from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api';
-import { GlobalSettings } from '../../entity/global-settings/global-settings.entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { GlobalSettings } from "../../entity/global-settings/global-settings.entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 /**
  * @description
@@ -13,8 +13,15 @@ import { DeenruvEntityEvent } from '../deenruv-entity-event';
  * @docsPage Event Types
  * @since 1.4
  */
-export class GlobalSettingsEvent extends DeenruvEntityEvent<GlobalSettings, UpdateGlobalSettingsInput> {
-    constructor(ctx: RequestContext, entity: GlobalSettings, input?: UpdateGlobalSettingsInput) {
-        super(entity, 'updated', ctx, input);
-    }
+export class GlobalSettingsEvent extends DeenruvEntityEvent<
+  GlobalSettings,
+  UpdateGlobalSettingsInput
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: GlobalSettings,
+    input?: UpdateGlobalSettingsInput,
+  ) {
+    super(entity, "updated", ctx, input);
+  }
 }

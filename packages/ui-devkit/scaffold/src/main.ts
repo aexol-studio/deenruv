@@ -1,17 +1,16 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { loadAppConfig } from '@deenruv/admin-ui/core';
+import { enableProdMode } from "@angular/core";
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+import { loadAppConfig } from "@deenruv/admin-ui/core";
 
-import { AppModule } from './app.module';
-import { environment } from './environment';
+import { AppModule } from "./app.module";
+import { environment } from "./environment";
 
 if (environment.production) {
-    enableProdMode();
+  enableProdMode();
 }
 
 loadAppConfig()
-    .then(() => platformBrowserDynamic().bootstrapModule(AppModule))
-    .catch((err: any) => {
-        /* eslint-disable no-console */
-        console.log(err);
-    });
+  .then(() => platformBrowserDynamic().bootstrapModule(AppModule))
+  .catch((err: any) => {
+    console.log(err);
+  });

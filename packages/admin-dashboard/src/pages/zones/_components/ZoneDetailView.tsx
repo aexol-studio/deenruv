@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import {
   Input,
   Label,
@@ -11,8 +10,9 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 const STOCK_LOCATION_FORM_KEYS = ['CreateZoneInput', 'name', 'memberIds', 'customFields'] as const;
 
@@ -82,10 +82,10 @@ export const ZoneDetailView = () => {
   return (
     <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-            <Stack className="gap-3">
-              <Stack className="basis-full md:basis-1/2">
+            <div className="flex gap-3">
+              <div className="flex basis-full md:basis-1/2">
                 <Input
                   label={t('details.basic.name')}
                   value={state.name?.value}
@@ -93,8 +93,8 @@ export const ZoneDetailView = () => {
                   errors={state.name?.errors}
                   required
                 />
-              </Stack>
-              <Stack column className="basis-full md:basis-1/2">
+              </div>
+              <div className="flex basis-full flex-col md:basis-1/2">
                 <Label className="mb-2">{t('details.basic.members')}</Label>
                 <MultipleSelector
                   options={countriesOptions}
@@ -106,8 +106,8 @@ export const ZoneDetailView = () => {
                   onChange={handleChange}
                   hideClearAllButton
                 />
-              </Stack>
-            </Stack>
+              </div>
+            </div>
           </CustomCard>
           <DetailViewMarker position={'zones-detail-view'} />
           <EntityCustomFields
@@ -121,7 +121,7 @@ export const ZoneDetailView = () => {
               entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
             }
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

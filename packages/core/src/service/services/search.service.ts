@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { JobState } from '@deenruv/common/lib/generated-types';
+import { Injectable } from "@nestjs/common";
+import { JobState } from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Logger } from '../../config/logger/deenruv-logger';
-import { Job } from '../../job-queue/job';
+import { RequestContext } from "../../api/common/request-context";
+import { Logger } from "../../config/logger/deenruv-logger";
+import { Job } from "../../job-queue/job";
 
 /**
  * @description
@@ -14,30 +14,32 @@ import { Job } from '../../job-queue/job';
  */
 @Injectable()
 export class SearchService {
-    private override: Pick<SearchService, 'reindex'> | undefined;
+  private override: Pick<SearchService, "reindex"> | undefined;
 
-    /**
-     * @description
-     * Adopt a concrete search service implementation to pass through the
-     * calls to.
-     */
-    adopt(override: Pick<SearchService, 'reindex'>) {
-        this.override = override;
-    }
+  /**
+   * @description
+   * Adopt a concrete search service implementation to pass through the
+   * calls to.
+   */
+  adopt(override: Pick<SearchService, "reindex">) {
+    this.override = override;
+  }
 
-    async reindex(ctx: RequestContext): Promise<Job> {
-        if (this.override) {
-            return this.override.reindex(ctx);
-        }
-        if (!process.env.CI) {
-            Logger.warn('The SearchService should be overridden by an appropriate search plugin.');
-        }
-        return new Job({
-            queueName: 'error',
-            data: {},
-            id: 'error',
-            state: JobState.FAILED,
-            progress: 0,
-        });
+  async reindex(ctx: RequestContext): Promise<Job> {
+    if (this.override) {
+      return this.override.reindex(ctx);
     }
+    if (!process.env.CI) {
+      Logger.warn(
+        "The SearchService should be overridden by an appropriate search plugin.",
+      );
+    }
+    return new Job({
+      queueName: "error",
+      data: {},
+      id: "error",
+      state: JobState.FAILED,
+      progress: 0,
+    });
+  }
 }

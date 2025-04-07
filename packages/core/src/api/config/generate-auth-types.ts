@@ -1,14 +1,14 @@
-import { stitchSchemas, ValidationLevel } from '@graphql-tools/stitch';
+import { stitchSchemas, ValidationLevel } from "@graphql-tools/stitch";
 import {
-    buildASTSchema,
-    GraphQLInputFieldConfigMap,
-    GraphQLInputObjectType,
-    GraphQLSchema,
-    isInputObjectType,
-} from 'graphql';
+  buildASTSchema,
+  GraphQLInputFieldConfigMap,
+  GraphQLInputObjectType,
+  GraphQLSchema,
+  isInputObjectType,
+} from "graphql";
 
-import { InternalServerError } from '../../common/error/errors';
-import { AuthenticationStrategy } from '../../config/auth/authentication-strategy';
+import { InternalServerError } from "../../common/error/errors";
+import { AuthenticationStrategy } from "../../config/auth/authentication-strategy";
 
 /**
  * This function is responsible for constructing the `AuthenticationInput` GraphQL input type.
@@ -22,33 +22,35 @@ import { AuthenticationStrategy } from '../../config/auth/authentication-strateg
  * ```
  */
 export function generateAuthenticationTypes(
-    schema: GraphQLSchema,
-    authenticationStrategies: AuthenticationStrategy[],
+  schema: GraphQLSchema,
+  authenticationStrategies: AuthenticationStrategy[],
 ): GraphQLSchema {
-    const fields: GraphQLInputFieldConfigMap = {};
-    const strategySchemas: GraphQLSchema[] = [];
-    for (const strategy of authenticationStrategies) {
-        const inputSchema = buildASTSchema(strategy.defineInputType());
+  const fields: GraphQLInputFieldConfigMap = {};
+  const strategySchemas: GraphQLSchema[] = [];
+  for (const strategy of authenticationStrategies) {
+    const inputSchema = buildASTSchema(strategy.defineInputType());
 
-        const inputType = Object.values(
-            inputSchema.getTypeMap(),
-        ).find((type): type is GraphQLInputObjectType => isInputObjectType(type));
-        if (!inputType) {
-            throw new InternalServerError(
-                `${strategy.constructor.name}.defineInputType() does not define a GraphQL Input type`,
-            );
-        }
-        fields[strategy.name] = { type: inputType };
-        strategySchemas.push(inputSchema);
+    const inputType = Object.values(inputSchema.getTypeMap()).find(
+      (type): type is GraphQLInputObjectType => isInputObjectType(type),
+    );
+    if (!inputType) {
+      throw new InternalServerError(
+        `${strategy.constructor.name}.defineInputType() does not define a GraphQL Input type`,
+      );
     }
-    const authenticationInput = new GraphQLInputObjectType({
-        name: 'AuthenticationInput',
-        fields,
-    });
+    fields[strategy.name] = { type: inputType };
+    strategySchemas.push(inputSchema);
+  }
+  const authenticationInput = new GraphQLInputObjectType({
+    name: "AuthenticationInput",
+    fields,
+  });
 
-    return stitchSchemas({
-        subschemas: [schema, ...strategySchemas],
-        types: [authenticationInput],
-        typeMergingOptions: { validationSettings: { validationLevel: ValidationLevel.Off } },
-    });
+  return stitchSchemas({
+    subschemas: [schema, ...strategySchemas],
+    types: [authenticationInput],
+    typeMergingOptions: {
+      validationSettings: { validationLevel: ValidationLevel.Off },
+    },
+  });
 }

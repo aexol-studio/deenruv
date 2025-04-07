@@ -1,13 +1,19 @@
-import { useDetailView, useSettings, DetailViewMarker, PromotionDetailSelector } from '@deenruv/react-ui-devkit';
+import {
+  useDetailView,
+  useSettings,
+  DetailViewMarker,
+  PromotionDetailSelector,
+  setInArrayBy,
+  CF,
+  EntityCustomFields,
+} from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useMemo } from 'react';
-import { setInArrayBy } from '@/lists/useGflp';
 import { BasicFieldsCard } from '@/pages/promotions/_components/BasicFieldsCard';
 import { OptionsCard } from '@/pages/promotions/_components/OptionsCard';
 import { ConditionsCard } from '@/pages/promotions/_components/ConditionsCard';
 import { ActionsCard } from '@/pages/promotions/_components/ActionsCard';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { PromotionConditionAndActionSelector } from '@/graphql/promotions.js';
-import { CF, EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 export const ConditionsQuery = typedGql('query', { scalars })({
   promotionConditions: PromotionConditionAndActionSelector,

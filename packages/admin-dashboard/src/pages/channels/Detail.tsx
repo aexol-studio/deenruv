@@ -8,10 +8,13 @@ import {
   DetailView,
   createDeenruvForm,
   useMutation,
-  fetchAndSetChannels,
+  useValidators,
+  apiClient,
+  DEFAULT_CHANNEL_CODE,
+  useSettings,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
-import { useValidators } from '@/hooks/useValidators.js';
 import { ChannelDetailView } from '@/pages/channels/_components/ChannelDetailView.js';
 
 const CreateChannelMutation = getMutation('createChannel', {
@@ -56,6 +59,9 @@ export const ChannelsDetailPage = () => {
   const [remove] = useMutation(DeleteChannelMutation);
   const { t } = useTranslation('channels');
   const { stringValidator } = useValidators();
+  const selectedChannel = useSettings((p) => p.selectedChannel);
+  const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
+  const setChannels = useServer((p) => p.setChannels);
 
   const onSubmitHandler = useCallback(
     async (data: FormDataType) => {
@@ -79,11 +85,75 @@ export const ChannelsDetailPage = () => {
 
       if (id) {
         const response = await update({ input: { id, ...inputData } });
-        await fetchAndSetChannels();
+        const {
+          channels: { items: allChannels = [] },
+        } = await apiClient('query')({
+          channels: [
+            {},
+            {
+              items: {
+                id: true,
+                code: true,
+                token: true,
+                currencyCode: true,
+                defaultLanguageCode: true,
+                availableLanguageCodes: true,
+              },
+            },
+          ],
+        });
+
+        setChannels(allChannels);
+        if (selectedChannel) {
+          const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
+          setSelectedChannel(foundChannel || allChannels[0]);
+        }
+        const existingChannel = allChannels.find(
+          (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+        );
+        if (existingChannel) {
+          setSelectedChannel(existingChannel);
+        }
+        const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
+        setSelectedChannel(defaultChannel);
+
         return response;
       } else {
         const response = await create({ input: inputData });
-        await fetchAndSetChannels();
+        const {
+          channels: { items: allChannels = [] },
+        } = await apiClient('query')({
+          channels: [
+            {},
+            {
+              items: {
+                id: true,
+                code: true,
+                token: true,
+                currencyCode: true,
+                defaultLanguageCode: true,
+                availableLanguageCodes: true,
+              },
+            },
+          ],
+        });
+
+        setChannels(allChannels);
+
+        if (selectedChannel) {
+          const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
+          setSelectedChannel(foundChannel || allChannels[0]);
+        }
+
+        const existingChannel = allChannels.find(
+          (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+        );
+        if (existingChannel) {
+          setSelectedChannel(existingChannel);
+        }
+
+        const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
+        setSelectedChannel(defaultChannel);
         return response;
       }
     },

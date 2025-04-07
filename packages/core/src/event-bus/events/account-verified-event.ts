@@ -1,6 +1,6 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Customer } from '../../entity/customer/customer.entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Customer } from "../../entity/customer/customer.entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -11,7 +11,10 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class AccountVerifiedEvent extends DeenruvEvent {
-    constructor(public ctx: RequestContext, public customer: Customer) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public customer: Customer,
+  ) {
+    super();
+  }
 }

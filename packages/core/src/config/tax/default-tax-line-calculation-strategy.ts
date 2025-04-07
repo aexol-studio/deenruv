@@ -1,6 +1,9 @@
-import { TaxLine } from '@deenruv/common/lib/generated-types';
+import { TaxLine } from "@deenruv/common/lib/generated-types";
 
-import { CalculateTaxLinesArgs, TaxLineCalculationStrategy } from './tax-line-calculation-strategy';
+import {
+  CalculateTaxLinesArgs,
+  TaxLineCalculationStrategy,
+} from "./tax-line-calculation-strategy";
 
 /**
  * @description
@@ -9,9 +12,11 @@ import { CalculateTaxLinesArgs, TaxLineCalculationStrategy } from './tax-line-ca
  *
  * @docsCategory tax
  */
-export class DefaultTaxLineCalculationStrategy implements TaxLineCalculationStrategy {
-    calculate(args: CalculateTaxLinesArgs): TaxLine[] {
-        const { orderLine, applicableTaxRate } = args;
-        return [applicableTaxRate.apply(orderLine.proratedUnitPrice)];
-    }
+export class DefaultTaxLineCalculationStrategy
+  implements TaxLineCalculationStrategy
+{
+  calculate(args: CalculateTaxLinesArgs): TaxLine[] {
+    const { orderLine, applicableTaxRate } = args;
+    return [applicableTaxRate.apply(orderLine.proratedUnitPrice)];
+  }
 }

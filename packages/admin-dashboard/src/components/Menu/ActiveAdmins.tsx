@@ -39,7 +39,7 @@ export const ActiveAdmins = () => {
                     <motion.div
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
-                      className="h-2 w-2 rounded-full bg-green-500"
+                      className="size-2 rounded-full bg-green-500"
                     />
                   </div>
                   <span className="text-muted-foreground text-sm">{formatTimeAgo(client.lastActive)}</span>

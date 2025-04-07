@@ -1,8 +1,8 @@
-import { DeenruvEntity } from '../../entity/base/base.entity';
+import { DeenruvEntity } from "../../entity/base/base.entity";
 
 export type GraphQLErrorResult = {
-    errorCode: string;
-    message: string;
+  errorCode: string;
+  message: string;
 };
 
 /**
@@ -18,10 +18,10 @@ export type GraphQLErrorResult = {
  * // T1 = OrderModificationError | OrderLimitError | NegativeQuantityError
  * ```
  */
-export type JustErrorResults<T extends GraphQLErrorResult | U, U = any> = Exclude<
-    T,
-    T extends GraphQLErrorResult ? never : T
->;
+export type JustErrorResults<
+  T extends GraphQLErrorResult | U,
+  U = any,
+> = Exclude<T, T extends GraphQLErrorResult ? never : T>;
 
 /**
  * @description
@@ -41,9 +41,11 @@ export type JustErrorResults<T extends GraphQLErrorResult | U, U = any> = Exclud
  *
  * @docsCategory errors
  */
-export type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends DeenruvEntity, U = any> =
-    | JustErrorResults<T>
-    | E;
+export type ErrorResultUnion<
+  T extends GraphQLErrorResult | U,
+  E extends DeenruvEntity,
+  U = any,
+> = JustErrorResults<T> | E;
 
 /**
  * @description
@@ -69,17 +71,17 @@ export type ErrorResultUnion<T extends GraphQLErrorResult | U, E extends Deenruv
  * @docsCategory errors
  */
 export function isGraphQlErrorResult<T extends GraphQLErrorResult | U, U = any>(
-    input: T,
+  input: T,
 ): input is JustErrorResults<T>;
 export function isGraphQlErrorResult<T, E extends DeenruvEntity>(
-    input: ErrorResultUnion<T, E>,
+  input: ErrorResultUnion<T, E>,
 ): input is JustErrorResults<ErrorResultUnion<T, E>> {
-    return (
-        input &&
-        !!(
-            (input as unknown as GraphQLErrorResult).errorCode &&
-            (input as unknown as GraphQLErrorResult).message != null
-        ) &&
-        (input as any).__typename
-    );
+  return (
+    input &&
+    !!(
+      (input as unknown as GraphQLErrorResult).errorCode &&
+      (input as unknown as GraphQLErrorResult).message != null
+    ) &&
+    (input as any).__typename
+  );
 }

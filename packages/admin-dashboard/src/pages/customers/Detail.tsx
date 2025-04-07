@@ -1,11 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { createDeenruvForm, DetailView, type ExcludeUndefined, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  useValidators,
+  createDeenruvForm,
+  DetailView,
+  type ExcludeUndefined,
+  useMutation,
+} from '@deenruv/react-ui-devkit';
 import { CustomerDetailView } from '@/pages/customers/_components/CustomerDetailView';
 import { CustomerDetailSidebar } from '@/pages/customers/_components/CustomerDetailSidebar';
 import { OrdersTab } from '@/pages/customers/_components/OrdersTab';
 import { HistoryTab } from '@/pages/customers/_components/HistoryTab';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
-import { useValidators } from '@/hooks/useValidators.js';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 

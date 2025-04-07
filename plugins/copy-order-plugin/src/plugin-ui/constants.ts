@@ -1,1 +1,1 @@
-export const PLUGIN_NAME = 'Copy Order Plugin';
+export const PLUGIN_NAME = "Copy Order Plugin";

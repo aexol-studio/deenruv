@@ -1,24 +1,25 @@
 {
-    "name": "@deenruv/common",
-    "version": "0.0.121",
-    "main": "index.js",
-    "license": "MIT",
-    "scripts": {
-        "watch": "tsc -p ./tsconfig.build.json -w",
-        "build": "rimraf lib && tsc -p ./tsconfig.build.json",
-        "lint": "eslint --fix .",
-        "test": "vitest --run",
-        "ci": "npm run build"
-    },
-    "homepage": "https://www.deenruv.io/",
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "lib/**/*"
-    ],
-    "devDependencies": {
-        "rimraf": "^5.0.5",
-        "typescript": "5.3.3"
-    }
+  "name": "@deenruv/common",
+  "version": "0.0.121",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "watch": "tsc -p ./tsconfig.build.json -w",
+    "build": "rimraf lib && tsc -p ./tsconfig.build.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "test": "vitest --run",
+    "ci": "npm run build"
+  },
+  "homepage": "https://www.deenruv.io/",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "typescript": "5.3.3"
+  }
 }

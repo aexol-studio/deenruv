@@ -16,7 +16,6 @@ import { ChevronLeft } from 'lucide-react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Stack } from '@/components';
 
 interface PageHeaderProps {
   collection: CollectionDetailsType | undefined;
@@ -47,16 +46,16 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
           <Button
             variant="outline"
             size="icon"
-            className="h-7 w-7"
+            className="size-7"
             onClick={() => navigate(Routes.collections.list, { viewTransition: true })}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="size-4" />
           </Button>
           <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
             {editMode ? collection?.name : t('create')}
           </h1>
         </div>
-        <Stack className="ml-auto gap-3">
+        <div className="ml-auto flex gap-3">
           <Select defaultValue={LanguageCode.en} value={currentTranslationLng} onValueChange={onCurrentLanguageChange}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Theme" />
@@ -73,7 +72,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               {editMode ? t('edit') : t('create')}
             </Button>
           </SimpleTooltip>
-        </Stack>
+        </div>
       </div>
       {editMode && collection && (
         <div className="flex flex-row flex-wrap gap-x-4 gap-y-2">

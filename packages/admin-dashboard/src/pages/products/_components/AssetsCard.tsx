@@ -9,13 +9,13 @@ import {
   cn,
   CustomCard,
   CardIcons,
+  AssetsModalInput,
 } from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
 
 import { ImageOff } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AssetsModalInput, Stack } from '@/components';
 
 interface AssetsCardProps {
   assetsIds: string[] | undefined | null;
@@ -72,27 +72,27 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
 
   return (
     <CustomCard title={t('assets')} color="green" icon={<CardIcons.asset />}>
-      <Stack column className="gap-6">
-        <Stack className="gap-6">
+      <div className="flex flex-col gap-6">
+        <div className="flex gap-6">
           <div>
             <Label>{t('details.featuredAsset')}</Label>
-            <Stack column className="pt-3">
+            <div className="flex flex-col pt-3">
               <div className="mb-4 flex h-36 min-w-36 items-center justify-center border border-solid border-gray-300 p-2 shadow">
                 {featureAsset?.preview ? (
                   <img src={featureAsset.preview} className="h-32" alt="Main image preview" />
                 ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-gray-200 p-3">
+                  <div className="flex size-full flex-col items-center justify-center gap-2 bg-gray-200 p-3">
                     <ImageOff size={32} />
                     {t('details.noFeaturedAsset')}
                   </div>
                 )}
               </div>
               <AssetsModalInput setValue={(a) => onAddAsset(a?.id)} />
-            </Stack>
+            </div>
           </div>
           <div>
             <Label>{t('details.otherAssets')}</Label>
-            <Stack className="gap-3 pt-3">
+            <div className="flex gap-3 pt-3">
               {assets?.length ? (
                 assets.map((a) => (
                   <DropdownMenu modal={false} key={a.id}>
@@ -121,10 +121,10 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
               ) : (
                 <p>{t('details.noAssets')}</p>
               )}
-            </Stack>
+            </div>
           </div>
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </CustomCard>
   );
 };

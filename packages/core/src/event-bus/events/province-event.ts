@@ -1,9 +1,12 @@
-import { CreateProvinceInput, UpdateProvinceInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateProvinceInput,
+  UpdateProvinceInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api';
-import { Province } from '../../entity/region/province.entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { Province } from "../../entity/region/province.entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type ProvinceInputTypes = CreateProvinceInput | UpdateProvinceInput | ID;
 
@@ -15,13 +18,16 @@ type ProvinceInputTypes = CreateProvinceInput | UpdateProvinceInput | ID;
  * @docsPage Event Types
  * @since 2.0
  */
-export class ProvinceEvent extends DeenruvEntityEvent<Province, ProvinceInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: Province,
-        type: 'created' | 'updated' | 'deleted',
-        input?: ProvinceInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class ProvinceEvent extends DeenruvEntityEvent<
+  Province,
+  ProvinceInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: Province,
+    type: "created" | "updated" | "deleted",
+    input?: ProvinceInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

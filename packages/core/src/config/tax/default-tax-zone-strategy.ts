@@ -1,7 +1,7 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Channel, Order, Zone } from '../../entity';
+import { RequestContext } from "../../api/common/request-context";
+import { Channel, Order, Zone } from "../../entity";
 
-import { TaxZoneStrategy } from './tax-zone-strategy';
+import { TaxZoneStrategy } from "./tax-zone-strategy";
 
 /**
  * @description
@@ -10,7 +10,12 @@ import { TaxZoneStrategy } from './tax-zone-strategy';
  * @docsCategory tax
  */
 export class DefaultTaxZoneStrategy implements TaxZoneStrategy {
-    determineTaxZone(ctx: RequestContext, zones: Zone[], channel: Channel, order?: Order): Zone {
-        return channel.defaultTaxZone;
-    }
+  determineTaxZone(
+    ctx: RequestContext,
+    zones: Zone[],
+    channel: Channel,
+    order?: Order,
+  ): Zone {
+    return channel.defaultTaxZone;
+  }
 }

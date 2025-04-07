@@ -1,7 +1,6 @@
 import { Input, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import React, { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@/components';
 
 interface DiscountRatingCardProps {
   discountByValue: number | undefined;
@@ -26,7 +25,7 @@ export const DiscountRatingCard: React.FC<DiscountRatingCardProps> = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack column className="gap-4">
+        <div className="flex flex-col gap-4">
           <Input
             type="number"
             step={0.01}
@@ -42,7 +41,7 @@ export const DiscountRatingCard: React.FC<DiscountRatingCardProps> = ({
             value={searchMetricsScoreValue}
             onChange={onSearchMetricsScoreChange}
           />
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   );

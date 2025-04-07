@@ -16,7 +16,7 @@ const currencyCodeToChannel = (currencyCode: string) => {
 };
 
 export const verifyPrzelewy24Payment = async (
-  body: Przelewy24NotificationBody
+  body: Przelewy24NotificationBody,
 ) => {
   const channel = currencyCodeToChannel(body.currency);
   const przelewy24Secrets = getPrzelewy24SecretsByChannel(channel);

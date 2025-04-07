@@ -57,37 +57,37 @@ const JobStateBadge = ({ state }: { state: JobState }) => {
     case JobState.PENDING:
       return (
         <Badge variant="outline" className="gap-1">
-          <Clock className="h-3 w-3" /> {t('jobs.states.pending')}
+          <Clock className="size-3" /> {t('jobs.states.pending')}
         </Badge>
       );
     case JobState.RUNNING:
       return (
         <Badge variant="secondary" className="gap-1">
-          <Play className="h-3 w-3" /> {t('jobs.states.running')}
+          <Play className="size-3" /> {t('jobs.states.running')}
         </Badge>
       );
     case JobState.COMPLETED:
       return (
         <Badge className="gap-1 bg-green-100 text-green-800">
-          <CheckCircle className="h-3 w-3" /> {t('jobs.states.completed')}
+          <CheckCircle className="size-3" /> {t('jobs.states.completed')}
         </Badge>
       );
     case JobState.RETRYING:
       return (
         <Badge className="gap-1 bg-yellow-100 text-yellow-800">
-          <RefreshCw className="h-3 w-3" /> {t('jobs.states.retrying')}
+          <RefreshCw className="size-3" /> {t('jobs.states.retrying')}
         </Badge>
       );
     case JobState.FAILED:
       return (
         <Badge variant="destructive" className="gap-1">
-          <XCircle className="h-3 w-3" /> {t('jobs.states.failed')}
+          <XCircle className="size-3" /> {t('jobs.states.failed')}
         </Badge>
       );
     case JobState.CANCELLED:
       return (
         <Badge variant="outline" className="gap-1 bg-gray-100 text-gray-800">
-          <AlertCircle className="h-3 w-3" /> {t('jobs.states.cancelled')}
+          <AlertCircle className="size-3" /> {t('jobs.states.cancelled')}
         </Badge>
       );
     default:
@@ -216,13 +216,13 @@ export const Jobs = () => {
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <MoreHorizontal className="h-4 w-4" />
+                <Button variant="ghost" className="size-8 p-0">
+                  <MoreHorizontal className="size-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => handleRemoveJob(job.id)} className="text-red-600">
-                  <XCircle className="mr-2 h-4 w-4" />
+                  <XCircle className="mr-2 size-4" />
                   {t('jobs.table.removeJob')}
                 </DropdownMenuItem>
               </DropdownMenuContent>

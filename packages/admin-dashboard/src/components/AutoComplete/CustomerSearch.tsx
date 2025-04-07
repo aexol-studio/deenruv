@@ -103,14 +103,14 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
             onChange={(e) => setValue(e.currentTarget.value)}
           />
           <div className="text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2">
-            {isSearching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+            {isSearching ? <Loader2 className="size-4 animate-spin" /> : <Search className="size-4" />}
           </div>
         </div>
       </div>
 
       {isSearching ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-500"></div>
+          <div className="size-10 animate-spin rounded-full border-4 border-indigo-200 border-t-indigo-500"></div>
           <p className="text-muted-foreground mt-4 text-sm">
             {t('create.selectCustomer.searching', 'Searching for customers...')}
           </p>
@@ -144,9 +144,9 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
                         {customer.id === selectedCustomer?.id ? (
-                          <UserCheck className="h-4 w-4 text-indigo-500" />
+                          <UserCheck className="size-4 text-indigo-500" />
                         ) : (
-                          <User className="text-muted-foreground h-4 w-4" />
+                          <User className="text-muted-foreground size-4" />
                         )}
                         <div className="font-medium">
                           {customer.firstName} {customer.lastName}
@@ -155,14 +155,14 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
                     </TableCell>
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
-                        <Mail className="text-muted-foreground h-4 w-4" />
+                        <Mail className="text-muted-foreground size-4" />
                         <span>{customer.emailAddress}</span>
                       </div>
                     </TableCell>
                     <TableCell className="py-3">
                       {customer.phoneNumber ? (
                         <div className="flex items-center gap-2">
-                          <Phone className="text-muted-foreground h-4 w-4" />
+                          <Phone className="text-muted-foreground size-4" />
                           <span>{customer.phoneNumber}</span>
                         </div>
                       ) : (
@@ -179,7 +179,7 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
       ) : hasSearched ? (
         <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
           <div className="rounded-full bg-amber-100 p-3 dark:bg-amber-900/30">
-            <AlertCircle className="h-6 w-6 text-amber-500" />
+            <AlertCircle className="size-6 text-amber-500" />
           </div>
           <div>
             <p className="font-medium">{t('create.selectCustomer.noResults', 'No customers found')}</p>
@@ -191,7 +191,7 @@ export const CustomerSearch: React.FC<Props> = ({ onSelect, selectedCustomer }) 
       ) : (
         <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
           <div className="rounded-full bg-indigo-100 p-3 dark:bg-indigo-900/30">
-            <Search className="h-6 w-6 text-indigo-500" />
+            <Search className="size-6 text-indigo-500" />
           </div>
           <div>
             <p className="font-medium">{t('create.selectCustomer.searchPrompt', 'Search for customers')}</p>

@@ -1,54 +1,55 @@
 {
-    "name": "@deenruv/cli",
-    "version": "0.0.121",
-    "description": "A modern, headless ecommerce framework",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/deenruv-ecommerce/deenruv/"
-    },
-    "keywords": [
-        "deenruv",
-        "ecommerce",
-        "headless",
-        "graphql",
-        "typescript"
-    ],
-    "homepage": "https://www.deenruv.io/",
-    "private": false,
-    "license": "MIT",
-    "type": "commonjs",
-    "scripts": {
-        "build": "rimraf dist && tsc -p ./tsconfig.cli.json && ts-node ./build.ts",
-        "watch": "tsc -p ./tsconfig.cli.json --watch",
-        "ci": "npm run build",
-        "test": "vitest --config vitest.config.mts --run"
-    },
-    "publishConfig": {
-        "access": "public"
-    },
-    "bin": {
-        "deenruv": "dist/cli.js"
-    },
-    "files": [
-        "dist/**/*"
-    ],
-    "dependencies": {
-        "@clack/prompts": "^0.7.0",
-        "@deenruv/common": "workspace:*",
-        "change-case": "^4.1.2",
-        "commander": "^11.0.0",
-        "cross-spawn": "^7.0.3",
-        "dotenv": "^16.4.5",
-        "fs-extra": "^11.2.0",
-        "picocolors": "^1.0.0",
-        "ts-morph": "^21.0.1",
-        "ts-node": "^10.9.2",
-        "tsconfig-paths": "^4.2.0"
-    },
-    "devDependencies": {
-        "@deenruv/core": "workspace:*",
-        "@types/cross-spawn": "^6.0.6",
-        "rimraf": "^5.0.5",
-        "typescript": "5.3.3"
-    }
+  "name": "@deenruv/cli",
+  "version": "0.0.121",
+  "description": "A modern, headless ecommerce framework",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deenruv-ecommerce/deenruv/"
+  },
+  "keywords": [
+    "deenruv",
+    "ecommerce",
+    "headless",
+    "graphql",
+    "typescript"
+  ],
+  "homepage": "https://www.deenruv.io/",
+  "private": false,
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "build": "rimraf dist && tsc -p ./tsconfig.cli.json && ts-node ./build.ts",
+    "watch": "tsc -p ./tsconfig.cli.json --watch",
+    "ci": "npm run build",
+    "test": "vitest --config vitest.config.mts --run",
+    "lint:fix": "eslint --fix ."
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "deenruv": "dist/cli.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "@deenruv/common": "workspace:*",
+    "change-case": "^4.1.2",
+    "commander": "^11.0.0",
+    "cross-spawn": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "fs-extra": "^11.2.0",
+    "picocolors": "^1.0.0",
+    "ts-morph": "^21.0.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "devDependencies": {
+    "@deenruv/core": "workspace:*",
+    "@types/cross-spawn": "^6.0.6",
+    "rimraf": "^5.0.5",
+    "typescript": "5.3.3"
+  }
 }

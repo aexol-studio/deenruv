@@ -1,6 +1,6 @@
-import { RequestContext } from '../../../api/common/request-context';
-import { Fulfillment } from '../../../entity/fulfillment/fulfillment.entity';
-import { Order } from '../../../entity/order/order.entity';
+import { RequestContext } from "../../../api/common/request-context";
+import { Fulfillment } from "../../../entity/fulfillment/fulfillment.entity";
+import { Order } from "../../../entity/order/order.entity";
 
 /**
  * @description
@@ -27,11 +27,11 @@ export interface FulfillmentStates {}
  * @docsCategory fulfillment
  */
 export type FulfillmentState =
-    | 'Created'
-    | 'Pending'
-    | 'Cancelled'
-    | keyof CustomFulfillmentStates
-    | keyof FulfillmentStates;
+  | "Created"
+  | "Pending"
+  | "Cancelled"
+  | keyof CustomFulfillmentStates
+  | keyof FulfillmentStates;
 
 /**
  * @description
@@ -40,7 +40,7 @@ export type FulfillmentState =
  * @docsCategory fulfillment
  */
 export interface FulfillmentTransitionData {
-    ctx: RequestContext;
-    orders: Order[];
-    fulfillment: Fulfillment;
+  ctx: RequestContext;
+  orders: Order[];
+  fulfillment: Fulfillment;
 }

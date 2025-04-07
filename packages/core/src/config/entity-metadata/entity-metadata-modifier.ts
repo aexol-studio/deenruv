@@ -1,4 +1,4 @@
-import { MetadataArgsStorage } from 'typeorm/metadata-args/MetadataArgsStorage';
+import { MetadataArgsStorage } from "typeorm/metadata-args/MetadataArgsStorage";
 
 /**
  * @description
@@ -53,4 +53,6 @@ import { MetadataArgsStorage } from 'typeorm/metadata-args/MetadataArgsStorage';
  * @docsPage EntityOptions
  * @since 1.6.0
  */
-export type EntityMetadataModifier = (metadata: MetadataArgsStorage) => void | Promise<void>;
+export type EntityMetadataModifier = (
+  metadata: MetadataArgsStorage,
+) => void | Promise<void>;

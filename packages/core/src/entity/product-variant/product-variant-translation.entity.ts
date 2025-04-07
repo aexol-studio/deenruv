@@ -1,31 +1,33 @@
-import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 
-import { Translation } from '../../common/types/locale-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomProductVariantFieldsTranslation } from '../custom-entity-fields';
+import { Translation } from "../../common/types/locale-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomProductVariantFieldsTranslation } from "../custom-entity-fields";
 
-import { ProductVariant } from './product-variant.entity';
+import { ProductVariant } from "./product-variant.entity";
 
 @Entity()
 export class ProductVariantTranslation
-    extends DeenruvEntity
-    implements Translation<ProductVariant>, HasCustomFields
+  extends DeenruvEntity
+  implements Translation<ProductVariant>, HasCustomFields
 {
-    constructor(input?: DeepPartial<Translation<ProductVariant>>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Translation<ProductVariant>>) {
+    super(input);
+  }
 
-    @Column('varchar') languageCode: LanguageCode;
+  @Column("varchar") languageCode: LanguageCode;
 
-    @Column() name: string;
+  @Column() name: string;
 
-    @Index()
-    @ManyToOne(type => ProductVariant, base => base.translations, { onDelete: 'CASCADE' })
-    base: ProductVariant;
+  @Index()
+  @ManyToOne((type) => ProductVariant, (base) => base.translations, {
+    onDelete: "CASCADE",
+  })
+  base: ProductVariant;
 
-    @Column(type => CustomProductVariantFieldsTranslation)
-    customFields: CustomProductVariantFieldsTranslation;
+  @Column((type) => CustomProductVariantFieldsTranslation)
+  customFields: CustomProductVariantFieldsTranslation;
 }

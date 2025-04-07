@@ -1,1 +1,1 @@
-export const translationNS = Symbol('in-realization-plugin').toString();
+export const translationNS = Symbol("in-realization-plugin").toString();

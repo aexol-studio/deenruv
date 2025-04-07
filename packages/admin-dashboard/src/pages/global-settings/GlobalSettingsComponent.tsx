@@ -1,4 +1,3 @@
-import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 import { LanguageCode } from '@deenruv/admin-types';
 import {
   Switch,
@@ -8,6 +7,7 @@ import {
   useSettings,
   CustomCard,
   CardIcons,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { t } from 'i18next';
 import { useEffect, useMemo } from 'react';

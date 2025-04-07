@@ -1,37 +1,40 @@
 import {
-    Inject,
-    MiddlewareConsumer,
-    NestModule,
-    OnApplicationBootstrap,
-    OnApplicationShutdown,
-} from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
+  Inject,
+  MiddlewareConsumer,
+  NestModule,
+  OnApplicationBootstrap,
+  OnApplicationShutdown,
+} from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
 import {
-    EventBus,
-    Injector,
-    JobQueue,
-    JobQueueService,
-    Logger,
-    PluginCommonModule,
-    ProcessContext,
-    registerPluginStartupMessage,
-    Type,
-    DeenruvPlugin,
-} from '@deenruv/core';
+  EventBus,
+  Injector,
+  JobQueue,
+  JobQueueService,
+  Logger,
+  PluginCommonModule,
+  ProcessContext,
+  registerPluginStartupMessage,
+  Type,
+  DeenruvPlugin,
+} from "@deenruv/core";
 
-import { isDevModeOptions, resolveTransportSettings } from './common';
-import { EMAIL_PLUGIN_OPTIONS, loggerCtx } from './constants';
-import { DevMailbox } from './dev-mailbox';
-import { EmailProcessor } from './email-processor';
-import { EmailEventHandler, EmailEventHandlerWithAsyncData } from './handler/event-handler';
-import { FileBasedTemplateLoader } from './template-loader/file-based-template-loader';
+import { isDevModeOptions, resolveTransportSettings } from "./common";
+import { EMAIL_PLUGIN_OPTIONS, loggerCtx } from "./constants";
+import { DevMailbox } from "./dev-mailbox";
+import { EmailProcessor } from "./email-processor";
 import {
-    EmailPluginDevModeOptions,
-    EmailPluginOptions,
-    EventWithContext,
-    InitializedEmailPluginOptions,
-    IntermediateEmailDetails,
-} from './types';
+  EmailEventHandler,
+  EmailEventHandlerWithAsyncData,
+} from "./handler/event-handler";
+import { FileBasedTemplateLoader } from "./template-loader/file-based-template-loader";
+import {
+  EmailPluginDevModeOptions,
+  EmailPluginOptions,
+  EventWithContext,
+  InitializedEmailPluginOptions,
+  IntermediateEmailDetails,
+} from "./types";
 
 /**
  * @description
@@ -302,133 +305,157 @@ import {
  * @docsCategory core plugins/EmailPlugin
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    providers: [{ provide: EMAIL_PLUGIN_OPTIONS, useFactory: () => EmailPlugin.options }, EmailProcessor],
-    compatibility: '^0.0.0',
+  imports: [PluginCommonModule],
+  providers: [
+    { provide: EMAIL_PLUGIN_OPTIONS, useFactory: () => EmailPlugin.options },
+    EmailProcessor,
+  ],
+  compatibility: "^0.0.0",
 })
-export class EmailPlugin implements OnApplicationBootstrap, OnApplicationShutdown, NestModule {
-    private static options: InitializedEmailPluginOptions;
-    private devMailbox: DevMailbox | undefined;
-    private jobQueue: JobQueue<IntermediateEmailDetails> | undefined;
-    private testingProcessor: EmailProcessor | undefined;
+export class EmailPlugin
+  implements OnApplicationBootstrap, OnApplicationShutdown, NestModule
+{
+  private static options: InitializedEmailPluginOptions;
+  private devMailbox: DevMailbox | undefined;
+  private jobQueue: JobQueue<IntermediateEmailDetails> | undefined;
+  private testingProcessor: EmailProcessor | undefined;
 
-    /** @internal */
-    constructor(
-        private eventBus: EventBus,
-        private moduleRef: ModuleRef,
-        private emailProcessor: EmailProcessor,
-        private jobQueueService: JobQueueService,
-        private processContext: ProcessContext,
-        @Inject(EMAIL_PLUGIN_OPTIONS) private options: InitializedEmailPluginOptions,
-    ) {}
+  /** @internal */
+  constructor(
+    private eventBus: EventBus,
+    private moduleRef: ModuleRef,
+    private emailProcessor: EmailProcessor,
+    private jobQueueService: JobQueueService,
+    private processContext: ProcessContext,
+    @Inject(EMAIL_PLUGIN_OPTIONS)
+    private options: InitializedEmailPluginOptions,
+  ) {}
 
-    /**
-     * Set the plugin options.
-     */
-    static init(options: EmailPluginOptions | EmailPluginDevModeOptions): Type<EmailPlugin> {
-        if (options.templateLoader) {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            Logger.info(`Using custom template loader '${options.templateLoader.constructor.name}'`);
-        } else if (!options.templateLoader && options.templatePath) {
-            // TODO: this else-if can be removed when deprecated templatePath is removed,
-            // because we will either have a custom template loader, or the default loader with a default path
-            options.templateLoader = new FileBasedTemplateLoader(options.templatePath);
-        } else {
-            throw new Error('You must either supply a templatePath or provide a custom templateLoader');
-        }
-        this.options = options as InitializedEmailPluginOptions;
-        return EmailPlugin;
+  /**
+   * Set the plugin options.
+   */
+  static init(
+    options: EmailPluginOptions | EmailPluginDevModeOptions,
+  ): Type<EmailPlugin> {
+    if (options.templateLoader) {
+      Logger.info(
+        `Using custom template loader '${options.templateLoader.constructor.name}'`,
+      );
+    } else if (!options.templateLoader && options.templatePath) {
+      // TODO: this else-if can be removed when deprecated templatePath is removed,
+      // because we will either have a custom template loader, or the default loader with a default path
+      options.templateLoader = new FileBasedTemplateLoader(
+        options.templatePath,
+      );
+    } else {
+      throw new Error(
+        "You must either supply a templatePath or provide a custom templateLoader",
+      );
     }
+    this.options = options as InitializedEmailPluginOptions;
+    return EmailPlugin;
+  }
 
-    /** @internal */
-    async onApplicationBootstrap(): Promise<void> {
-        await this.initInjectableStrategies();
-        await this.setupEventSubscribers();
-        const transport = await resolveTransportSettings(this.options, new Injector(this.moduleRef));
-        if (!isDevModeOptions(this.options) && transport.type === 'testing') {
-            // When running tests, we don't want to go through the JobQueue system,
-            // so we just call the email sending logic directly.
-            this.testingProcessor = new EmailProcessor(this.options, this.moduleRef, this.eventBus);
-            await this.testingProcessor.init();
-        } else {
-            await this.emailProcessor.init();
-            this.jobQueue = await this.jobQueueService.createQueue({
-                name: 'send-email',
-                process: job => {
-                    return this.emailProcessor.process(job.data);
-                },
-            });
-        }
+  /** @internal */
+  async onApplicationBootstrap(): Promise<void> {
+    await this.initInjectableStrategies();
+    await this.setupEventSubscribers();
+    const transport = await resolveTransportSettings(
+      this.options,
+      new Injector(this.moduleRef),
+    );
+    if (!isDevModeOptions(this.options) && transport.type === "testing") {
+      // When running tests, we don't want to go through the JobQueue system,
+      // so we just call the email sending logic directly.
+      this.testingProcessor = new EmailProcessor(
+        this.options,
+        this.moduleRef,
+        this.eventBus,
+      );
+      await this.testingProcessor.init();
+    } else {
+      await this.emailProcessor.init();
+      this.jobQueue = await this.jobQueueService.createQueue({
+        name: "send-email",
+        process: (job) => {
+          return this.emailProcessor.process(job.data);
+        },
+      });
     }
+  }
 
-    async onApplicationShutdown() {
-        await this.destroyInjectableStrategies();
-    }
+  async onApplicationShutdown() {
+    await this.destroyInjectableStrategies();
+  }
 
-    configure(consumer: MiddlewareConsumer) {
-        if (isDevModeOptions(this.options) && this.processContext.isServer) {
-            Logger.info('Creating dev mailbox middleware', loggerCtx);
-            this.devMailbox = new DevMailbox();
-            consumer.apply(this.devMailbox.serve(this.options)).forRoutes(this.options.route);
-            this.devMailbox.handleMockEvent((handler, event) => this.handleEvent(handler, event));
-            registerPluginStartupMessage('Dev mailbox', this.options.route);
-        }
+  configure(consumer: MiddlewareConsumer) {
+    if (isDevModeOptions(this.options) && this.processContext.isServer) {
+      Logger.info("Creating dev mailbox middleware", loggerCtx);
+      this.devMailbox = new DevMailbox();
+      consumer
+        .apply(this.devMailbox.serve(this.options))
+        .forRoutes(this.options.route);
+      this.devMailbox.handleMockEvent((handler, event) =>
+        this.handleEvent(handler, event),
+      );
+      registerPluginStartupMessage("Dev mailbox", this.options.route);
     }
+  }
 
-    private async initInjectableStrategies() {
-        const injector = new Injector(this.moduleRef);
-        if (typeof this.options.emailGenerator?.init === 'function') {
-            await this.options.emailGenerator.init(injector);
-        }
-        if (typeof this.options.emailSender?.init === 'function') {
-            await this.options.emailSender.init(injector);
-        }
+  private async initInjectableStrategies() {
+    const injector = new Injector(this.moduleRef);
+    if (typeof this.options.emailGenerator?.init === "function") {
+      await this.options.emailGenerator.init(injector);
     }
+    if (typeof this.options.emailSender?.init === "function") {
+      await this.options.emailSender.init(injector);
+    }
+  }
 
-    private async destroyInjectableStrategies() {
-        if (typeof this.options.emailGenerator?.destroy === 'function') {
-            await this.options.emailGenerator.destroy();
-        }
-        if (typeof this.options.emailSender?.destroy === 'function') {
-            await this.options.emailSender.destroy();
-        }
+  private async destroyInjectableStrategies() {
+    if (typeof this.options.emailGenerator?.destroy === "function") {
+      await this.options.emailGenerator.destroy();
     }
+    if (typeof this.options.emailSender?.destroy === "function") {
+      await this.options.emailSender.destroy();
+    }
+  }
 
-    private async setupEventSubscribers() {
-        for (const handler of EmailPlugin.options.handlers) {
-            this.eventBus.ofType(handler.event).subscribe(event => {
-                return this.handleEvent(handler, event);
-            });
-        }
+  private async setupEventSubscribers() {
+    for (const handler of EmailPlugin.options.handlers) {
+      this.eventBus.ofType(handler.event).subscribe((event) => {
+        return this.handleEvent(handler, event);
+      });
     }
+  }
 
-    private async handleEvent(
-        handler: EmailEventHandler | EmailEventHandlerWithAsyncData<any>,
-        event: EventWithContext,
-    ) {
-        Logger.debug(`Handling event "${handler.type}"`, loggerCtx);
-        const { type } = handler;
-        try {
-            const injector = new Injector(this.moduleRef);
-            let globalTemplateVars = this.options.globalTemplateVars;
-            if (typeof globalTemplateVars === 'function') {
-                globalTemplateVars = await globalTemplateVars(event.ctx, injector);
-            }
-            const result = await handler.handle(
-                event as any,
-                globalTemplateVars as { [key: string]: any },
-                injector,
-            );
-            if (!result) {
-                return;
-            }
-            if (this.jobQueue) {
-                await this.jobQueue.add(result, { retries: 5 });
-            } else if (this.testingProcessor) {
-                await this.testingProcessor.process(result);
-            }
-        } catch (e: any) {
-            Logger.error(e.message, loggerCtx, e.stack);
-        }
+  private async handleEvent(
+    handler: EmailEventHandler | EmailEventHandlerWithAsyncData<any>,
+    event: EventWithContext,
+  ) {
+    Logger.debug(`Handling event "${handler.type}"`, loggerCtx);
+    const { type } = handler;
+    try {
+      const injector = new Injector(this.moduleRef);
+      let globalTemplateVars = this.options.globalTemplateVars;
+      if (typeof globalTemplateVars === "function") {
+        globalTemplateVars = await globalTemplateVars(event.ctx, injector);
+      }
+      const result = await handler.handle(
+        event as any,
+        globalTemplateVars as { [key: string]: any },
+        injector,
+      );
+      if (!result) {
+        return;
+      }
+      if (this.jobQueue) {
+        await this.jobQueue.add(result, { retries: 5 });
+      } else if (this.testingProcessor) {
+        await this.testingProcessor.process(result);
+      }
+    } catch (e: any) {
+      Logger.error(e.message, loggerCtx, e.stack);
     }
+  }
 }

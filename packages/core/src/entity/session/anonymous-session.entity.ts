@@ -1,9 +1,9 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { ChildEntity, ManyToOne } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { ChildEntity, ManyToOne } from "typeorm";
 
-import { Order } from '../order/order.entity';
+import { Order } from "../order/order.entity";
 
-import { Session } from './session.entity';
+import { Session } from "./session.entity";
 
 /**
  * @description
@@ -15,7 +15,7 @@ import { Session } from './session.entity';
  */
 @ChildEntity()
 export class AnonymousSession extends Session {
-    constructor(input: DeepPartial<AnonymousSession>) {
-        super(input);
-    }
+  constructor(input: DeepPartial<AnonymousSession>) {
+    super(input);
+  }
 }

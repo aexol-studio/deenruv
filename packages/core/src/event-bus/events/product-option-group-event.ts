@@ -1,17 +1,17 @@
 import {
-    CreateProductOptionGroupInput,
-    UpdateProductOptionGroupInput,
-} from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+  CreateProductOptionGroupInput,
+  UpdateProductOptionGroupInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { ProductOptionGroup } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api/common/request-context";
+import { ProductOptionGroup } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type ProductOptionGroupInputTypes =
-    | Omit<CreateProductOptionGroupInput, 'options'>
-    | UpdateProductOptionGroupInput
-    | ID;
+  | Omit<CreateProductOptionGroupInput, "options">
+  | UpdateProductOptionGroupInput
+  | ID;
 
 /**
  * @description
@@ -22,15 +22,15 @@ type ProductOptionGroupInputTypes =
  * @since 1.4
  */
 export class ProductOptionGroupEvent extends DeenruvEntityEvent<
-    ProductOptionGroup,
-    ProductOptionGroupInputTypes
+  ProductOptionGroup,
+  ProductOptionGroupInputTypes
 > {
-    constructor(
-        ctx: RequestContext,
-        entity: ProductOptionGroup,
-        type: 'created' | 'updated' | 'deleted',
-        input?: ProductOptionGroupInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+  constructor(
+    ctx: RequestContext,
+    entity: ProductOptionGroup,
+    type: "created" | "updated" | "deleted",
+    input?: ProductOptionGroupInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

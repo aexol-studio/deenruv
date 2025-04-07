@@ -1,6 +1,6 @@
-import { RequestContext } from '../../../api/common/request-context';
-import { Order } from '../../../entity/order/order.entity';
-import { Payment } from '../../../entity/payment/payment.entity';
+import { RequestContext } from "../../../api/common/request-context";
+import { Order } from "../../../entity/order/order.entity";
+import { Payment } from "../../../entity/payment/payment.entity";
 
 /**
  * @description
@@ -25,11 +25,11 @@ export interface PaymentStates {}
  * @docsCategory payment
  */
 export type PaymentState =
-    | 'Created'
-    | 'Error'
-    | 'Cancelled'
-    | keyof CustomPaymentStates
-    | keyof PaymentStates;
+  | "Created"
+  | "Error"
+  | "Cancelled"
+  | keyof CustomPaymentStates
+  | keyof PaymentStates;
 
 /**
  * @description
@@ -39,7 +39,7 @@ export type PaymentState =
  * @docsCategory payment
  */
 export interface PaymentTransitionData {
-    ctx: RequestContext;
-    payment: Payment;
-    order: Order;
+  ctx: RequestContext;
+  payment: Payment;
+  order: Order;
 }

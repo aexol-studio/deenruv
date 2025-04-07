@@ -1,6 +1,6 @@
-import { RequestContext } from '../api';
+import { RequestContext } from "../api";
 
-import { DeenruvEvent } from './deenruv-event';
+import { DeenruvEvent } from "./deenruv-event";
 
 /**
  * @description
@@ -9,22 +9,25 @@ import { DeenruvEvent } from './deenruv-event';
  *
  * @docsCategory events
  * */
-export abstract class DeenruvEntityEvent<Entity, Input = any> extends DeenruvEvent {
-    public readonly entity: Entity;
-    public readonly type: 'created' | 'updated' | 'deleted';
-    public readonly ctx: RequestContext;
-    public readonly input?: Input;
+export abstract class DeenruvEntityEvent<
+  Entity,
+  Input = any,
+> extends DeenruvEvent {
+  public readonly entity: Entity;
+  public readonly type: "created" | "updated" | "deleted";
+  public readonly ctx: RequestContext;
+  public readonly input?: Input;
 
-    protected constructor(
-        entity: Entity,
-        type: 'created' | 'updated' | 'deleted',
-        ctx: RequestContext,
-        input?: Input,
-    ) {
-        super();
-        this.entity = entity;
-        this.type = type;
-        this.ctx = ctx;
-        this.input = input;
-    }
+  protected constructor(
+    entity: Entity,
+    type: "created" | "updated" | "deleted",
+    ctx: RequestContext,
+    input?: Input,
+  ) {
+    super();
+    this.entity = entity;
+    this.type = type;
+    this.ctx = ctx;
+    this.input = input;
+  }
 }

@@ -1,14 +1,14 @@
-import { ConfigArg, Permission } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ConfigArg, Permission } from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
+import { RequestContext } from "../../api/common/request-context";
 import {
-    ConfigArgs,
-    ConfigArgValues,
-    ConfigurableOperationDef,
-    ConfigurableOperationDefOptions,
-} from '../../common/configurable-operation';
-import { DeenruvEntity } from '../../entity/base/base.entity';
+  ConfigArgs,
+  ConfigArgValues,
+  ConfigurableOperationDef,
+  ConfigurableOperationDefOptions,
+} from "../../common/configurable-operation";
+import { DeenruvEntity } from "../../entity/base/base.entity";
 
 /**
  * @description
@@ -19,10 +19,10 @@ import { DeenruvEntity } from '../../entity/base/base.entity';
  * @since 2.2.0
  */
 export type DuplicateEntityFn<T extends ConfigArgs> = (input: {
-    ctx: RequestContext;
-    entityName: string;
-    id: ID;
-    args: ConfigArgValues<T>;
+  ctx: RequestContext;
+  entityName: string;
+  id: ID;
+  args: ConfigArgValues<T>;
 }) => Promise<DeenruvEntity>;
 
 /**
@@ -33,34 +33,35 @@ export type DuplicateEntityFn<T extends ConfigArgs> = (input: {
  * @docsCategory configuration
  * @since 2.2.0
  */
-export interface EntityDuplicatorConfig<T extends ConfigArgs> extends ConfigurableOperationDefOptions<T> {
-    /**
-     * @description
-     * The permissions required in order to execute this duplicator. If an array is passed,
-     * then the administrator must have at least one of the permissions in the array.
-     */
-    requiresPermission: Array<Permission | string> | Permission | string;
-    /**
-     * @description
-     * The entities for which this duplicator is able to duplicate.
-     */
-    forEntities: string[];
-    /**
-     * @description
-     * The function which performs the duplication.
-     *
-     * @example
-     * ```ts
-     * duplicate: async input => {
-     *   const { ctx, id, args } = input;
-     *
-     *   // perform the duplication logic here
-     *
-     *   return newEntity;
-     * }
-     * ```
-     */
-    duplicate: DuplicateEntityFn<T>;
+export interface EntityDuplicatorConfig<T extends ConfigArgs>
+  extends ConfigurableOperationDefOptions<T> {
+  /**
+   * @description
+   * The permissions required in order to execute this duplicator. If an array is passed,
+   * then the administrator must have at least one of the permissions in the array.
+   */
+  requiresPermission: Array<Permission | string> | Permission | string;
+  /**
+   * @description
+   * The entities for which this duplicator is able to duplicate.
+   */
+  forEntities: string[];
+  /**
+   * @description
+   * The function which performs the duplication.
+   *
+   * @example
+   * ```ts
+   * duplicate: async input => {
+   *   const { ctx, id, args } = input;
+   *
+   *   // perform the duplication logic here
+   *
+   *   return newEntity;
+   * }
+   * ```
+   */
+  duplicate: DuplicateEntityFn<T>;
 }
 
 /**
@@ -155,44 +156,46 @@ export interface EntityDuplicatorConfig<T extends ConfigArgs> extends Configurab
  * @docsCategory configuration
  * @since 2.2.0
  */
-export class EntityDuplicator<T extends ConfigArgs = ConfigArgs> extends ConfigurableOperationDef<T> {
-    private _forEntities: string[];
-    private _requiresPermission: Array<Permission | string> | Permission | string;
-    private duplicateFn: DuplicateEntityFn<T>;
+export class EntityDuplicator<
+  T extends ConfigArgs = ConfigArgs,
+> extends ConfigurableOperationDef<T> {
+  private _forEntities: string[];
+  private _requiresPermission: Array<Permission | string> | Permission | string;
+  private duplicateFn: DuplicateEntityFn<T>;
 
-    /** @internal */
-    canDuplicate(entityName: string): boolean {
-        return this._forEntities.includes(entityName);
-    }
+  /** @internal */
+  canDuplicate(entityName: string): boolean {
+    return this._forEntities.includes(entityName);
+  }
 
-    /** @internal */
-    get forEntities() {
-        return this._forEntities;
-    }
+  /** @internal */
+  get forEntities() {
+    return this._forEntities;
+  }
 
-    /** @internal */
-    get requiresPermission(): Permission[] {
-        return (Array.isArray(this._requiresPermission)
-            ? this._requiresPermission
-            : [this._requiresPermission]) as any as Permission[];
-    }
+  /** @internal */
+  get requiresPermission(): Permission[] {
+    return (Array.isArray(this._requiresPermission)
+      ? this._requiresPermission
+      : [this._requiresPermission]) as any as Permission[];
+  }
 
-    constructor(config: EntityDuplicatorConfig<T>) {
-        super(config);
-        this._forEntities = config.forEntities;
-        this._requiresPermission = config.requiresPermission;
-        this.duplicateFn = config.duplicate;
-    }
+  constructor(config: EntityDuplicatorConfig<T>) {
+    super(config);
+    this._forEntities = config.forEntities;
+    this._requiresPermission = config.requiresPermission;
+    this.duplicateFn = config.duplicate;
+  }
 
-    duplicate(input: {
-        ctx: RequestContext;
-        entityName: string;
-        id: ID;
-        args: ConfigArg[];
-    }): Promise<DeenruvEntity> {
-        return this.duplicateFn({
-            ...input,
-            args: this.argsArrayToHash(input.args),
-        });
-    }
+  duplicate(input: {
+    ctx: RequestContext;
+    entityName: string;
+    id: ID;
+    args: ConfigArg[];
+  }): Promise<DeenruvEntity> {
+    return this.duplicateFn({
+      ...input,
+      args: this.argsArrayToHash(input.args),
+    });
+  }
 }

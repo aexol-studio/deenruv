@@ -1,13 +1,21 @@
-import { Button, Input, Separator, useServer, apiClient, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
+import {
+  Button,
+  Input,
+  Separator,
+  useServer,
+  apiClient,
+  CustomCard,
+  CardIcons,
+  useGFFLP,
+  SimpleSelect,
+  priceFormatter,
+} from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CircleCheck, CircleX } from 'lucide-react';
 
-import { useGFFLP } from '@/lists/useGflp';
 import { ModelTypes } from '@deenruv/admin-types';
 import { Lines } from '@/pages/shipping-methods/_components/Lines';
-import { CircleCheck, CircleX } from 'lucide-react';
-import { priceFormatter } from '@/utils';
-import { SimpleSelect, Stack } from '@/components';
 
 interface TestCardProps {
   calculator: ModelTypes['ConfigurableOperationInput'] | undefined;
@@ -91,32 +99,32 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
       }
     >
       <div className="flex flex-col gap-4">
-        <Stack className="flex-wrap gap-3">
-          <Stack className="flex-1 basis-full md:basis-1/3">
+        <div className="flex flex-wrap gap-3">
+          <div className="flex flex-1 basis-full md:basis-1/3">
             <Input
               label={t('details.test.city')}
               value={state.shippingAddress?.value.city ?? undefined}
               onChange={(e) => setAddressField('city', e.target.value)}
               required
             />
-          </Stack>
-          <Stack className="flex-1 basis-full md:basis-1/3">
+          </div>
+          <div className="flex flex-1 basis-full md:basis-1/3">
             <Input
               label={t('details.test.province')}
               value={state.shippingAddress?.value.province ?? undefined}
               onChange={(e) => setAddressField('province', e.target.value)}
               required
             />
-          </Stack>
-          <Stack className="flex-1 basis-full md:basis-1/3">
+          </div>
+          <div className="flex flex-1 basis-full md:basis-1/3">
             <Input
               label={t('details.test.postalCode')}
               value={state.shippingAddress?.value.postalCode ?? undefined}
               onChange={(e) => setAddressField('postalCode', e.target.value)}
               required
             />
-          </Stack>
-          <Stack className="flex-1 basis-full md:basis-1/3">
+          </div>
+          <div className="flex flex-1 basis-full md:basis-1/3">
             <SimpleSelect
               label={t('details.test.country')}
               value={state.shippingAddress?.value.countryCode}
@@ -126,13 +134,13 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
                 value: c.code,
               }))}
             />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
         <Separator />
         <Lines onLinesChange={(e) => setField('lines', e)} />
         {testResult && (
-          <Stack column className="gap-3">
-            <Stack className="gap-3">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3">
               {testResult.eligible ? (
                 <>
                   <CircleCheck color="green" />
@@ -144,7 +152,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
                   {t('details.test.notEligible')}
                 </>
               )}
-            </Stack>
+            </div>
             <div>
               <span className="font-semibold">{t('details.lines.price')}:</span>{' '}
               {priceFormatter(testResult.quote?.price)}
@@ -153,7 +161,7 @@ export const TestCard: React.FC<TestCardProps> = ({ calculator, checker }) => {
               <span className="font-semibold">{t('details.lines.total')}:</span>{' '}
               {priceFormatter(testResult.quote?.priceWithTax)}
             </div>
-          </Stack>
+          </div>
         )}
       </div>
     </CustomCard>

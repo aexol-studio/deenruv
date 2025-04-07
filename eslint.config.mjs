@@ -1,49 +1,48 @@
 // @ts-check
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import tailwind from 'eslint-plugin-tailwindcss';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import * as importPlugin from 'eslint-plugin-import';
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
 export default tseslint.config(
-    eslint.configs.recommended,
-    ...tseslint.configs.recommended,
-    eslintPluginPrettierRecommended,
-    {
-        files: ['**/*.json'],
-        language: 'json/json',
-        rules: {
-            'json/no-duplicate-keys': 'error',
-            'no-irregular-whitespace': 'off',
-        },
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
+  eslintPluginPrettierRecommended,
+  {
+    ignores: [
+      "**/dist/**",
+      "**/lib/**",
+      "**/cli/**",
+      "**/package/**",
+      "**/node_modules/**",
+      "**/zeus/**",
+      "**/client/**",
+      "**/generated-shop-types.ts",
+      "**/generated-admin-types.ts",
+      "**/generated-e2e-shop-types.ts",
+      "**/generated-e2e-admin-types.ts",
+      "**/*.Dockerfile",
+    ],
+  },
+  {
+    files: ["**/*.{js,jsx,ts,tsx,mjs}"],
+    rules: {
+      "@typescript-eslint/no-empty-object-type": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unsafe-function-type": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/ban-ts-comment": "warn",
+      "@typescript-eslint/no-unused-expressions": "warn",
+      "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
+      "no-prototype-builtins": "warn",
+      "no-case-declarations": "warn",
+      "no-undef": "warn",
+      "no-useless-catch": "warn",
+      "no-async-promise-executor": "warn",
+      "no-empty": "warn",
+      "no-useless-escape": "warn",
+      "no-constant-binary-expression": "warn",
     },
-    {
-        files: ['apps/server/**/*.ts', 'plugins/**/*.ts', 'packages/**/*.{ts,tsx}'],
-        languageOptions: {
-            ecmaVersion: 'latest',
-            sourceType: 'module',
-        },
-        plugins: {
-            import: importPlugin,
-        },
-    },
-    tailwind.configs['flat/recommended'].map(config => ({
-        ...config,
-        files: [
-            'apps/panel/**/*.{ts,tsx}',
-            'packages/admin-dashboard/**/*.{ts,tsx}',
-            'packages/react-ui-devkit/**/*.{ts,tsx}',
-            'plugins/**/*.{ts,tsx}',
-        ],
-        settings: {
-            tailwindcss: { config: './apps/panel/tailwind.config.js' },
-        },
-    })),
-    {
-        files: ['**/*.{ts,tsx}'],
-        rules: {
-            '@typescript-eslint/no-explicit-any': 'off',
-        },
-    },
+  },
 );

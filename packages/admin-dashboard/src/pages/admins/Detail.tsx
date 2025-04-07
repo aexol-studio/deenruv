@@ -1,8 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { DetailView, createDeenruvForm, GFFLPFormField, getMutation, useMutation } from '@deenruv/react-ui-devkit';
-import { useValidators } from '@/hooks/useValidators.js';
+import {
+  DetailView,
+  createDeenruvForm,
+  GFFLPFormField,
+  getMutation,
+  useMutation,
+  useValidators,
+} from '@deenruv/react-ui-devkit';
 import { AdminDetailView } from '@/pages/admins/_components/AdminDetailView.js';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
 

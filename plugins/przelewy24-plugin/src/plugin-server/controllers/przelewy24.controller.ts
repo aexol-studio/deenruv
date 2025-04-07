@@ -11,27 +11,27 @@ import { PLUGIN_INIT_OPTIONS } from "../constants";
 export class Przelewy24Controller {
   constructor(
     private readonly przelewy24Service: Przelewy24Service,
-    @Inject(PLUGIN_INIT_OPTIONS) private config: Przelewy24PluginConfiguration
+    @Inject(PLUGIN_INIT_OPTIONS) private config: Przelewy24PluginConfiguration,
   ) {}
 
   @Post("settle")
   @HttpCode(200)
   async settle(
     @Ctx() ctx: RequestContext,
-    @Body() body: Przelewy24NotificationBody
+    @Body() body: Przelewy24NotificationBody,
   ) {
     const status = await this.przelewy24Service.verifyPayment(body);
     if (status === "success") {
       try {
         const payment = await this.przelewy24Service.findPaymentByTransactionId(
           ctx,
-          body.sessionId
+          body.sessionId,
         );
         await this.przelewy24Service.settlePayment(ctx, payment.id);
       } catch (err) {
         Logger.error(
           `Can't find order id ${body.sessionId}`,
-          "Przelewy24Controller - Settle"
+          "Przelewy24Controller - Settle",
         );
         throw err;
       }

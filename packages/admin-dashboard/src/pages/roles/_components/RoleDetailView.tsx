@@ -14,7 +14,6 @@ import {
   CardIcons,
 } from '@deenruv/react-ui-devkit';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
-import { Stack } from '@/components';
 
 const ROLE_FORM_KEYS = ['CreateRoleInput', 'code', 'description', 'channelIds', 'permissions'] as const;
 
@@ -78,10 +77,10 @@ export const RoleDetailView = () => {
   return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
             <div className="flex flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-              <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
+              <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
                 <Input
                   label={t('details.basic.description')}
                   value={state.description?.value ?? undefined}
@@ -89,8 +88,8 @@ export const RoleDetailView = () => {
                   errors={state.description?.errors}
                   required
                 />
-              </Stack>
-              <Stack className="basis-full md:basis-1/2 xl:basis-1/4">
+              </div>
+              <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
                 <Input
                   label={t('details.basic.code')}
                   value={state.code?.value ?? undefined}
@@ -98,8 +97,8 @@ export const RoleDetailView = () => {
                   errors={state.code?.errors}
                   required
                 />
-              </Stack>
-              <Stack column className="basis-full gap-[6px] xl:basis-1/2">
+              </div>
+              <div className="flex basis-full flex-col gap-[6px] xl:basis-1/2">
                 <Label>{t('details.basic.channels')}</Label>
                 <MultipleSelector
                   options={allChannelOptions}
@@ -113,7 +112,7 @@ export const RoleDetailView = () => {
                   }
                   hideClearAllButton
                 />
-              </Stack>
+              </div>
             </div>
           </CustomCard>
           <DetailViewMarker position={'roles-detail-view'} />
@@ -122,7 +121,7 @@ export const RoleDetailView = () => {
             onPermissionsChange={(e) => setField('permissions', e)}
             errors={state.permissions?.errors}
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

@@ -1,25 +1,28 @@
-import { CanDeactivateDetailGuard, registerRouteComponent } from '@deenruv/admin-ui/core';
-import { registerReactRouteComponent } from '@deenruv/admin-ui/react';
+import {
+  CanDeactivateDetailGuard,
+  registerRouteComponent,
+} from "@deenruv/admin-ui/core";
+import { registerReactRouteComponent } from "@deenruv/admin-ui/react";
 
-import { AngularUiComponent } from './angular-components/angular-ui/angular-ui.component';
-import { ReactUi } from './react-components/ReactUi';
+import { AngularUiComponent } from "./angular-components/angular-ui/angular-ui.component";
+import { ReactUi } from "./react-components/ReactUi";
 
 export default [
-    registerReactRouteComponent({
-        path: 'react-ui',
-        component: ReactUi,
-        title: 'React UI',
-        description: 'Test description',
-        locationId: 'react-ui',
-    }),
-    registerRouteComponent({
-        path: 'angular-ui',
-        component: AngularUiComponent,
-        title: 'Angular UI',
-        locationId: 'angular-ui',
-        description: 'Test description 2',
-        routeConfig: {
-            canDeactivate: [CanDeactivateDetailGuard],
-        },
-    }),
+  registerReactRouteComponent({
+    path: "react-ui",
+    component: ReactUi,
+    title: "React UI",
+    description: "Test description",
+    locationId: "react-ui",
+  }),
+  registerRouteComponent({
+    path: "angular-ui",
+    component: AngularUiComponent,
+    title: "Angular UI",
+    locationId: "angular-ui",
+    description: "Test description 2",
+    routeConfig: {
+      canDeactivate: [CanDeactivateDetailGuard],
+    },
+  }),
 ];

@@ -1,5 +1,5 @@
-import { RequestContext } from '../../../api/common/request-context';
-import { Order } from '../../../entity/order/order.entity';
+import { RequestContext } from "../../../api/common/request-context";
+import { Order } from "../../../entity/order/order.entity";
 
 /**
  * @description
@@ -40,12 +40,12 @@ export interface OrderStates {}
  * @docsPage OrderProcess
  */
 export type OrderState =
-    | 'Created'
-    | 'Draft'
-    | 'AddingItems'
-    | 'Cancelled'
-    | keyof CustomOrderStates
-    | keyof OrderStates;
+  | "Created"
+  | "Draft"
+  | "AddingItems"
+  | "Cancelled"
+  | keyof CustomOrderStates
+  | keyof OrderStates;
 
 /**
  * @description
@@ -55,6 +55,6 @@ export type OrderState =
  * @docsPage OrderProcess
  */
 export interface OrderTransitionData {
-    ctx: RequestContext;
-    order: Order;
+  ctx: RequestContext;
+  order: Order;
 }

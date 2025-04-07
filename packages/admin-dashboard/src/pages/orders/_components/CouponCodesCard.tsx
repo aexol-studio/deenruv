@@ -130,9 +130,9 @@ export const CouponCodesCard: React.FC<{}> = () => {
         />
         <div className="text-muted-foreground absolute right-3 top-2.5">
           {isSearching ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
           ) : (
-            <Search className="h-4 w-4" />
+            <Search className="size-4" />
           )}
         </div>
       </div>

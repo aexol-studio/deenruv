@@ -10,8 +10,8 @@ export const SpecialLineItem: React.FC<{
 }> = ({ variant, adjustLineItem }) => {
   const imageUrl = variant?.featuredAsset?.preview || variant?.product?.featuredAsset?.preview;
   return (
-    <div className="flex h-full w-[40%] flex-col gap-4">
-      <div className="bg-card text-card-foreground flex h-full w-full flex-col space-y-3 rounded-lg border p-3 shadow-sm">
+    <div className="flex h-full w-2/5 flex-col gap-4">
+      <div className="bg-card text-card-foreground flex size-full flex-col space-y-3 rounded-lg border p-3 shadow-sm">
         {imageUrl ? (
           <img
             alt={`${variant?.product.name} image`}
@@ -21,8 +21,8 @@ export const SpecialLineItem: React.FC<{
             src={imageUrl || '/placeholder.svg'}
           />
         ) : (
-          <div className="bg-muted/30 flex h-14 w-14 items-center justify-center rounded-md border">
-            <Package className="text-muted-foreground h-6 w-6" />
+          <div className="bg-muted/30 flex size-14 items-center justify-center rounded-md border">
+            <Package className="text-muted-foreground size-6" />
           </div>
         )}
         <div className="flex flex-col gap-2">
@@ -58,7 +58,7 @@ export const SpecialLineItem: React.FC<{
                     className="hover:bg-muted h-8 rounded-r-none border-r px-2"
                     aria-label="Decrease quantity"
                   >
-                    <Minus className="h-3.5 w-3.5" />
+                    <Minus className="size-3.5" />
                   </Button>
                   <span className="px-3 py-1 text-sm font-medium tabular-nums">{variant?.quantity}</span>
                   <Button
@@ -69,7 +69,7 @@ export const SpecialLineItem: React.FC<{
                     className="hover:bg-muted h-8 rounded-l-none border-l px-2"
                     aria-label="Increase quantity"
                   >
-                    <Plus className="h-3.5 w-3.5" />
+                    <Plus className="size-3.5" />
                   </Button>
                 </div>
               </div>

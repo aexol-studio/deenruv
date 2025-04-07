@@ -1,7 +1,7 @@
-import { DeenruvConfig } from '@deenruv/core';
+import { DeenruvConfig } from "@deenruv/core";
 
-import { SimpleGraphQLClient } from './simple-graphql-client';
-import { TestServer } from './test-server';
+import { SimpleGraphQLClient } from "./simple-graphql-client";
+import { TestServer } from "./test-server";
 
 /**
  * @description
@@ -11,21 +11,21 @@ import { TestServer } from './test-server';
  * @docsCategory testing
  */
 export interface TestEnvironment {
-    /**
-     * @description
-     * A Deenruv server instance against which GraphQL requests can be made.
-     */
-    server: TestServer;
-    /**
-     * @description
-     * A GraphQL client configured for the Admin API.
-     */
-    adminClient: SimpleGraphQLClient;
-    /**
-     * @description
-     * A GraphQL client configured for the Shop API.
-     */
-    shopClient: SimpleGraphQLClient;
+  /**
+   * @description
+   * A Deenruv server instance against which GraphQL requests can be made.
+   */
+  server: TestServer;
+  /**
+   * @description
+   * A GraphQL client configured for the Admin API.
+   */
+  adminClient: SimpleGraphQLClient;
+  /**
+   * @description
+   * A GraphQL client configured for the Shop API.
+   */
+  shopClient: SimpleGraphQLClient;
 }
 
 /**
@@ -57,16 +57,24 @@ export interface TestEnvironment {
  * ```
  * @docsCategory testing
  */
-export function createTestEnvironment(config: Required<DeenruvConfig>): TestEnvironment {
-    const server = new TestServer(config);
-    const { port, adminApiPath, shopApiPath } = config.apiOptions;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const adminClient = new SimpleGraphQLClient(config, `http://localhost:${port}/${adminApiPath!}`);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const shopClient = new SimpleGraphQLClient(config, `http://localhost:${port}/${shopApiPath!}`);
-    return {
-        server,
-        adminClient,
-        shopClient,
-    };
+export function createTestEnvironment(
+  config: Required<DeenruvConfig>,
+): TestEnvironment {
+  const server = new TestServer(config);
+  const { port, adminApiPath, shopApiPath } = config.apiOptions;
+
+  const adminClient = new SimpleGraphQLClient(
+    config,
+    `http://localhost:${port}/${adminApiPath!}`,
+  );
+
+  const shopClient = new SimpleGraphQLClient(
+    config,
+    `http://localhost:${port}/${shopApiPath!}`,
+  );
+  return {
+    server,
+    adminClient,
+    shopClient,
+  };
 }

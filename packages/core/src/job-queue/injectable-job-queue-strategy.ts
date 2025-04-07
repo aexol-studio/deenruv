@@ -1,9 +1,11 @@
-import { Injector } from '../common';
+import { Injector } from "../common";
 
-import { Job } from './job';
-import { JobData } from './types';
+import { Job } from "./job";
+import { JobData } from "./types";
 
-type ProcessFunc<Data extends JobData<Data> = object> = (job: Job<Data>) => Promise<any>;
+type ProcessFunc<Data extends JobData<Data> = object> = (
+  job: Job<Data>,
+) => Promise<any>;
 
 /**
  * @description
@@ -21,23 +23,23 @@ type ProcessFunc<Data extends JobData<Data> = object> = (job: Job<Data>) => Prom
  * ```
  */
 export abstract class InjectableJobQueueStrategy {
-    protected started = new Map<string, ProcessFunc<any>>();
-    protected hasInitialized = false;
+  protected started = new Map<string, ProcessFunc<any>>();
+  protected hasInitialized = false;
 
-    init(injector: Injector) {
-        this.hasInitialized = true;
-        for (const [queueName, process] of this.started) {
-            this.start(queueName, process);
-        }
-        this.started.clear();
+  init(injector: Injector) {
+    this.hasInitialized = true;
+    for (const [queueName, process] of this.started) {
+      this.start(queueName, process);
     }
+    this.started.clear();
+  }
 
-    destroy() {
-        this.hasInitialized = false;
-    }
+  destroy() {
+    this.hasInitialized = false;
+  }
 
-    abstract start<Data extends JobData<Data> = object>(
-        queueName: string,
-        process: (job: Job<Data>) => Promise<any>,
-    ): void;
+  abstract start<Data extends JobData<Data> = object>(
+    queueName: string,
+    process: (job: Job<Data>) => Promise<any>,
+  ): void;
 }

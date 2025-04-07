@@ -1,6 +1,6 @@
-import { RequestContext } from '../../../api/common/request-context';
-import { Order } from '../../../entity/order/order.entity';
-import { Refund } from '../../../entity/refund/refund.entity';
+import { RequestContext } from "../../../api/common/request-context";
+import { Order } from "../../../entity/order/order.entity";
+import { Refund } from "../../../entity/refund/refund.entity";
 
 /**
  * @description
@@ -24,7 +24,12 @@ export interface RefundStates {}
  *
  * @docsCategory payment
  */
-export type RefundState = 'Pending' | 'Settled' | 'Failed' | keyof CustomRefundStates | keyof RefundStates;
+export type RefundState =
+  | "Pending"
+  | "Settled"
+  | "Failed"
+  | keyof CustomRefundStates
+  | keyof RefundStates;
 
 /**
  * @description
@@ -33,7 +38,7 @@ export type RefundState = 'Pending' | 'Settled' | 'Failed' | keyof CustomRefundS
  * @docsCategory payment
  */
 export interface RefundTransitionData {
-    ctx: RequestContext;
-    order: Order;
-    refund: Refund;
+  ctx: RequestContext;
+  order: Order;
+  refund: Refund;
 }

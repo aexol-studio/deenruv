@@ -1,5 +1,5 @@
-import { Order, OrderState } from '@deenruv/core';
-import { Index, ViewColumn, ViewEntity } from 'typeorm';
+import { Order, OrderState } from "@deenruv/core";
+import { Index, ViewColumn, ViewEntity } from "typeorm";
 
 @ViewEntity({
   materialized: true,
@@ -20,7 +20,7 @@ import { Index, ViewColumn, ViewEntity } from 'typeorm';
 	  ORDER BY "hour" DESC
   `,
 })
-@Index(['hour', 'productVariantId', 'channelId', 'state'], { unique: true })
+@Index(["hour", "productVariantId", "channelId", "state"], { unique: true })
 export class TotalProductsWithStateViewEntity {
   @ViewColumn()
   hour: Date;

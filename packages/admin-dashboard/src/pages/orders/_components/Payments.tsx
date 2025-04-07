@@ -60,25 +60,25 @@ export const Payments: React.FC = () => {
       case PAYMENT_STATE.SETTLED:
         return {
           variant: 'success' as const,
-          icon: <CheckCircle className="mr-1 h-3.5 w-3.5" />,
+          icon: <CheckCircle className="mr-1 size-3.5" />,
           label: t('payments.status.settled', 'Settled'),
         };
       case PAYMENT_STATE.CANCELLED:
         return {
           variant: 'destructive' as const,
-          icon: <Ban className="mr-1 h-3.5 w-3.5" />,
+          icon: <Ban className="mr-1 size-3.5" />,
           label: t('payments.status.cancelled', 'Cancelled'),
         };
       case PAYMENT_STATE.AUTHORIZED:
         return {
           variant: 'outline' as const,
-          icon: <Clock className="mr-1 h-3.5 w-3.5" />,
+          icon: <Clock className="mr-1 size-3.5" />,
           label: t('payments.status.authorized', 'Authorized'),
         };
       default:
         return {
           variant: 'secondary' as const,
-          icon: <AlertCircle className="mr-1 h-3.5 w-3.5" />,
+          icon: <AlertCircle className="mr-1 size-3.5" />,
           label: state,
         };
     }
@@ -89,14 +89,14 @@ export const Payments: React.FC = () => {
       color="teal"
       description={t('payments.subTitle')}
       title={t('payments.title')}
-      icon={<Wallet className="h-5 w-5 text-teal-500 dark:text-teal-400" />}
+      icon={<Wallet className="size-5 text-teal-500 dark:text-teal-400" />}
       upperRight={<AddPaymentDialog order={order} onSubmit={(v) => addPaymentToOrder(v)} />}
     >
       <Dialog open={!!paymentToBeSettled} onOpenChange={() => setPaymentToBeSettled('')}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <div className="mb-2 flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-teal-500" />
+              <CheckCircle2 className="size-5 text-teal-500" />
               <DialogTitle>{t('payments.settle.title', 'Settle Payment')}</DialogTitle>
             </div>
             <DialogDescription>
@@ -112,7 +112,7 @@ export const Payments: React.FC = () => {
               <Button variant="outline">{t('payments.settle.cancel', 'Cancel')}</Button>
             </DialogClose>
             <Button variant="default" onClick={() => settlePayment({ id: paymentToBeSettled })} className="gap-2">
-              <CheckCircle2 className="h-4 w-4" />
+              <CheckCircle2 className="size-4" />
               {t('payments.settle.confirm', 'Confirm Settlement')}
             </Button>
           </DialogFooter>
@@ -141,13 +141,13 @@ export const Payments: React.FC = () => {
                     <TableCell className="text-muted-foreground py-3 font-mono text-xs">{id}</TableCell>
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-teal-500 dark:text-teal-400" />
+                        <Calendar className="size-4 text-teal-500 dark:text-teal-400" />
                         <span>{format(new Date(createdAt), 'dd/LL/Y, kk:mm')}</span>
                       </div>
                     </TableCell>
                     <TableCell className="py-3">
                       <div className="flex items-center gap-2">
-                        <CreditCard className="h-4 w-4 text-teal-500 dark:text-teal-400" />
+                        <CreditCard className="size-4 text-teal-500 dark:text-teal-400" />
                         <span className="font-medium">{method}</span>
                       </div>
                     </TableCell>

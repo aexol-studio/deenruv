@@ -1,1 +1,1 @@
-export * from './Replicate';
+export * from "./Replicate";

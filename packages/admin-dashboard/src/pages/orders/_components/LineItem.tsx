@@ -23,14 +23,14 @@ export const LineItem: React.FC<
           {imageUrl ? (
             <img
               alt={`${variant?.product.name} image`}
-              className="aspect-square h-12 w-12 rounded-md border bg-white object-cover shadow-sm"
+              className="aspect-square size-12 rounded-md border bg-white object-cover shadow-sm"
               height="48"
               width="48"
               src={imageUrl || '/placeholder.svg'}
             />
           ) : (
-            <div className="bg-muted/30 flex h-12 w-12 items-center justify-center rounded-md border">
-              <Package className="text-muted-foreground h-6 w-6" />
+            <div className="bg-muted/30 flex size-12 items-center justify-center rounded-md border">
+              <Package className="text-muted-foreground size-6" />
             </div>
           )}
           <div className="flex flex-col">
@@ -57,7 +57,7 @@ export const LineItem: React.FC<
                   className="hover:bg-muted h-8 rounded-r-none border-r px-2"
                   aria-label="Decrease quantity"
                 >
-                  <Minus className="h-3.5 w-3.5" />
+                  <Minus className="size-3.5" />
                 </Button>
                 <span className="px-3 py-1 text-sm font-medium tabular-nums">{variant?.quantity}</span>
                 <Button
@@ -68,12 +68,12 @@ export const LineItem: React.FC<
                   className="hover:bg-muted h-8 rounded-l-none border-l px-2"
                   aria-label="Increase quantity"
                 >
-                  <Plus className="h-3.5 w-3.5" />
+                  <Plus className="size-3.5" />
                 </Button>
               </div>
             </div>
           ) : (
-            <span className="bg-primary/10 text-primary inline-flex min-w-[2rem] items-center justify-center rounded-full px-2 py-0.5 text-xs font-medium">
+            <span className="bg-primary/10 text-primary inline-flex min-w-8 items-center justify-center rounded-full px-2 py-0.5 text-xs font-medium">
               {variant?.quantity}
             </span>
           )}

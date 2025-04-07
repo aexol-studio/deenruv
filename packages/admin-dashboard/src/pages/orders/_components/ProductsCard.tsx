@@ -26,6 +26,8 @@ import {
   useServer,
   useOrder,
   CustomCard,
+  type CF,
+  ImageWithPreview,
 } from '@deenruv/react-ui-devkit';
 import {
   type DraftOrderLineType,
@@ -45,7 +47,7 @@ import type { OnPriceQuantityChangeApproveInput } from './OrderLineActionModal/t
 import { OrderLineActionModal } from './OrderLineActionModal/index.js';
 import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
-import { type CF, ImageWithPreview, ProductVariantSearch } from '@/components';
+import { ProductVariantSearch } from '@/components';
 import { SpecialLineItem } from './SpecialLineItem.js';
 
 type AddItemCustomFieldsType = any;
@@ -326,11 +328,11 @@ export const ProductsCard: React.FC = () => {
       <Dialog open={open} onOpenChange={(e) => (!e ? closeAddVariantDialog() : setOpen(true))}>
         <DialogContent className="bg-background max-h-[90vh] min-h-[60vh] max-w-[65vw] overflow-auto">
           {selectedVariant ? (
-            <div className="flex h-full w-full flex-col justify-between">
+            <div className="flex size-full flex-col justify-between">
               <h3 className="text-primary pb-4 text-xl font-semibold">{t('create.addVariant')}</h3>
               <div className="flex h-full flex-col gap-8">
-                <div className="flex h-full w-full flex-col items-center gap-2">
-                  <div className="flex h-full w-full justify-between gap-4">
+                <div className="flex size-full flex-col items-center gap-2">
+                  <div className="flex size-full justify-between gap-4">
                     <SpecialLineItem variant={{ ...selectedVariant, quantity: 1 }} />
                     <CustomComponent onVariantAdd={handleNewVariantAdd} orderLine={selectedVariant} />
                   </div>
@@ -398,7 +400,7 @@ export const ProductsCard: React.FC = () => {
                         </TableCell>
                         <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
                           <div className="flex items-center gap-2">
-                            <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            <Tag className="size-4 text-blue-500 dark:text-blue-400" />
                             {line.productVariant.sku}
                           </div>
                         </TableCell>
@@ -424,13 +426,13 @@ export const ProductsCard: React.FC = () => {
                           <TableCell className="py-3 text-right">
                             <div className="flex items-center justify-end gap-3">
                               <DropdownMenu>
-                                <DropdownMenuTrigger className="hover:bg-muted flex h-8 w-8 items-center justify-center rounded-md">
-                                  <EllipsisVertical className="h-5 w-5" />
+                                <DropdownMenuTrigger className="hover:bg-muted flex size-8 items-center justify-center rounded-md">
+                                  <EllipsisVertical className="size-5" />
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
                                   <DropdownMenuLabel>
                                     <div className="flex items-center gap-2">
-                                      <Edit className="h-4 w-4 text-blue-500" />
+                                      <Edit className="size-4 text-blue-500" />
                                       {t('editOptions', 'Edit Options')}
                                     </div>
                                   </DropdownMenuLabel>
@@ -449,7 +451,7 @@ export const ProductsCard: React.FC = () => {
                                       <TooltipProvider>
                                         <Tooltip>
                                           <TooltipTrigger asChild>
-                                            <InfoIcon className="text-muted-foreground h-4 w-4" />
+                                            <InfoIcon className="text-muted-foreground size-4" />
                                           </TooltipTrigger>
                                           <TooltipContent>
                                             <p>
@@ -465,10 +467,10 @@ export const ProductsCard: React.FC = () => {
 
                               {(mode === 'create' || isLineAddedInModify(line.id)) && (
                                 <button
-                                  className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
+                                  className="flex size-8 items-center justify-center rounded-md text-red-500 hover:bg-red-50 hover:text-red-600"
                                   onClick={() => removeLineItem(line.id)}
                                 >
-                                  <Trash2 className="h-4 w-4" />
+                                  <Trash2 className="size-4" />
                                 </button>
                               )}
                             </div>
@@ -481,13 +483,13 @@ export const ProductsCard: React.FC = () => {
                       <TableRow key={surcharge.sku} className="bg-muted/10 hover:bg-muted/20">
                         <TableCell className="text-primary py-3 font-medium">
                           <div className="flex items-center gap-2">
-                            <Package className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            <Package className="size-4 text-blue-500 dark:text-blue-400" />
                             {surcharge.description}
                           </div>
                         </TableCell>
                         <TableCell className="text-muted-foreground min-w-[200px] py-3 font-mono text-sm">
                           <div className="flex items-center gap-2">
-                            <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            <Tag className="size-4 text-blue-500 dark:text-blue-400" />
                             {surcharge.sku}
                           </div>
                         </TableCell>
@@ -511,7 +513,7 @@ export const ProductsCard: React.FC = () => {
                     <TableCell colSpan={8}>
                       <div className="flex flex-col items-center justify-center py-12 text-center">
                         <div className="mb-4 rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
-                          <ShoppingCart className="h-6 w-6 text-blue-500 dark:text-blue-400" />
+                          <ShoppingCart className="size-6 text-blue-500 dark:text-blue-400" />
                         </div>
                         <span className="text-muted-foreground text-lg font-medium">
                           {t('create.noItems', 'No products in this order')}
@@ -539,7 +541,7 @@ export const ProductsCard: React.FC = () => {
                 </div>
                 <div className="text-muted-foreground mt-2 text-xs">
                   <div className="flex items-center gap-1">
-                    <InfoIcon className="h-3 w-3" />
+                    <InfoIcon className="size-3" />
                     <span>
                       {t('totalItems', {
                         value: currentOrder?.lines.reduce((acc, line) => acc + line.quantity, 0) || 0,

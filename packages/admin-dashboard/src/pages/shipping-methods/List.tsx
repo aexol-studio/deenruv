@@ -1,13 +1,10 @@
-import { Routes, apiClient, DetailList, PaginationInput, deepMerge } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient, DetailList, PaginationInput, deepMerge, ListLocations } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { ShippingMethodListSelector } from '@/graphql/shippingMethods';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(ShippingMethodListSelector, additionalSelector ?? {});
+const tableId = 'shippingMethods-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     shippingMethods: [
       {
@@ -19,7 +16,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['shippingMethods'];
@@ -49,7 +46,7 @@ export const ShippingMethodsListPage = () => {
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'ShippingMethod'}
       route={Routes['shippingMethods']}
-      tableId="shippingMethods-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateShippingMethod]}

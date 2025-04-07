@@ -1,96 +1,117 @@
-import { Logger as TypeOrmLoggerInterface, QueryRunner } from 'typeorm';
-import { LoggerOptions } from 'typeorm/logger/LoggerOptions';
+import { Logger as TypeOrmLoggerInterface, QueryRunner } from "typeorm";
+import { LoggerOptions } from "typeorm/logger/LoggerOptions";
 
-import { Logger } from './deenruv-logger';
+import { Logger } from "./deenruv-logger";
 
-const context = 'TypeORM';
+const context = "TypeORM";
 
-type typeOrmLogLevel = Exclude<LoggerOptions, 'all' | boolean>[number];
+type typeOrmLogLevel = Exclude<LoggerOptions, "all" | boolean>[number];
 
-const defaultLoggerOptions: LoggerOptions = ['error', 'warn', 'schema', 'migration'];
+const defaultLoggerOptions: LoggerOptions = [
+  "error",
+  "warn",
+  "schema",
+  "migration",
+];
 
 /**
  * A custom logger for TypeORM which delegates to the Deenruv Logger service.
  */
 export class TypeOrmLogger implements TypeOrmLoggerInterface {
-    constructor(private options: LoggerOptions = defaultLoggerOptions) {}
+  constructor(private options: LoggerOptions = defaultLoggerOptions) {}
 
-    log(level: 'log' | 'info' | 'warn', message: any, queryRunner?: QueryRunner): any {
-        switch (level) {
-            case 'info':
-                if (this.shouldDisplay('info')) {
-                    Logger.info(message, context);
-                }
-                break;
-            case 'log':
-                if (this.shouldDisplay('log')) {
-                    Logger.info(message, context);
-                }
-                break;
-            case 'warn':
-                if (this.shouldDisplay('warn')) {
-                    Logger.warn(message, context);
-                }
-                break;
+  log(
+    level: "log" | "info" | "warn",
+    message: any,
+    queryRunner?: QueryRunner,
+  ): any {
+    switch (level) {
+      case "info":
+        if (this.shouldDisplay("info")) {
+          Logger.info(message, context);
         }
-    }
-
-    logMigration(message: string, queryRunner?: QueryRunner): any {
-        Logger.info(message, context);
-    }
-
-    logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        if (this.shouldDisplay('query')) {
-            const sql = this.formatQueryWithParams(query, parameters);
-            Logger.debug(`Query: ${sql}`, context);
+        break;
+      case "log":
+        if (this.shouldDisplay("log")) {
+          Logger.info(message, context);
         }
-    }
-
-    logQueryError(error: string, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        if (this.shouldDisplay('error')) {
-            const sql = this.formatQueryWithParams(query, parameters);
-            Logger.error(`Query error: ${sql}`, context);
-            Logger.verbose(error, context);
+        break;
+      case "warn":
+        if (this.shouldDisplay("warn")) {
+          Logger.warn(message, context);
         }
+        break;
     }
+  }
 
-    logQuerySlow(time: number, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        const sql = this.formatQueryWithParams(query, parameters);
-        Logger.warn('Query is slow: ' + sql);
-        Logger.warn('Execution time: ' + time.toString());
-    }
+  logMigration(message: string, queryRunner?: QueryRunner): any {
+    Logger.info(message, context);
+  }
 
-    logSchemaBuild(message: string, queryRunner?: QueryRunner): any {
-        if (this.shouldDisplay('schema')) {
-            Logger.info(message, context);
-        }
+  logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner): any {
+    if (this.shouldDisplay("query")) {
+      const sql = this.formatQueryWithParams(query, parameters);
+      Logger.debug(`Query: ${sql}`, context);
     }
+  }
 
-    private shouldDisplay(logType: typeOrmLogLevel): boolean {
-        return (
-            this.options === 'all' ||
-            this.options === true ||
-            (Array.isArray(this.options) && this.options.includes(logType))
-        );
+  logQueryError(
+    error: string,
+    query: string,
+    parameters?: any[],
+    queryRunner?: QueryRunner,
+  ): any {
+    if (this.shouldDisplay("error")) {
+      const sql = this.formatQueryWithParams(query, parameters);
+      Logger.error(`Query error: ${sql}`, context);
+      Logger.verbose(error, context);
     }
+  }
 
-    private formatQueryWithParams(query: string, parameters?: any[]) {
-        return (
-            query +
-            (parameters?.length ? ' -- PARAMETERS: ' + this.stringifyParams(parameters).toString() : '')
-        );
-    }
+  logQuerySlow(
+    time: number,
+    query: string,
+    parameters?: any[],
+    queryRunner?: QueryRunner,
+  ): any {
+    const sql = this.formatQueryWithParams(query, parameters);
+    Logger.warn("Query is slow: " + sql);
+    Logger.warn("Execution time: " + time.toString());
+  }
 
-    /**
-     * Converts parameters to a string.
-     * Sometimes parameters can have circular objects and therefor we are handle this case too.
-     */
-    private stringifyParams(parameters: any[]) {
-        try {
-            return JSON.stringify(parameters);
-        } catch (error) {
-            // most probably circular objects in parameters
-            return parameters;
-        }
+  logSchemaBuild(message: string, queryRunner?: QueryRunner): any {
+    if (this.shouldDisplay("schema")) {
+      Logger.info(message, context);
     }
+  }
+
+  private shouldDisplay(logType: typeOrmLogLevel): boolean {
+    return (
+      this.options === "all" ||
+      this.options === true ||
+      (Array.isArray(this.options) && this.options.includes(logType))
+    );
+  }
+
+  private formatQueryWithParams(query: string, parameters?: any[]) {
+    return (
+      query +
+      (parameters?.length
+        ? " -- PARAMETERS: " + this.stringifyParams(parameters).toString()
+        : "")
+    );
+  }
+
+  /**
+   * Converts parameters to a string.
+   * Sometimes parameters can have circular objects and therefor we are handle this case too.
+   */
+  private stringifyParams(parameters: any[]) {
+    try {
+      return JSON.stringify(parameters);
+    } catch (error) {
+      // most probably circular objects in parameters
+      return parameters;
+    }
+  }
 }

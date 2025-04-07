@@ -1,4 +1,4 @@
-import { DeenruvEvent } from '../deenruv-event';
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -9,7 +9,7 @@ import { DeenruvEvent } from '../deenruv-event';
  * @since 1.7.0
  */
 export class InitializerEvent extends DeenruvEvent {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 }

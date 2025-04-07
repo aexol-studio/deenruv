@@ -7,9 +7,10 @@ import {
   Label,
   CustomCard,
   CardIcons,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { useEffect } from 'react';
-import { CF, EntityCustomFields, Stack } from '@/components';
 import { useTranslation } from 'react-i18next';
 
 const TAX_CATEGORY_FORM_KEYS = ['CreateTaxCategoryInput', 'name', 'isDefault', 'customFields'] as const;
@@ -38,8 +39,8 @@ export const TaxCategoryDetailView = () => {
     <div>
       <div className="flex w-full flex-col gap-4">
         <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-          <Stack className="items-start gap-4">
-            <Stack className="basis-full md:basis-1/2">
+          <div className="flex items-start gap-4">
+            <div className="flex basis-full md:basis-1/2">
               <Input
                 label={t('details.basic.name')}
                 value={state.name?.value}
@@ -49,12 +50,12 @@ export const TaxCategoryDetailView = () => {
                 }}
                 errors={state.name?.errors}
               />
-            </Stack>
-            <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/2">
+            </div>
+            <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/2">
               <Switch checked={state.isDefault?.value ?? undefined} onCheckedChange={(e) => setField('isDefault', e)} />
               <Label>{t('details.basic.isDefault')}</Label>
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </CustomCard>
         <DetailViewMarker position={'taxCategories-detail-view'} />
         <EntityCustomFields

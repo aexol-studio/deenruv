@@ -2,6 +2,7 @@ import {
   Button,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
   Input,
   Dialog,
   DialogContent,
@@ -9,14 +10,13 @@ import {
   DialogFooter,
   apiClient,
   useSettings,
+  useGFFLP,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useGFFLP } from '@/lists/useGflp';
-import { Stack, EntityCustomFields } from '@/components';
-import { DialogTrigger } from '@radix-ui/react-dialog';
 
 interface AddFacetValueDialogProps {
   facetId: string;
@@ -159,7 +159,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
         <DialogHeader>
           <DialogTitle>{editMode ? t('addValueModal.editTitle') : t('addValueModal.title')}</DialogTitle>
         </DialogHeader>
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <div>
             <Label>{t('addValueModal.nameLabel')}</Label>
             <Input className="mt-1" value={state.name?.value} onChange={(e) => setField('name', e.target.value)} />
@@ -182,7 +182,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
             }}
             additionalData={{}}
           />
-        </Stack>
+        </div>
         <DialogFooter className="mt-2">
           <Button onClick={editMode ? updateFacetValue : saveFacetValue}>
             {editMode ? t('addValueModal.editButton') : t('addValueModal.button')}

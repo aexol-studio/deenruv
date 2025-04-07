@@ -1,9 +1,9 @@
-import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
-import { Column, Index, ManyToOne } from 'typeorm';
+import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { Column, Index, ManyToOne } from "typeorm";
 
-import { Orderable } from '../../common/types/common-types';
-import { Asset } from '../asset/asset.entity';
-import { DeenruvEntity } from '../base/base.entity';
+import { Orderable } from "../../common/types/common-types";
+import { Asset } from "../asset/asset.entity";
+import { DeenruvEntity } from "../base/base.entity";
 
 /**
  * @description
@@ -15,18 +15,21 @@ import { DeenruvEntity } from '../base/base.entity';
  *
  * @docsCategory entities
  */
-export abstract class OrderableAsset extends DeenruvEntity implements Orderable {
-    protected constructor(input?: DeepPartial<OrderableAsset>) {
-        super(input);
-    }
+export abstract class OrderableAsset
+  extends DeenruvEntity
+  implements Orderable
+{
+  protected constructor(input?: DeepPartial<OrderableAsset>) {
+    super(input);
+  }
 
-    @Column()
-    assetId: ID;
+  @Column()
+  assetId: ID;
 
-    @Index()
-    @ManyToOne(type => Asset, { eager: true, onDelete: 'CASCADE' })
-    asset: Asset;
+  @Index()
+  @ManyToOne((type) => Asset, { eager: true, onDelete: "CASCADE" })
+  asset: Asset;
 
-    @Column()
-    position: number;
+  @Column()
+  position: number;
 }

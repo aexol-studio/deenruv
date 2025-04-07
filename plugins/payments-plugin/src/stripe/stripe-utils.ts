@@ -1,4 +1,4 @@
-import { CurrencyCode, Order } from '@deenruv/core';
+import { CurrencyCode, Order } from "@deenruv/core";
 
 /**
  * @description
@@ -12,9 +12,9 @@ import { CurrencyCode, Order } from '@deenruv/core';
  * stores money amounts multiplied by 100). See https://github.com/deenruv-ecommerce/deenruv/issues/1630
  */
 export function getAmountInStripeMinorUnits(order: Order): number {
-    return currencyHasFractionPart(order.currencyCode)
-        ? order.totalWithTax
-        : Math.round(order.totalWithTax / 100);
+  return currencyHasFractionPart(order.currencyCode)
+    ? order.totalWithTax
+    : Math.round(order.totalWithTax / 100);
 }
 
 /**
@@ -22,16 +22,21 @@ export function getAmountInStripeMinorUnits(order: Order): number {
  * Performs the reverse of `getAmountInStripeMinorUnits` - converting the Stripe minor units into the format
  * used by Deenruv.
  */
-export function getAmountFromStripeMinorUnits(order: Order, stripeAmount: number): number {
-    return currencyHasFractionPart(order.currencyCode) ? stripeAmount : stripeAmount * 100;
+export function getAmountFromStripeMinorUnits(
+  order: Order,
+  stripeAmount: number,
+): number {
+  return currencyHasFractionPart(order.currencyCode)
+    ? stripeAmount
+    : stripeAmount * 100;
 }
 
 function currencyHasFractionPart(currencyCode: CurrencyCode): boolean {
-    const parts = new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: currencyCode,
-        currencyDisplay: 'symbol',
-    }).formatToParts(123.45);
+  const parts = new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency: currencyCode,
+    currencyDisplay: "symbol",
+  }).formatToParts(123.45);
 
-    return !!parts.find(p => p.type === 'fraction');
+  return !!parts.find((p) => p.type === "fraction");
 }

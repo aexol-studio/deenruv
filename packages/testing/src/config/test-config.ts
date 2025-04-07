@@ -1,18 +1,21 @@
-import { ADMIN_API_PATH, SHOP_API_PATH } from '@deenruv/common/lib/shared-constants';
 import {
-    DefaultAssetNamingStrategy,
-    defaultConfig,
-    DefaultLogger,
-    mergeConfig,
-    NoopLogger,
-    DeenruvConfig,
-} from '@deenruv/core';
+  ADMIN_API_PATH,
+  SHOP_API_PATH,
+} from "@deenruv/common/lib/shared-constants";
+import {
+  DefaultAssetNamingStrategy,
+  defaultConfig,
+  DefaultLogger,
+  mergeConfig,
+  NoopLogger,
+  DeenruvConfig,
+} from "@deenruv/core";
 
-import { TestingAssetPreviewStrategy } from './testing-asset-preview-strategy';
-import { TestingAssetStorageStrategy } from './testing-asset-storage-strategy';
-import { TestingEntityIdStrategy } from './testing-entity-id-strategy';
+import { TestingAssetPreviewStrategy } from "./testing-asset-preview-strategy";
+import { TestingAssetStorageStrategy } from "./testing-asset-storage-strategy";
+import { TestingEntityIdStrategy } from "./testing-entity-id-strategy";
 
-export const E2E_DEFAULT_CHANNEL_TOKEN = 'e2e-default-channel';
+export const E2E_DEFAULT_CHANNEL_TOKEN = "e2e-default-channel";
 
 const logger = process.env.LOG ? new DefaultLogger() : new NoopLogger();
 
@@ -40,38 +43,38 @@ const logger = process.env.LOG ? new DefaultLogger() : new NoopLogger();
  * @docsCategory testing
  */
 export const testConfig: Required<DeenruvConfig> = mergeConfig(defaultConfig, {
-    apiOptions: {
-        port: 3050,
-        adminApiPath: ADMIN_API_PATH,
-        shopApiPath: SHOP_API_PATH,
-        cors: true,
+  apiOptions: {
+    port: 3050,
+    adminApiPath: ADMIN_API_PATH,
+    shopApiPath: SHOP_API_PATH,
+    cors: true,
+  },
+  defaultChannelToken: E2E_DEFAULT_CHANNEL_TOKEN,
+  authOptions: {
+    tokenMethod: "bearer",
+    requireVerification: true,
+    cookieOptions: {
+      secret: "some-secret",
     },
-    defaultChannelToken: E2E_DEFAULT_CHANNEL_TOKEN,
-    authOptions: {
-        tokenMethod: 'bearer',
-        requireVerification: true,
-        cookieOptions: {
-            secret: 'some-secret',
-        },
-    },
-    dbConnectionOptions: {
-        type: 'sqljs',
-        database: new Uint8Array([]),
-        location: '',
-        autoSave: false,
-        logging: false,
-    },
-    promotionOptions: {},
-    customFields: {},
-    entityOptions: { entityIdStrategy: new TestingEntityIdStrategy() },
-    paymentOptions: {
-        paymentMethodHandlers: [],
-    },
-    logger,
-    importExportOptions: {},
-    assetOptions: {
-        assetNamingStrategy: new DefaultAssetNamingStrategy(),
-        assetStorageStrategy: new TestingAssetStorageStrategy(),
-        assetPreviewStrategy: new TestingAssetPreviewStrategy(),
-    },
+  },
+  dbConnectionOptions: {
+    type: "sqljs",
+    database: new Uint8Array([]),
+    location: "",
+    autoSave: false,
+    logging: false,
+  },
+  promotionOptions: {},
+  customFields: {},
+  entityOptions: { entityIdStrategy: new TestingEntityIdStrategy() },
+  paymentOptions: {
+    paymentMethodHandlers: [],
+  },
+  logger,
+  importExportOptions: {},
+  assetOptions: {
+    assetNamingStrategy: new DefaultAssetNamingStrategy(),
+    assetStorageStrategy: new TestingAssetStorageStrategy(),
+    assetPreviewStrategy: new TestingAssetPreviewStrategy(),
+  },
 });

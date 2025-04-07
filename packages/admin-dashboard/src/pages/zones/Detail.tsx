@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
+  useValidators,
   apiClient,
   useMutation,
   DetailView,
@@ -11,7 +12,6 @@ import {
   GFFLPFormField,
 } from '@deenruv/react-ui-devkit';
 import { ZoneDetailView } from '@/pages/zones/_components/ZoneDetailView.js';
-import { useValidators } from '@/hooks/useValidators.js';
 import { ModelTypes } from '@deenruv/admin-types';
 
 const CreateZoneMutation = getMutation('createZone');

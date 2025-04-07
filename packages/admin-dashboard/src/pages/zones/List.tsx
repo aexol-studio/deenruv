@@ -1,15 +1,12 @@
-import { DetailList, PaginationInput, TableLabel, apiClient, deepMerge } from '@deenruv/react-ui-devkit';
+import { DetailList, ListLocations, PaginationInput, TableLabel, apiClient, deepMerge } from '@deenruv/react-ui-devkit';
 import { Routes } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { ZoneListSelector } from '@/graphql/zones';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(ZoneListSelector, additionalSelector ?? {});
+const tableId = 'zones-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     ['zones']: [
       {
@@ -21,7 +18,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['zones'];
@@ -64,7 +61,7 @@ export const ZonesListPage = () => {
       ]}
       entityName={'Zone'}
       route={Routes['zones']}
-      tableId="zones-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateZone]}

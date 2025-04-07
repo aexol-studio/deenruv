@@ -1,9 +1,15 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { DetailView, createDeenruvForm, getMutation, useMutation, GFFLPFormField } from '@deenruv/react-ui-devkit';
+import {
+  useValidators,
+  DetailView,
+  createDeenruvForm,
+  getMutation,
+  useMutation,
+  GFFLPFormField,
+} from '@deenruv/react-ui-devkit';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
-import { useValidators } from '@/hooks/useValidators.js';
 import { RoleDetailView } from '@/pages/roles/_components/RoleDetailView.js';
 
 // const DEFAULT_VALUES = {

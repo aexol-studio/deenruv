@@ -1,12 +1,17 @@
-import { MiddlewareConsumer, NestModule, OnApplicationBootstrap, OnModuleDestroy } from '@nestjs/common';
-import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
-import express from 'express';
-import path from 'path';
+import {
+  MiddlewareConsumer,
+  NestModule,
+  OnApplicationBootstrap,
+  OnModuleDestroy,
+} from "@nestjs/common";
+import { PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
+import express from "express";
+import path from "path";
 
-import { GoogleAuthenticationStrategy } from './google-authentication-strategy';
+import { GoogleAuthenticationStrategy } from "./google-authentication-strategy";
 
 export type GoogleAuthPluginOptions = {
-    clientId: string;
+  clientId: string;
 };
 
 /**
@@ -22,24 +27,26 @@ export type GoogleAuthPluginOptions = {
  * hosts file.
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    configuration: config => {
-        config.authOptions.shopAuthenticationStrategy = [
-            ...config.authOptions.shopAuthenticationStrategy,
-            new GoogleAuthenticationStrategy(GoogleAuthPlugin.options.clientId),
-        ];
-        return config;
-    },
+  imports: [PluginCommonModule],
+  configuration: (config) => {
+    config.authOptions.shopAuthenticationStrategy = [
+      ...config.authOptions.shopAuthenticationStrategy,
+      new GoogleAuthenticationStrategy(GoogleAuthPlugin.options.clientId),
+    ];
+    return config;
+  },
 })
 export class GoogleAuthPlugin implements NestModule {
-    static options: GoogleAuthPluginOptions;
+  static options: GoogleAuthPluginOptions;
 
-    static init(options: GoogleAuthPluginOptions) {
-        this.options = options;
-        return GoogleAuthPlugin;
-    }
+  static init(options: GoogleAuthPluginOptions) {
+    this.options = options;
+    return GoogleAuthPlugin;
+  }
 
-    configure(consumer: MiddlewareConsumer) {
-        consumer.apply(express.static(path.join(__dirname, 'public'))).forRoutes('google-login');
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(express.static(path.join(__dirname, "public")))
+      .forRoutes("google-login");
+  }
 }

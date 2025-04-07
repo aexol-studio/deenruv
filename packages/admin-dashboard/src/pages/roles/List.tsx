@@ -1,4 +1,3 @@
-import { Stack } from '@/components/Stack';
 import { Row } from '@tanstack/react-table';
 import { useCallback } from 'react';
 import {
@@ -8,22 +7,21 @@ import {
   PaginationInput,
   DEFAULT_CHANNEL_CODE,
   ListBadge,
+  ListLocations,
 } from '@deenruv/react-ui-devkit';
 import { Routes } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { RoleListSelector, RoleListType } from '@/graphql/roles';
+import { RoleListType } from '@/graphql/roles';
+
+const tableId = 'roles-list-view';
+const { selector } = ListLocations[tableId];
 
 const DEFAULT_ROLE_CODES = ['__customer_role__', '__super_admin_role__'];
 
 const isDefaultRole = (row: Row<RoleListType>) => DEFAULT_ROLE_CODES.includes(row.original.code);
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(RoleListSelector, additionalSelector ?? {});
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     roles: [
       {
@@ -35,7 +33,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response.roles;
@@ -87,7 +85,7 @@ export const RolesListPage = () => {
           enableColumnFilter: false,
           header: () => t('table.permissions'),
           cell: ({ row }) => (
-            <Stack className="gap-1">
+            <div className="flex gap-1">
               {isDefaultRole(row) ? (
                 <p className="flex w-full items-center justify-center py-2 text-[12px] font-medium text-gray-500">
                   {t('table.defaultRoleInfo')}
@@ -95,7 +93,7 @@ export const RolesListPage = () => {
               ) : (
                 renderElements(row.original.permissions)
               )}
-            </Stack>
+            </div>
           ),
         },
         {
@@ -104,7 +102,7 @@ export const RolesListPage = () => {
           enableColumnFilter: false,
           header: () => t('table.channels'),
           cell: ({ row }) => (
-            <Stack className="gap-1">
+            <div className="flex gap-1">
               {isDefaultRole(row)
                 ? ''
                 : row.original.channels.map((ch) => (
@@ -112,7 +110,7 @@ export const RolesListPage = () => {
                       {ch.code === DEFAULT_CHANNEL_CODE ? t('defaultChannel') : ch.code}
                     </ListBadge>
                   ))}
-            </Stack>
+            </div>
           ),
         },
       ]}

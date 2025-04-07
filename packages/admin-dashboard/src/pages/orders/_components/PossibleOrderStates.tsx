@@ -90,7 +90,7 @@ export const PossibleOrderStates: React.FC<{
         <div className="bg-muted/50 mb-4 rounded-md border p-4">
           <h3 className="mb-2 text-sm font-medium">{t('orderStates.currentState')}</h3>
           <div className="mb-3 flex items-center gap-2">
-            <CircleDot className="text-primary h-5 w-5" />
+            <CircleDot className="text-primary size-5" />
             <span className="font-semibold">{orderState}</span>
           </div>
 
@@ -101,7 +101,7 @@ export const PossibleOrderStates: React.FC<{
                 {possibleNextStates.map((nextState) => (
                   <Badge key={nextState} variant="outline" className="flex items-center gap-1">
                     {tCommon('search.inOperator.' + nextState)}
-                    <ArrowRight className="ml-1 h-3 w-3" />
+                    <ArrowRight className="ml-1 size-3" />
                   </Badge>
                 ))}
               </div>
@@ -125,7 +125,7 @@ export const PossibleOrderStates: React.FC<{
                     status={isPast ? 'done' : isCurrent ? 'current' : 'default'}
                     className={isPossibleNext ? 'ring-primary ring-1 ring-offset-1' : ''}
                   >
-                    {isPast && <Check className="h-4 w-4" />}
+                    {isPast && <Check className="size-4" />}
                   </TimelineDot>
                   <TimelineContent>
                     <TimelineHeading className={isCurrent ? 'text-primary font-bold' : ''}>

@@ -1,7 +1,15 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Input, useSettings, useDetailView, DetailViewMarker, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields, Stack } from '@/components';
+import {
+  CF,
+  EntityCustomFields,
+  Input,
+  useSettings,
+  useDetailView,
+  DetailViewMarker,
+  CustomCard,
+  CardIcons,
+} from '@deenruv/react-ui-devkit';
 
 const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name', 'customFields'] as const;
 
@@ -27,7 +35,7 @@ export const CustomerGroupsDetailView = () => {
   return (
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('basic.header')} icon={<CardIcons.basic />}>
             <Input
               className="w-1/2"
@@ -50,7 +58,7 @@ export const CustomerGroupsDetailView = () => {
               entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
             }
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

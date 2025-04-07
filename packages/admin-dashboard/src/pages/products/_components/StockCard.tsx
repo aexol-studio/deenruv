@@ -24,7 +24,6 @@ import { GlobalFlag } from '@deenruv/admin-types';
 import { MapPin } from 'lucide-react';
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@/components';
 
 interface StockLevelsValueType {
   stockLocationId: string;
@@ -113,8 +112,8 @@ export const StockCard: React.FC<StockCardProps> = ({
 
   return (
     <CustomCard title={t('details.stockLevels')} color="blue" icon={<CardIcons.stock />}>
-      <Stack column className="gap-y-4">
-        <Stack className="items-start justify-start gap-x-4">
+      <div className="flex flex-col gap-y-4">
+        <div className="flex items-start justify-start gap-x-4">
           <div className="w-1/2">
             <Input
               type="number"
@@ -124,12 +123,12 @@ export const StockCard: React.FC<StockCardProps> = ({
               onChange={onThresholdChange}
             />
           </div>
-          <Stack column className="gap-4">
+          <div className="flex flex-col gap-4">
             <Label>{t('details.useGlobal')}</Label>
             <Switch checked={useGlobalOutOfStockThresholdValue ?? undefined} onCheckedChange={onUseGlobalChange} />
-          </Stack>
-        </Stack>
-        <Stack column className="items-start justify-start gap-2">
+          </div>
+        </div>
+        <div className="flex flex-col items-start justify-start gap-2">
           <Label>{t('details.trackInventory')}</Label>
           <Select
             value={trackInventoryValue ?? undefined}
@@ -144,9 +143,9 @@ export const StockCard: React.FC<StockCardProps> = ({
               <SelectItem value={GlobalFlag.FALSE}>{t('details.notTrack')}</SelectItem>
             </SelectContent>
           </Select>
-        </Stack>
+        </div>
         <Separator orientation="horizontal" />
-        <Stack className="items-start justify-start gap-4">
+        <div className="flex items-start justify-start gap-4">
           <div className="w-1/2">
             <Input
               type="number"
@@ -156,13 +155,13 @@ export const StockCard: React.FC<StockCardProps> = ({
               // onChange={onStockOnHandChange}
             />
           </div>
-          <Stack column className="w-1/2 gap-3">
+          <div className="flex w-1/2 flex-col gap-3">
             <Label>{t('details.defaultStock2')}</Label>
             {stockAllocated}
-          </Stack>
-        </Stack>
+          </div>
+        </div>
         {stockLevelsValue?.map((sL) => (
-          <Stack key={'inputs' + sL.stockLocationId} className="items-start justify-start gap-4">
+          <div key={'inputs' + sL.stockLocationId} className="flex items-start justify-start gap-4">
             <div className="w-1/2">
               <Input
                 type="number"
@@ -173,13 +172,13 @@ export const StockCard: React.FC<StockCardProps> = ({
                 }
               />
             </div>
-            <Stack column className="w-1/2 gap-3">
+            <div className="flex w-1/2 flex-col gap-3">
               <Label>Allocated</Label>
               {getLocationAllocatedValue(sL.stockLocationId)}
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         ))}
-        <Stack>
+        <div className="flex">
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild disabled={!notUsedStockLocations.length}>
               <Button size={'sm'} className="mt-4">
@@ -200,8 +199,8 @@ export const StockCard: React.FC<StockCardProps> = ({
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </CustomCard>
   );
 };

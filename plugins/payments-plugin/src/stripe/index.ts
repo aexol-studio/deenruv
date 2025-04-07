@@ -1,1 +1,1 @@
-export { StripePlugin } from './stripe.plugin';
+export { StripePlugin } from "./stripe.plugin";

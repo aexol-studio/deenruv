@@ -1,8 +1,8 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Order } from '../../entity/order/order.entity';
-import { Payment } from '../../entity/payment/payment.entity';
-import { PaymentState } from '../../service/helpers/payment-state-machine/payment-state';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Order } from "../../entity/order/order.entity";
+import { Payment } from "../../entity/payment/payment.entity";
+import { PaymentState } from "../../service/helpers/payment-state-machine/payment-state";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -13,13 +13,13 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class PaymentStateTransitionEvent extends DeenruvEvent {
-    constructor(
-        public fromState: PaymentState,
-        public toState: PaymentState,
-        public ctx: RequestContext,
-        public payment: Payment,
-        public order: Order,
-    ) {
-        super();
-    }
+  constructor(
+    public fromState: PaymentState,
+    public toState: PaymentState,
+    public ctx: RequestContext,
+    public payment: Payment,
+    public order: Order,
+  ) {
+    super();
+  }
 }

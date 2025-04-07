@@ -1,8 +1,8 @@
-import { ColumnOptions } from 'typeorm';
+import { ColumnOptions } from "typeorm";
 
-import { Logger } from '../logger/deenruv-logger';
+import { Logger } from "../logger/deenruv-logger";
 
-import { MoneyStrategy } from './money-strategy';
+import { MoneyStrategy } from "./money-strategy";
 
 /**
  * @description
@@ -13,12 +13,12 @@ import { MoneyStrategy } from './money-strategy';
  * @since 2.0.0
  */
 export class DefaultMoneyStrategy implements MoneyStrategy {
-    readonly moneyColumnOptions: ColumnOptions = {
-        type: 'int',
-    };
-    readonly precision: number = 2;
+  readonly moneyColumnOptions: ColumnOptions = {
+    type: "int",
+  };
+  readonly precision: number = 2;
 
-    round(value: number, quantity = 1): number {
-        return Math.round(value * quantity);
-    }
+  round(value: number, quantity = 1): number {
+    return Math.round(value * quantity);
+  }
 }

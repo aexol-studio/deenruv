@@ -1,16 +1,16 @@
-import { ConfigArg } from '@deenruv/common/lib/generated-types';
-import { Json } from '@deenruv/common/lib/shared-types';
-import { createHash } from 'crypto';
+import { ConfigArg } from "@deenruv/common/lib/generated-types";
+import { Json } from "@deenruv/common/lib/shared-types";
+import { createHash } from "crypto";
 
-import { RequestContext } from '../../api/common/request-context';
+import { RequestContext } from "../../api/common/request-context";
 import {
-    ConfigArgs,
-    ConfigArgValues,
-    ConfigurableOperationDef,
-    ConfigurableOperationDefOptions,
-} from '../../common/configurable-operation';
-import { TtlCache } from '../../common/ttl-cache';
-import { ShippingMethod, Order } from '../../entity';
+  ConfigArgs,
+  ConfigArgValues,
+  ConfigurableOperationDef,
+  ConfigurableOperationDefOptions,
+} from "../../common/configurable-operation";
+import { TtlCache } from "../../common/ttl-cache";
+import { ShippingMethod, Order } from "../../entity";
 
 /**
  * @description
@@ -20,9 +20,9 @@ import { ShippingMethod, Order } from '../../entity';
  * @docsCategory shipping
  */
 export interface ShippingEligibilityCheckerConfig<T extends ConfigArgs>
-    extends ConfigurableOperationDefOptions<T> {
-    check: CheckShippingEligibilityCheckerFn<T>;
-    shouldRunCheck?: ShouldRunCheckFn<T>;
+  extends ConfigurableOperationDefOptions<T> {
+  check: CheckShippingEligibilityCheckerFn<T>;
+  shouldRunCheck?: ShouldRunCheckFn<T>;
 }
 /**
  * @description
@@ -47,65 +47,70 @@ export interface ShippingEligibilityCheckerConfig<T extends ConfigArgs>
  * @docsPage ShippingEligibilityChecker
  */
 export class ShippingEligibilityChecker<
-    T extends ConfigArgs = ConfigArgs,
+  T extends ConfigArgs = ConfigArgs,
 > extends ConfigurableOperationDef<T> {
-    private readonly checkFn: CheckShippingEligibilityCheckerFn<T>;
-    private readonly shouldRunCheckFn?: ShouldRunCheckFn<T>;
-    private shouldRunCheckCache = new TtlCache({ cacheSize: 5000, ttl: 1000 * 60 * 60 * 5 });
+  private readonly checkFn: CheckShippingEligibilityCheckerFn<T>;
+  private readonly shouldRunCheckFn?: ShouldRunCheckFn<T>;
+  private shouldRunCheckCache = new TtlCache({
+    cacheSize: 5000,
+    ttl: 1000 * 60 * 60 * 5,
+  });
 
-    constructor(config: ShippingEligibilityCheckerConfig<T>) {
-        super(config);
-        this.checkFn = config.check;
-        this.shouldRunCheckFn = config.shouldRunCheck;
-    }
+  constructor(config: ShippingEligibilityCheckerConfig<T>) {
+    super(config);
+    this.checkFn = config.check;
+    this.shouldRunCheckFn = config.shouldRunCheck;
+  }
 
-    /**
-     * @description
-     * Check the given Order to determine whether it is eligible.
-     *
-     * @internal
-     */
-    async check(
-        ctx: RequestContext,
-        order: Order,
-        args: ConfigArg[],
-        method: ShippingMethod,
-    ): Promise<boolean> {
-        const shouldRunCheck = await this.shouldRunCheck(ctx, order, args, method);
-        return shouldRunCheck ? this.checkFn(ctx, order, this.argsArrayToHash(args), method) : true;
-    }
+  /**
+   * @description
+   * Check the given Order to determine whether it is eligible.
+   *
+   * @internal
+   */
+  async check(
+    ctx: RequestContext,
+    order: Order,
+    args: ConfigArg[],
+    method: ShippingMethod,
+  ): Promise<boolean> {
+    const shouldRunCheck = await this.shouldRunCheck(ctx, order, args, method);
+    return shouldRunCheck
+      ? this.checkFn(ctx, order, this.argsArrayToHash(args), method)
+      : true;
+  }
 
-    /**
-     * Determines whether the check function needs to be run, based on the presence and
-     * result of any defined `shouldRunCheckFn`.
-     */
-    private async shouldRunCheck(
-        ctx: RequestContext,
-        order: Order,
-        args: ConfigArg[],
-        method: ShippingMethod,
-    ): Promise<boolean> {
-        if (typeof this.shouldRunCheckFn === 'function') {
-            const cacheKey = ctx.session?.id;
-            if (cacheKey) {
-                const checkResult = await this.shouldRunCheckFn(
-                    ctx,
-                    order,
-                    this.argsArrayToHash(args),
-                    method,
-                );
-                const checkResultHash = createHash('sha1')
-                    .update(JSON.stringify(checkResult))
-                    .digest('base64');
-                const lastResultHash = this.shouldRunCheckCache.get(cacheKey);
-                this.shouldRunCheckCache.set(cacheKey, checkResultHash);
-                if (checkResultHash === lastResultHash) {
-                    return false;
-                }
-            }
+  /**
+   * Determines whether the check function needs to be run, based on the presence and
+   * result of any defined `shouldRunCheckFn`.
+   */
+  private async shouldRunCheck(
+    ctx: RequestContext,
+    order: Order,
+    args: ConfigArg[],
+    method: ShippingMethod,
+  ): Promise<boolean> {
+    if (typeof this.shouldRunCheckFn === "function") {
+      const cacheKey = ctx.session?.id;
+      if (cacheKey) {
+        const checkResult = await this.shouldRunCheckFn(
+          ctx,
+          order,
+          this.argsArrayToHash(args),
+          method,
+        );
+        const checkResultHash = createHash("sha1")
+          .update(JSON.stringify(checkResult))
+          .digest("base64");
+        const lastResultHash = this.shouldRunCheckCache.get(cacheKey);
+        this.shouldRunCheckCache.set(cacheKey, checkResultHash);
+        if (checkResultHash === lastResultHash) {
+          return false;
         }
-        return true;
+      }
     }
+    return true;
+  }
 }
 
 /**
@@ -121,10 +126,10 @@ export class ShippingEligibilityChecker<
  * @docsCategory shipping
  */
 export type CheckShippingEligibilityCheckerFn<T extends ConfigArgs> = (
-    ctx: RequestContext,
-    order: Order,
-    args: ConfigArgValues<T>,
-    method: ShippingMethod,
+  ctx: RequestContext,
+  order: Order,
+  args: ConfigArgValues<T>,
+  method: ShippingMethod,
 ) => boolean | Promise<boolean>;
 
 /**
@@ -156,8 +161,8 @@ export type CheckShippingEligibilityCheckerFn<T extends ConfigArgs> = (
  * @docsCategory shipping
  */
 export type ShouldRunCheckFn<T extends ConfigArgs> = (
-    ctx: RequestContext,
-    order: Order,
-    args: ConfigArgValues<T>,
-    method: ShippingMethod,
+  ctx: RequestContext,
+  order: Order,
+  args: ConfigArgValues<T>,
+  method: ShippingMethod,
 ) => Json | Promise<Json>;

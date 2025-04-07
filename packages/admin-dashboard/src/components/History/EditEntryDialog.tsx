@@ -66,12 +66,12 @@ export const EditEntryDialog: React.FC<EditEntryDialogProps> = ({
       <AlertDialogContent className="min-w-min">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
-            <Pencil className="h-5 w-5 text-blue-500" />
+            <Pencil className="size-5 text-blue-500" />
             {t('history.editNoteHeader', 'Edit Note')}
           </AlertDialogTitle>
         </AlertDialogHeader>
 
-        <div className="mb-4 mt-4">
+        <div className="my-4">
           <Textarea
             onChange={(e) =>
               setSelectedNote((p) => (p ? { ...p, data: { ...p?.data, note: e.currentTarget.value } } : undefined))
@@ -112,12 +112,12 @@ export const EditEntryDialog: React.FC<EditEntryDialogProps> = ({
           >
             {selectedNote?.isPublic ? (
               <>
-                <MessageCircle className="h-3 w-3" />
+                <MessageCircle className="size-3" />
                 {t('history.toAdminsAndCustomer', 'Visible to customer')}
               </>
             ) : (
               <>
-                <ShieldCheck className="h-3 w-3" />
+                <ShieldCheck className="size-3" />
                 {t('history.toAdmins', 'Admin only')}
               </>
             )}
@@ -136,12 +136,12 @@ export const EditEntryDialog: React.FC<EditEntryDialogProps> = ({
           >
             {isUpdating ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                <span className="size-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
                 {t('history.updating', 'Updating...')}
               </>
             ) : (
               <>
-                <Save className="h-4 w-4" />
+                <Save className="size-4" />
                 {t('history.save', 'Save Changes')}
               </>
             )}

@@ -1,6 +1,6 @@
-import { RequestContext } from '../../api/common/request-context';
-import { User } from '../../entity/user/user.entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { User } from "../../entity/user/user.entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -12,7 +12,11 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class AttemptedLoginEvent extends DeenruvEvent {
-    constructor(public ctx: RequestContext, public strategy: string, public identifier?: string) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public strategy: string,
+    public identifier?: string,
+  ) {
+    super();
+  }
 }

@@ -1,7 +1,6 @@
 import { ArrowDownSquareIcon, ArrowUpSquareIcon, Folder, FolderOpen, XSquareIcon } from 'lucide-react';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { CollectionProductVariantsDrawer } from './_components/CollectionProductVariantsDrawer.js';
-import { CollectionListSelector } from '@/graphql/collections';
 import {
   DrawerTrigger,
   Routes,
@@ -11,12 +10,15 @@ import {
   PaginationInput,
   deepMerge,
   EntityChannelManagementRowAction,
-  DeenruvUITable,
+  ListLocations,
+  EntityChannelManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 import { ArrowRight } from 'lucide-react';
 
+const tableId = 'collections-list-view';
+const { selector } = ListLocations[tableId];
+
 const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
-  const selector = deepMerge(CollectionListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     ['collections']: [
       {
@@ -29,7 +31,7 @@ const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: Pagina
           topLevelOnly: true,
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['collections'];
@@ -96,6 +98,7 @@ export const CollectionsListPage = () => {
         },
       ]}
       additionalBulkActions={[
+        ...EntityChannelManagementBulkAction<'collections-list-view'>(),
         {
           icon: <FolderOpen size={16} />,
           label: 'Przenieś zaznaczone kolekcje',
@@ -110,22 +113,6 @@ export const CollectionsListPage = () => {
               console.log(e);
             }
             return { success: '' };
-          },
-        },
-        {
-          icon: <Folder size={16} />,
-          label: 'Przypisz kolekcje do kanału',
-          onClick: async ({ table, data, refetch }) => {
-            const selectedRows = table.getSelectedRowModel().flatRows.map((row) => row);
-            if (selectedRows.length === 0) {
-              return { error: 'Nie zaznaczone żadne kolekcji' };
-            }
-            try {
-              // const result = await createDialogFromComponent(MoveEntityToChannels, selectedRows);
-            } catch (e) {
-              console.log(e);
-            }
-            return { error: 'Nie zaznaczone żadne kolekcji' };
           },
         },
       ]}
@@ -194,7 +181,7 @@ export const CollectionsListPage = () => {
       ]}
       entityName={'Collection'}
       route={Routes['collections']}
-      tableId="collections-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={async () => {
         return true;

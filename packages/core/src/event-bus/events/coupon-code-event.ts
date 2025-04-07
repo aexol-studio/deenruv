@@ -1,7 +1,7 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -13,12 +13,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @since 1.4
  */
 export class CouponCodeEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public couponCode: string,
-        public orderId: ID,
-        public type: 'assigned' | 'removed',
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public couponCode: string,
+    public orderId: ID,
+    public type: "assigned" | "removed",
+  ) {
+    super();
+  }
 }

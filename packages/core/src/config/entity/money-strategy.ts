@@ -1,6 +1,6 @@
-import { ColumnOptions } from 'typeorm';
+import { ColumnOptions } from "typeorm";
 
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
 
 /**
  * @description
@@ -61,42 +61,42 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  * @since 2.0.0
  */
 export interface MoneyStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Defines the TypeORM column used to store monetary values.
-     */
-    readonly moneyColumnOptions: ColumnOptions;
-    /**
-     * @description
-     * Defines the precision (i.e. number of decimal places) represented by the monetary values.
-     * For example, consider a product variant with a price value of `12345`.
-     *
-     * - If the precision is `2`, then the price is `123.45`.
-     * - If the precision is `3`, then the price is `12.345`.
-     *
-     * Changing the precision has **no effect** on the stored value. It is merely a hint to the
-     * UI as to how many decimal places to display.
-     *
-     * @default 2
-     * @since 2.2.0
-     */
-    readonly precision?: number;
+  /**
+   * @description
+   * Defines the TypeORM column used to store monetary values.
+   */
+  readonly moneyColumnOptions: ColumnOptions;
+  /**
+   * @description
+   * Defines the precision (i.e. number of decimal places) represented by the monetary values.
+   * For example, consider a product variant with a price value of `12345`.
+   *
+   * - If the precision is `2`, then the price is `123.45`.
+   * - If the precision is `3`, then the price is `12.345`.
+   *
+   * Changing the precision has **no effect** on the stored value. It is merely a hint to the
+   * UI as to how many decimal places to display.
+   *
+   * @default 2
+   * @since 2.2.0
+   */
+  readonly precision?: number;
 
-    /**
-     * @description
-     * Defines the logic used to round monetary values. For instance, the default behavior
-     * in the {@link DefaultMoneyStrategy} is to round the value, then multiply.
-     *
-     * ```ts
-     * return Math.round(value) * quantity;
-     * ```
-     *
-     * However, it may be desirable to instead round only _after_ the unit amount has been
-     * multiplied. In this case you can define a custom strategy with logic like this:
-     *
-     * ```ts
-     * return Math.round(value * quantity);
-     * ```
-     */
-    round(value: number, quantity?: number): number;
+  /**
+   * @description
+   * Defines the logic used to round monetary values. For instance, the default behavior
+   * in the {@link DefaultMoneyStrategy} is to round the value, then multiply.
+   *
+   * ```ts
+   * return Math.round(value) * quantity;
+   * ```
+   *
+   * However, it may be desirable to instead round only _after_ the unit amount has been
+   * multiplied. In this case you can define a custom strategy with logic like this:
+   *
+   * ```ts
+   * return Math.round(value * quantity);
+   * ```
+   */
+  round(value: number, quantity?: number): number;
 }

@@ -32,7 +32,7 @@ export const EditNoteButton: React.FC<Props> = ({ note, updateConfirmed }) => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="ghost" className="flex w-full justify-start gap-2">
-          <Pencil className="h-4 w-4" /> {t('history.edit')}
+          <Pencil className="size-4" /> {t('history.edit')}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="min-w-min">

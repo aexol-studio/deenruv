@@ -1,18 +1,24 @@
-import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { EntityHydrator, ShippingEligibilityChecker } from '@deenruv/core';
+import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { EntityHydrator, ShippingEligibilityChecker } from "@deenruv/core";
 
-export const countryCodeShippingEligibilityChecker = new ShippingEligibilityChecker({
-    code: 'country-code-shipping-eligibility-checker',
-    description: [{ languageCode: LanguageCode.en, value: 'Country Shipping Eligibility Checker' }],
+export const countryCodeShippingEligibilityChecker =
+  new ShippingEligibilityChecker({
+    code: "country-code-shipping-eligibility-checker",
+    description: [
+      {
+        languageCode: LanguageCode.en,
+        value: "Country Shipping Eligibility Checker",
+      },
+    ],
     args: {
-        countryCode: {
-            type: 'string',
-        },
+      countryCode: {
+        type: "string",
+      },
     },
     check: (ctx, order, args) => {
-        return order.shippingAddress?.countryCode === args.countryCode;
+      return order.shippingAddress?.countryCode === args.countryCode;
     },
-});
+  });
 
 let entityHydrator: EntityHydrator;
 
@@ -26,15 +32,23 @@ let entityHydrator: EntityHydrator;
  *
  * See https://github.com/deenruv-ecommerce/deenruv/issues/2548
  */
-export const hydratingShippingEligibilityChecker = new ShippingEligibilityChecker({
-    code: 'hydrating-shipping-eligibility-checker',
-    description: [{ languageCode: LanguageCode.en, value: 'Hydrating Shipping Eligibility Checker' }],
+export const hydratingShippingEligibilityChecker =
+  new ShippingEligibilityChecker({
+    code: "hydrating-shipping-eligibility-checker",
+    description: [
+      {
+        languageCode: LanguageCode.en,
+        value: "Hydrating Shipping Eligibility Checker",
+      },
+    ],
     args: {},
     init(injector) {
-        entityHydrator = injector.get(EntityHydrator);
+      entityHydrator = injector.get(EntityHydrator);
     },
     check: async (ctx, order) => {
-        await entityHydrator.hydrate(ctx, order, { relations: ['lines.sellerChannel'] });
-        return true;
+      await entityHydrator.hydrate(ctx, order, {
+        relations: ["lines.sellerChannel"],
+      });
+      return true;
     },
-});
+  });

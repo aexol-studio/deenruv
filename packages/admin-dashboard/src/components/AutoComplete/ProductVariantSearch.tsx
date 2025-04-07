@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import {
   Button,
+  ImageWithPreview,
   Input,
   ScrollArea,
   Table,
@@ -27,7 +28,6 @@ import {
 import { priceFormatter } from '@/utils';
 import { CircleX, Loader2, Search, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
-import { ImageWithPreview } from '../ImageWithPreview';
 
 interface Props {
   onSelectItem: (selected: ProductVariantType) => void;
@@ -89,7 +89,7 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
     <div className="relative w-full">
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <Search className="text-muted-foreground h-4 w-4" />
+          <Search className="text-muted-foreground size-4" />
         </div>
         <Input
           ref={ref}
@@ -102,7 +102,7 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
         />
         {isLoading && (
           <div className="absolute inset-y-0 right-10 flex items-center pr-3">
-            <Loader2 className="text-muted-foreground h-4 w-4 animate-spin" />
+            <Loader2 className="text-muted-foreground size-4 animate-spin" />
           </div>
         )}
         {value !== '' && (
@@ -113,7 +113,7 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
               ref.current?.focus();
             }}
           >
-            <CircleX className="h-4 w-4" />
+            <CircleX className="size-4" />
           </button>
         )}
       </div>
@@ -179,9 +179,9 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
                           disabled={isSelecting === r.productVariantId}
                         >
                           {isSelecting === r.productVariantId ? (
-                            <Loader2 className="h-3 w-3 animate-spin" />
+                            <Loader2 className="size-3 animate-spin" />
                           ) : (
-                            <ShoppingCart className="h-3 w-3" />
+                            <ShoppingCart className="size-3" />
                           )}
                           <span>{t('create.addProduct')}</span>
                         </Button>
@@ -193,9 +193,9 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
             ) : (
               <div className="flex h-96 w-full flex-col items-center justify-center p-8 text-center">
                 {debouncedValue.trim() ? (
-                  <div className="flex h-full w-full flex-col items-center justify-center">
+                  <div className="flex size-full flex-col items-center justify-center">
                     <div className="bg-muted mb-4 rounded-full p-3">
-                      <Search className="text-muted-foreground h-5 w-5" />
+                      <Search className="text-muted-foreground size-5" />
                     </div>
                     <p className="text-foreground text-sm font-medium">{t('create.noItemsFound')}</p>
                     <p className="text-muted-foreground mt-1 text-xs">
@@ -203,9 +203,9 @@ export const ProductVariantSearch: React.FC<Props> = ({ onSelectItem }) => {
                     </p>
                   </div>
                 ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center">
+                  <div className="flex size-full flex-col items-center justify-center">
                     <div className="bg-muted mb-4 rounded-full p-3">
-                      <Search className="text-muted-foreground h-5 w-5" />
+                      <Search className="text-muted-foreground size-5" />
                     </div>
                     <p className="text-foreground text-sm font-medium">
                       {t('create.startTyping') || 'Start typing to search products'}

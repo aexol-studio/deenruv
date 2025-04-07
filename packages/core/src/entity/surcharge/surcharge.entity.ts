@@ -1,15 +1,15 @@
-import { TaxLine } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { summate } from '@deenruv/common/lib/shared-utils';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { TaxLine } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { summate } from "@deenruv/common/lib/shared-utils";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 
-import { Calculated } from '../../common/calculated-decorator';
-import { roundMoney } from '../../common/round-money';
-import { grossPriceOf, netPriceOf } from '../../common/tax-utils';
-import { DeenruvEntity } from '../base/base.entity';
-import { Money } from '../money.decorator';
-import { Order } from '../order/order.entity';
-import { OrderModification } from '../order-modification/order-modification.entity';
+import { Calculated } from "../../common/calculated-decorator";
+import { roundMoney } from "../../common/round-money";
+import { grossPriceOf, netPriceOf } from "../../common/tax-utils";
+import { DeenruvEntity } from "../base/base.entity";
+import { Money } from "../money.decorator";
+import { Order } from "../order/order.entity";
+import { OrderModification } from "../order-modification/order-modification.entity";
 
 /**
  * @description
@@ -20,49 +20,58 @@ import { OrderModification } from '../order-modification/order-modification.enti
  */
 @Entity()
 export class Surcharge extends DeenruvEntity {
-    constructor(input?: DeepPartial<Surcharge>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Surcharge>) {
+    super(input);
+  }
 
-    @Column()
-    description: string;
+  @Column()
+  description: string;
 
-    @Money()
-    listPrice: number;
+  @Money()
+  listPrice: number;
 
-    @Column()
-    listPriceIncludesTax: boolean;
+  @Column()
+  listPriceIncludesTax: boolean;
 
-    @Column()
-    sku: string;
+  @Column()
+  sku: string;
 
-    @Column('simple-json')
-    taxLines: TaxLine[];
+  @Column("simple-json")
+  taxLines: TaxLine[];
 
-    @Index()
-    @ManyToOne(type => Order, order => order.surcharges, { onDelete: 'CASCADE' })
-    order: Order;
+  @Index()
+  @ManyToOne((type) => Order, (order) => order.surcharges, {
+    onDelete: "CASCADE",
+  })
+  order: Order;
 
-    @Index()
-    @ManyToOne(type => OrderModification, orderModification => orderModification.surcharges)
-    orderModification: OrderModification;
+  @Index()
+  @ManyToOne(
+    (type) => OrderModification,
+    (orderModification) => orderModification.surcharges,
+  )
+  orderModification: OrderModification;
 
-    @Calculated()
-    get price(): number {
-        return roundMoney(
-            this.listPriceIncludesTax ? netPriceOf(this.listPrice, this.taxRate) : this.listPrice,
-        );
-    }
+  @Calculated()
+  get price(): number {
+    return roundMoney(
+      this.listPriceIncludesTax
+        ? netPriceOf(this.listPrice, this.taxRate)
+        : this.listPrice,
+    );
+  }
 
-    @Calculated()
-    get priceWithTax(): number {
-        return roundMoney(
-            this.listPriceIncludesTax ? this.listPrice : grossPriceOf(this.listPrice, this.taxRate),
-        );
-    }
+  @Calculated()
+  get priceWithTax(): number {
+    return roundMoney(
+      this.listPriceIncludesTax
+        ? this.listPrice
+        : grossPriceOf(this.listPrice, this.taxRate),
+    );
+  }
 
-    @Calculated()
-    get taxRate(): number {
-        return summate(this.taxLines, 'taxRate');
-    }
+  @Calculated()
+  get taxRate(): number {
+    return summate(this.taxLines, "taxRate");
+  }
 }

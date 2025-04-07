@@ -1,99 +1,115 @@
-import { cancel, isCancel, log, text } from '@clack/prompts';
-import { camelCase, pascalCase } from 'change-case';
-import { Node, Scope } from 'ts-morph';
+import { cancel, isCancel, log, text } from "@clack/prompts";
+import { camelCase, pascalCase } from "change-case";
+import { Node, Scope } from "ts-morph";
 
-import { CliCommand, CliCommandReturnVal } from '../../../shared/cli-command';
-import { ServiceRef } from '../../../shared/service-ref';
-import { analyzeProject, selectPlugin, selectServiceRef } from '../../../shared/shared-prompts';
-import { DeenruvPluginRef } from '../../../shared/deenruv-plugin-ref';
-import { addImportsToFile } from '../../../utilities/ast-utils';
+import { CliCommand, CliCommandReturnVal } from "../../../shared/cli-command";
+import { ServiceRef } from "../../../shared/service-ref";
+import {
+  analyzeProject,
+  selectPlugin,
+  selectServiceRef,
+} from "../../../shared/shared-prompts";
+import { DeenruvPluginRef } from "../../../shared/deenruv-plugin-ref";
+import { addImportsToFile } from "../../../utilities/ast-utils";
 
-const cancelledMessage = 'Add API extension cancelled';
+const cancelledMessage = "Add API extension cancelled";
 
 export interface AddJobQueueOptions {
-    plugin?: DeenruvPluginRef;
+  plugin?: DeenruvPluginRef;
 }
 
 export const addJobQueueCommand = new CliCommand({
-    id: 'add-job-queue',
-    category: 'Plugin: Job Queue',
-    description: 'Defines an new job queue on a service',
-    run: options => addJobQueue(options),
+  id: "add-job-queue",
+  category: "Plugin: Job Queue",
+  description: "Defines an new job queue on a service",
+  run: (options) => addJobQueue(options),
 });
 
 async function addJobQueue(
-    options?: AddJobQueueOptions,
+  options?: AddJobQueueOptions,
 ): Promise<CliCommandReturnVal<{ serviceRef: ServiceRef }>> {
-    const providedDeenruvPlugin = options?.plugin;
-    const { project } = await analyzeProject({ providedDeenruvPlugin, cancelledMessage });
-    const plugin = providedDeenruvPlugin ?? (await selectPlugin(project, cancelledMessage));
-    const serviceRef = await selectServiceRef(project, plugin);
+  const providedDeenruvPlugin = options?.plugin;
+  const { project } = await analyzeProject({
+    providedDeenruvPlugin,
+    cancelledMessage,
+  });
+  const plugin =
+    providedDeenruvPlugin ?? (await selectPlugin(project, cancelledMessage));
+  const serviceRef = await selectServiceRef(project, plugin);
 
-    const jobQueueName = await text({
-        message: 'What is the name of the job queue?',
-        initialValue: 'my-background-task',
-        validate: input => {
-            if (!/^[a-z][a-z-0-9]+$/.test(input)) {
-                return 'The job queue name must be lowercase and contain only letters, numbers and dashes';
-            }
-        },
-    });
+  const jobQueueName = await text({
+    message: "What is the name of the job queue?",
+    initialValue: "my-background-task",
+    validate: (input) => {
+      if (!/^[a-z][a-z-0-9]+$/.test(input)) {
+        return "The job queue name must be lowercase and contain only letters, numbers and dashes";
+      }
+    },
+  });
 
-    if (isCancel(jobQueueName)) {
-        cancel(cancelledMessage);
-        process.exit(0);
-    }
+  if (isCancel(jobQueueName)) {
+    cancel(cancelledMessage);
+    process.exit(0);
+  }
 
-    addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
-        moduleSpecifier: '@deenruv/core',
-        namedImports: ['JobQueue', 'JobQueueService', 'SerializedRequestContext'],
-    });
+  addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
+    moduleSpecifier: "@deenruv/core",
+    namedImports: ["JobQueue", "JobQueueService", "SerializedRequestContext"],
+  });
 
-    addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
-        moduleSpecifier: '@deenruv/common/lib/generated-types',
-        namedImports: ['JobState'],
-    });
+  addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
+    moduleSpecifier: "@deenruv/common/lib/generated-types",
+    namedImports: ["JobState"],
+  });
 
-    addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
-        moduleSpecifier: '@nestjs/common',
-        namedImports: ['OnModuleInit'],
-    });
+  addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
+    moduleSpecifier: "@nestjs/common",
+    namedImports: ["OnModuleInit"],
+  });
 
-    serviceRef.injectDependency({
-        name: 'jobQueueService',
-        type: 'JobQueueService',
-    });
+  serviceRef.injectDependency({
+    name: "jobQueueService",
+    type: "JobQueueService",
+  });
 
-    const jobQueuePropertyName = camelCase(jobQueueName) + 'Queue';
+  const jobQueuePropertyName = camelCase(jobQueueName) + "Queue";
 
-    serviceRef.classDeclaration.insertProperty(0, {
-        name: jobQueuePropertyName,
-        scope: Scope.Private,
-        type: writer => writer.write('JobQueue<{ ctx: SerializedRequestContext, someArg: string; }>'),
-    });
+  serviceRef.classDeclaration.insertProperty(0, {
+    name: jobQueuePropertyName,
+    scope: Scope.Private,
+    type: (writer) =>
+      writer.write(
+        "JobQueue<{ ctx: SerializedRequestContext, someArg: string; }>",
+      ),
+  });
 
-    serviceRef.classDeclaration.addImplements('OnModuleInit');
-    let onModuleInitMethod = serviceRef.classDeclaration.getMethod('onModuleInit');
-    if (!onModuleInitMethod) {
-        // Add this after the constructor
-        const constructor = serviceRef.classDeclaration.getConstructors()[0];
-        const constructorChildIndex = constructor?.getChildIndex() ?? 0;
+  serviceRef.classDeclaration.addImplements("OnModuleInit");
+  let onModuleInitMethod =
+    serviceRef.classDeclaration.getMethod("onModuleInit");
+  if (!onModuleInitMethod) {
+    // Add this after the constructor
+    const constructor = serviceRef.classDeclaration.getConstructors()[0];
+    const constructorChildIndex = constructor?.getChildIndex() ?? 0;
 
-        onModuleInitMethod = serviceRef.classDeclaration.insertMethod(constructorChildIndex + 1, {
-            name: 'onModuleInit',
-            isAsync: false,
-            returnType: 'void',
-            scope: Scope.Public,
-        });
-    }
-    onModuleInitMethod.setIsAsync(true);
-    onModuleInitMethod.setReturnType('Promise<void>');
-    const body = onModuleInitMethod.getBody();
-    if (Node.isBlock(body)) {
-        body.addStatements(writer => {
-            writer
-                .write(
-                    `this.${jobQueuePropertyName} = await this.jobQueueService.createQueue({
+    onModuleInitMethod = serviceRef.classDeclaration.insertMethod(
+      constructorChildIndex + 1,
+      {
+        name: "onModuleInit",
+        isAsync: false,
+        returnType: "void",
+        scope: Scope.Public,
+      },
+    );
+  }
+  onModuleInitMethod.setIsAsync(true);
+  onModuleInitMethod.setReturnType("Promise<void>");
+  const body = onModuleInitMethod.getBody();
+  if (Node.isBlock(body)) {
+    body
+      .addStatements((writer) => {
+        writer
+          .write(
+            `this.${jobQueuePropertyName} = await this.jobQueueService.createQueue({
                 name: '${jobQueueName}',
                 process: async job => {
                     // Deserialize the RequestContext from the job data
@@ -127,28 +143,33 @@ async function addJobQueue(
                     };
                 },
             })`,
-                )
-                .newLine();
-        }).forEach(s => s.formatText());
-    }
+          )
+          .newLine();
+      })
+      .forEach((s) => s.formatText());
+  }
 
-    serviceRef.classDeclaration
-        .addMethod({
-            name: `trigger${pascalCase(jobQueueName)}`,
-            scope: Scope.Public,
-            parameters: [{ name: 'ctx', type: 'RequestContext' }],
-            statements: writer => {
-                writer.write(`return this.${jobQueuePropertyName}.add({
+  serviceRef.classDeclaration
+    .addMethod({
+      name: `trigger${pascalCase(jobQueueName)}`,
+      scope: Scope.Public,
+      parameters: [{ name: "ctx", type: "RequestContext" }],
+      statements: (writer) => {
+        writer.write(`return this.${jobQueuePropertyName}.add({
                 ctx: ctx.serialize(),
                 someArg: 'foo',
             })`);
-            },
-        })
-        .formatText();
+      },
+    })
+    .formatText();
 
-    log.success(`New job queue created in ${serviceRef.name}`);
+  log.success(`New job queue created in ${serviceRef.name}`);
 
-    await project.save();
+  await project.save();
 
-    return { project, modifiedSourceFiles: [serviceRef.classDeclaration.getSourceFile()], serviceRef };
+  return {
+    project,
+    modifiedSourceFiles: [serviceRef.classDeclaration.getSourceFile()],
+    serviceRef,
+  };
 }

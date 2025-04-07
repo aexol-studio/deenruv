@@ -7,9 +7,10 @@ export const APIExtension = gql`
   type PhoneNumberValidationError {
     message: String
   }
-  union PhoneNumberValidationResult = PhoneNumberValidationSuccess | PhoneNumberValidationError
+  union PhoneNumberValidationResult =
+    | PhoneNumberValidationSuccess
+    | PhoneNumberValidationError
   extend type Query {
     validateCurrentOrderPhoneNumber: PhoneNumberValidationResult!
   }
 `;
-

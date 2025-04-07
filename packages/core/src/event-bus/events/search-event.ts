@@ -1,10 +1,10 @@
-import { SearchInput } from '@deenruv/common/lib/generated-types';
+import { SearchInput } from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { DeenruvEvent } from "../deenruv-event";
 
 type ExtendedSearchInput = SearchInput & {
-    [extendedInputField: string]: any;
+  [extendedInputField: string]: any;
 };
 
 /**
@@ -16,10 +16,10 @@ type ExtendedSearchInput = SearchInput & {
  * @since 1.6.0
  */
 export class SearchEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public input: ExtendedSearchInput,
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public input: ExtendedSearchInput,
+  ) {
+    super();
+  }
 }

@@ -1,5 +1,4 @@
-import { AssetsModalChangeType, Stack } from '@/components';
-import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
+import { Card, CardHeader, CardTitle, CardContent, AssetsModalChangeType } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,7 +17,7 @@ export const ImagesCard: React.FC<ImagesCardProps> = ({ customFields, onMainImag
         <CardTitle className="flex flex-row justify-between text-base">{t('details.image')}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack column className="gap-6">
+        <div className="flex flex-col gap-6">
           {/* <Stack className="justify-between gap-3">
             <div className="w-1/2">
               <Label>{t('customFields.images.mainImage')}</Label>
@@ -51,7 +50,7 @@ export const ImagesCard: React.FC<ImagesCardProps> = ({ customFields, onMainImag
               </Stack>
             </div>
           </Stack> */}
-        </Stack>
+        </div>
       </CardContent>
     </Card>
   );

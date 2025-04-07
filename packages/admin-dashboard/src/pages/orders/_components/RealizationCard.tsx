@@ -92,15 +92,15 @@ export const RealizationCard: React.FC = () => {
   const getFulfillmentStateBadge = (state: string) => {
     switch (state) {
       case ORDER_STATE.CREATED:
-        return { variant: 'secondary' as const, icon: <Package className="mr-1 h-3.5 w-3.5" /> };
+        return { variant: 'secondary' as const, icon: <Package className="mr-1 size-3.5" /> };
       case ORDER_STATE.SHIPPED:
-        return { variant: 'outline' as const, icon: <Truck className="mr-1 h-3.5 w-3.5 text-blue-500" /> };
+        return { variant: 'outline' as const, icon: <Truck className="mr-1 size-3.5 text-blue-500" /> };
       case ORDER_STATE.DELIVERED:
-        return { variant: 'success' as const, icon: <CheckCircle className="mr-1 h-3.5 w-3.5" /> };
+        return { variant: 'success' as const, icon: <CheckCircle className="mr-1 size-3.5" /> };
       case ORDER_STATE.CANCELLED:
-        return { variant: 'destructive' as const, icon: <XCircle className="mr-1 h-3.5 w-3.5" /> };
+        return { variant: 'destructive' as const, icon: <XCircle className="mr-1 size-3.5" /> };
       default:
-        return { variant: 'outline' as const, icon: <AlertCircle className="mr-1 h-3.5 w-3.5" /> };
+        return { variant: 'outline' as const, icon: <AlertCircle className="mr-1 size-3.5" /> };
     }
   };
 
@@ -129,7 +129,7 @@ export const RealizationCard: React.FC = () => {
               className="gap-2"
               onClick={markAllAsDelivered}
             >
-              <CheckCircle className="h-4 w-4" />
+              <CheckCircle className="size-4" />
               {order?.fulfillments?.filter((f) => f.state === ORDER_STATE.SHIPPED).length > 0
                 ? t('fulfillments.markAllAsDelivered')
                 : t('fulfillments.allDelivered')}
@@ -161,7 +161,7 @@ export const RealizationCard: React.FC = () => {
                     <TableRow key={fulfillment.id} className="hover:bg-muted/20">
                       <TableCell className="py-3">
                         <div className="flex items-center gap-2">
-                          <Truck className="h-4 w-4 text-green-500 dark:text-green-400" />
+                          <Truck className="size-4 text-green-500 dark:text-green-400" />
                           <span className="font-medium">{fulfillment.method}</span>
                         </div>
                       </TableCell>
@@ -191,7 +191,7 @@ export const RealizationCard: React.FC = () => {
                               disabled={isProcessing}
                               className="flex cursor-pointer items-center gap-2"
                             >
-                              <CheckCircle className="h-3.5 w-3.5 text-green-500" />
+                              <CheckCircle className="size-3.5 text-green-500" />
                               {t('fulfillments.markAsDelivered', 'Mark as Delivered')}
                             </DropdownMenuItem>
                           )}

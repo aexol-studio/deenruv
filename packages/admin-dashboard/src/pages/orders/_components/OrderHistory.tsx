@@ -72,14 +72,14 @@ export const OrderHistory: React.FC = () => {
     >
       {loading && (
         <div className="flex flex-col items-center justify-center py-16 text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500"></div>
+          <div className="size-8 animate-spin rounded-full border-4 border-amber-200 border-t-amber-500"></div>
           <p className="text-muted-foreground mt-4 text-sm">{t('history.loading', 'Loading order history...')}</p>
         </div>
       )}
       {error && (
         <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
           <div className="rounded-full bg-red-100 p-3 dark:bg-red-900/30">
-            <AlertCircle className="h-6 w-6 text-red-500 dark:text-red-400" />
+            <AlertCircle className="size-6 text-red-500 dark:text-red-400" />
           </div>
           <div>
             <p className="font-medium text-red-600">{t('toasts.orderHistoryLoadingError', { value: order?.id })}</p>

@@ -1,8 +1,8 @@
-import { SearchInput, SearchResult } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import { SearchInput, SearchResult } from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../../api';
-import { InjectableStrategy } from '../../../common';
+import { RequestContext } from "../../../api";
+import { InjectableStrategy } from "../../../common";
 
 /**
  * @description
@@ -19,16 +19,32 @@ import { InjectableStrategy } from '../../../common';
  * @docsCategory DefaultSearchPlugin
  */
 export interface SearchStrategy extends InjectableStrategy {
-    getSearchResults(ctx: RequestContext, input: SearchInput, enabledOnly: boolean): Promise<SearchResult[]>;
-    getTotalCount(ctx: RequestContext, input: SearchInput, enabledOnly: boolean): Promise<number>;
-    /**
-     * Returns a map of `facetValueId` => `count`, providing the number of times that
-     * facetValue occurs in the result set.
-     */
-    getFacetValueIds(ctx: RequestContext, input: SearchInput, enabledOnly: boolean): Promise<Map<ID, number>>;
-    /**
-     * Returns a map of `collectionId` => `count`, providing the number of times that
-     * collection occurs in the result set.
-     */
-    getCollectionIds(ctx: RequestContext, input: SearchInput, enabledOnly: boolean): Promise<Map<ID, number>>;
+  getSearchResults(
+    ctx: RequestContext,
+    input: SearchInput,
+    enabledOnly: boolean,
+  ): Promise<SearchResult[]>;
+  getTotalCount(
+    ctx: RequestContext,
+    input: SearchInput,
+    enabledOnly: boolean,
+  ): Promise<number>;
+  /**
+   * Returns a map of `facetValueId` => `count`, providing the number of times that
+   * facetValue occurs in the result set.
+   */
+  getFacetValueIds(
+    ctx: RequestContext,
+    input: SearchInput,
+    enabledOnly: boolean,
+  ): Promise<Map<ID, number>>;
+  /**
+   * Returns a map of `collectionId` => `count`, providing the number of times that
+   * collection occurs in the result set.
+   */
+  getCollectionIds(
+    ctx: RequestContext,
+    input: SearchInput,
+    enabledOnly: boolean,
+  ): Promise<Map<ID, number>>;
 }

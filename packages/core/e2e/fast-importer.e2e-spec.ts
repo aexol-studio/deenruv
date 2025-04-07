@@ -1,57 +1,68 @@
-import { CreateProductInput, ProductTranslationInput } from '@deenruv/common/lib/generated-types';
-import { ensureConfigLoaded, FastImporterService, LanguageCode } from '@deenruv/core';
-import { createTestEnvironment } from '@deenruv/testing';
-import path from 'path';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-
-import { testConfig, TEST_SETUP_TIMEOUT_MS } from '../../../e2e-common/test-config.js';
-import { initialData } from '../mock-data/data-sources/initial-data';
+import {
+  CreateProductInput,
+  ProductTranslationInput,
+} from "@deenruv/common/lib/generated-types";
+import {
+  ensureConfigLoaded,
+  FastImporterService,
+  LanguageCode,
+} from "@deenruv/core";
+import { createTestEnvironment } from "@deenruv/testing";
+import path from "path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import {
-    GetProductWithVariantsQuery,
-    GetProductWithVariantsQueryVariables,
-} from './graphql/generated-e2e-admin-types';
-import { GET_PRODUCT_WITH_VARIANTS } from './graphql/shared-definitions';
+  testConfig,
+  TEST_SETUP_TIMEOUT_MS,
+} from "../../../e2e-common/test-config.js";
+import { initialData } from "../mock-data/data-sources/initial-data";
 
-describe('FastImporterService resolver', () => {
-    const { server, adminClient } = createTestEnvironment(testConfig());
+import {
+  GetProductWithVariantsQuery,
+  GetProductWithVariantsQueryVariables,
+} from "./graphql/generated-e2e-admin-types";
+import { GET_PRODUCT_WITH_VARIANTS } from "./graphql/shared-definitions";
 
-    let fastImporterService: FastImporterService;
+describe("FastImporterService resolver", () => {
+  const { server, adminClient } = createTestEnvironment(testConfig());
 
-    beforeAll(async () => {
-        await ensureConfigLoaded();
-        await server.init({
-            initialData,
-            productsCsvPath: path.join(__dirname, 'fixtures/e2e-products-full.csv'),
-        });
-        await adminClient.asSuperAdmin();
-        fastImporterService = server.app.get(FastImporterService);
-    }, TEST_SETUP_TIMEOUT_MS);
+  let fastImporterService: FastImporterService;
 
-    afterAll(async () => {
-        await server.destroy();
+  beforeAll(async () => {
+    await ensureConfigLoaded();
+    await server.init({
+      initialData,
+      productsCsvPath: path.join(__dirname, "fixtures/e2e-products-full.csv"),
+    });
+    await adminClient.asSuperAdmin();
+    fastImporterService = server.app.get(FastImporterService);
+  }, TEST_SETUP_TIMEOUT_MS);
+
+  afterAll(async () => {
+    await server.destroy();
+  });
+
+  it("creates normalized slug", async () => {
+    const productTranslation: ProductTranslationInput = {
+      languageCode: LanguageCode.en,
+      name: "test product",
+      slug: "test product",
+      description: "test description",
+    };
+    const createProductInput: CreateProductInput = {
+      translations: [productTranslation],
+    };
+    await fastImporterService.initialize();
+    const productId =
+      await fastImporterService.createProduct(createProductInput);
+
+    const { product } = await adminClient.query<
+      GetProductWithVariantsQuery,
+      GetProductWithVariantsQueryVariables
+    >(GET_PRODUCT_WITH_VARIANTS, {
+      id: productId as string,
     });
 
-    it('creates normalized slug', async () => {
-        const productTranslation: ProductTranslationInput = {
-            languageCode: LanguageCode.en,
-            name: 'test product',
-            slug: 'test product',
-            description: 'test description',
-        };
-        const createProductInput: CreateProductInput = {
-            translations: [productTranslation],
-        };
-        await fastImporterService.initialize();
-        const productId = await fastImporterService.createProduct(createProductInput);
-
-        const { product } = await adminClient.query<
-            GetProductWithVariantsQuery,
-            GetProductWithVariantsQueryVariables
-        >(GET_PRODUCT_WITH_VARIANTS, {
-            id: productId as string,
-        });
-
-        expect(product?.slug).toMatch('test-product');
-    });
+    expect(product?.slug).toMatch("test-product");
+  });
 });

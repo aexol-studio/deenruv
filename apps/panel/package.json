@@ -8,15 +8,15 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "check-types": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "zeus:local": "zeus http://localhost:3000/admin-api ./src/",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "toc": "i18next-resources-for-ts toc -i ./src/locales/en -o ./src/@types/resources.ts",
     "interface": "i18next-resources-for-ts interface -i ./src/locales/en -o ./src/@types/resources.d.ts"
   },
   "dependencies": {
-    "@deenruv/content-management-plugin": "workspace:*",
     "@deenruv/admin-dashboard": "workspace:*",
     "@deenruv/product-badges-plugin": "workspace:*",
     "@deenruv/deenruv-examples-plugin": "workspace:*",
@@ -73,17 +73,8 @@
     "@types/react-color": "^3.0.12",
     "@types/react-dom": "^18.2.0",
     "@types/uuid": "^9.0.8",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.19",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-prettier": "^5.1.3",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.7",
     "graphql-zeus": "^7.0.0",
     "i18next-resources-for-ts": "^1.5.0",
     "postcss": "^8.4.38",
@@ -93,7 +84,6 @@
     "tsx": "^4.19.1",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",
-    "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-i18next-loader": "^2.0.12",
     "vite-tsconfig-paths": "^4.3.1"
   }

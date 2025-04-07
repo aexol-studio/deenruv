@@ -1,11 +1,11 @@
-import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
 
-import { BullMQJobQueueStrategy } from './bullmq-job-queue-strategy';
-import { BULLMQ_PLUGIN_OPTIONS } from './constants';
-import { RedisHealthCheckStrategy } from './redis-health-check-strategy';
-import { RedisHealthIndicator } from './redis-health-indicator';
-import { RedisJobBufferStorageStrategy } from './redis-job-buffer-storage-strategy';
-import { BullMQPluginOptions } from './types';
+import { BullMQJobQueueStrategy } from "./bullmq-job-queue-strategy";
+import { BULLMQ_PLUGIN_OPTIONS } from "./constants";
+import { RedisHealthCheckStrategy } from "./redis-health-check-strategy";
+import { RedisHealthIndicator } from "./redis-health-indicator";
+import { RedisJobBufferStorageStrategy } from "./redis-job-buffer-storage-strategy";
+import { BullMQPluginOptions } from "./types";
 
 /**
  * @description
@@ -132,28 +132,32 @@ import { BullMQPluginOptions } from './types';
  * @docsCategory core plugins/JobQueuePlugin
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    configuration: config => {
-        config.jobQueueOptions.jobQueueStrategy = new BullMQJobQueueStrategy();
-        config.jobQueueOptions.jobBufferStorageStrategy = new RedisJobBufferStorageStrategy();
-        config.systemOptions.healthChecks.push(new RedisHealthCheckStrategy());
-        return config;
+  imports: [PluginCommonModule],
+  configuration: (config) => {
+    config.jobQueueOptions.jobQueueStrategy = new BullMQJobQueueStrategy();
+    config.jobQueueOptions.jobBufferStorageStrategy =
+      new RedisJobBufferStorageStrategy();
+    config.systemOptions.healthChecks.push(new RedisHealthCheckStrategy());
+    return config;
+  },
+  providers: [
+    {
+      provide: BULLMQ_PLUGIN_OPTIONS,
+      useFactory: () => BullMQJobQueuePlugin.options,
     },
-    providers: [
-        { provide: BULLMQ_PLUGIN_OPTIONS, useFactory: () => BullMQJobQueuePlugin.options },
-        RedisHealthIndicator,
-    ],
-    compatibility: '^0.0.0',
+    RedisHealthIndicator,
+  ],
+  compatibility: "^0.0.0",
 })
 export class BullMQJobQueuePlugin {
-    static options: BullMQPluginOptions;
+  static options: BullMQPluginOptions;
 
-    /**
-     * @description
-     * Configures the plugin.
-     */
-    static init(options: BullMQPluginOptions) {
-        this.options = options;
-        return this;
-    }
+  /**
+   * @description
+   * Configures the plugin.
+   */
+  static init(options: BullMQPluginOptions) {
+    this.options = options;
+    return this;
+  }
 }

@@ -1,6 +1,6 @@
-import { HealthIndicatorFunction } from '@nestjs/terminus';
+import { HealthIndicatorFunction } from "@nestjs/terminus";
 
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
 
 /**
  * @description
@@ -46,10 +46,10 @@ import { InjectableStrategy } from '../../common/types/injectable-strategy';
  * @docsCategory health-check
  */
 export interface HealthCheckStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Should return a `HealthIndicatorFunction`, as defined by the
-     * [NestJS Terminus module](https://docs.nestjs.com/recipes/terminus).
-     */
-    getHealthIndicator(): HealthIndicatorFunction;
+  /**
+   * @description
+   * Should return a `HealthIndicatorFunction`, as defined by the
+   * [NestJS Terminus module](https://docs.nestjs.com/recipes/terminus).
+   */
+  getHealthIndicator(): HealthIndicatorFunction;
 }

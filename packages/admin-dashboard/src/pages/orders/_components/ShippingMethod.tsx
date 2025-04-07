@@ -145,7 +145,7 @@ export const ShippingMethod: React.FC = () => {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 cursor-not-allowed opacity-50">
+                    <Button variant="ghost" size="icon" className="size-8 cursor-not-allowed opacity-50">
                       <Edit size={16} className="text-muted-foreground" />
                     </Button>
                   </TooltipTrigger>
@@ -158,7 +158,7 @@ export const ShippingMethod: React.FC = () => {
               </TooltipProvider>
             ) : (
               <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Button variant="ghost" size="icon" className="size-8">
                   <Edit size={16} className="text-orange-500 dark:text-orange-400" />
                 </Button>
               </DialogTrigger>
@@ -167,7 +167,7 @@ export const ShippingMethod: React.FC = () => {
               <div className="flex flex-col gap-6">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
-                    <Truck className="h-5 w-5 text-orange-500 dark:text-orange-400" />
+                    <Truck className="size-5 text-orange-500 dark:text-orange-400" />
                     {t('selectShipmentMethod.setMethodTitle', 'Select Shipping Method')}
                   </DialogTitle>
                   <DialogDescription className="text-muted-foreground mt-2">
@@ -177,7 +177,7 @@ export const ShippingMethod: React.FC = () => {
 
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center py-12">
-                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-orange-200 border-t-orange-500"></div>
+                    <div className="size-10 animate-spin rounded-full border-4 border-orange-200 border-t-orange-500"></div>
                     <p className="text-muted-foreground mt-4 text-sm">
                       {t('selectShipmentMethod.loading', 'Loading shipping methods...')}
                     </p>
@@ -187,7 +187,7 @@ export const ShippingMethod: React.FC = () => {
                     {shippingMethods.length === 0 ? (
                       <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
                         <div className="rounded-full bg-orange-100 p-3 dark:bg-orange-900/30">
-                          <AlertCircle className="h-6 w-6 text-orange-500 dark:text-orange-400" />
+                          <AlertCircle className="size-6 text-orange-500 dark:text-orange-400" />
                         </div>
                         <div>
                           <p className="font-medium">
@@ -217,11 +217,11 @@ export const ShippingMethod: React.FC = () => {
                             >
                               {localSelectedShippingMethod === shippingMethod.id && (
                                 <div className="absolute right-2 top-2">
-                                  <Check className="h-4 w-4 text-green-500" />
+                                  <Check className="size-4 text-green-500" />
                                 </div>
                               )}
                               <div className="mb-1 flex items-center gap-2">
-                                <Package className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                                <Package className="size-4 text-orange-500 dark:text-orange-400" />
                                 <h3 className="text-base font-medium">{shippingMethod.name}</h3>
                               </div>
                               <Badge variant="outline" className="w-fit text-xs">
@@ -263,12 +263,12 @@ export const ShippingMethod: React.FC = () => {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="size-4 animate-spin" />
                       {t('common.processing', 'Processing...')}
                     </>
                   ) : (
                     <>
-                      <Check className="h-4 w-4" />
+                      <Check className="size-4" />
                       {t('selectShipmentMethod.save', 'Save Shipping Method')}
                     </>
                   )}
@@ -283,8 +283,8 @@ export const ShippingMethod: React.FC = () => {
         <div className="flex items-start gap-3">
           {!order?.lines.length ? (
             <>
-              <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
-                <AlertCircle className="h-4 w-4 text-amber-500" />
+              <div className="mt-0.5 flex size-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
+                <AlertCircle className="size-4 text-amber-500" />
               </div>
               <div className="flex-1">
                 <p className="text-muted-foreground text-sm italic">
@@ -308,7 +308,7 @@ export const ShippingMethod: React.FC = () => {
                     }}
                     disabled={!order?.lines.length}
                   >
-                    <Truck className="h-3.5 w-3.5" />
+                    <Truck className="size-3.5" />
                     {t('selectShipmentMethod.addMethod', 'Add Shipping Method')}
                   </Button>
                 )}
@@ -317,7 +317,7 @@ export const ShippingMethod: React.FC = () => {
           ) : (
             <div key={selectedShipping.id} className="relative flex w-full flex-col gap-2">
               <div className="mb-1 flex items-center gap-2">
-                <Package className="h-4 w-4 text-orange-500 dark:text-orange-400" />
+                <Package className="size-4 text-orange-500 dark:text-orange-400" />
                 <Label className="text-sm font-medium">{selectedShipping.name}</Label>
               </div>
               <Badge variant="outline" className="w-fit text-xs">

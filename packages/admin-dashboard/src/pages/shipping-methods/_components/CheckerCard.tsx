@@ -4,10 +4,6 @@ import { ModelTypes } from '@deenruv/admin-types';
 import {
   Button,
   Label,
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
   Option,
   apiClient,
   ErrorMessage,
@@ -16,11 +12,11 @@ import {
   CustomFieldsProvider,
   CustomCard,
   CardIcons,
+  SimpleSelect,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
-import { SimpleSelect, Stack } from '@/components';
 
 interface CheckerCardProps {
   currentCheckerValue: ModelTypes['ConfigurableOperationInput'] | undefined;
@@ -81,8 +77,8 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
       color="teal"
       upperRight={<ErrorMessage errors={errors} />}
     >
-      <Stack column className="basis-full gap-3 md:basis-1/2">
-        <Stack className="items-end gap-1">
+      <div className="flex basis-full flex-col gap-3 md:basis-1/2">
+        <div className="flex items-end gap-1">
           <SimpleSelect
             label={t('details.options.checker')}
             value={currentCheckerValue ? currentCheckerValue.code : ''}
@@ -94,8 +90,8 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
               <X size={20} />
             </Button>
           )}
-        </Stack>
-        <Stack>
+        </div>
+        <div className="flex">
           {currentCheckerValue?.arguments.map((e, i) => {
             const checker = checkers?.find((ch) => ch.code === currentCheckerValue.code);
             const argument = checker?.args.find((a) => a.name === a.name);
@@ -150,8 +146,8 @@ export const CheckerCard: React.FC<CheckerCardProps> = ({ currentCheckerValue, o
               );
             });
           })}
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </CustomCard>
   );
 };

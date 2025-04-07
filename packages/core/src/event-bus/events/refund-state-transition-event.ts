@@ -1,8 +1,8 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Order } from '../../entity/order/order.entity';
-import { Refund } from '../../entity/refund/refund.entity';
-import { RefundState } from '../../service/helpers/refund-state-machine/refund-state';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Order } from "../../entity/order/order.entity";
+import { Refund } from "../../entity/refund/refund.entity";
+import { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -12,13 +12,13 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class RefundStateTransitionEvent extends DeenruvEvent {
-    constructor(
-        public fromState: RefundState,
-        public toState: RefundState,
-        public ctx: RequestContext,
-        public refund: Refund,
-        public order: Order,
-    ) {
-        super();
-    }
+  constructor(
+    public fromState: RefundState,
+    public toState: RefundState,
+    public ctx: RequestContext,
+    public refund: Refund,
+    public order: Order,
+  ) {
+    super();
+  }
 }

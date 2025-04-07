@@ -1,8 +1,8 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { ProductVariantPrice } from '../../entity/product-variant/product-variant-price.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { ProductVariantPrice } from "../../entity/product-variant/product-variant-price.entity";
 
 /**
  * @description
@@ -13,16 +13,16 @@ import { ProductVariantPrice } from '../../entity/product-variant/product-varian
  * @since 2.2.0
  */
 export interface UpdatedProductVariantPrice {
-    /**
-     * @description
-     * The ID of the ProductVariantPrice to update.
-     */
-    id: ID;
-    /**
-     * @description
-     * The new price to set.
-     */
-    price: number;
+  /**
+   * @description
+   * The ID of the ProductVariantPrice to update.
+   */
+  id: ID;
+  /**
+   * @description
+   * The new price to set.
+   */
+  price: number;
 }
 
 /**
@@ -56,45 +56,45 @@ export interface UpdatedProductVariantPrice {
  * @since 2.2.0
  */
 export interface ProductVariantPriceUpdateStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * This method is called when a ProductVariantPrice is created. It receives the created
-     * ProductVariantPrice and the array of all prices associated with the ProductVariant.
-     *
-     * It should return an array of UpdatedProductVariantPrice objects which will be used to update
-     * the prices of the specific ProductVariantPrices.
-     */
-    onPriceCreated(
-        ctx: RequestContext,
-        createdPrice: ProductVariantPrice,
-        prices: ProductVariantPrice[],
-    ): UpdatedProductVariantPrice[] | Promise<UpdatedProductVariantPrice[]>;
+  /**
+   * @description
+   * This method is called when a ProductVariantPrice is created. It receives the created
+   * ProductVariantPrice and the array of all prices associated with the ProductVariant.
+   *
+   * It should return an array of UpdatedProductVariantPrice objects which will be used to update
+   * the prices of the specific ProductVariantPrices.
+   */
+  onPriceCreated(
+    ctx: RequestContext,
+    createdPrice: ProductVariantPrice,
+    prices: ProductVariantPrice[],
+  ): UpdatedProductVariantPrice[] | Promise<UpdatedProductVariantPrice[]>;
 
-    /**
-     * @description
-     * This method is called when a ProductVariantPrice is updated. It receives the updated
-     * ProductVariantPrice and the array of all prices associated with the ProductVariant.
-     *
-     * It should return an array of UpdatedProductVariantPrice objects which will be used to update
-     * the prices of the specific ProductVariantPrices.
-     */
-    onPriceUpdated(
-        ctx: RequestContext,
-        updatedPrice: ProductVariantPrice,
-        prices: ProductVariantPrice[],
-    ): UpdatedProductVariantPrice[] | Promise<UpdatedProductVariantPrice[]>;
+  /**
+   * @description
+   * This method is called when a ProductVariantPrice is updated. It receives the updated
+   * ProductVariantPrice and the array of all prices associated with the ProductVariant.
+   *
+   * It should return an array of UpdatedProductVariantPrice objects which will be used to update
+   * the prices of the specific ProductVariantPrices.
+   */
+  onPriceUpdated(
+    ctx: RequestContext,
+    updatedPrice: ProductVariantPrice,
+    prices: ProductVariantPrice[],
+  ): UpdatedProductVariantPrice[] | Promise<UpdatedProductVariantPrice[]>;
 
-    /**
-     * @description
-     * This method is called when a ProductVariantPrice is deleted. It receives the deleted
-     * ProductVariantPrice and the array of all prices associated with the ProductVariant.
-     *
-     * It should return an array of UpdatedProductVariantPrice objects which will be used to update
-     * the prices of the specific ProductVariantPrices.
-     */
-    onPriceDeleted(
-        ctx: RequestContext,
-        deletedPrice: ProductVariantPrice,
-        prices: ProductVariantPrice[],
-    ): UpdatedProductVariantPrice[] | Promise<UpdatedProductVariantPrice[]>;
+  /**
+   * @description
+   * This method is called when a ProductVariantPrice is deleted. It receives the deleted
+   * ProductVariantPrice and the array of all prices associated with the ProductVariant.
+   *
+   * It should return an array of UpdatedProductVariantPrice objects which will be used to update
+   * the prices of the specific ProductVariantPrices.
+   */
+  onPriceDeleted(
+    ctx: RequestContext,
+    deletedPrice: ProductVariantPrice,
+    prices: ProductVariantPrice[],
+  ): UpdatedProductVariantPrice[] | Promise<UpdatedProductVariantPrice[]>;
 }

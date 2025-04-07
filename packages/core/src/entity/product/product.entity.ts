@@ -1,19 +1,31 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 
-import { ChannelAware, SoftDeletable } from '../../common/types/common-types';
-import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { Asset } from '../asset/asset.entity';
-import { DeenruvEntity } from '../base/base.entity';
-import { Channel } from '../channel/channel.entity';
-import { CustomProductFields } from '../custom-entity-fields';
-import { FacetValue } from '../facet-value/facet-value.entity';
-import { ProductOptionGroup } from '../product-option-group/product-option-group.entity';
-import { ProductVariant } from '../product-variant/product-variant.entity';
+import { ChannelAware, SoftDeletable } from "../../common/types/common-types";
+import {
+  LocaleString,
+  Translatable,
+  Translation,
+} from "../../common/types/locale-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { Asset } from "../asset/asset.entity";
+import { DeenruvEntity } from "../base/base.entity";
+import { Channel } from "../channel/channel.entity";
+import { CustomProductFields } from "../custom-entity-fields";
+import { FacetValue } from "../facet-value/facet-value.entity";
+import { ProductOptionGroup } from "../product-option-group/product-option-group.entity";
+import { ProductVariant } from "../product-variant/product-variant.entity";
 
-import { ProductAsset } from './product-asset.entity';
-import { ProductTranslation } from './product-translation.entity';
+import { ProductAsset } from "./product-asset.entity";
+import { ProductTranslation } from "./product-translation.entity";
 
 /**
  * @description
@@ -24,49 +36,53 @@ import { ProductTranslation } from './product-translation.entity';
  */
 @Entity()
 export class Product
-    extends DeenruvEntity
-    implements Translatable, HasCustomFields, ChannelAware, SoftDeletable
+  extends DeenruvEntity
+  implements Translatable, HasCustomFields, ChannelAware, SoftDeletable
 {
-    constructor(input?: DeepPartial<Product>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Product>) {
+    super(input);
+  }
 
-    @Column({ type: Date, nullable: true })
-    deletedAt: Date | null;
+  @Column({ type: Date, nullable: true })
+  deletedAt: Date | null;
 
-    name: LocaleString;
+  name: LocaleString;
 
-    slug: LocaleString;
+  slug: LocaleString;
 
-    description: LocaleString;
+  description: LocaleString;
 
-    @Column({ default: true })
-    enabled: boolean;
+  @Column({ default: true })
+  enabled: boolean;
 
-    @Index()
-    @ManyToOne(type => Asset, asset => asset.featuredInProducts, { onDelete: 'SET NULL' })
-    featuredAsset: Asset;
+  @Index()
+  @ManyToOne((type) => Asset, (asset) => asset.featuredInProducts, {
+    onDelete: "SET NULL",
+  })
+  featuredAsset: Asset;
 
-    @OneToMany(type => ProductAsset, productAsset => productAsset.product)
-    assets: ProductAsset[];
+  @OneToMany((type) => ProductAsset, (productAsset) => productAsset.product)
+  assets: ProductAsset[];
 
-    @OneToMany(type => ProductTranslation, translation => translation.base, { eager: true })
-    translations: Array<Translation<Product>>;
+  @OneToMany((type) => ProductTranslation, (translation) => translation.base, {
+    eager: true,
+  })
+  translations: Array<Translation<Product>>;
 
-    @OneToMany(type => ProductVariant, variant => variant.product)
-    variants: ProductVariant[];
+  @OneToMany((type) => ProductVariant, (variant) => variant.product)
+  variants: ProductVariant[];
 
-    @OneToMany(type => ProductOptionGroup, optionGroup => optionGroup.product)
-    optionGroups: ProductOptionGroup[];
+  @OneToMany((type) => ProductOptionGroup, (optionGroup) => optionGroup.product)
+  optionGroups: ProductOptionGroup[];
 
-    @ManyToMany(type => FacetValue, facetValue => facetValue.products)
-    @JoinTable()
-    facetValues: FacetValue[];
+  @ManyToMany((type) => FacetValue, (facetValue) => facetValue.products)
+  @JoinTable()
+  facetValues: FacetValue[];
 
-    @ManyToMany(type => Channel, channel => channel.products)
-    @JoinTable()
-    channels: Channel[];
+  @ManyToMany((type) => Channel, (channel) => channel.products)
+  @JoinTable()
+  channels: Channel[];
 
-    @Column(type => CustomProductFields)
-    customFields: CustomProductFields;
+  @Column((type) => CustomProductFields)
+  customFields: CustomProductFields;
 }

@@ -1,9 +1,9 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { Order } from '../../entity/order/order.entity';
-import { OrderLine } from '../../entity/order-line/order-line.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { Order } from "../../entity/order/order.entity";
+import { OrderLine } from "../../entity/order-line/order-line.entity";
 
 /**
  * @description
@@ -13,17 +13,17 @@ import { OrderLine } from '../../entity/order-line/order-line.entity';
  * @docsPage OrderMergeStrategy
  */
 export interface MergedOrderLine {
-    orderLineId: ID;
-    quantity: number;
-    customFields?: any;
+  orderLineId: ID;
+  quantity: number;
+  customFields?: any;
 }
 
 export function toMergedOrderLine(line: OrderLine): MergedOrderLine {
-    return {
-        orderLineId: line.id,
-        quantity: line.quantity,
-        customFields: line.customFields,
-    };
+  return {
+    orderLineId: line.id,
+    quantity: line.quantity,
+    customFields: line.customFields,
+  };
 }
 
 /**
@@ -46,10 +46,14 @@ export function toMergedOrderLine(line: OrderLine): MergedOrderLine {
  * @docsWeight 0
  */
 export interface OrderMergeStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Merges the lines of the guest Order with those of the existing Order which is associated
-     * with the active customer.
-     */
-    merge(ctx: RequestContext, guestOrder: Order, existingOrder: Order): MergedOrderLine[];
+  /**
+   * @description
+   * Merges the lines of the guest Order with those of the existing Order which is associated
+   * with the active customer.
+   */
+  merge(
+    ctx: RequestContext,
+    guestOrder: Order,
+    existingOrder: Order,
+  ): MergedOrderLine[];
 }

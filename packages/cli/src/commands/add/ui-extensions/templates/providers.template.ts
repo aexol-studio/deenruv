@@ -1,3 +1,3 @@
 export default [
-    // Add your providers here
+  // Add your providers here
 ];

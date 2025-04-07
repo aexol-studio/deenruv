@@ -1,3 +1,3 @@
-import { defaultCampaigns } from './default-campaigns';
+import { defaultCampaigns } from "./default-campaigns";
 
 export const defaultCampaignData = () => [...defaultCampaigns()];

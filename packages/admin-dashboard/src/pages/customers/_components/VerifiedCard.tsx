@@ -1,6 +1,5 @@
 import React from 'react';
 import { Badge, CardIcons, CustomCard } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
 import { useTranslation } from 'react-i18next';
 
 interface RolesCardProps {
@@ -12,9 +11,9 @@ export const VerifiedCard: React.FC<RolesCardProps> = ({ verified }) => {
 
   return (
     <CustomCard title={t('verified.header')} icon={<CardIcons.permissions />} color="gray">
-      <Stack className="gap-2">
+      <div className="flex gap-2">
         {verified ? <Badge>{t('verified.true')}</Badge> : <Badge>{t('verified.false')}</Badge>}
-      </Stack>
+      </div>
     </CustomCard>
   );
 };

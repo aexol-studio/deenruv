@@ -1,14 +1,14 @@
-import { CurrencyCode } from '@deenruv/common/lib/generated-types';
-import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { CurrencyCode } from "@deenruv/common/lib/generated-types";
+import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomProductVariantPriceFields } from '../custom-entity-fields';
-import { EntityId } from '../entity-id.decorator';
-import { Money } from '../money.decorator';
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomProductVariantPriceFields } from "../custom-entity-fields";
+import { EntityId } from "../entity-id.decorator";
+import { Money } from "../money.decorator";
 
-import { ProductVariant } from './product-variant.entity';
+import { ProductVariant } from "./product-variant.entity";
 
 /**
  * @description
@@ -18,22 +18,29 @@ import { ProductVariant } from './product-variant.entity';
  * @docsCategory entities
  */
 @Entity()
-export class ProductVariantPrice extends DeenruvEntity implements HasCustomFields {
-    constructor(input?: DeepPartial<ProductVariantPrice>) {
-        super(input);
-    }
+export class ProductVariantPrice
+  extends DeenruvEntity
+  implements HasCustomFields
+{
+  constructor(input?: DeepPartial<ProductVariantPrice>) {
+    super(input);
+  }
 
-    @Money() price: number;
+  @Money() price: number;
 
-    @EntityId({ nullable: true }) channelId: ID;
+  @EntityId({ nullable: true }) channelId: ID;
 
-    @Column('varchar')
-    currencyCode: CurrencyCode;
+  @Column("varchar")
+  currencyCode: CurrencyCode;
 
-    @Index()
-    @ManyToOne(type => ProductVariant, variant => variant.productVariantPrices, { onDelete: 'CASCADE' })
-    variant: ProductVariant;
+  @Index()
+  @ManyToOne(
+    (type) => ProductVariant,
+    (variant) => variant.productVariantPrices,
+    { onDelete: "CASCADE" },
+  )
+  variant: ProductVariant;
 
-    @Column(type => CustomProductVariantPriceFields)
-    customFields: CustomProductVariantPriceFields;
+  @Column((type) => CustomProductVariantPriceFields)
+  customFields: CustomProductVariantPriceFields;
 }

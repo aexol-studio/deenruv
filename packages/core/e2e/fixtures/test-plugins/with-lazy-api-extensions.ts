@@ -1,23 +1,23 @@
-import { Query, Resolver } from '@nestjs/graphql';
-import { DeenruvPlugin } from '@deenruv/core';
-import gql from 'graphql-tag';
+import { Query, Resolver } from "@nestjs/graphql";
+import { DeenruvPlugin } from "@deenruv/core";
+import gql from "graphql-tag";
 
 @Resolver()
 export class TestLazyResolver {
-    @Query()
-    lazy() {
-        return 'sleeping';
-    }
+  @Query()
+  lazy() {
+    return "sleeping";
+  }
 }
 
 @DeenruvPlugin({
-    shopApiExtensions: {
-        resolvers: () => [TestLazyResolver],
-        schema: () => gql`
-            extend type Query {
-                lazy: String!
-            }
-        `,
-    },
+  shopApiExtensions: {
+    resolvers: () => [TestLazyResolver],
+    schema: () => gql`
+      extend type Query {
+        lazy: String!
+      }
+    `,
+  },
 })
 export class TestLazyExtensionPlugin {}

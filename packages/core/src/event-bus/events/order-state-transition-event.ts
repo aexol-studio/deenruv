@@ -1,7 +1,7 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Order } from '../../entity/order/order.entity';
-import { OrderState } from '../../service/helpers/order-state-machine/order-state';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Order } from "../../entity/order/order.entity";
+import { OrderState } from "../../service/helpers/order-state-machine/order-state";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -11,12 +11,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class OrderStateTransitionEvent extends DeenruvEvent {
-    constructor(
-        public fromState: OrderState,
-        public toState: OrderState,
-        public ctx: RequestContext,
-        public order: Order,
-    ) {
-        super();
-    }
+  constructor(
+    public fromState: OrderState,
+    public toState: OrderState,
+    public ctx: RequestContext,
+    public order: Order,
+  ) {
+    super();
+  }
 }

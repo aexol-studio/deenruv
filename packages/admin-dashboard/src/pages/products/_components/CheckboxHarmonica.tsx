@@ -8,7 +8,6 @@ import {
   Label,
 } from '@deenruv/react-ui-devkit';
 import { FacetValueOptionsType } from '@/graphql/facets';
-import { Stack } from '@/components';
 interface CheckboxAccordionProps {
   checkedFacetsIds?: string[];
   title: string | undefined;
@@ -29,7 +28,7 @@ export const CheckboxAccordion: React.FC<CheckboxAccordionProps> = ({
         <AccordionContent>
           <div className="grid grid-cols-4 gap-4">
             {allFacets?.map((f) => (
-              <Stack key={f.code} className="items-center  gap-3">
+              <div key={f.code} className="flex items-center gap-3">
                 <Checkbox
                   name={f.code}
                   id={f.code}
@@ -45,7 +44,7 @@ export const CheckboxAccordion: React.FC<CheckboxAccordionProps> = ({
                   )} */}
                   {f.name}
                 </Label>
-              </Stack>
+              </div>
             ))}
           </div>
         </AccordionContent>

@@ -1,27 +1,27 @@
-import { PubSub } from '@google-cloud/pubsub';
-import { PluginCommonModule, Type, DeenruvPlugin } from '@deenruv/core';
+import { PubSub } from "@google-cloud/pubsub";
+import { PluginCommonModule, Type, DeenruvPlugin } from "@deenruv/core";
 
-import { PUB_SUB_OPTIONS } from './constants';
-import { PubSubOptions } from './options';
-import { PubSubJobQueueStrategy } from './pub-sub-job-queue-strategy';
+import { PUB_SUB_OPTIONS } from "./constants";
+import { PubSubOptions } from "./options";
+import { PubSubJobQueueStrategy } from "./pub-sub-job-queue-strategy";
 
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    providers: [
-        { provide: PUB_SUB_OPTIONS, useFactory: () => PubSubPlugin.options },
-        { provide: PubSub, useFactory: () => new PubSub() },
-    ],
-    configuration: config => {
-        config.jobQueueOptions.jobQueueStrategy = new PubSubJobQueueStrategy();
-        return config;
-    },
-    compatibility: '^0.0.0',
+  imports: [PluginCommonModule],
+  providers: [
+    { provide: PUB_SUB_OPTIONS, useFactory: () => PubSubPlugin.options },
+    { provide: PubSub, useFactory: () => new PubSub() },
+  ],
+  configuration: (config) => {
+    config.jobQueueOptions.jobQueueStrategy = new PubSubJobQueueStrategy();
+    return config;
+  },
+  compatibility: "^0.0.0",
 })
 export class PubSubPlugin {
-    private static options: PubSubOptions;
+  private static options: PubSubOptions;
 
-    static init(options: PubSubOptions): Type<PubSubPlugin> {
-        this.options = options;
-        return PubSubPlugin;
-    }
+  static init(options: PubSubOptions): Type<PubSubPlugin> {
+    this.options = options;
+    return PubSubPlugin;
+  }
 }

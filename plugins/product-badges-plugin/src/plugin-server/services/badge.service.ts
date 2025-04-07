@@ -22,7 +22,7 @@ export class BadgeService {
   constructor(
     private connection: TransactionalConnection,
     private translator: TranslatorService,
-    private translatableSaver: TranslatableSaver
+    private translatableSaver: TranslatableSaver,
   ) {
     this.log("BadgeService initialized");
   }
@@ -46,7 +46,7 @@ export class BadgeService {
 
   async createBadge(
     ctx: RequestContext,
-    { productId, ...input }: ModelTypes["CreateBadgeInput"]
+    { productId, ...input }: ModelTypes["CreateBadgeInput"],
   ) {
     const product = await this.connection
       .getRepository(ctx, Product)

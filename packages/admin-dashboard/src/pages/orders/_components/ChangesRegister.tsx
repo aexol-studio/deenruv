@@ -51,10 +51,10 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
       let icon;
       switch (order?.currencyCode) {
         case 'USD':
-          icon = <DollarSign className="h-3.5 w-3.5" />;
+          icon = <DollarSign className="size-3.5" />;
           break;
         case 'EUR':
-          icon = <Euro className="h-3.5 w-3.5" />;
+          icon = <Euro className="size-3.5" />;
           break;
         default:
           icon = order?.currencyCode;
@@ -75,7 +75,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
       <Card className="border-muted">
         <CardContent className="flex flex-col items-center justify-center py-16 text-center">
           <div className="mb-4">
-            <Loader className="h-10 w-10 animate-spin text-orange-500" />
+            <Loader className="size-10 animate-spin text-orange-500" />
           </div>
           <h3 className="mb-2 text-xl font-medium">{t('changes.loading.title')}</h3>
           <p className="text-muted-foreground max-w-md">{t('changes.loading.description')}</p>
@@ -93,7 +93,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
       <Card className="border-l-4 border-l-gray-300 dark:border-l-gray-600">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-gray-500" />
+            <FileText className="size-5 text-gray-500" />
             {t('changes.emptyState.noChanges', 'No Changes')}
           </CardTitle>
         </CardHeader>
@@ -112,7 +112,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
         <Card className="border-l-4 border-l-amber-500 shadow-sm dark:border-l-amber-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <ArrowRight className="h-5 w-5 text-amber-500 dark:text-amber-400" />
+              <ArrowRight className="size-5 text-amber-500 dark:text-amber-400" />
               {t('changes.existingLines', 'Changes to Existing Items')}
             </CardTitle>
           </CardHeader>
@@ -162,7 +162,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
         <Card className="border-l-4 border-l-green-500 shadow-sm dark:border-l-green-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5 text-green-500 dark:text-green-400" />
+              <Plus className="size-5 text-green-500 dark:text-green-400" />
               {t('changes.newLines', 'Newly Added Items')}
             </CardTitle>
           </CardHeader>
@@ -216,7 +216,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
                         <TableRow key={lineChange.lineID}>
                           <TableCell className="font-medium">
                             <div className="flex items-center gap-2">
-                              <Package className="h-4 w-4 text-green-500 dark:text-green-400" />
+                              <Package className="size-4 text-green-500 dark:text-green-400" />
                               {variant.name || lineChange.variantName || t('changes.unknownProduct', 'Unknown Product')}
                             </div>
                           </TableCell>
@@ -240,7 +240,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
         <Card className="border-l-4 border-l-blue-500 shadow-sm dark:border-l-blue-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+              <Plus className="size-5 text-blue-500 dark:text-blue-400" />
               {t('changes.surcharges', 'Added Surcharges')}
             </CardTitle>
           </CardHeader>
@@ -262,13 +262,13 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
                       <TableRow key={index}>
                         <TableCell className="font-medium">
                           <div className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                            <FileText className="size-4 text-blue-500 dark:text-blue-400" />
                             {item.description || t('changes.unnamedSurcharge', 'Unnamed Surcharge')}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Tag className="text-muted-foreground h-4 w-4" />
+                            <Tag className="text-muted-foreground size-4" />
                             <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">{item.sku || '—'}</code>
                           </div>
                         </TableCell>
@@ -289,7 +289,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
         <Card className="border-l-4 border-l-purple-500 shadow-sm dark:border-l-purple-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Building className="h-5 w-5 text-purple-500 dark:text-purple-400" />
+              <Building className="size-5 text-purple-500 dark:text-purple-400" />
               {t('changes.billingAddress')}
             </CardTitle>
           </CardHeader>
@@ -302,7 +302,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
         <Card className="border-l-4 border-l-indigo-500 shadow-sm dark:border-l-indigo-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Pin className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+              <Pin className="size-5 text-indigo-500 dark:text-indigo-400" />
               {t('changes.shippingAddress')}
             </CardTitle>
           </CardHeader>
@@ -315,7 +315,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
         <Card className="border-l-4 border-l-orange-500 shadow-sm dark:border-l-orange-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Component className="h-5 w-5 text-orange-500 dark:text-orange-400" />
+              <Component className="size-5 text-orange-500 dark:text-orange-400" />
               {t('changes.shippingMethod')}
             </CardTitle>
           </CardHeader>
@@ -329,7 +329,7 @@ export const ChangesRegister: React.FC<{ changes: ChangesRegistry | undefined }>
     <Card className="border-muted">
       <CardContent className="flex flex-col items-center justify-center py-16 text-center">
         <div className="mb-4">
-          <Loader className="h-10 w-10 animate-spin text-orange-500" />
+          <Loader className="size-10 animate-spin text-orange-500" />
         </div>
         <h3 className="mb-2 text-xl font-medium">Checking for Changes</h3>
         <p className="text-muted-foreground max-w-md">Order changes are being checked. This may take a moment...</p>

@@ -1,28 +1,33 @@
-import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 
-import { Translation } from '../../common/types/locale-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomFacetFieldsTranslation } from '../custom-entity-fields';
+import { Translation } from "../../common/types/locale-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomFacetFieldsTranslation } from "../custom-entity-fields";
 
-import { Facet } from './facet.entity';
+import { Facet } from "./facet.entity";
 
 @Entity()
-export class FacetTranslation extends DeenruvEntity implements Translation<Facet>, HasCustomFields {
-    constructor(input?: DeepPartial<Translation<FacetTranslation>>) {
-        super(input);
-    }
+export class FacetTranslation
+  extends DeenruvEntity
+  implements Translation<Facet>, HasCustomFields
+{
+  constructor(input?: DeepPartial<Translation<FacetTranslation>>) {
+    super(input);
+  }
 
-    @Column('varchar') languageCode: LanguageCode;
+  @Column("varchar") languageCode: LanguageCode;
 
-    @Column() name: string;
+  @Column() name: string;
 
-    @Index()
-    @ManyToOne(type => Facet, base => base.translations, { onDelete: 'CASCADE' })
-    base: Facet;
+  @Index()
+  @ManyToOne((type) => Facet, (base) => base.translations, {
+    onDelete: "CASCADE",
+  })
+  base: Facet;
 
-    @Column(type => CustomFacetFieldsTranslation)
-    customFields: CustomFacetFieldsTranslation;
+  @Column((type) => CustomFacetFieldsTranslation)
+  customFields: CustomFacetFieldsTranslation;
 }

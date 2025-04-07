@@ -1,12 +1,12 @@
-import { priceFormatter, useLazyQuery } from '@deenruv/react-ui-devkit';
-import React, { useEffect, useState } from 'react';
-import { OrderSummaryMetricsQuery } from '../../graphql';
-import { DateRangeType } from '../../types';
-import { CurrencyCode, ModelTypes } from '../../zeus';
-import { useTranslation } from 'react-i18next';
+import { priceFormatter, useLazyQuery } from "@deenruv/react-ui-devkit";
+import React, { useEffect, useState } from "react";
+import { OrderSummaryMetricsQuery } from "../../graphql";
+import { DateRangeType } from "../../types";
+import { CurrencyCode, ModelTypes } from "../../zeus";
+import { useTranslation } from "react-i18next";
 
-import { giveSummaryMetricsRatio } from '../../utils';
-import { RatioBadge } from './RatioBadge';
+import { giveSummaryMetricsRatio } from "../../utils";
+import { RatioBadge } from "./RatioBadge";
 
 interface OrdersSummaryTileProps {
   dateRange: { range: DateRangeType; prevRange: DateRangeType };
@@ -17,14 +17,14 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
   dateRange,
   orderStates,
 }) => {
-  const { t } = useTranslation('dashboard-widgets-plugin', {
+  const { t } = useTranslation("dashboard-widgets-plugin", {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });
   const [getOrdersSummaryMetric] = useLazyQuery(OrderSummaryMetricsQuery);
   const [metricLoading, setMetricLoading] = useState(false);
   const [ordersSummaryMetric, setOrdersSummaryMetrics] = useState<{
-    metric: ModelTypes['OrderSummaryDataMetric'];
-    prevRatio: ModelTypes['OrderSummaryDataMetric'];
+    metric: ModelTypes["OrderSummaryDataMetric"];
+    prevRatio: ModelTypes["OrderSummaryDataMetric"];
   }>();
   const getOrders = async ({
     prevRange,
@@ -69,11 +69,11 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
 
   return (
     <div className="px-6">
-      <h2 className="pb-2">{t('summary')}</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 border bg-muted/20 rounded-md">
-        <div className="p-6 border-r pb-1">
-          <div className="flex flex-col-reverse 2xl:flex-row gap-1 2xl:items-center justify-between">
-            <h4 className="text-foreground/70 text-sm">{t('netSold')}</h4>
+      <h2 className="pb-2">{t("summary")}</h2>
+      <div className="bg-muted/20 grid grid-cols-2 rounded-md border lg:grid-cols-4">
+        <div className="border-r p-6 pb-1">
+          <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
+            <h4 className="text-foreground/70 text-sm">{t("netSold")}</h4>
             <RatioBadge ratio={ordersSummaryMetric?.prevRatio.total} />
           </div>
           <h3 className="flex items-end">
@@ -83,10 +83,10 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
             )}
           </h3>
         </div>
-        <div className="p-6 border-r ">
-          <div className="flex flex-col-reverse 2xl:flex-row gap-1 2xl:items-center justify-between">
+        <div className="border-r p-6 ">
+          <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
             <h4 className="text-foreground/70 text-sm">
-              {t('averageNetSold')}
+              {t("averageNetSold")}
             </h4>
             <RatioBadge
               ratio={ordersSummaryMetric?.prevRatio.averageOrderValue}
@@ -99,17 +99,17 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
             )}
           </h3>
         </div>
-        <div className="p-6 border-r  border-t xl:border-t-0">
-          <div className="flex flex-col-reverse 2xl:flex-row gap-1 2xl:items-center justify-between">
-            <h4 className="text-foreground/70 text-sm">{t('orders')}</h4>
+        <div className="border-r border-t  p-6 xl:border-t-0">
+          <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
+            <h4 className="text-foreground/70 text-sm">{t("orders")}</h4>
             <RatioBadge ratio={ordersSummaryMetric?.prevRatio.orderCount} />
           </div>
 
           <h3>{ordersSummaryMetric?.metric?.orderCount || 0}</h3>
         </div>
-        <div className="p-6  border-t xl:border-t-0">
-          <div className="flex flex-col-reverse 2xl:flex-row gap-1 2xl:items-center justify-between">
-            <h4 className="text-foreground/70 text-sm">{t('soldProducts')}</h4>
+        <div className="border-t  p-6 xl:border-t-0">
+          <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
+            <h4 className="text-foreground/70 text-sm">{t("soldProducts")}</h4>
             <RatioBadge ratio={ordersSummaryMetric?.prevRatio.productCount} />
           </div>
           <h3>{ordersSummaryMetric?.metric?.productCount || 0}</h3>

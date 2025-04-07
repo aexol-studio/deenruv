@@ -19,7 +19,6 @@ import {
 import { toast } from 'sonner';
 import { AddOptionGroupDialog } from '@/pages/products/_components/AddOptionGroupDialog';
 import { OptionValueCard } from '@/pages/products/_components/OptionValueCard';
-import { Stack } from '@/components';
 import { OptionGroup } from '@/pages/products/_components/OptionGroup';
 import { Info } from 'lucide-react';
 
@@ -53,8 +52,8 @@ export const OptionsTab: React.FC = () => {
   }, [fetchOptionGroups]);
 
   return (
-    <Stack column className="items-end">
-      <Stack className="w-full gap-3" column>
+    <div className="flex flex-col items-end">
+      <div className="flex w-full flex-col gap-3">
         {getMarker()}
         <CustomCard
           title={t('optionGroups')}
@@ -109,7 +108,7 @@ export const OptionsTab: React.FC = () => {
               upperRight={
                 !oG.options.length && (
                   <div className="flex items-center gap-2 text-sm">
-                    <Info className="h-4 w-4" />
+                    <Info className="size-4" />
                     {t('optionsTab.noOptionValues')}
                   </div>
                 )
@@ -130,7 +129,7 @@ export const OptionsTab: React.FC = () => {
               </div>
             </CustomCard>
           ))}
-      </Stack>
-    </Stack>
+      </div>
+    </div>
   );
 };

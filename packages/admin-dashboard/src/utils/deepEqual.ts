@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function areObjectsEqual(obj1: Record<string, any>, obj2: Record<string, any>) {
   if (obj1 === obj2) return true;
 

@@ -1,16 +1,16 @@
 import {
-    OnTransitionEndFn,
-    OnTransitionErrorFn,
-    OnTransitionStartFn,
-    StateMachineConfig,
-    Transitions,
-} from '../../common/finite-state-machine/types';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
+  OnTransitionEndFn,
+  OnTransitionErrorFn,
+  OnTransitionStartFn,
+  StateMachineConfig,
+  Transitions,
+} from "../../common/finite-state-machine/types";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
 import {
-    CustomOrderStates,
-    OrderState,
-    OrderTransitionData,
-} from '../../service/helpers/order-state-machine/order-state';
+  CustomOrderStates,
+  OrderState,
+  OrderTransitionData,
+} from "../../service/helpers/order-state-machine/order-state";
 
 /**
  * @description
@@ -32,11 +32,16 @@ import {
  * @docsPage OrderProcess
  * @docsWeight 0
  */
-export interface OrderProcess<State extends keyof CustomOrderStates | string> extends InjectableStrategy {
-    transitions?: Transitions<State, State | OrderState> & Partial<Transitions<OrderState | State>>;
-    onTransitionStart?: OnTransitionStartFn<State | OrderState, OrderTransitionData>;
-    onTransitionEnd?: OnTransitionEndFn<State | OrderState, OrderTransitionData>;
-    onTransitionError?: OnTransitionErrorFn<State | OrderState>;
+export interface OrderProcess<State extends keyof CustomOrderStates | string>
+  extends InjectableStrategy {
+  transitions?: Transitions<State, State | OrderState> &
+    Partial<Transitions<OrderState | State>>;
+  onTransitionStart?: OnTransitionStartFn<
+    State | OrderState,
+    OrderTransitionData
+  >;
+  onTransitionEnd?: OnTransitionEndFn<State | OrderState, OrderTransitionData>;
+  onTransitionError?: OnTransitionErrorFn<State | OrderState>;
 }
 
 /**
@@ -45,5 +50,6 @@ export interface OrderProcess<State extends keyof CustomOrderStates | string> ex
  *
  * @deprecated Use OrderProcess
  */
-export interface CustomOrderProcess<State extends keyof CustomOrderStates | string>
-    extends OrderProcess<State> {}
+export interface CustomOrderProcess<
+  State extends keyof CustomOrderStates | string,
+> extends OrderProcess<State> {}

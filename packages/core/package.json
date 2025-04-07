@@ -22,12 +22,13 @@
     "copy:watch": "ts-node build/copy-static.ts watch",
     "build": "rimraf dist && tsc -p ./build/tsconfig.build.json && tsc -p ./build/tsconfig.cli.json && ts-node build/copy-static.ts build",
     "watch": "concurrently npm:tsc:watch npm:copy:watch",
-    "lint": "eslint --fix .",
     "test": "vitest --config vitest.config.mts --run",
     "e2e": "cross-env PACKAGE=core vitest --config ../../e2e-common/vitest.config.mts --run",
     "e2e:watch": "cross-env PACKAGE=core vitest --config ../../e2e-common/vitest.config.mts",
     "bench": "cross-env PACKAGE=core vitest --config ../../e2e-common/vitest.config.bench.ts --run",
-    "ci": "npm run build"
+    "ci": "npm run build",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "publishConfig": {
     "access": "public"
@@ -89,7 +90,6 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-session": "^2.0.48",
-    "@types/csv-parse": "^1.2.2",
     "@types/express": "^4.17.21",
     "@types/graphql-upload": "^16.0.7",
     "@types/gulp": "^4.0.17",

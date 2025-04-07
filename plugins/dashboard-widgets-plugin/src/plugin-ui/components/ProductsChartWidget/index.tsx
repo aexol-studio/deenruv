@@ -5,7 +5,7 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
-} from 'recharts';
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -21,37 +21,37 @@ import {
   useLazyQuery,
   useSettings,
   useWidgetItem,
-} from '@deenruv/react-ui-devkit';
-import { ChartConfig, ChartTooltip, Separator } from '@deenruv/react-ui-devkit';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+} from "@deenruv/react-ui-devkit";
+import { ChartConfig, ChartTooltip, Separator } from "@deenruv/react-ui-devkit";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   MetricRangeType,
   ChartMetricType,
   MetricIntervalType,
-} from '../../zeus';
-import { useTranslation } from 'react-i18next';
+} from "../../zeus";
+import { useTranslation } from "react-i18next";
 
-import { endOfWeek, startOfWeek } from 'date-fns';
-import { colors, EmptyData } from '../shared';
-import { BarChartMetricQuery } from '../../graphql';
+import { endOfWeek, startOfWeek } from "date-fns";
+import { colors, EmptyData } from "../shared";
+import { BarChartMetricQuery } from "../../graphql";
 
-import { CurrencyCode } from '@deenruv/admin-types';
-import { CustomBarChartTooltip } from './CustomBarChartTooltip';
-import { UIPluginOptions } from '../..';
-import { getCustomIntervalDates, getRandomColor } from '../../utils';
+import { CurrencyCode } from "@deenruv/admin-types";
+import { CustomBarChartTooltip } from "./CustomBarChartTooltip";
+import { UIPluginOptions } from "../..";
+import { getCustomIntervalDates, getRandomColor } from "../../utils";
 
-import { DateRangeType } from '../../types';
-import { MetricsRangeSelect } from '../shared/MetricsRangeSelect';
+import { DateRangeType } from "../../types";
+import { MetricsRangeSelect } from "../shared/MetricsRangeSelect";
 
-type ShowData = 'FIRST_FIVE' | 'ALL';
+type ShowData = "FIRST_FIVE" | "ALL";
 
 export const ProductsChartWidget = () => {
-  const { t } = useTranslation('dashboard-widgets-plugin', {
+  const { t } = useTranslation("dashboard-widgets-plugin", {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });
   const [fetchChartMetrics] = useLazyQuery(BarChartMetricQuery);
   const currencyCode = useSettings((p) => p.selectedChannel?.currencyCode);
-  const [showData, setShowData] = useState<ShowData>('FIRST_FIVE');
+  const [showData, setShowData] = useState<ShowData>("FIRST_FIVE");
   const [dateRange, setDateRange] = useState<DateRangeType>({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
     end: endOfWeek(new Date(), { weekStartsOn: 1 }),
@@ -66,11 +66,11 @@ export const ProductsChartWidget = () => {
   const [selectedOrderStates, setSelectedOrderStates] = useState<
     Array<ORDER_STATE[keyof ORDER_STATE]>
   >([
-    'PaymentSettled',
-    'PartiallyShipped',
-    'Shipped',
-    'PartiallyDelivered',
-    'Delivered',
+    "PaymentSettled",
+    "PartiallyShipped",
+    "Shipped",
+    "PartiallyDelivered",
+    "Delivered",
   ]);
   const { plugin } = useWidgetItem();
 
@@ -141,11 +141,11 @@ export const ProductsChartWidget = () => {
   }, [dateRange, selectedOrderStates]);
 
   return (
-    <Card className="flex flex-col border-0 shadow-none h-full">
+    <Card className="flex h-full flex-col border-0 shadow-none">
       <CardHeader className="flex justify-between">
-        <div className="flex items-start justify-between gap-2 flex-wrap">
-          <CardTitle className="text-lg">{t('bestsellers')}</CardTitle>{' '}
-          <div className="flex-col flex gap-2 w-[240px]">
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <CardTitle className="text-lg">{t("bestsellers")}</CardTitle>{" "}
+          <div className="flex w-[240px] flex-col gap-2">
             <MetricsRangeSelect
               value={metricRangeTypeSelectValue}
               changeMetricInterval={setMetricRangeTypeSelectValue}
@@ -155,17 +155,17 @@ export const ProductsChartWidget = () => {
             <Select
               onValueChange={(value) => setShowData(value as ShowData)}
               value={showData}
-              defaultValue={'BY_COUNT'}
+              defaultValue={"BY_COUNT"}
             >
               <SelectTrigger className="h-[30px] w-[240px] text-[13px]">
-                <SelectValue placeholder={t('sortBy')} />
+                <SelectValue placeholder={t("sortBy")} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value={'FIRST_FIVE'}>
-                    {t('showFirstFive')}
+                  <SelectItem value={"FIRST_FIVE"}>
+                    {t("showFirstFive")}
                   </SelectItem>
-                  <SelectItem value={'ALL'}>{t('showAll')}</SelectItem>
+                  <SelectItem value={"ALL"}>{t("showAll")}</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -173,24 +173,24 @@ export const ProductsChartWidget = () => {
         </div>
       </CardHeader>
       <Separator className="mb-3" />
-      <CardContent className="flex flex-1 justify-center items-center text-xs  ">
+      <CardContent className="flex flex-1 items-center justify-center text-xs  ">
         {!chartData.length ? (
           <div className="flex flex-col items-center text-center">
-            <EmptyData text={t('emptyData')} />
+            <EmptyData text={t("emptyData")} />
           </div>
         ) : (
           <ResponsiveContainer
             className="transition-all"
             width="100%"
             height={
-              (showData === 'FIRST_FIVE'
+              (showData === "FIRST_FIVE"
                 ? chartData.slice(0, 5).length
                 : chartData.length) * 50
             }
           >
             <BarChart
               data={
-                showData === 'FIRST_FIVE' ? chartData.slice(0, 5) : chartData
+                showData === "FIRST_FIVE" ? chartData.slice(0, 5) : chartData
               }
               layout="vertical"
             >

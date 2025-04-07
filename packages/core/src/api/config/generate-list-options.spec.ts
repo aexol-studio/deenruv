@@ -1,16 +1,14 @@
 // Using require right now to force the commonjs version of GraphQL to be used
 // when running vitest tests. See https://github.com/vitejs/vite/issues/7879
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-import { describe, expect, it } from 'vitest';
 
-import { generateListOptions } from './generate-list-options';
+import { describe, expect, it } from "vitest";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { buildSchema, printType } = require('graphql');
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { generateListOptions } from "./generate-list-options";
 
-describe('generateListOptions()', () => {
-    const COMMON_TYPES = `
+const { buildSchema, printType } = require("graphql");
+
+describe("generateListOptions()", () => {
+  const COMMON_TYPES = `
     scalar JSON
     scalar DateTime
 
@@ -48,13 +46,13 @@ describe('generateListOptions()', () => {
     }
     `;
 
-    const removeLeadingWhitespace = (s: string) => {
-        const indent = s.match(/^\s+/m)![0].replace(/\n/, '');
-        return s.replace(new RegExp(`^${indent}`, 'gm'), '').trim();
-    };
+  const removeLeadingWhitespace = (s: string) => {
+    const indent = s.match(/^\s+/m)![0].replace(/\n/, "");
+    return s.replace(new RegExp(`^${indent}`, "gm"), "").trim();
+  };
 
-    it('creates the required input types', () => {
-        const input = `
+  it("creates the required input types", () => {
+    const input = `
                 ${COMMON_TYPES}
                type Query {
                    people(options: PersonListOptions): PersonList
@@ -69,10 +67,10 @@ describe('generateListOptions()', () => {
                input PersonListOptions
            `;
 
-        const result = generateListOptions(input);
+    const result = generateListOptions(input);
 
-        expect(printType(result.getType('PersonListOptions')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonListOptions")!)).toBe(
+      removeLeadingWhitespace(`
                    input PersonListOptions {
                      """Skips the first n results, for use in pagination"""
                      skip: Int
@@ -86,29 +84,29 @@ describe('generateListOptions()', () => {
                      """Allows the results to be filtered"""
                      filter: PersonFilterParameter
                    }`),
-        );
+    );
 
-        expect(printType(result.getType('PersonSortParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonSortParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input PersonSortParameter {
                      name: SortOrder
                      age: SortOrder
                    }`),
-        );
+    );
 
-        expect(printType(result.getType('PersonFilterParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonFilterParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input PersonFilterParameter {
                      name: StringOperators
                      age: NumberOperators
                      _and: [PersonFilterParameter!]
                      _or: [PersonFilterParameter!]
                    }`),
-        );
-    });
+    );
+  });
 
-    it('works with a non-nullabel list type', () => {
-        const input = `
+  it("works with a non-nullabel list type", () => {
+    const input = `
                 ${COMMON_TYPES}
                type Query {
                    people: PersonList!
@@ -120,13 +118,13 @@ describe('generateListOptions()', () => {
                }
            `;
 
-        const result = generateListOptions(buildSchema(input));
+    const result = generateListOptions(buildSchema(input));
 
-        expect(result.getType('PersonListOptions')).toBeTruthy();
-    });
+    expect(result.getType("PersonListOptions")).toBeTruthy();
+  });
 
-    it('uses the correct filter operators', () => {
-        const input = `
+  it("uses the correct filter operators", () => {
+    const input = `
                 ${COMMON_TYPES}
                type Query {
                    people(options: PersonListOptions): PersonList
@@ -150,10 +148,10 @@ describe('generateListOptions()', () => {
                input PersonListOptions
            `;
 
-        const result = generateListOptions(buildSchema(input));
+    const result = generateListOptions(buildSchema(input));
 
-        expect(printType(result.getType('PersonFilterParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonFilterParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input PersonFilterParameter {
                      name: StringOperators
                      age: NumberOperators
@@ -164,11 +162,11 @@ describe('generateListOptions()', () => {
                      _and: [PersonFilterParameter!]
                      _or: [PersonFilterParameter!]
                    }`),
-        );
-    });
+    );
+  });
 
-    it('creates the ListOptions interface and argument if not defined', () => {
-        const input = `
+  it("creates the ListOptions interface and argument if not defined", () => {
+    const input = `
                ${COMMON_TYPES}
                type Query {
                    people: PersonList
@@ -179,10 +177,10 @@ describe('generateListOptions()', () => {
                }
            `;
 
-        const result = generateListOptions(buildSchema(input));
+    const result = generateListOptions(buildSchema(input));
 
-        expect(printType(result.getType('PersonListOptions')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonListOptions")!)).toBe(
+      removeLeadingWhitespace(`
                     input PersonListOptions {
                       """Skips the first n results, for use in pagination"""
                       skip: Int
@@ -196,16 +194,16 @@ describe('generateListOptions()', () => {
                       """Allows the results to be filtered"""
                       filter: PersonFilterParameter
                     }`),
-        );
+    );
 
-        const args = result.getQueryType()!.getFields().people.args;
-        expect(args.length).toBe(1);
-        expect(args[0].name).toBe('options');
-        expect(args[0].type.toString()).toBe('PersonListOptions');
-    });
+    const args = result.getQueryType()!.getFields().people.args;
+    expect(args.length).toBe(1);
+    expect(args[0].name).toBe("options");
+    expect(args[0].type.toString()).toBe("PersonListOptions");
+  });
 
-    it('extends the ListOptions interface if already defined', () => {
-        const input = `
+  it("extends the ListOptions interface if already defined", () => {
+    const input = `
                ${COMMON_TYPES}
                type Query {
                    people(options: PersonListOptions): PersonList
@@ -220,10 +218,10 @@ describe('generateListOptions()', () => {
                }
            `;
 
-        const result = generateListOptions(buildSchema(input));
+    const result = generateListOptions(buildSchema(input));
 
-        expect(printType(result.getType('PersonListOptions')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonListOptions")!)).toBe(
+      removeLeadingWhitespace(`
                     input PersonListOptions {
                       categoryId: ID
 
@@ -239,16 +237,16 @@ describe('generateListOptions()', () => {
                       """Allows the results to be filtered"""
                       filter: PersonFilterParameter
                     }`),
-        );
+    );
 
-        const args = result.getQueryType()!.getFields().people.args;
-        expect(args.length).toBe(1);
-        expect(args[0].name).toBe('options');
-        expect(args[0].type.toString()).toBe('PersonListOptions');
-    });
+    const args = result.getQueryType()!.getFields().people.args;
+    expect(args.length).toBe(1);
+    expect(args[0].name).toBe("options");
+    expect(args[0].type.toString()).toBe("PersonListOptions");
+  });
 
-    it('ignores properties with types which cannot be sorted or filtered', () => {
-        const input = `
+  it("ignores properties with types which cannot be sorted or filtered", () => {
+    const input = `
                ${COMMON_TYPES}
                type Query {
                    people: PersonList
@@ -267,29 +265,29 @@ describe('generateListOptions()', () => {
                }
            `;
 
-        const result = generateListOptions(buildSchema(input));
+    const result = generateListOptions(buildSchema(input));
 
-        expect(printType(result.getType('PersonSortParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonSortParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input PersonSortParameter {
                      id: SortOrder
                      name: SortOrder
                    }`),
-        );
+    );
 
-        expect(printType(result.getType('PersonFilterParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("PersonFilterParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input PersonFilterParameter {
                      id: IDOperators
                      name: StringOperators
                      _and: [PersonFilterParameter!]
                      _or: [PersonFilterParameter!]
                    }`),
-        );
-    });
+    );
+  });
 
-    it('generates ListOptions for nested list queries', () => {
-        const input = `
+  it("generates ListOptions for nested list queries", () => {
+    const input = `
                ${COMMON_TYPES}
                type Query {
                    people: PersonList
@@ -314,10 +312,10 @@ describe('generateListOptions()', () => {
                input OrderListOptions
            `;
 
-        const result = generateListOptions(buildSchema(input));
+    const result = generateListOptions(buildSchema(input));
 
-        expect(printType(result.getType('OrderListOptions')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("OrderListOptions")!)).toBe(
+      removeLeadingWhitespace(`
                    input OrderListOptions {
                      """Skips the first n results, for use in pagination"""
                      skip: Int
@@ -331,23 +329,23 @@ describe('generateListOptions()', () => {
                      """Allows the results to be filtered"""
                      filter: OrderFilterParameter
                    }`),
-        );
-        expect(printType(result.getType('OrderSortParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    );
+    expect(printType(result.getType("OrderSortParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input OrderSortParameter {
                      id: SortOrder
                      code: SortOrder
                    }`),
-        );
+    );
 
-        expect(printType(result.getType('OrderFilterParameter')!)).toBe(
-            removeLeadingWhitespace(`
+    expect(printType(result.getType("OrderFilterParameter")!)).toBe(
+      removeLeadingWhitespace(`
                    input OrderFilterParameter {
                      id: IDOperators
                      code: StringOperators
                      _and: [OrderFilterParameter!]
                      _or: [OrderFilterParameter!]
                    }`),
-        );
-    });
+    );
+  });
 });

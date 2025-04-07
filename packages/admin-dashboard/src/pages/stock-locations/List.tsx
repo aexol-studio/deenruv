@@ -1,13 +1,10 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { StockLocationListSelector } from '@/graphql/stockLocations';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(StockLocationListSelector, additionalSelector ?? {});
+const tableId = 'stockLocations-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     ['stockLocations']: [
       {
@@ -19,7 +16,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['stockLocations'];
@@ -29,13 +26,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
   try {
     const ids = items.map((item) => item.id);
     const { deleteStockLocations } = await apiClient('mutation')({
-      deleteStockLocations: [
-        { input: ids.map((id) => ({ id })) },
-        {
-          message: true,
-          result: true,
-        },
-      ],
+      deleteStockLocations: [{ input: ids.map((id) => ({ id })) }, { message: true, result: true }],
     });
     return !!deleteStockLocations.length;
   } catch (error) {
@@ -54,7 +45,7 @@ export const StockLocationsListPage = () => (
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'StockLocation'}
     route={Routes['stockLocations']}
-    tableId="stockLocations-list-view"
+    tableId={tableId}
     fetch={fetch}
     onRemove={onRemove}
     createPermissions={[Permission.CreateStockLocation]}

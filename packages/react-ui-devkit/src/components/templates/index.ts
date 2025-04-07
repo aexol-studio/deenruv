@@ -1,2 +1,2 @@
-export * from './DetailList';
-export * from './DetailView';
+export * from "./DetailList";
+export * from "./DetailView";

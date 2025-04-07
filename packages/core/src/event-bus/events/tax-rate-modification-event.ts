@@ -1,6 +1,6 @@
-import { RequestContext } from '../../api/common/request-context';
-import { TaxRate } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { TaxRate } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -11,7 +11,10 @@ import { DeenruvEvent } from '../deenruv-event';
  * @deprecated Use TaxRateEvent instead
  */
 export class TaxRateModificationEvent extends DeenruvEvent {
-    constructor(public ctx: RequestContext, public taxRate: TaxRate) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public taxRate: TaxRate,
+  ) {
+    super();
+  }
 }

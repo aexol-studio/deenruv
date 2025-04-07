@@ -1,26 +1,28 @@
-import { ConfigArg, OrderLineInput } from '@deenruv/common/lib/generated-types';
+import { ConfigArg, OrderLineInput } from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api/common/request-context';
+import { RequestContext } from "../../api/common/request-context";
 import {
-    ConfigArgs,
-    ConfigArgValues,
-    ConfigurableOperationDef,
-    ConfigurableOperationDefOptions,
-} from '../../common/configurable-operation';
-import { OnTransitionStartFn } from '../../common/finite-state-machine/types';
-import { Fulfillment } from '../../entity/fulfillment/fulfillment.entity';
-import { Order } from '../../entity/order/order.entity';
+  ConfigArgs,
+  ConfigArgValues,
+  ConfigurableOperationDef,
+  ConfigurableOperationDefOptions,
+} from "../../common/configurable-operation";
+import { OnTransitionStartFn } from "../../common/finite-state-machine/types";
+import { Fulfillment } from "../../entity/fulfillment/fulfillment.entity";
+import { Order } from "../../entity/order/order.entity";
 import {
-    FulfillmentState,
-    FulfillmentTransitionData,
-} from '../../service/helpers/fulfillment-state-machine/fulfillment-state';
+  FulfillmentState,
+  FulfillmentTransitionData,
+} from "../../service/helpers/fulfillment-state-machine/fulfillment-state";
 
 /**
  * @docsCategory fulfillment
  * @docsPage FulfillmentHandler
  * @docsWeight 3
  */
-export type CreateFulfillmentResult = Partial<Pick<Fulfillment, 'trackingCode' | 'method' | 'customFields'>>;
+export type CreateFulfillmentResult = Partial<
+  Pick<Fulfillment, "trackingCode" | "method" | "customFields">
+>;
 
 /**
  * @description
@@ -31,10 +33,10 @@ export type CreateFulfillmentResult = Partial<Pick<Fulfillment, 'trackingCode' |
  * @docsWeight 2
  */
 export type CreateFulfillmentFn<T extends ConfigArgs> = (
-    ctx: RequestContext,
-    orders: Order[],
-    lines: OrderLineInput[],
-    args: ConfigArgValues<T>,
+  ctx: RequestContext,
+  orders: Order[],
+  lines: OrderLineInput[],
+  args: ConfigArgValues<T>,
 ) => CreateFulfillmentResult | Promise<CreateFulfillmentResult>;
 
 /**
@@ -45,26 +47,30 @@ export type CreateFulfillmentFn<T extends ConfigArgs> = (
  * @docsPage FulfillmentHandler
  * @docsWeight 1
  */
-export interface FulfillmentHandlerConfig<T extends ConfigArgs> extends ConfigurableOperationDefOptions<T> {
-    /**
-     * @description
-     * Invoked when the `addFulfillmentToOrder` mutation is executed with this handler selected.
-     *
-     * If an Error is thrown from within this function, no Fulfillment is created and the `CreateFulfillmentError`
-     * result will be returned.
-     */
-    createFulfillment: CreateFulfillmentFn<T>;
-    /**
-     * @description
-     * This allows the handler to intercept state transitions of the created Fulfillment. This works much in the
-     * same way as the {@link FulfillmentProcess} `onTransitionStart` method (i.e. returning `false` or
-     * `string` will be interpreted as an error and prevent the state transition), except that it is only invoked
-     * on Fulfillments which were created with this particular FulfillmentHandler.
-     *
-     * It can be useful e.g. to intercept Fulfillment cancellations and relay that information to a 3rd-party
-     * shipping API.
-     */
-    onFulfillmentTransition?: OnTransitionStartFn<FulfillmentState, FulfillmentTransitionData>;
+export interface FulfillmentHandlerConfig<T extends ConfigArgs>
+  extends ConfigurableOperationDefOptions<T> {
+  /**
+   * @description
+   * Invoked when the `addFulfillmentToOrder` mutation is executed with this handler selected.
+   *
+   * If an Error is thrown from within this function, no Fulfillment is created and the `CreateFulfillmentError`
+   * result will be returned.
+   */
+  createFulfillment: CreateFulfillmentFn<T>;
+  /**
+   * @description
+   * This allows the handler to intercept state transitions of the created Fulfillment. This works much in the
+   * same way as the {@link FulfillmentProcess} `onTransitionStart` method (i.e. returning `false` or
+   * `string` will be interpreted as an error and prevent the state transition), except that it is only invoked
+   * on Fulfillments which were created with this particular FulfillmentHandler.
+   *
+   * It can be useful e.g. to intercept Fulfillment cancellations and relay that information to a 3rd-party
+   * shipping API.
+   */
+  onFulfillmentTransition?: OnTransitionStartFn<
+    FulfillmentState,
+    FulfillmentTransitionData
+  >;
 }
 
 /**
@@ -146,42 +152,49 @@ export interface FulfillmentHandlerConfig<T extends ConfigArgs> extends Configur
  * @docsPage FulfillmentHandler
  * @docsWeight 0
  */
-export class FulfillmentHandler<T extends ConfigArgs = ConfigArgs> extends ConfigurableOperationDef<T> {
-    private readonly createFulfillmentFn: CreateFulfillmentFn<T>;
-    private readonly onFulfillmentTransitionFn:
-        | OnTransitionStartFn<FulfillmentState, FulfillmentTransitionData>
-        | undefined;
+export class FulfillmentHandler<
+  T extends ConfigArgs = ConfigArgs,
+> extends ConfigurableOperationDef<T> {
+  private readonly createFulfillmentFn: CreateFulfillmentFn<T>;
+  private readonly onFulfillmentTransitionFn:
+    | OnTransitionStartFn<FulfillmentState, FulfillmentTransitionData>
+    | undefined;
 
-    constructor(config: FulfillmentHandlerConfig<T>) {
-        super(config);
-        this.createFulfillmentFn = config.createFulfillment;
-        if (config.onFulfillmentTransition) {
-            this.onFulfillmentTransitionFn = config.onFulfillmentTransition;
-        }
+  constructor(config: FulfillmentHandlerConfig<T>) {
+    super(config);
+    this.createFulfillmentFn = config.createFulfillment;
+    if (config.onFulfillmentTransition) {
+      this.onFulfillmentTransitionFn = config.onFulfillmentTransition;
     }
+  }
 
-    /**
-     * @internal
-     */
-    createFulfillment(
-        ctx: RequestContext,
-        orders: Order[],
-        lines: OrderLineInput[],
-        args: ConfigArg[],
-    ): Partial<Fulfillment> | Promise<Partial<Fulfillment>> {
-        return this.createFulfillmentFn(ctx, orders, lines, this.argsArrayToHash(args));
-    }
+  /**
+   * @internal
+   */
+  createFulfillment(
+    ctx: RequestContext,
+    orders: Order[],
+    lines: OrderLineInput[],
+    args: ConfigArg[],
+  ): Partial<Fulfillment> | Promise<Partial<Fulfillment>> {
+    return this.createFulfillmentFn(
+      ctx,
+      orders,
+      lines,
+      this.argsArrayToHash(args),
+    );
+  }
 
-    /**
-     * @internal
-     */
-    onFulfillmentTransition(
-        fromState: FulfillmentState,
-        toState: FulfillmentState,
-        data: FulfillmentTransitionData,
-    ) {
-        if (typeof this.onFulfillmentTransitionFn === 'function') {
-            return this.onFulfillmentTransitionFn(fromState, toState, data);
-        }
+  /**
+   * @internal
+   */
+  onFulfillmentTransition(
+    fromState: FulfillmentState,
+    toState: FulfillmentState,
+    data: FulfillmentTransitionData,
+  ) {
+    if (typeof this.onFulfillmentTransitionFn === "function") {
+      return this.onFulfillmentTransitionFn(fromState, toState, data);
     }
+  }
 }

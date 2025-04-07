@@ -1,52 +1,51 @@
 {
-    "name": "@deenruv/wfirma-plugin",
-    "version": "0.0.121",
-    "homepage": "https://www.deenruv.com/",
-    "license": "MIT",
-    "files": [
-        "dist/**/*"
-    ],
-    "main": "./dist/plugin-server/index.js",
-    "exports": {
-        ".": "./dist/plugin-server/index.js",
-        "./plugin-server": "./dist/plugin-server/index.js",
-        "./plugin-ui": "./dist/plugin-ui/index.js"
-    },
-    "scripts": {
-        "build": "rimraf dist && tsc --build && cp -r ./src/plugin-server/ui ./dist/plugin-server",
-        "watch": "tsc --build --watch",
-        "lint": "eslint --fix .",
-        "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --es --td",
-        "test:server": "cd src/plugin-server && node --test-concurrency=1 --test .//e2e/order-export.e2e.test.ts",
-        "test": "npm run test:server"
-    },
-    "dependencies": {
-        "react": "^18.2.0",
-        "@deenruv/common": "workspace:^",
-        "@deenruv/core": "workspace:^",
-        "@deenruv/ui-devkit": "workspace:^",
-        "@deenruv/react-ui-devkit": "workspace:^",
-        "@deenruv/admin-types": "workspace:^",
-        "@deenruv/admin-ui": "workspace:^",
-        "react-i18next": "^14.0.5",
-        "react-router-dom": "^6.22.1",
-        "graphql-zeus": "^7.0.0",
-        "lucide-react": "^0.363.0",
-        "sonner": "^1.4.41",
-        "@nestjs/common": "^10.3.10",
-        "@nestjs/graphql": "^12.2.0",
-        "graphql-tag": "^2.12.6",
-        "replicate": "1.0.1"
-    },
-    "devDependencies": {
-        "typescript": "5.3.3",
-        "@graphql-typed-document-node/core": "3.2.0",
-        "@types/react": "^18.2.0",
-        "@types/react-dom": "^18.2.0",
-        "rimraf": "^5.0.10",
-        "typeorm": "^0.3.20"
-    },
-    "peerDependencies": {
-        "typeorm": "^0.3.20"
-    }
+  "name": "@deenruv/wfirma-plugin",
+  "version": "0.0.121",
+  "homepage": "https://www.deenruv.com/",
+  "license": "MIT",
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "./dist/plugin-server/index.js",
+  "exports": {
+    ".": "./dist/plugin-server/index.js",
+    "./plugin-server": "./dist/plugin-server/index.js",
+    "./plugin-ui": "./dist/plugin-ui/index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --build && cp -r ./src/plugin-server/ui ./dist/plugin-server",
+    "watch": "tsc --build --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --es --td"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "@deenruv/common": "workspace:^",
+    "@deenruv/core": "workspace:^",
+    "@deenruv/ui-devkit": "workspace:^",
+    "@deenruv/react-ui-devkit": "workspace:^",
+    "@deenruv/admin-types": "workspace:^",
+    "@deenruv/admin-ui": "workspace:^",
+    "react-i18next": "^14.0.5",
+    "react-router-dom": "^6.22.1",
+    "graphql-zeus": "^7.0.0",
+    "lucide-react": "^0.363.0",
+    "sonner": "^1.4.41",
+    "@nestjs/common": "^10.3.10",
+    "@nestjs/graphql": "^12.2.0",
+    "graphql-tag": "^2.12.6",
+    "replicate": "1.0.1"
+  },
+  "devDependencies": {
+    "typescript": "5.3.3",
+    "@graphql-typed-document-node/core": "3.2.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "rimraf": "^5.0.10",
+    "typeorm": "^0.3.20"
+  },
+  "peerDependencies": {
+    "typeorm": "^0.3.20"
+  }
 }

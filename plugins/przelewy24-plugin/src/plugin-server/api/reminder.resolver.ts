@@ -7,21 +7,21 @@ import { Przelewy24Service } from "../services/przelewy24.service";
 export class Przelewy24ReminderResolver {
   constructor(
     private readonly przelewy24Service: Przelewy24Service,
-    private readonly orderService: OrderService
+    private readonly orderService: OrderService,
   ) {}
 
   @Allow(Permission.UpdateCatalog)
   @Query()
   async remindPrzelewy24(
     @Ctx() ctx: RequestContext,
-    @Args() args: { orderId: ID }
-  ): Promise<Boolean> {
+    @Args() args: { orderId: ID },
+  ): Promise<boolean> {
     try {
       const order = await this.orderService.findOne(ctx, args.orderId, [
         "payments",
       ]);
       const przelewy24Payment = order?.payments?.find(
-        (p) => p.method === "przelewy24"
+        (p) => p.method === "przelewy24",
       );
 
       const przelewy24Url =

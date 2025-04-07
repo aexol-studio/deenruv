@@ -1,1 +1,1 @@
-export const HEALTH_CHECK_ROUTE = 'health';
+export const HEALTH_CHECK_ROUTE = "health";

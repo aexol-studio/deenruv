@@ -1,6 +1,6 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Order, Refund } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Order, Refund } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -10,12 +10,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class RefundEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public order: Order,
-        public refund: Refund,
-        public type: 'created',
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public order: Order,
+    public refund: Refund,
+    public type: "created",
+  ) {
+    super();
+  }
 }

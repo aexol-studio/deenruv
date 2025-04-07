@@ -1,20 +1,26 @@
-import { Controller, Get } from '@nestjs/common';
-import { Ctx, PluginCommonModule, ProductService, RequestContext, DeenruvPlugin } from '@deenruv/core';
-@Controller('products')
+import { Controller, Get } from "@nestjs/common";
+import {
+  Ctx,
+  PluginCommonModule,
+  ProductService,
+  RequestContext,
+  DeenruvPlugin,
+} from "@deenruv/core";
+@Controller("products")
 export class ProductsController {
-    constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) {}
 
-    @Get()
-    findAll(@Ctx() ctx: RequestContext) {
-        return this.productService.findAll(ctx);
-    }
+  @Get()
+  findAll(@Ctx() ctx: RequestContext) {
+    return this.productService.findAll(ctx);
+  }
 }
 
 /**
  * A proof-of-concept plugin which adds a REST endpoint for querying products.
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    controllers: [ProductsController],
+  imports: [PluginCommonModule],
+  controllers: [ProductsController],
 })
 export class RestPlugin {}

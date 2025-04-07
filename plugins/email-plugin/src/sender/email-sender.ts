@@ -1,6 +1,6 @@
-import { InjectableStrategy } from '@deenruv/core';
+import { InjectableStrategy } from "@deenruv/core";
 
-import { EmailDetails, EmailTransportOptions } from '../types';
+import { EmailDetails, EmailTransportOptions } from "../types";
 
 /**
  * @description
@@ -43,5 +43,8 @@ import { EmailDetails, EmailTransportOptions } from '../types';
  * @docsWeight 0
  */
 export interface EmailSender extends InjectableStrategy {
-    send: (email: EmailDetails, options: EmailTransportOptions) => void | Promise<void>;
+  send: (
+    email: EmailDetails,
+    options: EmailTransportOptions,
+  ) => void | Promise<void>;
 }

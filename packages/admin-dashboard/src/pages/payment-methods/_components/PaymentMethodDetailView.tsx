@@ -7,14 +7,15 @@ import {
   DetailViewMarker,
   Input,
   Label,
+  setInArrayBy,
   Switch,
   useDetailView,
   useSettings,
+  CF,
+  EntityCustomFields,
+  RichTextEditor,
 } from '@deenruv/react-ui-devkit';
-import { setInArrayBy } from '@/lists/useGflp';
-import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 import { OptionsCard } from '@/pages/payment-methods/_components/OptionsCard';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 const PAYMENT_METHOD_FORM_KEYS = [
   'CreatePaymentMethodInput',
@@ -74,11 +75,11 @@ export const PaymentMethodDetailView = () => {
   return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
             <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
-              <Stack className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                <Stack className="basis-full md:basis-1/3">
+              <div className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+                <div className="flex basis-full md:basis-1/3">
                   <Input
                     label={t('details.basic.name')}
                     value={currentTranslationValue?.name ?? undefined}
@@ -86,8 +87,8 @@ export const PaymentMethodDetailView = () => {
                     errors={state.translations?.errors}
                     required
                   />
-                </Stack>
-                <Stack className="basis-full md:basis-1/3">
+                </div>
+                <div className="flex basis-full md:basis-1/3">
                   <Input
                     label={t('details.basic.code')}
                     value={state.code?.value ?? undefined}
@@ -95,19 +96,19 @@ export const PaymentMethodDetailView = () => {
                     errors={state.code?.errors}
                     required
                   />
-                </Stack>
-                <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
+                </div>
+                <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/3">
                   <Switch checked={state.enabled?.value ?? undefined} onCheckedChange={(e) => setField('enabled', e)} />
                   <Label>{t('details.basic.enabled')}</Label>
-                </Stack>
-              </Stack>
-              <Stack column className="basis-full">
+                </div>
+              </div>
+              <div className="flex basis-full flex-col">
                 <Label className="mb-2">{t('details.basic.description')}</Label>
                 <RichTextEditor
                   content={currentTranslationValue?.description ?? undefined}
                   onContentChanged={(e) => setTranslationField('description', e)}
                 />
-              </Stack>
+              </div>
             </div>
           </CustomCard>
 
@@ -133,7 +134,7 @@ export const PaymentMethodDetailView = () => {
             onCheckerValueChange={(checker) => setField('checker', checker)}
             handlerErrors={state.handler?.errors}
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

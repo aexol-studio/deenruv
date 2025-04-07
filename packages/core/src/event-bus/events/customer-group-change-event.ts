@@ -1,7 +1,7 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Customer } from '../../entity/customer/customer.entity';
-import { CustomerGroup } from '../../entity/customer-group/customer-group.entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Customer } from "../../entity/customer/customer.entity";
+import { CustomerGroup } from "../../entity/customer-group/customer-group.entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -13,12 +13,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @since 1.4
  */
 export class CustomerGroupChangeEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public customers: Customer[],
-        public customGroup: CustomerGroup,
-        public type: 'assigned' | 'removed',
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public customers: Customer[],
+    public customGroup: CustomerGroup,
+    public type: "assigned" | "removed",
+  ) {
+    super();
+  }
 }

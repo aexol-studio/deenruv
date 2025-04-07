@@ -1,31 +1,36 @@
 import {
-    DeepPartial,
-    HasCustomFields,
-    LocaleString,
-    Translatable,
-    Translation,
-    DeenruvEntity,
-} from '@deenruv/core';
-import { Column, Entity, OneToMany } from 'typeorm';
+  DeepPartial,
+  HasCustomFields,
+  LocaleString,
+  Translatable,
+  Translation,
+  DeenruvEntity,
+} from "@deenruv/core";
+import { Column, Entity, OneToMany } from "typeorm";
 
-import { ScaffoldTranslation } from './entity-translation.template';
+import { ScaffoldTranslation } from "./entity-translation.template";
 
 export class ScaffoldEntityCustomFields {}
 
 @Entity()
-export class ScaffoldEntity extends DeenruvEntity implements Translatable, HasCustomFields {
-    constructor(input?: DeepPartial<ScaffoldEntity>) {
-        super(input);
-    }
+export class ScaffoldEntity
+  extends DeenruvEntity
+  implements Translatable, HasCustomFields
+{
+  constructor(input?: DeepPartial<ScaffoldEntity>) {
+    super(input);
+  }
 
-    @Column()
-    code: string;
+  @Column()
+  code: string;
 
-    @Column(type => ScaffoldEntityCustomFields)
-    customFields: ScaffoldEntityCustomFields;
+  @Column((type) => ScaffoldEntityCustomFields)
+  customFields: ScaffoldEntityCustomFields;
 
-    localizedName: LocaleString;
+  localizedName: LocaleString;
 
-    @OneToMany(type => ScaffoldTranslation, translation => translation.base, { eager: true })
-    translations: Array<Translation<ScaffoldEntity>>;
+  @OneToMany((type) => ScaffoldTranslation, (translation) => translation.base, {
+    eager: true,
+  })
+  translations: Array<Translation<ScaffoldEntity>>;
 }

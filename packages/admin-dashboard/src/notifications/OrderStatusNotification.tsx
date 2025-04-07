@@ -22,8 +22,17 @@ export const ORDER_STATUS_NOTIFICATION = createNotification({
     return orders.totalItems;
   },
   placements: {
-    main: () => {
-      return <></>;
+    main: (orders) => {
+      return {
+        name: 'order-states',
+        title: 'Pending Orders',
+        description: 'You have pending orders.',
+        icon: (
+          <SimpleTooltip content="Pending Orders">
+            <div className="size-4 rounded-full bg-yellow-500"></div>
+          </SimpleTooltip>
+        ),
+      };
     },
     navigation: [
       {

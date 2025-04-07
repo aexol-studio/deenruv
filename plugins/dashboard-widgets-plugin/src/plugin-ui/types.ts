@@ -1,72 +1,72 @@
-import { ChartMetricType } from './zeus';
+import { ChartMetricType } from "./zeus";
 
 export type AdditionalEntryData = {
-    id: string;
-    name: string;
-    quantity: number;
+  id: string;
+  name: string;
+  quantity: number;
 };
 export type DataTKeys =
-    | 'averageOrderValue'
-    | 'orderCount'
-    | 'orderTotal'
-    | 'orderTotalProductsCount'
-    | 'orderTotalProductsValue';
+  | "averageOrderValue"
+  | "orderCount"
+  | "orderTotal"
+  | "orderTotalProductsCount"
+  | "orderTotalProductsValue";
 
 export type BetterMetricsChartDataType = {
-    data: {
-        title: string;
-        type: ChartMetricType;
-        entries: {
-            type: ChartMetricType;
-            name: string;
-            value: number;
-            additionalData?: AdditionalEntryData[];
-        }[];
+  data: {
+    title: string;
+    type: ChartMetricType;
+    entries: {
+      type: ChartMetricType;
+      name: string;
+      value: number;
+      additionalData?: AdditionalEntryData[];
     }[];
-    lastCacheRefreshTime?: string;
+  }[];
+  lastCacheRefreshTime?: string;
 };
 
 export type AvailableProductData = {
-    id: string;
-    name: string;
-    label: string;
-    value: number;
+  id: string;
+  name: string;
+  label: string;
+  value: number;
 }[];
 
-export type SortBy = 'BY_COUNT' | 'BY_NET_WORTH';
-export type ShowData = 'FIRST_FIVE' | 'ALL';
+export type SortBy = "BY_COUNT" | "BY_NET_WORTH";
+export type ShowData = "FIRST_FIVE" | "ALL";
 
 export enum Periods {
-    Today = 'today',
-    Yesterday = 'yesterday',
-    ThisWeek = 'thisWeek',
-    LastWeek = 'lastWeek',
-    ThisMonth = 'thisMonth',
-    lastMonth = 'lastMonth',
-    ThisYear = 'thisYear',
-    FirstYearQuarter = 'firstYearQuarterInterval',
-    SecondYearQuarter = 'secondYearQuarterInterval',
-    ThirdYearQuarter = 'thirdYearQuarterInterval',
-    FourthYearQuarter = 'fourthYearQuarterInterval',
+  Today = "today",
+  Yesterday = "yesterday",
+  ThisWeek = "thisWeek",
+  LastWeek = "lastWeek",
+  ThisMonth = "thisMonth",
+  lastMonth = "lastMonth",
+  ThisYear = "thisYear",
+  FirstYearQuarter = "firstYearQuarterInterval",
+  SecondYearQuarter = "secondYearQuarterInterval",
+  ThirdYearQuarter = "thirdYearQuarterInterval",
+  FourthYearQuarter = "fourthYearQuarterInterval",
 }
 
 export type Period = {
-    period: Periods;
-    text: string;
-    start: Date;
-    end: Date;
+  period: Periods;
+  text: string;
+  start: Date;
+  end: Date;
 };
-export type GrossNet = 'gross' | 'net';
+export type GrossNet = "gross" | "net";
 export type DateRangeType = { start: Date; end?: Date };
-export type GroupBy = 'day' | 'week' | 'quarter' | 'month';
+export type GroupBy = "day" | "week" | "quarter" | "month";
 export interface GroupByPeriodArgs {
-    data: {
-        [key: string]: any;
-        name: string;
-        value?: number;
-        type: ChartMetricType;
-        additionalData?: AdditionalEntryData[];
-    }[];
-    language: string;
-    groupBy: GroupBy;
+  data: {
+    [key: string]: any;
+    name: string;
+    value?: number;
+    type: ChartMetricType;
+    additionalData?: AdditionalEntryData[];
+  }[];
+  language: string;
+  groupBy: GroupBy;
 }

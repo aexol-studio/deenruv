@@ -1,6 +1,6 @@
-import { GraphQLError } from 'graphql';
+import { GraphQLError } from "graphql";
 
-import { LogLevel } from '../config/logger/deenruv-logger';
+import { LogLevel } from "../config/logger/deenruv-logger";
 
 /**
  * @description
@@ -16,14 +16,14 @@ import { LogLevel } from '../config/logger/deenruv-logger';
  * @docsCategory errors
  */
 export abstract class I18nError extends GraphQLError {
-    protected constructor(
-        public message: string,
-        public variables: { [key: string]: string | number } = {},
-        public code?: string,
-        public logLevel: LogLevel = LogLevel.Warn,
-    ) {
-        super(message, {
-            extensions: { code },
-        });
-    }
+  protected constructor(
+    public message: string,
+    public variables: { [key: string]: string | number } = {},
+    public code?: string,
+    public logLevel: LogLevel = LogLevel.Warn,
+  ) {
+    super(message, {
+      extensions: { code },
+    });
+  }
 }

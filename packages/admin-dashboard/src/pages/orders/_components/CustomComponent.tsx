@@ -1,6 +1,5 @@
-import { Button } from '@deenruv/react-ui-devkit';
+import { CF, EntityCustomFields, Button } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
-import { CF, EntityCustomFields } from '@/components';
 import { useEffect, useState } from 'react';
 import { DraftOrderType } from '@/graphql/draft_order.js';
 

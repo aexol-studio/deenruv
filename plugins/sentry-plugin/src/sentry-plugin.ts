@@ -1,19 +1,19 @@
-import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
-import { MiddlewareConsumer, NestModule } from '@nestjs/common';
-import gql from 'graphql-tag';
+import { PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
+import { MiddlewareConsumer, NestModule } from "@nestjs/common";
+import gql from "graphql-tag";
 
-import { SentryAdminTestResolver } from './api/admin-test.resolver';
-import { ErrorTestService } from './api/error-test.service';
-import { SENTRY_PLUGIN_OPTIONS } from './constants';
-import { SentryApolloPlugin } from './sentry-apollo-plugin';
-import { SentryContextMiddleware } from './sentry-context.middleware';
-import { SentryErrorHandlerStrategy } from './sentry-error-handler-strategy';
-import { SentryService } from './sentry.service';
-import { SentryPluginOptions } from './types';
+import { SentryAdminTestResolver } from "./api/admin-test.resolver";
+import { ErrorTestService } from "./api/error-test.service";
+import { SENTRY_PLUGIN_OPTIONS } from "./constants";
+import { SentryApolloPlugin } from "./sentry-apollo-plugin";
+import { SentryContextMiddleware } from "./sentry-context.middleware";
+import { SentryErrorHandlerStrategy } from "./sentry-error-handler-strategy";
+import { SentryService } from "./sentry.service";
+import { SentryPluginOptions } from "./types";
 
 const SentryOptionsProvider = {
-    provide: SENTRY_PLUGIN_OPTIONS,
-    useFactory: () => SentryPlugin.options,
+  provide: SENTRY_PLUGIN_OPTIONS,
+  useFactory: () => SentryPlugin.options,
 };
 
 /**
@@ -106,45 +106,51 @@ const SentryOptionsProvider = {
  * @docsCategory core plugins/SentryPlugin
  */
 const testApiExtensions = gql`
-    enum TestErrorType {
-        UNCAUGHT_ERROR
-        THROWN_ERROR
-        CAPTURED_ERROR
-        CAPTURED_MESSAGE
-        DATABASE_ERROR
-    }
-    extend type Mutation {
-        createTestError(errorType: TestErrorType!): Boolean
-    }
+  enum TestErrorType {
+    UNCAUGHT_ERROR
+    THROWN_ERROR
+    CAPTURED_ERROR
+    CAPTURED_MESSAGE
+    DATABASE_ERROR
+  }
+  extend type Mutation {
+    createTestError(errorType: TestErrorType!): Boolean
+  }
 `;
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    providers: [SentryOptionsProvider, SentryService, ErrorTestService],
-    configuration: config => {
-        config.apiOptions.apolloServerPlugins.push(
-            new SentryApolloPlugin({
-                enableTracing: !!SentryPlugin.options.enableTracing,
-            }),
-        );
-        config.systemOptions.errorHandlers.push(new SentryErrorHandlerStrategy());
-        return config;
-    },
-    adminApiExtensions: {
-        schema: () => (SentryPlugin.options.includeErrorTestMutation ? testApiExtensions : undefined),
-        resolvers: () => (SentryPlugin.options.includeErrorTestMutation ? [SentryAdminTestResolver] : []),
-    },
-    exports: [SentryService],
-    compatibility: '^0.0.0',
+  imports: [PluginCommonModule],
+  providers: [SentryOptionsProvider, SentryService, ErrorTestService],
+  configuration: (config) => {
+    config.apiOptions.apolloServerPlugins.push(
+      new SentryApolloPlugin({
+        enableTracing: !!SentryPlugin.options.enableTracing,
+      }),
+    );
+    config.systemOptions.errorHandlers.push(new SentryErrorHandlerStrategy());
+    return config;
+  },
+  adminApiExtensions: {
+    schema: () =>
+      SentryPlugin.options.includeErrorTestMutation
+        ? testApiExtensions
+        : undefined,
+    resolvers: () =>
+      SentryPlugin.options.includeErrorTestMutation
+        ? [SentryAdminTestResolver]
+        : [],
+  },
+  exports: [SentryService],
+  compatibility: "^0.0.0",
 })
 export class SentryPlugin implements NestModule {
-    static options: SentryPluginOptions = {} as any;
+  static options: SentryPluginOptions = {} as any;
 
-    configure(consumer: MiddlewareConsumer): any {
-        consumer.apply(SentryContextMiddleware).forRoutes('*');
-    }
+  configure(consumer: MiddlewareConsumer): any {
+    consumer.apply(SentryContextMiddleware).forRoutes("*");
+  }
 
-    static init(options: SentryPluginOptions) {
-        this.options = options;
-        return this;
-    }
+  static init(options: SentryPluginOptions) {
+    this.options = options;
+    return this;
+  }
 }

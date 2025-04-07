@@ -1,5 +1,5 @@
-import React from 'react';
-import { Cell, Pie, PieChart } from 'recharts';
+import React from "react";
+import { Cell, Pie, PieChart } from "recharts";
 import {
   Card,
   CardContent,
@@ -11,19 +11,19 @@ import {
   ChartTooltipContent,
   Separator,
   useLazyQuery,
-} from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect, useState } from 'react';
-import { ChartMetricType, MetricIntervalType } from '../../zeus';
-import { useTranslation } from 'react-i18next';
-import { endOfToday, startOfToday } from 'date-fns';
-import { PeriodSelect, Period, Periods } from '../shared';
-import { dashCaseToSpaces } from './dashCaseToSpaces';
-import { colors, EmptyData } from '../shared';
+} from "@deenruv/react-ui-devkit";
+import { useCallback, useEffect, useState } from "react";
+import { ChartMetricType, MetricIntervalType } from "../../zeus";
+import { useTranslation } from "react-i18next";
+import { endOfToday, startOfToday } from "date-fns";
+import { PeriodSelect, Period, Periods } from "../shared";
+import { dashCaseToSpaces } from "./dashCaseToSpaces";
+import { colors, EmptyData } from "../shared";
 
-import { CategoriesMetricQuery, ProductCollectionsQuery } from '../../graphql';
+import { CategoriesMetricQuery, ProductCollectionsQuery } from "../../graphql";
 
 export const CategoriesChartWidget = () => {
-  const { t } = useTranslation('dashboard-widgets-plugin', {
+  const { t } = useTranslation("dashboard-widgets-plugin", {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });
   const [chartData, setChartData] = useState<
@@ -34,7 +34,7 @@ export const CategoriesChartWidget = () => {
   const [fetchProductCollections] = useLazyQuery(ProductCollectionsQuery);
   const [selectedPeriod, setSelectedPeriod] = useState<Period>({
     period: Periods.Today,
-    text: t('today'),
+    text: t("today"),
     start: startOfToday(),
     end: endOfToday(),
   });
@@ -73,7 +73,7 @@ export const CategoriesChartWidget = () => {
 
           products?.items.forEach(({ collections }) => {
             collections
-              .filter((c) => c.slug !== 'wszystkie')
+              .filter((c) => c.slug !== "wszystkie")
               .forEach((category) => {
                 const categoryName = dashCaseToSpaces(category.slug.trim());
                 if (categoryCounts[categoryName]) {
@@ -115,10 +115,10 @@ export const CategoriesChartWidget = () => {
   }, []);
 
   return (
-    <Card className="flex flex-col border-0 shadow-none h-full">
+    <Card className="flex h-full flex-col border-0 shadow-none">
       <CardHeader className="flex justify-between">
-        <div className="flex -mb-[1px] items-center gap-8">
-          <CardTitle className="text-lg">{t('categories')}</CardTitle>
+        <div className="-mb-px flex items-center gap-8">
+          <CardTitle className="text-lg">{t("categories")}</CardTitle>
           <PeriodSelect
             selectedPeriod={selectedPeriod.period}
             onPeriodChange={handlePeriodChange}
@@ -126,16 +126,16 @@ export const CategoriesChartWidget = () => {
         </div>
       </CardHeader>
       <Separator className="mb-3" />
-      <CardContent className="flex flex-1 justify-center items-center pb-0">
+      <CardContent className="flex flex-1 items-center justify-center pb-0">
         {!chartData.length ? (
           <div className="flex flex-col items-center text-center">
-            <EmptyData text={t('emptyData')} />
+            <EmptyData text={t("emptyData")} />
           </div>
         ) : (
           <ChartContainer
             config={chartConfig}
-            className="mx-auto aspect-square max-h-[400px] pb-0 [&_.recharts-pie-label-text]:fill-foreground"
-            style={{ height: `300px`, width: '100%' }}
+            className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[400px] pb-0"
+            style={{ height: `300px`, width: "100%" }}
           >
             <PieChart>
               <ChartTooltip content={<ChartTooltipContent hideLabel />} />

@@ -11,8 +11,9 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 const TAX_RATES_FORM_KEYS = [
   'CreateTaxRateInput',
@@ -83,11 +84,11 @@ export const TaxRateDetailView = () => {
   return (
     <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
             <div className="flex flex-col gap-4 p-0 pt-4">
-              <Stack className="items-start gap-4">
-                <Stack className="basis-full md:basis-1/2">
+              <div className="flex items-start gap-4">
+                <div className="flex basis-full md:basis-1/2">
                   <Input
                     label={t('details.basic.name')}
                     value={state.name?.value ?? undefined}
@@ -95,8 +96,8 @@ export const TaxRateDetailView = () => {
                     errors={state.name?.errors}
                     required
                   />
-                </Stack>
-                <Stack className="basis-full md:basis-1/2">
+                </div>
+                <div className="flex basis-full md:basis-1/2">
                   <Input
                     type="number"
                     label={t('details.basic.value')}
@@ -108,10 +109,10 @@ export const TaxRateDetailView = () => {
                     max={100}
                     required
                   />
-                </Stack>
-              </Stack>
-              <Stack className="items-end gap-4">
-                <Stack className="basis-full md:basis-1/2">
+                </div>
+              </div>
+              <div className="flex items-end gap-4">
+                <div className="flex basis-full md:basis-1/2">
                   <SimpleSelect
                     label={t('details.basic.taxCategory')}
                     value={state.categoryId?.value ?? undefined}
@@ -120,8 +121,8 @@ export const TaxRateDetailView = () => {
                     errors={state.categoryId?.errors}
                     required
                   />
-                </Stack>
-                <Stack className="basis-full md:basis-1/2">
+                </div>
+                <div className="flex basis-full md:basis-1/2">
                   <SimpleSelect
                     label={t('details.basic.zone')}
                     value={state.zoneId?.value ?? undefined}
@@ -130,14 +131,14 @@ export const TaxRateDetailView = () => {
                     errors={state.zoneId?.errors}
                     required
                   />
-                </Stack>
-              </Stack>
-              <Stack className="items-end gap-4">
-                <Stack className="mb-2 basis-full items-center gap-3 md:basis-1/2">
+                </div>
+              </div>
+              <div className="flex items-end gap-4">
+                <div className="mb-2 flex basis-full items-center gap-3 md:basis-1/2">
                   <Switch checked={state.enabled?.value ?? undefined} onCheckedChange={(e) => setField('enabled', e)} />
                   <Label>{t('details.basic.enabled')}</Label>
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             </div>
           </CustomCard>
           <DetailViewMarker position={'taxRates-detail-view'} />
@@ -152,7 +153,7 @@ export const TaxRateDetailView = () => {
             }
             hideButton
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

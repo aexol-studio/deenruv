@@ -95,7 +95,7 @@ const JsonProperty: React.FC<JsonPropertyProps> = ({ name, value, depth, isLast 
       <div className="flex items-center">
         {isExpandable && (
           <button onClick={toggleExpand} className="mr-1 rounded p-0.5 hover:bg-gray-100 dark:hover:bg-gray-800">
-            {isExpanded ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+            {isExpanded ? <ChevronDown className="size-3" /> : <ChevronRight className="size-3" />}
           </button>
         )}
         {isExpandable && !isExpanded ? (

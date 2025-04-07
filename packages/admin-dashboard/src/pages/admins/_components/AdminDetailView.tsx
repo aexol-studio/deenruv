@@ -1,8 +1,15 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CardIcons, CustomCard, DetailViewMarker, Input, useDetailView } from '@deenruv/react-ui-devkit';
+import {
+  CF,
+  EntityCustomFields,
+  CardIcons,
+  CustomCard,
+  DetailViewMarker,
+  Input,
+  useDetailView,
+} from '@deenruv/react-ui-devkit';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 const ADMIN_FORM_KEYS = [
   'CreateAdministratorInput',
@@ -43,7 +50,7 @@ export const AdminDetailView = () => {
   return (
     <main className="my-4">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
             <div className="flex items-start gap-4">
               <Input
@@ -97,7 +104,7 @@ export const AdminDetailView = () => {
             onRolesChange={(e) => setField('roleIds', e)}
             errors={state.roleIds?.errors}
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

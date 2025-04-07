@@ -1,31 +1,33 @@
-import { LanguageCode } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { LanguageCode } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne } from "typeorm";
 
-import { Translation } from '../../common/types/locale-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { CustomProductOptionGroupFieldsTranslation } from '../custom-entity-fields';
+import { Translation } from "../../common/types/locale-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { CustomProductOptionGroupFieldsTranslation } from "../custom-entity-fields";
 
-import { ProductOptionGroup } from './product-option-group.entity';
+import { ProductOptionGroup } from "./product-option-group.entity";
 
 @Entity()
 export class ProductOptionGroupTranslation
-    extends DeenruvEntity
-    implements Translation<ProductOptionGroup>, HasCustomFields
+  extends DeenruvEntity
+  implements Translation<ProductOptionGroup>, HasCustomFields
 {
-    constructor(input?: DeepPartial<Translation<ProductOptionGroup>>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Translation<ProductOptionGroup>>) {
+    super(input);
+  }
 
-    @Column('varchar') languageCode: LanguageCode;
+  @Column("varchar") languageCode: LanguageCode;
 
-    @Column() name: string;
+  @Column() name: string;
 
-    @Index()
-    @ManyToOne(type => ProductOptionGroup, base => base.translations, { onDelete: 'CASCADE' })
-    base: ProductOptionGroup;
+  @Index()
+  @ManyToOne((type) => ProductOptionGroup, (base) => base.translations, {
+    onDelete: "CASCADE",
+  })
+  base: ProductOptionGroup;
 
-    @Column(type => CustomProductOptionGroupFieldsTranslation)
-    customFields: CustomProductOptionGroupFieldsTranslation;
+  @Column((type) => CustomProductOptionGroupFieldsTranslation)
+  customFields: CustomProductOptionGroupFieldsTranslation;
 }

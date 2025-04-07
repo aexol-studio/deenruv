@@ -12,11 +12,11 @@ import {
   CustomFieldsProvider,
   CardIcons,
   CustomCard,
+  SimpleSelect,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
-import { SimpleSelect, Stack } from '@/components';
 
 interface CalculatorCardProps {
   currentCalculatorValue: ModelTypes['ConfigurableOperationInput'] | undefined;
@@ -76,8 +76,8 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
 
   return (
     <CustomCard title={t('details.calculator.title')} icon={<CardIcons.calc />} color="indigo">
-      <Stack column className="basis-full gap-3 md:basis-1/2">
-        <Stack className="items-end gap-1">
+      <div className="flex basis-full flex-col gap-3 md:basis-1/2">
+        <div className="flex items-end gap-1">
           <SimpleSelect
             label={t('details.calculator.type')}
             value={currentCalculatorValue ? currentCalculatorValue.code : ''}
@@ -89,8 +89,8 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
               <X size={20} />
             </Button>
           )}
-        </Stack>
-        <Stack className="gap-3">
+        </div>
+        <div className="flex gap-3">
           {currentCalculatorValue?.arguments.map((e, i) => {
             const calculator = calculators?.find((ch) => ch.code === currentCalculatorValue.code);
             const argument = calculator?.args.find((a) => a.name === e.name);
@@ -148,9 +148,9 @@ export const CalculatorCard: React.FC<CalculatorCardProps> = ({
               );
             });
           })}
-        </Stack>
+        </div>
         <ErrorMessage errors={errors} />
-      </Stack>
+      </div>
     </CustomCard>
   );
 };

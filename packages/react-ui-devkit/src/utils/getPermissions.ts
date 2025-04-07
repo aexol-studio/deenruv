@@ -1,4 +1,4 @@
-import { Permission } from '@deenruv/admin-types';
+import { Permission } from "@deenruv/admin-types";
 
 export const getPermissions = (type: string) => ({
   create: Permission[`Create${type}` as keyof typeof Permission],

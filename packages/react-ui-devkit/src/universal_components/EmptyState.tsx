@@ -1,17 +1,25 @@
-import React, { ReactNode } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, TableCell, TableRow } from '..';
-import { CircleOff, SearchX } from 'lucide-react';
-import { cn } from '@/lib/utils.js';
-import { TailwindColor } from '@/universal_components/CustomCard.js';
+import React, { ReactNode } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  TableCell,
+  TableRow,
+} from "..";
+import { CircleOff, SearchX } from "lucide-react";
+import { cn } from "@/lib/utils.js";
+import { TailwindColor } from "@/universal_components/CustomCard.js";
 
 interface Props {
-    columnsLength: number;
-    filtered?: boolean;
-    title: string;
-    description?: string;
-    icon?: ReactNode;
-    color?: TailwindColor;
-    small?: true;
+  columnsLength: number;
+  filtered?: boolean;
+  title: string;
+  description?: string;
+  icon?: ReactNode;
+  color?: TailwindColor;
+  small?: true;
 }
 
 /**
@@ -25,58 +33,76 @@ interface Props {
  * @param {boolean} [small] - If true, some different styles are applied to make the component smaller.
  */
 export const EmptyState: React.FC<Props> = ({
-    columnsLength,
-    filtered,
-    title,
-    description,
-    icon,
-    color,
-    small,
+  columnsLength,
+  filtered,
+  title,
+  description,
+  icon,
+  color,
+  small,
 }) => {
-    const iconWrapperColorClass = `bg-${color}-100 dark:bg-${color}-900/30`;
-    const iconColorClass = `text-${color}-500 dark:text-${color}-400`;
-    const _icon = icon ? (
-        React.isValidElement<{ className?: string }>(icon) ? (
-            React.cloneElement(icon, {
-                className: cn(icon.props.className, 'h-6 w-6', color ? iconColorClass : ''),
-            })
-        ) : (
-            icon
-        )
+  const iconWrapperColorClass = `bg-${color}-100 dark:bg-${color}-900/30`;
+  const iconColorClass = `text-${color}-500 dark:text-${color}-400`;
+  const _icon = icon ? (
+    React.isValidElement<{ className?: string }>(icon) ? (
+      React.cloneElement(icon, {
+        className: cn(
+          icon.props.className,
+          "h-6 w-6",
+          color ? iconColorClass : "",
+        ),
+      })
     ) : (
-        <CircleOff className={cn('h-6 w-6', color ? iconColorClass : '')} />
-    );
+      icon
+    )
+  ) : (
+    <CircleOff className={cn("h-6 w-6", color ? iconColorClass : "")} />
+  );
 
-    return (
-        <TableRow noHover className="h-full border-b-0">
-            <TableCell colSpan={columnsLength} className="h-full text-center">
-                <Card
-                    className={cn(
-                        'flex h-full flex-col items-center justify-center p-2',
-                        small && 'border-0 shadow-none p-0',
-                    )}
-                >
-                    <CardHeader className="flex flex-col items-center">
-                        {filtered ? (
-                            <div className={cn('mb-3 rounded-full p-3', color ? iconWrapperColorClass : '')}>
-                                <SearchX className={cn('h-6 w-6', color ? iconColorClass : '')} />
-                            </div>
-                        ) : (
-                            <div className={cn('mb-3 rounded-full p-3', color ? iconWrapperColorClass : '')}>
-                                {_icon}
-                            </div>
-                        )}
-                        <CardTitle {...(small && { className: 'text-base' })}>{title}</CardTitle>
-                    </CardHeader>
-                    {description && (
-                        <CardContent>
-                            <CardDescription {...(small && { className: 'text-sm' })}>
-                                {description}
-                            </CardDescription>
-                        </CardContent>
-                    )}
-                </Card>
-            </TableCell>
-        </TableRow>
-    );
+  return (
+    <TableRow noHover className="h-full border-b-0">
+      <TableCell colSpan={columnsLength} className="h-full text-center">
+        <Card
+          className={cn(
+            "flex h-full flex-col items-center justify-center p-2",
+            small && "border-0 shadow-none p-0",
+          )}
+        >
+          <CardHeader className="flex flex-col items-center">
+            {filtered ? (
+              <div
+                className={cn(
+                  "mb-3 rounded-full p-3",
+                  color ? iconWrapperColorClass : "",
+                )}
+              >
+                <SearchX
+                  className={cn("h-6 w-6", color ? iconColorClass : "")}
+                />
+              </div>
+            ) : (
+              <div
+                className={cn(
+                  "mb-3 rounded-full p-3",
+                  color ? iconWrapperColorClass : "",
+                )}
+              >
+                {_icon}
+              </div>
+            )}
+            <CardTitle {...(small && { className: "text-base" })}>
+              {title}
+            </CardTitle>
+          </CardHeader>
+          {description && (
+            <CardContent>
+              <CardDescription {...(small && { className: "text-sm" })}>
+                {description}
+              </CardDescription>
+            </CardContent>
+          )}
+        </Card>
+      </TableCell>
+    </TableRow>
+  );
 };

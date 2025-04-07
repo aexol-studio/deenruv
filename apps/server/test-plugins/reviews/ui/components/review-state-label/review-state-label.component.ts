@@ -1,27 +1,27 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { SharedModule } from '@deenruv/admin-ui/core';
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { SharedModule } from "@deenruv/admin-ui/core";
 
-import { ReviewState } from '../../common/ui-types';
+import { ReviewState } from "../../common/ui-types";
 
 @Component({
-    selector: 'review-state-label',
-    templateUrl: './review-state-label.component.html',
-    styleUrls: ['./review-state-label.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [SharedModule],
+  selector: "review-state-label",
+  templateUrl: "./review-state-label.component.html",
+  styleUrls: ["./review-state-label.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [SharedModule],
 })
 export class ReviewStateLabelComponent {
-    @Input() state: ReviewState;
+  @Input() state: ReviewState;
 
-    getIcon(state: ReviewState) {
-        switch (state) {
-            case 'new':
-                return 'bubble-exclamation';
-            case 'approved':
-                return 'check-circle';
-            case 'rejected':
-                return 'times-circle';
-        }
+  getIcon(state: ReviewState) {
+    switch (state) {
+      case "new":
+        return "bubble-exclamation";
+      case "approved":
+        return "check-circle";
+      case "rejected":
+        return "times-circle";
     }
+  }
 }

@@ -1,10 +1,13 @@
-import { CreateSellerInput, UpdateSellerInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateSellerInput,
+  UpdateSellerInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Role } from '../../entity';
-import { Seller } from '../../entity/seller/seller.entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Role } from "../../entity";
+import { Seller } from "../../entity/seller/seller.entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type SellerInputTypes = CreateSellerInput | UpdateSellerInput | ID;
 
@@ -17,12 +20,12 @@ type SellerInputTypes = CreateSellerInput | UpdateSellerInput | ID;
  * @since 2.0.1
  */
 export class SellerEvent extends DeenruvEntityEvent<Seller, SellerInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: Seller,
-        type: 'created' | 'updated' | 'deleted',
-        input?: SellerInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+  constructor(
+    ctx: RequestContext,
+    entity: Seller,
+    type: "created" | "updated" | "deleted",
+    input?: SellerInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

@@ -1,8 +1,8 @@
-import { HistoryEntryType } from '@deenruv/common/lib/generated-types';
-import { Column, Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
+import { HistoryEntryType } from "@deenruv/common/lib/generated-types";
+import { Column, Entity, Index, ManyToOne, TableInheritance } from "typeorm";
 
-import { Administrator } from '../administrator/administrator.entity';
-import { DeenruvEntity } from '../base/base.entity';
+import { Administrator } from "../administrator/administrator.entity";
+import { DeenruvEntity } from "../base/base.entity";
 
 /**
  * @description
@@ -12,18 +12,18 @@ import { DeenruvEntity } from '../base/base.entity';
  * @docsCategory entities
  */
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'discriminator' } })
+@TableInheritance({ column: { type: "varchar", name: "discriminator" } })
 export abstract class HistoryEntry extends DeenruvEntity {
-    @Index()
-    @ManyToOne(type => Administrator)
-    administrator?: Administrator;
+  @Index()
+  @ManyToOne((type) => Administrator)
+  administrator?: Administrator;
 
-    @Column({ nullable: false, type: 'varchar' })
-    readonly type: HistoryEntryType;
+  @Column({ nullable: false, type: "varchar" })
+  readonly type: HistoryEntryType;
 
-    @Column()
-    isPublic: boolean;
+  @Column()
+  isPublic: boolean;
 
-    @Column('simple-json')
-    data: any;
+  @Column("simple-json")
+  data: any;
 }

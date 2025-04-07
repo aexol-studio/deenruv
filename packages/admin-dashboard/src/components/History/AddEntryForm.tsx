@@ -84,12 +84,12 @@ export const AddEntryForm: React.FC<DeleteEntryDialogProps> = ({
           >
             {!isPrivate ? (
               <>
-                <MessageCircle className="h-3 w-3" />
+                <MessageCircle className="size-3" />
                 {t('history.toAdminsAndCustomer', 'Visible to customer')}
               </>
             ) : (
               <>
-                <ShieldCheck className="h-3 w-3" />
+                <ShieldCheck className="size-3" />
                 {t('history.toAdmins', 'Admin only')}
               </>
             )}
@@ -98,12 +98,12 @@ export const AddEntryForm: React.FC<DeleteEntryDialogProps> = ({
           <Button disabled={newNote === '' || isSubmitting} onClick={handleSubmit} className="gap-2">
             {isSubmitting ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                <span className="size-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
                 {t('history.adding', 'Adding...')}
               </>
             ) : (
               <>
-                <Send className="h-4 w-4" />
+                <Send className="size-4" />
                 {t('history.addComment', 'Add Note')}
               </>
             )}

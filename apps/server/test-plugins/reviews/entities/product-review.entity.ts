@@ -1,51 +1,56 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Customer, DeepPartial, Product, ProductVariant, DeenruvEntity } from '@deenruv/core';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import {
+  Customer,
+  DeepPartial,
+  Product,
+  ProductVariant,
+  DeenruvEntity,
+} from "@deenruv/core";
+import { Column, Entity, ManyToOne } from "typeorm";
 
-import { ReviewState } from '../types';
+import { ReviewState } from "../types";
 
 @Entity()
 export class ProductReview extends DeenruvEntity {
-    constructor(input?: DeepPartial<ProductReview>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<ProductReview>) {
+    super(input);
+  }
 
-    @ManyToOne(type => Product)
-    product: Product;
+  @ManyToOne((type) => Product)
+  product: Product;
 
-    @ManyToOne(type => ProductVariant)
-    productVariant: ProductVariant | null;
+  @ManyToOne((type) => ProductVariant)
+  productVariant: ProductVariant | null;
 
-    @Column()
-    summary: string;
+  @Column()
+  summary: string;
 
-    @Column('text')
-    body: string;
+  @Column("text")
+  body: string;
 
-    @Column()
-    rating: number;
+  @Column()
+  rating: number;
 
-    @ManyToOne(type => Customer)
-    author: Customer;
+  @ManyToOne((type) => Customer)
+  author: Customer;
 
-    @Column()
-    authorName: string;
+  @Column()
+  authorName: string;
 
-    @Column({ nullable: true })
-    authorLocation: string;
+  @Column({ nullable: true })
+  authorLocation: string;
 
-    @Column({ default: 0 })
-    upvotes: number;
+  @Column({ default: 0 })
+  upvotes: number;
 
-    @Column({ default: 0 })
-    downvotes: number;
+  @Column({ default: 0 })
+  downvotes: number;
 
-    @Column('varchar')
-    state: ReviewState;
+  @Column("varchar")
+  state: ReviewState;
 
-    @Column('text', { nullable: true, default: null })
-    response: string;
+  @Column("text", { nullable: true, default: null })
+  response: string;
 
-    @Column({ nullable: true, default: null })
-    responseCreatedAt: Date;
+  @Column({ nullable: true, default: null })
+  responseCreatedAt: Date;
 }

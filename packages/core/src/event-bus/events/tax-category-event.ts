@@ -1,11 +1,17 @@
-import { CreateTaxCategoryInput, UpdateTaxCategoryInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateTaxCategoryInput,
+  UpdateTaxCategoryInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { TaxCategory } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api/common/request-context";
+import { TaxCategory } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
-type TaxCategoryInputTypes = CreateTaxCategoryInput | UpdateTaxCategoryInput | ID;
+type TaxCategoryInputTypes =
+  | CreateTaxCategoryInput
+  | UpdateTaxCategoryInput
+  | ID;
 
 /**
  * @description
@@ -15,13 +21,16 @@ type TaxCategoryInputTypes = CreateTaxCategoryInput | UpdateTaxCategoryInput | I
  * @docsCategory events
  * @docsPage Event Types
  */
-export class TaxCategoryEvent extends DeenruvEntityEvent<TaxCategory, TaxCategoryInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: TaxCategory,
-        type: 'created' | 'updated' | 'deleted',
-        input?: TaxCategoryInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class TaxCategoryEvent extends DeenruvEntityEvent<
+  TaxCategory,
+  TaxCategoryInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: TaxCategory,
+    type: "created" | "updated" | "deleted",
+    input?: TaxCategoryInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

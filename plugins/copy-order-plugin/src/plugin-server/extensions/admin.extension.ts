@@ -1,13 +1,13 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 export const ADMIN_API_EXTENSION = gql`
-    type CopyOrderErrorResponse {
-        message: String!
-    }
+  type CopyOrderErrorResponse {
+    message: String!
+  }
 
-    union CopyOrderResult = Order | CopyOrderErrorResponse
+  union CopyOrderResult = Order | CopyOrderErrorResponse
 
-    extend type Mutation {
-        copyOrder(id: ID!): CopyOrderResult!
-    }
+  extend type Mutation {
+    copyOrder(id: ID!): CopyOrderResult!
+  }
 `;

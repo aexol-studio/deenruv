@@ -1,6 +1,5 @@
 import React from 'react';
 import { CardIcons, CustomCard, Input } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
 import { useTranslation } from 'react-i18next';
 
 interface PersonalDataCard {
@@ -13,15 +12,15 @@ export const PersonalDataCard: React.FC<PersonalDataCard> = ({ setField, state }
 
   return (
     <CustomCard title={t('personalData.header')} icon={<CardIcons.basic />} color="blue">
-      <Stack column className="gap-4">
-        <Stack className="w-1/4 gap-3">
+      <div className="flex flex-col gap-4">
+        <div className="flex w-1/4 gap-3">
           <Input
             label={t('personalData.title')}
             value={state.title?.value}
             onChange={(e) => setField('title', e.target.value)}
           />
-        </Stack>
-        <Stack className="items-start gap-3">
+        </div>
+        <div className="flex items-start gap-3">
           <Input
             label={t('personalData.firstName')}
             value={state.firstName?.value}
@@ -36,8 +35,8 @@ export const PersonalDataCard: React.FC<PersonalDataCard> = ({ setField, state }
             errors={state.lastName?.errors}
             required
           />
-        </Stack>
-        <Stack className="items-start  gap-3">
+        </div>
+        <div className="flex items-start gap-3">
           <Input
             label={t('personalData.emailAddress')}
             value={state.emailAddress?.value}
@@ -50,8 +49,8 @@ export const PersonalDataCard: React.FC<PersonalDataCard> = ({ setField, state }
             value={state.phoneNumber?.value}
             onChange={(e) => setField('phoneNumber', e.target.value)}
           />
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </CustomCard>
   );
 };

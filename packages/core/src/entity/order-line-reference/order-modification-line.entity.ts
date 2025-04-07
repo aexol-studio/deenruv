@@ -1,10 +1,10 @@
-import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
-import { ChildEntity, Index, ManyToOne } from 'typeorm';
+import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { ChildEntity, Index, ManyToOne } from "typeorm";
 
-import { EntityId } from '../entity-id.decorator';
-import { OrderModification } from '../order-modification/order-modification.entity';
+import { EntityId } from "../entity-id.decorator";
+import { OrderModification } from "../order-modification/order-modification.entity";
 
-import { OrderLineReference } from './order-line-reference.entity';
+import { OrderLineReference } from "./order-line-reference.entity";
 
 /**
  * @description
@@ -15,14 +15,14 @@ import { OrderLineReference } from './order-line-reference.entity';
  */
 @ChildEntity()
 export class OrderModificationLine extends OrderLineReference {
-    constructor(input?: DeepPartial<OrderModificationLine>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<OrderModificationLine>) {
+    super(input);
+  }
 
-    @Index()
-    @ManyToOne(type => OrderModification, modification => modification.lines)
-    modification: OrderModification;
+  @Index()
+  @ManyToOne((type) => OrderModification, (modification) => modification.lines)
+  modification: OrderModification;
 
-    @EntityId()
-    modificationId: ID;
+  @EntityId()
+  modificationId: ID;
 }

@@ -391,7 +391,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                 )}
                               >
                                 {viewMarkers ? (
-                                  <div className="text-muted-foreground dark:text-muted-foreground absolute right-2 top-1/2 -translate-y-[50%] text-xs font-semibold lowercase">
+                                  <div className="text-muted-foreground dark:text-muted-foreground absolute right-2 top-1/2 -translate-y-1/2 text-xs font-semibold lowercase">
                                     {link.id}
                                   </div>
                                 ) : null}

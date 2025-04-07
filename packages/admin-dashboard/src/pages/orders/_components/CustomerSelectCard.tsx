@@ -21,7 +21,7 @@ import {
   Label,
   useGFFLP,
   CustomCard,
-  OrderDetailType,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
@@ -30,7 +30,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Edit, User, Check, Mail, Phone, Loader2, UserPlus, Search, AlertCircle } from 'lucide-react';
-import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
@@ -159,14 +158,14 @@ export const CustomerSelectCard: React.FC = () => {
         mode !== 'update' && (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="ghost" size="icon" className="size-8">
                 <Edit size={16} className="text-indigo-500 dark:text-indigo-400" />
               </Button>
             </DialogTrigger>
             <DialogContent className="min-w-max">
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2 text-xl">
-                  <User className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+                  <User className="size-5 text-indigo-500 dark:text-indigo-400" />
                   {t('create.selectCustomer.label', 'Select Customer')}
                 </DialogTitle>
                 <DialogDescription className="text-muted-foreground mt-2">
@@ -180,13 +179,13 @@ export const CustomerSelectCard: React.FC = () => {
                 <TabsList className="my-4 grid w-full grid-cols-2">
                   <TabsTrigger className="w-full" value="select">
                     <div className="flex items-center gap-2">
-                      <Search className="h-4 w-4" />
+                      <Search className="size-4" />
                       {t('create.selectCustomer.selectTab', 'Find Customer')}
                     </div>
                   </TabsTrigger>
                   <TabsTrigger className="w-full" value="create">
                     <div className="flex items-center gap-2">
-                      <UserPlus className="h-4 w-4" />
+                      <UserPlus className="size-4" />
                       {t('create.selectCustomer.createTab', 'Create New')}
                     </div>
                   </TabsTrigger>
@@ -303,12 +302,12 @@ export const CustomerSelectCard: React.FC = () => {
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="size-4 animate-spin" />
                       {t('common.processing', 'Processing...')}
                     </>
                   ) : (
                     <>
-                      <Check className="h-4 w-4" />
+                      <Check className="size-4" />
                       {t(
                         tab === 'create' ? 'create.selectCustomer.create' : 'create.selectCustomer.selectButton',
                         tab === 'create' ? 'Create Customer' : 'Select Customer',
@@ -326,8 +325,8 @@ export const CustomerSelectCard: React.FC = () => {
         <div className="flex items-start gap-3">
           {!currentOrder?.customer ? (
             <>
-              <div className="bg-secondary mt-0.5 flex h-8 w-8 items-center justify-center rounded-full">
-                <AlertCircle className="h-4 w-4 text-green-500 dark:text-green-600" />
+              <div className="bg-secondary mt-0.5 flex size-8 items-center justify-center rounded-full">
+                <AlertCircle className="size-4 text-green-500 dark:text-green-600" />
               </div>
               <div className="flex-1">
                 <p className="text-muted-foreground text-sm italic">
@@ -335,7 +334,7 @@ export const CustomerSelectCard: React.FC = () => {
                 </p>
                 {mode !== 'view' && (
                   <Button variant="outline" size="sm" className="mt-2 gap-2" onClick={() => setOpen(true)}>
-                    <UserPlus className="h-3.5 w-3.5" />
+                    <UserPlus className="size-3.5" />
                     {t('create.selectCustomer.addCustomer', 'Add Customer')}
                   </Button>
                 )}
@@ -355,12 +354,12 @@ export const CustomerSelectCard: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <Mail className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
+                    <Mail className="size-3.5 text-indigo-500 dark:text-indigo-400" />
                     <span>{currentOrder.customer.emailAddress}</span>
                   </div>
                   {currentOrder.customer.phoneNumber && (
                     <div className="flex items-center gap-2 text-sm">
-                      <Phone className="h-3.5 w-3.5 text-indigo-500 dark:text-indigo-400" />
+                      <Phone className="size-3.5 text-indigo-500 dark:text-indigo-400" />
                       <span>{currentOrder.customer.phoneNumber}</span>
                     </div>
                   )}

@@ -1,3 +1,3 @@
 export interface CliOptions {
-    logLevel: 'silent' | 'info' | 'verbose';
+  logLevel: "silent" | "info" | "verbose";
 }

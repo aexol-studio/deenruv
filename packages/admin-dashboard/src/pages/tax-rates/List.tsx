@@ -1,14 +1,19 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput, TableLabel } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  apiClient,
+  DetailList,
+  deepMerge,
+  PaginationInput,
+  TableLabel,
+  ListLocations,
+} from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { TaxRateListSelector } from '@/graphql/taxRates';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(TaxRateListSelector, additionalSelector ?? {});
+const tableId = 'taxRates-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     ['taxRates']: [
       {
@@ -20,7 +25,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['taxRates'];
@@ -76,7 +81,7 @@ export const TaxRatesListPage = () => {
       ]}
       entityName={'TaxRate'}
       route={Routes['taxRates']}
-      tableId="taxRates-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateTaxRate]}

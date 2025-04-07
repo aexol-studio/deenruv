@@ -103,9 +103,9 @@ export const Address: React.FC<RolesCardProps> = ({ address, customerId, onActio
           </AddressDialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="h-8 w-8 p-0">
+              <Button variant="outline" className="size-8 p-0">
                 <span className="sr-only">{t('selectAddress.more')}</span>
-                <MoreHorizontal className="h-4 w-4" />
+                <MoreHorizontal className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

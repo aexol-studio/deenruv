@@ -12,7 +12,6 @@ import {
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
 import { Variant } from '@/pages/products/_components/Variant';
 import { useCallback, useEffect, useState } from 'react';
-import { Stack } from '@/components';
 import { PlusCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
@@ -61,11 +60,11 @@ export const VariantsTab = () => {
   return (
     <div className="flex flex-col">
       {getMarker()}
-      <Stack column className="items-end gap-4">
+      <div className="flex flex-col items-end gap-4">
         <Tabs defaultValue={variants?.[0]?.id} className="w-full" value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="h-auto flex-wrap justify-start">
             <TabsTrigger key={'new-variant'} value={NEW_VARIANT_TAB_VALUE} className="text-blue-600">
-              <PlusCircle size={16} className="mr-2 translate-y-[1px]" />
+              <PlusCircle size={16} className="mr-2 translate-y-px" />
               {t('addVariantDialog.new')}
             </TabsTrigger>
             {variants?.map((v) => (
@@ -89,7 +88,7 @@ export const VariantsTab = () => {
               </TabsContent>
             ))
           ) : (
-            <Stack className="w-full items-center justify-center">
+            <div className="flex w-full items-center justify-center">
               {activeTab !== NEW_VARIANT_TAB_VALUE && (
                 <EmptyState
                   columnsLength={1}
@@ -97,10 +96,10 @@ export const VariantsTab = () => {
                   description={t('variantsTab.emptyState.description')}
                 />
               )}
-            </Stack>
+            </div>
           )}
         </Tabs>
-      </Stack>
+      </div>
     </div>
   );
 };

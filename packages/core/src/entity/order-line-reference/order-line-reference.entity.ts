@@ -1,9 +1,9 @@
-import { ID } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
+import { ID } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne, TableInheritance } from "typeorm";
 
-import { DeenruvEntity } from '../base/base.entity';
-import { EntityId } from '../entity-id.decorator';
-import { OrderLine } from '../order-line/order-line.entity';
+import { DeenruvEntity } from "../base/base.entity";
+import { EntityId } from "../entity-id.decorator";
+import { OrderLine } from "../order-line/order-line.entity";
 
 /**
  * @description
@@ -13,15 +13,17 @@ import { OrderLine } from '../order-line/order-line.entity';
  * @docsPage OrderLineReference
  */
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'discriminator' } })
+@TableInheritance({ column: { type: "varchar", name: "discriminator" } })
 export abstract class OrderLineReference extends DeenruvEntity {
-    @Column()
-    quantity: number;
+  @Column()
+  quantity: number;
 
-    @Index()
-    @ManyToOne(type => OrderLine, line => line.linesReferences, { onDelete: 'CASCADE' })
-    orderLine: OrderLine;
+  @Index()
+  @ManyToOne((type) => OrderLine, (line) => line.linesReferences, {
+    onDelete: "CASCADE",
+  })
+  orderLine: OrderLine;
 
-    @EntityId()
-    orderLineId: ID;
+  @EntityId()
+  orderLineId: ID;
 }

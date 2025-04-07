@@ -1,6 +1,6 @@
 export const RANKED_TRANSLATIONS_SELECT = [
   'pvt.baseId AS "baseId"',
-  'pvt.name AS name',
+  "pvt.name AS name",
   'pvt.languageCode AS "languageCode"',
   `ROW_NUMBER() OVER (
         PARTITION BY pvt."baseId" 
@@ -11,7 +11,7 @@ export const TOTAL_PRODUCT_VIEW_SELECT = [
   'tpv."productVariantId" AS "productVariantId"',
   'SUM(tpv."orderPlacedQuantitySum") AS "orderPlacedQuantitySum"',
   'tpv."channelId" AS "channelId"',
-  'rt.name AS name',
+  "rt.name AS name",
 ];
 
 export const ORDER_TOTAL_DAILY_SELECT = [

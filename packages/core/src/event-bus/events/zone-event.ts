@@ -1,9 +1,12 @@
-import { CreateZoneInput, UpdateZoneInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateZoneInput,
+  UpdateZoneInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Zone } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Zone } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type ZoneInputTypes = CreateZoneInput | UpdateZoneInput | ID;
 
@@ -16,12 +19,12 @@ type ZoneInputTypes = CreateZoneInput | UpdateZoneInput | ID;
  * @docsPage Event Types
  */
 export class ZoneEvent extends DeenruvEntityEvent<Zone, ZoneInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: Zone,
-        type: 'created' | 'updated' | 'deleted',
-        input?: ZoneInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+  constructor(
+    ctx: RequestContext,
+    entity: Zone,
+    type: "created" | "updated" | "deleted",
+    input?: ZoneInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

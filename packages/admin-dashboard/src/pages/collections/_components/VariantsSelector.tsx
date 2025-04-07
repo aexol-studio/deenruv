@@ -1,7 +1,6 @@
 import { Label, MultipleSelector, apiClient, type Option } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { Stack } from '@/components';
 
 interface VariantsSelectorProps {
   type: 'variant' | 'product' | undefined;
@@ -55,7 +54,7 @@ export const VariantsSelector: React.FC<VariantsSelectorProps> = ({
   }, [type, fetchProducts, fetchVariants]);
 
   return (
-    <Stack column className="basis-full gap-2">
+    <div className="flex basis-full flex-col gap-2">
       <Label>{label}</Label>
       <MultipleSelector
         options={options}
@@ -72,6 +71,6 @@ export const VariantsSelector: React.FC<VariantsSelectorProps> = ({
         {...(singleSelection && { maxSelected: 1 })}
         hideClearAllButton
       />
-    </Stack>
+    </div>
   );
 };

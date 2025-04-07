@@ -286,7 +286,7 @@ export const TopActions: React.FC = () => {
       <Button
         variant="outline"
         size="icon"
-        className="h-7 w-7"
+        className="size-7"
         onClick={() => {
           if (order?.state === ORDER_STATE.DRAFT) {
             toast.error(t('create.leaveToastMessage'), {
@@ -299,7 +299,7 @@ export const TopActions: React.FC = () => {
           } else navigate(Routes.orders.list, { viewTransition: true });
         }}
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="size-4" />
         <span className="sr-only">{t('create.back')}</span>
       </Button>
       <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
@@ -336,7 +336,7 @@ export const TopActions: React.FC = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
-            <EllipsisVerticalIcon className="h-4 w-4" />
+            <EllipsisVerticalIcon className="size-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

@@ -1,19 +1,19 @@
 import {
-    CreateFacetValueInput,
-    CreateFacetValueWithFacetInput,
-    UpdateFacetValueInput,
-} from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+  CreateFacetValueInput,
+  CreateFacetValueWithFacetInput,
+  UpdateFacetValueInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api';
-import { FacetValue } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { FacetValue } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type FacetValueInputTypes =
-    | CreateFacetValueInput
-    | CreateFacetValueWithFacetInput
-    | UpdateFacetValueInput
-    | ID;
+  | CreateFacetValueInput
+  | CreateFacetValueWithFacetInput
+  | UpdateFacetValueInput
+  | ID;
 
 /**
  * @description
@@ -23,13 +23,16 @@ type FacetValueInputTypes =
  * @docsPage Event Types
  * @since 1.4
  */
-export class FacetValueEvent extends DeenruvEntityEvent<FacetValue, FacetValueInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: FacetValue,
-        type: 'created' | 'updated' | 'deleted',
-        input?: FacetValueInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class FacetValueEvent extends DeenruvEntityEvent<
+  FacetValue,
+  FacetValueInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: FacetValue,
+    type: "created" | "updated" | "deleted",
+    input?: FacetValueInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

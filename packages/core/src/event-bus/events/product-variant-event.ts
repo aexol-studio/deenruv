@@ -1,11 +1,18 @@
-import { CreateProductVariantInput, UpdateProductVariantInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateProductVariantInput,
+  UpdateProductVariantInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { ProductVariant } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api/common/request-context";
+import { ProductVariant } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
-type ProductVariantInputTypes = CreateProductVariantInput[] | UpdateProductVariantInput[] | ID | ID[];
+type ProductVariantInputTypes =
+  | CreateProductVariantInput[]
+  | UpdateProductVariantInput[]
+  | ID
+  | ID[];
 
 /**
  * @description
@@ -15,23 +22,26 @@ type ProductVariantInputTypes = CreateProductVariantInput[] | UpdateProductVaria
  * @docsCategory events
  * @docsPage Event Types
  */
-export class ProductVariantEvent extends DeenruvEntityEvent<ProductVariant[], ProductVariantInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: ProductVariant[],
-        type: 'created' | 'updated' | 'deleted',
-        input?: ProductVariantInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class ProductVariantEvent extends DeenruvEntityEvent<
+  ProductVariant[],
+  ProductVariantInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: ProductVariant[],
+    type: "created" | "updated" | "deleted",
+    input?: ProductVariantInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 
-    /**
-     * Return an variants field to become compatible with the
-     * deprecated old version of ProductEvent
-     * @deprecated Use `entity` instead
-     * @since 1.4
-     */
-    get variants(): ProductVariant[] {
-        return this.entity;
-    }
+  /**
+   * Return an variants field to become compatible with the
+   * deprecated old version of ProductEvent
+   * @deprecated Use `entity` instead
+   * @since 1.4
+   */
+  get variants(): ProductVariant[] {
+    return this.entity;
+  }
 }

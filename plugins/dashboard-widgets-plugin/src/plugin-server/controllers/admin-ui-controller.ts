@@ -1,12 +1,12 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Res } from "@nestjs/common";
 
-@Controller('admin-ui')
+@Controller("admin-ui")
 export class AdminUIController {
-    constructor() {}
+  constructor() {}
 
-    @Get()
-    async page(@Res() res: any) {
-        res.send(`
+  @Get()
+  async page(@Res() res: any) {
+    res.send(`
             <html>
               <head>
                 <title>Deenruv - Admin UI</title>
@@ -19,5 +19,5 @@ export class AdminUIController {
                 </body>
             </html>
           `);
-    }
+  }
 }

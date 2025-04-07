@@ -10,9 +10,8 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  setInArrayBy,
 } from '@deenruv/react-ui-devkit';
-import { setInArrayBy } from '@/lists/useGflp';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 export const CountryDetailView = () => {
   const { form, entity, fetchEntity, id } = useDetailView(
@@ -63,8 +62,8 @@ export const CountryDetailView = () => {
     <main className="min-h-96">
       <div className="mx-auto mt-2 flex w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
         <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-          <Stack className="items-start gap-3">
-            <Stack className="basis-full md:basis-1/3">
+          <div className="flex items-start gap-3">
+            <div className="flex basis-full md:basis-1/3">
               <Input
                 label={t('details.basic.name')}
                 value={currentTranslationValue?.name ?? undefined}
@@ -72,8 +71,8 @@ export const CountryDetailView = () => {
                 errors={state.translations?.errors}
                 required
               />
-            </Stack>
-            <Stack className="basis-full md:basis-1/3">
+            </div>
+            <div className="flex basis-full md:basis-1/3">
               <Input
                 label={t('details.basic.code')}
                 value={state.code?.value}
@@ -81,12 +80,12 @@ export const CountryDetailView = () => {
                 errors={state.code?.errors}
                 required
               />
-            </Stack>
-            <Stack className="mt-7 basis-full items-center gap-3 md:basis-1/3">
+            </div>
+            <div className="mt-7 flex basis-full items-center gap-3 md:basis-1/3">
               <Switch checked={state.enabled?.value} onCheckedChange={(e) => setField('enabled', e)} />
               <Label>{t('details.basic.enabled')}</Label>
-            </Stack>
-          </Stack>
+            </div>
+          </div>
         </CustomCard>
         <DetailViewMarker position={'countries-detail-view'} />
       </div>

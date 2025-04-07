@@ -23,10 +23,10 @@ import {
   priceFormatter,
   ArgumentFieldsComponent,
   CustomCard,
+  useGFFLP,
 } from '@deenruv/react-ui-devkit';
 import type { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem.js';
-import { useGFFLP } from '@/lists/useGflp';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
@@ -91,14 +91,14 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button disabled={disabled} size="sm" className="gap-2">
-          <Package className="h-4 w-4" />
+          <Package className="size-4" />
           {t('fulfillment.completeOrderButton', 'Fulfill Order')}
         </Button>
       </DialogTrigger>
       <DialogContent className="flex h-[80vh] max-w-[80vw] flex-col gap-0 overflow-hidden p-0">
         <DialogHeader className="border-b px-6 py-4">
           <div className="flex items-center gap-2">
-            <Truck className="text-primary h-5 w-5" />
+            <Truck className="text-primary size-5" />
             <DialogTitle>{t('fulfillment.completeDialogTitle', 'Complete Order Fulfillment')}</DialogTitle>
           </div>
           <DialogDescription>
@@ -109,10 +109,10 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex h-full w-full flex-col overflow-hidden md:flex-row">
-          <div className="flex h-full w-full flex-col border-r p-6 md:w-1/2">
+        <div className="flex size-full flex-col overflow-hidden md:flex-row">
+          <div className="flex size-full flex-col border-r p-6 md:w-1/2">
             <div className="mb-4 flex items-center gap-2">
-              <Box className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+              <Box className="size-5 text-blue-500 dark:text-blue-400" />
               <h3 className="text-lg font-medium">{t('fulfillment.itemsToFulfill', 'Items to Fulfill')}</h3>
             </div>
 
@@ -163,12 +163,12 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                                 <div className="flex items-center gap-1">
                                   {isLowStock ? (
                                     <div className="flex items-center gap-1 text-amber-500">
-                                      <AlertCircle className="h-4 w-4" />
+                                      <AlertCircle className="size-4" />
                                       <p className="text-xs font-medium">{t('fulfillment.lowStock', 'Low stock')}</p>
                                     </div>
                                   ) : (
                                     <div className="flex items-center gap-1 text-green-500">
-                                      <CheckCircle2 className="h-4 w-4" />
+                                      <CheckCircle2 className="size-4" />
                                       <p className="text-xs font-medium">{t('fulfillment.inStock', 'In stock')}</p>
                                     </div>
                                   )}
@@ -187,7 +187,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                       <TableCell colSpan={4} className="text-muted-foreground py-6 text-center">
                         <div className="flex flex-col items-center justify-center gap-2">
                           <div className="rounded-full bg-blue-100 p-3 dark:bg-blue-900/30">
-                            <Box className="h-6 w-6 text-blue-500 dark:text-blue-400" />
+                            <Box className="size-6 text-blue-500 dark:text-blue-400" />
                           </div>
                           <p>{t('fulfillment.emptyState', 'No items to fulfill')}</p>
                           <p className="text-muted-foreground text-xs">
@@ -203,14 +203,14 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
           </div>
 
           <ScrollArea className="flex h-full md:w-1/2">
-            <div className="flex h-full w-full flex-col p-6">
+            <div className="flex size-full flex-col p-6">
               <form onSubmit={handleSubmit} className="flex h-full flex-col gap-6">
                 <CustomCard title={t('fulfillment.shippingAddress', 'Shipping Address')} color="blue" icon={<MapPin />}>
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-3">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <User className="text-muted-foreground h-4 w-4" />
+                          <User className="text-muted-foreground size-4" />
                           <p className="text-muted-foreground text-xs font-medium">{t('fullName', 'Full Name')}</p>
                         </div>
                         <p className="text-sm font-medium">{order.shippingAddress?.fullName || '—'}</p>
@@ -218,7 +218,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Building className="text-muted-foreground h-4 w-4" />
+                          <Building className="text-muted-foreground size-4" />
                           <p className="text-muted-foreground text-xs font-medium">{t('company', 'Company')}</p>
                         </div>
                         <p className="text-sm font-medium">{order.shippingAddress?.company || '—'}</p>
@@ -226,7 +226,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <MapPin className="text-muted-foreground h-4 w-4" />
+                          <MapPin className="text-muted-foreground size-4" />
                           <p className="text-muted-foreground text-xs font-medium">{t('street1', 'Street Address')}</p>
                         </div>
                         <p className="text-sm font-medium">{order.shippingAddress?.streetLine1 || '—'}</p>
@@ -256,7 +256,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Phone className="text-muted-foreground h-4 w-4" />
+                          <Phone className="text-muted-foreground size-4" />
                           <p className="text-muted-foreground text-xs font-medium">
                             {t('phoneNumber', 'Phone Number')}
                           </p>
@@ -273,7 +273,7 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                     {order.shippingLines.map((line) => (
                       <div key={line.id} className="bg-muted/50 flex items-center justify-between rounded-md p-2">
                         <div className="flex items-center gap-2">
-                          <Truck className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                          <Truck className="size-4 text-blue-500 dark:text-blue-400" />
                           <span className="font-medium">{line.shippingMethod.name}</span>
                         </div>
                         <Badge variant="outline" className="font-mono">
@@ -291,12 +291,12 @@ export const FulfillmentModal: React.FC<Props> = ({ order, onSubmitted, disabled
                     <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <Loader2 className="size-4 animate-spin" />
                           {t('fulfillment.processing', 'Processing...')}
                         </>
                       ) : (
                         <>
-                          <CheckCircle2 className="h-4 w-4" />
+                          <CheckCircle2 className="size-4" />
                           {t('fulfillment.fulfill', 'Complete Fulfillment')}
                         </>
                       )}

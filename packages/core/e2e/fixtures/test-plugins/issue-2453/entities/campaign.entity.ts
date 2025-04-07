@@ -1,33 +1,33 @@
-import type { ID, LocaleString, Translation } from '@deenruv/core';
-import { DeepPartial, Promotion, DeenruvEntity } from '@deenruv/core';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import type { ID, LocaleString, Translation } from "@deenruv/core";
+import { DeepPartial, Promotion, DeenruvEntity } from "@deenruv/core";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
-import { CampaignTranslation } from './campaign-translation.entity';
+import { CampaignTranslation } from "./campaign-translation.entity";
 
 /**
  * @description This entity represents a front end campaign
  *
  * @docsCategory entities
  */
-@Entity('campaign')
+@Entity("campaign")
 export class Campaign extends DeenruvEntity {
-    constructor(input?: DeepPartial<Campaign>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Campaign>) {
+    super(input);
+  }
 
-    @Column({ unique: true })
-    code: string;
+  @Column({ unique: true })
+  code: string;
 
-    name: LocaleString;
+  name: LocaleString;
 
-    @ManyToOne(() => Promotion, { onDelete: 'SET NULL' })
-    promotion: Promotion | null;
+  @ManyToOne(() => Promotion, { onDelete: "SET NULL" })
+  promotion: Promotion | null;
 
-    @Column('int', { nullable: true })
-    promotionId: ID | null;
+  @Column("int", { nullable: true })
+  promotionId: ID | null;
 
-    @OneToMany(() => CampaignTranslation, translation => translation.base, {
-        eager: true,
-    })
-    translations: Array<Translation<Campaign>>;
+  @OneToMany(() => CampaignTranslation, (translation) => translation.base, {
+    eager: true,
+  })
+  translations: Array<Translation<Campaign>>;
 }

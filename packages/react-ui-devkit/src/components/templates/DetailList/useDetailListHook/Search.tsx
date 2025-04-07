@@ -1,43 +1,46 @@
-import { Input } from '@/components';
-import { useDebounce } from '@/hooks';
-import { PromisePaginated } from '@/types/models';
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Search as SearchIcon } from 'lucide-react';
+import { Input } from "@/components";
+import { useDebounce } from "@/hooks";
+import { PromisePaginated } from "@/types/models";
+import React from "react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Search as SearchIcon } from "lucide-react";
 
 export const Search = ({
-    initialSearchQuery,
-    setSearchQuery,
-    searchFields,
+  initialSearchQuery,
+  setSearchQuery,
+  searchFields,
 }: {
-    initialSearchQuery?: string | null;
-    setSearchQuery: (query: string | null) => void;
-    searchFields?: (keyof Awaited<ReturnType<PromisePaginated>>['items'][number])[];
+  initialSearchQuery?: string | null;
+  setSearchQuery: (query: string | null) => void;
+  searchFields?: (keyof Awaited<
+    ReturnType<PromisePaginated>
+  >["items"][number])[];
 }) => {
-    const { t } = useTranslation('table');
-    const [searchQuery, setSearchQueryState] = useState(initialSearchQuery ?? '');
-    const debouncedSearch = useDebounce(searchQuery, 500);
-    useEffect(() => {
-        if (debouncedSearch.length > 0) setSearchQuery(debouncedSearch);
-        else setSearchQuery(null);
-    }, [debouncedSearch]);
+  const { t } = useTranslation("table");
+  const [searchQuery, setSearchQueryState] = useState(initialSearchQuery ?? "");
+  const debouncedSearch = useDebounce(searchQuery, 500);
+  useEffect(() => {
+    if (debouncedSearch.length > 0) setSearchQuery(debouncedSearch);
+    else setSearchQuery(null);
+  }, [debouncedSearch]);
 
-    const placeholder = t('placeholders.search', {
-        fields: searchFields?.map(f => t('columns.' + f.toString())).join(', '),
-    }).toLowerCase();
-    const onlyFirstLetterCapitalized = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+  const placeholder = t("placeholders.search", {
+    fields: searchFields?.map((f) => t("columns." + f.toString())).join(", "),
+  }).toLowerCase();
+  const onlyFirstLetterCapitalized = (str: string) =>
+    str.charAt(0).toUpperCase() + str.slice(1);
 
-    return (
-        <div className="w-[38rem] flex items-center justify-center gap-3">
-            <Input
-                className="w-full h-8 pl-4"
-                placeholder={onlyFirstLetterCapitalized(placeholder)}
-                value={searchQuery}
-                onChange={e => setSearchQueryState(e.target.value)}
-                startAdornment={<SearchIcon size={20} />}
-                adornmentPlain
-            />
-        </div>
-    );
+  return (
+    <div className="flex w-[38rem] items-center justify-center gap-3">
+      <Input
+        className="h-8 w-full pl-4"
+        placeholder={onlyFirstLetterCapitalized(placeholder)}
+        value={searchQuery}
+        onChange={(e) => setSearchQueryState(e.target.value)}
+        startAdornment={<SearchIcon size={20} />}
+        adornmentPlain
+      />
+    </div>
+  );
 };

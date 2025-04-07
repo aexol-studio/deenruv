@@ -135,7 +135,7 @@ export const OptionGroup: React.FC<OptionGroupProps> = ({
         />
       </TableCell>
       <TableCell className="w-12">
-        <Button size={'icon'} variant={'outline'} className="h-8 w-8" onClick={() => removeGroup(group.id)}>
+        <Button size={'icon'} variant={'outline'} className="size-8" onClick={() => removeGroup(group.id)}>
           <Trash size={20} className="text-red-600" />
         </Button>
       </TableCell>

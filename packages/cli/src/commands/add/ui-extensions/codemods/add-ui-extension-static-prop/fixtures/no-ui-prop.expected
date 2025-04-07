@@ -1,11 +1,11 @@
-import * as path from 'path';
-import { AdminUiExtension } from '@deenruv/ui-devkit/compiler';
-import { PluginCommonModule, Type, DeenruvPlugin } from '@deenruv/core';
+import * as path from "path";
+import { AdminUiExtension } from "@deenruv/ui-devkit/compiler";
+import { PluginCommonModule, Type, DeenruvPlugin } from "@deenruv/core";
 type PluginInitOptions = any;
 
 @DeenruvPlugin({
     imports: [PluginCommonModule],
-    compatibility: '^0.0.0',
+    compatibility: "^0.0.0",
 })
 export class TestOnePlugin {
     static options: PluginInitOptions;
@@ -16,9 +16,9 @@ export class TestOnePlugin {
     }
 
     static ui: AdminUiExtension = {
-        id: 'test-one-ui',
-        extensionPath: path.join(__dirname, 'ui'),
-        routes: [{ route: 'test-one', filePath: 'routes.ts' }],
-        providers: ['providers.ts'],
+        id: "test-one-ui",
+        extensionPath: path.join(__dirname, "ui"),
+        routes: [{ route: "test-one", filePath: "routes.ts" }],
+        providers: ["providers.ts"],
     };
 }

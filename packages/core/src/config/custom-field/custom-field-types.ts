@@ -1,28 +1,28 @@
 import {
-    BooleanCustomFieldConfig as GraphQLBooleanCustomFieldConfig,
-    CustomField,
-    DateTimeCustomFieldConfig as GraphQLDateTimeCustomFieldConfig,
-    FloatCustomFieldConfig as GraphQLFloatCustomFieldConfig,
-    IntCustomFieldConfig as GraphQLIntCustomFieldConfig,
-    LocaleStringCustomFieldConfig as GraphQLLocaleStringCustomFieldConfig,
-    LocaleTextCustomFieldConfig as GraphQLLocaleTextCustomFieldConfig,
-    LocalizedString,
-    Permission,
-    RelationCustomFieldConfig as GraphQLRelationCustomFieldConfig,
-    StringCustomFieldConfig as GraphQLStringCustomFieldConfig,
-    TextCustomFieldConfig as GraphQLTextCustomFieldConfig,
-} from '@deenruv/common/lib/generated-types';
+  BooleanCustomFieldConfig as GraphQLBooleanCustomFieldConfig,
+  CustomField,
+  DateTimeCustomFieldConfig as GraphQLDateTimeCustomFieldConfig,
+  FloatCustomFieldConfig as GraphQLFloatCustomFieldConfig,
+  IntCustomFieldConfig as GraphQLIntCustomFieldConfig,
+  LocaleStringCustomFieldConfig as GraphQLLocaleStringCustomFieldConfig,
+  LocaleTextCustomFieldConfig as GraphQLLocaleTextCustomFieldConfig,
+  LocalizedString,
+  Permission,
+  RelationCustomFieldConfig as GraphQLRelationCustomFieldConfig,
+  StringCustomFieldConfig as GraphQLStringCustomFieldConfig,
+  TextCustomFieldConfig as GraphQLTextCustomFieldConfig,
+} from "@deenruv/common/lib/generated-types";
 import {
-    CustomFieldsObject,
-    CustomFieldType,
-    DefaultFormComponentId,
-    Type,
-    UiComponentConfig,
-} from '@deenruv/common/lib/shared-types';
+  CustomFieldsObject,
+  CustomFieldType,
+  DefaultFormComponentId,
+  Type,
+  UiComponentConfig,
+} from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Injector } from '../../common/injector';
-import { DeenruvEntity } from '../../entity/base/base.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { Injector } from "../../common/injector";
+import { DeenruvEntity } from "../../entity/base/base.entity";
 
 // prettier-ignore
 export type DefaultValueType<T extends CustomFieldType> =
@@ -32,29 +32,29 @@ export type DefaultValueType<T extends CustomFieldType> =
                 T extends 'datetime' ? Date :
                     T extends 'relation' ? any : never;
 
-export type BaseTypedCustomFieldConfig<T extends CustomFieldType, C extends CustomField> = Omit<
-    C,
-    '__typename' | 'list' | 'requiresPermission'
-> & {
-    type: T;
-    /**
-     * @description
-     * Whether the custom field is available via the Shop API.
-     * @default true
-     */
-    public?: boolean;
-    nullable?: boolean;
-    unique?: boolean;
-    /**
-     * @description
-     * The permission(s) required to read or write to this field.
-     * If the user has at least one of these permissions, they will be
-     * able to access the field.
-     *
-     * @since 2.2.0
-     */
-    requiresPermission?: Array<Permission | string> | Permission | string;
-    ui?: UiComponentConfig<DefaultFormComponentId | string>;
+export type BaseTypedCustomFieldConfig<
+  T extends CustomFieldType,
+  C extends CustomField,
+> = Omit<C, "__typename" | "list" | "requiresPermission"> & {
+  type: T;
+  /**
+   * @description
+   * Whether the custom field is available via the Shop API.
+   * @default true
+   */
+  public?: boolean;
+  nullable?: boolean;
+  unique?: boolean;
+  /**
+   * @description
+   * The permission(s) required to read or write to this field.
+   * If the user has at least one of these permissions, they will be
+   * able to access the field.
+   *
+   * @since 2.2.0
+   */
+  requiresPermission?: Array<Permission | string> | Permission | string;
+  ui?: UiComponentConfig<DefaultFormComponentId | string>;
 };
 
 /**
@@ -64,55 +64,79 @@ export type BaseTypedCustomFieldConfig<T extends CustomFieldType, C extends Cust
  * @docsCategory custom-fields
  */
 export type TypedCustomSingleFieldConfig<
-    T extends CustomFieldType,
-    C extends CustomField,
+  T extends CustomFieldType,
+  C extends CustomField,
 > = BaseTypedCustomFieldConfig<T, C> & {
-    list?: false;
-    defaultValue?: DefaultValueType<T>;
-    validate?: (
-        value: DefaultValueType<T>,
-        injector: Injector,
-        ctx: RequestContext,
-    ) => string | LocalizedString[] | void | Promise<string | LocalizedString[] | void>;
+  list?: false;
+  defaultValue?: DefaultValueType<T>;
+  validate?: (
+    value: DefaultValueType<T>,
+    injector: Injector,
+    ctx: RequestContext,
+  ) =>
+    | string
+    | LocalizedString[]
+    | void
+    | Promise<string | LocalizedString[] | void>;
 };
 
 export type TypedCustomListFieldConfig<
-    T extends CustomFieldType,
-    C extends CustomField,
+  T extends CustomFieldType,
+  C extends CustomField,
 > = BaseTypedCustomFieldConfig<T, C> & {
-    list?: true;
-    defaultValue?: Array<DefaultValueType<T>>;
-    validate?: (value: Array<DefaultValueType<T>>) => string | LocalizedString[] | void;
+  list?: true;
+  defaultValue?: Array<DefaultValueType<T>>;
+  validate?: (
+    value: Array<DefaultValueType<T>>,
+  ) => string | LocalizedString[] | void;
 };
 
 export type TypedCustomFieldConfig<
-    T extends CustomFieldType,
-    C extends CustomField,
+  T extends CustomFieldType,
+  C extends CustomField,
 > = BaseTypedCustomFieldConfig<T, C> &
-    (TypedCustomSingleFieldConfig<T, C> | TypedCustomListFieldConfig<T, C>);
+  (TypedCustomSingleFieldConfig<T, C> | TypedCustomListFieldConfig<T, C>);
 
-export type StringCustomFieldConfig = TypedCustomFieldConfig<'string', GraphQLStringCustomFieldConfig>;
+export type StringCustomFieldConfig = TypedCustomFieldConfig<
+  "string",
+  GraphQLStringCustomFieldConfig
+>;
 export type LocaleStringCustomFieldConfig = TypedCustomFieldConfig<
-    'localeString',
-    GraphQLLocaleStringCustomFieldConfig
+  "localeString",
+  GraphQLLocaleStringCustomFieldConfig
 >;
-export type TextCustomFieldConfig = TypedCustomFieldConfig<'text', GraphQLTextCustomFieldConfig>;
+export type TextCustomFieldConfig = TypedCustomFieldConfig<
+  "text",
+  GraphQLTextCustomFieldConfig
+>;
 export type LocaleTextCustomFieldConfig = TypedCustomFieldConfig<
-    'localeText',
-    GraphQLLocaleTextCustomFieldConfig
+  "localeText",
+  GraphQLLocaleTextCustomFieldConfig
 >;
-export type IntCustomFieldConfig = TypedCustomFieldConfig<'int', GraphQLIntCustomFieldConfig>;
-export type FloatCustomFieldConfig = TypedCustomFieldConfig<'float', GraphQLFloatCustomFieldConfig>;
-export type BooleanCustomFieldConfig = TypedCustomFieldConfig<'boolean', GraphQLBooleanCustomFieldConfig>;
-export type DateTimeCustomFieldConfig = TypedCustomFieldConfig<'datetime', GraphQLDateTimeCustomFieldConfig>;
+export type IntCustomFieldConfig = TypedCustomFieldConfig<
+  "int",
+  GraphQLIntCustomFieldConfig
+>;
+export type FloatCustomFieldConfig = TypedCustomFieldConfig<
+  "float",
+  GraphQLFloatCustomFieldConfig
+>;
+export type BooleanCustomFieldConfig = TypedCustomFieldConfig<
+  "boolean",
+  GraphQLBooleanCustomFieldConfig
+>;
+export type DateTimeCustomFieldConfig = TypedCustomFieldConfig<
+  "datetime",
+  GraphQLDateTimeCustomFieldConfig
+>;
 export type RelationCustomFieldConfig = TypedCustomFieldConfig<
-    'relation',
-    Omit<GraphQLRelationCustomFieldConfig, 'entity' | 'scalarFields'>
+  "relation",
+  Omit<GraphQLRelationCustomFieldConfig, "entity" | "scalarFields">
 > & {
-    entity: Type<DeenruvEntity>;
-    graphQLType?: string;
-    eager?: boolean;
-    inverseSide?: string | ((object: any) => any);
+  entity: Type<DeenruvEntity>;
+  graphQLType?: string;
+  eager?: boolean;
+  inverseSide?: string | ((object: any) => any);
 };
 
 /**
@@ -122,15 +146,15 @@ export type RelationCustomFieldConfig = TypedCustomFieldConfig<
  * @docsCategory custom-fields
  */
 export type CustomFieldConfig =
-    | StringCustomFieldConfig
-    | LocaleStringCustomFieldConfig
-    | TextCustomFieldConfig
-    | LocaleTextCustomFieldConfig
-    | IntCustomFieldConfig
-    | FloatCustomFieldConfig
-    | BooleanCustomFieldConfig
-    | DateTimeCustomFieldConfig
-    | RelationCustomFieldConfig;
+  | StringCustomFieldConfig
+  | LocaleStringCustomFieldConfig
+  | TextCustomFieldConfig
+  | LocaleTextCustomFieldConfig
+  | IntCustomFieldConfig
+  | FloatCustomFieldConfig
+  | BooleanCustomFieldConfig
+  | DateTimeCustomFieldConfig
+  | RelationCustomFieldConfig;
 
 /**
  * @description
@@ -157,34 +181,34 @@ export type CustomFieldConfig =
  * @docsCategory custom-fields
  */
 export type CustomFields = {
-    Address?: CustomFieldConfig[];
-    Administrator?: CustomFieldConfig[];
-    Asset?: CustomFieldConfig[];
-    Channel?: CustomFieldConfig[];
-    Collection?: CustomFieldConfig[];
-    Customer?: CustomFieldConfig[];
-    CustomerGroup?: CustomFieldConfig[];
-    Facet?: CustomFieldConfig[];
-    FacetValue?: CustomFieldConfig[];
-    Fulfillment?: CustomFieldConfig[];
-    GlobalSettings?: CustomFieldConfig[];
-    Order?: CustomFieldConfig[];
-    OrderLine?: CustomFieldConfig[];
-    PaymentMethod?: CustomFieldConfig[];
-    Product?: CustomFieldConfig[];
-    ProductOption?: CustomFieldConfig[];
-    ProductOptionGroup?: CustomFieldConfig[];
-    ProductVariant?: CustomFieldConfig[];
-    ProductVariantPrice?: CustomFieldConfig[];
-    Promotion?: CustomFieldConfig[];
-    Region?: CustomFieldConfig[];
-    Seller?: CustomFieldConfig[];
-    ShippingMethod?: CustomFieldConfig[];
-    StockLocation?: CustomFieldConfig[];
-    TaxCategory?: CustomFieldConfig[];
-    TaxRate?: CustomFieldConfig[];
-    User?: CustomFieldConfig[];
-    Zone?: CustomFieldConfig[];
+  Address?: CustomFieldConfig[];
+  Administrator?: CustomFieldConfig[];
+  Asset?: CustomFieldConfig[];
+  Channel?: CustomFieldConfig[];
+  Collection?: CustomFieldConfig[];
+  Customer?: CustomFieldConfig[];
+  CustomerGroup?: CustomFieldConfig[];
+  Facet?: CustomFieldConfig[];
+  FacetValue?: CustomFieldConfig[];
+  Fulfillment?: CustomFieldConfig[];
+  GlobalSettings?: CustomFieldConfig[];
+  Order?: CustomFieldConfig[];
+  OrderLine?: CustomFieldConfig[];
+  PaymentMethod?: CustomFieldConfig[];
+  Product?: CustomFieldConfig[];
+  ProductOption?: CustomFieldConfig[];
+  ProductOptionGroup?: CustomFieldConfig[];
+  ProductVariant?: CustomFieldConfig[];
+  ProductVariantPrice?: CustomFieldConfig[];
+  Promotion?: CustomFieldConfig[];
+  Region?: CustomFieldConfig[];
+  Seller?: CustomFieldConfig[];
+  ShippingMethod?: CustomFieldConfig[];
+  StockLocation?: CustomFieldConfig[];
+  TaxCategory?: CustomFieldConfig[];
+  TaxRate?: CustomFieldConfig[];
+  User?: CustomFieldConfig[];
+  Zone?: CustomFieldConfig[];
 } & { [entity: string]: CustomFieldConfig[] };
 
 /**
@@ -192,5 +216,5 @@ export type CustomFields = {
  * with custom fields.
  */
 export interface HasCustomFields {
-    customFields: CustomFieldsObject;
+  customFields: CustomFieldsObject;
 }

@@ -1,12 +1,17 @@
-import { PluginCommonModule, Type, DeenruvPlugin, Product } from '@deenruv/core';
-import { ScaffoldEntity } from './entity';
+import {
+    PluginCommonModule,
+    Type,
+    DeenruvPlugin,
+    Product
+} from "@deenruv/core";
+import { ScaffoldEntity } from "./entity";
 
 type PluginInitOptions = any;
 
 @DeenruvPlugin({
     imports: [PluginCommonModule],
     entities: [Product, ScaffoldEntity],
-    compatibility: '^0.0.0',
+    compatibility: "^0.0.0",
 })
 export class TestOnePlugin {
     static options: PluginInitOptions;

@@ -1,23 +1,25 @@
-import type { ListParameters } from '@mollie/api-client/dist/types/src/binders/methods/parameters';
+import type { ListParameters } from "@mollie/api-client/dist/types/src/binders/methods/parameters";
 import {
-    Injector,
-    Order,
-    PluginCommonModule,
-    RequestContext,
-    RuntimeDeenruvConfig,
-    DeenruvPlugin,
-} from '@deenruv/core';
+  Injector,
+  Order,
+  PluginCommonModule,
+  RequestContext,
+  RuntimeDeenruvConfig,
+  DeenruvPlugin,
+} from "@deenruv/core";
 
-import { shopApiExtensions, adminApiExtensions } from './api-extensions';
-import { PLUGIN_INIT_OPTIONS } from './constants';
-import { orderCustomFields } from './custom-fields';
-import { MollieCommonResolver } from './mollie.common-resolver';
-import { MollieController } from './mollie.controller';
-import { molliePaymentHandler } from './mollie.handler';
-import { MollieService } from './mollie.service';
-import { MollieShopResolver } from './mollie.shop-resolver';
+import { shopApiExtensions, adminApiExtensions } from "./api-extensions";
+import { PLUGIN_INIT_OPTIONS } from "./constants";
+import { orderCustomFields } from "./custom-fields";
+import { MollieCommonResolver } from "./mollie.common-resolver";
+import { MollieController } from "./mollie.controller";
+import { molliePaymentHandler } from "./mollie.handler";
+import { MollieService } from "./mollie.service";
+import { MollieShopResolver } from "./mollie.shop-resolver";
 
-export type AdditionalEnabledPaymentMethodsParams = Partial<Omit<ListParameters, 'resource'>>;
+export type AdditionalEnabledPaymentMethodsParams = Partial<
+  Omit<ListParameters, "resource">
+>;
 
 /**
  * @description
@@ -27,54 +29,56 @@ export type AdditionalEnabledPaymentMethodsParams = Partial<Omit<ListParameters,
  * @docsPage MolliePlugin
  */
 export interface MolliePluginOptions {
-    /**
-     * @description
-     * The host of your Deenruv server, e.g. `'https://my-deenruv.io'`.
-     * This is used by Mollie to send webhook events to the Deenruv server
-     */
-    deenruvHost: string;
+  /**
+   * @description
+   * The host of your Deenruv server, e.g. `'https://my-deenruv.io'`.
+   * This is used by Mollie to send webhook events to the Deenruv server
+   */
+  deenruvHost: string;
 
-    /**
-     * @description
-     * Provide additional parameters to the Mollie enabled payment methods API call. By default,
-     * the plugin will already pass the `resource` parameter.
-     *
-     * For example, if you want to provide a `locale` and `billingCountry` for the API call, you can do so like this:
-     *
-     * **Note:** The `order` argument is possibly `null`, this could happen when you fetch the available payment methods
-     * before the order is created.
-     *
-     * @example
-     * ```ts
-     * import { DeenruvConfig } from '\@deenruv/core';
-     * import { MolliePlugin, getLocale } from '\@deenruv/payments-plugin/package/mollie';
-     *
-     * export const config: DeenruvConfig = {
-     *   // ...
-     *   plugins: [
-     *     MolliePlugin.init({
-     *       enabledPaymentMethodsParams: (injector, ctx, order) => {
-     *         const locale = order?.billingAddress?.countryCode
-     *             ? getLocale(order.billingAddress.countryCode, ctx.languageCode)
-     *             : undefined;
-     *
-     *         return {
-     *           locale,
-     *           billingCountry: order?.billingAddress?.countryCode,
-     *         },
-     *       }
-     *     }),
-     *   ],
-     * };
-     * ```
-     *
-     * @since 2.2.0
-     */
-    enabledPaymentMethodsParams?: (
-        injector: Injector,
-        ctx: RequestContext,
-        order: Order | null,
-    ) => AdditionalEnabledPaymentMethodsParams | Promise<AdditionalEnabledPaymentMethodsParams>;
+  /**
+   * @description
+   * Provide additional parameters to the Mollie enabled payment methods API call. By default,
+   * the plugin will already pass the `resource` parameter.
+   *
+   * For example, if you want to provide a `locale` and `billingCountry` for the API call, you can do so like this:
+   *
+   * **Note:** The `order` argument is possibly `null`, this could happen when you fetch the available payment methods
+   * before the order is created.
+   *
+   * @example
+   * ```ts
+   * import { DeenruvConfig } from '\@deenruv/core';
+   * import { MolliePlugin, getLocale } from '\@deenruv/payments-plugin/package/mollie';
+   *
+   * export const config: DeenruvConfig = {
+   *   // ...
+   *   plugins: [
+   *     MolliePlugin.init({
+   *       enabledPaymentMethodsParams: (injector, ctx, order) => {
+   *         const locale = order?.billingAddress?.countryCode
+   *             ? getLocale(order.billingAddress.countryCode, ctx.languageCode)
+   *             : undefined;
+   *
+   *         return {
+   *           locale,
+   *           billingCountry: order?.billingAddress?.countryCode,
+   *         },
+   *       }
+   *     }),
+   *   ],
+   * };
+   * ```
+   *
+   * @since 2.2.0
+   */
+  enabledPaymentMethodsParams?: (
+    injector: Injector,
+    ctx: RequestContext,
+    order: Order | null,
+  ) =>
+    | AdditionalEnabledPaymentMethodsParams
+    | Promise<AdditionalEnabledPaymentMethodsParams>;
 }
 
 /**
@@ -190,34 +194,37 @@ export interface MolliePluginOptions {
  * @docsWeight 0
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    controllers: [MollieController],
-    providers: [MollieService, { provide: PLUGIN_INIT_OPTIONS, useFactory: () => MolliePlugin.options }],
-    configuration: (config: RuntimeDeenruvConfig) => {
-        config.paymentOptions.paymentMethodHandlers.push(molliePaymentHandler);
-        config.customFields.Order.push(...orderCustomFields);
-        return config;
-    },
-    shopApiExtensions: {
-        schema: shopApiExtensions,
-        resolvers: [MollieCommonResolver, MollieShopResolver],
-    },
-    adminApiExtensions: {
-        schema: adminApiExtensions,
-        resolvers: [MollieCommonResolver],
-    },
-    compatibility: '^0.0.1',
+  imports: [PluginCommonModule],
+  controllers: [MollieController],
+  providers: [
+    MollieService,
+    { provide: PLUGIN_INIT_OPTIONS, useFactory: () => MolliePlugin.options },
+  ],
+  configuration: (config: RuntimeDeenruvConfig) => {
+    config.paymentOptions.paymentMethodHandlers.push(molliePaymentHandler);
+    config.customFields.Order.push(...orderCustomFields);
+    return config;
+  },
+  shopApiExtensions: {
+    schema: shopApiExtensions,
+    resolvers: [MollieCommonResolver, MollieShopResolver],
+  },
+  adminApiExtensions: {
+    schema: adminApiExtensions,
+    resolvers: [MollieCommonResolver],
+  },
+  compatibility: "^0.0.1",
 })
 export class MolliePlugin {
-    static options: MolliePluginOptions;
+  static options: MolliePluginOptions;
 
-    /**
-     * @description
-     * Initialize the mollie payment plugin
-     * @param deenruvHost is needed to pass to mollie for callback
-     */
-    static init(options: MolliePluginOptions): typeof MolliePlugin {
-        this.options = options;
-        return MolliePlugin;
-    }
+  /**
+   * @description
+   * Initialize the mollie payment plugin
+   * @param deenruvHost is needed to pass to mollie for callback
+   */
+  static init(options: MolliePluginOptions): typeof MolliePlugin {
+    this.options = options;
+    return MolliePlugin;
+  }
 }

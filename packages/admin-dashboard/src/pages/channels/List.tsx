@@ -1,13 +1,10 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { ChannelListSelector } from '@/graphql/channels';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(ChannelListSelector, additionalSelector ?? {});
+const tableId = 'channels-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     channels: [
       {
@@ -19,7 +16,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response.channels;
@@ -46,6 +43,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
 export const ChannelsListPage = () => {
   return (
     <DetailList
+      tableId={tableId}
       filterFields={[
         { key: 'code', operator: 'StringOperators' },
         { key: 'token', operator: 'StringOperators' },
@@ -55,7 +53,6 @@ export const ChannelsListPage = () => {
       hideColumns={['customFields', 'translations']}
       entityName={'Channel'}
       route={Routes['channels']}
-      tableId="channels-list-view"
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateChannel]}

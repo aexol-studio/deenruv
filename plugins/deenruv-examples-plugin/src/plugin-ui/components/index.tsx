@@ -1,2 +1,2 @@
-export * from './CustomInput';
-export * from './TestComponent';
+export * from "./CustomInput";
+export * from "./TestComponent";

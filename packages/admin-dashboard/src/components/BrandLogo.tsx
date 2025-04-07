@@ -8,12 +8,12 @@ export const BrandLogo: React.FC<{ isCollapsed?: boolean }> = ({ isCollapsed = f
   let Logo = null;
 
   if (isCollapsed) {
-    if (typeof collapsed === 'string') Logo = <img src={collapsed} alt="Logo" className="h-full w-full object-fill" />;
+    if (typeof collapsed === 'string') Logo = <img src={collapsed} alt="Logo" className="size-full object-fill" />;
     if (typeof collapsed === 'object') Logo = React.cloneElement(collapsed, { className: 'object-contain' });
   }
 
   if (!isCollapsed) {
-    if (typeof full === 'string') Logo = <img src={full} alt="Logo" className="h-full w-full object-fill" />;
+    if (typeof full === 'string') Logo = <img src={full} alt="Logo" className="size-full object-fill" />;
     if (typeof full === 'object') Logo = React.cloneElement(full, { className: 'object-contain' });
   }
 

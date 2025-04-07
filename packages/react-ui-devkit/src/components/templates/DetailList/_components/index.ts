@@ -1,2 +1,2 @@
-export * from './DeleteDialog';
-export * from './TableLabel';
+export * from "./DeleteDialog";
+export * from "./TableLabel";

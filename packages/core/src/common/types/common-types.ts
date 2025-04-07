@@ -1,11 +1,11 @@
-import { LogicalOperator } from '@deenruv/common/lib/generated-types';
-import { Type } from '@deenruv/common/lib/shared-types';
+import { LogicalOperator } from "@deenruv/common/lib/generated-types";
+import { Type } from "@deenruv/common/lib/shared-types";
 
-import { DeenruvEntity } from '../../entity/base/base.entity';
-import { Channel } from '../../entity/channel/channel.entity';
-import { Tag } from '../../entity/tag/tag.entity';
+import { DeenruvEntity } from "../../entity/base/base.entity";
+import { Channel } from "../../entity/channel/channel.entity";
+import { Tag } from "../../entity/tag/tag.entity";
 
-import { LocaleString } from './locale-types';
+import { LocaleString } from "./locale-types";
 
 /**
  * @description
@@ -15,7 +15,7 @@ import { LocaleString } from './locale-types';
  * @docsPage interfaces
  */
 export interface ChannelAware {
-    channels: Channel[];
+  channels: Channel[];
 }
 
 /**
@@ -26,7 +26,7 @@ export interface ChannelAware {
  * @docsPage interfaces
  */
 export interface SoftDeletable {
-    deletedAt: Date | null;
+  deletedAt: Date | null;
 }
 
 /**
@@ -37,7 +37,7 @@ export interface SoftDeletable {
  * @docsPage interfaces
  */
 export interface Orderable {
-    position: number;
+  position: number;
 }
 
 /**
@@ -48,7 +48,7 @@ export interface Orderable {
  * @docsPage interfaces
  */
 export interface Taggable {
-    tags: Tag[];
+  tags: Tag[];
 }
 
 /**
@@ -66,11 +66,11 @@ export type UnwrappedArray<T extends any[]> = T[number];
  * Parameters for list queries
  */
 export interface ListQueryOptions<T extends DeenruvEntity> {
-    take?: number | null;
-    skip?: number | null;
-    sort?: NullOptionals<SortParameter<T>> | null;
-    filter?: NullOptionals<FilterParameter<T>> | null;
-    filterOperator?: LogicalOperator;
+  take?: number | null;
+  skip?: number | null;
+  sort?: NullOptionals<SortParameter<T>> | null;
+  filter?: NullOptionals<FilterParameter<T>> | null;
+  filterOperator?: LogicalOperator;
 }
 
 /**
@@ -79,10 +79,12 @@ export interface ListQueryOptions<T extends DeenruvEntity> {
  * nullable fields have the type `field?: <type> | null`.
  */
 export type NullOptionals<T> = {
-    [K in keyof T]: undefined extends T[K] ? NullOptionals<T[K]> | null : NullOptionals<T[K]>;
+  [K in keyof T]: undefined extends T[K]
+    ? NullOptionals<T[K]> | null
+    : NullOptionals<T[K]>;
 };
 
-export type SortOrder = 'ASC' | 'DESC';
+export type SortOrder = "ASC" | "DESC";
 
 // prettier-ignore
 export type PrimitiveFields<T extends DeenruvEntity> = {
@@ -111,57 +113,57 @@ export type FilterParameter<T extends DeenruvEntity> = {
 };
 
 export interface StringOperators {
-    eq?: string;
-    notEq?: string;
-    contains?: string;
-    notContains?: string;
-    in?: string[];
-    notIn?: string[];
-    regex?: string;
-    isNull?: boolean;
+  eq?: string;
+  notEq?: string;
+  contains?: string;
+  notContains?: string;
+  in?: string[];
+  notIn?: string[];
+  regex?: string;
+  isNull?: boolean;
 }
 
 export interface BooleanOperators {
-    eq?: boolean;
-    isNull?: boolean;
+  eq?: boolean;
+  isNull?: boolean;
 }
 
 export interface NumberRange {
-    start: number;
-    end: number;
+  start: number;
+  end: number;
 }
 
 export interface NumberOperators {
-    eq?: number;
-    lt?: number;
-    lte?: number;
-    gt?: number;
-    gte?: number;
-    between?: NumberRange;
-    isNull?: boolean;
+  eq?: number;
+  lt?: number;
+  lte?: number;
+  gt?: number;
+  gte?: number;
+  between?: NumberRange;
+  isNull?: boolean;
 }
 
 export interface DateRange {
-    start: Date;
-    end: Date;
+  start: Date;
+  end: Date;
 }
 
 export interface DateOperators {
-    eq?: Date;
-    before?: Date;
-    after?: Date;
-    between?: DateRange;
-    isNull?: boolean;
+  eq?: Date;
+  before?: Date;
+  after?: Date;
+  between?: DateRange;
+  isNull?: boolean;
 }
 
 export interface ListOperators {
-    inList?: string | number | boolean | Date;
+  inList?: string | number | boolean | Date;
 }
 
 export type PaymentMetadata = {
-    [prop: string]: any;
+  [prop: string]: any;
 } & {
-    public?: any;
+  public?: any;
 };
 
 /**
@@ -172,11 +174,10 @@ export type PaymentMetadata = {
  * @docsCategory Common
  */
 export type PriceCalculationResult = {
-    price: number;
-    priceIncludesTax: boolean;
+  price: number;
+  priceIncludesTax: boolean;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type MiddlewareHandler = Type<any> | Function;
 
 /**
@@ -210,28 +211,28 @@ export type MiddlewareHandler = Type<any> | Function;
  * @docsCategory Common
  */
 export interface Middleware {
-    /**
-     * @description
-     * The Express middleware function or NestJS `NestMiddleware` class.
-     */
-    handler: MiddlewareHandler;
-    /**
-     * @description
-     * The route to which this middleware will apply. Pattern based routes are supported as well.
-     *
-     * The `'ab*cd'` route path will match `abcd`, `ab_cd`, `abecd`, and so on. The characters `?`, `+`, `*`, and `()` may be used in a route path,
-     * and are subsets of their regular expression counterparts. The hyphen (`-`) and the dot (`.`) are interpreted literally.
-     */
-    route: string;
-    /**
-     * @description
-     * When set to `true`, this will cause the middleware to be applied before the Deenruv server (and underlying Express server) starts listening
-     * for connections. In practical terms this means that the middleware will be at the very start of the middleware stack, before even the
-     * `body-parser` middleware which is automatically applied by NestJS. This can be useful in certain cases such as when you need to access the
-     * raw unparsed request for a specific route.
-     *
-     * @since 1.1.0
-     * @default false
-     */
-    beforeListen?: boolean;
+  /**
+   * @description
+   * The Express middleware function or NestJS `NestMiddleware` class.
+   */
+  handler: MiddlewareHandler;
+  /**
+   * @description
+   * The route to which this middleware will apply. Pattern based routes are supported as well.
+   *
+   * The `'ab*cd'` route path will match `abcd`, `ab_cd`, `abecd`, and so on. The characters `?`, `+`, `*`, and `()` may be used in a route path,
+   * and are subsets of their regular expression counterparts. The hyphen (`-`) and the dot (`.`) are interpreted literally.
+   */
+  route: string;
+  /**
+   * @description
+   * When set to `true`, this will cause the middleware to be applied before the Deenruv server (and underlying Express server) starts listening
+   * for connections. In practical terms this means that the middleware will be at the very start of the middleware stack, before even the
+   * `body-parser` middleware which is automatically applied by NestJS. This can be useful in certain cases such as when you need to access the
+   * raw unparsed request for a specific route.
+   *
+   * @since 1.1.0
+   * @default false
+   */
+  beforeListen?: boolean;
 }

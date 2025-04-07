@@ -1,6 +1,6 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { ChartMetricType } from '../../zeus';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ChartMetricType } from "../../zeus";
 import {
   Select,
   SelectContent,
@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
   Skeleton,
-} from '@deenruv/react-ui-devkit';
+} from "@deenruv/react-ui-devkit";
 
 interface MetricTypeSelectProps {
   changeMetricType: (type: ChartMetricType) => void;
@@ -21,13 +21,13 @@ export const MetricTypeSelect: React.FC<MetricTypeSelectProps> = ({
   metricType,
   loading,
 }) => {
-  const { t } = useTranslation('dashboard-widgets-plugin', {
+  const { t } = useTranslation("dashboard-widgets-plugin", {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });
   return (
     <div className="relative w-full max-w-[240px]">
       {loading ? (
-        <Skeleton className="absolute left-0 top-0 h-full w-full" />
+        <Skeleton className="absolute left-0 top-0 size-full" />
       ) : null}
       <Select
         value={metricType}
@@ -35,21 +35,21 @@ export const MetricTypeSelect: React.FC<MetricTypeSelectProps> = ({
         defaultValue={ChartMetricType.OrderTotal}
       >
         <SelectTrigger className="h-[30px] text-[13px]">
-          <SelectValue placeholder={t('selectDataType')} />
+          <SelectValue placeholder={t("selectDataType")} />
         </SelectTrigger>
         <SelectContent className="w-full">
           <SelectGroup>
             <SelectItem value={ChartMetricType.AverageOrderValue}>
-              {t('averageOrderValue')}
+              {t("averageOrderValue")}
             </SelectItem>
             <SelectItem value={ChartMetricType.OrderCount}>
-              {t('orderCount')}
+              {t("orderCount")}
             </SelectItem>
             <SelectItem value={ChartMetricType.OrderTotal}>
-              {t('orderTotal')}
+              {t("orderTotal")}
             </SelectItem>
             <SelectItem value={ChartMetricType.OrderTotalProductsCount}>
-              {t('orderTotalProductsCount')}
+              {t("orderTotalProductsCount")}
             </SelectItem>
           </SelectGroup>
         </SelectContent>

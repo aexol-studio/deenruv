@@ -1,76 +1,84 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from "@nestjs/graphql";
 import {
-    Ctx,
-    Customer,
-    HistoryService,
-    ID,
-    Order,
-    PluginCommonModule,
-    RequestContext,
-    TransactionalConnection,
-    DeenruvPlugin,
-} from '@deenruv/core';
-import gql from 'graphql-tag';
+  Ctx,
+  Customer,
+  HistoryService,
+  ID,
+  Order,
+  PluginCommonModule,
+  RequestContext,
+  TransactionalConnection,
+  DeenruvPlugin,
+} from "@deenruv/core";
+import gql from "graphql-tag";
 
-import { CUSTOM_TYPE } from './types';
+import { CUSTOM_TYPE } from "./types";
 
 @Resolver()
 class AddHistoryEntryResolver {
-    constructor(
-        private connection: TransactionalConnection,
-        private historyService: HistoryService,
-    ) {}
+  constructor(
+    private connection: TransactionalConnection,
+    private historyService: HistoryService,
+  ) {}
 
-    @Mutation()
-    async addCustomOrderHistoryEntry(
-        @Ctx() ctx: RequestContext,
-        @Args() args: { orderId: ID; message: string },
-    ) {
-        const order = await this.connection.getEntityOrThrow(ctx, Order, args.orderId);
+  @Mutation()
+  async addCustomOrderHistoryEntry(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { orderId: ID; message: string },
+  ) {
+    const order = await this.connection.getEntityOrThrow(
+      ctx,
+      Order,
+      args.orderId,
+    );
 
-        await this.historyService.createHistoryEntryForOrder({
-            orderId: order.id,
-            ctx,
-            type: CUSTOM_TYPE,
-            data: { message: args.message },
-        });
-        return order;
-    }
+    await this.historyService.createHistoryEntryForOrder({
+      orderId: order.id,
+      ctx,
+      type: CUSTOM_TYPE,
+      data: { message: args.message },
+    });
+    return order;
+  }
 
-    @Mutation()
-    async addCustomCustomerHistoryEntry(
-        @Ctx() ctx: RequestContext,
-        @Args() args: { customerId: ID; name: string },
-    ) {
-        const customer = await this.connection.getEntityOrThrow(ctx, Customer, args.customerId);
+  @Mutation()
+  async addCustomCustomerHistoryEntry(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { customerId: ID; name: string },
+  ) {
+    const customer = await this.connection.getEntityOrThrow(
+      ctx,
+      Customer,
+      args.customerId,
+    );
 
-        await this.historyService.createHistoryEntryForCustomer({
-            customerId: customer.id,
-            ctx,
-            type: CUSTOM_TYPE,
-            data: { name: args.name },
-        });
-        return customer;
-    }
+    await this.historyService.createHistoryEntryForCustomer({
+      customerId: customer.id,
+      ctx,
+      type: CUSTOM_TYPE,
+      data: { name: args.name },
+    });
+    return customer;
+  }
 }
 
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    adminApiExtensions: {
-        schema: gql`
-            extend enum HistoryEntryType {
-                CUSTOM_TYPE
-            }
+  imports: [PluginCommonModule],
+  adminApiExtensions: {
+    schema: gql`
+      extend enum HistoryEntryType {
+        CUSTOM_TYPE
+      }
 
-            extend type Mutation {
-                addCustomOrderHistoryEntry(orderId: ID!, message: String!): Order!
-                addCustomCustomerHistoryEntry(customerId: ID!, name: String!): Customer!
-            }
-        `,
-        resolvers: [AddHistoryEntryResolver],
-    },
-    configuration: config => {
-        return config;
-    },
+      extend type Mutation {
+        addCustomOrderHistoryEntry(orderId: ID!, message: String!): Order!
+        addCustomCustomerHistoryEntry(customerId: ID!, name: String!): Customer!
+      }
+    `,
+    resolvers: [AddHistoryEntryResolver],
+  },
+  configuration: (config) => {
+    return config;
+  },
 })
 export class CustomHistoryEntryPlugin {}

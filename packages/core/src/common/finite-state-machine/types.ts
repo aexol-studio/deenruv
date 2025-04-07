@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
 
 /**
  * @description
@@ -28,10 +28,10 @@ import { Observable } from 'rxjs';
  * @docsCategory StateMachine
  */
 export type Transitions<State extends string, Target extends string = State> = {
-    [S in State]: {
-        to: Readonly<Target[]>;
-        mergeStrategy?: 'merge' | 'replace';
-    };
+  [S in State]: {
+    to: Readonly<Target[]>;
+    mergeStrategy?: "merge" | "replace";
+  };
 };
 
 /**
@@ -46,10 +46,15 @@ export type Transitions<State extends string, Target extends string = State> = {
  * @docsPage StateMachineConfig
  */
 export type OnTransitionStartFn<T extends string, Data> = (
-    fromState: T,
-    toState: T,
-    data: Data,
-) => boolean | string | void | Promise<boolean | string | void> | Observable<boolean | string | void>;
+  fromState: T,
+  toState: T,
+  data: Data,
+) =>
+  | boolean
+  | string
+  | void
+  | Promise<boolean | string | void>
+  | Observable<boolean | string | void>;
 
 /**
  * @description
@@ -60,9 +65,9 @@ export type OnTransitionStartFn<T extends string, Data> = (
  * @docsPage StateMachineConfig
  */
 export type OnTransitionErrorFn<T extends string> = (
-    fromState: T,
-    toState: T,
-    message?: string,
+  fromState: T,
+  toState: T,
+  message?: string,
 ) => void | Promise<void> | Observable<void>;
 
 /**
@@ -73,9 +78,9 @@ export type OnTransitionErrorFn<T extends string> = (
  * @docsPage StateMachineConfig
  */
 export type OnTransitionEndFn<T extends string, Data> = (
-    fromState: T,
-    toState: T,
-    data: Data,
+  fromState: T,
+  toState: T,
+  data: Data,
 ) => void | Promise<void> | Observable<void>;
 
 /**
@@ -87,33 +92,33 @@ export type OnTransitionEndFn<T extends string, Data> = (
  * @docsWeight 0
  */
 export interface StateMachineConfig<T extends string, Data = undefined> {
-    /**
-     * @description
-     * Defines the available states of the state machine as well as the permitted
-     * transitions from one state to another.
-     */
-    readonly transitions: Transitions<T>;
+  /**
+   * @description
+   * Defines the available states of the state machine as well as the permitted
+   * transitions from one state to another.
+   */
+  readonly transitions: Transitions<T>;
 
-    /**
-     * @description
-     * Called before a transition takes place. If the function resolves to `false` or a string, then the transition
-     * will be cancelled. In the case of a string, the string (error message) will be forwarded to the onError handler.
-     *
-     * If this function returns a value resolving to `true` or `void` (no return value), then the transition
-     * will be permitted.
-     */
-    onTransitionStart?: OnTransitionStartFn<T, Data>;
+  /**
+   * @description
+   * Called before a transition takes place. If the function resolves to `false` or a string, then the transition
+   * will be cancelled. In the case of a string, the string (error message) will be forwarded to the onError handler.
+   *
+   * If this function returns a value resolving to `true` or `void` (no return value), then the transition
+   * will be permitted.
+   */
+  onTransitionStart?: OnTransitionStartFn<T, Data>;
 
-    /**
-     * @description
-     * Called after a transition has taken place.
-     */
-    onTransitionEnd?: OnTransitionEndFn<T, Data>;
+  /**
+   * @description
+   * Called after a transition has taken place.
+   */
+  onTransitionEnd?: OnTransitionEndFn<T, Data>;
 
-    /**
-     * @description
-     * Called when a transition is prevented and the `onTransitionStart` handler has returned an
-     * error message.
-     */
-    onError?: OnTransitionErrorFn<T>;
+  /**
+   * @description
+   * Called when a transition is prevented and the `onTransitionStart` handler has returned an
+   * error message.
+   */
+  onError?: OnTransitionErrorFn<T>;
 }

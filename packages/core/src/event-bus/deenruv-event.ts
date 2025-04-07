@@ -5,8 +5,8 @@
  * @docsCategory events
  * */
 export abstract class DeenruvEvent {
-    public readonly createdAt: Date;
-    protected constructor() {
-        this.createdAt = new Date();
-    }
+  public readonly createdAt: Date;
+  protected constructor() {
+    this.createdAt = new Date();
+  }
 }

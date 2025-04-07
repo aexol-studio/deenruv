@@ -1,4 +1,4 @@
-import { LoggerService } from '@nestjs/common';
+import { LoggerService } from "@nestjs/common";
 
 /**
  * @description
@@ -7,34 +7,34 @@ import { LoggerService } from '@nestjs/common';
  * @docsCategory Logger
  */
 export enum LogLevel {
-    /**
-     * @description
-     * Log Errors only. These are usually indicative of some potentially
-     * serious issue, so should be acted upon.
-     */
-    Error = 0,
-    /**
-     * @description
-     * Warnings indicate that some situation may require investigation
-     * and handling. But not as serious as an Error.
-     */
-    Warn = 1,
-    /**
-     * @description
-     * Logs general information such as startup messages.
-     */
-    Info = 2,
-    /**
-     * @description
-     * Logs additional information
-     */
-    Verbose = 3,
-    /**
-     * @description
-     * Logs detailed info useful in debug scenarios, including stack traces for
-     * all errors. In production this would probably generate too much noise.
-     */
-    Debug = 4,
+  /**
+   * @description
+   * Log Errors only. These are usually indicative of some potentially
+   * serious issue, so should be acted upon.
+   */
+  Error = 0,
+  /**
+   * @description
+   * Warnings indicate that some situation may require investigation
+   * and handling. But not as serious as an Error.
+   */
+  Warn = 1,
+  /**
+   * @description
+   * Logs general information such as startup messages.
+   */
+  Info = 2,
+  /**
+   * @description
+   * Logs additional information
+   */
+  Verbose = 3,
+  /**
+   * @description
+   * Logs detailed info useful in debug scenarios, including stack traces for
+   * all errors. In production this would probably generate too much noise.
+   */
+  Debug = 4,
 }
 
 /**
@@ -45,30 +45,30 @@ export enum LogLevel {
  * @docsCategory Logger
  */
 export interface DeenruvLogger {
-    error(message: string, context?: string, trace?: string): void;
-    warn(message: string, context?: string): void;
-    info(message: string, context?: string): void;
-    verbose(message: string, context?: string): void;
-    debug(message: string, context?: string): void;
-    setDefaultContext?(defaultContext: string): void;
+  error(message: string, context?: string, trace?: string): void;
+  warn(message: string, context?: string): void;
+  info(message: string, context?: string): void;
+  verbose(message: string, context?: string): void;
+  debug(message: string, context?: string): void;
+  setDefaultContext?(defaultContext: string): void;
 }
 
 const noopLogger: DeenruvLogger = {
-    error() {
-        /* */
-    },
-    warn() {
-        /* */
-    },
-    info() {
-        /* */
-    },
-    verbose() {
-        /* */
-    },
-    debug() {
-        /* */
-    },
+  error() {
+    /* */
+  },
+  warn() {
+    /* */
+  },
+  info() {
+    /* */
+  },
+  verbose() {
+    /* */
+  },
+  debug() {
+    /* */
+  },
 };
 
 /**
@@ -134,65 +134,65 @@ const noopLogger: DeenruvLogger = {
  * @docsCategory Logger
  */
 export class Logger implements LoggerService {
-    private static _instance: typeof Logger = Logger;
-    private static _logger: DeenruvLogger;
+  private static _instance: typeof Logger = Logger;
+  private static _logger: DeenruvLogger;
 
-    static get logger(): DeenruvLogger {
-        return this._logger || noopLogger;
-    }
+  static get logger(): DeenruvLogger {
+    return this._logger || noopLogger;
+  }
 
-    private get instance(): typeof Logger {
-        const { _instance } = Logger;
-        return _instance;
-    }
+  private get instance(): typeof Logger {
+    const { _instance } = Logger;
+    return _instance;
+  }
 
-    /** @internal */
-    static useLogger(logger: DeenruvLogger) {
-        Logger._logger = logger;
-    }
+  /** @internal */
+  static useLogger(logger: DeenruvLogger) {
+    Logger._logger = logger;
+  }
 
-    /** @internal */
-    error(message: any, trace?: string, context?: string): any {
-        this.instance.error(message, context, trace);
-    }
+  /** @internal */
+  error(message: any, trace?: string, context?: string): any {
+    this.instance.error(message, context, trace);
+  }
 
-    /** @internal */
-    warn(message: any, context?: string): any {
-        this.instance.warn(message, context);
-    }
+  /** @internal */
+  warn(message: any, context?: string): any {
+    this.instance.warn(message, context);
+  }
 
-    /** @internal */
-    log(message: any, context?: string): any {
-        this.instance.info(message, context);
-    }
+  /** @internal */
+  log(message: any, context?: string): any {
+    this.instance.info(message, context);
+  }
 
-    /** @internal */
-    verbose(message: any, context?: string): any {
-        this.instance.verbose(message, context);
-    }
+  /** @internal */
+  verbose(message: any, context?: string): any {
+    this.instance.verbose(message, context);
+  }
 
-    /** @internal */
-    debug(message: any, context?: string): any {
-        this.instance.debug(message, context);
-    }
+  /** @internal */
+  debug(message: any, context?: string): any {
+    this.instance.debug(message, context);
+  }
 
-    static error(message: string, context?: string, trace?: string): void {
-        Logger.logger.error(message, context, trace);
-    }
+  static error(message: string, context?: string, trace?: string): void {
+    Logger.logger.error(message, context, trace);
+  }
 
-    static warn(message: string, context?: string): void {
-        Logger.logger.warn(message, context);
-    }
+  static warn(message: string, context?: string): void {
+    Logger.logger.warn(message, context);
+  }
 
-    static info(message: string, context?: string): void {
-        Logger.logger.info(message, context);
-    }
+  static info(message: string, context?: string): void {
+    Logger.logger.info(message, context);
+  }
 
-    static verbose(message: string, context?: string): void {
-        Logger.logger.verbose(message, context);
-    }
+  static verbose(message: string, context?: string): void {
+    Logger.logger.verbose(message, context);
+  }
 
-    static debug(message: string, context?: string): void {
-        Logger.logger.debug(message, context);
-    }
+  static debug(message: string, context?: string): void {
+    Logger.logger.debug(message, context);
+  }
 }

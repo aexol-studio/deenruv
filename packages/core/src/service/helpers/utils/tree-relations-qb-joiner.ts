@@ -1,9 +1,12 @@
-import { EntityMetadata, FindOneOptions, SelectQueryBuilder } from 'typeorm';
-import { EntityTarget } from 'typeorm/common/EntityTarget';
-import { FindOptionsRelationByString, FindOptionsRelations } from 'typeorm/find-options/FindOptionsRelations';
+import { EntityMetadata, FindOneOptions, SelectQueryBuilder } from "typeorm";
+import { EntityTarget } from "typeorm/common/EntityTarget";
+import {
+  FindOptionsRelationByString,
+  FindOptionsRelations,
+} from "typeorm/find-options/FindOptionsRelations";
 
-import { findOptionsObjectToArray } from '../../../connection/find-options-object-to-array';
-import { DeenruvEntity } from '../../../entity';
+import { findOptionsObjectToArray } from "../../../connection/find-options-object-to-array";
+import { DeenruvEntity } from "../../../entity";
 
 /**
  * @description
@@ -13,19 +16,19 @@ import { DeenruvEntity } from '../../../entity';
  * @private
  */
 function isTreeEntityMetadata(metadata: EntityMetadata): boolean {
-    if (metadata.treeType !== undefined) {
-        return true;
-    }
+  if (metadata.treeType !== undefined) {
+    return true;
+  }
 
-    for (const relation of metadata.relations) {
-        if (relation.isTreeParent || relation.isTreeChildren) {
-            return true;
-        }
-        if (relation.inverseEntityMetadata === metadata) {
-            return true;
-        }
+  for (const relation of metadata.relations) {
+    if (relation.isTreeParent || relation.isTreeChildren) {
+      return true;
     }
-    return false;
+    if (relation.inverseEntityMetadata === metadata) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -55,106 +58,121 @@ function isTreeEntityMetadata(metadata: EntityMetadata): boolean {
  * ```
  */
 export function joinTreeRelationsDynamically<T extends DeenruvEntity>(
-    qb: SelectQueryBuilder<T>,
-    entity: EntityTarget<T>,
-    requestedRelations: FindOneOptions['relations'] = {},
-    maxEagerDepth: number = 1,
+  qb: SelectQueryBuilder<T>,
+  entity: EntityTarget<T>,
+  requestedRelations: FindOneOptions["relations"] = {},
+  maxEagerDepth: number = 1,
 ): Map<string, string> {
-    const joinedRelations = new Map<string, string>();
-    const relationsArray = findOptionsObjectToArray(requestedRelations);
-    if (!relationsArray.length) {
-        return joinedRelations;
+  const joinedRelations = new Map<string, string>();
+  const relationsArray = findOptionsObjectToArray(requestedRelations);
+  if (!relationsArray.length) {
+    return joinedRelations;
+  }
+
+  const sourceMetadata = qb.connection.getMetadata(entity);
+  const sourceMetadataIsTree = isTreeEntityMetadata(sourceMetadata);
+
+  const processRelation = (
+    currentMetadata: EntityMetadata,
+    parentMetadataIsTree: boolean,
+    currentPath: string,
+    currentAlias: string,
+    parentPath?: string[],
+    eagerDepth: number = 0,
+  ) => {
+    if (currentPath === "") {
+      return;
+    }
+    parentPath = parentPath?.filter((p) => p !== "");
+    const currentMetadataIsTree =
+      isTreeEntityMetadata(currentMetadata) ||
+      sourceMetadataIsTree ||
+      parentMetadataIsTree;
+    if (!currentMetadataIsTree) {
+      return;
     }
 
-    const sourceMetadata = qb.connection.getMetadata(entity);
-    const sourceMetadataIsTree = isTreeEntityMetadata(sourceMetadata);
+    const parts = currentPath.split(".");
+    let part = parts.shift();
 
-    const processRelation = (
-        currentMetadata: EntityMetadata,
-        parentMetadataIsTree: boolean,
-        currentPath: string,
-        currentAlias: string,
-        parentPath?: string[],
-        eagerDepth: number = 0,
-    ) => {
-        if (currentPath === '') {
-            return;
-        }
-        parentPath = parentPath?.filter(p => p !== '');
-        const currentMetadataIsTree =
-            isTreeEntityMetadata(currentMetadata) || sourceMetadataIsTree || parentMetadataIsTree;
-        if (!currentMetadataIsTree) {
-            return;
-        }
+    if (!part || !currentMetadata) return;
 
-        const parts = currentPath.split('.');
-        let part = parts.shift();
+    if (part === "customFields" && parts.length > 0) {
+      const relation = parts.shift();
+      if (!relation) return;
+      part += `.${relation}`;
+    }
 
-        if (!part || !currentMetadata) return;
+    const relationMetadata = currentMetadata.findRelationWithPropertyPath(part);
 
-        if (part === 'customFields' && parts.length > 0) {
-            const relation = parts.shift();
-            if (!relation) return;
-            part += `.${relation}`;
-        }
+    if (!relationMetadata) {
+      return;
+    }
 
-        const relationMetadata = currentMetadata.findRelationWithPropertyPath(part);
+    let joinConnector = "_";
+    if (relationMetadata.isEager) {
+      joinConnector = "__";
+    }
+    const nextAlias = `${currentAlias}${joinConnector}${part.replace(/\./g, "_")}`;
+    const nextPath = parts.join(".");
+    const fullPath = [...(parentPath || []), part].join(".");
+    if (
+      !qb.expressionMap.joinAttributes.some((ja) => ja.alias.name === nextAlias)
+    ) {
+      qb.leftJoinAndSelect(`${currentAlias}.${part}`, nextAlias);
+      joinedRelations.set(fullPath, nextAlias);
+    }
 
-        if (!relationMetadata) {
-            return;
-        }
+    const inverseEntityMetadataIsTree = isTreeEntityMetadata(
+      relationMetadata.inverseEntityMetadata,
+    );
 
-        let joinConnector = '_';
-        if (relationMetadata.isEager) {
-            joinConnector = '__';
-        }
-        const nextAlias = `${currentAlias}${joinConnector}${part.replace(/\./g, '_')}`;
-        const nextPath = parts.join('.');
-        const fullPath = [...(parentPath || []), part].join('.');
-        if (!qb.expressionMap.joinAttributes.some(ja => ja.alias.name === nextAlias)) {
-            qb.leftJoinAndSelect(`${currentAlias}.${part}`, nextAlias);
-            joinedRelations.set(fullPath, nextAlias);
-        }
+    if (!currentMetadataIsTree && !inverseEntityMetadataIsTree) {
+      return;
+    }
 
-        const inverseEntityMetadataIsTree = isTreeEntityMetadata(relationMetadata.inverseEntityMetadata);
+    const newEagerDepth = relationMetadata.isEager
+      ? eagerDepth + 1
+      : eagerDepth;
 
-        if (!currentMetadataIsTree && !inverseEntityMetadataIsTree) {
-            return;
-        }
-
-        const newEagerDepth = relationMetadata.isEager ? eagerDepth + 1 : eagerDepth;
-
-        if (newEagerDepth <= maxEagerDepth) {
-            relationMetadata.inverseEntityMetadata.relations.forEach(subRelation => {
-                if (subRelation.isEager) {
-                    processRelation(
-                        relationMetadata.inverseEntityMetadata,
-                        currentMetadataIsTree,
-                        subRelation.propertyPath,
-                        nextAlias,
-                        [fullPath],
-                        newEagerDepth,
-                    );
-                }
-            });
-        }
-
-        if (nextPath) {
+    if (newEagerDepth <= maxEagerDepth) {
+      relationMetadata.inverseEntityMetadata.relations.forEach(
+        (subRelation) => {
+          if (subRelation.isEager) {
             processRelation(
-                relationMetadata.inverseEntityMetadata,
-                currentMetadataIsTree,
-                nextPath,
-                nextAlias,
-                [fullPath],
+              relationMetadata.inverseEntityMetadata,
+              currentMetadataIsTree,
+              subRelation.propertyPath,
+              nextAlias,
+              [fullPath],
+              newEagerDepth,
             );
-        }
-    };
+          }
+        },
+      );
+    }
 
-    relationsArray.forEach(relationPath => {
-        if (!joinedRelations.has(relationPath)) {
-            processRelation(sourceMetadata, sourceMetadataIsTree, relationPath, qb.alias);
-        }
-    });
+    if (nextPath) {
+      processRelation(
+        relationMetadata.inverseEntityMetadata,
+        currentMetadataIsTree,
+        nextPath,
+        nextAlias,
+        [fullPath],
+      );
+    }
+  };
 
-    return joinedRelations;
+  relationsArray.forEach((relationPath) => {
+    if (!joinedRelations.has(relationPath)) {
+      processRelation(
+        sourceMetadata,
+        sourceMetadataIsTree,
+        relationPath,
+        qb.alias,
+      );
+    }
+  });
+
+  return joinedRelations;
 }

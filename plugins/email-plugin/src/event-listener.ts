@@ -1,7 +1,7 @@
-import { Type } from '@deenruv/common/lib/shared-types';
+import { Type } from "@deenruv/common/lib/shared-types";
 
-import { EmailEventHandler } from './handler/event-handler';
-import { EventWithContext } from './types';
+import { EmailEventHandler } from "./handler/event-handler";
+import { EventWithContext } from "./types";
 
 /**
  * @description
@@ -11,16 +11,18 @@ import { EventWithContext } from './types';
  * @docsCategory core plugins/EmailPlugin
  */
 export class EmailEventListener<T extends string> {
-    public type: T;
-    constructor(type: T) {
-        this.type = type;
-    }
+  public type: T;
+  constructor(type: T) {
+    this.type = type;
+  }
 
-    /**
-     * @description
-     * Defines the event to listen for.
-     */
-    on<Event extends EventWithContext>(event: Type<Event>): EmailEventHandler<T, Event> {
-        return new EmailEventHandler<T, Event>(this, event);
-    }
+  /**
+   * @description
+   * Defines the event to listen for.
+   */
+  on<Event extends EventWithContext>(
+    event: Type<Event>,
+  ): EmailEventHandler<T, Event> {
+    return new EmailEventHandler<T, Event>(this, event);
+  }
 }

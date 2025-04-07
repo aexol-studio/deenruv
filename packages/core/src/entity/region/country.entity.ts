@@ -1,7 +1,7 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { ChildEntity } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { ChildEntity } from "typeorm";
 
-import { Region, RegionType } from './region.entity';
+import { Region, RegionType } from "./region.entity";
 
 /**
  * @description
@@ -13,9 +13,9 @@ import { Region, RegionType } from './region.entity';
  */
 @ChildEntity()
 export class Country extends Region {
-    constructor(input?: DeepPartial<Country>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Country>) {
+    super(input);
+  }
 
-    readonly type: RegionType = 'country';
+  readonly type: RegionType = "country";
 }

@@ -1,16 +1,15 @@
-import path from 'path';
+import path from "path";
 
-import { mergeConfig } from './merge-config';
-import { PartialDeenruvConfig, RuntimeDeenruvConfig } from './deenruv-config';
+import { mergeConfig } from "./merge-config";
+import { PartialDeenruvConfig, RuntimeDeenruvConfig } from "./deenruv-config";
 
 let activeConfig: RuntimeDeenruvConfig;
-const defaultConfigPath = path.join(__dirname, 'default-config');
+const defaultConfigPath = path.join(__dirname, "default-config");
 /**
  * Reset the activeConfig object back to the initial default state.
  */
 export function resetConfig() {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    activeConfig = require(defaultConfigPath).defaultConfig;
+  activeConfig = require(defaultConfigPath).defaultConfig;
 }
 
 /**
@@ -18,10 +17,10 @@ export function resetConfig() {
  * bootstrapping the app.
  */
 export async function setConfig(userConfig: PartialDeenruvConfig) {
-    if (!activeConfig) {
-        activeConfig = (await import(defaultConfigPath)).defaultConfig;
-    }
-    activeConfig = mergeConfig(activeConfig, userConfig);
+  if (!activeConfig) {
+    activeConfig = (await import(defaultConfigPath)).defaultConfig;
+  }
+  activeConfig = mergeConfig(activeConfig, userConfig);
 }
 
 /**
@@ -29,9 +28,9 @@ export async function setConfig(userConfig: PartialDeenruvConfig) {
  * do not go through the normal bootstrap process.
  */
 export async function ensureConfigLoaded() {
-    if (!activeConfig) {
-        activeConfig = (await import(defaultConfigPath)).defaultConfig;
-    }
+  if (!activeConfig) {
+    activeConfig = (await import(defaultConfigPath)).defaultConfig;
+  }
 }
 
 /**
@@ -40,16 +39,14 @@ export async function ensureConfigLoaded() {
  * should be used to access config settings.
  */
 export function getConfig(): Readonly<RuntimeDeenruvConfig> {
-    if (!activeConfig) {
-        try {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            activeConfig = require(defaultConfigPath).defaultConfig;
-        } catch (e: any) {
-            // eslint-disable-next-line no-console
-            console.log(
-                'Error loading config. If this is a test, make sure you have called ensureConfigLoaded() before using the config.',
-            );
-        }
+  if (!activeConfig) {
+    try {
+      activeConfig = require(defaultConfigPath).defaultConfig;
+    } catch (e: any) {
+      console.log(
+        "Error loading config. If this is a test, make sure you have called ensureConfigLoaded() before using the config.",
+      );
     }
-    return activeConfig;
+  }
+  return activeConfig;
 }

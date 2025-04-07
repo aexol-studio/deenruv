@@ -14,7 +14,7 @@ export class BadgeAdminResolver {
   @Allow(Permission.Authenticated)
   async createBadge(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["CreateBadgeInput"] }
+    @Args() args: { input: ModelTypes["CreateBadgeInput"] },
   ) {
     return this.badgeService.createBadge(ctx, args.input);
   }
@@ -23,7 +23,7 @@ export class BadgeAdminResolver {
   @Allow(Permission.Authenticated)
   async removeBadge(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["RemoveBadgeInput"] }
+    @Args() args: { input: ModelTypes["RemoveBadgeInput"] },
   ) {
     return this.badgeService.removeBadge(ctx, args.input.id);
   }
@@ -33,7 +33,7 @@ export class BadgeAdminResolver {
   @Allow(Permission.Authenticated)
   async editBadge(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["EditBadgeInput"] }
+    @Args() args: { input: ModelTypes["EditBadgeInput"] },
   ) {
     return this.badgeService.editBadge(ctx, args.input);
   }
@@ -41,7 +41,7 @@ export class BadgeAdminResolver {
   @Query()
   async getProductBadges(
     @Ctx() ctx: RequestContext,
-    @Args() args: { input: ModelTypes["GetProductBadgesInput"] }
+    @Args() args: { input: ModelTypes["GetProductBadgesInput"] },
   ) {
     return this.badgeService.findAll(ctx, [args.input.productId]);
   }

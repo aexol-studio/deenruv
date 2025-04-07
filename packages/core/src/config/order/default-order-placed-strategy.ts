@@ -1,8 +1,8 @@
-import { RequestContext } from '../../api/common/request-context';
-import { Order } from '../../entity/order/order.entity';
-import { OrderState } from '../../service/helpers/order-state-machine/order-state';
+import { RequestContext } from "../../api/common/request-context";
+import { Order } from "../../entity/order/order.entity";
+import { OrderState } from "../../service/helpers/order-state-machine/order-state";
 
-import { OrderPlacedStrategy } from './order-placed-strategy';
+import { OrderPlacedStrategy } from "./order-placed-strategy";
 
 /**
  * @description
@@ -12,15 +12,15 @@ import { OrderPlacedStrategy } from './order-placed-strategy';
  * @docsCategory orders
  */
 export class DefaultOrderPlacedStrategy implements OrderPlacedStrategy {
-    shouldSetAsPlaced(
-        ctx: RequestContext,
-        fromState: OrderState,
-        toState: OrderState,
-        order: Order,
-    ): boolean {
-        return fromState === 'ArrangingPayment' &&
-            (toState === 'PaymentAuthorized' || toState === 'PaymentSettled')
-            ? true
-            : false;
-    }
+  shouldSetAsPlaced(
+    ctx: RequestContext,
+    fromState: OrderState,
+    toState: OrderState,
+    order: Order,
+  ): boolean {
+    return fromState === "ArrangingPayment" &&
+      (toState === "PaymentAuthorized" || toState === "PaymentSettled")
+      ? true
+      : false;
+  }
 }

@@ -1,19 +1,19 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Allow, Ctx, Permission, RequestContext } from '@deenruv/core';
+import { Args, Query, Resolver } from "@nestjs/graphql";
+import { Allow, Ctx, Permission, RequestContext } from "@deenruv/core";
 
-import { MetricsService } from '../service/metrics.service';
-import { MetricSummary, MetricSummaryInput } from '../types';
+import { MetricsService } from "../service/metrics.service";
+import { MetricSummary, MetricSummaryInput } from "../types";
 
 @Resolver()
 export class MetricsResolver {
-    constructor(private service: MetricsService) {}
+  constructor(private service: MetricsService) {}
 
-    @Query()
-    @Allow(Permission.ReadOrder)
-    async metricSummary(
-        @Ctx() ctx: RequestContext,
-        @Args('input') input: MetricSummaryInput,
-    ): Promise<MetricSummary[]> {
-        return this.service.getMetrics(ctx, input);
-    }
+  @Query()
+  @Allow(Permission.ReadOrder)
+  async metricSummary(
+    @Ctx() ctx: RequestContext,
+    @Args("input") input: MetricSummaryInput,
+  ): Promise<MetricSummary[]> {
+    return this.service.getMetrics(ctx, input);
+  }
 }

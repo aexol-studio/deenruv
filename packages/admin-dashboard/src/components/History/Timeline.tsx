@@ -58,21 +58,21 @@ const historyDataToReadableString = (data: Record<string, unknown>) => {
 const getEntryTypeIcon = (type: HistoryEntryType, isPublic: boolean) => {
   switch (type) {
     case HistoryEntryType.ORDER_STATE_TRANSITION:
-      return <ArrowRightLeft className="h-4 w-4 text-blue-500" />;
+      return <ArrowRightLeft className="size-4 text-blue-500" />;
     case HistoryEntryType.ORDER_PAYMENT_TRANSITION:
-      return <CreditCard className="h-4 w-4 text-purple-500" />;
+      return <CreditCard className="size-4 text-purple-500" />;
     case HistoryEntryType.ORDER_FULFILLMENT:
-      return <Package className="h-4 w-4 text-green-500" />;
+      return <Package className="size-4 text-green-500" />;
     case HistoryEntryType.ORDER_NOTE:
       return isPublic ? (
-        <MessageCircle className="h-4 w-4 text-amber-500" />
+        <MessageCircle className="size-4 text-amber-500" />
       ) : (
-        <ShieldAlert className="h-4 w-4 text-emerald-500" />
+        <ShieldAlert className="size-4 text-emerald-500" />
       );
     case HistoryEntryType.CUSTOMER_NOTE:
-      return <User className="h-4 w-4 text-indigo-500" />;
+      return <User className="size-4 text-indigo-500" />;
     default:
-      return <Clock className="h-4 w-4 text-gray-500" />;
+      return <Clock className="size-4 text-gray-500" />;
   }
 };
 
@@ -101,7 +101,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                   <div className="flex items-center gap-2">
                     {history.administrator ? (
                       <div className="flex items-center gap-2">
-                        <div className="bg-muted flex h-8 w-8 items-center justify-center rounded-full">
+                        <div className="bg-muted flex size-8 items-center justify-center rounded-full">
                           <span className="text-xs font-medium">
                             {history.administrator.firstName?.[0]}
                             {history.administrator.lastName?.[0]}
@@ -140,12 +140,12 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                       >
                         {history.isPublic ? (
                           <>
-                            <MessageCircle className="h-3 w-3" />
+                            <MessageCircle className="size-3" />
                             {t('history.public', 'Public')}
                           </>
                         ) : (
                           <>
-                            <ShieldCheck className="h-3 w-3" />
+                            <ShieldCheck className="size-3" />
                             {t('history.private', 'Private')}
                           </>
                         )}
@@ -155,8 +155,8 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                     {isNote ? (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <EllipsisVerticalIcon className="h-4 w-4" />
+                          <Button variant="ghost" size="icon" className="size-8">
+                            <EllipsisVerticalIcon className="size-4" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -167,7 +167,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                             }}
                             className="flex cursor-pointer items-center gap-2"
                           >
-                            <Pencil className="h-4 w-4" /> {t('history.edit', 'Edit')}
+                            <Pencil className="size-4" /> {t('history.edit', 'Edit')}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             onClick={() => {
@@ -176,7 +176,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                             }}
                             className="flex cursor-pointer items-center gap-2 text-red-600"
                           >
-                            <Trash className="h-4 w-4" /> {t('history.delete', 'Delete')}
+                            <Trash className="size-4" /> {t('history.delete', 'Delete')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -187,7 +187,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                       'to' in history.data && (
                         <div className="flex items-center gap-2">
                           <OrderStateBadge state={history.data.from as string} />
-                          <ArrowRightLeft className="text-muted-foreground h-4 w-4" />
+                          <ArrowRightLeft className="text-muted-foreground size-4" />
                           <OrderStateBadge state={history.data.to as string} />
                         </div>
                       )
@@ -216,7 +216,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
 
                   {'paymentId' in history.data && (
                     <div className="mt-2 flex items-center gap-2 text-sm">
-                      <CreditCard className="h-4 w-4 text-purple-500" />
+                      <CreditCard className="size-4 text-purple-500" />
                       <span className="font-medium">Payment ID:</span>
                       <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
                         {history.data.paymentId as string}
@@ -226,7 +226,7 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
 
                   {'fulfillmentId' in history.data && (
                     <div className="mt-2 flex items-center gap-2 text-sm">
-                      <Package className="h-4 w-4 text-green-500" />
+                      <Package className="size-4 text-green-500" />
                       <span className="font-medium">Fulfillment ID:</span>
                       <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
                         {history.data.fulfillmentId as string}

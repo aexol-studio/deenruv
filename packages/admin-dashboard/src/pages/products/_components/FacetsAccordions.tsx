@@ -1,4 +1,3 @@
-import { Stack } from '@/components';
 import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { FacetListOptionsType } from '@/graphql/facets';
 import { CheckboxAccordion } from '@/pages/products/_components/CheckboxHarmonica';
@@ -24,7 +23,7 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
           <CardTitle className="flex flex-row justify-between text-base">{t('colors')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Stack column>
+          <div className="flex flex-col">
             {facetsOptions?.map((f) => (
               <CheckboxAccordion
                 key={f.id}
@@ -34,7 +33,7 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
                 onChange={handleFacetCheckboxChange}
               />
             ))}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
       <Card>
@@ -42,7 +41,7 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
           <CardTitle className="flex flex-row justify-between text-base">{t('colorPalettes')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Stack column>
+          <div className="flex flex-col">
             {facetsOptions?.map((f) => (
               <CheckboxAccordion
                 key={f.id}
@@ -52,7 +51,7 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
                 onChange={handleFacetCheckboxChange}
               />
             ))}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
       <Card>
@@ -60,7 +59,7 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
           <CardTitle className="flex flex-row justify-between text-base">{t('otherOptions')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <Stack column>
+          <div className="flex flex-col">
             {facetsOptions?.map((f) => (
               <CheckboxAccordion
                 key={f.id}
@@ -70,7 +69,7 @@ export const FacetsAccordions: React.FC<FacetsAccordionsProps> = ({
                 onChange={handleFacetCheckboxChange}
               />
             ))}
-          </Stack>
+          </div>
         </CardContent>
       </Card>
     </>

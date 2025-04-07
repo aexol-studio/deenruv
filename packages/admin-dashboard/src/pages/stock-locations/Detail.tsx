@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
-import { DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
+import { useValidators, DetailView, GFFLPFormField, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { StockLocationDetailView } from './_components/StockLocationDetailView';
 import { typedGql, scalars, $, ModelTypes, Permission } from '@deenruv/admin-types';
 import { useCallback } from 'react';
-import { useValidators } from '@/hooks/useValidators.js';
 
 type CreateStockLocationInput = ModelTypes['CreateStockLocationInput'];
 type FormDataType = Partial<{

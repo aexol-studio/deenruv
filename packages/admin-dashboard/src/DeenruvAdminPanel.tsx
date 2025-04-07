@@ -27,6 +27,7 @@ import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
 import { LanguageCode } from '@deenruv/admin-types';
 import { ORDER_STATUS_NOTIFICATION } from './notifications/OrderStatusNotification.js';
 import { SYSTEM_STATUS_NOTIFICATION } from './notifications/SystemStatusNotification.js';
+import { GlobalSearch } from './components/GlobalSearch.js';
 
 declare global {
   interface Window {
@@ -72,7 +73,6 @@ const loadTranslations = () => {
 
 const pluginsStore = new PluginStore();
 export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
-  const isLocalhost = window.location.hostname === 'localhost';
   pluginsStore.install(plugins, i18n);
   loadTranslations();
   window.__DEENRUV_SETTINGS__ = {
@@ -126,7 +126,6 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
                 )}
               >
                 <RouterProvider router={router} />
-                {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
               </NotificationProvider>
             </PluginProvider>
           ) : (

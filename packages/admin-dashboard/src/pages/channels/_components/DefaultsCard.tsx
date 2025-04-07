@@ -11,7 +11,6 @@ import {
   CustomCard,
   CardIcons,
 } from '@deenruv/react-ui-devkit';
-import { Stack } from '@/components';
 
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { useCallback, useEffect, useState } from 'react';
@@ -74,8 +73,8 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
   return (
     <CustomCard title={t('details.defaults.title')} icon={<CardIcons.default />}>
       <div className="flex flex-col gap-4">
-        <Stack className="gap-3">
-          <Stack className="basis-full md:basis-1/2">
+        <div className="flex gap-3">
+          <div className="flex basis-full md:basis-1/2">
             <SimpleSelect
               label={t('details.defaults.defaultLanguage')}
               value={defaultLanguage}
@@ -84,8 +83,8 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
               errors={defaultLanguageErrors}
               disabled={!availableLanguages?.length}
             />
-          </Stack>
-          <Stack className="basis-full md:basis-1/2">
+          </div>
+          <div className="flex basis-full md:basis-1/2">
             <SimpleSelect
               label={t('details.defaults.defaultCurrency')}
               value={defaultCurrency}
@@ -93,10 +92,10 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
               options={availableCurrencies?.map((c) => ({ label: c, value: c }))}
               disabled={!availableCurrencies?.length}
             />
-          </Stack>
-        </Stack>
-        <Stack className="gap-3">
-          <Stack className="basis-full md:basis-1/2">
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <div className="flex basis-full md:basis-1/2">
             <SimpleSelect
               label={t('details.defaults.defaultTaxZone')}
               value={defaultTaxZone}
@@ -104,8 +103,8 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
               options={zonesOptions}
               errors={defaultTaxZoneErrors}
             />
-          </Stack>
-          <Stack className="basis-full md:basis-1/2">
+          </div>
+          <div className="flex basis-full md:basis-1/2">
             <SimpleSelect
               label={t('details.defaults.defaultShippingZone')}
               value={defaultShippingZone}
@@ -113,12 +112,12 @@ export const DefaultsCard: React.FC<DefaultsCardProps> = ({
               options={zonesOptions}
               errors={defaultShippingZoneErrors}
             />
-          </Stack>
-        </Stack>
-        <Stack className="gap-3">
+          </div>
+        </div>
+        <div className="flex gap-3">
           <Switch checked={includeTax} onCheckedChange={onIncludeTaxChange} />
           <Label>{t('details.defaults.includeTax')}</Label>
-        </Stack>
+        </div>
       </div>
     </CustomCard>
   );

@@ -1,2 +1,2 @@
-export * from './createDialogFunction.js';
-export * from './createDialogFromComponentFunction.js';
+export * from "./createDialogFunction.js";
+export * from "./createDialogFromComponentFunction.js";

@@ -15,10 +15,15 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  ListLocations,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields } from '@/components';
 import { AddFacetValueDialog } from './AddFacetValueDialog.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';
+
+const tableId = 'facet-values-list';
+const { selector } = ListLocations[tableId];
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
   try {
@@ -72,13 +77,8 @@ export const FacetsDetailView = () => {
   );
 
   const fetchFacetValues = useCallback(
-    async <T, K>(
-      { page, perPage, filter, filterOperator, sort }: PaginationInput,
-      customFieldsSelector?: T,
-      additionalSelector?: K,
-    ) => {
+    async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
       // if (!id) return Promise.resolve([]);
-      const selector = deepMerge({ id: true, name: true, code: true }, additionalSelector ?? {});
       const response = await apiClient('query')({
         ['facetValues']: [
           {
@@ -90,7 +90,7 @@ export const FacetsDetailView = () => {
               ...(filter && { filter: { ...filter, facetId: { eq: id } } }),
             },
           },
-          { items: selector, totalItems: true },
+          { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
         ],
       });
       return response['facetValues'];
@@ -197,7 +197,7 @@ export const FacetsDetailView = () => {
                   },
                 }}
                 searchFields={['name']}
-                tableId={'facet-values-list'}
+                tableId={tableId}
                 noPaddings
                 createPermissions={[Permission.CreateFacet]}
                 deletePermissions={[Permission.DeleteFacet]}

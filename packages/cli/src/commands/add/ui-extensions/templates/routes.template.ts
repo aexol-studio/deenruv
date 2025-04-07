@@ -1,3 +1,3 @@
 export default [
-    // Add your custom routes here
+  // Add your custom routes here
 ];

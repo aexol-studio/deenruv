@@ -11,10 +11,12 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  CF,
+  EntityCustomFields,
+  SimpleSelect,
 } from '@deenruv/react-ui-devkit';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';
-import { CF, EntityCustomFields, SimpleSelect, Stack } from '@/components';
 
 export const ChannelDetailView = () => {
   const { t } = useTranslation('channels');
@@ -96,11 +98,11 @@ export const ChannelDetailView = () => {
   return (
     <main>
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
             <div className="flex flex-col gap-4">
-              <Stack className="items-start gap-3">
-                <Stack className="basis-full md:basis-1/2">
+              <div className="flex items-start gap-3">
+                <div className="flex basis-full md:basis-1/2">
                   <Input
                     label={t('details.basic.code')}
                     value={state.code?.value ?? undefined}
@@ -108,8 +110,8 @@ export const ChannelDetailView = () => {
                     errors={state.code?.errors}
                     required
                   />
-                </Stack>
-                <Stack className="basis-full md:basis-1/2">
+                </div>
+                <div className="flex basis-full md:basis-1/2">
                   <Input
                     label={t('details.basic.token')}
                     value={state.token?.value ?? undefined}
@@ -117,18 +119,18 @@ export const ChannelDetailView = () => {
                     errors={state.token?.errors}
                     required
                   />
-                </Stack>
-              </Stack>
-              <Stack className="gap-3">
-                <Stack className="basis-full md:basis-1/3">
+                </div>
+              </div>
+              <div className="gap-3">
+                <div className="flex basis-full md:basis-1/3">
                   <SimpleSelect
                     label={t('details.basic.seller')}
                     value={state?.sellerId?.value ?? undefined}
                     onValueChange={(e) => setField('sellerId', e)}
                     options={sellersOptions}
                   />
-                </Stack>
-                <Stack column className="basis-full md:basis-1/3">
+                </div>
+                <div className="flex basis-full flex-col md:basis-1/3">
                   <Label className="mb-2">{t('details.basic.languages')}</Label>
                   <MultipleSelector
                     options={languageOptions}
@@ -142,8 +144,8 @@ export const ChannelDetailView = () => {
                     }}
                     hideClearAllButton
                   />
-                </Stack>
-                <Stack column className="basis-full md:basis-1/3">
+                </div>
+                <div className="flex basis-full flex-col md:basis-1/3">
                   <Label className="mb-2">{t('details.basic.currencies')}</Label>
                   <MultipleSelector
                     options={currencyOptions}
@@ -157,8 +159,8 @@ export const ChannelDetailView = () => {
                     }}
                     hideClearAllButton
                   />
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             </div>
           </CustomCard>
           <DetailViewMarker position={'channels-detail-view'} />
@@ -187,7 +189,7 @@ export const ChannelDetailView = () => {
             defaultShippingZoneErrors={state.defaultShippingZoneId?.errors}
             defaultTaxZoneErrors={state.defaultTaxZoneId?.errors}
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

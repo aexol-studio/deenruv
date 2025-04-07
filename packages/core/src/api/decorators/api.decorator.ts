@@ -1,7 +1,7 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { GraphQLResolveInfo } from 'graphql';
+import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { GraphQLResolveInfo } from "graphql";
 
-import { getApiType } from '../common/get-api-type';
+import { getApiType } from "../common/get-api-type";
 
 /**
  * @description
@@ -24,6 +24,6 @@ import { getApiType } from '../common/get-api-type';
  * @docsPage Api Decorator
  */
 export const Api = createParamDecorator((data, ctx: ExecutionContext) => {
-    const info = ctx.getArgByIndex(3);
-    return getApiType(info);
+  const info = ctx.getArgByIndex(3);
+  return getApiType(info);
 });

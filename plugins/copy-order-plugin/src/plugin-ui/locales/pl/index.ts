@@ -1,3 +1,3 @@
-import test from './test.json';
+import test from "./test.json";
 
 export default [test];

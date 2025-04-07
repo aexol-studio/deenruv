@@ -1,7 +1,7 @@
-import { Type } from '@deenruv/common/lib/shared-types';
-import { DeenruvEvent, Injector } from '@deenruv/core';
+import { Type } from "@deenruv/common/lib/shared-types";
+import { DeenruvEvent, Injector } from "@deenruv/core";
 
-import { StellateService } from './service/stellate.service';
+import { StellateService } from "./service/stellate.service";
 
 /**
  * @description
@@ -11,29 +11,29 @@ import { StellateService } from './service/stellate.service';
  * @docsPage PurgeRule
  */
 export interface PurgeRuleConfig<Event extends DeenruvEvent> {
-    /**
-     * @description
-     * Specifies which DeenruvEvent will trigger this purge rule.
-     */
-    eventType: Type<Event>;
-    /**
-     * @description
-     * How long to buffer events for in milliseconds before executing the handler. This allows
-     * us to efficiently batch calls to the Stellate Purge API.
-     *
-     * @default 5000
-     */
-    bufferTime?: number;
-    /**
-     * @description
-     * The function to invoke when the specified event is published. This function should use the
-     * {@link StellateService} instance to call the Stellate Purge API.
-     */
-    handler: (handlerArgs: {
-        events: Event[];
-        stellateService: StellateService;
-        injector: Injector;
-    }) => void | Promise<void>;
+  /**
+   * @description
+   * Specifies which DeenruvEvent will trigger this purge rule.
+   */
+  eventType: Type<Event>;
+  /**
+   * @description
+   * How long to buffer events for in milliseconds before executing the handler. This allows
+   * us to efficiently batch calls to the Stellate Purge API.
+   *
+   * @default 5000
+   */
+  bufferTime?: number;
+  /**
+   * @description
+   * The function to invoke when the specified event is published. This function should use the
+   * {@link StellateService} instance to call the Stellate Purge API.
+   */
+  handler: (handlerArgs: {
+    events: Event[];
+    stellateService: StellateService;
+    injector: Injector;
+  }) => void | Promise<void>;
 }
 
 /**
@@ -47,14 +47,18 @@ export interface PurgeRuleConfig<Event extends DeenruvEvent> {
  * @docsWeight 0
  */
 export class PurgeRule<Event extends DeenruvEvent = DeenruvEvent> {
-    get eventType(): Type<Event> {
-        return this.config.eventType;
-    }
-    get bufferTimeMs(): number | undefined {
-        return this.config.bufferTime;
-    }
-    handle(handlerArgs: { events: Event[]; stellateService: StellateService; injector: Injector }) {
-        return this.config.handler(handlerArgs);
-    }
-    constructor(private config: PurgeRuleConfig<Event>) {}
+  get eventType(): Type<Event> {
+    return this.config.eventType;
+  }
+  get bufferTimeMs(): number | undefined {
+    return this.config.bufferTime;
+  }
+  handle(handlerArgs: {
+    events: Event[];
+    stellateService: StellateService;
+    injector: Injector;
+  }) {
+    return this.config.handler(handlerArgs);
+  }
+  constructor(private config: PurgeRuleConfig<Event>) {}
 }

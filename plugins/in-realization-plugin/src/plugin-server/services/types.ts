@@ -1,13 +1,13 @@
-import { Administrator, Order, ShippingMethod } from '@deenruv/core';
+import { Administrator, Order, ShippingMethod } from "@deenruv/core";
 
 export type PDFProps = {
-    user: Administrator | null;
-    order: Order & { shippingMethod: ShippingMethod };
-    options: {
-        assets?: { id: string; orderLineID: string; preview: string }[];
-        plannedAt: String;
-        finalPlannedAt: String;
-        note: String;
-        color: string;
-    };
+  user: Administrator | null;
+  order: Order & { shippingMethod: ShippingMethod };
+  options: {
+    assets?: { id: string; orderLineID: string; preview: string }[];
+    plannedAt: string;
+    finalPlannedAt: string;
+    note: string;
+    color: string;
+  };
 };

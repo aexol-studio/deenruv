@@ -1,4 +1,4 @@
-import { EntityIdStrategy } from './entity-id-strategy';
+import { EntityIdStrategy } from "./entity-id-strategy";
 
 /**
  * @description
@@ -8,13 +8,13 @@ import { EntityIdStrategy } from './entity-id-strategy';
  * @docsCategory configuration
  * @docsPage EntityIdStrategy
  */
-export class AutoIncrementIdStrategy implements EntityIdStrategy<'increment'> {
-    readonly primaryKeyType = 'increment';
-    decodeId(id: string): number {
-        const asNumber = +id;
-        return Number.isNaN(asNumber) ? -1 : asNumber;
-    }
-    encodeId(primaryKey: number): string {
-        return primaryKey.toString();
-    }
+export class AutoIncrementIdStrategy implements EntityIdStrategy<"increment"> {
+  readonly primaryKeyType = "increment";
+  decodeId(id: string): number {
+    const asNumber = +id;
+    return Number.isNaN(asNumber) ? -1 : asNumber;
+  }
+  encodeId(primaryKey: number): string {
+    return primaryKey.toString();
+  }
 }

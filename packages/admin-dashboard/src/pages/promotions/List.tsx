@@ -1,8 +1,10 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { apiClient, DetailList, PaginationInput, PromotionListSelector, Routes } from '@deenruv/react-ui-devkit';
+import { apiClient, deepMerge, DetailList, ListLocations, PaginationInput, Routes } from '@deenruv/react-ui-devkit';
 
-const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput) => {
-  const selector = PromotionListSelector;
+const tableId = 'promotions-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     ['promotions']: [
       {
@@ -14,7 +16,7 @@ const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: Pagina
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['promotions'];
@@ -41,7 +43,7 @@ export const PromotionsListPage = () => (
     searchFields={['name']}
     entityName={'Promotion'}
     route={Routes['promotions']}
-    tableId="promotions-list-view"
+    tableId={tableId}
     fetch={fetch}
     onRemove={onRemove}
     detailLinkColumn="id"

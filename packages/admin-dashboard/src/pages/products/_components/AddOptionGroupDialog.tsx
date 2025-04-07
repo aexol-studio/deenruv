@@ -9,14 +9,15 @@ import {
   Label,
   DialogFooter,
   apiClient,
+  useGFFLP,
+  setInArrayBy,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';
-import { EntityCustomFields, Stack } from '@/components';
 
 interface AddOptionGroupDialogProps {
   currentTranslationLng: LanguageCode;
@@ -85,7 +86,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
         <DialogHeader>
           <DialogTitle>{t('addOptionGroupDialog.title')}</DialogTitle>
         </DialogHeader>
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <div>
             <Label>{t('addOptionGroupDialog.name')}</Label>
             <Input
@@ -127,7 +128,7 @@ export const AddOptionGroupDialog: React.FC<AddOptionGroupDialogProps> = ({
             additionalData={{}}
             withoutBorder
           />
-        </Stack>
+        </div>
         <DialogFooter className="mt-2">
           <Button onClick={() => setOpen(false)}>{t('addOptionGroupDialog.cancel')}</Button>
           <Button onClick={createGroup}>{t('addOptionGroupDialog.add')}</Button>

@@ -6,10 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
   Skeleton,
-} from '@deenruv/react-ui-devkit';
-import { MetricRangeType } from '../../zeus';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+} from "@deenruv/react-ui-devkit";
+import { MetricRangeType } from "../../zeus";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface MetricTypeSelectProps {
   value?: MetricRangeType;
@@ -24,13 +24,13 @@ export const MetricsRangeSelect: React.FC<MetricTypeSelectProps> = ({
   loading,
   withoutCustom = false,
 }) => {
-  const { t } = useTranslation('dashboard-widgets-plugin', {
+  const { t } = useTranslation("dashboard-widgets-plugin", {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });
   return (
     <div className="relative w-full max-w-[240px] xl:w-[240px]">
       {loading ? (
-        <Skeleton className="absolute left-0 top-0 h-full w-full" />
+        <Skeleton className="absolute left-0 top-0 size-full" />
       ) : null}
       <Select
         value={value}
@@ -40,47 +40,47 @@ export const MetricsRangeSelect: React.FC<MetricTypeSelectProps> = ({
         defaultValue={MetricRangeType.ThisWeek}
       >
         <SelectTrigger className="h-[30px] w-full  text-[13px]">
-          <SelectValue placeholder={t('selectDataType')} />
+          <SelectValue placeholder={t("selectDataType")} />
         </SelectTrigger>
         <SelectContent className="max-h-none w-full">
           <SelectGroup>
-            <SelectItem value={MetricRangeType.Today}>{t('today')}</SelectItem>
+            <SelectItem value={MetricRangeType.Today}>{t("today")}</SelectItem>
             <SelectItem value={MetricRangeType.Yesterday}>
-              {t('yesterday')}
+              {t("yesterday")}
             </SelectItem>
             <SelectItem value={MetricRangeType.ThisWeek}>
-              {t('thisWeek')}
+              {t("thisWeek")}
             </SelectItem>
             <SelectItem value={MetricRangeType.LastWeek}>
-              {t('lastWeek')}
+              {t("lastWeek")}
             </SelectItem>
             <SelectItem value={MetricRangeType.ThisMonth}>
-              {t('thisMonth')}
+              {t("thisMonth")}
             </SelectItem>
             <SelectItem value={MetricRangeType.LastMonth}>
-              {t('lastMonth')}
+              {t("lastMonth")}
             </SelectItem>
             <SelectItem value={MetricRangeType.ThisYear}>
-              {t('thisYear')}
+              {t("thisYear")}
             </SelectItem>
             <SelectItem value={MetricRangeType.LastYear}>
-              {t('lastYear')}
+              {t("lastYear")}
             </SelectItem>
             <SelectItem value={MetricRangeType.FirstQuarter}>
-              {t('firstYearQuarterInterval')}
+              {t("firstYearQuarterInterval")}
             </SelectItem>
             <SelectItem value={MetricRangeType.SecondQuarter}>
-              {t('secondYearQuarterInterval')}
+              {t("secondYearQuarterInterval")}
             </SelectItem>
             <SelectItem value={MetricRangeType.ThirdQuarter}>
-              {t('thirdYearQuarterInterval')}
+              {t("thirdYearQuarterInterval")}
             </SelectItem>
             <SelectItem value={MetricRangeType.FourthQuarter}>
-              {t('fourthYearQuarterInterval')}
+              {t("fourthYearQuarterInterval")}
             </SelectItem>
             {!withoutCustom ? (
               <SelectItem value={MetricRangeType.Custom}>
-                {t('customInterval')}
+                {t("customInterval")}
               </SelectItem>
             ) : null}
           </SelectGroup>

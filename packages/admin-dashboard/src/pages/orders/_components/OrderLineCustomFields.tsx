@@ -1,5 +1,3 @@
-import { CF, EntityCustomFields } from '@/components';
-
 import {
   Button,
   Dialog,
@@ -10,6 +8,8 @@ import {
   ScrollArea,
   useOrder,
   useServer,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

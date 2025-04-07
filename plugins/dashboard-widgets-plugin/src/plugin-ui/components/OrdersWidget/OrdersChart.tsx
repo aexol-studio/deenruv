@@ -5,24 +5,24 @@ import {
   Line,
   XAxis,
   YAxis,
-} from 'recharts';
-import React, { useMemo } from 'react';
-import { ChartMetricType } from '../../zeus';
+} from "recharts";
+import React, { useMemo } from "react";
+import { ChartMetricType } from "../../zeus";
 import {
   camelCaseToSpaces,
   priceFormatter,
   useSettings,
   useWidgetItem,
-} from '@deenruv/react-ui-devkit';
-import { CustomTooltip } from './CustomTooltip';
+} from "@deenruv/react-ui-devkit";
+import { CustomTooltip } from "./CustomTooltip";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-} from '@deenruv/react-ui-devkit';
-import { UIPluginOptions } from '../..';
+} from "@deenruv/react-ui-devkit";
+import { UIPluginOptions } from "../..";
 
-import { CurrencyCode } from '@deenruv/admin-types';
+import { CurrencyCode } from "@deenruv/admin-types";
 
 interface ChartProps {
   data: {
@@ -36,7 +36,6 @@ interface ChartProps {
   selectedAvailableProducts: { id: string; color: string }[];
   metricType: ChartMetricType;
   shouldShowCompare: boolean;
-
 }
 
 const HEIGHT = 300;
@@ -64,7 +63,7 @@ export const OrdersChart: React.FC<ChartProps> = ({
   return (
     <ChartContainer
       config={chartConfig}
-      style={{ height: `${HEIGHT}px`, width: '100%' }}
+      style={{ height: `${HEIGHT}px`, width: "100%" }}
     >
       <ComposedChart
         height={HEIGHT}
@@ -119,11 +118,11 @@ export const OrdersChart: React.FC<ChartProps> = ({
             <stop offset="5%" stopColor="#82FF9E" stopOpacity={0.5} />
             <stop offset="95%" stopColor="#82FF9E" stopOpacity={0} />
           </linearGradient>
-        </defs>{' '}
+        </defs>{" "}
         {shouldShowCompare ? (
           <Area
             dataKey={
-              selectedAvailableProducts.length ? 'no-value' : 'prevValue'
+              selectedAvailableProducts.length ? "no-value" : "prevValue"
             }
             strokeWidth={0.1}
             type="monotone"
@@ -134,7 +133,7 @@ export const OrdersChart: React.FC<ChartProps> = ({
           />
         ) : null}
         <Area
-          dataKey={selectedAvailableProducts.length ? 'no-value' : 'value'}
+          dataKey={selectedAvailableProducts.length ? "no-value" : "value"}
           type="monotone"
           fill="url(#fill)"
           fillOpacity={shouldShowCompare ? 0.6 : 0.4}

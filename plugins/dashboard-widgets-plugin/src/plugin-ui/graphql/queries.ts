@@ -1,21 +1,21 @@
-import { typedGql } from '../zeus/typedDocumentNode';
-import { $, SortOrder } from '../zeus';
-import { scalars } from '@deenruv/admin-types';
-import { LatestOrderSelector, SummaryOrdersSelector } from './selectors';
-import { ORDER_STATE } from '@deenruv/react-ui-devkit';
-export const OrdersSummaryQuery = typedGql('query', { scalars })({
+import { typedGql } from "../zeus/typedDocumentNode";
+import { $, SortOrder } from "../zeus";
+import { scalars } from "@deenruv/admin-types";
+import { LatestOrderSelector, SummaryOrdersSelector } from "./selectors";
+import { ORDER_STATE } from "@deenruv/react-ui-devkit";
+export const OrdersSummaryQuery = typedGql("query", { scalars })({
   orders: [
     {
-      options: $('options', 'OrderListOptions'),
+      options: $("options", "OrderListOptions"),
     },
     { totalItems: true, items: SummaryOrdersSelector },
   ],
 });
 
-export const CategoriesMetricQuery = typedGql('query', { scalars })({
+export const CategoriesMetricQuery = typedGql("query", { scalars })({
   chartMetric: [
     {
-      input: $('input', 'ChartMetricInput!'),
+      input: $("input", "ChartMetricInput!"),
     },
     {
       data: {
@@ -35,12 +35,12 @@ export const CategoriesMetricQuery = typedGql('query', { scalars })({
   ],
 });
 
-export const ChartMetricQuery = typedGql('query', { scalars })({
+export const ChartMetricQuery = typedGql("query", { scalars })({
   __alias: {
     prevChartMetric: {
       chartMetric: [
         {
-          input: $('prevInput', 'ChartMetricInput!'),
+          input: $("prevInput", "ChartMetricInput!"),
         },
         {
           data: {
@@ -62,7 +62,7 @@ export const ChartMetricQuery = typedGql('query', { scalars })({
   },
   chartMetric: [
     {
-      input: $('input', 'ChartMetricInput!'),
+      input: $("input", "ChartMetricInput!"),
     },
     {
       data: {
@@ -82,10 +82,10 @@ export const ChartMetricQuery = typedGql('query', { scalars })({
   ],
 });
 
-export const BarChartMetricQuery = typedGql('query', { scalars })({
+export const BarChartMetricQuery = typedGql("query", { scalars })({
   chartMetric: [
     {
-      input: $('input', 'ChartMetricInput!'),
+      input: $("input", "ChartMetricInput!"),
     },
     {
       data: {
@@ -105,11 +105,11 @@ export const BarChartMetricQuery = typedGql('query', { scalars })({
   ],
 });
 
-export const OrderSummaryMetricsQuery = typedGql('query', { scalars })({
+export const OrderSummaryMetricsQuery = typedGql("query", { scalars })({
   __alias: {
     prevOrderSummaryMetric: {
       orderSummaryMetric: [
-        { input: $('prevInput', 'OrderSummaryMetricInput!') },
+        { input: $("prevInput", "OrderSummaryMetricInput!") },
         {
           __typename: true,
           data: {
@@ -127,7 +127,7 @@ export const OrderSummaryMetricsQuery = typedGql('query', { scalars })({
     },
   },
   orderSummaryMetric: [
-    { input: $('input', 'OrderSummaryMetricInput!') },
+    { input: $("input", "OrderSummaryMetricInput!") },
     {
       __typename: true,
       data: {
@@ -143,13 +143,13 @@ export const OrderSummaryMetricsQuery = typedGql('query', { scalars })({
     },
   ],
 });
-export const ProductCollectionsQuery = typedGql('query', { scalars })({
+export const ProductCollectionsQuery = typedGql("query", { scalars })({
   products: [
     {
       options: {
         filter: {
           id: {
-            in: $('in', '[String!]'),
+            in: $("in", "[String!]"),
           },
         },
       },
@@ -165,7 +165,7 @@ const LATEST_ORDERS_EXCLUDED_STATUSES = [
   ORDER_STATE.ADDING_ITEMS,
 ];
 
-export const LatestOrdersQuery = typedGql('query', { scalars })({
+export const LatestOrdersQuery = typedGql("query", { scalars })({
   orders: [
     {
       options: {

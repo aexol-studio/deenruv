@@ -1,30 +1,30 @@
-import { PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
+import { PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
 
-import { apiExtensions } from './api/index';
-import { CampaignTranslation } from './entities/campaign-translation.entity';
-import { Campaign } from './entities/campaign.entity';
-import { collectionCustomFields } from './entities/custom-fields-collection.entity';
-import { CampaignService } from './services/campaign.service';
+import { apiExtensions } from "./api/index";
+import { CampaignTranslation } from "./entities/campaign-translation.entity";
+import { Campaign } from "./entities/campaign.entity";
+import { collectionCustomFields } from "./entities/custom-fields-collection.entity";
+import { CampaignService } from "./services/campaign.service";
 
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    entities: [Campaign, CampaignTranslation],
-    adminApiExtensions: {
-        schema: apiExtensions,
-    },
-    shopApiExtensions: {
-        schema: apiExtensions,
-    },
-    compatibility: '^0.0.0',
-    providers: [CampaignService],
-    configuration: config => {
-        config.customFields.Collection.push(...collectionCustomFields);
-        return config;
-    },
+  imports: [PluginCommonModule],
+  entities: [Campaign, CampaignTranslation],
+  adminApiExtensions: {
+    schema: apiExtensions,
+  },
+  shopApiExtensions: {
+    schema: apiExtensions,
+  },
+  compatibility: "^0.0.0",
+  providers: [CampaignService],
+  configuration: (config) => {
+    config.customFields.Collection.push(...collectionCustomFields);
+    return config;
+  },
 })
 export class PluginIssue2453 {
-    constructor(private campaignService: CampaignService) {}
-    async onApplicationBootstrap() {
-        await this.campaignService.initCampaigns();
-    }
+  constructor(private campaignService: CampaignService) {}
+  async onApplicationBootstrap() {
+    await this.campaignService.initCampaigns();
+  }
 }

@@ -1,8 +1,6 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
-  Button,
   apiClient,
-  CustomerListSelector,
   deepMerge,
   DetailList,
   PaginationInput,
@@ -10,16 +8,14 @@ import {
   BooleanCell,
   TableLabel,
   ListBadge,
+  ListLocations,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(CustomerListSelector, additionalSelector ?? {});
+const tableId = 'customers-list-view';
+const { selector } = ListLocations[tableId];
 
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     customers: [
       {
@@ -31,7 +27,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['customers'];
@@ -83,7 +79,7 @@ export const CustomersListPage = () => {
       ]}
       entityName={'Customer'}
       route={Routes['customers']}
-      tableId="customers-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateCustomer]}

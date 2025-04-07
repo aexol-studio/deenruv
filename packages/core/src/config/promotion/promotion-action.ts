@@ -1,19 +1,19 @@
-import { ConfigArg } from '@deenruv/common/lib/generated-types';
-import { pick } from '@deenruv/common/lib/pick';
+import { ConfigArg } from "@deenruv/common/lib/generated-types";
+import { pick } from "@deenruv/common/lib/pick";
 
-import { RequestContext } from '../../api/common/request-context';
+import { RequestContext } from "../../api/common/request-context";
 import {
-    ConfigArgs,
-    ConfigArgValues,
-    ConfigurableOperationDef,
-    ConfigurableOperationDefOptions,
-} from '../../common/configurable-operation';
-import { Promotion, PromotionState } from '../../entity';
-import { Order } from '../../entity/order/order.entity';
-import { OrderLine } from '../../entity/order-line/order-line.entity';
-import { ShippingLine } from '../../entity/shipping-line/shipping-line.entity';
+  ConfigArgs,
+  ConfigArgValues,
+  ConfigurableOperationDef,
+  ConfigurableOperationDefOptions,
+} from "../../common/configurable-operation";
+import { Promotion, PromotionState } from "../../entity";
+import { Order } from "../../entity/order/order.entity";
+import { OrderLine } from "../../entity/order-line/order-line.entity";
+import { ShippingLine } from "../../entity/shipping-line/shipping-line.entity";
 
-import { PromotionCondition } from './promotion-condition';
+import { PromotionCondition } from "./promotion-condition";
 
 /**
  * Unwrap a promise type
@@ -24,8 +24,8 @@ type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
  * Extract the (non-false) return value of the PromotionCondition "check" function.
  */
 type ConditionCheckReturnType<T extends PromotionCondition<any>> = Exclude<
-    Awaited<ReturnType<T['check']>>,
-    false
+  Awaited<ReturnType<T["check"]>>,
+  false
 >;
 
 /**
@@ -38,11 +38,12 @@ export type ConditionTuple<C extends Array<PromotionCondition<any>>> = [...C];
  * Converts an array of PromotionConditions into a tuple of the type:
  * [<condition code>, <check function return value>]
  */
-type CodesStateTuple<T extends ConditionTuple<Array<PromotionCondition<any>>>> = {
+type CodesStateTuple<T extends ConditionTuple<Array<PromotionCondition<any>>>> =
+  {
     [K in keyof T]: T[K] extends PromotionCondition<any>
-        ? [T[K]['code'], ConditionCheckReturnType<T[K]>]
-        : never;
-};
+      ? [T[K]["code"], ConditionCheckReturnType<T[K]>]
+      : never;
+  };
 
 /**
  * Convert a tuple into a union
@@ -57,8 +58,8 @@ type TupleToUnion<T extends any[]> = T[number];
  * }
  */
 export type ConditionState<
-    U extends Array<PromotionCondition<any>>,
-    T extends [string, any] = TupleToUnion<CodesStateTuple<ConditionTuple<U>>>,
+  U extends Array<PromotionCondition<any>>,
+  T extends [string, any] = TupleToUnion<CodesStateTuple<ConditionTuple<U>>>,
 > = { [key in T[0]]: Extract<T, [key, any]>[1] };
 
 /**
@@ -69,12 +70,15 @@ export type ConditionState<
  * @docsCategory promotions
  * @docsPage promotion-action
  */
-export type ExecutePromotionItemActionFn<T extends ConfigArgs, U extends Array<PromotionCondition<any>>> = (
-    ctx: RequestContext,
-    orderLine: OrderLine,
-    args: ConfigArgValues<T>,
-    state: ConditionState<U>,
-    promotion: Promotion,
+export type ExecutePromotionItemActionFn<
+  T extends ConfigArgs,
+  U extends Array<PromotionCondition<any>>,
+> = (
+  ctx: RequestContext,
+  orderLine: OrderLine,
+  args: ConfigArgValues<T>,
+  state: ConditionState<U>,
+  promotion: Promotion,
 ) => number | Promise<number>;
 
 /**
@@ -85,12 +89,15 @@ export type ExecutePromotionItemActionFn<T extends ConfigArgs, U extends Array<P
  * @docsCategory promotions
  * @docsPage promotion-action
  */
-export type ExecutePromotionOrderActionFn<T extends ConfigArgs, U extends Array<PromotionCondition<any>>> = (
-    ctx: RequestContext,
-    order: Order,
-    args: ConfigArgValues<T>,
-    state: ConditionState<U>,
-    promotion: Promotion,
+export type ExecutePromotionOrderActionFn<
+  T extends ConfigArgs,
+  U extends Array<PromotionCondition<any>>,
+> = (
+  ctx: RequestContext,
+  order: Order,
+  args: ConfigArgValues<T>,
+  state: ConditionState<U>,
+  promotion: Promotion,
 ) => number | Promise<number>;
 
 /**
@@ -102,15 +109,15 @@ export type ExecutePromotionOrderActionFn<T extends ConfigArgs, U extends Array<
  * @docsPage promotion-action
  */
 export type ExecutePromotionShippingActionFn<
-    T extends ConfigArgs,
-    U extends Array<PromotionCondition<any>>,
+  T extends ConfigArgs,
+  U extends Array<PromotionCondition<any>>,
 > = (
-    ctx: RequestContext,
-    shippingLine: ShippingLine,
-    order: Order,
-    args: ConfigArgValues<T>,
-    state: ConditionState<U>,
-    promotion: Promotion,
+  ctx: RequestContext,
+  shippingLine: ShippingLine,
+  order: Order,
+  args: ConfigArgValues<T>,
+  state: ConditionState<U>,
+  promotion: Promotion,
 ) => number | Promise<number>;
 
 /**
@@ -123,10 +130,10 @@ export type ExecutePromotionShippingActionFn<
  * @experimental
  */
 type PromotionActionSideEffectFn<T extends ConfigArgs> = (
-    ctx: RequestContext,
-    order: Order,
-    args: ConfigArgValues<T>,
-    promotion: Promotion,
+  ctx: RequestContext,
+  order: Order,
+  args: ConfigArgValues<T>,
+  promotion: Promotion,
 ) => void | Promise<void>;
 
 /**
@@ -137,50 +144,52 @@ type PromotionActionSideEffectFn<T extends ConfigArgs> = (
  * @docsPage promotion-action
  */
 export interface PromotionActionConfig<
-    T extends ConfigArgs,
-    U extends Array<PromotionCondition<any>> | undefined,
+  T extends ConfigArgs,
+  U extends Array<PromotionCondition<any>> | undefined,
 > extends ConfigurableOperationDefOptions<T> {
-    /**
-     * @description
-     * Used to determine the order of application of multiple Promotions
-     * on the same Order. See the {@link Promotion} `priorityScore` field for
-     * more information.
-     *
-     * @default 0
-     */
-    priorityValue?: number;
-    /**
-     * @description
-     * Allows PromotionActions to define one or more PromotionConditions as dependencies. Having a PromotionCondition
-     * as a dependency has the following consequences:
-     * 1. A Promotion using this PromotionAction is only valid if it also contains all PromotionConditions
-     * on which it depends.
-     * 2. The `execute()` function will receive a statically-typed `state` argument which will contain
-     * the return values of the PromotionConditions' `check()` function.
-     */
-    conditions?: U extends undefined ? undefined : ConditionTuple<Exclude<U, undefined>>;
-    /**
-     * @description
-     * An optional side effect function which is invoked when the promotion
-     * becomes active. It can be used for things like adding a free gift to the order
-     * or other side effects that are unrelated to price calculations.
-     *
-     * If used, make sure to use the corresponding `onDeactivate` function to clean up
-     * or reverse any side effects as needed.
-     *
-     * @since 1.8.0
-     * @experimental
-     */
-    onActivate?: PromotionActionSideEffectFn<T>;
+  /**
+   * @description
+   * Used to determine the order of application of multiple Promotions
+   * on the same Order. See the {@link Promotion} `priorityScore` field for
+   * more information.
+   *
+   * @default 0
+   */
+  priorityValue?: number;
+  /**
+   * @description
+   * Allows PromotionActions to define one or more PromotionConditions as dependencies. Having a PromotionCondition
+   * as a dependency has the following consequences:
+   * 1. A Promotion using this PromotionAction is only valid if it also contains all PromotionConditions
+   * on which it depends.
+   * 2. The `execute()` function will receive a statically-typed `state` argument which will contain
+   * the return values of the PromotionConditions' `check()` function.
+   */
+  conditions?: U extends undefined
+    ? undefined
+    : ConditionTuple<Exclude<U, undefined>>;
+  /**
+   * @description
+   * An optional side effect function which is invoked when the promotion
+   * becomes active. It can be used for things like adding a free gift to the order
+   * or other side effects that are unrelated to price calculations.
+   *
+   * If used, make sure to use the corresponding `onDeactivate` function to clean up
+   * or reverse any side effects as needed.
+   *
+   * @since 1.8.0
+   * @experimental
+   */
+  onActivate?: PromotionActionSideEffectFn<T>;
 
-    /**
-     * @description
-     * Used to reverse or clean up any side effects executed as part of the `onActivate` function.
-     *
-     * @since 1.8.0
-     * @experimental
-     */
-    onDeactivate?: PromotionActionSideEffectFn<T>;
+  /**
+   * @description
+   * Used to reverse or clean up any side effects executed as part of the `onActivate` function.
+   *
+   * @since 1.8.0
+   * @experimental
+   */
+  onDeactivate?: PromotionActionSideEffectFn<T>;
 }
 
 /**
@@ -190,15 +199,17 @@ export interface PromotionActionConfig<
  * @docsCategory promotions
  * @docsPage promotion-action
  */
-export interface PromotionItemActionConfig<T extends ConfigArgs, U extends PromotionCondition[]>
-    extends PromotionActionConfig<T, U> {
-    /**
-     * @description
-     * The function which contains the promotion calculation logic.
-     * Should resolve to a number which represents the amount by which to discount
-     * the OrderLine, i.e. the number should be negative.
-     */
-    execute: ExecutePromotionItemActionFn<T, U>;
+export interface PromotionItemActionConfig<
+  T extends ConfigArgs,
+  U extends PromotionCondition[],
+> extends PromotionActionConfig<T, U> {
+  /**
+   * @description
+   * The function which contains the promotion calculation logic.
+   * Should resolve to a number which represents the amount by which to discount
+   * the OrderLine, i.e. the number should be negative.
+   */
+  execute: ExecutePromotionItemActionFn<T, U>;
 }
 
 /**
@@ -207,15 +218,17 @@ export interface PromotionItemActionConfig<T extends ConfigArgs, U extends Promo
  * @docsCategory promotions
  * @docsPage promotion-action
  */
-export interface PromotionOrderActionConfig<T extends ConfigArgs, U extends PromotionCondition[]>
-    extends PromotionActionConfig<T, U> {
-    /**
-     * @description
-     * The function which contains the promotion calculation logic.
-     * Should resolve to a number which represents the amount by which to discount
-     * the Order, i.e. the number should be negative.
-     */
-    execute: ExecutePromotionOrderActionFn<T, U>;
+export interface PromotionOrderActionConfig<
+  T extends ConfigArgs,
+  U extends PromotionCondition[],
+> extends PromotionActionConfig<T, U> {
+  /**
+   * @description
+   * The function which contains the promotion calculation logic.
+   * Should resolve to a number which represents the amount by which to discount
+   * the Order, i.e. the number should be negative.
+   */
+  execute: ExecutePromotionOrderActionFn<T, U>;
 }
 
 /**
@@ -224,15 +237,17 @@ export interface PromotionOrderActionConfig<T extends ConfigArgs, U extends Prom
  * @docsCategory promotions
  * @docsPage promotion-action
  */
-export interface PromotionShippingActionConfig<T extends ConfigArgs, U extends PromotionCondition[]>
-    extends PromotionActionConfig<T, U> {
-    /**
-     * @description
-     * The function which contains the promotion calculation logic.
-     * Should resolve to a number which represents the amount by which to discount
-     * the Shipping, i.e. the number should be negative.
-     */
-    execute: ExecutePromotionShippingActionFn<T, U>;
+export interface PromotionShippingActionConfig<
+  T extends ConfigArgs,
+  U extends PromotionCondition[],
+> extends PromotionActionConfig<T, U> {
+  /**
+   * @description
+   * The function which contains the promotion calculation logic.
+   * Should resolve to a number which represents the amount by which to discount
+   * the Shipping, i.e. the number should be negative.
+   */
+  execute: ExecutePromotionShippingActionFn<T, U>;
 }
 
 /**
@@ -245,55 +260,65 @@ export interface PromotionShippingActionConfig<T extends ConfigArgs, U extends P
  * @docsWeight 0
  */
 export abstract class PromotionAction<
-    T extends ConfigArgs = ConfigArgs,
-    U extends PromotionCondition[] | undefined = any,
+  T extends ConfigArgs = ConfigArgs,
+  U extends PromotionCondition[] | undefined = any,
 > extends ConfigurableOperationDef<T> {
-    /**
-     * @description
-     * Used to determine the order of application of multiple Promotions
-     * on the same Order. See the {@link Promotion} `priorityScore` field for
-     * more information.
-     *
-     * @default 0
-     */
-    readonly priorityValue: number;
-    /** @internal */
-    readonly conditions?: U;
-    /** @internal */
-    protected readonly onActivateFn?: PromotionActionSideEffectFn<T>;
-    /** @internal */
-    protected readonly onDeactivateFn?: PromotionActionSideEffectFn<T>;
+  /**
+   * @description
+   * Used to determine the order of application of multiple Promotions
+   * on the same Order. See the {@link Promotion} `priorityScore` field for
+   * more information.
+   *
+   * @default 0
+   */
+  readonly priorityValue: number;
+  /** @internal */
+  readonly conditions?: U;
+  /** @internal */
+  protected readonly onActivateFn?: PromotionActionSideEffectFn<T>;
+  /** @internal */
+  protected readonly onDeactivateFn?: PromotionActionSideEffectFn<T>;
 
-    protected constructor(config: PromotionActionConfig<T, U>) {
-        super(config);
-        this.priorityValue = config.priorityValue || 0;
-        this.conditions = config.conditions;
-        this.onActivateFn = config.onActivate;
-        this.onDeactivateFn = config.onDeactivate;
-    }
+  protected constructor(config: PromotionActionConfig<T, U>) {
+    super(config);
+    this.priorityValue = config.priorityValue || 0;
+    this.conditions = config.conditions;
+    this.onActivateFn = config.onActivate;
+    this.onDeactivateFn = config.onDeactivate;
+  }
 
-    /** @internal */
-    abstract execute(...arg: any[]): number | Promise<number>;
+  /** @internal */
+  abstract execute(...arg: any[]): number | Promise<number>;
 
-    /** @internal */
-    onActivate(
-        ctx: RequestContext,
-        order: Order,
-        args: ConfigArg[],
-        promotion: Promotion,
-    ): void | Promise<void> {
-        return this.onActivateFn?.(ctx, order, this.argsArrayToHash(args), promotion);
-    }
+  /** @internal */
+  onActivate(
+    ctx: RequestContext,
+    order: Order,
+    args: ConfigArg[],
+    promotion: Promotion,
+  ): void | Promise<void> {
+    return this.onActivateFn?.(
+      ctx,
+      order,
+      this.argsArrayToHash(args),
+      promotion,
+    );
+  }
 
-    /** @internal */
-    onDeactivate(
-        ctx: RequestContext,
-        order: Order,
-        args: ConfigArg[],
-        promotion: Promotion,
-    ): void | Promise<void> {
-        return this.onDeactivateFn?.(ctx, order, this.argsArrayToHash(args), promotion);
-    }
+  /** @internal */
+  onDeactivate(
+    ctx: RequestContext,
+    order: Order,
+    args: ConfigArg[],
+    promotion: Promotion,
+  ): void | Promise<void> {
+    return this.onDeactivateFn?.(
+      ctx,
+      order,
+      this.argsArrayToHash(args),
+      promotion,
+    );
+  }
 }
 
 /**
@@ -318,37 +343,37 @@ export abstract class PromotionAction<
  * @docsWeight 1
  */
 export class PromotionItemAction<
-    T extends ConfigArgs = ConfigArgs,
-    U extends Array<PromotionCondition<any>> = [],
+  T extends ConfigArgs = ConfigArgs,
+  U extends Array<PromotionCondition<any>> = [],
 > extends PromotionAction<T, U> {
-    private readonly executeFn: ExecutePromotionItemActionFn<T, U>;
-    constructor(config: PromotionItemActionConfig<T, U>) {
-        super(config);
-        this.executeFn = config.execute;
-    }
+  private readonly executeFn: ExecutePromotionItemActionFn<T, U>;
+  constructor(config: PromotionItemActionConfig<T, U>) {
+    super(config);
+    this.executeFn = config.execute;
+  }
 
-    /** @internal */
-    execute(
-        ctx: RequestContext,
-        orderLine: OrderLine,
-        args: ConfigArg[],
-        state: PromotionState,
-        promotion: Promotion,
-    ) {
-        const actionState = this.conditions
-            ? pick(
-                  state,
-                  this.conditions.map(c => c.code),
-              )
-            : {};
-        return this.executeFn(
-            ctx,
-            orderLine,
-            this.argsArrayToHash(args),
-            actionState as ConditionState<U>,
-            promotion,
-        );
-    }
+  /** @internal */
+  execute(
+    ctx: RequestContext,
+    orderLine: OrderLine,
+    args: ConfigArg[],
+    state: PromotionState,
+    promotion: Promotion,
+  ) {
+    const actionState = this.conditions
+      ? pick(
+          state,
+          this.conditions.map((c) => c.code),
+        )
+      : {};
+    return this.executeFn(
+      ctx,
+      orderLine,
+      this.argsArrayToHash(args),
+      actionState as ConditionState<U>,
+      promotion,
+    );
+  }
 }
 
 /**
@@ -373,37 +398,37 @@ export class PromotionItemAction<
  * @docsWeight 2
  */
 export class PromotionOrderAction<
-    T extends ConfigArgs = ConfigArgs,
-    U extends PromotionCondition[] = [],
+  T extends ConfigArgs = ConfigArgs,
+  U extends PromotionCondition[] = [],
 > extends PromotionAction<T, U> {
-    private readonly executeFn: ExecutePromotionOrderActionFn<T, U>;
-    constructor(config: PromotionOrderActionConfig<T, U>) {
-        super(config);
-        this.executeFn = config.execute;
-    }
+  private readonly executeFn: ExecutePromotionOrderActionFn<T, U>;
+  constructor(config: PromotionOrderActionConfig<T, U>) {
+    super(config);
+    this.executeFn = config.execute;
+  }
 
-    /** @internal */
-    execute(
-        ctx: RequestContext,
-        order: Order,
-        args: ConfigArg[],
-        state: PromotionState,
-        promotion: Promotion,
-    ) {
-        const actionState = this.conditions
-            ? pick(
-                  state,
-                  this.conditions.map(c => c.code),
-              )
-            : {};
-        return this.executeFn(
-            ctx,
-            order,
-            this.argsArrayToHash(args),
-            actionState as ConditionState<U>,
-            promotion,
-        );
-    }
+  /** @internal */
+  execute(
+    ctx: RequestContext,
+    order: Order,
+    args: ConfigArg[],
+    state: PromotionState,
+    promotion: Promotion,
+  ) {
+    const actionState = this.conditions
+      ? pick(
+          state,
+          this.conditions.map((c) => c.code),
+        )
+      : {};
+    return this.executeFn(
+      ctx,
+      order,
+      this.argsArrayToHash(args),
+      actionState as ConditionState<U>,
+      promotion,
+    );
+  }
 }
 
 /**
@@ -415,37 +440,37 @@ export class PromotionOrderAction<
  * @docsWeight 3
  */
 export class PromotionShippingAction<
-    T extends ConfigArgs = ConfigArgs,
-    U extends PromotionCondition[] = [],
+  T extends ConfigArgs = ConfigArgs,
+  U extends PromotionCondition[] = [],
 > extends PromotionAction<T, U> {
-    private readonly executeFn: ExecutePromotionShippingActionFn<T, U>;
-    constructor(config: PromotionShippingActionConfig<T, U>) {
-        super(config);
-        this.executeFn = config.execute;
-    }
+  private readonly executeFn: ExecutePromotionShippingActionFn<T, U>;
+  constructor(config: PromotionShippingActionConfig<T, U>) {
+    super(config);
+    this.executeFn = config.execute;
+  }
 
-    /** @internal */
-    execute(
-        ctx: RequestContext,
-        shippingLine: ShippingLine,
-        order: Order,
-        args: ConfigArg[],
-        state: PromotionState,
-        promotion: Promotion,
-    ) {
-        const actionState = this.conditions
-            ? pick(
-                  state,
-                  this.conditions.map(c => c.code),
-              )
-            : {};
-        return this.executeFn(
-            ctx,
-            shippingLine,
-            order,
-            this.argsArrayToHash(args),
-            actionState as ConditionState<U>,
-            promotion,
-        );
-    }
+  /** @internal */
+  execute(
+    ctx: RequestContext,
+    shippingLine: ShippingLine,
+    order: Order,
+    args: ConfigArg[],
+    state: PromotionState,
+    promotion: Promotion,
+  ) {
+    const actionState = this.conditions
+      ? pick(
+          state,
+          this.conditions.map((c) => c.code),
+        )
+      : {};
+    return this.executeFn(
+      ctx,
+      shippingLine,
+      order,
+      this.argsArrayToHash(args),
+      actionState as ConditionState<U>,
+      promotion,
+    );
+  }
 }

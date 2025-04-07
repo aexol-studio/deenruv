@@ -1,6 +1,6 @@
-import { RequestContext } from '../../api/common/request-context';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { ProductVariantPrice } from '../../entity/product-variant/product-variant-price.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { ProductVariantPrice } from "../../entity/product-variant/product-variant-price.entity";
 
 /**
  * @description
@@ -18,9 +18,10 @@ import { ProductVariantPrice } from '../../entity/product-variant/product-varian
  * @docsWeight 0
  * @since 2.0.0
  */
-export interface ProductVariantPriceSelectionStrategy extends InjectableStrategy {
-    selectPrice(
-        ctx: RequestContext,
-        prices: ProductVariantPrice[],
-    ): ProductVariantPrice | undefined | Promise<ProductVariantPrice | undefined>;
+export interface ProductVariantPriceSelectionStrategy
+  extends InjectableStrategy {
+  selectPrice(
+    ctx: RequestContext,
+    prices: ProductVariantPrice[],
+  ): ProductVariantPrice | undefined | Promise<ProductVariantPrice | undefined>;
 }

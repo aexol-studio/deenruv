@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo } from "graphql";
 
 /**
  * @description
@@ -6,16 +6,16 @@ import { GraphQLResolveInfo } from 'graphql';
  *
  * @docsCategory request
  */
-export type ApiType = 'admin' | 'shop' | 'custom';
+export type ApiType = "admin" | "shop" | "custom";
 
 /**
  * Inspects the GraphQL "info" resolver argument to determine which API
  * the request came through.
  */
 export function getApiType(info?: GraphQLResolveInfo): ApiType {
-    const query = info && info.schema.getQueryType();
-    if (query) {
-        return !!query.getFields().administrators ? 'admin' : 'shop';
-    }
-    return 'custom';
+  const query = info && info.schema.getQueryType();
+  if (query) {
+    return query.getFields().administrators ? "admin" : "shop";
+  }
+  return "custom";
 }

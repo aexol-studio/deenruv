@@ -1,10 +1,10 @@
-import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
-import { ChildEntity, Index, ManyToOne } from 'typeorm';
+import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { ChildEntity, Index, ManyToOne } from "typeorm";
 
-import { EntityId } from '../entity-id.decorator';
-import { Fulfillment } from '../fulfillment/fulfillment.entity';
+import { EntityId } from "../entity-id.decorator";
+import { Fulfillment } from "../fulfillment/fulfillment.entity";
 
-import { OrderLineReference } from './order-line-reference.entity';
+import { OrderLineReference } from "./order-line-reference.entity";
 
 /**
  * @description
@@ -15,14 +15,14 @@ import { OrderLineReference } from './order-line-reference.entity';
  */
 @ChildEntity()
 export class FulfillmentLine extends OrderLineReference {
-    constructor(input?: DeepPartial<FulfillmentLine>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<FulfillmentLine>) {
+    super(input);
+  }
 
-    @Index()
-    @ManyToOne(type => Fulfillment, fulfillment => fulfillment.lines)
-    fulfillment: Fulfillment;
+  @Index()
+  @ManyToOne((type) => Fulfillment, (fulfillment) => fulfillment.lines)
+  fulfillment: Fulfillment;
 
-    @EntityId()
-    fulfillmentId: ID;
+  @EntityId()
+  fulfillmentId: ID;
 }

@@ -1,11 +1,13 @@
-import { ReactDataTableComponentProps } from '@deenruv/admin-ui/react';
-import React from 'react';
+import { ReactDataTableComponentProps } from "@deenruv/admin-ui/react";
+import React from "react";
 
-export function SlugWithLink({ rowItem }: ReactDataTableComponentProps<{ slug: string }>) {
-    const slug = rowItem.slug;
-    return (
-        <a href={`https://example.com/category/${slug}`} target="_blank">
-            {slug}
-        </a>
-    );
+export function SlugWithLink({
+  rowItem,
+}: ReactDataTableComponentProps<{ slug: string }>) {
+  const slug = rowItem.slug;
+  return (
+    <a href={`https://example.com/category/${slug}`} target="_blank">
+      {slug}
+    </a>
+  );
 }

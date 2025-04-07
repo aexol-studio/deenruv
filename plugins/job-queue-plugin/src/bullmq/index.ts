@@ -1,14 +1,14 @@
-import { Logger } from '@deenruv/core';
+import { Logger } from "@deenruv/core";
 
 // ensure that the bullmq package is installed
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require('bullmq');
+  require("bullmq");
 } catch (e: any) {
-    // eslint-disable-next-line no-console
-    console.error('The BullMQJobQueuePlugin depends on the "bullmq" package being installed.');
-    process.exit(1);
+  console.error(
+    'The BullMQJobQueuePlugin depends on the "bullmq" package being installed.',
+  );
+  process.exit(1);
 }
 
-export * from './plugin';
-export * from './types';
+export * from "./plugin";
+export * from "./types";

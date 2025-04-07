@@ -8,8 +8,9 @@ import {
   DetailViewMarker,
   Input,
   useDetailView,
+  CF,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields, Stack } from '@/components';
 
 export const SELLER_FORM_KEYS = ['CreateSellerInput', 'name', 'customFields'] as const;
 
@@ -35,12 +36,12 @@ export const SellerDetailView = () => {
   return (
     <main className="my-4 min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <Card>
             <CardHeader>
               <CardTitle className="flex flex-row justify-between text-base">{t('details.basic.title')}</CardTitle>
               <CardContent className="flex flex-col gap-4 p-0 pt-4">
-                <Stack column className="gap-3">
+                <div className="flex flex-col gap-3">
                   <Input
                     className="w-1/2"
                     label={t('details.basic.name')}
@@ -49,7 +50,7 @@ export const SellerDetailView = () => {
                     errors={state.name?.errors}
                     required
                   />
-                </Stack>
+                </div>
               </CardContent>
             </CardHeader>
           </Card>
@@ -65,7 +66,7 @@ export const SellerDetailView = () => {
               entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
             }
           />
-        </Stack>
+        </div>
       </div>
     </main>
   );

@@ -1,1 +1,1 @@
-export * from './services/supplier-stock.service';
+export * from "./services/supplier-stock.service";

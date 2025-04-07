@@ -1,13 +1,13 @@
-import { ConfigArg } from '@deenruv/common/lib/generated-types';
+import { ConfigArg } from "@deenruv/common/lib/generated-types";
 
-import { RequestContext } from '../../api/common/request-context';
+import { RequestContext } from "../../api/common/request-context";
 import {
-    ConfigArgs,
-    ConfigArgValues,
-    ConfigurableOperationDef,
-    ConfigurableOperationDefOptions,
-} from '../../common/configurable-operation';
-import { Order, PaymentMethod } from '../../entity';
+  ConfigArgs,
+  ConfigArgValues,
+  ConfigurableOperationDef,
+  ConfigurableOperationDefOptions,
+} from "../../common/configurable-operation";
+import { Order, PaymentMethod } from "../../entity";
 
 /**
  * @description
@@ -18,8 +18,8 @@ import { Order, PaymentMethod } from '../../entity';
  * @docsPage PaymentMethodEligibilityChecker
  */
 export interface PaymentMethodEligibilityCheckerConfig<T extends ConfigArgs>
-    extends ConfigurableOperationDefOptions<T> {
-    check: CheckPaymentMethodEligibilityCheckerFn<T>;
+  extends ConfigurableOperationDefOptions<T> {
+  check: CheckPaymentMethodEligibilityCheckerFn<T>;
 }
 /**
  * @description
@@ -45,29 +45,29 @@ export interface PaymentMethodEligibilityCheckerConfig<T extends ConfigArgs>
  * @docsWeight 0
  */
 export class PaymentMethodEligibilityChecker<
-    T extends ConfigArgs = ConfigArgs,
+  T extends ConfigArgs = ConfigArgs,
 > extends ConfigurableOperationDef<T> {
-    private readonly checkFn: CheckPaymentMethodEligibilityCheckerFn<T>;
+  private readonly checkFn: CheckPaymentMethodEligibilityCheckerFn<T>;
 
-    constructor(config: PaymentMethodEligibilityCheckerConfig<T>) {
-        super(config);
-        this.checkFn = config.check;
-    }
+  constructor(config: PaymentMethodEligibilityCheckerConfig<T>) {
+    super(config);
+    this.checkFn = config.check;
+  }
 
-    /**
-     * @description
-     * Check the given Order to determine whether it is eligible.
-     *
-     * @internal
-     */
-    async check(
-        ctx: RequestContext,
-        order: Order,
-        args: ConfigArg[],
-        method: PaymentMethod,
-    ): Promise<boolean | string> {
-        return this.checkFn(ctx, order, this.argsArrayToHash(args), method);
-    }
+  /**
+   * @description
+   * Check the given Order to determine whether it is eligible.
+   *
+   * @internal
+   */
+  async check(
+    ctx: RequestContext,
+    order: Order,
+    args: ConfigArg[],
+    method: PaymentMethod,
+  ): Promise<boolean | string> {
+    return this.checkFn(ctx, order, this.argsArrayToHash(args), method);
+  }
 }
 
 /**
@@ -81,8 +81,8 @@ export class PaymentMethodEligibilityChecker<
  * @docsPage PaymentMethodEligibilityChecker
  */
 export type CheckPaymentMethodEligibilityCheckerFn<T extends ConfigArgs> = (
-    ctx: RequestContext,
-    order: Order,
-    args: ConfigArgValues<T>,
-    method: PaymentMethod,
+  ctx: RequestContext,
+  order: Order,
+  args: ConfigArgValues<T>,
+  method: PaymentMethod,
 ) => boolean | string | Promise<boolean | string>;

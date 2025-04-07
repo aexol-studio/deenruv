@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { TransactionalConnection } from '@deenruv/core';
+import { Injectable } from "@nestjs/common";
+import { TransactionalConnection } from "@deenruv/core";
 
 @Injectable()
 export class ErrorTestService {
-    constructor(private connection: TransactionalConnection) {}
+  constructor(private connection: TransactionalConnection) {}
 
-    createDatabaseError() {
-        return this.connection.rawConnection.query('SELECT * FROM non_existent_table');
-    }
+  createDatabaseError() {
+    return this.connection.rawConnection.query(
+      "SELECT * FROM non_existent_table",
+    );
+  }
 }

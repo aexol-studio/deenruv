@@ -1,21 +1,12 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import {
-  apiClient,
-  Badge,
-  deepMerge,
-  DetailList,
-  PaginationInput,
-  ProductVariantListSelector,
-} from '@deenruv/react-ui-devkit';
+import { apiClient, Badge, deepMerge, DetailList, ListLocations, PaginationInput } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(ProductVariantListSelector, additionalSelector ?? {});
+const tableId = 'productVariants-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     productVariants: [
       {
@@ -27,7 +18,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response.productVariants;
@@ -70,7 +61,7 @@ export const VariantsList = () => {
         },
       }}
       noCreateButton
-      tableId="productVariants-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateProduct]}
@@ -83,7 +74,7 @@ export const VariantsList = () => {
           cell: ({ row }) => {
             return (
               <Badge variant={'outline'}>
-                {row.original.stockOnHand}{' '}
+                {row.original.stockOnHand}
                 {row.original.stockAllocated > 0 && `(${row.original.stockAllocated} ${t('table.allocated')})`}
               </Badge>
             );

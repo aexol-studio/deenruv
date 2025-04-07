@@ -13,8 +13,8 @@ import {
   ErrorMessage,
   CustomCard,
   CardIcons,
+  SimpleSelect,
 } from '@deenruv/react-ui-devkit';
-import { SimpleSelect, Stack } from '@/components';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
@@ -117,21 +117,21 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
       icon={<CardIcons.filter />}
     >
       <div className="flex- flex flex-wrap gap-4 xl:flex-nowrap">
-        <Stack column className="basis-full gap-4">
-          <Stack className="mb-2 basis-full">
-            <Stack className=" items-center gap-3">
+        <div className="flex basis-full flex-col gap-4">
+          <div className="mb-2 flex basis-full">
+            <div className="flex items-center gap-3">
               <Switch checked={inheritValue} onCheckedChange={onInheritChange} />
               <Label>{t('details.filters.inherit')}</Label>
-            </Stack>
+            </div>
             <Button className="ml-auto" onClick={handleAddFilter}>
               {t('details.filters.addCondition')}
             </Button>
-          </Stack>
+          </div>
           {currentFiltersValue?.map((filter, index) => {
             return (
-              <Stack column className="gap-4" key={index}>
+              <div className="flex flex-col gap-4" key={index}>
                 <Separator />
-                <Stack className="w-1/2 items-end gap-1">
+                <div className="flex w-1/2 items-end gap-1">
                   <SimpleSelect
                     label={t('details.filters.condition')}
                     value={filter ? filter.code : ''}
@@ -150,8 +150,8 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                       <X size={20} />
                     </Button>
                   )}
-                </Stack>
-                <Stack className="items-start justify-center gap-4">
+                </div>
+                <div className="flex items-start justify-center gap-4">
                   {filter?.arguments.map((e, i) => {
                     const _filter = filters?.find((f) => f.code === filter.code);
                     const argument = _filter?.args.find((a) => a.name === e.name);
@@ -200,7 +200,7 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                         }}
                       />
                     ) : argument?.type === 'int' ? (
-                      <Stack className="basis-full" key={i}>
+                      <div className="flex basis-full" key={i}>
                         <Input
                           type="number"
                           step={0.01}
@@ -212,9 +212,9 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                           }}
                           required
                         />
-                      </Stack>
+                      </div>
                     ) : argument?.type === 'string' ? (
-                      <Stack className="basis-full" key={i}>
+                      <div className="flex basis-full" key={i}>
                         <Input
                           label={argument?.label || argument.name}
                           value={filter?.arguments[i].value}
@@ -224,9 +224,9 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                           }}
                           required
                         />
-                      </Stack>
+                      </div>
                     ) : argument?.type === 'boolean' ? (
-                      <Stack column className="basis-full gap-3" key={e.name}>
+                      <div className="flex basis-full flex-col gap-3" key={e.name}>
                         <Label>{argument?.label}</Label>
                         <Checkbox
                           checked={filter?.arguments[i].value === 'true' ? true : false}
@@ -235,9 +235,9 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                             handleFiltersValueChange(index, filter?.code, filter.arguments);
                           }}
                         />
-                      </Stack>
+                      </div>
                     ) : (
-                      <Stack className="basis-full" key={i}>
+                      <div className="flex basis-full" key={i}>
                         <Input
                           type="number"
                           step={0.01}
@@ -249,14 +249,14 @@ export const FiltersCard: React.FC<FiltersCardProps> = ({
                           }}
                           required
                         />
-                      </Stack>
+                      </div>
                     );
                   })}
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             );
           })}
-        </Stack>
+        </div>
       </div>
     </CustomCard>
   );

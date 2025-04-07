@@ -1,7 +1,7 @@
-import { RequestContext } from '../../api/common/request-context';
-import { ProductVariant } from '../../entity/product-variant/product-variant.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { ProductVariant } from "../../entity/product-variant/product-variant.entity";
 
-import { StockDisplayStrategy } from './stock-display-strategy';
+import { StockDisplayStrategy } from "./stock-display-strategy";
 
 /**
  * @description
@@ -12,12 +12,16 @@ import { StockDisplayStrategy } from './stock-display-strategy';
  * @docsCategory products & stock
  */
 export class DefaultStockDisplayStrategy implements StockDisplayStrategy {
-    constructor(private lowStockLevel: number = 2) {}
-    getStockLevel(ctx: RequestContext, productVariant: ProductVariant, saleableStockLevel: number): string {
-        return saleableStockLevel < 1
-            ? 'OUT_OF_STOCK'
-            : saleableStockLevel <= this.lowStockLevel
-            ? 'LOW_STOCK'
-            : 'IN_STOCK';
-    }
+  constructor(private lowStockLevel: number = 2) {}
+  getStockLevel(
+    ctx: RequestContext,
+    productVariant: ProductVariant,
+    saleableStockLevel: number,
+  ): string {
+    return saleableStockLevel < 1
+      ? "OUT_OF_STOCK"
+      : saleableStockLevel <= this.lowStockLevel
+        ? "LOW_STOCK"
+        : "IN_STOCK";
+  }
 }

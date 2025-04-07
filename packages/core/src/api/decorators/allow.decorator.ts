@@ -1,7 +1,7 @@
-import { SetMetadata } from '@nestjs/common';
-import { Permission } from '@deenruv/common/lib/generated-types';
+import { SetMetadata } from "@nestjs/common";
+import { Permission } from "@deenruv/common/lib/generated-types";
 
-export const PERMISSIONS_METADATA_KEY = '__permissions__';
+export const PERMISSIONS_METADATA_KEY = "__permissions__";
 
 /**
  * @description
@@ -35,4 +35,5 @@ export const PERMISSIONS_METADATA_KEY = '__permissions__';
  * @docsCategory request
  * @docsPage Allow Decorator
  */
-export const Allow = (...permissions: Permission[]) => SetMetadata(PERMISSIONS_METADATA_KEY, permissions);
+export const Allow = (...permissions: Permission[]) =>
+  SetMetadata(PERMISSIONS_METADATA_KEY, permissions);

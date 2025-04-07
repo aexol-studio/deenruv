@@ -29,16 +29,16 @@ import {
   useOrder,
   cn,
   CustomCard,
+  useGFFLP,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { type AddressBaseType, addressBaseSelector } from '@/graphql/draft_order';
-import { useGFFLP } from '@/lists/useGflp';
 import { Edit, MapPin, Building, Check, Loader2, User, Phone, Globe } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
-import { EntityCustomFields } from '@/components/EntityCustomFields.js';
 
 type DefaultAddress = AddressBaseType & {
   id?: string | null;

@@ -15,14 +15,14 @@ export const MetadataDisplay = ({ metadata }: { metadata: any }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 gap-1">
-          <FileText className="h-4 w-4" />
+          <FileText className="size-4" />
           <span>View</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-teal-500" />
+            <FileText className="size-5 text-teal-500" />
             Payment Metadata
           </DialogTitle>
           <DialogDescription>Additional information associated with this payment</DialogDescription>

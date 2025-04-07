@@ -1,10 +1,10 @@
-import { Permission } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Permission } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 
-import { ChannelAware } from '../../common/types/common-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { Channel } from '../channel/channel.entity';
+import { ChannelAware } from "../../common/types/common-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { Channel } from "../channel/channel.entity";
 
 /**
  * @description
@@ -15,17 +15,17 @@ import { Channel } from '../channel/channel.entity';
  */
 @Entity()
 export class Role extends DeenruvEntity implements ChannelAware {
-    constructor(input?: DeepPartial<Role>) {
-        super(input);
-    }
+  constructor(input?: DeepPartial<Role>) {
+    super(input);
+  }
 
-    @Column() code: string;
+  @Column() code: string;
 
-    @Column() description: string;
+  @Column() description: string;
 
-    @Column('simple-array') permissions: Permission[];
+  @Column("simple-array") permissions: Permission[];
 
-    @ManyToMany(type => Channel, channel => channel.roles)
-    @JoinTable()
-    channels: Channel[];
+  @ManyToMany((type) => Channel, (channel) => channel.roles)
+  @JoinTable()
+  channels: Channel[];
 }

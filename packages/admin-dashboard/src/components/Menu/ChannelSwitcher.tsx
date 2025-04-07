@@ -9,25 +9,8 @@ import {
   DEFAULT_CHANNEL_CODE,
   cn,
 } from '@deenruv/react-ui-devkit';
-// import { US, PL, CZ, DE } from 'country-flag-icons/react/3x2';
-import { clearAllCache } from '@/lists/cache';
 import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
-
-// function FlagIcon({ langCode }: { langCode?: string }) {
-//   switch (langCode) {
-//     case 'en':
-//       return <US />;
-//     case 'pl':
-//       return <PL />;
-//     case 'cs':
-//       return <CZ />;
-//     case 'de':
-//       return <DE />;
-//     default:
-//       return null;
-//   }
-// }
 
 export function ChannelSwitcher() {
   const channels = useServer((p) => p.channels);
@@ -39,7 +22,6 @@ export function ChannelSwitcher() {
     const channel = channels.find((channel) => channel.id === id);
     if (!channel) return;
     setSelectedChannel(channel);
-    // clearAllCache();
   };
 
   const getChannelLabel = useCallback(
@@ -64,7 +46,7 @@ export function ChannelSwitcher() {
       <SelectContent>
         {channels.map((channel) => (
           <SelectItem key={channel.code} value={channel.id}>
-            <div className="[&_svg]:text-foreground flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0">
+            <div className="[&_svg]:text-foreground flex items-center gap-3 [&_svg]:size-4 [&_svg]:shrink-0">
               {getChannelLabel(channel.code)}
             </div>
           </SelectItem>

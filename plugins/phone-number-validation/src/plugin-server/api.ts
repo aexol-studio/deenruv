@@ -1,4 +1,4 @@
-import { Resolver, Query, } from "@nestjs/graphql";
+import { Resolver, Query } from "@nestjs/graphql";
 import { Ctx, RequestContext } from "@deenruv/core";
 import { PhoneNumberValidationService } from "./service";
 
@@ -10,17 +10,19 @@ export class ValidatePhoneNumberAPIResolver {
 
   @Query()
   async validateCurrentOrderPhoneNumber(@Ctx() ctx: RequestContext) {
-    const message = await this.phoneNumberValidationService.validatePhoneNumberForCurrentOrder(ctx);
+    const message =
+      await this.phoneNumberValidationService.validatePhoneNumberForCurrentOrder(
+        ctx,
+      );
     if (!message) {
       return {
-        __typename: 'PhoneNumberValidationSuccess',
+        __typename: "PhoneNumberValidationSuccess",
         success: true,
-      }
+      };
     }
     return {
-      __typename: 'PhoneNumberValidationError',
+      __typename: "PhoneNumberValidationError",
       message,
     };
   }
 }
-

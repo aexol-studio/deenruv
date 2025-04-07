@@ -1,10 +1,10 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { OrderLine } from '../../entity/order-line/order-line.entity';
-import { StockLevel } from '../../entity/stock-level/stock-level.entity';
-import { StockLocation } from '../../entity/stock-location/stock-location.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { OrderLine } from "../../entity/order-line/order-line.entity";
+import { StockLevel } from "../../entity/stock-level/stock-level.entity";
+import { StockLocation } from "../../entity/stock-location/stock-location.entity";
 
 /**
  * @description
@@ -16,8 +16,8 @@ import { StockLocation } from '../../entity/stock-location/stock-location.entity
  * @docsPage StockLocationStrategy
  */
 export interface AvailableStock {
-    stockOnHand: number;
-    stockAllocated: number;
+  stockOnHand: number;
+  stockAllocated: number;
 }
 
 /**
@@ -30,8 +30,8 @@ export interface AvailableStock {
  * @docsPage StockLocationStrategy
  */
 export interface LocationWithQuantity {
-    location: StockLocation;
-    quantity: number;
+  location: StockLocation;
+  quantity: number;
 }
 
 /**
@@ -53,62 +53,62 @@ export interface LocationWithQuantity {
  * @since 2.0.0
  */
 export interface StockLocationStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Returns the available stock for the given ProductVariant, taking into account
-     * the stock levels at each StockLocation.
-     */
-    getAvailableStock(
-        ctx: RequestContext,
-        productVariantId: ID,
-        stockLevels: StockLevel[],
-    ): AvailableStock | Promise<AvailableStock>;
+  /**
+   * @description
+   * Returns the available stock for the given ProductVariant, taking into account
+   * the stock levels at each StockLocation.
+   */
+  getAvailableStock(
+    ctx: RequestContext,
+    productVariantId: ID,
+    stockLevels: StockLevel[],
+  ): AvailableStock | Promise<AvailableStock>;
 
-    /**
-     * @description
-     * Determines which StockLocations should be used to when allocating stock when
-     * and Order is placed.
-     */
-    forAllocation(
-        ctx: RequestContext,
-        stockLocations: StockLocation[],
-        orderLine: OrderLine,
-        quantity: number,
-    ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
+  /**
+   * @description
+   * Determines which StockLocations should be used to when allocating stock when
+   * and Order is placed.
+   */
+  forAllocation(
+    ctx: RequestContext,
+    stockLocations: StockLocation[],
+    orderLine: OrderLine,
+    quantity: number,
+  ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
 
-    /**
-     * @description
-     * Determines which StockLocations should be used to when releasing allocated
-     * stock when an OrderLine is cancelled before being fulfilled.
-     */
-    forRelease(
-        ctx: RequestContext,
-        stockLocations: StockLocation[],
-        orderLine: OrderLine,
-        quantity: number,
-    ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
+  /**
+   * @description
+   * Determines which StockLocations should be used to when releasing allocated
+   * stock when an OrderLine is cancelled before being fulfilled.
+   */
+  forRelease(
+    ctx: RequestContext,
+    stockLocations: StockLocation[],
+    orderLine: OrderLine,
+    quantity: number,
+  ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
 
-    /**
-     * @description
-     * Determines which StockLocations should be used to when creating a Sale
-     * and reducing the stockOnHand upon fulfillment.
-     */
-    forSale(
-        ctx: RequestContext,
-        stockLocations: StockLocation[],
-        orderLine: OrderLine,
-        quantity: number,
-    ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
+  /**
+   * @description
+   * Determines which StockLocations should be used to when creating a Sale
+   * and reducing the stockOnHand upon fulfillment.
+   */
+  forSale(
+    ctx: RequestContext,
+    stockLocations: StockLocation[],
+    orderLine: OrderLine,
+    quantity: number,
+  ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
 
-    /**
-     * @description
-     * Determines which StockLocations should be used to when creating a Cancellation
-     * of an OrderLine which has already been fulfilled.
-     */
-    forCancellation(
-        ctx: RequestContext,
-        stockLocations: StockLocation[],
-        orderLine: OrderLine,
-        quantity: number,
-    ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
+  /**
+   * @description
+   * Determines which StockLocations should be used to when creating a Cancellation
+   * of an OrderLine which has already been fulfilled.
+   */
+  forCancellation(
+    ctx: RequestContext,
+    stockLocations: StockLocation[],
+    orderLine: OrderLine,
+    quantity: number,
+  ): LocationWithQuantity[] | Promise<LocationWithQuantity[]>;
 }

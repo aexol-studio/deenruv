@@ -1,8 +1,8 @@
-import { RequestContext } from '../../api/common/request-context';
-import { idsAreEqual } from '../../common/utils';
-import { ProductVariantPrice } from '../../entity/product-variant/product-variant-price.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { idsAreEqual } from "../../common/utils";
+import { ProductVariantPrice } from "../../entity/product-variant/product-variant-price.entity";
 
-import { ProductVariantPriceSelectionStrategy } from './product-variant-price-selection-strategy';
+import { ProductVariantPriceSelectionStrategy } from "./product-variant-price-selection-strategy";
 
 /**
  * @description
@@ -14,10 +14,16 @@ import { ProductVariantPriceSelectionStrategy } from './product-variant-price-se
  * @docsPage ProductVariantPriceSelectionStrategy
  * @since 2.0.0
  */
-export class DefaultProductVariantPriceSelectionStrategy implements ProductVariantPriceSelectionStrategy {
-    selectPrice(ctx: RequestContext, prices: ProductVariantPrice[]) {
-        const pricesInChannel = prices.filter(p => idsAreEqual(p.channelId, ctx.channelId));
-        const priceInCurrency = pricesInChannel.find(p => p.currencyCode === ctx.currencyCode);
-        return priceInCurrency;
-    }
+export class DefaultProductVariantPriceSelectionStrategy
+  implements ProductVariantPriceSelectionStrategy
+{
+  selectPrice(ctx: RequestContext, prices: ProductVariantPrice[]) {
+    const pricesInChannel = prices.filter((p) =>
+      idsAreEqual(p.channelId, ctx.channelId),
+    );
+    const priceInCurrency = pricesInChannel.find(
+      (p) => p.currencyCode === ctx.currencyCode,
+    );
+    return priceInCurrency;
+  }
 }

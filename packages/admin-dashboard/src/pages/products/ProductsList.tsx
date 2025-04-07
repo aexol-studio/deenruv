@@ -1,23 +1,24 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
   apiClient,
-  Badge,
   deepMerge,
   DetailList,
   ListBadge,
+  ListLocations,
   PaginationInput,
-  ProductListSelector,
   Routes,
   TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
+
+const tableId = 'products-list-view';
+const { selector } = ListLocations[tableId];
 
 const fetch = async <T, K>(
   { page, perPage, filter, filterOperator, sort }: PaginationInput,
   customFieldsSelector?: T,
   additionalSelector?: K,
 ) => {
-  const selector = deepMerge(ProductListSelector, additionalSelector ?? {});
   const response = await apiClient('query')({
     ['products']: [
       {
@@ -29,7 +30,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response['products'];
@@ -63,7 +64,7 @@ export const ProductsList = () => {
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
       entityName={'Product'}
       route={Routes['products']}
-      tableId="products-list-view"
+      tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
       createPermissions={[Permission.CreateProduct]}

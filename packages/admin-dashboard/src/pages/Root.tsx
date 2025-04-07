@@ -1,14 +1,13 @@
-import { CanLeaveRouteDialog, Menu } from '@/components';
+import { CanLeaveRouteDialog } from '@/components';
 
 import {
   serverConfigSelector,
   configurableOperationDefinitionSelector,
   countrySelector,
   apiClient,
-  fetchAndSetChannels,
   useOrder,
-  GraphQLSchema,
   useNotifications,
+  DEFAULT_CHANNEL_CODE,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +20,9 @@ import {
   useServer,
   useSettings,
 } from '@deenruv/react-ui-devkit';
+import { Menu } from '@/components';
+import { GlobalSearch } from '@/components/GlobalSearch.js';
+import { DeenruvDeveloperIndicator } from '@/DeenruvDeveloperIndicator.js';
 
 const TAKE = 100;
 const getAllPaginatedCountries = async () => {
@@ -61,6 +63,7 @@ const getAllPaymentMethods = async () => {
 };
 
 export const Root = () => {
+  const isLocalhost = window.location.hostname === 'localhost';
   const { t } = useTranslation('common');
   const setActiveAdministrator = useServer((p) => p.setActiveAdministrator);
   const setUserPermissions = useServer((p) => p.setUserPermissions);
@@ -71,6 +74,9 @@ export const Root = () => {
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
   const setLanguage = useSettings((p) => p.setLanguage);
   const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
+  const selectedChannel = useSettings((p) => p.selectedChannel);
+  const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
+  const setChannels = useServer((p) => p.setChannels);
   const fetchGraphQLSchema = useServer((p) => p.fetchGraphQLSchema);
   const [loaded, setLoaded] = useState(false);
   const { initializeOrderCustomFields } = useOrder();
@@ -96,7 +102,7 @@ export const Root = () => {
   }, [notifications.map((n) => n.id).join(','), loaded]);
 
   useEffect(() => {
-    const init = async (schema: GraphQLSchema | null) => {
+    const init = async () => {
       const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
       });
@@ -110,7 +116,40 @@ export const Root = () => {
             new Set(activeAdministratorResponse.activeAdministrator.user.roles.flatMap((role) => role.permissions)),
           ),
         );
-        await fetchAndSetChannels();
+        const {
+          channels: { items: allChannels = [] },
+        } = await apiClient('query')({
+          channels: [
+            {},
+            {
+              items: {
+                id: true,
+                code: true,
+                token: true,
+                currencyCode: true,
+                defaultLanguageCode: true,
+                availableLanguageCodes: true,
+              },
+            },
+          ],
+        });
+
+        setChannels(allChannels);
+
+        if (selectedChannel) {
+          const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
+          setSelectedChannel(foundChannel || allChannels[0]);
+        }
+
+        const existingChannel = allChannels.find(
+          (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+        );
+        if (existingChannel) {
+          setSelectedChannel(existingChannel);
+        }
+
+        const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
+        setSelectedChannel(defaultChannel);
       }
 
       // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
@@ -163,18 +202,22 @@ export const Root = () => {
     fetchGraphQLSchema().then(async (schema) => {
       window.__DEENRUV_SCHEMA__ = schema;
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      await init(schema);
+      await init();
     });
   }, []);
 
   return (
-    <div className="bg-background text-foreground flex  max-h-[100vh] w-full max-w-full overflow-hidden">
-      <Menu>
-        {/* <div className="flex h-full w-full flex-1 flex-col gap-y-4 space-y-4 overflow-y-auto"> */}
-        {loaded ? <Outlet /> : <></>}
-        {/* </div> */}
-      </Menu>
-      <CanLeaveRouteDialog />
-    </div>
+    <>
+      <div className="bg-background text-foreground flex max-h-screen w-full max-w-full overflow-hidden">
+        <Menu>
+          {/* <div className="flex h-full w-full flex-1 flex-col gap-y-4 space-y-4 overflow-y-auto"> */}
+          {loaded ? <Outlet /> : <></>}
+          {/* </div> */}
+        </Menu>
+        <CanLeaveRouteDialog />
+      </div>
+      {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
+      <GlobalSearch />
+    </>
   );
 };

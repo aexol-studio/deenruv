@@ -14,7 +14,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { Stack } from '@/components';
 
 interface OptionsCardProps {
   startsAt: string;
@@ -40,10 +39,10 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
 
   return (
     <CustomCard title={t('options.header')} color="orange" icon={<CardIcons.options />}>
-      <Stack column className="flex-1 gap-y-4">
-        <Stack className="gap-3">
+      <div className="flex flex-1 flex-col gap-y-4">
+        <div className="flex gap-3">
           <Popover>
-            <Stack column className="flex-1">
+            <div className="flex flex-1 flex-col">
               <Label className="mb-2">{t('options.startsAt')}</Label>
               <PopoverTrigger asChild>
                 <Button
@@ -51,10 +50,10 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
                   className={cn('pl-3 text-left font-normal', !startsAt && 'text-muted-foreground')}
                 >
                   {startsAt ? format(new Date(startsAt), 'PPP') : <span>{t('options.pickDate')}</span>}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  <CalendarIcon className="ml-auto size-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
-            </Stack>
+            </div>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
@@ -66,7 +65,7 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
             </PopoverContent>
           </Popover>
           <Popover>
-            <Stack column className="flex-1">
+            <div className="flex flex-1 flex-col">
               <Label className="mb-2">{t('options.endsAt')}</Label>
               <PopoverTrigger asChild>
                 <Button
@@ -74,10 +73,10 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
                   className={cn('pl-3 text-left font-normal', endsAt && 'text-muted-foreground')}
                 >
                   {endsAt ? format(new Date(endsAt), 'PPP') : <span>{t('options.pickDate')}</span>}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  <CalendarIcon className="ml-auto size-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
-            </Stack>
+            </div>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode="single"
@@ -88,8 +87,8 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
               />
             </PopoverContent>
           </Popover>
-        </Stack>
-        <Stack className="gap-3">
+        </div>
+        <div className="flex gap-3">
           <Input
             label={t('options.couponCode')}
             placeholder={t('options.couponCode')}
@@ -110,8 +109,8 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
             type="number"
             onChange={(e) => setField('perCustomerUsageLimit', +e.target.value)}
           />
-        </Stack>
-      </Stack>
+        </div>
+      </div>
     </CustomCard>
   );
 };

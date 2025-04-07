@@ -1,3 +1,3 @@
-import wfirma from './wfirma.json';
+import wfirma from "./wfirma.json";
 
 export default [wfirma];

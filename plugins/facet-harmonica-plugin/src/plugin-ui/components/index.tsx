@@ -1,1 +1,1 @@
-export * from './FacetHarmonica';
+export * from "./FacetHarmonica";

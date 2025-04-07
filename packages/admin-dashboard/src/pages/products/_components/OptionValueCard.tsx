@@ -1,12 +1,21 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Input, Card, CardHeader, CardTitle, CardContent, apiClient } from '@deenruv/react-ui-devkit';
+import {
+  Button,
+  Input,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  apiClient,
+  useGFFLP,
+  setInArrayBy,
+  EntityCustomFields,
+} from '@deenruv/react-ui-devkit';
 import { ProductOptionType } from '@/graphql/products';
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 
 import { toast } from 'sonner';
 import { LanguageCode } from '@deenruv/admin-types';
-import { EntityCustomFields, Stack } from '@/components';
 
 interface OptionValueCardProps {
   productOption: ProductOptionType;
@@ -71,8 +80,8 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
         <CardTitle className="flex flex-row justify-between text-base">{productOption.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Stack column className="justify-between gap-6">
-          <Stack column className="gap-3">
+        <div className="flex flex-col justify-between gap-6">
+          <div className="flex flex-col gap-3">
             <Input
               label="name"
               value={currentTranslationValue?.name ?? undefined}
@@ -108,8 +117,8 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
               }}
               additionalData={{}}
             />
-          </Stack>
-        </Stack>
+          </div>
+        </div>
         <Button size={'sm'} className="mt-4" onClick={editOption}>
           {t('editOption')}
         </Button>

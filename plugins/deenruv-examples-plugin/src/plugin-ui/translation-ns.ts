@@ -1,1 +1,1 @@
-export const translationNS = Symbol('deenruv-examples-plugin').toString();
+export const translationNS = Symbol("deenruv-examples-plugin").toString();

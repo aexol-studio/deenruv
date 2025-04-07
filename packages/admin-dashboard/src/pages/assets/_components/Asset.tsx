@@ -23,6 +23,7 @@ import {
   TabsList,
   TabsTrigger,
   useServer,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 import { type AssetType, assetsSelector } from '@/graphql/base';
 import { DeletionResult } from '@deenruv/admin-types';
@@ -33,7 +34,6 @@ import type React from 'react';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { EntityCustomFields } from '@/components';
 import { Copy, ExternalLink, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 
 interface AssetProps {
@@ -145,7 +145,7 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="bg-background/80 h-8 w-8 rounded-full p-0 opacity-0 shadow-sm backdrop-blur-sm group-hover:opacity-100"
+                  className="bg-background/80 size-8 rounded-full p-0 opacity-0 shadow-sm backdrop-blur-sm group-hover:opacity-100"
                 >
                   <MoreHorizontal size={16} />
                   <span className="sr-only">Open menu</span>

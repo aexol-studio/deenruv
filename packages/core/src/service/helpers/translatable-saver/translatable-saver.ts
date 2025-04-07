@@ -1,29 +1,34 @@
-import { Injectable } from '@nestjs/common';
-import { omit } from '@deenruv/common/lib/omit';
-import { ID, Type } from '@deenruv/common/lib/shared-types';
-import { FindOneOptions } from 'typeorm';
-import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
+import { Injectable } from "@nestjs/common";
+import { omit } from "@deenruv/common/lib/omit";
+import { ID, Type } from "@deenruv/common/lib/shared-types";
+import { FindOneOptions } from "typeorm";
+import { FindManyOptions } from "typeorm/find-options/FindManyOptions";
 
-import { RequestContext } from '../../../api/common/request-context';
-import { Translatable, TranslatedInput, Translation } from '../../../common/types/locale-types';
-import { TransactionalConnection } from '../../../connection/transactional-connection';
-import { DeenruvEntity } from '../../../entity/base/base.entity';
-import { ProductOptionGroup } from '../../../entity/product-option-group/product-option-group.entity';
-import { patchEntity } from '../utils/patch-entity';
+import { RequestContext } from "../../../api/common/request-context";
+import {
+  Translatable,
+  TranslatedInput,
+  Translation,
+} from "../../../common/types/locale-types";
+import { TransactionalConnection } from "../../../connection/transactional-connection";
+import { DeenruvEntity } from "../../../entity/base/base.entity";
+import { ProductOptionGroup } from "../../../entity/product-option-group/product-option-group.entity";
+import { patchEntity } from "../utils/patch-entity";
 
-import { TranslationDiffer } from './translation-differ';
+import { TranslationDiffer } from "./translation-differ";
 
 export interface CreateTranslatableOptions<T extends Translatable> {
-    ctx: RequestContext;
-    entityType: Type<T>;
-    translationType: Type<Translation<T>>;
-    input: TranslatedInput<T>;
-    beforeSave?: (newEntity: T) => any | Promise<any>;
-    typeOrmSubscriberData?: any;
+  ctx: RequestContext;
+  entityType: Type<T>;
+  translationType: Type<Translation<T>>;
+  input: TranslatedInput<T>;
+  beforeSave?: (newEntity: T) => any | Promise<any>;
+  typeOrmSubscriberData?: any;
 }
 
-export interface UpdateTranslatableOptions<T extends Translatable> extends CreateTranslatableOptions<T> {
-    input: TranslatedInput<T> & { id: ID };
+export interface UpdateTranslatableOptions<T extends Translatable>
+  extends CreateTranslatableOptions<T> {
+  input: TranslatedInput<T> & { id: ID };
 }
 
 /**
@@ -56,65 +61,90 @@ export interface UpdateTranslatableOptions<T extends Translatable> extends Creat
  */
 @Injectable()
 export class TranslatableSaver {
-    constructor(private connection: TransactionalConnection) {}
+  constructor(private connection: TransactionalConnection) {}
 
-    /**
-     * @description
-     * Create a translatable entity, including creating any translation entities according
-     * to the `translations` array.
-     */
-    async create<T extends Translatable & DeenruvEntity>(options: CreateTranslatableOptions<T>): Promise<T> {
-        const { ctx, entityType, translationType, input, beforeSave, typeOrmSubscriberData } = options;
+  /**
+   * @description
+   * Create a translatable entity, including creating any translation entities according
+   * to the `translations` array.
+   */
+  async create<T extends Translatable & DeenruvEntity>(
+    options: CreateTranslatableOptions<T>,
+  ): Promise<T> {
+    const {
+      ctx,
+      entityType,
+      translationType,
+      input,
+      beforeSave,
+      typeOrmSubscriberData,
+    } = options;
 
-        const entity = new entityType(input);
-        const translations: Array<Translation<T>> = [];
+    const entity = new entityType(input);
+    const translations: Array<Translation<T>> = [];
 
-        if (input.translations) {
-            for (const translationInput of input.translations) {
-                const translation = new translationType(translationInput);
-                translations.push(translation);
-                await this.connection.getRepository(ctx, translationType).save(translation as any);
-            }
-        }
-
-        entity.translations = translations;
-        if (typeof beforeSave === 'function') {
-            await beforeSave(entity);
-        }
-        return await this.connection
-            .getRepository(ctx, entityType)
-            .save(entity as any, { data: typeOrmSubscriberData });
+    if (input.translations) {
+      for (const translationInput of input.translations) {
+        const translation = new translationType(translationInput);
+        translations.push(translation);
+        await this.connection
+          .getRepository(ctx, translationType)
+          .save(translation as any);
+      }
     }
 
-    /**
-     * @description
-     * Update a translatable entity. Performs a diff of the `translations` array in order to
-     * perform the correct operation on the translations.
-     */
-    async update<T extends Translatable & DeenruvEntity>(options: UpdateTranslatableOptions<T>): Promise<T> {
-        const { ctx, entityType, translationType, input, beforeSave, typeOrmSubscriberData } = options;
-        const existingTranslations = await this.connection.getRepository(ctx, translationType).find({
-            relationLoadStrategy: 'query',
-            loadEagerRelations: false,
-            where: { base: { id: input.id } },
-            relations: ['base'],
-        } as FindManyOptions<Translation<T>>);
-
-        const differ = new TranslationDiffer(translationType, this.connection);
-        const diff = differ.diff(existingTranslations, input.translations);
-        const entity = await differ.applyDiff(
-            ctx,
-            new entityType({ ...input, translations: existingTranslations }),
-            diff,
-        );
-        entity.updatedAt = new Date();
-
-        const updatedEntity = patchEntity(entity as any, omit(input, ['translations']));
-        if (typeof beforeSave === 'function') {
-            await beforeSave(entity);
-        }
-        return this.connection
-            .getRepository(ctx, entityType)
-            .save(updatedEntity, { data: typeOrmSubscriberData });
+    entity.translations = translations;
+    if (typeof beforeSave === "function") {
+      await beforeSave(entity);
     }
+    return await this.connection
+      .getRepository(ctx, entityType)
+      .save(entity as any, { data: typeOrmSubscriberData });
+  }
+
+  /**
+   * @description
+   * Update a translatable entity. Performs a diff of the `translations` array in order to
+   * perform the correct operation on the translations.
+   */
+  async update<T extends Translatable & DeenruvEntity>(
+    options: UpdateTranslatableOptions<T>,
+  ): Promise<T> {
+    const {
+      ctx,
+      entityType,
+      translationType,
+      input,
+      beforeSave,
+      typeOrmSubscriberData,
+    } = options;
+    const existingTranslations = await this.connection
+      .getRepository(ctx, translationType)
+      .find({
+        relationLoadStrategy: "query",
+        loadEagerRelations: false,
+        where: { base: { id: input.id } },
+        relations: ["base"],
+      } as FindManyOptions<Translation<T>>);
+
+    const differ = new TranslationDiffer(translationType, this.connection);
+    const diff = differ.diff(existingTranslations, input.translations);
+    const entity = await differ.applyDiff(
+      ctx,
+      new entityType({ ...input, translations: existingTranslations }),
+      diff,
+    );
+    entity.updatedAt = new Date();
+
+    const updatedEntity = patchEntity(
+      entity as any,
+      omit(input, ["translations"]),
+    );
+    if (typeof beforeSave === "function") {
+      await beforeSave(entity);
+    }
+    return this.connection
+      .getRepository(ctx, entityType)
+      .save(updatedEntity, { data: typeOrmSubscriberData });
+  }
 }

@@ -76,8 +76,8 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
             key={asset.id}
             className="hover:bg-muted/10 grid grid-cols-[auto_1fr_auto] items-center gap-4 p-3 transition-colors"
           >
-            <div className="bg-muted/20 h-16 w-16 overflow-hidden rounded">
-              <img src={`${asset.preview}?preset=tile`} alt={asset.name} className="h-full w-full object-cover" />
+            <div className="bg-muted/20 size-16 overflow-hidden rounded">
+              <img src={`${asset.preview}?preset=tile`} alt={asset.name} className="size-full object-cover" />
             </div>
 
             <div className="text-muted-foreground truncate text-sm" title={asset.name}>
@@ -87,7 +87,7 @@ export const AssetListView: React.FC<AssetListViewProps> = ({ assets, onAssetCha
             <div className="flex items-center gap-1">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                  <Button size="sm" variant="ghost" className="size-8 p-0">
                     <MoreHorizontal size={16} />
                     <span className="sr-only">More options</span>
                   </Button>

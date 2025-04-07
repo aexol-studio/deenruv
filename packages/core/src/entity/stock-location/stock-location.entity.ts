@@ -1,12 +1,12 @@
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
-import { ChannelAware } from '../../common/types/common-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { Channel } from '../channel/channel.entity';
-import { CustomStockLocationFields } from '../custom-entity-fields';
-import { StockMovement } from '../stock-movement/stock-movement.entity';
+import { ChannelAware } from "../../common/types/common-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { Channel } from "../channel/channel.entity";
+import { CustomStockLocationFields } from "../custom-entity-fields";
+import { StockMovement } from "../stock-movement/stock-movement.entity";
 
 /**
  * @description
@@ -20,23 +20,26 @@ import { StockMovement } from '../stock-movement/stock-movement.entity';
  * @docsCategory entities
  */
 @Entity()
-export class StockLocation extends DeenruvEntity implements HasCustomFields, ChannelAware {
-    constructor(input: DeepPartial<StockLocation>) {
-        super(input);
-    }
-    @Column()
-    name: string;
+export class StockLocation
+  extends DeenruvEntity
+  implements HasCustomFields, ChannelAware
+{
+  constructor(input: DeepPartial<StockLocation>) {
+    super(input);
+  }
+  @Column()
+  name: string;
 
-    @Column()
-    description: string;
+  @Column()
+  description: string;
 
-    @Column(type => CustomStockLocationFields)
-    customFields: CustomStockLocationFields;
+  @Column((type) => CustomStockLocationFields)
+  customFields: CustomStockLocationFields;
 
-    @ManyToMany(type => Channel, channel => channel.stockLocations)
-    @JoinTable()
-    channels: Channel[];
+  @ManyToMany((type) => Channel, (channel) => channel.stockLocations)
+  @JoinTable()
+  channels: Channel[];
 
-    @OneToMany(type => StockMovement, movement => movement.stockLocation)
-    stockMovements: StockMovement[];
+  @OneToMany((type) => StockMovement, (movement) => movement.stockLocation)
+  stockMovements: StockMovement[];
 }

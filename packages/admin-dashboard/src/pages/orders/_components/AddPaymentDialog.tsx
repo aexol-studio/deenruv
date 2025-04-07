@@ -85,7 +85,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
           className="gap-2"
           onClick={setOpen.bind(null, true)}
         >
-          <DollarSign className="h-4 w-4" />
+          <DollarSign className="size-4" />
           {paymentAmount > 0
             ? t('create.buttonAddPayment', {
                 value: priceFormatter(paymentAmount, order.currencyCode),
@@ -96,7 +96,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
       <DialogContent className="max-w-md">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-teal-500 dark:text-teal-400" />
+            <CreditCard className="size-5 text-teal-500 dark:text-teal-400" />
             <DialogTitle>{t('create.addPaymentTitle')}</DialogTitle>
           </div>
           <DialogDescription>{t('create.addPaymentDescription')}</DialogDescription>
@@ -143,7 +143,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
 
           <div className="bg-muted/50 mt-2 rounded-md p-3">
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-teal-500 dark:text-teal-400" />
+              <FileText className="size-4 text-teal-500 dark:text-teal-400" />
               <span className="text-sm font-medium">{t('payments.summary')}</span>
             </div>
             <div className="mt-2 space-y-1">
@@ -169,7 +169,7 @@ export const AddPaymentDialog: React.FC<Props> = ({ order, onSubmit }) => {
               <Button variant="outline">{t('payments.cancel')}</Button>
             </DialogClose>
             <Button type="submit" disabled={isFormValid.length > 0} className="gap-2">
-              <CheckCircle className="h-4 w-4" />
+              <CheckCircle className="size-4" />
               {t('payments.add')}
             </Button>
           </DialogFooter>

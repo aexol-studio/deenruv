@@ -1,13 +1,10 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput } from '@deenruv/react-ui-devkit';
+import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { CustomerGroupListSelector } from '@/graphql/customerGroups';
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
-  const selector = deepMerge(CustomerGroupListSelector, additionalSelector ?? {});
+const tableId = 'customerGroups-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
     customerGroups: [
       {
@@ -19,7 +16,7 @@ const fetch = async <T, K>(
           ...(filter && { filter }),
         },
       },
-      { items: selector, totalItems: true },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
   return response.customerGroups;
@@ -51,7 +48,7 @@ export const CustomerGroupsListPage = () => (
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'CustomerGroupList'}
     route={Routes['customerGroups']}
-    tableId="customerGroups-list-view"
+    tableId={tableId}
     fetch={fetch}
     onRemove={onRemove}
     createPermissions={[Permission.CreateCustomerGroup]}

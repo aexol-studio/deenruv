@@ -1,12 +1,12 @@
-import { DeepPartial, ID } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, Index, ManyToOne, TableInheritance } from 'typeorm';
+import { DeepPartial, ID } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, Index, ManyToOne, TableInheritance } from "typeorm";
 
-import { DeenruvEntity } from '../base/base.entity';
-import { Channel } from '../channel/channel.entity';
-import { Customer } from '../customer/customer.entity';
-import { EntityId } from '../entity-id.decorator';
-import { Order } from '../order/order.entity';
-import { User } from '../user/user.entity';
+import { DeenruvEntity } from "../base/base.entity";
+import { Channel } from "../channel/channel.entity";
+import { Customer } from "../customer/customer.entity";
+import { EntityId } from "../entity-id.decorator";
+import { Order } from "../order/order.entity";
+import { User } from "../user/user.entity";
 
 /**
  * @description
@@ -16,27 +16,27 @@ import { User } from '../user/user.entity';
  * @docsCategory entities
  */
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
+@TableInheritance({ column: { type: "varchar", name: "type" } })
 export abstract class Session extends DeenruvEntity {
-    @Index({ unique: true })
-    @Column()
-    token: string;
+  @Index({ unique: true })
+  @Column()
+  token: string;
 
-    @Column() expires: Date;
+  @Column() expires: Date;
 
-    @Column() invalidated: boolean;
+  @Column() invalidated: boolean;
 
-    @EntityId({ nullable: true })
-    activeOrderId?: ID;
+  @EntityId({ nullable: true })
+  activeOrderId?: ID;
 
-    @Index()
-    @ManyToOne(type => Order)
-    activeOrder: Order | null;
+  @Index()
+  @ManyToOne((type) => Order)
+  activeOrder: Order | null;
 
-    @EntityId({ nullable: true })
-    activeChannelId?: ID;
+  @EntityId({ nullable: true })
+  activeChannelId?: ID;
 
-    @Index()
-    @ManyToOne(type => Channel)
-    activeChannel: Channel | null;
+  @Index()
+  @ManyToOne((type) => Channel)
+  activeChannel: Channel | null;
 }

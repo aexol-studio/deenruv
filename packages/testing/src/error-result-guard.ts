@@ -1,4 +1,4 @@
-import { fail } from 'assert';
+import { fail } from "assert";
 
 /**
  * @description
@@ -15,8 +15,10 @@ import { fail } from 'assert';
  * ```
  * @docsCategory testing
  */
-export function createErrorResultGuard<T>(testFn: (input: T) => boolean): ErrorResultGuard<T> {
-    return new ErrorResultGuard<T>(testFn);
+export function createErrorResultGuard<T>(
+  testFn: (input: T) => boolean,
+): ErrorResultGuard<T> {
+  return new ErrorResultGuard<T>(testFn);
 }
 
 /**
@@ -48,35 +50,35 @@ export function createErrorResultGuard<T>(testFn: (input: T) => boolean): ErrorR
  * @docsCategory testing
  */
 export class ErrorResultGuard<T> {
-    constructor(private testFn: (input: T) => boolean) {}
+  constructor(private testFn: (input: T) => boolean) {}
 
-    /**
-     * @description
-     * A type guard which returns `true` if the input passes the `testFn` predicate.
-     */
-    isSuccess(input: T | any): input is T {
-        return this.testFn(input as T);
-    }
+  /**
+   * @description
+   * A type guard which returns `true` if the input passes the `testFn` predicate.
+   */
+  isSuccess(input: T | any): input is T {
+    return this.testFn(input as T);
+  }
 
-    /**
-     * @description
-     * Asserts (using the testing library's `fail()` function) that the input is
-     * successful, i.e. it passes the `testFn`.
-     */
-    assertSuccess<R>(input: T | R): asserts input is T {
-        if (!this.isSuccess(input)) {
-            fail(`Unexpected error: ${JSON.stringify(input)}`);
-        }
+  /**
+   * @description
+   * Asserts (using the testing library's `fail()` function) that the input is
+   * successful, i.e. it passes the `testFn`.
+   */
+  assertSuccess<R>(input: T | R): asserts input is T {
+    if (!this.isSuccess(input)) {
+      fail(`Unexpected error: ${JSON.stringify(input)}`);
     }
+  }
 
-    /**
-     * @description
-     * Asserts (using the testing library's `fail()` function) that the input is
-     * not successful, i.e. it does not pass the `testFn`.
-     */
-    assertErrorResult<R>(input: T | R): asserts input is R {
-        if (this.isSuccess(input)) {
-            fail('Should have errored');
-        }
+  /**
+   * @description
+   * Asserts (using the testing library's `fail()` function) that the input is
+   * not successful, i.e. it does not pass the `testFn`.
+   */
+  assertErrorResult<R>(input: T | R): asserts input is R {
+    if (this.isSuccess(input)) {
+      fail("Should have errored");
     }
+  }
 }

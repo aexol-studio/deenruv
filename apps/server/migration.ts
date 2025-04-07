@@ -1,27 +1,31 @@
-import { generateMigration, revertLastMigration, runMigrations } from '@deenruv/core';
-import { program } from 'commander';
+import {
+  generateMigration,
+  revertLastMigration,
+  runMigrations,
+} from "@deenruv/core";
+import { program } from "commander";
 
-import { devConfig } from './dev-config';
-
-program
-    .command('generate <name>')
-    .description('Generate a new migration file with the given name')
-    .action(async name => {
-        await generateMigration(devConfig, { name, outputDir: './migrations' });
-    });
+import { devConfig } from "./dev-config";
 
 program
-    .command('run')
-    .description('Run all pending migrations')
-    .action(async () => {
-        await runMigrations(devConfig);
-    });
+  .command("generate <name>")
+  .description("Generate a new migration file with the given name")
+  .action(async (name) => {
+    await generateMigration(devConfig, { name, outputDir: "./migrations" });
+  });
 
 program
-    .command('revert')
-    .description('Revert the last applied migration')
-    .action(async () => {
-        await revertLastMigration(devConfig);
-    });
+  .command("run")
+  .description("Run all pending migrations")
+  .action(async () => {
+    await runMigrations(devConfig);
+  });
+
+program
+  .command("revert")
+  .description("Revert the last applied migration")
+  .action(async () => {
+    await revertLastMigration(devConfig);
+  });
 
 program.parse(process.argv);

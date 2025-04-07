@@ -1,9 +1,14 @@
-import { useDetailView, DetailViewMarker, useSettings } from '@deenruv/react-ui-devkit';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  useDetailView,
+  DetailViewMarker,
+  useSettings,
+  setInArrayBy,
+  CF,
+  EntityCustomFields,
+} from '@deenruv/react-ui-devkit';
+import { useCallback, useEffect, useMemo } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
-import { CF, EntityCustomFields } from '@/components';
 import { AssetsCard } from './AssetsCard';
-import { setInArrayBy } from '@/lists/useGflp';
 import { useNavigate } from 'react-router-dom';
 
 export const PRODUCT_FORM_KEYS = [

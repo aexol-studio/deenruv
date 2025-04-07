@@ -1,9 +1,12 @@
-import { CreateCollectionInput, UpdateCollectionInput } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
+import {
+  CreateCollectionInput,
+  UpdateCollectionInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api';
-import { Collection } from '../../entity';
-import { DeenruvEntityEvent } from '../deenruv-entity-event';
+import { RequestContext } from "../../api";
+import { Collection } from "../../entity";
+import { DeenruvEntityEvent } from "../deenruv-entity-event";
 
 type CollectionInputTypes = CreateCollectionInput | UpdateCollectionInput | ID;
 
@@ -15,13 +18,16 @@ type CollectionInputTypes = CreateCollectionInput | UpdateCollectionInput | ID;
  * @docsPage Event Types
  * @since 1.4
  */
-export class CollectionEvent extends DeenruvEntityEvent<Collection, CollectionInputTypes> {
-    constructor(
-        ctx: RequestContext,
-        entity: Collection,
-        type: 'created' | 'updated' | 'deleted',
-        input?: CollectionInputTypes,
-    ) {
-        super(entity, type, ctx, input);
-    }
+export class CollectionEvent extends DeenruvEntityEvent<
+  Collection,
+  CollectionInputTypes
+> {
+  constructor(
+    ctx: RequestContext,
+    entity: Collection,
+    type: "created" | "updated" | "deleted",
+    input?: CollectionInputTypes,
+  ) {
+    super(entity, type, ctx, input);
+  }
 }

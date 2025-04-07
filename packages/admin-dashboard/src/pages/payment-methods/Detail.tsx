@@ -2,9 +2,15 @@ import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { DetailView, createDeenruvForm, GFFLPFormField, useMutation, getMutation } from '@deenruv/react-ui-devkit';
+import {
+  useValidators,
+  DetailView,
+  createDeenruvForm,
+  GFFLPFormField,
+  useMutation,
+  getMutation,
+} from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
-import { useValidators } from '@/hooks/useValidators.js';
 import { PaymentMethodDetailView } from '@/pages/payment-methods/_components/PaymentMethodDetailView.js';
 
 type CreatePaymentMethodInput = ModelTypes['CreatePaymentMethodInput'];

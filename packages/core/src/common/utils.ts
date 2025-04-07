@@ -1,16 +1,16 @@
-import { AssetType } from '@deenruv/common/lib/generated-types';
-import { ID } from '@deenruv/common/lib/shared-types';
-import { lastValueFrom, Observable, Observer } from 'rxjs';
-import { FindOptionsRelations } from 'typeorm/find-options/FindOptionsRelations';
+import { AssetType } from "@deenruv/common/lib/generated-types";
+import { ID } from "@deenruv/common/lib/shared-types";
+import { lastValueFrom, Observable, Observer } from "rxjs";
+import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations";
 
-import { RelationPaths } from '../api/decorators/relations.decorator';
-import { DeenruvEntity } from '../entity/base/base.entity';
+import { RelationPaths } from "../api/decorators/relations.decorator";
+import { DeenruvEntity } from "../entity/base/base.entity";
 
 /**
  * Takes a predicate function and returns a negated version.
  */
 export function not(predicate: (...args: any[]) => boolean) {
-    return (...args: any[]) => !predicate(...args);
+  return (...args: any[]) => !predicate(...args);
 }
 
 /**
@@ -18,7 +18,7 @@ export function not(predicate: (...args: any[]) => boolean) {
  * as determined by a === equality check on the given compareBy property.
  */
 export function foundIn<T>(set: T[], compareBy: keyof T) {
-    return (item: T) => set.some(t => t[compareBy] === item[compareBy]);
+  return (item: T) => set.some((t) => t[compareBy] === item[compareBy]);
 }
 
 /**
@@ -27,8 +27,10 @@ export function foundIn<T>(set: T[], compareBy: keyof T) {
  * Used when performing a "find" operation on an entity which we are sure exists, as in the case that we
  * just successfully created or updated it.
  */
-export function assertFound<T>(promise: Promise<T | undefined | null>): Promise<T> {
-    return promise as Promise<T>;
+export function assertFound<T>(
+  promise: Promise<T | undefined | null>,
+): Promise<T> {
+  return promise as Promise<T>;
 }
 
 /**
@@ -36,25 +38,25 @@ export function assertFound<T>(promise: Promise<T | undefined | null>): Promise<
  * (string or number).
  */
 export function idsAreEqual(id1?: ID, id2?: ID): boolean {
-    if (id1 === undefined || id2 === undefined) {
-        return false;
-    }
-    return id1.toString() === id2.toString();
+  if (id1 === undefined || id2 === undefined) {
+    return false;
+  }
+  return id1.toString() === id2.toString();
 }
 
 /**
  * Returns the AssetType based on the mime type.
  */
 export function getAssetType(mimeType: string): AssetType {
-    const type = mimeType.split('/')[0];
-    switch (type) {
-        case 'image':
-            return AssetType.IMAGE;
-        case 'video':
-            return AssetType.VIDEO;
-        default:
-            return AssetType.BINARY;
-    }
+  const type = mimeType.split("/")[0];
+  switch (type) {
+    case "image":
+      return AssetType.IMAGE;
+    case "video":
+      return AssetType.VIDEO;
+    default:
+      return AssetType.BINARY;
+  }
 }
 
 /**
@@ -65,7 +67,7 @@ export function getAssetType(mimeType: string): AssetType {
  * upper/lower case. See more discussion here: https://ux.stackexchange.com/a/16849
  */
 export function normalizeEmailAddress(input: string): string {
-    return isEmailAddressLike(input) ? input.trim().toLowerCase() : input.trim();
+  return isEmailAddressLike(input) ? input.trim().toLowerCase() : input.trim();
 }
 
 /**
@@ -76,19 +78,21 @@ export function normalizeEmailAddress(input: string): string {
  * identifiers for other authentication methods.
  */
 export function isEmailAddressLike(input: string): boolean {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim());
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.trim());
 }
 
 /**
  * Converts a value that may be wrapped into a Promise or Observable into a Promise-wrapped
  * value.
  */
-export async function awaitPromiseOrObservable<T>(value: T | Promise<T> | Observable<T>): Promise<T> {
-    let result = await value;
-    if (result instanceof Observable) {
-        result = await lastValueFrom(result);
-    }
-    return result;
+export async function awaitPromiseOrObservable<T>(
+  value: T | Promise<T> | Observable<T>,
+): Promise<T> {
+  let result = await value;
+  if (result instanceof Observable) {
+    result = await lastValueFrom(result);
+  }
+  return result;
 }
 
 /**
@@ -112,38 +116,40 @@ export async function awaitPromiseOrObservable<T>(value: T | Promise<T> | Observ
  * }
  * ```
  */
-export function asyncObservable<T>(work: (observer: Observer<T>) => Promise<T | void>): Observable<T> {
-    return new Observable<T>(subscriber => {
-        void (async () => {
-            try {
-                const result = await work(subscriber);
-                if (result) {
-                    subscriber.next(result);
-                }
-                subscriber.complete();
-            } catch (e: any) {
-                subscriber.error(e);
-            }
-        })();
-    });
+export function asyncObservable<T>(
+  work: (observer: Observer<T>) => Promise<T | void>,
+): Observable<T> {
+  return new Observable<T>((subscriber) => {
+    void (async () => {
+      try {
+        const result = await work(subscriber);
+        if (result) {
+          subscriber.next(result);
+        }
+        subscriber.complete();
+      } catch (e: any) {
+        subscriber.error(e);
+      }
+    })();
+  });
 }
 
 export function convertRelationPaths<T extends DeenruvEntity>(
-    relationPaths?: RelationPaths<T> | null,
+  relationPaths?: RelationPaths<T> | null,
 ): FindOptionsRelations<T> | undefined {
-    const result: FindOptionsRelations<T> = {};
-    if (relationPaths == null) {
-        return undefined;
+  const result: FindOptionsRelations<T> = {};
+  if (relationPaths == null) {
+    return undefined;
+  }
+  for (const path of relationPaths) {
+    const parts = (path as string).split(".");
+    let current: any = result;
+    for (const [i, part] of Object.entries(parts)) {
+      if (!current[part]) {
+        current[part] = +i === parts.length - 1 ? true : {};
+      }
+      current = current[part];
     }
-    for (const path of relationPaths) {
-        const parts = (path as string).split('.');
-        let current: any = result;
-        for (const [i, part] of Object.entries(parts)) {
-            if (!current[part]) {
-                current[part] = +i === parts.length - 1 ? true : {};
-            }
-            current = current[part];
-        }
-    }
-    return result;
+  }
+  return result;
 }

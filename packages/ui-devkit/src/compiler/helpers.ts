@@ -1,4 +1,8 @@
-import { BrandingOptions, StaticAssetDefinition, StaticAssetExtension } from './types';
+import {
+  BrandingOptions,
+  StaticAssetDefinition,
+  StaticAssetExtension,
+} from "./types";
 
 /**
  * @description
@@ -24,24 +28,24 @@ import { BrandingOptions, StaticAssetDefinition, StaticAssetExtension } from './
  * @docsPage helpers
  */
 export function setBranding(options: BrandingOptions): StaticAssetExtension {
-    const staticAssets: StaticAssetDefinition[] = [];
-    if (options.smallLogoPath) {
-        staticAssets.push({
-            path: options.smallLogoPath,
-            rename: 'logo-top.webp',
-        });
-    }
-    if (options.largeLogoPath) {
-        staticAssets.push({
-            path: options.largeLogoPath,
-            rename: 'logo-login.webp',
-        });
-    }
-    if (options.faviconPath) {
-        staticAssets.push({
-            path: options.faviconPath,
-            rename: 'favicon.ico',
-        });
-    }
-    return { staticAssets };
+  const staticAssets: StaticAssetDefinition[] = [];
+  if (options.smallLogoPath) {
+    staticAssets.push({
+      path: options.smallLogoPath,
+      rename: "logo-top.webp",
+    });
+  }
+  if (options.largeLogoPath) {
+    staticAssets.push({
+      path: options.largeLogoPath,
+      rename: "logo-login.webp",
+    });
+  }
+  if (options.faviconPath) {
+    staticAssets.push({
+      path: options.faviconPath,
+      rename: "favicon.ico",
+    });
+  }
+  return { staticAssets };
 }

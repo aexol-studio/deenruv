@@ -53,7 +53,7 @@ export const PromotionsList: React.FC = () => {
                   <TableRow key={name} noHover className="group">
                     <TableCell className="py-3 font-medium">
                       <div className="flex items-center gap-2">
-                        <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                        <Tag className="size-4 text-blue-500 dark:text-blue-400" />
                         <span className="capitalize">{name}</span>
                       </div>
                     </TableCell>
@@ -86,7 +86,7 @@ export const PromotionsList: React.FC = () => {
         notCollapsible
         description={t('discounts.description', 'Applied order discounts')}
         title={t('discounts.title', 'Discounts')}
-        icon={<BadgePercent className="h-5 w-5 text-green-500 dark:text-green-400" />}
+        icon={<BadgePercent className="size-5 text-green-500 dark:text-green-400" />}
         wrapperClassName="col-span-1 h-full md:col-span-2 lg:col-span-6"
         color="green"
       >
@@ -107,7 +107,7 @@ export const PromotionsList: React.FC = () => {
                   <TableRow key={index} noHover className="group">
                     <TableCell className="py-3 font-medium">
                       <div className="flex items-center gap-2">
-                        <CreditCard className="h-4 w-4 text-green-500 dark:text-green-400" />
+                        <CreditCard className="size-4 text-green-500 dark:text-green-400" />
                         <span className="capitalize">{description}</span>
                       </div>
                     </TableCell>

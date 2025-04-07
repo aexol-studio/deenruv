@@ -1,4 +1,4 @@
-import { CachedSession, SessionCacheStrategy } from './session-cache-strategy';
+import { CachedSession, SessionCacheStrategy } from "./session-cache-strategy";
 
 /**
  * @description
@@ -8,19 +8,19 @@ import { CachedSession, SessionCacheStrategy } from './session-cache-strategy';
  * @docsCategory auth
  */
 export class NoopSessionCacheStrategy implements SessionCacheStrategy {
-    clear() {
-        return undefined;
-    }
+  clear() {
+    return undefined;
+  }
 
-    delete(sessionToken: string) {
-        return undefined;
-    }
+  delete(sessionToken: string) {
+    return undefined;
+  }
 
-    get(sessionToken: string) {
-        return undefined;
-    }
+  get(sessionToken: string) {
+    return undefined;
+  }
 
-    set(session: CachedSession) {
-        return undefined;
-    }
+  set(session: CachedSession) {
+    return undefined;
+  }
 }

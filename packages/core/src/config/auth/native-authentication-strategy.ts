@@ -1,21 +1,21 @@
-import { ID } from '@deenruv/common/lib/shared-types';
-import { DocumentNode } from 'graphql';
-import gql from 'graphql-tag';
+import { ID } from "@deenruv/common/lib/shared-types";
+import { DocumentNode } from "graphql";
+import gql from "graphql-tag";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Injector } from '../../common/injector';
-import { TransactionalConnection } from '../../connection/transactional-connection';
-import { NativeAuthenticationMethod } from '../../entity/authentication-method/native-authentication-method.entity';
-import { User } from '../../entity/user/user.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { Injector } from "../../common/injector";
+import { TransactionalConnection } from "../../connection/transactional-connection";
+import { NativeAuthenticationMethod } from "../../entity/authentication-method/native-authentication-method.entity";
+import { User } from "../../entity/user/user.entity";
 
-import { AuthenticationStrategy } from './authentication-strategy';
+import { AuthenticationStrategy } from "./authentication-strategy";
 
 export interface NativeAuthenticationData {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
-export const NATIVE_AUTH_STRATEGY_NAME = 'native';
+export const NATIVE_AUTH_STRATEGY_NAME = "native";
 
 /**
  * @description
@@ -25,69 +25,91 @@ export const NATIVE_AUTH_STRATEGY_NAME = 'native';
  *
  * @docsCategory auth
  */
-export class NativeAuthenticationStrategy implements AuthenticationStrategy<NativeAuthenticationData> {
-    readonly name = NATIVE_AUTH_STRATEGY_NAME;
+export class NativeAuthenticationStrategy
+  implements AuthenticationStrategy<NativeAuthenticationData>
+{
+  readonly name = NATIVE_AUTH_STRATEGY_NAME;
 
-    private connection: TransactionalConnection;
-    private passwordCipher: import('../../service/helpers/password-cipher/password-cipher').PasswordCipher;
-    private userService: import('../../service/services/user.service').UserService;
+  private connection: TransactionalConnection;
+  private passwordCipher: import("../../service/helpers/password-cipher/password-cipher").PasswordCipher;
+  private userService: import("../../service/services/user.service").UserService;
 
-    async init(injector: Injector) {
-        this.connection = injector.get(TransactionalConnection);
-        // These are lazily-loaded to avoid a circular dependency
-        const { PasswordCipher } = await import('../../service/helpers/password-cipher/password-cipher.js');
-        const { UserService } = await import('../../service/services/user.service.js');
-        this.passwordCipher = injector.get(PasswordCipher);
-        this.userService = injector.get(UserService);
+  async init(injector: Injector) {
+    this.connection = injector.get(TransactionalConnection);
+    // These are lazily-loaded to avoid a circular dependency
+    const { PasswordCipher } = await import(
+      "../../service/helpers/password-cipher/password-cipher.js"
+    );
+    const { UserService } = await import(
+      "../../service/services/user.service.js"
+    );
+    this.passwordCipher = injector.get(PasswordCipher);
+    this.userService = injector.get(UserService);
+  }
+
+  defineInputType(): DocumentNode {
+    return gql`
+      input NativeAuthInput {
+        username: String!
+        password: String!
+      }
+    `;
+  }
+
+  async authenticate(
+    ctx: RequestContext,
+    data: NativeAuthenticationData,
+  ): Promise<User | false> {
+    const user = await this.userService.getUserByEmailAddress(
+      ctx,
+      data.username,
+    );
+    if (!user) {
+      return false;
     }
-
-    defineInputType(): DocumentNode {
-        return gql`
-            input NativeAuthInput {
-                username: String!
-                password: String!
-            }
-        `;
+    const passwordMatch = await this.verifyUserPassword(
+      ctx,
+      user.id,
+      data.password,
+    );
+    if (!passwordMatch) {
+      return false;
     }
+    return user;
+  }
 
-    async authenticate(ctx: RequestContext, data: NativeAuthenticationData): Promise<User | false> {
-        const user = await this.userService.getUserByEmailAddress(ctx, data.username);
-        if (!user) {
-            return false;
-        }
-        const passwordMatch = await this.verifyUserPassword(ctx, user.id, data.password);
-        if (!passwordMatch) {
-            return false;
-        }
-        return user;
+  /**
+   * Verify the provided password against the one we have for the given user.
+   */
+  async verifyUserPassword(
+    ctx: RequestContext,
+    userId: ID,
+    password: string,
+  ): Promise<boolean> {
+    const user = await this.connection.getRepository(ctx, User).findOne({
+      where: { id: userId },
+      relations: ["authenticationMethods"],
+    });
+    if (!user) {
+      return false;
     }
-
-    /**
-     * Verify the provided password against the one we have for the given user.
-     */
-    async verifyUserPassword(ctx: RequestContext, userId: ID, password: string): Promise<boolean> {
-        const user = await this.connection.getRepository(ctx, User).findOne({
-            where: { id: userId },
-            relations: ['authenticationMethods'],
-        });
-        if (!user) {
-            return false;
-        }
-        const nativeAuthMethod = user.getNativeAuthenticationMethod(false);
-        if (!nativeAuthMethod) {
-            return false;
-        }
-        const pw =
-            (
-                await this.connection.getRepository(ctx, NativeAuthenticationMethod).findOne({
-                    where: { id: nativeAuthMethod.id },
-                    select: ['passwordHash'],
-                })
-            )?.passwordHash ?? '';
-        const passwordMatches = await this.passwordCipher.check(password, pw);
-        if (!passwordMatches) {
-            return false;
-        }
-        return true;
+    const nativeAuthMethod = user.getNativeAuthenticationMethod(false);
+    if (!nativeAuthMethod) {
+      return false;
     }
+    const pw =
+      (
+        await this.connection
+          .getRepository(ctx, NativeAuthenticationMethod)
+          .findOne({
+            where: { id: nativeAuthMethod.id },
+            select: ["passwordHash"],
+          })
+      )?.passwordHash ?? "";
+    const passwordMatches = await this.passwordCipher.check(password, pw);
+    if (!passwordMatches) {
+      return false;
+    }
+    return true;
+  }
 }

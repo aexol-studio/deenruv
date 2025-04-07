@@ -2,7 +2,6 @@
 
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useGFFLP } from '@/lists/useGflp.js';
 import {
   useOrder,
   Button,
@@ -20,6 +19,7 @@ import {
   Separator,
   DryRunOptions,
   ChangesRegistry,
+  useGFFLP,
 } from '@deenruv/react-ui-devkit';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -97,7 +97,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
       <Card className="flex h-full flex-col border-l-4 border-l-blue-500 shadow-sm transition-shadow duration-200 hover:shadow dark:border-l-blue-400">
         <CardHeader className="pb-4">
           <div className="flex items-center gap-2">
-            <FileEdit className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+            <FileEdit className="size-5 text-blue-500 dark:text-blue-400" />
             <div>
               <CardTitle>{t('orderModification', 'Order Modification')}</CardTitle>
               <CardDescription className="mt-1">
@@ -122,7 +122,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
               />
               {!state.note?.value && (
                 <div className="absolute right-3 top-3 text-amber-500">
-                  <AlertCircle className="h-4 w-4" />
+                  <AlertCircle className="size-4" />
                 </div>
               )}
             </div>
@@ -141,8 +141,8 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
             <div className="flex flex-col space-y-4">
               <div className="border-border bg-muted/20 space-y-4 rounded-md border p-4">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
-                    <RefreshCw className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                  <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
+                    <RefreshCw className="size-4 text-blue-500 dark:text-blue-400" />
                   </div>
                   <h4 className="font-medium">{t('processingOptions', 'Processing Options')}</h4>
                 </div>
@@ -165,7 +165,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                       htmlFor="recalculateShipping"
                       className="flex cursor-pointer items-center gap-2 text-sm font-medium"
                     >
-                      <Truck className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                      <Truck className="size-4 text-blue-500 dark:text-blue-400" />
                       {t('recalculateShipping', 'Recalculate Shipping')}
                     </Label>
                   </div>
@@ -187,7 +187,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                       htmlFor="freezePromotions"
                       className="flex cursor-pointer items-center gap-2 text-sm font-medium"
                     >
-                      <Tag className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                      <Tag className="size-4 text-blue-500 dark:text-blue-400" />
                       {t('freezePromotions', 'Freeze Promotions')}
                     </Label>
                   </div>
@@ -196,7 +196,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                     <div className="flex items-center space-x-2">
                       <Checkbox id="refund" checked={sendRefund} onCheckedChange={(e) => setSendRefund(e as boolean)} />
                       <Label htmlFor="refund" className="flex cursor-pointer items-center gap-2 text-sm font-medium">
-                        <CreditCard className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                        <CreditCard className="size-4 text-blue-500 dark:text-blue-400" />
                         {t('refund', 'Process Refund')}
                       </Label>
                     </div>
@@ -226,12 +226,12 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
                   >
                     {isSubmitting ? (
                       <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <Loader2 className="size-4 animate-spin" />
                         {t('processing', 'Processing...')}
                       </>
                     ) : (
                       <>
-                        <Save className="h-4 w-4" />
+                        <Save className="size-4" />
                         {t('applyChanges', 'Apply Changes')}
                       </>
                     )}
@@ -241,7 +241,7 @@ export const ModifyingCard: React.FC<ModifyingCardProps> = ({ onNoteModified, on
               {!noteAdded && (
                 <TooltipContent className="border border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-800 dark:bg-amber-900/50 dark:text-amber-200">
                   <div className="flex items-center gap-2 px-1">
-                    <AlertCircle className="h-4 w-4" />
+                    <AlertCircle className="size-4" />
                     {t('disabledBtnTooltip', 'A note is required to apply changes')}
                   </div>
                 </TooltipContent>

@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSettings, useDetailView, CustomerDetailType, DetailViewMarker } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields, Stack } from '@/components';
+import {
+  CF,
+  EntityCustomFields,
+  useSettings,
+  useDetailView,
+  CustomerDetailType,
+  DetailViewMarker,
+} from '@deenruv/react-ui-devkit';
 import { PersonalDataCard } from '@/pages/customers/_components/PersonalDataCard';
 import { AddressesCard } from '@/pages/customers/_components/AddressesCard';
 
@@ -45,7 +51,7 @@ export const CustomerDetailView = () => {
   return (
     <main className="min-h-96">
       <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <Stack column className="gap-3">
+        <div className="flex flex-col gap-3">
           <PersonalDataCard setField={setField} state={state} />
           <DetailViewMarker position={'customers-detail-view'} />
           <EntityCustomFields
@@ -61,7 +67,7 @@ export const CustomerDetailView = () => {
             }}
           />
           {id && <AddressesCard addresses={addresses} customerId={id} onActionCompleted={handleFetchEntity} />}
-        </Stack>
+        </div>
       </div>
     </main>
   );

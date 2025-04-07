@@ -1,1 +1,1 @@
-export { DefaultRelationInput } from './DefaultRelationInput';
+export { DefaultRelationInput } from "./DefaultRelationInput";

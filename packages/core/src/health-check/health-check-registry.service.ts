@@ -1,4 +1,4 @@
-import { HealthIndicatorFunction } from '@nestjs/terminus';
+import { HealthIndicatorFunction } from "@nestjs/terminus";
 
 /**
  * @description
@@ -45,20 +45,22 @@ import { HealthIndicatorFunction } from '@nestjs/terminus';
  * @docsCategory health-check
  */
 export class HealthCheckRegistryService {
-    /** @internal */
-    get healthIndicatorFunctions(): HealthIndicatorFunction[] {
-        return this._healthIndicatorFunctions;
-    }
-    private _healthIndicatorFunctions: HealthIndicatorFunction[] = [];
+  /** @internal */
+  get healthIndicatorFunctions(): HealthIndicatorFunction[] {
+    return this._healthIndicatorFunctions;
+  }
+  private _healthIndicatorFunctions: HealthIndicatorFunction[] = [];
 
-    /**
-     * @description
-     * Registers one or more `HealthIndicatorFunctions` (see [Nestjs docs](https://docs.nestjs.com/recipes/terminus#setting-up-a-healthcheck))
-     * to be added to the health check endpoint.
-     * The indicator will also appear in the Admin UI's "system status" view.
-     */
-    registerIndicatorFunction(fn: HealthIndicatorFunction | HealthIndicatorFunction[]) {
-        const fnArray = Array.isArray(fn) ? fn : [fn];
-        this._healthIndicatorFunctions.push(...fnArray);
-    }
+  /**
+   * @description
+   * Registers one or more `HealthIndicatorFunctions` (see [Nestjs docs](https://docs.nestjs.com/recipes/terminus#setting-up-a-healthcheck))
+   * to be added to the health check endpoint.
+   * The indicator will also appear in the Admin UI's "system status" view.
+   */
+  registerIndicatorFunction(
+    fn: HealthIndicatorFunction | HealthIndicatorFunction[],
+  ) {
+    const fnArray = Array.isArray(fn) ? fn : [fn];
+    this._healthIndicatorFunctions.push(...fnArray);
+  }
 }

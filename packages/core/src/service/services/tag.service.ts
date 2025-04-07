@@ -1,19 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import {
-    CreateTagInput,
-    DeletionResponse,
-    DeletionResult,
-    UpdateTagInput,
-} from '@deenruv/common/lib/generated-types';
-import { ID, PaginatedList, Type } from '@deenruv/common/lib/shared-types';
-import { unique } from '@deenruv/common/lib/unique';
+  CreateTagInput,
+  DeletionResponse,
+  DeletionResult,
+  UpdateTagInput,
+} from "@deenruv/common/lib/generated-types";
+import { ID, PaginatedList, Type } from "@deenruv/common/lib/shared-types";
+import { unique } from "@deenruv/common/lib/unique";
 
-import { RequestContext } from '../../api/common/request-context';
-import { ListQueryOptions, Taggable } from '../../common/types/common-types';
-import { TransactionalConnection } from '../../connection/transactional-connection';
-import { DeenruvEntity } from '../../entity/base/base.entity';
-import { Tag } from '../../entity/tag/tag.entity';
-import { ListQueryBuilder } from '../helpers/list-query-builder/list-query-builder';
+import { RequestContext } from "../../api/common/request-context";
+import { ListQueryOptions, Taggable } from "../../common/types/common-types";
+import { TransactionalConnection } from "../../connection/transactional-connection";
+import { DeenruvEntity } from "../../entity/base/base.entity";
+import { Tag } from "../../entity/tag/tag.entity";
+import { ListQueryBuilder } from "../helpers/list-query-builder/list-query-builder";
 
 /**
  * @description
@@ -23,71 +23,85 @@ import { ListQueryBuilder } from '../helpers/list-query-builder/list-query-build
  */
 @Injectable()
 export class TagService {
-    constructor(
-        private connection: TransactionalConnection,
-        private listQueryBuilder: ListQueryBuilder,
-    ) {}
+  constructor(
+    private connection: TransactionalConnection,
+    private listQueryBuilder: ListQueryBuilder,
+  ) {}
 
-    findAll(ctx: RequestContext, options?: ListQueryOptions<Tag>): Promise<PaginatedList<Tag>> {
-        return this.listQueryBuilder
-            .build(Tag, options, { ctx })
-            .getManyAndCount()
-            .then(([items, totalItems]) => ({
-                items,
-                totalItems,
-            }));
-    }
+  findAll(
+    ctx: RequestContext,
+    options?: ListQueryOptions<Tag>,
+  ): Promise<PaginatedList<Tag>> {
+    return this.listQueryBuilder
+      .build(Tag, options, { ctx })
+      .getManyAndCount()
+      .then(([items, totalItems]) => ({
+        items,
+        totalItems,
+      }));
+  }
 
-    findOne(ctx: RequestContext, tagId: ID): Promise<Tag | undefined> {
-        return this.connection
-            .getRepository(ctx, Tag)
-            .findOne({ where: { id: tagId } })
-            .then(result => result ?? undefined);
-    }
+  findOne(ctx: RequestContext, tagId: ID): Promise<Tag | undefined> {
+    return this.connection
+      .getRepository(ctx, Tag)
+      .findOne({ where: { id: tagId } })
+      .then((result) => result ?? undefined);
+  }
 
-    create(ctx: RequestContext, input: CreateTagInput) {
-        return this.tagValueToTag(ctx, input.value);
-    }
+  create(ctx: RequestContext, input: CreateTagInput) {
+    return this.tagValueToTag(ctx, input.value);
+  }
 
-    async update(ctx: RequestContext, input: UpdateTagInput) {
-        const tag = await this.connection.getEntityOrThrow(ctx, Tag, input.id);
-        if (input.value) {
-            tag.value = input.value;
-            await this.connection.getRepository(ctx, Tag).save(tag);
-        }
-        return tag;
+  async update(ctx: RequestContext, input: UpdateTagInput) {
+    const tag = await this.connection.getEntityOrThrow(ctx, Tag, input.id);
+    if (input.value) {
+      tag.value = input.value;
+      await this.connection.getRepository(ctx, Tag).save(tag);
     }
+    return tag;
+  }
 
-    async delete(ctx: RequestContext, id: ID): Promise<DeletionResponse> {
-        const tag = await this.connection.getEntityOrThrow(ctx, Tag, id);
-        await this.connection.getRepository(ctx, Tag).remove(tag);
-        return {
-            result: DeletionResult.DELETED,
-        };
-    }
+  async delete(ctx: RequestContext, id: ID): Promise<DeletionResponse> {
+    const tag = await this.connection.getEntityOrThrow(ctx, Tag, id);
+    await this.connection.getRepository(ctx, Tag).remove(tag);
+    return {
+      result: DeletionResult.DELETED,
+    };
+  }
 
-    async valuesToTags(ctx: RequestContext, values: string[]): Promise<Tag[]> {
-        const tags: Tag[] = [];
-        for (const value of unique(values)) {
-            tags.push(await this.tagValueToTag(ctx, value));
-        }
-        return tags;
+  async valuesToTags(ctx: RequestContext, values: string[]): Promise<Tag[]> {
+    const tags: Tag[] = [];
+    for (const value of unique(values)) {
+      tags.push(await this.tagValueToTag(ctx, value));
     }
+    return tags;
+  }
 
-    getTagsForEntity(ctx: RequestContext, entity: Type<DeenruvEntity & Taggable>, id: ID): Promise<Tag[]> {
-        return this.connection
-            .getRepository(ctx, entity)
-            .createQueryBuilder()
-            .relation(entity, 'tags')
-            .of(id)
-            .loadMany();
-    }
+  getTagsForEntity(
+    ctx: RequestContext,
+    entity: Type<DeenruvEntity & Taggable>,
+    id: ID,
+  ): Promise<Tag[]> {
+    return this.connection
+      .getRepository(ctx, entity)
+      .createQueryBuilder()
+      .relation(entity, "tags")
+      .of(id)
+      .loadMany();
+  }
 
-    private async tagValueToTag(ctx: RequestContext, value: string): Promise<Tag> {
-        const existing = await this.connection.getRepository(ctx, Tag).findOne({ where: { value } });
-        if (existing) {
-            return existing;
-        }
-        return await this.connection.getRepository(ctx, Tag).save(new Tag({ value }));
+  private async tagValueToTag(
+    ctx: RequestContext,
+    value: string,
+  ): Promise<Tag> {
+    const existing = await this.connection
+      .getRepository(ctx, Tag)
+      .findOne({ where: { value } });
+    if (existing) {
+      return existing;
     }
+    return await this.connection
+      .getRepository(ctx, Tag)
+      .save(new Tag({ value }));
+  }
 }

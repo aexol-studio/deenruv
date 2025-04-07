@@ -1,7 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { DetailView, GFFLPFormField, createDeenruvForm, getMutation, useMutation } from '@deenruv/react-ui-devkit';
-import { useValidators } from '@/hooks/useValidators.js';
+import {
+  useValidators,
+  DetailView,
+  GFFLPFormField,
+  createDeenruvForm,
+  getMutation,
+  useMutation,
+} from '@deenruv/react-ui-devkit';
 import { FacetsDetailView } from '@/pages/facets/_components/FacetDetailView.js';
 import { useCallback } from 'react';
 import { ModelTypes } from '@deenruv/admin-types';

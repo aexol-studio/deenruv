@@ -1,6 +1,6 @@
-import { Injector, RequestContext } from '@deenruv/core';
+import { Injector, RequestContext } from "@deenruv/core";
 
-import { LoadTemplateInput, Partial } from '../types';
+import { LoadTemplateInput, Partial } from "../types";
 
 /**
  * @description
@@ -30,16 +30,20 @@ import { LoadTemplateInput, Partial } from '../types';
  * @docsWeight 0
  */
 export interface TemplateLoader {
-    /**
-     * @description
-     * Load template and return it's content as a string
-     */
-    loadTemplate(injector: Injector, ctx: RequestContext, input: LoadTemplateInput): Promise<string>;
+  /**
+   * @description
+   * Load template and return it's content as a string
+   */
+  loadTemplate(
+    injector: Injector,
+    ctx: RequestContext,
+    input: LoadTemplateInput,
+  ): Promise<string>;
 
-    /**
-     * @description
-     * Load partials and return their contents.
-     * This method is only called during initialization, i.e. during server startup.
-     */
-    loadPartials?(): Promise<Partial[]>;
+  /**
+   * @description
+   * Load partials and return their contents.
+   * This method is only called during initialization, i.e. during server startup.
+   */
+  loadPartials?(): Promise<Partial[]>;
 }

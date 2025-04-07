@@ -1,7 +1,7 @@
 export type MetricResponse = {
-    orderId: string;
-    orderPlacedAt: string;
-    totalWithTax: number;
-    orderProducts: { id: number; name: string; quantity: number }[];
-    overallQuantity: number;
+  orderId: string;
+  orderPlacedAt: string;
+  totalWithTax: number;
+  orderProducts: { id: number; name: string; quantity: number }[];
+  overallQuantity: number;
 };

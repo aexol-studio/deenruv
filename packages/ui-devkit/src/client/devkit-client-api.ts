@@ -1,15 +1,15 @@
 import {
-    ActiveRouteData,
-    BaseExtensionMessage,
-    ExtensionMessage,
-    MessageResponse,
-    NotificationMessage,
-    WatchQueryFetchPolicy,
-} from '@deenruv/common/lib/extension-host-types';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+  ActiveRouteData,
+  BaseExtensionMessage,
+  ExtensionMessage,
+  MessageResponse,
+  NotificationMessage,
+  WatchQueryFetchPolicy,
+} from "@deenruv/common/lib/extension-host-types";
+import { Observable } from "rxjs";
+import { take } from "rxjs/operators";
 
-let targetOrigin = 'http://localhost:3000';
+let targetOrigin = "http://localhost:3000";
 
 /**
  * @description
@@ -22,7 +22,7 @@ let targetOrigin = 'http://localhost:3000';
  * @docsPage UiDevkitClient
  */
 export function setTargetOrigin(value: string) {
-    targetOrigin = value;
+  targetOrigin = value;
 }
 
 /**
@@ -41,7 +41,7 @@ export function setTargetOrigin(value: string) {
  * @docsPage UiDevkitClient
  */
 export function getActivatedRoute(): Promise<ActiveRouteData> {
-    return sendMessage('active-route', {}).toPromise();
+  return sendMessage("active-route", {}).toPromise();
 }
 
 /**
@@ -68,22 +68,26 @@ export function getActivatedRoute(): Promise<ActiveRouteData> {
  * @docsPage UiDevkitClient
  */
 export function graphQlQuery<T, V extends { [key: string]: any }>(
-    document: string,
-    variables?: { [key: string]: any },
-    fetchPolicy?: WatchQueryFetchPolicy,
+  document: string,
+  variables?: { [key: string]: any },
+  fetchPolicy?: WatchQueryFetchPolicy,
 ): {
-    then: Promise<T>['then'];
-    stream: Observable<T>;
+  then: Promise<T>["then"];
+  stream: Observable<T>;
 } {
-    const result$ = sendMessage('graphql-query', { document, variables, fetchPolicy });
-    return {
-        then: (...args: any[]) =>
-            result$
-                .pipe(take(1))
-                .toPromise()
-                .then(...args),
-        stream: result$,
-    };
+  const result$ = sendMessage("graphql-query", {
+    document,
+    variables,
+    fetchPolicy,
+  });
+  return {
+    then: (...args: any[]) =>
+      result$
+        .pipe(take(1))
+        .toPromise()
+        .then(...args),
+    stream: result$,
+  };
 }
 
 /**
@@ -110,21 +114,21 @@ export function graphQlQuery<T, V extends { [key: string]: any }>(
  * @docsPage UiDevkitClient
  */
 export function graphQlMutation<T, V extends { [key: string]: any }>(
-    document: string,
-    variables?: { [key: string]: any },
+  document: string,
+  variables?: { [key: string]: any },
 ): {
-    then: Promise<T>['then'];
-    stream: Observable<T>;
+  then: Promise<T>["then"];
+  stream: Observable<T>;
 } {
-    const result$ = sendMessage('graphql-mutation', { document, variables });
-    return {
-        then: (...args: any[]) =>
-            result$
-                .pipe(take(1))
-                .toPromise()
-                .then(...args),
-        stream: result$,
-    };
+  const result$ = sendMessage("graphql-mutation", { document, variables });
+  return {
+    then: (...args: any[]) =>
+      result$
+        .pipe(take(1))
+        .toPromise()
+        .then(...args),
+    stream: result$,
+  };
 }
 
 /**
@@ -144,42 +148,48 @@ export function graphQlMutation<T, V extends { [key: string]: any }>(
  * @docsCategory ui-devkit
  * @docsPage UiDevkitClient
  */
-export function notify(options: NotificationMessage['data']): void {
-    void sendMessage('notification', options).toPromise();
+export function notify(options: NotificationMessage["data"]): void {
+  void sendMessage("notification", options).toPromise();
 }
 
-function sendMessage<T extends ExtensionMessage>(type: T['type'], data: T['data']): Observable<any> {
-    const requestId = type + '__' + Math.random().toString(36).substr(3);
-    const message: BaseExtensionMessage = {
-        requestId,
-        type,
-        data,
+function sendMessage<T extends ExtensionMessage>(
+  type: T["type"],
+  data: T["data"],
+): Observable<any> {
+  const requestId = type + "__" + Math.random().toString(36).substr(3);
+  const message: BaseExtensionMessage = {
+    requestId,
+    type,
+    data,
+  };
+
+  return new Observable<any>((subscriber) => {
+    const hostWindow = window.opener || window.parent;
+    const handleReply = (event: MessageEvent) => {
+      const response: MessageResponse = event.data;
+      if (response && response.requestId === requestId) {
+        if (response.complete) {
+          subscriber.complete();
+          tearDown();
+          return;
+        }
+        if (response.error) {
+          subscriber.error(response.data);
+          tearDown();
+          return;
+        }
+        subscriber.next(response.data);
+      }
     };
+    const tearDown = () => {
+      hostWindow.postMessage(
+        { requestId, type: "cancellation", data: null },
+        targetOrigin,
+      );
+    };
+    window.addEventListener("message", handleReply);
+    hostWindow.postMessage(message, targetOrigin);
 
-    return new Observable<any>(subscriber => {
-        const hostWindow = window.opener || window.parent;
-        const handleReply = (event: MessageEvent) => {
-            const response: MessageResponse = event.data;
-            if (response && response.requestId === requestId) {
-                if (response.complete) {
-                    subscriber.complete();
-                    tearDown();
-                    return;
-                }
-                if (response.error) {
-                    subscriber.error(response.data);
-                    tearDown();
-                    return;
-                }
-                subscriber.next(response.data);
-            }
-        };
-        const tearDown = () => {
-            hostWindow.postMessage({ requestId, type: 'cancellation', data: null }, targetOrigin);
-        };
-        window.addEventListener('message', handleReply);
-        hostWindow.postMessage(message, targetOrigin);
-
-        return tearDown;
-    });
+    return tearDown;
+  });
 }

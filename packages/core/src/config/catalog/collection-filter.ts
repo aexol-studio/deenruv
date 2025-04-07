@@ -1,23 +1,24 @@
-import { ConfigArg } from '@deenruv/common/lib/generated-types';
-import { SelectQueryBuilder } from 'typeorm';
+import { ConfigArg } from "@deenruv/common/lib/generated-types";
+import { SelectQueryBuilder } from "typeorm";
 
 import {
-    ConfigArgs,
-    ConfigArgValues,
-    ConfigurableOperationDef,
-    ConfigurableOperationDefOptions,
-} from '../../common/configurable-operation';
-import { ProductVariant } from '../../entity/product-variant/product-variant.entity';
+  ConfigArgs,
+  ConfigArgValues,
+  ConfigurableOperationDef,
+  ConfigurableOperationDefOptions,
+} from "../../common/configurable-operation";
+import { ProductVariant } from "../../entity/product-variant/product-variant.entity";
 
 export type ApplyCollectionFilterFn<T extends ConfigArgs> = (
-    qb: SelectQueryBuilder<ProductVariant>,
-    args: ConfigArgValues<T>,
+  qb: SelectQueryBuilder<ProductVariant>,
+  args: ConfigArgValues<T>,
 ) => SelectQueryBuilder<ProductVariant>;
 
-export interface CollectionFilterConfig<T extends ConfigArgs> extends ConfigurableOperationDefOptions<T> {
-    apply: ApplyCollectionFilterFn<T>;
+export interface CollectionFilterConfig<T extends ConfigArgs>
+  extends ConfigurableOperationDefOptions<T> {
+  apply: ApplyCollectionFilterFn<T>;
 }
-/* eslint-disable max-len */
+
 /**
  * @description
  * A CollectionFilter defines a rule which can be used to associate ProductVariants with a Collection.
@@ -61,15 +62,19 @@ export interface CollectionFilterConfig<T extends ConfigArgs> extends Configurab
  *
  * @docsCategory configuration
  */
-export class CollectionFilter<T extends ConfigArgs = ConfigArgs> extends ConfigurableOperationDef<T> {
-    /* eslint-enable max-len */
-    private readonly applyFn: ApplyCollectionFilterFn<T>;
-    constructor(config: CollectionFilterConfig<T>) {
-        super(config);
-        this.applyFn = config.apply;
-    }
+export class CollectionFilter<
+  T extends ConfigArgs = ConfigArgs,
+> extends ConfigurableOperationDef<T> {
+  private readonly applyFn: ApplyCollectionFilterFn<T>;
+  constructor(config: CollectionFilterConfig<T>) {
+    super(config);
+    this.applyFn = config.apply;
+  }
 
-    apply(qb: SelectQueryBuilder<ProductVariant>, args: ConfigArg[]): SelectQueryBuilder<ProductVariant> {
-        return this.applyFn(qb, this.argsArrayToHash(args));
-    }
+  apply(
+    qb: SelectQueryBuilder<ProductVariant>,
+    args: ConfigArg[],
+  ): SelectQueryBuilder<ProductVariant> {
+    return this.applyFn(qb, this.argsArrayToHash(args));
+  }
 }

@@ -1,8 +1,8 @@
-import ms from 'ms';
+import ms from "ms";
 
-import { RequestContext } from '../../api/common/request-context';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
-import { Order } from '../../entity/order/order.entity';
+import { RequestContext } from "../../api/common/request-context";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
+import { Order } from "../../entity/order/order.entity";
 
 /**
  * @description
@@ -36,11 +36,11 @@ import { Order } from '../../entity/order/order.entity';
  * @docsPage OrderByCodeAccessStrategy
  */
 export interface OrderByCodeAccessStrategy extends InjectableStrategy {
-    /**
-     * @description
-     * Gives or denies permission to access the requested Order
-     */
-    canAccessOrder(ctx: RequestContext, order: Order): boolean | Promise<boolean>;
+  /**
+   * @description
+   * Gives or denies permission to access the requested Order
+   */
+  canAccessOrder(ctx: RequestContext, order: Order): boolean | Promise<boolean>;
 }
 
 /**
@@ -54,26 +54,31 @@ export interface OrderByCodeAccessStrategy extends InjectableStrategy {
  * @docsCategory orders
  * @docsPage OrderByCodeAccessStrategy
  */
-export class DefaultOrderByCodeAccessStrategy implements OrderByCodeAccessStrategy {
-    private anonymousAccessDuration;
+export class DefaultOrderByCodeAccessStrategy
+  implements OrderByCodeAccessStrategy
+{
+  private anonymousAccessDuration;
 
-    constructor(anonymousAccessDuration: string) {
-        this.anonymousAccessDuration = anonymousAccessDuration;
-    }
+  constructor(anonymousAccessDuration: string) {
+    this.anonymousAccessDuration = anonymousAccessDuration;
+  }
 
-    canAccessOrder(ctx: RequestContext, order: Order): boolean {
-        // Order owned by active user
-        const activeUserMatches = order?.customer?.user?.id === ctx.activeUserId;
+  canAccessOrder(ctx: RequestContext, order: Order): boolean {
+    // Order owned by active user
+    const activeUserMatches = order?.customer?.user?.id === ctx.activeUserId;
 
-        // For guest Customers, allow access to the Order for the following
-        // time period
-        const anonymousAccessPermitted = () => {
-            const anonymousAccessLimit = ms(this.anonymousAccessDuration);
-            const orderPlaced = order.orderPlacedAt ? +order.orderPlacedAt : 0;
-            const now = Date.now();
-            return now - orderPlaced < anonymousAccessLimit;
-        };
+    // For guest Customers, allow access to the Order for the following
+    // time period
+    const anonymousAccessPermitted = () => {
+      const anonymousAccessLimit = ms(this.anonymousAccessDuration);
+      const orderPlaced = order.orderPlacedAt ? +order.orderPlacedAt : 0;
+      const now = Date.now();
+      return now - orderPlaced < anonymousAccessLimit;
+    };
 
-        return (ctx.activeUserId && activeUserMatches) || (!ctx.activeUserId && anonymousAccessPermitted());
-    }
+    return (
+      (ctx.activeUserId && activeUserMatches) ||
+      (!ctx.activeUserId && anonymousAccessPermitted())
+    );
+  }
 }

@@ -1,4 +1,3 @@
-import { Stack } from '@/components';
 import { Label, ToggleGroup, ToggleGroupItem } from '@deenruv/react-ui-devkit';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +11,7 @@ interface CombinationModeProps {
 export const CombinationMode: React.FC<CombinationModeProps> = ({ label, value, onChange }) => {
   const { t } = useTranslation('collections');
   return (
-    <Stack column className="basis-full gap-3">
+    <div className="flex basis-full flex-col gap-3">
       <Label>{label}</Label>
       <ToggleGroup type="single" value={value} onValueChange={onChange} className=" justify-start">
         <ToggleGroupItem variant={'outline'} size={'sm'} value={'true'}>
@@ -22,6 +21,6 @@ export const CombinationMode: React.FC<CombinationModeProps> = ({ label, value, 
           {t('details.filters.labels.arguments.or')}
         </ToggleGroupItem>
       </ToggleGroup>
-    </Stack>
+    </div>
   );
 };

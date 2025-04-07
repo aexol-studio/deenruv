@@ -80,7 +80,7 @@ export const DeenruvDeveloperIndicator = () => {
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            className="border-primary flex h-10 w-10 items-center justify-center rounded-full border-dashed text-xs"
+            className="border-primary flex size-10 items-center justify-center rounded-full border-dashed text-xs"
           >
             DDP
           </Button>
@@ -120,7 +120,7 @@ export const DeenruvDeveloperIndicator = () => {
 
                   <div className="rounded-md border p-3">
                     <div className="mb-1 flex items-center gap-2">
-                      <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                      <div className="size-3 rounded-full bg-green-500"></div>
                       <h3 className="text-sm font-medium">Plugins</h3>
                     </div>
                     <ScrollArea className="mt-2 h-[250px]">
@@ -134,7 +134,7 @@ export const DeenruvDeveloperIndicator = () => {
                               <div className="text-sm font-medium">{plugin.name}</div>
                               <div className="text-xs text-gray-500 dark:text-gray-400">v{plugin.version}</div>
                             </div>
-                            <div className="mr-1 h-2 w-2 rounded-full bg-green-500" title="Active"></div>
+                            <div className="mr-1 size-2 rounded-full bg-green-500" title="Active"></div>
                           </div>
                         ))}
                         {plugins.length === 0 && (

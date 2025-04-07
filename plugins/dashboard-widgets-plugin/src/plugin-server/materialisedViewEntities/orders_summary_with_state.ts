@@ -1,4 +1,4 @@
-import { Index, ViewColumn, ViewEntity } from 'typeorm';
+import { Index, ViewColumn, ViewEntity } from "typeorm";
 
 @ViewEntity({
   materialized: true,
@@ -28,7 +28,7 @@ import { Index, ViewColumn, ViewEntity } from 'typeorm';
         ORDER BY hour ASC
   `,
 })
-@Index(['hour', 'channelId', 'state'], { unique: true })
+@Index(["hour", "channelId", "state"], { unique: true })
 export class OrderSummaryWithStateViewEntity {
   @ViewColumn()
   hour: Date;

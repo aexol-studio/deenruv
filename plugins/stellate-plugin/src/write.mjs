@@ -1,18 +1,18 @@
-import fetch from 'node-fetch'
-import { getIntrospectionQuery } from 'graphql'
+import fetch from "node-fetch";
+import { getIntrospectionQuery } from "graphql";
 
 // TODO: you can get a token by means of using settings --> api-tokens
-const token = '';
-const apiUrl = 'https://api.graphcdn.io/api'
-const originUrl = 'https://trygql.formidable.dev/graphql/basic-pokedex'
+const token = "";
+const apiUrl = "https://api.graphcdn.io/api";
+const originUrl = "https://trygql.formidable.dev/graphql/basic-pokedex";
 
 // The app { config { input } } can be used to write the graphcdn.YAML file with help of libs like "@atomist/yaml-updater"
 async function listOrganizations() {
   const response = await fetch(apiUrl, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'graphcdn-token': token,
+      "Content-Type": "application/json",
+      "graphcdn-token": token,
     },
     body: JSON.stringify({
       query: /* GraphQL */ `
@@ -26,17 +26,17 @@ async function listOrganizations() {
           }
         }
       `,
-    })
-  })
+    }),
+  });
 
-  const result = await response.json()
+  const result = await response.json();
 
-  return result.data.user.organizations
+  return result.data.user.organizations;
 }
 
 async function pushAppConfig(orgId, schema) {
   const config = {
-    name: 'node-write-test',
+    name: "node-write-test",
     originUrl,
     schema: originUrl,
     queryDepthLimit: 20,
@@ -44,28 +44,34 @@ async function pushAppConfig(orgId, schema) {
     enablePlayground: true,
     injectHeaders: true,
     headers: {
-      'something-to-inject': '1',
+      "something-to-inject": "1",
     },
     keyFields: {
       types: {
-        Pokemon: ['id', 'name']
-      }
+        Pokemon: ["id", "name"],
+      },
     },
     scopes: {
-      AUTHENTICATED: 'header:Authorization',
+      AUTHENTICATED: "header:Authorization",
     },
-    rootTypeNames: { query: 'Query' },
+    rootTypeNames: { query: "Query" },
     rules: [
-      { description: 'Cache all queries', maxAge: 600, swr: 900, scope: 'AUTHENTICATED', types: ['Query'] },
+      {
+        description: "Cache all queries",
+        maxAge: 600,
+        swr: 900,
+        scope: "AUTHENTICATED",
+        types: ["Query"],
+      },
     ],
-    bypassCacheHeaders: [{ name: 'x-preview-token' }],
-  }
+    bypassCacheHeaders: [{ name: "x-preview-token" }],
+  };
 
   const result = await fetch(apiUrl, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'graphcdn-token': token,
+      "Content-Type": "application/json",
+      "graphcdn-token": token,
     },
     body: JSON.stringify({
       query: /* GraphQL */ `
@@ -86,14 +92,14 @@ async function pushAppConfig(orgId, schema) {
         input: config,
         schema: schema,
         appName: config.name,
-      }
-    })
-  })
+      },
+    }),
+  });
 }
 
 async function createApp(orgId, schema) {
   const config = {
-    name: 'node-write-test',
+    name: "node-write-test",
     originUrl,
     schema: originUrl,
     queryDepthLimit: 20,
@@ -101,28 +107,34 @@ async function createApp(orgId, schema) {
     enablePlayground: true,
     injectHeaders: true,
     headers: {
-      'something-to-inject': '1',
+      "something-to-inject": "1",
     },
     keyFields: {
       types: {
-        Pokemon: ['id', 'name']
-      }
+        Pokemon: ["id", "name"],
+      },
     },
     scopes: {
-      AUTHENTICATED: 'header:Authorization',
+      AUTHENTICATED: "header:Authorization",
     },
-    rootTypeNames: { query: 'Query' },
+    rootTypeNames: { query: "Query" },
     rules: [
-      { description: 'Cache all queries', maxAge: 600, swr: 900, scope: 'AUTHENTICATED', types: ['Query'] },
+      {
+        description: "Cache all queries",
+        maxAge: 600,
+        swr: 900,
+        scope: "AUTHENTICATED",
+        types: ["Query"],
+      },
     ],
-    bypassCacheHeaders: [{ name: 'x-preview-token' }],
-  }
+    bypassCacheHeaders: [{ name: "x-preview-token" }],
+  };
 
   const result = await fetch(apiUrl, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'graphcdn-token': token,
+      "Content-Type": "application/json",
+      "graphcdn-token": token,
     },
     body: JSON.stringify({
       query: /* GraphQL */ `
@@ -146,23 +158,23 @@ async function createApp(orgId, schema) {
       variables: {
         input: config,
         schema: schema,
-        organizationId: orgId
-      }
-    })
-  })
+        organizationId: orgId,
+      },
+    }),
+  });
 
-  return await result.json()
+  return await result.json();
 }
 
 async function getServices(slug) {
   const response = await fetch(apiUrl, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
-      'graphcdn-token': token,
+      "Content-Type": "application/json",
+      "graphcdn-token": token,
     },
     body: JSON.stringify({
-      query: /* GraphQL */`
+      query: /* GraphQL */ `
         query ($slug: String!) {
           organization(slug: $slug) {
             name
@@ -176,35 +188,35 @@ async function getServices(slug) {
           }
         }
       `,
-      variables: { slug }
-    })
-  })
+      variables: { slug },
+    }),
+  });
 
-  const result = await response.json()
+  const result = await response.json();
 
-  return result.data.organization.apps
+  return result.data.organization.apps;
 }
 
 async function main() {
-  const introspectionQuery = getIntrospectionQuery()
+  const introspectionQuery = getIntrospectionQuery();
 
   const introspectionResponse = await fetch(originUrl, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       query: introspectionQuery,
-    })
-  })
+    }),
+  });
 
-  const { data: schema } = await introspectionResponse.json()
+  const { data: schema } = await introspectionResponse.json();
 
   const organizations = await listOrganizations();
 
-  console.log(organizations)
-  const result = await createApp(organizations[0].id, schema)
-  console.log(result)
+  console.log(organizations);
+  const result = await createApp(organizations[0].id, schema);
+  console.log(result);
 }
 
-main()
+main();

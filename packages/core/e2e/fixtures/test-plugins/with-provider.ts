@@ -1,34 +1,34 @@
-import { Injectable } from '@nestjs/common';
-import { Query, Resolver } from '@nestjs/graphql';
-import { DeenruvPlugin } from '@deenruv/core';
-import gql from 'graphql-tag';
+import { Injectable } from "@nestjs/common";
+import { Query, Resolver } from "@nestjs/graphql";
+import { DeenruvPlugin } from "@deenruv/core";
+import gql from "graphql-tag";
 
 @Injectable()
 export class NameService {
-    getNames(): string[] {
-        return ['seon', 'linda', 'hong'];
-    }
+  getNames(): string[] {
+    return ["seon", "linda", "hong"];
+  }
 }
 
 @Resolver()
 export class TestResolverWithInjection {
-    constructor(private nameService: NameService) {}
+  constructor(private nameService: NameService) {}
 
-    @Query()
-    names() {
-        return this.nameService.getNames();
-    }
+  @Query()
+  names() {
+    return this.nameService.getNames();
+  }
 }
 
 @DeenruvPlugin({
-    providers: [NameService],
-    shopApiExtensions: {
-        resolvers: [TestResolverWithInjection],
-        schema: gql`
-            extend type Query {
-                names: [String]!
-            }
-        `,
-    },
+  providers: [NameService],
+  shopApiExtensions: {
+    resolvers: [TestResolverWithInjection],
+    schema: gql`
+      extend type Query {
+        names: [String]!
+      }
+    `,
+  },
 })
 export class TestPluginWithProvider {}

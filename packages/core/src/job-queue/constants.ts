@@ -1,1 +1,1 @@
-export const loggerCtx = 'JobQueue';
+export const loggerCtx = "JobQueue";

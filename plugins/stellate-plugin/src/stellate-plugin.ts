@@ -1,17 +1,22 @@
-import { Inject, OnApplicationBootstrap } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
-import { EventBus, Injector, PluginCommonModule, DeenruvPlugin } from '@deenruv/core';
-import { buffer, debounceTime } from 'rxjs/operators';
+import { Inject, OnApplicationBootstrap } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
+import {
+  EventBus,
+  Injector,
+  PluginCommonModule,
+  DeenruvPlugin,
+} from "@deenruv/core";
+import { buffer, debounceTime } from "rxjs/operators";
 
-import { shopApiExtensions } from './api/api-extensions';
-import { SearchResponseFieldResolver } from './api/search-response.resolver';
-import { STELLATE_PLUGIN_OPTIONS } from './constants';
-import { StellateService } from './service/stellate.service';
-import { StellatePluginOptions } from './types';
+import { shopApiExtensions } from "./api/api-extensions";
+import { SearchResponseFieldResolver } from "./api/search-response.resolver";
+import { STELLATE_PLUGIN_OPTIONS } from "./constants";
+import { StellateService } from "./service/stellate.service";
+import { StellatePluginOptions } from "./types";
 
 const StellateOptionsProvider = {
-    provide: STELLATE_PLUGIN_OPTIONS,
-    useFactory: () => StellatePlugin.options,
+  provide: STELLATE_PLUGIN_OPTIONS,
+  useFactory: () => StellatePlugin.options,
 };
 
 /**
@@ -244,45 +249,53 @@ const StellateOptionsProvider = {
  * @docsCategory core plugins/StellatePlugin
  */
 @DeenruvPlugin({
-    imports: [PluginCommonModule],
-    providers: [StellateOptionsProvider, StellateService],
-    shopApiExtensions: {
-        schema: shopApiExtensions,
-        resolvers: [SearchResponseFieldResolver],
-    },
-    compatibility: '^0.0.0',
+  imports: [PluginCommonModule],
+  providers: [StellateOptionsProvider, StellateService],
+  shopApiExtensions: {
+    schema: shopApiExtensions,
+    resolvers: [SearchResponseFieldResolver],
+  },
+  compatibility: "^0.0.0",
 })
 export class StellatePlugin implements OnApplicationBootstrap {
-    static options: StellatePluginOptions;
+  static options: StellatePluginOptions;
 
-    static init(options: StellatePluginOptions) {
-        this.options = options;
-        return this;
+  static init(options: StellatePluginOptions) {
+    this.options = options;
+    return this;
+  }
+
+  constructor(
+    @Inject(STELLATE_PLUGIN_OPTIONS) private options: StellatePluginOptions,
+    private eventBus: EventBus,
+    private stellateService: StellateService,
+    private moduleRef: ModuleRef,
+  ) {}
+
+  onApplicationBootstrap() {
+    const injector = new Injector(this.moduleRef);
+
+    for (const purgeRule of this.options.purgeRules ?? []) {
+      const source$ = this.eventBus.ofType(purgeRule.eventType);
+      source$
+        .pipe(
+          buffer(
+            source$.pipe(
+              debounceTime(
+                purgeRule.bufferTimeMs ??
+                  this.options.defaultBufferTimeMs ??
+                  2000,
+              ),
+            ),
+          ),
+        )
+        .subscribe((events) =>
+          purgeRule.handle({
+            events,
+            injector,
+            stellateService: this.stellateService,
+          }),
+        );
     }
-
-    constructor(
-        @Inject(STELLATE_PLUGIN_OPTIONS) private options: StellatePluginOptions,
-        private eventBus: EventBus,
-        private stellateService: StellateService,
-        private moduleRef: ModuleRef,
-    ) {}
-
-    onApplicationBootstrap() {
-        const injector = new Injector(this.moduleRef);
-
-        for (const purgeRule of this.options.purgeRules ?? []) {
-            const source$ = this.eventBus.ofType(purgeRule.eventType);
-            source$
-                .pipe(
-                    buffer(
-                        source$.pipe(
-                            debounceTime(purgeRule.bufferTimeMs ?? this.options.defaultBufferTimeMs ?? 2000),
-                        ),
-                    ),
-                )
-                .subscribe(events =>
-                    purgeRule.handle({ events, injector, stellateService: this.stellateService }),
-                );
-        }
-    }
+  }
 }

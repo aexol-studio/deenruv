@@ -1,9 +1,9 @@
-import { ID, Type } from '@deenruv/common/lib/shared-types';
+import { ID, Type } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api';
-import { ChannelAware } from '../../common';
-import { DeenruvEntity } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api";
+import { ChannelAware } from "../../common";
+import { DeenruvEntity } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -14,14 +14,16 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  * @since 1.4
  */
-export class ChangeChannelEvent<T extends ChannelAware & DeenruvEntity> extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public entity: T,
-        public channelIds: ID[],
-        public type: 'assigned' | 'removed',
-        public entityType?: Type<T>,
-    ) {
-        super();
-    }
+export class ChangeChannelEvent<
+  T extends ChannelAware & DeenruvEntity,
+> extends DeenruvEvent {
+  constructor(
+    public ctx: RequestContext,
+    public entity: T,
+    public channelIds: ID[],
+    public type: "assigned" | "removed",
+    public entityType?: Type<T>,
+  ) {
+    super();
+  }
 }

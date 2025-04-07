@@ -1,8 +1,8 @@
-import { ID } from '@deenruv/common/lib/shared-types';
+import { ID } from "@deenruv/common/lib/shared-types";
 
-import { RequestContext } from '../../api/common/request-context';
-import { Asset } from '../../entity';
-import { DeenruvEvent } from '../deenruv-event';
+import { RequestContext } from "../../api/common/request-context";
+import { Asset } from "../../entity";
+import { DeenruvEvent } from "../deenruv-event";
 
 /**
  * @description
@@ -13,12 +13,12 @@ import { DeenruvEvent } from '../deenruv-event';
  * @docsPage Event Types
  */
 export class AssetChannelEvent extends DeenruvEvent {
-    constructor(
-        public ctx: RequestContext,
-        public asset: Asset,
-        public channelId: ID,
-        public type: 'assigned' | 'removed',
-    ) {
-        super();
-    }
+  constructor(
+    public ctx: RequestContext,
+    public asset: Asset,
+    public channelId: ID,
+    public type: "assigned" | "removed",
+  ) {
+    super();
+  }
 }

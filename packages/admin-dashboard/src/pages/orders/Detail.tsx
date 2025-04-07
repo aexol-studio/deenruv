@@ -14,8 +14,7 @@ import {
   Payments,
   SurchargeCard,
 } from '@/pages/orders/_components';
-import { EntityCustomFields } from '@/components';
-import { useOrder, ORDER_STATE } from '@deenruv/react-ui-devkit';
+import { useOrder, ORDER_STATE, EntityCustomFields } from '@deenruv/react-ui-devkit';
 import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 
 export const OrdersDetailPage = () => {

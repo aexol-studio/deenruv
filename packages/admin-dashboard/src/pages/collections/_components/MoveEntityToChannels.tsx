@@ -201,7 +201,7 @@ export const MoveEntityToChannels: React.FC<
             </TableBody>
           </Table>
         </div>
-        <div className="mx-4 h-full w-[1px] bg-stone-700"></div>
+        <div className="mx-4 h-full w-px bg-stone-700"></div>
         <div className="flex h-full min-h-0 flex-col ">
           <div className="flex items-center  gap-2">
             <h1 className="p-4">{t('moveCollectionsToChannels.availableChannels')}</h1>

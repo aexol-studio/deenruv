@@ -46,7 +46,7 @@ export const LanguagesDropdown = () => {
         <Button variant="outline">
           {t('language')}
           <Badge variant="outline" className="ml-2">
-            <Flag className="h-4 w-4" />
+            <Flag className="size-4" />
           </Badge>
         </Button>
       </DropdownMenuTrigger>
@@ -60,7 +60,7 @@ export const LanguagesDropdown = () => {
               {contentLanguages.map((lng) => (
                 <DropdownMenuItem key={lng} onClick={() => lng !== contentLng && setContentLng(lng)}>
                   <span>{getLanguageName(lng, uiLng)}</span>
-                  {lng === contentLng && <Check className="ml-auto h-4 w-4" />}
+                  {lng === contentLng && <Check className="ml-auto size-4" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuSubContent>
@@ -75,7 +75,7 @@ export const LanguagesDropdown = () => {
               {uiLanguages.map((lng) => (
                 <DropdownMenuItem key={lng} onClick={() => lng !== uiLng && setUiLng(lng)}>
                   <span>{getLanguageName(lng)}</span>
-                  {lng === uiLng && <Check className="ml-auto h-4 w-4" />}
+                  {lng === uiLng && <Check className="ml-auto size-4" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuSubContent>

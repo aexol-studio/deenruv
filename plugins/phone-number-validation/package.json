@@ -1,29 +1,30 @@
 {
-    "name": "@deenruv/phone-number-validation",
-    "version": "0.0.121",
-    "homepage": "https://www.deenruv.com/",
-    "license": "MIT",
-    "files": [
-        "dist/**/*"
-    ],
-    "main": "./dist/plugin-server/index.js",
-    "exports": {
-        ".": "./dist/plugin-server/index.js",
-        "./plugin-server": "./dist/plugin-server/index.js"
-    },
-    "scripts": {
-        "build": "rimraf dist && tsc --build",
-        "watch": "tsc --build --watch",
-        "lint": "eslint --fix ."
-    },
-    "dependencies": {
-        "@deenruv/common": "workspace:^",
-        "@deenruv/core": "workspace:^",
-        "@deenruv/react-ui-devkit": "workspace:^",
-        "libphonenumber-js": "^1.12.6"
-    },
-    "devDependencies": {
-        "rimraf": "^5.0.10",
-        "typescript": "5.3.3"
-    }
+  "name": "@deenruv/phone-number-validation",
+  "version": "0.0.121",
+  "homepage": "https://www.deenruv.com/",
+  "license": "MIT",
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "./dist/plugin-server/index.js",
+  "exports": {
+    ".": "./dist/plugin-server/index.js",
+    "./plugin-server": "./dist/plugin-server/index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --build --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "dependencies": {
+    "@deenruv/common": "workspace:^",
+    "@deenruv/core": "workspace:^",
+    "@deenruv/react-ui-devkit": "workspace:^",
+    "libphonenumber-js": "^1.12.6"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.10",
+    "typescript": "5.3.3"
+  }
 }

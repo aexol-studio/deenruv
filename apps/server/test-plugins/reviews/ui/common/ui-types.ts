@@ -1,1 +1,1 @@
-export type ReviewState = 'new' | 'approved' | 'rejected';
+export type ReviewState = "new" | "approved" | "rejected";

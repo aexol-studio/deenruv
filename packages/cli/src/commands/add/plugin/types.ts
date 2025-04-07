@@ -1,9 +1,9 @@
 export interface GeneratePluginOptions {
-    name: string;
-    pluginDir: string;
+  name: string;
+  pluginDir: string;
 }
 
 export type NewPluginTemplateContext = GeneratePluginOptions & {
-    pluginName: string;
-    pluginInitOptionsName: string;
+  pluginName: string;
+  pluginInitOptionsName: string;
 };

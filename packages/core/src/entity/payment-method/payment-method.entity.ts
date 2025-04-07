@@ -1,15 +1,19 @@
-import { ConfigurableOperation } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { ConfigurableOperation } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
-import { ChannelAware } from '../../common/types/common-types';
-import { LocaleString, Translatable, Translation } from '../../common/types/locale-types';
-import { HasCustomFields } from '../../config/custom-field/custom-field-types';
-import { DeenruvEntity } from '../base/base.entity';
-import { Channel } from '../channel/channel.entity';
-import { CustomPaymentMethodFields } from '../custom-entity-fields';
+import { ChannelAware } from "../../common/types/common-types";
+import {
+  LocaleString,
+  Translatable,
+  Translation,
+} from "../../common/types/locale-types";
+import { HasCustomFields } from "../../config/custom-field/custom-field-types";
+import { DeenruvEntity } from "../base/base.entity";
+import { Channel } from "../channel/channel.entity";
+import { CustomPaymentMethodFields } from "../custom-entity-fields";
 
-import { PaymentMethodTranslation } from './payment-method-translation.entity';
+import { PaymentMethodTranslation } from "./payment-method-translation.entity";
 
 /**
  * @description
@@ -19,30 +23,38 @@ import { PaymentMethodTranslation } from './payment-method-translation.entity';
  * @docsCategory entities
  */
 @Entity()
-export class PaymentMethod extends DeenruvEntity implements Translatable, ChannelAware, HasCustomFields {
-    constructor(input?: DeepPartial<PaymentMethod>) {
-        super(input);
-    }
+export class PaymentMethod
+  extends DeenruvEntity
+  implements Translatable, ChannelAware, HasCustomFields
+{
+  constructor(input?: DeepPartial<PaymentMethod>) {
+    super(input);
+  }
 
-    name: LocaleString;
+  name: LocaleString;
 
-    @Column({ default: '' }) code: string;
+  @Column({ default: "" }) code: string;
 
-    description: LocaleString;
+  description: LocaleString;
 
-    @OneToMany(type => PaymentMethodTranslation, translation => translation.base, { eager: true })
-    translations: Array<Translation<PaymentMethod>>;
+  @OneToMany(
+    (type) => PaymentMethodTranslation,
+    (translation) => translation.base,
+    { eager: true },
+  )
+  translations: Array<Translation<PaymentMethod>>;
 
-    @Column() enabled: boolean;
+  @Column() enabled: boolean;
 
-    @Column('simple-json', { nullable: true }) checker: ConfigurableOperation | null;
+  @Column("simple-json", { nullable: true })
+  checker: ConfigurableOperation | null;
 
-    @Column('simple-json') handler: ConfigurableOperation;
+  @Column("simple-json") handler: ConfigurableOperation;
 
-    @ManyToMany(type => Channel, channel => channel.paymentMethods)
-    @JoinTable()
-    channels: Channel[];
+  @ManyToMany((type) => Channel, (channel) => channel.paymentMethods)
+  @JoinTable()
+  channels: Channel[];
 
-    @Column(type => CustomPaymentMethodFields)
-    customFields: CustomPaymentMethodFields;
+  @Column((type) => CustomPaymentMethodFields)
+  customFields: CustomPaymentMethodFields;
 }

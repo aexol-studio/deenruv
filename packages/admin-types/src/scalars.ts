@@ -1,27 +1,26 @@
-import { FromSelector, GraphQLTypes, ZeusScalars } from './zeus/index.js';
+import { FromSelector, GraphQLTypes, ZeusScalars } from "./zeus/index.js";
 
 export const scalars = ZeusScalars({
-    Money: {
-        decode: e => e as number,
+  Money: {
+    decode: (e) => e as number,
+  },
+  DateTime: {
+    decode: (e: unknown) => new Date(e as string).toISOString(),
+  },
+  JSON: {
+    encode: (e: unknown) => {
+      // hax który fixuje buga ze złym parsowaniem obiektu do query (productUpdate -> customFields)
+      // bez tego jest przesyłany jako zwykły stringify, czyli klucze dostają "" i request sie crashuje
+      return JSON.stringify(e).replace(/"(\w+)":/g, "$1:");
     },
-    DateTime: {
-        decode: (e: unknown) => new Date(e as string).toISOString(),
+    decode: (e: unknown) => {
+      return JSON.parse(JSON.stringify(e) as string);
     },
-    JSON: {
-        encode: (e: unknown) => {
-            // hax który fixuje buga ze złym parsowaniem obiektu do query (productUpdate -> customFields)
-            // bez tego jest przesyłany jako zwykły stringify, czyli klucze dostają "" i request sie crashuje
-            return JSON.stringify(e).replace(/"(\w+)":/g, '$1:');
-        },
-        decode: (e: unknown) => {
-            return JSON.parse(JSON.stringify(e) as string);
-        },
-    },
+  },
 });
 export type ScalarsType = typeof scalars;
 
-export type FromSelectorWithScalars<SELECTOR, NAME extends keyof GraphQLTypes> = FromSelector<
-    SELECTOR,
-    NAME,
-    ScalarsType
->;
+export type FromSelectorWithScalars<
+  SELECTOR,
+  NAME extends keyof GraphQLTypes,
+> = FromSelector<SELECTOR, NAME, ScalarsType>;

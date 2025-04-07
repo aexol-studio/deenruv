@@ -1,21 +1,26 @@
-import { AdminUiPlugin } from '@deenruv/admin-ui-plugin';
+import { AdminUiPlugin } from "@deenruv/admin-ui-plugin";
 import {
-    ChannelService,
-    DefaultLogger,
-    LanguageCode,
-    Logger,
-    LogLevel,
-    mergeConfig,
-    OrderService,
-    RequestContext,
-} from '@deenruv/core';
-import { createTestEnvironment, registerInitializer, SqljsInitializer, testConfig } from '@deenruv/testing';
-import gql from 'graphql-tag';
-import path from 'path';
+  ChannelService,
+  DefaultLogger,
+  LanguageCode,
+  Logger,
+  LogLevel,
+  mergeConfig,
+  OrderService,
+  RequestContext,
+} from "@deenruv/core";
+import {
+  createTestEnvironment,
+  registerInitializer,
+  SqljsInitializer,
+  testConfig,
+} from "@deenruv/testing";
+import gql from "graphql-tag";
+import path from "path";
 
-import { initialData } from '../../../e2e-common/e2e-initial-data';
-import { StripePlugin } from '../src/stripe';
-import { stripePaymentMethodHandler } from '../src/stripe/stripe.handler';
+import { initialData } from "../../../e2e-common/e2e-initial-data";
+import { StripePlugin } from "../src/stripe";
+import { stripePaymentMethodHandler } from "../src/stripe/stripe.handler";
 
 /* eslint-disable */
 import { CREATE_PAYMENT_METHOD } from './graphql/admin-queries';

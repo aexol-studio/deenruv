@@ -22,6 +22,7 @@ import {
   cn,
   dashToCamelCase,
   apiClient,
+  useGlobalSearch,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -34,13 +35,13 @@ import {
   Trash2Icon,
   SunMoon,
   RotateCwSquare,
+  SearchIcon,
 } from 'lucide-react';
 import * as ResizablePrimitive from 'react-resizable-panels';
 
 import { Navigation } from './Navigation.js';
 import { NavLink, useMatches, useNavigate } from 'react-router-dom';
 import { ChannelSwitcher } from './ChannelSwitcher.js';
-import { clearAllCache } from '@/lists/cache';
 import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
 import { Notifications } from './Notifications.js';
@@ -70,7 +71,7 @@ const ResizableHandle = ({
   >
     {withHandle && (
       <div className="bg-border z-10 flex h-4 w-3 items-center justify-center rounded-sm border">
-        <GripVertical className="h-2.5 w-2.5" />
+        <GripVertical className="size-2.5" />
       </div>
     )}
   </ResizablePrimitive.PanelResizeHandle>
@@ -79,6 +80,7 @@ const ResizableHandle = ({
 const removableCrumbs = ['draft', 'admin-ui'];
 
 export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+  const openGlobalSearch = useGlobalSearch((state) => state.open);
   const linkPath: string[] = [];
   const { t } = useTranslation('common');
   const { topNavigationActionsMenu, topNavigationComponents } = usePluginStore();
@@ -95,9 +97,11 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
   const { activeAdministrator, setJobQueue } = useServer();
 
   const rebuildSearchIndex = async () => {
-    await apiClient('mutation')({ reindex: { id: true, queueName: true, state: true } }).then(({ reindex: { queueName, state } })=> {
-      setJobQueue(queueName, state === 'RUNNING');
-    });
+    await apiClient('mutation')({ reindex: { id: true, queueName: true, state: true } }).then(
+      ({ reindex: { queueName, state } }) => {
+        setJobQueue(queueName, state === 'RUNNING');
+      },
+    );
   };
 
   const matches = useMatches();
@@ -122,7 +126,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                 document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`;
               }}
               direction="horizontal"
-              className="h-full w-full"
+              className="size-full"
             >
               <ResizablePanel
                 defaultSize={18}
@@ -161,7 +165,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel>
-                <div className="flex h-[70px] items-center border-b px-4 py-4 lg:h-[80px] lg:px-6">
+                <div className="flex h-[70px] items-center border-b p-4 lg:h-[80px] lg:px-6">
                   <div className="flex flex-col items-start justify-center">
                     <Breadcrumb>
                       <BreadcrumbList>
@@ -209,16 +213,19 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                       <ChannelSwitcher />
                     </div>
                     {/* <ActiveAdmins /> */}
+                    <Button onClick={openGlobalSearch} variant="outline" size="icon" className="relative size-10">
+                      <SearchIcon className="size-4" />
+                    </Button>
                     <Notifications />
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="icon">
                           {theme === 'light' ? (
-                            <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                            <Sun className="size-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
                           ) : theme === 'dark' ? (
-                            <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                            <Moon className="absolute size-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
                           ) : (
-                            <SunMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 transition-all" />
+                            <SunMoon className="absolute size-[1.2rem] rotate-90 transition-all" />
                           )}
                           <span className="sr-only">{t('toggleTheme')}</span>
                         </Button>
@@ -232,7 +239,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="icon">
-                          <MenuIcon className="h-4 w-4" />
+                          <MenuIcon className="size-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="z-[150] mr-6 min-w-40">
@@ -241,17 +248,10 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           className="flex cursor-pointer items-center gap-2 text-nowrap"
                           onSelect={rebuildSearchIndex}
                         >
-                          <RotateCwSquare className="h-4 w-4" />
+                          <RotateCwSquare className="size-4" />
                           Przebuduj search index
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="flex cursor-pointer items-center gap-2 text-nowrap"
-                          onSelect={clearAllCache}
-                        >
-                          <Trash2Icon className="h-4 w-4" />
-                          {t('clearCache')}
-                        </DropdownMenuItem>
                         {topNavigationActionsMenu?.length && topNavigationActionsMenu.length > 0 ? (
                           <>
                             <DropdownMenuSeparator />
@@ -261,7 +261,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                                 className="flex cursor-pointer items-center gap-2"
                                 onSelect={action.onClick}
                               >
-                                {action.icon && <action.icon className="h-4 w-4" />}
+                                {action.icon && <action.icon className="size-4" />}
                                 {action.label}
                               </DropdownMenuItem>
                             ))}
@@ -270,7 +270,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
 
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="flex cursor-pointer items-center gap-2" onSelect={() => logOut()}>
-                          <LogOutIcon className="h-4 w-4" />
+                          <LogOutIcon className="size-4" />
                           {t('logOut')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>

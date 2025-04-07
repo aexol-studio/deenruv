@@ -1,10 +1,10 @@
-import { StockMovementType } from '@deenruv/common/lib/generated-types';
-import { DeepPartial } from '@deenruv/common/lib/shared-types';
-import { ChildEntity, Index, ManyToOne } from 'typeorm';
+import { StockMovementType } from "@deenruv/common/lib/generated-types";
+import { DeepPartial } from "@deenruv/common/lib/shared-types";
+import { ChildEntity, Index, ManyToOne } from "typeorm";
 
-import { OrderLine } from '../order-line/order-line.entity';
+import { OrderLine } from "../order-line/order-line.entity";
 
-import { StockMovement } from './stock-movement.entity';
+import { StockMovement } from "./stock-movement.entity";
 
 /**
  * @description
@@ -16,13 +16,13 @@ import { StockMovement } from './stock-movement.entity';
  */
 @ChildEntity()
 export class Allocation extends StockMovement {
-    readonly type = StockMovementType.ALLOCATION;
+  readonly type = StockMovementType.ALLOCATION;
 
-    constructor(input: DeepPartial<Allocation>) {
-        super(input);
-    }
+  constructor(input: DeepPartial<Allocation>) {
+    super(input);
+  }
 
-    @Index()
-    @ManyToOne(type => OrderLine, orderLine => orderLine.allocations)
-    orderLine: OrderLine;
+  @Index()
+  @ManyToOne((type) => OrderLine, (orderLine) => orderLine.allocations)
+  orderLine: OrderLine;
 }

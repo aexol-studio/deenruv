@@ -2,7 +2,6 @@ import { Label, MultipleSelector, apiClient, type Option } from '@deenruv/react-
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@/components';
 
 interface FacetsSelectorProps {
   value: string[];
@@ -33,7 +32,7 @@ export const FacetsSelector: React.FC<FacetsSelectorProps> = ({ value, onChange 
   }, [fetchFacets]);
 
   return (
-    <Stack column className="basis-full gap-2">
+    <div className="flex basis-full flex-col gap-2">
       <Label>{t('details.filters.addFacets')}</Label>
       <MultipleSelector
         options={facetsOptions}
@@ -49,6 +48,6 @@ export const FacetsSelector: React.FC<FacetsSelectorProps> = ({ value, onChange 
         onChange={(e) => onChange(e.map((e) => e.value))}
         hideClearAllButton
       />
-    </Stack>
+    </div>
   );
 };

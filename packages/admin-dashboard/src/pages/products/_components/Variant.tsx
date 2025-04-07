@@ -1,12 +1,20 @@
-import { Button, CardIcons, ConfirmationDialog, CustomCard, Input, apiClient } from '@deenruv/react-ui-devkit';
-import { CF, EntityCustomFields, Stack } from '@/components';
+import {
+  Button,
+  CardIcons,
+  ConfirmationDialog,
+  CustomCard,
+  Input,
+  apiClient,
+  setInArrayBy,
+  useGFFLP,
+  CF,
+  EntityCustomFields,
+} from '@deenruv/react-ui-devkit';
 
 import { ProductVariantType } from '@/graphql/products';
-import { setInArrayBy, useGFFLP } from '@/lists/useGflp';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { resetCache } from '@/lists/cache';
 import { toast } from 'sonner';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard';
 import { PriceCard } from '@/pages/products/_components/PriceCard';
@@ -69,7 +77,6 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
       'facetValueIds',
       variant.facetValues.map((f) => f.id),
     );
-    // eslint-disable-next-line
   }, [variant]);
 
   const createVariant = useCallback(() => {
@@ -141,14 +148,12 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
       ],
     })
       .then(() => {
-        resetCache('products');
         onActionCompleted();
         toast(t('toasts.updateProductSuccessToast'), {
           description: new Date().toLocaleString(),
         });
       })
       .catch(() => toast.error(t('toasts.updateProductErrorToast')));
-    // eslint-disable-next-line
   }, [state, variant]);
 
   const deleteVariant = useCallback(() => {
@@ -157,14 +162,12 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
       deleteProductVariant: [{ id: variant.id }, { message: true }],
     })
       .then(() => {
-        resetCache('products');
         onActionCompleted();
         toast(t('toasts.deleteProductVariantSuccessToast'), {
           description: new Date().toLocaleString(),
         });
       })
       .catch(() => toast.error(t('toasts.deleteProductVariantErrorToast')));
-    // eslint-disable-next-line
   }, [variant]);
 
   const setTranslationField = useCallback(
@@ -177,7 +180,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
         }),
       );
     },
-    // eslint-disable-next-line
+
     [currentTranslationLng, translations],
   );
 
@@ -191,8 +194,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
   };
 
   return (
-    <Stack column className="mt-4 gap-4">
-      <Stack className="gap-3 self-end">
+    <div className="mt-4 flex flex-col gap-4">
+      <div className="flex gap-3 self-end">
         {variant ? (
           <>
             <ConfirmationDialog onConfirm={deleteVariant}>
@@ -203,9 +206,9 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
         ) : (
           <Button onClick={createVariant}>{t('addVariantDialog.add')}</Button>
         )}
-      </Stack>
-      <Stack className="gap-4">
-        <Stack className="w-2/3 flex-col gap-4">
+      </div>
+      <div className="flex gap-4">
+        <div className="flex w-2/3 flex-col gap-4">
           {!!variant && (
             <StockCard
               priceValue={state.price?.value}
@@ -245,10 +248,10 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
                 : { customFields: {} }
             }
           />
-        </Stack>
-        <Stack className="w-1/3 flex-col gap-4">
+        </div>
+        <div className="flex w-1/3 flex-col gap-4">
           <CustomCard title={t('name')} icon={<CardIcons.basic />} color="purple">
-            <Stack column className="gap-y-4">
+            <div className="flex flex-col gap-y-4">
               <Input
                 label={t('sku')}
                 placeholder={t('sku')}
@@ -261,7 +264,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
                 value={currentTranslationValue?.name ?? undefined}
                 onChange={(e) => setTranslationField('name', e)}
               />
-            </Stack>
+            </div>
           </CustomCard>
           <OptionsCard
             optionGroups={variant?.options || []}
@@ -283,8 +286,8 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               onChange={(e) => setField('facetValueIds', e)}
             />
           )}
-        </Stack>
-      </Stack>
-    </Stack>
+        </div>
+      </div>
+    </div>
   );
 };

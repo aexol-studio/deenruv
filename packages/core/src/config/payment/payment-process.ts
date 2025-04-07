@@ -1,15 +1,15 @@
 import {
-    OnTransitionEndFn,
-    OnTransitionErrorFn,
-    OnTransitionStartFn,
-    Transitions,
-} from '../../common/finite-state-machine/types';
-import { InjectableStrategy } from '../../common/types/injectable-strategy';
+  OnTransitionEndFn,
+  OnTransitionErrorFn,
+  OnTransitionStartFn,
+  Transitions,
+} from "../../common/finite-state-machine/types";
+import { InjectableStrategy } from "../../common/types/injectable-strategy";
 import {
-    CustomPaymentStates,
-    PaymentState,
-    PaymentTransitionData,
-} from '../../service/helpers/payment-state-machine/payment-state';
+  CustomPaymentStates,
+  PaymentState,
+  PaymentTransitionData,
+} from "../../service/helpers/payment-state-machine/payment-state";
 
 /**
  * @description
@@ -30,11 +30,20 @@ import {
  * @docsCategory payment
  * @since 2.0.0
  */
-export interface PaymentProcess<State extends keyof CustomPaymentStates | string> extends InjectableStrategy {
-    transitions?: Transitions<State, State | PaymentState> & Partial<Transitions<PaymentState | State>>;
-    onTransitionStart?: OnTransitionStartFn<State | PaymentState, PaymentTransitionData>;
-    onTransitionEnd?: OnTransitionEndFn<State | PaymentState, PaymentTransitionData>;
-    onTransitionError?: OnTransitionErrorFn<State | PaymentState>;
+export interface PaymentProcess<
+  State extends keyof CustomPaymentStates | string,
+> extends InjectableStrategy {
+  transitions?: Transitions<State, State | PaymentState> &
+    Partial<Transitions<PaymentState | State>>;
+  onTransitionStart?: OnTransitionStartFn<
+    State | PaymentState,
+    PaymentTransitionData
+  >;
+  onTransitionEnd?: OnTransitionEndFn<
+    State | PaymentState,
+    PaymentTransitionData
+  >;
+  onTransitionError?: OnTransitionErrorFn<State | PaymentState>;
 }
 
 /**
@@ -45,5 +54,6 @@ export interface PaymentProcess<State extends keyof CustomPaymentStates | string
  *
  * @deprecated use PaymentProcess
  */
-export interface CustomPaymentProcess<State extends keyof CustomPaymentStates | string>
-    extends PaymentProcess<State> {}
+export interface CustomPaymentProcess<
+  State extends keyof CustomPaymentStates | string,
+> extends PaymentProcess<State> {}

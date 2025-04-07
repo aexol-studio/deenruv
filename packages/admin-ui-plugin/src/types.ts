@@ -1,29 +1,29 @@
-import { ID } from '@deenruv/core';
+import { ID } from "@deenruv/core";
 
 export type MetricSummary = {
-    interval: MetricInterval;
-    type: MetricType;
-    title: string;
-    entries: MetricSummaryEntry[];
+  interval: MetricInterval;
+  type: MetricType;
+  title: string;
+  entries: MetricSummaryEntry[];
 };
 
 export enum MetricType {
-    OrderCount = 'OrderCount',
-    OrderTotal = 'OrderTotal',
-    AverageOrderValue = 'AverageOrderValue',
+  OrderCount = "OrderCount",
+  OrderTotal = "OrderTotal",
+  AverageOrderValue = "AverageOrderValue",
 }
 
 export enum MetricInterval {
-    Daily = 'Daily',
+  Daily = "Daily",
 }
 
 export type MetricSummaryEntry = {
-    label: string;
-    value: number;
+  label: string;
+  value: number;
 };
 
 export interface MetricSummaryInput {
-    interval: MetricInterval;
-    types: MetricType[];
-    refresh?: boolean;
+  interval: MetricInterval;
+  types: MetricType[];
+  refresh?: boolean;
 }

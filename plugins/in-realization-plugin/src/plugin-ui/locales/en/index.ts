@@ -1,3 +1,3 @@
-import realization from './realization.json';
+import realization from "./realization.json";
 
 export default [realization];

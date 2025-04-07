@@ -45,7 +45,7 @@ export const DeleteEntryDialog: React.FC<DeleteEntryDialogProps> = ({ isOpen, se
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2 text-red-600">
-            <Trash className="h-5 w-5" />
+            <Trash className="size-5" />
             {t('history.deleteNoteHeader', 'Delete Note')}
           </AlertDialogTitle>
           <AlertDialogDescription>
@@ -74,12 +74,12 @@ export const DeleteEntryDialog: React.FC<DeleteEntryDialogProps> = ({ isOpen, se
           >
             {isDeleting ? (
               <span className="flex items-center gap-2">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                <span className="size-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
                 {t('history.deleting', 'Deleting...')}
               </span>
             ) : (
               <span className="flex items-center gap-2">
-                <Trash className="h-4 w-4" />
+                <Trash className="size-4" />
                 {t('history.delete', 'Delete')}
               </span>
             )}

@@ -1,4 +1,4 @@
-import { OrderSellerStrategy } from './order-seller-strategy';
+import { OrderSellerStrategy } from "./order-seller-strategy";
 
 /**
  * @description
@@ -9,5 +9,5 @@ import { OrderSellerStrategy } from './order-seller-strategy';
  * @docsPage OrderSellerStrategy
  */
 export class DefaultOrderSellerStrategy implements OrderSellerStrategy {
-    // By default, Orders will not get split.
+  // By default, Orders will not get split.
 }

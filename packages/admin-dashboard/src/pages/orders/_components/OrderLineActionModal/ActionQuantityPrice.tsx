@@ -83,13 +83,13 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
             <div className="bg-background relative overflow-hidden rounded-md border">
               <img
                 alt={line?.productVariant.name || 'Product image'}
-                className="aspect-square h-24 w-24 object-cover transition-transform hover:scale-105"
+                className="aspect-square size-24 object-cover transition-transform hover:scale-105"
                 src={productImage || '/placeholder.svg'}
               />
             </div>
           ) : (
-            <div className="bg-muted/50 flex h-24 w-24 items-center justify-center rounded-md border">
-              <Package className="text-muted-foreground h-10 w-10" />
+            <div className="bg-muted/50 flex size-24 items-center justify-center rounded-md border">
+              <Package className="text-muted-foreground size-10" />
             </div>
           )}
           <div className="flex flex-col">
@@ -110,10 +110,10 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <button
                 type="button"
                 onClick={decrementQuantity}
-                className="bg-muted/50 text-muted-foreground hover:bg-muted flex h-10 w-10 items-center justify-center rounded-l-md border border-r-0 transition-colors"
+                className="bg-muted/50 text-muted-foreground hover:bg-muted flex size-10 items-center justify-center rounded-l-md border border-r-0 transition-colors"
                 aria-label="Decrease quantity"
               >
-                <MinusCircle className="h-4 w-4" />
+                <MinusCircle className="size-4" />
               </button>
               <Input
                 id="quantity-input"
@@ -127,10 +127,10 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
               <button
                 type="button"
                 onClick={incrementQuantity}
-                className="bg-muted/50 text-muted-foreground hover:bg-muted flex h-10 w-10 items-center justify-center rounded-r-md border border-l-0 transition-colors"
+                className="bg-muted/50 text-muted-foreground hover:bg-muted flex size-10 items-center justify-center rounded-r-md border border-l-0 transition-colors"
                 aria-label="Increase quantity"
               >
-                <PlusCircle className="h-4 w-4" />
+                <PlusCircle className="size-4" />
               </button>
             </div>
           </div>
@@ -154,9 +154,9 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
                 {quantityDelta !== 0 && (
                   <>
                     {quantityDelta > 0 ? (
-                      <ArrowUp className="mr-1 h-3 w-3 text-green-500" />
+                      <ArrowUp className="mr-1 size-3 text-green-500" />
                     ) : (
-                      <ArrowDown className="text-destructive mr-1 h-3 w-3" />
+                      <ArrowDown className="text-destructive mr-1 size-3" />
                     )}
                   </>
                 )}
@@ -209,7 +209,7 @@ export const ActionQuantityPrice: React.FC<ActionQuantityPriceProps> = ({
         >
           {isLoading ? (
             <span className="flex items-center gap-2">
-              <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
+              <span className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"></span>
               {t('orderLineActionModal.saving')}
             </span>
           ) : (

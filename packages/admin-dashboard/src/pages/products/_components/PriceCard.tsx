@@ -8,12 +8,12 @@ import {
   apiClient,
   CustomCard,
   CardIcons,
+  EntityCustomFields,
 } from '@deenruv/react-ui-devkit';
 
 import { CurrencyCode, ModelTypes } from '@deenruv/admin-types';
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { EntityCustomFields, Stack } from '@/components';
 
 type ProductVariantPrice = {
   currencyCode: ModelTypes['CurrencyCode'];
@@ -124,8 +124,8 @@ export const PriceCard: React.FC<PriceCardProps> = ({
 
   return (
     <CustomCard title={t('details.price')} color="rose" icon={<CardIcons.calc />}>
-      <Stack column className="gap-y-4">
-        <Stack className="items-center gap-x-2">
+      <div className="flex flex-col gap-y-4">
+        <div className="flex items-center gap-x-2">
           <Input
             type="currency"
             placeholder={t('price')}
@@ -146,7 +146,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
               ))}
             </SelectContent>
           </Select>
-        </Stack>
+        </div>
 
         <EntityCustomFields
           id={undefined}
@@ -167,7 +167,7 @@ export const PriceCard: React.FC<PriceCardProps> = ({
         />
 
         {currentTaxCategory?.value !== undefined && `${t('details.taxRateDescription')} ${currentTaxCategory?.value}%`}
-      </Stack>
+      </div>
     </CustomCard>
   );
 };
