@@ -1,13 +1,11 @@
 import {
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowRight } from "lucide-react";
-import React, { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useState } from "react";
 import { DialogComponentProps } from "@/universal_utils/createDialogFromComponentFunction.js";
 import { apiClient } from "@/zeus_client/deenruvAPICall.js";
 import { channelSelector, ChannelType } from "@/selectors/BaseSelectors.js";
@@ -26,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/index.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 export function MoveEntityToChannels<T extends { id: string }>({
   close,

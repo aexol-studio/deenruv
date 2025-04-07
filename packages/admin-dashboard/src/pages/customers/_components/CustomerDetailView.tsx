@@ -50,24 +50,22 @@ export const CustomerDetailView = () => {
 
   return (
     <main className="min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <PersonalDataCard setField={setField} state={state} />
-          <DetailViewMarker position={'customers-detail-view'} />
-          <EntityCustomFields
-            entityName="customer"
-            id={id}
-            hideButton
-            additionalData={{}}
-            initialValues={
-              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
-            }
-            onChange={(cf) => {
-              setField('customFields', cf);
-            }}
-          />
-          {id && <AddressesCard addresses={addresses} customerId={id} onActionCompleted={handleFetchEntity} />}
-        </div>
+      <div className="flex flex-col gap-3">
+        <PersonalDataCard setField={setField} state={state} />
+        <DetailViewMarker position={'customers-detail-view'} />
+        <EntityCustomFields
+          entityName="customer"
+          id={id}
+          hideButton
+          additionalData={{}}
+          initialValues={
+            entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+          }
+          onChange={(cf) => {
+            setField('customFields', cf);
+          }}
+        />
+        {id && <AddressesCard addresses={addresses} customerId={id} onActionCompleted={handleFetchEntity} />}
       </div>
     </main>
   );

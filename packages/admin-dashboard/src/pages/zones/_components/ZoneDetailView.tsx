@@ -81,47 +81,45 @@ export const ZoneDetailView = () => {
 
   return (
     <main className="my-4 min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-            <div className="flex gap-3">
-              <div className="flex basis-full md:basis-1/2">
-                <Input
-                  label={t('details.basic.name')}
-                  value={state.name?.value}
-                  onChange={(e) => setField('name', e.target.value)}
-                  errors={state.name?.errors}
-                  required
-                />
-              </div>
-              <div className="flex basis-full flex-col md:basis-1/2">
-                <Label className="mb-2">{t('details.basic.members')}</Label>
-                <MultipleSelector
-                  options={countriesOptions}
-                  value={state?.memberIds?.value?.map((id) => ({
-                    label: countriesOptions?.find((o) => o.value === id)?.label || id,
-                    value: id,
-                  }))}
-                  placeholder={t('details.basic.memberPlaceholder')}
-                  onChange={handleChange}
-                  hideClearAllButton
-                />
-              </div>
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+          <div className="flex gap-3">
+            <div className="flex basis-full md:basis-1/2">
+              <Input
+                label={t('details.basic.name')}
+                value={state.name?.value}
+                onChange={(e) => setField('name', e.target.value)}
+                errors={state.name?.errors}
+                required
+              />
             </div>
-          </CustomCard>
-          <DetailViewMarker position={'zones-detail-view'} />
-          <EntityCustomFields
-            entityName="zone"
-            id={id}
-            hideButton
-            onChange={(customFields) => {
-              setField('customFields', customFields);
-            }}
-            initialValues={
-              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
-            }
-          />
-        </div>
+            <div className="flex basis-full flex-col md:basis-1/2">
+              <Label className="mb-2">{t('details.basic.members')}</Label>
+              <MultipleSelector
+                options={countriesOptions}
+                value={state?.memberIds?.value?.map((id) => ({
+                  label: countriesOptions?.find((o) => o.value === id)?.label || id,
+                  value: id,
+                }))}
+                placeholder={t('details.basic.memberPlaceholder')}
+                onChange={handleChange}
+                hideClearAllButton
+              />
+            </div>
+          </div>
+        </CustomCard>
+        <DetailViewMarker position={'zones-detail-view'} />
+        <EntityCustomFields
+          entityName="zone"
+          id={id}
+          hideButton
+          onChange={(customFields) => {
+            setField('customFields', customFields);
+          }}
+          initialValues={
+            entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+          }
+        />
       </div>
     </main>
   );

@@ -2,7 +2,6 @@ import { endOfDay, format, startOfDay } from "date-fns";
 import { useCallback, useState } from "react";
 import { DateRange } from "react-day-picker";
 
-import { useTranslation } from "react-i18next";
 import { FilterInputType } from "../types";
 import {
   Button,
@@ -16,15 +15,10 @@ import React from "react";
 import { OperatorSelect } from "@/components/templates/DetailList/useDetailListHook/OperatorSelect.js";
 import { cn } from "@/lib/utils.js";
 import { CalendarIcon } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 type DateOperator = Omit<FilterInputType["DateOperators"], "__typename">;
-const TYPES = [
-  "eq",
-  "before",
-  "after",
-  "between",
-  "isNull",
-] as (keyof DateOperator)[];
+
 function isDateRange(
   data: undefined | Date | boolean | DateRange,
 ): data is DateRange {

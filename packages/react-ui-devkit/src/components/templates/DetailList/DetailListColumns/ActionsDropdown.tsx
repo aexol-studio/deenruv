@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import {
   Button,
   DropdownMenu,
@@ -15,6 +14,7 @@ import React, { useMemo } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useServer } from "@/state";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 export const ActionsDropdown = <T extends { id: string }>(
   navigate: NavigateFunction,
@@ -60,7 +60,7 @@ export const ActionsDropdown = <T extends { id: string }>(
                 <DropdownMenuItem
                   onClick={() => {
                     if ("edit" in route) {
-                      route.edit(row.original.id);
+                      route.edit(row.original.id, row);
                     } else
                       navigate(route.to(row.original.id), {
                         viewTransition: true,

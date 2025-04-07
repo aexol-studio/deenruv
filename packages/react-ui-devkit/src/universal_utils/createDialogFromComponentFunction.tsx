@@ -22,6 +22,7 @@ export function createDialogFromComponent<
   options: {
     preventOutsideClose?: boolean;
     preventEscapeClose?: boolean;
+    className?: string;
   } = {},
 ): Promise<InferDialogProps<C>["returnType"]> {
   return new Promise((resolve, reject) => {
@@ -70,6 +71,7 @@ export function createDialogFromComponent<
             options.preventOutsideClose ? undefined : handleClose
           }
           onEscapeKeyDown={options.preventEscapeClose ? undefined : handleClose}
+          className={options.className}
         >
           {React.createElement(DialogComponent, props)}
         </DialogContent>

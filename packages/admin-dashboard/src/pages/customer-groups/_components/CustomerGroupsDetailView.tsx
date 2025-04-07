@@ -34,31 +34,29 @@ export const CustomerGroupsDetailView = () => {
 
   return (
     <main className="min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('basic.header')} icon={<CardIcons.basic />}>
-            <Input
-              className="w-1/2"
-              label={t('basic.name')}
-              value={state.name?.value}
-              onChange={(e) => setField('name', e.target.value)}
-              errors={state.name?.errors}
-              required
-            />
-          </CustomCard>
-          <DetailViewMarker position={'customerGroups-detail-view'} />
-          <EntityCustomFields
-            entityName="customerGroup"
-            id={id}
-            hideButton
-            onChange={(customFields) => {
-              setField('customFields', customFields);
-            }}
-            initialValues={
-              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
-            }
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('basic.header')} icon={<CardIcons.basic />}>
+          <Input
+            className="w-1/2"
+            label={t('basic.name')}
+            value={state.name?.value}
+            onChange={(e) => setField('name', e.target.value)}
+            errors={state.name?.errors}
+            required
           />
-        </div>
+        </CustomCard>
+        <DetailViewMarker position={'customerGroups-detail-view'} />
+        <EntityCustomFields
+          entityName="customerGroup"
+          id={id}
+          hideButton
+          onChange={(customFields) => {
+            setField('customFields', customFields);
+          }}
+          initialValues={
+            entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+          }
+        />
       </div>
     </main>
   );

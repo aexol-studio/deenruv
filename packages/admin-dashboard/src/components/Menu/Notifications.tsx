@@ -43,7 +43,7 @@ export const Notifications = () => {
   const cyclingNotifications = useNotifications(({ notifications }) => notifications);
   const getMainNotification = useNotifications(({ getMainNotification }) => getMainNotification);
   const jobQueues = useServer(({ jobQueues }) => jobQueues);
-  console.log('jobQueues', jobQueues);
+
   const { t } = useTranslation('common');
   const [notifications, setNotifications] = useState<Array<Notification>>([]);
   const prevJobQueuesRef = useRef(jobQueues);
@@ -149,16 +149,21 @@ export const Notifications = () => {
                 components.length === 0 && 'pb-3',
               )}
             >
-              <div className="h-full flex-1 px-4 pt-3">
-                <CardTitle className="text-base">{t('notificationsBox.notifications')}</CardTitle>
-                <CardDescription className="mt-1 text-xs">{t('notificationsBox.recentNotifications')}</CardDescription>
+              <div className="flex h-full w-full flex-1 items-center justify-between px-4 pt-3">
+                <div className="flex flex-col">
+                  <CardTitle className="text-base">{t('notificationsBox.notifications')}</CardTitle>
+                  <CardDescription className="mt-1 text-xs">
+                    {t('notificationsBox.recentNotifications')}
+                  </CardDescription>
+                </div>
+                {notifications.length > 0 && (
+                  <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={clearAllNotifications}>
+                    <Trash2 className="mr-1 size-3" />
+                    {t('notificationsBox.clearAll')}
+                  </Button>
+                )}
               </div>
-              {notifications.length > 0 && (
-                <Button variant="ghost" size="sm" className="h-8 text-xs" onClick={clearAllNotifications}>
-                  <Trash2 className="mr-1 size-3" />
-                  {t('notificationsBox.clearAll')}
-                </Button>
-              )}
+
               {components.length !== 0 && (
                 <TabsList className="m-0 w-full rounded-none">
                   <TabsTrigger value="ALL" className="w-full rounded-none text-left">

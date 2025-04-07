@@ -16,12 +16,12 @@ import {
 } from "@/components/atoms";
 import { SearchInput } from "@/components/molecules/SearchInput";
 import { useCustomFields } from "@/custom_fields";
+import { useTranslation } from "@/hooks/useTranslation.js";
 import { cn } from "@/lib";
 import type { CustomFieldSelectorsType } from "@/selectors";
 import { Check, ImageIcon } from "lucide-react";
 import React from "react";
 import { type Dispatch, type SetStateAction, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 type CF = CustomFieldSelectorsType;
 

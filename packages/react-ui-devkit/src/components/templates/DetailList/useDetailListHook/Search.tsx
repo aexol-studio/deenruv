@@ -1,9 +1,8 @@
 import { Input } from "@/components";
-import { useDebounce } from "@/hooks";
+import { useDebounce, useTranslation } from "@/hooks";
 import { PromisePaginated } from "@/types/models";
 import React from "react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Search as SearchIcon } from "lucide-react";
 
 export const Search = ({

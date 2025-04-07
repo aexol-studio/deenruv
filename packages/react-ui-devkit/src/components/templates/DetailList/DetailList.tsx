@@ -10,7 +10,6 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +36,7 @@ import {
   LocationKeys,
   PromisePaginated,
 } from "@/types";
-import { useErrorHandler, useLocalStorage } from "@/hooks";
+import { useErrorHandler, useLocalStorage, useTranslation } from "@/hooks";
 import {
   Button,
   DropdownMenu,
@@ -62,6 +61,7 @@ import { ExpandedState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { GenericListContextType } from "./useDetailListHook/types.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
+import { Row } from "@tanstack/react-table";
 
 export const isAssetObject = (value: object): boolean => {
   return Boolean(
@@ -109,7 +109,9 @@ type RouteBase = {
   route: string;
   to: (id: string) => string;
 };
-type RouteWithoutCreate = { edit: (id: string, parentId?: string) => void };
+type RouteWithoutCreate = {
+  edit: (id: string, row: Row<any>) => void;
+};
 type RouteWithCreate = RouteWithoutCreate & { create: () => void };
 
 export function DetailList<
@@ -423,12 +425,7 @@ export function DetailList<
                 className="h-6 border border-gray-500 p-0 px-3 text-gray-800 hover:border-gray-600 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
                 onClick={() => {
                   if ("edit" in route) {
-                    route.edit(
-                      row.original.id,
-                      "productId" in row.original
-                        ? row.original.productId
-                        : undefined,
-                    );
+                    route.edit(row.original.id, row);
                   } else {
                     navigate(route.to(row.original.id), {
                       viewTransition: true,

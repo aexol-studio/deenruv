@@ -9,11 +9,9 @@ export const CustomerDetailSidebar = () => {
 
   return (
     <main className="min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          {id && <VerifiedCard verified={!!entity?.user?.verified} />}
-          <CustomerGroupsCard customerId={id} groups={entity?.groups} />
-        </div>
+      <div className="flex flex-col gap-3">
+        {id && <VerifiedCard verified={!!entity?.user?.verified} />}
+        <CustomerGroupsCard customerId={id} groups={entity?.groups} />
       </div>
     </main>
   );

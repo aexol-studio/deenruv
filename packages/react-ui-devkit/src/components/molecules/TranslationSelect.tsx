@@ -1,6 +1,5 @@
 import { useSettings } from "@/state";
 import { Globe } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import {
   Select,
   SelectContent,
@@ -11,6 +10,7 @@ import {
 } from "..";
 import React from "react";
 import { getLanguageName } from "@/utils";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 export const TranslationSelect = () => {
   const { t } = useTranslation("common");

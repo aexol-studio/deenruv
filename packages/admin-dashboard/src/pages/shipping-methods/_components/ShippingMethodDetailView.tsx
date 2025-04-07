@@ -94,75 +94,73 @@ export const ShippingMethodDetailView = () => {
 
   return (
     <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-            <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
-              <div className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-                <div className="flex basis-full md:basis-1/3">
-                  <Input
-                    label={t('details.basic.name')}
-                    value={currentTranslationValue?.name ?? undefined}
-                    onChange={(e) => setTranslationField('name', e.target.value)}
-                    errors={state.translations?.errors}
-                    required
-                  />
-                </div>
-                <div className="flex basis-full md:basis-1/3">
-                  <Input
-                    label={t('details.basic.code')}
-                    value={state.code?.value ?? undefined}
-                    onChange={(e) => setField('code', e.target.value)}
-                    errors={state.code?.errors}
-                    required
-                  />
-                </div>
-              </div>
-              <div className="flex basis-full flex-col">
-                <Label className="mb-2">{t('details.basic.description')}</Label>
-                <RichTextEditor
-                  content={currentTranslationValue?.description ?? undefined}
-                  onContentChanged={(e) => setTranslationField('description', e)}
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+          <div className="flex flex-wrap items-start gap-4 p-0 pt-4">
+            <div className="flex w-full flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+              <div className="flex basis-full md:basis-1/3">
+                <Input
+                  label={t('details.basic.name')}
+                  value={currentTranslationValue?.name ?? undefined}
+                  onChange={(e) => setTranslationField('name', e.target.value)}
+                  errors={state.translations?.errors}
+                  required
                 />
               </div>
-              <div className="flex basis-full">
-                <SimpleSelect
-                  label={t('details.basic.fulfillmentHandler')}
-                  value={state.fulfillmentHandler?.value ?? undefined}
-                  onValueChange={(e) => setField('fulfillmentHandler', e)}
-                  options={fulfillmentHandlersOptions}
-                  errors={state.fulfillmentHandler?.errors}
+              <div className="flex basis-full md:basis-1/3">
+                <Input
+                  label={t('details.basic.code')}
+                  value={state.code?.value ?? undefined}
+                  onChange={(e) => setField('code', e.target.value)}
+                  errors={state.code?.errors}
+                  required
                 />
               </div>
             </div>
-          </CustomCard>
-          <DetailViewMarker position={'shippingMethods-detail-view'} />
-          <EntityCustomFields
-            entityName="shippingMethod"
-            id={id}
-            hideButton
-            onChange={(customFields, translations) => {
-              setField('customFields', customFields);
-              if (translations) setField('translations', translations as any);
-            }}
-            initialValues={
-              entity && 'customFields' in entity
-                ? { customFields: entity.customFields as CF, translations: entity.translations as any }
-                : { customFields: {} }
-            }
-          />
-          <CheckerCard
-            currentCheckerValue={state.checker?.value ?? undefined}
-            onCheckerValueChange={(checker) => checker && setField('checker', checker)}
-            errors={state.checker?.errors}
-          />
-          <CalculatorCard
-            currentCalculatorValue={state.calculator?.value ?? undefined}
-            onCalculatorValueChange={(calculator) => calculator && setField('calculator', calculator)}
-            errors={state.calculator?.errors}
-          />
-          <TestCard calculator={state.calculator?.value ?? undefined} checker={state.checker?.value ?? undefined} />
-        </div>
+            <div className="flex basis-full flex-col">
+              <Label className="mb-2">{t('details.basic.description')}</Label>
+              <RichTextEditor
+                content={currentTranslationValue?.description ?? undefined}
+                onContentChanged={(e) => setTranslationField('description', e)}
+              />
+            </div>
+            <div className="flex basis-full">
+              <SimpleSelect
+                label={t('details.basic.fulfillmentHandler')}
+                value={state.fulfillmentHandler?.value ?? undefined}
+                onValueChange={(e) => setField('fulfillmentHandler', e)}
+                options={fulfillmentHandlersOptions}
+                errors={state.fulfillmentHandler?.errors}
+              />
+            </div>
+          </div>
+        </CustomCard>
+        <DetailViewMarker position={'shippingMethods-detail-view'} />
+        <EntityCustomFields
+          entityName="shippingMethod"
+          id={id}
+          hideButton
+          onChange={(customFields, translations) => {
+            setField('customFields', customFields);
+            if (translations) setField('translations', translations as any);
+          }}
+          initialValues={
+            entity && 'customFields' in entity
+              ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+              : { customFields: {} }
+          }
+        />
+        <CheckerCard
+          currentCheckerValue={state.checker?.value ?? undefined}
+          onCheckerValueChange={(checker) => checker && setField('checker', checker)}
+          errors={state.checker?.errors}
+        />
+        <CalculatorCard
+          currentCalculatorValue={state.calculator?.value ?? undefined}
+          onCalculatorValueChange={(calculator) => calculator && setField('calculator', calculator)}
+          errors={state.calculator?.errors}
+        />
+        <TestCard calculator={state.calculator?.value ?? undefined} checker={state.checker?.value ?? undefined} />
       </div>
     </main>
   );

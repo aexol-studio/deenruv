@@ -1,8 +1,12 @@
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/index.js";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  useTranslation,
+} from "@/index.js";
 import { cn } from "@/lib/utils.js";
 import { ImageOff } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 interface Props
   extends Omit<
     React.DetailedHTMLProps<

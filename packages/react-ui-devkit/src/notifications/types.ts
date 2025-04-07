@@ -12,6 +12,7 @@ export interface Notification<T = any> {
       title: string;
       description: string;
       icon: React.ReactNode;
+      when?: (data: T) => boolean;
     };
     navigation?: Array<{ id: string; component: (data: T) => React.ReactNode }>;
   };

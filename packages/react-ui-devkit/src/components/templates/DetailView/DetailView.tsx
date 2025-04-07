@@ -27,9 +27,8 @@ import {
   DetailViewMarker,
   Separator,
 } from "@/components";
-import { GFFLPFormField, useGFFLP } from "@/hooks";
+import { GFFLPFormField, useGFFLP, useTranslation } from "@/hooks";
 import { useServer } from "@/state/server.js";
-import { useTranslation } from "react-i18next";
 import { getPermissions } from "@/utils/getPermissions.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
 import { LoadingMask } from "@/components/templates/DetailView/_components/LoadingMask.js";

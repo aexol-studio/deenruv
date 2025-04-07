@@ -22,13 +22,13 @@ import {
 import { Grip, PanelsTopLeft } from "lucide-react";
 import React from "react";
 import { CSS } from "@dnd-kit/utilities";
-import { useTranslation } from "react-i18next";
 import { Table } from "@tanstack/react-table";
 import { EXCLUDED_COLUMNS } from "@/components/templates/DetailList/useDetailListHook/constants.js";
 import { Checkbox } from "@/components/atoms/checkbox.js";
 import { camelCaseToSpaces } from "@/utils/camel-case-to-spaces.js";
 import { useServer } from "@/state/server.js";
 import { useSettings } from "@/state/settings.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 const CUSTOM_FIELDS_PREFIX = "customFields.";
 

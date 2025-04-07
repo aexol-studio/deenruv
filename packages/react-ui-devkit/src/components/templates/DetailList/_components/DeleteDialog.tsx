@@ -7,8 +7,8 @@ import {
   DialogClose,
   DialogDescription,
 } from "@/components";
+import { useTranslation } from "@/hooks/useTranslation.js";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 type ConfirmationDialogProps<T extends { id: string }> = {
   onConfirmDelete: () => void;

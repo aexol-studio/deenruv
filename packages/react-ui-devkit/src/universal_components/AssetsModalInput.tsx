@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-
-import { useTranslation } from "react-i18next";
 import { ChevronDown, CircleX } from "lucide-react";
 import { apiClient } from "@/zeus_client/deenruvAPICall.js";
 import { cn } from "@/lib/utils.js";
@@ -43,6 +41,7 @@ import {
   ASSETS_PER_PAGE,
   useAssets,
 } from "@/hooks/useAssets.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 const arrayRange = (start: number, stop: number) =>
   Array.from({ length: stop - start + 1 }, (_, index) => start + index);
 

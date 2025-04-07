@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { FilterInputType } from "../types";
 import { ArrayInput } from "./ArrayInput";
 import { Checkbox, Input } from "@/components";
 import React from "react";
 import { OperatorSelect } from "@/components/templates/DetailList/useDetailListHook/OperatorSelect.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 type StringOperator = Omit<FilterInputType["StringOperators"], "__typename">;
 const ARRAY_TYPES = ["in", "notIn"] as (keyof StringOperator)[];

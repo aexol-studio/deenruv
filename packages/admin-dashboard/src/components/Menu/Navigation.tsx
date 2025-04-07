@@ -317,7 +317,7 @@ export function Navigation({ isCollapsed }: NavProps) {
     <div className="relative h-[calc(100vh-110px)] overflow-y-auto lg:h-[calc(100vh-120px)]">
       <div
         data-collapsed={isCollapsed}
-        className="group flex h-[calc(100%-70px)] flex-col gap-4 py-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"
+        className="group flex h-[calc(100%-70px)] flex-col gap-4 pb-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"
       >
         <Accordion
           type="multiple"

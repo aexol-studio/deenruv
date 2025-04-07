@@ -38,39 +38,37 @@ export const StockLocationDetailView = () => {
 
   return (
     <main className="min-h-96">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-            <div className="flex flex-col gap-3">
-              <Input
-                label={t('details.basic.name')}
-                value={state.name?.value}
-                onChange={(e) => setField('name', e.target.value)}
-                errors={state.name?.errors}
-                required
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+          <div className="flex flex-col gap-3">
+            <Input
+              label={t('details.basic.name')}
+              value={state.name?.value}
+              onChange={(e) => setField('name', e.target.value)}
+              errors={state.name?.errors}
+              required
+            />
+            <div className="flex basis-full flex-col">
+              <Label className="mb-2">{t('details.basic.description')}</Label>
+              <RichTextEditor
+                content={state.description?.value ?? undefined}
+                onContentChanged={(e) => setField('description', e)}
               />
-              <div className="flex basis-full flex-col">
-                <Label className="mb-2">{t('details.basic.description')}</Label>
-                <RichTextEditor
-                  content={state.description?.value ?? undefined}
-                  onContentChanged={(e) => setField('description', e)}
-                />
-              </div>
             </div>
-          </CustomCard>
-          <DetailViewMarker position={'stockLocations-detail-view'} />
-          <EntityCustomFields
-            entityName="stockLocation"
-            id={id}
-            hideButton
-            onChange={(customFields) => {
-              setField('customFields', customFields);
-            }}
-            initialValues={
-              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
-            }
-          />
-        </div>
+          </div>
+        </CustomCard>
+        <DetailViewMarker position={'stockLocations-detail-view'} />
+        <EntityCustomFields
+          entityName="stockLocation"
+          id={id}
+          hideButton
+          onChange={(customFields) => {
+            setField('customFields', customFields);
+          }}
+          initialValues={
+            entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+          }
+        />
       </div>
     </main>
   );

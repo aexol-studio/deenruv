@@ -8,7 +8,7 @@ import {
   AlertDialogFooter,
 } from "@/components/atoms/alert-dialog.js";
 import React, { PropsWithChildren, useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 interface ConfirmationDialogProps {
   onConfirm: () => void;

@@ -1,5 +1,3 @@
-'use client';
-
 import {
   CommandDialog,
   CommandInput,
@@ -11,9 +9,9 @@ import {
   Routes,
   useGlobalSearch,
   capitalizeFirstLetter,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { LayoutDashboard, ListPlus, FileText, Puzzle, ArrowRight } from 'lucide-react';
 
@@ -28,7 +26,8 @@ type Route = {
 };
 
 export const GlobalSearch = () => {
-  const { t } = useTranslation('common');
+  const { t, tEntity } = useTranslation('common');
+
   const { plugins } = usePluginStore();
   const isOpen = useGlobalSearch((s) => s.isOpen);
   const toggle = useGlobalSearch((s) => s.toggle);
@@ -57,7 +56,7 @@ export const GlobalSearch = () => {
             name: capitalizeFirstLetter(t(`menu.${key}`)),
             path: value.new,
             type: 'new',
-            description: t('Utwórz', { value: key.toLowerCase() }),
+            description: tEntity('Utwórz', key),
           });
         }
         if ('list' in value && typeof value.list === 'string') {
@@ -65,7 +64,7 @@ export const GlobalSearch = () => {
             name: capitalizeFirstLetter(t(`menu.${key}`)),
             path: value.list,
             type: 'list',
-            description: `View all ${key.toLowerCase()} items`,
+            description: tEntity('Zobacz wszystkie', key, 'many'),
           });
         }
         routes.push({ name: key, children });
@@ -91,24 +90,6 @@ export const GlobalSearch = () => {
         }
       });
     });
-
-    // return routes.flatMap((route, routeIndex) =>
-    //   route.children?.length
-    //     ? route.children.map((child, childIndex) => ({
-    //         name: `${route.name}`,
-    //         path: child.path,
-    //         type: child.type,
-    //         subName: child.type === 'new' ? 'Create New' : 'View List',
-    //         description: child.description,
-    //         id: `${routeIndex}-${childIndex}-${child.type}-${route.name}`,
-    //       }))
-    //     : [
-    //         {
-    //           ...route,
-    //           id: `${routeIndex}-main-${route.name}`,
-    //         },
-    //       ],
-    // );
 
     return routes.flatMap((route, routeIndex) =>
       route.children?.length

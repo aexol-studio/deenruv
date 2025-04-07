@@ -49,62 +49,60 @@ export const AdminDetailView = () => {
 
   return (
     <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
-            <div className="flex items-start gap-4">
-              <Input
-                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                label={t('details.basic.firstName')}
-                value={state.firstName?.value ?? undefined}
-                onChange={(e) => setField('firstName', e.target.value)}
-                errors={state.firstName?.errors}
-                required
-              />
-              <Input
-                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                label={t('details.basic.lastName')}
-                value={state.lastName?.value ?? undefined}
-                onChange={(e) => setField('lastName', e.target.value)}
-                errors={state.lastName?.errors}
-                required
-              />
-              <Input
-                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                label={t('details.basic.emailAddress')}
-                value={state.emailAddress?.value ?? undefined}
-                onChange={(e) => setField('emailAddress', e.target.value)}
-                errors={state.emailAddress?.errors}
-                required
-              />
-              <Input
-                wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
-                label={t('details.basic.password')}
-                value={state.password?.value ?? undefined}
-                onChange={(e) => setField('password', e.target.value)}
-                errors={state.password?.errors}
-                required={!editMode}
-              />
-            </div>
-          </CustomCard>
-          <DetailViewMarker position={'admins-detail-view'} />
-          <EntityCustomFields
-            entityName="administrator"
-            id={id}
-            hideButton
-            onChange={(customFields) => {
-              setField('customFields', customFields);
-            }}
-            initialValues={
-              entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
-            }
-          />
-          <RolesCard
-            adminRoleIds={state.roleIds?.value ?? undefined}
-            onRolesChange={(e) => setField('roleIds', e)}
-            errors={state.roleIds?.errors}
-          />
-        </div>
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />}>
+          <div className="flex items-start gap-4">
+            <Input
+              wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+              label={t('details.basic.firstName')}
+              value={state.firstName?.value ?? undefined}
+              onChange={(e) => setField('firstName', e.target.value)}
+              errors={state.firstName?.errors}
+              required
+            />
+            <Input
+              wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+              label={t('details.basic.lastName')}
+              value={state.lastName?.value ?? undefined}
+              onChange={(e) => setField('lastName', e.target.value)}
+              errors={state.lastName?.errors}
+              required
+            />
+            <Input
+              wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+              label={t('details.basic.emailAddress')}
+              value={state.emailAddress?.value ?? undefined}
+              onChange={(e) => setField('emailAddress', e.target.value)}
+              errors={state.emailAddress?.errors}
+              required
+            />
+            <Input
+              wrapperClassName="basis-full md:basis-1/2 xl:basis-1/4"
+              label={t('details.basic.password')}
+              value={state.password?.value ?? undefined}
+              onChange={(e) => setField('password', e.target.value)}
+              errors={state.password?.errors}
+              required={!editMode}
+            />
+          </div>
+        </CustomCard>
+        <DetailViewMarker position={'admins-detail-view'} />
+        <EntityCustomFields
+          entityName="administrator"
+          id={id}
+          hideButton
+          onChange={(customFields) => {
+            setField('customFields', customFields);
+          }}
+          initialValues={
+            entity && 'customFields' in entity ? { customFields: entity.customFields as CF } : { customFields: {} }
+          }
+        />
+        <RolesCard
+          adminRoleIds={state.roleIds?.value ?? undefined}
+          onRolesChange={(e) => setField('roleIds', e)}
+          errors={state.roleIds?.errors}
+        />
       </div>
     </main>
   );

@@ -11,7 +11,6 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Trash } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export const SelectIDColumn = <T extends { id: string }>(): ColumnDef<T> => {

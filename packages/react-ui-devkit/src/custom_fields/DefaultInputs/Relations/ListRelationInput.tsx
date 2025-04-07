@@ -22,14 +22,13 @@ import { cn } from "@/lib/utils";
 import { CircleX, ImageIcon, Plus, Search, Trash2 } from "lucide-react";
 import { useCustomFields } from "@/custom_fields";
 import { useList } from "@/hooks/useList";
-import { useTranslation } from "react-i18next";
 import type { ResolverInputTypes } from "@deenruv/admin-types";
 import {
   type CustomFieldSelectorsType,
   customFieldSelectors,
 } from "@/selectors";
 import { apiClient } from "@/zeus_client";
-import { useDebounce } from "@/hooks";
+import { useDebounce, useTranslation } from "@/hooks";
 import React from "react";
 
 type CF = CustomFieldSelectorsType;

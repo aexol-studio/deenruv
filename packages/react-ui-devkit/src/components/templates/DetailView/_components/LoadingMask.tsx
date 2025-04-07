@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 export const LoadingMask: React.FC = () => {
   const { t } = useTranslation("common");

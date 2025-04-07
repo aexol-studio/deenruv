@@ -22,11 +22,11 @@ import {
   ListTypeKeys,
   ListType,
 } from "@/components/templates/DetailList/useDetailListHook/types.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 import { cn } from "@/lib/utils.js";
 import { ModelTypes } from "@deenruv/admin-types";
 import { Check, ChevronsUpDown, ListFilter, Trash2 } from "lucide-react";
 import React, { useCallback, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const joinOperatorOptions: Option[] = [
   { label: "and", value: "and" },

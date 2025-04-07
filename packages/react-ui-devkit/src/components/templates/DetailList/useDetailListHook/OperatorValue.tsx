@@ -4,8 +4,8 @@ import { IDOperator as IDOperatorInput } from "@/components/templates/DetailList
 import { NumberOperator } from "@/components/templates/DetailList/_components/operators/NumberOperator.js";
 import { StringOperator as StringOperatorInput } from "@/components/templates/DetailList/_components/operators/StringOperator.js";
 import { FilterInputType } from "@/components/templates/DetailList/_components/types.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 export type IDOperator = Omit<FilterInputType["IDOperators"], "__typename">;
 export type StringOperator = Omit<

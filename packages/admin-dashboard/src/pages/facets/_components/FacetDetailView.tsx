@@ -117,94 +117,92 @@ export const FacetsDetailView = () => {
 
   return (
     <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('facets:details.basicInfo')} icon={<CardIcons.basic />} color="green">
-            <div className="flex gap-8 p-0 pt-2">
-              <div className="basis-full md:basis-1/2 xl:basis-1/3">
-                <Input
-                  label={t('facets:table.name')}
-                  value={currentTranslationValue?.name ?? undefined}
-                  onChange={(e) => setTranslationField('name', e.target.value)}
-                  errors={state.translations?.errors}
-                  required
-                />
-              </div>
-              <div className="basis-full md:basis-1/2 xl:basis-1/3">
-                <Input
-                  label={t('facets:table.code')}
-                  value={state.code?.value}
-                  onChange={(e) => setField('code', e.target.value)}
-                  errors={state.code?.errors}
-                  required
-                />
-              </div>
-              <div className="basis-full md:basis-1/2 xl:basis-1/3">
-                <Label>{t('facets:table.isPrivate')}</Label>
-                <div className="mt-2 flex gap-3">
-                  <Switch checked={state.isPrivate?.value} onCheckedChange={(e) => setField('isPrivate', e)} />
-                  <p>{state.isPrivate?.value ? t('facets:table.isPrivate') : t('facets:table.public')}</p>
-                </div>
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('facets:details.basicInfo')} icon={<CardIcons.basic />} color="green">
+          <div className="flex gap-8 p-0 pt-2">
+            <div className="basis-full md:basis-1/2 xl:basis-1/3">
+              <Input
+                label={t('facets:table.name')}
+                value={currentTranslationValue?.name ?? undefined}
+                onChange={(e) => setTranslationField('name', e.target.value)}
+                errors={state.translations?.errors}
+                required
+              />
+            </div>
+            <div className="basis-full md:basis-1/2 xl:basis-1/3">
+              <Input
+                label={t('facets:table.code')}
+                value={state.code?.value}
+                onChange={(e) => setField('code', e.target.value)}
+                errors={state.code?.errors}
+                required
+              />
+            </div>
+            <div className="basis-full md:basis-1/2 xl:basis-1/3">
+              <Label>{t('facets:table.isPrivate')}</Label>
+              <div className="mt-2 flex gap-3">
+                <Switch checked={state.isPrivate?.value} onCheckedChange={(e) => setField('isPrivate', e)} />
+                <p>{state.isPrivate?.value ? t('facets:table.isPrivate') : t('facets:table.public')}</p>
               </div>
             </div>
-          </CustomCard>
-          <DetailViewMarker position={'facets-detail-view'} />
-          <EntityCustomFields
-            entityName="facet"
-            id={id}
-            hideButton
-            onChange={(customFields, translations) => {
-              setField('customFields', customFields);
-              if (translations) setField('translations', translations);
-            }}
-            initialValues={
-              entity && 'customFields' in entity
-                ? { customFields: entity.customFields as CF, translations: entity.translations as any }
-                : { customFields: {} }
-            }
-          />
-          {entity && editMode && (
-            <CustomCard
-              title={t('facets:details.facetValues')}
-              icon={<CardIcons.tag />}
-              color="teal"
-              upperRight={
-                <AddFacetValueDialog
-                  open={open}
-                  setOpen={setOpen}
-                  facetId={entity.id}
-                  facetValueId={facetValueIdInModal}
-                  onFacetValueChange={() => {
-                    setAdditionalData({ ...additionalData, refetchList: true });
-                    setFacetValueIdInModal(null);
-                  }}
-                />
-              }
-            >
-              <DetailList
-                entityName="FacetValue"
-                hideColumns={['customFields', 'createdAt', 'updatedAt']}
-                fetch={fetchFacetValues}
-                onRemove={onRemove}
-                route={{
-                  edit: (id) => {
-                    setFacetValueIdInModal(id);
-                    setOpen(true);
-                  },
-                  create: () => {
-                    setFacetValueIdInModal(null);
-                    setOpen(true);
-                  },
+          </div>
+        </CustomCard>
+        <DetailViewMarker position={'facets-detail-view'} />
+        <EntityCustomFields
+          entityName="facet"
+          id={id}
+          hideButton
+          onChange={(customFields, translations) => {
+            setField('customFields', customFields);
+            if (translations) setField('translations', translations);
+          }}
+          initialValues={
+            entity && 'customFields' in entity
+              ? { customFields: entity.customFields as CF, translations: entity.translations as any }
+              : { customFields: {} }
+          }
+        />
+        {entity && editMode && (
+          <CustomCard
+            title={t('facets:details.facetValues')}
+            icon={<CardIcons.tag />}
+            color="teal"
+            upperRight={
+              <AddFacetValueDialog
+                open={open}
+                setOpen={setOpen}
+                facetId={entity.id}
+                facetValueId={facetValueIdInModal}
+                onFacetValueChange={() => {
+                  setAdditionalData({ ...additionalData, refetchList: true });
+                  setFacetValueIdInModal(null);
                 }}
-                searchFields={['name']}
-                tableId={tableId}
-                noPaddings
-                createPermissions={[Permission.CreateFacet]}
-                deletePermissions={[Permission.DeleteFacet]}
               />
-            </CustomCard>
-          )}
-        </div>
+            }
+          >
+            <DetailList
+              entityName="FacetValue"
+              hideColumns={['customFields', 'createdAt', 'updatedAt']}
+              fetch={fetchFacetValues}
+              onRemove={onRemove}
+              route={{
+                edit: (id) => {
+                  setFacetValueIdInModal(id);
+                  setOpen(true);
+                },
+                create: () => {
+                  setFacetValueIdInModal(null);
+                  setOpen(true);
+                },
+              }}
+              searchFields={['name']}
+              tableId={tableId}
+              noPaddings
+              createPermissions={[Permission.CreateFacet]}
+              deletePermissions={[Permission.DeleteFacet]}
+            />
+          </CustomCard>
+        )}
       </div>
     </main>
   );

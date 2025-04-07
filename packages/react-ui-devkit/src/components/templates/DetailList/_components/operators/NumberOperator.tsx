@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { FilterInputType } from "../types";
 import { Checkbox, Input } from "@/components";
 import React from "react";
 import { OperatorSelect } from "@/components/templates/DetailList/useDetailListHook/OperatorSelect.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 type NumberOperator = Omit<FilterInputType["NumberOperators"], "__typename">;
 type NumberRange = { start: number; end: number };

@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 import {
   Pagination,
@@ -17,6 +16,7 @@ import { arrayRange, ItemsPerPageType, SearchParamKey } from "./types";
 import React from "react";
 import { cn } from "@/lib";
 import { PaginationInput } from "@/types";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 export const Paginate = ({
   itemsPerPage,

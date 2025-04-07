@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import type { LanguageCode, ModelTypes } from "@deenruv/admin-types";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -14,6 +13,7 @@ import { mergeSelectorWithCustomFields } from "@/utils/zeus-utils.js";
 import { apiClient } from "@/zeus_client/deenruvAPICall.js";
 import { getGraphqlError } from "@/utils/getGraphqlError.js";
 import { Button } from "@/components/atoms/button.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 type ViableEntity = Uncapitalize<
   keyof Pick<

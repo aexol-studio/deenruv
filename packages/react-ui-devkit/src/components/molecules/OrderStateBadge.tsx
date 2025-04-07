@@ -1,8 +1,8 @@
 import ListBadge from "@/components/molecules/ListBadge.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 import { cn } from "@/lib/utils";
 import { ORDER_STATE } from "@/utils/order_state.js";
 import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 export const OrderStateBadge: React.FC<{
   fullWidth?: boolean;

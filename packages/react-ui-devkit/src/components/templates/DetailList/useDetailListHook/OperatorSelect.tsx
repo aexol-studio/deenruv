@@ -1,8 +1,8 @@
 import { Option } from "@/components/atoms/multiple-selector.js";
 import { SimpleSelect } from "@/components/molecules/SimpleSelect.js";
 import { FilterInputType } from "@/components/templates/DetailList/_components/types.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 type IDOperator = Omit<FilterInputType["IDOperators"], "__typename">;
 type StringOperator = Omit<FilterInputType["StringOperators"], "__typename">;

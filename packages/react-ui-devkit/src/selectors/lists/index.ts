@@ -1,4 +1,5 @@
 export * from "./CollectionListSelector.js";
+export * from "./AssetListSelector.js";
 export * from "./AdminListSelector.js";
 export * from "./ChannelListSelector.js";
 export * from "./CountryListSelector.js";

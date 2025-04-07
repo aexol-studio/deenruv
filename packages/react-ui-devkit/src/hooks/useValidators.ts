@@ -1,5 +1,5 @@
 import { LanguageCode, ModelTypes } from "@deenruv/admin-types";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "./useTranslation.js";
 
 export const useValidators = () => {
   const { t } = useTranslation("common");

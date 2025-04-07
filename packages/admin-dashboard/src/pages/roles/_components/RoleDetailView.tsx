@@ -76,52 +76,50 @@ export const RoleDetailView = () => {
 
   return (
     <main className="my-4">
-      <div className="mx-auto flex  w-full max-w-[1440px] flex-col gap-4 2xl:px-8">
-        <div className="flex flex-col gap-3">
-          <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
-            <div className="flex flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
-              <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
-                <Input
-                  label={t('details.basic.description')}
-                  value={state.description?.value ?? undefined}
-                  onChange={(e) => setField('description', e.target.value)}
-                  errors={state.description?.errors}
-                  required
-                />
-              </div>
-              <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
-                <Input
-                  label={t('details.basic.code')}
-                  value={state.code?.value ?? undefined}
-                  onChange={(e) => setField('code', e.target.value)}
-                  errors={state.code?.errors}
-                  required
-                />
-              </div>
-              <div className="flex basis-full flex-col gap-[6px] xl:basis-1/2">
-                <Label>{t('details.basic.channels')}</Label>
-                <MultipleSelector
-                  options={allChannelOptions}
-                  value={currentChannelOptions}
-                  placeholder={t('details.basic.channelsPlaceholder')}
-                  onChange={(channelsOptions) =>
-                    setField(
-                      'channelIds',
-                      channelsOptions.map((o) => o.value),
-                    )
-                  }
-                  hideClearAllButton
-                />
-              </div>
+      <div className="flex flex-col gap-3">
+        <CustomCard title={t('details.basic.title')} icon={<CardIcons.basic />} color="green">
+          <div className="flex flex-wrap items-start gap-4 p-0 pt-4 xl:flex-nowrap">
+            <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
+              <Input
+                label={t('details.basic.description')}
+                value={state.description?.value ?? undefined}
+                onChange={(e) => setField('description', e.target.value)}
+                errors={state.description?.errors}
+                required
+              />
             </div>
-          </CustomCard>
-          <DetailViewMarker position={'roles-detail-view'} />
-          <PermissionsCard
-            currentPermissions={state.permissions?.value ?? undefined}
-            onPermissionsChange={(e) => setField('permissions', e)}
-            errors={state.permissions?.errors}
-          />
-        </div>
+            <div className="flex basis-full md:basis-1/2 xl:basis-1/4">
+              <Input
+                label={t('details.basic.code')}
+                value={state.code?.value ?? undefined}
+                onChange={(e) => setField('code', e.target.value)}
+                errors={state.code?.errors}
+                required
+              />
+            </div>
+            <div className="flex basis-full flex-col gap-[6px] xl:basis-1/2">
+              <Label>{t('details.basic.channels')}</Label>
+              <MultipleSelector
+                options={allChannelOptions}
+                value={currentChannelOptions}
+                placeholder={t('details.basic.channelsPlaceholder')}
+                onChange={(channelsOptions) =>
+                  setField(
+                    'channelIds',
+                    channelsOptions.map((o) => o.value),
+                  )
+                }
+                hideClearAllButton
+              />
+            </div>
+          </div>
+        </CustomCard>
+        <DetailViewMarker position={'roles-detail-view'} />
+        <PermissionsCard
+          currentPermissions={state.permissions?.value ?? undefined}
+          onPermissionsChange={(e) => setField('permissions', e)}
+          errors={state.permissions?.errors}
+        />
       </div>
     </main>
   );

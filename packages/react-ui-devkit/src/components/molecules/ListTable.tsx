@@ -15,11 +15,11 @@ import {
   TableLabel,
 } from "@/components";
 import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import React from "react";
 import { cn } from "@/lib";
 import { LocationKeys } from "@/types/types.js";
 import { EmptyState } from "@/universal_components/EmptyState.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 interface ListTableProps<TData, TValue> {
   tableId: LocationKeys;
@@ -89,10 +89,6 @@ export function ListTable<TData, TValue>({
   const [showPinned, setShowPinned] = useState(false);
 
   useEffect(() => {
-    console.log(showPinned);
-  }, [showPinned]);
-
-  useEffect(() => {
     const checkScroll = () => {
       if (!tableWrapperRef.current || !rowRefs.current?.[0]) return;
 
@@ -107,8 +103,6 @@ export function ListTable<TData, TValue>({
       resizeObserver.observe(tableWrapperRef.current);
       tableWrapperRef.current.addEventListener("scroll", checkScroll);
     }
-
-    console.log("EFF");
 
     checkScroll();
 

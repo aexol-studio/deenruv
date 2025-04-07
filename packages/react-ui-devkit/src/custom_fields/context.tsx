@@ -1,5 +1,5 @@
+import { useTranslation } from "@/hooks/useTranslation.js";
 import React, { PropsWithChildren, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 export type Field = {
   name: string;

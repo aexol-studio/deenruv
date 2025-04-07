@@ -1,7 +1,7 @@
 import { GraphQLError } from "graphql";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useTranslation } from "./useTranslation.js";
 
 export function useErrorHandler() {
   const { t } = useTranslation("common");

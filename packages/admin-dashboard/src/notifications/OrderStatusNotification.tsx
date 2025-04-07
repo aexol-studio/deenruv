@@ -27,6 +27,7 @@ export const ORDER_STATUS_NOTIFICATION = createNotification({
         name: 'order-states',
         title: 'Pending Orders',
         description: 'You have pending orders.',
+        when: (orders) => orders > 0,
         icon: (
           <SimpleTooltip content="Pending Orders">
             <div className="size-4 rounded-full bg-yellow-500"></div>
