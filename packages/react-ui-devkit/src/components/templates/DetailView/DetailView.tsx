@@ -381,7 +381,7 @@ const DetailTabs = ({
           </div>
         </div>
       </div>
-      <div className="relative px-4 py-2 md:px-8 md:py-4">
+      <div className="relative">
         {loading ? (
           <LoadingMask />
         ) : !entity && !!id ? (

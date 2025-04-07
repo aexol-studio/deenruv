@@ -623,7 +623,7 @@ export function DetailList<
   };
 
   return (
-    <PageBlock withPadding={!noPaddings}>
+    <PageBlock withoutPadding={noPaddings}>
       <DetailListStoreProvider refetch={refetch} table={table}>
         <div className={cn("w-full")}>
           <DeleteDialog

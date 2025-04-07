@@ -122,7 +122,7 @@ export const Extensions = () => {
   const categories = ['all', ...new Set(plugins.map((p) => p.category))];
 
   return (
-    <PageBlock withPadding>
+    <PageBlock>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">

@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from "react";
 
 interface PageBlockProps {
   sidebar?: React.ReactNode;
-  withPadding?: boolean;
+  withoutPadding?: boolean;
   className?: string;
 }
 
@@ -15,7 +15,7 @@ interface PageBlockProps {
  */
 export const PageBlock: React.FC<PropsWithChildren<PageBlockProps>> = ({
   className,
-  withPadding,
+  withoutPadding,
   children,
   sidebar,
 }) => {
@@ -23,7 +23,7 @@ export const PageBlock: React.FC<PropsWithChildren<PageBlockProps>> = ({
     <div
       className={cn(
         sidebar ? "grid grid-cols-[minmax(0,1fr)_400px] gap-4" : "w-full",
-        withPadding ? "p-4" : "",
+        withoutPadding ? "" : "p-4",
         className,
       )}
     >
