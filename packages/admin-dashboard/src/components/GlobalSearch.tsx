@@ -163,7 +163,7 @@ export const GlobalSearch = () => {
   return (
     <CommandDialog open={isOpen} onOpenChange={toggle} modal>
       <CommandInput
-        placeholder={t('entity.product', { count: 4 })}
+        placeholder={t('Type a command or search...')}
         className="placeholder:text-muted-foreground flex-1 bg-transparent text-base outline-none"
       />
       <CommandList className="max-h-[300px] overflow-y-auto py-2">
