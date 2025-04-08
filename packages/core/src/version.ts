@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @description
  * A constant which holds the current version of the Deenruv core. You can use
@@ -14,4 +13,4 @@
  * @docsCategory common
  * @since 2.0.0
  */
-export const DEENRUV_VERSION: string = require('../package.json').version;
+export const DEENRUV_VERSION: string = require("../package.json").version;
