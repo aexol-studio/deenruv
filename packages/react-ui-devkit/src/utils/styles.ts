@@ -22,9 +22,9 @@ export const buttonVariants = cva(
         link: "text-stone-900 underline-offset-4 hover:underline focus:ring-2 focus:ring-stone-400 dark:text-stone-50",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        default: "h-8 px-4 py-2",
+        sm: "h-7 rounded-md px-3",
+        lg: "h-9 rounded-md px-8",
         icon: "size-10",
       },
     },

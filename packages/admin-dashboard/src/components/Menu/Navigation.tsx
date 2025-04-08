@@ -384,8 +384,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                               <div
                                 id={link.id}
                                 className={cn(
-                                  buttonVariants({ variant: 'navigation-link', size: 'sm' }),
-                                  'relative justify-start capitalize',
+                                  'relative flex items-center justify-start rounded-md px-4 py-2 capitalize',
                                   location.pathname === link.href &&
                                     'bg-muted hover:bg-muted hover:text-muted-foreground dark:bg-muted dark:hover:bg-muted font-semibold opacity-100',
                                 )}

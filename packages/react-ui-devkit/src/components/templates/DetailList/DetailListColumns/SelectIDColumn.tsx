@@ -7,6 +7,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  TableCell,
+  TableRow,
 } from "@/components";
 import { useTranslation } from "@/hooks/useTranslation.js";
 import { ColumnDef } from "@tanstack/react-table";

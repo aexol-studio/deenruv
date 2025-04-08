@@ -26,7 +26,7 @@ import {
 } from "@/components/index.js";
 import { useTranslation } from "@/hooks/useTranslation.js";
 
-export function MoveEntityToChannels<T extends { id: string }>({
+export function ManageEntityToChannels<T extends { id: string }>({
   close,
   reject,
   resolve,

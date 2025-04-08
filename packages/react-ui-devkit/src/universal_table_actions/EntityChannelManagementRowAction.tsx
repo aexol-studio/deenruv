@@ -1,7 +1,7 @@
 import { createDialogFromComponent } from "@/universal_utils/createDialogFromComponentFunction.js";
 import { FolderOpen } from "lucide-react";
 import React from "react";
-import { MoveEntityToChannels } from "./MoveEntityToChannels.js";
+import { ManageEntityToChannels } from "./ManageEntityToChannels.js";
 import { ListLocations } from "@/types/index.js";
 import { useSettings } from "@/state/settings.js";
 import { DEFAULT_CHANNEL_CODE } from "@/consts/defaultChannel.js";
@@ -19,39 +19,15 @@ export const EntityChannelManagementRowAction = <
   return [
     {
       icon: <FolderOpen size={16} />,
-      label: "Przenieś do kanałów",
+      label: "Zarządzaj kanałami",
       canShow: () => channel?.code === DEFAULT_CHANNEL_CODE,
       onClick: async ({ row, refetch }) => {
         try {
-          const result = await createDialogFromComponent(MoveEntityToChannels, {
-            items: [row.original],
-          });
-          const input = {
-            channelId: result.channelId,
-            collectionIds: result.ids,
-          };
-          const { assignCollectionsToChannel } = await apiClient("mutation")({
-            assignCollectionsToChannel: [{ input }, { id: true }],
-          });
-          if (!assignCollectionsToChannel) {
-            throw new Error("Failed to assign collections to channel");
-          }
-          refetch();
-          return { success: "" };
-        } catch {
-          return { error: "" };
-        }
-      },
-    },
-    {
-      icon: <FolderOpen size={16} />,
-      label: "Usuń z kanałów",
-      canShow: () => channel?.code === DEFAULT_CHANNEL_CODE,
-      onClick: async ({ row, refetch }) => {
-        try {
-          const result = await createDialogFromComponent(MoveEntityToChannels, {
-            items: [row.original],
-          });
+          const result = await createDialogFromComponent(
+            ManageEntityToChannels,
+            { items: [row.original] },
+          );
+
           const input = {
             channelId: result.channelId,
             collectionIds: result.ids,
