@@ -48,6 +48,8 @@
   "previous": "Poprzednio",
   "netSold": "Sprzedaż netto",
   "averageNetSold": "Średnia sprzedaż netto",
+  "grossSold": "Sprzedaż brutto",
+  "averageGrossSold": "Średnia sprzedaż brutto",
   "orders": "Zamówienia",
   "soldProducts": "Sprzedane produkty",
   "compare": "Porównaj z poprzednim okresem",

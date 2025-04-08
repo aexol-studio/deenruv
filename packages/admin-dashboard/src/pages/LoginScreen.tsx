@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 export const LoginScreen = () => {
   const { t } = useTranslation('common');
   const showAppVersion = window.__DEENRUV_SETTINGS__.branding.showAppVersion;
+  const [error, setError] = React.useState<string | null>(null);
 
   const image =
     window.__DEENRUV_SETTINGS__.branding.loginPage?.logo ||
@@ -16,6 +17,7 @@ export const LoginScreen = () => {
   const hideFormLogo = window.__DEENRUV_SETTINGS__.branding.loginPage?.hideFormLogo || false;
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
     const username = (e.currentTarget.elements.namedItem('username') as HTMLInputElement).value;
     const password = (e.currentTarget.elements.namedItem('password') as HTMLInputElement).value;
     const rememberMe = (e.currentTarget.elements.namedItem('rememberMe') as HTMLInputElement).checked;
@@ -30,34 +32,24 @@ export const LoginScreen = () => {
         },
       ],
     });
-    if (data.login.__typename !== 'CurrentUser') toast(data.login.message, {});
+    if (data.login.__typename !== 'CurrentUser') {
+      setError(data.login.message);
+      toast(data.login.message, {});
+    }
   };
-
   return (
     <div className="bg-background text-foreground flex h-screen w-screen">
       <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
         <div className="flex items-center justify-center py-12">
           <div className="mx-auto grid w-[350px] gap-6">
             {hideFormLogo ? null : (
-              <div className="flex items-center justify-center">
+              <div className="flex h-[100px] items-center justify-center">
                 <BrandLogo />
               </div>
             )}
             <form onSubmit={login} className="grid gap-4">
-              <div className="grid gap-2">
-                <Label className="select-none" htmlFor="email">
-                  {t('userName')}
-                </Label>
-                <Input placeholder={t('userName')} name="username" />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label className="select-none" htmlFor="password">
-                    {t('password')}
-                  </Label>
-                </div>
-                <Input placeholder={t('password')} type="password" name="password" />
-              </div>
+              <Input label={t('userName')} placeholder={t('userName')} name="username" />
+              <Input label={t('password')} placeholder={t('password')} type="password" name="password" />
               <div className="flex items-center space-x-2">
                 <Checkbox id="rememberMe" name="rememberMe" />
                 <label
@@ -66,6 +58,9 @@ export const LoginScreen = () => {
                 >
                   {t('rememberMe')}
                 </label>
+              </div>
+              <div className="h-4">
+                <p className="text-sm text-red-500">{error}</p>
               </div>
               <Button type="submit">{t('login')}</Button>
             </form>

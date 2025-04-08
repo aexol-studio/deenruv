@@ -49,6 +49,8 @@
   "previous": "Previous",
   "netSold": "Net sold",
   "averageNetSold": "Average net sold",
+  "grossSold": "Gross sold",
+  "averageGrossSold": "Average gross sold",
   "orders": "Orders",
   "soldProducts": "Sold products",
   "compare": "Compare with previous period",

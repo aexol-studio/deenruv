@@ -3,10 +3,10 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 import React from "react";
 
 interface RatioBadgeProps {
-  ratio?: number;
+  ratio: number | undefined | null;
 }
-export const RatioBadge: React.FC<RatioBadgeProps> = ({ ratio }) => {
-  if (ratio === 0 || !ratio) return null;
+export const RatioBadge: React.FC<RatioBadgeProps> = ({ ratio: _ratio }) => {
+  const ratio = _ratio && _ratio > 0 ? _ratio : 0;
   return (
     <div
       className={cn(

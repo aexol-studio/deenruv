@@ -1,5 +1,10 @@
-import { priceFormatter, useLazyQuery } from "@deenruv/react-ui-devkit";
-import React, { useEffect, useState } from "react";
+import {
+  Label,
+  priceFormatter,
+  Switch,
+  useLazyQuery,
+} from "@deenruv/react-ui-devkit";
+import React, { useEffect, useMemo, useState } from "react";
 import { OrderSummaryMetricsQuery } from "../../graphql";
 import { DateRangeType } from "../../types";
 import { CurrencyCode, ModelTypes } from "../../zeus";
@@ -26,6 +31,7 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
     metric: ModelTypes["OrderSummaryDataMetric"];
     prevRatio: ModelTypes["OrderSummaryDataMetric"];
   }>();
+
   const getOrders = async ({
     prevRange,
     range,
@@ -67,34 +73,92 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
     getOrders({ ...dateRange, _orderStates: orderStates });
   }, [dateRange, orderStates]);
 
+  const [net, setNet] = useState(false);
+
+  const total = useMemo(() => {
+    if (ordersSummaryMetric && net) {
+      return ordersSummaryMetric.metric.total;
+    } else if (ordersSummaryMetric) {
+      return ordersSummaryMetric.metric.totalWithTax;
+    }
+    return 0;
+  }, [net, ordersSummaryMetric]);
+
+  const totalRatio = useMemo(() => {
+    if (ordersSummaryMetric && net) {
+      return ordersSummaryMetric.prevRatio.total;
+    } else if (ordersSummaryMetric) {
+      return ordersSummaryMetric.prevRatio.totalWithTax;
+    }
+    return 0;
+  }, [net, ordersSummaryMetric]);
+
+  const average = useMemo(() => {
+    if (ordersSummaryMetric && net) {
+      return ordersSummaryMetric.metric.averageOrderValue;
+    } else if (ordersSummaryMetric) {
+      return ordersSummaryMetric.metric.averageOrderValueWithTax;
+    }
+    return 0;
+  }, [net, ordersSummaryMetric]);
+
+  const averageRatio = useMemo(() => {
+    if (ordersSummaryMetric && net) {
+      return ordersSummaryMetric.prevRatio.averageOrderValue;
+    } else if (ordersSummaryMetric) {
+      return ordersSummaryMetric.prevRatio.averageOrderValueWithTax;
+    }
+    return 0;
+  }, [net, ordersSummaryMetric]);
+
   return (
     <div className="px-6">
-      <h2 className="pb-2">{t("summary")}</h2>
+      <div className="flex items-center justify-between py-4">
+        <h2>{t("summary")}</h2>
+        <div className="flex items-center gap-2">
+          <Label htmlFor="net">{net ? t("netSold") : t("grossSold")}</Label>
+          <Switch
+            id="net"
+            checked={net}
+            onCheckedChange={(checked) => {
+              setNet(checked);
+              getOrders({
+                ...dateRange,
+                refresh: true,
+                _orderStates: orderStates,
+                prevRange: dateRange.prevRange,
+              });
+            }}
+          />
+        </div>
+      </div>
       <div className="bg-muted/20 grid grid-cols-2 rounded-md border lg:grid-cols-4">
-        <div className="border-r p-6 pb-1">
-          <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
-            <h4 className="text-foreground/70 text-sm">{t("netSold")}</h4>
-            <RatioBadge ratio={ordersSummaryMetric?.prevRatio.total} />
+        <div>
+          <div className="border-r p-6 pb-1">
+            <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
+              <h4 className="text-foreground/70 text-sm">
+                {net ? t("netSold") : t("grossSold")}
+              </h4>
+              <RatioBadge ratio={totalRatio} />
+            </div>
+            <h3 className="flex items-end">
+              {priceFormatter(
+                total || 0,
+                ordersSummaryMetric?.metric?.currencyCode || CurrencyCode.PLN,
+              )}
+            </h3>
           </div>
-          <h3 className="flex items-end">
-            {priceFormatter(
-              ordersSummaryMetric?.metric?.total || 0,
-              ordersSummaryMetric?.metric?.currencyCode || CurrencyCode.PLN,
-            )}
-          </h3>
         </div>
         <div className="border-r p-6 ">
           <div className="flex flex-col-reverse justify-between gap-1 2xl:flex-row 2xl:items-center">
             <h4 className="text-foreground/70 text-sm">
-              {t("averageNetSold")}
+              {net ? t("averageNetSold") : t("averageGrossSold")}
             </h4>
-            <RatioBadge
-              ratio={ordersSummaryMetric?.prevRatio.averageOrderValue}
-            />
+            <RatioBadge ratio={averageRatio} />
           </div>
           <h3 className="flex items-end">
             {priceFormatter(
-              ordersSummaryMetric?.metric?.averageOrderValue || 0,
+              average || 0,
               ordersSummaryMetric?.metric?.currencyCode || CurrencyCode.PLN,
             )}
           </h3>

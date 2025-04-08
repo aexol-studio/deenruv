@@ -3,7 +3,7 @@ import {
   AssetServerPlugin,
   configureS3AssetStorage,
 } from "@deenruv/asset-server-plugin";
-// import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
+import { DashboardWidgetsPlugin } from "@deenruv/dashboard-widgets-plugin";
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
@@ -556,7 +556,7 @@ export const devConfig: DeenruvConfig = {
     ],
   },
   plugins: [
-    // DashboardWidgetsPlugin,
+    DashboardWidgetsPlugin,
     // MultivendorPlugin.init({
     //     platformFeePercent: 10,
     //     platformFeeSKU: 'FEE',

@@ -182,7 +182,7 @@ export const Notifications = () => {
               )}
             </CardHeader>
             <CardContent className="max-h-[400px] overflow-auto p-0">
-              <TabsContent value="ALL">
+              <TabsContent value="ALL" className="mt-0">
                 {notifications.length > 0 ? (
                   <div className="divide-y">
                     {notifications.map((notification) => (
