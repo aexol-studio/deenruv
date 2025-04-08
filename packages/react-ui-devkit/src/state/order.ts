@@ -10,13 +10,13 @@ import { apiClient } from "@/zeus_client/deenruvAPICall.js";
 import {
   CustomFieldConfigType,
   HistoryEntryType,
+  ModelTypes,
   ResolverInputTypes,
   SortOrder,
 } from "@deenruv/admin-types";
 import { toast } from "sonner";
 import { create } from "zustand";
 import { ServerConfigType } from "@/selectors/BaseSelectors.js";
-import { useCallback } from "react";
 import { OrderDetailSelector, OrderDetailType } from "@/selectors/index.js";
 import { ORDER_STATE } from "@/utils/order_state.js";
 
@@ -137,6 +137,21 @@ interface Actions {
     customerId: string,
   ) => Promise<OrderDetailType>;
   changeOrderState: (newStatus: ORDER_STATE) => Promise<{ id: string }>;
+  cancelOrder: (
+    input: Omit<ModelTypes["CancelOrderInput"], "orderId">,
+    noOrderRefetch?: boolean,
+  ) => Promise<{ id: string }>;
+  refundOrder: (
+    input: Omit<ModelTypes["RefundOrderInput"], "paymentId">,
+  ) => Promise<{ id: string }>;
+  cancelAndRefundOrder: (input: {
+    cancelShipping: boolean;
+    amount: number;
+    lines: { orderLineId: string; quantity: number }[];
+    reason: string;
+    shipping: number;
+    adjustment: number;
+  }) => Promise<{ id: string }>;
 }
 
 const cancelPaymentMutation = (id: string) =>
@@ -774,6 +789,98 @@ export const useOrder = create<Order & Actions>()((set, get) => {
           fetchOrderHistory();
         }
       });
+    },
+    cancelOrder: async (
+      input: Omit<ModelTypes["CancelOrderInput"], "orderId">,
+      noOrderRefetch?: boolean,
+    ) => {
+      const { order, fetchOrder, fetchOrderHistory } = get();
+      if (!order || !order.payments?.length) return;
+
+      return apiClient("mutation")({
+        cancelOrder: [
+          {
+            input: {
+              orderId: order.id,
+              ...input,
+            },
+          },
+          {
+            __typename: true,
+            "...on Order": { id: true },
+            "...on EmptyOrderLineSelectionError": {
+              errorCode: true,
+              message: true,
+            },
+            "...on QuantityTooGreatError": {
+              errorCode: true,
+              message: true,
+            },
+            "...on MultipleOrderError": {
+              errorCode: true,
+              message: true,
+            },
+            "...on CancelActiveOrderError": {
+              errorCode: true,
+              message: true,
+            },
+            "...on OrderStateTransitionError": {
+              errorCode: true,
+              message: true,
+            },
+          },
+        ],
+      }).then((resp) => {
+        if (!noOrderRefetch && resp.cancelOrder?.__typename === "Order") {
+          fetchOrder(order?.id);
+          fetchOrderHistory();
+        }
+      });
+    },
+    refundOrder: async (
+      input: Omit<ModelTypes["RefundOrderInput"], "paymentId">,
+    ) => {
+      const { order, fetchOrder, fetchOrderHistory } = get();
+      if (!order || !order.payments?.length) return;
+
+      const paymentId = order.payments[order.payments?.length - 1].id;
+
+      return apiClient("mutation")({
+        refundOrder: [
+          {
+            input: {
+              paymentId,
+              ...input,
+            },
+          },
+          {
+            "...on Refund": { id: true },
+            __typename: true,
+          },
+        ],
+      }).then((resp) => {
+        if (resp.refundOrder?.__typename === "Refund") {
+          fetchOrder(order?.id);
+          fetchOrderHistory();
+        }
+      });
+    },
+    cancelAndRefundOrder: async (input: {
+      cancelShipping: boolean;
+      amount: number;
+      lines: { orderLineId: string; quantity: number }[];
+      reason: string;
+      shipping: number;
+      adjustment: number;
+    }) => {
+      const { order, cancelOrder, refundOrder } = get();
+      if (!order || !order.payments?.length) return;
+      const { adjustment, amount, cancelShipping, lines, reason, shipping } =
+        input;
+
+      return cancelOrder({ cancelShipping, lines, reason }, true).then(() =>
+        refundOrder({ adjustment, lines, shipping, amount, reason }),
+      );
     },
   };
 });

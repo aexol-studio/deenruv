@@ -1,4 +1,3 @@
-import { Button } from "@/components/atoms/button.js";
 import {
   AlertDialogHeader,
   AlertDialogTitle,
@@ -6,14 +5,18 @@ import {
   AlertDialogContent,
   AlertDialogTrigger,
   AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
 } from "@/components/atoms/alert-dialog.js";
-import React, { PropsWithChildren, useCallback, useState } from "react";
-import { useTranslation } from "@/hooks/useTranslation.js";
+import React, { PropsWithChildren, ReactNode, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ConfirmationDialogProps {
   onConfirm: () => void;
   title?: string;
   description?: string;
+  additionalElement?: ReactNode;
 }
 
 /**
@@ -22,21 +25,20 @@ interface ConfirmationDialogProps {
  * @param {() => void} onConfirm - Callback invoked when the user confirms the action.
  * @param {string} title - The title of the dialog.
  * @param {string} description - The description of the dialog.
+ * @param {ReactNode} additionalElement - A socket for an additional element that should be rendered in the modal.
  * @param {ReactNode} children - The trigger element that opens the dialog.
  */
 export const ConfirmationDialog: React.FC<
   PropsWithChildren<ConfirmationDialogProps>
-> = ({ children, onConfirm, title, description }) => {
+> = ({ children, onConfirm, title, description, additionalElement }) => {
   const { t } = useTranslation("common");
-  const [open, setOpen] = useState(false);
 
   const handleConfirm = useCallback(() => {
     onConfirm();
-    setOpen(false);
-  }, [onConfirm, setOpen]);
+  }, [onConfirm]);
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -44,16 +46,17 @@ export const ConfirmationDialog: React.FC<
             {title ? title : t("confirmationDialog.title")}
           </AlertDialogTitle>
         </AlertDialogHeader>
-        <div className="flex flex-col gap-3">
+        <AlertDialogDescription className="flex flex-col gap-4">
           {description ? description : t("confirmationDialog.description")}
-        </div>
+          {additionalElement}
+        </AlertDialogDescription>
         <AlertDialogFooter className="mt-2">
-          <Button onClick={() => setOpen(false)}>
+          <AlertDialogCancel>
             {t("confirmationDialog.cancelBtn")}
-          </Button>
-          <Button onClick={handleConfirm}>
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirm}>
             {t("confirmationDialog.confirmBtn")}
-          </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

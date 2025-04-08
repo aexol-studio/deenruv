@@ -75,7 +75,7 @@ export const basePROForma = {
   bottomR: "Osoba upoważniona do wystawienia",
   headings: [
     "Nazwa towaru/usługi",
-    "Ilość",
+    "Liczba",
     "Cena jedn.",
     "Cena netto",
     "Rabat",

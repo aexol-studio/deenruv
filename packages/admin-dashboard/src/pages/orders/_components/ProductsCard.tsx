@@ -39,7 +39,7 @@ import {
 } from '@/graphql/draft_order';
 import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit } from 'lucide-react';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
@@ -322,6 +322,25 @@ export const ProductsCard: React.FC = () => {
     closeAddVariantDialog();
   };
 
+  const renderLineQuantity = useCallback(
+    (lineId: string, quantity: number) => {
+      const allRefundLines = order?.payments?.flatMap((payment) => payment.refunds)?.flatMap((refund) => refund.lines);
+      const lineInRefunds = allRefundLines?.find((line) => line.orderLineId === lineId);
+
+      console.log('AR', allRefundLines, lineInRefunds);
+
+      if (!lineInRefunds) return quantity;
+      else
+        return (
+          <div className="flex gap-2">
+            <span className="text-red-500 line-through">{lineInRefunds.quantity}</span>
+            {quantity}
+          </div>
+        );
+    },
+    [order?.lines, order?.payments],
+  );
+
   if (!order) return null;
   return (
     <>
@@ -413,7 +432,9 @@ export const ProductsCard: React.FC = () => {
                         <TableCell className="py-3 font-medium">
                           {priceFormatter(line.linePriceWithTax, line.productVariant.currencyCode)}
                         </TableCell>
-                        <TableCell className="py-3 text-center font-semibold">{line.quantity}</TableCell>
+                        <TableCell className="py-3 text-center font-semibold">
+                          {renderLineQuantity(line.id, line.quantity)}
+                        </TableCell>
                         <TableCell className="py-3">
                           <div className="flex flex-col">
                             <span>{priceFormatter(line.unitPrice, line.productVariant.currencyCode)}</span>

@@ -26,6 +26,12 @@
   "totalItems": "Łączna cena {{value}} produktów",
   "addPaymentInfo": "Dodaj płatność, by przejść dalej",
   "markFulfillmentInfo": "Oznacz realizację jako dostarczoną lub anuluj",
+  "cancellationLabel": "Podaj powód anulowania",
+  "cancellationReasons": {
+    "clientRequest": "Żądanie klienta",
+    "notAvailable": "Brak dostępności",
+    "mistake": "Pomyłka"
+  },
   "deleteDraft": {
     "button": "Usuń wersję roboczą",
     "title": "Czy na pewno?",
@@ -149,8 +155,8 @@
       "addModal": {
         "discount": "Rabat do sumy w {{value}}",
         "discountAmount": "Kwota rabatu",
-        "quantity": "Ilość",
-        "quantityPlaceholder": "Ilość"
+        "quantity": "Liczba",
+        "quantityPlaceholder": "Liczba"
       },
       "perUnit": "Za jednostkę (TAX)",
       "baseInfoCode": "Kod: {{value}}",
@@ -189,7 +195,7 @@
       "addItem": " Dodaj element",
       "somethingWrong": "Coś poszło nie tak",
       "sku": "SKU",
-      "quantity": "Ilość",
+      "quantity": "Liczba",
       "remove": "Usunąć",
       "edit": "Edytuj",
       "noItems": "Brak elementów w projekcie zamówienia",
@@ -364,12 +370,19 @@
   },
   "filterPlaceholder": "Pole dla filtra",
   "createOrder": "Utwórz zamówienie",
+  "cancelAndRefund": {
+    "trigger": "Anuluj i refunduj",
+    "title": "Anuluj i refunduj zamówienie",
+    "refund": "Refunduj",
+    "returnToStock": "Zwróć do magazynu",
+    "refundShipping": "Zwróć za przesyłkę"
+  },
   "create": {
     "addModal": {
       "discount": "Rabat do sumy w {{value}}",
       "discountAmount": "Kwota rabatu",
-      "quantity": "Ilość",
-      "quantityPlaceholder": "Ilość"
+      "quantity": "Liczba",
+      "quantityPlaceholder": "Liczba"
     },
     "perUnit": "Za jednostkę (TAX)",
     "baseInfoCode": "Kod: {{value}}",
@@ -408,7 +421,7 @@
     "addItem": " Dodaj element",
     "somethingWrong": "Coś poszło nie tak",
     "sku": "SKU",
-    "quantity": "Ilość",
+    "quantity": "Liczba",
     "remove": "Usunąć",
     "edit": "Edytuj",
     "noItems": "Brak elementów w projekcie zamówienia",
@@ -661,8 +674,10 @@
     "errMsg": "Coś poszło nie tak",
     "fulfillmentAdded": "Realizacja została pomyślnie dodana",
     "orderCanceledSuccessfully": "Zamówienie anulowane pomyślnie",
+    "orderRefundedSuccessfully": "Zamówienie refundowane pomyślnie",
     "draftDeletedSuccessfully": "Projekt zamówienia został pomyślnie usunięty",
     "orderCancelError": "Coś poszło nie tak podczas anulowania zamówienia: {{value}}",
+    "orderRefundError": "Coś poszło nie tak podczas refundowania zamówienia.",
     "draftDeleteError": "Coś poszło nie tak podczas usuwania wersji roboczej zamówienia: {{value}}"
   },
   "history": {
@@ -737,11 +752,11 @@
       "headName": "Nazwa produktu",
       "headSku": "SKU",
       "headUnitPrice": "Cena jednostkowa",
-      "headQuantity": "Ilość",
+      "headQuantity": "Liczba",
       "headTotal": "Razem"
     },
     "addItemTitle": "Dodaj produkt",
-    "quantity": "Ilość"
+    "quantity": "Liczba"
   },
   "custom": {
     "selectAttributes": "Wybierz atrybuty",
@@ -873,7 +888,7 @@
       "description": "Nie wprowadzono żadnych zmian do tego zamówienia."
     },
     "keys": {
-      "quantity": "Ilość",
+      "quantity": "Liczba",
       "price": "Cena",
       "priceWithTax": "Cena z podatkiem",
       "overallPriceWithTax": "Ogółem z podatkiem",

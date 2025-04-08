@@ -53,7 +53,7 @@
             "placeholder": "Wyszukiwanie produktów",
             "product": "Produkt",
             "price": "Cena",
-            "quantity": "Ilość",
+            "quantity": "Liczba",
             "total": "Razem",
             "noItems": "Dodaj produkty"
         }

@@ -56,6 +56,10 @@ const paymentSelector = Selector("Payment")({
   refunds: {
     state: true,
     total: true,
+    lines: {
+      orderLineId: true,
+      quantity: true,
+    },
   },
 });
 

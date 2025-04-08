@@ -23,6 +23,9 @@ import {
   FulfillmentOrderDetailType,
   OrderDetailType,
   PaymentOrderDetailType,
+  ConfirmationDialog,
+  SimpleSelect,
+  Option,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
@@ -31,15 +34,14 @@ import { PossibleOrderStates } from '@/pages/orders/_components/PossibleOrderSta
 import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/admin-types';
 
 import { ChevronLeft, EllipsisVerticalIcon, Info } from 'lucide-react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
 import { addFulfillmentToOrderResultSelector } from '@/graphql/draft_order';
-import { ModifyAcceptModal } from './index.js';
+import { CancelAndRefundDialog, ModifyAcceptModal } from './index.js';
 import React from 'react';
 
-const COMPLETE_ORDER_STATES = [ORDER_STATE.DELIVERED];
 export const TopActions: React.FC = () => {
   const {
     currentPossibilities,
@@ -49,12 +51,27 @@ export const TopActions: React.FC = () => {
     fetchOrder,
     order,
     changeOrderState,
+    cancelOrder: _cancelOrder,
+    cancelAndRefundOrder,
   } = useOrder();
   const orderProcess = useServer((p) => p.serverConfig?.orderProcess || []);
   const { t } = useTranslation('orders');
   const navigate = useNavigate();
   const { getDetailViewActions } = usePluginStore();
   const actions = useMemo(() => getDetailViewActions('orders-detail-view'), []);
+  const [cancellationReason, setCancellationReason] = useState<string>('');
+
+  const reasonOptions = useMemo((): Option[] => {
+    const options = [
+      t('cancellationReasons.clientRequest'),
+      t('cancellationReasons.notAvailable'),
+      t('cancellationReasons.mistake'),
+    ];
+    return options.map((o) => ({
+      value: o,
+      label: o,
+    }));
+  }, []);
 
   const isOrderValid = useMemo(() => {
     const isVariantValid = !!order?.lines.every((line) => line.productVariant);
@@ -139,45 +156,30 @@ export const TopActions: React.FC = () => {
     }
   };
 
-  const cancelOrder = async () => {
-    if (order) {
-      const { cancelOrder } = await apiClient('mutation')({
-        cancelOrder: [
-          { input: { orderId: order.id } },
-          {
-            __typename: true,
-            '...on Order': { id: true },
-            '...on EmptyOrderLineSelectionError': {
-              errorCode: true,
-              message: true,
-            },
-            '...on QuantityTooGreatError': {
-              errorCode: true,
-              message: true,
-            },
-            '...on MultipleOrderError': {
-              errorCode: true,
-              message: true,
-            },
-            '...on CancelActiveOrderError': {
-              errorCode: true,
-              message: true,
-            },
-            '...on OrderStateTransitionError': {
-              errorCode: true,
-              message: true,
-            },
-          },
-        ],
-      });
-      if (cancelOrder.__typename === 'Order') {
-        fetchOrder(cancelOrder.id);
+  const cancelOrder = (lines?: { orderLineId: string; quantity: number }[], cancelShipping?: boolean) =>
+    _cancelOrder({ cancelShipping, lines, reason: cancellationReason })
+      .then(() => {
         toast.info(t('topActions.orderCanceledSuccessfully'));
-      } else {
-        toast.error(t('topActions.orderCancelError', { value: cancelOrder.message }), { position: 'top-center' });
-      }
-    }
-  };
+      })
+      .catch((err) => {
+        toast.error(t('topActions.orderCancelError', { value: err.message }));
+      });
+
+  const cancelAndRefund = (
+    amount: number,
+    lines: { orderLineId: string; quantity: number }[],
+    reason: string,
+    shipping: number,
+    cancelShipping: boolean,
+    adjustment: number,
+  ) =>
+    cancelAndRefundOrder({ adjustment, amount, cancelShipping, lines, reason, shipping })
+      .then(() => {
+        toast.info(t('topActions.orderRefundedSuccessfully'));
+      })
+      .catch(() => {
+        toast.error(t('topActions.orderRefundError'));
+      });
 
   const deleteDraftOrder = async () => {
     if (!order) return;
@@ -230,7 +232,6 @@ export const TopActions: React.FC = () => {
       const totalFulfilledCount = allFulfillmentLines
         .filter((row) => row.orderLineId === line.id)
         .reduce((sum, row) => sum + row.quantity, 0);
-      console.log('IF', line.quantity, totalFulfilledCount, allFulfillmentLines);
 
       if (totalFulfilledCount < line.quantity) {
         allItemsFulfilled = false;
@@ -372,33 +373,41 @@ export const TopActions: React.FC = () => {
               </Button>
             </DropdownMenuItem>
           ) : null}
+
           {((order.state !== ORDER_STATE.CANCELLED && order.state !== ORDER_STATE.DRAFT) ||
             order.state === ORDER_STATE.DRAFT) && <DropdownMenuSeparator />}
-          {order.state !== ORDER_STATE.CANCELLED && order.state !== ORDER_STATE.DRAFT && (
-            <>
-              <DropdownMenuItem asChild>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:text-red-400 dark:hover:text-red-400"
-                    >
-                      {t('create.cancelOrder')}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>{t('create.areYouSure')}</AlertDialogTitle>
-                      <AlertDialogDescription>{t('create.cancelOrderMessage')}</AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>{t('create.cancel')}</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => cancelOrder()}>{t('create.continue')}</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </DropdownMenuItem>
-            </>
+
+          {order.state === ORDER_STATE.ARRANGING_PAYMENT && (
+            <DropdownMenuItem asChild>
+              <ConfirmationDialog
+                onConfirm={() => cancelOrder()}
+                title={t('create.areYouSure')}
+                description={t('create.cancelOrderMessage')}
+                additionalElement={
+                  <SimpleSelect
+                    label={t('cancellationLabel')}
+                    value={cancellationReason}
+                    onValueChange={setCancellationReason}
+                    options={reasonOptions}
+                  />
+                }
+              >
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start px-4 py-2 text-red-400 hover:text-red-400 dark:text-red-400 dark:hover:text-red-400"
+                >
+                  {t('create.cancelOrder')}
+                </Button>
+              </ConfirmationDialog>
+            </DropdownMenuItem>
+          )}
+          {(order.state === ORDER_STATE.PAYMENT_SETTLED ||
+            order.state === ORDER_STATE.ARRANGING_ADDITIONAL_PAYMENT) && (
+            <CancelAndRefundDialog
+              refundReason={cancellationReason}
+              setRefundReason={setCancellationReason}
+              onConfirm={cancelAndRefund}
+            />
           )}
           {order.state === ORDER_STATE.DRAFT && (
             <DropdownMenuItem asChild>
