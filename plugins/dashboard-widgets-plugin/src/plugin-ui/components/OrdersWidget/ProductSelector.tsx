@@ -33,9 +33,7 @@ export const ProductSelector: React.FC<ProductSelectProps> = ({
   clearSelectedProducts,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>

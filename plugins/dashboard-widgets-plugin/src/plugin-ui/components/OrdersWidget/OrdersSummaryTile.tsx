@@ -22,9 +22,7 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
   dateRange,
   orderStates,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const [getOrdersSummaryMetric] = useLazyQuery(OrderSummaryMetricsQuery);
   const [metricLoading, setMetricLoading] = useState(false);
   const [ordersSummaryMetric, setOrdersSummaryMetrics] = useState<{
