@@ -83,6 +83,7 @@ export const Root = () => {
   const { initializeOrderCustomFields } = useOrder();
   const setData = useNotifications(({ setData }) => setData);
   const notifications = useNotifications(({ notifications }) => notifications);
+  const channel = useSettings((p) => p.selectedChannel);
 
   useEffect(() => {
     if (!loaded) return;
@@ -136,21 +137,20 @@ export const Root = () => {
         });
 
         setChannels(allChannels);
-
-        if (selectedChannel) {
-          const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
-          setSelectedChannel(foundChannel || allChannels[0]);
+        if (!channel) {
+          if (selectedChannel) {
+            const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
+            setSelectedChannel(foundChannel || allChannels[0]);
+          }
+          const existingChannel = allChannels.find(
+            (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+          );
+          if (existingChannel) {
+            setSelectedChannel(existingChannel);
+          }
+          const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
+          setSelectedChannel(defaultChannel);
         }
-
-        const existingChannel = allChannels.find(
-          (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
-        );
-        if (existingChannel) {
-          setSelectedChannel(existingChannel);
-        }
-
-        const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
-        setSelectedChannel(defaultChannel);
       }
 
       // WE NEED TO CHECK IF LOCALSTORAGE HAS LANGUAGE SET
