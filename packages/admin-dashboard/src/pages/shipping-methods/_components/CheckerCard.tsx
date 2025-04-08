@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ModelTypes } from '@deenruv/admin-types';
 import {
   Button,
@@ -13,6 +12,7 @@ import {
   CustomCard,
   CardIcons,
   SimpleSelect,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';

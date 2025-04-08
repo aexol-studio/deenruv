@@ -1,6 +1,5 @@
-import { Label, Switch, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
+import { useTranslation, Label, Switch, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface EnabledCardProps {
   enabledValue: boolean | undefined;

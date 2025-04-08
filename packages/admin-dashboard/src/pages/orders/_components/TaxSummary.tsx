@@ -8,10 +8,10 @@ import {
   useOrder,
   ScrollArea,
   CustomCard,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import type React from 'react';
-import { useTranslation } from 'react-i18next';
 import { ReceiptText, Percent, Calculator, AlertCircle } from 'lucide-react';
 
 export const TaxSummary: React.FC = () => {

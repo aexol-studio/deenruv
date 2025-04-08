@@ -1,6 +1,13 @@
-import { Button, Label, Popover, PopoverContent, PopoverTrigger, useServer } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  Button,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  useServer,
+} from '@deenruv/react-ui-devkit';
 import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
 export const ActiveAdmins = () => {

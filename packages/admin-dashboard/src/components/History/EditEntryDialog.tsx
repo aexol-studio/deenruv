@@ -15,10 +15,10 @@ import {
   Textarea,
   cn,
   Badge,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Checkbox } from '@radix-ui/react-checkbox';
 import { type Dispatch, type SetStateAction, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Pencil, MessageCircle, ShieldCheck, Save } from 'lucide-react';
 
 interface onConfirmProps {

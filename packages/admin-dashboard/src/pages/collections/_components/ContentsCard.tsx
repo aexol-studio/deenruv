@@ -6,9 +6,9 @@ import {
   apiClient,
   PaginationInput,
   deepMerge,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { CollectionProductVariantsSelector } from '@/graphql/collections.js';
 

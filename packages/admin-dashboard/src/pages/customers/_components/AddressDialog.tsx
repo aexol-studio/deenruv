@@ -14,8 +14,8 @@ import {
   useMutation,
   useServer,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $, GraphQLTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 

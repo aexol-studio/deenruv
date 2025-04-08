@@ -8,13 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
   SimpleTooltip,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { CollectionDetailsType } from '@/graphql/collections';
 import { LanguageCode } from '@deenruv/admin-types';
 import { format } from 'date-fns';
 import { ChevronLeft } from 'lucide-react';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 interface PageHeaderProps {

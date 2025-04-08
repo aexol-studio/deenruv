@@ -1,6 +1,7 @@
+// eslint-disable-next-line no-restricted-imports
+import { I18nextProvider } from 'react-i18next';
 import { useEffect } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { I18nextProvider } from 'react-i18next';
 import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 import i18n from './i18.js';

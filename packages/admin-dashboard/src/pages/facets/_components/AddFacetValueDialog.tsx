@@ -12,10 +12,10 @@ import {
   useSettings,
   useGFFLP,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 interface AddFacetValueDialogProps {

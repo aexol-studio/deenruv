@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
   Input,
@@ -12,6 +11,7 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { PermissionsCard } from '@/pages/roles/_components/PermissionsCard';
 

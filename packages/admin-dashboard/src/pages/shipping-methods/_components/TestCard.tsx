@@ -9,9 +9,9 @@ import {
   useGFFLP,
   SimpleSelect,
   priceFormatter,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CircleCheck, CircleX } from 'lucide-react';
 
 import { ModelTypes } from '@deenruv/admin-types';

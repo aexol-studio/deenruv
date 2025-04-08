@@ -23,6 +23,7 @@ import {
   ConfirmationDialog,
   CustomCard,
   EmptyState,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import { format } from 'date-fns';
@@ -40,7 +41,6 @@ import {
 } from 'lucide-react';
 import type React from 'react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { AddPaymentDialog } from './index.js';
 import { PAYMENT_STATE } from '@/graphql/base';
 import { MetadataDisplay } from './PaymentMetadata.js';

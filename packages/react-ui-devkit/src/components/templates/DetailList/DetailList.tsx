@@ -16,7 +16,9 @@ import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   EllipsisVertical,
+  Group,
   ImageOff,
+  PanelsTopLeft,
   PlusCircleIcon,
   Trash2Icon,
 } from "lucide-react";
@@ -635,6 +637,86 @@ export function DetailList<
             <div className="mb-1 flex w-full flex-col items-start gap-4">
               <div className="flex w-full items-end justify-between gap-4">
                 <div className="flex items-center gap-2">
+                  {table.getSelectedRowModel().flatRows.length > 0 && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 gap-2 py-0"
+                          aria-label="Open filters"
+                        >
+                          <Group className="size-4" aria-hidden="true" />
+                          {t("Zaznaczone")} (
+                          {table.getSelectedRowModel().flatRows.length})
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="mr-6 w-56" align="start">
+                        <DropdownMenuLabel className="select-none">
+                          {t("Operacje masowe")}
+                        </DropdownMenuLabel>
+                        {bulkActions.length > 0 ? (
+                          <>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                              {bulkActions?.map((action) => {
+                                const onClick = async () => {
+                                  try {
+                                    const { error } = await action.onClick({
+                                      table,
+                                      data: objects,
+                                      refetch,
+                                    });
+                                    if (error) {
+                                      throw new Error(error);
+                                    } else {
+                                      refetch();
+                                      table.toggleAllRowsSelected(false);
+                                    }
+                                  } catch (error) {
+                                    const message =
+                                      error instanceof Error
+                                        ? error.message
+                                        : "Unknown error";
+                                    toast.error(message);
+                                  }
+                                };
+                                return (
+                                  <DropdownMenuItem
+                                    key={action.label}
+                                    onClick={onClick}
+                                    className="flex items-center gap-2 cursor-pointer"
+                                  >
+                                    {action.icon}
+                                    {action.label}
+                                  </DropdownMenuItem>
+                                );
+                              })}
+                            </DropdownMenuGroup>
+                          </>
+                        ) : null}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                          <DropdownMenuItem
+                            className="text-red-600 cursor-pointer"
+                            disabled={
+                              !table.getSelectedRowModel().flatRows.length
+                            }
+                            onClick={() => {
+                              const selected = table
+                                .getSelectedRowModel()
+                                .rows.map((row) => row.original);
+                              onRemove(selected);
+                            }}
+                          >
+                            <Trash2Icon className="mr-2 size-4" />
+                            {t("Usuń zacznaczone")}
+                          </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+
                   <ColumnView table={table} entityName={entityName} />
                   {Search}
                   <FiltersDialog {...filterProperties} />
@@ -658,74 +740,6 @@ export function DetailList<
                     )}
                     {additionalButtons}
                   </div>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button size="icon" variant="outline">
-                        <EllipsisVertical />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="mr-6 w-56">
-                      <DropdownMenuLabel>
-                        {t("Operacje masowe")}
-                      </DropdownMenuLabel>
-                      {bulkActions.length > 0 ? (
-                        <>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuGroup>
-                            {bulkActions?.map((action) => {
-                              const onClick = async () => {
-                                try {
-                                  const { error } = await action.onClick({
-                                    table,
-                                    data: objects,
-                                    refetch,
-                                  });
-                                  if (error) {
-                                    throw new Error(error);
-                                  } else {
-                                    refetch();
-                                    table.toggleAllRowsSelected(false);
-                                  }
-                                } catch (error) {
-                                  const message =
-                                    error instanceof Error
-                                      ? error.message
-                                      : "Unknown error";
-                                  toast.error(message);
-                                }
-                              };
-                              return (
-                                <DropdownMenuItem
-                                  key={action.label}
-                                  onClick={onClick}
-                                  className="flex items-center gap-2"
-                                >
-                                  {action.icon}
-                                  {action.label}
-                                </DropdownMenuItem>
-                              );
-                            })}
-                          </DropdownMenuGroup>
-                        </>
-                      ) : null}
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem
-                          className="text-red-600"
-                          disabled={!table.getIsSomeRowsSelected()}
-                          onClick={() => {
-                            const selected = table
-                              .getSelectedRowModel()
-                              .rows.map((row) => row.original);
-                            onRemove(selected);
-                          }}
-                        >
-                          <Trash2Icon className="mr-2 size-4" />
-                          {t("Usuń zacznaczone")}
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                 </div>
               </div>
             </div>

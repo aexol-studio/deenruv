@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 import {
   useValidators,
@@ -9,6 +8,7 @@ import {
   GFFLPFormField,
   getMutation,
   useMutation,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { TaxRateDetailView } from '@/pages/tax-rates/_components/TaxRateDetailView.js';
 import { ModelTypes } from '@deenruv/admin-types';

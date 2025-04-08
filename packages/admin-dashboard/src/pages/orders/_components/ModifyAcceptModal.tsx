@@ -8,10 +8,10 @@ import {
   DialogTrigger,
   ChangesRegistry,
   DryRunOptions,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ModifyingCard } from './ModifyingCard.js';
 import { ChangesRegister } from './ChangesRegister';
 

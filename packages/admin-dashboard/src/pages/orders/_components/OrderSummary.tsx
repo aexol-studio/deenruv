@@ -1,7 +1,6 @@
-import { useOrder, Label, usePluginStore, Renderer } from '@deenruv/react-ui-devkit';
+import { useTranslation, useOrder, Label, Renderer } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const OrderSummary: React.FC = () => {
   const { order } = useOrder();

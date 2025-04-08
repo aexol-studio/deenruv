@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 import {
   getMutation,
@@ -13,6 +12,7 @@ import {
   DEFAULT_CHANNEL_CODE,
   useSettings,
   useServer,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { ChannelDetailView } from '@/pages/channels/_components/ChannelDetailView.js';

@@ -10,9 +10,9 @@ import {
   deepMerge,
   useDetailView,
   useSettings,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { useTranslation } from 'react-i18next';
 
 const CUSTOMER_FORM_KEYS = ['CreateCustomerInput'] as const;
 

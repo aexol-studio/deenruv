@@ -9,11 +9,11 @@ import {
   TableLabel,
   apiClient,
   DropdownMenuSeparator,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { DeletionResult } from '@deenruv/admin-types';
 import type React from 'react';
 import { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Copy, ExternalLink, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 

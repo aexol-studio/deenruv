@@ -3,9 +3,8 @@ import { VariantsTab } from '@/pages/products/_components/VariantsTab';
 import { OptionsTab } from '@/pages/products/_components/OptionsTab';
 import { ProductDetailView } from './_components/ProductDetailView';
 import { ProductDetailSidebar } from './_components/ProductDetailSidebar';
-import { createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
+import { useTranslation, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
-import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 
 const EditProductMutation = typedGql('mutation', { scalars })({

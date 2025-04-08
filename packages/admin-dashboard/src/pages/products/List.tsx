@@ -1,6 +1,5 @@
 import { ProductsList, VariantsList } from '@/pages/products';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Tabs, TabsContent, TabsList, TabsTrigger } from '@deenruv/react-ui-devkit';
 
 export const ProductsListPage = () => {
   const { t } = useTranslation('products');

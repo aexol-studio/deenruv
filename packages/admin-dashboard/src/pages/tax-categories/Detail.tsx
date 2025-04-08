@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
-import { DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
+import { useTranslation, DetailView, createDeenruvForm, useMutation } from '@deenruv/react-ui-devkit';
 import { TaxCategoryDetailView } from './_components/TaxCategoryDetailView';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const CreateTaxCategoryMutation = typedGql('mutation', { scalars })({
   createTaxCategory: [

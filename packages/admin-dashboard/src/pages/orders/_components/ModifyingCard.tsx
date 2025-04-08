@@ -20,8 +20,8 @@ import {
   DryRunOptions,
   ChangesRegistry,
   useGFFLP,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { PriceChangedInfo } from '@/pages/orders/_components/PriceChangedInfo.js';
 import { FileEdit, Truck, Tag, CreditCard, AlertCircle, Save, Loader2, RefreshCw } from 'lucide-react';

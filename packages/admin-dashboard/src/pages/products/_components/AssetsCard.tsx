@@ -10,12 +10,12 @@ import {
   CustomCard,
   CardIcons,
   AssetsModalInput,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
 
 import { ImageOff } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface AssetsCardProps {
   assetsIds: string[] | undefined | null;

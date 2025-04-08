@@ -8,8 +8,8 @@ import {
   PaginationInput,
   Routes,
   TableLabel,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 
 const tableId = 'products-list-view';
 const { selector } = ListLocations[tableId];

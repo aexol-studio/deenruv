@@ -1,7 +1,6 @@
-import { Input, CustomCard, CardIcons, RichTextEditor } from '@deenruv/react-ui-devkit';
+import { useTranslation, Input, CustomCard, CardIcons, RichTextEditor } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 type PartialNull<T> = {
   [P in keyof T]?: T[P] | null;

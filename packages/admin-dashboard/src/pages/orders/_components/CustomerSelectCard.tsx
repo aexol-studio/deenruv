@@ -22,12 +22,12 @@ import {
   useGFFLP,
   CustomCard,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Edit, User, Check, Mail, Phone, Loader2, UserPlus, Search, AlertCircle } from 'lucide-react';
 

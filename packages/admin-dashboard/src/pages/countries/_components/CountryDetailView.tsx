@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
   Input,
@@ -11,6 +10,7 @@ import {
   CustomCard,
   CardIcons,
   setInArrayBy,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 export const CountryDetailView = () => {

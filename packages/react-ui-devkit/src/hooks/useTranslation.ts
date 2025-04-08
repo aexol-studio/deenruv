@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { useTranslation as useI18NTranslation } from "react-i18next";
 
 type KnownEntityType =
@@ -25,7 +26,7 @@ type KnownEntityType =
 type EntityType = KnownEntityType | (string & {});
 type CountType = number | "single" | "many" | "one";
 
-export const useTranslation = (ns: string = "common") => {
+export const useTranslation = (ns: string | string[] = "common") => {
   const i18n = useI18NTranslation(ns, {
     i18n: window.__DEENRUV_SETTINGS__.i18n,
   });

@@ -1,6 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import {
   CF,
@@ -13,6 +12,7 @@ import {
   useDetailView,
   useSettings,
   RichTextEditor,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';

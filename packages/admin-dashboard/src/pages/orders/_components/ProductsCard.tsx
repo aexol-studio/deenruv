@@ -28,6 +28,7 @@ import {
   CustomCard,
   type CF,
   ImageWithPreview,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import {
   type DraftOrderLineType,
@@ -36,11 +37,10 @@ import {
   updateOrderItemsSelector,
   updatedDraftOrderSelector,
 } from '@/graphql/draft_order';
-import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit, CircleOff } from 'lucide-react';
+import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit } from 'lucide-react';
 
 import { useMemo, useState } from 'react';
 
-import { useTranslation } from 'react-i18next';
 import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
 import type { OnPriceQuantityChangeApproveInput } from './OrderLineActionModal/types.js';

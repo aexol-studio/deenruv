@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   useValidators,
   DetailView,
@@ -7,6 +6,7 @@ import {
   createDeenruvForm,
   getMutation,
   useMutation,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { FacetsDetailView } from '@/pages/facets/_components/FacetDetailView.js';
 import { useCallback } from 'react';

@@ -1,9 +1,8 @@
 import { Aexol } from '@/components';
 import { BrandLogo } from '@/components/BrandLogo';
 
-import { Button, Checkbox, Input, Label, apiClient, cn } from '@deenruv/react-ui-devkit';
+import { Button, Checkbox, Input, useTranslation, apiClient, cn } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 export const LoginScreen = () => {

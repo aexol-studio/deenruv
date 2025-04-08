@@ -1,6 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
 import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   cn,
   buttonVariants,
@@ -15,6 +14,7 @@ import {
   AccordionTrigger,
   AccordionContent,
   useNotifications,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import {
   BarChart,

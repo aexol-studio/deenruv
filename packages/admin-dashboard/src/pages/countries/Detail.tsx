@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 import {
   useValidators,
@@ -8,6 +7,7 @@ import {
   createDeenruvForm,
   getMutation,
   useMutation,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { CountryDetailView } from '@/pages/countries/_components/CountryDetailView.js';
 import { useCallback } from 'react';

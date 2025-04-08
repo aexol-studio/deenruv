@@ -6,9 +6,9 @@ import {
   DialogFooter,
   DialogClose,
   DialogDescription,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface ConfirmationDialogProps {
   onConfirm: () => void;

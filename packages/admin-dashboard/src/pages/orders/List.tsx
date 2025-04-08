@@ -10,9 +10,9 @@ import {
   TableLabel,
   useQuery,
   ListLocations,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 

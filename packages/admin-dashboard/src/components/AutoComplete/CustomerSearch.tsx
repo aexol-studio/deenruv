@@ -15,10 +15,9 @@ import {
   apiClient,
   cn,
   ScrollArea,
-  Badge,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
-import { useTranslation } from 'react-i18next';
 import { LogicalOperator } from '@deenruv/admin-types';
 import { type SearchCustomerType, searchCustomerSelector } from '@/graphql/draft_order';
 import { Search, User, Mail, Phone, UserCheck, AlertCircle, Loader2 } from 'lucide-react';

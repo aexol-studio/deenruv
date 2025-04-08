@@ -17,12 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
   useServer,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { PAYMENT_STATE } from '@/graphql/base';
 import { DraftOrderType } from '@/graphql/draft_order';
 import { priceFormatter } from '@/utils';
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { CheckCircle, CreditCard, DollarSign, FileText } from 'lucide-react';
 import { ResolverInputTypes } from '@deenruv/admin-types';

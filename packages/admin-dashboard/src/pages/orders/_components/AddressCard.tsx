@@ -31,12 +31,12 @@ import {
   CustomCard,
   useGFFLP,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { type AddressBaseType, addressBaseSelector } from '@/graphql/draft_order';
 import { Edit, MapPin, Building, Check, Loader2, User, Phone, Globe } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
 

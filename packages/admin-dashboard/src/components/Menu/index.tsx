@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
   Breadcrumb,
@@ -23,6 +22,7 @@ import {
   dashToCamelCase,
   apiClient,
   useGlobalSearch,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import {

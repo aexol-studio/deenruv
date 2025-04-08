@@ -14,6 +14,7 @@ import {
   TableRow,
   apiClient,
   DialogComponentProps,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -26,7 +27,6 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CollectionListSelector, CollectionListType } from '@/graphql/collections';
 import { toast } from 'sonner';
 import { ModelTypes } from '@deenruv/admin-types';

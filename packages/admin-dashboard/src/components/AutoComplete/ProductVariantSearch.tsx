@@ -16,9 +16,9 @@ import {
   TableRow,
   apiClient,
   cn,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
-import { useTranslation } from 'react-i18next';
 import {
   type ProductVariantType,
   type SearchProductVariantType,

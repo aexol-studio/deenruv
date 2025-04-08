@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   Input,
@@ -11,6 +10,7 @@ import {
   useGFFLP,
   setInArrayBy,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ProductOptionType } from '@/graphql/products';
 

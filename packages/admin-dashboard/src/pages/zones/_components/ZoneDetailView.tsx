@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Input,
   Label,
@@ -12,6 +11,7 @@ import {
   CardIcons,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 const STOCK_LOCATION_FORM_KEYS = ['CreateZoneInput', 'name', 'memberIds', 'customFields'] as const;

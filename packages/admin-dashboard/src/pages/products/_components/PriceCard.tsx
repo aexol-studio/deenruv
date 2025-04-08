@@ -9,11 +9,11 @@ import {
   CustomCard,
   CardIcons,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { CurrencyCode, ModelTypes } from '@deenruv/admin-types';
-import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 type ProductVariantPrice = {
   currencyCode: ModelTypes['CurrencyCode'];

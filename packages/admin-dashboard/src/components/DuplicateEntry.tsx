@@ -1,7 +1,14 @@
-import { Button, DialogClose, DialogContent, DialogFooter, apiClient, useSettings } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  Button,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  apiClient,
+  useSettings,
+} from '@deenruv/react-ui-devkit';
 import { ValueTypes } from '@deenruv/admin-types';
 import React, { PropsWithChildren } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 interface DeleteCollectionsFromChannel extends PropsWithChildren {

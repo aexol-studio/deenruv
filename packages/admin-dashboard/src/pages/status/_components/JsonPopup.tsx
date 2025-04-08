@@ -1,7 +1,14 @@
 'use client';
 import { JsonExplorer } from '@/pages/status/_components/JsonExplorer.js';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Button } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import {
+  useTranslation,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Button,
+} from '@deenruv/react-ui-devkit';
 
 interface JsonPopupProps {
   data: Record<string, any>;

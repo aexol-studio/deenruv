@@ -11,11 +11,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  Routes,
   ChannelType,
   channelSelector,
   apiClient,
   DialogComponentProps,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -28,7 +28,6 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { CollectionListType } from '@/graphql/collections';
 import { DialogTitle } from '@radix-ui/react-dialog';
 

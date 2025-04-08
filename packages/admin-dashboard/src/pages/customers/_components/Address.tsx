@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -14,8 +14,8 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { AddressDialog } from '@/pages/customers/_components/AddressDialog';
 import { CreditCard, MoreHorizontal, Trash, Truck } from 'lucide-react';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';

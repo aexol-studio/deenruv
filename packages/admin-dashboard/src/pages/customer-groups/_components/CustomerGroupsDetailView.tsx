@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   CF,
   EntityCustomFields,
@@ -9,6 +8,7 @@ import {
   DetailViewMarker,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 const CUSTOMER_GROUPS_FORM_KEYS = ['CreateCustomerGroupInput', 'name', 'customFields'] as const;

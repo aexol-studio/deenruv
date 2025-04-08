@@ -1,6 +1,5 @@
-import { Label, ToggleGroup, ToggleGroupItem } from '@deenruv/react-ui-devkit';
+import { useTranslation, Label, ToggleGroup, ToggleGroupItem } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface CombinationModeProps {
   label: string;

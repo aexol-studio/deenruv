@@ -1,11 +1,10 @@
 'use client';
 
-import { useOrder, cn, Button, DialogFooter, Input } from '@deenruv/react-ui-devkit';
+import { useTranslation, useOrder, cn, Button, DialogFooter, Input } from '@deenruv/react-ui-devkit';
 import type { DraftOrderLineType } from '@/graphql/draft_order';
 
 import type React from 'react';
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import type { OnPriceQuantityChangeApproveInput } from './types.js';
 import { ArrowDown, ArrowUp, Package, MinusCircle, PlusCircle } from 'lucide-react';
 

@@ -9,8 +9,8 @@ import {
   TableLabel,
   ListBadge,
   ListLocations,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 
 const tableId = 'customers-list-view';
 const { selector } = ListLocations[tableId];

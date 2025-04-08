@@ -1,7 +1,6 @@
-import { cn, priceFormatter, Textarea, useOrder } from '@deenruv/react-ui-devkit';
+import { useTranslation, cn, priceFormatter, Textarea, useOrder } from '@deenruv/react-ui-devkit';
 import { CreditCard, FileText } from 'lucide-react';
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface RefundCardProps {
   priceDifference: number;

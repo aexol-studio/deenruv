@@ -1,6 +1,5 @@
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Table,
   TableBody,
@@ -14,6 +13,7 @@ import {
   CustomCard,
   CardIcons,
   Separator,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { toast } from 'sonner';

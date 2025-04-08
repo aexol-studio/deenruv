@@ -1,9 +1,16 @@
 import { OptionGroupType } from '@/graphql/products';
 import { DeletionResult, LanguageCode } from '@deenruv/admin-types';
-import { Button, MultipleSelector, Option, TableCell, TableRow, apiClient } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  Button,
+  MultipleSelector,
+  Option,
+  TableCell,
+  TableRow,
+  apiClient,
+} from '@deenruv/react-ui-devkit';
 import { Trash } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 interface OptionGroupProps {

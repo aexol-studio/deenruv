@@ -5,13 +5,13 @@ import {
   DetailView,
   type ExcludeUndefined,
   useMutation,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { CustomerDetailView } from '@/pages/customers/_components/CustomerDetailView';
 import { CustomerDetailSidebar } from '@/pages/customers/_components/CustomerDetailSidebar';
 import { OrdersTab } from '@/pages/customers/_components/OrdersTab';
 import { HistoryTab } from '@/pages/customers/_components/HistoryTab';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
-import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 
 const CreateCustomerMutation = typedGql('mutation', { scalars })({

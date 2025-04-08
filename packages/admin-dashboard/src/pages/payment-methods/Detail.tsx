@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 import {
   useValidators,
@@ -9,6 +8,7 @@ import {
   GFFLPFormField,
   useMutation,
   getMutation,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { PaymentMethodDetailView } from '@/pages/payment-methods/_components/PaymentMethodDetailView.js';

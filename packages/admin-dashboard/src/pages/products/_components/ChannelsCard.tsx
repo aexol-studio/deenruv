@@ -1,6 +1,5 @@
-import { Badge, CardIcons, CustomCard } from '@deenruv/react-ui-devkit';
+import { useTranslation, Badge, CardIcons, CustomCard } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface ChannelsCardProps {
   channels: {

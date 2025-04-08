@@ -4,7 +4,6 @@ import type React from 'react';
 
 import type { OrderHistoryEntryType } from '@/graphql/draft_order';
 import type { Dispatch, SetStateAction } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Button,
   DropdownMenu,
@@ -20,6 +19,7 @@ import {
   OrderStateBadge,
   cn,
   Badge,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import { HistoryEntryType } from '@deenruv/admin-types';

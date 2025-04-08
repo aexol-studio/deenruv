@@ -7,10 +7,10 @@ import {
   TableCell,
   Table,
   Label,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ProductVariantType } from '@/graphql/draft_order';
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ProductVariantSearch } from '@/components';
 
 interface LinesProps {

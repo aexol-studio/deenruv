@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   useValidators,
   DetailView,
@@ -8,6 +7,7 @@ import {
   getMutation,
   useMutation,
   GFFLPFormField,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, Permission } from '@deenruv/admin-types';
 import { RoleDetailView } from '@/pages/roles/_components/RoleDetailView.js';

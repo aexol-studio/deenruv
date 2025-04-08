@@ -8,10 +8,10 @@ import {
   DialogTitle,
   apiClient,
   useSettings,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 interface DeleteCollectionsFromChannel {

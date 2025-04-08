@@ -1,16 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardIcons,
-  CardTitle,
-  CustomCard,
-  CustomerDetailType,
-} from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { Button, CardIcons, CustomCard, CustomerDetailType, useTranslation } from '@deenruv/react-ui-devkit';
 import { Address } from '@/pages/customers/_components/Address';
 import { PlusCircle } from 'lucide-react';
 import { AddressDialog } from '@/pages/customers/_components/AddressDialog';

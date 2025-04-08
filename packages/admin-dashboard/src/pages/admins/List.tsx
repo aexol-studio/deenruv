@@ -6,9 +6,9 @@ import {
   PaginationInput,
   ListBadge,
   ListLocations,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { useTranslation } from 'react-i18next';
 
 const tableId = 'admins-list-view';
 const { selector } = ListLocations[tableId];

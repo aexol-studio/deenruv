@@ -17,11 +17,11 @@ import {
   DropdownMenuItem,
   ConfirmationDialog,
   Button,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { AnimatePresence, motion } from 'framer-motion';
 import type React from 'react';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';
 import { Package, Truck, CheckCircle, XCircle, AlertCircle, Loader2, ClipboardCheck } from 'lucide-react';

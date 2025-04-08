@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 import {
   useValidators,
@@ -10,6 +9,7 @@ import {
   getMutation,
   createDeenruvForm,
   GFFLPFormField,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ZoneDetailView } from '@/pages/zones/_components/ZoneDetailView.js';
 import { ModelTypes } from '@deenruv/admin-types';

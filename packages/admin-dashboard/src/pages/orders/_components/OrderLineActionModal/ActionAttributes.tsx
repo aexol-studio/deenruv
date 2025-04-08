@@ -2,8 +2,7 @@ import { DraftOrderLineType } from '@/graphql/draft_order';
 import React from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
-import { cn, Button, Input } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, cn, Button, Input } from '@deenruv/react-ui-devkit';
 import { Trash } from 'lucide-react';
 
 interface ActionAttributesProps extends React.HTMLAttributes<HTMLDivElement> {

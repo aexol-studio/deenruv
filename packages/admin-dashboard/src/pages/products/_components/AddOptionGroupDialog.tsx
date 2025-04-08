@@ -12,9 +12,9 @@ import {
   useGFFLP,
   setInArrayBy,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { LanguageCode } from '@deenruv/admin-types';
 import { toast } from 'sonner';

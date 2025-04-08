@@ -1,6 +1,5 @@
-import { ErrorMessage, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
+import { useTranslation, ErrorMessage, CustomCard, CardIcons } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { Permission } from '@deenruv/admin-types';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
 

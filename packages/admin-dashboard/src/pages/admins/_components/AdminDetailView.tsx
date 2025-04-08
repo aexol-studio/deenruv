@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   CF,
   EntityCustomFields,
@@ -8,6 +7,7 @@ import {
   DetailViewMarker,
   Input,
   useDetailView,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { RolesCard } from '@/pages/admins/_components/RolesCard';
 

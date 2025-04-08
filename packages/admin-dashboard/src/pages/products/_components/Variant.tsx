@@ -9,12 +9,12 @@ import {
   useGFFLP,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantType } from '@/graphql/products';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { ChangeEvent, useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard';
 import { PriceCard } from '@/pages/products/_components/PriceCard';

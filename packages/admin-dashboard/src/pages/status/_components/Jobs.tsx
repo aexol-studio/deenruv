@@ -16,12 +16,12 @@ import {
   formatDate,
   ListTable,
   useDetailListHook,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ColumnDef, useReactTable, getCoreRowModel } from '@tanstack/react-table';
 import { AlertCircle, CheckCircle, Clock, MoreHorizontal, Play, RefreshCw, XCircle } from 'lucide-react';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { JobResultPopover } from '@/pages/status/_components/JobResultPopover.js';
-import { useTranslation } from 'react-i18next';
 
 const JobSelector = Selector('Job')({
   id: true,

@@ -10,9 +10,9 @@ import {
   useServer,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
   line: OrderDetailType['lines'][number];

@@ -1,7 +1,13 @@
 import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { DetailView, createDeenruvForm, GFFLPFormField, getMutation, useMutation } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  DetailView,
+  createDeenruvForm,
+  GFFLPFormField,
+  getMutation,
+  useMutation,
+} from '@deenruv/react-ui-devkit';
 import { ModelTypes } from '@deenruv/admin-types';
 import { ShippingMethodDetailView } from '@/pages/shipping-methods/_components/ShippingMethodDetailView.js';
 

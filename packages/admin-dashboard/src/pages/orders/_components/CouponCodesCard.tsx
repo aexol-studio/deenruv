@@ -12,8 +12,8 @@ import {
   EmptyState,
   CustomCard,
   ORDER_STATE,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
 import { toast } from 'sonner';
 import { Ticket, X, Search } from 'lucide-react';

@@ -8,8 +8,8 @@ import {
   useSettings,
   DEFAULT_CHANNEL_CODE,
   cn,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { useCallback } from 'react';
 
 export function ChannelSwitcher() {

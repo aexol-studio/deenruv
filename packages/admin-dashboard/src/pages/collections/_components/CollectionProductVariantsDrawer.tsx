@@ -12,12 +12,12 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ValueTypes } from '@deenruv/admin-types';
 
 import type collections from '../../../locales/en/collections.json';
 import React, { PropsWithChildren, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ContentsTable } from '@/pages/collections/_components/ContentsTable';
 
 interface CollectionProductVariantsDrawerProps extends PropsWithChildren {

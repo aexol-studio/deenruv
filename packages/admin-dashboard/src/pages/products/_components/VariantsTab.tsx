@@ -7,13 +7,13 @@ import {
   TabsTrigger,
   useDetailView,
   useSettings,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantSelector, ProductVariantType } from '@/graphql/products';
 import { Variant } from '@/pages/products/_components/Variant';
 import { useCallback, useEffect, useState } from 'react';
 import { PlusCircle } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
 const NEW_VARIANT_TAB_VALUE = 'new';

@@ -12,10 +12,10 @@ import {
   ArgumentFieldsComponent,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import { PromotionConditionAndActionSelector, PromotionConditionAndActionType } from '@/graphql/promotions';
 

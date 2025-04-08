@@ -1,9 +1,8 @@
 import { useParams } from 'react-router-dom';
-import { useValidators, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
+import { useTranslation, useValidators, createDeenruvForm, DetailView, useMutation } from '@deenruv/react-ui-devkit';
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
 import { PromotionDetailView } from '@/pages/promotions/_components/PromotionDetailView';
 import { PromotionDetailSidebar } from '@/pages/promotions/_components/PromotionDetailSidebar';
-import { useTranslation } from 'react-i18next';
 
 const EditPromotionMutation = typedGql('mutation', { scalars })({
   updatePromotion: [{ input: $('input', 'UpdatePromotionInput!') }, { '...on Promotion': { id: true } }],

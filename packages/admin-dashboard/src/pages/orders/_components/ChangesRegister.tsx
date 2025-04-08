@@ -17,9 +17,9 @@ import {
   useOrder,
   UnknownObject,
   formatPrice,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
   Plus,

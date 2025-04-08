@@ -24,11 +24,11 @@ import {
   ArgumentFieldsComponent,
   CustomCard,
   useGFFLP,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import type { DraftOrderType } from '@/graphql/draft_order';
 import { LineItem } from './LineItem.js';
 import type { ResolverInputTypes } from '@deenruv/admin-types';
-import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { Package, Truck, MapPin, User, Building, Phone, Box, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 

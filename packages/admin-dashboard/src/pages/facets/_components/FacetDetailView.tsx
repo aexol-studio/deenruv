@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
   Input,
@@ -18,6 +17,7 @@ import {
   ListLocations,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { AddFacetValueDialog } from './AddFacetValueDialog.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';

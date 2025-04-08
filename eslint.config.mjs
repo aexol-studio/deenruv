@@ -42,6 +42,18 @@ export default tseslint.config(
       "no-empty": "warn",
       "no-useless-escape": "warn",
       "no-constant-binary-expression": "warn",
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "react-i18next",
+              message:
+                "Do not import from 'react-i18next'. Use 'useTranslation' from '@deenruv/react-ui-devkit' instead.",
+            },
+          ],
+        },
+      ],
     },
   },
 );

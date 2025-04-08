@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger,
   getLanguageName,
   useSettings,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Check } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 import { US, PL, CZ, DE, EU } from 'country-flag-icons/react/3x2';
 const uiLanguages = [LanguageCode.en, LanguageCode.pl];
 

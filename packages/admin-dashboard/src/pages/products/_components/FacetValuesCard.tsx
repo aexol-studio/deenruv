@@ -1,7 +1,6 @@
 import { generateColorFromString } from '@/utils';
-import { CardIcons, CustomCard, MultipleSelector, Option, apiClient } from '@deenruv/react-ui-devkit';
+import { useTranslation, CardIcons, CustomCard, MultipleSelector, Option, apiClient } from '@deenruv/react-ui-devkit';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface FacetValuesCardProps {
   onChange: (facetValuesIds: string[]) => void;

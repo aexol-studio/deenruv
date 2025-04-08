@@ -12,9 +12,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { type Dispatch, type SetStateAction, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Trash } from 'lucide-react';
 
 interface DeleteEntryDialogProps {

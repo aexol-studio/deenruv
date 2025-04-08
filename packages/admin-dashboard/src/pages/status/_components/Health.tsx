@@ -1,6 +1,14 @@
-import { Badge, Button, CardIcons, cn, CustomCard, Skeleton, useServer } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  Badge,
+  Button,
+  CardIcons,
+  cn,
+  CustomCard,
+  Skeleton,
+  useServer,
+} from '@deenruv/react-ui-devkit';
 import { RefreshCw, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 const getStatusBadge = (status: string) => {
   const statusLower = status.toLowerCase();

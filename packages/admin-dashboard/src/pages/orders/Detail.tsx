@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import {
   OrderSummary,
   RealizationCard,
@@ -14,7 +13,7 @@ import {
   Payments,
   SurchargeCard,
 } from '@/pages/orders/_components';
-import { useOrder, ORDER_STATE, EntityCustomFields } from '@deenruv/react-ui-devkit';
+import { useTranslation, useOrder, ORDER_STATE, EntityCustomFields } from '@deenruv/react-ui-devkit';
 import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 
 export const OrdersDetailPage = () => {

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { ModelTypes } from '@deenruv/admin-types';
 import {
+  useTranslation,
   Checkbox,
   Label,
   type Option,

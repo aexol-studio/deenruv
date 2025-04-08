@@ -1,6 +1,5 @@
 import { $, Permission, scalars, typedGql } from '@deenruv/admin-types';
-import { createDeenruvForm, DetailView, useMutation, useSettings } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, createDeenruvForm, DetailView, useMutation, useSettings } from '@deenruv/react-ui-devkit';
 import { toast } from 'sonner';
 import { GlobalSettingsComponent } from './GlobalSettingsComponent.js';
 

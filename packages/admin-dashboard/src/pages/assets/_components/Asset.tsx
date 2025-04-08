@@ -24,6 +24,7 @@ import {
   TabsTrigger,
   useServer,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { type AssetType, assetsSelector } from '@/graphql/base';
 import { DeletionResult } from '@deenruv/admin-types';
@@ -32,7 +33,6 @@ import { TooltipContent, TooltipTrigger } from '@radix-ui/react-tooltip';
 import { format } from 'date-fns';
 import type React from 'react';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Copy, ExternalLink, MoreHorizontal, Pencil, Trash } from 'lucide-react';
 

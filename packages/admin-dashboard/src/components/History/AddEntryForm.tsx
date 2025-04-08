@@ -3,9 +3,8 @@
 import type React from 'react';
 
 import type { ModelTypes } from '@deenruv/admin-types';
-import { Badge, Button, Checkbox, Label, Textarea, cn } from '@deenruv/react-ui-devkit';
+import { useTranslation, Badge, Button, Checkbox, Label, Textarea, cn } from '@deenruv/react-ui-devkit';
 import { type Dispatch, type SetStateAction, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { MessageCircle, ShieldCheck, Send } from 'lucide-react';
 

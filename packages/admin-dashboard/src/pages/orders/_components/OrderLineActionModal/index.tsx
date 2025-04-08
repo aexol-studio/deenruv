@@ -1,7 +1,6 @@
 import type React from 'react';
-import { useTranslation } from 'react-i18next';
 import type { OnPriceQuantityChangeApproveInput } from './types.js';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@deenruv/react-ui-devkit';
+import { useTranslation, Dialog, DialogContent, DialogHeader, DialogTitle } from '@deenruv/react-ui-devkit';
 import { ActionQuantityPrice } from './ActionQuantityPrice.js';
 
 import type { DraftOrderLineType } from '@/graphql/draft_order';

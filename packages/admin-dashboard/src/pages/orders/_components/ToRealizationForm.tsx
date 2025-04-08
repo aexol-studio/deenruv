@@ -16,13 +16,13 @@ import {
   useOrder,
   AssetsModalInput,
   ImageWithPreview,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { DraftOrderType } from '@/graphql/draft_order';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 const colors = ['BIAŁA', 'ŻÓŁTA', 'POMARAŃCZOWA', 'RÓŻOWA', 'ZIELONA', 'CZERWONA'];

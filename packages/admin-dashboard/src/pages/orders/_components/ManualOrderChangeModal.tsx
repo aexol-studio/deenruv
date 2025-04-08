@@ -14,9 +14,9 @@ import {
   DialogTitle,
   OrderStateBadge,
   usePluginStore,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { DraftOrderType } from '@/graphql/draft_order';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 export const ManualOrderChangeModal: React.FC<{

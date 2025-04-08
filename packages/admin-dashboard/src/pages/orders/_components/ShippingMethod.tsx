@@ -19,13 +19,13 @@ import {
   OrderDetailSelector,
   Badge,
   CustomCard,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { type EligibleShippingMethodsType, eligibleShippingMethodsSelector } from '@/graphql/draft_order';
 import { priceFormatter } from '@/utils';
 import { Edit, Truck, Package, AlertCircle, Check, Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 export const ShippingMethod: React.FC = () => {

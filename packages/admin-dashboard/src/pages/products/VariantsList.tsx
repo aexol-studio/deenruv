@@ -1,6 +1,13 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { apiClient, Badge, deepMerge, DetailList, ListLocations, PaginationInput } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import {
+  useTranslation,
+  apiClient,
+  Badge,
+  deepMerge,
+  DetailList,
+  ListLocations,
+  PaginationInput,
+} from '@deenruv/react-ui-devkit';
 import { useNavigate } from 'react-router-dom';
 
 const tableId = 'productVariants-list-view';

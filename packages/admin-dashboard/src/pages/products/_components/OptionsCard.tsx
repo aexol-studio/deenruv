@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Table,
   TableBody,
@@ -13,6 +12,7 @@ import {
   apiClient,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { OptionGroupSelector, OptionGroupType } from '@/graphql/products';
 import { toast } from 'sonner';

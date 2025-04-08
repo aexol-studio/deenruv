@@ -1,7 +1,6 @@
-import { useOrder, priceFormatter, CardFooter, ChangesRegistry } from '@deenruv/react-ui-devkit';
+import { useTranslation, useOrder, priceFormatter, CardFooter, ChangesRegistry } from '@deenruv/react-ui-devkit';
 import { ShieldCheck } from 'lucide-react';
 import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const PriceChangedInfo: React.FC<{ changes: ChangesRegistry | undefined }> = ({ changes }) => {
   const { order } = useOrder();

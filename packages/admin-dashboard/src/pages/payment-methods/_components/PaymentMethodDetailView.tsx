@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
+  useTranslation,
   CardIcons,
   CustomCard,
   DetailViewMarker,

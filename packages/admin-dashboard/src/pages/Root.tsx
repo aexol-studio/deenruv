@@ -8,9 +8,9 @@ import {
   useOrder,
   useNotifications,
   DEFAULT_CHANNEL_CODE,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
@@ -71,6 +71,7 @@ export const Root = () => {
   const setCountries = useServer((p) => p.setCountries);
   const setFulfillmentHandlers = useServer((p) => p.setFulfillmentHandlers);
   const setPaymentMethodsType = useServer((p) => p.setPaymentMethodsType);
+  const fetchPendingJobs = useServer((p) => p.fetchPendingJobs);
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
   const setLanguage = useSettings((p) => p.setLanguage);
   const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
@@ -165,6 +166,7 @@ export const Root = () => {
       const { globalSettings } = await apiClient('query')({
         globalSettings: { serverConfig: serverConfigSelector, availableLanguages: true },
       });
+      fetchPendingJobs();
       initializeOrderCustomFields(globalSettings.serverConfig);
       setLoaded(true);
 

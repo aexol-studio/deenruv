@@ -1,10 +1,18 @@
 'use client';
 
 import { SurchargeTable } from './';
-import { Button, Checkbox, Input, Label, useGFFLP, useOrder, CustomCard } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  Button,
+  Checkbox,
+  Input,
+  Label,
+  useGFFLP,
+  useOrder,
+  CustomCard,
+} from '@deenruv/react-ui-devkit';
 import type React from 'react';
 import { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { PlusCircle, DollarSign, Tag, FileText, Percent, Receipt, Loader2 } from 'lucide-react';
 
 export const SurchargeCard: React.FC<{}> = () => {

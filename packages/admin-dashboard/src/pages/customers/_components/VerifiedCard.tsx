@@ -1,6 +1,5 @@
 import React from 'react';
-import { Badge, CardIcons, CustomCard } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Badge, CardIcons, CustomCard } from '@deenruv/react-ui-devkit';
 
 interface RolesCardProps {
   verified: boolean;

@@ -7,9 +7,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const ChangesRegisterTable: React.FC<{ changes: RestChange[] }> = ({ changes }) => {
   const { t } = useTranslation('orders');

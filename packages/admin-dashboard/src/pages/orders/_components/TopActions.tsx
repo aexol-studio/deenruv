@@ -23,6 +23,7 @@ import {
   FulfillmentOrderDetailType,
   OrderDetailType,
   PaymentOrderDetailType,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { FulfillmentModal } from '@/pages/orders/_components/FulfillmentModal';
 import { ManualOrderChangeModal } from '@/pages/orders/_components/ManualOrderChangeModal';
@@ -31,7 +32,6 @@ import { DeletionResult, HistoryEntryType, ResolverInputTypes } from '@deenruv/a
 
 import { ChevronLeft, EllipsisVerticalIcon, Info } from 'lucide-react';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ORDER_STATE } from '@/graphql/base';

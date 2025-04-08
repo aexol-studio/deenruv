@@ -17,8 +17,8 @@ import {
   useServer,
   Button,
   Badge,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { ArrowRight, Check, CircleDot } from 'lucide-react';
 
 export const PossibleOrderStates: React.FC<{

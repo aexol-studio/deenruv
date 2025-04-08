@@ -9,9 +9,9 @@ import {
   CardIcons,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const TAX_CATEGORY_FORM_KEYS = ['CreateTaxCategoryInput', 'name', 'isDefault', 'customFields'] as const;
 

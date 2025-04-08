@@ -6,8 +6,8 @@ import {
   PaginationInput,
   TableLabel,
   ListLocations,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
 const tableId = 'taxRates-list-view';

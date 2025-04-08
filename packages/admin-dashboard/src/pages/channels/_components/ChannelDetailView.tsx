@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Input,
   Label,
@@ -14,6 +13,7 @@ import {
   CF,
   EntityCustomFields,
   SimpleSelect,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { DefaultsCard } from '@/pages/channels/_components/DefaultsCard';

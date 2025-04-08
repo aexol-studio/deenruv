@@ -1,8 +1,4 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Label,
   Switch,
   type Option,
@@ -10,11 +6,11 @@ import {
   SimpleSelect,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { CurrencyCode, LanguageCode } from '@deenruv/admin-types';
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface DefaultsCardProps {
   onIncludeTaxChange: (e: boolean) => void;

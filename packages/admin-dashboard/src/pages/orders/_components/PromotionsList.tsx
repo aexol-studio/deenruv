@@ -12,10 +12,10 @@ import {
   ScrollArea,
   EmptyState,
   CustomCard,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import type React from 'react';
-import { useTranslation } from 'react-i18next';
 import { CouponCodesCard } from '@/pages/orders/_components/CouponCodesCard.js';
 import { BadgePercent, Gift, Tag, CreditCard } from 'lucide-react';
 

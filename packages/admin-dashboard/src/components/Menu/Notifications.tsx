@@ -21,8 +21,9 @@ import {
   TabsList,
   TabsTrigger,
   cn,
+  formatDate,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 
 type Notification = {
   name: string;
@@ -43,6 +44,7 @@ export const Notifications = () => {
   const cyclingNotifications = useNotifications(({ notifications }) => notifications);
   const getMainNotification = useNotifications(({ getMainNotification }) => getMainNotification);
   const jobQueues = useServer(({ jobQueues }) => jobQueues);
+  const status = useServer(({ status }) => status);
 
   const { t } = useTranslation('common');
   const [notifications, setNotifications] = useState<Array<Notification>>([]);
@@ -101,7 +103,12 @@ export const Notifications = () => {
             read: false,
             title: t('notificationsBox.titleStart', { name: queue.name }),
             description: t('notificationsBox.descriptionStart', { name: queue.name }),
-            time: new Date().toLocaleTimeString(),
+            time: formatDate(new Date(), {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false,
+            }),
             icon: <Clock className="size-4 text-blue-500" />,
             isJobQueue: true,
           };
@@ -115,7 +122,12 @@ export const Notifications = () => {
             read: false,
             title: t('notificationsBox.titleComplete', { name: queue.name }),
             description: t('notificationsBox.descriptionComplete', { name: queue.name }),
-            time: new Date().toLocaleTimeString(),
+            time: formatDate(new Date(), {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false,
+            }),
             icon: <Check className="size-4 text-green-500" />,
             isJobQueue: true,
           };
@@ -125,7 +137,7 @@ export const Notifications = () => {
 
       prevJobQueuesRef.current = [...jobQueues];
     }
-  }, [jobQueues]);
+  }, [jobQueues, status]);
 
   return (
     <Popover>

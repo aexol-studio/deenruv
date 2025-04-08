@@ -1,7 +1,6 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
+import { useTranslation, Card, CardHeader, CardTitle, CardContent } from '@deenruv/react-ui-devkit';
 import { FacetListOptionsType } from '@/graphql/facets';
 import { CheckboxAccordion } from '@/pages/products/_components/CheckboxHarmonica';
-import { useTranslation } from 'react-i18next';
 
 interface FacetsAccordionsProps {
   facetsOptions: FacetListOptionsType['items'] | undefined;

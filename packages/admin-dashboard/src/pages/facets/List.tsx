@@ -8,8 +8,8 @@ import {
   ListBadge,
   TableLabel,
   ListLocations,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 
 const tableId = 'facets-list-view';
 const { selector } = ListLocations[tableId];

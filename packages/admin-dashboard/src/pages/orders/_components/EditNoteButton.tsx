@@ -12,13 +12,13 @@ import {
   Label,
   Button,
   cn,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { OrderHistoryEntryType } from '@/graphql/draft_order';
 import { ModelTypes } from '@deenruv/admin-types';
 
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   note: OrderHistoryEntryType;

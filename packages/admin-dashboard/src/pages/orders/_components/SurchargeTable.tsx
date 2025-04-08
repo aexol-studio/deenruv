@@ -9,9 +9,9 @@ import {
   TableRow,
   priceFormatter,
   useOrder,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const SurchargeTable: React.FC = () => {
   const { t } = useTranslation('orders');

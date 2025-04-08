@@ -1,6 +1,13 @@
-import { DetailList, ListLocations, PaginationInput, TableLabel, apiClient, deepMerge } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  DetailList,
+  ListLocations,
+  PaginationInput,
+  TableLabel,
+  apiClient,
+  deepMerge,
+} from '@deenruv/react-ui-devkit';
 import { Routes } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
 const tableId = 'zones-list-view';

@@ -1,6 +1,12 @@
-import { Card, CardHeader, CardTitle, CardContent, AssetsModalChangeType } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  AssetsModalChangeType,
+} from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface ImagesCardProps {
   customFields: any;

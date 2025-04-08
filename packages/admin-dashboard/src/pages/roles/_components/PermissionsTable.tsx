@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { cn, Table, TableBody, TableCell, TableRow, useServer } from '@deenruv/react-ui-devkit';
+import { useTranslation, cn, Table, TableBody, TableCell, TableRow, useServer } from '@deenruv/react-ui-devkit';
 import { CircleCheckBig } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
 import permissionsJson from '@/locales/en/permissions.json';

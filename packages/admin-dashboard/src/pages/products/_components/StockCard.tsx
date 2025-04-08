@@ -17,13 +17,13 @@ import {
   apiClient,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { StockLevelsType } from '@/graphql/products';
 import { GlobalFlag } from '@deenruv/admin-types';
 import { MapPin } from 'lucide-react';
 import React, { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface StockLevelsValueType {
   stockLocationId: string;

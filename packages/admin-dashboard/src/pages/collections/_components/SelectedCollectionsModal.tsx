@@ -7,9 +7,8 @@ import { CollectionAction } from '../consts.js';
 import { DeleteCollectionsFromChannel } from './DeleteCollectionsFromChannel.js';
 
 import { ValueTypes } from '@deenruv/admin-types';
-import { DialogHeader } from '@deenruv/react-ui-devkit';
+import { useTranslation, DialogHeader } from '@deenruv/react-ui-devkit';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
-import { useTranslation } from 'react-i18next';
 import { DuplicateEntity } from '@/components/DuplicateEntry';
 
 interface SelectedCollectionsModalProps {

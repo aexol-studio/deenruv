@@ -1,9 +1,8 @@
 import type React from 'react';
-import { useOrder, apiClient, CustomCard } from '@deenruv/react-ui-devkit';
+import { useTranslation, useOrder, apiClient, CustomCard } from '@deenruv/react-ui-devkit';
 
 import { DeletionResult, type ModelTypes } from '@deenruv/admin-types';
 import { toast } from 'sonner';
-import { useTranslation } from 'react-i18next';
 import { History } from '@/components';
 import { ClipboardList, AlertCircle } from 'lucide-react';
 

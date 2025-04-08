@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import {
   Input,
@@ -16,6 +15,7 @@ import {
   setInArrayBy,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { CheckerCard } from '@/pages/shipping-methods/_components/CheckerCard';
 import { CalculatorCard } from '@/pages/shipping-methods/_components/CalculatorCard';

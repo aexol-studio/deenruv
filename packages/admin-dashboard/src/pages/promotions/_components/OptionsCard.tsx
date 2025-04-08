@@ -9,9 +9,9 @@ import {
   Label,
   CustomCard,
   CardIcons,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 

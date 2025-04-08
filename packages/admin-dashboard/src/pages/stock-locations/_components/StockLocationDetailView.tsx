@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Input,
   Label,
@@ -11,6 +10,7 @@ import {
   CF,
   EntityCustomFields,
   RichTextEditor,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 const STOCK_LOCATION_FORM_KEYS = ['CreateStockLocationInput', 'name', 'description', 'customFields'] as const;

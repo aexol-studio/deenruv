@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Input,
   Label,
@@ -13,6 +12,7 @@ import {
   CardIcons,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 const TAX_RATES_FORM_KEYS = [

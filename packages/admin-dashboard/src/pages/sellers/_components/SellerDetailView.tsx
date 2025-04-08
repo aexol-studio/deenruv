@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
   useDetailView,
   CF,
   EntityCustomFields,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 export const SELLER_FORM_KEYS = ['CreateSellerInput', 'name', 'customFields'] as const;

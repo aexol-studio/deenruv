@@ -8,9 +8,9 @@ import {
   DEFAULT_CHANNEL_CODE,
   ListBadge,
   ListLocations,
+  useTranslation,
+  Routes,
 } from '@deenruv/react-ui-devkit';
-import { Routes } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { RoleListType } from '@/graphql/roles';
 

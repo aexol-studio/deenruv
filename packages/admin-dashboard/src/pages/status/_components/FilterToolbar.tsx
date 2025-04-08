@@ -1,7 +1,6 @@
 import { JobState } from '@deenruv/admin-types';
-import { Checkbox, Option, SimpleSelect, useServer } from '@deenruv/react-ui-devkit';
+import { useTranslation, Checkbox, Option, SimpleSelect, useServer } from '@deenruv/react-ui-devkit';
 import React, { ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface FilterToolbarProps {
   Search: ReactNode;

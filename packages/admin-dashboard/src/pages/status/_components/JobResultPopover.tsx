@@ -1,7 +1,6 @@
 'use client';
 import { FileText } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger, Button } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Popover, PopoverContent, PopoverTrigger, Button } from '@deenruv/react-ui-devkit';
 
 interface JobResultProps {
   result:

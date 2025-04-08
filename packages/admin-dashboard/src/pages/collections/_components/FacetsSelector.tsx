@@ -1,7 +1,6 @@
-import { Label, MultipleSelector, apiClient, type Option } from '@deenruv/react-ui-devkit';
+import { useTranslation, Label, MultipleSelector, apiClient, type Option } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface FacetsSelectorProps {
   value: string[];

@@ -1,6 +1,5 @@
 import React from 'react';
-import { CardIcons, CustomCard, Input } from '@deenruv/react-ui-devkit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, CardIcons, CustomCard, Input } from '@deenruv/react-ui-devkit';
 
 interface PersonalDataCard {
   setField: (fieldName: 'title' | 'firstName' | 'lastName' | 'emailAddress' | 'phoneNumber', value: string) => void;

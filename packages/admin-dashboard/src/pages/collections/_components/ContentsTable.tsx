@@ -10,11 +10,11 @@ import {
   Routes,
   EmptyState,
   apiClient,
-  cn,
   useDetailListHook,
   PaginationInput,
   deepMerge,
   ImageWithPreview,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
@@ -33,7 +33,6 @@ import {
 } from '@tanstack/react-table';
 import { ArrowRight } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'use-debounce';
 
