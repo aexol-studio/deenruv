@@ -5,7 +5,7 @@ import { ImageUp } from "lucide-react";
 import { cn } from "@/lib";
 import { toast } from "sonner";
 import { apiUploadClient } from "@/zeus_client";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 type Props = {
   refetch?: () => void;

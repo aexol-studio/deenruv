@@ -7,8 +7,8 @@
   },
   "scripts": {
     "test": "pnpm -r --workspace-concurrency=1 test",
-    "NIEDZIALAlint": "pnpm -r --workspace-concurrency=1 lint",
-    "NIEDZIALAlint:fix": "pnpm -r lint:fix",
+    "lint": "pnpm -r --workspace-concurrency=1 lint",
+    "lint:fix": "pnpm -r lint:fix",
     "format": "prettier --write --html-whitespace-sensitivity ignore",
     "docs:generate-typescript-docs": "node --import @deenruv/ts-node-register scripts/docs/generate-typescript-docs.ts",
     "docs:generate-graphql-docs": "node --import @deenruv/ts-node-register scripts/docs/generate-graphql-docs.ts --api=shop && node --import @deenruv/ts-node-register scripts/docs/generate-graphql-docs.ts --api=admin",

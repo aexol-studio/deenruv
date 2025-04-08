@@ -5,10 +5,10 @@ import {
   DialogTrigger,
   ORDER_STATE,
   useDetailView,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { NotepadText, Printer } from "lucide-react";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 const illegalStates = [
   ORDER_STATE.DRAFT,

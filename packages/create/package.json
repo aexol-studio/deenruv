@@ -15,6 +15,7 @@
     "copy-assets": "rimraf assets && ts-node ./build.ts",
     "build": "npm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json",
     "watch": "npm run copy-assets && rimraf lib && tsc -p ./tsconfig.build.json -w",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
   "homepage": "https://www.deenruv.io/",

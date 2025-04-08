@@ -12,10 +12,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { sortBySelected } from "../../utils";
-import { useTranslation } from "react-i18next";
 
 interface ProductSelectProps {
   metricType: ChartMetricType;

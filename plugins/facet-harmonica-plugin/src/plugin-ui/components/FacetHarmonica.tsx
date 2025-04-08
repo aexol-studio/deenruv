@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -7,6 +6,7 @@ import {
   CardTitle,
   useDetailView,
   useQuery,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { translationNS } from "../translation-ns";
 import { CheckboxAccordion } from "./CheckboxAccordion";
@@ -14,9 +14,7 @@ import { FACETS_QUERY } from "../graphql/queries.js";
 import { SortOrder } from "@deenruv/admin-types";
 
 export const FacetHarmonica = () => {
-  const { t } = useTranslation(translationNS, {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation(translationNS);
   const { entity, setEntity } = useDetailView(
     "products-detail-view",
     "UpdateProductInput",

@@ -11,10 +11,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { Check, ChevronsUpDown } from "lucide-react";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 interface OrderStatesSelectProps {
   selectedOrderStates: string[];
@@ -26,9 +26,7 @@ export const OrderStatesSelect: React.FC<OrderStatesSelectProps> = ({
   selectedOrderStates,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>

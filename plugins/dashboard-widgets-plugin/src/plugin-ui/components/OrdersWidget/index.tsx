@@ -1,16 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 
-import {
-  differenceInDays,
-  endOfWeek,
-  format,
-  isValid,
-  parse,
-  startOfWeek,
-  subWeeks,
-} from "date-fns";
-import { pl, enGB } from "date-fns/locale";
+import { differenceInDays, endOfWeek, startOfWeek, subWeeks } from "date-fns";
+
 import {
   Card,
   CardHeader,
@@ -20,6 +11,7 @@ import {
   ORDER_STATE,
   Checkbox,
   cn,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 
 import { MetricsCustomDates } from "./MetricCustomDates";
@@ -53,9 +45,7 @@ import { ProductSelector } from "./ProductSelector";
 import { GroupBySelect } from "./GroupBySelect";
 
 export const OrdersWidget = () => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const [fetchChartMetrics] = useLazyQuery(ChartMetricQuery);
   const { language } = usePluginStore();
   const [metricLoading, setMetricLoading] = useState(false);

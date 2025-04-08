@@ -3,12 +3,12 @@ import {
   priceFormatter,
   Switch,
   useLazyQuery,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React, { useEffect, useMemo, useState } from "react";
 import { OrderSummaryMetricsQuery } from "../../graphql";
 import { DateRangeType } from "../../types";
 import { CurrencyCode, ModelTypes } from "../../zeus";
-import { useTranslation } from "react-i18next";
 
 import { giveSummaryMetricsRatio } from "../../utils";
 import { RatioBadge } from "./RatioBadge";

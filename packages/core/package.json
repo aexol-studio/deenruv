@@ -27,6 +27,7 @@
     "e2e:watch": "cross-env PACKAGE=core vitest --config ../../e2e-common/vitest.config.mts",
     "bench": "cross-env PACKAGE=core vitest --config ../../e2e-common/vitest.config.bench.ts --run",
     "ci": "npm run build",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
   "publishConfig": {

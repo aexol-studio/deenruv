@@ -9,6 +9,7 @@
     "build": "node scripts/copy-package-json.js && node scripts/set-version.js && node scripts/build-public-api.js && ng build deenruv-admin-lib --configuration production && node scripts/compile-styles.js",
     "watch": "ng build --watch=true",
     "test:ui": "ng test --watch=false --browsers=ChromeHeadlessCI --progress=false",
+    "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "extract-translations": "node scripts/extract-translations.js",
     "ngcc": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",

@@ -11,10 +11,10 @@ import {
   ChartTooltipContent,
   Separator,
   useLazyQuery,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { useCallback, useEffect, useState } from "react";
 import { ChartMetricType, MetricIntervalType } from "../../zeus";
-import { useTranslation } from "react-i18next";
 import { endOfToday, startOfToday } from "date-fns";
 import { PeriodSelect, Period, Periods } from "../shared";
 import { dashCaseToSpaces } from "./dashCaseToSpaces";
@@ -23,9 +23,7 @@ import { colors, EmptyData } from "../shared";
 import { CategoriesMetricQuery, ProductCollectionsQuery } from "../../graphql";
 
 export const CategoriesChartWidget = () => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const [chartData, setChartData] = useState<
     { category: string; value: number }[]
   >([]);

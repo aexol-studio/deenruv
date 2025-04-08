@@ -4,9 +4,9 @@ import {
   CardDescription,
   CardHeader,
   cn,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { ChartMetricType } from "../../zeus";
-import { useTranslation } from "react-i18next";
 import { TooltipProps } from "recharts";
 import {
   NameType,
@@ -44,9 +44,7 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
   valueStroke,
   currencyCode,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const payload = chartProps.payload?.[0]?.payload;
 
   const value = payload?.value;

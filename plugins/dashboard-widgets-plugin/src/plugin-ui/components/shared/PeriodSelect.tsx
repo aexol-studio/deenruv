@@ -5,9 +5,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import React, { useCallback, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import {
   endOfMonth,
   endOfToday,
@@ -45,9 +45,7 @@ export const PeriodSelect: React.FC<PeriodSelectProps> = ({
   selectedPeriod,
   onPeriodChange,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
 
   const _periods = useMemo(
     (): Period[] => [

@@ -19,13 +19,12 @@ import {
   Separator,
   OrderStateBadge,
   useQuery,
-} from "@deenruv/react-ui-devkit";
-import { LatestOrderListType, LatestOrdersQuery } from "../../graphql";
-import {
+  useTranslation,
   Routes,
   priceFormatter,
   useWidgetsStore,
 } from "@deenruv/react-ui-devkit";
+import { LatestOrderListType, LatestOrdersQuery } from "../../graphql";
 import {
   ColumnDef,
   flexRender,
@@ -36,15 +35,12 @@ import { formatDistanceToNow } from "date-fns";
 import { pl } from "date-fns/locale/pl";
 import { ArrowRight, Hash, RefreshCw } from "lucide-react";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 
 type LatestOrdersProps = object;
 
 export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const language = useWidgetsStore((p) => p.context?.language);

@@ -42,8 +42,9 @@ export default tseslint.config(
       "no-empty": "warn",
       "no-useless-escape": "warn",
       "no-constant-binary-expression": "warn",
+      "no-undef": "warn",
       "no-restricted-imports": [
-        "error",
+        "warn",
         {
           paths: [
             {

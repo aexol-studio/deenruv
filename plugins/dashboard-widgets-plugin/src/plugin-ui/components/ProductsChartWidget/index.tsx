@@ -21,6 +21,7 @@ import {
   useLazyQuery,
   useSettings,
   useWidgetItem,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { ChartConfig, ChartTooltip, Separator } from "@deenruv/react-ui-devkit";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -29,7 +30,6 @@ import {
   ChartMetricType,
   MetricIntervalType,
 } from "../../zeus";
-import { useTranslation } from "react-i18next";
 
 import { endOfWeek, startOfWeek } from "date-fns";
 import { colors, EmptyData } from "../shared";
@@ -46,9 +46,7 @@ import { MetricsRangeSelect } from "../shared/MetricsRangeSelect";
 type ShowData = "FIRST_FIVE" | "ALL";
 
 export const ProductsChartWidget = () => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   const [fetchChartMetrics] = useLazyQuery(BarChartMetricQuery);
   const currencyCode = useSettings((p) => p.selectedChannel?.currencyCode);
   const [showData, setShowData] = useState<ShowData>("FIRST_FIVE");

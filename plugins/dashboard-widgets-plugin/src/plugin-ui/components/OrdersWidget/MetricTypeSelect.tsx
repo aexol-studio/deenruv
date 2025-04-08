@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { ChartMetricType } from "../../zeus";
 import {
   Select,
@@ -9,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
   Skeleton,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 
 interface MetricTypeSelectProps {
@@ -21,9 +21,7 @@ export const MetricTypeSelect: React.FC<MetricTypeSelectProps> = ({
   metricType,
   loading,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   return (
     <div className="relative w-full max-w-[240px]">
       {loading ? (

@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import {
   Button,
@@ -10,6 +9,7 @@ import {
   useMutation,
   useOrder,
   usePluginStore,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { COPY_ORDER } from "../graphql/mutations.js";
 import { PLUGIN_NAME } from "../constants.js";
@@ -20,9 +20,7 @@ const DEFAULT_NOT_ALLOWED = [
 ];
 export const CopyOrderButton = () => {
   const { order } = useOrder();
-  const { t } = useTranslation("copy-order-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("copy-order-plugin");
   const [mutate] = useMutation(COPY_ORDER);
   const navigate = useNavigate();
   const { configs } = usePluginStore();

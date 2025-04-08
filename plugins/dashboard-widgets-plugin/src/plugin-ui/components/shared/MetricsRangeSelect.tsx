@@ -6,10 +6,10 @@ import {
   SelectTrigger,
   SelectValue,
   Skeleton,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { MetricRangeType } from "../../zeus";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 interface MetricTypeSelectProps {
   value?: MetricRangeType;
@@ -24,9 +24,7 @@ export const MetricsRangeSelect: React.FC<MetricTypeSelectProps> = ({
   loading,
   withoutCustom = false,
 }) => {
-  const { t } = useTranslation("dashboard-widgets-plugin", {
-    i18n: window.__DEENRUV_SETTINGS__.i18n,
-  });
+  const { t } = useTranslation("dashboard-widgets-plugin");
   return (
     <div className="relative w-full max-w-[240px] xl:w-[240px]">
       {loading ? (

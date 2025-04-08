@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { translationNS } from "../translation-ns";
 import {
   Button,
@@ -10,6 +9,7 @@ import {
   Label,
   useMutation,
   useQuery,
+  useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { ProductsQuery } from "../graphql/queries";
 import { ProductMutation } from "../graphql/mutations";
