@@ -112,6 +112,7 @@ export const OrderDetailSelector = Selector("Order")({
     type: true,
   },
   fulfillments: FulfillmentSelector,
+  excludedPromotionIds: true,
   taxSummary: {
     description: true,
     taxBase: true,
