@@ -299,7 +299,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
               ...rest,
               countryCode: billingAddress?.country.code,
               ...("customFields" in billingAddress
-                ? { customFields: billingAddress.customFields }
+                ? { customFields: billingAddress.customFields as any }
                 : {}),
             });
           }
@@ -311,7 +311,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
               ...rest,
               countryCode: shippingAddress?.country.code,
               ...("customFields" in shippingAddress
-                ? { customFields: shippingAddress.customFields }
+                ? { customFields: shippingAddress.customFields as any }
                 : {}),
             });
           }

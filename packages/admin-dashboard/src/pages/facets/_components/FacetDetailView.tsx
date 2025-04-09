@@ -105,7 +105,7 @@ export const FacetsDetailView = () => {
       setField('translations', res.translations);
       setField('code', res.code);
       setField('isPrivate', res.isPrivate);
-      if ('customFields' in res) setField('customFields', res.customFields);
+      if ('customFields' in res) setField('customFields', res.customFields as CF);
     })();
   }, []);
 

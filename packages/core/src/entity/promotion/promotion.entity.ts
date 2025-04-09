@@ -235,6 +235,9 @@ export class Promotion
     if (this.couponCode && !order.couponCodes.includes(this.couponCode)) {
       return false;
     }
+    if ((order?.excludedPromotionIds || []).includes(this.id.toString())) {
+      return false;
+    }
     const promotionState: PromotionState = {};
     for (const condition of this.conditions) {
       const promotionCondition = this.allConditions[condition.code];

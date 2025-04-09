@@ -11,6 +11,7 @@ import {
   setInArrayBy,
   EntityCustomFields,
   useTranslation,
+  CF,
 } from '@deenruv/react-ui-devkit';
 import { ProductOptionType } from '@/graphql/products';
 
@@ -39,7 +40,7 @@ export const OptionValueCard: React.FC<OptionValueCardProps> = ({
     setField('code', productOption.code);
     setField('translations', productOption.translations);
     if ('customFields' in productOption) {
-      setField('customFields', productOption.customFields);
+      setField('customFields', productOption.customFields as CF);
     }
   }, [productOption]);
 

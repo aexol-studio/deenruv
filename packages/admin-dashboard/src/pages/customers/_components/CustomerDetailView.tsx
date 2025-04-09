@@ -38,7 +38,7 @@ export const CustomerDetailView = () => {
     setField('firstName', res.firstName);
     setField('lastName', res.lastName);
     setField('emailAddress', res.emailAddress);
-    if ('customFields' in res) setField('customFields', res.customFields);
+    if ('customFields' in res) setField('customFields', res.customFields as CF);
     setAddresses(res.addresses);
   }, []);
 

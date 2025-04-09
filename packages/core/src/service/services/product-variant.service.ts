@@ -177,7 +177,7 @@ export class ProductVariantService {
             ctx,
           })
           .select("product.id", "id")
-          .addSelect("COUNT(productvariant.id)", "count")
+          .addSelect("COUNT(DISTINCT productvariant.id)", "count")
           .innerJoin(
             "productvariant.channels",
             "channel",

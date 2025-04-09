@@ -291,6 +291,7 @@ export class OrderService {
       "lines.taxCategory",
       "shippingLines",
       "surcharges",
+      "promotions",
     ];
     if (
       relations &&
@@ -849,6 +850,60 @@ export class OrderService {
       order: updatedOrder,
       errorResults,
     };
+  }
+
+  /**
+   * @description
+   * Toggles exclusion of a promotion in the Order.
+   */
+  async toggleExcludePromotionInOrder(
+    ctx: RequestContext,
+    orderId: ID,
+    promotionId: ID,
+  ) {
+    const order = await this.getOrderOrThrow(ctx, orderId);
+    if (!order) throw new Error("Order not found");
+
+    const promotion =
+      order.promotions.find((el) => el.id === promotionId) ||
+      (await this.promotionService.findOne(ctx, promotionId));
+
+    if (!promotion) return order;
+    // When removing a global promotion which has triggered an Order-level discount
+    // we need to make sure we persist the changes to the adjustments array of
+    // any affected OrderLines.
+    const affectedOrderLines = order.lines.filter(
+      (line) =>
+        line.adjustments.filter(
+          (a) => a.type === AdjustmentType.DISTRIBUTED_ORDER_PROMOTION,
+        ).length,
+    );
+    const promotionIdStr = promotionId.toString();
+    const found = order.excludedPromotionIds.find(
+      (el) => el === promotionIdStr,
+    );
+
+    if (found)
+      order.excludedPromotionIds = order.excludedPromotionIds.filter(
+        (el) => el !== promotionIdStr,
+      );
+    else order.excludedPromotionIds.push(promotionIdStr);
+
+    await this.historyService.createHistoryEntryForOrder({
+      ctx,
+      orderId: order.id,
+      type: HistoryEntryType.ORDER_NOTE,
+      data: {
+        note: found
+          ? `promotion ${promotion.name} removed from exclusion`
+          : `promotion ${promotion.name} excluded`,
+      },
+    });
+    const result = await this.applyPriceAdjustments(ctx, order);
+    await this.connection
+      .getRepository(ctx, OrderLine)
+      .save(affectedOrderLines);
+    return result;
   }
 
   /**

@@ -130,6 +130,13 @@ export class Order
 
   /**
    * @description
+   * An id array of excluded promotions.
+   */
+  @Column("simple-array", { default: "" })
+  excludedPromotionIds: string[];
+
+  /**
+   * @description
    * Promotions applied to the order. Only gets populated after the payment process has completed,
    * i.e. the Order is no longer active.
    */

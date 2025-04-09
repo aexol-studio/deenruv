@@ -117,7 +117,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
 
   return (
     <GlobalStoreProvider {...settings}>
-      <I18nextProvider i18n={i18n} defaultNS={'translation'}>
+      <I18nextProvider i18n={i18n} defaultNS={'common'}>
         <AnimatePresence>
           {isLoggedIn ? (
             <PluginProvider plugins={pluginsStore} context={context}>

@@ -100,6 +100,7 @@ export const OrderDetailSelector = Selector("Order")({
   },
   couponCodes: true,
   promotions: {
+    id: true,
     name: true,
     couponCode: true,
   },

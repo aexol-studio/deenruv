@@ -109,7 +109,9 @@ export const draftOrderSelector = Selector('Order')({
     taxRate: true,
   },
   couponCodes: true,
+  excludedPromotionIds: true,
   promotions: {
+    id: true,
     name: true,
     couponCode: true,
   },

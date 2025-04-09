@@ -1,6 +1,10 @@
 import { FromSelector, GraphQLTypes, ZeusScalars } from "./zeus/index.js";
 
 export const scalars = ZeusScalars({
+  ID: {
+    encode: (e) => e as string,
+    decode: (e) => e as string,
+  },
   Money: {
     decode: (e) => e as number,
   },

@@ -15,10 +15,8 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
-  EllipsisVertical,
   Group,
   ImageOff,
-  PanelsTopLeft,
   PlusCircleIcon,
   Trash2Icon,
 } from "lucide-react";
@@ -140,6 +138,7 @@ export function DetailList<
   additionalRowActions,
   additionalBulkActions,
   stopRefetchOnChannelChange,
+  suggestedOrderColumns,
 }: {
   fetch: T;
   onRemove?: (items: AwaitedReturnType<T>["items"]) => Promise<boolean>;
@@ -163,6 +162,9 @@ export function DetailList<
     ? GenericListContextType<ExternalListLocationSelector[KEY]>["bulkActions"]
     : GenericListContextType<any>["bulkActions"];
   stopRefetchOnChannelChange?: boolean;
+  suggestedOrderColumns?: Partial<
+    Record<keyof AwaitedReturnType<T>["items"][number], number>
+  >;
 } & (
   | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
   | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
@@ -177,8 +179,11 @@ export function DetailList<
     );
   }, [userPermissions]);
   const getPriority = (key: string): number => {
-    // TODO: Here we probably need to add a check for custom columns
-    // (or add a custom priority for them)
+    if (suggestedOrderColumns) {
+      const suggestedOrder =
+        suggestedOrderColumns[key as keyof typeof suggestedOrderColumns];
+      if (suggestedOrder) return suggestedOrder;
+    }
     return DEFAULT_COLUMN_PRIORITIES[key] ?? 500;
   };
 
@@ -251,6 +256,7 @@ export function DetailList<
     `${tableId}-table-order`,
     [],
   );
+
   const columnsTranslations = t("columns", { returnObjects: true });
   const { handleError } = useErrorHandler();
   const hiddenColumns = useMemo(

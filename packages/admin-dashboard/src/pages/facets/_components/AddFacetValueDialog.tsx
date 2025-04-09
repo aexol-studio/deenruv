@@ -13,6 +13,7 @@ import {
   useGFFLP,
   EntityCustomFields,
   useTranslation,
+  CF,
 } from '@deenruv/react-ui-devkit';
 
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -69,7 +70,7 @@ export const AddFacetValueDialog: React.FC<AddFacetValueDialogProps> = ({
           resp.facetValues.items[0].translations.find((t) => t.languageCode === languageCode)?.name || '',
         );
         if ('customFields' in resp.facetValues.items[0])
-          setField('customFields', resp.facetValues.items[0].customFields);
+          setField('customFields', resp.facetValues.items[0].customFields as CF);
       }),
     [facetValueId, t, languageCode],
   );

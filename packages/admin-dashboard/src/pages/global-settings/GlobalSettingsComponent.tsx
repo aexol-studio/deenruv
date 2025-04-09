@@ -8,6 +8,7 @@ import {
   CustomCard,
   CardIcons,
   EntityCustomFields,
+  CF,
 } from '@deenruv/react-ui-devkit';
 import { t } from 'i18next';
 import { useEffect, useMemo } from 'react';
@@ -38,7 +39,7 @@ export const GlobalSettingsComponent = () => {
         setField('availableLanguages', data.availableLanguages);
         setField('outOfStockThreshold', data.outOfStockThreshold);
         setField('trackInventory', data.trackInventory);
-        if ('customFields' in data) setField('customFields', data.customFields);
+        if ('customFields' in data) setField('customFields', data.customFields as CF);
       }
     };
     init();

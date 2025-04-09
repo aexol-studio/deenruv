@@ -38,6 +38,7 @@ import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
+import { ID } from "@deenruv/common/lib/shared-types.js";
 
 @Resolver()
 export class DraftOrderResolver {
@@ -79,6 +80,20 @@ export class DraftOrderResolver {
         message: e.message,
       };
     }
+  }
+
+  @Transaction()
+  @Mutation()
+  @Allow(Permission.CreateOrder)
+  async toggleExcludePromotionInOrder(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { orderId: ID; promotionId: ID },
+  ): Promise<Order> {
+    return this.orderService.toggleExcludePromotionInOrder(
+      ctx,
+      args.orderId,
+      args.promotionId,
+    );
   }
 
   @Transaction()
