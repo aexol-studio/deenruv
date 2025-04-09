@@ -34,7 +34,7 @@ export const useTranslation = (ns: string | string[] = "common") => {
   function tEntity(
     value: string,
     entity: EntityType,
-    _count: CountType = "one"
+    _count: CountType = "one",
   ) {
     let count = 1;
     if (typeof _count === "number") {
