@@ -117,7 +117,7 @@ type RouteWithoutCreate = {
 type RouteWithCreate = RouteWithoutCreate & { create: () => void };
 
 export function DetailList<
-  KEY extends LocationKeys,
+  KEY extends LocationKeys | ({} & string),
   T extends PromisePaginated,
   ENTITY extends keyof ValueTypes,
 >({
@@ -156,12 +156,12 @@ export function DetailList<
   deletePermissions: Array<Permission>;
   additionalButtons?: React.ReactNode;
   getSubRows?: (row: AwaitedReturnType<T>["items"][number]) => any;
-  additionalRowActions?: GenericListContextType<
-    ExternalListLocationSelector[KEY]
-  >["rowActions"];
-  additionalBulkActions?: GenericListContextType<
-    ExternalListLocationSelector[KEY]
-  >["bulkActions"];
+  additionalRowActions?: KEY extends LocationKeys
+    ? GenericListContextType<ExternalListLocationSelector[KEY]>["rowActions"]
+    : GenericListContextType<any>["rowActions"];
+  additionalBulkActions?: KEY extends LocationKeys
+    ? GenericListContextType<ExternalListLocationSelector[KEY]>["bulkActions"]
+    : GenericListContextType<any>["bulkActions"];
   stopRefetchOnChannelChange?: boolean;
 } & (
   | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
@@ -184,7 +184,7 @@ export function DetailList<
 
   const navigate = useNavigate();
   const { getTableExtensions } = usePluginStore();
-  const tableExtensions = getTableExtensions(tableId);
+  const tableExtensions = getTableExtensions(tableId as LocationKeys);
   const mergedSelectors = tableExtensions?.reduce(
     (acc, table) => deepMerge(acc, table.externalSelector || {}),
     {},
@@ -743,7 +743,15 @@ export function DetailList<
                 </div>
               </div>
             </div>
-            <ListTable {...{ columns, isFiltered, table, Paginate, tableId }} />
+            <ListTable
+              {...{
+                columns,
+                isFiltered,
+                table,
+                Paginate,
+                tableId: tableId as LocationKeys,
+              }}
+            />
           </div>
         </div>
       </DetailListStoreProvider>
