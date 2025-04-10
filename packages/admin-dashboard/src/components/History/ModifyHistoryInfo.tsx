@@ -1,5 +1,11 @@
-import React from 'react';
+import { useTranslation } from '@deenruv/react-ui-devkit';
 
 export const ModifyHistoryInfo = ({ modificationId }: { modificationId: string }) => {
-  return <div>ModifyHistoryInfo</div>;
+  const { t } = useTranslation('orders');
+
+  return (
+    <div className="text-muted-foreground flex gap-2 text-sm">
+      {t('modifyInfo')}: {modificationId}
+    </div>
+  );
 };

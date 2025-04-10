@@ -70,10 +70,10 @@ export const GlobalSearch = () => {
         routes.push({ name: key, children });
       } else if (typeof value === 'string') {
         routes.push({
-          name: key,
+          name: capitalizeFirstLetter(t(`menu.${key}`)),
           path: value,
           type: 'default',
-          description: `Navigate to ${key}`,
+          description: `${t('globalSearch.navigateTo')} ${t(`menu.${key}`)}`,
         });
       }
     });
@@ -85,7 +85,7 @@ export const GlobalSearch = () => {
             name: `${plugin.name} - ${page.path || 'Page'}`,
             path: page.path,
             type: 'plugin',
-            description: `Access ${plugin.name} plugin functionality`,
+            description: t('globalSearch.accessPlugin', { pluginName: plugin.name }),
           });
         }
       });
@@ -144,14 +144,14 @@ export const GlobalSearch = () => {
   return (
     <CommandDialog open={isOpen} onOpenChange={toggle} modal>
       <CommandInput
-        placeholder={t('Type a command or search...')}
+        placeholder={t('globalSearch.placeholder')}
         className="placeholder:text-muted-foreground flex-1 bg-transparent text-base outline-none"
       />
       <CommandList className="max-h-[300px] overflow-y-auto py-2">
-        <CommandEmpty className="py-6 text-center text-sm">{t('No results found.')}</CommandEmpty>
+        <CommandEmpty className="py-6 text-center text-sm">{t('globalSearch.emptyState')}</CommandEmpty>
 
         {groupedRoutes.core.length > 0 && (
-          <CommandGroup heading={t('Navigation')} className="px-2">
+          <CommandGroup heading={t('globalSearch.navigation')} className="px-2">
             {groupedRoutes.core.map((route) => (
               <CommandItem
                 key={route.id || `core-${route.name}-${route.path}`}
@@ -175,7 +175,7 @@ export const GlobalSearch = () => {
         )}
 
         {groupedRoutes.newItems.length > 0 && (
-          <CommandGroup heading={t('Create New')} className="px-2">
+          <CommandGroup heading={t('globalSearch.createNew')} className="px-2">
             {groupedRoutes.newItems.map((route) => (
               <CommandItem
                 key={route.id || `new-${route.name}-${route.path}`}
@@ -199,7 +199,7 @@ export const GlobalSearch = () => {
         )}
 
         {groupedRoutes.lists.length > 0 && (
-          <CommandGroup heading={t('View Lists')} className="px-2">
+          <CommandGroup heading={t('globalSearch.viewLists')} className="px-2">
             {groupedRoutes.lists.map((route) => (
               <CommandItem
                 key={route.id || `list-${route.name}-${route.path}`}
@@ -223,7 +223,7 @@ export const GlobalSearch = () => {
         )}
 
         {groupedRoutes.pluginRoutes.length > 0 && (
-          <CommandGroup heading={t('Plugins')} className="px-2">
+          <CommandGroup heading={t('globalSearch.plugins')} className="px-2">
             {groupedRoutes.pluginRoutes.map((route) => (
               <CommandItem
                 key={route.id || `plugin-${route.name}-${route.path}`}
@@ -253,16 +253,16 @@ export const GlobalSearch = () => {
             <div className="flex items-center gap-1">
               <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">↑</kbd>
               <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">↓</kbd>
-              <span>Navigate</span>
+              <span>{t('globalSearch.navigate')}</span>
             </div>
             <div className="flex items-center gap-1">
               <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">Enter</kbd>
-              <span>Select</span>
+              <span>{t('globalSearch.select')}</span>
             </div>
           </div>
           <div className="flex items-center gap-1">
             <kbd className="bg-muted rounded border px-1.5 py-0.5 text-[10px]">Esc</kbd>
-            <span>Close</span>
+            <span>{t('globalSearch.close')}</span>
           </div>
         </div>
       </div>

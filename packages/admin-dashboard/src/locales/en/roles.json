@@ -15,10 +15,10 @@
         "code": "Code",
         "permissions": "Entitlements",
         "channels": "Channels",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy ID",
+        "copyId": "Copy identifier",
         "viewRole": "Display role",
         "columns": "Columns",
         "defaultRoleInfo": "This is the default role and cannot be modified"
@@ -50,7 +50,7 @@
         "successMessage": "The role has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "selectedValue": "{{from}} of {{to}} lines was selected",
+    "selectedValue": "{{from}} of {{to}} lines selected",
     "validation": {
         "nameRequired": "Name is required",
         "permissionsRequired": "Select at least one entitlement",

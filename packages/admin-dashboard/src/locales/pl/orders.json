@@ -743,6 +743,7 @@
   "createCopyCustomerFail": "Nie udało się dodać klienta: {{value}}",
   "createCopyLineFail": "Nie udało się dodać produktu: {{value}}",
   "createCopyShippingFail": "Nie udało się dodać metody wysyłki: {{value}}",
+  "modifyInfo": "Numer modyfikacji",
   "modify": {
     "title": "Modyfikowanie zamówienia o Id:{{value}}",
     "disclaimer": "Edycja ceny linii jest możliwa po zapisaniu zamówienia z nowo dodaną linią",

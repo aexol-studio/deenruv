@@ -214,7 +214,6 @@ const DetailTabs = ({
     setSidebar,
     hasUnsavedChanges,
     form,
-    fetchEntity,
   } = useDetailView();
 
   const [, setSearchParams] = useSearchParams();

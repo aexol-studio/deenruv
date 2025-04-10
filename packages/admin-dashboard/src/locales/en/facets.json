@@ -10,7 +10,7 @@
     "table": {
         "id": "Id",
         "name": "Name",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "code": "Code",
         "isPrivate": "Private",
@@ -44,10 +44,10 @@
         "successMessage": "The aspect has been deleted.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "selectedValue": "{{from}} of {{to}} lines was selected",
+    "selectedValue": "{{from}} of {{to}} lines selected",
     "details": {
         "basicInfo": "Basic data",
-        "customFields": "Custom fields",
+        "customFields": "Non-standard fields",
         "facetValues": "Aspect value",
         "usedForColorsDesc": "Use this attribute for guys who are colours",
         "colorsCollectionDesc": "Use this for product paths in COLOUR (BLAT/CORPUS)",

@@ -23,7 +23,7 @@
         "actions": "Activities",
         "copyId": "Copy id",
         "products": "number of products",
-        "delete": "Remove collection"
+        "delete": "Delete collection"
     },
     "details": {
         "basic": {
@@ -69,7 +69,7 @@
         "collectionCreatedError": "Collection could not be created",
         "collectionDeleteSuccess": "Collection was successfully deleted",
         "collectionDeleteError": "Collection could not be deleted successfully",
-        "deletionCollectionErrorToast": "Failed to delete collection",
+        "deletionCollectionErrorToast": "Collection could not be deleted successfully",
         "deletionCollectionSuccessToast": "Collections were successfully deleted",
         "noCollectionChildrens": "collection {{collection}} has no children"
     },
@@ -79,13 +79,13 @@
         "successMessage": "The collection has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "editCollection": "Edit collection",
+    "editCollection": "Edit the collection",
     "withSelected": "With selected {{collections}}",
     "columns": "Columns",
     "rowsSelected": "{{selected}} of {{all}} selected rows",
     "duplicateCollection": "Are you sure you want to duplicate these collections?",
     "collectionActions": {
-        "move": "Transfer",
+        "move": "Move",
         "copy": "Duplicate",
         "assign": "Assign to channel",
         "deleteFromChannel": "Remove from current channel"
@@ -118,13 +118,13 @@
     },
     "deleteCollectionsFromChannel": {
         "areYouSure": "Are you sure you want to delete these collections from {{ channel }} ?",
-        "removeCollection": "Delete a collection",
+        "removeCollection": "Delete collection",
         "cancel": "Cancel",
         "removeSuccess": "Deleted collections",
         "removeError": "Cannot delete a collection from a feed"
     },
     "moveCollectionsToChannels": {
-        "moveCollections": "Moving a collection",
+        "moveCollections": "Transferring collections",
         "move": "Move",
         "selected": "Selected",
         "availableChannels": "Available channels",
@@ -142,7 +142,7 @@
     "moveCollectionsToCollections": {
         "targetCollection": "Target collection",
         "searchByName": "Search by name...",
-        "move": "Transfer",
+        "move": "Move",
         "selected": "Selected",
         "moveCollections": "Transferring collections",
         "movedAllCollections": "All collections transferred",

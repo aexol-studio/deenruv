@@ -60,12 +60,12 @@ export const RefundCard: React.FC<RefundCardProps> = ({ priceDifference, refundR
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-muted-foreground text-sm">{t('refund.amount')}</p>
-              <p className="font-medium">${priceFormatter(currentPayment?.amount ?? 0, modifiedOrder?.currencyCode)}</p>
+              <p className="font-medium">{priceFormatter(currentPayment?.amount ?? 0, modifiedOrder?.currencyCode)}</p>
             </div>
 
             <div>
               <p className="text-muted-foreground text-sm">{t('refund.refund')}</p>
-              <p className="font-medium">${priceFormatter(priceDifference * -1, modifiedOrder?.currencyCode)}</p>
+              <p className="font-medium">{priceFormatter(priceDifference * -1, modifiedOrder?.currencyCode)}</p>
             </div>
           </div>
         </div>

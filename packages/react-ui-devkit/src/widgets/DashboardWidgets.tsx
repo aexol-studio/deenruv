@@ -34,6 +34,7 @@ import { restrictToWindowEdges } from "@dnd-kit/modifiers";
 import { useWidgetsStore } from "./widgets-context";
 import { LanguageCode } from "@deenruv/admin-types";
 import { DeenruvUIPlugin, Widget } from "@/plugins/types.js";
+import { WidgetsEmptyState } from "@/widgets/WidgetsEmptyState.js";
 
 const WidgetItemContext = createContext<{
   size: { width: number; height: number };
@@ -204,11 +205,7 @@ export const DashboardWidgets = () => {
   }
 
   if (widgets?.length === 0) {
-    return (
-      <div className="flex h-96 items-center justify-center">
-        <p className="text-lg text-gray-500">No widgets added yet</p>
-      </div>
-    );
+    return <WidgetsEmptyState />;
   }
 
   return (

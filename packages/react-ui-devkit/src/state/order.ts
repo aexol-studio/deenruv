@@ -435,7 +435,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
       const latestOrderTransition = orderHistory?.data?.find(
         (el) => el.type === HistoryEntryType.ORDER_STATE_TRANSITION,
       );
-      console.log(orderHistory);
       if (!latestOrderTransition)
         throw new Error("No state transition history entry found");
       let orderState =
@@ -556,7 +555,6 @@ export const useOrder = create<Order & Actions>()((set, get) => {
     isOrderModified: () => {
       const { getObjectsChanges } = get();
       const modifications = getObjectsChanges();
-      console.log(modifications);
       return modifications.linesChanges.length > 0
         ? !!modifications.linesChanges.length ||
             !!modifications.resChanges.length
@@ -650,6 +648,8 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         "shippingLines.0.price",
         "__typename",
       ]);
+
+      console.log("ORD", order, dryRunOrder);
 
       const latestShippingLinesIndex = Math.max(
         ...rawChanges.resChanges

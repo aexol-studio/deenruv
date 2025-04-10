@@ -1,9 +1,9 @@
 {
-    "customer": "Customer",
+    "customer": "Client",
     "personalData": {
         "header": "Personal data",
         "title": "Title",
-        "firstName": "First name",
+        "firstName": "Name",
         "lastName": "Surname",
         "emailAddress": "E-mail address",
         "phoneNumber": "Telephone number"
@@ -99,7 +99,7 @@
         "inputStreet2Label": "Street Line 2",
         "inputStreet2Placeholder": "Street Line 2",
         "inputTaxLabel": "Company tax ID",
-        "inputTaxPlaceholder": "Company tax identifier"
+        "inputTaxPlaceholder": "Company tax ID"
     },
     "validation": {
         "firstNameRequired": "First name is required",

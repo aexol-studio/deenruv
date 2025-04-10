@@ -122,6 +122,7 @@ export const draftOrderSelector = Selector('Order')({
     amountWithTax: true,
     type: true,
   },
+  modifications: { id: true, note: true },
   fulfillments: {
     id: true,
     createdAt: true,

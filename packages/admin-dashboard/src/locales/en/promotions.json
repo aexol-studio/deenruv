@@ -44,7 +44,7 @@
             "order_percentage_discount": "Order discount by X%",
             "facet_based_discount": "Discount on products with these aspects by X%",
             "products_percentage_discount": "Discount on certain products by X%",
-            "buy_x_get_y_free": "Buy X products, get Y products free"
+            "buy_x_get_y_free": "Buy X products, get Y products for free"
         },
         "labels": {
             "discount": "Discount",

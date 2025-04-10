@@ -20,6 +20,7 @@ import {
   cn,
   Badge,
   useTranslation,
+  useOrder,
 } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import { HistoryEntryType } from '@deenruv/admin-types';
@@ -44,15 +45,6 @@ interface DeleteEntryDialogProps {
   setIsDeleteOpen: Dispatch<SetStateAction<boolean>>;
   setSelectedNote: Dispatch<SetStateAction<OrderHistoryEntryType | undefined>>;
 }
-
-const historyDataToReadableString = (data: Record<string, unknown>) => {
-  return Object.entries(data)
-    .map(([key, value]) => {
-      if (key === 'note') return value;
-      return `${key}: ${value}`;
-    })
-    .join(', ');
-};
 
 // Helper function to get icon based on history entry type
 const getEntryTypeIcon = (type: HistoryEntryType, isPublic: boolean) => {
@@ -83,16 +75,22 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
   setSelectedNote,
 }) => {
   const { t } = useTranslation('common');
+  const { order } = useOrder();
 
   return (
     <div className="bg-card rounded-md border p-4">
       <h3 className="mb-4 font-medium">{t('history.timeline')}</h3>
       <TimelineWrapper positions="left" className="w-full">
         {data?.map((history) => {
-          const historyData = historyDataToReadableString(history.data);
           const entryIcon = getEntryTypeIcon(history.type, history.isPublic);
           const isNote =
             history.type === HistoryEntryType.ORDER_NOTE || history.type === HistoryEntryType.CUSTOMER_NOTE;
+          const modificationNote =
+            history.type === HistoryEntryType.ORDER_MODIFIED
+              ? order?.modifications.find((m) => m.id === history.data.modificationId)?.note
+              : '';
+
+          console.log('DATA', history);
 
           return (
             <TimelineItem key={history.id} status="done" className="w-full pb-6">
@@ -231,6 +229,12 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                       <code className="bg-muted rounded px-1 py-0.5 font-mono text-xs">
                         {history.data.fulfillmentId as string}
                       </code>
+                    </div>
+                  )}
+
+                  {'modificationId' in history.data && (
+                    <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
+                      {modificationNote}
                     </div>
                   )}
                 </div>

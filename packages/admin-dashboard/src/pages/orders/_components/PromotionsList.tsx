@@ -22,11 +22,8 @@ import {
 } from '@deenruv/react-ui-devkit';
 import { priceFormatter } from '@/utils';
 import type React from 'react';
-import { CouponCodesCard } from '@/pages/orders/_components/CouponCodesCard.js';
-import { BadgePercent, Gift, Tag, CreditCard, Trash } from 'lucide-react';
-
+import { BadgePercent, Gift, Tag, CreditCard, Trash, Plus } from 'lucide-react';
 import { $, ModelTypes, scalars, typedGql } from '@deenruv/admin-types';
-import { draftOrderSelector } from '@/graphql/draft_order.js';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 
@@ -108,20 +105,24 @@ export const PromotionsList: React.FC = () => {
   };
 
   return (
-    <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-6 lg:grid-cols-12">
-      <div className="col-span-1 md:col-span-2 lg:col-span-3">{/* <CouponCodesCard /> */}</div>
-
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12">
       <CustomCard
         notCollapsible
         color="blue"
         description={t('promotions.description', 'Active order promotions')}
         title={t('promotions.title', 'Promotions')}
-        wrapperClassName="col-span-1 h-full md:col-span-2 lg:col-span-3"
+        wrapperClassName="col-span-1 h-full md:col-span-2 lg:col-span-6"
         icon={<Gift />}
         upperRight={
-          <div className="flex gap-4 py-2">
-            <Input placeholder="coupon code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} />
-            <Button onClick={addCouponHandler}>{t('promotion.add')}</Button>
+          <div className="flex gap-2 py-2">
+            <Input
+              placeholder={t('couponCodes.placeholder')}
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value)}
+            />
+            <Button size={'icon'} className="w-14" onClick={addCouponHandler}>
+              <Plus />
+            </Button>
           </div>
         }
       >
@@ -169,7 +170,7 @@ export const PromotionsList: React.FC = () => {
                 ))
               ) : (
                 <EmptyState
-                  columnsLength={2}
+                  columnsLength={3}
                   title={t('promotions.noPromotions', 'No promotions applied')}
                   color="blue"
                   icon={<Gift />}

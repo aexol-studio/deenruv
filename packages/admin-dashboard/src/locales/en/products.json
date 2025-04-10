@@ -48,7 +48,8 @@
         "emptyState": {
             "title": "There is nothing here",
             "description": "There are no option groups yet. Use the button above to add them."
-        }
+        },
+        "noOptionValues": "Add the options above to find them here"
     },
     "variantsTab": {
         "emptyState": {
@@ -112,7 +113,7 @@
         "addStockLocation": "Add stock location",
         "basicInfo": "Basic information",
         "settings": "Settings",
-        "customFields": "Custom fields",
+        "customFields": "Non-standard fields",
         "facetValues": "Aspect value",
         "image": "Image",
         "price": "Price",
@@ -150,7 +151,7 @@
             "hoverImage": "Product image after hovering the cursor"
         },
         "textCards": {
-            "completionDate": "Completion date",
+            "completionDate": "End date",
             "delivery": "Delivery",
             "payment": "Payment",
             "materials": "Materials",

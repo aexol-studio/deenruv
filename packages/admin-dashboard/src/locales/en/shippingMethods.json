@@ -12,7 +12,7 @@
         "name": "Name",
         "code": "Code",
         "modalTitle": "Modal title",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "columns": "Columns"
     },
@@ -22,7 +22,7 @@
             "name": "Name",
             "description": "Description",
             "code": "Code",
-            "enabled": "Enabled",
+            "enabled": "Included",
             "fulfillmentHandler": "Implementation support"
         },
         "modal": {
@@ -32,7 +32,7 @@
             "additionalDescription": "Modal additional description"
         },
         "options": {
-            "title": "Tool to check shipment eligibility",
+            "title": "Shipping eligibility checker tool",
             "checker": "Shipping eligibility checker tool"
         },
         "calculator": {
@@ -53,7 +53,7 @@
             "placeholder": "Product search",
             "product": "Product",
             "price": "Price",
-            "quantity": "Quantity",
+            "quantity": "Number",
             "total": "Total",
             "noItems": "Add products"
         }

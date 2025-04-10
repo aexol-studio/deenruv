@@ -10,10 +10,10 @@
     "table": {
         "id": "Id",
         "name": "Name",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy ID",
+        "copyId": "Copy identifier",
         "viewSeller": "Display vendor",
         "columns": "Columns"
     },
@@ -21,7 +21,7 @@
         "basic": {
             "title": "Basic information",
             "name": "Name",
-            "memberPlaceholder": "Add a member"
+            "memberPlaceholder": "Add member"
         }
     },
     "toasts": {

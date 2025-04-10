@@ -19,19 +19,25 @@
     "noFilterField": "No",
     "columns": "Columns",
     "deleteOrCancel": "Delete/Cancel option selected",
-    "selectedValue": "{{from}} of {{to}} lines was selected",
+    "selectedValue": "{{from}} of {{to}} lines selected",
     "discountByValue": "Discount {{value}}",
     "editOptions": "Edit options",
     "total": "Total",
     "totalItems": "Total price of {{value}} products",
     "addPaymentInfo": "Add payment to proceed",
     "markFulfillmentInfo": "Mark completion as delivered or cancel",
+    "cancellationLabel": "Give reason for cancellation",
+    "cancellationReasons": {
+        "clientRequest": "Customer request",
+        "notAvailable": "No availability",
+        "mistake": "Mistake"
+    },
     "deleteDraft": {
         "button": "Delete draft",
         "title": "Are you sure?",
         "descriptionDraft": "The following draft orders will be permanently deleted:",
         "descriptionOrder": "The following orders will be cancelled:",
-        "confirm": "Delete draft version",
+        "confirm": "Delete draft",
         "cancel": "Cancel"
     },
     "searchProduct": {
@@ -70,7 +76,7 @@
         "viewPayment": "Display payment details",
         "viewOrder": "View order",
         "paymentMethod": "Payment type",
-        "add": "Add order",
+        "add": "Add your order",
         "applyChanges": "Apply changes",
         "reviewChanges": "Review changes",
         "note": "Add note",
@@ -88,17 +94,17 @@
         "noFilterField": "No",
         "columns": "Columns",
         "deleteOrCancel": "Delete/Cancel option selected",
-        "selectedValue": "{{from}} of {{to}} lines was selected",
+        "selectedValue": "{{from}} of {{to}} lines selected",
         "discountByValue": "Discount {{value}}",
         "editOptions": "Edit options",
         "total": "Total",
         "totalItems": "Total price of {{value}} products",
         "deleteDraft": {
-            "button": "Delete draft version",
+            "button": "Delete draft",
             "title": "Are you sure?",
             "descriptionDraft": "The following draft orders will be permanently deleted:",
             "descriptionOrder": "The following orders will be cancelled:",
-            "confirm": "Delete draft version",
+            "confirm": "Delete draft",
             "cancel": "Cancel"
         },
         "searchProduct": {
@@ -149,8 +155,8 @@
             "addModal": {
                 "discount": "Discount to total in {{value}}",
                 "discountAmount": "Amount of discount",
-                "quantity": "Quantity",
-                "quantityPlaceholder": "Quantity"
+                "quantity": "Number",
+                "quantityPlaceholder": "Number"
             },
             "perUnit": "Per unit (TAX)",
             "baseInfoCode": "Code: {{value}}",
@@ -176,7 +182,7 @@
             "updateAddItemToast": "Item successfully added to the order",
             "updateQuantityItemToast": "Item successfully changed to order quantity",
             "searchHeader": "Product",
-            "searchPlaceholder": "Enter to search for products...",
+            "searchPlaceholder": "Type to search for products...",
             "product": "Product",
             "slug": "Short name (slug)",
             "preview": "Preview",
@@ -187,15 +193,15 @@
             "add": "Add item to order",
             "update": "Updating an item in an order",
             "addItem": " Add item",
-            "somethingWrong": "Something went wrong",
+            "somethingWrong": "Something has gone wrong",
             "sku": "SKU",
-            "quantity": "Quantity",
+            "quantity": "Number",
             "remove": "Remove",
             "edit": "Edit",
-            "noItems": "Missing elements in the draft order",
+            "noItems": "No items in the draft order",
             "price": "Price",
             "priceWithTax": "Price with tax",
-            "totalWithTax": "Total including tax",
+            "totalWithTax": "Total incl. tax",
             "customFields": "Non-standard fields",
             "discount": "Discount",
             "orderCancelSuccessfully": "Order successfully cancelled",
@@ -204,7 +210,7 @@
             "realizeOrder": "Complete order",
             "areYouSure": "Are you sure?",
             "continue": "Continue",
-            "cancelOrderMessage": "Once an order has been cancelled, no action will be permitted",
+            "cancelOrderMessage": "After cancelling the order, no action will be allowed",
             "selectCustomer": {
                 "noCustomer": "No customer",
                 "titleLabel": "Title",
@@ -212,8 +218,8 @@
                 "lastNameLabel": "Surname",
                 "emailLabel": "Email",
                 "phoneNumberLabel": "Telephone number",
-                "select": "Customer",
-                "selectButton": "Select customer",
+                "select": "Client",
+                "selectButton": "Select a customer",
                 "change": "Change customer",
                 "create": "Create client",
                 "customer": "Client",
@@ -231,7 +237,7 @@
                 "phoneNumber": "Telephone number",
                 "id": "Id",
                 "inputLabel": "To find a specific customer, use the field below and select the desired one from the list below",
-                "selectCustomerFailed": "Failed to select customer",
+                "selectCustomerFailed": "Unsuccessful customer selection",
                 "success": "Customer added to order",
                 "error": "Failed to add customer to order",
                 "noResults": "Customer of specified value not found"
@@ -309,23 +315,24 @@
             "inputStreet2Label": "Street Line 2",
             "inputStreet2Placeholder": "Street Line 2",
             "inputTaxLabel": "Company tax ID",
-            "inputTaxPlaceholder": "Company tax identifier"
+            "inputTaxPlaceholder": "Company tax ID"
         },
         "selectShipmentMethod": {
             "noLines": "At least one item is required",
             "cardTitle": "Shipping method",
-            "cardDescription": "Choose your shipping method",
+            "cardDescription": "Select shipping method",
             "noSelected": "No shipping method selected.",
             "noSelectedTip": "Please add products before selecting a shipping method.",
             "buttonLabel": "Set your shipping method",
             "close": "Close",
             "save": "Save",
-            "setMethodTitle": "Set shipping method",
+            "setMethodTitle": "Set your shipping method",
             "setMethodDescription": "Select shipping method",
             "shippingAdded": "Shipping method has been successfully added",
             "code": "Code:",
             "price": "Price:",
-            "method": "Method:"
+            "method": "Method:",
+            "addMethod": "Add a shipping method"
         },
         "inputs": {
             "pickDate": "Select date"
@@ -342,7 +349,7 @@
             "fulfill": "Finalise",
             "handlers": {
                 "manual-fulfillment": {
-                    "title": "Manual filling",
+                    "title": "Hand-filling",
                     "description": "Manual input of implementation details",
                     "method": "Method",
                     "trackingCode": "Tracking code"
@@ -363,12 +370,19 @@
     },
     "filterPlaceholder": "Field for the filter",
     "createOrder": "Create order",
+    "cancelAndRefund": {
+        "trigger": "Cancel and refund",
+        "title": "Cancel and refund the order",
+        "refund": "Refund",
+        "returnToStock": "Return to warehouse",
+        "refundShipping": "Return for shipment"
+    },
     "create": {
         "addModal": {
             "discount": "Discount to total in {{value}}",
             "discountAmount": "Amount of discount",
-            "quantity": "Quantity",
-            "quantityPlaceholder": "Quantity"
+            "quantity": "Number",
+            "quantityPlaceholder": "Number"
         },
         "perUnit": "Per unit (TAX)",
         "baseInfoCode": "Code: {{value}}",
@@ -394,7 +408,7 @@
         "updateAddItemToast": "Item successfully added to the order",
         "updateQuantityItemToast": "Item successfully changed to order quantity",
         "searchHeader": "Product",
-        "searchPlaceholder": "Enter to search for products...",
+        "searchPlaceholder": "Type to search for products...",
         "product": "Product",
         "slug": "Short name (slug)",
         "preview": "Preview",
@@ -405,15 +419,15 @@
         "add": "Add item to order",
         "update": "Updating an item in an order",
         "addItem": " Add item",
-        "somethingWrong": "Something went wrong",
+        "somethingWrong": "Something has gone wrong",
         "sku": "SKU",
-        "quantity": "Quantity",
+        "quantity": "Number",
         "remove": "Remove",
         "edit": "Edit",
-        "noItems": "Missing elements in the draft order",
+        "noItems": "No items in the draft order",
         "price": "Price",
         "priceWithTax": "Price with tax",
-        "totalWithTax": "Total including tax",
+        "totalWithTax": "Total incl. tax",
         "customFields": "Non-standard fields",
         "discount": "Discount",
         "orderCancelSuccessfully": "Order successfully cancelled",
@@ -430,8 +444,8 @@
             "lastNameLabel": "Surname",
             "emailLabel": "Email",
             "phoneNumberLabel": "Telephone number",
-            "select": "Customer",
-            "selectButton": "Select customer",
+            "select": "Client",
+            "selectButton": "Select a customer",
             "change": "Change customer",
             "create": "Create client",
             "customer": "Client",
@@ -527,23 +541,24 @@
         "inputStreet2Label": "Street Line 2",
         "inputStreet2Placeholder": "Street Line 2",
         "inputTaxLabel": "Company tax ID",
-        "inputTaxPlaceholder": "Company tax identifier"
+        "inputTaxPlaceholder": "Company tax ID"
     },
     "selectShipmentMethod": {
         "noLines": "At least one item is required",
         "cardTitle": "Shipping method",
-        "cardDescription": "Choose your shipping method",
+        "cardDescription": "Select shipping method",
         "noSelected": "No shipping method selected.",
         "noSelectedTip": "Please add products before selecting a shipping method.",
         "buttonLabel": "Set your shipping method",
         "close": "Close",
         "save": "Save",
-        "setMethodTitle": "Set shipping method",
+        "setMethodTitle": "Set your shipping method",
         "setMethodDescription": "Select shipping method",
         "shippingAdded": "Shipping method has been successfully added",
         "code": "Code:",
         "price": "Price:",
-        "method": "Method:"
+        "method": "Method:",
+        "addMethod": "Add a shipping method"
     },
     "inputs": {
         "pickDate": "Select date"
@@ -590,7 +605,7 @@
         "productVariantLoadingError": "Failed to load product variant data"
     },
     "orderStates": {
-        "button": "Order status",
+        "button": "Order states",
         "title": "Order states",
         "description": " All possible order states and the current order status can be displayed here.",
         "currentState": "Current status",
@@ -604,7 +619,7 @@
         "title": "Implementation",
         "description": "Track and manage the delivery status of your order",
         "method": "Method",
-        "state": "Condition",
+        "state": "State",
         "trackingCode": "Tracking code",
         "actions": "Activities",
         "markAsDelivered": " Mark as delivered",
@@ -659,8 +674,10 @@
         "errMsg": "Something has gone wrong",
         "fulfillmentAdded": "Implementation has been successfully added",
         "orderCanceledSuccessfully": "Order successfully cancelled",
+        "orderRefundedSuccessfully": "Order successfully refunded",
         "draftDeletedSuccessfully": "Draft order successfully deleted",
         "orderCancelError": "Something went wrong when cancelling the order: {{value}}",
+        "orderRefundError": "Something went wrong when refunding the order.",
         "draftDeleteError": "Something went wrong when deleting draft order: {{value}}"
     },
     "history": {
@@ -726,6 +743,7 @@
     "createCopyCustomerFail": "Failed to add customer: {{value}}",
     "createCopyLineFail": "Failed to add product: {{value}}",
     "createCopyShippingFail": "Failed to add shipping method: {{value}}",
+    "modifyInfo": "Modification number",
     "modify": {
         "title": "Modification of order with Id:{{value}}",
         "disclaimer": "Editing the line price is possible after saving the order with the newly added line",
@@ -735,11 +753,11 @@
             "headName": "Product name",
             "headSku": "SKU",
             "headUnitPrice": "Unit price",
-            "headQuantity": "Quantity",
+            "headQuantity": "Number",
             "headTotal": "Total"
         },
         "addItemTitle": "Add product",
-        "quantity": "Quantity"
+        "quantity": "Number"
     },
     "custom": {
         "selectAttributes": "Select attributes",
@@ -871,7 +889,7 @@
             "description": "No changes have been made to this order."
         },
         "keys": {
-            "quantity": "Quantity",
+            "quantity": "Number",
             "price": "Price",
             "priceWithTax": "Price with tax",
             "overallPriceWithTax": "Total incl. tax",

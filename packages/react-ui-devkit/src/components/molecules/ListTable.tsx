@@ -15,7 +15,14 @@ import {
   TableLabel,
   Checkbox,
 } from "@/components";
-import { CSSProperties, ReactNode, useEffect, useRef, useState } from "react";
+import {
+  CSSProperties,
+  ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import React from "react";
 import { cn } from "@/lib";
 import { LocationKeys } from "@/types/types.js";
@@ -113,7 +120,7 @@ export function ListTable<TData, TValue>({
     };
   }, [rowRefs.current.length, tableWrapperRef.current]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (rowRefs.current.length && tableWrapperRef.current) {
       const tbodyHeight =
         tableWrapperRef.current?.clientHeight - TABLE_HEADER_HEIGHT;
@@ -122,10 +129,16 @@ export function ListTable<TData, TValue>({
         rowHeight >= MINIMUM_ROW_HEIGHT ? rowHeight : MINIMUM_ROW_HEIGHT;
 
       rowRefs.current.forEach((row) => {
-        if (row) row.style.height = `${finalRowHeight}px`;
+        if (row) {
+          row.style.height = `${finalRowHeight}px`;
+        }
       });
     }
-  }, [table.getRowModel().rows.length]);
+  }, [
+    table.getRowModel().rows.length,
+    rowRefs.current,
+    table.getState().pagination.pageIndex,
+  ]);
 
   useEffect(() => {
     const PADDING_X_VALUE = 64;
@@ -198,36 +211,40 @@ export function ListTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row, idx) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  ref={(el) => (rowRefs.current[idx] = el)}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    const columnWidth = cell.column.getSize();
+              table.getRowModel().rows.map((row, idx) => {
+                rowRefs.current = [];
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    ref={(el) => (rowRefs.current[idx] = el)}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      const columnWidth = cell.column.getSize();
 
-                    return (
-                      <TableCell
-                        key={cell.id}
-                        className={cn(
-                          "whitespace-nowrap",
-                          columnWidth > WIDTH_TRUNCATE_BREAKPOINT && "truncate",
-                          getCommonClassNameStyles(cell.column),
-                        )}
-                        style={{
-                          ...getCommonPinningStyles(cell.column, showPinned),
-                        }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className={cn(
+                            "whitespace-nowrap",
+                            columnWidth > WIDTH_TRUNCATE_BREAKPOINT &&
+                              "truncate",
+                            getCommonClassNameStyles(cell.column),
+                          )}
+                          style={{
+                            ...getCommonPinningStyles(cell.column, showPinned),
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })
             ) : (
               <EmptyState
                 columnsLength={columns.length}

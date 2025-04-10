@@ -99,6 +99,7 @@ export const OrderDetailSelector = Selector("Order")({
     taxRate: true,
   },
   couponCodes: true,
+  modifications: { id: true, note: true },
   promotions: {
     id: true,
     name: true,

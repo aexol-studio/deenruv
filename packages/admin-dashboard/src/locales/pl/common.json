@@ -489,7 +489,8 @@
   },
   "menu": {
     "extensions": "rozszerzenia",
-    "dashboard": "deska rozdzielcza",
+    "dashboard": "pulpit",
+    "status": "status",
     "products": "produkty",
     "customers": "klienci",
     "customerGroups": "grupy klientów",
@@ -1012,5 +1013,26 @@
     "defaultError": "Wystąpił nieoczekiwany błąd"
   },
   "filters": "Filtry",
-  "loading": "Ładowanie..."
+  "loading": "Ładowanie...",
+  "globalSearch": {
+    "placeholder": "Wpisz komendę lub wyszukaj",
+    "navigation": "Nawigacja",
+    "emptyState": "Nic nie znaleziono",
+    "createNew": "Utwórz nowe",
+    "viewLists": "Wyświetl listy",
+    "plugins": "Wtyczki",
+    "navigate": "Wybieraj",
+    "select": "Przejdź",
+    "close": "Zamknij",
+    "navigateTo": "Przejdź do",
+    "accessPlugin": "Dostęp do wtyczki {{pluginName}}"
+  },
+  "widgets": {
+    "title": "Widżety",
+    "add": "Dodaj widżet",
+    "addFirst": "Dodaj swój pierwszy widżet",
+    "emptyState": "Brak włączonych widgetów",
+    "emptyStateDescription": "Twój pulpit jest pusty. Dodaj widżety, aby znaleźć tutaj mnóstwo informacji.",
+    "emptyStateDescription2": "Widżety pomagają zwizualizować dane oraz mieć szybki dostęp do kluczowych funkcji. Dodaj pierwszy, by rozpocząć."
+  }
 }

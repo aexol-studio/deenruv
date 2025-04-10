@@ -12,10 +12,10 @@
         "id": "Id",
         "code": "Code",
         "token": "Token",
-        "createdAt": "Created in",
+        "createdAt": "Established in",
         "updatedAt": "Updated by",
         "openMenu": "Open menu",
-        "copyId": "Copy ID",
+        "copyId": "Copy identifier",
         "viewChannel": "Display channel",
         "columns": "Columns"
     },
@@ -54,7 +54,7 @@
         "successMessage": "The channel has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "selectedValue": "{{from}} of {{to}} lines was selected",
+    "selectedValue": "{{from}} of {{to}} lines selected",
     "validation": {
         "codeRequired": "The code is required",
         "tokenRequired": "Token required",
