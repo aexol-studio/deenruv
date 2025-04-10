@@ -23,6 +23,7 @@ import {
   Routes,
   priceFormatter,
   useWidgetsStore,
+  useSettings,
 } from "@deenruv/react-ui-devkit";
 import { LatestOrderListType, LatestOrdersQuery } from "../../graphql";
 import {
@@ -34,7 +35,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { pl } from "date-fns/locale/pl";
 import { ArrowRight, Hash, RefreshCw } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 type LatestOrdersProps = object;
@@ -42,12 +43,20 @@ type LatestOrdersProps = object;
 export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
   const { t } = useTranslation("dashboard-widgets-plugin");
   const navigate = useNavigate();
+  const channel = useSettings((state) => state.selectedChannel);
   const [isLoading, setIsLoading] = useState(false);
   const language = useWidgetsStore((p) => p.context?.language);
   const { data: latestOrdersData, runQuery: getOrders } =
     useQuery(LatestOrdersQuery);
   const orders = latestOrdersData?.orders?.items || [];
-
+  useEffect(() => {
+    setIsLoading(true);
+    getOrders({
+      input: { channelId: channel?.id, first: 5, after: null },
+    }).finally(() => {
+      setIsLoading(false);
+    });
+  }, [channel]);
   const columns: ColumnDef<LatestOrderListType>[] = [
     {
       accessorKey: "id",

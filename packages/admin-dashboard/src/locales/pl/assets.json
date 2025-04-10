@@ -3,6 +3,10 @@
     "close": "Zamknij",
     "delete": "Usuń",
     "edit": "Edytuj",
+    "cancel": "Anuluj",
+    "uploading": "Ładowanie...",
+    "upload": "Załaduj",
+    "save": "Zapisz",
     "deleteSuccess": "Zasób został pomyślnie usunięty",
     "deleteFail": "Zasób nie został usunięty",
     "editSuccess": "Zasób został edytowany",
@@ -21,11 +25,45 @@
     "copyURL": "Kopiuj URL",
     "open": "Otwórz",
     "detailsTable": {
-        "id": "Id",
+        "id": "Identyfikator",
         "name": "Nazwa",
         "fileSize": "Rozmiar pliku",
         "createdAt": "Utworzony",
+        "updatedAt": "Zmodyfikowany",
         "size": "Rozmiar",
-        "source": "Ścieżka"
+        "width": "Szerokość",
+        "height": "Wysokość",
+        "mimeType": "Typ MIME",
+        "source": "Ścieżka",
+        "preview": "Podgląd",
+        "focalPoint": "Punkt centralny",
+        "type": "Typ",
+        "tags": "Tagi"
+    },
+    "dialogs": {
+        "title": "Załaduj zasób",
+        "dragAndDrop": "Przeciągnij i upuść",
+        "browse": "Albo kliknij, żeby przeglądać i wybrać",
+        "selectFile": "Wybierz plik",
+        "focal": "Punkt centralny",
+        "focalStop": "Przestań edytować punkt centralny",
+        "focalEdit": "Wybierz punkt centralny",
+        "noFocal": "Brak punktu centralnego",
+        "details": "Szczegóły zasobu",
+        "noTags": "Nie dodano tagów",
+        "addTag": "Dodaj tagi",
+        "add": "Dodaj",
+        "noFile": "Nie wybrano pliku",
+        "invalidType": "Nieprawidłowy typ",
+        "uploadFail": "Błąd w ładowaniu obrazka",
+        "linkCopied": "Link skopiowany",
+        "createdSuccess": "Zasób utworzony pomyślnie",
+        "createdFail": "Błąd przy tworzeniu zasobu",
+        "editedSuccess": "Zasób utworzony pomyślnie",
+        "editedFail": "Błąd przy tworzeniu zasobu"
+    },
+    "types": {
+        "IMAGE": "obraz",
+        "VIDEO": "wideo"
     }
 }

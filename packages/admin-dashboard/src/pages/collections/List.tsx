@@ -117,7 +117,7 @@ export const CollectionsListPage = () => {
         },
       ]}
       additionalRowActions={[
-        ...EntityChannelManagementRowAction<'collections-list-view'>(),
+        ...EntityChannelManagementRowAction(),
         {
           icon: <ArrowUpSquareIcon size={16} />,
           label: 'Przenieś kolekcje',

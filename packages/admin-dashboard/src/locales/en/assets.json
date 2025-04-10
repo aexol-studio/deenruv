@@ -3,6 +3,10 @@
     "close": "Close",
     "delete": "Delete",
     "edit": "Edit",
+    "cancel": "Cancel",
+    "uploading": "Charging ...",
+    "upload": "Upload",
+    "save": "Save",
     "deleteSuccess": "The asset was successfully removed",
     "deleteFail": "The asset was not removed",
     "editSuccess": "The resource has been edited",
@@ -21,11 +25,45 @@
     "copyURL": "Copy URL",
     "open": "Open",
     "detailsTable": {
-        "id": "Id",
+        "id": "ID",
         "name": "Name",
         "fileSize": "File size",
         "createdAt": "Created",
+        "updatedAt": "Modified",
         "size": "Size",
-        "source": "Path"
+        "width": "Width",
+        "height": "Height",
+        "mimeType": "MIME type",
+        "source": "Path",
+        "preview": "Preview",
+        "focalPoint": "Focal point",
+        "type": "Type",
+        "tags": "Tags"
+    },
+    "dialogs": {
+        "title": "Load a resource",
+        "dragAndDrop": "Drag and drop",
+        "browse": "Or click to browse and select",
+        "selectFile": "Select file",
+        "focal": "Focal point",
+        "focalStop": "Stop editing the focal point",
+        "focalEdit": "Select focal point",
+        "noFocal": "No focal point",
+        "details": "Details of the resource",
+        "noTags": "Tags have not been added",
+        "addTag": "Add tags",
+        "add": "Add",
+        "noFile": "File not selected",
+        "invalidType": "Invalid type",
+        "uploadFail": "Error loading image",
+        "linkCopied": "Link copied",
+        "createdSuccess": "Resource successfully created",
+        "createdFail": "Error creating resource",
+        "editedSuccess": "Resource successfully created",
+        "editedFail": "Error creating resource"
+    },
+    "types": {
+        "IMAGE": "image",
+        "VIDEO": "video"
     }
 }

@@ -11,6 +11,7 @@ import {
   ChartTooltipContent,
   Separator,
   useLazyQuery,
+  useSettings,
   useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { useCallback, useEffect, useState } from "react";
@@ -27,6 +28,7 @@ export const CategoriesChartWidget = () => {
   const [chartData, setChartData] = useState<
     { category: string; value: number }[]
   >([]);
+  const channel = useSettings((state) => state.selectedChannel);
 
   const [fetchBetterMetrics] = useLazyQuery(CategoriesMetricQuery);
   const [fetchProductCollections] = useLazyQuery(ProductCollectionsQuery);
@@ -98,7 +100,7 @@ export const CategoriesChartWidget = () => {
 
   useEffect(() => {
     fetchData();
-  }, [selectedPeriod]);
+  }, [channel, selectedPeriod]);
 
   const chartConfig: ChartConfig = chartData.reduce((config, item, index) => {
     config[item.category] = {

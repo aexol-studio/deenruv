@@ -12,9 +12,7 @@ type RowAction<K extends keyof typeof ListLocations> = NonNullable<
   DeenruvUITable<K>["rowActions"]
 >[number];
 
-export const EntityChannelManagementRowAction = <
-  K extends keyof typeof ListLocations,
->(): RowAction<K>[] => {
+export const EntityChannelManagementRowAction = (): RowAction<any>[] => {
   const channel = useSettings((state) => state.selectedChannel);
   return [
     {

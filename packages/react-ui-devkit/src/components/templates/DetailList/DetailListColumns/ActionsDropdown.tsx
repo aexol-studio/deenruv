@@ -60,7 +60,7 @@ export const ActionsDropdown = <T extends { id: string }>(
                 <DropdownMenuItem
                   onClick={() => {
                     if ("edit" in route) {
-                      route.edit(row.original.id, row);
+                      route.edit(row.original.id, row, refetch);
                     } else
                       navigate(route.to(row.original.id), {
                         viewTransition: true,

@@ -12,6 +12,7 @@ import {
   Checkbox,
   cn,
   useTranslation,
+  useSettings,
 } from "@deenruv/react-ui-devkit";
 
 import { MetricsCustomDates } from "./MetricCustomDates";
@@ -48,6 +49,7 @@ export const OrdersWidget = () => {
   const { t } = useTranslation("dashboard-widgets-plugin");
   const [fetchChartMetrics] = useLazyQuery(ChartMetricQuery);
   const { language } = usePluginStore();
+  const channel = useSettings((state) => state.selectedChannel);
   const [metricLoading, setMetricLoading] = useState(false);
   const [shouldShowCompare, setShouldShowCompare] = useState(false);
   const [groupBy, setGroupBy] = useState<GroupBy>("day");
@@ -173,7 +175,7 @@ export const OrdersWidget = () => {
 
   useEffect(() => {
     fetchData();
-  }, [dateRange, metricType, selectedOrderStates]);
+  }, [channel, dateRange, metricType, selectedOrderStates]);
 
   const changeCustomMetricRange = (
     date: Date | undefined,

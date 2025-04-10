@@ -48,6 +48,7 @@ type ShowData = "FIRST_FIVE" | "ALL";
 export const ProductsChartWidget = () => {
   const { t } = useTranslation("dashboard-widgets-plugin");
   const [fetchChartMetrics] = useLazyQuery(BarChartMetricQuery);
+  const channel = useSettings((state) => state.selectedChannel);
   const currencyCode = useSettings((p) => p.selectedChannel?.currencyCode);
   const [showData, setShowData] = useState<ShowData>("FIRST_FIVE");
   const [dateRange, setDateRange] = useState<DateRangeType>({
@@ -136,7 +137,7 @@ export const ProductsChartWidget = () => {
   }, [metricRangeTypeSelectValue]);
   useEffect(() => {
     fetchData();
-  }, [dateRange, selectedOrderStates]);
+  }, [channel, dateRange, selectedOrderStates]);
 
   return (
     <Card className="flex h-full flex-col border-0 shadow-none">

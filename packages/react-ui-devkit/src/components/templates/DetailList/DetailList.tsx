@@ -110,9 +110,11 @@ type RouteBase = {
   to: (id: string) => string;
 };
 type RouteWithoutCreate = {
-  edit: (id: string, row: Row<any>) => void;
+  edit: (id: string, row: Row<any>, refetch: () => void) => void;
 };
-type RouteWithCreate = RouteWithoutCreate & { create: () => void };
+type RouteWithCreate = RouteWithoutCreate & {
+  create: (refetch: () => void) => void;
+};
 
 export function DetailList<
   KEY extends LocationKeys | ({} & string),
@@ -433,7 +435,7 @@ export function DetailList<
                 className="h-6 border border-gray-500 p-0 px-3 text-gray-800 hover:border-gray-600 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-50"
                 onClick={() => {
                   if ("edit" in route) {
-                    route.edit(row.original.id, row);
+                    route.edit(row.original.id, row, refetch);
                   } else {
                     navigate(route.to(row.original.id), {
                       viewTransition: true,
@@ -733,7 +735,7 @@ export function DetailList<
                       <Button
                         className="flex items-center gap-2"
                         onClick={() => {
-                          if ("create" in route) route.create();
+                          if ("create" in route) route.create(refetch);
                           else
                             navigate((route as RouteBase).new, {
                               viewTransition: true,
