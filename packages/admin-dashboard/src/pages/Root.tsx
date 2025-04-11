@@ -72,6 +72,8 @@ export const Root = () => {
   const setFulfillmentHandlers = useServer((p) => p.setFulfillmentHandlers);
   const setPaymentMethodsType = useServer((p) => p.setPaymentMethodsType);
   const fetchPendingJobs = useServer((p) => p.fetchPendingJobs);
+  const loaded = useServer((p) => p.loaded);
+  const setLoaded = useServer((p) => p.setLoaded);
   const setAvailableLanguages = useSettings((p) => p.setAvailableLanguages);
   const setLanguage = useSettings((p) => p.setLanguage);
   const setTranslationLanguage = useSettings((p) => p.setTranslationsLanguage);
@@ -79,7 +81,6 @@ export const Root = () => {
   const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
   const setChannels = useServer((p) => p.setChannels);
   const fetchGraphQLSchema = useServer((p) => p.fetchGraphQLSchema);
-  const [loaded, setLoaded] = useState(false);
   const { initializeOrderCustomFields } = useOrder();
   const setData = useNotifications(({ setData }) => setData);
   const notifications = useNotifications(({ notifications }) => notifications);

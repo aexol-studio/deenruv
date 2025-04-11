@@ -61,7 +61,9 @@ export const LoginScreen = () => {
               <div className="h-4">
                 <p className="text-sm text-red-500">{error}</p>
               </div>
-              <Button type="submit">{t('login')}</Button>
+              <Button size="lg" type="submit">
+                {t('login')}
+              </Button>
             </form>
           </div>
         </div>

@@ -43,7 +43,7 @@ export const LanguagesDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="h-9">
           {t('language')}
           <Badge variant="outline" className="ml-2">
             <Flag className="size-4" />

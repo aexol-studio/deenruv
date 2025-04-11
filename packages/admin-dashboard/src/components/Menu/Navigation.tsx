@@ -15,6 +15,7 @@ import {
   AccordionContent,
   useNotifications,
   useTranslation,
+  capitalizeFirstLetter,
 } from '@deenruv/react-ui-devkit';
 import {
   BarChart,
@@ -59,7 +60,8 @@ export function Navigation({ isCollapsed }: NavProps) {
   const { t: _pluginT } = useTranslation();
   const location = useLocation();
   const { navMenuData, viewMarkers } = usePluginStore();
-  const { userPermissions } = useServer();
+  const userPermissions = useServer((p) => p.userPermissions);
+  const loaded = useServer((p) => p.loaded);
   const getNavigationNotification = useNotifications(({ getNavigationNotification }) => getNavigationNotification);
   const pluginT = (trans: string): string => {
     const split = trans.split('.');
@@ -313,6 +315,7 @@ export function Navigation({ isCollapsed }: NavProps) {
       .filter((group) => group.links.length > 0);
   }, [userPermissions, navigationGroups]);
 
+  if (!loaded) return null;
   return (
     <div className="relative h-[calc(100vh-110px)] overflow-y-auto lg:h-[calc(100vh-120px)]">
       <div
@@ -369,13 +372,13 @@ export function Navigation({ isCollapsed }: NavProps) {
                                   </NavLink>
                                 </div>
                               </TooltipTrigger>
-                              <TooltipContent side="right" className="relative flex items-center gap-4 capitalize">
+                              <TooltipContent side="right" className="relative flex items-center gap-4">
                                 {viewMarkers ? (
                                   <div className="text-muted-foreground dark:text-muted-foreground text-xs font-semibold lowercase">
                                     {link.id}
                                   </div>
                                 ) : null}
-                                {link.title}
+                                {capitalizeFirstLetter(link.title)}
                                 {notifications}
                               </TooltipContent>
                             </Tooltip>
@@ -395,7 +398,7 @@ export function Navigation({ isCollapsed }: NavProps) {
                                   </div>
                                 ) : null}
                                 <link.icon className="mr-2 size-4" />
-                                {link.title}
+                                {capitalizeFirstLetter(link.title)}
                                 {notifications}
                               </div>
                             </NavLink>

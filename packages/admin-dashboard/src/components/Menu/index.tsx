@@ -23,6 +23,13 @@ import {
   apiClient,
   useGlobalSearch,
   useTranslation,
+  DropdownMenuGroup,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuPortal,
+  DropdownMenuSubContent,
+  DropdownMenuShortcut,
+  createDialog,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -243,7 +250,19 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="z-[150] mr-6 min-w-40">
-                        <DropdownMenuLabel>{activeAdministrator?.emailAddress}</DropdownMenuLabel>
+                        {activeAdministrator?.emailAddress && (
+                          <>
+                            <DropdownMenuLabel className="flex items-center gap-2 px-3 py-2 font-medium ">
+                              <div className="flex size-5 items-center justify-center rounded-full bg-gray-100 text-xs text-gray-600">
+                                {activeAdministrator.firstName.charAt(0).toUpperCase()}
+                              </div>
+                              <div className="truncate text-sm">
+                                {activeAdministrator.firstName} {activeAdministrator.lastName}
+                              </div>
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator className="my-1" />
+                          </>
+                        )}
                         <DropdownMenuItem
                           className="flex cursor-pointer items-center gap-2 text-nowrap"
                           onSelect={rebuildSearchIndex}
@@ -252,6 +271,31 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           Przebuduj search index
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                          <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>Szybkie linki</DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                              <DropdownMenuSubContent>
+                                <DropdownMenuItem
+                                  className="flex cursor-pointer items-center gap-2 text-nowrap"
+                                  onSelect={() => navigate(Routes.status, { viewTransition: true })}
+                                >
+                                  <RotateCwSquare className="size-4" />
+                                  Status systemu
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  className="flex cursor-pointer items-center gap-2 text-nowrap"
+                                  onSelect={() => navigate(Routes.globalSettings, { viewTransition: true })}
+                                >
+                                  <RotateCwSquare className="size-4" />
+                                  Ustawienia globalne
+                                </DropdownMenuItem>
+                              </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                          </DropdownMenuSub>
+                        </DropdownMenuGroup>
+
                         {topNavigationActionsMenu?.length && topNavigationActionsMenu.length > 0 ? (
                           <>
                             <DropdownMenuSeparator />
@@ -269,7 +313,20 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                         ) : null}
 
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="flex cursor-pointer items-center gap-2" onSelect={() => logOut()}>
+                        <DropdownMenuItem
+                          className="flex cursor-pointer items-center gap-2 text-red-500"
+                          onSelect={async () => {
+                            const result = await createDialog({
+                              title: t('logOutConfirmation'),
+                              description: t('logOutConfirmationDescription'),
+                              buttons: [
+                                { label: t('cancel'), variant: 'secondary', returnValue: false },
+                                { label: t('logOut'), variant: 'destructive', returnValue: true },
+                              ],
+                            });
+                            if (result) logOut();
+                          }}
+                        >
                           <LogOutIcon className="size-4" />
                           {t('logOut')}
                         </DropdownMenuItem>
