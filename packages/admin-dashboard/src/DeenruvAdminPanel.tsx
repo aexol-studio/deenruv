@@ -78,6 +78,7 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   loadTranslations();
   window.__DEENRUV_SETTINGS__ = {
     ...settings,
+    base: settings?.ui?.base || '/admin-ui',
     ui: {
       ...settings.ui,
       defaultChannelCode: settings?.ui?.defaultChannelCode || DEFAULT_CHANNEL_CODE,

@@ -4,6 +4,7 @@ type Logo = string | JSX.Element;
 export type DeenruvAdminPanelSettings = {
   api: { uri: string; channelTokenName?: string; authTokenName?: string };
   ui?: {
+    base?: string;
     defaultChannelCode?: string;
     defaultLanguageCode?: LanguageCode;
     defaultTranslationLanguageCode?: LanguageCode;
@@ -18,6 +19,7 @@ export type DeenruvAdminPanelSettings = {
 };
 
 export type DeenruvSettingsWindowType = DeenruvAdminPanelSettings & {
+  base: string;
   appVersion: string;
   api: Required<DeenruvAdminPanelSettings["api"]>;
   i18n: any;

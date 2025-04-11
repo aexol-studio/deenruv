@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/admin-dashboard",
-  "version": "0.0.126",
+  "version": "0.0.127",
   "main": "dist/index.js",
   "style": "dist/index.css",
   "types": "dist/index.d.ts",
