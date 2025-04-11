@@ -62,11 +62,11 @@ interface Actions {
   setLoaded: (loaded: boolean) => void;
   setPaymentMethodsType(paymentMethodsType: PaymentMethodsType[]): void;
   setFulfillmentHandlers(
-    fulfillmentHandlers: ConfigurableOperationDefinitionType[]
+    fulfillmentHandlers: ConfigurableOperationDefinitionType[],
   ): void;
   setServerConfig(serverConfig: ServerConfigType | undefined): void;
   setActiveAdministrator(
-    activeAdministrator: ActiveAdministratorType | undefined
+    activeAdministrator: ActiveAdministratorType | undefined,
   ): void;
   setUserPermissions(permissions: Permission[]): void;
   setChannels(channels: ChannelType[]): void;
@@ -82,7 +82,7 @@ interface Actions {
 export const getSystemStatus = async () => {
   try {
     const response = await fetch(
-      window.__DEENRUV_SETTINGS__.api.uri + "/health"
+      window.__DEENRUV_SETTINGS__.api.uri + "/health",
     );
     if (!response.ok) {
       throw new Error("Failed to fetch system status");
@@ -188,7 +188,7 @@ export const useServer = create<Server & Actions>()((set, get) => ({
           headers: { "Content-Type": "application/json" },
           credentials: "include",
           body: JSON.stringify({ query: buildQuery(6) }),
-        }
+        },
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -220,11 +220,11 @@ export const useServer = create<Server & Actions>()((set, get) => ({
                 pv[cv.name] = typeName(cv.type);
                 return pv;
               },
-              {} as Record<string, string>
+              {} as Record<string, string>,
             );
             return pv;
           },
-          {} as Record<string, Record<string, string>>
+          {} as Record<string, Record<string, string>>,
         ),
         data.__schema.queryType.name,
         data.__schema.queryType.name,
@@ -240,7 +240,7 @@ export const useServer = create<Server & Actions>()((set, get) => ({
     const { fetchPendingJobs } = get();
     set((state) => ({
       jobQueues: state.jobQueues.map((jobQueue) =>
-        jobQueue.name === name ? { ...jobQueue, running } : jobQueue
+        jobQueue.name === name ? { ...jobQueue, running } : jobQueue,
       ),
     }));
     fetchPendingJobs();
