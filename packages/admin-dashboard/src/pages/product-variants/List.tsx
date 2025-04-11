@@ -1,26 +1,22 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
+  useTranslation,
   apiClient,
+  Badge,
   deepMerge,
   DetailList,
-  ListBadge,
   ListLocations,
   PaginationInput,
   Routes,
-  TableLabel,
-  useTranslation,
 } from '@deenruv/react-ui-devkit';
+import { useNavigate } from 'react-router-dom';
 
-const tableId = 'products-list-view';
+const tableId = 'productVariants-list-view';
 const { selector } = ListLocations[tableId];
 
-const fetch = async <T, K>(
-  { page, perPage, filter, filterOperator, sort }: PaginationInput,
-  customFieldsSelector?: T,
-  additionalSelector?: K,
-) => {
+const fetch = async <T,>({ page, perPage, filter, filterOperator, sort }: PaginationInput, additionalSelector?: T) => {
   const response = await apiClient('query')({
-    ['products']: [
+    productVariants: [
       {
         options: {
           take: perPage,
@@ -33,7 +29,7 @@ const fetch = async <T, K>(
       { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
     ],
   });
-  return response['products'];
+  return response.productVariants;
 };
 
 const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
@@ -48,22 +44,34 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
   }
 };
 
-export const ProductsList = () => {
+export const ProductVariantsListPage = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation('products');
 
   return (
     <DetailList
       filterFields={[
-        { key: 'slug', operator: 'StringOperators' },
-        { key: 'enabled', operator: 'BooleanOperators' },
         { key: 'sku', operator: 'StringOperators' },
         { key: 'name', operator: 'StringOperators' },
+        { key: 'enabled', operator: 'BooleanOperators' },
+        { key: 'price', operator: 'NumberOperators' },
+        { key: 'priceWithTax', operator: 'NumberOperators' },
+        { key: 'stockOnHand', operator: 'NumberOperators' },
+        { key: 'stockAllocated', operator: 'NumberOperators' },
       ]}
       detailLinkColumn="id"
-      searchFields={['name', 'slug', 'sku']}
-      hideColumns={['customFields', 'translations', 'collections', 'variantList']}
-      entityName={'Product'}
-      route={Routes['products']}
+      searchFields={['name', 'sku']}
+      hideColumns={['customFields', 'stockOnHand', 'stockAllocated', 'productId']}
+      entityName={'ProductVariant'}
+      route={{
+        ...Routes.productVariants,
+        edit: (variantId, row) => {
+          navigate(`/admin-ui/products/${row.original['productId']}?tab=variants&variantId=${variantId}`, {
+            viewTransition: true,
+          });
+        },
+      }}
+      noCreateButton
       tableId={tableId}
       fetch={fetch}
       onRemove={onRemove}
@@ -71,29 +79,15 @@ export const ProductsList = () => {
       deletePermissions={[Permission.DeleteProduct]}
       additionalColumns={[
         {
-          id: 'variants',
-          accessorKey: 'variants',
-          header: () => <TableLabel>{t('table.variants')}</TableLabel>,
-          cell: ({ row }) => row.original.variantList.totalItems,
-        },
-        {
-          id: 'allVariantsStock',
-          accessorKey: 'allVariantsStock',
-          header: () => <TableLabel>{t('table.allVariantsStock')}</TableLabel>,
+          id: 'stock',
+          accessorKey: 'stock',
+          header: () => t('table.stock'),
           cell: ({ row }) => {
-            const { stockOnHandTotal, stockAllocatedTotal } = row.original.variantList.items.reduce(
-              (totals, item) => {
-                totals.stockOnHandTotal += item.stockOnHand;
-                totals.stockAllocatedTotal += item.stockAllocated;
-                return totals;
-              },
-              { stockOnHandTotal: 0, stockAllocatedTotal: 0 },
-            );
-
             return (
-              <ListBadge>
-                {stockOnHandTotal} ({stockAllocatedTotal} {t('table.allocated')})
-              </ListBadge>
+              <Badge variant={'outline'}>
+                {row.original.stockOnHand}
+                {row.original.stockAllocated > 0 && `(${row.original.stockAllocated} ${t('table.allocated')})`}
+              </Badge>
             );
           },
         },

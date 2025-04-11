@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const ProductVariantDetailView = () => {
+export const ProductVariantDetailPage = () => {
   return <div></div>;
 };

@@ -40,6 +40,7 @@ import {
   UsersRound,
   Server,
   Puzzle,
+  ScanBarcode,
 } from 'lucide-react';
 import { Permission } from '@deenruv/admin-types';
 
@@ -90,20 +91,6 @@ export function Navigation({ isCollapsed }: NavProps) {
             requiredPermissions: [Permission.ReadOrder],
           },
           {
-            title: t('menu.products'),
-            href: Routes.products.list,
-            id: 'link-products',
-            icon: Barcode,
-            requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
-          },
-          {
-            title: t('menu.collections'),
-            href: Routes.collections.list,
-            id: 'link-collections',
-            icon: Folder,
-            requiredPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
-          },
-          {
             title: t('menu.customers'),
             href: Routes.customers.list,
             id: 'link-customers',
@@ -116,6 +103,33 @@ export function Navigation({ isCollapsed }: NavProps) {
             id: 'link-customerGroups',
             icon: UsersRound,
             requiredPermissions: [Permission.ReadCustomerGroup],
+          },
+        ],
+      },
+      {
+        label: t('menuGroups.assortment'),
+        id: 'assortment-group',
+        links: [
+          {
+            title: t('menu.products'),
+            href: Routes.products.list,
+            id: 'link-products',
+            icon: Barcode,
+            requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.productVariants'),
+            href: Routes.productVariants.list,
+            id: 'link-product-variants',
+            icon: ScanBarcode,
+            requiredPermissions: [Permission.ReadProduct, Permission.ReadCatalog],
+          },
+          {
+            title: t('menu.collections'),
+            href: Routes.collections.list,
+            id: 'link-collections',
+            icon: Folder,
+            requiredPermissions: [Permission.ReadCollection, Permission.ReadCatalog],
           },
           {
             title: t('menu.facets'),
@@ -315,6 +329,14 @@ export function Navigation({ isCollapsed }: NavProps) {
       .filter((group) => group.links.length > 0);
   }, [userPermissions, navigationGroups]);
 
+  const defaultAccordionOpenValue = useMemo(
+    () =>
+      permittedNavigationGroups
+        .filter((g) => !navMenuData.groups.find((pluginGroup) => pluginGroup.id === g.id))
+        .map((g) => g.id),
+    [permittedNavigationGroups, navMenuData],
+  );
+
   if (!loaded) return null;
   return (
     <div className="relative h-[calc(100vh-110px)] overflow-y-auto lg:h-[calc(100vh-120px)]">
@@ -325,7 +347,7 @@ export function Navigation({ isCollapsed }: NavProps) {
         <Accordion
           type="multiple"
           className="w-full"
-          defaultValue={permittedNavigationGroups.map((g) => g.id)}
+          defaultValue={defaultAccordionOpenValue}
           value={isCollapsed ? permittedNavigationGroups.map((g) => g.id) : undefined}
         >
           {permittedNavigationGroups.map((group) => (

@@ -129,6 +129,7 @@ export const CustomerSelectCard: React.FC = () => {
 
         if (setCustomerForDraftOrder.__typename === 'Order') {
           setOpen(false);
+          setOrder(setCustomerForDraftOrder);
           toast.success(t('create.selectCustomer.success', 'Customer successfully assigned to order'));
         } else {
           toast.error(t('create.selectCustomer.error', 'Failed to assign customer to order'));

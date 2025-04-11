@@ -1,21 +1,103 @@
-import { ProductsList, VariantsList } from '@/pages/products';
-import { useTranslation, Tabs, TabsContent, TabsList, TabsTrigger } from '@deenruv/react-ui-devkit';
+import { Permission, SortOrder } from '@deenruv/admin-types';
+import {
+  apiClient,
+  deepMerge,
+  DetailList,
+  ListBadge,
+  ListLocations,
+  PaginationInput,
+  Routes,
+  TableLabel,
+  useTranslation,
+} from '@deenruv/react-ui-devkit';
+
+const tableId = 'products-list-view';
+const { selector } = ListLocations[tableId];
+
+const fetch = async <T, K>(
+  { page, perPage, filter, filterOperator, sort }: PaginationInput,
+  customFieldsSelector?: T,
+  additionalSelector?: K,
+) => {
+  const response = await apiClient('query')({
+    ['products']: [
+      {
+        options: {
+          take: perPage,
+          skip: (page - 1) * perPage,
+          filterOperator: filterOperator,
+          sort: sort ? { [sort.key]: sort.sortDir } : { createdAt: SortOrder.DESC },
+          ...(filter && { filter }),
+        },
+      },
+      { items: deepMerge(selector, additionalSelector ?? {}), totalItems: true },
+    ],
+  });
+  return response['products'];
+};
+
+const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean | any> => {
+  try {
+    const ids = items.map((item) => item.id);
+    const { deleteProducts } = await apiClient('mutation')({
+      deleteProducts: [{ ids }, { message: true, result: true }],
+    });
+    return !!deleteProducts.length;
+  } catch (error) {
+    return error;
+  }
+};
 
 export const ProductsListPage = () => {
   const { t } = useTranslation('products');
 
   return (
-    <Tabs defaultValue="products">
-      <TabsList className="relative z-50 mb-0 ml-8 mt-2">
-        <TabsTrigger value="products">{t('products')}</TabsTrigger>
-        <TabsTrigger value="variants">{t('variants')}</TabsTrigger>
-      </TabsList>
-      <TabsContent value="products" className="mt-0">
-        <ProductsList />
-      </TabsContent>
-      <TabsContent value="variants" className="mt-0">
-        <VariantsList />
-      </TabsContent>
-    </Tabs>
+    <DetailList
+      filterFields={[
+        { key: 'slug', operator: 'StringOperators' },
+        { key: 'enabled', operator: 'BooleanOperators' },
+        { key: 'sku', operator: 'StringOperators' },
+        { key: 'name', operator: 'StringOperators' },
+      ]}
+      detailLinkColumn="id"
+      searchFields={['name', 'slug', 'sku']}
+      hideColumns={['customFields', 'translations', 'collections', 'variantList']}
+      entityName={'Product'}
+      route={Routes['products']}
+      tableId={tableId}
+      fetch={fetch}
+      onRemove={onRemove}
+      createPermissions={[Permission.CreateProduct]}
+      deletePermissions={[Permission.DeleteProduct]}
+      additionalColumns={[
+        {
+          id: 'variants',
+          accessorKey: 'variants',
+          header: () => <TableLabel>{t('table.variants')}</TableLabel>,
+          cell: ({ row }) => row.original.variantList.totalItems,
+        },
+        {
+          id: 'allVariantsStock',
+          accessorKey: 'allVariantsStock',
+          header: () => <TableLabel>{t('table.allVariantsStock')}</TableLabel>,
+          cell: ({ row }) => {
+            const { stockOnHandTotal, stockAllocatedTotal } = row.original.variantList.items.reduce(
+              (totals, item) => {
+                totals.stockOnHandTotal += item.stockOnHand;
+                totals.stockAllocatedTotal += item.stockAllocated;
+                return totals;
+              },
+              { stockOnHandTotal: 0, stockAllocatedTotal: 0 },
+            );
+
+            return (
+              <ListBadge>
+                {stockOnHandTotal} ({stockAllocatedTotal} {t('table.allocated')})
+              </ListBadge>
+            );
+          },
+        },
+      ]}
+    />
   );
 };
