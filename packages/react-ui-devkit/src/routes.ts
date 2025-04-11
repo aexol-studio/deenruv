@@ -1,8 +1,11 @@
 export const buildURL = (path?: string[]) => {
-  const base =
-    typeof window !== "undefined"
-      ? window.location.pathname.replace(/\/$/, "")
-      : "/admin-ui";
+  let base = "/admin-ui";
+  if (typeof window !== "undefined") {
+    const url = new URL(window.location.href);
+    const pathname = url.pathname.split("/");
+    const basePath = pathname.slice(0, pathname.indexOf("admin-ui") + 1);
+    base = basePath.join("/");
+  }
   return [base, ...(path || [])].join("/");
 };
 
