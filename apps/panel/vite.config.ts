@@ -4,7 +4,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import devTranslatePlugin, { Languages } from '@aexol/vite-plugin-dev-translate';
 
 export default defineConfig({
-  base: '/admin-ui-v2',
+  base: '/admin-ui',
   server: { port: 3001 },
   plugins: [
     tsconfigPaths(),
