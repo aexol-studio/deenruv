@@ -488,6 +488,7 @@
     "promotions": "Promocje"
   },
   "menu": {
+    "adminUiV2": "Admin UI",
     "extensions": "rozszerzenia",
     "dashboard": "pulpit",
     "status": "status",

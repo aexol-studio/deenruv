@@ -1,5 +1,8 @@
-const buildURL = (path?: string[]) => {
-  const base = window.__DEENRUV_SETTINGS__.base;
+export const buildURL = (path?: string[]) => {
+  const base =
+    typeof window !== "undefined"
+      ? window.location.pathname.replace(/\/$/, "")
+      : "/admin-ui";
   return [base, ...(path || [])].join("/");
 };
 

@@ -13,7 +13,6 @@ type GlobalStoreType = ReturnType<typeof createGlobalStore>;
 
 const createGlobalStore = (initProps?: Partial<DeenruvAdminPanelSettings>) => {
   const DEFAULT_PROPS: DeenruvSettingsWindowType = {
-    base: "/admin-ui",
     appVersion: "0.0.1",
     branding: { name: "Deenruv" },
     api: {

@@ -74,11 +74,8 @@ const loadTranslations = () => {
 
 const pluginsStore = new PluginStore();
 export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, settings }) => {
-  pluginsStore.install(plugins, i18n);
-  loadTranslations();
   window.__DEENRUV_SETTINGS__ = {
     ...settings,
-    base: settings?.ui?.base || '/admin-ui',
     ui: {
       ...settings.ui,
       defaultChannelCode: settings?.ui?.defaultChannelCode || DEFAULT_CHANNEL_CODE,
@@ -93,6 +90,8 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
     appVersion: ADMIN_DASHBOARD_VERSION,
     i18n,
   };
+  pluginsStore.install(plugins, i18n);
+  loadTranslations();
 
   const router = createBrowserRouter([
     { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },

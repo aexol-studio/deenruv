@@ -30,6 +30,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuShortcut,
   createDialog,
+  buildURL,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -182,7 +183,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                             return (
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
-                                  <NavLink to={'/admin-ui/' + linkPath.join('/')} viewTransition>
+                                  <NavLink to={buildURL(linkPath)} viewTransition>
                                     <p className="text-foreground text-2xl font-bold capitalize">
                                       {i === 0 ? t('menu.' + dashToCamelCase(c)) : c}
                                     </p>
