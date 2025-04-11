@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/ui-devkit",
-  "version": "0.0.127",
+  "version": "0.0.128",
   "description": "A library for authoring Deenruv Admin UI extensions",
   "keywords": [
     "deenruv",

@@ -1,10 +1,7 @@
 export const buildURL = (path?: string[]) => {
   let base = "/admin-ui";
-  if (typeof window !== "undefined") {
-    const url = new URL(window.location.href);
-    const pathname = url.pathname.split("/");
-    const basePath = pathname.slice(0, pathname.indexOf("admin-ui") + 1);
-    base = basePath.join("/");
+  if (import.meta.env.BASE_URL) {
+    base = import.meta.env.BASE_URL;
   }
   return [base, ...(path || [])].join("/");
 };
