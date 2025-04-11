@@ -3,11 +3,13 @@ import {
   AssetServerPlugin,
   configureS3AssetStorage,
 } from "@deenruv/asset-server-plugin";
-import { DashboardWidgetsPlugin } from "@deenruv/dashboard-widgets-plugin";
+// import { DashboardWidgetsPlugin } from '@deenruv/dashboard-widgets-plugin';
+// import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
 import { ReplicatePlugin } from "@deenruv/replicate-plugin";
+import { ReplicateSimpleBGPlugin } from "@deenruv/replicate-simple-bg-plugin";
 import { FacetHarmonicaServerPlugin } from "@deenruv/facet-harmonica-plugin";
 import { InRealizationPlugin } from "@deenruv/in-realization-plugin";
 import { CopyOrderPlugin } from "@deenruv/copy-order-plugin";
@@ -556,7 +558,7 @@ export const devConfig: DeenruvConfig = {
     // ],
   },
   plugins: [
-    DashboardWidgetsPlugin,
+    // DashboardWidgetsPlugin,
     // MultivendorPlugin.init({
     //     platformFeePercent: 10,
     //     platformFeeSKU: 'FEE',
@@ -678,5 +680,23 @@ export const devConfig: DeenruvConfig = {
     //   // password: process.env.REPLICATE_PASSWORD || '',
     //   apiToken: process.env.REPLICATE_API_TOKEN || "",
     // }),
+    ReplicateSimpleBGPlugin.init({
+      envs: {
+        deploymentName: "simple-bg-plugin",
+        apiToken: "r8_UMPkYKvQkhddFa1Nq3eQy7eKg8yes610EtUEk",
+        assetPrefix: "http://localhost:3000/assets",
+        prompt:
+          "High resolution,photography,interior design,dreamy sunken,conversion pit,wooden floor,small windows opening onto the garden,bauhaus furniture and decoration,high ceiling,beige blue salmon pastel palette,interior design magazine,cozy atmosphere,8k,intricate detail,photorealistic,realistic light,wide angle,kinkfolk photography,A+D architecture"?.split(
+            ",",
+          ) || [],
+        n_prompt:
+          "High resolution,photography,interior design,dreamy sunken,conversion pit,wooden floor,small windows opening onto the garden,bauhaus furniture and decoration,high ceiling,beige blue salmon pastel palette,interior design magazine,cozy atmosphere,8k,intricate detail,photorealistic,realistic light,wide angle,kinkfolk photography,A+D architecture"?.split(
+            ",",
+          ) || [],
+        seed: process.env.REPLICATE_SBG_SEED || "-1",
+      },
+      roomType: [],
+      roomTheme: [],
+    }),
   ],
 };

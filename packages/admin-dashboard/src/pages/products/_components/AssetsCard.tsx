@@ -36,18 +36,16 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
   const [featureAsset, setFeatureAsset] = useState<AssetType>();
   const [assets, setAssets] = useState<AssetType[]>([]);
 
-  const getAsset = useCallback(async (id: string) => {
-    const response = await apiClient('query')({
-      asset: [
-        {
-          id: id,
-        },
-        assetsSelector,
-      ],
-    });
+  const getAsset = useCallback(
+    async (id: string) => {
+      const response = await apiClient('query')({
+        asset: [{ id: id }, assetsSelector],
+      });
 
-    return response.asset;
-  }, []);
+      return response.asset;
+    },
+    [assetsIds],
+  );
 
   useEffect(() => {
     if (featuredAssetId) getAsset(featuredAssetId).then((a) => setFeatureAsset(a));

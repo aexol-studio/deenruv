@@ -1,46 +1,55 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from "fs-extra";
+import path from "path";
 
 // import { addStream } from './add-stream';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const conventionalChangelogCore = require('conventional-changelog-core');
 
-let changelogFileName = 'CHANGELOG.md';
-if (process.argv.includes('--next') || process.env.npm_config_argv?.includes('publish-prerelease')) {
-    changelogFileName = 'CHANGELOG_NEXT.md';
+const conventionalChangelogCore = require("conventional-changelog-core");
+
+let changelogFileName = "CHANGELOG.md";
+if (
+  process.argv.includes("--next") ||
+  process.env.npm_config_argv?.includes("publish-prerelease")
+) {
+  changelogFileName = "CHANGELOG_NEXT.md";
 }
 
 /**
  * The types of commit which will be included in the changelog.
  */
-const VALID_TYPES = ['feat', 'fix', 'perf'];
+const VALID_TYPES = ["feat", "fix", "perf"];
 
 /**
  * Define which packages to create changelog entries for.
  */
 const VALID_SCOPES: string[] = [
-    'admin-ui-plugin',
-    'admin-ui',
-    'asset-server',
-    'asset-server-plugin',
-    'cli',
-    'common',
-    'core',
-    'create',
-    'elasticsearch-plugin',
-    'email-plugin',
-    'email',
-    'job-queue-plugin',
-    'payments-plugin',
-    'testing',
-    'ui-devkit',
-    'harden-plugin',
-    'stellate-plugin',
-    'sentry-plugin',
+  "admin-ui-plugin",
+  "admin-ui",
+  "asset-server",
+  "asset-server-plugin",
+  "cli",
+  "common",
+  "core",
+  "create",
+  "elasticsearch-plugin",
+  "email-plugin",
+  "email",
+  "job-queue-plugin",
+  "payments-plugin",
+  "testing",
+  "ui-devkit",
+  "harden-plugin",
+  "stellate-plugin",
+  "sentry-plugin",
 ];
 
-const mainTemplate = fs.readFileSync(path.join(__dirname, 'template.hbs'), 'utf-8');
-const commitTemplate = fs.readFileSync(path.join(__dirname, 'commit.hbs'), 'utf-8');
+const mainTemplate = fs.readFileSync(
+  path.join(__dirname, "template.hbs"),
+  "utf-8",
+);
+const commitTemplate = fs.readFileSync(
+  path.join(__dirname, "commit.hbs"),
+  "utf-8",
+);
 
 generateChangelogForPackage();
 
@@ -48,55 +57,55 @@ generateChangelogForPackage();
  * Generates changelog entries based on the conventional commits data.
  */
 function generateChangelogForPackage() {
-    // TODO
-    // const changelogPath = path.join(__dirname, '../../', changelogFileName);
-    // const inStream = fs.createReadStream(changelogPath, { flags: 'a+' });
-    // const tempFile = path.join(__dirname, `__temp_changelog__`);
-    // conventionalChangelogCore(
-    //     {
-    //         transform: (commit: any, context: any) => {
-    //             const includeCommit = VALID_TYPES.includes(commit.type) && scopeIsValid(commit.scope);
-    //             if (includeCommit) {
-    //                 return context(null, commit);
-    //             } else {
-    //                 return context(null, null);
-    //             }
-    //         },
-    //         releaseCount: 1,
-    //         outputUnreleased: true,
-    //     },
-    //     {
-    //         version: require('../../lerna.json').version,
-    //     },
-    //     null,
-    //     null,
-    //     {
-    //         mainTemplate,
-    //         commitPartial: commitTemplate,
-    //         finalizeContext(context: any, options: any, commits: any) {
-    //             context.commitGroups.forEach(addHeaderToCommitGroup);
-    //             return context;
-    //         },
-    //     },
-    // )
-    //     .pipe(addStream(inStream))
-    //     .pipe(fs.createWriteStream(tempFile))
-    //     .on('finish', () => {
-    //         fs.createReadStream(tempFile)
-    //             .pipe(fs.createWriteStream(changelogPath))
-    //             .on('finish', () => {
-    //                 fs.unlinkSync(tempFile);
-    //             });
-    //     });
+  // TODO
+  // const changelogPath = path.join(__dirname, '../../', changelogFileName);
+  // const inStream = fs.createReadStream(changelogPath, { flags: 'a+' });
+  // const tempFile = path.join(__dirname, `__temp_changelog__`);
+  // conventionalChangelogCore(
+  //     {
+  //         transform: (commit: any, context: any) => {
+  //             const includeCommit = VALID_TYPES.includes(commit.type) && scopeIsValid(commit.scope);
+  //             if (includeCommit) {
+  //                 return context(null, commit);
+  //             } else {
+  //                 return context(null, null);
+  //             }
+  //         },
+  //         releaseCount: 1,
+  //         outputUnreleased: true,
+  //     },
+  //     {
+  //         version: require('../../lerna.json').version,
+  //     },
+  //     null,
+  //     null,
+  //     {
+  //         mainTemplate,
+  //         commitPartial: commitTemplate,
+  //         finalizeContext(context: any, options: any, commits: any) {
+  //             context.commitGroups.forEach(addHeaderToCommitGroup);
+  //             return context;
+  //         },
+  //     },
+  // )
+  //     .pipe(addStream(inStream))
+  //     .pipe(fs.createWriteStream(tempFile))
+  //     .on('finish', () => {
+  //         fs.createReadStream(tempFile)
+  //             .pipe(fs.createWriteStream(changelogPath))
+  //             .on('finish', () => {
+  //                 fs.unlinkSync(tempFile);
+  //             });
+  //     });
 }
 
 function scopeIsValid(scope?: string): boolean {
-    for (const validScope of VALID_SCOPES) {
-        if (scope && scope.includes(validScope)) {
-            return true;
-        }
+  for (const validScope of VALID_SCOPES) {
+    if (scope && scope.includes(validScope)) {
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 /**
@@ -104,16 +113,16 @@ function scopeIsValid(scope?: string): boolean {
  * template.hbs as a sub-heading.
  */
 function addHeaderToCommitGroup(commitGroup: any) {
-    // TODO
-    // switch (commitGroup.title) {
-    //     case 'fix':
-    //         commitGroup.header = 'Fixes';
-    //         break;
-    //     case 'feat':
-    //         commitGroup.header = 'Features';
-    //         break;
-    //     default:
-    //         commitGroup.header = commitGroup.title.charAt(0).toUpperCase() + commitGroup.title.slice(1);
-    //         break;
-    // }
+  // TODO
+  // switch (commitGroup.title) {
+  //     case 'fix':
+  //         commitGroup.header = 'Fixes';
+  //         break;
+  //     case 'feat':
+  //         commitGroup.header = 'Features';
+  //         break;
+  //     default:
+  //         commitGroup.header = commitGroup.title.charAt(0).toUpperCase() + commitGroup.title.slice(1);
+  //         break;
+  // }
 }
