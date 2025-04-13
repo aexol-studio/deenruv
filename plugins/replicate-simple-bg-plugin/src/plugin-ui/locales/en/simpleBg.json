@@ -45,6 +45,9 @@
     "product_action": "Action",
     "product_assign": "Assign",
     "run_model_again": "Run the model again",
-    "input_prompt": "Would you like to change something? Describe it here!"
+    "input_prompt": "Would you like to change something? Describe it here!",
+    "room_type": "Room Type",
+    "room_style": "Room Style",
+    "prediction": "Prediction"
   }
 }

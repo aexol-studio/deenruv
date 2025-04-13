@@ -685,15 +685,6 @@ export const devConfig: DeenruvConfig = {
         deploymentName: "simple-bg-plugin",
         apiToken: "r8_UMPkYKvQkhddFa1Nq3eQy7eKg8yes610EtUEk",
         assetPrefix: "http://localhost:3000/assets",
-        prompt:
-          "High resolution,photography,interior design,dreamy sunken,conversion pit,wooden floor,small windows opening onto the garden,bauhaus furniture and decoration,high ceiling,beige blue salmon pastel palette,interior design magazine,cozy atmosphere,8k,intricate detail,photorealistic,realistic light,wide angle,kinkfolk photography,A+D architecture"?.split(
-            ",",
-          ) || [],
-        n_prompt:
-          "High resolution,photography,interior design,dreamy sunken,conversion pit,wooden floor,small windows opening onto the garden,bauhaus furniture and decoration,high ceiling,beige blue salmon pastel palette,interior design magazine,cozy atmosphere,8k,intricate detail,photorealistic,realistic light,wide angle,kinkfolk photography,A+D architecture"?.split(
-            ",",
-          ) || [],
-        seed: process.env.REPLICATE_SBG_SEED || "-1",
       },
       roomType: [],
       roomTheme: [],

@@ -2,17 +2,14 @@ import { ID, SerializedRequestContext } from "@deenruv/core";
 
 export interface ReplicateSimpleBGOptions {
   envs: {
-    [key: string]: string | Array<string>;
+    deploymentName: string;
+    apiToken: string;
+    assetPrefix: string;
   };
-  roomType: Array<{
-    value: string;
-    label: string;
-  }>;
-  roomTheme: Array<{
-    value: string;
-    label: string;
-    image: string;
-  }>;
+  prompts?: { positive?: string; negative?: string };
+  seed?: number;
+  roomType?: Array<{ value: string; label: string }>;
+  roomTheme?: Array<{ value: string; label: string; image: string }>;
 }
 
 export interface ModelRunQueueType {

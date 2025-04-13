@@ -35,6 +35,8 @@ import {
 
 @Injectable()
 export class ReplicateSimpleBGService {
+  private readonly assetURL: string;
+
   constructor(
     @Inject(REPLICATE_SIMPLE_BG_PLUGIN_OPTIONS)
     private readonly options: ReplicateSimpleBGOptions,
@@ -43,7 +45,21 @@ export class ReplicateSimpleBGService {
     @Inject(AssetService) private readonly assetService: AssetService,
     @Inject(ListQueryBuilder)
     private readonly listQueryBuilder: ListQueryBuilder,
-  ) {}
+  ) {
+    if (!this.options.envs) {
+      throw new Error("Replicate: options not set");
+    }
+    if (!this.options.envs["apiToken"]) {
+      throw new Error("Replicate: apiToken not set");
+    }
+    if (!this.options.envs["deploymentName"]) {
+      throw new Error("Replicate: deploymentName not set");
+    }
+    if (!this.options.envs["assetPrefix"]) {
+      throw new Error("Replicate: assetPrefix not set");
+    }
+    this.assetURL = this.options.envs["assetPrefix"];
+  }
 
   async getSimpleBgID(ctx: RequestContext, prediction_simple_bg_id: string) {
     const entity = await this.connection
@@ -55,24 +71,17 @@ export class ReplicateSimpleBGService {
   }
 
   async startModelRun(ctx: RequestContext, input: StartGenerateSimpleBGInput) {
-    const { assetId, roomType, roomStyle, prompt } = input;
+    const { assetId, roomType, roomStyle, prompt: additionalPrompt } = input;
     try {
-      const requiredEnvs = ["apiToken", "deploymentName", "assetPrefix"];
-      for (const key of requiredEnvs) {
-        if (!this.options.envs[key]) {
-          throw new Error("Replicate: Environment variable not set: " + key);
-        }
-      }
-
       const imageAsset = await this.assetService.findOne(ctx, assetId as ID);
-
       if (!imageAsset?.source) {
         Logger.error("Asset not found", LOGGER_CTX);
         return;
       }
 
-      const assetUrl = `http://localhost:3000/assets/${imageAsset.source}`;
-
+      const assetUrl = [this.assetURL, imageAsset.source]
+        .filter((v) => !!v)
+        .join("/");
       const assetResponse = await axios.get(assetUrl, {
         responseType: "arraybuffer",
       });
@@ -80,40 +89,25 @@ export class ReplicateSimpleBGService {
         "base64",
       );
 
-      if (this.options.envs["prompt"].length === 0) {
-        this.options.envs["prompt"] = DEFAULT_PROMPT;
-      }
-      if (this.options.envs["n_prompt"].length === 0) {
-        this.options.envs["n_prompt"] = DEFAULT_NEGATIVE_PROMPT;
-      }
+      const prompt = [
+        DEFAULT_PROMPT,
+        this.options.prompts?.positive,
+        additionalPrompt,
+      ]
+        .filter((v) => !!v)
+        .join(", ");
+      const n_prompt = [DEFAULT_NEGATIVE_PROMPT, this.options.prompts?.negative]
+        .filter((v) => !!v)
+        .join(", ");
 
-      let new_prompt: string;
-      if (!prompt) {
-        new_prompt = Array.isArray(this.options.envs["prompt"])
-          ? this.options.envs["prompt"].join(", ") + ` ${roomType} ${roomStyle}`
-          : this.options.envs["prompt"] + ` ${roomType} ${roomStyle}`;
-      } else {
-        new_prompt = Array.isArray(this.options.envs["prompt"])
-          ? this.options.envs["prompt"].join(", ") +
-            ` ${roomType} ${roomStyle} ${prompt}`
-          : this.options.envs["prompt"] + ` ${roomType} ${roomStyle} ${prompt}`;
-      }
-
-      const n_prompt = Array.isArray(this.options.envs["n_prompt"])
-        ? this.options.envs["n_prompt"].join(", ")
-        : this.options.envs["n_prompt"];
-
+      const seed = this.options.seed ? this.options.seed : -1;
       const response = await axios.post(
         `https://api.replicate.com/v1/deployments/aexol-studio/${this.options.envs["deploymentName"]}/predictions`,
         {
           input: {
-            seed: Number.parseInt(
-              Array.isArray(this.options.envs["seed"])
-                ? this.options.envs["seed"][0]
-                : this.options.envs["seed"],
-            ),
+            seed,
             image: `data:image/png;base64,${assetBase64}`,
-            prompt: new_prompt,
+            prompt: [roomType, roomStyle, prompt].join(", "),
             negative_prompt: n_prompt,
           },
         },
@@ -250,11 +244,9 @@ export class ReplicateSimpleBGService {
     if (!prediction) {
       return new Error("Prediction not found");
     }
-
     if (this.options.envs["assetPrefix"] === undefined) {
       throw new Error("Replicate: assetPrefix not set");
     }
-
     if (
       [
         PredictionSimpleBgStatus.preprocessing as string,
@@ -269,28 +261,18 @@ export class ReplicateSimpleBGService {
         return { status: prediction.status, image: "" };
       }
     }
-
-    return {
-      status: prediction.status,
-      image: [this.options.envs["assetPrefix"], prediction.output].join("/"),
-      roomType: prediction.roomType,
-      roomStyle: prediction.roomStyle,
-    };
+    const image = [this.options.envs["assetPrefix"], prediction.output].join(
+      "/",
+    );
+    return { ...prediction, image };
   }
 
   async getSimpleBgThemesAsset() {
-    if (this.options.envs["assetPrefix"] === undefined) {
-      throw new Error("Replicate: assetPrefix not set");
-    }
     return this.options.envs["assetPrefix"];
   }
 
   async getSimpleBgRoomType() {
-    if (!this.options.roomType) {
-      throw new Error("Replicate: roomType not set");
-    }
-
-    return [...DEFAULT_ROOM_TYPE, ...this.options.roomType];
+    return [...DEFAULT_ROOM_TYPE, ...(this.options.roomType || [])];
   }
 
   async getSimpleBgRoomTheme() {
@@ -299,7 +281,10 @@ export class ReplicateSimpleBGService {
       throw new Error("Replicate: assetPrefix must be a string");
     }
 
-    const roomTheme = [...DEFAULT_ROOM_THEME, ...this.options.roomTheme];
+    const roomTheme = [
+      ...DEFAULT_ROOM_THEME,
+      ...(this.options.roomTheme || []),
+    ];
 
     for (const theme of roomTheme) {
       if (!theme.image.startsWith(assetPrefix)) {
@@ -316,9 +301,7 @@ export class ReplicateSimpleBGService {
   ) {
     const prediction = await this.connection
       .getRepository(ctx, ReplicateSimpleBgEntity)
-      .findOne({
-        where: { id: input.predictionId },
-      });
+      .findOne({ where: { id: input.predictionId } });
 
     if (!prediction) {
       return new Error("Prediction not found");

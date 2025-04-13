@@ -10,13 +10,12 @@ import {
   useDetailView,
   useMutation,
   Dialog,
-  DialogPortal,
   useTranslation,
   CardContent,
   cn,
 } from "@deenruv/react-ui-devkit";
 import { translationNS } from "../translation-ns";
-import { ResplicateSimpleBGModal } from "./ReplicateSimpleBGModal.js";
+import { ReplicateSimpleBGModal } from "./ReplicateSimpleBGModal.js";
 import { z } from "zod";
 import { startGenerateSimpleBgMutation } from "../graphql/mutations.js";
 import { ChevronDown, Image } from "lucide-react";
@@ -98,6 +97,11 @@ export const ReplicateSimpleBGProduct: React.FC = () => {
                   <RoomTypeSelect />
                   <RoomThemeSelect theme_preview={false} />
                   <Button
+                    disabled={
+                      !form.watch("room_type_enum")?.value ||
+                      !form.watch("room_style_enum")?.value ||
+                      form.formState.isSubmitting
+                    }
                     onClick={async () => {
                       try {
                         await onSubmit(form.getValues());
@@ -115,16 +119,12 @@ export const ReplicateSimpleBGProduct: React.FC = () => {
         </div>
       </Form>
       {isDialogVisible && predictionEntityID && (
-        <>
-          <Dialog open={isDialogVisible} onOpenChange={setIsDialogVisible}>
-            <DialogPortal>
-              <ResplicateSimpleBGModal
-                onClose={() => setIsDialogVisible(false)}
-                initPpredictionEntityID={predictionEntityID || ""}
-              />
-            </DialogPortal>
-          </Dialog>
-        </>
+        <Dialog open={isDialogVisible} onOpenChange={setIsDialogVisible}>
+          <ReplicateSimpleBGModal
+            onClose={() => setIsDialogVisible(false)}
+            initPredictionEntityID={predictionEntityID || ""}
+          />
+        </Dialog>
       )}
     </>
   );

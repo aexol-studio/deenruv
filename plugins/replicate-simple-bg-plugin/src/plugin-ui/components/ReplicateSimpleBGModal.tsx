@@ -7,6 +7,12 @@ import {
   useTranslation,
   Input,
   useDetailView,
+  DialogFooter,
+  DialogHeader,
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
 } from "@deenruv/react-ui-devkit";
 import {
   assignPredictionToProductMutation,
@@ -20,23 +26,21 @@ import React, { useState, useEffect, useRef } from "react";
 import { translationNS } from "../translation-ns.js";
 import { ReplicatePredictionListType } from "../graphql/selectors.js";
 import { PredictionSimpleBgStatus } from "../zeus/index.js";
-import { useLocation } from "react-router-dom";
-import { getLastPathSegment } from "./ReplicateSimpleBGUtilities.js";
 import { LoadingMask } from "./ReplicateSimpleBGUtilities.js";
 
 interface PredictionModalProps {
   onClose: () => void;
-  initPpredictionEntityID: string;
+  initPredictionEntityID: string;
 }
 const MAX_RETRIES = 200;
-export const ResplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
+export const ReplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
   onClose,
-  initPpredictionEntityID,
+  initPredictionEntityID,
 }) => {
   const { t } = useTranslation(translationNS);
   const {
+    id: productId,
     entity,
-    setEntity,
     markAsDirty,
     form: {
       base: { state, setField },
@@ -45,19 +49,16 @@ export const ResplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
   const [startGenerateSimpleBg] = useMutation(startGenerateSimpleBgMutation);
   const [roomType, setRoomType] = useState<string | null>(null);
   const [roomStyle, setRoomStyle] = useState<string | null>(null);
-  const [predictionEntityID, setPredictionEntityID] = useState<string | null>(
-    null,
+  const [predictionEntityID, setPredictionEntityID] = useState<string>(
+    initPredictionEntityID,
   );
   const [prompt, setPrompt] = useState("");
-  const [isPolling, setIsPolling] = useState(true);
   const [loading, setLoading] = useState(true);
   const [prediction, setPrediction] =
     useState<ReplicatePredictionListType["image"]>("");
-  const [selectedAssetId, setSelectedAssetId] = useState<string | null>(null);
 
   const [getPredictionID] = useLazyQuery(getPredictionSimpleBGIDQuery);
   const [getPredictionItem] = useLazyQuery(getSimpleBgItemQuery);
-
   const [assignPredictionToProduct] = useMutation(
     assignPredictionToProductMutation,
   );
@@ -65,22 +66,14 @@ export const ResplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const retryCountRef = useRef(0);
 
-  const location = useLocation();
-  const productId = getLastPathSegment(location.pathname);
-
   useEffect(() => {
-    setPredictionEntityID(initPpredictionEntityID);
-  }, [initPpredictionEntityID]);
-
-  useEffect(() => {
-    if (!predictionEntityID || !isPolling) return;
+    if (!predictionEntityID || !loading) return;
 
     setLoading(true);
     intervalRef.current = setInterval(() => {
       if (retryCountRef.current >= MAX_RETRIES) {
         console.warn("Max retries reached. Stopping polling.");
         clearInterval(intervalRef.current as NodeJS.Timeout);
-        setIsPolling(false);
         setLoading(false);
         return;
       }
@@ -104,7 +97,7 @@ export const ResplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [predictionEntityID, isPolling]);
+  }, [predictionEntityID, loading]);
 
   const fetchPrediction = (predictionID: string) => {
     getPredictionItem({ id: predictionID })
@@ -115,12 +108,10 @@ export const ResplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
             setPrediction(response.getSimpleBgItem.image);
             setRoomStyle(response.getSimpleBgItem.roomStyle ?? null);
             setRoomType(response.getSimpleBgItem.roomType ?? null);
-            setIsPolling(false);
             setLoading(false);
             if (intervalRef.current) clearInterval(intervalRef.current);
           } else if (status === PredictionSimpleBgStatus.failed) {
             console.error("Prediction failed.");
-            setIsPolling(false);
             setLoading(false);
             if (intervalRef.current) clearInterval(intervalRef.current);
           }
@@ -131,99 +122,100 @@ export const ResplicateSimpleBGModal: React.FC<PredictionModalProps> = ({
       });
   };
 
-  const assignPredicitonInToProduct = async () => {
+  const assignPredictionInToProduct = async () => {
+    if (!productId || !predictionEntityID) return;
     const asset = await assignPredictionToProduct({
       input: {
         predictionId: predictionEntityID ?? "",
         productId: productId,
       },
     });
-
-    if (asset?.assignPredictionToProduct) {
-      if (entity) {
-        const newAsset = asset.assignPredictionToProduct;
-
-        // const updatedEntity = {
-        //   ...entity,
-        //   assets: Array.isArray(entity.assets)
-        //     ? [...entity.assets, newAsset]
-        //     : [newAsset],
-        // };
-
-        if (state.assetIds?.value) {
-          setField("assetIds", [...state.assetIds.value, newAsset.id]);
-        }
-        setSelectedAssetId(newAsset.id);
-        markAsDirty();
-      }
+    if (!asset || !entity) return;
+    const newAsset = asset.assignPredictionToProduct;
+    if (state.assetIds?.value) {
+      setField("assetIds", [...state.assetIds.value, newAsset.id]);
     }
+    markAsDirty();
+    onClose();
+    setPredictionEntityID("");
+    setLoading(false);
   };
 
   const onSubmit = async () => {
     const assetId = entity?.featuredAsset?.id;
     setLoading(true);
-    setIsPolling(true);
 
-    if (assetId) {
-      const response = await startGenerateSimpleBg({
-        input: {
-          assetId: assetId,
-          roomType: roomType,
-          roomStyle: roomStyle,
-          prompt: prompt,
-        },
-      });
-      const predictionEntityId = response.startGenerateSimpleBg;
-      if (predictionEntityId) {
-        setPredictionEntityID(predictionEntityId);
-      }
-    }
+    if (!assetId) return;
+    const response = await startGenerateSimpleBg({
+      input: {
+        assetId: assetId,
+        roomType: roomType,
+        roomStyle: roomStyle,
+        prompt: prompt,
+      },
+    });
+    const predictionEntityId = response.startGenerateSimpleBg;
+    if (!predictionEntityId) return;
+    setPredictionEntityID(predictionEntityId);
   };
 
   return (
-    <DialogContent className="min-w-[500px] sm:max-w-[600px]">
-      <DialogTitle>{t("modal.title")}</DialogTitle>
+    <DialogContent className="w-full lg:max-w-[800px]">
+      <DialogHeader>
+        <DialogTitle>{t("modal.title")}</DialogTitle>
+      </DialogHeader>
       <div className="flex flex-col">
         <div className="border rounded-md p-4 mb-4 flex flex-col">
           <div className="flex-grow mb-4 max-h-[600px] overflow-hidden">
             {loading ? (
               <LoadingMask />
             ) : (
-              <img
-                src={prediction || "/placeholder.svg"}
-                alt="Prediction"
-                className="w-full h-auto object-contain max-h-[350px]"
-              />
+              <div className="w-full h-full flex gap-4 justify-between items-start">
+                <div className="w-2/3 relative h-[350px]">
+                  <img
+                    src={prediction || "/placeholder.svg"}
+                    alt="Prediction"
+                    className="absolute inset-0 w-full h-full object-cover rounded-md"
+                  />
+                </div>
+                <Card className="w-1/3">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-semibold">
+                        {t("modal.prediction")}
+                      </span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm text-gray-500">
+                        {t("modal.room_type")}: {roomType}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {t("modal.room_style")}: {roomStyle}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             )}
           </div>
-
-          <div className="mt-auto">
-            <div className="mb-4">
-              <Input
-                type="text"
-                placeholder={t("modal.input_prompt")}
-                value={prompt}
-                onChange={(e) => setPrompt(e.currentTarget.value)}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <Button onClick={onSubmit}>{t("modal.run_model_again")}</Button>
-              <Button onClick={() => assignPredicitonInToProduct()}>
-                {t("modal.assign_prediction_to_product")}
-              </Button>
-            </div>
+          <div className="flex gap-4 items-center justify-between">
+            <Input
+              type="text"
+              placeholder={t("modal.input_prompt")}
+              value={prompt}
+              onChange={(e) => setPrompt(e.currentTarget.value)}
+            />
+            <Button onClick={onSubmit}>{t("modal.run_model_again")}</Button>
           </div>
         </div>
-        <div className="flex justify-end">
-          <Button
-            onClick={onClose}
-            variant="outline"
-            disabled={entity?.assets.length === 0}
-          >
-            {t("modal.close")}
-          </Button>
-        </div>
       </div>
+      <DialogFooter className="flex items-center gap-2 justify-end">
+        <Button onClick={assignPredictionInToProduct}>
+          {t("modal.assign_prediction_to_product")}
+        </Button>
+      </DialogFooter>
     </DialogContent>
   );
 };
