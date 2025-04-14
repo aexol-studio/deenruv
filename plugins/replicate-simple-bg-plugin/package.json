@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/replicate-simple-bg-plugin",
-  "version": "0.0.132",
+  "version": "0.0.133",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "files": [
@@ -31,7 +31,7 @@
     "sonner": "^1.4.41",
     "@nestjs/common": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
-    "typeorm": "0.3.20",
+    "typeorm": "^0.3.20",
     "graphql-tag": "^2.12.6",
     "replicate": "1.0.1"
   },
