@@ -171,8 +171,9 @@ export class ProductVariantService {
             },
           );
 
+        const { sort: _, ...countOptions } = options;
         const countQb = this.listQueryBuilder
-          .build(ProductVariant, options, {
+          .build(ProductVariant, countOptions, {
             where: { deletedAt: IsNull() },
             ctx,
           })
