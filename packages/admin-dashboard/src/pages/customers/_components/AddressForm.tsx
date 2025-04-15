@@ -1,0 +1,199 @@
+import { forwardRef, useEffect, useImperativeHandle } from 'react';
+import {
+  CustomerAddressType,
+  Input,
+  SimpleSelect,
+  useGFFLP,
+  useServer,
+  EntityCustomFields,
+  useTranslation,
+} from '@deenruv/react-ui-devkit';
+import { ModelTypes, GraphQLTypes } from '@deenruv/admin-types';
+
+interface AddressCardProps {
+  addressId?: string;
+  initialValues?: Omit<CustomerAddressType, 'id'>;
+  onInputChange: (input: ModelTypes['CreateAddressInput']) => void;
+}
+
+export type AddressFormRef = {
+  validate: () => boolean;
+};
+
+export const AddressForm = forwardRef<AddressFormRef, AddressCardProps>(
+  ({ initialValues: address, addressId, onInputChange }, ref) => {
+    const { t } = useTranslation('customers');
+    const countries = useServer((p) => p.countries);
+
+    const { state, setField, checkIfAllFieldsAreValid } = useGFFLP(
+      'CreateAddressInput',
+      'city',
+      'company',
+      'countryCode',
+      'fullName',
+      'phoneNumber',
+      'postalCode',
+      'streetLine1',
+      'streetLine2',
+      'province',
+      'customFields',
+    )({
+      fullName: {
+        initialValue: address?.fullName,
+        validate: (v) => {
+          if (!v || v === '') return [t('selectAddress.nameRequired')];
+        },
+      },
+      company: { initialValue: address?.company },
+      streetLine1: {
+        initialValue: address?.streetLine1,
+        validate: (v) => {
+          if (!v || v === '') return [t('selectAddress.streetRequired')];
+        },
+      },
+      streetLine2: { initialValue: address?.streetLine2 },
+      postalCode: {
+        initialValue: address?.postalCode,
+        validate: (v) => {
+          if (!v || v === '') return [t('selectAddress.postalCodeRequired')];
+        },
+      },
+      countryCode: {
+        initialValue: address?.country.code,
+        validate: (v) => {
+          if (!v || v === '') return [t('selectAddress.countryRequired')];
+        },
+      },
+      phoneNumber: {
+        initialValue: address?.phoneNumber,
+        validate: (v) => {
+          if (!v || v === '') return [t('selectAddress.phoneNumberRequired')];
+        },
+      },
+      city: {
+        initialValue: address?.city,
+        validate: (v) => {
+          if (!v || v === '') return [t('selectAddress.cityRequired')];
+        },
+      },
+      province: { initialValue: address?.province },
+    });
+
+    useImperativeHandle(ref, () => ({
+      validate: checkIfAllFieldsAreValid,
+    }));
+
+    useEffect(() => {
+      const input: GraphQLTypes['CreateAddressInput'] = {
+        countryCode: state.countryCode!.validatedValue,
+        streetLine1: state.streetLine1!.validatedValue,
+        streetLine2: state.streetLine2!.validatedValue,
+        city: state.city!.validatedValue,
+        company: state.company!.validatedValue,
+        fullName: state.fullName!.validatedValue,
+        phoneNumber: state.phoneNumber!.validatedValue,
+        postalCode: state.postalCode!.validatedValue,
+        province: state.province?.validatedValue,
+        ...(state.customFields?.validatedValue ? { customFields: state.customFields?.validatedValue } : {}),
+      };
+      onInputChange(input);
+    }, [state]);
+
+    return (
+      <form className="flex flex-col gap-3 overflow-auto">
+        <Input
+          label={t('selectAddress.inputNameLabel')}
+          placeholder={t('selectAddress.inputNamePlaceholder')}
+          value={state.fullName?.value ?? undefined}
+          defaultValue={state?.fullName?.value ?? undefined}
+          onChange={(e) => setField('fullName', e.target.value)}
+          errors={state.fullName?.errors}
+          required
+        />
+        <Input
+          label={t('selectAddress.inputCompanyLabel')}
+          placeholder={t('selectAddress.inputCompanyPlaceholder')}
+          value={state.company?.value ?? undefined}
+          defaultValue={state?.company?.value ?? undefined}
+          onChange={(e) => setField('company', e.target.value)}
+          errors={state.company?.errors}
+        />
+        <Input
+          label={t('selectAddress.inputStreetLabel')}
+          placeholder={t('selectAddress.inputStreetPlaceholder')}
+          value={state.streetLine1?.value}
+          defaultValue={state?.streetLine1?.value}
+          onChange={(e) => setField('streetLine1', e.target.value)}
+          errors={state.streetLine1?.errors}
+          required
+        />
+        <Input
+          label={t('selectAddress.inputStreet2Label')}
+          placeholder={t('selectAddress.inputStreet2Placeholder')}
+          value={state.streetLine2?.value ?? undefined}
+          defaultValue={state?.streetLine2?.value ?? undefined}
+          onChange={(e) => setField('streetLine2', e.target.value)}
+          errors={state.streetLine2?.errors}
+        />
+        <Input
+          label={t('selectAddress.inputCityLabel')}
+          placeholder={t('selectAddress.inputCityPlaceholder')}
+          defaultValue={state?.city?.value ?? undefined}
+          onChange={(e) => setField('city', e.target.value)}
+          errors={state.city?.errors}
+          required
+        />
+        <Input
+          label={t('selectAddress.inputProvinceLabel')}
+          placeholder={t('selectAddress.inputProvincePlaceholder')}
+          defaultValue={state?.province?.value ?? undefined}
+          onChange={(e) => setField('province', e.target.value)}
+          errors={state.province?.errors}
+        />
+        <Input
+          label={t('selectAddress.inputPostalLabel')}
+          placeholder={t('selectAddress.inputPostalPlaceholder')}
+          value={state.postalCode?.value ?? undefined}
+          defaultValue={state?.postalCode?.value ?? undefined}
+          onChange={(e) => setField('postalCode', e.target.value)}
+          errors={state.postalCode?.errors}
+          required
+        />
+        <Input
+          label={t('selectAddress.inputPhoneLabel')}
+          placeholder={t('selectAddress.inputPhonePlaceholder')}
+          value={state.phoneNumber?.value ?? undefined}
+          defaultValue={state?.phoneNumber?.value ?? undefined}
+          onChange={(e) => setField('phoneNumber', e.target.value)}
+          errors={state.phoneNumber?.errors}
+          required
+        />
+        <SimpleSelect
+          label={t('selectAddress.countrySelectLabel')}
+          options={countries.map((c) => ({ label: c.name, value: c.code }))}
+          value={state.countryCode?.value}
+          onValueChange={(value) => setField('countryCode', value)}
+          errors={state.countryCode?.errors}
+          required
+        />
+        {addressId && (
+          <EntityCustomFields
+            id={addressId}
+            entityName="address"
+            hideButton
+            initialValues={
+              address && 'customFields' in address
+                ? { customFields: address.customFields as any }
+                : { customFields: {} }
+            }
+            onChange={(cf) => {
+              setField('customFields', cf);
+            }}
+            additionalData={{}}
+            withoutBorder
+          />
+        )}
+      </form>
+    );
+  },
+);
