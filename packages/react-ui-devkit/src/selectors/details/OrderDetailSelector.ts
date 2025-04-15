@@ -170,6 +170,10 @@ export type FulfillmentOrderDetailType = FromSelectorWithScalars<
   typeof FulfillmentSelector,
   "Fulfillment"
 >;
+export type OrderLineType = FromSelectorWithScalars<
+  typeof draftOrderLineSelector,
+  "OrderLine"
+>;
 export type OrderDetailType = FromSelectorWithScalars<
   typeof OrderDetailSelector,
   "Order"

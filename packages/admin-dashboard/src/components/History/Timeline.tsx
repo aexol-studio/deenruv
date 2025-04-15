@@ -21,6 +21,7 @@ import {
   Badge,
   useTranslation,
   useOrder,
+  OrderLineType,
 } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import { HistoryEntryType } from '@deenruv/admin-types';
@@ -89,8 +90,6 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
             history.type === HistoryEntryType.ORDER_MODIFIED
               ? order?.modifications.find((m) => m.id === history.data.modificationId)?.note
               : '';
-
-          console.log('DATA', history);
 
           return (
             <TimelineItem key={history.id} status="done" className="w-full pb-6">
@@ -235,6 +234,26 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                   {'modificationId' in history.data && (
                     <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
                       {modificationNote}
+                    </div>
+                  )}
+
+                  {'reason' in history.data && (
+                    <div>
+                      <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
+                        {history.data.reason}
+                      </div>
+                      {'lines' in history.data && (
+                        <div className="mt-2">
+                          {history.data.lines
+                            .map((l: { orderLineId: string; quantity: number }) =>
+                              order?.lines.find((line) => line.id === l.orderLineId),
+                            )
+                            .filter(Boolean)
+                            .map((line: OrderLineType) => (
+                              <p className="text-sm">{line.productVariant.name}</p>
+                            ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

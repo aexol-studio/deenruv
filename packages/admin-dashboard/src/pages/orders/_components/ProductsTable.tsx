@@ -15,7 +15,7 @@ import {
   useOrder,
 } from '@deenruv/react-ui-devkit';
 import { Tag } from 'lucide-react';
-import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ProductsTableProps {
@@ -25,11 +25,7 @@ interface ProductsTableProps {
 
 export const ProductsTable: React.FC<ProductsTableProps> = ({ setRefundLines, refundLines }) => {
   const { t } = useTranslation('orders');
-  const { mode, order, modifiedOrder } = useOrder();
-  const currentOrder = useMemo(
-    () => (mode === 'update' ? (modifiedOrder ? modifiedOrder : order) : order),
-    [mode, order, modifiedOrder],
-  );
+  const { mode, currentOrder } = useOrder();
 
   const handleLineChange = useCallback(
     (lineId: string, quantity: number) => {

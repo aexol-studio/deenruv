@@ -27,21 +27,18 @@ import {
 import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
 import type { SearchCustomerType } from '@/graphql/draft_order';
 import type React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Edit, User, Check, Mail, Phone, Loader2, UserPlus, Search, AlertCircle } from 'lucide-react';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
-  const { order, setOrder, mode, modifiedOrder, setCustomerAndAddressesForDraftOrder } = useOrder();
+  const { setOrder, mode, currentOrder: order, setCustomerAndAddressesForDraftOrder } = useOrder();
   const [tab, setTab] = useState<'select' | 'create'>('select');
   const [selected, setSelected] = useState<SearchCustomerType | undefined>(order?.customer);
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const currentOrder = useMemo(
-    () => (mode === 'update' ? (modifiedOrder ? modifiedOrder : order) : order),
-    [mode, order, modifiedOrder],
-  );
+
   const { state, checkIfAllFieldsAreValid, setField, clearAllForm } = useGFFLP(
     'CreateCustomerInput',
     'firstName',
@@ -147,7 +144,7 @@ export const CustomerSelectCard: React.FC = () => {
   return (
     <CustomCard
       notCollapsible
-      color={currentOrder?.customer ? 'indigo' : 'gray'}
+      color={order?.customer ? 'indigo' : 'gray'}
       description={t(
         'create.selectCustomer.description',
         'Choose an existing customer or create a new one for this order',
@@ -309,10 +306,7 @@ export const CustomerSelectCard: React.FC = () => {
                   ) : (
                     <>
                       <Check className="size-4" />
-                      {t(
-                        tab === 'create' ? 'create.selectCustomer.create' : 'create.selectCustomer.selectButton',
-                        tab === 'create' ? 'Create Customer' : 'Select Customer',
-                      )}
+                      {t(tab === 'create' ? 'create.selectCustomer.create' : 'create.selectCustomer.selectButton')}
                     </>
                   )}
                 </Button>
@@ -324,7 +318,7 @@ export const CustomerSelectCard: React.FC = () => {
     >
       <div className="border-border bg-muted/50 rounded-lg border p-3">
         <div className="flex items-start gap-3">
-          {!currentOrder?.customer ? (
+          {!order?.customer ? (
             <>
               <div className="bg-secondary mt-0.5 flex size-8 items-center justify-center rounded-full">
                 <AlertCircle className="size-4 text-green-500 dark:text-green-600" />
@@ -347,8 +341,8 @@ export const CustomerSelectCard: React.FC = () => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium">
-                      {currentOrder.customer.title && `${currentOrder.customer.title} `}
-                      {currentOrder.customer.firstName} {currentOrder.customer.lastName}
+                      {order.customer.title && `${order.customer.title} `}
+                      {order.customer.firstName} {order.customer.lastName}
                     </p>
                     <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-800 dark:bg-indigo-900/50 dark:text-indigo-300">
                       {t('create.selectCustomer.customer', 'Customer')}
@@ -356,12 +350,12 @@ export const CustomerSelectCard: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="size-3.5 text-indigo-500 dark:text-indigo-400" />
-                    <span>{currentOrder.customer.emailAddress}</span>
+                    <span>{order.customer.emailAddress}</span>
                   </div>
-                  {currentOrder.customer.phoneNumber && (
+                  {order.customer.phoneNumber && (
                     <div className="flex items-center gap-2 text-sm">
                       <Phone className="size-3.5 text-indigo-500 dark:text-indigo-400" />
-                      <span>{currentOrder.customer.phoneNumber}</span>
+                      <span>{order.customer.phoneNumber}</span>
                     </div>
                   )}
                 </div>
