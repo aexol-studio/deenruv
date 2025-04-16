@@ -975,6 +975,8 @@
     "noteContent": "Treść uwagi:",
     "commentPlaceholder": "Wpisz tutaj swoją notatkę...",
     "timeline": "Oś czasu",
+    "quantityOld": "Stara liczba sztuk",
+    "quantityNew": "Nowa liczba sztuk",
     "entryType": {
       "CUSTOMER_REGISTERED": "Klient zarejestrowany",
       "CUSTOMER_VERIFIED": "Klient zweryfikowany",

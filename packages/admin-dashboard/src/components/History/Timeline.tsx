@@ -243,16 +243,29 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                         {history.data.reason}
                       </div>
                       {'lines' in history.data && (
-                        <div className="mt-2">
+                        <ul className="mt-2 list-disc pl-5">
                           {history.data.lines
-                            .map((l: { orderLineId: string; quantity: number }) =>
-                              order?.lines.find((line) => line.id === l.orderLineId),
-                            )
-                            .filter(Boolean)
-                            .map((line: OrderLineType) => (
-                              <p className="text-sm">{line.productVariant.name}</p>
+                            .map((l: { orderLineId: string; quantity: number }) => {
+                              const line = order?.lines.find((line) => line.id === l.orderLineId);
+                              if (!line) return null;
+                              return { line, newQuantity: l.quantity };
+                            })
+                            .map(({ line, newQuantity }: { line: OrderLineType; newQuantity: number }) => (
+                              <li className="list-item list-disc flex-col pl-3">
+                                <p key={line.id} className="text-sm">
+                                  {line.productVariant.name}
+                                </p>
+                                <p className="flex gap-4">
+                                  <span>
+                                    {t('history.quantityOld')}: {line.quantity}
+                                  </span>
+                                  <span>
+                                    {t('history.quantityNew')}: {newQuantity}
+                                  </span>
+                                </p>
+                              </li>
                             ))}
-                        </div>
+                        </ul>
                       )}
                     </div>
                   )}

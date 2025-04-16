@@ -68,6 +68,7 @@ export const OrderHistory: React.FC = () => {
       description={t('history.description', 'Timeline of order events and notes')}
       title={t('history.title', 'Order History')}
       icon={<ClipboardList />}
+      collapsed
     >
       {loading && (
         <div className="flex flex-col items-center justify-center py-16 text-center">
