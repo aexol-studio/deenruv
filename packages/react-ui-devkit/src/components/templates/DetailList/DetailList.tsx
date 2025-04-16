@@ -46,6 +46,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  ImageWithPreview,
   TableLabel,
 } from "@/components";
 import { ListTable } from "@/components/molecules/ListTable";
@@ -406,10 +407,11 @@ export function DetailList<
             const isAsset = isAssetObject(value);
             if (isAsset) {
               return (
-                <img
+                <ImageWithPreview
                   src={value.preview}
                   alt={row.original.name}
-                  className="size-16 object-cover"
+                  imageClassName="size-16 object-cover"
+                  previewClassName="p-2"
                 />
               );
             }

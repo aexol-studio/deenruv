@@ -141,7 +141,9 @@
         "currencyCode": "Currency",
         "totalQuantity": "Number",
         "postalCode": "Postcode",
-        "image": "Image"
+        "image": "Image",
+        "preview": "Preview",
+        "tags": "Tags"
     },
     "actionsMenu": {
         "title": "Activities",

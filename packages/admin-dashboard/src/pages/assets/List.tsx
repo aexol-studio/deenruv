@@ -6,6 +6,8 @@ import {
   ListLocations,
   createDialogFromComponent,
   Badge,
+  ImageWithPreview,
+  useTranslation,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { UploadAssetDialog } from '@/pages/assets/_components/UploadAssetDialog.js';
@@ -44,19 +46,20 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
 };
 
 export const AssetsListPage = () => {
+  const { t } = useTranslation('table');
   return (
     <DetailList
       tableId={tableId}
       detailLinkColumn="id"
       searchFields={['id']}
-      suggestedOrderColumns={{ id: 1, source: 2, tags: 3 }}
+      suggestedOrderColumns={{ id: 1, preview: 2, tags: 3 }}
       hideColumns={[
         'fileSize',
         'width',
         'height',
         'focalPoint',
         'mimeType',
-        'preview',
+        'source',
         'type',
         'customFields',
         'translations',
@@ -88,20 +91,20 @@ export const AssetsListPage = () => {
       onRemove={onRemove}
       additionalColumns={[
         {
-          accessorKey: 'source',
-          header: 'Source',
+          accessorKey: 'preview',
+          header: t('columns.image'),
           cell: ({ row }) => {
-            const { name, source } = row.original;
+            const { name, preview } = row.original;
             return (
-              <div className="relative h-32 w-32">
-                <img src={source} alt={name} className="h-full w-full rounded-lg object-cover" />
+              <div className="relative">
+                <ImageWithPreview src={preview} alt={name} previewClassName="p-2" />
               </div>
             );
           },
         },
         {
           accessorKey: 'tags',
-          header: 'Tags',
+          header: t('columns.tags'),
           cell: ({ row }) => {
             const { tags } = row.original;
             return (

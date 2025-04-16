@@ -141,7 +141,9 @@
     "currencyCode": "Waluta",
     "totalQuantity": "Liczba",
     "postalCode": "Kod pocztowy",
-    "image": "Obraz"
+    "image": "Obraz",
+    "preview": "Podgląd",
+    "tags": "Tagi"
   },
   "actionsMenu": {
     "title": "Działania",

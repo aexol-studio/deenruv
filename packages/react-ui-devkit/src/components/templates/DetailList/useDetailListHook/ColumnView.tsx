@@ -30,7 +30,7 @@ import { useServer } from "@/state/server.js";
 import { useSettings } from "@/state/settings.js";
 import { useTranslation } from "@/hooks/useTranslation.js";
 
-const CUSTOM_FIELDS_PREFIX = "customFields.";
+const CUSTOM_FIELDS_PREFIX = "customFields_";
 
 export const ColumnView = <T extends { id: string }>({
   table,
@@ -75,6 +75,7 @@ export const ColumnView = <T extends { id: string }>({
 
   const getCustomFieldLabel = (key: string) => {
     const fromTable = table.getColumn(key);
+    console.log("FRM", fromTable);
     if (fromTable && "label" in fromTable) {
       return fromTable.label;
     }
