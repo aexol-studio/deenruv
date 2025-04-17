@@ -179,9 +179,15 @@ export const FiltersDialog = <T extends keyof ListType>({
                       className="focus:ring-ring h-8 w-32 max-w-[109px] justify-between gap-2 rounded focus:outline-none focus:ring-1 focus-visible:ring-0"
                     >
                       <span className="overflow-hidden truncate">
-                        {filterLabels
-                          .find((field) => field.name === filterKey)
-                          ?.name.toString() ?? "Select field"}
+                        {filterLabels.find((field) => field.name === filterKey)
+                          ?.name
+                          ? t(
+                              "columns." +
+                                filterLabels
+                                  .find((field) => field.name === filterKey)
+                                  ?.name.toString(),
+                            )
+                          : "Select field"}
                       </span>
                       <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
                     </Button>
@@ -214,7 +220,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                               }}
                             >
                               <span className="mr-1.5 truncate">
-                                {field.name.toString()}
+                                {t("columns." + field.name.toString())}
                               </span>
                               <Check
                                 className={cn(
