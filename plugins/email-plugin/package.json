@@ -29,7 +29,10 @@
     "fs-extra": "^11.2.0",
     "handlebars": "^4.7.8",
     "mjml": "^4.14.1",
-    "nodemailer": "^6.9.4"
+    "nodemailer": "^6.9.4",
+    "react-email": "4.0.3",
+    "@react-email/components": "^0.0.35",
+    "@react-email/render": "1.0.5"
   },
   "devDependencies": {
     "@types/dateformat": "^3.0.1",
@@ -39,6 +42,7 @@
     "@deenruv/common": "workspace:^",
     "@deenruv/core": "workspace:^",
     "rimraf": "^5.0.5",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "@types/react": "^18.2.0"
   }
 }
