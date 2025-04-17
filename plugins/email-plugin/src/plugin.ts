@@ -28,6 +28,8 @@ import {
   EmailEventHandlerWithAsyncData,
 } from "./handler/event-handler";
 import { FileBasedTemplateLoader } from "./template-loader/file-based-template-loader";
+import { ReactComponentLoader } from "./template-loader/react-email-template-loader";
+import { ReactComponentEmailGenerator } from "./generator/react-email-generator";
 import {
   EmailPluginDevModeOptions,
   EmailPluginOptions,
@@ -312,7 +314,7 @@ import {
   ],
   compatibility: "^0.0.0",
 })
-export class EmailPlugin
+class EmailPlugin
   implements OnApplicationBootstrap, OnApplicationShutdown, NestModule
 {
   private static options: InitializedEmailPluginOptions;
@@ -459,3 +461,5 @@ export class EmailPlugin
     }
   }
 }
+
+export { EmailPlugin, ReactComponentLoader, ReactComponentEmailGenerator };

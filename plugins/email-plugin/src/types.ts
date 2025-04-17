@@ -14,6 +14,7 @@ import { EmailGenerator } from "./generator/email-generator";
 import { EmailEventHandler } from "./handler/event-handler";
 import { EmailSender } from "./sender/email-sender";
 import { TemplateLoader } from "./template-loader/template-loader";
+import type { FC } from "react";
 
 /**
  * @description
@@ -82,6 +83,11 @@ export type GlobalTemplateVarsFn = (
  * @docsWeight 0
  * */
 export interface EmailPluginOptions {
+  /**
+   * @description
+   * Boolean flag to indicate whether the email templates are written in react-email, and should be handled by it .
+   */
+  useReactEmail?: boolean;
   /**
    * @description
    * The path to the location of the email templates. In a default Deenruv installation,
@@ -489,3 +495,12 @@ export interface OptionalAddressFields {
 export type SetOptionalAddressFieldsFn<Event> = (
   event: Event,
 ) => OptionalAddressFields | Promise<OptionalAddressFields>;
+
+export interface LoaderBody {
+  type: string;
+  ctx: SerializedRequestContext;
+}
+
+export interface ReactEmailSenderPluginOptions {
+  templates: Record<string, (ctx: RequestContext) => FC<any>>;
+}
