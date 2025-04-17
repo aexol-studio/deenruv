@@ -3,6 +3,9 @@ export const buildURL = (path?: string[]) => {
   if (import.meta.env.BASE_URL) {
     base = import.meta.env.BASE_URL;
   }
+  if (base.endsWith("/")) {
+    base = base.slice(0, -1);
+  }
   return [base, ...(path || [])].join("/");
 };
 

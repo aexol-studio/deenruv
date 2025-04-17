@@ -13,7 +13,6 @@ import {
   TableRow,
   ListViewMarker,
   TableLabel,
-  Checkbox,
 } from "@/components";
 import {
   CSSProperties,
@@ -142,29 +141,28 @@ export function ListTable<TData, TValue>({
 
   useEffect(() => {
     const PADDING_X_VALUE = 64;
-    const updateSize = () => {
-      setTimeout(() => {
-        if (tableWrapperRef.current) {
-          const wrapperWidth = document
-            .getElementById("scrollArea")
-            ?.getBoundingClientRect().width;
-          if (wrapperWidth)
-            tableWrapperRef.current.style.maxWidth =
-              wrapperWidth - PADDING_X_VALUE + "px";
-        }
-      }, 0);
-    };
+    const scrollArea = document.getElementById("scrollArea");
+    if (!scrollArea || !tableWrapperRef.current) return;
 
-    window.addEventListener("resize", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      const width = entry.contentRect.width;
+      tableWrapperRef.current!.style.maxWidth =
+        width - PADDING_X_VALUE / 2 + "px";
+    });
+
+    observer.observe(scrollArea);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [tableWrapperRef]);
 
   return (
     <>
       <div
         ref={tableWrapperRef}
-        className={`bg-background h-full overflow-auto rounded-md border`}
+        className={`bg-background w-full h-full overflow-auto rounded-md border`}
       >
         <Table
           className={cn("w-full")}
