@@ -8,6 +8,7 @@ import {
   ListLocations,
   PaginationInput,
   Routes,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { useNavigate } from 'react-router-dom';
 
@@ -81,7 +82,7 @@ export const ProductVariantsListPage = () => {
         {
           id: 'stock',
           accessorKey: 'stock',
-          header: () => t('table.stock'),
+          header: () => <TableLabel>{t('table.stock')}</TableLabel>,
           cell: ({ row }) => {
             return (
               <Badge variant={'outline'}>

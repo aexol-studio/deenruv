@@ -2,6 +2,8 @@ import { Button } from "@/components/atoms/button.js";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/atoms/dropdown-menu.js";
 import {
@@ -109,6 +111,8 @@ export const ColumnView = <T extends { id: string }>({
           align="start"
           className="max-h-[350px] space-y-2.5 overflow-y-auto p-2"
         >
+          <DropdownMenuLabel>{t("actionsMenu.label")}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}

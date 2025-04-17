@@ -15,6 +15,7 @@ import {
   apiClient,
   DialogComponentProps,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -73,7 +74,7 @@ export const MoveCollectionsToCollections: React.FC<
       accessorKey: 'id',
       enableHiding: false,
       enableColumnFilter: false,
-      header: () => t('table.id'),
+      header: () => <TableLabel>{t('table.id')}</TableLabel>,
       meta: { isPlaceholder: true },
       cell: ({ row }) => (
         <Badge variant="outline" className="flex w-full items-center justify-center">
@@ -84,12 +85,12 @@ export const MoveCollectionsToCollections: React.FC<
     },
     {
       accessorKey: 'name',
-      header: () => t('table.name'),
+      header: () => <TableLabel>{t('table.name')}</TableLabel>,
       filterFn: 'includesString',
     },
     {
       accessorKey: 'breadcrumbs',
-      header: () => t('table.breadcrumb'),
+      header: () => <TableLabel>{t('table.breadcrumb')}</TableLabel>,
       accessorFn: (row) =>
         row.breadcrumbs
           ?.filter((crumb) => !crumb.slug.includes('root_collection'))
@@ -97,7 +98,7 @@ export const MoveCollectionsToCollections: React.FC<
     },
     {
       accessorKey: 'slug',
-      header: () => t('table.slug'),
+      header: () => <TableLabel>{t('table.slug')}</TableLabel>,
     },
   ];
   const allCollectionsColumns: ColumnDef<SimpleTableData>[] = [

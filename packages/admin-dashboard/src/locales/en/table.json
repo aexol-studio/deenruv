@@ -150,7 +150,8 @@
         "open": "Open",
         "copyId": "Copy ID",
         "view": "View",
-        "delete": "Delete"
+        "delete": "Delete",
+        "label": "Order in the table"
     },
     "filterDialog": {
         "title": "Filters",

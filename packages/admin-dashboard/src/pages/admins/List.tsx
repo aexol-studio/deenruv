@@ -7,6 +7,7 @@ import {
   ListBadge,
   ListLocations,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
@@ -67,7 +68,7 @@ export const AdminsListPage = () => {
           accessorKey: 'role',
           enableSorting: false,
           enableColumnFilter: false,
-          header: () => t('table.role'),
+          header: () => <TableLabel>{t('table.role')}</TableLabel>,
           cell: ({ row }) => (
             <div className="flex gap-1">
               {row.original.user.roles.map((r) => (

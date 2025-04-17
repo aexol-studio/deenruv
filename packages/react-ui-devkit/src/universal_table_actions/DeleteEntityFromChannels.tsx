@@ -22,6 +22,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TableLabel,
   TableRow,
 } from "@/components/index.js";
 import { useTranslation } from "@/hooks/useTranslation.js";
@@ -74,7 +75,7 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
         accessorKey: "id",
         enableHiding: false,
         enableColumnFilter: false,
-        header: () => t("table.id"),
+        header: () => <TableLabel>{t("table.id")}</TableLabel>,
         meta: { isPlaceholder: true },
         cell: ({ row }) => (
           <Badge
@@ -88,11 +89,11 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
       },
       {
         accessorKey: "name",
-        header: () => t("table.name"),
+        header: () => <TableLabel>{t("table.name")}</TableLabel>,
       },
       {
         accessorKey: "slug",
-        header: () => t("table.slug"),
+        header: () => <TableLabel>{t("table.slug")}</TableLabel>,
       },
     ],
     getCoreRowModel: getCoreRowModel(),
@@ -128,11 +129,15 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
       },
       {
         accessorKey: "code",
-        header: () => t("moveCollectionsToChannels.table.code"),
+        header: () => (
+          <TableLabel>{t("moveCollectionsToChannels.table.code")}</TableLabel>
+        ),
       },
       {
         accessorKey: "token",
-        header: () => t("moveCollectionsToChannels.table.token"),
+        header: () => (
+          <TableLabel>{t("moveCollectionsToChannels.table.token")}</TableLabel>
+        ),
       },
       {
         accessorKey: "active",

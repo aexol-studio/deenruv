@@ -150,7 +150,8 @@
     "open": "Otwarte",
     "copyId": "Kopiuj ID",
     "view": "Widok",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    "label": "Kolejnosć w tabeli"
   },
   "filterDialog": {
     "title": "Filtry",

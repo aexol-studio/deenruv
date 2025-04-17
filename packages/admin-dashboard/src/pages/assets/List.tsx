@@ -8,6 +8,7 @@ import {
   Badge,
   ImageWithPreview,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { UploadAssetDialog } from '@/pages/assets/_components/UploadAssetDialog.js';
@@ -92,7 +93,7 @@ export const AssetsListPage = () => {
       additionalColumns={[
         {
           accessorKey: 'preview',
-          header: t('columns.image'),
+          header: () => <TableLabel>{t('columns.image')}</TableLabel>,
           cell: ({ row }) => {
             const { name, preview } = row.original;
             return (
@@ -104,7 +105,7 @@ export const AssetsListPage = () => {
         },
         {
           accessorKey: 'tags',
-          header: t('columns.tags'),
+          header: () => <TableLabel>{t('columns.tags')}</TableLabel>,
           cell: ({ row }) => {
             const { tags } = row.original;
             return (

@@ -10,6 +10,7 @@ import {
   ListLocations,
   useTranslation,
   Routes,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { RoleListType } from '@/graphql/roles';
@@ -83,7 +84,7 @@ export const RolesListPage = () => {
           accessorKey: 'permissions',
           enableSorting: false,
           enableColumnFilter: false,
-          header: () => t('table.permissions'),
+          header: () => <TableLabel>{t('table.permissions')}</TableLabel>,
           cell: ({ row }) => (
             <div className="flex gap-1">
               {isDefaultRole(row) ? (
@@ -100,7 +101,7 @@ export const RolesListPage = () => {
           accessorKey: 'channels',
           enableSorting: false,
           enableColumnFilter: false,
-          header: () => t('table.channels'),
+          header: () => <TableLabel>{t('table.channels')}</TableLabel>,
           cell: ({ row }) => (
             <div className="flex gap-1">
               {isDefaultRole(row)

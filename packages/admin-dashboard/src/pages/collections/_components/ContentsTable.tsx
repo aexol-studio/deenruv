@@ -15,6 +15,7 @@ import {
   deepMerge,
   ImageWithPreview,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 
 import { CollectionProductVariantsSelector, CollectionProductVariantsType } from '@/graphql/collections';
@@ -94,7 +95,7 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
         accessorKey: 'id',
         enableHiding: false,
         enableColumnFilter: false,
-        header: t('table.id'),
+        header: () => <TableLabel>{t('table.id')}</TableLabel>,
         cell: ({ row }) => (
           <Link to={Routes.products.to(`${row.original.product.id}?tab=variants`)} className="text-primary-600">
             <Badge variant="outline" className="flex w-full items-center justify-center">
@@ -107,21 +108,21 @@ export const ContentsTable: React.FC<ContentsProps> = ({ collectionId, filter })
 
       {
         accessorKey: 'featuredAsset',
-        header: t('table.featuredAsset'),
+        header: () => <TableLabel>{t('table.featuredAsset')}</TableLabel>,
         cell: ({ row }) => <ImageWithPreview src={row.original.featuredAsset?.preview} alt={row.original.name} />,
       },
       {
         accessorKey: 'product.name',
-        header: () => <span>{t('drawer.product')}</span>,
+        header: () => <TableLabel>{t('drawer.product')}</TableLabel>,
       },
       {
         accessorKey: 'name',
-        header: () => <span>{t('drawer.variant')}</span>,
+        header: () => <TableLabel>{t('drawer.variant')}</TableLabel>,
       },
 
       {
         accessorKey: 'sku',
-        header: () => <span>{t('drawer.sku')}</span>,
+        header: () => <TableLabel>{t('drawer.sku')}</TableLabel>,
       },
     ],
     [t],

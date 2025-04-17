@@ -123,6 +123,7 @@ export function ListTable<TData, TValue>({
     if (rowRefs.current.length && tableWrapperRef.current) {
       const tbodyHeight =
         tableWrapperRef.current?.clientHeight - TABLE_HEADER_HEIGHT;
+      console.log("H", tableWrapperRef.current?.clientHeight);
       const rowHeight = tbodyHeight / 10;
       const finalRowHeight =
         rowHeight >= MINIMUM_ROW_HEIGHT ? rowHeight : MINIMUM_ROW_HEIGHT;
@@ -162,7 +163,7 @@ export function ListTable<TData, TValue>({
     <>
       <div
         ref={tableWrapperRef}
-        className={`bg-background w-full h-full overflow-auto rounded-md border`}
+        className={`bg-background w-full h-full overflow-auto rounded-md border scroll-thin`}
       >
         <Table
           className={cn("w-full")}
