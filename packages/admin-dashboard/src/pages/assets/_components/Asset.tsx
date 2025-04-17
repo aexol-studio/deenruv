@@ -61,27 +61,27 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
 
   const tableData = [
     {
-      header: () => <TableLabel>{t('assets:detailsTable.id', 'ID')}</TableLabel>,
+      header: <TableLabel>{t('assets:detailsTable.id', 'ID')}</TableLabel>,
       render: assetDetails?.id,
     },
     {
-      header: () => <TableLabel>{t('assets:detailsTable.name', 'Name')}</TableLabel>,
+      header: <TableLabel>{t('assets:detailsTable.name', 'Name')}</TableLabel>,
       render: <Input value={assetName} onChange={(e) => setAssetName(e.target.value)} />,
     },
     {
-      header: () => <TableLabel>{t('assets:detailsTable.fileSize', 'File Size')}</TableLabel>,
+      header: <TableLabel>{t('assets:detailsTable.fileSize', 'File Size')}</TableLabel>,
       render: assetDetails?.fileSize && assetDetails.fileSize / 1000 + 'kB',
     },
     {
-      header: () => <TableLabel>{t('assets:detailsTable.createdAt', 'Created At')}</TableLabel>,
+      header: <TableLabel>{t('assets:detailsTable.createdAt', 'Created At')}</TableLabel>,
       render: assetDetails?.createdAt && format(new Date(assetDetails.createdAt), 'yyyy-MM-dd, HH:ss'),
     },
     {
-      header: () => <TableLabel>{t('assets:detailsTable.size', 'Dimensions')}</TableLabel>,
+      header: <TableLabel>{t('assets:detailsTable.size', 'Dimensions')}</TableLabel>,
       render: assetDetails?.width && assetDetails?.height ? `${assetDetails.width}px x ${assetDetails.height}px` : '-',
     },
     {
-      header: () => <TableLabel>{t('assets:detailsTable.source', 'Source')}</TableLabel>,
+      header: <TableLabel>{t('assets:detailsTable.source', 'Source')}</TableLabel>,
       render: assetDetails?.source,
     },
   ];
