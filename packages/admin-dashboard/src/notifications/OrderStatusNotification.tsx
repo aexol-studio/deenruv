@@ -22,7 +22,7 @@ export const ORDER_STATUS_NOTIFICATION = createNotification({
     return orders.totalItems;
   },
   placements: {
-    main: (orders) => {
+    main: () => {
       return {
         name: 'order-states',
         title: 'Pending Orders',

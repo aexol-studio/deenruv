@@ -9,11 +9,11 @@ export const startGenerateSimpleBgMutation = typedGql("mutation", { scalars })({
   ],
 });
 
-export const assignPredictionToProductMutation = typedGql("mutation", {
+export const getPredictionAssetMutation = typedGql("mutation", {
   scalars,
 })({
-  assignPredictionToProduct: [
-    { input: $("input", "AssignPredictionToProductInput!") },
+  getPredictionAsset: [
+    { input: $("input", "GetPredictionAssetInput!") },
     {
       id: true,
       preview: true,

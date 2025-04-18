@@ -8,7 +8,7 @@ export const AdminExtension = gql`
     prompt: String
   }
 
-  input AssignPredictionToProductInput {
+  input GetPredictionAssetInput {
     predictionId: String!
     productId: String!
   }
@@ -21,7 +21,7 @@ export const AdminExtension = gql`
 
   extend type Mutation {
     startGenerateSimpleBg(input: StartGenerateSimpleBgInput!): String!
-    assignPredictionToProduct(input: AssignPredictionToProductInput!): Asset!
+    getPredictionAsset(input: GetPredictionAssetInput!): Asset!
   }
 
   input GetSimpleBgEntityInput {
@@ -36,6 +36,7 @@ export const AdminExtension = gql`
   }
 
   type PredictionSimpleBgResult {
+    id: ID!
     status: PredictionSimpleBgStatus
     image: String
     roomType: String
@@ -43,8 +44,6 @@ export const AdminExtension = gql`
   }
 
   input ReplicateSimpleBgEntityListOptions
-
-  input SimpleBgProductListOptions
 
   type Image {
     url: String!
@@ -63,6 +62,11 @@ export const AdminExtension = gql`
     image: String
   }
 
+  type SimpleBgPluginOptions {
+    roomTypes: [RoomType]
+    roomThemes: [RoomTheme]
+  }
+
   extend type Query {
     getSimpleBgID(input: GetSimpleBgEntityInput!): String
     getSimpleBgPredictions(
@@ -70,12 +74,7 @@ export const AdminExtension = gql`
     ): ReplicateSimpleBgEntityList!
     getSimpleBgItem(id: String!): PredictionSimpleBgResult!
     getSimpleBgThemeAsset(url: String!): Image!
-    getSimpleBgRoomType: [RoomType]
-    getSimpleBgRoomTheme: [RoomTheme]
-    getSimpleBgAssetIDByName(source: String!): ID!
-    getSimpleBgProductList(
-      options: SimpleBgProductListOptions
-    ): SimpleBgProductList!
+    getSimpleBgOptions: SimpleBgPluginOptions!
   }
 
   type ReplicateSimpleBgEntity implements Node {

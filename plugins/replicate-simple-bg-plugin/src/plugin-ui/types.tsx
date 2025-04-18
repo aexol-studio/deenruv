@@ -4,15 +4,9 @@ import { useForm } from "react-hook-form";
 
 export const formSchema = z.object({
   file: z.instanceof(File).nullable(),
-  room_type_enum: z.object({
-    value: z.string(),
-    label: z.string(),
-  }),
-  room_style_enum: z.object({
-    value: z.string(),
-    label: z.string(),
-    image: z.string(),
-  }),
+  room_type_enum: z.string().min(1),
+  room_style_enum: z.string().min(1),
+  prompt: z.string().optional().nullable(),
 });
 
 export const useReplicateForm = () => {

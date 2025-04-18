@@ -49,5 +49,5 @@ export function useLazyQuery<
     });
   }, [selectedChannel]);
 
-  return [runQuery, { data, loading, error }] as const;
+  return [runQuery, { data, setData, loading, error }] as const;
 }

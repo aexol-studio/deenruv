@@ -1,58 +1,48 @@
 import {
+  Label,
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectItem,
-  useLazyQuery,
+  SelectTrigger,
+  SelectValue,
   useTranslation,
 } from "@deenruv/react-ui-devkit";
-import { useFormContext } from "react-hook-form";
-import { translationNS } from "../translation-ns";
-import { z } from "zod";
-import { formSchema } from "../types";
-import { getSimpleBgRoomTypeQuery } from "../graphql/queries";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { translationNS } from "../translation-ns.js";
+import { ReplicateRoomType } from "../graphql/selectors.js";
 
-export function RoomTypeSelect() {
+export const RoomTypeSelect: React.FC<{
+  roomTypes?: ReplicateRoomType[];
+  onValueChange: (newValue: string) => void;
+  selectedValue?: string;
+}> = ({ roomTypes, onValueChange, selectedValue }) => {
   const { t } = useTranslation(translationNS);
-  const [getRoomTypes] = useLazyQuery(getSimpleBgRoomTypeQuery);
-  const { setValue, watch } = useFormContext<z.infer<typeof formSchema>>();
-  const value = watch("room_type_enum") || { value: "", label: "" };
-  const [roomTypes, setRoomTypes] = useState<
-    { value: string; label: string }[] | null
-  >(null);
-
-  useEffect(() => {
-    getRoomTypes().then((data) => {
-      return setRoomTypes(
-        Array.isArray(data.getSimpleBgRoomType)
-          ? data.getSimpleBgRoomType.filter(
-              (item): item is { value: string; label: string } =>
-                !!item.value && !!item.label,
-            )
-          : [],
-      );
-    });
-  }, [getRoomTypes]);
-
   return (
-    <Select
-      value={value.label}
-      onValueChange={(newValue) =>
-        setValue("room_type_enum", { value: newValue, label: newValue })
-      }
-    >
-      <SelectTrigger id="room-type">
-        <SelectValue placeholder={t("select_room_type")} />
-      </SelectTrigger>
-      <SelectContent>
-        {roomTypes?.map((roomType) => (
-          <SelectItem key={roomType.value} value={roomType.value}>
-            {t(roomType.label)}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex flex-col gap-2">
+      <Label className="text-sm font-medium">{t("room_type")}</Label>
+      <Select
+        value={selectedValue}
+        onValueChange={(newValue) => {
+          const selectedOption = roomTypes?.find(
+            (option) => option.value === newValue,
+          );
+          if (!selectedOption) return;
+          const { value, label } = selectedOption;
+          if (!value || !label) return;
+          onValueChange(value);
+        }}
+      >
+        <SelectTrigger id="room-type">
+          <SelectValue placeholder={t("select_room_type")} />
+        </SelectTrigger>
+        <SelectContent>
+          {roomTypes?.map(({ label, value }) => (
+            <SelectItem key={value} value={value!}>
+              {t(label as string)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>{" "}
+    </div>
   );
-}
+};

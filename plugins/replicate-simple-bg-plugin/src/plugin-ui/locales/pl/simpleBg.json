@@ -32,6 +32,22 @@
   "succeeded": "Zakończono",
   "failed": "Niepowodzenie",
   "generate_new_background": "Wygeneruj nowe tło",
+  "no_room_style": "Brak stylu pomieszczenia",
+  "no_room_type": "Brak rodzaju pomieszczenia",
+  "no_file": "Brak pliku",
+  "refresh": "Odśwież liste",
+  "status": "Status",
+  "room_type": "Rodzaj pokoju",
+  "room_style": "Styl pokoju",
+  "prediction": "Predykcja",
+  "prediction_details": "Szczególy predykcji",
+  "generating_asset": "Generenowanie zdjęcia..",
+  "asset_assigned": "Zdjęcie przypisane do produktu",
+  "prompt_placeholder": "Czy chcesz coś zmienić? Opisz to tutaj!",
+  "prompt": "Zapytanie",
+  "error": {
+    "loading": "Trwa generowanie zdjęcia.."
+  },
   "modal": {
     "title": "Predykcja",
     "choose_room_type": "Wybierz pomieszczenie",
@@ -45,9 +61,6 @@
     "product_action": "Akcja",
     "product_assign": "Przypisz",
     "run_model_again": "Uruchom model ponownie",
-    "input_prompt": "Czy chcesz coś zmienić? Opisz to tutaj!",
-    "room_type": "Rodzaj pokoju",
-    "room_style": "Styl pokoju",
-    "prediction": "Predykcja"
+    "input_prompt": "Czy chcesz coś zmienić? Opisz to tutaj!"
   }
 }

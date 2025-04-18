@@ -7,7 +7,6 @@ import {
   ListQueryOptions,
   PaginatedList,
   ListQueryBuilder,
-  Product,
   ProductTranslation,
 } from "@deenruv/core";
 import { Inject, Injectable } from "@nestjs/common";
@@ -20,7 +19,7 @@ import {
   StartGenerateSimpleBGInput,
   AssignPredictionToProductInput,
 } from "../graphql/generated-admin-types.js";
-import { ReplicateSimpleBgEntity } from "../entities/replicate-simple-gb.js";
+import { ReplicateSimpleBgEntity } from "../entities/replicate-simple-bg.js";
 import axios from "axios";
 import { PredictionSimpleBgStatus } from "../zeus/index.js";
 import fs from "fs";
@@ -35,8 +34,6 @@ import {
 
 @Injectable()
 export class ReplicateSimpleBGService {
-  private readonly assetURL: string;
-
   constructor(
     @Inject(REPLICATE_SIMPLE_BG_PLUGIN_OPTIONS)
     private readonly options: ReplicateSimpleBGOptions,
@@ -58,7 +55,6 @@ export class ReplicateSimpleBGService {
     if (!this.options.envs["assetPrefix"]) {
       throw new Error("Replicate: assetPrefix not set");
     }
-    this.assetURL = this.options.envs["assetPrefix"];
   }
 
   async getSimpleBgID(ctx: RequestContext, prediction_simple_bg_id: string) {
@@ -78,8 +74,7 @@ export class ReplicateSimpleBGService {
         Logger.error("Asset not found", LOGGER_CTX);
         return;
       }
-
-      const assetUrl = [this.assetURL, imageAsset.source]
+      const assetUrl = [this.options["envs"]["assetPrefix"], imageAsset.source]
         .filter((v) => !!v)
         .join("/");
       const assetResponse = await axios.get(assetUrl, {
@@ -113,7 +108,7 @@ export class ReplicateSimpleBGService {
         },
         {
           headers: {
-            Authorization: `Bearer ${this.options.envs["apiToken"]}`,
+            Authorization: `Bearer ${this.options["envs"]["apiToken"]}`,
             "Content-Type": `application/json`,
           },
         },
@@ -124,8 +119,8 @@ export class ReplicateSimpleBGService {
         .save({
           prediction_simple_bg_id: response.data.id,
           status: response.data.status,
-          roomType: roomType,
-          roomStyle: roomStyle,
+          roomType,
+          roomStyle,
         });
 
       return entity.id;
@@ -149,7 +144,7 @@ export class ReplicateSimpleBGService {
         `https://api.replicate.com/v1/predictions/${prediction_simple_bg_id}`,
         {
           headers: {
-            Authorization: `Bearer ${this.options.envs["apiToken"]}`,
+            Authorization: `Bearer ${this.options["envs"]["apiToken"]}`,
             "Content-Type": "application/json",
           },
         },
@@ -244,9 +239,6 @@ export class ReplicateSimpleBGService {
     if (!prediction) {
       return new Error("Prediction not found");
     }
-    if (this.options.envs["assetPrefix"] === undefined) {
-      throw new Error("Replicate: assetPrefix not set");
-    }
     if (
       [
         PredictionSimpleBgStatus.preprocessing as string,
@@ -258,7 +250,7 @@ export class ReplicateSimpleBGService {
         prediction.prediction_simple_bg_id,
       );
       if (!updated_prediction) {
-        return { status: prediction.status, image: "" };
+        return { ...prediction, image: "" };
       }
     }
     const image = [this.options.envs["assetPrefix"], prediction.output].join(
@@ -267,46 +259,38 @@ export class ReplicateSimpleBGService {
     return { ...prediction, image };
   }
 
-  async getSimpleBgThemesAsset() {
+  getSimpleBgThemesAsset() {
     return this.options.envs["assetPrefix"];
   }
 
-  async getSimpleBgRoomType() {
-    return [...DEFAULT_ROOM_TYPE, ...(this.options.roomType || [])];
-  }
-
-  async getSimpleBgRoomTheme() {
-    const assetPrefix = this.options.envs["assetPrefix"];
-    if (typeof assetPrefix !== "string" || assetPrefix === undefined) {
-      throw new Error("Replicate: assetPrefix must be a string");
-    }
-
-    const roomTheme = [
+  getSimpleBgOptions() {
+    const roomThemes = [
       ...DEFAULT_ROOM_THEME,
       ...(this.options.roomTheme || []),
-    ];
-
-    for (const theme of roomTheme) {
-      if (!theme.image.startsWith(assetPrefix)) {
-        theme.image = [assetPrefix, theme.image].join("/");
+    ].map((theme) => {
+      if (!theme.image.startsWith(this.options.envs["assetPrefix"])) {
+        return {
+          ...theme,
+          image: [this.options.envs["assetPrefix"], theme.image].join("/"),
+        };
       }
-    }
+      return theme;
+    });
+    const roomTypes = [...DEFAULT_ROOM_TYPE, ...(this.options.roomType || [])];
 
-    return roomTheme;
+    return { roomTypes, roomThemes };
   }
 
-  async assignPredictionToProduct(
+  async getPredictionAsset(
     ctx: RequestContext,
     input: AssignPredictionToProductInput,
   ) {
     const prediction = await this.connection
       .getRepository(ctx, ReplicateSimpleBgEntity)
       .findOne({ where: { id: input.predictionId } });
-
     if (!prediction) {
       return new Error("Prediction not found");
     }
-
     const prediction_asset = await this.connection
       .getRepository(ctx, ReplicateSimpleBgEntity)
       .findOne({
@@ -315,13 +299,10 @@ export class ReplicateSimpleBGService {
     if (!prediction_asset) {
       throw new Error("Asset not found for prediction output");
     }
-
     const assets = await this.assetService.findAll(ctx, {
       filter: { source: { eq: prediction_asset.output } },
     });
-
-    const asset = assets.items[0];
-    return asset;
+    return assets.items?.at(0);
   }
 
   async getSimpleBgAssetIDByName(ctx: RequestContext, source: string) {
@@ -335,16 +316,5 @@ export class ReplicateSimpleBGService {
       throw new Error("Asset not found");
     }
     return asset.id;
-  }
-
-  async getSimpleBgProductList(
-    ctx: RequestContext,
-    options?: ListQueryOptions<ProductTranslation>,
-  ): Promise<PaginatedList<ProductTranslation>> {
-    const qb = this.listQueryBuilder.build(ProductTranslation, options, {
-      ctx,
-    });
-    const [items, totalItems] = await qb.getManyAndCount();
-    return { items, totalItems };
   }
 }
