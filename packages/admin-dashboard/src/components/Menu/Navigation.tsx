@@ -261,13 +261,6 @@ export function Navigation({ isCollapsed }: NavProps) {
             requiredPermissions: [Permission.ReadSettings],
           },
           {
-            title: t('menu.extensions'),
-            href: Routes.extensions,
-            id: 'Extensions',
-            icon: Puzzle,
-            requiredPermissions: [Permission.ReadSettings],
-          },
-          {
             title: t('menu.systemStatus'),
             href: Routes.status,
             id: 'link-system-status',
@@ -329,17 +322,19 @@ export function Navigation({ isCollapsed }: NavProps) {
       .filter((group) => group.links.length > 0);
   }, [userPermissions, navigationGroups]);
 
-  const defaultAccordionOpenValue = useMemo(
-    () =>
-      permittedNavigationGroups
-        .filter((g) => !navMenuData.groups.find((pluginGroup) => pluginGroup.id === g.id))
-        .map((g) => g.id),
-    [permittedNavigationGroups, navMenuData],
-  );
+  // const defaultAccordionOpenValue = useMemo(
+  //   () =>
+  //     permittedNavigationGroups
+  //       .filter((g) => !navMenuData.groups.find((pluginGroup) => pluginGroup.id === g.id))
+  //       .map((g) => g.id),
+  //   [permittedNavigationGroups, navMenuData],
+  // );
+
+  const defaultAccordionOpenValue = ['shop-group', 'assortment-group'];
 
   if (!loaded) return null;
   return (
-    <div className="relative h-[calc(100vh-110px)] overflow-y-auto lg:h-[calc(100vh-120px)]">
+    <div className="relative overflow-y-auto">
       <div
         data-collapsed={isCollapsed}
         className="group flex h-[calc(100%-70px)] flex-col gap-4 pb-2 data-[collapsed=true]:py-2 lg:h-[calc(100%-80px)]"

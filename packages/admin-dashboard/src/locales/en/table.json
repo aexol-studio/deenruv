@@ -141,14 +141,18 @@
         "currencyCode": "Currency",
         "totalQuantity": "Number",
         "postalCode": "Postcode",
-        "image": "Image"
+        "image": "Image",
+        "preview": "Preview",
+        "tags": "Tags",
+        "title": "Title"
     },
     "actionsMenu": {
         "title": "Activities",
         "open": "Open",
         "copyId": "Copy ID",
         "view": "View",
-        "delete": "Delete"
+        "delete": "Delete",
+        "label": "Order in the table"
     },
     "filterDialog": {
         "title": "Filters",

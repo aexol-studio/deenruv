@@ -1,5 +1,5 @@
 {
-    "add": "Add your order",
+    "add": "Add order",
     "selectPaymentMethod": "Select a payment method",
     "enterTransactionId": "Enter transaction id",
     "applyChanges": "Apply changes",
@@ -16,7 +16,7 @@
     "variants": "variants",
     "enabled": "on",
     "copied": "Text copied to clipboard",
-    "noFilterField": "No",
+    "noFilterField": "None",
     "columns": "Columns",
     "deleteOrCancel": "Delete/Cancel option selected",
     "selectedValue": "{{from}} of {{to}} lines selected",
@@ -33,11 +33,11 @@
         "mistake": "Mistake"
     },
     "deleteDraft": {
-        "button": "Delete draft",
+        "button": "Delete draft version",
         "title": "Are you sure?",
         "descriptionDraft": "The following draft orders will be permanently deleted:",
         "descriptionOrder": "The following orders will be cancelled:",
-        "confirm": "Delete draft",
+        "confirm": "Delete draft version",
         "cancel": "Cancel"
     },
     "searchProduct": {
@@ -46,7 +46,7 @@
         "name": "Name",
         "price": "Price",
         "action": "Operation",
-        "placeholder": "Type to search for products..."
+        "placeholder": "Enter to search for products..."
     },
     "forms": {
         "create": "Create order",
@@ -76,7 +76,7 @@
         "viewPayment": "Display payment details",
         "viewOrder": "View order",
         "paymentMethod": "Payment type",
-        "add": "Add your order",
+        "add": "Add order",
         "applyChanges": "Apply changes",
         "reviewChanges": "Review changes",
         "note": "Add note",
@@ -91,7 +91,7 @@
         "variants": "variants",
         "enabled": "on",
         "copied": "Text copied to clipboard",
-        "noFilterField": "No",
+        "noFilterField": "None",
         "columns": "Columns",
         "deleteOrCancel": "Delete/Cancel option selected",
         "selectedValue": "{{from}} of {{to}} lines selected",
@@ -100,11 +100,11 @@
         "total": "Total",
         "totalItems": "Total price of {{value}} products",
         "deleteDraft": {
-            "button": "Delete draft",
+            "button": "Delete draft version",
             "title": "Are you sure?",
             "descriptionDraft": "The following draft orders will be permanently deleted:",
             "descriptionOrder": "The following orders will be cancelled:",
-            "confirm": "Delete draft",
+            "confirm": "Delete draft version",
             "cancel": "Cancel"
         },
         "searchProduct": {
@@ -113,7 +113,7 @@
             "name": "Name",
             "price": "Price",
             "action": "Operation",
-            "placeholder": "Type to search for products..."
+            "placeholder": "Enter to search for products..."
         },
         "forms": {
             "create": "Create order",
@@ -167,7 +167,7 @@
             "baseInfoCreated": "Created: {{value}}",
             "orderId": "Order #{{value}}",
             "addProduct": "Add product",
-            "back": "Back",
+            "back": "Return",
             "draftOrder": "Draft order",
             "leaveToastMessage": "Are you sure you want to leave this page?",
             "leaveToastButton": "Leave",
@@ -182,7 +182,7 @@
             "updateAddItemToast": "Item successfully added to the order",
             "updateQuantityItemToast": "Item successfully changed to order quantity",
             "searchHeader": "Product",
-            "searchPlaceholder": "Type to search for products...",
+            "searchPlaceholder": "Enter to search for products...",
             "product": "Product",
             "slug": "Short name (slug)",
             "preview": "Preview",
@@ -314,8 +314,8 @@
             "inputStreetPlaceholder": "Street Line 1",
             "inputStreet2Label": "Street Line 2",
             "inputStreet2Placeholder": "Street Line 2",
-            "inputTaxLabel": "Company tax ID",
-            "inputTaxPlaceholder": "Company tax ID"
+            "inputTaxLabel": "Company tax identifier",
+            "inputTaxPlaceholder": "Company tax identifier"
         },
         "selectShipmentMethod": {
             "noLines": "At least one item is required",
@@ -323,16 +323,16 @@
             "cardDescription": "Select shipping method",
             "noSelected": "No shipping method selected.",
             "noSelectedTip": "Please add products before selecting a shipping method.",
-            "buttonLabel": "Set your shipping method",
+            "buttonLabel": "Set shipping method",
             "close": "Close",
             "save": "Save",
-            "setMethodTitle": "Set your shipping method",
+            "setMethodTitle": "Set shipping method",
             "setMethodDescription": "Select shipping method",
             "shippingAdded": "Shipping method has been successfully added",
             "code": "Code:",
             "price": "Price:",
             "method": "Method:",
-            "addMethod": "Add a shipping method"
+            "addMethod": "Add shipping method"
         },
         "inputs": {
             "pickDate": "Select date"
@@ -393,7 +393,7 @@
         "baseInfoCreated": "Created: {{value}}",
         "orderId": "Order #{{value}}",
         "addProduct": "Add product",
-        "back": "Back",
+        "back": "Return",
         "draftOrder": "Draft order",
         "leaveToastMessage": "Are you sure you want to leave this page?",
         "leaveToastButton": "Leave",
@@ -408,7 +408,7 @@
         "updateAddItemToast": "Item successfully added to the order",
         "updateQuantityItemToast": "Item successfully changed to order quantity",
         "searchHeader": "Product",
-        "searchPlaceholder": "Type to search for products...",
+        "searchPlaceholder": "Enter to search for products...",
         "product": "Product",
         "slug": "Short name (slug)",
         "preview": "Preview",
@@ -540,8 +540,8 @@
         "inputStreetPlaceholder": "Street Line 1",
         "inputStreet2Label": "Street Line 2",
         "inputStreet2Placeholder": "Street Line 2",
-        "inputTaxLabel": "Company tax ID",
-        "inputTaxPlaceholder": "Company tax ID"
+        "inputTaxLabel": "Company tax identifier",
+        "inputTaxPlaceholder": "Company tax identifier"
     },
     "selectShipmentMethod": {
         "noLines": "At least one item is required",
@@ -549,16 +549,16 @@
         "cardDescription": "Select shipping method",
         "noSelected": "No shipping method selected.",
         "noSelectedTip": "Please add products before selecting a shipping method.",
-        "buttonLabel": "Set your shipping method",
+        "buttonLabel": "Set shipping method",
         "close": "Close",
         "save": "Save",
-        "setMethodTitle": "Set your shipping method",
+        "setMethodTitle": "Set shipping method",
         "setMethodDescription": "Select shipping method",
         "shippingAdded": "Shipping method has been successfully added",
         "code": "Code:",
         "price": "Price:",
         "method": "Method:",
-        "addMethod": "Add a shipping method"
+        "addMethod": "Add shipping method"
     },
     "inputs": {
         "pickDate": "Select date"

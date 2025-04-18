@@ -16,6 +16,7 @@ import {
   apiClient,
   DialogComponentProps,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import {
   ColumnDef,
@@ -64,7 +65,7 @@ export const MoveEntityToChannels: React.FC<
       accessorKey: 'id',
       enableHiding: false,
       enableColumnFilter: false,
-      header: () => t('table.id'),
+      header: () => <TableLabel>{t('table.id')}</TableLabel>,
       meta: { isPlaceholder: true },
       cell: ({ row }) => (
         <Badge variant="outline" className="flex w-full items-center justify-center">
@@ -75,11 +76,11 @@ export const MoveEntityToChannels: React.FC<
     },
     {
       accessorKey: 'name',
-      header: () => t('table.name'),
+      header: () => <TableLabel>{t('table.name')}</TableLabel>,
     },
     {
       accessorKey: 'breadcrumbs',
-      header: () => t('table.breadcrumb'),
+      header: () => <TableLabel>{t('table.breadcrumb')}</TableLabel>,
       accessorFn: (row) =>
         row.breadcrumbs
           ?.filter((crumb) => !crumb.slug.includes('root_collection'))
@@ -87,7 +88,7 @@ export const MoveEntityToChannels: React.FC<
     },
     {
       accessorKey: 'slug',
-      header: () => t('table.slug'),
+      header: () => <TableLabel>{t('table.slug')}</TableLabel>,
     },
   ];
   const channelsColumns: ColumnDef<ChannelType>[] = [
@@ -117,11 +118,11 @@ export const MoveEntityToChannels: React.FC<
     },
     {
       accessorKey: 'code',
-      header: () => t('moveCollectionsToChannels.table.code'),
+      header: () => <TableLabel>{t('moveCollectionsToChannels.table.code')}</TableLabel>,
     },
     {
       accessorKey: 'token',
-      header: () => t('moveCollectionsToChannels.table.token'),
+      header: () => <TableLabel>{t('moveCollectionsToChannels.table.token')}</TableLabel>,
     },
     {
       accessorKey: 'active',

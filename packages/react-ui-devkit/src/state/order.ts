@@ -329,16 +329,22 @@ export const useOrder = create<Order & Actions>()((set, get) => {
       cancelFulfillmentMutation(id).then(() => fetchOrder(order!.id));
     },
     setOrder: (order) => {
-      const { orderProcess } = get();
+      const { orderProcess, modifiedOrder } = get();
       let mode: Mode | undefined;
+      let currentOrder: OrderDetailType | undefined;
       if (!order) {
         mode = undefined;
+        currentOrder = undefined;
       } else if (order.state === ORDER_STATE.DRAFT) {
         mode = "create";
+        currentOrder = order;
       } else if (order.state === ORDER_STATE.MODIFYING) {
         mode = "update";
+        console.log("SETTING MOD");
+        currentOrder = modifiedOrder ? modifiedOrder : order;
       } else {
         mode = "view";
+        currentOrder = order;
       }
       if (order) {
         const currentPossibilities = orderProcess?.find(
@@ -351,7 +357,7 @@ export const useOrder = create<Order & Actions>()((set, get) => {
         set({ modifiedOrder });
       }
 
-      set({ mode, order });
+      set({ mode, order, currentOrder });
     },
     initializeOrderCustomFields: (serverConfig: ServerConfigType) => {
       const { order } = get();

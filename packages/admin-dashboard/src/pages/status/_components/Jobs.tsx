@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
   formatDate,
   ListTable,
+  TableLabel,
   useDetailListHook,
   useTranslation,
 } from '@deenruv/react-ui-devkit';
@@ -148,7 +149,7 @@ export const Jobs = () => {
     () => [
       {
         accessorKey: 'id',
-        header: t('jobs.table.id'),
+        header: () => <TableLabel>{t('jobs.table.id')}</TableLabel>,
         cell: ({ row }) => (
           <div className="max-w-[120px] truncate font-mono text-xs" title={row.original.id}>
             {row.original.id}
@@ -157,12 +158,12 @@ export const Jobs = () => {
       },
       {
         accessorKey: 'queueName',
-        header: t('jobs.table.queueName'),
+        header: () => <TableLabel>{t('jobs.table.queueName')}</TableLabel>,
         cell: ({ row }) => <div className="font-medium">{row.original.queueName}</div>,
       },
       {
         accessorKey: 'state',
-        header: t('jobs.table.status'),
+        header: () => <TableLabel>{t('jobs.table.status')}</TableLabel>,
         cell: ({ row }) => {
           const state = row.original.state;
           return <JobStateBadge state={state} />;
@@ -170,22 +171,22 @@ export const Jobs = () => {
       },
       {
         accessorKey: 'createdAt',
-        header: t('jobs.table.created'),
+        header: () => <TableLabel>{t('jobs.table.created')}</TableLabel>,
         cell: ({ row }) => formatDate(row.original.createdAt),
       },
       {
         accessorKey: 'startedAt',
-        header: t('jobs.table.started'),
+        header: () => <TableLabel>{t('jobs.table.started')}</TableLabel>,
         cell: ({ row }) => formatDate(row.original.startedAt || ''),
       },
       {
         accessorKey: 'settledAt',
-        header: t('jobs.table.settled'),
+        header: () => <TableLabel>{t('jobs.table.settled')}</TableLabel>,
         cell: ({ row }) => formatDate(row.original.settledAt || ''),
       },
       {
         accessorKey: 'jobData',
-        header: t('jobs.table.jobData'),
+        header: () => <TableLabel>{t('jobs.table.jobData')}</TableLabel>,
         cell: ({ row }) => {
           return JsonPopup({
             data: row.original.data,
@@ -194,7 +195,7 @@ export const Jobs = () => {
       },
       {
         accessorKey: 'duration',
-        header: t('jobs.table.duration'),
+        header: () => <TableLabel>{t('jobs.table.duration')}</TableLabel>,
         cell: ({ row }) => {
           const duration = calculateDuration(row.original.startedAt, row.original.settledAt);
           return <div>{duration}</div>;
@@ -202,7 +203,7 @@ export const Jobs = () => {
       },
       {
         accessorKey: 'jobResult',
-        header: t('jobs.table.jobResult'),
+        header: () => <TableLabel>{t('jobs.table.jobResult')}</TableLabel>,
         cell: ({ row }) => {
           return JobResultPopover({
             result: row.original.result,

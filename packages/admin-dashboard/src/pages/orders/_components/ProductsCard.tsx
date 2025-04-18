@@ -327,8 +327,6 @@ export const ProductsCard: React.FC = () => {
       const allRefundLines = order?.payments?.flatMap((payment) => payment.refunds)?.flatMap((refund) => refund.lines);
       const lineInRefunds = allRefundLines?.find((line) => line.orderLineId === lineId);
 
-      console.log('AR', allRefundLines, lineInRefunds);
-
       if (!lineInRefunds) return quantity;
       else
         return (

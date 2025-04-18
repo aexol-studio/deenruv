@@ -20,8 +20,6 @@ export const SurchargeCard: React.FC<{}> = () => {
   const { setModifyOrderInput, modifyOrderInput, setModifiedOrder, modifiedOrder } = useOrder();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  console.log('C', modifiedOrder?.currencyCode);
-
   const { state, setField } = useGFFLP(
     'SurchargeInput',
     'description',

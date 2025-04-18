@@ -141,14 +141,18 @@
     "currencyCode": "Waluta",
     "totalQuantity": "Liczba",
     "postalCode": "Kod pocztowy",
-    "image": "Obraz"
+    "image": "Obraz",
+    "preview": "Podgląd",
+    "tags": "Tagi",
+    "title": "Tytuł"
   },
   "actionsMenu": {
     "title": "Działania",
     "open": "Otwarte",
     "copyId": "Kopiuj ID",
     "view": "Widok",
-    "delete": "Usuń"
+    "delete": "Usuń",
+    "label": "Kolejnosć w tabeli"
   },
   "filterDialog": {
     "title": "Filtry",

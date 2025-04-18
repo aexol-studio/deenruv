@@ -25,6 +25,7 @@ import {
   useServer,
   EntityCustomFields,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import { type AssetType, assetsSelector } from '@/graphql/base';
 import { DeletionResult } from '@deenruv/admin-types';
@@ -60,27 +61,27 @@ export const Asset: React.FC<AssetProps> = ({ asset, onAssetChange }) => {
 
   const tableData = [
     {
-      header: t('assets:detailsTable.id', 'ID'),
+      header: <TableLabel>{t('assets:detailsTable.id', 'ID')}</TableLabel>,
       render: assetDetails?.id,
     },
     {
-      header: t('assets:detailsTable.name', 'Name'),
+      header: <TableLabel>{t('assets:detailsTable.name', 'Name')}</TableLabel>,
       render: <Input value={assetName} onChange={(e) => setAssetName(e.target.value)} />,
     },
     {
-      header: t('assets:detailsTable.fileSize', 'File Size'),
+      header: <TableLabel>{t('assets:detailsTable.fileSize', 'File Size')}</TableLabel>,
       render: assetDetails?.fileSize && assetDetails.fileSize / 1000 + 'kB',
     },
     {
-      header: t('assets:detailsTable.createdAt', 'Created At'),
+      header: <TableLabel>{t('assets:detailsTable.createdAt', 'Created At')}</TableLabel>,
       render: assetDetails?.createdAt && format(new Date(assetDetails.createdAt), 'yyyy-MM-dd, HH:ss'),
     },
     {
-      header: t('assets:detailsTable.size', 'Dimensions'),
+      header: <TableLabel>{t('assets:detailsTable.size', 'Dimensions')}</TableLabel>,
       render: assetDetails?.width && assetDetails?.height ? `${assetDetails.width}px x ${assetDetails.height}px` : '-',
     },
     {
-      header: t('assets:detailsTable.source', 'Source'),
+      header: <TableLabel>{t('assets:detailsTable.source', 'Source')}</TableLabel>,
       render: assetDetails?.source,
     },
   ];

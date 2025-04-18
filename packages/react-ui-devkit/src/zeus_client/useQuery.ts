@@ -3,6 +3,7 @@ import { DocumentNode } from "graphql";
 import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { print } from "graphql";
 import { deenruvAPICall } from "./deenruvAPICall";
+import { useSettings } from "@/state/settings.js";
 
 export function useQuery<
   T,
@@ -13,8 +14,10 @@ export function useQuery<
     initialVariables?: V;
     customParams?: Record<string, string>;
     onSuccess?: (data: T) => void;
+    stopRefetchOnChannelChange?: boolean;
   },
 ) {
+  const selectedChannel = useSettings((p) => p.selectedChannel);
   const { initialVariables, customParams, onSuccess } = options || {};
   const [variables] = useState<V | undefined>(initialVariables);
   const [data, setData] = useState<T | null>(null);
@@ -52,6 +55,13 @@ export function useQuery<
       // * Allow the consuming component to handle the error
     });
   }, []);
+
+  useEffect(() => {
+    if (options?.stopRefetchOnChannelChange) return;
+    runQuery(variables, customParams).catch(() => {
+      // * Allow the consuming component to handle the error
+    });
+  }, [selectedChannel]);
 
   return { data, loading, error, runQuery };
 }

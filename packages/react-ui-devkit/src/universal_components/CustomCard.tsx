@@ -147,9 +147,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
           >
             <CardContent>{children}</CardContent>
             {bottomRight && (
-              <CardFooter className="justify-end pb-2">
-                {bottomRight}
-              </CardFooter>
+              <CardFooter className="justify-end">{bottomRight}</CardFooter>
             )}
           </AccordionContent>
         </Card>

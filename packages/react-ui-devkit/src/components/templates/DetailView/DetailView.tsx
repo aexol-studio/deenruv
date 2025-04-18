@@ -32,8 +32,7 @@ import { useServer } from "@/state/server.js";
 import { getPermissions } from "@/utils/getPermissions.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
 import { LoadingMask } from "@/components/templates/DetailView/_components/LoadingMask.js";
-import { useSettings } from "@/state/settings.js";
-import { toast } from "sonner";
+
 interface DetailViewFormProps<
   FORMKEY extends keyof ModelTypes,
   FORMKEYS extends keyof ModelTypes[FORMKEY],

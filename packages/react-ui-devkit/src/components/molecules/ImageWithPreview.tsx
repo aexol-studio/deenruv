@@ -6,6 +6,7 @@ import {
 } from "@/index.js";
 import { cn } from "@/lib/utils.js";
 import { ImageOff } from "lucide-react";
+import { Portal } from "@radix-ui/react-portal";
 import React from "react";
 interface Props
   extends Omit<
@@ -31,15 +32,11 @@ export const ImageWithPreview: React.FC<Props> = ({
     <HoverCard>
       <HoverCardTrigger className="cursor-pointer" asChild>
         {src ? (
-          <img
-            className={cn("h-14 w-14", imageClassName)}
-            src={src}
-            {...props}
-          />
+          <img className={cn("size-14", imageClassName)} src={src} {...props} />
         ) : (
           <div
             className={cn(
-              "flex h-14 w-14 items-center justify-center bg-gray-100",
+              "flex size-14 items-center justify-center bg-gray-100",
               imageClassName,
             )}
           >
@@ -47,15 +44,17 @@ export const ImageWithPreview: React.FC<Props> = ({
           </div>
         )}
       </HoverCardTrigger>
-      <HoverCardContent
-        className={cn("w-80 rounded border p-0", previewClassName)}
-      >
-        {src ? (
-          <img className="object-cover" src={src} {...props} />
-        ) : (
-          <p className="m-3">{t("noImage")}</p>
-        )}
-      </HoverCardContent>
+      <Portal>
+        <HoverCardContent
+          className={cn("w-80 rounded border p-0", previewClassName)}
+        >
+          {src ? (
+            <img className="object-cover" src={src} {...props} />
+          ) : (
+            <p className="m-3">{t("noImage")}</p>
+          )}
+        </HoverCardContent>
+      </Portal>
     </HoverCard>
   );
 };

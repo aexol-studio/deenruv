@@ -24,6 +24,7 @@ import {
   priceFormatter,
   useWidgetsStore,
   useSettings,
+  TableLabel,
 } from "@deenruv/react-ui-devkit";
 import { LatestOrderListType, LatestOrdersQuery } from "../../graphql";
 import {
@@ -60,12 +61,12 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
   const columns: ColumnDef<LatestOrderListType>[] = [
     {
       accessorKey: "id",
-      header: () => t("orders:table.id"),
+      header: () => <TableLabel>{t("orders:table.id")}</TableLabel>,
       cell: ({ row }) => <span>{row.original.id}</span>,
     },
     {
       accessorKey: "payments",
-      header: () => t("dashboard:payment"),
+      header: () => <TableLabel>{t("dashboard:payment")}</TableLabel>,
       cell: ({ row }) => {
         const type = row.original.payments?.[0]?.method;
         if (!type) return <></>;
@@ -74,7 +75,7 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
     },
     {
       accessorKey: "code",
-      header: () => t("orders:table.code"),
+      header: () => <TableLabel>{t("orders:table.code")}</TableLabel>,
       cell: ({ row }) => (
         <Tooltip>
           <TooltipTrigger>
@@ -93,12 +94,12 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
     },
     {
       accessorKey: "state",
-      header: () => t("orders:table.state"),
+      header: () => <TableLabel>{t("orders:table.state")}</TableLabel>,
       cell: ({ row }) => <OrderStateBadge state={row.original.state} />,
     },
     {
       accessorKey: "totalWithTax",
-      header: () => t("orders:table.totalWithTax"),
+      header: () => <TableLabel>{t("orders:table.totalWithTax")}</TableLabel>,
       cell: ({ row }) => (
         <span>
           {priceFormatter(row.original.totalWithTax, row.original.currencyCode)}
@@ -107,7 +108,7 @@ export const LatestOrdersWidget: React.FC<LatestOrdersProps> = () => {
     },
     {
       accessorKey: "createdAt",
-      header: () => t("orders:table.createdAt"),
+      header: () => <TableLabel>{t("orders:table.createdAt")}</TableLabel>,
       cell: ({ row }) => (
         <span>
           {formatDistanceToNow(new Date(row.original.createdAt), {

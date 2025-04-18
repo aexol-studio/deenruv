@@ -7,6 +7,7 @@ import {
   PaginationInput,
   deepMerge,
   useTranslation,
+  TableLabel,
 } from '@deenruv/react-ui-devkit';
 import React, { useCallback } from 'react';
 import { Permission, SortOrder } from '@deenruv/admin-types';
@@ -76,7 +77,7 @@ export const ContentsCard: React.FC<ContentsCardProps> = ({ collectionId }) => {
             accessorKey: 'product',
             enableSorting: false,
             enableColumnFilter: false,
-            header: () => t('table.product'),
+            header: () => <TableLabel>{t('table.product')}</TableLabel>,
             cell: ({ row }) => <div className="flex gap-1">{row.original.product.name}</div>,
           },
         ]}

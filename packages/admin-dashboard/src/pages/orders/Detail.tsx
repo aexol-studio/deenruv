@@ -13,17 +13,19 @@ import {
   Payments,
   SurchargeCard,
 } from '@/pages/orders/_components';
-import { useTranslation, useOrder, ORDER_STATE, EntityCustomFields } from '@deenruv/react-ui-devkit';
+import { useTranslation, useOrder, ORDER_STATE, EntityCustomFields, LoadingMask } from '@deenruv/react-ui-devkit';
 import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 
 export const OrdersDetailPage = () => {
   const { id } = useParams();
   const { t } = useTranslation('orders');
-  const { order, mode, fetchOrder } = useOrder();
+  const { order, mode, fetchOrder, loading } = useOrder();
 
   useEffect(() => {
     if (id) fetchOrder(id);
   }, [id]);
+
+  if (loading) return <LoadingMask />;
 
   if (!order || !mode) {
     return (

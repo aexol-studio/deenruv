@@ -21,6 +21,7 @@ import {
   Badge,
   useTranslation,
   useOrder,
+  OrderLineType,
 } from '@deenruv/react-ui-devkit';
 import { format } from 'date-fns';
 import { HistoryEntryType } from '@deenruv/admin-types';
@@ -89,8 +90,6 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
             history.type === HistoryEntryType.ORDER_MODIFIED
               ? order?.modifications.find((m) => m.id === history.data.modificationId)?.note
               : '';
-
-          console.log('DATA', history);
 
           return (
             <TimelineItem key={history.id} status="done" className="w-full pb-6">
@@ -235,6 +234,39 @@ export const Timeline: React.FC<DeleteEntryDialogProps> = ({
                   {'modificationId' in history.data && (
                     <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
                       {modificationNote}
+                    </div>
+                  )}
+
+                  {'reason' in history.data && (
+                    <div>
+                      <div className="bg-background mt-2 whitespace-pre-wrap rounded-md p-3 text-sm">
+                        {history.data.reason}
+                      </div>
+                      {'lines' in history.data && (
+                        <ul className="mt-2 list-disc pl-5">
+                          {history.data.lines
+                            .map((l: { orderLineId: string; quantity: number }) => {
+                              const line = order?.lines.find((line) => line.id === l.orderLineId);
+                              if (!line) return null;
+                              return { line, newQuantity: l.quantity };
+                            })
+                            .map(({ line, newQuantity }: { line: OrderLineType; newQuantity: number }) => (
+                              <li className="list-item list-disc flex-col pl-3">
+                                <p key={line.id} className="text-sm">
+                                  {line.productVariant.name}
+                                </p>
+                                <p className="flex gap-4">
+                                  <span>
+                                    {t('history.quantityOld')}: {line.quantity}
+                                  </span>
+                                  <span>
+                                    {t('history.quantityNew')}: {newQuantity}
+                                  </span>
+                                </p>
+                              </li>
+                            ))}
+                        </ul>
+                      )}
                     </div>
                   )}
                 </div>

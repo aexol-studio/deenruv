@@ -28,7 +28,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuSubContent,
-  DropdownMenuShortcut,
   createDialog,
   buildURL,
 } from '@deenruv/react-ui-devkit';
@@ -40,7 +39,6 @@ import {
   Moon,
   Slash,
   Sun,
-  Trash2Icon,
   SunMoon,
   RotateCwSquare,
   SearchIcon,
@@ -53,6 +51,7 @@ import { ChannelSwitcher } from './ChannelSwitcher.js';
 import { BrandLogo } from '@/components/BrandLogo.js';
 import { LanguagesDropdown } from './LanguagesDropdown.js';
 import { Notifications } from './Notifications.js';
+import { NavigationFooter } from '@/components/Menu/NavigationFooter.js';
 
 const ResizablePanelGroup = ({ className, ...props }: React.ComponentProps<typeof ResizablePrimitive.PanelGroup>) => (
   <ResizablePrimitive.PanelGroup
@@ -160,15 +159,9 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     <BrandLogo isCollapsed={isCollapsed} />
                   </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex h-[calc(100vh-80px)] flex-col justify-between">
                   <Navigation isCollapsed={isCollapsed} />
-                  <div className="bg-secondary flex h-[40px] w-full select-none items-center justify-center gap-2 text-xs shadow-2xl">
-                    {!isCollapsed && <p className="uppercase">Deenruv</p>}
-                    <span>
-                      {!isCollapsed ? 'ver. ' : 'v. '}
-                      {window.__DEENRUV_SETTINGS__.appVersion}
-                    </span>
-                  </div>
+                  <NavigationFooter isCollapsed={isCollapsed} />
                 </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
@@ -269,12 +262,12 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                           onSelect={rebuildSearchIndex}
                         >
                           <RotateCwSquare className="size-4" />
-                          Przebuduj search index
+                          {t('rebuildSerachIndex')}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                           <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>Szybkie linki</DropdownMenuSubTrigger>
+                            <DropdownMenuSubTrigger>{t('fastLinks')}</DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
                                 <DropdownMenuItem
@@ -282,7 +275,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                                   onSelect={() => navigate(Routes.status, { viewTransition: true })}
                                 >
                                   <RotateCwSquare className="size-4" />
-                                  Status systemu
+                                  {t('systemStatus')}
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem
@@ -290,7 +283,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                                   onSelect={() => navigate(Routes.globalSettings, { viewTransition: true })}
                                 >
                                   <RotateCwSquare className="size-4" />
-                                  Ustawienia globalne
+                                  {t('globalSettings')}
                                 </DropdownMenuItem>
                               </DropdownMenuSubContent>
                             </DropdownMenuPortal>
