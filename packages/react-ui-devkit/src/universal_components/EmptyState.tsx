@@ -64,8 +64,8 @@ export const EmptyState: React.FC<Props> = ({
       <TableCell colSpan={columnsLength} className="h-full text-center">
         <Card
           className={cn(
-            "flex h-full flex-col items-center justify-center p-2",
-            small && "border-0 shadow-none p-0",
+            "flex h-full flex-col items-center justify-center p-2 border-0 shadow-none",
+            small && "p-0",
           )}
         >
           <CardHeader className="flex flex-col items-center">

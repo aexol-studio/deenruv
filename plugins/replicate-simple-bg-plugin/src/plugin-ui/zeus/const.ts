@@ -185,12 +185,6 @@ export const AllTypesProps: Record<string,any> = {
 		},
 		getSimpleBgThemeAsset:{
 
-		},
-		getSimpleBgAssetIDByName:{
-
-		},
-		getSimpleBgProductList:{
-			options:"SimpleBgProductListOptions"
 		}
 	},
 	Mutation:{
@@ -674,8 +668,8 @@ export const AllTypesProps: Record<string,any> = {
 		startGenerateSimpleBg:{
 			input:"StartGenerateSimpleBgInput"
 		},
-		assignPredictionToProduct:{
-			input:"AssignPredictionToProductInput"
+		getPredictionAsset:{
+			input:"GetPredictionAssetInput"
 		}
 	},
 	AdministratorListOptions:{
@@ -1467,7 +1461,7 @@ export const AllTypesProps: Record<string,any> = {
 	StartGenerateSimpleBgInput:{
 
 	},
-	AssignPredictionToProductInput:{
+	GetPredictionAssetInput:{
 
 	},
 	GetSimpleBgEntityInput:{
@@ -1477,11 +1471,6 @@ export const AllTypesProps: Record<string,any> = {
 	ReplicateSimpleBgEntityListOptions:{
 		sort:"ReplicateSimpleBgEntitySortParameter",
 		filter:"ReplicateSimpleBgEntityFilterParameter",
-		filterOperator:"LogicalOperator"
-	},
-	SimpleBgProductListOptions:{
-		sort:"SimpleBgProductSortParameter",
-		filter:"SimpleBgProductFilterParameter",
 		filterOperator:"LogicalOperator"
 	},
 	AdministratorFilterParameter:{
@@ -1914,22 +1903,6 @@ export const AllTypesProps: Record<string,any> = {
 		id:"SortOrder",
 		finishedAt:"SortOrder"
 	},
-	SimpleBgProductFilterParameter:{
-		createdAt:"DateOperators",
-		updatedAt:"DateOperators",
-		name:"StringOperators",
-		slug:"StringOperators",
-		id:"IDOperators",
-		_and:"SimpleBgProductFilterParameter",
-		_or:"SimpleBgProductFilterParameter"
-	},
-	SimpleBgProductSortParameter:{
-		createdAt:"SortOrder",
-		updatedAt:"SortOrder",
-		name:"SortOrder",
-		slug:"SortOrder",
-		id:"SortOrder"
-	},
 	HistoryEntryFilterParameter:{
 		isPublic:"BooleanOperators",
 		id:"IDOperators",
@@ -2028,10 +2001,7 @@ export const ReturnTypes: Record<string,any> = {
 		getSimpleBgPredictions:"ReplicateSimpleBgEntityList",
 		getSimpleBgItem:"PredictionSimpleBgResult",
 		getSimpleBgThemeAsset:"Image",
-		getSimpleBgRoomType:"RoomType",
-		getSimpleBgRoomTheme:"RoomTheme",
-		getSimpleBgAssetIDByName:"ID",
-		getSimpleBgProductList:"SimpleBgProductList"
+		getSimpleBgOptions:"SimpleBgPluginOptions"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2198,7 +2168,7 @@ export const ReturnTypes: Record<string,any> = {
 		addMembersToZone:"Zone",
 		removeMembersFromZone:"Zone",
 		startGenerateSimpleBg:"String",
-		assignPredictionToProduct:"Asset"
+		getPredictionAsset:"Asset"
 	},
 	Administrator:{
 		id:"ID",
@@ -3945,6 +3915,7 @@ export const ReturnTypes: Record<string,any> = {
 		source:"String"
 	},
 	PredictionSimpleBgResult:{
+		id:"ID",
 		status:"PredictionSimpleBgStatus",
 		image:"String",
 		roomType:"String",
@@ -3963,6 +3934,10 @@ export const ReturnTypes: Record<string,any> = {
 		value:"String",
 		label:"String",
 		image:"String"
+	},
+	SimpleBgPluginOptions:{
+		roomTypes:"RoomType",
+		roomThemes:"RoomTheme"
 	},
 	ReplicateSimpleBgEntity:{
 		id:"ID",

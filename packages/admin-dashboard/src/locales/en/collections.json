@@ -1,6 +1,6 @@
 {
     "create": "Create a collection",
-    "edit": "Edit collection",
+    "edit": "Edit the collection",
     "baseInfoCode": "Code: {{value}}",
     "baseInfoId": "Id: {{value}}",
     "baseInfoCreated": "Created: {{value}}",
@@ -23,7 +23,7 @@
         "actions": "Activities",
         "copyId": "Copy id",
         "products": "number of products",
-        "delete": "Delete a collection"
+        "delete": "Delete collection"
     },
     "details": {
         "basic": {
@@ -68,18 +68,18 @@
         "collectionCreatedSuccess": "The collection was successfully created",
         "collectionCreatedError": "Collection could not be created",
         "collectionDeleteSuccess": "Collection was successfully deleted",
-        "collectionDeleteError": "Failed to delete collection",
-        "deletionCollectionErrorToast": "Failed to delete collection",
+        "collectionDeleteError": "Collection could not be deleted successfully",
+        "deletionCollectionErrorToast": "Collection could not be deleted successfully",
         "deletionCollectionSuccessToast": "Collections were successfully deleted",
         "noCollectionChildrens": "collection {{collection}} has no children"
     },
     "deleteCollection": {
-        "title": "Delete a collection",
+        "title": "Delete collection",
         "description": "Are you sure you want to delete this collection?",
         "successMessage": "The collection has been removed.",
         "deleteOrCancel": "Delete/Cancel option selected"
     },
-    "editCollection": "Edit collection",
+    "editCollection": "Edit the collection",
     "withSelected": "With selected {{collections}}",
     "columns": "Columns",
     "rowsSelected": "{{selected}} of {{all}} selected rows",
@@ -110,15 +110,15 @@
         }
     },
     "deleteCollectionDialog": {
-        "button": "Delete a collection",
+        "button": "Delete collection",
         "title": "Are you sure?",
         "description": "The collection will be permanently deleted.",
-        "confirm": "Delete a collection",
+        "confirm": "Delete collection",
         "cancel": "Cancel"
     },
     "deleteCollectionsFromChannel": {
         "areYouSure": "Are you sure you want to delete these collections from {{ channel }} ?",
-        "removeCollection": "Delete a collection",
+        "removeCollection": "Delete collection",
         "cancel": "Cancel",
         "removeSuccess": "Deleted collections",
         "removeError": "Cannot delete a collection from a feed"

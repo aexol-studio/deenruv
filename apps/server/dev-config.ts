@@ -688,6 +688,10 @@ export const devConfig: DeenruvConfig = {
     //   },
     //   roomType: [],
     //   roomTheme: [],
+    //   prompts: {
+    //     positive: "",
+    //     negative: "",
+    //   },
     // }),
   ],
 };

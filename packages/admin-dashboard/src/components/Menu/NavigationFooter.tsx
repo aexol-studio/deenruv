@@ -34,8 +34,7 @@ export const NavigationFooter: React.FC<NavigationFooterProps> = ({ isCollapsed 
           <Separator />
         </>
       )}
-
-      <div className="flex  items-center justify-center">
+      <div className="flex items-center justify-center gap-1">
         {!isCollapsed && <p className="uppercase">Deenruv</p>}
         <span>
           {!isCollapsed ? 'ver. ' : 'v. '}

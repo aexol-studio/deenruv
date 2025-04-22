@@ -44,10 +44,11 @@
 
     --page-padding-total-y: 2.75rem;
     --page-padding-total-y-md: 4.75rem;
+    --page-padding-total-y-lg: 2rem;
 
     --page-content-h: calc(100vh - var(--topbar-height) - var(--page-padding-total-y));
     --page-content-h-md: calc(100vh - var(--topbar-height) - var(--page-padding-total-y-md));
-    --page-content-h-lg: calc(100vh - var(--topbar-height-lg) - var(--page-padding-total-y-md));
+    --page-content-h-lg: calc(100vh - var(--topbar-height-lg) - var(--page-padding-total-y-lg));
   }
 
   .dark {

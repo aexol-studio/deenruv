@@ -1,1 +1,1 @@
-export * from "./ReplicateSimpleBG.js";
+export * from "../pages/ReplicateProductSidebar.js";

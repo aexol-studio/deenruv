@@ -53,6 +53,7 @@ export const useDetailListHook = <
   removeFilterField: (field: FIELD) => void;
   resetFilterFields: () => void;
   changeFilterField: (index: number, field: FIELD) => void;
+  loading: boolean;
 } => {
   const { additionalData, setAdditionalData } = useDetailView();
   const { translationsLanguage } = useSettings(({ translationsLanguage }) => ({
@@ -63,6 +64,7 @@ export const useDetailListHook = <
   });
   const [total, setTotal] = useState(0);
   const [objects, setObjects] = useState<GenericReturn<T>>();
+  const [loading, setLoading] = useState(false);
 
   const setSearchQuery = (query: string | null) => {
     if (query) {
@@ -207,9 +209,12 @@ export const useDetailListHook = <
   );
 
   useEffect(() => {
+    console.log("FETCH");
+    // setLoading(true);
     fetch(searchParamValues).then(({ items, totalItems }) => {
       setObjects(items);
       setTotal(totalItems);
+      // setLoading(false);
     });
   }, [translationsLanguage, searchParams]);
 
@@ -277,5 +282,6 @@ export const useDetailListHook = <
     objects,
     searchParamValues,
     refetch,
+    loading,
   };
 };

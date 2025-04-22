@@ -981,10 +981,7 @@ getSimpleBgID?: [{	input: ValueTypes["GetSimpleBgEntityInput"] | Variable<any, s
 getSimpleBgPredictions?: [{	options?: ValueTypes["ReplicateSimpleBgEntityListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ReplicateSimpleBgEntityList"]],
 getSimpleBgItem?: [{	id: string | Variable<any, string>},ValueTypes["PredictionSimpleBgResult"]],
 getSimpleBgThemeAsset?: [{	url: string | Variable<any, string>},ValueTypes["Image"]],
-	getSimpleBgRoomType?:ValueTypes["RoomType"],
-	getSimpleBgRoomTheme?:ValueTypes["RoomTheme"],
-getSimpleBgAssetIDByName?: [{	source: string | Variable<any, string>},boolean | `@${string}`],
-getSimpleBgProductList?: [{	options?: ValueTypes["SimpleBgProductListOptions"] | undefined | null | Variable<any, string>},ValueTypes["SimpleBgProductList"]],
+	getSimpleBgOptions?:ValueTypes["SimpleBgPluginOptions"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -1153,7 +1150,7 @@ deleteZones?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueType
 addMembersToZone?: [{	zoneId: ValueTypes["ID"] | Variable<any, string>,	memberIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: ValueTypes["ID"] | Variable<any, string>,	memberIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Zone"]],
 startGenerateSimpleBg?: [{	input: ValueTypes["StartGenerateSimpleBgInput"] | Variable<any, string>},boolean | `@${string}`],
-assignPredictionToProduct?: [{	input: ValueTypes["AssignPredictionToProductInput"] | Variable<any, string>},ValueTypes["Asset"]],
+getPredictionAsset?: [{	input: ValueTypes["GetPredictionAssetInput"] | Variable<any, string>},ValueTypes["Asset"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -4571,7 +4568,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	roomStyle?: string | undefined | null | Variable<any, string>,
 	prompt?: string | undefined | null | Variable<any, string>
 };
-	["AssignPredictionToProductInput"]: {
+	["GetPredictionAssetInput"]: {
 	predictionId: string | Variable<any, string>,
 	productId: string | Variable<any, string>
 };
@@ -4586,6 +4583,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["PredictionSimpleBgStatus"]:PredictionSimpleBgStatus;
 	["PredictionSimpleBgResult"]: AliasType<{
+	id?:boolean | `@${string}`,
 	status?:boolean | `@${string}`,
 	image?:boolean | `@${string}`,
 	roomType?:boolean | `@${string}`,
@@ -4604,18 +4602,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
-	["SimpleBgProductListOptions"]: {
-	/** Skips the first n results, for use in pagination */
-	skip?: number | undefined | null | Variable<any, string>,
-	/** Takes n results, for use in pagination */
-	take?: number | undefined | null | Variable<any, string>,
-	/** Specifies which properties to sort the results by */
-	sort?: ValueTypes["SimpleBgProductSortParameter"] | undefined | null | Variable<any, string>,
-	/** Allows the results to be filtered */
-	filter?: ValueTypes["SimpleBgProductFilterParameter"] | undefined | null | Variable<any, string>,
-	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
-};
 	["Image"]: AliasType<{
 	url?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
@@ -4631,6 +4617,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	value?:boolean | `@${string}`,
 	label?:boolean | `@${string}`,
 	image?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SimpleBgPluginOptions"]: AliasType<{
+	roomTypes?:ValueTypes["RoomType"],
+	roomThemes?:ValueTypes["RoomTheme"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ReplicateSimpleBgEntity"]: AliasType<{
@@ -5087,22 +5078,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	finishedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
-	["SimpleBgProductFilterParameter"]: {
-	createdAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
-	updatedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
-	name?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	slug?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
-	_and?: Array<ValueTypes["SimpleBgProductFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["SimpleBgProductFilterParameter"]> | undefined | null | Variable<any, string>
-};
-	["SimpleBgProductSortParameter"]: {
-	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
-};
 	["HistoryEntryFilterParameter"]: {
 	isPublic?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -5241,10 +5216,7 @@ getSimpleBgID?: [{	input: ResolverInputTypes["GetSimpleBgEntityInput"]},boolean 
 getSimpleBgPredictions?: [{	options?: ResolverInputTypes["ReplicateSimpleBgEntityListOptions"] | undefined | null},ResolverInputTypes["ReplicateSimpleBgEntityList"]],
 getSimpleBgItem?: [{	id: string},ResolverInputTypes["PredictionSimpleBgResult"]],
 getSimpleBgThemeAsset?: [{	url: string},ResolverInputTypes["Image"]],
-	getSimpleBgRoomType?:ResolverInputTypes["RoomType"],
-	getSimpleBgRoomTheme?:ResolverInputTypes["RoomTheme"],
-getSimpleBgAssetIDByName?: [{	source: string},boolean | `@${string}`],
-getSimpleBgProductList?: [{	options?: ResolverInputTypes["SimpleBgProductListOptions"] | undefined | null},ResolverInputTypes["SimpleBgProductList"]],
+	getSimpleBgOptions?:ResolverInputTypes["SimpleBgPluginOptions"],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -5413,7 +5385,7 @@ deleteZones?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Delet
 addMembersToZone?: [{	zoneId: ResolverInputTypes["ID"],	memberIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Zone"]],
 removeMembersFromZone?: [{	zoneId: ResolverInputTypes["ID"],	memberIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Zone"]],
 startGenerateSimpleBg?: [{	input: ResolverInputTypes["StartGenerateSimpleBgInput"]},boolean | `@${string}`],
-assignPredictionToProduct?: [{	input: ResolverInputTypes["AssignPredictionToProductInput"]},ResolverInputTypes["Asset"]],
+getPredictionAsset?: [{	input: ResolverInputTypes["GetPredictionAssetInput"]},ResolverInputTypes["Asset"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -8863,7 +8835,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	roomStyle?: string | undefined | null,
 	prompt?: string | undefined | null
 };
-	["AssignPredictionToProductInput"]: {
+	["GetPredictionAssetInput"]: {
 	predictionId: string,
 	productId: string
 };
@@ -8878,6 +8850,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["PredictionSimpleBgStatus"]:PredictionSimpleBgStatus;
 	["PredictionSimpleBgResult"]: AliasType<{
+	id?:boolean | `@${string}`,
 	status?:boolean | `@${string}`,
 	image?:boolean | `@${string}`,
 	roomType?:boolean | `@${string}`,
@@ -8896,18 +8869,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
-	["SimpleBgProductListOptions"]: {
-	/** Skips the first n results, for use in pagination */
-	skip?: number | undefined | null,
-	/** Takes n results, for use in pagination */
-	take?: number | undefined | null,
-	/** Specifies which properties to sort the results by */
-	sort?: ResolverInputTypes["SimpleBgProductSortParameter"] | undefined | null,
-	/** Allows the results to be filtered */
-	filter?: ResolverInputTypes["SimpleBgProductFilterParameter"] | undefined | null,
-	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
-};
 	["Image"]: AliasType<{
 	url?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
@@ -8923,6 +8884,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	value?:boolean | `@${string}`,
 	label?:boolean | `@${string}`,
 	image?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["SimpleBgPluginOptions"]: AliasType<{
+	roomTypes?:ResolverInputTypes["RoomType"],
+	roomThemes?:ResolverInputTypes["RoomTheme"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ReplicateSimpleBgEntity"]: AliasType<{
@@ -9379,22 +9345,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
 	finishedAt?: ResolverInputTypes["SortOrder"] | undefined | null
 };
-	["SimpleBgProductFilterParameter"]: {
-	createdAt?: ResolverInputTypes["DateOperators"] | undefined | null,
-	updatedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
-	name?: ResolverInputTypes["StringOperators"] | undefined | null,
-	slug?: ResolverInputTypes["StringOperators"] | undefined | null,
-	id?: ResolverInputTypes["IDOperators"] | undefined | null,
-	_and?: Array<ResolverInputTypes["SimpleBgProductFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["SimpleBgProductFilterParameter"]> | undefined | null
-};
-	["SimpleBgProductSortParameter"]: {
-	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
-	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
-	name?: ResolverInputTypes["SortOrder"] | undefined | null,
-	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
-	id?: ResolverInputTypes["SortOrder"] | undefined | null
-};
 	["HistoryEntryFilterParameter"]: {
 	isPublic?: ResolverInputTypes["BooleanOperators"] | undefined | null,
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9548,10 +9498,7 @@ export type ModelTypes = {
 	getSimpleBgPredictions: ModelTypes["ReplicateSimpleBgEntityList"],
 	getSimpleBgItem: ModelTypes["PredictionSimpleBgResult"],
 	getSimpleBgThemeAsset: ModelTypes["Image"],
-	getSimpleBgRoomType?: Array<ModelTypes["RoomType"] | undefined | null> | undefined | null,
-	getSimpleBgRoomTheme?: Array<ModelTypes["RoomTheme"] | undefined | null> | undefined | null,
-	getSimpleBgAssetIDByName: ModelTypes["ID"],
-	getSimpleBgProductList: ModelTypes["SimpleBgProductList"]
+	getSimpleBgOptions: ModelTypes["SimpleBgPluginOptions"]
 };
 	["Mutation"]: {
 		/** Create a new Administrator */
@@ -9863,7 +9810,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Remove members from a Zone */
 	removeMembersFromZone: ModelTypes["Zone"],
 	startGenerateSimpleBg: string,
-	assignPredictionToProduct: ModelTypes["Asset"]
+	getPredictionAsset: ModelTypes["Asset"]
 };
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -12729,7 +12676,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	roomStyle?: string | undefined | null,
 	prompt?: string | undefined | null
 };
-	["AssignPredictionToProductInput"]: {
+	["GetPredictionAssetInput"]: {
 	predictionId: string,
 	productId: string
 };
@@ -12743,7 +12690,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["PredictionSimpleBgStatus"]:PredictionSimpleBgStatus;
 	["PredictionSimpleBgResult"]: {
-		status?: ModelTypes["PredictionSimpleBgStatus"] | undefined | null,
+		id: ModelTypes["ID"],
+	status?: ModelTypes["PredictionSimpleBgStatus"] | undefined | null,
 	image?: string | undefined | null,
 	roomType?: string | undefined | null,
 	roomStyle?: string | undefined | null
@@ -12760,18 +12708,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
-	["SimpleBgProductListOptions"]: {
-	/** Skips the first n results, for use in pagination */
-	skip?: number | undefined | null,
-	/** Takes n results, for use in pagination */
-	take?: number | undefined | null,
-	/** Specifies which properties to sort the results by */
-	sort?: ModelTypes["SimpleBgProductSortParameter"] | undefined | null,
-	/** Allows the results to be filtered */
-	filter?: ModelTypes["SimpleBgProductFilterParameter"] | undefined | null,
-	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
-};
 	["Image"]: {
 		url: string
 };
@@ -12785,6 +12721,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	value?: string | undefined | null,
 	label?: string | undefined | null,
 	image?: string | undefined | null
+};
+	["SimpleBgPluginOptions"]: {
+		roomTypes?: Array<ModelTypes["RoomType"] | undefined | null> | undefined | null,
+	roomThemes?: Array<ModelTypes["RoomTheme"] | undefined | null> | undefined | null
 };
 	["ReplicateSimpleBgEntity"]: {
 		id: ModelTypes["ID"],
@@ -13236,22 +13176,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	id?: ModelTypes["SortOrder"] | undefined | null,
 	finishedAt?: ModelTypes["SortOrder"] | undefined | null
 };
-	["SimpleBgProductFilterParameter"]: {
-	createdAt?: ModelTypes["DateOperators"] | undefined | null,
-	updatedAt?: ModelTypes["DateOperators"] | undefined | null,
-	name?: ModelTypes["StringOperators"] | undefined | null,
-	slug?: ModelTypes["StringOperators"] | undefined | null,
-	id?: ModelTypes["IDOperators"] | undefined | null,
-	_and?: Array<ModelTypes["SimpleBgProductFilterParameter"]> | undefined | null,
-	_or?: Array<ModelTypes["SimpleBgProductFilterParameter"]> | undefined | null
-};
-	["SimpleBgProductSortParameter"]: {
-	createdAt?: ModelTypes["SortOrder"] | undefined | null,
-	updatedAt?: ModelTypes["SortOrder"] | undefined | null,
-	name?: ModelTypes["SortOrder"] | undefined | null,
-	slug?: ModelTypes["SortOrder"] | undefined | null,
-	id?: ModelTypes["SortOrder"] | undefined | null
-};
 	["HistoryEntryFilterParameter"]: {
 	isPublic?: ModelTypes["BooleanOperators"] | undefined | null,
 	id?: ModelTypes["IDOperators"] | undefined | null,
@@ -13403,10 +13327,7 @@ export type GraphQLTypes = {
 	getSimpleBgPredictions: GraphQLTypes["ReplicateSimpleBgEntityList"],
 	getSimpleBgItem: GraphQLTypes["PredictionSimpleBgResult"],
 	getSimpleBgThemeAsset: GraphQLTypes["Image"],
-	getSimpleBgRoomType?: Array<GraphQLTypes["RoomType"] | undefined | null> | undefined | null,
-	getSimpleBgRoomTheme?: Array<GraphQLTypes["RoomTheme"] | undefined | null> | undefined | null,
-	getSimpleBgAssetIDByName: GraphQLTypes["ID"],
-	getSimpleBgProductList: GraphQLTypes["SimpleBgProductList"]
+	getSimpleBgOptions: GraphQLTypes["SimpleBgPluginOptions"]
 };
 	["Mutation"]: {
 	__typename: "Mutation",
@@ -13719,7 +13640,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Remove members from a Zone */
 	removeMembersFromZone: GraphQLTypes["Zone"],
 	startGenerateSimpleBg: string,
-	assignPredictionToProduct: GraphQLTypes["Asset"]
+	getPredictionAsset: GraphQLTypes["Asset"]
 };
 	["AdministratorListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -17170,7 +17091,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	roomStyle?: string | undefined | null,
 	prompt?: string | undefined | null
 };
-	["AssignPredictionToProductInput"]: {
+	["GetPredictionAssetInput"]: {
 		predictionId: string,
 	productId: string
 };
@@ -17186,6 +17107,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["PredictionSimpleBgStatus"]: PredictionSimpleBgStatus;
 	["PredictionSimpleBgResult"]: {
 	__typename: "PredictionSimpleBgResult",
+	id: GraphQLTypes["ID"],
 	status?: GraphQLTypes["PredictionSimpleBgStatus"] | undefined | null,
 	image?: string | undefined | null,
 	roomType?: string | undefined | null,
@@ -17200,18 +17122,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	sort?: GraphQLTypes["ReplicateSimpleBgEntitySortParameter"] | undefined | null,
 	/** Allows the results to be filtered */
 	filter?: GraphQLTypes["ReplicateSimpleBgEntityFilterParameter"] | undefined | null,
-	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
-	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
-};
-	["SimpleBgProductListOptions"]: {
-		/** Skips the first n results, for use in pagination */
-	skip?: number | undefined | null,
-	/** Takes n results, for use in pagination */
-	take?: number | undefined | null,
-	/** Specifies which properties to sort the results by */
-	sort?: GraphQLTypes["SimpleBgProductSortParameter"] | undefined | null,
-	/** Allows the results to be filtered */
-	filter?: GraphQLTypes["SimpleBgProductFilterParameter"] | undefined | null,
 	/** Specifies whether multiple top-level "filter" fields should be combined with a logical AND or OR operation. Defaults to AND. */
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
@@ -17231,6 +17141,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	value?: string | undefined | null,
 	label?: string | undefined | null,
 	image?: string | undefined | null
+};
+	["SimpleBgPluginOptions"]: {
+	__typename: "SimpleBgPluginOptions",
+	roomTypes?: Array<GraphQLTypes["RoomType"] | undefined | null> | undefined | null,
+	roomThemes?: Array<GraphQLTypes["RoomTheme"] | undefined | null> | undefined | null
 };
 	["ReplicateSimpleBgEntity"]: {
 	__typename: "ReplicateSimpleBgEntity",
@@ -17685,22 +17600,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["ReplicateSimpleBgEntitySortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined | null,
 	finishedAt?: GraphQLTypes["SortOrder"] | undefined | null
-};
-	["SimpleBgProductFilterParameter"]: {
-		createdAt?: GraphQLTypes["DateOperators"] | undefined | null,
-	updatedAt?: GraphQLTypes["DateOperators"] | undefined | null,
-	name?: GraphQLTypes["StringOperators"] | undefined | null,
-	slug?: GraphQLTypes["StringOperators"] | undefined | null,
-	id?: GraphQLTypes["IDOperators"] | undefined | null,
-	_and?: Array<GraphQLTypes["SimpleBgProductFilterParameter"]> | undefined | null,
-	_or?: Array<GraphQLTypes["SimpleBgProductFilterParameter"]> | undefined | null
-};
-	["SimpleBgProductSortParameter"]: {
-		createdAt?: GraphQLTypes["SortOrder"] | undefined | null,
-	updatedAt?: GraphQLTypes["SortOrder"] | undefined | null,
-	name?: GraphQLTypes["SortOrder"] | undefined | null,
-	slug?: GraphQLTypes["SortOrder"] | undefined | null,
-	id?: GraphQLTypes["SortOrder"] | undefined | null
 };
 	["HistoryEntryFilterParameter"]: {
 		isPublic?: GraphQLTypes["BooleanOperators"] | undefined | null,
@@ -18546,11 +18445,10 @@ type ZEUS_VARIABLES = {
 	["MetricType"]: ValueTypes["MetricType"];
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];
 	["StartGenerateSimpleBgInput"]: ValueTypes["StartGenerateSimpleBgInput"];
-	["AssignPredictionToProductInput"]: ValueTypes["AssignPredictionToProductInput"];
+	["GetPredictionAssetInput"]: ValueTypes["GetPredictionAssetInput"];
 	["GetSimpleBgEntityInput"]: ValueTypes["GetSimpleBgEntityInput"];
 	["PredictionSimpleBgStatus"]: ValueTypes["PredictionSimpleBgStatus"];
 	["ReplicateSimpleBgEntityListOptions"]: ValueTypes["ReplicateSimpleBgEntityListOptions"];
-	["SimpleBgProductListOptions"]: ValueTypes["SimpleBgProductListOptions"];
 	["AdministratorFilterParameter"]: ValueTypes["AdministratorFilterParameter"];
 	["AdministratorSortParameter"]: ValueTypes["AdministratorSortParameter"];
 	["AssetFilterParameter"]: ValueTypes["AssetFilterParameter"];
@@ -18596,8 +18494,6 @@ type ZEUS_VARIABLES = {
 	["ZoneSortParameter"]: ValueTypes["ZoneSortParameter"];
 	["ReplicateSimpleBgEntityFilterParameter"]: ValueTypes["ReplicateSimpleBgEntityFilterParameter"];
 	["ReplicateSimpleBgEntitySortParameter"]: ValueTypes["ReplicateSimpleBgEntitySortParameter"];
-	["SimpleBgProductFilterParameter"]: ValueTypes["SimpleBgProductFilterParameter"];
-	["SimpleBgProductSortParameter"]: ValueTypes["SimpleBgProductSortParameter"];
 	["HistoryEntryFilterParameter"]: ValueTypes["HistoryEntryFilterParameter"];
 	["HistoryEntrySortParameter"]: ValueTypes["HistoryEntrySortParameter"];
 	["NativeAuthInput"]: ValueTypes["NativeAuthInput"];

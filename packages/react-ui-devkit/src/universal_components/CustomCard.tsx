@@ -119,7 +119,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
     <Accordion
       type="single"
       collapsible
-      className={cn("w-full", wrapperClassName)}
+      className={cn("w-full overflow-hidden", wrapperClassName)}
       defaultValue={defaultOpen}
       onValueChange={setOpenItem}
     >
