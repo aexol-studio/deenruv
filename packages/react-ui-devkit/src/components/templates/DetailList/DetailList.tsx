@@ -83,26 +83,38 @@ type CheckIfInModelTypes<T extends string> = T extends keyof ModelTypes
   ? T
   : never;
 
-type FilterField<ENTITY extends keyof ModelTypes> = {
-  key:
-    | Exclude<
-        keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>],
-        "_or" | "_and"
-      >
-    | string;
-  // TODO: infer operator based on the type of the field
-  operator:
-    | "StringOperators"
-    | "IDOperators"
-    | "BooleanOperators"
-    | "NumberOperators"
-    | "DateOperators"
-    | "StringListOperators"
-    | "NumberListOperators"
-    | "BooleanListOperators"
-    | "IDListOperators"
-    | "DateListOperators";
-};
+type FilterField<ENTITY extends keyof ModelTypes> =
+  | {
+      key:
+        | Exclude<
+            keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>],
+            "_or" | "_and"
+          >
+        | string;
+      // TODO: infer operator based on the type of the field
+      operator:
+        | "StringOperators"
+        | "IDOperators"
+        | "BooleanOperators"
+        | "NumberOperators"
+        | "DateOperators"
+        | "StringListOperators"
+        | "NumberListOperators"
+        | "BooleanListOperators"
+        | "IDListOperators"
+        | "DateListOperators";
+    }
+  | {
+      key:
+        | Exclude<
+            keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>],
+            "_or" | "_and"
+          >
+        | string;
+      // TODO: infer operator based on the type of the field
+
+      component?: React.ComponentType<any>;
+    };
 
 type RouteBase = {
   list: string;
@@ -609,21 +621,20 @@ export function DetailList<
 
   const defaultFilterFields = DEFAULT_COLUMNS.map((key) => {
     if (key === "id") {
-      return { key: "id", operator: "IDOperators" };
+      return { key: "id", operator: "IDOperators", component: undefined };
     } else if (key === "createdAt" || key === "updatedAt") {
-      return { key, operator: "DateOperators" };
+      return { key, operator: "DateOperators", component: undefined };
     }
-    return { key, operator: "StringOperators" };
+    return { key, operator: "StringOperators", component: undefined };
   });
 
   const filterProperties = {
     filterLabels:
-      [...defaultFilterFields, ...(filterFields || [])].map(
-        ({ key, operator }) => ({
-          name: key,
-          type: operator,
-        }),
-      ) || [],
+      [...defaultFilterFields, ...(filterFields || [])].map((values) => ({
+        name: values.key,
+        type: "operator" in values ? values.operator : undefined,
+        component: "component" in values ? values.component : undefined,
+      })) || [],
     filter: searchParamFilter,
     setFilterField,
     removeFilterField,

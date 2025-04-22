@@ -9,7 +9,7 @@ import {
 // import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
 import { ReplicatePlugin } from "@deenruv/replicate-plugin";
-import { ReplicateSimpleBGPlugin } from "@deenruv/replicate-simple-bg-plugin";
+// import { ReplicateSimpleBGPlugin } from "@deenruv/replicate-simple-bg-plugin";
 import { FacetHarmonicaServerPlugin } from "@deenruv/facet-harmonica-plugin";
 import { InRealizationPlugin } from "@deenruv/in-realization-plugin";
 import { CopyOrderPlugin } from "@deenruv/copy-order-plugin";
@@ -680,14 +680,14 @@ export const devConfig: DeenruvConfig = {
     //   // password: process.env.REPLICATE_PASSWORD || '',
     //   apiToken: process.env.REPLICATE_API_TOKEN || "",
     // }),
-    ReplicateSimpleBGPlugin.init({
-      envs: {
-        deploymentName: "simple-bg-plugin",
-        apiToken: "r8_UMPkYKvQkhddFa1Nq3eQy7eKg8yes610EtUEk",
-        assetPrefix: "http://localhost:3000/assets",
-      },
-      roomType: [],
-      roomTheme: [],
-    }),
+    // ReplicateSimpleBGPlugin.init({
+    //   envs: {
+    //     deploymentName: "simple-bg-plugin",
+    //     apiToken: "r8_UMPkYKvQkhddFa1Nq3eQy7eKg8yes610EtUEk",
+    //     assetPrefix: "http://localhost:3000/assets",
+    //   },
+    //   roomType: [],
+    //   roomTheme: [],
+    // }),
   ],
 };

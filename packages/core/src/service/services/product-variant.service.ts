@@ -233,6 +233,31 @@ export class ProductVariantService {
         options?.filter,
         "facetValueId",
       );
+
+    const hasStockOnHandFilter =
+      this.listQueryBuilder.filterObjectHasProperty<ProductVariantFilterParameter>(
+        options?.filter,
+        "stockOnHand",
+      );
+
+    const hasStockAlocatedFilter =
+      this.listQueryBuilder.filterObjectHasProperty<ProductVariantFilterParameter>(
+        options?.filter,
+        "stockAllocated",
+      );
+
+    if (hasStockAlocatedFilter || hasStockOnHandFilter) {
+      relations.push("stockLevels");
+    }
+
+    if (hasStockOnHandFilter) {
+      customPropertyMap.stockOnHand = "stockLevels.stockOnHand";
+    }
+
+    if (hasStockAlocatedFilter) {
+      customPropertyMap.stockAllocated = "stockLevels.stockAllocated";
+    }
+
     if (hasFacetValueIdFilter) {
       relations.push("facetValues");
       customPropertyMap.facetValueId = "facetValues.id";

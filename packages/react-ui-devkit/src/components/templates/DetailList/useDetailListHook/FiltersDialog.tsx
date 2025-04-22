@@ -40,7 +40,11 @@ export const FiltersDialog = <T extends keyof ListType>({
   removeFilterField,
   resetFilterFields,
 }: {
-  filterLabels: { name: string | number | symbol; type: string }[];
+  filterLabels: {
+    name: string | number | symbol;
+    type?: string;
+    component?: React.ComponentType<any>;
+  }[];
   filter: ModelTypes[(typeof ListTypeKeys)[T]] | undefined;
   setFilterField: (
     field: keyof ModelTypes[(typeof ListTypeKeys)[T]],
@@ -140,14 +144,13 @@ export const FiltersDialog = <T extends keyof ListType>({
             </p>
           </div>
         )}
-        <div className="max-h-50 min-w-50vw flex flex-col gap-2 overflow-y-auto py-1 pr-1">
+        <div className="max-h-50 min-w-50vw flex flex-col gap-2  py-1 pr-1">
           {filtersArray.map(([filterKey], index) => {
-            const filterType = filterLabels.find(
+            const filter = filterLabels.find(
               (field) => field.name === filterKey,
-            )?.type;
-
+            );
             return (
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-start">
                 <div className="flex items-center gap-2">
                   <div className="min-w-[4.5rem] text-center">
                     {index === 0 ? (
@@ -179,14 +182,8 @@ export const FiltersDialog = <T extends keyof ListType>({
                       className="focus:ring-ring h-8 w-32 max-w-[109px] justify-between gap-2 rounded focus:outline-none focus:ring-1 focus-visible:ring-0"
                     >
                       <span className="overflow-hidden truncate">
-                        {filterLabels.find((field) => field.name === filterKey)
-                          ?.name
-                          ? t(
-                              "columns." +
-                                filterLabels
-                                  .find((field) => field.name === filterKey)
-                                  ?.name.toString(),
-                            )
+                        {filter?.name
+                          ? t("columns." + filter?.name.toString())
                           : "Select field"}
                       </span>
                       <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
@@ -237,19 +234,36 @@ export const FiltersDialog = <T extends keyof ListType>({
                     </Command>
                   </PopoverContent>
                 </Popover>
-                <OperatorValue
-                  currentValue={
-                    filtersArray[index][1] as ModelTypes["StringOperators"]
-                  }
-                  filterType={filterType}
-                  onChange={(value) => {
-                    setFiltersArray((prev) => {
-                      const newFilters = [...prev];
-                      newFilters[index] = [filterKey, value];
-                      return newFilters;
-                    });
-                  }}
-                />
+                {filter?.type ? (
+                  <OperatorValue
+                    currentValue={filtersArray[index][1]}
+                    filterType={filter?.type}
+                    onChange={(value) => {
+                      setFiltersArray((prev) => {
+                        const newFilters = [...prev];
+                        newFilters[index] = [filterKey, value];
+                        return newFilters;
+                      });
+                    }}
+                  />
+                ) : filter?.component ? (
+                  React.createElement(filter?.component, {
+                    key: filterKey,
+                    value: filtersArray[index][1],
+                    onChange: (value: any) => {
+                      setFiltersArray((prev) => {
+                        const newFilters = [...prev];
+                        if (value === null || value === undefined) {
+                          return newFilters.filter(
+                            ([key]) => key !== filterKey,
+                          );
+                        }
+                        newFilters[index] = [filterKey, value];
+                        return newFilters;
+                      });
+                    },
+                  })
+                ) : null}
                 <Button
                   variant="outline"
                   size="icon"

@@ -73,7 +73,9 @@
         "delete": "Usuń produkt",
         "allVariantsStock": "Zapasy wszystkich wariantów",
         "allocated": "przydzielony",
-        "stock": "Akcje"
+        "stockOnHand": "Stan magazynowy",
+        "stockAllocated": "Zablokowany stan magazynowy",
+        "stock": "Stan magazynowy"
     },
     "deleteProductDialog": {
         "button": "Usuń produkt",

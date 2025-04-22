@@ -144,7 +144,11 @@
     "image": "Obraz",
     "preview": "Podgląd",
     "tags": "Tagi",
-    "title": "Tytuł"
+    "title": "Tytuł",
+    "facetValueId": "Facety",
+    "stockOnHand": "Stan magazynowy",
+    "stockAllocated": "Zablokowany stan magazynowy",
+    "stock": "Stan magazynowy"
   },
   "actionsMenu": {
     "title": "Działania",
