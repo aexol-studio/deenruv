@@ -191,17 +191,15 @@ If we want to merge our develop to main and publish packages we have to do the f
 
 _(For the sake of this example lets say our version is 1.1.15)_
 
-1. `git checkout main`
-2. `git pull origin develop`
-3. `pnpm -r exec pnpm version patch` - this will patch version in every package.json by **1** so in our case we would get **1.1.16**
-4. `git add .` - to include all modified package.json files
-5. `git commit -m "v1.1.16"` - we have to specify version that we got after previous command so in this case it will be **1.1.16**
-6. `git push`
-7. `git tag v1.1.16` - specify the tag same as the new version
-8. `git push origin v1.1.16` - will upload tag specified in previous command to remote
-9. `git checkout develop`
-10. `git merge main` - sync develop with main
-11. `git push`
+1. `Start on develop`
+2. `pnpm -r exec pnpm version patch command`
+3. `pnpm run lint:fix command`
+4. `Push it into develop`
+5. `Go into gitlab and create merge request into main branch`
+6. `Merge it after build succeed`
+7. `Go into main branch and pull it`
+8. `git tag v1.1.15`
+9. `git push origin v1.1.15`
 
 ## Code generation for legacy admin panel
 
