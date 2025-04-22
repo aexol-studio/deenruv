@@ -98,8 +98,8 @@
         "inputStreetPlaceholder": "Street Line 1",
         "inputStreet2Label": "Street Line 2",
         "inputStreet2Placeholder": "Street Line 2",
-        "inputTaxLabel": "Company tax identifier",
-        "inputTaxPlaceholder": "Company tax identifier"
+        "inputTaxLabel": "Company tax ID",
+        "inputTaxPlaceholder": "Company tax ID"
     },
     "validation": {
         "firstNameRequired": "First name is required",

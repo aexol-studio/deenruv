@@ -47,6 +47,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   ImageWithPreview,
+  LoadingMask,
   TableLabel,
 } from "@/components";
 import { ListTable } from "@/components/molecules/ListTable";
@@ -281,6 +282,7 @@ export function DetailList<
     removeFilterField,
     resetFilterFields,
     changeFilterField,
+    loading,
   } = useDetailListHook({
     fetch: (params, customFieldsSelector) =>
       fetch(params, customFieldsSelector, mergedSelectors),
@@ -634,136 +636,143 @@ export function DetailList<
   return (
     <PageBlock withoutPadding={noPaddings}>
       <DetailListStoreProvider refetch={refetch} table={table}>
-        <div className={cn("w-full")}>
-          <DeleteDialog
-            {...{
-              itemsToDelete,
-              deleteDialogOpened,
-              setDeleteDialogOpened,
-              onConfirmDelete,
-            }}
-          />
-          <div className="page-content-h flex w-full flex-col gap-2">
-            <div className="mb-1 flex w-full flex-col items-start gap-4">
-              <div className="flex w-full items-end justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  {table.getSelectedRowModel().flatRows.length > 0 && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 gap-2 py-0"
-                          aria-label="Open filters"
-                        >
-                          <Group className="size-4" aria-hidden="true" />
-                          {t("Zaznaczone")} (
-                          {table.getSelectedRowModel().flatRows.length})
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="mr-6 w-56" align="start">
-                        <DropdownMenuLabel className="select-none">
-                          {t("Operacje masowe")}
-                        </DropdownMenuLabel>
-                        {bulkActions.length > 0 ? (
-                          <>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                              {bulkActions?.map((action) => {
-                                const onClick = async () => {
-                                  try {
-                                    const { error } = await action.onClick({
-                                      table,
-                                      data: objects,
-                                      refetch,
-                                    });
-                                    if (error) {
-                                      throw new Error(error);
-                                    } else {
-                                      refetch();
-                                      table.toggleAllRowsSelected(false);
-                                    }
-                                  } catch (error) {
-                                    const message =
-                                      error instanceof Error
-                                        ? error.message
-                                        : "Unknown error";
-                                    toast.error(message);
-                                  }
-                                };
-                                return (
-                                  <DropdownMenuItem
-                                    key={action.label}
-                                    onClick={onClick}
-                                    className="flex items-center gap-2 cursor-pointer"
-                                  >
-                                    {action.icon}
-                                    {action.label}
-                                  </DropdownMenuItem>
-                                );
-                              })}
-                            </DropdownMenuGroup>
-                          </>
-                        ) : null}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                          <DropdownMenuItem
-                            className="text-red-600 cursor-pointer"
-                            disabled={
-                              !table.getSelectedRowModel().flatRows.length
-                            }
-                            onClick={() => {
-                              const selected = table
-                                .getSelectedRowModel()
-                                .rows.map((row) => row.original);
-                              onRemove(selected);
-                            }}
+        {loading ? (
+          <LoadingMask />
+        ) : (
+          <div className={cn("w-full")}>
+            <DeleteDialog
+              {...{
+                itemsToDelete,
+                deleteDialogOpened,
+                setDeleteDialogOpened,
+                onConfirmDelete,
+              }}
+            />
+            <div className="page-content-h flex w-full flex-col gap-2">
+              <div className="mb-1 flex w-full flex-col items-start gap-4">
+                <div className="flex w-full items-end justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    {table.getSelectedRowModel().flatRows.length > 0 && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 gap-2 py-0"
+                            aria-label="Open filters"
                           >
-                            <Trash2Icon className="mr-2 size-4" />
-                            {t("Usuń zacznaczone")}
-                          </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-
-                  <ColumnView table={table} entityName={entityName} />
-                  {Search}
-                  <FiltersDialog {...filterProperties} />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-2">
-                    {route && !noCreateButton && isPermittedToCreate && (
-                      <Button
-                        className="flex items-center gap-2"
-                        onClick={() => {
-                          if ("create" in route) route.create(refetch);
-                          else
-                            navigate((route as RouteBase).new, {
-                              viewTransition: true,
-                            });
-                        }}
-                      >
-                        <PlusCircleIcon size={16} />
-                        {t("create")}
-                      </Button>
+                            <Group className="size-4" aria-hidden="true" />
+                            {t("Zaznaczone")} (
+                            {table.getSelectedRowModel().flatRows.length})
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          className="mr-6 w-56"
+                          align="start"
+                        >
+                          <DropdownMenuLabel className="select-none">
+                            {t("Operacje masowe")}
+                          </DropdownMenuLabel>
+                          {bulkActions.length > 0 ? (
+                            <>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuGroup>
+                                {bulkActions?.map((action) => {
+                                  const onClick = async () => {
+                                    try {
+                                      const { error } = await action.onClick({
+                                        table,
+                                        data: objects,
+                                        refetch,
+                                      });
+                                      if (error) {
+                                        throw new Error(error);
+                                      } else {
+                                        refetch();
+                                        table.toggleAllRowsSelected(false);
+                                      }
+                                    } catch (error) {
+                                      const message =
+                                        error instanceof Error
+                                          ? error.message
+                                          : "Unknown error";
+                                      toast.error(message);
+                                    }
+                                  };
+                                  return (
+                                    <DropdownMenuItem
+                                      key={action.label}
+                                      onClick={onClick}
+                                      className="flex items-center gap-2 cursor-pointer"
+                                    >
+                                      {action.icon}
+                                      {action.label}
+                                    </DropdownMenuItem>
+                                  );
+                                })}
+                              </DropdownMenuGroup>
+                            </>
+                          ) : null}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuGroup>
+                            <DropdownMenuItem
+                              className="text-red-600 cursor-pointer"
+                              disabled={
+                                !table.getSelectedRowModel().flatRows.length
+                              }
+                              onClick={() => {
+                                const selected = table
+                                  .getSelectedRowModel()
+                                  .rows.map((row) => row.original);
+                                onRemove(selected);
+                              }}
+                            >
+                              <Trash2Icon className="mr-2 size-4" />
+                              {t("Usuń zacznaczone")}
+                            </DropdownMenuItem>
+                          </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     )}
-                    {additionalButtons}
+
+                    <ColumnView table={table} entityName={entityName} />
+                    {Search}
+                    <FiltersDialog {...filterProperties} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-2">
+                      {route && !noCreateButton && isPermittedToCreate && (
+                        <Button
+                          className="flex items-center gap-2"
+                          onClick={() => {
+                            if ("create" in route) route.create(refetch);
+                            else
+                              navigate((route as RouteBase).new, {
+                                viewTransition: true,
+                              });
+                          }}
+                        >
+                          <PlusCircleIcon size={16} />
+                          {t("create")}
+                        </Button>
+                      )}
+                      {additionalButtons}
+                    </div>
                   </div>
                 </div>
               </div>
+              <ListTable
+                {...{
+                  columns,
+                  isFiltered,
+                  table,
+                  Paginate,
+                  tableId: tableId as LocationKeys,
+                }}
+              />
             </div>
-            <ListTable
-              {...{
-                columns,
-                isFiltered,
-                table,
-                Paginate,
-                tableId: tableId as LocationKeys,
-              }}
-            />
           </div>
-        </div>
+        )}
       </DetailListStoreProvider>
     </PageBlock>
   );

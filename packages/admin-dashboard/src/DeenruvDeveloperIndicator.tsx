@@ -75,7 +75,7 @@ export const DeenruvDeveloperIndicator = () => {
   const [showSchema, setShowSchema] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4">
+    <div className="fixed bottom-4 left-4">
       <Drawer>
         <DrawerTrigger asChild>
           <Button
