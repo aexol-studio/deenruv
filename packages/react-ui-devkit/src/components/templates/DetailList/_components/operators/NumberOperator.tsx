@@ -57,7 +57,7 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
             setValue({ start: 0, end: 0 });
           } else {
             setType(e as keyof NumberOperator);
-            setValue(0);
+            setValue(undefined);
           }
           onSubmit({ [e as keyof NumberOperator]: value });
         }}
@@ -122,7 +122,7 @@ export const NumberOperator: React.FC<Props<NumberOperator>> = ({
               disabled={!type}
               type="number"
               className="h-8 w-full rounded"
-              value={typeof value === "number" ? value : 0}
+              value={typeof value === "number" ? value : undefined}
               onChange={(e) => {
                 setValue(parseFloat(e.currentTarget.value));
                 onSubmit({ [type]: parseFloat(e.currentTarget.value) });

@@ -6,3 +6,4 @@ export * from "./PageBlock.js";
 export * from "./CustomCard.js";
 export * from "./CustomCardHeader.js";
 export * from "./EmptyState.js";
+export * from "./FacetIdsSelector.js";

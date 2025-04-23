@@ -1,4 +1,3 @@
-import { FacetTableFilter } from '@/components/FacetTableFilter.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
   useTranslation,
@@ -10,6 +9,7 @@ import {
   PaginationInput,
   Routes,
   TableLabel,
+  FacetIdsSelector,
 } from '@deenruv/react-ui-devkit';
 import { useNavigate } from 'react-router-dom';
 
@@ -64,7 +64,7 @@ export const ProductVariantsListPage = () => {
           key: 'facetValueId',
           component: (props) => {
             return (
-              <FacetTableFilter
+              <FacetIdsSelector
                 onChange={(facetValuesId: string[]) => {
                   if (facetValuesId.length === 0) {
                     props.onChange(undefined);
@@ -105,13 +105,13 @@ export const ProductVariantsListPage = () => {
             return (
               <div className="flex flex-col gap-1">
                 <Badge
-                  className="flex justify-between"
+                  className="flex justify-between gap-1"
                   variant={row.original.stockOnHand <= 0 ? 'destructive' : 'outline'}
                 >
                   <span>{t('table.stockOnHand')}</span>
                   <span>{row.original.stockOnHand}</span>
                 </Badge>
-                <Badge className="flex justify-between" variant={'outline'}>
+                <Badge className="flex justify-between gap-1" variant={'outline'}>
                   <span>{t('table.stockAllocated')}</span>
                   <span>{row.original.stockAllocated}</span>
                 </Badge>

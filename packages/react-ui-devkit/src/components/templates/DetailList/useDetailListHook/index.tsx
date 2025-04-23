@@ -209,7 +209,6 @@ export const useDetailListHook = <
   );
 
   useEffect(() => {
-    console.log("FETCH");
     // setLoading(true);
     fetch(searchParamValues).then(({ items, totalItems }) => {
       setObjects(items);

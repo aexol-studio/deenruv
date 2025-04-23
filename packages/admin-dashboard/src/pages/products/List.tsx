@@ -1,4 +1,3 @@
-import { FacetTableFilter } from '@/components/FacetTableFilter.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import {
   apiClient,
@@ -10,6 +9,7 @@ import {
   Routes,
   TableLabel,
   useTranslation,
+  FacetIdsSelector,
 } from '@deenruv/react-ui-devkit';
 // import { FacetValueSelector } from '@deenruv/react-ui-devkit/FacetValueSelector.js';
 const tableId = 'products-list-view';
@@ -63,7 +63,7 @@ export const ProductsListPage = () => {
           key: 'facetValueId',
           component: (props) => {
             return (
-              <FacetTableFilter
+              <FacetIdsSelector
                 onChange={(facetValuesId: string[]) => {
                   if (facetValuesId.length === 0) {
                     props.onChange(undefined);
