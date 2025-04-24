@@ -242,20 +242,30 @@ export function DetailList<
       updatedAt: true,
     });
 
-  const getTableDefaultOrder = (): string[] => {
-    return table
-      .getAllColumns()
-      .slice()
-      .map((column) => column.id)
+  const getTableDefaultOrder = (
+    additional?: (string | undefined)[],
+  ): string[] => {
+    const columns = table.getAllColumns().map((col) => col.id);
+    const hasCode = columns.includes("code");
+    const hasFeaturedAsset = columns.includes("featuredAsset");
+
+    const prefix: string[] = ["id"];
+    if (hasCode) prefix.push("code");
+    if (hasFeaturedAsset) prefix.push("featuredAsset");
+
+    const additionalColumns = (additional?.filter(Boolean) as string[]) || [];
+
+    const remaining = columns
+      .filter((id) => !prefix.includes(id))
+      .filter((id) => !additionalColumns.includes(id))
       .sort((a, b) => {
-        const isCustomA = a.startsWith("customFields.");
-        const isCustomB = b.startsWith("customFields.");
-
-        if (isCustomA && !isCustomB) return 1;
-        if (!isCustomA && isCustomB) return -1;
-
+        const isCustomFieldA = a.startsWith("customFields.");
+        const isCustomFieldB = b.startsWith("customFields.");
+        if (isCustomFieldA && !isCustomFieldB) return 1;
+        if (!isCustomFieldA && isCustomFieldB) return -1;
         return a.localeCompare(b);
       });
+    return [...prefix, ...remaining, ...additionalColumns];
   };
 
   const getTableDefaultVisibility = () => {
@@ -577,14 +587,18 @@ export function DetailList<
   });
 
   useEffect(() => {
-    if (!columnsOrderState.length) setColumnsOrderState(getTableDefaultOrder());
+    if (!objects?.length) return;
+    if (!columnsOrderState.length)
+      setColumnsOrderState(
+        getTableDefaultOrder(additionalColumns?.map((col) => col.id) || []),
+      );
     if (
       !columnsVisibilityState ||
       !Object.keys(columnsVisibilityState).length
     ) {
       setColumnsVisibilityState(getTableDefaultVisibility());
     }
-  }, [table]);
+  }, [objects, table]);
 
   const isFiltered = useMemo(() => {
     let isFiltered = false;
