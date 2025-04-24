@@ -155,6 +155,7 @@ export function DetailList<
   additionalBulkActions,
   stopRefetchOnChannelChange,
   suggestedOrderColumns,
+  refetchTimeout,
 }: {
   fetch: T;
   onRemove?: (items: AwaitedReturnType<T>["items"]) => Promise<boolean>;
@@ -181,6 +182,7 @@ export function DetailList<
   suggestedOrderColumns?: Partial<
     Record<keyof AwaitedReturnType<T>["items"][number], number>
   >;
+  refetchTimeout?: number;
 } & (
   | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
   | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
@@ -316,6 +318,15 @@ export function DetailList<
       refetch();
     }
   }, [selectedChannel?.id]);
+
+  useEffect(() => {
+    if (refetchTimeout) {
+      const interval = setInterval(() => {
+        refetch();
+      }, refetchTimeout);
+      return () => clearInterval(interval);
+    }
+  }, [refetchTimeout]);
 
   const columns = useMemo(() => {
     const entry = objects?.[0];
