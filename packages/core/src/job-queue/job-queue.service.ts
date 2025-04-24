@@ -102,6 +102,18 @@ export class JobQueueService implements OnModuleDestroy {
     }
   }
 
+  async startOne(queueName: string): Promise<void> {
+    const queue = this.queues.find((q) => q.name === queueName);
+    if (!queue) {
+      Logger.warn(`No queue found with name "${queueName}"`, loggerCtx);
+      return;
+    }
+    if (!queue.started) {
+      Logger.info(`Starting queue: ${queue.name}`, loggerCtx);
+      await queue.start();
+    }
+  }
+
   /**
    * @description
    * Adds a {@link JobBuffer}, which will make it active and begin collecting
