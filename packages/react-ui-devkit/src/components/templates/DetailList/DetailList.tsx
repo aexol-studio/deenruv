@@ -320,13 +320,13 @@ export function DetailList<
   }, [selectedChannel?.id]);
 
   useEffect(() => {
-    if (refetchTimeout) {
+    if (refetchTimeout && !loading) {
       const interval = setInterval(() => {
         refetch();
       }, refetchTimeout);
       return () => clearInterval(interval);
     }
-  }, [refetchTimeout]);
+  }, [refetchTimeout, loading]);
 
   const columns = useMemo(() => {
     const entry = objects?.[0];
