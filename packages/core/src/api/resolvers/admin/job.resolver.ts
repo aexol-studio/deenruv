@@ -64,7 +64,10 @@ export class JobResolver {
   @Query()
   @Allow(Permission.ReadSettings, Permission.ReadSystem)
   jobQueues(): JobQueue[] {
-    return this.jobService.getJobQueues();
+    return this.jobService.getJobQueues().map((queue) => ({
+      name: queue.name,
+      running: queue.started,
+    }));
   }
 
   @Mutation()

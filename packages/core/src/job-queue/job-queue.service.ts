@@ -102,18 +102,6 @@ export class JobQueueService implements OnModuleDestroy {
     }
   }
 
-  async startOne(queueName: string): Promise<void> {
-    const queue = this.queues.find((q) => q.name === queueName);
-    if (!queue) {
-      Logger.warn(`No queue found with name "${queueName}"`, loggerCtx);
-      return;
-    }
-    if (!queue.started) {
-      Logger.info(`Starting queue: ${queue.name}`, loggerCtx);
-      await queue.start();
-    }
-  }
-
   /**
    * @description
    * Adds a {@link JobBuffer}, which will make it active and begin collecting
@@ -183,11 +171,8 @@ export class JobQueueService implements OnModuleDestroy {
    * Returns an array of `{ name: string; running: boolean; }` for each
    * registered JobQueue.
    */
-  getJobQueues(): GraphQlJobQueue[] {
-    return this.queues.map((queue) => ({
-      name: queue.name,
-      running: queue.started,
-    }));
+  getJobQueues(): JobQueue[] {
+    return this.queues;
   }
 
   /**
