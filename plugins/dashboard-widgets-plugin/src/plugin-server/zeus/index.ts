@@ -279,9 +279,15 @@ export const ZeusScalars = ZeusSelect<ScalarCoders>();
 
 type BaseSymbol = number | string | undefined | boolean | null;
 
-type ScalarsSelector<T> = {
+type ScalarsSelector<T, V> = {
   [X in Required<{
-    [P in keyof T]: T[P] extends BaseSymbol | Array<BaseSymbol> ? P : never;
+    [P in keyof T]: P extends keyof V
+      ? V[P] extends Array<any> | undefined
+        ? never
+        : T[P] extends BaseSymbol | Array<BaseSymbol>
+        ? P
+        : never
+      : never;
   }>[keyof T]]: true;
 };
 
@@ -304,7 +310,7 @@ export const fields = <T extends keyof ModelTypes>(k: T) => {
       })
       .map(([key]) => [key, true as const]),
   );
-  return o as ScalarsSelector<ModelTypes[T]>;
+  return o as ScalarsSelector<ModelTypes[T], T extends keyof ValueTypes ? ValueTypes[T] : never>;
 };
 
 export const decodeScalarsInResponse = <O extends Operations>({
@@ -668,7 +674,7 @@ export const InternalArgsBuilt = ({
     }
     const checkType = ResolveFromPath(props, returns, ops)(p);
     if (checkType.startsWith('scalar.')) {
-       
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const [_, ...splittedScalar] = checkType.split('.');
       const scalarKey = splittedScalar.join('.');
       return (scalars?.[scalarKey]?.encode?.(a) as string) || JSON.stringify(a);
@@ -807,7 +813,6 @@ type BuiltInVariableTypes = {
   ['String']: string;
   ['Int']: number;
   ['Float']: number;
-  ['ID']: unknown;
   ['Boolean']: boolean;
 };
 type AllVariableTypes = keyof BuiltInVariableTypes | keyof ZEUS_VARIABLES;
@@ -893,83 +898,85 @@ export type ScalarCoders = {
 	DateTime?: ScalarResolver;
 	Upload?: ScalarResolver;
 	Money?: ScalarResolver;
+	ID?: ScalarResolver;
 }
 type ZEUS_UNIONS = GraphQLTypes["CreateAssetResult"] | GraphQLTypes["NativeAuthenticationResult"] | GraphQLTypes["AuthenticationResult"] | GraphQLTypes["CreateChannelResult"] | GraphQLTypes["UpdateChannelResult"] | GraphQLTypes["CreateCustomerResult"] | GraphQLTypes["UpdateCustomerResult"] | GraphQLTypes["DuplicateEntityResult"] | GraphQLTypes["RemoveFacetFromChannelResult"] | GraphQLTypes["UpdateGlobalSettingsResult"] | GraphQLTypes["TransitionOrderToStateResult"] | GraphQLTypes["SettlePaymentResult"] | GraphQLTypes["CancelPaymentResult"] | GraphQLTypes["AddFulfillmentToOrderResult"] | GraphQLTypes["CancelOrderResult"] | GraphQLTypes["RefundOrderResult"] | GraphQLTypes["SettleRefundResult"] | GraphQLTypes["TransitionFulfillmentToStateResult"] | GraphQLTypes["TransitionPaymentToStateResult"] | GraphQLTypes["ModifyOrderResult"] | GraphQLTypes["AddManualPaymentToOrderResult"] | GraphQLTypes["SetCustomerForDraftOrderResult"] | GraphQLTypes["RemoveOptionGroupFromProductResult"] | GraphQLTypes["CreatePromotionResult"] | GraphQLTypes["UpdatePromotionResult"] | GraphQLTypes["StockMovementItem"] | GraphQLTypes["UpdateOrderItemsResult"] | GraphQLTypes["RemoveOrderItemsResult"] | GraphQLTypes["SetOrderShippingMethodResult"] | GraphQLTypes["ApplyCouponCodeResult"] | GraphQLTypes["CustomFieldConfig"] | GraphQLTypes["SearchResultPrice"]
 
 export type ValueTypes = {
     ["Query"]: AliasType<{
 administrators?: [{	options?: ValueTypes["AdministratorListOptions"] | undefined | null | Variable<any, string>},ValueTypes["AdministratorList"]],
-administrator?: [{	id: string | Variable<any, string>},ValueTypes["Administrator"]],
+administrator?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Administrator"]],
 	activeAdministrator?:ValueTypes["Administrator"],
 assets?: [{	options?: ValueTypes["AssetListOptions"] | undefined | null | Variable<any, string>},ValueTypes["AssetList"]],
-asset?: [{	id: string | Variable<any, string>},ValueTypes["Asset"]],
+asset?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Asset"]],
 	me?:ValueTypes["CurrentUser"],
 channels?: [{	options?: ValueTypes["ChannelListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ChannelList"]],
-channel?: [{	id: string | Variable<any, string>},ValueTypes["Channel"]],
+channel?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Channel"]],
 	activeChannel?:ValueTypes["Channel"],
 collections?: [{	options?: ValueTypes["CollectionListOptions"] | undefined | null | Variable<any, string>},ValueTypes["CollectionList"]],
-collection?: [{	id?: string | undefined | null | Variable<any, string>,	slug?: string | undefined | null | Variable<any, string>},ValueTypes["Collection"]],
+collection?: [{	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,	slug?: string | undefined | null | Variable<any, string>},ValueTypes["Collection"]],
 	collectionFilters?:ValueTypes["ConfigurableOperationDefinition"],
 previewCollectionVariants?: [{	input: ValueTypes["PreviewCollectionVariantsInput"] | Variable<any, string>,	options?: ValueTypes["ProductVariantListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ProductVariantList"]],
 countries?: [{	options?: ValueTypes["CountryListOptions"] | undefined | null | Variable<any, string>},ValueTypes["CountryList"]],
-country?: [{	id: string | Variable<any, string>},ValueTypes["Country"]],
+country?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Country"]],
 customerGroups?: [{	options?: ValueTypes["CustomerGroupListOptions"] | undefined | null | Variable<any, string>},ValueTypes["CustomerGroupList"]],
-customerGroup?: [{	id: string | Variable<any, string>},ValueTypes["CustomerGroup"]],
+customerGroup?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["CustomerGroup"]],
 customers?: [{	options?: ValueTypes["CustomerListOptions"] | undefined | null | Variable<any, string>},ValueTypes["CustomerList"]],
-customer?: [{	id: string | Variable<any, string>},ValueTypes["Customer"]],
+customer?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Customer"]],
 	/** Returns all configured EntityDuplicators. */
 	entityDuplicators?:ValueTypes["EntityDuplicatorDefinition"],
 facets?: [{	options?: ValueTypes["FacetListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FacetList"]],
-facet?: [{	id: string | Variable<any, string>},ValueTypes["Facet"]],
+facet?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Facet"]],
 facetValues?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null | Variable<any, string>},ValueTypes["FacetValueList"]],
 	globalSettings?:ValueTypes["GlobalSettings"],
-job?: [{	jobId: string | Variable<any, string>},ValueTypes["Job"]],
+job?: [{	jobId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Job"]],
 jobs?: [{	options?: ValueTypes["JobListOptions"] | undefined | null | Variable<any, string>},ValueTypes["JobList"]],
-jobsById?: [{	jobIds: Array<string> | Variable<any, string>},ValueTypes["Job"]],
+jobsById?: [{	jobIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Job"]],
 	jobQueues?:ValueTypes["JobQueue"],
 jobBufferSize?: [{	bufferIds?: Array<string> | undefined | null | Variable<any, string>},ValueTypes["JobBufferSize"]],
-order?: [{	id: string | Variable<any, string>},ValueTypes["Order"]],
+order?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Order"]],
 orders?: [{	options?: ValueTypes["OrderListOptions"] | undefined | null | Variable<any, string>},ValueTypes["OrderList"]],
-eligibleShippingMethodsForDraftOrder?: [{	orderId: string | Variable<any, string>},ValueTypes["ShippingMethodQuote"]],
+eligibleShippingMethodsForDraftOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["ShippingMethodQuote"]],
 paymentMethods?: [{	options?: ValueTypes["PaymentMethodListOptions"] | undefined | null | Variable<any, string>},ValueTypes["PaymentMethodList"]],
-paymentMethod?: [{	id: string | Variable<any, string>},ValueTypes["PaymentMethod"]],
+paymentMethod?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["PaymentMethod"]],
 	paymentMethodEligibilityCheckers?:ValueTypes["ConfigurableOperationDefinition"],
 	paymentMethodHandlers?:ValueTypes["ConfigurableOperationDefinition"],
 productOptionGroups?: [{	filterTerm?: string | undefined | null | Variable<any, string>},ValueTypes["ProductOptionGroup"]],
-productOptionGroup?: [{	id: string | Variable<any, string>},ValueTypes["ProductOptionGroup"]],
+productOptionGroup?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["ProductOptionGroup"]],
 search?: [{	input: ValueTypes["SearchInput"] | Variable<any, string>},ValueTypes["SearchResponse"]],
 	pendingSearchIndexUpdates?:boolean | `@${string}`,
 products?: [{	options?: ValueTypes["ProductListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ProductList"]],
-product?: [{	id?: string | undefined | null | Variable<any, string>,	slug?: string | undefined | null | Variable<any, string>},ValueTypes["Product"]],
-productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined | null | Variable<any, string>,	productId?: string | undefined | null | Variable<any, string>},ValueTypes["ProductVariantList"]],
-productVariant?: [{	id: string | Variable<any, string>},ValueTypes["ProductVariant"]],
-promotion?: [{	id: string | Variable<any, string>},ValueTypes["Promotion"]],
+product?: [{	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,	slug?: string | undefined | null | Variable<any, string>},ValueTypes["Product"]],
+productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined | null | Variable<any, string>,	productId?: ValueTypes["ID"] | undefined | null | Variable<any, string>},ValueTypes["ProductVariantList"]],
+productVariant?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["ProductVariant"]],
+promotion?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Promotion"]],
 promotions?: [{	options?: ValueTypes["PromotionListOptions"] | undefined | null | Variable<any, string>},ValueTypes["PromotionList"]],
 	promotionConditions?:ValueTypes["ConfigurableOperationDefinition"],
 	promotionActions?:ValueTypes["ConfigurableOperationDefinition"],
 provinces?: [{	options?: ValueTypes["ProvinceListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ProvinceList"]],
-province?: [{	id: string | Variable<any, string>},ValueTypes["Province"]],
+province?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Province"]],
 roles?: [{	options?: ValueTypes["RoleListOptions"] | undefined | null | Variable<any, string>},ValueTypes["RoleList"]],
-role?: [{	id: string | Variable<any, string>},ValueTypes["Role"]],
+role?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Role"]],
 sellers?: [{	options?: ValueTypes["SellerListOptions"] | undefined | null | Variable<any, string>},ValueTypes["SellerList"]],
-seller?: [{	id: string | Variable<any, string>},ValueTypes["Seller"]],
+seller?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Seller"]],
 shippingMethods?: [{	options?: ValueTypes["ShippingMethodListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ShippingMethodList"]],
-shippingMethod?: [{	id: string | Variable<any, string>},ValueTypes["ShippingMethod"]],
+shippingMethod?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["ShippingMethod"]],
 	shippingEligibilityCheckers?:ValueTypes["ConfigurableOperationDefinition"],
 	shippingCalculators?:ValueTypes["ConfigurableOperationDefinition"],
 	fulfillmentHandlers?:ValueTypes["ConfigurableOperationDefinition"],
 testShippingMethod?: [{	input: ValueTypes["TestShippingMethodInput"] | Variable<any, string>},ValueTypes["TestShippingMethodResult"]],
 testEligibleShippingMethods?: [{	input: ValueTypes["TestEligibleShippingMethodsInput"] | Variable<any, string>},ValueTypes["ShippingMethodQuote"]],
-stockLocation?: [{	id: string | Variable<any, string>},ValueTypes["StockLocation"]],
+stockLocation?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["StockLocation"]],
 stockLocations?: [{	options?: ValueTypes["StockLocationListOptions"] | undefined | null | Variable<any, string>},ValueTypes["StockLocationList"]],
-tag?: [{	id: string | Variable<any, string>},ValueTypes["Tag"]],
+tag?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Tag"]],
 tags?: [{	options?: ValueTypes["TagListOptions"] | undefined | null | Variable<any, string>},ValueTypes["TagList"]],
 taxCategories?: [{	options?: ValueTypes["TaxCategoryListOptions"] | undefined | null | Variable<any, string>},ValueTypes["TaxCategoryList"]],
-taxCategory?: [{	id: string | Variable<any, string>},ValueTypes["TaxCategory"]],
+taxCategory?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["TaxCategory"]],
 taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Variable<any, string>},ValueTypes["TaxRateList"]],
-taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
+taxRate?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
-zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
+zone?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Zone"]],
+	additionalOrderStates?:ValueTypes["AdditionalOrderState"],
 chartMetric?: [{	input: ValueTypes["ChartMetricInput"] | Variable<any, string>},ValueTypes["ChartMetrics"]],
 orderSummaryMetric?: [{	input: ValueTypes["OrderSummaryMetricInput"] | Variable<any, string>},ValueTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
@@ -979,9 +986,9 @@ metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null |
 createAdministrator?: [{	input: ValueTypes["CreateAdministratorInput"] | Variable<any, string>},ValueTypes["Administrator"]],
 updateAdministrator?: [{	input: ValueTypes["UpdateAdministratorInput"] | Variable<any, string>},ValueTypes["Administrator"]],
 updateActiveAdministrator?: [{	input: ValueTypes["UpdateActiveAdministratorInput"] | Variable<any, string>},ValueTypes["Administrator"]],
-deleteAdministrator?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteAdministrators?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
-assignRoleToAdministrator?: [{	administratorId: string | Variable<any, string>,	roleId: string | Variable<any, string>},ValueTypes["Administrator"]],
+deleteAdministrator?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteAdministrators?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+assignRoleToAdministrator?: [{	administratorId: ValueTypes["ID"] | Variable<any, string>,	roleId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Administrator"]],
 createAssets?: [{	input: Array<ValueTypes["CreateAssetInput"]> | Variable<any, string>},ValueTypes["CreateAssetResult"]],
 updateAsset?: [{	input: ValueTypes["UpdateAssetInput"] | Variable<any, string>},ValueTypes["Asset"]],
 deleteAsset?: [{	input: ValueTypes["DeleteAssetInput"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
@@ -992,128 +999,129 @@ authenticate?: [{	input: ValueTypes["AuthenticationInput"] | Variable<any, strin
 	logout?:ValueTypes["Success"],
 createChannel?: [{	input: ValueTypes["CreateChannelInput"] | Variable<any, string>},ValueTypes["CreateChannelResult"]],
 updateChannel?: [{	input: ValueTypes["UpdateChannelInput"] | Variable<any, string>},ValueTypes["UpdateChannelResult"]],
-deleteChannel?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteChannels?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteChannel?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteChannels?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createCollection?: [{	input: ValueTypes["CreateCollectionInput"] | Variable<any, string>},ValueTypes["Collection"]],
 updateCollection?: [{	input: ValueTypes["UpdateCollectionInput"] | Variable<any, string>},ValueTypes["Collection"]],
-deleteCollection?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteCollections?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCollection?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCollections?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 moveCollection?: [{	input: ValueTypes["MoveCollectionInput"] | Variable<any, string>},ValueTypes["Collection"]],
 assignCollectionsToChannel?: [{	input: ValueTypes["AssignCollectionsToChannelInput"] | Variable<any, string>},ValueTypes["Collection"]],
 removeCollectionsFromChannel?: [{	input: ValueTypes["RemoveCollectionsFromChannelInput"] | Variable<any, string>},ValueTypes["Collection"]],
 createCountry?: [{	input: ValueTypes["CreateCountryInput"] | Variable<any, string>},ValueTypes["Country"]],
 updateCountry?: [{	input: ValueTypes["UpdateCountryInput"] | Variable<any, string>},ValueTypes["Country"]],
-deleteCountry?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteCountries?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCountry?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCountries?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createCustomerGroup?: [{	input: ValueTypes["CreateCustomerGroupInput"] | Variable<any, string>},ValueTypes["CustomerGroup"]],
 updateCustomerGroup?: [{	input: ValueTypes["UpdateCustomerGroupInput"] | Variable<any, string>},ValueTypes["CustomerGroup"]],
-deleteCustomerGroup?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteCustomerGroups?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
-addCustomersToGroup?: [{	customerGroupId: string | Variable<any, string>,	customerIds: Array<string> | Variable<any, string>},ValueTypes["CustomerGroup"]],
-removeCustomersFromGroup?: [{	customerGroupId: string | Variable<any, string>,	customerIds: Array<string> | Variable<any, string>},ValueTypes["CustomerGroup"]],
+deleteCustomerGroup?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCustomerGroups?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+addCustomersToGroup?: [{	customerGroupId: ValueTypes["ID"] | Variable<any, string>,	customerIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["CustomerGroup"]],
+removeCustomersFromGroup?: [{	customerGroupId: ValueTypes["ID"] | Variable<any, string>,	customerIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["CustomerGroup"]],
 createCustomer?: [{	input: ValueTypes["CreateCustomerInput"] | Variable<any, string>,	password?: string | undefined | null | Variable<any, string>},ValueTypes["CreateCustomerResult"]],
 updateCustomer?: [{	input: ValueTypes["UpdateCustomerInput"] | Variable<any, string>},ValueTypes["UpdateCustomerResult"]],
-deleteCustomer?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteCustomers?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
-createCustomerAddress?: [{	customerId: string | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Address"]],
+deleteCustomer?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCustomers?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+createCustomerAddress?: [{	customerId: ValueTypes["ID"] | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Address"]],
 updateCustomerAddress?: [{	input: ValueTypes["UpdateAddressInput"] | Variable<any, string>},ValueTypes["Address"]],
-deleteCustomerAddress?: [{	id: string | Variable<any, string>},ValueTypes["Success"]],
+deleteCustomerAddress?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Success"]],
 addNoteToCustomer?: [{	input: ValueTypes["AddNoteToCustomerInput"] | Variable<any, string>},ValueTypes["Customer"]],
 updateCustomerNote?: [{	input: ValueTypes["UpdateCustomerNoteInput"] | Variable<any, string>},ValueTypes["HistoryEntry"]],
-deleteCustomerNote?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteCustomerNote?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
 duplicateEntity?: [{	input: ValueTypes["DuplicateEntityInput"] | Variable<any, string>},ValueTypes["DuplicateEntityResult"]],
 createFacet?: [{	input: ValueTypes["CreateFacetInput"] | Variable<any, string>},ValueTypes["Facet"]],
 updateFacet?: [{	input: ValueTypes["UpdateFacetInput"] | Variable<any, string>},ValueTypes["Facet"]],
-deleteFacet?: [{	id: string | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteFacets?: [{	ids: Array<string> | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteFacet?: [{	id: ValueTypes["ID"] | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteFacets?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createFacetValues?: [{	input: Array<ValueTypes["CreateFacetValueInput"]> | Variable<any, string>},ValueTypes["FacetValue"]],
 updateFacetValues?: [{	input: Array<ValueTypes["UpdateFacetValueInput"]> | Variable<any, string>},ValueTypes["FacetValue"]],
-deleteFacetValues?: [{	ids: Array<string> | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteFacetValues?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
 assignFacetsToChannel?: [{	input: ValueTypes["AssignFacetsToChannelInput"] | Variable<any, string>},ValueTypes["Facet"]],
 removeFacetsFromChannel?: [{	input: ValueTypes["RemoveFacetsFromChannelInput"] | Variable<any, string>},ValueTypes["RemoveFacetFromChannelResult"]],
 updateGlobalSettings?: [{	input: ValueTypes["UpdateGlobalSettingsInput"] | Variable<any, string>},ValueTypes["UpdateGlobalSettingsResult"]],
 importProducts?: [{	csvFile: ValueTypes["Upload"] | Variable<any, string>},ValueTypes["ImportInfo"]],
 removeSettledJobs?: [{	queueNames?: Array<string> | undefined | null | Variable<any, string>,	olderThan?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>},boolean | `@${string}`],
-cancelJob?: [{	jobId: string | Variable<any, string>},ValueTypes["Job"]],
+cancelJob?: [{	jobId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Job"]],
 flushBufferedJobs?: [{	bufferIds?: Array<string> | undefined | null | Variable<any, string>},ValueTypes["Success"]],
-settlePayment?: [{	id: string | Variable<any, string>},ValueTypes["SettlePaymentResult"]],
-cancelPayment?: [{	id: string | Variable<any, string>},ValueTypes["CancelPaymentResult"]],
+settlePayment?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["SettlePaymentResult"]],
+cancelPayment?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["CancelPaymentResult"]],
 addFulfillmentToOrder?: [{	input: ValueTypes["FulfillOrderInput"] | Variable<any, string>},ValueTypes["AddFulfillmentToOrderResult"]],
 cancelOrder?: [{	input: ValueTypes["CancelOrderInput"] | Variable<any, string>},ValueTypes["CancelOrderResult"]],
 refundOrder?: [{	input: ValueTypes["RefundOrderInput"] | Variable<any, string>},ValueTypes["RefundOrderResult"]],
 settleRefund?: [{	input: ValueTypes["SettleRefundInput"] | Variable<any, string>},ValueTypes["SettleRefundResult"]],
 addNoteToOrder?: [{	input: ValueTypes["AddNoteToOrderInput"] | Variable<any, string>},ValueTypes["Order"]],
 updateOrderNote?: [{	input: ValueTypes["UpdateOrderNoteInput"] | Variable<any, string>},ValueTypes["HistoryEntry"]],
-deleteOrderNote?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-transitionOrderToState?: [{	id: string | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["TransitionOrderToStateResult"]],
-transitionFulfillmentToState?: [{	id: string | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["TransitionFulfillmentToStateResult"]],
-transitionPaymentToState?: [{	id: string | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["TransitionPaymentToStateResult"]],
+deleteOrderNote?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+transitionOrderToState?: [{	id: ValueTypes["ID"] | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["TransitionOrderToStateResult"]],
+transitionFulfillmentToState?: [{	id: ValueTypes["ID"] | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["TransitionFulfillmentToStateResult"]],
+transitionPaymentToState?: [{	id: ValueTypes["ID"] | Variable<any, string>,	state: string | Variable<any, string>},ValueTypes["TransitionPaymentToStateResult"]],
 setOrderCustomFields?: [{	input: ValueTypes["UpdateOrderInput"] | Variable<any, string>},ValueTypes["Order"]],
 setOrderCustomer?: [{	input: ValueTypes["SetOrderCustomerInput"] | Variable<any, string>},ValueTypes["Order"]],
 modifyOrder?: [{	input: ValueTypes["ModifyOrderInput"] | Variable<any, string>},ValueTypes["ModifyOrderResult"]],
 addManualPaymentToOrder?: [{	input: ValueTypes["ManualPaymentInput"] | Variable<any, string>},ValueTypes["AddManualPaymentToOrderResult"]],
 	/** Creates a draft Order */
 	createDraftOrder?:ValueTypes["Order"],
-deleteDraftOrder?: [{	orderId: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-addItemToDraftOrder?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["AddItemToDraftOrderInput"] | Variable<any, string>},ValueTypes["UpdateOrderItemsResult"]],
-adjustDraftOrderLine?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["AdjustDraftOrderLineInput"] | Variable<any, string>},ValueTypes["UpdateOrderItemsResult"]],
-removeDraftOrderLine?: [{	orderId: string | Variable<any, string>,	orderLineId: string | Variable<any, string>},ValueTypes["RemoveOrderItemsResult"]],
-setCustomerForDraftOrder?: [{	orderId: string | Variable<any, string>,	customerId?: string | undefined | null | Variable<any, string>,	input?: ValueTypes["CreateCustomerInput"] | undefined | null | Variable<any, string>},ValueTypes["SetCustomerForDraftOrderResult"]],
-setDraftOrderShippingAddress?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Order"]],
-setDraftOrderBillingAddress?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Order"]],
-setDraftOrderCustomFields?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["UpdateOrderInput"] | Variable<any, string>},ValueTypes["Order"]],
-applyCouponCodeToDraftOrder?: [{	orderId: string | Variable<any, string>,	couponCode: string | Variable<any, string>},ValueTypes["ApplyCouponCodeResult"]],
-removeCouponCodeFromDraftOrder?: [{	orderId: string | Variable<any, string>,	couponCode: string | Variable<any, string>},ValueTypes["Order"]],
-setDraftOrderShippingMethod?: [{	orderId: string | Variable<any, string>,	shippingMethodId: string | Variable<any, string>},ValueTypes["SetOrderShippingMethodResult"]],
+deleteDraftOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+addItemToDraftOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	input: ValueTypes["AddItemToDraftOrderInput"] | Variable<any, string>},ValueTypes["UpdateOrderItemsResult"]],
+adjustDraftOrderLine?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	input: ValueTypes["AdjustDraftOrderLineInput"] | Variable<any, string>},ValueTypes["UpdateOrderItemsResult"]],
+removeDraftOrderLine?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	orderLineId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["RemoveOrderItemsResult"]],
+setCustomerForDraftOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	customerId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,	input?: ValueTypes["CreateCustomerInput"] | undefined | null | Variable<any, string>},ValueTypes["SetCustomerForDraftOrderResult"]],
+setDraftOrderShippingAddress?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Order"]],
+setDraftOrderBillingAddress?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Order"]],
+setDraftOrderCustomFields?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	input: ValueTypes["UpdateOrderInput"] | Variable<any, string>},ValueTypes["Order"]],
+applyCouponCodeToDraftOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	couponCode: string | Variable<any, string>},ValueTypes["ApplyCouponCodeResult"]],
+toggleExcludePromotionInOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	promotionId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Order"]],
+removeCouponCodeFromDraftOrder?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	couponCode: string | Variable<any, string>},ValueTypes["Order"]],
+setDraftOrderShippingMethod?: [{	orderId: ValueTypes["ID"] | Variable<any, string>,	shippingMethodId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["SetOrderShippingMethodResult"]],
 createPaymentMethod?: [{	input: ValueTypes["CreatePaymentMethodInput"] | Variable<any, string>},ValueTypes["PaymentMethod"]],
 updatePaymentMethod?: [{	input: ValueTypes["UpdatePaymentMethodInput"] | Variable<any, string>},ValueTypes["PaymentMethod"]],
-deletePaymentMethod?: [{	id: string | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deletePaymentMethods?: [{	ids: Array<string> | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deletePaymentMethod?: [{	id: ValueTypes["ID"] | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deletePaymentMethods?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["DeletionResponse"]],
 assignPaymentMethodsToChannel?: [{	input: ValueTypes["AssignPaymentMethodsToChannelInput"] | Variable<any, string>},ValueTypes["PaymentMethod"]],
 removePaymentMethodsFromChannel?: [{	input: ValueTypes["RemovePaymentMethodsFromChannelInput"] | Variable<any, string>},ValueTypes["PaymentMethod"]],
 createProductOptionGroup?: [{	input: ValueTypes["CreateProductOptionGroupInput"] | Variable<any, string>},ValueTypes["ProductOptionGroup"]],
 updateProductOptionGroup?: [{	input: ValueTypes["UpdateProductOptionGroupInput"] | Variable<any, string>},ValueTypes["ProductOptionGroup"]],
 createProductOption?: [{	input: ValueTypes["CreateProductOptionInput"] | Variable<any, string>},ValueTypes["ProductOption"]],
 updateProductOption?: [{	input: ValueTypes["UpdateProductOptionInput"] | Variable<any, string>},ValueTypes["ProductOption"]],
-deleteProductOption?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteProductOption?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
 	reindex?:ValueTypes["Job"],
 	runPendingSearchIndexUpdates?:ValueTypes["Success"],
 createProduct?: [{	input: ValueTypes["CreateProductInput"] | Variable<any, string>},ValueTypes["Product"]],
 updateProduct?: [{	input: ValueTypes["UpdateProductInput"] | Variable<any, string>},ValueTypes["Product"]],
 updateProducts?: [{	input: Array<ValueTypes["UpdateProductInput"]> | Variable<any, string>},ValueTypes["Product"]],
-deleteProduct?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteProducts?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
-addOptionGroupToProduct?: [{	productId: string | Variable<any, string>,	optionGroupId: string | Variable<any, string>},ValueTypes["Product"]],
-removeOptionGroupFromProduct?: [{	productId: string | Variable<any, string>,	optionGroupId: string | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["RemoveOptionGroupFromProductResult"]],
+deleteProduct?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteProducts?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+addOptionGroupToProduct?: [{	productId: ValueTypes["ID"] | Variable<any, string>,	optionGroupId: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Product"]],
+removeOptionGroupFromProduct?: [{	productId: ValueTypes["ID"] | Variable<any, string>,	optionGroupId: ValueTypes["ID"] | Variable<any, string>,	force?: boolean | undefined | null | Variable<any, string>},ValueTypes["RemoveOptionGroupFromProductResult"]],
 createProductVariants?: [{	input: Array<ValueTypes["CreateProductVariantInput"]> | Variable<any, string>},ValueTypes["ProductVariant"]],
 updateProductVariants?: [{	input: Array<ValueTypes["UpdateProductVariantInput"]> | Variable<any, string>},ValueTypes["ProductVariant"]],
-deleteProductVariant?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteProductVariants?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteProductVariant?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteProductVariants?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 assignProductsToChannel?: [{	input: ValueTypes["AssignProductsToChannelInput"] | Variable<any, string>},ValueTypes["Product"]],
 removeProductsFromChannel?: [{	input: ValueTypes["RemoveProductsFromChannelInput"] | Variable<any, string>},ValueTypes["Product"]],
 assignProductVariantsToChannel?: [{	input: ValueTypes["AssignProductVariantsToChannelInput"] | Variable<any, string>},ValueTypes["ProductVariant"]],
 removeProductVariantsFromChannel?: [{	input: ValueTypes["RemoveProductVariantsFromChannelInput"] | Variable<any, string>},ValueTypes["ProductVariant"]],
 createPromotion?: [{	input: ValueTypes["CreatePromotionInput"] | Variable<any, string>},ValueTypes["CreatePromotionResult"]],
 updatePromotion?: [{	input: ValueTypes["UpdatePromotionInput"] | Variable<any, string>},ValueTypes["UpdatePromotionResult"]],
-deletePromotion?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deletePromotions?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deletePromotion?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deletePromotions?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 assignPromotionsToChannel?: [{	input: ValueTypes["AssignPromotionsToChannelInput"] | Variable<any, string>},ValueTypes["Promotion"]],
 removePromotionsFromChannel?: [{	input: ValueTypes["RemovePromotionsFromChannelInput"] | Variable<any, string>},ValueTypes["Promotion"]],
 createProvince?: [{	input: ValueTypes["CreateProvinceInput"] | Variable<any, string>},ValueTypes["Province"]],
 updateProvince?: [{	input: ValueTypes["UpdateProvinceInput"] | Variable<any, string>},ValueTypes["Province"]],
-deleteProvince?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteProvince?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createRole?: [{	input: ValueTypes["CreateRoleInput"] | Variable<any, string>},ValueTypes["Role"]],
 updateRole?: [{	input: ValueTypes["UpdateRoleInput"] | Variable<any, string>},ValueTypes["Role"]],
-deleteRole?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteRoles?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteRole?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteRoles?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createSeller?: [{	input: ValueTypes["CreateSellerInput"] | Variable<any, string>},ValueTypes["Seller"]],
 updateSeller?: [{	input: ValueTypes["UpdateSellerInput"] | Variable<any, string>},ValueTypes["Seller"]],
-deleteSeller?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteSellers?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteSeller?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteSellers?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createShippingMethod?: [{	input: ValueTypes["CreateShippingMethodInput"] | Variable<any, string>},ValueTypes["ShippingMethod"]],
 updateShippingMethod?: [{	input: ValueTypes["UpdateShippingMethodInput"] | Variable<any, string>},ValueTypes["ShippingMethod"]],
-deleteShippingMethod?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteShippingMethods?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteShippingMethod?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteShippingMethods?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 assignShippingMethodsToChannel?: [{	input: ValueTypes["AssignShippingMethodsToChannelInput"] | Variable<any, string>},ValueTypes["ShippingMethod"]],
 removeShippingMethodsFromChannel?: [{	input: ValueTypes["RemoveShippingMethodsFromChannelInput"] | Variable<any, string>},ValueTypes["ShippingMethod"]],
 createStockLocation?: [{	input: ValueTypes["CreateStockLocationInput"] | Variable<any, string>},ValueTypes["StockLocation"]],
@@ -1124,21 +1132,21 @@ assignStockLocationsToChannel?: [{	input: ValueTypes["AssignStockLocationsToChan
 removeStockLocationsFromChannel?: [{	input: ValueTypes["RemoveStockLocationsFromChannelInput"] | Variable<any, string>},ValueTypes["StockLocation"]],
 createTag?: [{	input: ValueTypes["CreateTagInput"] | Variable<any, string>},ValueTypes["Tag"]],
 updateTag?: [{	input: ValueTypes["UpdateTagInput"] | Variable<any, string>},ValueTypes["Tag"]],
-deleteTag?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteTag?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createTaxCategory?: [{	input: ValueTypes["CreateTaxCategoryInput"] | Variable<any, string>},ValueTypes["TaxCategory"]],
 updateTaxCategory?: [{	input: ValueTypes["UpdateTaxCategoryInput"] | Variable<any, string>},ValueTypes["TaxCategory"]],
-deleteTaxCategory?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteTaxCategories?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteTaxCategory?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteTaxCategories?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createTaxRate?: [{	input: ValueTypes["CreateTaxRateInput"] | Variable<any, string>},ValueTypes["TaxRate"]],
 updateTaxRate?: [{	input: ValueTypes["UpdateTaxRateInput"] | Variable<any, string>},ValueTypes["TaxRate"]],
-deleteTaxRate?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteTaxRates?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteTaxRate?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteTaxRates?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
 createZone?: [{	input: ValueTypes["CreateZoneInput"] | Variable<any, string>},ValueTypes["Zone"]],
 updateZone?: [{	input: ValueTypes["UpdateZoneInput"] | Variable<any, string>},ValueTypes["Zone"]],
-deleteZone?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
-deleteZones?: [{	ids: Array<string> | Variable<any, string>},ValueTypes["DeletionResponse"]],
-addMembersToZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
-removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
+deleteZone?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
+deleteZones?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["DeletionResponse"]],
+addMembersToZone?: [{	zoneId: ValueTypes["ID"] | Variable<any, string>,	memberIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Zone"]],
+removeMembersFromZone?: [{	zoneId: ValueTypes["ID"] | Variable<any, string>,	memberIds: Array<ValueTypes["ID"]> | Variable<any, string>},ValueTypes["Zone"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -1158,16 +1166,16 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	lastName: string | Variable<any, string>,
 	emailAddress: string | Variable<any, string>,
 	password: string | Variable<any, string>,
-	roleIds: Array<string> | Variable<any, string>,
+	roleIds: Array<ValueTypes["ID"]> | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateAdministratorInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	firstName?: string | undefined | null | Variable<any, string>,
 	lastName?: string | undefined | null | Variable<any, string>,
 	emailAddress?: string | undefined | null | Variable<any, string>,
 	password?: string | undefined | null | Variable<any, string>,
-	roleIds?: Array<string> | undefined | null | Variable<any, string>,
+	roleIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateActiveAdministratorInput"]: {
@@ -1228,25 +1236,25 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	y: number | Variable<any, string>
 };
 	["DeleteAssetInput"]: {
-	assetId: string | Variable<any, string>,
+	assetId: ValueTypes["ID"] | Variable<any, string>,
 	force?: boolean | undefined | null | Variable<any, string>,
 	deleteFromAllChannels?: boolean | undefined | null | Variable<any, string>
 };
 	["DeleteAssetsInput"]: {
-	assetIds: Array<string> | Variable<any, string>,
+	assetIds: Array<ValueTypes["ID"]> | Variable<any, string>,
 	force?: boolean | undefined | null | Variable<any, string>,
 	deleteFromAllChannels?: boolean | undefined | null | Variable<any, string>
 };
 	["UpdateAssetInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	focalPoint?: ValueTypes["CoordinateInput"] | undefined | null | Variable<any, string>,
 	tags?: Array<string> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignAssetsToChannelInput"]: {
-	assetIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	assetIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["AuthenticationInput"]: {
 	native?: ValueTypes["NativeAuthInput"] | undefined | null | Variable<any, string>
@@ -1287,13 +1295,13 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	availableCurrencyCodes?: Array<ValueTypes["CurrencyCode"]> | undefined | null | Variable<any, string>,
 	trackInventory?: boolean | undefined | null | Variable<any, string>,
 	outOfStockThreshold?: number | undefined | null | Variable<any, string>,
-	defaultTaxZoneId: string | Variable<any, string>,
-	defaultShippingZoneId: string | Variable<any, string>,
-	sellerId?: string | undefined | null | Variable<any, string>,
+	defaultTaxZoneId: ValueTypes["ID"] | Variable<any, string>,
+	defaultShippingZoneId: ValueTypes["ID"] | Variable<any, string>,
+	sellerId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateChannelInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	token?: string | undefined | null | Variable<any, string>,
 	defaultLanguageCode?: ValueTypes["LanguageCode"] | undefined | null | Variable<any, string>,
@@ -1303,9 +1311,9 @@ removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Ar
 	availableCurrencyCodes?: Array<ValueTypes["CurrencyCode"]> | undefined | null | Variable<any, string>,
 	trackInventory?: boolean | undefined | null | Variable<any, string>,
 	outOfStockThreshold?: number | undefined | null | Variable<any, string>,
-	defaultTaxZoneId?: string | undefined | null | Variable<any, string>,
-	defaultShippingZoneId?: string | undefined | null | Variable<any, string>,
-	sellerId?: string | undefined | null | Variable<any, string>,
+	defaultTaxZoneId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	defaultShippingZoneId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	sellerId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	/** Returned if attempting to set a Channel's defaultLanguageCode to a language which is not enabled in GlobalSettings */
@@ -1360,8 +1368,8 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["MoveCollectionInput"]: {
-	collectionId: string | Variable<any, string>,
-	parentId: string | Variable<any, string>,
+	collectionId: ValueTypes["ID"] | Variable<any, string>,
+	parentId: ValueTypes["ID"] | Variable<any, string>,
 	index: number | Variable<any, string>
 };
 	["CreateCollectionTranslationInput"]: {
@@ -1372,7 +1380,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateCollectionTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
@@ -1381,40 +1389,40 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
-	featuredAssetId?: string | undefined | null | Variable<any, string>,
-	assetIds?: Array<string> | undefined | null | Variable<any, string>,
-	parentId?: string | undefined | null | Variable<any, string>,
+	featuredAssetId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	assetIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
+	parentId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	inheritFilters?: boolean | undefined | null | Variable<any, string>,
 	filters: Array<ValueTypes["ConfigurableOperationInput"]> | Variable<any, string>,
 	translations: Array<ValueTypes["CreateCollectionTranslationInput"]> | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["PreviewCollectionVariantsInput"]: {
-	parentId?: string | undefined | null | Variable<any, string>,
+	parentId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	inheritFilters: boolean | Variable<any, string>,
 	filters: Array<ValueTypes["ConfigurableOperationInput"]> | Variable<any, string>
 };
 	["UpdateCollectionInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
-	featuredAssetId?: string | undefined | null | Variable<any, string>,
-	parentId?: string | undefined | null | Variable<any, string>,
-	assetIds?: Array<string> | undefined | null | Variable<any, string>,
+	featuredAssetId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	parentId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	assetIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	inheritFilters?: boolean | undefined | null | Variable<any, string>,
 	filters?: Array<ValueTypes["ConfigurableOperationInput"]> | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["UpdateCollectionTranslationInput"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignCollectionsToChannelInput"]: {
-	collectionIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	collectionIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["RemoveCollectionsFromChannelInput"]: {
-	collectionIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	collectionIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["CountryTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -1426,7 +1434,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateCountryInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["CountryTranslationInput"]> | undefined | null | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
@@ -1480,16 +1488,16 @@ orders?: [{	options?: ValueTypes["OrderListOptions"] | undefined | null | Variab
 };
 	["CreateCustomerGroupInput"]: {
 	name: string | Variable<any, string>,
-	customerIds?: Array<string> | undefined | null | Variable<any, string>,
+	customerIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateCustomerGroupInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateCustomerInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	title?: string | undefined | null | Variable<any, string>,
 	firstName?: string | undefined | null | Variable<any, string>,
 	lastName?: string | undefined | null | Variable<any, string>,
@@ -1523,12 +1531,12 @@ orders?: [{	options?: ValueTypes["OrderListOptions"] | undefined | null | Variab
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["AddNoteToCustomerInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	note: string | Variable<any, string>,
 	isPublic: boolean | Variable<any, string>
 };
 	["UpdateCustomerNoteInput"]: {
-	noteId: string | Variable<any, string>,
+	noteId: ValueTypes["ID"] | Variable<any, string>,
 	note: string | Variable<any, string>
 };
 	["CreateCustomerResult"]: AliasType<{		["...on Customer"]?: ValueTypes["Customer"],
@@ -1563,7 +1571,7 @@ orders?: [{	options?: ValueTypes["OrderListOptions"] | undefined | null | Variab
 }>;
 	["DuplicateEntityInput"]: {
 	entityName: string | Variable<any, string>,
-	entityId: string | Variable<any, string>,
+	entityId: ValueTypes["ID"] | Variable<any, string>,
 	duplicatorInput: ValueTypes["ConfigurableOperationInput"] | Variable<any, string>
 };
 	["Facet"]: AliasType<{
@@ -1593,7 +1601,7 @@ valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null 
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["FacetTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -1606,14 +1614,14 @@ valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null 
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateFacetInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["FacetTranslationInput"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["FacetValueTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -1623,24 +1631,24 @@ valueList?: [{	options?: ValueTypes["FacetValueListOptions"] | undefined | null 
 	translations: Array<ValueTypes["FacetValueTranslationInput"]> | Variable<any, string>
 };
 	["CreateFacetValueInput"]: {
-	facetId: string | Variable<any, string>,
+	facetId: ValueTypes["ID"] | Variable<any, string>,
 	code: string | Variable<any, string>,
 	translations: Array<ValueTypes["FacetValueTranslationInput"]> | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateFacetValueInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["FacetValueTranslationInput"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignFacetsToChannelInput"]: {
-	facetIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	facetIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["RemoveFacetsFromChannelInput"]: {
-	facetIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>,
+	facetIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>,
 	force?: boolean | undefined | null | Variable<any, string>
 };
 	["FacetInUseError"]: AliasType<{
@@ -1803,6 +1811,8 @@ methods. */
 	discounts?:ValueTypes["Discount"],
 	/** An array of all coupon codes applied to the Order */
 	couponCodes?:boolean | `@${string}`,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?:boolean | `@${string}`,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions?:ValueTypes["Promotion"],
 	payments?:ValueTypes["Payment"],
@@ -1931,12 +1941,12 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["SetOrderCustomerInput"]: {
-	orderId: string | Variable<any, string>,
-	customerId: string | Variable<any, string>,
+	orderId: ValueTypes["ID"] | Variable<any, string>,
+	customerId: ValueTypes["ID"] | Variable<any, string>,
 	note?: string | undefined | null | Variable<any, string>
 };
 	["UpdateOrderInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["FulfillOrderInput"]: {
@@ -1945,7 +1955,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 };
 	["CancelOrderInput"]: {
 	/** The id of the order to be cancelled */
-	orderId: string | Variable<any, string>,
+	orderId: ValueTypes["ID"] | Variable<any, string>,
 	/** Optionally specify which OrderLines to cancel. If not provided, all OrderLines will be cancelled */
 	lines?: Array<ValueTypes["OrderLineInput"]> | undefined | null | Variable<any, string>,
 	/** Specify whether the shipping charges should also be cancelled. Defaults to false */
@@ -1961,24 +1971,24 @@ amount automatically. This was added in v2.2 and will be the preferred way to sp
 amount in the future. The `lines`, `shipping` and `adjustment` fields will likely be removed in a future
 version. */
 	amount?: ValueTypes["Money"] | undefined | null | Variable<any, string>,
-	paymentId: string | Variable<any, string>,
+	paymentId: ValueTypes["ID"] | Variable<any, string>,
 	reason?: string | undefined | null | Variable<any, string>
 };
 	["OrderLineInput"]: {
-	orderLineId: string | Variable<any, string>,
+	orderLineId: ValueTypes["ID"] | Variable<any, string>,
 	quantity: number | Variable<any, string>
 };
 	["SettleRefundInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	transactionId: string | Variable<any, string>
 };
 	["AddNoteToOrderInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	note: string | Variable<any, string>,
 	isPublic: boolean | Variable<any, string>
 };
 	["UpdateOrderNoteInput"]: {
-	noteId: string | Variable<any, string>,
+	noteId: ValueTypes["ID"] | Variable<any, string>,
 	note?: string | undefined | null | Variable<any, string>,
 	isPublic?: boolean | undefined | null | Variable<any, string>
 };
@@ -1987,7 +1997,7 @@ version. */
 	metadata?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AdministratorRefundInput"]: {
-	paymentId: string | Variable<any, string>,
+	paymentId: ValueTypes["ID"] | Variable<any, string>,
 	reason?: string | undefined | null | Variable<any, string>,
 	/** The amount to be refunded to this particular Payment. This was introduced in
 v2.2.0 as the preferred way to specify the refund amount. The `lines`, `shipping` and `adjustment`
@@ -2011,7 +2021,7 @@ fields will be removed in a future version. */
 };
 	["ModifyOrderInput"]: {
 	dryRun: boolean | Variable<any, string>,
-	orderId: string | Variable<any, string>,
+	orderId: ValueTypes["ID"] | Variable<any, string>,
 	addItems?: Array<ValueTypes["AddItemInput"]> | undefined | null | Variable<any, string>,
 	adjustOrderLines?: Array<ValueTypes["OrderLineInput"]> | undefined | null | Variable<any, string>,
 	surcharges?: Array<ValueTypes["SurchargeInput"]> | undefined | null | Variable<any, string>,
@@ -2025,10 +2035,10 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ValueTypes["ModifyOrderOptions"] | undefined | null | Variable<any, string>,
 	couponCodes?: Array<string> | undefined | null | Variable<any, string>,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null | Variable<any, string>
+	shippingMethodIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>
 };
 	["AddItemInput"]: {
-	productVariantId: string | Variable<any, string>,
+	productVariantId: ValueTypes["ID"] | Variable<any, string>,
 	quantity: number | Variable<any, string>
 };
 	["SurchargeInput"]: {
@@ -2040,17 +2050,17 @@ applied in the case that multiple payment methods have been used on the order. *
 	taxDescription?: string | undefined | null | Variable<any, string>
 };
 	["ManualPaymentInput"]: {
-	orderId: string | Variable<any, string>,
+	orderId: ValueTypes["ID"] | Variable<any, string>,
 	method: string | Variable<any, string>,
 	transactionId?: string | undefined | null | Variable<any, string>,
 	metadata?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AddItemToDraftOrderInput"]: {
-	productVariantId: string | Variable<any, string>,
+	productVariantId: ValueTypes["ID"] | Variable<any, string>,
 	quantity: number | Variable<any, string>
 };
 	["AdjustDraftOrderLineInput"]: {
-	orderLineId: string | Variable<any, string>,
+	orderLineId: ValueTypes["ID"] | Variable<any, string>,
 	quantity: number | Variable<any, string>
 };
 	/** Returned if the Payment settlement fails */
@@ -2310,7 +2320,7 @@ is not in the required state. */
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["PaymentMethodTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
@@ -2325,7 +2335,7 @@ is not in the required state. */
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdatePaymentMethodInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
 	checker?: ValueTypes["ConfigurableOperationInput"] | undefined | null | Variable<any, string>,
@@ -2334,12 +2344,12 @@ is not in the required state. */
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignPaymentMethodsToChannelInput"]: {
-	paymentMethodIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	paymentMethodIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["RemovePaymentMethodsFromChannelInput"]: {
-	paymentMethodIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	paymentMethodIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["Product"]: AliasType<{
 	channels?:ValueTypes["Channel"],
@@ -2403,7 +2413,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -2415,13 +2425,13 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductOptionGroupInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["ProductOptionTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -2431,13 +2441,13 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	translations: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | Variable<any, string>
 };
 	["CreateProductOptionInput"]: {
-	productOptionGroupId: string | Variable<any, string>,
+	productOptionGroupId: ValueTypes["ID"] | Variable<any, string>,
 	code: string | Variable<any, string>,
 	translations: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductOptionInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductOptionGroupTranslationInput"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -2532,7 +2542,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["ProductTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
@@ -2540,35 +2550,35 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateProductInput"]: {
-	featuredAssetId?: string | undefined | null | Variable<any, string>,
+	featuredAssetId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
-	assetIds?: Array<string> | undefined | null | Variable<any, string>,
-	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
+	assetIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
+	facetValueIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	translations: Array<ValueTypes["ProductTranslationInput"]> | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
-	featuredAssetId?: string | undefined | null | Variable<any, string>,
-	assetIds?: Array<string> | undefined | null | Variable<any, string>,
-	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
+	featuredAssetId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	assetIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
+	facetValueIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductTranslationInput"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateProductVariantOptionInput"]: {
-	optionGroupId: string | Variable<any, string>,
+	optionGroupId: ValueTypes["ID"] | Variable<any, string>,
 	code: string | Variable<any, string>,
 	translations: Array<ValueTypes["ProductOptionTranslationInput"]> | Variable<any, string>
 };
 	["StockLevelInput"]: {
-	stockLocationId: string | Variable<any, string>,
+	stockLocationId: ValueTypes["ID"] | Variable<any, string>,
 	stockOnHand: number | Variable<any, string>
 };
 	/** Used to set up update the price of a ProductVariant in a particular Channel.
@@ -2579,15 +2589,15 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	delete?: boolean | undefined | null | Variable<any, string>
 };
 	["CreateProductVariantInput"]: {
-	productId: string | Variable<any, string>,
+	productId: ValueTypes["ID"] | Variable<any, string>,
 	translations: Array<ValueTypes["ProductVariantTranslationInput"]> | Variable<any, string>,
-	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
+	facetValueIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	sku: string | Variable<any, string>,
 	price?: ValueTypes["Money"] | undefined | null | Variable<any, string>,
-	taxCategoryId?: string | undefined | null | Variable<any, string>,
-	optionIds?: Array<string> | undefined | null | Variable<any, string>,
-	featuredAssetId?: string | undefined | null | Variable<any, string>,
-	assetIds?: Array<string> | undefined | null | Variable<any, string>,
+	taxCategoryId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	optionIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
+	featuredAssetId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	assetIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	stockOnHand?: number | undefined | null | Variable<any, string>,
 	stockLevels?: Array<ValueTypes["StockLevelInput"]> | undefined | null | Variable<any, string>,
 	outOfStockThreshold?: number | undefined | null | Variable<any, string>,
@@ -2596,19 +2606,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductVariantInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductVariantTranslationInput"]> | undefined | null | Variable<any, string>,
-	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
-	optionIds?: Array<string> | undefined | null | Variable<any, string>,
+	facetValueIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
+	optionIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	sku?: string | undefined | null | Variable<any, string>,
-	taxCategoryId?: string | undefined | null | Variable<any, string>,
+	taxCategoryId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	/** Sets the price for the ProductVariant in the Channel's default currency */
 	price?: ValueTypes["Money"] | undefined | null | Variable<any, string>,
 	/** Allows multiple prices to be set for the ProductVariant in different currencies. */
 	prices?: Array<ValueTypes["ProductVariantPriceInput"]> | undefined | null | Variable<any, string>,
-	featuredAssetId?: string | undefined | null | Variable<any, string>,
-	assetIds?: Array<string> | undefined | null | Variable<any, string>,
+	featuredAssetId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	assetIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	stockOnHand?: number | undefined | null | Variable<any, string>,
 	stockLevels?: Array<ValueTypes["StockLevelInput"]> | undefined | null | Variable<any, string>,
 	outOfStockThreshold?: number | undefined | null | Variable<any, string>,
@@ -2617,22 +2627,22 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignProductsToChannelInput"]: {
-	productIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>,
+	productIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>,
 	priceFactor?: number | undefined | null | Variable<any, string>
 };
 	["RemoveProductsFromChannelInput"]: {
-	productIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	productIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["AssignProductVariantsToChannelInput"]: {
-	productVariantIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>,
+	productVariantIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>,
 	priceFactor?: number | undefined | null | Variable<any, string>
 };
 	["RemoveProductVariantsFromChannelInput"]: {
-	productVariantIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	productVariantIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["ProductOptionInUseError"]: AliasType<{
 	errorCode?:boolean | `@${string}`,
@@ -2658,7 +2668,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["PromotionTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
@@ -2677,7 +2687,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdatePromotionInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
 	startsAt?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
 	endsAt?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>,
@@ -2690,12 +2700,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["AssignPromotionsToChannelInput"]: {
-	promotionIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	promotionIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["RemovePromotionsFromChannelInput"]: {
-	promotionIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	promotionIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	/** Returned if a PromotionCondition has neither a couponCode nor any conditions set */
 ["MissingConditionsError"]: AliasType<{
@@ -2712,7 +2722,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		__typename?: boolean | `@${string}`
 }>;
 	["ProvinceTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -2724,7 +2734,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateProvinceInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProvinceTranslationInput"]> | undefined | null | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
@@ -2758,14 +2768,14 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	code: string | Variable<any, string>,
 	description: string | Variable<any, string>,
 	permissions: Array<ValueTypes["Permission"]> | Variable<any, string>,
-	channelIds?: Array<string> | undefined | null | Variable<any, string>
+	channelIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>
 };
 	["UpdateRoleInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
 	permissions?: Array<ValueTypes["Permission"]> | undefined | null | Variable<any, string>,
-	channelIds?: Array<string> | undefined | null | Variable<any, string>
+	channelIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>
 };
 	["SellerList"]: AliasType<{
 	items?:ValueTypes["Seller"],
@@ -2789,7 +2799,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateSellerInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
@@ -2806,7 +2816,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: ValueTypes["LogicalOperator"] | undefined | null | Variable<any, string>
 };
 	["ShippingMethodTranslationInput"]: {
-	id?: string | undefined | null | Variable<any, string>,
+	id?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	languageCode: ValueTypes["LanguageCode"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
@@ -2821,7 +2831,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateShippingMethodInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	code?: string | undefined | null | Variable<any, string>,
 	fulfillmentHandler?: string | undefined | null | Variable<any, string>,
 	checker?: ValueTypes["ConfigurableOperationInput"] | undefined | null | Variable<any, string>,
@@ -2840,7 +2850,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	lines: Array<ValueTypes["TestShippingMethodOrderLineInput"]> | Variable<any, string>
 };
 	["TestShippingMethodOrderLineInput"]: {
-	productVariantId: string | Variable<any, string>,
+	productVariantId: ValueTypes["ID"] | Variable<any, string>,
 	quantity: number | Variable<any, string>
 };
 	["TestShippingMethodResult"]: AliasType<{
@@ -2855,12 +2865,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		__typename?: boolean | `@${string}`
 }>;
 	["AssignShippingMethodsToChannelInput"]: {
-	shippingMethodIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	shippingMethodIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["RemoveShippingMethodsFromChannelInput"]: {
-	shippingMethodIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	shippingMethodIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["StockLevel"]: AliasType<{
 	id?:boolean | `@${string}`,
@@ -2895,22 +2905,22 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateStockLocationInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["DeleteStockLocationInput"]: {
-	id: string | Variable<any, string>,
-	transferToLocationId?: string | undefined | null | Variable<any, string>
+	id: ValueTypes["ID"] | Variable<any, string>,
+	transferToLocationId?: ValueTypes["ID"] | undefined | null | Variable<any, string>
 };
 	["AssignStockLocationsToChannelInput"]: {
-	stockLocationIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	stockLocationIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["RemoveStockLocationsFromChannelInput"]: {
-	stockLocationIds: Array<string> | Variable<any, string>,
-	channelId: string | Variable<any, string>
+	stockLocationIds: Array<ValueTypes["ID"]> | Variable<any, string>,
+	channelId: ValueTypes["ID"] | Variable<any, string>
 };
 	["StockLocation"]: AliasType<{
 	id?:boolean | `@${string}`,
@@ -3022,7 +3032,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	value: string | Variable<any, string>
 };
 	["UpdateTagInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	value?: string | undefined | null | Variable<any, string>
 };
 	["TaxCategoryList"]: AliasType<{
@@ -3048,7 +3058,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateTaxCategoryInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	isDefault?: boolean | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
@@ -3069,19 +3079,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name: string | Variable<any, string>,
 	enabled: boolean | Variable<any, string>,
 	value: number | Variable<any, string>,
-	categoryId: string | Variable<any, string>,
-	zoneId: string | Variable<any, string>,
-	customerGroupId?: string | undefined | null | Variable<any, string>,
+	categoryId: ValueTypes["ID"] | Variable<any, string>,
+	zoneId: ValueTypes["ID"] | Variable<any, string>,
+	customerGroupId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateTaxRateInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	value?: number | undefined | null | Variable<any, string>,
 	enabled?: boolean | undefined | null | Variable<any, string>,
-	categoryId?: string | undefined | null | Variable<any, string>,
-	zoneId?: string | undefined | null | Variable<any, string>,
-	customerGroupId?: string | undefined | null | Variable<any, string>,
+	categoryId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	zoneId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	customerGroupId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["ZoneList"]: AliasType<{
@@ -3103,11 +3113,11 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["CreateZoneInput"]: {
 	name: string | Variable<any, string>,
-	memberIds?: Array<string> | undefined | null | Variable<any, string>,
+	memberIds?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateZoneInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	name?: string | undefined | null | Variable<any, string>,
 	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
@@ -3347,6 +3357,13 @@ current session. */
 	message?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: AliasType<{
+	errorCode?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	middlewareError?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:unknown;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -3480,6 +3497,7 @@ current session. */
 		['...on OrderModificationError']?: Omit<ValueTypes["OrderModificationError"],keyof ValueTypes["ErrorResult"]>;
 		['...on IneligibleShippingMethodError']?: Omit<ValueTypes["IneligibleShippingMethodError"],keyof ValueTypes["ErrorResult"]>;
 		['...on NoActiveOrderError']?: Omit<ValueTypes["NoActiveOrderError"],keyof ValueTypes["ErrorResult"]>;
+		['...on OrderMiddlewareError']?: Omit<ValueTypes["OrderMiddlewareError"],keyof ValueTypes["ErrorResult"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Adjustment"]: AliasType<{
@@ -3600,7 +3618,7 @@ current session. */
 };
 	/** Operators for filtering on a list of ID fields */
 ["IDListOperators"]: {
-	inList: string | Variable<any, string>
+	inList: ValueTypes["ID"] | Variable<any, string>
 };
 	/** Operators for filtering on a list of Date fields */
 ["DateListOperators"]: {
@@ -3613,13 +3631,13 @@ by FacetValue ID. Examples:
 * ID=1 AND ID=2: `{ facetValueFilters: [{ and: 1 }, { and: 2 }] }`
 * ID=1 AND (ID=2 OR ID=3): `{ facetValueFilters: [{ and: 1 }, { or: [2,3] }] }` */
 ["FacetValueFilterInput"]: {
-	and?: string | undefined | null | Variable<any, string>,
-	or?: Array<string> | undefined | null | Variable<any, string>
+	and?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
+	or?: Array<ValueTypes["ID"]> | undefined | null | Variable<any, string>
 };
 	["SearchInput"]: {
 	term?: string | undefined | null | Variable<any, string>,
 	facetValueFilters?: Array<ValueTypes["FacetValueFilterInput"]> | undefined | null | Variable<any, string>,
-	collectionId?: string | undefined | null | Variable<any, string>,
+	collectionId?: ValueTypes["ID"] | undefined | null | Variable<any, string>,
 	collectionSlug?: string | undefined | null | Variable<any, string>,
 	groupByProduct?: boolean | undefined | null | Variable<any, string>,
 	take?: number | undefined | null | Variable<any, string>,
@@ -3663,7 +3681,7 @@ The countryCode must correspond to a `code` property of a Country that has been 
 Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
 If an invalid code is passed, the mutation will fail. */
 ["UpdateAddressInput"]: {
-	id: string | Variable<any, string>,
+	id: ValueTypes["ID"] | Variable<any, string>,
 	fullName?: string | undefined | null | Variable<any, string>,
 	company?: string | undefined | null | Variable<any, string>,
 	streetLine1?: string | undefined | null | Variable<any, string>,
@@ -3708,11 +3726,13 @@ If an invalid code is passed, the mutation will fail. */
 		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"],
 		["...on OrderLimitError"]?: ValueTypes["OrderLimitError"],
 		["...on NegativeQuantityError"]?: ValueTypes["NegativeQuantityError"],
-		["...on InsufficientStockError"]?: ValueTypes["InsufficientStockError"]
+		["...on InsufficientStockError"]?: ValueTypes["InsufficientStockError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	["RemoveOrderItemsResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
-		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"]
+		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	["SetOrderShippingMethodResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
@@ -3724,7 +3744,8 @@ If an invalid code is passed, the mutation will fail. */
 	["ApplyCouponCodeResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
 		["...on CouponCodeExpiredError"]?: ValueTypes["CouponCodeExpiredError"],
 		["...on CouponCodeInvalidError"]?: ValueTypes["CouponCodeInvalidError"],
-		["...on CouponCodeLimitError"]?: ValueTypes["CouponCodeLimitError"]
+		["...on CouponCodeLimitError"]?: ValueTypes["CouponCodeLimitError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	/** @description
@@ -4512,6 +4533,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["AdditionalOrderState"]: AliasType<{
+	state?:boolean | `@${string}`,
+	selectedByDefault?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["ChartDataType"]: AliasType<{
 	type?:boolean | `@${string}`,
 	title?:boolean | `@${string}`,
@@ -5059,83 +5085,85 @@ which allows custom fields to be defined on user-supplies entities. */
 	entityName?:boolean | `@${string}`,
 	customFields?:ValueTypes["CustomFieldConfig"],
 		__typename?: boolean | `@${string}`
-}>
+}>;
+	["ID"]:unknown
   }
 
 export type ResolverInputTypes = {
     ["Query"]: AliasType<{
 administrators?: [{	options?: ResolverInputTypes["AdministratorListOptions"] | undefined | null},ResolverInputTypes["AdministratorList"]],
-administrator?: [{	id: string},ResolverInputTypes["Administrator"]],
+administrator?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Administrator"]],
 	activeAdministrator?:ResolverInputTypes["Administrator"],
 assets?: [{	options?: ResolverInputTypes["AssetListOptions"] | undefined | null},ResolverInputTypes["AssetList"]],
-asset?: [{	id: string},ResolverInputTypes["Asset"]],
+asset?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Asset"]],
 	me?:ResolverInputTypes["CurrentUser"],
 channels?: [{	options?: ResolverInputTypes["ChannelListOptions"] | undefined | null},ResolverInputTypes["ChannelList"]],
-channel?: [{	id: string},ResolverInputTypes["Channel"]],
+channel?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Channel"]],
 	activeChannel?:ResolverInputTypes["Channel"],
 collections?: [{	options?: ResolverInputTypes["CollectionListOptions"] | undefined | null},ResolverInputTypes["CollectionList"]],
-collection?: [{	id?: string | undefined | null,	slug?: string | undefined | null},ResolverInputTypes["Collection"]],
+collection?: [{	id?: ResolverInputTypes["ID"] | undefined | null,	slug?: string | undefined | null},ResolverInputTypes["Collection"]],
 	collectionFilters?:ResolverInputTypes["ConfigurableOperationDefinition"],
 previewCollectionVariants?: [{	input: ResolverInputTypes["PreviewCollectionVariantsInput"],	options?: ResolverInputTypes["ProductVariantListOptions"] | undefined | null},ResolverInputTypes["ProductVariantList"]],
 countries?: [{	options?: ResolverInputTypes["CountryListOptions"] | undefined | null},ResolverInputTypes["CountryList"]],
-country?: [{	id: string},ResolverInputTypes["Country"]],
+country?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Country"]],
 customerGroups?: [{	options?: ResolverInputTypes["CustomerGroupListOptions"] | undefined | null},ResolverInputTypes["CustomerGroupList"]],
-customerGroup?: [{	id: string},ResolverInputTypes["CustomerGroup"]],
+customerGroup?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["CustomerGroup"]],
 customers?: [{	options?: ResolverInputTypes["CustomerListOptions"] | undefined | null},ResolverInputTypes["CustomerList"]],
-customer?: [{	id: string},ResolverInputTypes["Customer"]],
+customer?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Customer"]],
 	/** Returns all configured EntityDuplicators. */
 	entityDuplicators?:ResolverInputTypes["EntityDuplicatorDefinition"],
 facets?: [{	options?: ResolverInputTypes["FacetListOptions"] | undefined | null},ResolverInputTypes["FacetList"]],
-facet?: [{	id: string},ResolverInputTypes["Facet"]],
+facet?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Facet"]],
 facetValues?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined | null},ResolverInputTypes["FacetValueList"]],
 	globalSettings?:ResolverInputTypes["GlobalSettings"],
-job?: [{	jobId: string},ResolverInputTypes["Job"]],
+job?: [{	jobId: ResolverInputTypes["ID"]},ResolverInputTypes["Job"]],
 jobs?: [{	options?: ResolverInputTypes["JobListOptions"] | undefined | null},ResolverInputTypes["JobList"]],
-jobsById?: [{	jobIds: Array<string>},ResolverInputTypes["Job"]],
+jobsById?: [{	jobIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Job"]],
 	jobQueues?:ResolverInputTypes["JobQueue"],
 jobBufferSize?: [{	bufferIds?: Array<string> | undefined | null},ResolverInputTypes["JobBufferSize"]],
-order?: [{	id: string},ResolverInputTypes["Order"]],
+order?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Order"]],
 orders?: [{	options?: ResolverInputTypes["OrderListOptions"] | undefined | null},ResolverInputTypes["OrderList"]],
-eligibleShippingMethodsForDraftOrder?: [{	orderId: string},ResolverInputTypes["ShippingMethodQuote"]],
+eligibleShippingMethodsForDraftOrder?: [{	orderId: ResolverInputTypes["ID"]},ResolverInputTypes["ShippingMethodQuote"]],
 paymentMethods?: [{	options?: ResolverInputTypes["PaymentMethodListOptions"] | undefined | null},ResolverInputTypes["PaymentMethodList"]],
-paymentMethod?: [{	id: string},ResolverInputTypes["PaymentMethod"]],
+paymentMethod?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["PaymentMethod"]],
 	paymentMethodEligibilityCheckers?:ResolverInputTypes["ConfigurableOperationDefinition"],
 	paymentMethodHandlers?:ResolverInputTypes["ConfigurableOperationDefinition"],
 productOptionGroups?: [{	filterTerm?: string | undefined | null},ResolverInputTypes["ProductOptionGroup"]],
-productOptionGroup?: [{	id: string},ResolverInputTypes["ProductOptionGroup"]],
+productOptionGroup?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["ProductOptionGroup"]],
 search?: [{	input: ResolverInputTypes["SearchInput"]},ResolverInputTypes["SearchResponse"]],
 	pendingSearchIndexUpdates?:boolean | `@${string}`,
 products?: [{	options?: ResolverInputTypes["ProductListOptions"] | undefined | null},ResolverInputTypes["ProductList"]],
-product?: [{	id?: string | undefined | null,	slug?: string | undefined | null},ResolverInputTypes["Product"]],
-productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | undefined | null,	productId?: string | undefined | null},ResolverInputTypes["ProductVariantList"]],
-productVariant?: [{	id: string},ResolverInputTypes["ProductVariant"]],
-promotion?: [{	id: string},ResolverInputTypes["Promotion"]],
+product?: [{	id?: ResolverInputTypes["ID"] | undefined | null,	slug?: string | undefined | null},ResolverInputTypes["Product"]],
+productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | undefined | null,	productId?: ResolverInputTypes["ID"] | undefined | null},ResolverInputTypes["ProductVariantList"]],
+productVariant?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["ProductVariant"]],
+promotion?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Promotion"]],
 promotions?: [{	options?: ResolverInputTypes["PromotionListOptions"] | undefined | null},ResolverInputTypes["PromotionList"]],
 	promotionConditions?:ResolverInputTypes["ConfigurableOperationDefinition"],
 	promotionActions?:ResolverInputTypes["ConfigurableOperationDefinition"],
 provinces?: [{	options?: ResolverInputTypes["ProvinceListOptions"] | undefined | null},ResolverInputTypes["ProvinceList"]],
-province?: [{	id: string},ResolverInputTypes["Province"]],
+province?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Province"]],
 roles?: [{	options?: ResolverInputTypes["RoleListOptions"] | undefined | null},ResolverInputTypes["RoleList"]],
-role?: [{	id: string},ResolverInputTypes["Role"]],
+role?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Role"]],
 sellers?: [{	options?: ResolverInputTypes["SellerListOptions"] | undefined | null},ResolverInputTypes["SellerList"]],
-seller?: [{	id: string},ResolverInputTypes["Seller"]],
+seller?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Seller"]],
 shippingMethods?: [{	options?: ResolverInputTypes["ShippingMethodListOptions"] | undefined | null},ResolverInputTypes["ShippingMethodList"]],
-shippingMethod?: [{	id: string},ResolverInputTypes["ShippingMethod"]],
+shippingMethod?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["ShippingMethod"]],
 	shippingEligibilityCheckers?:ResolverInputTypes["ConfigurableOperationDefinition"],
 	shippingCalculators?:ResolverInputTypes["ConfigurableOperationDefinition"],
 	fulfillmentHandlers?:ResolverInputTypes["ConfigurableOperationDefinition"],
 testShippingMethod?: [{	input: ResolverInputTypes["TestShippingMethodInput"]},ResolverInputTypes["TestShippingMethodResult"]],
 testEligibleShippingMethods?: [{	input: ResolverInputTypes["TestEligibleShippingMethodsInput"]},ResolverInputTypes["ShippingMethodQuote"]],
-stockLocation?: [{	id: string},ResolverInputTypes["StockLocation"]],
+stockLocation?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["StockLocation"]],
 stockLocations?: [{	options?: ResolverInputTypes["StockLocationListOptions"] | undefined | null},ResolverInputTypes["StockLocationList"]],
-tag?: [{	id: string},ResolverInputTypes["Tag"]],
+tag?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Tag"]],
 tags?: [{	options?: ResolverInputTypes["TagListOptions"] | undefined | null},ResolverInputTypes["TagList"]],
 taxCategories?: [{	options?: ResolverInputTypes["TaxCategoryListOptions"] | undefined | null},ResolverInputTypes["TaxCategoryList"]],
-taxCategory?: [{	id: string},ResolverInputTypes["TaxCategory"]],
+taxCategory?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["TaxCategory"]],
 taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | null},ResolverInputTypes["TaxRateList"]],
-taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
+taxRate?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
-zone?: [{	id: string},ResolverInputTypes["Zone"]],
+zone?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Zone"]],
+	additionalOrderStates?:ResolverInputTypes["AdditionalOrderState"],
 chartMetric?: [{	input: ResolverInputTypes["ChartMetricInput"]},ResolverInputTypes["ChartMetrics"]],
 orderSummaryMetric?: [{	input: ResolverInputTypes["OrderSummaryMetricInput"]},ResolverInputTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
@@ -5145,9 +5173,9 @@ metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined 
 createAdministrator?: [{	input: ResolverInputTypes["CreateAdministratorInput"]},ResolverInputTypes["Administrator"]],
 updateAdministrator?: [{	input: ResolverInputTypes["UpdateAdministratorInput"]},ResolverInputTypes["Administrator"]],
 updateActiveAdministrator?: [{	input: ResolverInputTypes["UpdateActiveAdministratorInput"]},ResolverInputTypes["Administrator"]],
-deleteAdministrator?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteAdministrators?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
-assignRoleToAdministrator?: [{	administratorId: string,	roleId: string},ResolverInputTypes["Administrator"]],
+deleteAdministrator?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteAdministrators?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
+assignRoleToAdministrator?: [{	administratorId: ResolverInputTypes["ID"],	roleId: ResolverInputTypes["ID"]},ResolverInputTypes["Administrator"]],
 createAssets?: [{	input: Array<ResolverInputTypes["CreateAssetInput"]>},ResolverInputTypes["CreateAssetResult"]],
 updateAsset?: [{	input: ResolverInputTypes["UpdateAssetInput"]},ResolverInputTypes["Asset"]],
 deleteAsset?: [{	input: ResolverInputTypes["DeleteAssetInput"]},ResolverInputTypes["DeletionResponse"]],
@@ -5158,128 +5186,129 @@ authenticate?: [{	input: ResolverInputTypes["AuthenticationInput"],	rememberMe?:
 	logout?:ResolverInputTypes["Success"],
 createChannel?: [{	input: ResolverInputTypes["CreateChannelInput"]},ResolverInputTypes["CreateChannelResult"]],
 updateChannel?: [{	input: ResolverInputTypes["UpdateChannelInput"]},ResolverInputTypes["UpdateChannelResult"]],
-deleteChannel?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteChannels?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteChannel?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteChannels?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 createCollection?: [{	input: ResolverInputTypes["CreateCollectionInput"]},ResolverInputTypes["Collection"]],
 updateCollection?: [{	input: ResolverInputTypes["UpdateCollectionInput"]},ResolverInputTypes["Collection"]],
-deleteCollection?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteCollections?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteCollection?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteCollections?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 moveCollection?: [{	input: ResolverInputTypes["MoveCollectionInput"]},ResolverInputTypes["Collection"]],
 assignCollectionsToChannel?: [{	input: ResolverInputTypes["AssignCollectionsToChannelInput"]},ResolverInputTypes["Collection"]],
 removeCollectionsFromChannel?: [{	input: ResolverInputTypes["RemoveCollectionsFromChannelInput"]},ResolverInputTypes["Collection"]],
 createCountry?: [{	input: ResolverInputTypes["CreateCountryInput"]},ResolverInputTypes["Country"]],
 updateCountry?: [{	input: ResolverInputTypes["UpdateCountryInput"]},ResolverInputTypes["Country"]],
-deleteCountry?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteCountries?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteCountry?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteCountries?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 createCustomerGroup?: [{	input: ResolverInputTypes["CreateCustomerGroupInput"]},ResolverInputTypes["CustomerGroup"]],
 updateCustomerGroup?: [{	input: ResolverInputTypes["UpdateCustomerGroupInput"]},ResolverInputTypes["CustomerGroup"]],
-deleteCustomerGroup?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteCustomerGroups?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
-addCustomersToGroup?: [{	customerGroupId: string,	customerIds: Array<string>},ResolverInputTypes["CustomerGroup"]],
-removeCustomersFromGroup?: [{	customerGroupId: string,	customerIds: Array<string>},ResolverInputTypes["CustomerGroup"]],
+deleteCustomerGroup?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteCustomerGroups?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
+addCustomersToGroup?: [{	customerGroupId: ResolverInputTypes["ID"],	customerIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["CustomerGroup"]],
+removeCustomersFromGroup?: [{	customerGroupId: ResolverInputTypes["ID"],	customerIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["CustomerGroup"]],
 createCustomer?: [{	input: ResolverInputTypes["CreateCustomerInput"],	password?: string | undefined | null},ResolverInputTypes["CreateCustomerResult"]],
 updateCustomer?: [{	input: ResolverInputTypes["UpdateCustomerInput"]},ResolverInputTypes["UpdateCustomerResult"]],
-deleteCustomer?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteCustomers?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
-createCustomerAddress?: [{	customerId: string,	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Address"]],
+deleteCustomer?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteCustomers?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
+createCustomerAddress?: [{	customerId: ResolverInputTypes["ID"],	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Address"]],
 updateCustomerAddress?: [{	input: ResolverInputTypes["UpdateAddressInput"]},ResolverInputTypes["Address"]],
-deleteCustomerAddress?: [{	id: string},ResolverInputTypes["Success"]],
+deleteCustomerAddress?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Success"]],
 addNoteToCustomer?: [{	input: ResolverInputTypes["AddNoteToCustomerInput"]},ResolverInputTypes["Customer"]],
 updateCustomerNote?: [{	input: ResolverInputTypes["UpdateCustomerNoteInput"]},ResolverInputTypes["HistoryEntry"]],
-deleteCustomerNote?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
+deleteCustomerNote?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
 duplicateEntity?: [{	input: ResolverInputTypes["DuplicateEntityInput"]},ResolverInputTypes["DuplicateEntityResult"]],
 createFacet?: [{	input: ResolverInputTypes["CreateFacetInput"]},ResolverInputTypes["Facet"]],
 updateFacet?: [{	input: ResolverInputTypes["UpdateFacetInput"]},ResolverInputTypes["Facet"]],
-deleteFacet?: [{	id: string,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
-deleteFacets?: [{	ids: Array<string>,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
+deleteFacet?: [{	id: ResolverInputTypes["ID"],	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
+deleteFacets?: [{	ids: Array<ResolverInputTypes["ID"]>,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
 createFacetValues?: [{	input: Array<ResolverInputTypes["CreateFacetValueInput"]>},ResolverInputTypes["FacetValue"]],
 updateFacetValues?: [{	input: Array<ResolverInputTypes["UpdateFacetValueInput"]>},ResolverInputTypes["FacetValue"]],
-deleteFacetValues?: [{	ids: Array<string>,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
+deleteFacetValues?: [{	ids: Array<ResolverInputTypes["ID"]>,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
 assignFacetsToChannel?: [{	input: ResolverInputTypes["AssignFacetsToChannelInput"]},ResolverInputTypes["Facet"]],
 removeFacetsFromChannel?: [{	input: ResolverInputTypes["RemoveFacetsFromChannelInput"]},ResolverInputTypes["RemoveFacetFromChannelResult"]],
 updateGlobalSettings?: [{	input: ResolverInputTypes["UpdateGlobalSettingsInput"]},ResolverInputTypes["UpdateGlobalSettingsResult"]],
 importProducts?: [{	csvFile: ResolverInputTypes["Upload"]},ResolverInputTypes["ImportInfo"]],
 removeSettledJobs?: [{	queueNames?: Array<string> | undefined | null,	olderThan?: ResolverInputTypes["DateTime"] | undefined | null},boolean | `@${string}`],
-cancelJob?: [{	jobId: string},ResolverInputTypes["Job"]],
+cancelJob?: [{	jobId: ResolverInputTypes["ID"]},ResolverInputTypes["Job"]],
 flushBufferedJobs?: [{	bufferIds?: Array<string> | undefined | null},ResolverInputTypes["Success"]],
-settlePayment?: [{	id: string},ResolverInputTypes["SettlePaymentResult"]],
-cancelPayment?: [{	id: string},ResolverInputTypes["CancelPaymentResult"]],
+settlePayment?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["SettlePaymentResult"]],
+cancelPayment?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["CancelPaymentResult"]],
 addFulfillmentToOrder?: [{	input: ResolverInputTypes["FulfillOrderInput"]},ResolverInputTypes["AddFulfillmentToOrderResult"]],
 cancelOrder?: [{	input: ResolverInputTypes["CancelOrderInput"]},ResolverInputTypes["CancelOrderResult"]],
 refundOrder?: [{	input: ResolverInputTypes["RefundOrderInput"]},ResolverInputTypes["RefundOrderResult"]],
 settleRefund?: [{	input: ResolverInputTypes["SettleRefundInput"]},ResolverInputTypes["SettleRefundResult"]],
 addNoteToOrder?: [{	input: ResolverInputTypes["AddNoteToOrderInput"]},ResolverInputTypes["Order"]],
 updateOrderNote?: [{	input: ResolverInputTypes["UpdateOrderNoteInput"]},ResolverInputTypes["HistoryEntry"]],
-deleteOrderNote?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-transitionOrderToState?: [{	id: string,	state: string},ResolverInputTypes["TransitionOrderToStateResult"]],
-transitionFulfillmentToState?: [{	id: string,	state: string},ResolverInputTypes["TransitionFulfillmentToStateResult"]],
-transitionPaymentToState?: [{	id: string,	state: string},ResolverInputTypes["TransitionPaymentToStateResult"]],
+deleteOrderNote?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+transitionOrderToState?: [{	id: ResolverInputTypes["ID"],	state: string},ResolverInputTypes["TransitionOrderToStateResult"]],
+transitionFulfillmentToState?: [{	id: ResolverInputTypes["ID"],	state: string},ResolverInputTypes["TransitionFulfillmentToStateResult"]],
+transitionPaymentToState?: [{	id: ResolverInputTypes["ID"],	state: string},ResolverInputTypes["TransitionPaymentToStateResult"]],
 setOrderCustomFields?: [{	input: ResolverInputTypes["UpdateOrderInput"]},ResolverInputTypes["Order"]],
 setOrderCustomer?: [{	input: ResolverInputTypes["SetOrderCustomerInput"]},ResolverInputTypes["Order"]],
 modifyOrder?: [{	input: ResolverInputTypes["ModifyOrderInput"]},ResolverInputTypes["ModifyOrderResult"]],
 addManualPaymentToOrder?: [{	input: ResolverInputTypes["ManualPaymentInput"]},ResolverInputTypes["AddManualPaymentToOrderResult"]],
 	/** Creates a draft Order */
 	createDraftOrder?:ResolverInputTypes["Order"],
-deleteDraftOrder?: [{	orderId: string},ResolverInputTypes["DeletionResponse"]],
-addItemToDraftOrder?: [{	orderId: string,	input: ResolverInputTypes["AddItemToDraftOrderInput"]},ResolverInputTypes["UpdateOrderItemsResult"]],
-adjustDraftOrderLine?: [{	orderId: string,	input: ResolverInputTypes["AdjustDraftOrderLineInput"]},ResolverInputTypes["UpdateOrderItemsResult"]],
-removeDraftOrderLine?: [{	orderId: string,	orderLineId: string},ResolverInputTypes["RemoveOrderItemsResult"]],
-setCustomerForDraftOrder?: [{	orderId: string,	customerId?: string | undefined | null,	input?: ResolverInputTypes["CreateCustomerInput"] | undefined | null},ResolverInputTypes["SetCustomerForDraftOrderResult"]],
-setDraftOrderShippingAddress?: [{	orderId: string,	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Order"]],
-setDraftOrderBillingAddress?: [{	orderId: string,	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Order"]],
-setDraftOrderCustomFields?: [{	orderId: string,	input: ResolverInputTypes["UpdateOrderInput"]},ResolverInputTypes["Order"]],
-applyCouponCodeToDraftOrder?: [{	orderId: string,	couponCode: string},ResolverInputTypes["ApplyCouponCodeResult"]],
-removeCouponCodeFromDraftOrder?: [{	orderId: string,	couponCode: string},ResolverInputTypes["Order"]],
-setDraftOrderShippingMethod?: [{	orderId: string,	shippingMethodId: string},ResolverInputTypes["SetOrderShippingMethodResult"]],
+deleteDraftOrder?: [{	orderId: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+addItemToDraftOrder?: [{	orderId: ResolverInputTypes["ID"],	input: ResolverInputTypes["AddItemToDraftOrderInput"]},ResolverInputTypes["UpdateOrderItemsResult"]],
+adjustDraftOrderLine?: [{	orderId: ResolverInputTypes["ID"],	input: ResolverInputTypes["AdjustDraftOrderLineInput"]},ResolverInputTypes["UpdateOrderItemsResult"]],
+removeDraftOrderLine?: [{	orderId: ResolverInputTypes["ID"],	orderLineId: ResolverInputTypes["ID"]},ResolverInputTypes["RemoveOrderItemsResult"]],
+setCustomerForDraftOrder?: [{	orderId: ResolverInputTypes["ID"],	customerId?: ResolverInputTypes["ID"] | undefined | null,	input?: ResolverInputTypes["CreateCustomerInput"] | undefined | null},ResolverInputTypes["SetCustomerForDraftOrderResult"]],
+setDraftOrderShippingAddress?: [{	orderId: ResolverInputTypes["ID"],	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Order"]],
+setDraftOrderBillingAddress?: [{	orderId: ResolverInputTypes["ID"],	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Order"]],
+setDraftOrderCustomFields?: [{	orderId: ResolverInputTypes["ID"],	input: ResolverInputTypes["UpdateOrderInput"]},ResolverInputTypes["Order"]],
+applyCouponCodeToDraftOrder?: [{	orderId: ResolverInputTypes["ID"],	couponCode: string},ResolverInputTypes["ApplyCouponCodeResult"]],
+toggleExcludePromotionInOrder?: [{	orderId: ResolverInputTypes["ID"],	promotionId: ResolverInputTypes["ID"]},ResolverInputTypes["Order"]],
+removeCouponCodeFromDraftOrder?: [{	orderId: ResolverInputTypes["ID"],	couponCode: string},ResolverInputTypes["Order"]],
+setDraftOrderShippingMethod?: [{	orderId: ResolverInputTypes["ID"],	shippingMethodId: ResolverInputTypes["ID"]},ResolverInputTypes["SetOrderShippingMethodResult"]],
 createPaymentMethod?: [{	input: ResolverInputTypes["CreatePaymentMethodInput"]},ResolverInputTypes["PaymentMethod"]],
 updatePaymentMethod?: [{	input: ResolverInputTypes["UpdatePaymentMethodInput"]},ResolverInputTypes["PaymentMethod"]],
-deletePaymentMethod?: [{	id: string,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
-deletePaymentMethods?: [{	ids: Array<string>,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
+deletePaymentMethod?: [{	id: ResolverInputTypes["ID"],	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
+deletePaymentMethods?: [{	ids: Array<ResolverInputTypes["ID"]>,	force?: boolean | undefined | null},ResolverInputTypes["DeletionResponse"]],
 assignPaymentMethodsToChannel?: [{	input: ResolverInputTypes["AssignPaymentMethodsToChannelInput"]},ResolverInputTypes["PaymentMethod"]],
 removePaymentMethodsFromChannel?: [{	input: ResolverInputTypes["RemovePaymentMethodsFromChannelInput"]},ResolverInputTypes["PaymentMethod"]],
 createProductOptionGroup?: [{	input: ResolverInputTypes["CreateProductOptionGroupInput"]},ResolverInputTypes["ProductOptionGroup"]],
 updateProductOptionGroup?: [{	input: ResolverInputTypes["UpdateProductOptionGroupInput"]},ResolverInputTypes["ProductOptionGroup"]],
 createProductOption?: [{	input: ResolverInputTypes["CreateProductOptionInput"]},ResolverInputTypes["ProductOption"]],
 updateProductOption?: [{	input: ResolverInputTypes["UpdateProductOptionInput"]},ResolverInputTypes["ProductOption"]],
-deleteProductOption?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
+deleteProductOption?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
 	reindex?:ResolverInputTypes["Job"],
 	runPendingSearchIndexUpdates?:ResolverInputTypes["Success"],
 createProduct?: [{	input: ResolverInputTypes["CreateProductInput"]},ResolverInputTypes["Product"]],
 updateProduct?: [{	input: ResolverInputTypes["UpdateProductInput"]},ResolverInputTypes["Product"]],
 updateProducts?: [{	input: Array<ResolverInputTypes["UpdateProductInput"]>},ResolverInputTypes["Product"]],
-deleteProduct?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteProducts?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
-addOptionGroupToProduct?: [{	productId: string,	optionGroupId: string},ResolverInputTypes["Product"]],
-removeOptionGroupFromProduct?: [{	productId: string,	optionGroupId: string,	force?: boolean | undefined | null},ResolverInputTypes["RemoveOptionGroupFromProductResult"]],
+deleteProduct?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteProducts?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
+addOptionGroupToProduct?: [{	productId: ResolverInputTypes["ID"],	optionGroupId: ResolverInputTypes["ID"]},ResolverInputTypes["Product"]],
+removeOptionGroupFromProduct?: [{	productId: ResolverInputTypes["ID"],	optionGroupId: ResolverInputTypes["ID"],	force?: boolean | undefined | null},ResolverInputTypes["RemoveOptionGroupFromProductResult"]],
 createProductVariants?: [{	input: Array<ResolverInputTypes["CreateProductVariantInput"]>},ResolverInputTypes["ProductVariant"]],
 updateProductVariants?: [{	input: Array<ResolverInputTypes["UpdateProductVariantInput"]>},ResolverInputTypes["ProductVariant"]],
-deleteProductVariant?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteProductVariants?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteProductVariant?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteProductVariants?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 assignProductsToChannel?: [{	input: ResolverInputTypes["AssignProductsToChannelInput"]},ResolverInputTypes["Product"]],
 removeProductsFromChannel?: [{	input: ResolverInputTypes["RemoveProductsFromChannelInput"]},ResolverInputTypes["Product"]],
 assignProductVariantsToChannel?: [{	input: ResolverInputTypes["AssignProductVariantsToChannelInput"]},ResolverInputTypes["ProductVariant"]],
 removeProductVariantsFromChannel?: [{	input: ResolverInputTypes["RemoveProductVariantsFromChannelInput"]},ResolverInputTypes["ProductVariant"]],
 createPromotion?: [{	input: ResolverInputTypes["CreatePromotionInput"]},ResolverInputTypes["CreatePromotionResult"]],
 updatePromotion?: [{	input: ResolverInputTypes["UpdatePromotionInput"]},ResolverInputTypes["UpdatePromotionResult"]],
-deletePromotion?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deletePromotions?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deletePromotion?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deletePromotions?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 assignPromotionsToChannel?: [{	input: ResolverInputTypes["AssignPromotionsToChannelInput"]},ResolverInputTypes["Promotion"]],
 removePromotionsFromChannel?: [{	input: ResolverInputTypes["RemovePromotionsFromChannelInput"]},ResolverInputTypes["Promotion"]],
 createProvince?: [{	input: ResolverInputTypes["CreateProvinceInput"]},ResolverInputTypes["Province"]],
 updateProvince?: [{	input: ResolverInputTypes["UpdateProvinceInput"]},ResolverInputTypes["Province"]],
-deleteProvince?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
+deleteProvince?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
 createRole?: [{	input: ResolverInputTypes["CreateRoleInput"]},ResolverInputTypes["Role"]],
 updateRole?: [{	input: ResolverInputTypes["UpdateRoleInput"]},ResolverInputTypes["Role"]],
-deleteRole?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteRoles?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteRole?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteRoles?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 createSeller?: [{	input: ResolverInputTypes["CreateSellerInput"]},ResolverInputTypes["Seller"]],
 updateSeller?: [{	input: ResolverInputTypes["UpdateSellerInput"]},ResolverInputTypes["Seller"]],
-deleteSeller?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteSellers?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteSeller?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteSellers?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 createShippingMethod?: [{	input: ResolverInputTypes["CreateShippingMethodInput"]},ResolverInputTypes["ShippingMethod"]],
 updateShippingMethod?: [{	input: ResolverInputTypes["UpdateShippingMethodInput"]},ResolverInputTypes["ShippingMethod"]],
-deleteShippingMethod?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteShippingMethods?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteShippingMethod?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteShippingMethods?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 assignShippingMethodsToChannel?: [{	input: ResolverInputTypes["AssignShippingMethodsToChannelInput"]},ResolverInputTypes["ShippingMethod"]],
 removeShippingMethodsFromChannel?: [{	input: ResolverInputTypes["RemoveShippingMethodsFromChannelInput"]},ResolverInputTypes["ShippingMethod"]],
 createStockLocation?: [{	input: ResolverInputTypes["CreateStockLocationInput"]},ResolverInputTypes["StockLocation"]],
@@ -5290,21 +5319,21 @@ assignStockLocationsToChannel?: [{	input: ResolverInputTypes["AssignStockLocatio
 removeStockLocationsFromChannel?: [{	input: ResolverInputTypes["RemoveStockLocationsFromChannelInput"]},ResolverInputTypes["StockLocation"]],
 createTag?: [{	input: ResolverInputTypes["CreateTagInput"]},ResolverInputTypes["Tag"]],
 updateTag?: [{	input: ResolverInputTypes["UpdateTagInput"]},ResolverInputTypes["Tag"]],
-deleteTag?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
+deleteTag?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
 createTaxCategory?: [{	input: ResolverInputTypes["CreateTaxCategoryInput"]},ResolverInputTypes["TaxCategory"]],
 updateTaxCategory?: [{	input: ResolverInputTypes["UpdateTaxCategoryInput"]},ResolverInputTypes["TaxCategory"]],
-deleteTaxCategory?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteTaxCategories?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteTaxCategory?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteTaxCategories?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 createTaxRate?: [{	input: ResolverInputTypes["CreateTaxRateInput"]},ResolverInputTypes["TaxRate"]],
 updateTaxRate?: [{	input: ResolverInputTypes["UpdateTaxRateInput"]},ResolverInputTypes["TaxRate"]],
-deleteTaxRate?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteTaxRates?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
+deleteTaxRate?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteTaxRates?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
 createZone?: [{	input: ResolverInputTypes["CreateZoneInput"]},ResolverInputTypes["Zone"]],
 updateZone?: [{	input: ResolverInputTypes["UpdateZoneInput"]},ResolverInputTypes["Zone"]],
-deleteZone?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
-deleteZones?: [{	ids: Array<string>},ResolverInputTypes["DeletionResponse"]],
-addMembersToZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
-removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
+deleteZone?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
+deleteZones?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["DeletionResponse"]],
+addMembersToZone?: [{	zoneId: ResolverInputTypes["ID"],	memberIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Zone"]],
+removeMembersFromZone?: [{	zoneId: ResolverInputTypes["ID"],	memberIds: Array<ResolverInputTypes["ID"]>},ResolverInputTypes["Zone"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -5324,16 +5353,16 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	lastName: string,
 	emailAddress: string,
 	password: string,
-	roleIds: Array<string>,
+	roleIds: Array<ResolverInputTypes["ID"]>,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateAdministratorInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	firstName?: string | undefined | null,
 	lastName?: string | undefined | null,
 	emailAddress?: string | undefined | null,
 	password?: string | undefined | null,
-	roleIds?: Array<string> | undefined | null,
+	roleIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateActiveAdministratorInput"]: {
@@ -5395,25 +5424,25 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	y: number
 };
 	["DeleteAssetInput"]: {
-	assetId: string,
+	assetId: ResolverInputTypes["ID"],
 	force?: boolean | undefined | null,
 	deleteFromAllChannels?: boolean | undefined | null
 };
 	["DeleteAssetsInput"]: {
-	assetIds: Array<string>,
+	assetIds: Array<ResolverInputTypes["ID"]>,
 	force?: boolean | undefined | null,
 	deleteFromAllChannels?: boolean | undefined | null
 };
 	["UpdateAssetInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	focalPoint?: ResolverInputTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
-	assetIds: Array<string>,
-	channelId: string
+	assetIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["AuthenticationInput"]: {
 	native?: ResolverInputTypes["NativeAuthInput"] | undefined | null
@@ -5456,13 +5485,13 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	availableCurrencyCodes?: Array<ResolverInputTypes["CurrencyCode"]> | undefined | null,
 	trackInventory?: boolean | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
-	defaultTaxZoneId: string,
-	defaultShippingZoneId: string,
-	sellerId?: string | undefined | null,
+	defaultTaxZoneId: ResolverInputTypes["ID"],
+	defaultShippingZoneId: ResolverInputTypes["ID"],
+	sellerId?: ResolverInputTypes["ID"] | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateChannelInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	token?: string | undefined | null,
 	defaultLanguageCode?: ResolverInputTypes["LanguageCode"] | undefined | null,
@@ -5472,9 +5501,9 @@ removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInp
 	availableCurrencyCodes?: Array<ResolverInputTypes["CurrencyCode"]> | undefined | null,
 	trackInventory?: boolean | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
-	defaultTaxZoneId?: string | undefined | null,
-	defaultShippingZoneId?: string | undefined | null,
-	sellerId?: string | undefined | null,
+	defaultTaxZoneId?: ResolverInputTypes["ID"] | undefined | null,
+	defaultShippingZoneId?: ResolverInputTypes["ID"] | undefined | null,
+	sellerId?: ResolverInputTypes["ID"] | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	/** Returned if attempting to set a Channel's defaultLanguageCode to a language which is not enabled in GlobalSettings */
@@ -5531,8 +5560,8 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["MoveCollectionInput"]: {
-	collectionId: string,
-	parentId: string,
+	collectionId: ResolverInputTypes["ID"],
+	parentId: ResolverInputTypes["ID"],
 	index: number
 };
 	["CreateCollectionTranslationInput"]: {
@@ -5543,7 +5572,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
@@ -5552,40 +5581,40 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	parentId?: string | undefined | null,
+	featuredAssetId?: ResolverInputTypes["ID"] | undefined | null,
+	assetIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
+	parentId?: ResolverInputTypes["ID"] | undefined | null,
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<ResolverInputTypes["ConfigurableOperationInput"]>,
 	translations: Array<ResolverInputTypes["CreateCollectionTranslationInput"]>,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
-	parentId?: string | undefined | null,
+	parentId?: ResolverInputTypes["ID"] | undefined | null,
 	inheritFilters: boolean,
 	filters: Array<ResolverInputTypes["ConfigurableOperationInput"]>
 };
 	["UpdateCollectionInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	isPrivate?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	parentId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	featuredAssetId?: ResolverInputTypes["ID"] | undefined | null,
+	parentId?: ResolverInputTypes["ID"] | undefined | null,
+	assetIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<ResolverInputTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<ResolverInputTypes["UpdateCollectionTranslationInput"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
-	collectionIds: Array<string>,
-	channelId: string
+	collectionIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["RemoveCollectionsFromChannelInput"]: {
-	collectionIds: Array<string>,
-	channelId: string
+	collectionIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["CountryTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -5597,7 +5626,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateCountryInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["CountryTranslationInput"]> | undefined | null,
 	enabled?: boolean | undefined | null,
@@ -5651,16 +5680,16 @@ orders?: [{	options?: ResolverInputTypes["OrderListOptions"] | undefined | null}
 };
 	["CreateCustomerGroupInput"]: {
 	name: string,
-	customerIds?: Array<string> | undefined | null,
+	customerIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateCustomerGroupInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateCustomerInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	title?: string | undefined | null,
 	firstName?: string | undefined | null,
 	lastName?: string | undefined | null,
@@ -5694,12 +5723,12 @@ orders?: [{	options?: ResolverInputTypes["OrderListOptions"] | undefined | null}
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["AddNoteToCustomerInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	note: string,
 	isPublic: boolean
 };
 	["UpdateCustomerNoteInput"]: {
-	noteId: string,
+	noteId: ResolverInputTypes["ID"],
 	note: string
 };
 	["CreateCustomerResult"]: AliasType<{
@@ -5737,7 +5766,7 @@ orders?: [{	options?: ResolverInputTypes["OrderListOptions"] | undefined | null}
 }>;
 	["DuplicateEntityInput"]: {
 	entityName: string,
-	entityId: string,
+	entityId: ResolverInputTypes["ID"],
 	duplicatorInput: ResolverInputTypes["ConfigurableOperationInput"]
 };
 	["Facet"]: AliasType<{
@@ -5767,7 +5796,7 @@ valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["FacetTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -5780,14 +5809,14 @@ valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateFacetInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["FacetTranslationInput"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -5797,24 +5826,24 @@ valueList?: [{	options?: ResolverInputTypes["FacetValueListOptions"] | undefined
 	translations: Array<ResolverInputTypes["FacetValueTranslationInput"]>
 };
 	["CreateFacetValueInput"]: {
-	facetId: string,
+	facetId: ResolverInputTypes["ID"],
 	code: string,
 	translations: Array<ResolverInputTypes["FacetValueTranslationInput"]>,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateFacetValueInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["FacetValueTranslationInput"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignFacetsToChannelInput"]: {
-	facetIds: Array<string>,
-	channelId: string
+	facetIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["RemoveFacetsFromChannelInput"]: {
-	facetIds: Array<string>,
-	channelId: string,
+	facetIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"],
 	force?: boolean | undefined | null
 };
 	["FacetInUseError"]: AliasType<{
@@ -5979,6 +6008,8 @@ methods. */
 	discounts?:ResolverInputTypes["Discount"],
 	/** An array of all coupon codes applied to the Order */
 	couponCodes?:boolean | `@${string}`,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?:boolean | `@${string}`,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions?:ResolverInputTypes["Promotion"],
 	payments?:ResolverInputTypes["Payment"],
@@ -6107,12 +6138,12 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["SetOrderCustomerInput"]: {
-	orderId: string,
-	customerId: string,
+	orderId: ResolverInputTypes["ID"],
+	customerId: ResolverInputTypes["ID"],
 	note?: string | undefined | null
 };
 	["UpdateOrderInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["FulfillOrderInput"]: {
@@ -6121,7 +6152,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 };
 	["CancelOrderInput"]: {
 	/** The id of the order to be cancelled */
-	orderId: string,
+	orderId: ResolverInputTypes["ID"],
 	/** Optionally specify which OrderLines to cancel. If not provided, all OrderLines will be cancelled */
 	lines?: Array<ResolverInputTypes["OrderLineInput"]> | undefined | null,
 	/** Specify whether the shipping charges should also be cancelled. Defaults to false */
@@ -6137,24 +6168,24 @@ amount automatically. This was added in v2.2 and will be the preferred way to sp
 amount in the future. The `lines`, `shipping` and `adjustment` fields will likely be removed in a future
 version. */
 	amount?: ResolverInputTypes["Money"] | undefined | null,
-	paymentId: string,
+	paymentId: ResolverInputTypes["ID"],
 	reason?: string | undefined | null
 };
 	["OrderLineInput"]: {
-	orderLineId: string,
+	orderLineId: ResolverInputTypes["ID"],
 	quantity: number
 };
 	["SettleRefundInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	transactionId: string
 };
 	["AddNoteToOrderInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	note: string,
 	isPublic: boolean
 };
 	["UpdateOrderNoteInput"]: {
-	noteId: string,
+	noteId: ResolverInputTypes["ID"],
 	note?: string | undefined | null,
 	isPublic?: boolean | undefined | null
 };
@@ -6163,7 +6194,7 @@ version. */
 	metadata?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AdministratorRefundInput"]: {
-	paymentId: string,
+	paymentId: ResolverInputTypes["ID"],
 	reason?: string | undefined | null,
 	/** The amount to be refunded to this particular Payment. This was introduced in
 v2.2.0 as the preferred way to specify the refund amount. The `lines`, `shipping` and `adjustment`
@@ -6187,7 +6218,7 @@ fields will be removed in a future version. */
 };
 	["ModifyOrderInput"]: {
 	dryRun: boolean,
-	orderId: string,
+	orderId: ResolverInputTypes["ID"],
 	addItems?: Array<ResolverInputTypes["AddItemInput"]> | undefined | null,
 	adjustOrderLines?: Array<ResolverInputTypes["OrderLineInput"]> | undefined | null,
 	surcharges?: Array<ResolverInputTypes["SurchargeInput"]> | undefined | null,
@@ -6201,10 +6232,10 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ResolverInputTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<ResolverInputTypes["ID"]> | undefined | null
 };
 	["AddItemInput"]: {
-	productVariantId: string,
+	productVariantId: ResolverInputTypes["ID"],
 	quantity: number
 };
 	["SurchargeInput"]: {
@@ -6216,17 +6247,17 @@ applied in the case that multiple payment methods have been used on the order. *
 	taxDescription?: string | undefined | null
 };
 	["ManualPaymentInput"]: {
-	orderId: string,
+	orderId: ResolverInputTypes["ID"],
 	method: string,
 	transactionId?: string | undefined | null,
 	metadata?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AddItemToDraftOrderInput"]: {
-	productVariantId: string,
+	productVariantId: ResolverInputTypes["ID"],
 	quantity: number
 };
 	["AdjustDraftOrderLineInput"]: {
-	orderLineId: string,
+	orderLineId: ResolverInputTypes["ID"],
 	quantity: number
 };
 	/** Returned if the Payment settlement fails */
@@ -6498,7 +6529,7 @@ is not in the required state. */
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["PaymentMethodTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -6513,7 +6544,7 @@ is not in the required state. */
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdatePaymentMethodInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	enabled?: boolean | undefined | null,
 	checker?: ResolverInputTypes["ConfigurableOperationInput"] | undefined | null,
@@ -6522,12 +6553,12 @@ is not in the required state. */
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignPaymentMethodsToChannelInput"]: {
-	paymentMethodIds: Array<string>,
-	channelId: string
+	paymentMethodIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["RemovePaymentMethodsFromChannelInput"]: {
-	paymentMethodIds: Array<string>,
-	channelId: string
+	paymentMethodIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["Product"]: AliasType<{
 	channels?:ResolverInputTypes["Channel"],
@@ -6591,7 +6622,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -6603,13 +6634,13 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateProductOptionGroupInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["ProductOptionTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -6619,13 +6650,13 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	translations: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]>
 };
 	["CreateProductOptionInput"]: {
-	productOptionGroupId: string,
+	productOptionGroupId: ResolverInputTypes["ID"],
 	code: string,
 	translations: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]>,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateProductOptionInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -6720,7 +6751,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null
 };
 	["ProductTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
@@ -6728,35 +6759,35 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
-	featuredAssetId?: string | undefined | null,
+	featuredAssetId?: ResolverInputTypes["ID"] | undefined | null,
 	enabled?: boolean | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
+	assetIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
+	facetValueIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	translations: Array<ResolverInputTypes["ProductTranslationInput"]>,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateProductInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	enabled?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
+	featuredAssetId?: ResolverInputTypes["ID"] | undefined | null,
+	assetIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
+	facetValueIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductTranslationInput"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["ProductVariantTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateProductVariantOptionInput"]: {
-	optionGroupId: string,
+	optionGroupId: ResolverInputTypes["ID"],
 	code: string,
 	translations: Array<ResolverInputTypes["ProductOptionTranslationInput"]>
 };
 	["StockLevelInput"]: {
-	stockLocationId: string,
+	stockLocationId: ResolverInputTypes["ID"],
 	stockOnHand: number
 };
 	/** Used to set up update the price of a ProductVariant in a particular Channel.
@@ -6767,15 +6798,15 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	delete?: boolean | undefined | null
 };
 	["CreateProductVariantInput"]: {
-	productId: string,
+	productId: ResolverInputTypes["ID"],
 	translations: Array<ResolverInputTypes["ProductVariantTranslationInput"]>,
-	facetValueIds?: Array<string> | undefined | null,
+	facetValueIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	sku: string,
 	price?: ResolverInputTypes["Money"] | undefined | null,
-	taxCategoryId?: string | undefined | null,
-	optionIds?: Array<string> | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	taxCategoryId?: ResolverInputTypes["ID"] | undefined | null,
+	optionIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
+	featuredAssetId?: ResolverInputTypes["ID"] | undefined | null,
+	assetIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	stockOnHand?: number | undefined | null,
 	stockLevels?: Array<ResolverInputTypes["StockLevelInput"]> | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
@@ -6784,19 +6815,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateProductVariantInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	enabled?: boolean | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductVariantTranslationInput"]> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
-	optionIds?: Array<string> | undefined | null,
+	facetValueIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
+	optionIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	sku?: string | undefined | null,
-	taxCategoryId?: string | undefined | null,
+	taxCategoryId?: ResolverInputTypes["ID"] | undefined | null,
 	/** Sets the price for the ProductVariant in the Channel's default currency */
 	price?: ResolverInputTypes["Money"] | undefined | null,
 	/** Allows multiple prices to be set for the ProductVariant in different currencies. */
 	prices?: Array<ResolverInputTypes["ProductVariantPriceInput"]> | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	featuredAssetId?: ResolverInputTypes["ID"] | undefined | null,
+	assetIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	stockOnHand?: number | undefined | null,
 	stockLevels?: Array<ResolverInputTypes["StockLevelInput"]> | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
@@ -6805,22 +6836,22 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignProductsToChannelInput"]: {
-	productIds: Array<string>,
-	channelId: string,
+	productIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"],
 	priceFactor?: number | undefined | null
 };
 	["RemoveProductsFromChannelInput"]: {
-	productIds: Array<string>,
-	channelId: string
+	productIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["AssignProductVariantsToChannelInput"]: {
-	productVariantIds: Array<string>,
-	channelId: string,
+	productVariantIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"],
 	priceFactor?: number | undefined | null
 };
 	["RemoveProductVariantsFromChannelInput"]: {
-	productVariantIds: Array<string>,
-	channelId: string
+	productVariantIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["ProductOptionInUseError"]: AliasType<{
 	errorCode?:boolean | `@${string}`,
@@ -6847,7 +6878,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["PromotionTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -6866,7 +6897,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdatePromotionInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	enabled?: boolean | undefined | null,
 	startsAt?: ResolverInputTypes["DateTime"] | undefined | null,
 	endsAt?: ResolverInputTypes["DateTime"] | undefined | null,
@@ -6879,12 +6910,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["AssignPromotionsToChannelInput"]: {
-	promotionIds: Array<string>,
-	channelId: string
+	promotionIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["RemovePromotionsFromChannelInput"]: {
-	promotionIds: Array<string>,
-	channelId: string
+	promotionIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	/** Returned if a PromotionCondition has neither a couponCode nor any conditions set */
 ["MissingConditionsError"]: AliasType<{
@@ -6903,7 +6934,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		__typename?: boolean | `@${string}`
 }>;
 	["ProvinceTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -6915,7 +6946,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateProvinceInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ResolverInputTypes["ProvinceTranslationInput"]> | undefined | null,
 	enabled?: boolean | undefined | null,
@@ -6949,14 +6980,14 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	code: string,
 	description: string,
 	permissions: Array<ResolverInputTypes["Permission"]>,
-	channelIds?: Array<string> | undefined | null
+	channelIds?: Array<ResolverInputTypes["ID"]> | undefined | null
 };
 	["UpdateRoleInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	description?: string | undefined | null,
 	permissions?: Array<ResolverInputTypes["Permission"]> | undefined | null,
-	channelIds?: Array<string> | undefined | null
+	channelIds?: Array<ResolverInputTypes["ID"]> | undefined | null
 };
 	["SellerList"]: AliasType<{
 	items?:ResolverInputTypes["Seller"],
@@ -6980,7 +7011,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateSellerInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
@@ -6997,7 +7028,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: ResolverInputTypes["LogicalOperator"] | undefined | null
 };
 	["ShippingMethodTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ResolverInputTypes["ID"] | undefined | null,
 	languageCode: ResolverInputTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -7012,7 +7043,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateShippingMethodInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	code?: string | undefined | null,
 	fulfillmentHandler?: string | undefined | null,
 	checker?: ResolverInputTypes["ConfigurableOperationInput"] | undefined | null,
@@ -7031,7 +7062,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	lines: Array<ResolverInputTypes["TestShippingMethodOrderLineInput"]>
 };
 	["TestShippingMethodOrderLineInput"]: {
-	productVariantId: string,
+	productVariantId: ResolverInputTypes["ID"],
 	quantity: number
 };
 	["TestShippingMethodResult"]: AliasType<{
@@ -7046,12 +7077,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		__typename?: boolean | `@${string}`
 }>;
 	["AssignShippingMethodsToChannelInput"]: {
-	shippingMethodIds: Array<string>,
-	channelId: string
+	shippingMethodIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["RemoveShippingMethodsFromChannelInput"]: {
-	shippingMethodIds: Array<string>,
-	channelId: string
+	shippingMethodIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["StockLevel"]: AliasType<{
 	id?:boolean | `@${string}`,
@@ -7086,22 +7117,22 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateStockLocationInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["DeleteStockLocationInput"]: {
-	id: string,
-	transferToLocationId?: string | undefined | null
+	id: ResolverInputTypes["ID"],
+	transferToLocationId?: ResolverInputTypes["ID"] | undefined | null
 };
 	["AssignStockLocationsToChannelInput"]: {
-	stockLocationIds: Array<string>,
-	channelId: string
+	stockLocationIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["RemoveStockLocationsFromChannelInput"]: {
-	stockLocationIds: Array<string>,
-	channelId: string
+	stockLocationIds: Array<ResolverInputTypes["ID"]>,
+	channelId: ResolverInputTypes["ID"]
 };
 	["StockLocation"]: AliasType<{
 	id?:boolean | `@${string}`,
@@ -7214,7 +7245,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	value: string
 };
 	["UpdateTagInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	value?: string | undefined | null
 };
 	["TaxCategoryList"]: AliasType<{
@@ -7240,7 +7271,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateTaxCategoryInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	isDefault?: boolean | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
@@ -7261,19 +7292,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name: string,
 	enabled: boolean,
 	value: number,
-	categoryId: string,
-	zoneId: string,
-	customerGroupId?: string | undefined | null,
+	categoryId: ResolverInputTypes["ID"],
+	zoneId: ResolverInputTypes["ID"],
+	customerGroupId?: ResolverInputTypes["ID"] | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateTaxRateInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	value?: number | undefined | null,
 	enabled?: boolean | undefined | null,
-	categoryId?: string | undefined | null,
-	zoneId?: string | undefined | null,
-	customerGroupId?: string | undefined | null,
+	categoryId?: ResolverInputTypes["ID"] | undefined | null,
+	zoneId?: ResolverInputTypes["ID"] | undefined | null,
+	customerGroupId?: ResolverInputTypes["ID"] | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["ZoneList"]: AliasType<{
@@ -7295,11 +7326,11 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["CreateZoneInput"]: {
 	name: string,
-	memberIds?: Array<string> | undefined | null,
+	memberIds?: Array<ResolverInputTypes["ID"]> | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateZoneInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
@@ -7539,6 +7570,13 @@ current session. */
 	message?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: AliasType<{
+	errorCode?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	middlewareError?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:unknown;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -7672,6 +7710,7 @@ current session. */
 		['...on OrderModificationError']?: Omit<ResolverInputTypes["OrderModificationError"],keyof ResolverInputTypes["ErrorResult"]>;
 		['...on IneligibleShippingMethodError']?: Omit<ResolverInputTypes["IneligibleShippingMethodError"],keyof ResolverInputTypes["ErrorResult"]>;
 		['...on NoActiveOrderError']?: Omit<ResolverInputTypes["NoActiveOrderError"],keyof ResolverInputTypes["ErrorResult"]>;
+		['...on OrderMiddlewareError']?: Omit<ResolverInputTypes["OrderMiddlewareError"],keyof ResolverInputTypes["ErrorResult"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Adjustment"]: AliasType<{
@@ -7792,7 +7831,7 @@ current session. */
 };
 	/** Operators for filtering on a list of ID fields */
 ["IDListOperators"]: {
-	inList: string
+	inList: ResolverInputTypes["ID"]
 };
 	/** Operators for filtering on a list of Date fields */
 ["DateListOperators"]: {
@@ -7805,13 +7844,13 @@ by FacetValue ID. Examples:
 * ID=1 AND ID=2: `{ facetValueFilters: [{ and: 1 }, { and: 2 }] }`
 * ID=1 AND (ID=2 OR ID=3): `{ facetValueFilters: [{ and: 1 }, { or: [2,3] }] }` */
 ["FacetValueFilterInput"]: {
-	and?: string | undefined | null,
-	or?: Array<string> | undefined | null
+	and?: ResolverInputTypes["ID"] | undefined | null,
+	or?: Array<ResolverInputTypes["ID"]> | undefined | null
 };
 	["SearchInput"]: {
 	term?: string | undefined | null,
 	facetValueFilters?: Array<ResolverInputTypes["FacetValueFilterInput"]> | undefined | null,
-	collectionId?: string | undefined | null,
+	collectionId?: ResolverInputTypes["ID"] | undefined | null,
 	collectionSlug?: string | undefined | null,
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
@@ -7855,7 +7894,7 @@ The countryCode must correspond to a `code` property of a Country that has been 
 Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
 If an invalid code is passed, the mutation will fail. */
 ["UpdateAddressInput"]: {
-	id: string,
+	id: ResolverInputTypes["ID"],
 	fullName?: string | undefined | null,
 	company?: string | undefined | null,
 	streetLine1?: string | undefined | null,
@@ -7902,11 +7941,13 @@ If an invalid code is passed, the mutation will fail. */
 	OrderLimitError?:ResolverInputTypes["OrderLimitError"],
 	NegativeQuantityError?:ResolverInputTypes["NegativeQuantityError"],
 	InsufficientStockError?:ResolverInputTypes["InsufficientStockError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	["RemoveOrderItemsResult"]: AliasType<{
 	Order?:ResolverInputTypes["Order"],
 	OrderModificationError?:ResolverInputTypes["OrderModificationError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	["SetOrderShippingMethodResult"]: AliasType<{
@@ -7921,6 +7962,7 @@ If an invalid code is passed, the mutation will fail. */
 	CouponCodeExpiredError?:ResolverInputTypes["CouponCodeExpiredError"],
 	CouponCodeInvalidError?:ResolverInputTypes["CouponCodeInvalidError"],
 	CouponCodeLimitError?:ResolverInputTypes["CouponCodeLimitError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	/** @description
@@ -8710,6 +8752,11 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	["AdditionalOrderState"]: AliasType<{
+	state?:boolean | `@${string}`,
+	selectedByDefault?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["ChartDataType"]: AliasType<{
 	type?:boolean | `@${string}`,
 	title?:boolean | `@${string}`,
@@ -9262,7 +9309,8 @@ which allows custom fields to be defined on user-supplies entities. */
 	query?:ResolverInputTypes["Query"],
 	mutation?:ResolverInputTypes["Mutation"],
 		__typename?: boolean | `@${string}`
-}>
+}>;
+	["ID"]:unknown
   }
 
 export type ModelTypes = {
@@ -9348,6 +9396,7 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined | null,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined | null,
+	additionalOrderStates: Array<ModelTypes["AdditionalOrderState"]>,
 	chartMetric: ModelTypes["ChartMetrics"],
 	orderSummaryMetric: ModelTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
@@ -9515,6 +9564,8 @@ Payment. */
 	setDraftOrderCustomFields: ModelTypes["Order"],
 	/** Applies the given coupon code to the draft Order */
 	applyCouponCodeToDraftOrder: ModelTypes["ApplyCouponCodeResult"],
+	/** Toggle exclusion of given promotion from the draft Order */
+	toggleExcludePromotionInOrder?: ModelTypes["Order"] | undefined | null,
 	/** Removes the given coupon code from the draft Order */
 	removeCouponCodeFromDraftOrder?: ModelTypes["Order"] | undefined | null,
 	/** Sets the shipping method by id, which can be obtained with the `eligibleShippingMethodsForDraftOrder` query */
@@ -9678,16 +9729,16 @@ as well as removing any of the group's options from the Product's ProductVariant
 	lastName: string,
 	emailAddress: string,
 	password: string,
-	roleIds: Array<string>,
+	roleIds: Array<ModelTypes["ID"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateAdministratorInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	firstName?: string | undefined | null,
 	lastName?: string | undefined | null,
 	emailAddress?: string | undefined | null,
 	password?: string | undefined | null,
-	roleIds?: Array<string> | undefined | null,
+	roleIds?: Array<ModelTypes["ID"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateActiveAdministratorInput"]: {
@@ -9698,7 +9749,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["Administrator"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	firstName: string,
@@ -9742,25 +9793,25 @@ as well as removing any of the group's options from the Product's ProductVariant
 	y: number
 };
 	["DeleteAssetInput"]: {
-	assetId: string,
+	assetId: ModelTypes["ID"],
 	force?: boolean | undefined | null,
 	deleteFromAllChannels?: boolean | undefined | null
 };
 	["DeleteAssetsInput"]: {
-	assetIds: Array<string>,
+	assetIds: Array<ModelTypes["ID"]>,
 	force?: boolean | undefined | null,
 	deleteFromAllChannels?: boolean | undefined | null
 };
 	["UpdateAssetInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	focalPoint?: ModelTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
-	assetIds: Array<string>,
-	channelId: string
+	assetIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["AuthenticationInput"]: {
 	native?: ModelTypes["NativeAuthInput"] | undefined | null
@@ -9793,13 +9844,13 @@ as well as removing any of the group's options from the Product's ProductVariant
 	availableCurrencyCodes?: Array<ModelTypes["CurrencyCode"]> | undefined | null,
 	trackInventory?: boolean | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
-	defaultTaxZoneId: string,
-	defaultShippingZoneId: string,
-	sellerId?: string | undefined | null,
+	defaultTaxZoneId: ModelTypes["ID"],
+	defaultShippingZoneId: ModelTypes["ID"],
+	sellerId?: ModelTypes["ID"] | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateChannelInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	token?: string | undefined | null,
 	defaultLanguageCode?: ModelTypes["LanguageCode"] | undefined | null,
@@ -9809,9 +9860,9 @@ as well as removing any of the group's options from the Product's ProductVariant
 	availableCurrencyCodes?: Array<ModelTypes["CurrencyCode"]> | undefined | null,
 	trackInventory?: boolean | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
-	defaultTaxZoneId?: string | undefined | null,
-	defaultShippingZoneId?: string | undefined | null,
-	sellerId?: string | undefined | null,
+	defaultTaxZoneId?: ModelTypes["ID"] | undefined | null,
+	defaultShippingZoneId?: ModelTypes["ID"] | undefined | null,
+	sellerId?: ModelTypes["ID"] | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	/** Returned if attempting to set a Channel's defaultLanguageCode to a language which is not enabled in GlobalSettings */
@@ -9825,7 +9876,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["Collection"]: {
 		isPrivate: boolean,
 	inheritFilters: boolean,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode?: ModelTypes["LanguageCode"] | undefined | null,
@@ -9837,7 +9888,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	featuredAsset?: ModelTypes["Asset"] | undefined | null,
 	assets: Array<ModelTypes["Asset"]>,
 	parent?: ModelTypes["Collection"] | undefined | null,
-	parentId: string,
+	parentId: ModelTypes["ID"],
 	children?: Array<ModelTypes["Collection"]> | undefined | null,
 	filters: Array<ModelTypes["ConfigurableOperation"]>,
 	translations: Array<ModelTypes["CollectionTranslation"]>,
@@ -9858,8 +9909,8 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["MoveCollectionInput"]: {
-	collectionId: string,
-	parentId: string,
+	collectionId: ModelTypes["ID"],
+	parentId: ModelTypes["ID"],
 	index: number
 };
 	["CreateCollectionTranslationInput"]: {
@@ -9870,7 +9921,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
@@ -9879,40 +9930,40 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	parentId?: string | undefined | null,
+	featuredAssetId?: ModelTypes["ID"] | undefined | null,
+	assetIds?: Array<ModelTypes["ID"]> | undefined | null,
+	parentId?: ModelTypes["ID"] | undefined | null,
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<ModelTypes["ConfigurableOperationInput"]>,
 	translations: Array<ModelTypes["CreateCollectionTranslationInput"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
-	parentId?: string | undefined | null,
+	parentId?: ModelTypes["ID"] | undefined | null,
 	inheritFilters: boolean,
 	filters: Array<ModelTypes["ConfigurableOperationInput"]>
 };
 	["UpdateCollectionInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	isPrivate?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	parentId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	featuredAssetId?: ModelTypes["ID"] | undefined | null,
+	parentId?: ModelTypes["ID"] | undefined | null,
+	assetIds?: Array<ModelTypes["ID"]> | undefined | null,
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<ModelTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<ModelTypes["UpdateCollectionTranslationInput"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
-	collectionIds: Array<string>,
-	channelId: string
+	collectionIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["RemoveCollectionsFromChannelInput"]: {
-	collectionIds: Array<string>,
-	channelId: string
+	collectionIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["CountryTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -9924,7 +9975,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateCountryInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["CountryTranslationInput"]> | undefined | null,
 	enabled?: boolean | undefined | null,
@@ -9945,7 +9996,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["Customer"]: {
 		groups: Array<ModelTypes["CustomerGroup"]>,
 	history: ModelTypes["HistoryEntryList"],
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	title?: string | undefined | null,
@@ -9976,16 +10027,16 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["CreateCustomerGroupInput"]: {
 	name: string,
-	customerIds?: Array<string> | undefined | null,
+	customerIds?: Array<ModelTypes["ID"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateCustomerGroupInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateCustomerInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	title?: string | undefined | null,
 	firstName?: string | undefined | null,
 	lastName?: string | undefined | null,
@@ -10019,12 +10070,12 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["AddNoteToCustomerInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	note: string,
 	isPublic: boolean
 };
 	["UpdateCustomerNoteInput"]: {
-	noteId: string,
+	noteId: ModelTypes["ID"],
 	note: string
 };
 	["CreateCustomerResult"]:ModelTypes["Customer"] | ModelTypes["EmailAddressConflictError"];
@@ -10037,7 +10088,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	requiresPermission: Array<ModelTypes["Permission"]>
 };
 	["DuplicateEntitySuccess"]: {
-		newEntityId: string
+		newEntityId: ModelTypes["ID"]
 };
 	["DuplicateEntityError"]: {
 		errorCode: ModelTypes["ErrorCode"],
@@ -10047,12 +10098,12 @@ as well as removing any of the group's options from the Product's ProductVariant
 	["DuplicateEntityResult"]:ModelTypes["DuplicateEntitySuccess"] | ModelTypes["DuplicateEntityError"];
 	["DuplicateEntityInput"]: {
 	entityName: string,
-	entityId: string,
+	entityId: ModelTypes["ID"],
 	duplicatorInput: ModelTypes["ConfigurableOperationInput"]
 };
 	["Facet"]: {
 		isPrivate: boolean,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -10077,7 +10128,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["FacetTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -10090,14 +10141,14 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateFacetInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["FacetTranslationInput"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -10107,24 +10158,24 @@ as well as removing any of the group's options from the Product's ProductVariant
 	translations: Array<ModelTypes["FacetValueTranslationInput"]>
 };
 	["CreateFacetValueInput"]: {
-	facetId: string,
+	facetId: ModelTypes["ID"],
 	code: string,
 	translations: Array<ModelTypes["FacetValueTranslationInput"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateFacetValueInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["FacetValueTranslationInput"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignFacetsToChannelInput"]: {
-	facetIds: Array<string>,
-	channelId: string
+	facetIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["RemoveFacetsFromChannelInput"]: {
-	facetIds: Array<string>,
-	channelId: string,
+	facetIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"],
 	force?: boolean | undefined | null
 };
 	["FacetInUseError"]: {
@@ -10151,7 +10202,7 @@ of the GlobalSettings */
 };
 	["UpdateGlobalSettingsResult"]:ModelTypes["GlobalSettings"] | ModelTypes["ChannelDefaultLanguageError"];
 	["GlobalSettings"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	availableLanguages: Array<ModelTypes["LanguageCode"]>,
@@ -10182,7 +10233,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	["HistoryEntry"]: {
 		isPublic: boolean,
 	administrator?: ModelTypes["Administrator"] | undefined | null,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	type: ModelTypes["HistoryEntryType"],
@@ -10215,7 +10266,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	totalItems: number
 };
 	["Job"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	startedAt?: ModelTypes["DateTime"] | undefined | null,
 	settledAt?: ModelTypes["DateTime"] | undefined | null,
@@ -10239,9 +10290,9 @@ which allows custom fields to be defined on user-supplies entities. */
 	modifications: Array<ModelTypes["OrderModification"]>,
 	sellerOrders?: Array<ModelTypes["Order"]> | undefined | null,
 	aggregateOrder?: ModelTypes["Order"] | undefined | null,
-	aggregateOrderId?: string | undefined | null,
+	aggregateOrderId?: ModelTypes["ID"] | undefined | null,
 	channels: Array<ModelTypes["Channel"]>,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	type: ModelTypes["OrderType"],
@@ -10265,6 +10316,8 @@ methods. */
 	discounts: Array<ModelTypes["Discount"]>,
 	/** An array of all coupon codes applied to the Order */
 	couponCodes: Array<string>,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?: Array<string> | undefined | null,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions: Array<ModelTypes["Promotion"]>,
 	payments?: Array<ModelTypes["Payment"]> | undefined | null,
@@ -10292,7 +10345,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["Fulfillment"]: {
 		nextStates: Array<string>,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	lines: Array<ModelTypes["FulfillmentLine"]>,
@@ -10304,7 +10357,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["Payment"]: {
 		nextStates: Array<string>,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	method: string,
@@ -10317,13 +10370,13 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["OrderModificationLine"]: {
 		orderLine: ModelTypes["OrderLine"],
-	orderLineId: string,
+	orderLineId: ModelTypes["ID"],
 	quantity: number,
 	modification: ModelTypes["OrderModification"],
-	modificationId: string
+	modificationId: ModelTypes["ID"]
 };
 	["OrderModification"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	priceChange: ModelTypes["Money"],
@@ -10388,12 +10441,12 @@ sum of `OrderLine.discountedLinePrice` values. */
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["SetOrderCustomerInput"]: {
-	orderId: string,
-	customerId: string,
+	orderId: ModelTypes["ID"],
+	customerId: ModelTypes["ID"],
 	note?: string | undefined | null
 };
 	["UpdateOrderInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["FulfillOrderInput"]: {
@@ -10402,7 +10455,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["CancelOrderInput"]: {
 	/** The id of the order to be cancelled */
-	orderId: string,
+	orderId: ModelTypes["ID"],
 	/** Optionally specify which OrderLines to cancel. If not provided, all OrderLines will be cancelled */
 	lines?: Array<ModelTypes["OrderLineInput"]> | undefined | null,
 	/** Specify whether the shipping charges should also be cancelled. Defaults to false */
@@ -10418,24 +10471,24 @@ amount automatically. This was added in v2.2 and will be the preferred way to sp
 amount in the future. The `lines`, `shipping` and `adjustment` fields will likely be removed in a future
 version. */
 	amount?: ModelTypes["Money"] | undefined | null,
-	paymentId: string,
+	paymentId: ModelTypes["ID"],
 	reason?: string | undefined | null
 };
 	["OrderLineInput"]: {
-	orderLineId: string,
+	orderLineId: ModelTypes["ID"],
 	quantity: number
 };
 	["SettleRefundInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	transactionId: string
 };
 	["AddNoteToOrderInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	note: string,
 	isPublic: boolean
 };
 	["UpdateOrderNoteInput"]: {
-	noteId: string,
+	noteId: ModelTypes["ID"],
 	note?: string | undefined | null,
 	isPublic?: boolean | undefined | null
 };
@@ -10444,7 +10497,7 @@ version. */
 	metadata?: ModelTypes["JSON"] | undefined | null
 };
 	["AdministratorRefundInput"]: {
-	paymentId: string,
+	paymentId: ModelTypes["ID"],
 	reason?: string | undefined | null,
 	/** The amount to be refunded to this particular Payment. This was introduced in
 v2.2.0 as the preferred way to specify the refund amount. The `lines`, `shipping` and `adjustment`
@@ -10468,7 +10521,7 @@ fields will be removed in a future version. */
 };
 	["ModifyOrderInput"]: {
 	dryRun: boolean,
-	orderId: string,
+	orderId: ModelTypes["ID"],
 	addItems?: Array<ModelTypes["AddItemInput"]> | undefined | null,
 	adjustOrderLines?: Array<ModelTypes["OrderLineInput"]> | undefined | null,
 	surcharges?: Array<ModelTypes["SurchargeInput"]> | undefined | null,
@@ -10482,10 +10535,10 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: ModelTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<ModelTypes["ID"]> | undefined | null
 };
 	["AddItemInput"]: {
-	productVariantId: string,
+	productVariantId: ModelTypes["ID"],
 	quantity: number
 };
 	["SurchargeInput"]: {
@@ -10497,17 +10550,17 @@ applied in the case that multiple payment methods have been used on the order. *
 	taxDescription?: string | undefined | null
 };
 	["ManualPaymentInput"]: {
-	orderId: string,
+	orderId: ModelTypes["ID"],
 	method: string,
 	transactionId?: string | undefined | null,
 	metadata?: ModelTypes["JSON"] | undefined | null
 };
 	["AddItemToDraftOrderInput"]: {
-	productVariantId: string,
+	productVariantId: ModelTypes["ID"],
 	quantity: number
 };
 	["AdjustDraftOrderLineInput"]: {
-	orderLineId: string,
+	orderLineId: ModelTypes["ID"],
 	quantity: number
 };
 	/** Returned if the Payment settlement fails */
@@ -10548,7 +10601,7 @@ stockOnHand of a ProductVariant to satisfy the requested quantity. */
 ["InsufficientStockOnHandError"]: {
 		errorCode: ModelTypes["ErrorCode"],
 	message: string,
-	productVariantId: string,
+	productVariantId: ModelTypes["ID"],
 	productVariantName: string,
 	stockOnHand: number
 };
@@ -10583,7 +10636,7 @@ stockOnHand of a ProductVariant to satisfy the requested quantity. */
 ["AlreadyRefundedError"]: {
 		errorCode: ModelTypes["ErrorCode"],
 	message: string,
-	refundId: string
+	refundId: ModelTypes["ID"]
 };
 	/** Returned if the specified quantity of an OrderLine is greater than the number of items in that line */
 ["QuantityTooGreatError"]: {
@@ -10677,7 +10730,7 @@ is not in the required state. */
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["PaymentMethodTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -10692,7 +10745,7 @@ is not in the required state. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdatePaymentMethodInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	enabled?: boolean | undefined | null,
 	checker?: ModelTypes["ConfigurableOperationInput"] | undefined | null,
@@ -10701,16 +10754,16 @@ is not in the required state. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignPaymentMethodsToChannelInput"]: {
-	paymentMethodIds: Array<string>,
-	channelId: string
+	paymentMethodIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["RemovePaymentMethodsFromChannelInput"]: {
-	paymentMethodIds: Array<string>,
-	channelId: string
+	paymentMethodIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["Product"]: {
 		channels: Array<ModelTypes["Channel"]>,
-	id: string,
+	id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -10746,9 +10799,9 @@ is not in the required state. */
 	stockLevels: Array<ModelTypes["StockLevel"]>,
 	stockMovements: ModelTypes["StockMovementList"],
 	channels: Array<ModelTypes["Channel"]>,
-	id: string,
+	id: ModelTypes["ID"],
 	product: ModelTypes["Product"],
-	productId: string,
+	productId: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -10768,7 +10821,7 @@ is not in the required state. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ProductOptionGroupTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -10780,13 +10833,13 @@ is not in the required state. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateProductOptionGroupInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ProductOptionTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -10796,13 +10849,13 @@ is not in the required state. */
 	translations: Array<ModelTypes["ProductOptionGroupTranslationInput"]>
 };
 	["CreateProductOptionInput"]: {
-	productOptionGroupId: string,
+	productOptionGroupId: ModelTypes["ID"],
 	code: string,
 	translations: Array<ModelTypes["ProductOptionGroupTranslationInput"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateProductOptionInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -10810,23 +10863,23 @@ is not in the required state. */
 	["SearchResult"]: {
 		enabled: boolean,
 	/** An array of ids of the Channels in which this result appears */
-	channelIds: Array<string>,
+	channelIds: Array<ModelTypes["ID"]>,
 	sku: string,
 	slug: string,
-	productId: string,
+	productId: ModelTypes["ID"],
 	productName: string,
 	productAsset?: ModelTypes["SearchResultAsset"] | undefined | null,
-	productVariantId: string,
+	productVariantId: ModelTypes["ID"],
 	productVariantName: string,
 	productVariantAsset?: ModelTypes["SearchResultAsset"] | undefined | null,
 	price: ModelTypes["SearchResultPrice"],
 	priceWithTax: ModelTypes["SearchResultPrice"],
 	currencyCode: ModelTypes["CurrencyCode"],
 	description: string,
-	facetIds: Array<string>,
-	facetValueIds: Array<string>,
+	facetIds: Array<ModelTypes["ID"]>,
+	facetValueIds: Array<ModelTypes["ID"]>,
 	/** An array of ids of the Collections in which this result appears */
-	collectionIds: Array<string>,
+	collectionIds: Array<ModelTypes["ID"]>,
 	/** A relevance score for the result. Differs between database implementations */
 	score: number
 };
@@ -10896,7 +10949,7 @@ is not in the required state. */
 	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined | null
 };
 	["ProductTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
@@ -10904,35 +10957,35 @@ is not in the required state. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
-	featuredAssetId?: string | undefined | null,
+	featuredAssetId?: ModelTypes["ID"] | undefined | null,
 	enabled?: boolean | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
+	assetIds?: Array<ModelTypes["ID"]> | undefined | null,
+	facetValueIds?: Array<ModelTypes["ID"]> | undefined | null,
 	translations: Array<ModelTypes["ProductTranslationInput"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateProductInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	enabled?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
+	featuredAssetId?: ModelTypes["ID"] | undefined | null,
+	assetIds?: Array<ModelTypes["ID"]> | undefined | null,
+	facetValueIds?: Array<ModelTypes["ID"]> | undefined | null,
 	translations?: Array<ModelTypes["ProductTranslationInput"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ProductVariantTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CreateProductVariantOptionInput"]: {
-	optionGroupId: string,
+	optionGroupId: ModelTypes["ID"],
 	code: string,
 	translations: Array<ModelTypes["ProductOptionTranslationInput"]>
 };
 	["StockLevelInput"]: {
-	stockLocationId: string,
+	stockLocationId: ModelTypes["ID"],
 	stockOnHand: number
 };
 	/** Used to set up update the price of a ProductVariant in a particular Channel.
@@ -10943,15 +10996,15 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	delete?: boolean | undefined | null
 };
 	["CreateProductVariantInput"]: {
-	productId: string,
+	productId: ModelTypes["ID"],
 	translations: Array<ModelTypes["ProductVariantTranslationInput"]>,
-	facetValueIds?: Array<string> | undefined | null,
+	facetValueIds?: Array<ModelTypes["ID"]> | undefined | null,
 	sku: string,
 	price?: ModelTypes["Money"] | undefined | null,
-	taxCategoryId?: string | undefined | null,
-	optionIds?: Array<string> | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	taxCategoryId?: ModelTypes["ID"] | undefined | null,
+	optionIds?: Array<ModelTypes["ID"]> | undefined | null,
+	featuredAssetId?: ModelTypes["ID"] | undefined | null,
+	assetIds?: Array<ModelTypes["ID"]> | undefined | null,
 	stockOnHand?: number | undefined | null,
 	stockLevels?: Array<ModelTypes["StockLevelInput"]> | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
@@ -10960,19 +11013,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateProductVariantInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	enabled?: boolean | undefined | null,
 	translations?: Array<ModelTypes["ProductVariantTranslationInput"]> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
-	optionIds?: Array<string> | undefined | null,
+	facetValueIds?: Array<ModelTypes["ID"]> | undefined | null,
+	optionIds?: Array<ModelTypes["ID"]> | undefined | null,
 	sku?: string | undefined | null,
-	taxCategoryId?: string | undefined | null,
+	taxCategoryId?: ModelTypes["ID"] | undefined | null,
 	/** Sets the price for the ProductVariant in the Channel's default currency */
 	price?: ModelTypes["Money"] | undefined | null,
 	/** Allows multiple prices to be set for the ProductVariant in different currencies. */
 	prices?: Array<ModelTypes["ProductVariantPriceInput"]> | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	featuredAssetId?: ModelTypes["ID"] | undefined | null,
+	assetIds?: Array<ModelTypes["ID"]> | undefined | null,
 	stockOnHand?: number | undefined | null,
 	stockLevels?: Array<ModelTypes["StockLevelInput"]> | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
@@ -10981,22 +11034,22 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignProductsToChannelInput"]: {
-	productIds: Array<string>,
-	channelId: string,
+	productIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"],
 	priceFactor?: number | undefined | null
 };
 	["RemoveProductsFromChannelInput"]: {
-	productIds: Array<string>,
-	channelId: string
+	productIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["AssignProductVariantsToChannelInput"]: {
-	productVariantIds: Array<string>,
-	channelId: string,
+	productVariantIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"],
 	priceFactor?: number | undefined | null
 };
 	["RemoveProductVariantsFromChannelInput"]: {
-	productVariantIds: Array<string>,
-	channelId: string
+	productVariantIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["ProductOptionInUseError"]: {
 		errorCode: ModelTypes["ErrorCode"],
@@ -11018,7 +11071,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["PromotionTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -11037,7 +11090,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdatePromotionInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	enabled?: boolean | undefined | null,
 	startsAt?: ModelTypes["DateTime"] | undefined | null,
 	endsAt?: ModelTypes["DateTime"] | undefined | null,
@@ -11050,12 +11103,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignPromotionsToChannelInput"]: {
-	promotionIds: Array<string>,
-	channelId: string
+	promotionIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["RemovePromotionsFromChannelInput"]: {
-	promotionIds: Array<string>,
-	channelId: string
+	promotionIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	/** Returned if a PromotionCondition has neither a couponCode nor any conditions set */
 ["MissingConditionsError"]: {
@@ -11065,7 +11118,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	["CreatePromotionResult"]:ModelTypes["Promotion"] | ModelTypes["MissingConditionsError"];
 	["UpdatePromotionResult"]:ModelTypes["Promotion"] | ModelTypes["MissingConditionsError"];
 	["ProvinceTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -11077,7 +11130,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateProvinceInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<ModelTypes["ProvinceTranslationInput"]> | undefined | null,
 	enabled?: boolean | undefined | null,
@@ -11111,14 +11164,14 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	code: string,
 	description: string,
 	permissions: Array<ModelTypes["Permission"]>,
-	channelIds?: Array<string> | undefined | null
+	channelIds?: Array<ModelTypes["ID"]> | undefined | null
 };
 	["UpdateRoleInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	description?: string | undefined | null,
 	permissions?: Array<ModelTypes["Permission"]> | undefined | null,
-	channelIds?: Array<string> | undefined | null
+	channelIds?: Array<ModelTypes["ID"]> | undefined | null
 };
 	["SellerList"]: {
 		items: Array<ModelTypes["Seller"]>,
@@ -11141,7 +11194,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateSellerInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
@@ -11158,7 +11211,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: ModelTypes["LogicalOperator"] | undefined | null
 };
 	["ShippingMethodTranslationInput"]: {
-	id?: string | undefined | null,
+	id?: ModelTypes["ID"] | undefined | null,
 	languageCode: ModelTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -11173,7 +11226,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateShippingMethodInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	code?: string | undefined | null,
 	fulfillmentHandler?: string | undefined | null,
 	checker?: ModelTypes["ConfigurableOperationInput"] | undefined | null,
@@ -11192,7 +11245,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	lines: Array<ModelTypes["TestShippingMethodOrderLineInput"]>
 };
 	["TestShippingMethodOrderLineInput"]: {
-	productVariantId: string,
+	productVariantId: ModelTypes["ID"],
 	quantity: number
 };
 	["TestShippingMethodResult"]: {
@@ -11205,18 +11258,18 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	metadata?: ModelTypes["JSON"] | undefined | null
 };
 	["AssignShippingMethodsToChannelInput"]: {
-	shippingMethodIds: Array<string>,
-	channelId: string
+	shippingMethodIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["RemoveShippingMethodsFromChannelInput"]: {
-	shippingMethodIds: Array<string>,
-	channelId: string
+	shippingMethodIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["StockLevel"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
-	stockLocationId: string,
+	stockLocationId: ModelTypes["ID"],
 	stockOnHand: number,
 	stockAllocated: number,
 	stockLocation: ModelTypes["StockLocation"]
@@ -11243,25 +11296,25 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateStockLocationInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["DeleteStockLocationInput"]: {
-	id: string,
-	transferToLocationId?: string | undefined | null
+	id: ModelTypes["ID"],
+	transferToLocationId?: ModelTypes["ID"] | undefined | null
 };
 	["AssignStockLocationsToChannelInput"]: {
-	stockLocationIds: Array<string>,
-	channelId: string
+	stockLocationIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["RemoveStockLocationsFromChannelInput"]: {
-	stockLocationIds: Array<string>,
-	channelId: string
+	stockLocationIds: Array<ModelTypes["ID"]>,
+	channelId: ModelTypes["ID"]
 };
 	["StockLocation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
@@ -11271,7 +11324,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	["StockMovementType"]:StockMovementType;
 	["StockMovement"]: ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"];
 	["StockAdjustment"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -11279,7 +11332,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	quantity: number
 };
 	["Allocation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -11288,7 +11341,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	orderLine: ModelTypes["OrderLine"]
 };
 	["Sale"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -11296,7 +11349,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	quantity: number
 };
 	["Cancellation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -11305,7 +11358,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	orderLine: ModelTypes["OrderLine"]
 };
 	["Return"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -11313,7 +11366,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	quantity: number
 };
 	["Release"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -11341,7 +11394,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	value: string
 };
 	["UpdateTagInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	value?: string | undefined | null
 };
 	["TaxCategoryList"]: {
@@ -11366,7 +11419,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateTaxCategoryInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	isDefault?: boolean | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
@@ -11387,19 +11440,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name: string,
 	enabled: boolean,
 	value: number,
-	categoryId: string,
-	zoneId: string,
-	customerGroupId?: string | undefined | null,
+	categoryId: ModelTypes["ID"],
+	zoneId: ModelTypes["ID"],
+	customerGroupId?: ModelTypes["ID"] | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateTaxRateInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	value?: number | undefined | null,
 	enabled?: boolean | undefined | null,
-	categoryId?: string | undefined | null,
-	zoneId?: string | undefined | null,
-	customerGroupId?: string | undefined | null,
+	categoryId?: ModelTypes["ID"] | undefined | null,
+	zoneId?: ModelTypes["ID"] | undefined | null,
+	customerGroupId?: ModelTypes["ID"] | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ZoneList"]: {
@@ -11420,16 +11473,16 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["CreateZoneInput"]: {
 	name: string,
-	memberIds?: Array<string> | undefined | null,
+	memberIds?: Array<ModelTypes["ID"]> | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["UpdateZoneInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["Address"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	fullName?: string | undefined | null,
@@ -11446,7 +11499,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["Asset"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
@@ -11471,18 +11524,18 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["AssetType"]:AssetType;
 	["CurrentUser"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	identifier: string,
 	channels: Array<ModelTypes["CurrentUserChannel"]>
 };
 	["CurrentUserChannel"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	token: string,
 	code: string,
 	permissions: Array<ModelTypes["Permission"]>
 };
 	["Channel"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	code: string,
@@ -11503,12 +11556,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["CollectionBreadcrumb"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	name: string,
 	slug: string
 };
 	["CollectionTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -11610,6 +11663,12 @@ current session. */
 		errorCode: ModelTypes["ErrorCode"],
 	message: string
 };
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: {
+		errorCode: ModelTypes["ErrorCode"],
+	message: string,
+	middlewareError: string
+};
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:any;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -11620,7 +11679,7 @@ current session. */
 ["Money"]:any;
 	["PaginatedList"]: ModelTypes["AdministratorList"] | ModelTypes["ChannelList"] | ModelTypes["CustomerGroupList"] | ModelTypes["JobList"] | ModelTypes["PaymentMethodList"] | ModelTypes["SellerList"] | ModelTypes["StockLocationList"] | ModelTypes["TaxCategoryList"] | ModelTypes["ZoneList"] | ModelTypes["AssetList"] | ModelTypes["CollectionList"] | ModelTypes["CustomerList"] | ModelTypes["FacetList"] | ModelTypes["FacetValueList"] | ModelTypes["HistoryEntryList"] | ModelTypes["OrderList"] | ModelTypes["ProductList"] | ModelTypes["ProductVariantList"] | ModelTypes["PromotionList"] | ModelTypes["CountryList"] | ModelTypes["ProvinceList"] | ModelTypes["RoleList"] | ModelTypes["ShippingMethodList"] | ModelTypes["TagList"] | ModelTypes["TaxRateList"];
 	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"];
-	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
+	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"] | ModelTypes["OrderMiddlewareError"];
 	["Adjustment"]: {
 		adjustmentSource: string,
 	type: ModelTypes["AdjustmentType"],
@@ -11732,7 +11791,7 @@ current session. */
 };
 	/** Operators for filtering on a list of ID fields */
 ["IDListOperators"]: {
-	inList: string
+	inList: ModelTypes["ID"]
 };
 	/** Operators for filtering on a list of Date fields */
 ["DateListOperators"]: {
@@ -11745,13 +11804,13 @@ by FacetValue ID. Examples:
 * ID=1 AND ID=2: `{ facetValueFilters: [{ and: 1 }, { and: 2 }] }`
 * ID=1 AND (ID=2 OR ID=3): `{ facetValueFilters: [{ and: 1 }, { or: [2,3] }] }` */
 ["FacetValueFilterInput"]: {
-	and?: string | undefined | null,
-	or?: Array<string> | undefined | null
+	and?: ModelTypes["ID"] | undefined | null,
+	or?: Array<ModelTypes["ID"]> | undefined | null
 };
 	["SearchInput"]: {
 	term?: string | undefined | null,
 	facetValueFilters?: Array<ModelTypes["FacetValueFilterInput"]> | undefined | null,
-	collectionId?: string | undefined | null,
+	collectionId?: ModelTypes["ID"] | undefined | null,
 	collectionSlug?: string | undefined | null,
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
@@ -11795,7 +11854,7 @@ The countryCode must correspond to a `code` property of a Country that has been 
 Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
 If an invalid code is passed, the mutation will fail. */
 ["UpdateAddressInput"]: {
-	id: string,
+	id: ModelTypes["ID"],
 	fullName?: string | undefined | null,
 	company?: string | undefined | null,
 	streetLine1?: string | undefined | null,
@@ -11814,7 +11873,7 @@ If an invalid code is passed, the mutation will fail. */
 		success: boolean
 };
 	["ShippingMethodQuote"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	price: ModelTypes["Money"],
 	priceWithTax: ModelTypes["Money"],
 	code: string,
@@ -11825,7 +11884,7 @@ If an invalid code is passed, the mutation will fail. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["PaymentMethodQuote"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	code: string,
 	name: string,
 	description: string,
@@ -11833,10 +11892,10 @@ If an invalid code is passed, the mutation will fail. */
 	eligibilityMessage?: string | undefined | null,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
-	["UpdateOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"];
-	["RemoveOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"];
+	["UpdateOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["OrderMiddlewareError"];
+	["RemoveOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderMiddlewareError"];
 	["SetOrderShippingMethodResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
-	["ApplyCouponCodeResult"]:ModelTypes["Order"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeLimitError"];
+	["ApplyCouponCodeResult"]:ModelTypes["Order"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderMiddlewareError"];
 	["CurrencyCode"]:CurrencyCode;
 	["CustomField"]: ModelTypes["StringCustomFieldConfig"] | ModelTypes["LocaleStringCustomFieldConfig"] | ModelTypes["IntCustomFieldConfig"] | ModelTypes["FloatCustomFieldConfig"] | ModelTypes["BooleanCustomFieldConfig"] | ModelTypes["DateTimeCustomFieldConfig"] | ModelTypes["RelationCustomFieldConfig"] | ModelTypes["TextCustomFieldConfig"] | ModelTypes["LocaleTextCustomFieldConfig"];
 	["StringCustomFieldConfig"]: {
@@ -11975,7 +12034,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 };
 	["CustomFieldConfig"]:ModelTypes["StringCustomFieldConfig"] | ModelTypes["LocaleStringCustomFieldConfig"] | ModelTypes["IntCustomFieldConfig"] | ModelTypes["FloatCustomFieldConfig"] | ModelTypes["BooleanCustomFieldConfig"] | ModelTypes["DateTimeCustomFieldConfig"] | ModelTypes["RelationCustomFieldConfig"] | ModelTypes["TextCustomFieldConfig"] | ModelTypes["LocaleTextCustomFieldConfig"];
 	["CustomerGroup"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
@@ -11987,26 +12046,26 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 	totalItems: number
 };
 	["FacetValue"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
 	facet: ModelTypes["Facet"],
-	facetId: string,
+	facetId: ModelTypes["ID"],
 	name: string,
 	code: string,
 	translations: Array<ModelTypes["FacetValueTranslation"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
 	name: string
 };
 	["FacetTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12081,7 +12140,7 @@ by taxRate. */
 	totalItems: number
 };
 	["ShippingLine"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	shippingMethod: ModelTypes["ShippingMethod"],
 	price: ModelTypes["Money"],
 	priceWithTax: ModelTypes["Money"],
@@ -12097,7 +12156,7 @@ by taxRate. */
 	amountWithTax: ModelTypes["Money"]
 };
 	["OrderLine"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	productVariant: ModelTypes["ProductVariant"],
@@ -12154,13 +12213,13 @@ and refund calculations. */
 };
 	["RefundLine"]: {
 		orderLine: ModelTypes["OrderLine"],
-	orderLineId: string,
+	orderLineId: ModelTypes["ID"],
 	quantity: number,
 	refund: ModelTypes["Refund"],
-	refundId: string
+	refundId: ModelTypes["ID"]
 };
 	["Refund"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	items: ModelTypes["Money"],
@@ -12172,18 +12231,18 @@ and refund calculations. */
 	transactionId?: string | undefined | null,
 	reason?: string | undefined | null,
 	lines: Array<ModelTypes["RefundLine"]>,
-	paymentId: string,
+	paymentId: ModelTypes["ID"],
 	metadata?: ModelTypes["JSON"] | undefined | null
 };
 	["FulfillmentLine"]: {
 		orderLine: ModelTypes["OrderLine"],
-	orderLineId: string,
+	orderLineId: ModelTypes["ID"],
 	quantity: number,
 	fulfillment: ModelTypes["Fulfillment"],
-	fulfillmentId: string
+	fulfillmentId: ModelTypes["ID"]
 };
 	["Surcharge"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	description: string,
@@ -12194,7 +12253,7 @@ and refund calculations. */
 	taxRate: number
 };
 	["PaymentMethod"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
@@ -12207,7 +12266,7 @@ and refund calculations. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["PaymentMethodTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12215,7 +12274,7 @@ and refund calculations. */
 	description: string
 };
 	["ProductOptionGroup"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12226,26 +12285,26 @@ and refund calculations. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ProductOptionGroupTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
 	name: string
 };
 	["ProductOption"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
 	code: string,
 	name: string,
-	groupId: string,
+	groupId: ModelTypes["ID"],
 	group: ModelTypes["ProductOptionGroup"],
 	translations: Array<ModelTypes["ProductOptionTranslation"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ProductOptionTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12273,7 +12332,7 @@ by the search, and in what quantity. */
 	count: number
 };
 	["SearchResultAsset"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	preview: string,
 	focalPoint?: ModelTypes["Coordinate"] | undefined | null
 };
@@ -12289,7 +12348,7 @@ by the search, and in what quantity. */
 	max: ModelTypes["Money"]
 };
 	["ProductTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12306,14 +12365,14 @@ by the search, and in what quantity. */
 	totalItems: number
 };
 	["ProductVariantTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
 	name: string
 };
 	["Promotion"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	startsAt?: ModelTypes["DateTime"] | undefined | null,
@@ -12330,7 +12389,7 @@ by the search, and in what quantity. */
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["PromotionTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12343,7 +12402,7 @@ by the search, and in what quantity. */
 };
 	["Region"]: ModelTypes["Country"] | ModelTypes["Province"];
 	["RegionTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12354,7 +12413,7 @@ by the search, and in what quantity. */
 The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" etc. This code is used in certain inputs such as
 `UpdateAddressInput` and `CreateAddressInput` to specify the country. */
 ["Country"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12363,7 +12422,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name: string,
 	enabled: boolean,
 	parent?: ModelTypes["Region"] | undefined | null,
-	parentId?: string | undefined | null,
+	parentId?: ModelTypes["ID"] | undefined | null,
 	translations: Array<ModelTypes["RegionTranslation"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
@@ -12372,7 +12431,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalItems: number
 };
 	["Province"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12381,7 +12440,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name: string,
 	enabled: boolean,
 	parent?: ModelTypes["Region"] | undefined | null,
-	parentId?: string | undefined | null,
+	parentId?: ModelTypes["ID"] | undefined | null,
 	translations: Array<ModelTypes["RegionTranslation"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
@@ -12390,7 +12449,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalItems: number
 };
 	["Role"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	code: string,
@@ -12403,14 +12462,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalItems: number
 };
 	["Seller"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ShippingMethod"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12424,7 +12483,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["ShippingMethodTranslation"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	languageCode: ModelTypes["LanguageCode"],
@@ -12436,7 +12495,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalItems: number
 };
 	["Tag"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	value: string
@@ -12446,7 +12505,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalItems: number
 };
 	["TaxCategory"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
@@ -12454,7 +12513,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["TaxRate"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
@@ -12470,7 +12529,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	totalItems: number
 };
 	["User"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	identifier: string,
@@ -12481,18 +12540,22 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
 	["AuthenticationMethod"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	strategy: string
 };
 	["Zone"]: {
-		id: string,
+		id: ModelTypes["ID"],
 	createdAt: ModelTypes["DateTime"],
 	updatedAt: ModelTypes["DateTime"],
 	name: string,
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
+};
+	["AdditionalOrderState"]: {
+		state: string,
+	selectedByDefault: boolean
 };
 	["ChartDataType"]: {
 		type: ModelTypes["ChartMetricType"],
@@ -13035,7 +13098,8 @@ which allows custom fields to be defined on user-supplies entities. */
 	["schema"]: {
 	query?: ModelTypes["Query"] | undefined | null,
 	mutation?: ModelTypes["Mutation"] | undefined | null
-}
+};
+	["ID"]:any
     }
 
 export type GraphQLTypes = {
@@ -13122,6 +13186,7 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined | null,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined | null,
+	additionalOrderStates: Array<GraphQLTypes["AdditionalOrderState"]>,
 	chartMetric: GraphQLTypes["ChartMetrics"],
 	orderSummaryMetric: GraphQLTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
@@ -13290,6 +13355,8 @@ Payment. */
 	setDraftOrderCustomFields: GraphQLTypes["Order"],
 	/** Applies the given coupon code to the draft Order */
 	applyCouponCodeToDraftOrder: GraphQLTypes["ApplyCouponCodeResult"],
+	/** Toggle exclusion of given promotion from the draft Order */
+	toggleExcludePromotionInOrder?: GraphQLTypes["Order"] | undefined | null,
 	/** Removes the given coupon code from the draft Order */
 	removeCouponCodeFromDraftOrder?: GraphQLTypes["Order"] | undefined | null,
 	/** Sets the shipping method by id, which can be obtained with the `eligibleShippingMethodsForDraftOrder` query */
@@ -13453,16 +13520,16 @@ as well as removing any of the group's options from the Product's ProductVariant
 	lastName: string,
 	emailAddress: string,
 	password: string,
-	roleIds: Array<string>,
+	roleIds: Array<GraphQLTypes["ID"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateAdministratorInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	firstName?: string | undefined | null,
 	lastName?: string | undefined | null,
 	emailAddress?: string | undefined | null,
 	password?: string | undefined | null,
-	roleIds?: Array<string> | undefined | null,
+	roleIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateActiveAdministratorInput"]: {
@@ -13474,7 +13541,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["Administrator"]: {
 	__typename: "Administrator",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	firstName: string,
@@ -13524,25 +13591,25 @@ as well as removing any of the group's options from the Product's ProductVariant
 	y: number
 };
 	["DeleteAssetInput"]: {
-		assetId: string,
+		assetId: GraphQLTypes["ID"],
 	force?: boolean | undefined | null,
 	deleteFromAllChannels?: boolean | undefined | null
 };
 	["DeleteAssetsInput"]: {
-		assetIds: Array<string>,
+		assetIds: Array<GraphQLTypes["ID"]>,
 	force?: boolean | undefined | null,
 	deleteFromAllChannels?: boolean | undefined | null
 };
 	["UpdateAssetInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	focalPoint?: GraphQLTypes["CoordinateInput"] | undefined | null,
 	tags?: Array<string> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignAssetsToChannelInput"]: {
-		assetIds: Array<string>,
-	channelId: string
+		assetIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["AuthenticationInput"]: {
 		native?: GraphQLTypes["NativeAuthInput"] | undefined | null
@@ -13585,13 +13652,13 @@ as well as removing any of the group's options from the Product's ProductVariant
 	availableCurrencyCodes?: Array<GraphQLTypes["CurrencyCode"]> | undefined | null,
 	trackInventory?: boolean | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
-	defaultTaxZoneId: string,
-	defaultShippingZoneId: string,
-	sellerId?: string | undefined | null,
+	defaultTaxZoneId: GraphQLTypes["ID"],
+	defaultShippingZoneId: GraphQLTypes["ID"],
+	sellerId?: GraphQLTypes["ID"] | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateChannelInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	token?: string | undefined | null,
 	defaultLanguageCode?: GraphQLTypes["LanguageCode"] | undefined | null,
@@ -13601,9 +13668,9 @@ as well as removing any of the group's options from the Product's ProductVariant
 	availableCurrencyCodes?: Array<GraphQLTypes["CurrencyCode"]> | undefined | null,
 	trackInventory?: boolean | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
-	defaultTaxZoneId?: string | undefined | null,
-	defaultShippingZoneId?: string | undefined | null,
-	sellerId?: string | undefined | null,
+	defaultTaxZoneId?: GraphQLTypes["ID"] | undefined | null,
+	defaultShippingZoneId?: GraphQLTypes["ID"] | undefined | null,
+	sellerId?: GraphQLTypes["ID"] | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	/** Returned if attempting to set a Channel's defaultLanguageCode to a language which is not enabled in GlobalSettings */
@@ -13627,7 +13694,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	__typename: "Collection",
 	isPrivate: boolean,
 	inheritFilters: boolean,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode?: GraphQLTypes["LanguageCode"] | undefined | null,
@@ -13639,7 +13706,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	featuredAsset?: GraphQLTypes["Asset"] | undefined | null,
 	assets: Array<GraphQLTypes["Asset"]>,
 	parent?: GraphQLTypes["Collection"] | undefined | null,
-	parentId: string,
+	parentId: GraphQLTypes["ID"],
 	children?: Array<GraphQLTypes["Collection"]> | undefined | null,
 	filters: Array<GraphQLTypes["ConfigurableOperation"]>,
 	translations: Array<GraphQLTypes["CollectionTranslation"]>,
@@ -13660,8 +13727,8 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["MoveCollectionInput"]: {
-		collectionId: string,
-	parentId: string,
+		collectionId: GraphQLTypes["ID"],
+	parentId: GraphQLTypes["ID"],
 	index: number
 };
 	["CreateCollectionTranslationInput"]: {
@@ -13672,7 +13739,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
@@ -13681,40 +13748,40 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["CreateCollectionInput"]: {
 		isPrivate?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	parentId?: string | undefined | null,
+	featuredAssetId?: GraphQLTypes["ID"] | undefined | null,
+	assetIds?: Array<GraphQLTypes["ID"]> | undefined | null,
+	parentId?: GraphQLTypes["ID"] | undefined | null,
 	inheritFilters?: boolean | undefined | null,
 	filters: Array<GraphQLTypes["ConfigurableOperationInput"]>,
 	translations: Array<GraphQLTypes["CreateCollectionTranslationInput"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["PreviewCollectionVariantsInput"]: {
-		parentId?: string | undefined | null,
+		parentId?: GraphQLTypes["ID"] | undefined | null,
 	inheritFilters: boolean,
 	filters: Array<GraphQLTypes["ConfigurableOperationInput"]>
 };
 	["UpdateCollectionInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	isPrivate?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	parentId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	featuredAssetId?: GraphQLTypes["ID"] | undefined | null,
+	parentId?: GraphQLTypes["ID"] | undefined | null,
+	assetIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	inheritFilters?: boolean | undefined | null,
 	filters?: Array<GraphQLTypes["ConfigurableOperationInput"]> | undefined | null,
 	translations?: Array<GraphQLTypes["UpdateCollectionTranslationInput"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignCollectionsToChannelInput"]: {
-		collectionIds: Array<string>,
-	channelId: string
+		collectionIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["RemoveCollectionsFromChannelInput"]: {
-		collectionIds: Array<string>,
-	channelId: string
+		collectionIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["CountryTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -13726,7 +13793,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateCountryInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["CountryTranslationInput"]> | undefined | null,
 	enabled?: boolean | undefined | null,
@@ -13748,7 +13815,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	__typename: "Customer",
 	groups: Array<GraphQLTypes["CustomerGroup"]>,
 	history: GraphQLTypes["HistoryEntryList"],
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	title?: string | undefined | null,
@@ -13780,16 +13847,16 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["CreateCustomerGroupInput"]: {
 		name: string,
-	customerIds?: Array<string> | undefined | null,
+	customerIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateCustomerGroupInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateCustomerInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	title?: string | undefined | null,
 	firstName?: string | undefined | null,
 	lastName?: string | undefined | null,
@@ -13823,12 +13890,12 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["AddNoteToCustomerInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	note: string,
 	isPublic: boolean
 };
 	["UpdateCustomerNoteInput"]: {
-		noteId: string,
+		noteId: GraphQLTypes["ID"],
 	note: string
 };
 	["CreateCustomerResult"]:{
@@ -13851,7 +13918,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["DuplicateEntitySuccess"]: {
 	__typename: "DuplicateEntitySuccess",
-	newEntityId: string
+	newEntityId: GraphQLTypes["ID"]
 };
 	["DuplicateEntityError"]: {
 	__typename: "DuplicateEntityError",
@@ -13866,13 +13933,13 @@ as well as removing any of the group's options from the Product's ProductVariant
 };
 	["DuplicateEntityInput"]: {
 		entityName: string,
-	entityId: string,
+	entityId: GraphQLTypes["ID"],
 	duplicatorInput: GraphQLTypes["ConfigurableOperationInput"]
 };
 	["Facet"]: {
 	__typename: "Facet",
 	isPrivate: boolean,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -13897,7 +13964,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["FacetTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -13910,14 +13977,14 @@ as well as removing any of the group's options from the Product's ProductVariant
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateFacetInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	isPrivate?: boolean | undefined | null,
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["FacetTranslationInput"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["FacetValueTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -13927,24 +13994,24 @@ as well as removing any of the group's options from the Product's ProductVariant
 	translations: Array<GraphQLTypes["FacetValueTranslationInput"]>
 };
 	["CreateFacetValueInput"]: {
-		facetId: string,
+		facetId: GraphQLTypes["ID"],
 	code: string,
 	translations: Array<GraphQLTypes["FacetValueTranslationInput"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateFacetValueInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["FacetValueTranslationInput"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignFacetsToChannelInput"]: {
-		facetIds: Array<string>,
-	channelId: string
+		facetIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["RemoveFacetsFromChannelInput"]: {
-		facetIds: Array<string>,
-	channelId: string,
+		facetIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"],
 	force?: boolean | undefined | null
 };
 	["FacetInUseError"]: {
@@ -13982,7 +14049,7 @@ of the GlobalSettings */
 };
 	["GlobalSettings"]: {
 	__typename: "GlobalSettings",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	availableLanguages: Array<GraphQLTypes["LanguageCode"]>,
@@ -14017,7 +14084,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	__typename: "HistoryEntry",
 	isPublic: boolean,
 	administrator?: GraphQLTypes["Administrator"] | undefined | null,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	type: GraphQLTypes["HistoryEntryType"],
@@ -14058,7 +14125,7 @@ The state of a Job in the JobQueue
 };
 	["Job"]: {
 	__typename: "Job",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	startedAt?: GraphQLTypes["DateTime"] | undefined | null,
 	settledAt?: GraphQLTypes["DateTime"] | undefined | null,
@@ -14084,9 +14151,9 @@ The state of a Job in the JobQueue
 	modifications: Array<GraphQLTypes["OrderModification"]>,
 	sellerOrders?: Array<GraphQLTypes["Order"]> | undefined | null,
 	aggregateOrder?: GraphQLTypes["Order"] | undefined | null,
-	aggregateOrderId?: string | undefined | null,
+	aggregateOrderId?: GraphQLTypes["ID"] | undefined | null,
 	channels: Array<GraphQLTypes["Channel"]>,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	type: GraphQLTypes["OrderType"],
@@ -14110,6 +14177,8 @@ methods. */
 	discounts: Array<GraphQLTypes["Discount"]>,
 	/** An array of all coupon codes applied to the Order */
 	couponCodes: Array<string>,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?: Array<string> | undefined | null,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions: Array<GraphQLTypes["Promotion"]>,
 	payments?: Array<GraphQLTypes["Payment"]> | undefined | null,
@@ -14138,7 +14207,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	["Fulfillment"]: {
 	__typename: "Fulfillment",
 	nextStates: Array<string>,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	lines: Array<GraphQLTypes["FulfillmentLine"]>,
@@ -14151,7 +14220,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	["Payment"]: {
 	__typename: "Payment",
 	nextStates: Array<string>,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	method: string,
@@ -14165,14 +14234,14 @@ sum of `OrderLine.discountedLinePrice` values. */
 	["OrderModificationLine"]: {
 	__typename: "OrderModificationLine",
 	orderLine: GraphQLTypes["OrderLine"],
-	orderLineId: string,
+	orderLineId: GraphQLTypes["ID"],
 	quantity: number,
 	modification: GraphQLTypes["OrderModification"],
-	modificationId: string
+	modificationId: GraphQLTypes["ID"]
 };
 	["OrderModification"]: {
 	__typename: "OrderModification",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	priceChange: GraphQLTypes["Money"],
@@ -14237,12 +14306,12 @@ sum of `OrderLine.discountedLinePrice` values. */
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["SetOrderCustomerInput"]: {
-		orderId: string,
-	customerId: string,
+		orderId: GraphQLTypes["ID"],
+	customerId: GraphQLTypes["ID"],
 	note?: string | undefined | null
 };
 	["UpdateOrderInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["FulfillOrderInput"]: {
@@ -14251,7 +14320,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 };
 	["CancelOrderInput"]: {
 		/** The id of the order to be cancelled */
-	orderId: string,
+	orderId: GraphQLTypes["ID"],
 	/** Optionally specify which OrderLines to cancel. If not provided, all OrderLines will be cancelled */
 	lines?: Array<GraphQLTypes["OrderLineInput"]> | undefined | null,
 	/** Specify whether the shipping charges should also be cancelled. Defaults to false */
@@ -14267,24 +14336,24 @@ amount automatically. This was added in v2.2 and will be the preferred way to sp
 amount in the future. The `lines`, `shipping` and `adjustment` fields will likely be removed in a future
 version. */
 	amount?: GraphQLTypes["Money"] | undefined | null,
-	paymentId: string,
+	paymentId: GraphQLTypes["ID"],
 	reason?: string | undefined | null
 };
 	["OrderLineInput"]: {
-		orderLineId: string,
+		orderLineId: GraphQLTypes["ID"],
 	quantity: number
 };
 	["SettleRefundInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	transactionId: string
 };
 	["AddNoteToOrderInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	note: string,
 	isPublic: boolean
 };
 	["UpdateOrderNoteInput"]: {
-		noteId: string,
+		noteId: GraphQLTypes["ID"],
 	note?: string | undefined | null,
 	isPublic?: boolean | undefined | null
 };
@@ -14293,7 +14362,7 @@ version. */
 	metadata?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AdministratorRefundInput"]: {
-		paymentId: string,
+		paymentId: GraphQLTypes["ID"],
 	reason?: string | undefined | null,
 	/** The amount to be refunded to this particular Payment. This was introduced in
 v2.2.0 as the preferred way to specify the refund amount. The `lines`, `shipping` and `adjustment`
@@ -14317,7 +14386,7 @@ fields will be removed in a future version. */
 };
 	["ModifyOrderInput"]: {
 		dryRun: boolean,
-	orderId: string,
+	orderId: GraphQLTypes["ID"],
 	addItems?: Array<GraphQLTypes["AddItemInput"]> | undefined | null,
 	adjustOrderLines?: Array<GraphQLTypes["OrderLineInput"]> | undefined | null,
 	surcharges?: Array<GraphQLTypes["SurchargeInput"]> | undefined | null,
@@ -14331,10 +14400,10 @@ applied in the case that multiple payment methods have been used on the order. *
 	options?: GraphQLTypes["ModifyOrderOptions"] | undefined | null,
 	couponCodes?: Array<string> | undefined | null,
 	/** Added in v2.2 */
-	shippingMethodIds?: Array<string> | undefined | null
+	shippingMethodIds?: Array<GraphQLTypes["ID"]> | undefined | null
 };
 	["AddItemInput"]: {
-		productVariantId: string,
+		productVariantId: GraphQLTypes["ID"],
 	quantity: number
 };
 	["SurchargeInput"]: {
@@ -14346,17 +14415,17 @@ applied in the case that multiple payment methods have been used on the order. *
 	taxDescription?: string | undefined | null
 };
 	["ManualPaymentInput"]: {
-		orderId: string,
+		orderId: GraphQLTypes["ID"],
 	method: string,
 	transactionId?: string | undefined | null,
 	metadata?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AddItemToDraftOrderInput"]: {
-		productVariantId: string,
+		productVariantId: GraphQLTypes["ID"],
 	quantity: number
 };
 	["AdjustDraftOrderLineInput"]: {
-		orderLineId: string,
+		orderLineId: GraphQLTypes["ID"],
 	quantity: number
 };
 	/** Returned if the Payment settlement fails */
@@ -14404,7 +14473,7 @@ stockOnHand of a ProductVariant to satisfy the requested quantity. */
 	__typename: "InsufficientStockOnHandError",
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string,
-	productVariantId: string,
+	productVariantId: GraphQLTypes["ID"],
 	productVariantName: string,
 	stockOnHand: number
 };
@@ -14445,7 +14514,7 @@ stockOnHand of a ProductVariant to satisfy the requested quantity. */
 	__typename: "AlreadyRefundedError",
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string,
-	refundId: string
+	refundId: GraphQLTypes["ID"]
 };
 	/** Returned if the specified quantity of an OrderLine is greater than the number of items in that line */
 ["QuantityTooGreatError"]: {
@@ -14628,7 +14697,7 @@ is not in the required state. */
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["PaymentMethodTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -14643,7 +14712,7 @@ is not in the required state. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdatePaymentMethodInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	enabled?: boolean | undefined | null,
 	checker?: GraphQLTypes["ConfigurableOperationInput"] | undefined | null,
@@ -14652,17 +14721,17 @@ is not in the required state. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignPaymentMethodsToChannelInput"]: {
-		paymentMethodIds: Array<string>,
-	channelId: string
+		paymentMethodIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["RemovePaymentMethodsFromChannelInput"]: {
-		paymentMethodIds: Array<string>,
-	channelId: string
+		paymentMethodIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["Product"]: {
 	__typename: "Product",
 	channels: Array<GraphQLTypes["Channel"]>,
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -14700,9 +14769,9 @@ is not in the required state. */
 	stockLevels: Array<GraphQLTypes["StockLevel"]>,
 	stockMovements: GraphQLTypes["StockMovementList"],
 	channels: Array<GraphQLTypes["Channel"]>,
-	id: string,
+	id: GraphQLTypes["ID"],
 	product: GraphQLTypes["Product"],
-	productId: string,
+	productId: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -14722,7 +14791,7 @@ is not in the required state. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["ProductOptionGroupTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -14734,13 +14803,13 @@ is not in the required state. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateProductOptionGroupInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["ProductOptionTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -14750,13 +14819,13 @@ is not in the required state. */
 	translations: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]>
 };
 	["CreateProductOptionInput"]: {
-		productOptionGroupId: string,
+		productOptionGroupId: GraphQLTypes["ID"],
 	code: string,
 	translations: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateProductOptionInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["ProductOptionGroupTranslationInput"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -14765,23 +14834,23 @@ is not in the required state. */
 	__typename: "SearchResult",
 	enabled: boolean,
 	/** An array of ids of the Channels in which this result appears */
-	channelIds: Array<string>,
+	channelIds: Array<GraphQLTypes["ID"]>,
 	sku: string,
 	slug: string,
-	productId: string,
+	productId: GraphQLTypes["ID"],
 	productName: string,
 	productAsset?: GraphQLTypes["SearchResultAsset"] | undefined | null,
-	productVariantId: string,
+	productVariantId: GraphQLTypes["ID"],
 	productVariantName: string,
 	productVariantAsset?: GraphQLTypes["SearchResultAsset"] | undefined | null,
 	price: GraphQLTypes["SearchResultPrice"],
 	priceWithTax: GraphQLTypes["SearchResultPrice"],
 	currencyCode: GraphQLTypes["CurrencyCode"],
 	description: string,
-	facetIds: Array<string>,
-	facetValueIds: Array<string>,
+	facetIds: Array<GraphQLTypes["ID"]>,
+	facetValueIds: Array<GraphQLTypes["ID"]>,
 	/** An array of ids of the Collections in which this result appears */
-	collectionIds: Array<string>,
+	collectionIds: Array<GraphQLTypes["ID"]>,
 	/** A relevance score for the result. Differs between database implementations */
 	score: number
 };
@@ -14851,7 +14920,7 @@ is not in the required state. */
 	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined | null
 };
 	["ProductTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
@@ -14859,35 +14928,35 @@ is not in the required state. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
-		featuredAssetId?: string | undefined | null,
+		featuredAssetId?: GraphQLTypes["ID"] | undefined | null,
 	enabled?: boolean | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
+	assetIds?: Array<GraphQLTypes["ID"]> | undefined | null,
+	facetValueIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	translations: Array<GraphQLTypes["ProductTranslationInput"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateProductInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	enabled?: boolean | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
+	featuredAssetId?: GraphQLTypes["ID"] | undefined | null,
+	assetIds?: Array<GraphQLTypes["ID"]> | undefined | null,
+	facetValueIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	translations?: Array<GraphQLTypes["ProductTranslationInput"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["ProductVariantTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["CreateProductVariantOptionInput"]: {
-		optionGroupId: string,
+		optionGroupId: GraphQLTypes["ID"],
 	code: string,
 	translations: Array<GraphQLTypes["ProductOptionTranslationInput"]>
 };
 	["StockLevelInput"]: {
-		stockLocationId: string,
+		stockLocationId: GraphQLTypes["ID"],
 	stockOnHand: number
 };
 	/** Used to set up update the price of a ProductVariant in a particular Channel.
@@ -14898,15 +14967,15 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	delete?: boolean | undefined | null
 };
 	["CreateProductVariantInput"]: {
-		productId: string,
+		productId: GraphQLTypes["ID"],
 	translations: Array<GraphQLTypes["ProductVariantTranslationInput"]>,
-	facetValueIds?: Array<string> | undefined | null,
+	facetValueIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	sku: string,
 	price?: GraphQLTypes["Money"] | undefined | null,
-	taxCategoryId?: string | undefined | null,
-	optionIds?: Array<string> | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	taxCategoryId?: GraphQLTypes["ID"] | undefined | null,
+	optionIds?: Array<GraphQLTypes["ID"]> | undefined | null,
+	featuredAssetId?: GraphQLTypes["ID"] | undefined | null,
+	assetIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	stockOnHand?: number | undefined | null,
 	stockLevels?: Array<GraphQLTypes["StockLevelInput"]> | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
@@ -14915,19 +14984,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateProductVariantInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	enabled?: boolean | undefined | null,
 	translations?: Array<GraphQLTypes["ProductVariantTranslationInput"]> | undefined | null,
-	facetValueIds?: Array<string> | undefined | null,
-	optionIds?: Array<string> | undefined | null,
+	facetValueIds?: Array<GraphQLTypes["ID"]> | undefined | null,
+	optionIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	sku?: string | undefined | null,
-	taxCategoryId?: string | undefined | null,
+	taxCategoryId?: GraphQLTypes["ID"] | undefined | null,
 	/** Sets the price for the ProductVariant in the Channel's default currency */
 	price?: GraphQLTypes["Money"] | undefined | null,
 	/** Allows multiple prices to be set for the ProductVariant in different currencies. */
 	prices?: Array<GraphQLTypes["ProductVariantPriceInput"]> | undefined | null,
-	featuredAssetId?: string | undefined | null,
-	assetIds?: Array<string> | undefined | null,
+	featuredAssetId?: GraphQLTypes["ID"] | undefined | null,
+	assetIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	stockOnHand?: number | undefined | null,
 	stockLevels?: Array<GraphQLTypes["StockLevelInput"]> | undefined | null,
 	outOfStockThreshold?: number | undefined | null,
@@ -14936,22 +15005,22 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignProductsToChannelInput"]: {
-		productIds: Array<string>,
-	channelId: string,
+		productIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"],
 	priceFactor?: number | undefined | null
 };
 	["RemoveProductsFromChannelInput"]: {
-		productIds: Array<string>,
-	channelId: string
+		productIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["AssignProductVariantsToChannelInput"]: {
-		productVariantIds: Array<string>,
-	channelId: string,
+		productVariantIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"],
 	priceFactor?: number | undefined | null
 };
 	["RemoveProductVariantsFromChannelInput"]: {
-		productVariantIds: Array<string>,
-	channelId: string
+		productVariantIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["ProductOptionInUseError"]: {
 	__typename: "ProductOptionInUseError",
@@ -14978,7 +15047,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["PromotionTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -14997,7 +15066,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdatePromotionInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	enabled?: boolean | undefined | null,
 	startsAt?: GraphQLTypes["DateTime"] | undefined | null,
 	endsAt?: GraphQLTypes["DateTime"] | undefined | null,
@@ -15010,12 +15079,12 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignPromotionsToChannelInput"]: {
-		promotionIds: Array<string>,
-	channelId: string
+		promotionIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["RemovePromotionsFromChannelInput"]: {
-		promotionIds: Array<string>,
-	channelId: string
+		promotionIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	/** Returned if a PromotionCondition has neither a couponCode nor any conditions set */
 ["MissingConditionsError"]: {
@@ -15034,7 +15103,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	['...on MissingConditionsError']: '__union' & GraphQLTypes["MissingConditionsError"];
 };
 	["ProvinceTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -15046,7 +15115,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateProvinceInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	translations?: Array<GraphQLTypes["ProvinceTranslationInput"]> | undefined | null,
 	enabled?: boolean | undefined | null,
@@ -15080,14 +15149,14 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		code: string,
 	description: string,
 	permissions: Array<GraphQLTypes["Permission"]>,
-	channelIds?: Array<string> | undefined | null
+	channelIds?: Array<GraphQLTypes["ID"]> | undefined | null
 };
 	["UpdateRoleInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	description?: string | undefined | null,
 	permissions?: Array<GraphQLTypes["Permission"]> | undefined | null,
-	channelIds?: Array<string> | undefined | null
+	channelIds?: Array<GraphQLTypes["ID"]> | undefined | null
 };
 	["SellerList"]: {
 	__typename: "SellerList",
@@ -15111,7 +15180,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateSellerInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
@@ -15128,7 +15197,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	filterOperator?: GraphQLTypes["LogicalOperator"] | undefined | null
 };
 	["ShippingMethodTranslationInput"]: {
-		id?: string | undefined | null,
+		id?: GraphQLTypes["ID"] | undefined | null,
 	languageCode: GraphQLTypes["LanguageCode"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
@@ -15143,7 +15212,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateShippingMethodInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	code?: string | undefined | null,
 	fulfillmentHandler?: string | undefined | null,
 	checker?: GraphQLTypes["ConfigurableOperationInput"] | undefined | null,
@@ -15162,7 +15231,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	lines: Array<GraphQLTypes["TestShippingMethodOrderLineInput"]>
 };
 	["TestShippingMethodOrderLineInput"]: {
-		productVariantId: string,
+		productVariantId: GraphQLTypes["ID"],
 	quantity: number
 };
 	["TestShippingMethodResult"]: {
@@ -15177,19 +15246,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	metadata?: GraphQLTypes["JSON"] | undefined | null
 };
 	["AssignShippingMethodsToChannelInput"]: {
-		shippingMethodIds: Array<string>,
-	channelId: string
+		shippingMethodIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["RemoveShippingMethodsFromChannelInput"]: {
-		shippingMethodIds: Array<string>,
-	channelId: string
+		shippingMethodIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["StockLevel"]: {
 	__typename: "StockLevel",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
-	stockLocationId: string,
+	stockLocationId: GraphQLTypes["ID"],
 	stockOnHand: number,
 	stockAllocated: number,
 	stockLocation: GraphQLTypes["StockLocation"]
@@ -15217,26 +15286,26 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateStockLocationInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	description?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["DeleteStockLocationInput"]: {
-		id: string,
-	transferToLocationId?: string | undefined | null
+		id: GraphQLTypes["ID"],
+	transferToLocationId?: GraphQLTypes["ID"] | undefined | null
 };
 	["AssignStockLocationsToChannelInput"]: {
-		stockLocationIds: Array<string>,
-	channelId: string
+		stockLocationIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["RemoveStockLocationsFromChannelInput"]: {
-		stockLocationIds: Array<string>,
-	channelId: string
+		stockLocationIds: Array<GraphQLTypes["ID"]>,
+	channelId: GraphQLTypes["ID"]
 };
 	["StockLocation"]: {
 	__typename: "StockLocation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -15246,7 +15315,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	["StockMovementType"]: StockMovementType;
 	["StockMovement"]: {
 	__typename:"StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15261,7 +15330,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["StockAdjustment"]: {
 	__typename: "StockAdjustment",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15270,7 +15339,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["Allocation"]: {
 	__typename: "Allocation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15280,7 +15349,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["Sale"]: {
 	__typename: "Sale",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15289,7 +15358,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["Cancellation"]: {
 	__typename: "Cancellation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15299,7 +15368,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["Return"]: {
 	__typename: "Return",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15308,7 +15377,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["Release"]: {
 	__typename: "Release",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -15345,7 +15414,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		value: string
 };
 	["UpdateTagInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	value?: string | undefined | null
 };
 	["TaxCategoryList"]: {
@@ -15371,7 +15440,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateTaxCategoryInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	isDefault?: boolean | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
@@ -15392,19 +15461,19 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 		name: string,
 	enabled: boolean,
 	value: number,
-	categoryId: string,
-	zoneId: string,
-	customerGroupId?: string | undefined | null,
+	categoryId: GraphQLTypes["ID"],
+	zoneId: GraphQLTypes["ID"],
+	customerGroupId?: GraphQLTypes["ID"] | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateTaxRateInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	value?: number | undefined | null,
 	enabled?: boolean | undefined | null,
-	categoryId?: string | undefined | null,
-	zoneId?: string | undefined | null,
-	customerGroupId?: string | undefined | null,
+	categoryId?: GraphQLTypes["ID"] | undefined | null,
+	zoneId?: GraphQLTypes["ID"] | undefined | null,
+	customerGroupId?: GraphQLTypes["ID"] | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["ZoneList"]: {
@@ -15426,17 +15495,17 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["CreateZoneInput"]: {
 		name: string,
-	memberIds?: Array<string> | undefined | null,
+	memberIds?: Array<GraphQLTypes["ID"]> | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateZoneInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	name?: string | undefined | null,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["Address"]: {
 	__typename: "Address",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	fullName?: string | undefined | null,
@@ -15454,7 +15523,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["Asset"]: {
 	__typename: "Asset",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -15482,20 +15551,20 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	["AssetType"]: AssetType;
 	["CurrentUser"]: {
 	__typename: "CurrentUser",
-	id: string,
+	id: GraphQLTypes["ID"],
 	identifier: string,
 	channels: Array<GraphQLTypes["CurrentUserChannel"]>
 };
 	["CurrentUserChannel"]: {
 	__typename: "CurrentUserChannel",
-	id: string,
+	id: GraphQLTypes["ID"],
 	token: string,
 	code: string,
 	permissions: Array<GraphQLTypes["Permission"]>
 };
 	["Channel"]: {
 	__typename: "Channel",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	code: string,
@@ -15517,13 +15586,13 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 };
 	["CollectionBreadcrumb"]: {
 	__typename: "CollectionBreadcrumb",
-	id: string,
+	id: GraphQLTypes["ID"],
 	name: string,
 	slug: string
 };
 	["CollectionTranslation"]: {
 	__typename: "CollectionTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -15670,6 +15739,13 @@ current session. */
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string
 };
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: {
+	__typename: "OrderMiddlewareError",
+	errorCode: GraphQLTypes["ErrorCode"],
+	message: string,
+	middlewareError: string
+};
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]: "scalar" & { name: "JSON" };
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -15710,7 +15786,7 @@ current session. */
 };
 	["Node"]: {
 	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone",
-	id: string
+	id: GraphQLTypes["ID"]
 	['...on Administrator']: '__union' & GraphQLTypes["Administrator"];
 	['...on Collection']: '__union' & GraphQLTypes["Collection"];
 	['...on Customer']: '__union' & GraphQLTypes["Customer"];
@@ -15757,7 +15833,7 @@ current session. */
 	['...on Zone']: '__union' & GraphQLTypes["Zone"];
 };
 	["ErrorResult"]: {
-	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError",
+	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError" | "OrderMiddlewareError",
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string
 	['...on MimeTypeError']: '__union' & GraphQLTypes["MimeTypeError"];
@@ -15804,6 +15880,7 @@ current session. */
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
 	['...on IneligibleShippingMethodError']: '__union' & GraphQLTypes["IneligibleShippingMethodError"];
 	['...on NoActiveOrderError']: '__union' & GraphQLTypes["NoActiveOrderError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["Adjustment"]: {
 	__typename: "Adjustment",
@@ -15923,7 +16000,7 @@ current session. */
 };
 	/** Operators for filtering on a list of ID fields */
 ["IDListOperators"]: {
-		inList: string
+		inList: GraphQLTypes["ID"]
 };
 	/** Operators for filtering on a list of Date fields */
 ["DateListOperators"]: {
@@ -15936,13 +16013,13 @@ by FacetValue ID. Examples:
 * ID=1 AND ID=2: `{ facetValueFilters: [{ and: 1 }, { and: 2 }] }`
 * ID=1 AND (ID=2 OR ID=3): `{ facetValueFilters: [{ and: 1 }, { or: [2,3] }] }` */
 ["FacetValueFilterInput"]: {
-		and?: string | undefined | null,
-	or?: Array<string> | undefined | null
+		and?: GraphQLTypes["ID"] | undefined | null,
+	or?: Array<GraphQLTypes["ID"]> | undefined | null
 };
 	["SearchInput"]: {
 		term?: string | undefined | null,
 	facetValueFilters?: Array<GraphQLTypes["FacetValueFilterInput"]> | undefined | null,
-	collectionId?: string | undefined | null,
+	collectionId?: GraphQLTypes["ID"] | undefined | null,
 	collectionSlug?: string | undefined | null,
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
@@ -15986,7 +16063,7 @@ The countryCode must correspond to a `code` property of a Country that has been 
 Deenruv server. The `code` property is typically a 2-character ISO code such as "GB", "US", "DE" etc.
 If an invalid code is passed, the mutation will fail. */
 ["UpdateAddressInput"]: {
-		id: string,
+		id: GraphQLTypes["ID"],
 	fullName?: string | undefined | null,
 	company?: string | undefined | null,
 	streetLine1?: string | undefined | null,
@@ -16007,7 +16084,7 @@ If an invalid code is passed, the mutation will fail. */
 };
 	["ShippingMethodQuote"]: {
 	__typename: "ShippingMethodQuote",
-	id: string,
+	id: GraphQLTypes["ID"],
 	price: GraphQLTypes["Money"],
 	priceWithTax: GraphQLTypes["Money"],
 	code: string,
@@ -16019,7 +16096,7 @@ If an invalid code is passed, the mutation will fail. */
 };
 	["PaymentMethodQuote"]: {
 	__typename: "PaymentMethodQuote",
-	id: string,
+	id: GraphQLTypes["ID"],
 	code: string,
 	name: string,
 	description: string,
@@ -16028,17 +16105,19 @@ If an invalid code is passed, the mutation will fail. */
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["UpdateOrderItemsResult"]:{
-        	__typename:"Order" | "OrderModificationError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError"
+        	__typename:"Order" | "OrderModificationError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
 	['...on OrderLimitError']: '__union' & GraphQLTypes["OrderLimitError"];
 	['...on NegativeQuantityError']: '__union' & GraphQLTypes["NegativeQuantityError"];
 	['...on InsufficientStockError']: '__union' & GraphQLTypes["InsufficientStockError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["RemoveOrderItemsResult"]:{
-        	__typename:"Order" | "OrderModificationError"
+        	__typename:"Order" | "OrderModificationError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["SetOrderShippingMethodResult"]:{
         	__typename:"Order" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError"
@@ -16048,11 +16127,12 @@ If an invalid code is passed, the mutation will fail. */
 	['...on NoActiveOrderError']: '__union' & GraphQLTypes["NoActiveOrderError"];
 };
 	["ApplyCouponCodeResult"]:{
-        	__typename:"Order" | "CouponCodeExpiredError" | "CouponCodeInvalidError" | "CouponCodeLimitError"
+        	__typename:"Order" | "CouponCodeExpiredError" | "CouponCodeInvalidError" | "CouponCodeLimitError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on CouponCodeExpiredError']: '__union' & GraphQLTypes["CouponCodeExpiredError"];
 	['...on CouponCodeInvalidError']: '__union' & GraphQLTypes["CouponCodeInvalidError"];
 	['...on CouponCodeLimitError']: '__union' & GraphQLTypes["CouponCodeLimitError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	/** @description
 ISO 4217 currency code
@@ -16240,7 +16320,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 };
 	["CustomerGroup"]: {
 	__typename: "CustomerGroup",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -16254,12 +16334,12 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 };
 	["FacetValue"]: {
 	__typename: "FacetValue",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
 	facet: GraphQLTypes["Facet"],
-	facetId: string,
+	facetId: GraphQLTypes["ID"],
 	name: string,
 	code: string,
 	translations: Array<GraphQLTypes["FacetValueTranslation"]>,
@@ -16267,7 +16347,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 };
 	["FacetValueTranslation"]: {
 	__typename: "FacetValueTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16275,7 +16355,7 @@ See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-loc
 };
 	["FacetTranslation"]: {
 	__typename: "FacetTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16364,7 +16444,7 @@ by taxRate. */
 };
 	["ShippingLine"]: {
 	__typename: "ShippingLine",
-	id: string,
+	id: GraphQLTypes["ID"],
 	shippingMethod: GraphQLTypes["ShippingMethod"],
 	price: GraphQLTypes["Money"],
 	priceWithTax: GraphQLTypes["Money"],
@@ -16382,7 +16462,7 @@ by taxRate. */
 };
 	["OrderLine"]: {
 	__typename: "OrderLine",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	productVariant: GraphQLTypes["ProductVariant"],
@@ -16440,14 +16520,14 @@ and refund calculations. */
 	["RefundLine"]: {
 	__typename: "RefundLine",
 	orderLine: GraphQLTypes["OrderLine"],
-	orderLineId: string,
+	orderLineId: GraphQLTypes["ID"],
 	quantity: number,
 	refund: GraphQLTypes["Refund"],
-	refundId: string
+	refundId: GraphQLTypes["ID"]
 };
 	["Refund"]: {
 	__typename: "Refund",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	items: GraphQLTypes["Money"],
@@ -16459,20 +16539,20 @@ and refund calculations. */
 	transactionId?: string | undefined | null,
 	reason?: string | undefined | null,
 	lines: Array<GraphQLTypes["RefundLine"]>,
-	paymentId: string,
+	paymentId: GraphQLTypes["ID"],
 	metadata?: GraphQLTypes["JSON"] | undefined | null
 };
 	["FulfillmentLine"]: {
 	__typename: "FulfillmentLine",
 	orderLine: GraphQLTypes["OrderLine"],
-	orderLineId: string,
+	orderLineId: GraphQLTypes["ID"],
 	quantity: number,
 	fulfillment: GraphQLTypes["Fulfillment"],
-	fulfillmentId: string
+	fulfillmentId: GraphQLTypes["ID"]
 };
 	["Surcharge"]: {
 	__typename: "Surcharge",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	description: string,
@@ -16484,7 +16564,7 @@ and refund calculations. */
 };
 	["PaymentMethod"]: {
 	__typename: "PaymentMethod",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -16498,7 +16578,7 @@ and refund calculations. */
 };
 	["PaymentMethodTranslation"]: {
 	__typename: "PaymentMethodTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16507,7 +16587,7 @@ and refund calculations. */
 };
 	["ProductOptionGroup"]: {
 	__typename: "ProductOptionGroup",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16519,7 +16599,7 @@ and refund calculations. */
 };
 	["ProductOptionGroupTranslation"]: {
 	__typename: "ProductOptionGroupTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16527,20 +16607,20 @@ and refund calculations. */
 };
 	["ProductOption"]: {
 	__typename: "ProductOption",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
 	code: string,
 	name: string,
-	groupId: string,
+	groupId: GraphQLTypes["ID"],
 	group: GraphQLTypes["ProductOptionGroup"],
 	translations: Array<GraphQLTypes["ProductOptionTranslation"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
 	["ProductOptionTranslation"]: {
 	__typename: "ProductOptionTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16573,7 +16653,7 @@ by the search, and in what quantity. */
 };
 	["SearchResultAsset"]: {
 	__typename: "SearchResultAsset",
-	id: string,
+	id: GraphQLTypes["ID"],
 	preview: string,
 	focalPoint?: GraphQLTypes["Coordinate"] | undefined | null
 };
@@ -16596,7 +16676,7 @@ by the search, and in what quantity. */
 };
 	["ProductTranslation"]: {
 	__typename: "ProductTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16616,7 +16696,7 @@ by the search, and in what quantity. */
 };
 	["ProductVariantTranslation"]: {
 	__typename: "ProductVariantTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16624,7 +16704,7 @@ by the search, and in what quantity. */
 };
 	["Promotion"]: {
 	__typename: "Promotion",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	startsAt?: GraphQLTypes["DateTime"] | undefined | null,
@@ -16642,7 +16722,7 @@ by the search, and in what quantity. */
 };
 	["PromotionTranslation"]: {
 	__typename: "PromotionTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16656,7 +16736,7 @@ by the search, and in what quantity. */
 };
 	["Region"]: {
 	__typename:"Country" | "Province",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16665,14 +16745,14 @@ by the search, and in what quantity. */
 	name: string,
 	enabled: boolean,
 	parent?: GraphQLTypes["Region"] | undefined | null,
-	parentId?: string | undefined | null,
+	parentId?: GraphQLTypes["ID"] | undefined | null,
 	translations: Array<GraphQLTypes["RegionTranslation"]>
 	['...on Country']: '__union' & GraphQLTypes["Country"];
 	['...on Province']: '__union' & GraphQLTypes["Province"];
 };
 	["RegionTranslation"]: {
 	__typename: "RegionTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16684,7 +16764,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 `UpdateAddressInput` and `CreateAddressInput` to specify the country. */
 ["Country"]: {
 	__typename: "Country",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16693,7 +16773,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name: string,
 	enabled: boolean,
 	parent?: GraphQLTypes["Region"] | undefined | null,
-	parentId?: string | undefined | null,
+	parentId?: GraphQLTypes["ID"] | undefined | null,
 	translations: Array<GraphQLTypes["RegionTranslation"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
@@ -16704,7 +16784,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["Province"]: {
 	__typename: "Province",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16713,7 +16793,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name: string,
 	enabled: boolean,
 	parent?: GraphQLTypes["Region"] | undefined | null,
-	parentId?: string | undefined | null,
+	parentId?: GraphQLTypes["ID"] | undefined | null,
 	translations: Array<GraphQLTypes["RegionTranslation"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
@@ -16724,7 +16804,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["Role"]: {
 	__typename: "Role",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	code: string,
@@ -16739,7 +16819,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["Seller"]: {
 	__typename: "Seller",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -16747,7 +16827,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["ShippingMethod"]: {
 	__typename: "ShippingMethod",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16762,7 +16842,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["ShippingMethodTranslation"]: {
 	__typename: "ShippingMethodTranslation",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	languageCode: GraphQLTypes["LanguageCode"],
@@ -16776,7 +16856,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["Tag"]: {
 	__typename: "Tag",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	value: string
@@ -16788,7 +16868,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["TaxCategory"]: {
 	__typename: "TaxCategory",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -16797,7 +16877,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["TaxRate"]: {
 	__typename: "TaxRate",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
@@ -16815,7 +16895,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["User"]: {
 	__typename: "User",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	identifier: string,
@@ -16827,19 +16907,24 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["AuthenticationMethod"]: {
 	__typename: "AuthenticationMethod",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	strategy: string
 };
 	["Zone"]: {
 	__typename: "Zone",
-	id: string,
+	id: GraphQLTypes["ID"],
 	createdAt: GraphQLTypes["DateTime"],
 	updatedAt: GraphQLTypes["DateTime"],
 	name: string,
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
+};
+	["AdditionalOrderState"]: {
+	__typename: "AdditionalOrderState",
+	state: string,
+	selectedByDefault: boolean
 };
 	["ChartDataType"]: {
 	__typename: "ChartDataType",
@@ -17388,7 +17473,8 @@ which allows custom fields to be defined on user-supplies entities. */
 	__typename: "EntityCustomFields",
 	entityName: string,
 	customFields: Array<GraphQLTypes["CustomFieldConfig"]>
-}
+};
+	["ID"]: "scalar" & { name: "ID" }
     }
 /** @description
 The state of a Job in the JobQueue
@@ -17603,7 +17689,8 @@ export enum ErrorCode {
 	COUPON_CODE_LIMIT_ERROR = "COUPON_CODE_LIMIT_ERROR",
 	ORDER_MODIFICATION_ERROR = "ORDER_MODIFICATION_ERROR",
 	INELIGIBLE_SHIPPING_METHOD_ERROR = "INELIGIBLE_SHIPPING_METHOD_ERROR",
-	NO_ACTIVE_ORDER_ERROR = "NO_ACTIVE_ORDER_ERROR"
+	NO_ACTIVE_ORDER_ERROR = "NO_ACTIVE_ORDER_ERROR",
+	ORDER_MIDDLEWARE_ERROR = "ORDER_MIDDLEWARE_ERROR"
 }
 export enum LogicalOperator {
 	AND = "AND",
@@ -18245,4 +18332,5 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryFilterParameter"]: ValueTypes["HistoryEntryFilterParameter"];
 	["HistoryEntrySortParameter"]: ValueTypes["HistoryEntrySortParameter"];
 	["NativeAuthInput"]: ValueTypes["NativeAuthInput"];
+	["ID"]: ValueTypes["ID"];
 }

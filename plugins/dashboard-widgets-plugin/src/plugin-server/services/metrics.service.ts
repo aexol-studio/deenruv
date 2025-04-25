@@ -74,6 +74,11 @@ export class BetterMetricsService {
   ) {
     this.options = options;
   }
+
+  async additionalOrderStates(ctx: RequestContext) {
+    return this.options?.additionalOrderStates ?? [];
+  }
+
   async refreshViews(ctx: RequestContext) {
     await this.connection
       .getRepository(ctx, OrderSummaryViewEntity)
@@ -291,6 +296,7 @@ export class BetterMetricsService {
           endDate: endDate.toISOString(),
         });
       }
+      console.log(orderStates);
       if (!shoulBeFromDefaultView && orderStates.length) {
         viewQb.andWhere({ state: In(orderStates) });
       }

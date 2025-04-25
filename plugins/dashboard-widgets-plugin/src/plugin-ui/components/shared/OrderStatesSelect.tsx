@@ -14,19 +14,28 @@ import {
   useTranslation,
 } from "@deenruv/react-ui-devkit";
 import { Check, ChevronsUpDown } from "lucide-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 interface OrderStatesSelectProps {
+  additionalOrderStates?: string[];
   selectedOrderStates: string[];
   onSelectedOrderStatesChange: (value: string) => void;
 }
 
 export const OrderStatesSelect: React.FC<OrderStatesSelectProps> = ({
+  additionalOrderStates,
   onSelectedOrderStatesChange,
   selectedOrderStates,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const { t } = useTranslation("dashboard-widgets-plugin");
+  const allStates = useMemo(
+    () =>
+      [...Object.values(ORDER_STATE), ...(additionalOrderStates || [])]
+        .filter((i, index, arr) => arr.indexOf(i) === index)
+        .sort((a, b) => a.localeCompare(b)),
+    [additionalOrderStates],
+  );
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
       <PopoverTrigger asChild>
@@ -52,7 +61,7 @@ export const OrderStatesSelect: React.FC<OrderStatesSelectProps> = ({
           <CommandList>
             <CommandEmpty>{t("noOrderStatesFound")}</CommandEmpty>
             <CommandGroup>
-              {Object.values(ORDER_STATE).map((value) => (
+              {allStates.map((value) => (
                 <CommandItem
                   className="cursor-pointer"
                   key={value}

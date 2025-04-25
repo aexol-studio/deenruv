@@ -183,3 +183,7 @@ export const LatestOrdersQuery = typedGql("query", { scalars })({
     },
   ],
 });
+
+export const AdditionalOrderStatesQuery = typedGql("query", { scalars })({
+  additionalOrderStates: { state: true, selectedByDefault: true },
+});
