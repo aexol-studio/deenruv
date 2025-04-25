@@ -11,13 +11,24 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDate(date: Date | string | number, opts: FormatDateOptions = {}) {
     const browserLocale = typeof navigator !== 'undefined' ? navigator.language : 'en-US';
-    
-    return new Intl.DateTimeFormat(opts.locale ?? browserLocale, {
+    try {
+      const result = new Intl.DateTimeFormat(opts.locale ?? browserLocale, {
         month: opts.month ?? 'long',
         day: opts.day ?? 'numeric',
         year: opts.year ?? 'numeric',
         ...opts,
-    }).format(new Date(date));
+      }).format(new Date(date))
+      return result
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      if (typeof date === 'string') {
+        return date;
+      }
+      if (typeof date === 'number') {
+        return new Date(date).toString();
+      }
+      return date.toString();
+    }
 }
 
 export function generateColorFromString(name: string): string {
