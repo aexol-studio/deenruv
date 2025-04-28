@@ -14,6 +14,7 @@ import {
   useTranslation,
   useSettings,
   useQuery,
+  useLocalStorage,
 } from "@deenruv/react-ui-devkit";
 
 import { MetricsCustomDates } from "./MetricCustomDates";
@@ -69,7 +70,10 @@ export const OrdersWidget = () => {
     },
   });
   const [metricRangeTypeSelectValue, setMetricRangeTypeSelectValue] =
-    useState<MetricRangeType>();
+    useLocalStorage<MetricRangeType>(
+      "orders-metric-range",
+      MetricRangeType.Today,
+    );
   const [metricType, setMetricType] = useState<ChartMetricType>(
     ChartMetricType.OrderTotal,
   );
