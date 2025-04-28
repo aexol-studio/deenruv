@@ -33,6 +33,11 @@ import { RefreshViewController } from "./controllers/refresh-view-controller";
   },
   adminApiExtensions: {
     schema: gql`
+      type AdditionalOrderState {
+        state: String!
+        selectedByDefault: Boolean!
+      }
+
       type ChartDataType {
         type: ChartMetricType!
         title: String!
@@ -111,6 +116,7 @@ import { RefreshViewController } from "./controllers/refresh-view-controller";
       }
 
       extend type Query {
+        additionalOrderStates: [AdditionalOrderState!]!
         chartMetric(input: ChartMetricInput!): ChartMetrics!
         orderSummaryMetric(
           input: OrderSummaryMetricInput!

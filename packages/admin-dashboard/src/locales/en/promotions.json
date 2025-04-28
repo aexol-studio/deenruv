@@ -22,7 +22,7 @@
             "minimum_order_amount": "If the order total is greater than X",
             "at_least_n_with_facets": "Buy at least X products with the specified aspects",
             "contains_products": "Buy at least X specified products",
-            "buy_x_get_y_free": "Buy X products, get Y products free"
+            "buy_x_get_y_free": "Buy X products, get Y products for free"
         },
         "labels": {
             "amount": "Amount",
@@ -44,7 +44,7 @@
             "order_percentage_discount": "Order discount by X%",
             "facet_based_discount": "Discount on products with these aspects by X%",
             "products_percentage_discount": "Discount on certain products by X%",
-            "buy_x_get_y_free": "Buy X products, get Y products free"
+            "buy_x_get_y_free": "Buy X products, get Y products for free"
         },
         "labels": {
             "discount": "Discount",

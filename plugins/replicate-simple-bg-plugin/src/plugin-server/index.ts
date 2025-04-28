@@ -4,7 +4,7 @@ import { ReplicateSimpleBGService } from "./services/replicate-simple-bg.service
 import { REPLICATE_SIMPLE_BG_PLUGIN_OPTIONS } from "./constants.js";
 import { ReplicateSimpleBGOptions } from "./types.js";
 import { AdminExtension } from "./extensions/replicate-simple-bg.extension.js";
-import { ReplicateSimpleBgEntity } from "./entities/replicate-simple-gb.js";
+import { ReplicateSimpleBgEntity } from "./entities/replicate-simple-bg.js";
 @DeenruvPlugin({
   compatibility: "^0.0.20",
   imports: [PluginCommonModule],

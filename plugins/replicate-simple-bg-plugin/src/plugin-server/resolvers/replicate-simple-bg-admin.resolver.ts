@@ -18,11 +18,11 @@ export class ReplicateSimpleBGAdminResolver {
   }
 
   @Mutation()
-  async assignPredictionToProduct(
+  async getPredictionAsset(
     @Args() { input }: { input: AssignPredictionToProductInput },
     @Ctx() ctx: RequestContext,
   ) {
-    return this.replicateSimpleBGService.assignPredictionToProduct(ctx, input);
+    return this.replicateSimpleBGService.getPredictionAsset(ctx, input);
   }
 
   @Query()
@@ -54,42 +54,16 @@ export class ReplicateSimpleBGAdminResolver {
 
   @Query()
   async getSimpleBgThemeAsset(@Args() parent: { url: string }) {
-    const key = await parent.url;
+    const key = parent.url;
     const baseUrl = String(
-      await this.replicateSimpleBGService.getSimpleBgThemesAsset(),
+      this.replicateSimpleBGService.getSimpleBgThemesAsset(),
     );
     const url = key.startsWith(baseUrl) ? key : [baseUrl, key].join("/");
     return { url };
   }
 
-  @ResolveField("Image")
-  Image(parent: { url: string }) {
-    return { url: parent.url };
-  }
-
   @Query()
-  async getSimpleBgRoomType() {
-    return this.replicateSimpleBGService.getSimpleBgRoomType();
-  }
-
-  @Query()
-  async getSimpleBgRoomTheme() {
-    return this.replicateSimpleBGService.getSimpleBgRoomTheme();
-  }
-
-  @Query()
-  async getSimpleBgAssetIDByName(
-    @Ctx() ctx: RequestContext,
-    @Args() { source }: { source: string },
-  ) {
-    return this.replicateSimpleBGService.getSimpleBgAssetIDByName(ctx, source);
-  }
-
-  @Query()
-  async getSimpleBgProductList(
-    @Ctx() ctx: RequestContext,
-    @Args() { options }: { options: any },
-  ) {
-    return this.replicateSimpleBGService.getSimpleBgProductList(ctx, options);
+  async getSimpleBgOptions() {
+    return this.replicateSimpleBGService.getSimpleBgOptions();
   }
 }

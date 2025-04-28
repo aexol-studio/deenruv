@@ -235,8 +235,6 @@ const DetailTabs = ({
   const showEditButton = id && isPermittedToUpdate;
   const showCreateButton = !id && isPermittedToCreate;
   const buttonDisabled = !form.base.haveValidFields || !hasUnsavedChanges;
-  const currentPath = useLocation().pathname;
-  const listPath = currentPath.slice(0, currentPath.lastIndexOf("/"));
 
   const tabsWithMarker = tabs.map((tab, idx) => (
     <TabsContent key={idx} value={tab.name}>
@@ -274,17 +272,17 @@ const DetailTabs = ({
       <div className="bg-muted sticky top-0 z-[51] w-full items-center justify-start shadow-xl">
         <div className="flex w-full items-center justify-between px-4 py-2">
           <div className="flex w-full flex-1 items-center">
-            <Button
-              variant="secondary"
-              size="icon"
-              className="mb-2"
-              onClick={() => {
-                navigate(listPath);
-              }}
-            >
-              <ChevronLeft className="size-4" />
-              <span className="sr-only">{t("create.back")}</span>
-            </Button>
+            <SimpleTooltip content={t("goBackToList")}>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="mb-2"
+                onClick={() => navigate(-1)}
+              >
+                <ChevronLeft className="size-4" />
+                <span className="sr-only">{t("create.back")}</span>
+              </Button>
+            </SimpleTooltip>
             <Separator orientation="vertical" className="mx-4" />
             {tabs.length > 1 && (
               <TabsList className="h-12 justify-start gap-2 bg-transparent p-0">

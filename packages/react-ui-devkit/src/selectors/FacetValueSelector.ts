@@ -6,6 +6,7 @@ export const FacetValueSelector = Selector("FacetValue")({
   updatedAt: true,
   createdAt: true,
   code: true,
+  facet: { name: true, id: true },
   translations: { name: true },
 });
 export type FacetValueType = FromSelectorWithScalars<

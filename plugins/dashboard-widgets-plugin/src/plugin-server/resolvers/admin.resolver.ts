@@ -24,4 +24,10 @@ export class AdminResolver {
   ) {
     return this.betterMetricsService.getOrderSummaryMetric(ctx, args.input);
   }
+
+  @Allow(Permission.Authenticated)
+  @Query()
+  async additionalOrderStates(@Ctx() ctx: RequestContext) {
+    return this.betterMetricsService.additionalOrderStates(ctx);
+  }
 }

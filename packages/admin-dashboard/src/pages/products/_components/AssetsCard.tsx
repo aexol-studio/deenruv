@@ -11,11 +11,13 @@ import {
   CardIcons,
   AssetsModalInput,
   useTranslation,
+  createDialogFromComponent,
 } from '@deenruv/react-ui-devkit';
 import { AssetType, assetsSelector } from '@/graphql/base';
 
 import { ImageOff } from 'lucide-react';
 import React, { useCallback, useEffect, useState } from 'react';
+import { EditAssetDialog } from '@/pages/assets/_components/EditAssetDialog.js';
 
 interface AssetsCardProps {
   assetsIds: string[] | undefined | null;
@@ -92,24 +94,31 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
             <Label>{t('details.otherAssets')}</Label>
             <div className="flex gap-3 pt-3">
               {assets?.length ? (
-                assets.map((a) => (
-                  <DropdownMenu modal={false} key={a.id}>
+                assets.map((asset) => (
+                  <DropdownMenu modal={false} key={asset.id}>
                     <DropdownMenuTrigger asChild>
                       <div
                         className={cn(
                           'flex h-20 min-w-20 cursor-pointer items-center justify-center border border-solid border-gray-300 p-2 shadow',
-                          a.id === featuredAssetId && 'border-2 border-blue-500',
+                          asset.id === featuredAssetId && 'border-2 border-blue-500',
                         )}
                       >
-                        {a?.preview && <img src={a.preview} className="h-16" />}
+                        {asset?.preview && <img src={asset.preview} className="h-16" />}
                       </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56" side="bottom" align="end">
                       <DropdownMenuGroup>
-                        <DropdownMenuItem onClick={() => onFeaturedAssetChange(a.id)}>
+                        <DropdownMenuItem
+                          onClick={async () => {
+                            const { success } = await createDialogFromComponent(EditAssetDialog, asset, {});
+                          }}
+                        >
                           {t('details.setAsFeatured')}
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleRemoveAsset(a.id)}>
+                        <DropdownMenuItem onClick={() => onFeaturedAssetChange(asset.id)}>
+                          {t('details.setAsFeatured')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleRemoveAsset(asset.id)}>
                           {t('details.removeAsset')}
                         </DropdownMenuItem>
                       </DropdownMenuGroup>

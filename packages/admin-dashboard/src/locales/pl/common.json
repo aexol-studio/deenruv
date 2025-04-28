@@ -1043,5 +1043,6 @@
     "emptyState": "Brak włączonych widgetów",
     "emptyStateDescription": "Twój pulpit jest pusty. Dodaj widżety, aby znaleźć tutaj mnóstwo informacji.",
     "emptyStateDescription2": "Widżety pomagają zwizualizować dane oraz mieć szybki dostęp do kluczowych funkcji. Dodaj pierwszy, by rozpocząć."
-  }
+  },
+  "goBackToList": "Wróć do listy"
 }

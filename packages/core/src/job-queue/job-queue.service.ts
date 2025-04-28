@@ -171,11 +171,8 @@ export class JobQueueService implements OnModuleDestroy {
    * Returns an array of `{ name: string; running: boolean; }` for each
    * registered JobQueue.
    */
-  getJobQueues(): GraphQlJobQueue[] {
-    return this.queues.map((queue) => ({
-      name: queue.name,
-      running: queue.started,
-    }));
+  getJobQueues(): JobQueue[] {
+    return this.queues;
   }
 
   /**

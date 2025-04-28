@@ -84,6 +84,8 @@ interface MultipleSelectorProps {
   >;
   /** hide the clear all button. */
   hideClearAllButton?: boolean;
+  fixedDropdown?: boolean;
+  /** Fixed dropdown position, for example if  selector is in container with overflow-hidden */
 }
 
 export interface MultipleSelectorRef {
@@ -192,6 +194,7 @@ const MultipleSelector = React.forwardRef<
       commandProps,
       inputProps,
       hideClearAllButton = false,
+      fixedDropdown = false,
     }: MultipleSelectorProps,
     ref: React.Ref<MultipleSelectorRef>,
   ) => {
@@ -207,6 +210,13 @@ const MultipleSelector = React.forwardRef<
     );
     const [inputValue, setInputValue] = React.useState("");
     const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
+
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    const [position, setPosition] = React.useState({
+      top: 0,
+      left: 0,
+      width: 0,
+    });
 
     React.useImperativeHandle(
       ref,
@@ -406,7 +416,16 @@ const MultipleSelector = React.forwardRef<
       () => removePickedOption(options, selected),
       [options, selected],
     );
-
+    useEffect(() => {
+      if (containerRef.current && fixedDropdown) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setPosition({
+          top: rect.bottom + window.scrollY, // uwzględnij scroll
+          left: rect.left + window.scrollX,
+          width: rect.width,
+        });
+      }
+    }, [open]);
     /** Avoid Creatable Selector freezing or lagging when paste a long string. */
     const commandFilter = React.useCallback(() => {
       if (commandProps?.filter) {
@@ -442,6 +461,7 @@ const MultipleSelector = React.forwardRef<
         filter={commandFilter()}
       >
         <div
+          ref={containerRef}
           className={cn(
             "min-h-10 rounded-md border border-input text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
             {
@@ -550,9 +570,24 @@ const MultipleSelector = React.forwardRef<
           </div>
         </div>
         <div className="relative">
-          {open && (
+          {((open &&
+            !!Object.values(selectables).some((value) => !!value.length)) ||
+            (open && !!EmptyItem()) ||
+            (open && !!CreatableItem())) && (
             <CommandList
-              className="bg-popover text-popover-foreground animate-in absolute top-1 z-50 w-full rounded-md border shadow-md outline-none"
+              className={cn(
+                "bg-popover text-popover-foreground animate-in  z-50 rounded-md border shadow-md outline-none",
+                fixedDropdown ? "fixed" : "absolute top-1 w-full",
+              )}
+              style={
+                fixedDropdown
+                  ? {
+                      top: position.top + 4,
+                      left: position.left,
+                      width: position.width,
+                    }
+                  : {}
+              }
               onMouseLeave={() => {
                 setOnScrollbar(false);
               }}

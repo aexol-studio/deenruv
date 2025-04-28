@@ -73,7 +73,9 @@
         "delete": "Delete product",
         "allVariantsStock": "Stock of all variants",
         "allocated": "allocated",
-        "stock": "Shares"
+        "stockOnHand": "Stock on hand",
+        "stockAllocated": "Stock allocated",
+        "stock": "Stock"
     },
     "deleteProductDialog": {
         "button": "Delete product",

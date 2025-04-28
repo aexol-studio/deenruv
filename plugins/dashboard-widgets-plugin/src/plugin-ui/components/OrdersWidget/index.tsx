@@ -13,6 +13,8 @@ import {
   cn,
   useTranslation,
   useSettings,
+  useQuery,
+  useLocalStorage,
 } from "@deenruv/react-ui-devkit";
 
 import { MetricsCustomDates } from "./MetricCustomDates";
@@ -24,7 +26,7 @@ import {
   ChartMetricType,
   MetricIntervalType,
 } from "../../zeus";
-import { ChartMetricQuery } from "../../graphql";
+import { AdditionalOrderStatesQuery, ChartMetricQuery } from "../../graphql";
 
 import {
   convertBackedDataToChartData,
@@ -47,6 +49,7 @@ import { GroupBySelect } from "./GroupBySelect";
 
 export const OrdersWidget = () => {
   const { t } = useTranslation("dashboard-widgets-plugin");
+  const { data } = useQuery(AdditionalOrderStatesQuery);
   const [fetchChartMetrics] = useLazyQuery(ChartMetricQuery);
   const { language } = usePluginStore();
   const channel = useSettings((state) => state.selectedChannel);
@@ -67,7 +70,10 @@ export const OrdersWidget = () => {
     },
   });
   const [metricRangeTypeSelectValue, setMetricRangeTypeSelectValue] =
-    useState<MetricRangeType>();
+    useLocalStorage<MetricRangeType>(
+      "orders-metric-range",
+      MetricRangeType.Today,
+    );
   const [metricType, setMetricType] = useState<ChartMetricType>(
     ChartMetricType.OrderTotal,
   );
@@ -90,6 +96,20 @@ export const OrdersWidget = () => {
     "PartiallyDelivered",
     "Delivered",
   ]);
+
+  useEffect(() => {
+    if (!data) return;
+    const selectedAdditionalOrderStates = data.additionalOrderStates.filter(
+      (state) => state.selectedByDefault,
+    );
+    setSelectedOrderStates((prev) => [
+      ...prev,
+      ...selectedAdditionalOrderStates
+        .map((state) => state.state)
+        .filter((state) => !prev.includes(state)),
+    ]);
+  }, [data]);
+
   const fetchData = useCallback(async () => {
     try {
       setMetricLoading(true);
@@ -175,7 +195,13 @@ export const OrdersWidget = () => {
 
   useEffect(() => {
     fetchData();
-  }, [channel, dateRange, metricType, selectedOrderStates]);
+  }, [
+    channel,
+    dateRange,
+    metricType,
+    selectedOrderStates,
+    data?.additionalOrderStates,
+  ]);
 
   const changeCustomMetricRange = (
     date: Date | undefined,
@@ -296,6 +322,9 @@ export const OrdersWidget = () => {
         </div>
         <div className="!mt-0 flex items-center gap-2">
           <OrderStatesSelect
+            additionalOrderStates={data?.additionalOrderStates.map(
+              ({ state }) => state,
+            )}
             selectedOrderStates={selectedOrderStates as string[]}
             onSelectedOrderStatesChange={onSelectedAStatesChange}
           />

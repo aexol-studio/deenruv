@@ -144,7 +144,11 @@
         "image": "Image",
         "preview": "Preview",
         "tags": "Tags",
-        "title": "Title"
+        "title": "Title",
+        "facetValueId": "Facets",
+        "stockOnHand": "Stock on hand",
+        "stockAllocated": "Stock allocated",
+        "stock": "Stock"
     },
     "actionsMenu": {
         "title": "Activities",

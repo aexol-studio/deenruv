@@ -1,6 +1,8 @@
 import { FromSelector, Selector } from "../zeus";
+import { FromSelectorWithScalars } from "../zeus/scalars.js";
 
 export const PredictionSelector = Selector("PredictionSimpleBgResult")({
+  id: true,
   status: true,
   image: true,
   roomType: true,
@@ -44,17 +46,27 @@ export const ProductSelector = Selector("SimpleBgProductList")({
   totalItems: true,
 });
 
-export type ReplicatePredictionListType = FromSelector<
+export type ReplicateRoomType = FromSelectorWithScalars<
+  typeof RoomTypeSelector,
+  "RoomType"
+>;
+
+export type ReplicateRoomStyle = FromSelectorWithScalars<
+  typeof RoomThemeSelector,
+  "RoomTheme"
+>;
+
+export type ReplicatePredictionListType = FromSelectorWithScalars<
   typeof PredictionSelector,
   "PredictionSimpleBgResult"
 >;
 
-export type ReplicateSimpleBgEntityListType = FromSelector<
+export type ReplicateSimpleBgEntityListType = FromSelectorWithScalars<
   typeof ReplicateSimpleBgEntityListSelector,
   "ReplicateSimpleBgEntityList"
 >;
 
-export type SimpleBgProductListType = FromSelector<
+export type SimpleBgProductListType = FromSelectorWithScalars<
   typeof ProductSelector,
   "SimpleBgProductList"
 >;

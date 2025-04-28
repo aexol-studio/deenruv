@@ -434,6 +434,9 @@ export const AllTypesProps: Record<string,any> = {
 		applyCouponCodeToDraftOrder:{
 
 		},
+		toggleExcludePromotionInOrder:{
+
+		},
 		removeCouponCodeFromDraftOrder:{
 
 		},
@@ -1893,7 +1896,8 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	NativeAuthInput:{
 
-	}
+	},
+	ID: `scalar.ID` as const
 }
 
 export const ReturnTypes: Record<string,any> = {
@@ -1969,6 +1973,7 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
+		additionalOrderStates:"AdditionalOrderState",
 		chartMetric:"ChartMetrics",
 		orderSummaryMetric:"OrderSummaryMetrics",
 		metricSummary:"MetricSummary"
@@ -2060,6 +2065,7 @@ export const ReturnTypes: Record<string,any> = {
 		setDraftOrderBillingAddress:"Order",
 		setDraftOrderCustomFields:"Order",
 		applyCouponCodeToDraftOrder:"ApplyCouponCodeResult",
+		toggleExcludePromotionInOrder:"Order",
 		removeCouponCodeFromDraftOrder:"Order",
 		setDraftOrderShippingMethod:"SetOrderShippingMethodResult",
 		createPaymentMethod:"PaymentMethod",
@@ -2381,6 +2387,7 @@ export const ReturnTypes: Record<string,any> = {
 		surcharges:"Surcharge",
 		discounts:"Discount",
 		couponCodes:"String",
+		excludedPromotionIds:"String",
 		promotions:"Promotion",
 		payments:"Payment",
 		fulfillments:"Fulfillment",
@@ -3008,6 +3015,11 @@ export const ReturnTypes: Record<string,any> = {
 		errorCode:"ErrorCode",
 		message:"String"
 	},
+	OrderMiddlewareError:{
+		errorCode:"ErrorCode",
+		message:"String",
+		middlewareError:"String"
+	},
 	JSON: `scalar.JSON` as const,
 	DateTime: `scalar.DateTime` as const,
 	Upload: `scalar.Upload` as const,
@@ -3133,6 +3145,7 @@ export const ReturnTypes: Record<string,any> = {
 		"...on OrderModificationError": "OrderModificationError",
 		"...on IneligibleShippingMethodError": "IneligibleShippingMethodError",
 		"...on NoActiveOrderError": "NoActiveOrderError",
+		"...on OrderMiddlewareError": "OrderMiddlewareError",
 		errorCode:"ErrorCode",
 		message:"String"
 	},
@@ -3201,11 +3214,13 @@ export const ReturnTypes: Record<string,any> = {
 		"...on OrderModificationError":"OrderModificationError",
 		"...on OrderLimitError":"OrderLimitError",
 		"...on NegativeQuantityError":"NegativeQuantityError",
-		"...on InsufficientStockError":"InsufficientStockError"
+		"...on InsufficientStockError":"InsufficientStockError",
+		"...on OrderMiddlewareError":"OrderMiddlewareError"
 	},
 	RemoveOrderItemsResult:{
 		"...on Order":"Order",
-		"...on OrderModificationError":"OrderModificationError"
+		"...on OrderModificationError":"OrderModificationError",
+		"...on OrderMiddlewareError":"OrderMiddlewareError"
 	},
 	SetOrderShippingMethodResult:{
 		"...on Order":"Order",
@@ -3217,7 +3232,8 @@ export const ReturnTypes: Record<string,any> = {
 		"...on Order":"Order",
 		"...on CouponCodeExpiredError":"CouponCodeExpiredError",
 		"...on CouponCodeInvalidError":"CouponCodeInvalidError",
-		"...on CouponCodeLimitError":"CouponCodeLimitError"
+		"...on CouponCodeLimitError":"CouponCodeLimitError",
+		"...on OrderMiddlewareError":"OrderMiddlewareError"
 	},
 	CustomField:{
 		"...on StringCustomFieldConfig": "StringCustomFieldConfig",
@@ -3850,6 +3866,10 @@ export const ReturnTypes: Record<string,any> = {
 		members:"Region",
 		customFields:"JSON"
 	},
+	AdditionalOrderState:{
+		state:"String",
+		selectedByDefault:"Boolean"
+	},
 	ChartDataType:{
 		type:"ChartMetricType",
 		title:"String",
@@ -3923,7 +3943,8 @@ export const ReturnTypes: Record<string,any> = {
 	EntityCustomFields:{
 		entityName:"String",
 		customFields:"CustomFieldConfig"
-	}
+	},
+	ID: `scalar.ID` as const
 }
 
 export const Ops = {

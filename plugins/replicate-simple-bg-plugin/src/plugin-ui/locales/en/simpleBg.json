@@ -32,6 +32,22 @@
   "succeeded": "Completed",
   "failed": "Failed",
   "generate_new_background": "Generate new background",
+  "no_room_style": "No room style",
+  "no_room_type": "No room type",
+  "no_file": "No file",
+  "refresh": "Refresh list",
+  "status": "Status",
+  "room_style": "Room Style",
+  "room_type": "Room Type",
+  "prediction": "Prediction",
+  "prediction_details": "Prediction Details",
+  "generating_asset": "Generating asset..",
+  "asset_assigned": "Asset assigned to product",
+  "prompt_placeholder": "Would you like to change something? Describe it here!",
+  "prompt": "Prompt",
+  "error": {
+    "loading": "Generating asset.."
+  },
   "modal": {
     "title": "Predicition",
     "choose_room_type": "Choose Room Type",
@@ -45,9 +61,6 @@
     "product_action": "Action",
     "product_assign": "Assign",
     "run_model_again": "Run the model again",
-    "input_prompt": "Would you like to change something? Describe it here!",
-    "room_type": "Room Type",
-    "room_style": "Room Style",
-    "prediction": "Prediction"
+    "input_prompt": "Would you like to change something? Describe it here!"
   }
 }

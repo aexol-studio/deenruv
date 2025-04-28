@@ -2,12 +2,18 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation.js";
+import { cn } from "@/lib/utils.js";
 
-export const LoadingMask: React.FC = () => {
+export const LoadingMask: React.FC<{
+  className?: string;
+}> = ({ className }) => {
   const { t } = useTranslation("common");
   return (
     <motion.div
-      className="bg-background/90 absolute inset-0 z-50 flex h-screen w-full items-center justify-center backdrop-blur-sm"
+      className={cn(
+        "bg-background/90 absolute inset-0 z-50 flex h-screen w-full items-center justify-center backdrop-blur-sm",
+        className,
+      )}
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

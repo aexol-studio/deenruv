@@ -9,6 +9,7 @@ import {
   PaginationInput,
   Routes,
   TableLabel,
+  FacetIdsSelector,
 } from '@deenruv/react-ui-devkit';
 import { useNavigate } from 'react-router-dom';
 
@@ -59,10 +60,27 @@ export const ProductVariantsListPage = () => {
         { key: 'priceWithTax', operator: 'NumberOperators' },
         { key: 'stockOnHand', operator: 'NumberOperators' },
         { key: 'stockAllocated', operator: 'NumberOperators' },
+        {
+          key: 'facetValueId',
+          component: (props) => {
+            return (
+              <FacetIdsSelector
+                onChange={(facetValuesId: string[]) => {
+                  if (facetValuesId.length === 0) {
+                    props.onChange(undefined);
+                    return;
+                  }
+                  props.onChange({ in: facetValuesId.map((o) => o) });
+                }}
+                facetValuesIds={props.value.in}
+              />
+            );
+          },
+        },
       ]}
       detailLinkColumn="id"
       searchFields={['name', 'sku']}
-      hideColumns={['customFields', 'stockOnHand', 'stockAllocated', 'productId']}
+      hideColumns={['customFields', 'productId', 'stockOnHand', 'stockAllocated']}
       entityName={'ProductVariant'}
       route={{
         ...Routes.productVariants,
@@ -85,10 +103,19 @@ export const ProductVariantsListPage = () => {
           header: () => <TableLabel>{t('table.stock')}</TableLabel>,
           cell: ({ row }) => {
             return (
-              <Badge variant={'outline'}>
-                {row.original.stockOnHand}
-                {row.original.stockAllocated > 0 && `(${row.original.stockAllocated} ${t('table.allocated')})`}
-              </Badge>
+              <div className="flex flex-col gap-1">
+                <Badge
+                  className="flex justify-between gap-1"
+                  variant={row.original.stockOnHand <= 0 ? 'destructive' : 'outline'}
+                >
+                  <span>{t('table.stockOnHand')}</span>
+                  <span>{row.original.stockOnHand}</span>
+                </Badge>
+                <Badge className="flex justify-between gap-1" variant={'outline'}>
+                  <span>{t('table.stockAllocated')}</span>
+                  <span>{row.original.stockAllocated}</span>
+                </Badge>
+              </div>
             );
           },
         },

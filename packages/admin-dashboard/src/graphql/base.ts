@@ -52,6 +52,9 @@ export const assetsSelector = Selector('Asset')({
   preview: true,
   source: true,
   name: true,
+  tags: { id: true, value: true },
+  type: true,
+  updatedAt: true,
 });
 
 export type AssetType = FromSelectorWithScalars<typeof assetsSelector, 'Asset'>;

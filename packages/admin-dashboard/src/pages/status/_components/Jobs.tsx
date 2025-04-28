@@ -172,17 +172,41 @@ export const Jobs = () => {
       {
         accessorKey: 'createdAt',
         header: () => <TableLabel>{t('jobs.table.created')}</TableLabel>,
-        cell: ({ row }) => formatDate(row.original.createdAt),
+        cell: ({ row }) =>
+          formatDate(row.original.createdAt, {
+            month: '2-digit',
+            day: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          }),
       },
       {
         accessorKey: 'startedAt',
         header: () => <TableLabel>{t('jobs.table.started')}</TableLabel>,
-        cell: ({ row }) => formatDate(row.original.startedAt || ''),
+        cell: ({ row }) =>
+          formatDate(row.original.startedAt || '', {
+            month: '2-digit',
+            day: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          }),
       },
       {
         accessorKey: 'settledAt',
         header: () => <TableLabel>{t('jobs.table.settled')}</TableLabel>,
-        cell: ({ row }) => formatDate(row.original.settledAt || ''),
+        cell: ({ row }) =>
+          formatDate(row.original.settledAt || '', {
+            month: '2-digit',
+            day: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          }),
       },
       {
         accessorKey: 'jobData',

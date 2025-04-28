@@ -1,9 +1,11 @@
+import { getLocalStorageVersion } from "@/consts/localStorageVersion.js";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export function useLocalStorage<T>(
-  key: string,
+  _key: string,
   defaultValue: T,
 ): [state: T, setLocalStorageValue: Dispatch<SetStateAction<T>>] {
+  const key = getLocalStorageVersion(_key);
   const [localStorageValue, setLocalStorageValue] = useState<T>(() => {
     try {
       const value = localStorage.getItem(key);

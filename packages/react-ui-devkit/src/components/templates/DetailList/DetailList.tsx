@@ -47,6 +47,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   ImageWithPreview,
+  LoadingMask,
   TableLabel,
 } from "@/components";
 import { ListTable } from "@/components/molecules/ListTable";
@@ -83,26 +84,38 @@ type CheckIfInModelTypes<T extends string> = T extends keyof ModelTypes
   ? T
   : never;
 
-type FilterField<ENTITY extends keyof ModelTypes> = {
-  key:
-    | Exclude<
-        keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>],
-        "_or" | "_and"
-      >
-    | string;
-  // TODO: infer operator based on the type of the field
-  operator:
-    | "StringOperators"
-    | "IDOperators"
-    | "BooleanOperators"
-    | "NumberOperators"
-    | "DateOperators"
-    | "StringListOperators"
-    | "NumberListOperators"
-    | "BooleanListOperators"
-    | "IDListOperators"
-    | "DateListOperators";
-};
+type FilterField<ENTITY extends keyof ModelTypes> =
+  | {
+      key:
+        | Exclude<
+            keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>],
+            "_or" | "_and"
+          >
+        | string;
+      // TODO: infer operator based on the type of the field
+      operator:
+        | "StringOperators"
+        | "IDOperators"
+        | "BooleanOperators"
+        | "NumberOperators"
+        | "DateOperators"
+        | "StringListOperators"
+        | "NumberListOperators"
+        | "BooleanListOperators"
+        | "IDListOperators"
+        | "DateListOperators";
+    }
+  | {
+      key:
+        | Exclude<
+            keyof ModelTypes[CheckIfInModelTypes<`${ENTITY}FilterParameter`>],
+            "_or" | "_and"
+          >
+        | string;
+      // TODO: infer operator based on the type of the field
+
+      component?: React.ComponentType<any>;
+    };
 
 type RouteBase = {
   list: string;
@@ -142,6 +155,7 @@ export function DetailList<
   additionalBulkActions,
   stopRefetchOnChannelChange,
   suggestedOrderColumns,
+  refetchTimeout,
 }: {
   fetch: T;
   onRemove?: (items: AwaitedReturnType<T>["items"]) => Promise<boolean>;
@@ -168,6 +182,7 @@ export function DetailList<
   suggestedOrderColumns?: Partial<
     Record<keyof AwaitedReturnType<T>["items"][number], number>
   >;
+  refetchTimeout?: number;
 } & (
   | { noCreateButton: true; route?: RouteBase | RouteWithoutCreate }
   | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
@@ -229,20 +244,30 @@ export function DetailList<
       updatedAt: true,
     });
 
-  const getTableDefaultOrder = (): string[] => {
-    return table
-      .getAllColumns()
-      .slice()
-      .map((column) => column.id)
+  const getTableDefaultOrder = (
+    additional?: (string | undefined)[],
+  ): string[] => {
+    const columns = table.getAllColumns().map((col) => col.id);
+    const hasCode = columns.includes("code");
+    const hasFeaturedAsset = columns.includes("featuredAsset");
+
+    const prefix: string[] = ["id"];
+    if (hasCode) prefix.push("code");
+    if (hasFeaturedAsset) prefix.push("featuredAsset");
+
+    const additionalColumns = (additional?.filter(Boolean) as string[]) || [];
+
+    const remaining = columns
+      .filter((id) => !prefix.includes(id))
+      .filter((id) => !additionalColumns.includes(id))
       .sort((a, b) => {
-        const isCustomA = a.startsWith("customFields.");
-        const isCustomB = b.startsWith("customFields.");
-
-        if (isCustomA && !isCustomB) return 1;
-        if (!isCustomA && isCustomB) return -1;
-
+        const isCustomFieldA = a.startsWith("customFields.");
+        const isCustomFieldB = b.startsWith("customFields.");
+        if (isCustomFieldA && !isCustomFieldB) return 1;
+        if (!isCustomFieldA && isCustomFieldB) return -1;
         return a.localeCompare(b);
       });
+    return [...prefix, ...remaining, ...additionalColumns];
   };
 
   const getTableDefaultVisibility = () => {
@@ -281,6 +306,7 @@ export function DetailList<
     removeFilterField,
     resetFilterFields,
     changeFilterField,
+    loading,
   } = useDetailListHook({
     fetch: (params, customFieldsSelector) =>
       fetch(params, customFieldsSelector, mergedSelectors),
@@ -292,6 +318,15 @@ export function DetailList<
       refetch();
     }
   }, [selectedChannel?.id]);
+
+  useEffect(() => {
+    if (refetchTimeout && !loading) {
+      const interval = setInterval(() => {
+        refetch();
+      }, refetchTimeout);
+      return () => clearInterval(interval);
+    }
+  }, [refetchTimeout, loading]);
 
   const columns = useMemo(() => {
     const entry = objects?.[0];
@@ -563,14 +598,18 @@ export function DetailList<
   });
 
   useEffect(() => {
-    if (!columnsOrderState.length) setColumnsOrderState(getTableDefaultOrder());
+    if (!objects?.length) return;
+    if (!columnsOrderState.length)
+      setColumnsOrderState(
+        getTableDefaultOrder(additionalColumns?.map((col) => col.id) || []),
+      );
     if (
       !columnsVisibilityState ||
       !Object.keys(columnsVisibilityState).length
     ) {
       setColumnsVisibilityState(getTableDefaultVisibility());
     }
-  }, [table]);
+  }, [objects, table]);
 
   const isFiltered = useMemo(() => {
     let isFiltered = false;
@@ -609,21 +648,20 @@ export function DetailList<
 
   const defaultFilterFields = DEFAULT_COLUMNS.map((key) => {
     if (key === "id") {
-      return { key: "id", operator: "IDOperators" };
+      return { key: "id", operator: "IDOperators", component: undefined };
     } else if (key === "createdAt" || key === "updatedAt") {
-      return { key, operator: "DateOperators" };
+      return { key, operator: "DateOperators", component: undefined };
     }
-    return { key, operator: "StringOperators" };
+    return { key, operator: "StringOperators", component: undefined };
   });
 
   const filterProperties = {
     filterLabels:
-      [...defaultFilterFields, ...(filterFields || [])].map(
-        ({ key, operator }) => ({
-          name: key,
-          type: operator,
-        }),
-      ) || [],
+      [...defaultFilterFields, ...(filterFields || [])].map((values) => ({
+        name: values.key,
+        type: "operator" in values ? values.operator : undefined,
+        component: "component" in values ? values.component : undefined,
+      })) || [],
     filter: searchParamFilter,
     setFilterField,
     removeFilterField,
@@ -634,136 +672,143 @@ export function DetailList<
   return (
     <PageBlock withoutPadding={noPaddings}>
       <DetailListStoreProvider refetch={refetch} table={table}>
-        <div className={cn("w-full")}>
-          <DeleteDialog
-            {...{
-              itemsToDelete,
-              deleteDialogOpened,
-              setDeleteDialogOpened,
-              onConfirmDelete,
-            }}
-          />
-          <div className="page-content-h flex w-full flex-col gap-2">
-            <div className="mb-1 flex w-full flex-col items-start gap-4">
-              <div className="flex w-full items-end justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  {table.getSelectedRowModel().flatRows.length > 0 && (
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="h-8 gap-2 py-0"
-                          aria-label="Open filters"
-                        >
-                          <Group className="size-4" aria-hidden="true" />
-                          {t("Zaznaczone")} (
-                          {table.getSelectedRowModel().flatRows.length})
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="mr-6 w-56" align="start">
-                        <DropdownMenuLabel className="select-none">
-                          {t("Operacje masowe")}
-                        </DropdownMenuLabel>
-                        {bulkActions.length > 0 ? (
-                          <>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
-                              {bulkActions?.map((action) => {
-                                const onClick = async () => {
-                                  try {
-                                    const { error } = await action.onClick({
-                                      table,
-                                      data: objects,
-                                      refetch,
-                                    });
-                                    if (error) {
-                                      throw new Error(error);
-                                    } else {
-                                      refetch();
-                                      table.toggleAllRowsSelected(false);
-                                    }
-                                  } catch (error) {
-                                    const message =
-                                      error instanceof Error
-                                        ? error.message
-                                        : "Unknown error";
-                                    toast.error(message);
-                                  }
-                                };
-                                return (
-                                  <DropdownMenuItem
-                                    key={action.label}
-                                    onClick={onClick}
-                                    className="flex items-center gap-2 cursor-pointer"
-                                  >
-                                    {action.icon}
-                                    {action.label}
-                                  </DropdownMenuItem>
-                                );
-                              })}
-                            </DropdownMenuGroup>
-                          </>
-                        ) : null}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                          <DropdownMenuItem
-                            className="text-red-600 cursor-pointer"
-                            disabled={
-                              !table.getSelectedRowModel().flatRows.length
-                            }
-                            onClick={() => {
-                              const selected = table
-                                .getSelectedRowModel()
-                                .rows.map((row) => row.original);
-                              onRemove(selected);
-                            }}
+        {loading ? (
+          <LoadingMask />
+        ) : (
+          <div className={cn("w-full")}>
+            <DeleteDialog
+              {...{
+                itemsToDelete,
+                deleteDialogOpened,
+                setDeleteDialogOpened,
+                onConfirmDelete,
+              }}
+            />
+            <div className="page-content-h flex w-full flex-col gap-2">
+              <div className="mb-1 flex w-full flex-col items-start gap-4">
+                <div className="flex w-full items-end justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    {table.getSelectedRowModel().flatRows.length > 0 && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 gap-2 py-0"
+                            aria-label="Open filters"
                           >
-                            <Trash2Icon className="mr-2 size-4" />
-                            {t("Usuń zacznaczone")}
-                          </DropdownMenuItem>
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  )}
-
-                  <ColumnView table={table} entityName={entityName} />
-                  {Search}
-                  <FiltersDialog {...filterProperties} />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-2">
-                    {route && !noCreateButton && isPermittedToCreate && (
-                      <Button
-                        className="flex items-center gap-2"
-                        onClick={() => {
-                          if ("create" in route) route.create(refetch);
-                          else
-                            navigate((route as RouteBase).new, {
-                              viewTransition: true,
-                            });
-                        }}
-                      >
-                        <PlusCircleIcon size={16} />
-                        {t("create")}
-                      </Button>
+                            <Group className="size-4" aria-hidden="true" />
+                            {t("Zaznaczone")} (
+                            {table.getSelectedRowModel().flatRows.length})
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          className="mr-6 w-56"
+                          align="start"
+                        >
+                          <DropdownMenuLabel className="select-none">
+                            {t("Operacje masowe")}
+                          </DropdownMenuLabel>
+                          {bulkActions.length > 0 ? (
+                            <>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuGroup>
+                                {bulkActions?.map((action) => {
+                                  const onClick = async () => {
+                                    try {
+                                      const { error } = await action.onClick({
+                                        table,
+                                        data: objects,
+                                        refetch,
+                                      });
+                                      if (error) {
+                                        throw new Error(error);
+                                      } else {
+                                        refetch();
+                                        table.toggleAllRowsSelected(false);
+                                      }
+                                    } catch (error) {
+                                      const message =
+                                        error instanceof Error
+                                          ? error.message
+                                          : "Unknown error";
+                                      toast.error(message);
+                                    }
+                                  };
+                                  return (
+                                    <DropdownMenuItem
+                                      key={action.label}
+                                      onClick={onClick}
+                                      className="flex items-center gap-2 cursor-pointer"
+                                    >
+                                      {action.icon}
+                                      {action.label}
+                                    </DropdownMenuItem>
+                                  );
+                                })}
+                              </DropdownMenuGroup>
+                            </>
+                          ) : null}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuGroup>
+                            <DropdownMenuItem
+                              className="text-red-600 cursor-pointer"
+                              disabled={
+                                !table.getSelectedRowModel().flatRows.length
+                              }
+                              onClick={() => {
+                                const selected = table
+                                  .getSelectedRowModel()
+                                  .rows.map((row) => row.original);
+                                onRemove(selected);
+                              }}
+                            >
+                              <Trash2Icon className="mr-2 size-4" />
+                              {t("Usuń zacznaczone")}
+                            </DropdownMenuItem>
+                          </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     )}
-                    {additionalButtons}
+
+                    <ColumnView table={table} entityName={entityName} />
+                    {Search}
+                    <FiltersDialog {...filterProperties} />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-2">
+                      {route && !noCreateButton && isPermittedToCreate && (
+                        <Button
+                          className="flex items-center gap-2"
+                          onClick={() => {
+                            if ("create" in route) route.create(refetch);
+                            else
+                              navigate((route as RouteBase).new, {
+                                viewTransition: true,
+                              });
+                          }}
+                        >
+                          <PlusCircleIcon size={16} />
+                          {t("create")}
+                        </Button>
+                      )}
+                      {additionalButtons}
+                    </div>
                   </div>
                 </div>
               </div>
+              <ListTable
+                {...{
+                  columns,
+                  isFiltered,
+                  table,
+                  Paginate,
+                  tableId: tableId as LocationKeys,
+                }}
+              />
             </div>
-            <ListTable
-              {...{
-                columns,
-                isFiltered,
-                table,
-                Paginate,
-                tableId: tableId as LocationKeys,
-              }}
-            />
           </div>
-        </div>
+        )}
       </DetailListStoreProvider>
     </PageBlock>
   );

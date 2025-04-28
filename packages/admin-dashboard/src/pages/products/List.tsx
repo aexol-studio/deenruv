@@ -9,8 +9,9 @@ import {
   Routes,
   TableLabel,
   useTranslation,
+  FacetIdsSelector,
 } from '@deenruv/react-ui-devkit';
-
+// import { FacetValueSelector } from '@deenruv/react-ui-devkit/FacetValueSelector.js';
 const tableId = 'products-list-view';
 const { selector } = ListLocations[tableId];
 
@@ -58,6 +59,23 @@ export const ProductsListPage = () => {
         { key: 'enabled', operator: 'BooleanOperators' },
         { key: 'sku', operator: 'StringOperators' },
         { key: 'name', operator: 'StringOperators' },
+        {
+          key: 'facetValueId',
+          component: (props) => {
+            return (
+              <FacetIdsSelector
+                onChange={(facetValuesId: string[]) => {
+                  if (facetValuesId.length === 0) {
+                    props.onChange(undefined);
+                    return;
+                  }
+                  props.onChange({ in: facetValuesId.map((o) => o) });
+                }}
+                facetValuesIds={props.value.in}
+              />
+            );
+          },
+        },
       ]}
       detailLinkColumn="id"
       searchFields={['name', 'slug', 'sku']}

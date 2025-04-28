@@ -7,7 +7,6 @@ import {
   ImageSelector,
   RoomTypeSelector,
   RoomThemeSelector,
-  ProductSelector,
 } from "./selectors";
 
 export const getPredictionSimpleBGIDQuery = typedGql("query", { scalars })({
@@ -26,52 +25,22 @@ export const getPredictionSimpleBGIDQuery = typedGql("query", { scalars })({
 
 export const getSimpleBgPredictionsQuery = typedGql("query", { scalars })({
   getSimpleBgPredictions: [
-    {
-      options: $("options", "ReplicateSimpleBgEntityListOptions"),
-    },
+    { options: $("options", "ReplicateSimpleBgEntityListOptions") },
     ReplicateSimpleBgEntityListSelector,
   ],
 });
 
 export const getSimpleBgItemQuery = typedGql("query", { scalars })({
-  getSimpleBgItem: [
-    {
-      id: $("id", "String!"),
-    },
-    PredictionSelector,
-  ],
+  getSimpleBgItem: [{ id: $("id", "String!") }, PredictionSelector],
 });
 
 export const getSimpleBgThemeAssetQuery = typedGql("query", { scalars })({
-  getSimpleBgThemeAsset: [
-    {
-      url: $("url", "String!"),
-    },
-    ImageSelector,
-  ],
+  getSimpleBgThemeAsset: [{ url: $("url", "String!") }, ImageSelector],
 });
 
-export const getSimpleBgRoomTypeQuery = typedGql("query", { scalars })({
-  getSimpleBgRoomType: RoomTypeSelector,
-});
-
-export const getSimpleBgRoomThemeQuery = typedGql("query", { scalars })({
-  getSimpleBgRoomTheme: RoomThemeSelector,
-});
-export const getSimpleBgAssetIDByNameQuery = typedGql("query", { scalars })({
-  getSimpleBgAssetIDByName: [
-    {
-      source: $("source", "String!"),
-    },
-    true,
-  ],
-});
-
-export const getSimpleBgProductListQuery = typedGql("query", { scalars })({
-  getSimpleBgProductList: [
-    {
-      options: $("options", "SimpleBgProductListOptions"),
-    },
-    ProductSelector,
-  ],
+export const getSimpleBgRoomOptions = typedGql("query", { scalars })({
+  getSimpleBgOptions: {
+    roomTypes: RoomTypeSelector,
+    roomThemes: RoomThemeSelector,
+  },
 });
