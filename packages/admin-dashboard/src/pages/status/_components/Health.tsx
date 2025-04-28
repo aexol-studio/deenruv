@@ -43,10 +43,8 @@ const getStatusBadge = (status: string) => {
 };
 export const Health = () => {
   const { t } = useTranslation('system');
-  const {
-    fetchStatus,
-    status: { data, lastUpdated, loading },
-  } = useServer(({ fetchStatus, status }) => ({ fetchStatus, status }));
+  const { data, lastUpdated, loading } = useServer((state) => state.status);
+  const fetchStatus = useServer((state) => state.fetchStatus);
 
   return (
     <CustomCard

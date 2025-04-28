@@ -81,10 +81,18 @@ export const Root = () => {
   const setSelectedChannel = useSettings((p) => p.setSelectedChannel);
   const setChannels = useServer((p) => p.setChannels);
   const fetchGraphQLSchema = useServer((p) => p.fetchGraphQLSchema);
+  const fetchStatus = useServer((p) => p.fetchStatus);
   const { initializeOrderCustomFields } = useOrder();
   const setData = useNotifications(({ setData }) => setData);
   const notifications = useNotifications(({ notifications }) => notifications);
   const channel = useSettings((p) => p.selectedChannel);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchStatus();
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, [fetchStatus]);
 
   useEffect(() => {
     if (!loaded) return;

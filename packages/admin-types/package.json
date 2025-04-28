@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/admin-types",
-  "version": "0.0.143",
+  "version": "0.0.144",
   "homepage": "https://www.deenruv.io/",
   "license": "MIT",
   "main": "./dist/index.js",
