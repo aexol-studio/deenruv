@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/admin-ui",
-  "version": "0.0.144",
+  "version": "0.0.145",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

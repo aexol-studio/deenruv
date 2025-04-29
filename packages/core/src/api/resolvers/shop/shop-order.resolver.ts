@@ -53,7 +53,6 @@ import { OrderService } from "../../../service/services/order.service";
 import { SessionService } from "../../../service/services/session.service";
 import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
 
@@ -83,17 +82,8 @@ export class ShopOrderResolver {
   async order(
     @Ctx() ctx: RequestContext,
     @Args() args: QueryOrderArgs,
-    @Relations(Order) relations: RelationPaths<Order>,
   ): Promise<Order | undefined> {
-    const requiredRelations: RelationPaths<Order> = [
-      "customer",
-      "customer.user",
-    ];
-    const order = await this.orderService.findOne(
-      ctx,
-      args.id,
-      unique([...relations, ...requiredRelations]),
-    );
+    const order = await this.orderService.findOne(ctx, args.id);
     if (order && ctx.authorizedAsOwnerOnly) {
       const orderUserId =
         order.customer && order.customer.user && order.customer.user.id;
@@ -109,7 +99,6 @@ export class ShopOrderResolver {
   @Allow(Permission.Owner)
   async activeOrder(
     @Ctx() ctx: RequestContext,
-    @Relations(Order) relations: RelationPaths<Order>,
     @Args() args: ActiveOrderArgs,
   ): Promise<Order | undefined> {
     if (ctx.authorizedAsOwnerOnly) {
@@ -130,18 +119,12 @@ export class ShopOrderResolver {
   async orderByCode(
     @Ctx() ctx: RequestContext,
     @Args() args: QueryOrderByCodeArgs,
-    @Relations(Order) relations: RelationPaths<Order>,
   ): Promise<Order | undefined> {
     if (ctx.authorizedAsOwnerOnly) {
-      const requiredRelations: RelationPaths<Order> = [
+      const order = await this.orderService.findOneByCode(ctx, args.code, [
         "customer",
         "customer.user",
-      ];
-      const order = await this.orderService.findOneByCode(
-        ctx,
-        args.code,
-        unique([...relations, ...requiredRelations]),
-      );
+      ]);
 
       if (
         order &&

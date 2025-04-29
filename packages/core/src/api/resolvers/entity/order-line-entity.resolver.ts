@@ -14,7 +14,6 @@ import {
   ProductVariantService,
 } from "../../../service";
 import { RequestContext } from "../../common/request-context";
-import { RelationPaths, Relations } from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 
 @Resolver("OrderLine")
@@ -56,16 +55,14 @@ export class OrderLineEntityResolver {
   async order(
     @Ctx() ctx: RequestContext,
     @Parent() orderLine: OrderLine,
-    @Relations(Order) relations: RelationPaths<Order>,
   ): Promise<Order | undefined> {
-    return this.orderService.findOneByOrderLineId(ctx, orderLine.id, relations);
+    return this.orderService.findOneByOrderLineId(ctx, orderLine.id);
   }
 
   @ResolveField()
   async fulfillmentLines(
     @Ctx() ctx: RequestContext,
     @Parent() orderLine: OrderLine,
-    @Relations(Order) relations: RelationPaths<Order>,
   ): Promise<FulfillmentLine[]> {
     return this.fulfillmentService.getFulfillmentsLinesForOrderLine(
       ctx,

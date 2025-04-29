@@ -59,9 +59,8 @@ export class OrderResolver {
   orders(
     @Ctx() ctx: RequestContext,
     @Args() args: QueryOrdersArgs,
-    @Relations(Order) relations: RelationPaths<Order>,
   ): Promise<PaginatedList<Order>> {
-    return this.orderService.findAll(ctx, args.options || undefined, relations);
+    return this.orderService.findAll(ctx, args.options || undefined);
   }
 
   @Query()
@@ -69,10 +68,8 @@ export class OrderResolver {
   async order(
     @Ctx() ctx: RequestContext,
     @Args() args: QueryOrderArgs,
-    @Relations({ entity: Order, omit: ["aggregateOrder", "sellerOrders"] })
-    relations: RelationPaths<Order>,
   ): Promise<Order | undefined> {
-    return this.orderService.findOne(ctx, args.id, relations);
+    return this.orderService.findOne(ctx, args.id);
   }
 
   @Transaction()
