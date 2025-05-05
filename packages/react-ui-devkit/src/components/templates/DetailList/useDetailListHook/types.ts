@@ -32,8 +32,27 @@ type RouteConfig =
   | { list: string; new: string; route: string; to: (id: string) => string }
   | {
       create?: (refetch: () => void) => void;
+      createTranslation?: string;
       edit: (id: string, row: Row<any>, refetch: () => void) => void;
+      editTranslation?: string;
     };
+
+export type RouteBase = {
+  list: string;
+  new: string;
+  route: string;
+  to: (id: string) => string;
+};
+
+export type RouteWithoutCreate = {
+  editTranslation?: string;
+  edit: (id: string, row: Row<any>, refetch: () => void) => void;
+};
+
+export type RouteWithCreate = RouteWithoutCreate & {
+  createTranslation?: string;
+  create: (refetch: () => void) => void;
+};
 
 export type GenericListContextType<T> = {
   route?: RouteConfig;

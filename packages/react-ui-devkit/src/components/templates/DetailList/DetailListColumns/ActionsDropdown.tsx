@@ -69,7 +69,9 @@ export const ActionsDropdown = <T extends { id: string }>(
                 >
                   <div className="flex items-center gap-2">
                     <ExternalLink size={14} />
-                    {t("actionsMenu.view")}
+                    {"editTranslation" in route
+                      ? route.editTranslation
+                      : t("actionsMenu.view")}
                   </div>
                 </DropdownMenuItem>
               ) : null}

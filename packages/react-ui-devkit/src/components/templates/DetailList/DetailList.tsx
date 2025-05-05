@@ -61,7 +61,12 @@ import { ColumnView } from "@/components/templates/DetailList/useDetailListHook/
 import { DetailListStoreProvider } from "./useDetailList.js";
 import { ExpandedState } from "@tanstack/react-table";
 import { toast } from "sonner";
-import { GenericListContextType } from "./useDetailListHook/types.js";
+import {
+  GenericListContextType,
+  RouteBase,
+  RouteWithCreate,
+  RouteWithoutCreate,
+} from "./useDetailListHook/types.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
 import { Row } from "@tanstack/react-table";
 
@@ -117,19 +122,6 @@ type FilterField<ENTITY extends keyof ModelTypes> =
       translation?: string;
       component?: React.ComponentType<any>;
     };
-
-type RouteBase = {
-  list: string;
-  new: string;
-  route: string;
-  to: (id: string) => string;
-};
-type RouteWithoutCreate = {
-  edit: (id: string, row: Row<any>, refetch: () => void) => void;
-};
-type RouteWithCreate = RouteWithoutCreate & {
-  create: (refetch: () => void) => void;
-};
 
 export function DetailList<
   KEY extends LocationKeys | ({} & string),
@@ -817,7 +809,9 @@ export function DetailList<
                           }}
                         >
                           <PlusCircleIcon size={16} />
-                          {t("create")}
+                          {"createTranslation" in route
+                            ? route.createTranslation
+                            : t("create")}
                         </Button>
                       )}
                       {additionalButtons}
