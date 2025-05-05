@@ -133,45 +133,6 @@ export const ActionsDropdown = <T extends { id: string }>(
     size: 28,
     minSize: 28,
     maxSize: 28,
-    meta: {
-      isFixedWidth: true,
-    },
+    meta: { isFixedWidth: true },
   };
-};
-
-interface DraggableMenuItemProps {
-  id: string;
-  children: React.ReactNode;
-}
-const DraggableMenuItem: React.FC<DraggableMenuItemProps> = ({
-  id,
-  children,
-}) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id,
-    });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      className="flex items-center"
-    >
-      <Button
-        variant="outline"
-        {...listeners}
-        className="mr-2 h-auto cursor-move p-1"
-      >
-        <Grip className="size-3.5" />
-      </Button>
-      {children}
-    </div>
-  );
 };

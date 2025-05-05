@@ -42,6 +42,7 @@ export const FiltersDialog = <T extends keyof ListType>({
 }: {
   filterLabels: {
     name: string | number | symbol;
+    translation?: string;
     type?: string;
     component?: React.ComponentType<any>;
   }[];
@@ -182,9 +183,11 @@ export const FiltersDialog = <T extends keyof ListType>({
                       className="focus:ring-ring h-8 w-32 max-w-[109px] justify-between gap-2 rounded focus:outline-none focus:ring-1 focus-visible:ring-0"
                     >
                       <span className="overflow-hidden truncate">
-                        {filter?.name
-                          ? t("columns." + filter?.name.toString())
-                          : "Select field"}
+                        {filter?.translation
+                          ? filter?.translation
+                          : filter?.name
+                            ? t("columns." + filter?.name.toString())
+                            : "Select field"}
                       </span>
                       <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
                     </Button>

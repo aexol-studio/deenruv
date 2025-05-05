@@ -92,6 +92,7 @@ type FilterField<ENTITY extends keyof ModelTypes> =
             "_or" | "_and"
           >
         | string;
+      translation?: string;
       // TODO: infer operator based on the type of the field
       operator:
         | "StringOperators"
@@ -113,7 +114,7 @@ type FilterField<ENTITY extends keyof ModelTypes> =
           >
         | string;
       // TODO: infer operator based on the type of the field
-
+      translation?: string;
       component?: React.ComponentType<any>;
     };
 
@@ -141,6 +142,7 @@ export function DetailList<
   tableId,
   entityName,
   searchFields,
+  searchTranslations,
   hideColumns,
   additionalColumns = [],
   detailLinkColumn,
@@ -161,7 +163,11 @@ export function DetailList<
   onRemove?: (items: AwaitedReturnType<T>["items"]) => Promise<boolean>;
   tableId: KEY;
   entityName: ENTITY | string;
-  searchFields: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
+  searchFields?: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
+  searchTranslations?: Array<{
+    key: Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>;
+    value: string;
+  }>;
   hideColumns?: FIELDS<T>;
   additionalColumns?: ColumnDef<AwaitedReturnType<T>["items"][number]>[];
   detailLinkColumn?: keyof AwaitedReturnType<T>["items"][number];
@@ -180,7 +186,7 @@ export function DetailList<
     : GenericListContextType<any>["bulkActions"];
   stopRefetchOnChannelChange?: boolean;
   suggestedOrderColumns?: Partial<
-    Record<keyof AwaitedReturnType<T>["items"][number], number>
+    Record<keyof AwaitedReturnType<T>["items"][number] | (string & {}), number>
   >;
   refetchTimeout?: number;
 } & (
@@ -196,14 +202,6 @@ export function DetailList<
       userPermissions.includes(permission),
     );
   }, [userPermissions]);
-  const getPriority = (key: string): number => {
-    if (suggestedOrderColumns) {
-      const suggestedOrder =
-        suggestedOrderColumns[key as keyof typeof suggestedOrderColumns];
-      if (suggestedOrder) return suggestedOrder;
-    }
-    return DEFAULT_COLUMN_PRIORITIES[key] ?? 500;
-  };
 
   const navigate = useNavigate();
   const { getTableExtensions } = usePluginStore();
@@ -246,6 +244,9 @@ export function DetailList<
 
   const getTableDefaultOrder = (
     additional?: (string | undefined)[],
+    suggestedOrder?: Partial<
+      Record<keyof AwaitedReturnType<T>["items"][number], number>
+    >,
   ): string[] => {
     const columns = table.getAllColumns().map((col) => col.id);
     const hasCode = columns.includes("code");
@@ -257,17 +258,41 @@ export function DetailList<
 
     const additionalColumns = (additional?.filter(Boolean) as string[]) || [];
 
+    const getOrder = (id: string) =>
+      suggestedOrder && id in suggestedOrder
+        ? suggestedOrder[id as keyof typeof suggestedOrder]
+        : undefined;
+
     const remaining = columns
       .filter((id) => !prefix.includes(id))
       .filter((id) => !additionalColumns.includes(id))
       .sort((a, b) => {
+        const orderA = getOrder(a);
+        const orderB = getOrder(b);
+
+        if (orderA !== undefined && orderB !== undefined)
+          return orderA - orderB;
+        if (orderA !== undefined) return -1;
+        if (orderB !== undefined) return 1;
+
         const isCustomFieldA = a.startsWith("customFields.");
         const isCustomFieldB = b.startsWith("customFields.");
         if (isCustomFieldA && !isCustomFieldB) return 1;
         if (!isCustomFieldA && isCustomFieldB) return -1;
         return a.localeCompare(b);
       });
-    return [...prefix, ...remaining, ...additionalColumns];
+
+    return [...prefix, ...remaining, ...additionalColumns].sort(
+      (a, b) =>
+        (suggestedOrder?.[a as keyof typeof suggestedOrder] ||
+          DEFAULT_COLUMN_PRIORITIES[
+            a as keyof typeof DEFAULT_COLUMN_PRIORITIES
+          ]) -
+        (suggestedOrder?.[b as keyof typeof suggestedOrder] ||
+          DEFAULT_COLUMN_PRIORITIES[
+            b as keyof typeof DEFAULT_COLUMN_PRIORITIES
+          ]),
+    );
   };
 
   const getTableDefaultVisibility = () => {
@@ -311,6 +336,7 @@ export function DetailList<
     fetch: (params, customFieldsSelector) =>
       fetch(params, customFieldsSelector, mergedSelectors),
     searchFields,
+    searchTranslations,
   });
 
   useEffect(() => {
@@ -510,15 +536,9 @@ export function DetailList<
       },
       [] as ColumnDef<AwaitedReturnType<T>["items"]>[],
     );
-    const resultColumns = mergedAndReplacedColumns
-      .filter(
-        (column) => !hiddenColumns?.includes(getAccessorKey(column) as string),
-      )
-      .sort((a, b) => {
-        const keyA = getAccessorKey(a) as string;
-        const keyB = getAccessorKey(b) as string;
-        return getPriority(keyA) - getPriority(keyB);
-      }) as ColumnDef<AwaitedReturnType<T>["items"]>[];
+    const resultColumns = mergedAndReplacedColumns.filter(
+      (column) => !hiddenColumns?.includes(getAccessorKey(column) as string),
+    );
 
     return resultColumns;
   }, [objects, navigate]);
@@ -601,7 +621,10 @@ export function DetailList<
     if (!objects?.length) return;
     if (!columnsOrderState.length)
       setColumnsOrderState(
-        getTableDefaultOrder(additionalColumns?.map((col) => col.id) || []),
+        getTableDefaultOrder(
+          additionalColumns?.map((col) => col.id) || [],
+          suggestedOrderColumns,
+        ),
       );
     if (
       !columnsVisibilityState ||
@@ -661,6 +684,7 @@ export function DetailList<
         name: values.key,
         type: "operator" in values ? values.operator : undefined,
         component: "component" in values ? values.component : undefined,
+        translation: "translation" in values ? values.translation : undefined,
       })) || [],
     filter: searchParamFilter,
     setFilterField,
@@ -671,7 +695,11 @@ export function DetailList<
 
   return (
     <PageBlock withoutPadding={noPaddings}>
-      <DetailListStoreProvider refetch={refetch} table={table}>
+      <DetailListStoreProvider
+        refetch={refetch}
+        sortButton={SortButton}
+        table={table}
+      >
         {loading ? (
           <LoadingMask />
         ) : (

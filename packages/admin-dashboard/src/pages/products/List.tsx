@@ -87,6 +87,10 @@ export const ProductsListPage = () => {
       onRemove={onRemove}
       createPermissions={[Permission.CreateProduct]}
       deletePermissions={[Permission.DeleteProduct]}
+      suggestedOrderColumns={{
+        featuredAsset: 4,
+        variants: 99,
+      }}
       additionalColumns={[
         {
           id: 'variants',

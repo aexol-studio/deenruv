@@ -9,12 +9,17 @@ export const Search = ({
   initialSearchQuery,
   setSearchQuery,
   searchFields,
+  searchTranslations,
 }: {
   initialSearchQuery?: string | null;
   setSearchQuery: (query: string | null) => void;
   searchFields?: (keyof Awaited<
     ReturnType<PromisePaginated>
   >["items"][number])[];
+  searchTranslations?: Array<{
+    key: keyof Awaited<ReturnType<PromisePaginated>>["items"][number];
+    value: string;
+  }>;
 }) => {
   const { t } = useTranslation("table");
   const [searchQuery, setSearchQueryState] = useState(initialSearchQuery ?? "");
@@ -25,7 +30,13 @@ export const Search = ({
   }, [debouncedSearch]);
 
   const placeholder = t("placeholders.search", {
-    fields: searchFields?.map((f) => t("columns." + f.toString())).join(", "),
+    fields: searchFields
+      ?.map((f) => {
+        const translation = searchTranslations?.find((t) => t.key === f);
+        if (translation) return translation.value;
+        return t("columns." + f.toString());
+      })
+      .join(", "),
   }).toLowerCase();
   const onlyFirstLetterCapitalized = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);

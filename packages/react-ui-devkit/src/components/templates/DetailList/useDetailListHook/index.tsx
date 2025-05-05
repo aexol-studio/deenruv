@@ -25,19 +25,19 @@ type VALUE = ModelTypes[ListType[keyof ListType]][FIELD];
 export const useDetailListHook = <
   T extends PromisePaginated,
   K extends keyof ListType,
-  S,
+  S extends keyof Awaited<ReturnType<PromisePaginated>>["items"][number],
 >({
   fetch,
   customItemsPerPage,
   searchFields,
   fakeURLParams,
+  searchTranslations,
 }: {
   fetch: T;
   customItemsPerPage?: ItemsPerPageType;
-  searchFields?: (keyof Awaited<
-    ReturnType<PromisePaginated>
-  >["items"][number])[];
+  searchFields?: S[];
   fakeURLParams?: boolean;
+  searchTranslations?: Array<{ key: S; value: string }>;
 }): {
   Paginate: JSX.Element;
   Search: JSX.Element;
@@ -246,14 +246,17 @@ export const useDetailListHook = <
     removeFilterField,
     resetFilterFields,
     changeFilterField,
-    Search: (
+    Search: searchFields?.length ? (
       <Search
         {...{
           initialSearchQuery: searchParams.get(SearchParamKey.SEARCH),
           setSearchQuery,
           searchFields,
+          searchTranslations,
         }}
       />
+    ) : (
+      <></>
     ),
     Paginate: (
       <Paginate
