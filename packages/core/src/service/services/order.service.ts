@@ -40,7 +40,7 @@ import {
 import { omit } from "@deenruv/common/lib/omit";
 import { ID, PaginatedList } from "@deenruv/common/lib/shared-types";
 import { summate } from "@deenruv/common/lib/shared-utils";
-import { In, IsNull } from "typeorm";
+import { In, IsNull, getMetadataArgsStorage } from "typeorm";
 import { FindOptionsUtils } from "typeorm/find-options/FindOptionsUtils";
 import { type QueryExpressionMap } from "typeorm/query-builder/QueryExpressionMap";
 import { RequestContext } from "../../api/common/request-context";
@@ -143,6 +143,26 @@ import { ProductVariantTranslation } from "../../entity/product-variant/product-
 import { ShippingMethodTranslation } from "../../entity/shipping-method/shipping-method-translation.entity";
 import { PromotionTranslation } from "../../entity/promotion/promotion-translation.entity";
 import { ProductVariantPrice } from "../../entity/product-variant/product-variant-price.entity";
+import { EntityHydrator } from "../helpers/entity-hydrator/entity-hydrator.service";
+
+const [linesRelation, channelsRelation, otherToManyRelations] = (function () {
+  const relToMany: { [k: string]: RegExp } = {};
+  const relations = getMetadataArgsStorage().filterRelations(Order);
+  const targetTypes: (typeof relations)[0]["relationType"][] = [
+    "one-to-many",
+    "many-to-many",
+  ];
+  for (const r of relations) {
+    if (targetTypes.includes(r.relationType)) {
+      relToMany[`${r.propertyName}`] = new RegExp(
+        `^${r.propertyName}(|\\..*)$`,
+      );
+    }
+  }
+  const { lines, channels, ...rest } = relToMany;
+  const otherToMany = Object.values(rest);
+  return [lines, channels, otherToMany];
+})();
 
 /**
  * @description
@@ -176,6 +196,7 @@ export class OrderService {
     private requestCache: RequestContextCacheService,
     private translator: TranslatorService,
     private stockLevelService: StockLevelService,
+    private entityHydrator: EntityHydrator,
   ) {}
 
   /**
@@ -239,6 +260,27 @@ export class OrderService {
     });
   }
 
+  // Try to split query for all the XToMany relations except for lines and channels.
+  private splitRelations(
+    relations?: RelationPaths<Order>,
+  ): RelationPaths<Order>[] | void {
+    if (relations) {
+      const split: RelationPaths<Order>[] = [[]];
+      for (const r of relations) {
+        if (
+          r.match(linesRelation) ||
+          r.match(channelsRelation) ||
+          !otherToManyRelations.find((re) => r.match(re))
+        ) {
+          split[0].push(r);
+        } else {
+          split.push([r]);
+        }
+      }
+      return split;
+    }
+  }
+
   findAll(
     ctx: RequestContext,
     options?: OrderListOptions,
@@ -278,21 +320,23 @@ export class OrderService {
     const qb = this.connection
       .getRepository(ctx, Order)
       .createQueryBuilder("order");
-    const effectiveRelations = relations ?? [
-      "channels",
-      "customer",
-      "customer.user",
-      "lines",
-      "lines.productVariant",
-      "lines.productVariant.taxCategory",
-      "lines.productVariant.productVariantPrices",
-      "lines.productVariant.translations",
-      "lines.featuredAsset",
-      "lines.taxCategory",
-      "shippingLines",
-      "surcharges",
-      "promotions",
-    ];
+    const [effectiveRelations, ...toManyRelations] = this.splitRelations(
+      relations ?? [
+        "channels",
+        "customer",
+        "customer.user",
+        "lines",
+        "lines.productVariant",
+        "lines.productVariant.taxCategory",
+        "lines.productVariant.productVariantPrices",
+        "lines.productVariant.translations",
+        "lines.featuredAsset",
+        "lines.taxCategory",
+        "shippingLines",
+        "surcharges",
+        "promotions",
+      ],
+    ) || [[]];
     if (
       relations &&
       effectiveRelations.includes("lines.productVariant") &&
@@ -335,6 +379,11 @@ export class OrderService {
           );
         }
       }
+      await Promise.all(
+        toManyRelations.map((relations) =>
+          this.entityHydrator.hydrate(ctx, order, { relations }),
+        ),
+      );
       return order;
     }
   }

@@ -121,10 +121,7 @@ export class ShopOrderResolver {
     @Args() args: QueryOrderByCodeArgs,
   ): Promise<Order | undefined> {
     if (ctx.authorizedAsOwnerOnly) {
-      const order = await this.orderService.findOneByCode(ctx, args.code, [
-        "customer",
-        "customer.user",
-      ]);
+      const order = await this.orderService.findOneByCode(ctx, args.code);
 
       if (
         order &&
