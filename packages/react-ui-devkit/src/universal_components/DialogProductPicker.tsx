@@ -176,7 +176,7 @@ export const DialogProductPicker = ({
 
   return (
     <div>
-      <Button onClick={() => isOpen(true)}>
+      <Button type="button" onClick={() => isOpen(true)}>
         {mode === "product" ? "Select Product" : "Select Variant"}
       </Button>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -198,6 +198,7 @@ export const DialogProductPicker = ({
               />
               {searchString && (
                 <Button
+                  type="button"
                   variant="ghost"
                   size="sm"
                   className="absolute right-1 top-1.5 size-7 p-0"
@@ -287,6 +288,7 @@ export const DialogProductPicker = ({
             </div>
             <div className="flex w-full gap-2 sm:w-auto">
               <Button
+                type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
                 className="flex-1 sm:flex-none"
@@ -294,6 +296,7 @@ export const DialogProductPicker = ({
                 Cancel
               </Button>
               <Button
+                type="button"
                 onClick={handleConfirm}
                 disabled={
                   selectedItems.length === 0 ||
