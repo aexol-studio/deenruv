@@ -101,11 +101,14 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
           <DropdownMenuContent>
             <DropdownMenuLabel>{t(`conditions.header`)}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {availableConditions.map((condition) => (
-              <DropdownMenuItem onClick={() => addCondition(condition)} key={condition.code}>
-                {t(`conditions.codes.${condition.code}`)}
-              </DropdownMenuItem>
-            ))}
+            {availableConditions.map((condition) => {
+              const translated = t(`conditions.codes.${condition.code}`);
+              return (
+                <DropdownMenuItem onClick={() => addCondition(condition)} key={condition.code}>
+                  {translated !== `conditions.codes.${condition.code}` ? translated : condition.description}
+                </DropdownMenuItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       }

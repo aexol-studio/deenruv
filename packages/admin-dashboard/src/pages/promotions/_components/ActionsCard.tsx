@@ -99,11 +99,14 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, e
           <DropdownMenuContent>
             <DropdownMenuLabel>{t(`actions.header`)}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            {availableActions.map((action) => (
-              <DropdownMenuItem key={action.code} onClick={() => addAction(action)}>
-                {t(`actions.codes.${action.code}`)}
-              </DropdownMenuItem>
-            ))}
+            {availableActions.map((action) => {
+              const translated = t(`actions.codes.${action.code}`);
+              return (
+                <DropdownMenuItem key={action.code} onClick={() => addAction(action)}>
+                  {translated !== `actions.codes.${action.code}` ? translated : action.code}
+                </DropdownMenuItem>
+              );
+            })}
           </DropdownMenuContent>
         </DropdownMenu>
       }
