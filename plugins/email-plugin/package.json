@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/email-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -35,7 +35,7 @@
     "@react-email/render": "1.0.5"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148",
+    "@deenruv/core": "^0.1.0",
     "@nestjs/core": "^10.3.10"
   },
   "devDependencies": {

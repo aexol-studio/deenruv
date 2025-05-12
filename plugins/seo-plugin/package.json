@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/seo-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "files": [
@@ -23,7 +23,7 @@
     "@deenruv/react-ui-devkit": "workspace:^"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148"
+    "@deenruv/core": "^0.1.0"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",

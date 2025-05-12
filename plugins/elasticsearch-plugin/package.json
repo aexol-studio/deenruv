@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/elasticsearch-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -36,7 +36,7 @@
     "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148",
+    "@deenruv/core": "^0.1.0",
     "@nestjs/core": "^10.3.10",
     "graphql-tag": "^2.12.6",
     "typeorm": "^0.3.20"

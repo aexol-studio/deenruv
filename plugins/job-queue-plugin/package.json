@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/job-queue-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "package/index.js",
   "types": "package/index.d.ts",
@@ -22,13 +22,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148"
+    "@deenruv/core": "^0.1.0"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",
     "@google-cloud/pubsub": "^2.8.0",
     "@deenruv/common": "workspace:^",
-    "@deenruv/core": "workspace:^",
     "bullmq": "^5.4.2",
     "ioredis": "^5.3.2",
     "rimraf": "^5.0.5",

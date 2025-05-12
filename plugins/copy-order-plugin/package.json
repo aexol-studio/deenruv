@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/copy-order-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "files": [
@@ -20,7 +20,7 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148"
+    "@deenruv/core": "^0.1.0"
   },
   "dependencies": {
     "react": "^18.2.0",

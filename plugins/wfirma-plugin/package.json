@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/wfirma-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "files": [
@@ -46,7 +46,7 @@
     "rimraf": "^5.0.10"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148",
+    "@deenruv/core": "^0.1.0",
     "typeorm": "^0.3.20"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/deenruv-examples-plugin",
-  "version": "0.0.148",
+  "version": "0.1.0",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "files": [
@@ -47,7 +47,7 @@
     "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.0.148",
+    "@deenruv/core": "^0.1.0",
     "typeorm": "^0.3.20"
   }
 }
