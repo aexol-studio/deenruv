@@ -17,11 +17,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@deenruv/core": "^0.0.148"
+  },
   "dependencies": {
     "@apollo/server": "^4.10.4",
     "graphql-query-complexity": "^0.12.0"
   },
   "devDependencies": {
+    "@deenruv/core": "workspace:^",
     "@deenruv/common": "workspace:^",
     "@deenruv/core": "workspace:^",
     "rimraf": "^5.0.5"

@@ -36,7 +36,6 @@
     "@deenruv/facet-harmonica-plugin": "workspace:*",
     "@deenruv/product-badges-plugin": "workspace:*",
     "@deenruv/method-modal-plugin": "workspace:*",
-    "@deenruv/minko-core-plugin": "workspace:*",
     "@deenruv/elasticsearch-plugin": "workspace:*",
     "@deenruv/email-plugin": "workspace:*",
     "@deenruv/job-queue-plugin": "workspace:*",

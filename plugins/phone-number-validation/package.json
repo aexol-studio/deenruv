@@ -18,12 +18,16 @@
     "lint:fix": "eslint --fix ."
   },
   "dependencies": {
+    "@nestjs/graphql": "^12.2.0",
     "@deenruv/common": "workspace:^",
-    "@deenruv/core": "workspace:^",
     "@deenruv/react-ui-devkit": "workspace:^",
     "libphonenumber-js": "^1.12.6"
   },
+  "peerDependencies": {
+    "@deenruv/core": "^0.0.148"
+  },
   "devDependencies": {
+    "@deenruv/core": "workspace:^",
     "rimraf": "^5.0.10",
     "typescript": "5.3.3"
   }

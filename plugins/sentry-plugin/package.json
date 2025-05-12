@@ -19,11 +19,11 @@
   },
   "peerDependencies": {
     "@sentry/node": "7.106.1",
+    "@deenruv/core": "^0.0.148",
     "graphql": "~16.9.0",
     "graphql-tag": "^2.12.6"
   },
   "devDependencies": {
-    "@deenruv/common": "workspace:^",
     "@deenruv/core": "workspace:^",
     "@sentry/node": "7.106.1",
     "@sentry/types": "7.106.1",
@@ -31,6 +31,7 @@
     "rimraf": "^5.0.5"
   },
   "dependencies": {
+    "@deenruv/common": "workspace:^",
     "@apollo/server": "^4.10.4",
     "@nestjs/common": "^10.3.10",
     "@nestjs/core": "^10.3.10",

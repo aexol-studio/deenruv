@@ -1,7 +1,7 @@
 import { Allow, Ctx, Permission, RequestContext } from "@deenruv/core";
 import { Controller, Get, Res } from "@nestjs/common";
 import { BetterMetricsService } from "../services/metrics.service";
-import { Response } from "express";
+import { type Response } from "express";
 @Controller("metrics")
 export class RefreshViewController {
   constructor(private metricsService: BetterMetricsService) {}

@@ -22,11 +22,11 @@
   "dependencies": {
     "react": "^18.2.0",
     "@deenruv/common": "workspace:^",
-    "@deenruv/core": "workspace:^",
     "@deenruv/ui-devkit": "workspace:^",
     "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/admin-types": "workspace:^",
     "@deenruv/admin-ui": "workspace:^",
+    "axios": "^1.7.7",
     "react-i18next": "^14.0.5",
     "react-router-dom": "^6.22.1",
     "graphql-zeus": "^7.0.0",
@@ -38,14 +38,15 @@
     "replicate": "1.0.1"
   },
   "devDependencies": {
+    "@deenruv/core": "workspace:^",
     "typescript": "5.3.3",
     "@graphql-typed-document-node/core": "3.2.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "rimraf": "^5.0.10",
-    "typeorm": "^0.3.20"
+    "rimraf": "^5.0.10"
   },
   "peerDependencies": {
+    "@deenruv/core": "^0.0.148",
     "typeorm": "^0.3.20"
   }
 }

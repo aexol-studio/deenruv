@@ -21,7 +21,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "@deenruv/core": "^0.0.148"
+  },
   "devDependencies": {
+    "@deenruv/core": "workspace:^",
     "@google-cloud/pubsub": "^2.8.0",
     "@deenruv/common": "workspace:^",
     "@deenruv/core": "workspace:^",

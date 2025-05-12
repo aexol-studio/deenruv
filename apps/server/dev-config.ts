@@ -6,7 +6,6 @@ import {
 import { DashboardWidgetsPlugin } from "@deenruv/dashboard-widgets-plugin";
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
-// import { MinkoCorePlugin } from '@deenruv/minko-core-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
 import { ReplicatePlugin } from "@deenruv/replicate-plugin";
 // import { ReplicateSimpleBGPlugin } from "@deenruv/replicate-simple-bg-plugin";
@@ -679,11 +678,6 @@ export const devConfig: DeenruvConfig = {
     // }),
     // DeenruvExamplesServerPlugin,
     // ContentManagementServerPlugin,
-    // MinkoCorePlugin.init({
-    //     s3Client,
-    //     expiresIn: 60 * 60 * 24 * 3,
-    //     bucket: process.env.MINIO_INVOICES ?? 'invoices.dev.minko.aexol.work',
-    // }),
     // ReplicatePlugin.init({
     //   deploymentName: process.env.REPLICATE_DEPLOYMENT_NAME || "",
     //   // url: process.env.REPLICATE_URL || '',

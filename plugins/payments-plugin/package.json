@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@deenruv/common": "workspace:^",
-    "@deenruv/core": "workspace:^",
     "@deenruv/testing": "workspace:^",
     "@nestjs/common": "^10.3.10",
     "@nestjs/core": "^10.3.10",
@@ -43,6 +42,7 @@
     "express": "^4.21.0"
   },
   "peerDependenciesMeta": {
+    "@deenruv/core": "^0.0.148",
     "@mollie/api-client": {
       "optional": true
     },
@@ -54,6 +54,7 @@
     }
   },
   "devDependencies": {
+    "@deenruv/core": "workspace:^",
     "@mollie/api-client": "^3.7.0",
     "@types/body-parser": "^1.19.5",
     "@types/braintree": "^3.3.11",

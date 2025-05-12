@@ -20,31 +20,35 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --es --td"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "@deenruv/common": "workspace:^",
-    "@deenruv/core": "workspace:^",
-    "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/admin-types": "workspace:^",
+    "@deenruv/common": "workspace:^",
+    "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/testing": "workspace:^",
-    "react-i18next": "^14.0.5",
-    "react-router-dom": "^6.22.1",
-    "graphql-zeus": "^7.0.0",
-    "lucide-react": "^0.363.0",
-    "sonner": "^1.4.41",
     "@nestjs/common": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
+    "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
     "graphql-tag": "^2.12.6",
-    "replicate": "1.0.1"
+    "graphql-zeus": "^7.0.0",
+    "lucide-react": "^0.363.0",
+    "react": "^18.2.0",
+    "react-day-picker": "^8.10.1",
+    "react-hook-form": "^7.51.3",
+    "react-i18next": "^14.0.5",
+    "react-router-dom": "^6.22.1",
+    "replicate": "1.0.1",
+    "sonner": "^1.4.41"
   },
   "devDependencies": {
-    "typescript": "5.3.3",
+    "@deenruv/core": "workspace:^",
     "@graphql-typed-document-node/core": "3.2.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "rimraf": "^5.0.10",
-    "typeorm": "^0.3.20"
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
+    "@deenruv/core": "^0.0.148",
     "typeorm": "^0.3.20"
   }
 }

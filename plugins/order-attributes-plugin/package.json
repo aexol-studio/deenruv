@@ -20,28 +20,31 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
-    "graphql-tag": "^2.12.6",
-    "react": "^18.2.0",
-    "@deenruv/common": "workspace:^",
-    "@deenruv/core": "workspace:^",
-    "@deenruv/react-ui-devkit": "workspace:^",
     "@deenruv/admin-types": "workspace:^",
-    "react-i18next": "^14.0.5",
-    "react-router-dom": "^6.22.1",
+    "@deenruv/common": "workspace:^",
+    "@deenruv/react-ui-devkit": "workspace:^",
+    "@nestjs/common": "^10.3.10",
+    "@nestjs/graphql": "^12.2.0",
+    "graphql-tag": "^2.12.6",
     "graphql-zeus": "^7.0.0",
     "lucide-react": "^0.363.0",
+    "react": "^18.2.0",
+    "react-i18next": "^14.0.5",
+    "react-router-dom": "^6.22.1",
     "sonner": "^1.4.41",
-    "@nestjs/common": "^10.3.10",
-    "@nestjs/graphql": "^12.2.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "rimraf": "^5.0.10",
-    "typescript": "5.3.3",
+    "@deenruv/core": "workspace:^",
+    "@graphql-typed-document-node/core": "3.2.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "typeorm": "^0.3.20"
+    "@types/uuid": "^9.0.8",
+    "rimraf": "^5.0.10",
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
+    "@deenruv/core": "^0.0.148",
     "typeorm": "^0.3.20"
   }
 }

@@ -21,24 +21,24 @@
     "access": "public"
   },
   "dependencies": {
+    "@deenruv/common": "workspace:^",
     "@elastic/elasticsearch": "~7.9.1",
     "@nestjs/common": "^10.3.10",
-    "@nestjs/core": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
     "@nestjs/terminus": "^10.2.3",
     "deepmerge": "^4.2.2",
     "fast-deep-equal": "^3.1.3",
-    "graphql-tag": "^2.12.6",
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
-    "@deenruv/common": "workspace:^",
     "@deenruv/core": "workspace:^",
     "rimraf": "^5.0.5",
-    "typescript": "5.3.3",
-    "typeorm": "^0.3.20"
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
+    "@deenruv/core": "^0.0.148",
+    "@nestjs/core": "^10.3.10",
+    "graphql-tag": "^2.12.6",
     "typeorm": "^0.3.20"
   }
 }
