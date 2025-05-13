@@ -22,16 +22,17 @@
     "@nestjs/core": "^10.3.10",
     "@nestjs/graphql": "^12.2.0",
     "graphql-tag": "^2.12.6",
-    "node-fetch": "^2.7.0",
-    "rxjs": "^7.8.1"
+    "node-fetch": "^2.7.0"
   },
   "peerDependencies": {
-    "@deenruv/core": "^0.1.0"
+    "@deenruv/core": "^0.1.0",
+    "rxjs": "7.8.1"
   },
   "devDependencies": {
     "@deenruv/core": "workspace:^",
     "@deenruv/common": "workspace:^",
     "@types/node-fetch": "^2.6.11",
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "rxjs": "7.8.1"
   }
 }
