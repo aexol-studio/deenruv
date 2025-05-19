@@ -152,7 +152,7 @@ export function DetailList<
   refetchTimeout,
 }: {
   fetch: T;
-  onRemove?: (items: AwaitedReturnType<T>["items"]) => Promise<boolean>;
+  onRemove?: (items: { id: string }[]) => Promise<boolean>;
   tableId: KEY;
   entityName: ENTITY | string;
   searchFields?: Array<Exclude<FIELDS<T>[number], DISABLED_SEARCH_FIELDS>>;
@@ -221,9 +221,7 @@ export function DetailList<
     ),
   )?.customFields;
 
-  const [itemsToDelete, setItemsToDelete] = useState<
-    AwaitedReturnType<T>["items"]
-  >([]);
+  const [itemsToDelete, setItemsToDelete] = useState<{ id: string }[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [deleteDialogOpened, setDeleteDialogOpened] = useState(false);
@@ -566,7 +564,7 @@ export function DetailList<
     });
   }, [objects]);
 
-  const onRemove = (items: AwaitedReturnType<T>["items"]) => {
+  const onRemove = (items: { id: string }[]) => {
     setItemsToDelete(items);
     setDeleteDialogOpened(true);
   };
@@ -574,7 +572,7 @@ export function DetailList<
   const table = useReactTable({
     data: objects || [],
     manualPagination: true,
-    columns,
+    columns: columns as any,
     getRowId: (row) => row.id,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -588,7 +586,7 @@ export function DetailList<
     onExpandedChange: setExpanded,
     getSubRows: getSubRows,
     meta: {
-      hideColumns: hiddenColumns,
+      hideColumns: hiddenColumns as any,
       bulkActions,
       rowActions,
       route,
@@ -653,7 +651,7 @@ export function DetailList<
       }
 
       refetch();
-      table.toggleAllRowsSelected(false);
+      table.setRowSelection({});
       setItemsToDelete([]);
       setDeleteDialogOpened(false);
     } catch {
@@ -685,6 +683,13 @@ export function DetailList<
     changeFilterField,
   };
 
+  const selectedAmount = useMemo(
+    () =>
+      Object.entries(table.getState().rowSelection).filter(([, value]) => value)
+        .length,
+    [table.getState().rowSelection],
+  );
+
   return (
     <PageBlock withoutPadding={noPaddings}>
       <DetailListStoreProvider
@@ -708,7 +713,7 @@ export function DetailList<
               <div className="mb-1 flex w-full flex-col items-start gap-4">
                 <div className="flex w-full items-end justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    {table.getSelectedRowModel().flatRows.length > 0 && (
+                    {selectedAmount > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -718,8 +723,7 @@ export function DetailList<
                             aria-label="Open filters"
                           >
                             <Group className="size-4" aria-hidden="true" />
-                            {t("Zaznaczone")} (
-                            {table.getSelectedRowModel().flatRows.length})
+                            {t("Zaznaczone")} ({selectedAmount})
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
@@ -736,14 +740,16 @@ export function DetailList<
                                 {bulkActions?.map((action) => {
                                   const onClick = async () => {
                                     try {
-                                      const { error } = await action.onClick({
-                                        table,
-                                        data: objects,
-                                        refetch,
-                                      });
+                                      const { success, error } =
+                                        await action.onClick({
+                                          table,
+                                          data: objects,
+                                          refetch,
+                                        });
                                       if (error) {
                                         throw new Error(error);
                                       } else {
+                                        toast.success(success);
                                         refetch();
                                         table.toggleAllRowsSelected(false);
                                       }
@@ -773,14 +779,14 @@ export function DetailList<
                           <DropdownMenuGroup>
                             <DropdownMenuItem
                               className="text-red-600 cursor-pointer"
-                              disabled={
-                                !table.getSelectedRowModel().flatRows.length
-                              }
+                              disabled={!selectedAmount}
                               onClick={() => {
-                                const selected = table
-                                  .getSelectedRowModel()
-                                  .rows.map((row) => row.original);
-                                onRemove(selected);
+                                const selected = Object.entries(
+                                  table.getState().rowSelection,
+                                )
+                                  .filter(([, value]) => value)
+                                  .map(([key]) => key);
+                                onRemove(selected.map((id) => ({ id })));
                               }}
                             >
                               <Trash2Icon className="mr-2 size-4" />

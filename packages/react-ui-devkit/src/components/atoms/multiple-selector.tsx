@@ -85,6 +85,7 @@ interface MultipleSelectorProps {
   /** hide the clear all button. */
   hideClearAllButton?: boolean;
   fixedDropdown?: boolean;
+  disabledInput?: boolean;
   /** Fixed dropdown position, for example if  selector is in container with overflow-hidden */
 }
 
@@ -195,6 +196,7 @@ const MultipleSelector = React.forwardRef<
       inputProps,
       hideClearAllButton = false,
       fixedDropdown = false,
+      disabledInput = false,
     }: MultipleSelectorProps,
     ref: React.Ref<MultipleSelectorRef>,
   ) => {
@@ -463,10 +465,11 @@ const MultipleSelector = React.forwardRef<
         <div
           ref={containerRef}
           className={cn(
-            "min-h-10 rounded-md border border-input text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+            "min-h-10 rounded-md border border-input text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 max-h-[150px] overflow-auto",
             {
               "px-3 py-2": selected.length !== 0,
-              "cursor-text": !disabled && selected.length !== 0,
+              "cursor-text":
+                !disabled && selected.length !== 0 && !disabledInput,
             },
             className,
           )}
@@ -515,41 +518,43 @@ const MultipleSelector = React.forwardRef<
               );
             })}
             {/* Avoid having the "Search" Icon */}
-            <CommandPrimitive.Input
-              {...inputProps}
-              ref={inputRef}
-              value={inputValue}
-              disabled={disabled}
-              onValueChange={(value) => {
-                setInputValue(value);
-                inputProps?.onValueChange?.(value);
-              }}
-              onBlur={(event) => {
-                if (!onScrollbar) {
-                  setOpen(false);
+            {!disabledInput ? (
+              <CommandPrimitive.Input
+                {...inputProps}
+                ref={inputRef}
+                value={inputValue}
+                disabled={disabled}
+                onValueChange={(value) => {
+                  setInputValue(value);
+                  inputProps?.onValueChange?.(value);
+                }}
+                onBlur={(event) => {
+                  if (!onScrollbar) {
+                    setOpen(false);
+                  }
+                  inputProps?.onBlur?.(event);
+                }}
+                onFocus={(event) => {
+                  setOpen(true);
+                  triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
+                  inputProps?.onFocus?.(event);
+                }}
+                placeholder={
+                  hidePlaceholderWhenSelected && selected.length !== 0
+                    ? ""
+                    : placeholder
                 }
-                inputProps?.onBlur?.(event);
-              }}
-              onFocus={(event) => {
-                setOpen(true);
-                triggerSearchOnFocus && onSearch?.(debouncedSearchTerm);
-                inputProps?.onFocus?.(event);
-              }}
-              placeholder={
-                hidePlaceholderWhenSelected && selected.length !== 0
-                  ? ""
-                  : placeholder
-              }
-              className={cn(
-                "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
-                {
-                  "w-full": hidePlaceholderWhenSelected,
-                  "px-3 py-2": selected.length === 0,
-                  "ml-1": selected.length !== 0,
-                },
-                inputProps?.className,
-              )}
-            />
+                className={cn(
+                  "flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
+                  {
+                    "w-full": hidePlaceholderWhenSelected,
+                    "px-3 py-2": selected.length === 0,
+                    "ml-1": selected.length !== 0,
+                  },
+                  inputProps?.className,
+                )}
+              />
+            ) : null}
             <button
               type="button"
               onClick={() => {

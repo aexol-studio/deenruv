@@ -10,6 +10,8 @@ import {
   TableLabel,
   useTranslation,
   FacetIdsSelector,
+  EntityChannelManagementBulkAction,
+  EntityFacetManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 // import { FacetValueSelector } from '@deenruv/react-ui-devkit/FacetValueSelector.js';
 const tableId = 'products-list-view';
@@ -76,6 +78,10 @@ export const ProductsListPage = () => {
             );
           },
         },
+      ]}
+      additionalBulkActions={[
+        ...EntityChannelManagementBulkAction('products-list-view'),
+        EntityFacetManagementBulkAction('products-list-view'),
       ]}
       detailLinkColumn="id"
       searchFields={['name', 'slug', 'sku']}

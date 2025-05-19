@@ -14,7 +14,9 @@ type BulkAction<K extends keyof typeof ListLocations> = NonNullable<
 
 export const EntityChannelManagementBulkAction = <
   K extends keyof typeof ListLocations,
->(): BulkAction<K>[] => {
+>(
+  type: K,
+): BulkAction<K>[] => {
   const channel = useSettings((state) => state.selectedChannel);
   return [
     {

@@ -79,10 +79,3 @@ export function createDialogFromComponent<
     );
   });
 }
-
-// if (import.meta.hot) {
-//   import.meta.hot.dispose(() => {
-//     const modals = document.querySelectorAll("[data-dialog-container]");
-//     modals.forEach((modal) => modal.remove());
-//   });
-// }

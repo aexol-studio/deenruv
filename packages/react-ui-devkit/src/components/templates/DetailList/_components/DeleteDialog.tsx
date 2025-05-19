@@ -10,19 +10,19 @@ import {
 import { useTranslation } from "@/hooks/useTranslation.js";
 import React from "react";
 
-type ConfirmationDialogProps<T extends { id: string }> = {
+type ConfirmationDialogProps = {
   onConfirmDelete: () => void;
   setDeleteDialogOpened: (e: boolean) => void;
-  itemsToDelete: T[];
+  itemsToDelete: { id: string }[];
   deleteDialogOpened: boolean;
 };
 
-export function DeleteDialog<T extends { id: string }>({
+export function DeleteDialog({
   onConfirmDelete,
   setDeleteDialogOpened,
   deleteDialogOpened,
   itemsToDelete,
-}: ConfirmationDialogProps<T>) {
+}: ConfirmationDialogProps) {
   const { t } = useTranslation("table");
 
   return (
@@ -38,8 +38,8 @@ export function DeleteDialog<T extends { id: string }>({
             {t("bulk.delete.description")}
           </DialogDescription>
           <DialogDescription>
-            {itemsToDelete.map((n) => (
-              <div key={n.id}>{n.id}</div>
+            {itemsToDelete.map(({ id }) => (
+              <div key={id}>{id}</div>
             ))}
           </DialogDescription>
         </div>

@@ -126,7 +126,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
       <AccordionItem value={title} className="h-full border-none">
         <Card
           className={cn(
-            "shadow-sm transition-colors duration-200 hover:shadow h-full",
+            "shadow-sm transition-colors duration-200 hover:shadow h-full overflow-hidden",
             variant === "group" &&
               "bg-transparent border-dashed border-[2px] shadow-none",
             borderColor,

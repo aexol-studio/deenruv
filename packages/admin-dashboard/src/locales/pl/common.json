@@ -491,6 +491,21 @@
     "shipping": "Wysyłka i płatności",
     "promotions": "Promocje"
   },
+  "manageEntityFacetsDialog": {
+    "title": "Masowo edytuj aspekty w",
+    "addFacet": "Dodaj aspekt do wszystkich zaznaczonych",
+    "assignFacet": "Przypisz do zaznaczonych",
+    "allSelectedFacetValues": "Wszystkie zaznaczone wartości aspektów",
+    "facetValues": "aspektów",
+    "products": {
+      "in": "produktach",
+      "selected": "produktów"
+    },
+    "collections": {
+      "in": "kolekcjach",
+      "selected": "kolekcji"
+    }
+  },
   "menu": {
     "adminUiV2": "Admin UI",
     "extensions": "rozszerzenia",
@@ -1044,5 +1059,7 @@
     "emptyStateDescription": "Twój pulpit jest pusty. Dodaj widżety, aby znaleźć tutaj mnóstwo informacji.",
     "emptyStateDescription2": "Widżety pomagają zwizualizować dane oraz mieć szybki dostęp do kluczowych funkcji. Dodaj pierwszy, by rozpocząć."
   },
-  "goBackToList": "Wróć do listy"
+  "goBackToList": "Wróć do listy",
+  "saveChanges": "Zapisz zmiany",
+  "submit": "Zatwierdź"
 }

@@ -10,12 +10,18 @@ interface FacetIdsSelectorProps {
   onChange: (facetValuesIds: string[]) => void;
   facetValuesIds: string[] | undefined;
   fixedDropdown?: boolean;
+  single?: boolean;
+  className?: string;
+  disabledInput?: boolean;
 }
 
 export const FacetIdsSelector: React.FC<FacetIdsSelectorProps> = ({
   facetValuesIds,
   onChange,
   fixedDropdown,
+  single = false,
+  className,
+  disabledInput,
 }) => {
   const { t } = useTranslation("products");
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
@@ -37,7 +43,6 @@ export const FacetIdsSelector: React.FC<FacetIdsSelectorProps> = ({
 
   useEffect(() => {
     (async () => {
-      if (!facetValuesIds || !facetValuesIds.length) return;
       const response = await apiClient("query")({
         facetValues: [
           { options: { filter: { id: { in: facetValuesIds } } } },
@@ -56,14 +61,28 @@ export const FacetIdsSelector: React.FC<FacetIdsSelectorProps> = ({
     })();
   }, [facetValuesIds]);
 
+  const handleChange = (options: Option[]) => {
+    if (single) {
+      const first = options[0];
+      setSelectedOptions(first ? [first] : []);
+      onChange(first ? [first.value] : []);
+    } else {
+      setSelectedOptions(options);
+      onChange(options.map((o) => o.value));
+    }
+  };
+
   return (
     <MultipleSelector
       value={selectedOptions}
       placeholder={t("facetPlaceholder")}
-      onChange={(options) => onChange(options.map((o) => o.value))}
+      onChange={handleChange}
       onSearch={handleSearch}
       hideClearAllButton
       fixedDropdown={fixedDropdown}
+      maxSelected={single ? 1 : undefined}
+      className={className}
+      disabledInput={disabledInput}
     />
   );
 };

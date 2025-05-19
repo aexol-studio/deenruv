@@ -12,6 +12,7 @@ import {
   EntityChannelManagementRowAction,
   ListLocations,
   EntityChannelManagementBulkAction,
+  EntityFacetManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 import { ArrowRight } from 'lucide-react';
 
@@ -98,7 +99,8 @@ export const CollectionsListPage = () => {
         },
       ]}
       additionalBulkActions={[
-        ...EntityChannelManagementBulkAction<'collections-list-view'>(),
+        ...EntityChannelManagementBulkAction('collections-list-view'),
+        EntityFacetManagementBulkAction('collections-list-view'),
         {
           icon: <FolderOpen size={16} />,
           label: 'Przenieś zaznaczone kolekcje',
