@@ -113,6 +113,7 @@ import { RefreshViewController } from "./controllers/refresh-view-controller";
         types: [ChartMetricType!]!
         orderStates: [String!]!
         productIDs: [String!]
+        net: Boolean
       }
 
       extend type Query {

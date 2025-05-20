@@ -16,14 +16,14 @@ import { DeenruvLogo } from './DeenruvLogo';
 // const plugins: Array<DeenruvUIPlugin> = [ExampleUiPlugin, CMSPlugin, BadgesUiPlugin, DashboardWidgetsPlugin];
 const plugins: Array<DeenruvUIPlugin> = [
   DashboardWidgetsPlugin,
-  ReplicateUiPlugin,
+  // ReplicateUiPlugin,
   // ReplicateSimpleBGUiPlugin,
-  InRealizationUIPlugin,
-  CopyOrderUIPlugin,
-  FacetHarmonicaUiPlugin,
-  OrderLineAttributesUiPlugin,
-  WFirmaUIPlugin,
-  Przelewy24UIPlugin,
+  // InRealizationUIPlugin,
+  // CopyOrderUIPlugin,
+  // FacetHarmonicaUiPlugin,
+  // OrderLineAttributesUiPlugin,
+  // WFirmaUIPlugin,
+  // Przelewy24UIPlugin,
 ];
 const settings: DeenruvAdminPanelSettings = {
   branding: {

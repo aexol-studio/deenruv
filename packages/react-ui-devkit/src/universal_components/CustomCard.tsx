@@ -12,6 +12,7 @@ import React, {
   PropsWithChildren,
   ReactElement,
   ReactNode,
+  useRef,
   useState,
 } from "react";
 
@@ -99,6 +100,30 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
       : icon;
 
   const [openItem, setOpenItem] = useState(defaultOpen);
+  const [collapsing, setCollapsing] = useState(false);
+  const collapseTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleValueChange = (value: string | undefined) => {
+    // If closing (collapsing)
+    if (openItem && !value) {
+      setCollapsing(true);
+      collapseTimeout.current = setTimeout(() => {
+        setOpenItem(value);
+        setCollapsing(false);
+      }, 250);
+    } else {
+      // Opening: open immediately, remove overflow-hidden
+      if (collapseTimeout.current) clearTimeout(collapseTimeout.current);
+      setCollapsing(false);
+      setOpenItem(value);
+    }
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (collapseTimeout.current) clearTimeout(collapseTimeout.current);
+    };
+  }, []);
   const HeaderJSX = (
     <CustomCardHeader
       {...{ description, title }}
@@ -121,15 +146,18 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
       collapsible
       className={cn("w-full", wrapperClassName)}
       defaultValue={defaultOpen}
-      onValueChange={setOpenItem}
+      value={openItem}
+      onValueChange={handleValueChange}
     >
       <AccordionItem value={title} className="h-full border-none">
         <Card
           className={cn(
-            "shadow-sm transition-colors duration-200 hover:shadow h-full overflow-hidden",
+            "shadow-sm transition-colors duration-200 hover:shadow h-full",
             variant === "group" &&
               "bg-transparent border-dashed border-[2px] shadow-none",
             borderColor,
+            (collapsing || !openItem) && "overflow-hidden",
+            !collapsing && openItem && "overflow-visible",
           )}
         >
           {notCollapsible ? (

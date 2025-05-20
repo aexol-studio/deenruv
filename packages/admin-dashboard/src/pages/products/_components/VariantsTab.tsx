@@ -49,9 +49,12 @@ export const VariantsTab = () => {
       setLoading(false);
       if (response.productVariants) {
         setVariants(response.productVariants.items);
+        if (activeTab === undefined) {
+          setActiveTab(response.productVariants.items[0]?.id);
+        }
       }
     }
-  }, [id]);
+  }, [id, activeTab]);
 
   useEffect(() => {
     fetchData();

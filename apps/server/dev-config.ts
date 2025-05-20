@@ -7,7 +7,6 @@ import { DashboardWidgetsPlugin } from "@deenruv/dashboard-widgets-plugin";
 // import { ContentManagementServerPlugin } from '@deenruv/content-management-plugin';
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { DeenruvExamplesServerPlugin } from '@deenruv/deenruv-examples-plugin';
-import { ReplicatePlugin } from "@deenruv/replicate-plugin";
 // import { ReplicateSimpleBGPlugin } from "@deenruv/replicate-simple-bg-plugin";
 import { FacetHarmonicaServerPlugin } from "@deenruv/facet-harmonica-plugin";
 import { InRealizationPlugin } from "@deenruv/in-realization-plugin";
@@ -30,7 +29,6 @@ import {
   Asset,
 } from "@deenruv/core";
 import { BullMQJobQueuePlugin } from "@deenruv/job-queue-plugin/package/bullmq";
-import "dotenv/config";
 import path from "path";
 import { s3Client } from "client-s3.js";
 import { OrderLineAttributesServerPlugin } from "@deenruv/order-line-attributes-plugin";

@@ -107,7 +107,7 @@ export const CollectionsListPage = () => {
           onClick: async ({ table, data, refetch }) => {
             const selectedRows = table.getSelectedRowModel().flatRows.map((row) => row);
             if (selectedRows.length === 0) {
-              return { error: 'Nie zaznaczone żadne kolekcji' };
+              return { error: 'Nie zaznaczono żadnej kolekcji' };
             }
             try {
               // const result = await createDialogFromComponent(MoveCollectionsToCollections, selectedRows);

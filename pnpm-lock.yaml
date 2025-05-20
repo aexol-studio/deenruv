@@ -74,6 +74,9 @@ importers:
       graphql-upload:
         specifier: ^16.0.2
         version: 16.0.2(@types/express@4.17.21)(@types/koa@2.15.0)(graphql@16.9.0)
+      prettier-plugin-tailwindcss:
+        specifier: ^0.5.14
+        version: 0.5.14(prettier@3.5.3)
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -165,9 +168,6 @@ importers:
       lint-staged:
         specifier: ^10.5.4
         version: 10.5.4
-      prettier:
-        specifier: ^3.2.5
-        version: 3.5.3
       prettier-eslint:
         specifier: ^16.3.0
         version: 16.4.2(typescript@5.3.3)
@@ -373,12 +373,6 @@ importers:
       postcss:
         specifier: ^8.4.38
         version: 8.5.3
-      prettier:
-        specifier: ^3.2.5
-        version: 3.5.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.5.14
-        version: 0.5.14(prettier@3.5.3)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17(ts-node@10.9.2(@swc/core@1.11.24(@swc/helpers@0.5.17))(@types/node@20.17.46)(typescript@5.4.2))
@@ -777,12 +771,6 @@ importers:
       postcss:
         specifier: ^8.4.38
         version: 8.5.3
-      prettier:
-        specifier: ^3.2.5
-        version: 3.5.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.5.14
-        version: 0.5.14(prettier@3.5.3)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.17(ts-node@10.9.2(@swc/core@1.11.24(@swc/helpers@0.5.17))(@types/node@20.17.46)(typescript@5.4.2))
@@ -1534,12 +1522,6 @@ importers:
       postcss:
         specifier: ^8.4.38
         version: 8.5.3
-      prettier:
-        specifier: ^3.2.5
-        version: 3.5.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.5.14
-        version: 0.5.14(prettier@3.5.3)
       react:
         specifier: ^18.2.0
         version: 18.3.1

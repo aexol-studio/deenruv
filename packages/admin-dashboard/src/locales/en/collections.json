@@ -124,7 +124,7 @@
         "removeError": "Cannot delete a collection from a feed"
     },
     "moveCollectionsToChannels": {
-        "moveCollections": "Transferring collections",
+        "moveCollections": "Transferring entities",
         "move": "Move",
         "selected": "Selected",
         "availableChannels": "Available channels",
@@ -135,9 +135,9 @@
             "code": "Code",
             "active": "Active"
         },
-        "movedAllCollections": "All collections transferred",
-        "movedPartOfCollections": "Part of the collection has been transferred",
-        "moveError": "Unable to transfer collection"
+        "movedAllCollections": "All entities transferred",
+        "movedPartOfCollections": "Part of the entities has been transferred",
+        "moveError": "Unable to transfer entities"
     },
     "moveCollectionsToCollections": {
         "targetCollection": "Target collection",

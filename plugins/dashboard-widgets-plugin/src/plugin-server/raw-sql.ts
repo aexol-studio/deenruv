@@ -17,10 +17,12 @@ export const TOTAL_PRODUCT_VIEW_SELECT = [
 export const ORDER_TOTAL_DAILY_SELECT = [
   'extract(epoch from osv.hour - :startDate)::integer/86400 + 1 as "intervalTick"',
   'SUM(osv."total") as value',
+  'SUM(osv."totalWithTax") as "valueWithTax"',
 ];
 export const ORDER_TOTAL_HOURLY_SELECT = [
   'extract(epoch from osv.hour - :startDate)::integer/3600  as "intervalTick"',
   'SUM(osv."total") as value',
+  'SUM(osv."totalWithTax") as "valueWithTax"',
 ];
 export const ORDER_COUNT_DAILY_SELECT = [
   'extract(epoch from osv.hour - :startDate)::integer/86400 + 1 as "intervalTick"',
@@ -34,10 +36,12 @@ export const ORDER_AVERAGE_DAILY_SELECT = [
   'extract(epoch from osv.hour - :startDate)::integer/86400 + 1 as "intervalTick"',
   'SUM(osv."orderCount") as orderCount',
   'SUM(osv."total") as value',
+  'SUM(osv."totalWithTax") as "valueWithTax"',
 ];
 
 export const ORDER_AVERAGE_HOURLY_SELECT = [
   'extract(epoch from osv.hour - :startDate)::integer/3600 as "intervalTick"',
   'SUM(osv."orderCount") as orderCount',
   'SUM(osv."total") as value',
+  'SUM(osv."totalWithTax") as "valueWithTax"',
 ];

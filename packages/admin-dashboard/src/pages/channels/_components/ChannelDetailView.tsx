@@ -47,10 +47,7 @@ export const ChannelDetailView = () => {
   useEffect(() => {
     (async () => {
       const resp = await fetchEntity();
-
       if (!resp) return;
-
-      console.log('CH', resp);
 
       setField('code', resp.code);
       setField('availableCurrencyCodes', resp.availableCurrencyCodes);
@@ -67,15 +64,7 @@ export const ChannelDetailView = () => {
 
   const fetchSellers = useCallback(async () => {
     const response = await apiClient('query')({
-      sellers: [
-        {},
-        {
-          items: {
-            id: true,
-            name: true,
-          },
-        },
-      ],
+      sellers: [{}, { items: { id: true, name: true } }],
     });
     setSellersOptions(response.sellers.items.map((s) => ({ label: s.name, value: s.id })));
   }, []);
@@ -120,7 +109,7 @@ export const ChannelDetailView = () => {
                 />
               </div>
             </div>
-            <div className="gap-3">
+            <div className="flex flex-col gap-3">
               <div className="flex basis-full md:basis-1/3">
                 <SimpleSelect
                   label={t('details.basic.seller')}

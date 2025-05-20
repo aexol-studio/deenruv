@@ -863,6 +863,8 @@ type OptionalKeys<T> = {
 
 export type WithOptionalNullables<T> = OptionalKeys<WithNullableKeys<T>> & WithNonNullableKeys<T>;
 
+export type ComposableSelector<T extends keyof ValueTypes> = ReturnType<SelectionFunction<ValueTypes[T]>>;
+
 export type Variable<T extends GraphQLVariableType, Name extends string> = {
   ' __zeus_name': Name;
   ' __zeus_type': T;
@@ -4590,7 +4592,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: ValueTypes["MetricIntervalType"] | Variable<any, string>,
 	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
 	orderStates: Array<string> | Variable<any, string>,
-	productIDs?: Array<string> | undefined | null | Variable<any, string>
+	productIDs?: Array<string> | undefined | null | Variable<any, string>,
+	net?: boolean | undefined | null | Variable<any, string>
 };
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
@@ -8809,7 +8812,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: ResolverInputTypes["MetricIntervalType"],
 	types: Array<ResolverInputTypes["ChartMetricType"]>,
 	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
 };
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
@@ -12603,7 +12607,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: ModelTypes["MetricIntervalType"],
 	types: Array<ModelTypes["ChartMetricType"]>,
 	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
 };
 	["MetricSummary"]: {
 		interval: ModelTypes["MetricInterval"],
@@ -16978,7 +16983,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	interval: GraphQLTypes["MetricIntervalType"],
 	types: Array<GraphQLTypes["ChartMetricType"]>,
 	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
+	productIDs?: Array<string> | undefined | null,
+	net?: boolean | undefined | null
 };
 	["MetricSummary"]: {
 	__typename: "MetricSummary",

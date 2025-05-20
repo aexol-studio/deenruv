@@ -124,6 +124,7 @@ export class BetterMetricsService {
       interval,
 
       orderStates,
+      net,
     }: ResolverInputTypes["ChartMetricInput"],
   ): Promise<GraphQLTypes["ChartMetrics"]> {
     const data = await this.loadChartData(ctx, {
@@ -132,6 +133,7 @@ export class BetterMetricsService {
       metricType: types[0],
       interval,
       orderStates,
+      net,
     });
     const metrics: GraphQLTypes["ChartMetrics"] = {
       __typename: "ChartMetrics",
@@ -166,10 +168,12 @@ export class BetterMetricsService {
       metricType,
       interval,
       orderStates,
+      net,
     }: ResolverInputTypes["BetterMetricRangeInput"] & {
       metricType: ChartMetricType;
       interval: MetricIntervalType;
       orderStates: string[];
+      net?: boolean | null;
     },
   ): Promise<{ response: any }> {
     let response: any;
@@ -302,14 +306,15 @@ export class BetterMetricsService {
       viewQb.groupBy('"intervalTick"').orderBy('"intervalTick"', "ASC");
 
       const viewResponse = await viewQb.getRawMany();
-
-      const mappedResponse = viewResponse.map((r: any) => ({
-        intervalTick: r.intervalTick,
-        value: +(
-          "ordercount" in r ? +r.value / +r.ordercount : +r.value
-        ).toFixed(2),
-      }));
-
+      const mappedResponse = viewResponse.map((r: any) => {
+        const value = !net && "valueWithTax" in r ? +r.valueWithTax : +r.value;
+        return {
+          intervalTick: r.intervalTick,
+          value: +("ordercount" in r ? value / +r.ordercount : value).toFixed(
+            2,
+          ),
+        };
+      });
       response = mappedResponse;
     }
     return { response };

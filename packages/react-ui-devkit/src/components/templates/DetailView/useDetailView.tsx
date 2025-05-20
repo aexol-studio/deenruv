@@ -117,7 +117,7 @@ export const DetailViewStoreProvider = <
 
   useEffect(() => {
     if (id !== undefined) fetchEntity();
-  }, []);
+  }, [tab, id]);
 
   useEffect(() => {
     const _hasUnsavedChanges = checkUnsavedChanges(form.base.state, entity);

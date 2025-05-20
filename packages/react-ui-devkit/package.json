@@ -76,8 +76,6 @@
     "graphql": "~16.9.0",
     "lucide-react": "^0.363.0",
     "postcss": "^8.4.38",
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.14",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
     "react-day-picker": "^8.10.1",

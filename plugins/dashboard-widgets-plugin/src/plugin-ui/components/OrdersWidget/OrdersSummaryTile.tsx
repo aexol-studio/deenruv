@@ -14,6 +14,8 @@ import { giveSummaryMetricsRatio } from "../../utils";
 import { RatioBadge } from "./RatioBadge";
 
 interface OrdersSummaryTileProps {
+  net?: boolean;
+  setNet: (net: boolean) => void;
   dateRange: { range: DateRangeType; prevRange: DateRangeType };
   orderStates: string[];
 }
@@ -21,6 +23,8 @@ interface OrdersSummaryTileProps {
 export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
   dateRange,
   orderStates,
+  net,
+  setNet,
 }) => {
   const { t } = useTranslation("dashboard-widgets-plugin");
   const [getOrdersSummaryMetric] = useLazyQuery(OrderSummaryMetricsQuery);
@@ -70,8 +74,6 @@ export const OrdersSummaryTile: React.FC<OrdersSummaryTileProps> = ({
   useEffect(() => {
     getOrders({ ...dateRange, _orderStates: orderStates });
   }, [dateRange, orderStates]);
-
-  const [net, setNet] = useState(false);
 
   const total = useMemo(() => {
     if (ordersSummaryMetric && net) {

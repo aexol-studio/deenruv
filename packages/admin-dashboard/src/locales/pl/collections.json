@@ -2,13 +2,13 @@
     "create": "Utwórz kolekcję",
     "edit": "Edytuj kolekcję",
     "baseInfoCode": "Kod: {{value}}",
-    "baseInfoId": "Id: {{value}}",
+    "baseInfoId": "ID: {{value}}",
     "baseInfoCreated": "Utworzono: {{value}}",
     "baseInfoUpdated": "Zaktualizowano: {{value}}",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
     "table": {
-        "id": "Id",
+        "id": "ID",
         "name": "Nazwa",
         "isPrivate": "Prywatny",
         "subCollections": "Kolekcje",
@@ -21,7 +21,7 @@
         "children": "Liczba dzieci",
         "collections": "W kolekcjach",
         "actions": "Działania",
-        "copyId": "Kopiuj id",
+        "copyId": "Kopiuj ID",
         "products": "liczba produktów",
         "delete": "Usuń kolekcję"
     },
@@ -101,11 +101,11 @@
             "title": "Filtr...",
             "name": "Według nazwy wariantu",
             "sku": "Według SKU",
-            "id": "Według Id",
+            "id": "Według ID",
             "labels": {
                 "name": "Nazwa wariantu",
                 "sku": "SKU",
-                "id": "Id"
+                "id": "ID"
             }
         }
     },
@@ -124,20 +124,23 @@
         "removeError": "Nie można usunąć kolekcji z kanału"
     },
     "moveCollectionsToChannels": {
-        "moveCollections": "Przenoszenie kolekcji",
+        "moveCollections": "Przenoszenie encji",
         "move": "Przenieś",
         "selected": "Wybrany",
         "availableChannels": "Dostępne kanały",
         "searchByCode": "Szukaj według kodu",
         "searchByToken": "Szukaj według tokena...",
+        "priceFactor": "Współczynnik ceny",
         "table": {
             "token": "Token",
             "code": "Kod",
-            "active": "Aktywny"
+            "active": "Aktywny",
+            "priceBefore": "Cena przed",
+            "priceAfter": "Cena po"
         },
-        "movedAllCollections": "Przeniesiono wszystkie kolekcje",
-        "movedPartOfCollections": "Przeniesiono część kolekcji",
-        "moveError": "Nie można przenieść kolekcji"
+        "movedAllCollections": "Przeniesiono wszystkie encje",
+        "movedPartOfCollections": "Przeniesiono część encji",
+        "moveError": "Nie można przenieść encji"
     },
     "moveCollectionsToCollections": {
         "targetCollection": "Kolekcja docelowa",

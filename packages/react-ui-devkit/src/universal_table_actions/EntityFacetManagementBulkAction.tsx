@@ -1,7 +1,6 @@
 import { createDialogFromComponent } from "@/universal_utils/createDialogFromComponentFunction.js";
 import { Tag } from "lucide-react";
 import React from "react";
-import { ManageEntityToChannels } from "./ManageEntityToChannels.js";
 import { ListLocations } from "@/types/index.js";
 import { useSettings } from "@/state/settings.js";
 import { DEFAULT_CHANNEL_CODE } from "@/consts/defaultChannel.js";

@@ -1,7 +1,7 @@
 import { createDialogFromComponent } from "@/universal_utils/createDialogFromComponentFunction.js";
 import { FolderOpen } from "lucide-react";
 import React from "react";
-import { ManageEntityToChannels } from "./ManageEntityToChannels.js";
+import { ManageEntityToChannelsDialog } from "./ManageEntityToChannelsDialog.js";
 import { ListLocations } from "@/types/index.js";
 import { useSettings } from "@/state/settings.js";
 import { DEFAULT_CHANNEL_CODE } from "@/consts/defaultChannel.js";
@@ -22,7 +22,7 @@ export const EntityChannelManagementRowAction = (): RowAction<any>[] => {
       onClick: async ({ row, refetch }) => {
         try {
           const result = await createDialogFromComponent(
-            ManageEntityToChannels,
+            ManageEntityToChannelsDialog,
             { items: [row.original] },
           );
 

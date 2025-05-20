@@ -49,6 +49,7 @@ import { GroupBySelect } from "./GroupBySelect";
 
 export const OrdersWidget = () => {
   const { t } = useTranslation("dashboard-widgets-plugin");
+  const [net, setNet] = useState(false);
   const { data } = useQuery(AdditionalOrderStatesQuery);
   const [fetchChartMetrics] = useLazyQuery(ChartMetricQuery);
   const { language } = usePluginStore();
@@ -128,12 +129,14 @@ export const OrdersWidget = () => {
           range: { ...prevRange },
           orderStates: selectedOrderStates as string[],
           interval,
+          net,
         },
         input: {
           types: [metricType],
           range,
           orderStates: selectedOrderStates as string[],
           interval,
+          net,
         },
       });
 
@@ -178,7 +181,7 @@ export const OrdersWidget = () => {
     } finally {
       setMetricLoading(false);
     }
-  }, [dateRange, metricType, selectedOrderStates]);
+  }, [dateRange, metricType, selectedOrderStates, net]);
 
   useEffect(() => {
     if (metricRangeTypeSelectValue !== MetricRangeType.Custom)
@@ -196,6 +199,7 @@ export const OrdersWidget = () => {
   useEffect(() => {
     fetchData();
   }, [
+    net,
     channel,
     dateRange,
     metricType,
@@ -234,10 +238,8 @@ export const OrdersWidget = () => {
       )
       .flat();
 
-    return {
-      allData,
-    };
-  }, [betterMetrics, language, selectedAvailableProducts]);
+    return { allData };
+  }, [betterMetrics, net, language, selectedAvailableProducts]);
 
   const onSelectedAvailableProductsChange = (id: string) => {
     setSelectedAvailableProducts((prev) =>
@@ -336,6 +338,8 @@ export const OrdersWidget = () => {
         </div>
       </CardHeader>
       <OrdersSummaryTile
+        net={net}
+        setNet={setNet}
         orderStates={selectedOrderStates as string[]}
         dateRange={dateRange}
       />

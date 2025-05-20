@@ -76,7 +76,7 @@ const getCommonPinningStyles = <T,>(
 const getCommonClassNameStyles = <T,>(column: Column<T>): string => {
   const isPinned = column.getIsPinned();
   if (!isPinned) return "";
-  return isPinned ? cn("bg-background") : "";
+  return isPinned === "left" ? cn("bg-background/30") : cn("bg-background/70");
 };
 
 const TABLE_HEADER_HEIGHT = 48;
