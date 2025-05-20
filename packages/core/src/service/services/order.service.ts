@@ -281,7 +281,7 @@ export class OrderService {
     }
   }
 
-  findAll(
+  async findAll(
     ctx: RequestContext,
     options?: OrderListOptions,
     relations?: RelationPaths<Order>,
@@ -304,12 +304,31 @@ export class OrderService {
     });
     this.restrictOrderJoins(ctx, qb);
 
-    return qb.getManyAndCount().then(([items, totalItems]) => {
-      return {
-        items,
-        totalItems,
-      };
+    const cntQbRelations = [];
+
+    if (options?.filter?.customerLastName) {
+      cntQbRelations.push("customer");
+    }
+    if (options?.filter?.transactionId) {
+      cntQbRelations.push("payments");
+    }
+
+    const cntQb = this.listQueryBuilder.build(Order, options, {
+      ctx,
+      relations: cntQbRelations,
+      channelId: ctx.channelId,
+      customPropertyMap: {
+        customerLastName: "customer.lastName",
+        transactionId: "payments.transactionId",
+      },
     });
+
+    const [items, totalItems] = await Promise.all([
+      qb.getMany(),
+      cntQb.getCount(),
+    ]);
+
+    return { items, totalItems };
   }
 
   async findOne(
