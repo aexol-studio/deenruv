@@ -9,7 +9,6 @@ import {
   ImageWithPreview,
   useTranslation,
   TableLabel,
-  EntityChannelManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 import { UploadAssetDialog } from '@/pages/assets/_components/UploadAssetDialog.js';
@@ -55,7 +54,6 @@ export const AssetsListPage = () => {
       detailLinkColumn="id"
       searchFields={['id']}
       suggestedOrderColumns={{ id: 1, preview: 2, tags: 3 }}
-      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
       hideColumns={[
         'fileSize',
         'width',
