@@ -9,6 +9,8 @@ export type DialogComponentProps<T, K = any> = {
   close: () => void;
 };
 
+export const CLOSED_WITHOUT_RESOLUTION = "CLOSED_WITHOUT_RESOLUTION";
+
 type InferDialogProps<C> =
   C extends React.ComponentType<DialogComponentProps<infer T, infer K>>
     ? { returnType: T; dataType: K }
@@ -41,7 +43,7 @@ export function createDialogFromComponent<
 
     const handleClose = () => {
       cleanup();
-      reject(new Error("Dialog closed without resolution"));
+      reject(new Error(CLOSED_WITHOUT_RESOLUTION));
     };
 
     const handleResolve = (value: InferDialogProps<C>["returnType"]) => {

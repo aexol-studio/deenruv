@@ -10,9 +10,9 @@ import {
   CustomCard,
   CardIcons,
   SimpleSelect,
+  PaymentMethodHandlerType,
+  PaymentMethodHandlerSelector,
 } from '@deenruv/react-ui-devkit';
-
-import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 
 interface OptionsCardProps {
   currentHandlerValue: ModelTypes['ConfigurableOperationInput'] | undefined;

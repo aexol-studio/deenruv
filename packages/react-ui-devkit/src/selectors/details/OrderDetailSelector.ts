@@ -54,8 +54,10 @@ const paymentSelector = Selector("Payment")({
   metadata: true,
   transactionId: true,
   refunds: {
+    id: true,
     state: true,
     total: true,
+    transactionId: true,
     lines: {
       orderLineId: true,
       quantity: true,

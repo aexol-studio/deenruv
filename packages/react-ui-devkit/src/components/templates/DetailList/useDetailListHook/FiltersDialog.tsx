@@ -195,7 +195,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                   <PopoverContent
                     id={filterKey + "box"}
                     align="start"
-                    className="w-40 p-0"
+                    className="w-64 p-0"
                   >
                     <Command>
                       <CommandInput
@@ -321,6 +321,7 @@ export const FiltersDialog = <T extends keyof ListType>({
             size="sm"
             className="ml-auto h-[1.85rem] rounded"
             onClick={applyFilters}
+            disabled={filtersArray.length === 0}
           >
             {t("filterDialog.apply")}
           </Button>

@@ -18,6 +18,7 @@ import {
   CF,
   EntityCustomFields,
   useTranslation,
+  EntityChannelManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 import { AddFacetValueDialog } from './AddFacetValueDialog.js';
 import { Permission, SortOrder } from '@deenruv/admin-types';
@@ -183,6 +184,7 @@ export const FacetsDetailView = () => {
             <DetailList
               entityName="FacetValue"
               hideColumns={['customFields', 'createdAt', 'updatedAt']}
+              additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
               fetch={fetchFacetValues}
               onRemove={onRemove}
               route={{

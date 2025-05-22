@@ -16,19 +16,19 @@ import {
   GraphQLSchema,
   NotificationProvider,
 } from '@deenruv/react-ui-devkit';
-import { ADMIN_DASHBOARD_VERSION } from '@/version';
-
-import { Root } from '@/pages/Root';
-import { LoginScreen } from '@/pages/LoginScreen';
-import { Custom404 } from '@/pages/Custom404';
-import * as Pages from '@/pages';
-import { DeenruvAdminPanel as DeenruvAdminPanelType } from './root.js';
-import * as resources from './locales';
-import { DeenruvDeveloperIndicator } from './DeenruvDeveloperIndicator.js';
 import { LanguageCode } from '@deenruv/admin-types';
-import { ORDER_STATUS_NOTIFICATION } from './notifications/OrderStatusNotification.js';
-import { SYSTEM_STATUS_NOTIFICATION } from './notifications/SystemStatusNotification.js';
-import { GlobalSearch } from './components/GlobalSearch.js';
+
+import { Root } from '@/pages/Root.js';
+import { LoginScreen } from '@/pages/LoginScreen.js';
+import { Custom404 } from '@/pages/Custom404.js';
+
+import * as Pages from '@/pages/index.js';
+import * as resources from '@/locales/index.js';
+
+import { ADMIN_DASHBOARD_VERSION } from '@/version.js';
+import { DeenruvAdminPanel as DeenruvAdminPanelType } from '@/root.js';
+import { ORDER_STATUS_NOTIFICATION } from '@/notifications/OrderStatusNotification.js';
+import { SYSTEM_STATUS_NOTIFICATION } from '@/notifications/SystemStatusNotification.js';
 
 declare global {
   interface Window {
@@ -94,7 +94,11 @@ export const DeenruvAdminPanel: typeof DeenruvAdminPanelType = ({ plugins, setti
   loadTranslations();
 
   const router = createBrowserRouter([
-    { element: <Root />, errorElement: <Custom404 />, children: [...DeenruvPaths, ...pluginsStore.routes] },
+    {
+      element: <Root allPaths={[...DeenruvPaths].map((path) => path.path).filter(Boolean)} />,
+      errorElement: <Custom404 />,
+      children: [...DeenruvPaths, ...pluginsStore.routes],
+    },
   ]);
   const { theme, isLoggedIn, ...context } = useSettings((p) => ({
     theme: p.theme,

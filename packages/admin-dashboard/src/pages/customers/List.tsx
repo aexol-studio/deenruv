@@ -10,6 +10,7 @@ import {
   ListBadge,
   ListLocations,
   useTranslation,
+  EntityChannelManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 
 const tableId = 'customers-list-view';
@@ -61,6 +62,7 @@ export const CustomersListPage = () => {
       ]}
       searchFields={['firstName', 'lastName', 'emailAddress', 'postalCode']}
       hideColumns={['customFields', 'user', 'title']}
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
       additionalColumns={[
         {
           id: 'verified',

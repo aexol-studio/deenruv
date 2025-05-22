@@ -68,7 +68,7 @@ export const ProductsListPage = () => {
               <FacetIdsSelector
                 onChange={(facetValuesId: string[]) => {
                   if (facetValuesId.length === 0) {
-                    props.onChange(undefined);
+                    props.onChange({});
                     return;
                   }
                   props.onChange({ in: facetValuesId.map((o) => o) });
@@ -79,10 +79,7 @@ export const ProductsListPage = () => {
           },
         },
       ]}
-      additionalBulkActions={[
-        ...EntityChannelManagementBulkAction('products-list-view'),
-        EntityFacetManagementBulkAction('products-list-view'),
-      ]}
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId), EntityFacetManagementBulkAction(tableId)]}
       detailLinkColumn="id"
       searchFields={['name', 'slug', 'sku']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}

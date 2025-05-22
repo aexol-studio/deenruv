@@ -14,9 +14,10 @@ import {
   CardIcons,
   SimpleSelect,
   useTranslation,
+  PaymentMethodHandlerType,
+  PaymentMethodHandlerSelector,
 } from '@deenruv/react-ui-devkit';
 
-import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
 import { FacetsSelector } from '@/pages/collections/_components/FacetsSelector';
 import { CombinationMode } from '@/pages/collections/_components/CombinationMode';

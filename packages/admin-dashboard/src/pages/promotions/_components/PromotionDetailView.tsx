@@ -6,6 +6,7 @@ import {
   setInArrayBy,
   CF,
   EntityCustomFields,
+  PromotionConditionAndActionSelector,
 } from '@deenruv/react-ui-devkit';
 import { useCallback, useEffect, useMemo } from 'react';
 import { BasicFieldsCard } from '@/pages/promotions/_components/BasicFieldsCard';
@@ -13,7 +14,6 @@ import { OptionsCard } from '@/pages/promotions/_components/OptionsCard';
 import { ConditionsCard } from '@/pages/promotions/_components/ConditionsCard';
 import { ActionsCard } from '@/pages/promotions/_components/ActionsCard';
 import { typedGql, scalars, $ } from '@deenruv/admin-types';
-import { PromotionConditionAndActionSelector } from '@/graphql/promotions.js';
 
 export const ConditionsQuery = typedGql('query', { scalars })({
   promotionConditions: PromotionConditionAndActionSelector,

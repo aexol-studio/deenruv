@@ -11,6 +11,8 @@ import {
   useQuery,
   ListLocations,
   useTranslation,
+  MultipleSelector,
+  useServer,
 } from '@deenruv/react-ui-devkit';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -51,7 +53,9 @@ const PaymentMethodsQuery = typedGql('query', { scalars })({
 export const OrdersListPage = () => {
   const { data } = useQuery(PaymentMethodsQuery);
   const { t } = useTranslation('table');
+  const { t: tCommon } = useTranslation('common');
   const navigate = useNavigate();
+  const orderStates = useServer((state) => state.serverConfig?.orderProcess.map((p) => p.name) ?? []);
 
   const getMethodName = useCallback(
     (code: string | undefined) =>
@@ -65,10 +69,38 @@ export const OrdersListPage = () => {
   return (
     <DetailList
       filterFields={[
+        { key: 'orderPlacedAt', operator: 'DateOperators' },
         { key: 'code', operator: 'StringOperators' },
-        { key: 'active', operator: 'BooleanOperators' },
         { key: 'customerLastName', operator: 'StringOperators' },
         { key: 'total', operator: 'NumberOperators' },
+        { key: 'totalWithTax', operator: 'NumberOperators' },
+        {
+          key: 'state',
+          component: (props) => {
+            const value = props?.value?.in
+              ? (props.value.in as string[]).map((state) => ({
+                  label: tCommon(`search.inOperator.${state}`),
+                  value: state,
+                }))
+              : [];
+            return (
+              <MultipleSelector
+                value={value}
+                options={orderStates.map((state) => ({
+                  label: tCommon(`search.inOperator.${state}`),
+                  value: state,
+                }))}
+                onChange={(options) => {
+                  if (options.length === 0) {
+                    props.onChange({});
+                    return;
+                  }
+                  props.onChange({ in: options.map((o) => o.value) });
+                }}
+              />
+            );
+          },
+        },
       ]}
       detailLinkColumn="id"
       searchFields={['code', 'customerLastName']}
@@ -88,7 +120,7 @@ export const OrdersListPage = () => {
       fetch={fetch}
       createPermissions={[Permission.CreateOrder]}
       deletePermissions={[Permission.DeleteOrder]}
-      hideColumns={['active', 'totalQuantity', 'currencyCode', 'customFields_TEST']}
+      hideColumns={['active', 'totalQuantity', 'currencyCode']}
       additionalColumns={[
         {
           accessorKey: 'payments',

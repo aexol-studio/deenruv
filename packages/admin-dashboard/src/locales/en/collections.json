@@ -123,22 +123,6 @@
         "removeSuccess": "Deleted collections",
         "removeError": "Cannot delete a collection from a feed"
     },
-    "moveCollectionsToChannels": {
-        "moveCollections": "Transferring entities",
-        "move": "Move",
-        "selected": "Selected",
-        "availableChannels": "Available channels",
-        "searchByCode": "Search by code",
-        "searchByToken": "Search by token...",
-        "table": {
-            "token": "Token",
-            "code": "Code",
-            "active": "Active"
-        },
-        "movedAllCollections": "All entities transferred",
-        "movedPartOfCollections": "Part of the entities has been transferred",
-        "moveError": "Unable to transfer entities"
-    },
     "moveCollectionsToCollections": {
         "targetCollection": "Target collection",
         "searchByName": "Search by name...",

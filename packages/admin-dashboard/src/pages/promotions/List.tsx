@@ -1,5 +1,13 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { apiClient, deepMerge, DetailList, ListLocations, PaginationInput, Routes } from '@deenruv/react-ui-devkit';
+import {
+  apiClient,
+  deepMerge,
+  DetailList,
+  EntityChannelManagementBulkAction,
+  ListLocations,
+  PaginationInput,
+  Routes,
+} from '@deenruv/react-ui-devkit';
 
 const tableId = 'promotions-list-view';
 const { selector } = ListLocations[tableId];
@@ -40,6 +48,7 @@ export const PromotionsListPage = () => (
       { key: 'name', operator: 'StringOperators' },
       { key: 'enabled', operator: 'BooleanOperators' },
     ]}
+    additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
     searchFields={['name']}
     entityName={'Promotion'}
     route={Routes['promotions']}

@@ -1,5 +1,13 @@
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  apiClient,
+  DetailList,
+  deepMerge,
+  PaginationInput,
+  ListLocations,
+  EntityChannelManagementBulkAction,
+} from '@deenruv/react-ui-devkit';
 
 const tableId = 'paymentMethods-list-view';
 const { selector } = ListLocations[tableId];
@@ -42,6 +50,7 @@ export const PaymentMethodsListPage = () => {
         { key: 'code', operator: 'StringOperators' },
         { key: 'enabled', operator: 'BooleanOperators' },
       ]}
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
       detailLinkColumn="id"
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}

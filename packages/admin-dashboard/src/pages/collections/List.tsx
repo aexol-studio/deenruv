@@ -99,8 +99,8 @@ export const CollectionsListPage = () => {
         },
       ]}
       additionalBulkActions={[
-        ...EntityChannelManagementBulkAction('collections-list-view'),
-        EntityFacetManagementBulkAction('collections-list-view'),
+        ...EntityChannelManagementBulkAction(tableId),
+        EntityFacetManagementBulkAction(tableId),
         {
           icon: <FolderOpen size={16} />,
           label: 'Przenieś zaznaczone kolekcje',
@@ -119,7 +119,6 @@ export const CollectionsListPage = () => {
         },
       ]}
       additionalRowActions={[
-        ...EntityChannelManagementRowAction(),
         {
           icon: <ArrowUpSquareIcon size={16} />,
           label: 'Przenieś kolekcje',

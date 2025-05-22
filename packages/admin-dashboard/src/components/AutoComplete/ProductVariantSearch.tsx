@@ -17,6 +17,7 @@ import {
   apiClient,
   cn,
   useTranslation,
+  priceFormatter,
 } from '@deenruv/react-ui-devkit';
 
 import {
@@ -25,7 +26,6 @@ import {
   productVariantSelector,
   searchProductVariantSelector,
 } from '@/graphql/draft_order';
-import { priceFormatter } from '@/utils';
 import { CircleX, Loader2, Search, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 

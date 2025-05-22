@@ -213,7 +213,6 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                     <div className="min-w-44">
                       <ChannelSwitcher />
                     </div>
-                    {/* <ActiveAdmins /> */}
                     <Button onClick={openGlobalSearch} variant="outline" size="icon" className="relative size-10">
                       <SearchIcon className="size-4" />
                     </Button>

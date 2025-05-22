@@ -9,9 +9,10 @@ import {
   useNotifications,
   DEFAULT_CHANNEL_CODE,
   useTranslation,
+  capitalizeFirstLetter,
 } from '@deenruv/react-ui-devkit';
-import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Outlet, useLocation, useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
   PaymentMethodsType,
@@ -62,7 +63,7 @@ const getAllPaymentMethods = async () => {
   return { paymentMethods };
 };
 
-export const Root = () => {
+export const Root = ({ allPaths }: { allPaths: string[] }) => {
   const isLocalhost = window.location.hostname === 'localhost';
   const { t } = useTranslation('common');
   const setActiveAdministrator = useServer((p) => p.setActiveAdministrator);
@@ -86,6 +87,58 @@ export const Root = () => {
   const setData = useNotifications(({ setData }) => setData);
   const notifications = useNotifications(({ notifications }) => notifications);
   const channel = useSettings((p) => p.selectedChannel);
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const managePageTitle = useCallback(() => {
+    const pathname = location.pathname;
+    const isDeenruvPath = allPaths.some((path) => pathname.startsWith(path));
+    if (isDeenruvPath) {
+      let [, , route, id] = pathname.split('/');
+      if (!route) {
+        document.title = [
+          window.__DEENRUV_SETTINGS__.branding.name,
+          capitalizeFirstLetter(t(`menu.dashboard`)),
+          'Admin UI',
+        ].join(' - ');
+      } else {
+        if (route?.split('-').length > 1) {
+          const [first, second] = route.split('-');
+          route = `${first}${second.charAt(0).toUpperCase()}${second.slice(1)}`;
+        }
+        if (isNaN(parseInt(id, 10))) {
+          document.title = [
+            window.__DEENRUV_SETTINGS__.branding.name,
+            capitalizeFirstLetter(t(`menu.${route}`)),
+            'Admin UI',
+          ].join(' - ');
+        } else {
+          const tab = searchParams.get('tab');
+          if (tab) {
+            const variantID = searchParams.get('variantId');
+            if (variantID) id = variantID;
+            document.title = [
+              window.__DEENRUV_SETTINGS__.branding.name,
+              capitalizeFirstLetter(t(`menu.${tab}`)),
+              id,
+              'Admin UI',
+            ].join(' - ');
+          } else {
+            document.title = [
+              window.__DEENRUV_SETTINGS__.branding.name,
+              capitalizeFirstLetter(t(`menu.${route}`)),
+              id,
+              'Admin UI',
+            ].join(' - ');
+          }
+        }
+      }
+    }
+  }, [location, searchParams]);
+
+  useEffect(() => {
+    managePageTitle();
+  }, [location, searchParams]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {

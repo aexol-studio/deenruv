@@ -11,9 +11,10 @@ import {
   useTranslation,
   Routes,
   TableLabel,
+  RoleListType,
+  EntityChannelManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
-import { RoleListType } from '@/graphql/roles';
 
 const tableId = 'roles-list-view';
 const { selector } = ListLocations[tableId];
@@ -79,6 +80,7 @@ export const RolesListPage = () => {
       detailLinkColumn="description"
       searchFields={['code', 'description']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
       additionalColumns={[
         {
           accessorKey: 'permissions',

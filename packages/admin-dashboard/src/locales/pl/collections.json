@@ -123,25 +123,6 @@
         "removeSuccess": "Usunięte kolekcje",
         "removeError": "Nie można usunąć kolekcji z kanału"
     },
-    "moveCollectionsToChannels": {
-        "moveCollections": "Przenoszenie encji",
-        "move": "Przenieś",
-        "selected": "Wybrany",
-        "availableChannels": "Dostępne kanały",
-        "searchByCode": "Szukaj według kodu",
-        "searchByToken": "Szukaj według tokena...",
-        "priceFactor": "Współczynnik ceny",
-        "table": {
-            "token": "Token",
-            "code": "Kod",
-            "active": "Aktywny",
-            "priceBefore": "Cena przed",
-            "priceAfter": "Cena po"
-        },
-        "movedAllCollections": "Przeniesiono wszystkie encje",
-        "movedPartOfCollections": "Przeniesiono część encji",
-        "moveError": "Nie można przenieść encji"
-    },
     "moveCollectionsToCollections": {
         "targetCollection": "Kolekcja docelowa",
         "searchByName": "Wyszukiwanie według nazwy...",

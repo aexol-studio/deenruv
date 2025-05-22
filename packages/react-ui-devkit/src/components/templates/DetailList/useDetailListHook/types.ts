@@ -3,8 +3,9 @@ import { Row } from "@tanstack/react-table";
 import { Table } from "@tanstack/react-table";
 
 export type ActionResult =
-  | { success: string; error?: never }
-  | { success?: never; error: string };
+  | { success: string; error?: never; info?: never }
+  | { success?: never; error: string; info?: never }
+  | { success?: never; error?: never; info: string };
 
 type ActionBaseProps<T> = {
   refetch: () => void;

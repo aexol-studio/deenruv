@@ -18,10 +18,10 @@ import {
   SelectValue,
   useServer,
   useTranslation,
+  priceFormatter,
 } from '@deenruv/react-ui-devkit';
 import { PAYMENT_STATE } from '@/graphql/base';
 import { DraftOrderType } from '@/graphql/draft_order';
-import { priceFormatter } from '@/utils';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { CheckCircle, CreditCard, DollarSign, FileText } from 'lucide-react';

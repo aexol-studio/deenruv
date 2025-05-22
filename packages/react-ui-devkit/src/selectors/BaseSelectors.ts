@@ -4,6 +4,18 @@ import {
   Selector,
 } from "@deenruv/admin-types";
 
+export const RoleSelector = Selector("Role")({
+  id: true,
+  description: true,
+  permissions: true,
+  channels: {
+    code: true,
+  },
+  code: true,
+});
+
+export type RoleType = FromSelectorWithScalars<typeof RoleSelector, "Role">;
+
 export const activeAdministratorSelector = Selector("Administrator")({
   id: true,
   emailAddress: true,

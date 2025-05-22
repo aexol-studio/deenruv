@@ -31,25 +31,29 @@ import {
 } from "@/components/index.js";
 import { useTranslation } from "@/hooks/useTranslation.js";
 import { priceFormatter } from "@/utils/price-formatter.js";
+import { useSettings } from "@/state/settings.js";
+import { useServer } from "@/state/server.js";
 
 export function ManageEntityToChannelsDialog<T extends { id: string }>({
   close,
   reject,
   resolve,
-  data: { items, withPriceFactor },
+  data: { items, withPriceFactor, withSlug, withCode },
 }: DialogComponentProps<
   { channelId: string; ids: string[]; priceFactor?: number },
-  { items: T[]; withPriceFactor?: boolean }
+  {
+    items: T[];
+    withPriceFactor?: boolean;
+    withSlug?: boolean;
+    withCode?: boolean;
+  }
 >) {
-  const { t } = useTranslation("collections");
+  const channels = useServer((state) => state.channels);
+  const selectedChannel = useSettings((state) => state.selectedChannel);
+  const { t } = useTranslation("common");
   const [priceFactor, setPriceFactor] = useState(1);
   const [rowSelection, setRowSelection] = useState({});
-  const [channels, setChannels] = useState<{
-    activeChannel?: ChannelType;
-    channels: ChannelType[];
-  }>({
-    channels: [],
-  });
+
   const moveCollectionToChannel = async () => {
     const channelId = channelsTable.getSelectedRowModel().rows[0].original.id;
     const ids =
@@ -58,22 +62,6 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
         .filter((id): id is string => !!id) ?? [];
     resolve({ channelId, ids, ...(withPriceFactor ? { priceFactor } : {}) });
   };
-
-  useEffect(() => {
-    (async () => {
-      const channelsResponse = await apiClient("query")({
-        channels: [
-          { options: { take: 10 } },
-          { items: channelSelector, totalItems: true },
-        ],
-        activeChannel: channelSelector,
-      });
-      setChannels({
-        channels: channelsResponse.channels.items,
-        activeChannel: channelsResponse.activeChannel,
-      });
-    })();
-  }, []);
 
   const selectedTable = useReactTable({
     data: items || [],
@@ -100,10 +88,25 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
         accessorKey: "name",
         header: () => <TableLabel>{t("table.name")}</TableLabel>,
       },
-      {
-        accessorKey: "slug",
-        header: () => <TableLabel>{t("table.slug")}</TableLabel>,
-      },
+      ...(withCode
+        ? [
+            {
+              id: "code",
+              accessorKey: "code",
+              header: () => <TableLabel>{t("table.code")}</TableLabel>,
+            },
+          ]
+        : []),
+      ...(withSlug
+        ? [
+            {
+              id: "slug",
+              accessorKey: "slug",
+              header: () => <TableLabel>{t("table.slug")}</TableLabel>,
+            },
+          ]
+        : []),
+
       ...(withPriceFactor
         ? [
             {
@@ -112,7 +115,7 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
               header: () => (
                 <div className="flex gap-2 items-center">
                   <TableLabel>
-                    {t("moveCollectionsToChannels.table.priceBefore")}
+                    {t("moveEntitiesToChannels.table.priceBefore")}
                   </TableLabel>
                   <TooltipProvider delayDuration={0}>
                     <Tooltip>
@@ -161,7 +164,7 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
               header: () => (
                 <div className="flex gap-2 items-center">
                   <TableLabel>
-                    {t("moveCollectionsToChannels.table.priceAfter")}
+                    {t("moveEntitiesToChannels.table.priceAfter")}
                   </TableLabel>{" "}
                   <TooltipProvider>
                     <Tooltip>
@@ -217,7 +220,7 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
     getCoreRowModel: getCoreRowModel(),
   });
   const channelsTable = useReactTable({
-    data: channels.channels || [],
+    data: channels || [],
     manualPagination: true,
     enableExpanding: true,
     columns: [
@@ -226,7 +229,7 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
         cell: ({ row, table }) => (
           <div className="flex items-center gap-2">
             <Checkbox
-              disabled={row.original.id === channels.activeChannel?.id}
+              disabled={row.original.id === selectedChannel?.id}
               checked={row.getIsSelected()}
               onCheckedChange={(value) => {
                 table.toggleAllRowsSelected(false);
@@ -248,22 +251,22 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
       {
         accessorKey: "code",
         header: () => (
-          <TableLabel>{t("moveCollectionsToChannels.table.code")}</TableLabel>
+          <TableLabel>{t("moveEntitiesToChannels.table.code")}</TableLabel>
         ),
       },
       {
         accessorKey: "token",
         header: () => (
-          <TableLabel>{t("moveCollectionsToChannels.table.token")}</TableLabel>
+          <TableLabel>{t("moveEntitiesToChannels.table.token")}</TableLabel>
         ),
       },
       {
         accessorKey: "active",
         header: () => null,
         cell: ({ row }) =>
-          row.original.id === channels.activeChannel?.id ? (
+          row.original.id === selectedChannel?.id ? (
             <Badge variant="outline" className="border-green-500">
-              {t("moveCollectionsToChannels.table.active")}
+              {t("moveEntitiesToChannels.table.active")}
             </Badge>
           ) : null,
       },
@@ -282,18 +285,18 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
     <DialogContent className="flex h-[90dvh] w-[90vw] max-w-full flex-col">
       <DialogHeader>
         <DialogTitle>
-          <span>{t("moveCollectionsToChannels.moveCollections")}</span>
+          <span>{t("moveEntitiesToChannels.moveEntities")}</span>
         </DialogTitle>
       </DialogHeader>
 
       <div className="grid h-full min-h-0  grid-cols-[1fr_auto_1fr]">
         <div className="flex h-full min-h-0 flex-col ">
           <div className="flex items-center justify-between  gap-2">
-            <h1 className="p-4">{t("moveCollectionsToChannels.selected")}</h1>
+            <h1 className="p-4">{t("moveEntitiesToChannels.selected")}</h1>
             {withPriceFactor && (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">
-                  {t("moveCollectionsToChannels.priceFactor")}
+                  {t("moveEntitiesToChannels.priceFactor")}
                 </span>
                 <Input
                   min={1}
@@ -352,7 +355,7 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
         <div className="flex h-full min-h-0 flex-col ">
           <div className="flex items-center justify-between  gap-2">
             <h1 className="p-4">
-              {t("moveCollectionsToChannels.availableChannels")}
+              {t("moveEntitiesToChannels.availableChannels")}
             </h1>
             <div className="flex items-center gap-2">
               <Button
@@ -360,7 +363,7 @@ export function ManageEntityToChannelsDialog<T extends { id: string }>({
                 onClick={moveCollectionToChannel}
                 disabled={!isValid}
               >
-                {t("moveCollectionsToChannels.move")}
+                {t("moveEntitiesToChannels.move")}
               </Button>
             </div>
           </div>

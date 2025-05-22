@@ -5,3 +5,5 @@ export * from "./DialogProductPickerSelector.js";
 export * from "./lists/index.js";
 export * from "./details/index.js";
 export * from "./FacetValueSelector.js";
+export * from "./PromotionsSelector.js";
+export * from "./PaymentMethodsSelector.js";

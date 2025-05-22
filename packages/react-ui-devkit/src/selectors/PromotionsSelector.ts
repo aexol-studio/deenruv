@@ -1,7 +1,6 @@
-import { Selector } from '@deenruv/admin-types';
-import { FromSelectorWithScalars } from '@/graphql/scalars';
+import { FromSelectorWithScalars, Selector } from "@deenruv/admin-types";
 
-export const PromotionsListSelector = Selector('Promotion')({
+export const PromotionsListSelector = Selector("Promotion")({
   id: true,
   name: true,
   couponCode: true,
@@ -10,9 +9,14 @@ export const PromotionsListSelector = Selector('Promotion')({
   perCustomerUsageLimit: true,
   usageLimit: true,
 });
-export type PromotionsListType = FromSelectorWithScalars<typeof PromotionsListSelector, 'Promotion'>;
+export type PromotionsListType = FromSelectorWithScalars<
+  typeof PromotionsListSelector,
+  "Promotion"
+>;
 
-export const PromotionConditionAndActionSelector = Selector('ConfigurableOperationDefinition')({
+export const PromotionConditionAndActionSelector = Selector(
+  "ConfigurableOperationDefinition",
+)({
   code: true,
   description: true,
   args: {
@@ -28,5 +32,5 @@ export const PromotionConditionAndActionSelector = Selector('ConfigurableOperati
 });
 export type PromotionConditionAndActionType = FromSelectorWithScalars<
   typeof PromotionConditionAndActionSelector,
-  'ConfigurableOperationDefinition'
+  "ConfigurableOperationDefinition"
 >;

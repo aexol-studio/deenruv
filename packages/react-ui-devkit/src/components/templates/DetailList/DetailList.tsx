@@ -733,48 +733,53 @@ export function DetailList<
                           <DropdownMenuLabel className="select-none">
                             {t("Operacje masowe")}
                           </DropdownMenuLabel>
-                          {bulkActions.length > 0 ? (
-                            <>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuGroup>
-                                {bulkActions?.map((action) => {
-                                  const onClick = async () => {
-                                    try {
-                                      const { success, error } =
-                                        await action.onClick({
-                                          table,
-                                          data: objects,
-                                          refetch,
-                                        });
-                                      if (error) {
-                                        throw new Error(error);
-                                      } else {
-                                        toast.success(success);
-                                        refetch();
-                                        table.toggleAllRowsSelected(false);
-                                      }
-                                    } catch (error) {
-                                      const message =
-                                        error instanceof Error
-                                          ? error.message
-                                          : "Unknown error";
-                                      toast.error(message);
-                                    }
-                                  };
-                                  return (
-                                    <DropdownMenuItem
-                                      key={action.label}
-                                      onClick={onClick}
-                                      className="flex items-center gap-2 cursor-pointer"
-                                    >
-                                      {action.icon}
-                                      {action.label}
-                                    </DropdownMenuItem>
-                                  );
-                                })}
-                              </DropdownMenuGroup>
-                            </>
-                          ) : null}
+
+                          <DropdownMenuSeparator />
+                          <DropdownMenuGroup>
+                            {bulkActions.map((action) => {
+                              const canShow = action?.canShow
+                                ? action.canShow()
+                                : true;
+                              if (!canShow) return null;
+                              const onClick = async () => {
+                                try {
+                                  const response = await action.onClick({
+                                    table,
+                                    data: objects,
+                                    refetch,
+                                  });
+                                  const { error, info, success } = response;
+
+                                  if (error) {
+                                    throw new Error(error);
+                                  } else if (info) {
+                                    toast.info(info);
+                                    table.toggleAllRowsSelected(false);
+                                  } else {
+                                    toast.success(success);
+                                    refetch();
+                                    table.toggleAllRowsSelected(false);
+                                  }
+                                } catch (error) {
+                                  const message =
+                                    error instanceof Error
+                                      ? error.message
+                                      : "Unknown error";
+                                  toast.error(message);
+                                }
+                              };
+                              return (
+                                <DropdownMenuItem
+                                  key={action.label}
+                                  onClick={onClick}
+                                  className="flex items-center gap-2 cursor-pointer"
+                                >
+                                  {action.icon}
+                                  {action.label}
+                                </DropdownMenuItem>
+                              );
+                            })}
+                          </DropdownMenuGroup>
                           <DropdownMenuSeparator />
                           <DropdownMenuGroup>
                             <DropdownMenuItem

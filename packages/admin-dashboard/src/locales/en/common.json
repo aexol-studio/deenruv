@@ -1,4 +1,52 @@
 {
+  "elementów zostało przypisanych do kanału": "{{count}} items have been assigned to the channel",
+  "elementów zostało przypisanych do kanału z mnożnikiem": "{{count}} items have been assigned to the channel with a multiplier",
+  "elementów nie można przenieść do kanału, ponieważ są używane": "{{count}} items cannot be moved to the channel because they are used",
+  "Elementy zostały przypisane do kanału, a ich cena została zaktualizowana": "Items have been assigned to the channel and their price has been updated",
+  "Elementy zostały przypisane do kanału": "Items have been assigned to the channel",
+  "Przenieś do kanału": "Move to channel",
+  "Usuń z kanału": "Remove from channel",
+  "Nie zatwierdzono akcji": "Action not confirmed",
+  "Nie udało się przypisać elementów z kanału": "Failed to assign items from channel",
+  "Nie udało się usunąć elementów z kanału": "Failed to remove items from channel",
+  "title": "{{name}} - Deenruv",
+  "table": {
+    "id": "ID",
+    "name": "Name",
+    "slug": "Short name (slug)",
+    "code": "Code"
+  },
+  "moveEntitiesToChannels": {
+    "moveEntities": "Transferring entities",
+    "move": "Move",
+    "selected": "Selected",
+    "availableChannels": "Available channels",
+    "searchByCode": "Search by code",
+    "searchByToken": "Search by token...",
+    "priceFactor": "Price factor",
+    "table": {
+      "token": "Token",
+      "code": "Code",
+      "active": "Active",
+      "priceBefore": "Price before",
+      "priceAfter": "Price after"
+    }
+  },
+  "removeEntitiesToChannels": {
+    "removeEntities": "Removing entities from channels",
+    "remove": "Remove",
+    "selected": "Selected",
+    "availableChannels": "Available channels",
+    "searchByCode": "Search by code",
+    "searchByToken": "Search by token...",
+    "table": {
+      "token": "Token",
+      "code": "Code",
+      "active": "Active",
+      "priceBefore": "Price before",
+      "priceAfter": "Price after"
+    }
+  },
   "entity": {
     "address_zero": "Addresses",
     "address_one": "Address",
@@ -507,6 +555,9 @@
     }
   },
   "menu": {
+    "product": "Product",
+    "options": "Options",
+    "variants": "Variants",
     "adminUiV2": "Admin UI",
     "extensions": "extensions",
     "dashboard": "desktop",

@@ -20,9 +20,9 @@ import {
   Badge,
   CustomCard,
   useTranslation,
+  priceFormatter,
 } from '@deenruv/react-ui-devkit';
 import { type EligibleShippingMethodsType, eligibleShippingMethodsSelector } from '@/graphql/draft_order';
-import { priceFormatter } from '@/utils';
 import { Edit, Truck, Package, AlertCircle, Check, Loader2 } from 'lucide-react';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';

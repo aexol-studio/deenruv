@@ -1,4 +1,12 @@
-import { Routes, apiClient, DetailList, deepMerge, PaginationInput, ListLocations } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  apiClient,
+  DetailList,
+  deepMerge,
+  PaginationInput,
+  ListLocations,
+  EntityChannelManagementBulkAction,
+} from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
 const tableId = 'stockLocations-list-view';
@@ -41,6 +49,7 @@ export const StockLocationsListPage = () => (
       { key: 'description', operator: 'StringOperators' },
     ]}
     detailLinkColumn="id"
+    additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
     searchFields={['name']}
     hideColumns={['customFields', 'translations', 'collections', 'variantList']}
     entityName={'StockLocation'}

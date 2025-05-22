@@ -7,8 +7,9 @@ import {
   ErrorMessage,
   CardIcons,
   CustomCard,
+  RoleSelector,
+  RoleType,
 } from '@deenruv/react-ui-devkit';
-import { RoleSelector, RoleType } from '@/graphql/roles';
 import { PermissionsTable } from '@/pages/roles/_components/PermissionsTable';
 
 interface RolesCardProps {
@@ -28,12 +29,7 @@ export const RolesCard: React.FC<RolesCardProps> = ({ adminRoleIds, onRolesChang
 
   const fetchAllRoles = useCallback(() => {
     apiClient('query')({
-      roles: [
-        {},
-        {
-          items: RoleSelector,
-        },
-      ],
+      roles: [{}, { items: RoleSelector }],
     }).then((resp) => {
       setAllRoles(resp.roles.items);
     });

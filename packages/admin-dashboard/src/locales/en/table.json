@@ -105,6 +105,7 @@
         "featuredAsset": "Assets",
         "name": "Name",
         "slug": "Short name (slug)",
+        "customerLastName": "Customer surname",
         "enabled": "Included",
         "sku": "SKU",
         "description": "Description",
@@ -169,7 +170,7 @@
         "searchFields": "Search",
         "noFiltersApplied": "No filters were used",
         "emptyState": "Add filters to narrow the results.",
-        "operatorPlaceholder": "Selection operator"
+        "operatorPlaceholder": "selection operator"
     },
     "entities": {
         "administrator": "administrator",

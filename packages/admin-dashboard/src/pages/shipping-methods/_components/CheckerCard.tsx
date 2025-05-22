@@ -13,9 +13,10 @@ import {
   CardIcons,
   SimpleSelect,
   useTranslation,
+  PaymentMethodHandlerType,
+  PaymentMethodHandlerSelector,
 } from '@deenruv/react-ui-devkit';
 
-import { PaymentMethodHandlerSelector, PaymentMethodHandlerType } from '@/graphql/paymentMethods';
 import { X } from 'lucide-react';
 
 interface CheckerCardProps {

@@ -29,6 +29,7 @@ import {
   type CF,
   ImageWithPreview,
   useTranslation,
+  priceFormatter,
 } from '@deenruv/react-ui-devkit';
 import {
   type DraftOrderLineType,
@@ -41,7 +42,6 @@ import { EllipsisVertical, InfoIcon, Trash2, ShoppingCart, Package, Tag, Edit } 
 
 import { useCallback, useMemo, useState } from 'react';
 
-import { priceFormatter } from '@/utils';
 import { toast } from 'sonner';
 import type { OnPriceQuantityChangeApproveInput } from './OrderLineActionModal/types.js';
 import { OrderLineActionModal } from './OrderLineActionModal/index.js';

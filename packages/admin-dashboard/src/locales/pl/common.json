@@ -1,4 +1,51 @@
 {
+  "elementów zostało przypisanych do kanału": "{{count}} elementów zostało przypisanych do kanału",
+  "elementów zostało przypisanych do kanału z mnożnikiem": "{{count}} elementów zostało przypisanych do kanału z mnożnikiem {{factor}}",
+  "elementów nie można usunąć z kanału, ponieważ są używane": "{{count}} elementów nie można usunąć z kanału, ponieważ są używane",
+  "Elementy zostały usunięte z kanału": "Elementy zostały usunięte z kanału",
+  "Przenieś do kanału": "Przenieś do kanału",
+  "Usuń z kanału": "Usuń z kanału",
+  "Nie zatwierdzono akcji": "Nie zatwierdzono akcji",
+  "Nie udało się przypisać elementów z kanału": "Nie udało się przypisać elementów z kanału",
+  "Nie udało się usunąć elementów z kanału": "Nie udało się usunąć elementów z kanału",
+  "title": "{{route}} - {{app}}",
+  "table": {
+    "id": "ID",
+    "name": "Nazwa",
+    "slug": "Krótka nazwa (slug)",
+    "code": "Kod"
+  },
+  "moveEntitiesToChannels": {
+    "moveEntities": "Przenoszenie encji",
+    "move": "Przenieś",
+    "selected": "Wybrany",
+    "availableChannels": "Dostępne kanały",
+    "searchByCode": "Szukaj według kodu",
+    "searchByToken": "Szukaj według tokena...",
+    "priceFactor": "Współczynnik ceny",
+    "table": {
+      "token": "Token",
+      "code": "Kod",
+      "active": "Aktywny",
+      "priceBefore": "Cena przed",
+      "priceAfter": "Cena po"
+    }
+  },
+  "removeEntitiesToChannels": {
+    "removeEntities": "Usuwanie encji z kanałów",
+    "remove": "Usuń",
+    "selected": "Wybrany",
+    "availableChannels": "Dostępne kanały",
+    "searchByCode": "Szukaj według kodu",
+    "searchByToken": "Szukaj według tokena...",
+    "table": {
+      "token": "Token",
+      "code": "Kod",
+      "active": "Aktywny",
+      "priceBefore": "Cena przed",
+      "priceAfter": "Cena po"
+    }
+  },
   "entity": {
     "address_zero": "Adresów",
     "address_one": "Adres",
@@ -507,6 +554,9 @@
     }
   },
   "menu": {
+    "product": "Produkt",
+    "options": "Opcje produktu",
+    "variants": "Warianty",
     "adminUiV2": "Admin UI",
     "extensions": "rozszerzenia",
     "dashboard": "pulpit",

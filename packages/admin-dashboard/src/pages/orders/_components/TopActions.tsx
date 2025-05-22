@@ -374,9 +374,6 @@ export const TopActions: React.FC = () => {
             </DropdownMenuItem>
           ) : null}
 
-          {((order.state !== ORDER_STATE.CANCELLED && order.state !== ORDER_STATE.DRAFT) ||
-            order.state === ORDER_STATE.DRAFT) && <DropdownMenuSeparator />}
-
           {order.state === ORDER_STATE.ARRANGING_PAYMENT && (
             <DropdownMenuItem asChild>
               <ConfirmationDialog

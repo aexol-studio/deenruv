@@ -115,7 +115,7 @@ export const OperatorSelect: React.FC<OperatorSelectProps> = ({
       options={options}
       placeholder={t("filterDialog.operatorPlaceholder")}
       wrapperClassName="w-36 max-w-36"
-      className="h-8 rounded lowercase"
+      className="h-8 rounded lowercase p-2"
     />
   );
 };

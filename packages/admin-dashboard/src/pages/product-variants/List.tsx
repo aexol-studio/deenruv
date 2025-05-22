@@ -10,6 +10,8 @@ import {
   Routes,
   TableLabel,
   FacetIdsSelector,
+  EntityChannelManagementBulkAction,
+  EntityFacetManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 import { useNavigate } from 'react-router-dom';
 
@@ -52,6 +54,7 @@ export const ProductVariantsListPage = () => {
 
   return (
     <DetailList
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId), EntityFacetManagementBulkAction(tableId)]}
       filterFields={[
         { key: 'sku', operator: 'StringOperators' },
         { key: 'name', operator: 'StringOperators' },

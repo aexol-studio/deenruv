@@ -9,6 +9,7 @@ import {
   TableLabel,
   ListLocations,
   useTranslation,
+  EntityChannelManagementBulkAction,
 } from '@deenruv/react-ui-devkit';
 
 const tableId = 'facets-list-view';
@@ -36,13 +37,7 @@ const onRemove = async <T extends { id: string }[]>(items: T): Promise<boolean |
   try {
     const ids = items.map((item) => item.id);
     const { deleteFacets } = await apiClient('mutation')({
-      deleteFacets: [
-        { ids },
-        {
-          message: true,
-          result: true,
-        },
-      ],
+      deleteFacets: [{ ids }, { message: true, result: true }],
     });
     return !!deleteFacets.length;
   } catch (error) {
@@ -64,14 +59,8 @@ export const FacetsListPage = () => {
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations']}
       entityName={'Facet'}
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
       additionalColumns={[
-        {
-          accessorKey: 'values',
-          enableHiding: true,
-          enableColumnFilter: false,
-          header: () => <TableLabel>{t('table.values')}</TableLabel>,
-          cell: ({ row }) => <ListBadge>{row.original.values.length}</ListBadge>,
-        },
         {
           accessorKey: 'isPrivate',
           header: () => <TableLabel>{t('table.isPrivate')}</TableLabel>,

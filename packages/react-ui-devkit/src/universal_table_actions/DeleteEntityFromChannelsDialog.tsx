@@ -1,15 +1,12 @@
 import {
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowRight } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DialogComponentProps } from "@/universal_utils/createDialogFromComponentFunction.js";
-import { apiClient } from "@/zeus_client/deenruvAPICall.js";
-import { channelSelector, ChannelType } from "@/selectors/BaseSelectors.js";
 import {
   Badge,
   Button,
@@ -26,45 +23,26 @@ import {
   TableRow,
 } from "@/components/index.js";
 import { useTranslation } from "@/hooks/useTranslation.js";
+import { useSettings } from "@/state/settings.js";
 
-export function DeleteEntityFromChannels<T extends { id: string }>({
+export function DeleteEntityFromChannelsDialog<T extends { id: string }>({
   close,
   reject,
   resolve,
   data: { items },
 }: DialogComponentProps<{ channelId: string; ids: string[] }, { items: T[] }>) {
-  const { t } = useTranslation("collections");
-  const [rowSelection, setRowSelection] = useState({});
-  const [channels, setChannels] = useState<{
-    activeChannel?: ChannelType;
-    channels: ChannelType[];
-  }>({
-    channels: [],
-  });
-  const moveCollectionToChannel = async () => {
-    const channelId = channelsTable.getSelectedRowModel().rows[0].original.id;
-    const ids =
-      items
-        ?.map((collection) => collection.id)
-        .filter((id): id is string => !!id) ?? [];
-    resolve({ channelId, ids });
+  const { t } = useTranslation("common");
+  const selectedChannel = useSettings((state) => state.selectedChannel);
+  const deleteEntitiesFromChannel = () => {
+    if (!selectedChannel) {
+      reject("Nie wybrano kanału");
+      return;
+    }
+    resolve({
+      ids: items.map((item) => item.id),
+      channelId: selectedChannel?.id,
+    });
   };
-
-  useEffect(() => {
-    (async () => {
-      const channelsResponse = await apiClient("query")({
-        channels: [
-          { options: { take: 10 } },
-          { items: channelSelector, totalItems: true },
-        ],
-        activeChannel: channelSelector,
-      });
-      setChannels({
-        channels: channelsResponse.channels.items,
-        activeChannel: channelsResponse.activeChannel,
-      });
-    })();
-  }, []);
 
   const selectedTable = useReactTable({
     data: items || [],
@@ -99,7 +77,7 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
     getCoreRowModel: getCoreRowModel(),
   });
   const channelsTable = useReactTable({
-    data: channels.channels || [],
+    data: [selectedChannel],
     manualPagination: true,
     enableExpanding: true,
     columns: [
@@ -107,14 +85,7 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
         id: "select",
         cell: ({ row, table }) => (
           <div className="flex items-center gap-2">
-            <Checkbox
-              disabled={row.original.id === channels.activeChannel?.id}
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => {
-                table.toggleAllRowsSelected(false);
-                row.toggleSelected(!!value);
-              }}
-            />{" "}
+            <Checkbox checked />
           </div>
         ),
         enableSorting: false,
@@ -130,43 +101,40 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
       {
         accessorKey: "code",
         header: () => (
-          <TableLabel>{t("moveCollectionsToChannels.table.code")}</TableLabel>
+          <TableLabel>{t("removeEntitiesToChannels.table.code")}</TableLabel>
         ),
       },
       {
         accessorKey: "token",
         header: () => (
-          <TableLabel>{t("moveCollectionsToChannels.table.token")}</TableLabel>
+          <TableLabel>{t("removeEntitiesToChannels.table.token")}</TableLabel>
         ),
       },
       {
         accessorKey: "active",
         header: () => null,
-        cell: ({ row }) =>
-          row.original.id === channels.activeChannel?.id ? (
-            <Badge variant="outline" className="border-green-500">
-              {t("moveCollectionsToChannels.table.active")}
-            </Badge>
-          ) : null,
+        cell: ({ row }) => (
+          <Badge variant="outline" className="border-green-500">
+            {t("removeEntitiesToChannels.table.active")}
+          </Badge>
+        ),
       },
     ],
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
-    state: { rowSelection },
   });
 
   return (
     <DialogContent className="flex h-[90dvh] w-[90vw] max-w-full flex-col">
       <DialogHeader>
         <DialogTitle>
-          <span>{t("moveCollectionsToChannels.moveCollections")}</span>
+          <span>{t("removeEntitiesToChannels.removeEntities")}</span>
         </DialogTitle>
       </DialogHeader>
 
       <div className="grid h-full min-h-0  grid-cols-[1fr_auto_1fr]">
         <div className="flex h-full min-h-0 flex-col ">
-          <h1 className="p-4">{t("moveCollectionsToChannels.selected")}</h1>
+          <h1 className="p-4">{t("removeEntitiesToChannels.selected")}</h1>
 
           <Table>
             <TableHeader className="bg-primary-foreground sticky top-0">
@@ -211,10 +179,10 @@ export function DeleteEntityFromChannels<T extends { id: string }>({
         <div className="flex h-full min-h-0 flex-col ">
           <div className="flex items-center  gap-2">
             <h1 className="p-4">
-              {t("moveCollectionsToChannels.availableChannels")}
+              {t("removeEntitiesToChannels.availableChannels")}
             </h1>
-            <Button className="ml-auto" onClick={moveCollectionToChannel}>
-              {t("moveCollectionsToChannels.move")}
+            <Button className="ml-auto" onClick={deleteEntitiesFromChannel}>
+              {t("removeEntitiesToChannels.remove")}
             </Button>
           </div>
 

@@ -9,8 +9,8 @@ import {
   ScrollArea,
   CustomCard,
   useTranslation,
+  priceFormatter,
 } from '@deenruv/react-ui-devkit';
-import { priceFormatter } from '@/utils';
 import type React from 'react';
 import { ReceiptText, Percent, Calculator, AlertCircle } from 'lucide-react';
 

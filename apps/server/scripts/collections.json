@@ -1,0 +1,2082 @@
+[
+  {
+    "name": "Collection 1",
+    "filters": []
+  },
+  {
+    "name": "Collection 1-1",
+    "filters": [],
+    "parentName": "Collection 1"
+  },
+  {
+    "name": "Collection 1-1-1",
+    "filters": [],
+    "parentName": "Collection 1-1"
+  },
+  {
+    "name": "Collection 1-1-2",
+    "filters": [],
+    "parentName": "Collection 1-1"
+  },
+  {
+    "name": "Collection 1-1-3",
+    "filters": [],
+    "parentName": "Collection 1-1"
+  },
+  {
+    "name": "Collection 1-2",
+    "filters": [],
+    "parentName": "Collection 1"
+  },
+  {
+    "name": "Collection 1-2-1",
+    "filters": [],
+    "parentName": "Collection 1-2"
+  },
+  {
+    "name": "Collection 1-2-2",
+    "filters": [],
+    "parentName": "Collection 1-2"
+  },
+  {
+    "name": "Collection 1-2-3",
+    "filters": [],
+    "parentName": "Collection 1-2"
+  },
+  {
+    "name": "Collection 1-3",
+    "filters": [],
+    "parentName": "Collection 1"
+  },
+  {
+    "name": "Collection 1-3-1",
+    "filters": [],
+    "parentName": "Collection 1-3"
+  },
+  {
+    "name": "Collection 1-3-2",
+    "filters": [],
+    "parentName": "Collection 1-3"
+  },
+  {
+    "name": "Collection 1-3-3",
+    "filters": [],
+    "parentName": "Collection 1-3"
+  },
+  {
+    "name": "Collection 1-4",
+    "filters": [],
+    "parentName": "Collection 1"
+  },
+  {
+    "name": "Collection 1-4-1",
+    "filters": [],
+    "parentName": "Collection 1-4"
+  },
+  {
+    "name": "Collection 1-4-2",
+    "filters": [],
+    "parentName": "Collection 1-4"
+  },
+  {
+    "name": "Collection 1-4-3",
+    "filters": [],
+    "parentName": "Collection 1-4"
+  },
+  {
+    "name": "Collection 1-5",
+    "filters": [],
+    "parentName": "Collection 1"
+  },
+  {
+    "name": "Collection 1-5-1",
+    "filters": [],
+    "parentName": "Collection 1-5"
+  },
+  {
+    "name": "Collection 1-5-2",
+    "filters": [],
+    "parentName": "Collection 1-5"
+  },
+  {
+    "name": "Collection 1-5-3",
+    "filters": [],
+    "parentName": "Collection 1-5"
+  },
+  {
+    "name": "Collection 2",
+    "filters": []
+  },
+  {
+    "name": "Collection 2-1",
+    "filters": [],
+    "parentName": "Collection 2"
+  },
+  {
+    "name": "Collection 2-1-1",
+    "filters": [],
+    "parentName": "Collection 2-1"
+  },
+  {
+    "name": "Collection 2-1-2",
+    "filters": [],
+    "parentName": "Collection 2-1"
+  },
+  {
+    "name": "Collection 2-1-3",
+    "filters": [],
+    "parentName": "Collection 2-1"
+  },
+  {
+    "name": "Collection 2-2",
+    "filters": [],
+    "parentName": "Collection 2"
+  },
+  {
+    "name": "Collection 2-2-1",
+    "filters": [],
+    "parentName": "Collection 2-2"
+  },
+  {
+    "name": "Collection 2-2-2",
+    "filters": [],
+    "parentName": "Collection 2-2"
+  },
+  {
+    "name": "Collection 2-2-3",
+    "filters": [],
+    "parentName": "Collection 2-2"
+  },
+  {
+    "name": "Collection 2-3",
+    "filters": [],
+    "parentName": "Collection 2"
+  },
+  {
+    "name": "Collection 2-3-1",
+    "filters": [],
+    "parentName": "Collection 2-3"
+  },
+  {
+    "name": "Collection 2-3-2",
+    "filters": [],
+    "parentName": "Collection 2-3"
+  },
+  {
+    "name": "Collection 2-3-3",
+    "filters": [],
+    "parentName": "Collection 2-3"
+  },
+  {
+    "name": "Collection 2-4",
+    "filters": [],
+    "parentName": "Collection 2"
+  },
+  {
+    "name": "Collection 2-4-1",
+    "filters": [],
+    "parentName": "Collection 2-4"
+  },
+  {
+    "name": "Collection 2-4-2",
+    "filters": [],
+    "parentName": "Collection 2-4"
+  },
+  {
+    "name": "Collection 2-4-3",
+    "filters": [],
+    "parentName": "Collection 2-4"
+  },
+  {
+    "name": "Collection 2-5",
+    "filters": [],
+    "parentName": "Collection 2"
+  },
+  {
+    "name": "Collection 2-5-1",
+    "filters": [],
+    "parentName": "Collection 2-5"
+  },
+  {
+    "name": "Collection 2-5-2",
+    "filters": [],
+    "parentName": "Collection 2-5"
+  },
+  {
+    "name": "Collection 2-5-3",
+    "filters": [],
+    "parentName": "Collection 2-5"
+  },
+  {
+    "name": "Collection 3",
+    "filters": []
+  },
+  {
+    "name": "Collection 3-1",
+    "filters": [],
+    "parentName": "Collection 3"
+  },
+  {
+    "name": "Collection 3-1-1",
+    "filters": [],
+    "parentName": "Collection 3-1"
+  },
+  {
+    "name": "Collection 3-1-2",
+    "filters": [],
+    "parentName": "Collection 3-1"
+  },
+  {
+    "name": "Collection 3-1-3",
+    "filters": [],
+    "parentName": "Collection 3-1"
+  },
+  {
+    "name": "Collection 3-2",
+    "filters": [],
+    "parentName": "Collection 3"
+  },
+  {
+    "name": "Collection 3-2-1",
+    "filters": [],
+    "parentName": "Collection 3-2"
+  },
+  {
+    "name": "Collection 3-2-2",
+    "filters": [],
+    "parentName": "Collection 3-2"
+  },
+  {
+    "name": "Collection 3-2-3",
+    "filters": [],
+    "parentName": "Collection 3-2"
+  },
+  {
+    "name": "Collection 3-3",
+    "filters": [],
+    "parentName": "Collection 3"
+  },
+  {
+    "name": "Collection 3-3-1",
+    "filters": [],
+    "parentName": "Collection 3-3"
+  },
+  {
+    "name": "Collection 3-3-2",
+    "filters": [],
+    "parentName": "Collection 3-3"
+  },
+  {
+    "name": "Collection 3-3-3",
+    "filters": [],
+    "parentName": "Collection 3-3"
+  },
+  {
+    "name": "Collection 3-4",
+    "filters": [],
+    "parentName": "Collection 3"
+  },
+  {
+    "name": "Collection 3-4-1",
+    "filters": [],
+    "parentName": "Collection 3-4"
+  },
+  {
+    "name": "Collection 3-4-2",
+    "filters": [],
+    "parentName": "Collection 3-4"
+  },
+  {
+    "name": "Collection 3-4-3",
+    "filters": [],
+    "parentName": "Collection 3-4"
+  },
+  {
+    "name": "Collection 3-5",
+    "filters": [],
+    "parentName": "Collection 3"
+  },
+  {
+    "name": "Collection 3-5-1",
+    "filters": [],
+    "parentName": "Collection 3-5"
+  },
+  {
+    "name": "Collection 3-5-2",
+    "filters": [],
+    "parentName": "Collection 3-5"
+  },
+  {
+    "name": "Collection 3-5-3",
+    "filters": [],
+    "parentName": "Collection 3-5"
+  },
+  {
+    "name": "Collection 4",
+    "filters": []
+  },
+  {
+    "name": "Collection 4-1",
+    "filters": [],
+    "parentName": "Collection 4"
+  },
+  {
+    "name": "Collection 4-1-1",
+    "filters": [],
+    "parentName": "Collection 4-1"
+  },
+  {
+    "name": "Collection 4-1-2",
+    "filters": [],
+    "parentName": "Collection 4-1"
+  },
+  {
+    "name": "Collection 4-1-3",
+    "filters": [],
+    "parentName": "Collection 4-1"
+  },
+  {
+    "name": "Collection 4-2",
+    "filters": [],
+    "parentName": "Collection 4"
+  },
+  {
+    "name": "Collection 4-2-1",
+    "filters": [],
+    "parentName": "Collection 4-2"
+  },
+  {
+    "name": "Collection 4-2-2",
+    "filters": [],
+    "parentName": "Collection 4-2"
+  },
+  {
+    "name": "Collection 4-2-3",
+    "filters": [],
+    "parentName": "Collection 4-2"
+  },
+  {
+    "name": "Collection 4-3",
+    "filters": [],
+    "parentName": "Collection 4"
+  },
+  {
+    "name": "Collection 4-3-1",
+    "filters": [],
+    "parentName": "Collection 4-3"
+  },
+  {
+    "name": "Collection 4-3-2",
+    "filters": [],
+    "parentName": "Collection 4-3"
+  },
+  {
+    "name": "Collection 4-3-3",
+    "filters": [],
+    "parentName": "Collection 4-3"
+  },
+  {
+    "name": "Collection 4-4",
+    "filters": [],
+    "parentName": "Collection 4"
+  },
+  {
+    "name": "Collection 4-4-1",
+    "filters": [],
+    "parentName": "Collection 4-4"
+  },
+  {
+    "name": "Collection 4-4-2",
+    "filters": [],
+    "parentName": "Collection 4-4"
+  },
+  {
+    "name": "Collection 4-4-3",
+    "filters": [],
+    "parentName": "Collection 4-4"
+  },
+  {
+    "name": "Collection 4-5",
+    "filters": [],
+    "parentName": "Collection 4"
+  },
+  {
+    "name": "Collection 4-5-1",
+    "filters": [],
+    "parentName": "Collection 4-5"
+  },
+  {
+    "name": "Collection 4-5-2",
+    "filters": [],
+    "parentName": "Collection 4-5"
+  },
+  {
+    "name": "Collection 4-5-3",
+    "filters": [],
+    "parentName": "Collection 4-5"
+  },
+  {
+    "name": "Collection 5",
+    "filters": []
+  },
+  {
+    "name": "Collection 5-1",
+    "filters": [],
+    "parentName": "Collection 5"
+  },
+  {
+    "name": "Collection 5-1-1",
+    "filters": [],
+    "parentName": "Collection 5-1"
+  },
+  {
+    "name": "Collection 5-1-2",
+    "filters": [],
+    "parentName": "Collection 5-1"
+  },
+  {
+    "name": "Collection 5-1-3",
+    "filters": [],
+    "parentName": "Collection 5-1"
+  },
+  {
+    "name": "Collection 5-2",
+    "filters": [],
+    "parentName": "Collection 5"
+  },
+  {
+    "name": "Collection 5-2-1",
+    "filters": [],
+    "parentName": "Collection 5-2"
+  },
+  {
+    "name": "Collection 5-2-2",
+    "filters": [],
+    "parentName": "Collection 5-2"
+  },
+  {
+    "name": "Collection 5-2-3",
+    "filters": [],
+    "parentName": "Collection 5-2"
+  },
+  {
+    "name": "Collection 5-3",
+    "filters": [],
+    "parentName": "Collection 5"
+  },
+  {
+    "name": "Collection 5-3-1",
+    "filters": [],
+    "parentName": "Collection 5-3"
+  },
+  {
+    "name": "Collection 5-3-2",
+    "filters": [],
+    "parentName": "Collection 5-3"
+  },
+  {
+    "name": "Collection 5-3-3",
+    "filters": [],
+    "parentName": "Collection 5-3"
+  },
+  {
+    "name": "Collection 5-4",
+    "filters": [],
+    "parentName": "Collection 5"
+  },
+  {
+    "name": "Collection 5-4-1",
+    "filters": [],
+    "parentName": "Collection 5-4"
+  },
+  {
+    "name": "Collection 5-4-2",
+    "filters": [],
+    "parentName": "Collection 5-4"
+  },
+  {
+    "name": "Collection 5-4-3",
+    "filters": [],
+    "parentName": "Collection 5-4"
+  },
+  {
+    "name": "Collection 5-5",
+    "filters": [],
+    "parentName": "Collection 5"
+  },
+  {
+    "name": "Collection 5-5-1",
+    "filters": [],
+    "parentName": "Collection 5-5"
+  },
+  {
+    "name": "Collection 5-5-2",
+    "filters": [],
+    "parentName": "Collection 5-5"
+  },
+  {
+    "name": "Collection 5-5-3",
+    "filters": [],
+    "parentName": "Collection 5-5"
+  },
+  {
+    "name": "Collection 6",
+    "filters": []
+  },
+  {
+    "name": "Collection 6-1",
+    "filters": [],
+    "parentName": "Collection 6"
+  },
+  {
+    "name": "Collection 6-1-1",
+    "filters": [],
+    "parentName": "Collection 6-1"
+  },
+  {
+    "name": "Collection 6-1-2",
+    "filters": [],
+    "parentName": "Collection 6-1"
+  },
+  {
+    "name": "Collection 6-1-3",
+    "filters": [],
+    "parentName": "Collection 6-1"
+  },
+  {
+    "name": "Collection 6-2",
+    "filters": [],
+    "parentName": "Collection 6"
+  },
+  {
+    "name": "Collection 6-2-1",
+    "filters": [],
+    "parentName": "Collection 6-2"
+  },
+  {
+    "name": "Collection 6-2-2",
+    "filters": [],
+    "parentName": "Collection 6-2"
+  },
+  {
+    "name": "Collection 6-2-3",
+    "filters": [],
+    "parentName": "Collection 6-2"
+  },
+  {
+    "name": "Collection 6-3",
+    "filters": [],
+    "parentName": "Collection 6"
+  },
+  {
+    "name": "Collection 6-3-1",
+    "filters": [],
+    "parentName": "Collection 6-3"
+  },
+  {
+    "name": "Collection 6-3-2",
+    "filters": [],
+    "parentName": "Collection 6-3"
+  },
+  {
+    "name": "Collection 6-3-3",
+    "filters": [],
+    "parentName": "Collection 6-3"
+  },
+  {
+    "name": "Collection 6-4",
+    "filters": [],
+    "parentName": "Collection 6"
+  },
+  {
+    "name": "Collection 6-4-1",
+    "filters": [],
+    "parentName": "Collection 6-4"
+  },
+  {
+    "name": "Collection 6-4-2",
+    "filters": [],
+    "parentName": "Collection 6-4"
+  },
+  {
+    "name": "Collection 6-4-3",
+    "filters": [],
+    "parentName": "Collection 6-4"
+  },
+  {
+    "name": "Collection 6-5",
+    "filters": [],
+    "parentName": "Collection 6"
+  },
+  {
+    "name": "Collection 6-5-1",
+    "filters": [],
+    "parentName": "Collection 6-5"
+  },
+  {
+    "name": "Collection 6-5-2",
+    "filters": [],
+    "parentName": "Collection 6-5"
+  },
+  {
+    "name": "Collection 6-5-3",
+    "filters": [],
+    "parentName": "Collection 6-5"
+  },
+  {
+    "name": "Collection 7",
+    "filters": []
+  },
+  {
+    "name": "Collection 7-1",
+    "filters": [],
+    "parentName": "Collection 7"
+  },
+  {
+    "name": "Collection 7-1-1",
+    "filters": [],
+    "parentName": "Collection 7-1"
+  },
+  {
+    "name": "Collection 7-1-2",
+    "filters": [],
+    "parentName": "Collection 7-1"
+  },
+  {
+    "name": "Collection 7-1-3",
+    "filters": [],
+    "parentName": "Collection 7-1"
+  },
+  {
+    "name": "Collection 7-2",
+    "filters": [],
+    "parentName": "Collection 7"
+  },
+  {
+    "name": "Collection 7-2-1",
+    "filters": [],
+    "parentName": "Collection 7-2"
+  },
+  {
+    "name": "Collection 7-2-2",
+    "filters": [],
+    "parentName": "Collection 7-2"
+  },
+  {
+    "name": "Collection 7-2-3",
+    "filters": [],
+    "parentName": "Collection 7-2"
+  },
+  {
+    "name": "Collection 7-3",
+    "filters": [],
+    "parentName": "Collection 7"
+  },
+  {
+    "name": "Collection 7-3-1",
+    "filters": [],
+    "parentName": "Collection 7-3"
+  },
+  {
+    "name": "Collection 7-3-2",
+    "filters": [],
+    "parentName": "Collection 7-3"
+  },
+  {
+    "name": "Collection 7-3-3",
+    "filters": [],
+    "parentName": "Collection 7-3"
+  },
+  {
+    "name": "Collection 7-4",
+    "filters": [],
+    "parentName": "Collection 7"
+  },
+  {
+    "name": "Collection 7-4-1",
+    "filters": [],
+    "parentName": "Collection 7-4"
+  },
+  {
+    "name": "Collection 7-4-2",
+    "filters": [],
+    "parentName": "Collection 7-4"
+  },
+  {
+    "name": "Collection 7-4-3",
+    "filters": [],
+    "parentName": "Collection 7-4"
+  },
+  {
+    "name": "Collection 7-5",
+    "filters": [],
+    "parentName": "Collection 7"
+  },
+  {
+    "name": "Collection 7-5-1",
+    "filters": [],
+    "parentName": "Collection 7-5"
+  },
+  {
+    "name": "Collection 7-5-2",
+    "filters": [],
+    "parentName": "Collection 7-5"
+  },
+  {
+    "name": "Collection 7-5-3",
+    "filters": [],
+    "parentName": "Collection 7-5"
+  },
+  {
+    "name": "Collection 8",
+    "filters": []
+  },
+  {
+    "name": "Collection 8-1",
+    "filters": [],
+    "parentName": "Collection 8"
+  },
+  {
+    "name": "Collection 8-1-1",
+    "filters": [],
+    "parentName": "Collection 8-1"
+  },
+  {
+    "name": "Collection 8-1-2",
+    "filters": [],
+    "parentName": "Collection 8-1"
+  },
+  {
+    "name": "Collection 8-1-3",
+    "filters": [],
+    "parentName": "Collection 8-1"
+  },
+  {
+    "name": "Collection 8-2",
+    "filters": [],
+    "parentName": "Collection 8"
+  },
+  {
+    "name": "Collection 8-2-1",
+    "filters": [],
+    "parentName": "Collection 8-2"
+  },
+  {
+    "name": "Collection 8-2-2",
+    "filters": [],
+    "parentName": "Collection 8-2"
+  },
+  {
+    "name": "Collection 8-2-3",
+    "filters": [],
+    "parentName": "Collection 8-2"
+  },
+  {
+    "name": "Collection 8-3",
+    "filters": [],
+    "parentName": "Collection 8"
+  },
+  {
+    "name": "Collection 8-3-1",
+    "filters": [],
+    "parentName": "Collection 8-3"
+  },
+  {
+    "name": "Collection 8-3-2",
+    "filters": [],
+    "parentName": "Collection 8-3"
+  },
+  {
+    "name": "Collection 8-3-3",
+    "filters": [],
+    "parentName": "Collection 8-3"
+  },
+  {
+    "name": "Collection 8-4",
+    "filters": [],
+    "parentName": "Collection 8"
+  },
+  {
+    "name": "Collection 8-4-1",
+    "filters": [],
+    "parentName": "Collection 8-4"
+  },
+  {
+    "name": "Collection 8-4-2",
+    "filters": [],
+    "parentName": "Collection 8-4"
+  },
+  {
+    "name": "Collection 8-4-3",
+    "filters": [],
+    "parentName": "Collection 8-4"
+  },
+  {
+    "name": "Collection 8-5",
+    "filters": [],
+    "parentName": "Collection 8"
+  },
+  {
+    "name": "Collection 8-5-1",
+    "filters": [],
+    "parentName": "Collection 8-5"
+  },
+  {
+    "name": "Collection 8-5-2",
+    "filters": [],
+    "parentName": "Collection 8-5"
+  },
+  {
+    "name": "Collection 8-5-3",
+    "filters": [],
+    "parentName": "Collection 8-5"
+  },
+  {
+    "name": "Collection 9",
+    "filters": []
+  },
+  {
+    "name": "Collection 9-1",
+    "filters": [],
+    "parentName": "Collection 9"
+  },
+  {
+    "name": "Collection 9-1-1",
+    "filters": [],
+    "parentName": "Collection 9-1"
+  },
+  {
+    "name": "Collection 9-1-2",
+    "filters": [],
+    "parentName": "Collection 9-1"
+  },
+  {
+    "name": "Collection 9-1-3",
+    "filters": [],
+    "parentName": "Collection 9-1"
+  },
+  {
+    "name": "Collection 9-2",
+    "filters": [],
+    "parentName": "Collection 9"
+  },
+  {
+    "name": "Collection 9-2-1",
+    "filters": [],
+    "parentName": "Collection 9-2"
+  },
+  {
+    "name": "Collection 9-2-2",
+    "filters": [],
+    "parentName": "Collection 9-2"
+  },
+  {
+    "name": "Collection 9-2-3",
+    "filters": [],
+    "parentName": "Collection 9-2"
+  },
+  {
+    "name": "Collection 9-3",
+    "filters": [],
+    "parentName": "Collection 9"
+  },
+  {
+    "name": "Collection 9-3-1",
+    "filters": [],
+    "parentName": "Collection 9-3"
+  },
+  {
+    "name": "Collection 9-3-2",
+    "filters": [],
+    "parentName": "Collection 9-3"
+  },
+  {
+    "name": "Collection 9-3-3",
+    "filters": [],
+    "parentName": "Collection 9-3"
+  },
+  {
+    "name": "Collection 9-4",
+    "filters": [],
+    "parentName": "Collection 9"
+  },
+  {
+    "name": "Collection 9-4-1",
+    "filters": [],
+    "parentName": "Collection 9-4"
+  },
+  {
+    "name": "Collection 9-4-2",
+    "filters": [],
+    "parentName": "Collection 9-4"
+  },
+  {
+    "name": "Collection 9-4-3",
+    "filters": [],
+    "parentName": "Collection 9-4"
+  },
+  {
+    "name": "Collection 9-5",
+    "filters": [],
+    "parentName": "Collection 9"
+  },
+  {
+    "name": "Collection 9-5-1",
+    "filters": [],
+    "parentName": "Collection 9-5"
+  },
+  {
+    "name": "Collection 9-5-2",
+    "filters": [],
+    "parentName": "Collection 9-5"
+  },
+  {
+    "name": "Collection 9-5-3",
+    "filters": [],
+    "parentName": "Collection 9-5"
+  },
+  {
+    "name": "Collection 10",
+    "filters": []
+  },
+  {
+    "name": "Collection 10-1",
+    "filters": [],
+    "parentName": "Collection 10"
+  },
+  {
+    "name": "Collection 10-1-1",
+    "filters": [],
+    "parentName": "Collection 10-1"
+  },
+  {
+    "name": "Collection 10-1-2",
+    "filters": [],
+    "parentName": "Collection 10-1"
+  },
+  {
+    "name": "Collection 10-1-3",
+    "filters": [],
+    "parentName": "Collection 10-1"
+  },
+  {
+    "name": "Collection 10-2",
+    "filters": [],
+    "parentName": "Collection 10"
+  },
+  {
+    "name": "Collection 10-2-1",
+    "filters": [],
+    "parentName": "Collection 10-2"
+  },
+  {
+    "name": "Collection 10-2-2",
+    "filters": [],
+    "parentName": "Collection 10-2"
+  },
+  {
+    "name": "Collection 10-2-3",
+    "filters": [],
+    "parentName": "Collection 10-2"
+  },
+  {
+    "name": "Collection 10-3",
+    "filters": [],
+    "parentName": "Collection 10"
+  },
+  {
+    "name": "Collection 10-3-1",
+    "filters": [],
+    "parentName": "Collection 10-3"
+  },
+  {
+    "name": "Collection 10-3-2",
+    "filters": [],
+    "parentName": "Collection 10-3"
+  },
+  {
+    "name": "Collection 10-3-3",
+    "filters": [],
+    "parentName": "Collection 10-3"
+  },
+  {
+    "name": "Collection 10-4",
+    "filters": [],
+    "parentName": "Collection 10"
+  },
+  {
+    "name": "Collection 10-4-1",
+    "filters": [],
+    "parentName": "Collection 10-4"
+  },
+  {
+    "name": "Collection 10-4-2",
+    "filters": [],
+    "parentName": "Collection 10-4"
+  },
+  {
+    "name": "Collection 10-4-3",
+    "filters": [],
+    "parentName": "Collection 10-4"
+  },
+  {
+    "name": "Collection 10-5",
+    "filters": [],
+    "parentName": "Collection 10"
+  },
+  {
+    "name": "Collection 10-5-1",
+    "filters": [],
+    "parentName": "Collection 10-5"
+  },
+  {
+    "name": "Collection 10-5-2",
+    "filters": [],
+    "parentName": "Collection 10-5"
+  },
+  {
+    "name": "Collection 10-5-3",
+    "filters": [],
+    "parentName": "Collection 10-5"
+  },
+  {
+    "name": "Collection 11",
+    "filters": []
+  },
+  {
+    "name": "Collection 11-1",
+    "filters": [],
+    "parentName": "Collection 11"
+  },
+  {
+    "name": "Collection 11-1-1",
+    "filters": [],
+    "parentName": "Collection 11-1"
+  },
+  {
+    "name": "Collection 11-1-2",
+    "filters": [],
+    "parentName": "Collection 11-1"
+  },
+  {
+    "name": "Collection 11-1-3",
+    "filters": [],
+    "parentName": "Collection 11-1"
+  },
+  {
+    "name": "Collection 11-2",
+    "filters": [],
+    "parentName": "Collection 11"
+  },
+  {
+    "name": "Collection 11-2-1",
+    "filters": [],
+    "parentName": "Collection 11-2"
+  },
+  {
+    "name": "Collection 11-2-2",
+    "filters": [],
+    "parentName": "Collection 11-2"
+  },
+  {
+    "name": "Collection 11-2-3",
+    "filters": [],
+    "parentName": "Collection 11-2"
+  },
+  {
+    "name": "Collection 11-3",
+    "filters": [],
+    "parentName": "Collection 11"
+  },
+  {
+    "name": "Collection 11-3-1",
+    "filters": [],
+    "parentName": "Collection 11-3"
+  },
+  {
+    "name": "Collection 11-3-2",
+    "filters": [],
+    "parentName": "Collection 11-3"
+  },
+  {
+    "name": "Collection 11-3-3",
+    "filters": [],
+    "parentName": "Collection 11-3"
+  },
+  {
+    "name": "Collection 11-4",
+    "filters": [],
+    "parentName": "Collection 11"
+  },
+  {
+    "name": "Collection 11-4-1",
+    "filters": [],
+    "parentName": "Collection 11-4"
+  },
+  {
+    "name": "Collection 11-4-2",
+    "filters": [],
+    "parentName": "Collection 11-4"
+  },
+  {
+    "name": "Collection 11-4-3",
+    "filters": [],
+    "parentName": "Collection 11-4"
+  },
+  {
+    "name": "Collection 11-5",
+    "filters": [],
+    "parentName": "Collection 11"
+  },
+  {
+    "name": "Collection 11-5-1",
+    "filters": [],
+    "parentName": "Collection 11-5"
+  },
+  {
+    "name": "Collection 11-5-2",
+    "filters": [],
+    "parentName": "Collection 11-5"
+  },
+  {
+    "name": "Collection 11-5-3",
+    "filters": [],
+    "parentName": "Collection 11-5"
+  },
+  {
+    "name": "Collection 12",
+    "filters": []
+  },
+  {
+    "name": "Collection 12-1",
+    "filters": [],
+    "parentName": "Collection 12"
+  },
+  {
+    "name": "Collection 12-1-1",
+    "filters": [],
+    "parentName": "Collection 12-1"
+  },
+  {
+    "name": "Collection 12-1-2",
+    "filters": [],
+    "parentName": "Collection 12-1"
+  },
+  {
+    "name": "Collection 12-1-3",
+    "filters": [],
+    "parentName": "Collection 12-1"
+  },
+  {
+    "name": "Collection 12-2",
+    "filters": [],
+    "parentName": "Collection 12"
+  },
+  {
+    "name": "Collection 12-2-1",
+    "filters": [],
+    "parentName": "Collection 12-2"
+  },
+  {
+    "name": "Collection 12-2-2",
+    "filters": [],
+    "parentName": "Collection 12-2"
+  },
+  {
+    "name": "Collection 12-2-3",
+    "filters": [],
+    "parentName": "Collection 12-2"
+  },
+  {
+    "name": "Collection 12-3",
+    "filters": [],
+    "parentName": "Collection 12"
+  },
+  {
+    "name": "Collection 12-3-1",
+    "filters": [],
+    "parentName": "Collection 12-3"
+  },
+  {
+    "name": "Collection 12-3-2",
+    "filters": [],
+    "parentName": "Collection 12-3"
+  },
+  {
+    "name": "Collection 12-3-3",
+    "filters": [],
+    "parentName": "Collection 12-3"
+  },
+  {
+    "name": "Collection 12-4",
+    "filters": [],
+    "parentName": "Collection 12"
+  },
+  {
+    "name": "Collection 12-4-1",
+    "filters": [],
+    "parentName": "Collection 12-4"
+  },
+  {
+    "name": "Collection 12-4-2",
+    "filters": [],
+    "parentName": "Collection 12-4"
+  },
+  {
+    "name": "Collection 12-4-3",
+    "filters": [],
+    "parentName": "Collection 12-4"
+  },
+  {
+    "name": "Collection 12-5",
+    "filters": [],
+    "parentName": "Collection 12"
+  },
+  {
+    "name": "Collection 12-5-1",
+    "filters": [],
+    "parentName": "Collection 12-5"
+  },
+  {
+    "name": "Collection 12-5-2",
+    "filters": [],
+    "parentName": "Collection 12-5"
+  },
+  {
+    "name": "Collection 12-5-3",
+    "filters": [],
+    "parentName": "Collection 12-5"
+  },
+  {
+    "name": "Collection 13",
+    "filters": []
+  },
+  {
+    "name": "Collection 13-1",
+    "filters": [],
+    "parentName": "Collection 13"
+  },
+  {
+    "name": "Collection 13-1-1",
+    "filters": [],
+    "parentName": "Collection 13-1"
+  },
+  {
+    "name": "Collection 13-1-2",
+    "filters": [],
+    "parentName": "Collection 13-1"
+  },
+  {
+    "name": "Collection 13-1-3",
+    "filters": [],
+    "parentName": "Collection 13-1"
+  },
+  {
+    "name": "Collection 13-2",
+    "filters": [],
+    "parentName": "Collection 13"
+  },
+  {
+    "name": "Collection 13-2-1",
+    "filters": [],
+    "parentName": "Collection 13-2"
+  },
+  {
+    "name": "Collection 13-2-2",
+    "filters": [],
+    "parentName": "Collection 13-2"
+  },
+  {
+    "name": "Collection 13-2-3",
+    "filters": [],
+    "parentName": "Collection 13-2"
+  },
+  {
+    "name": "Collection 13-3",
+    "filters": [],
+    "parentName": "Collection 13"
+  },
+  {
+    "name": "Collection 13-3-1",
+    "filters": [],
+    "parentName": "Collection 13-3"
+  },
+  {
+    "name": "Collection 13-3-2",
+    "filters": [],
+    "parentName": "Collection 13-3"
+  },
+  {
+    "name": "Collection 13-3-3",
+    "filters": [],
+    "parentName": "Collection 13-3"
+  },
+  {
+    "name": "Collection 13-4",
+    "filters": [],
+    "parentName": "Collection 13"
+  },
+  {
+    "name": "Collection 13-4-1",
+    "filters": [],
+    "parentName": "Collection 13-4"
+  },
+  {
+    "name": "Collection 13-4-2",
+    "filters": [],
+    "parentName": "Collection 13-4"
+  },
+  {
+    "name": "Collection 13-4-3",
+    "filters": [],
+    "parentName": "Collection 13-4"
+  },
+  {
+    "name": "Collection 13-5",
+    "filters": [],
+    "parentName": "Collection 13"
+  },
+  {
+    "name": "Collection 13-5-1",
+    "filters": [],
+    "parentName": "Collection 13-5"
+  },
+  {
+    "name": "Collection 13-5-2",
+    "filters": [],
+    "parentName": "Collection 13-5"
+  },
+  {
+    "name": "Collection 13-5-3",
+    "filters": [],
+    "parentName": "Collection 13-5"
+  },
+  {
+    "name": "Collection 14",
+    "filters": []
+  },
+  {
+    "name": "Collection 14-1",
+    "filters": [],
+    "parentName": "Collection 14"
+  },
+  {
+    "name": "Collection 14-1-1",
+    "filters": [],
+    "parentName": "Collection 14-1"
+  },
+  {
+    "name": "Collection 14-1-2",
+    "filters": [],
+    "parentName": "Collection 14-1"
+  },
+  {
+    "name": "Collection 14-1-3",
+    "filters": [],
+    "parentName": "Collection 14-1"
+  },
+  {
+    "name": "Collection 14-2",
+    "filters": [],
+    "parentName": "Collection 14"
+  },
+  {
+    "name": "Collection 14-2-1",
+    "filters": [],
+    "parentName": "Collection 14-2"
+  },
+  {
+    "name": "Collection 14-2-2",
+    "filters": [],
+    "parentName": "Collection 14-2"
+  },
+  {
+    "name": "Collection 14-2-3",
+    "filters": [],
+    "parentName": "Collection 14-2"
+  },
+  {
+    "name": "Collection 14-3",
+    "filters": [],
+    "parentName": "Collection 14"
+  },
+  {
+    "name": "Collection 14-3-1",
+    "filters": [],
+    "parentName": "Collection 14-3"
+  },
+  {
+    "name": "Collection 14-3-2",
+    "filters": [],
+    "parentName": "Collection 14-3"
+  },
+  {
+    "name": "Collection 14-3-3",
+    "filters": [],
+    "parentName": "Collection 14-3"
+  },
+  {
+    "name": "Collection 14-4",
+    "filters": [],
+    "parentName": "Collection 14"
+  },
+  {
+    "name": "Collection 14-4-1",
+    "filters": [],
+    "parentName": "Collection 14-4"
+  },
+  {
+    "name": "Collection 14-4-2",
+    "filters": [],
+    "parentName": "Collection 14-4"
+  },
+  {
+    "name": "Collection 14-4-3",
+    "filters": [],
+    "parentName": "Collection 14-4"
+  },
+  {
+    "name": "Collection 14-5",
+    "filters": [],
+    "parentName": "Collection 14"
+  },
+  {
+    "name": "Collection 14-5-1",
+    "filters": [],
+    "parentName": "Collection 14-5"
+  },
+  {
+    "name": "Collection 14-5-2",
+    "filters": [],
+    "parentName": "Collection 14-5"
+  },
+  {
+    "name": "Collection 14-5-3",
+    "filters": [],
+    "parentName": "Collection 14-5"
+  },
+  {
+    "name": "Collection 15",
+    "filters": []
+  },
+  {
+    "name": "Collection 15-1",
+    "filters": [],
+    "parentName": "Collection 15"
+  },
+  {
+    "name": "Collection 15-1-1",
+    "filters": [],
+    "parentName": "Collection 15-1"
+  },
+  {
+    "name": "Collection 15-1-2",
+    "filters": [],
+    "parentName": "Collection 15-1"
+  },
+  {
+    "name": "Collection 15-1-3",
+    "filters": [],
+    "parentName": "Collection 15-1"
+  },
+  {
+    "name": "Collection 15-2",
+    "filters": [],
+    "parentName": "Collection 15"
+  },
+  {
+    "name": "Collection 15-2-1",
+    "filters": [],
+    "parentName": "Collection 15-2"
+  },
+  {
+    "name": "Collection 15-2-2",
+    "filters": [],
+    "parentName": "Collection 15-2"
+  },
+  {
+    "name": "Collection 15-2-3",
+    "filters": [],
+    "parentName": "Collection 15-2"
+  },
+  {
+    "name": "Collection 15-3",
+    "filters": [],
+    "parentName": "Collection 15"
+  },
+  {
+    "name": "Collection 15-3-1",
+    "filters": [],
+    "parentName": "Collection 15-3"
+  },
+  {
+    "name": "Collection 15-3-2",
+    "filters": [],
+    "parentName": "Collection 15-3"
+  },
+  {
+    "name": "Collection 15-3-3",
+    "filters": [],
+    "parentName": "Collection 15-3"
+  },
+  {
+    "name": "Collection 15-4",
+    "filters": [],
+    "parentName": "Collection 15"
+  },
+  {
+    "name": "Collection 15-4-1",
+    "filters": [],
+    "parentName": "Collection 15-4"
+  },
+  {
+    "name": "Collection 15-4-2",
+    "filters": [],
+    "parentName": "Collection 15-4"
+  },
+  {
+    "name": "Collection 15-4-3",
+    "filters": [],
+    "parentName": "Collection 15-4"
+  },
+  {
+    "name": "Collection 15-5",
+    "filters": [],
+    "parentName": "Collection 15"
+  },
+  {
+    "name": "Collection 15-5-1",
+    "filters": [],
+    "parentName": "Collection 15-5"
+  },
+  {
+    "name": "Collection 15-5-2",
+    "filters": [],
+    "parentName": "Collection 15-5"
+  },
+  {
+    "name": "Collection 15-5-3",
+    "filters": [],
+    "parentName": "Collection 15-5"
+  },
+  {
+    "name": "Collection 16",
+    "filters": []
+  },
+  {
+    "name": "Collection 16-1",
+    "filters": [],
+    "parentName": "Collection 16"
+  },
+  {
+    "name": "Collection 16-1-1",
+    "filters": [],
+    "parentName": "Collection 16-1"
+  },
+  {
+    "name": "Collection 16-1-2",
+    "filters": [],
+    "parentName": "Collection 16-1"
+  },
+  {
+    "name": "Collection 16-1-3",
+    "filters": [],
+    "parentName": "Collection 16-1"
+  },
+  {
+    "name": "Collection 16-2",
+    "filters": [],
+    "parentName": "Collection 16"
+  },
+  {
+    "name": "Collection 16-2-1",
+    "filters": [],
+    "parentName": "Collection 16-2"
+  },
+  {
+    "name": "Collection 16-2-2",
+    "filters": [],
+    "parentName": "Collection 16-2"
+  },
+  {
+    "name": "Collection 16-2-3",
+    "filters": [],
+    "parentName": "Collection 16-2"
+  },
+  {
+    "name": "Collection 16-3",
+    "filters": [],
+    "parentName": "Collection 16"
+  },
+  {
+    "name": "Collection 16-3-1",
+    "filters": [],
+    "parentName": "Collection 16-3"
+  },
+  {
+    "name": "Collection 16-3-2",
+    "filters": [],
+    "parentName": "Collection 16-3"
+  },
+  {
+    "name": "Collection 16-3-3",
+    "filters": [],
+    "parentName": "Collection 16-3"
+  },
+  {
+    "name": "Collection 16-4",
+    "filters": [],
+    "parentName": "Collection 16"
+  },
+  {
+    "name": "Collection 16-4-1",
+    "filters": [],
+    "parentName": "Collection 16-4"
+  },
+  {
+    "name": "Collection 16-4-2",
+    "filters": [],
+    "parentName": "Collection 16-4"
+  },
+  {
+    "name": "Collection 16-4-3",
+    "filters": [],
+    "parentName": "Collection 16-4"
+  },
+  {
+    "name": "Collection 16-5",
+    "filters": [],
+    "parentName": "Collection 16"
+  },
+  {
+    "name": "Collection 16-5-1",
+    "filters": [],
+    "parentName": "Collection 16-5"
+  },
+  {
+    "name": "Collection 16-5-2",
+    "filters": [],
+    "parentName": "Collection 16-5"
+  },
+  {
+    "name": "Collection 16-5-3",
+    "filters": [],
+    "parentName": "Collection 16-5"
+  },
+  {
+    "name": "Collection 17",
+    "filters": []
+  },
+  {
+    "name": "Collection 17-1",
+    "filters": [],
+    "parentName": "Collection 17"
+  },
+  {
+    "name": "Collection 17-1-1",
+    "filters": [],
+    "parentName": "Collection 17-1"
+  },
+  {
+    "name": "Collection 17-1-2",
+    "filters": [],
+    "parentName": "Collection 17-1"
+  },
+  {
+    "name": "Collection 17-1-3",
+    "filters": [],
+    "parentName": "Collection 17-1"
+  },
+  {
+    "name": "Collection 17-2",
+    "filters": [],
+    "parentName": "Collection 17"
+  },
+  {
+    "name": "Collection 17-2-1",
+    "filters": [],
+    "parentName": "Collection 17-2"
+  },
+  {
+    "name": "Collection 17-2-2",
+    "filters": [],
+    "parentName": "Collection 17-2"
+  },
+  {
+    "name": "Collection 17-2-3",
+    "filters": [],
+    "parentName": "Collection 17-2"
+  },
+  {
+    "name": "Collection 17-3",
+    "filters": [],
+    "parentName": "Collection 17"
+  },
+  {
+    "name": "Collection 17-3-1",
+    "filters": [],
+    "parentName": "Collection 17-3"
+  },
+  {
+    "name": "Collection 17-3-2",
+    "filters": [],
+    "parentName": "Collection 17-3"
+  },
+  {
+    "name": "Collection 17-3-3",
+    "filters": [],
+    "parentName": "Collection 17-3"
+  },
+  {
+    "name": "Collection 17-4",
+    "filters": [],
+    "parentName": "Collection 17"
+  },
+  {
+    "name": "Collection 17-4-1",
+    "filters": [],
+    "parentName": "Collection 17-4"
+  },
+  {
+    "name": "Collection 17-4-2",
+    "filters": [],
+    "parentName": "Collection 17-4"
+  },
+  {
+    "name": "Collection 17-4-3",
+    "filters": [],
+    "parentName": "Collection 17-4"
+  },
+  {
+    "name": "Collection 17-5",
+    "filters": [],
+    "parentName": "Collection 17"
+  },
+  {
+    "name": "Collection 17-5-1",
+    "filters": [],
+    "parentName": "Collection 17-5"
+  },
+  {
+    "name": "Collection 17-5-2",
+    "filters": [],
+    "parentName": "Collection 17-5"
+  },
+  {
+    "name": "Collection 17-5-3",
+    "filters": [],
+    "parentName": "Collection 17-5"
+  },
+  {
+    "name": "Collection 18",
+    "filters": []
+  },
+  {
+    "name": "Collection 18-1",
+    "filters": [],
+    "parentName": "Collection 18"
+  },
+  {
+    "name": "Collection 18-1-1",
+    "filters": [],
+    "parentName": "Collection 18-1"
+  },
+  {
+    "name": "Collection 18-1-2",
+    "filters": [],
+    "parentName": "Collection 18-1"
+  },
+  {
+    "name": "Collection 18-1-3",
+    "filters": [],
+    "parentName": "Collection 18-1"
+  },
+  {
+    "name": "Collection 18-2",
+    "filters": [],
+    "parentName": "Collection 18"
+  },
+  {
+    "name": "Collection 18-2-1",
+    "filters": [],
+    "parentName": "Collection 18-2"
+  },
+  {
+    "name": "Collection 18-2-2",
+    "filters": [],
+    "parentName": "Collection 18-2"
+  },
+  {
+    "name": "Collection 18-2-3",
+    "filters": [],
+    "parentName": "Collection 18-2"
+  },
+  {
+    "name": "Collection 18-3",
+    "filters": [],
+    "parentName": "Collection 18"
+  },
+  {
+    "name": "Collection 18-3-1",
+    "filters": [],
+    "parentName": "Collection 18-3"
+  },
+  {
+    "name": "Collection 18-3-2",
+    "filters": [],
+    "parentName": "Collection 18-3"
+  },
+  {
+    "name": "Collection 18-3-3",
+    "filters": [],
+    "parentName": "Collection 18-3"
+  },
+  {
+    "name": "Collection 18-4",
+    "filters": [],
+    "parentName": "Collection 18"
+  },
+  {
+    "name": "Collection 18-4-1",
+    "filters": [],
+    "parentName": "Collection 18-4"
+  },
+  {
+    "name": "Collection 18-4-2",
+    "filters": [],
+    "parentName": "Collection 18-4"
+  },
+  {
+    "name": "Collection 18-4-3",
+    "filters": [],
+    "parentName": "Collection 18-4"
+  },
+  {
+    "name": "Collection 18-5",
+    "filters": [],
+    "parentName": "Collection 18"
+  },
+  {
+    "name": "Collection 18-5-1",
+    "filters": [],
+    "parentName": "Collection 18-5"
+  },
+  {
+    "name": "Collection 18-5-2",
+    "filters": [],
+    "parentName": "Collection 18-5"
+  },
+  {
+    "name": "Collection 18-5-3",
+    "filters": [],
+    "parentName": "Collection 18-5"
+  },
+  {
+    "name": "Collection 19",
+    "filters": []
+  },
+  {
+    "name": "Collection 19-1",
+    "filters": [],
+    "parentName": "Collection 19"
+  },
+  {
+    "name": "Collection 19-1-1",
+    "filters": [],
+    "parentName": "Collection 19-1"
+  },
+  {
+    "name": "Collection 19-1-2",
+    "filters": [],
+    "parentName": "Collection 19-1"
+  },
+  {
+    "name": "Collection 19-1-3",
+    "filters": [],
+    "parentName": "Collection 19-1"
+  },
+  {
+    "name": "Collection 19-2",
+    "filters": [],
+    "parentName": "Collection 19"
+  },
+  {
+    "name": "Collection 19-2-1",
+    "filters": [],
+    "parentName": "Collection 19-2"
+  },
+  {
+    "name": "Collection 19-2-2",
+    "filters": [],
+    "parentName": "Collection 19-2"
+  },
+  {
+    "name": "Collection 19-2-3",
+    "filters": [],
+    "parentName": "Collection 19-2"
+  },
+  {
+    "name": "Collection 19-3",
+    "filters": [],
+    "parentName": "Collection 19"
+  },
+  {
+    "name": "Collection 19-3-1",
+    "filters": [],
+    "parentName": "Collection 19-3"
+  },
+  {
+    "name": "Collection 19-3-2",
+    "filters": [],
+    "parentName": "Collection 19-3"
+  },
+  {
+    "name": "Collection 19-3-3",
+    "filters": [],
+    "parentName": "Collection 19-3"
+  },
+  {
+    "name": "Collection 19-4",
+    "filters": [],
+    "parentName": "Collection 19"
+  },
+  {
+    "name": "Collection 19-4-1",
+    "filters": [],
+    "parentName": "Collection 19-4"
+  },
+  {
+    "name": "Collection 19-4-2",
+    "filters": [],
+    "parentName": "Collection 19-4"
+  },
+  {
+    "name": "Collection 19-4-3",
+    "filters": [],
+    "parentName": "Collection 19-4"
+  },
+  {
+    "name": "Collection 19-5",
+    "filters": [],
+    "parentName": "Collection 19"
+  },
+  {
+    "name": "Collection 19-5-1",
+    "filters": [],
+    "parentName": "Collection 19-5"
+  },
+  {
+    "name": "Collection 19-5-2",
+    "filters": [],
+    "parentName": "Collection 19-5"
+  },
+  {
+    "name": "Collection 19-5-3",
+    "filters": [],
+    "parentName": "Collection 19-5"
+  },
+  {
+    "name": "Collection 20",
+    "filters": []
+  },
+  {
+    "name": "Collection 20-1",
+    "filters": [],
+    "parentName": "Collection 20"
+  },
+  {
+    "name": "Collection 20-1-1",
+    "filters": [],
+    "parentName": "Collection 20-1"
+  },
+  {
+    "name": "Collection 20-1-2",
+    "filters": [],
+    "parentName": "Collection 20-1"
+  },
+  {
+    "name": "Collection 20-1-3",
+    "filters": [],
+    "parentName": "Collection 20-1"
+  },
+  {
+    "name": "Collection 20-2",
+    "filters": [],
+    "parentName": "Collection 20"
+  },
+  {
+    "name": "Collection 20-2-1",
+    "filters": [],
+    "parentName": "Collection 20-2"
+  },
+  {
+    "name": "Collection 20-2-2",
+    "filters": [],
+    "parentName": "Collection 20-2"
+  },
+  {
+    "name": "Collection 20-2-3",
+    "filters": [],
+    "parentName": "Collection 20-2"
+  },
+  {
+    "name": "Collection 20-3",
+    "filters": [],
+    "parentName": "Collection 20"
+  },
+  {
+    "name": "Collection 20-3-1",
+    "filters": [],
+    "parentName": "Collection 20-3"
+  },
+  {
+    "name": "Collection 20-3-2",
+    "filters": [],
+    "parentName": "Collection 20-3"
+  },
+  {
+    "name": "Collection 20-3-3",
+    "filters": [],
+    "parentName": "Collection 20-3"
+  },
+  {
+    "name": "Collection 20-4",
+    "filters": [],
+    "parentName": "Collection 20"
+  },
+  {
+    "name": "Collection 20-4-1",
+    "filters": [],
+    "parentName": "Collection 20-4"
+  },
+  {
+    "name": "Collection 20-4-2",
+    "filters": [],
+    "parentName": "Collection 20-4"
+  },
+  {
+    "name": "Collection 20-4-3",
+    "filters": [],
+    "parentName": "Collection 20-4"
+  },
+  {
+    "name": "Collection 20-5",
+    "filters": [],
+    "parentName": "Collection 20"
+  },
+  {
+    "name": "Collection 20-5-1",
+    "filters": [],
+    "parentName": "Collection 20-5"
+  },
+  {
+    "name": "Collection 20-5-2",
+    "filters": [],
+    "parentName": "Collection 20-5"
+  },
+  {
+    "name": "Collection 20-5-3",
+    "filters": [],
+    "parentName": "Collection 20-5"
+  }
+]

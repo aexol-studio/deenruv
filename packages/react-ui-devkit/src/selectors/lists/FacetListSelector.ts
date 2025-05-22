@@ -7,7 +7,6 @@ export const FacetListSelector = Selector("Facet")({
   code: true,
   isPrivate: true,
   name: true,
-  values: { id: true },
 });
 export type FacetListType = FromSelectorWithScalars<
   typeof FacetListSelector,

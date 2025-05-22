@@ -19,8 +19,8 @@ import {
   useLazyQuery,
   Input,
   OrderDetailSelector,
+  priceFormatter,
 } from '@deenruv/react-ui-devkit';
-import { priceFormatter } from '@/utils';
 import type React from 'react';
 import { BadgePercent, Gift, Tag, CreditCard, Trash, Plus } from 'lucide-react';
 import { $, ModelTypes, scalars, typedGql } from '@deenruv/admin-types';

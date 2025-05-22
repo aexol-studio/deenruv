@@ -1,4 +1,12 @@
-import { Routes, apiClient, DetailList, PaginationInput, deepMerge, ListLocations } from '@deenruv/react-ui-devkit';
+import {
+  Routes,
+  apiClient,
+  DetailList,
+  PaginationInput,
+  deepMerge,
+  ListLocations,
+  EntityChannelManagementBulkAction,
+} from '@deenruv/react-ui-devkit';
 import { Permission, SortOrder } from '@deenruv/admin-types';
 
 const tableId = 'shippingMethods-list-view';
@@ -41,6 +49,7 @@ export const ShippingMethodsListPage = () => {
         { key: 'name', operator: 'StringOperators' },
         { key: 'code', operator: 'StringOperators' },
       ]}
+      additionalBulkActions={[...EntityChannelManagementBulkAction(tableId)]}
       detailLinkColumn="id"
       searchFields={['name', 'code']}
       hideColumns={['customFields', 'translations', 'collections', 'variantList']}

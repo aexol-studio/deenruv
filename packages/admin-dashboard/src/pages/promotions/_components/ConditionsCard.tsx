@@ -13,11 +13,12 @@ import {
   CustomCard,
   CardIcons,
   useTranslation,
+  PromotionConditionAndActionSelector,
+  PromotionConditionAndActionType,
 } from '@deenruv/react-ui-devkit';
-import { ModelTypes, typedGql, scalars, $ } from '@deenruv/admin-types';
+import { ModelTypes, typedGql, scalars } from '@deenruv/admin-types';
 import React, { useCallback, useMemo } from 'react';
 import { X } from 'lucide-react';
-import { PromotionConditionAndActionSelector, PromotionConditionAndActionType } from '@/graphql/promotions';
 
 export const ConditionsQuery = typedGql('query', { scalars })({
   promotionConditions: PromotionConditionAndActionSelector,
