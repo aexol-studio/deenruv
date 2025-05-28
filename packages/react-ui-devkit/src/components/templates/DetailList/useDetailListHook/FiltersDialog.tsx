@@ -194,7 +194,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                   </PopoverTrigger>
                   <PopoverContent
                     id={filterKey + "box"}
-                    align="start"
+                    align="center"
                     className="w-64 p-0"
                   >
                     <Command>
@@ -220,7 +220,9 @@ export const FiltersDialog = <T extends keyof ListType>({
                               }}
                             >
                               <span className="mr-1.5 truncate">
-                                {t("columns." + field.name.toString())}
+                                {field.translation
+                                  ? field.translation
+                                  : t("columns." + field.name.toString())}
                               </span>
                               <Check
                                 className={cn(

@@ -195,6 +195,8 @@ export const useDetailListHook = <
     }
   }, [searchParams, searchFields]);
 
+  const selectedChannel = useSettings(({ selectedChannel }) => selectedChannel);
+
   const refetch = useCallback(
     (initialFilterState?: ModelTypes[ListType[K]] | undefined) => {
       const page = searchParams.get(SearchParamKey.PAGE);
@@ -215,7 +217,7 @@ export const useDetailListHook = <
       setTotal(totalItems);
       // setLoading(false);
     });
-  }, [translationsLanguage, searchParams]);
+  }, [translationsLanguage, searchParams, selectedChannel?.id]);
 
   useEffect(() => {
     if (

@@ -186,7 +186,6 @@ export function DetailList<
   | { noCreateButton?: false; route?: RouteBase | RouteWithCreate }
 )) {
   const { t } = useTranslation("table");
-  const selectedChannel = useSettings(({ selectedChannel }) => selectedChannel);
   const userPermissions = useServer(({ userPermissions }) => userPermissions);
   const isPermittedToCreate = useMemo(() => {
     if (!createPermissions) return true;
@@ -328,12 +327,6 @@ export function DetailList<
     searchFields,
     searchTranslations,
   });
-
-  // useEffect(() => {
-  //   if (!stopRefetchOnChannelChange) {
-  //     refetch();
-  //   }
-  // }, [selectedChannel?.id]);
 
   // useEffect(() => {
   //   if (refetchTimeout && !loading) {
