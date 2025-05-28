@@ -329,20 +329,20 @@ export function DetailList<
     searchTranslations,
   });
 
-  useEffect(() => {
-    if (!stopRefetchOnChannelChange) {
-      refetch();
-    }
-  }, [selectedChannel?.id]);
+  // useEffect(() => {
+  //   if (!stopRefetchOnChannelChange) {
+  //     refetch();
+  //   }
+  // }, [selectedChannel?.id]);
 
-  useEffect(() => {
-    if (refetchTimeout && !loading) {
-      const interval = setInterval(() => {
-        refetch();
-      }, refetchTimeout);
-      return () => clearInterval(interval);
-    }
-  }, [refetchTimeout, loading]);
+  // useEffect(() => {
+  //   if (refetchTimeout && !loading) {
+  //     const interval = setInterval(() => {
+  //       refetch();
+  //     }, refetchTimeout);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [refetchTimeout, loading]);
 
   const columns = useMemo(() => {
     const entry = objects?.[0];

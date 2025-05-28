@@ -1,7 +1,7 @@
 name: deenruv-local
 services:
     deenruv-postgres:
-        image: docker.io/postgis/postgis:16-3.4
+        image: postgres:16.6
         hostname: deenruv-postgres
         container_name: deenruv-postgres
         environment:

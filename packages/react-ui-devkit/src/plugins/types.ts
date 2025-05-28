@@ -88,14 +88,14 @@ export type DeenruvTabs<KEY extends keyof typeof DetailLocations> = {
 export type PluginNavigationGroup = {
   id: string;
   labelId: string;
-  placement?: { groupId: BASE_GROUP_ID | string };
+  placement?: { groupId: BASE_GROUP_ID | (string & {}) };
 };
 
 export type PluginNavigationLink = {
   id: string;
   labelId: string;
   href: string;
-  groupId: BASE_GROUP_ID | string;
+  groupId: BASE_GROUP_ID | (string & {});
   icon: FC<SVGProps<SVGSVGElement>>;
   placement?: { linkId: string; where?: "above" | "under" };
 };

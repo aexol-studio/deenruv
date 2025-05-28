@@ -12,6 +12,7 @@ import React, {
   PropsWithChildren,
   ReactElement,
   ReactNode,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -55,22 +56,6 @@ interface OrderCardTitleProps {
   variant?: "group";
 }
 
-/**
- * A default Deenruv card component.
- * This component provides a styled card layout with configurable title, description, icons,
- * and additional content areas. It supports collapsible behavior and custom styling.
- * @param {ReactNode} [icon] - An optional icon displayed alongside the title.
- * @param {string} title - The title of the card.
- * @param {string} [description] - An optional description displayed below the title.
- * @param {ReactNode} [upperRight] - An optional element positioned in the upper-right corner.
- * @param {ReactNode} [bottomRight] - An optional element positioned in the bottom-right footer corner.
- * @param {TailwindColor} [color] - The color theme of the card.
- * @param {string} [wrapperClassName] - Additional CSS classes for the card wrapper.
- * @param {boolean} [collapsed] - If true, the card starts in a collapsed state.
- * @param {boolean} [notCollapsible] - If true, the card cannot be collapsed.
- * @param {CardVariant} [variant] - Allows to choose different styles applied to the card.
- * @param {ReactNode} children - The main content of the card.
- */
 export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
   children,
   icon,
@@ -84,7 +69,6 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
   notCollapsible,
   variant,
 }) => {
-  // const textColor = color ? `text-${color}-500 dark:text-${color}-300` : '';
   const textColor = "";
   const borderColor = color
     ? `border-l-4 border-l-${color}-500 dark:border-l-${color}-300`
@@ -100,30 +84,34 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
       : icon;
 
   const [openItem, setOpenItem] = useState(defaultOpen);
+  const [pendingValue, setPendingValue] = useState(defaultOpen);
   const [collapsing, setCollapsing] = useState(false);
+  const [expanding, setExpanding] = useState(false);
   const collapseTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleValueChange = (value: string | undefined) => {
-    // If closing (collapsing)
-    if (openItem && !value) {
-      setCollapsing(true);
-      collapseTimeout.current = setTimeout(() => {
-        setOpenItem(value);
-        setCollapsing(false);
-      }, 250);
-    } else {
-      // Opening: open immediately, remove overflow-hidden
-      if (collapseTimeout.current) clearTimeout(collapseTimeout.current);
-      setCollapsing(false);
+    if (collapseTimeout.current) clearTimeout(collapseTimeout.current);
+
+    const isCollapsing = Boolean(openItem && !value);
+    const isExpanding = Boolean(!openItem && value);
+
+    setCollapsing(isCollapsing);
+    setExpanding(isExpanding);
+    setPendingValue(value);
+
+    collapseTimeout.current = setTimeout(() => {
       setOpenItem(value);
-    }
+      setCollapsing(false);
+      setExpanding(false);
+    }, 250);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       if (collapseTimeout.current) clearTimeout(collapseTimeout.current);
     };
   }, []);
+
   const HeaderJSX = (
     <CustomCardHeader
       {...{ description, title }}
@@ -146,7 +134,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
       collapsible
       className={cn("w-full", wrapperClassName)}
       defaultValue={defaultOpen}
-      value={openItem}
+      value={pendingValue}
       onValueChange={handleValueChange}
     >
       <AccordionItem value={title} className="h-full border-none">
@@ -156,8 +144,7 @@ export const CustomCard: React.FC<PropsWithChildren<OrderCardTitleProps>> = ({
             variant === "group" &&
               "bg-transparent border-dashed border-[2px] shadow-none",
             borderColor,
-            (collapsing || !openItem) && "overflow-hidden",
-            !collapsing && openItem && "overflow-visible",
+            collapsing || expanding ? "overflow-hidden" : "overflow-visible",
           )}
         >
           {notCollapsible ? (

@@ -285,8 +285,9 @@ export type ModalLocationsKeys = keyof typeof ModalLocations;
 
 export enum BASE_GROUP_ID {
   SHOP = "shop-group",
-  SETTINGS = "settings-group",
+  ASSORTMENT = "assortment-group",
   USERS = "users-group",
   PROMOTIONS = "promotions-group",
   SHIPPING = "shipping-group",
+  SETTINGS = "settings-group",
 }
