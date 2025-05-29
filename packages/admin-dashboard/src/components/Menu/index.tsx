@@ -177,12 +177,7 @@ export const Menu: React.FC<{ children?: React.ReactNode }> = ({ children }) => 
                               <React.Fragment key={c}>
                                 <BreadcrumbItem>
                                   <NavLink to={buildURL(linkPath)} viewTransition>
-                                    <p
-                                      className={cn('text-foreground font-bold capitalize', {
-                                        'text-xl': i === 0,
-                                        'text-md': i > 0,
-                                      })}
-                                    >
+                                    <p className={cn('text-md text-foreground font-bold capitalize')}>
                                       {i === 0 ? t('menu.' + dashToCamelCase(c)) : c}
                                     </p>
                                   </NavLink>

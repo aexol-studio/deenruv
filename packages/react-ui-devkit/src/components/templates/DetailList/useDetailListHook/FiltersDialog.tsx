@@ -124,7 +124,7 @@ export const FiltersDialog = <T extends keyof ListType>({
       </PopoverTrigger>
       <PopoverContent
         id={`-filter-dialog`}
-        align="end"
+        align="center"
         collisionPadding={16}
         className={cn(
           "flex w-[calc(100vw-theme(spacing.12))] min-w-60vw origin-[var(--radix-popover-content-transform-origin)] flex-col p-4 sm:w-[38rem]",
@@ -194,7 +194,7 @@ export const FiltersDialog = <T extends keyof ListType>({
                   </PopoverTrigger>
                   <PopoverContent
                     id={filterKey + "box"}
-                    align="center"
+                    align="start"
                     className="w-64 p-0"
                   >
                     <Command>

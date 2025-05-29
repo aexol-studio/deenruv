@@ -13,7 +13,14 @@ import {
   Payments,
   SurchargeCard,
 } from '@/pages/orders/_components';
-import { useTranslation, useOrder, ORDER_STATE, EntityCustomFields, LoadingMask } from '@deenruv/react-ui-devkit';
+import {
+  useTranslation,
+  useOrder,
+  ORDER_STATE,
+  EntityCustomFields,
+  LoadingMask,
+  DetailViewMarker,
+} from '@deenruv/react-ui-devkit';
 import { PromotionsList } from '@/pages/orders/_components/PromotionsList.js';
 
 export const OrdersDetailPage = () => {
@@ -53,6 +60,7 @@ export const OrdersDetailPage = () => {
         <EntityCustomFields entityName="order" id={id} />
         {mode === 'update' && <SurchargeCard />}
         {order.state !== ORDER_STATE.DRAFT && <PromotionsList />}
+        <DetailViewMarker position="order-detail-view" />
         {order.state !== ORDER_STATE.DRAFT && <OrderHistory />}
       </div>
     </main>
