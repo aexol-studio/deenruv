@@ -32,7 +32,7 @@ export const MetricTypeSelect: React.FC<MetricTypeSelectProps> = ({
         onValueChange={(value) => changeMetricType(value as ChartMetricType)}
         defaultValue={ChartMetricType.OrderTotal}
       >
-        <SelectTrigger className="h-[30px] text-[13px]">
+        <SelectTrigger className="text-[13px]">
           <SelectValue placeholder={t("selectDataType")} />
         </SelectTrigger>
         <SelectContent className="w-full">
