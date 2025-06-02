@@ -7,3 +7,4 @@ export * from "./CustomCard.js";
 export * from "./CustomCardHeader.js";
 export * from "./EmptyState.js";
 export * from "./FacetIdsSelector.js";
+export * from "./DraggableSelect.js";

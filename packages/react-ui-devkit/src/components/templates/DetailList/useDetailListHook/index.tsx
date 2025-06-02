@@ -28,6 +28,7 @@ export const useDetailListHook = <
   S extends keyof Awaited<ReturnType<PromisePaginated>>["items"][number],
 >({
   fetch,
+  refetchTimeout,
   customItemsPerPage,
   searchFields,
   fakeURLParams,
@@ -38,6 +39,7 @@ export const useDetailListHook = <
   searchFields?: S[];
   fakeURLParams?: boolean;
   searchTranslations?: Array<{ key: S; value: string }>;
+  refetchTimeout?: number;
 }): {
   Paginate: JSX.Element;
   Search: JSX.Element;
@@ -232,6 +234,19 @@ export const useDetailListHook = <
       setAdditionalData({ ...additionalData, refetchList: false });
     }
   }, [additionalData, translationsLanguage, searchParams]);
+
+  useEffect(() => {
+    if (!refetchTimeout) return;
+
+    const interval = setInterval(() => {
+      fetch(searchParamValues).then(({ items, totalItems }) => {
+        setObjects(items);
+        setTotal(totalItems);
+      });
+    }, refetchTimeout);
+
+    return () => clearInterval(interval);
+  }, [refetchTimeout, fetch, searchParamValues]);
 
   const itemsPerPage = useMemo(
     () => customItemsPerPage || ITEMS_PER_PAGE,

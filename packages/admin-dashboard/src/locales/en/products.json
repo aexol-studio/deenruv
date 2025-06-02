@@ -124,6 +124,7 @@
         "noFeaturedAsset": "Not established",
         "noAssets": "No assets yet",
         "setAsFeatured": "Set as recommended",
+        "editAsset": "Edit asset",
         "removeAsset": "Remove resource",
         "usedForColorsDesc": "Use this attribute for guys who are colours",
         "colorsCollectionDesc": "Use this for product paths in COLOUR (BLAT/CORPUS)",

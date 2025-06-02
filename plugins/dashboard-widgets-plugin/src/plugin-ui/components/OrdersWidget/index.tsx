@@ -15,6 +15,8 @@ import {
   useSettings,
   useQuery,
   useLocalStorage,
+  DraggableSelect,
+  Button,
 } from "@deenruv/react-ui-devkit";
 
 import { MetricsCustomDates } from "./MetricCustomDates";
@@ -46,6 +48,7 @@ import { OrdersSummaryTile } from "./OrdersSummaryTile";
 import { OrderStatesSelect } from "../shared/OrderStatesSelect";
 import { ProductSelector } from "./ProductSelector";
 import { GroupBySelect } from "./GroupBySelect";
+import { PanelsTopLeft } from "lucide-react";
 
 export const OrdersWidget = () => {
   const { t } = useTranslation("dashboard-widgets-plugin");
@@ -89,7 +92,7 @@ export const OrdersWidget = () => {
     { id: string; color: string }[]
   >([]);
   const [selectedOrderStates, setSelectedOrderStates] = useState<
-    Array<ORDER_STATE[keyof ORDER_STATE]>
+    (string | ORDER_STATE)[]
   >([
     "PaymentSettled",
     "PartiallyShipped",
@@ -254,11 +257,6 @@ export const OrdersWidget = () => {
           ],
     );
   };
-  const onSelectedAStatesChange = (value: string) => {
-    setSelectedOrderStates((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-    );
-  };
 
   const shouldShowGroupBy = useMemo(() => {
     const { start, end } = dateRange.range;
@@ -274,6 +272,21 @@ export const OrdersWidget = () => {
       groupByPeriods({ data: betterData.allData, language, groupBy }),
     );
   }, [betterData.allData, groupBy, dateRange.range.start, dateRange.range.end]);
+
+  const options = useMemo(
+    () =>
+      [
+        ...Object.values(ORDER_STATE),
+        ...(data?.additionalOrderStates.map(({ state }) => state) || []),
+      ]
+        .filter((i, index, arr) => arr.indexOf(i) === index)
+        .sort((a, b) => a.localeCompare(b))
+        .map((state) => ({
+          value: state,
+          label: parseNameToCurrentLanguage(state, language),
+        })),
+    [data?.additionalOrderStates],
+  );
 
   return (
     <Card className="border-0 py-6 pr-6 shadow-none ">
@@ -323,12 +336,21 @@ export const OrdersWidget = () => {
           </div>
         </div>
         <div className="!mt-0 flex items-center gap-2">
-          <OrderStatesSelect
-            additionalOrderStates={data?.additionalOrderStates.map(
-              ({ state }) => state,
-            )}
-            selectedOrderStates={selectedOrderStates as string[]}
-            onSelectedOrderStatesChange={onSelectedAStatesChange}
+          <DraggableSelect
+            localStorageKey="orders-widget-order-states"
+            align="end"
+            title={t("selectOrderStates")}
+            button={
+              <Button variant="outline" size="sm" className="h-8 gap-2 py-0">
+                {selectedOrderStates.length
+                  ? `${t("selectedOrderStates")} (${selectedOrderStates.length})`
+                  : t("selectOrderStates")}
+                <PanelsTopLeft className="size-4" aria-hidden="true" />
+              </Button>
+            }
+            value={selectedOrderStates}
+            onChange={setSelectedOrderStates}
+            options={options}
           />
           <MetricTypeSelect
             metricType={metricType}

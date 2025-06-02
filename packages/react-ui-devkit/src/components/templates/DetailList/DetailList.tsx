@@ -68,7 +68,6 @@ import {
   RouteWithoutCreate,
 } from "./useDetailListHook/types.js";
 import { PageBlock } from "@/universal_components/PageBlock.js";
-import { Row } from "@tanstack/react-table";
 
 export const isAssetObject = (value: object): boolean => {
   return Boolean(
@@ -98,7 +97,6 @@ type FilterField<ENTITY extends keyof ModelTypes> =
           >
         | string;
       translation?: string;
-      // TODO: infer operator based on the type of the field
       operator:
         | "StringOperators"
         | "IDOperators"
@@ -118,11 +116,14 @@ type FilterField<ENTITY extends keyof ModelTypes> =
             "_or" | "_and"
           >
         | string;
-      // TODO: infer operator based on the type of the field
       translation?: string;
-      component?: React.ComponentType<any>;
+      component?: React.ComponentType<{
+        value: any;
+        onChange: (value: any) => void;
+      }>;
     };
 
+const CHARACTERS_LIMIT = 100;
 export function DetailList<
   KEY extends LocationKeys | ({} & string),
   T extends PromisePaginated,
@@ -326,16 +327,8 @@ export function DetailList<
       fetch(params, customFieldsSelector, mergedSelectors),
     searchFields,
     searchTranslations,
+    refetchTimeout,
   });
-
-  // useEffect(() => {
-  //   if (refetchTimeout && !loading) {
-  //     const interval = setInterval(() => {
-  //       refetch();
-  //     }, refetchTimeout);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [refetchTimeout, loading]);
 
   const columns = useMemo(() => {
     const entry = objects?.[0];
@@ -474,6 +467,18 @@ export function DetailList<
               </div>
             );
           }
+
+          if (typeof value === "string" && value.length > CHARACTERS_LIMIT) {
+            return (
+              <div className="text-nowrap">
+                {value.slice(0, CHARACTERS_LIMIT)}...
+                <span className="text-gray-500">
+                  {value.length - CHARACTERS_LIMIT} {t("znaków")}
+                </span>
+              </div>
+            );
+          }
+
           if (key === detailLinkColumn && route) {
             return (
               <Button
@@ -706,7 +711,7 @@ export function DetailList<
               <div className="mb-1 flex w-full flex-col items-start gap-4">
                 <div className="flex w-full items-end justify-between gap-4">
                   <div className="flex items-center gap-2">
-                    {selectedAmount > 0 && (
+                    {(bulkActions.length || remove) && selectedAmount > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
@@ -773,28 +778,32 @@ export function DetailList<
                               );
                             })}
                           </DropdownMenuGroup>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuGroup>
-                            <DropdownMenuItem
-                              className="text-red-600 cursor-pointer"
-                              disabled={!selectedAmount}
-                              onClick={() => {
-                                const selected = Object.entries(
-                                  table.getState().rowSelection,
-                                )
-                                  .filter(([, value]) => value)
-                                  .map(([key]) => key);
-                                onRemove(selected.map((id) => ({ id })));
-                              }}
-                            >
-                              <Trash2Icon className="mr-2 size-4" />
-                              {t("Usuń zacznaczone")}
-                            </DropdownMenuItem>
-                          </DropdownMenuGroup>
+
+                          {remove && (
+                            <>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuGroup>
+                                <DropdownMenuItem
+                                  className="text-red-600 cursor-pointer"
+                                  disabled={!selectedAmount}
+                                  onClick={() => {
+                                    const selected = Object.entries(
+                                      table.getState().rowSelection,
+                                    )
+                                      .filter(([, value]) => value)
+                                      .map(([key]) => key);
+                                    onRemove(selected.map((id) => ({ id })));
+                                  }}
+                                >
+                                  <Trash2Icon className="mr-2 size-4" />
+                                  {t("Usuń zacznaczone")}
+                                </DropdownMenuItem>
+                              </DropdownMenuGroup>
+                            </>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     )}
-
                     <ColumnView table={table} entityName={entityName} />
                     {Search}
                     <FiltersDialog {...filterProperties} />

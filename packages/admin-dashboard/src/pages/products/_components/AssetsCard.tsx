@@ -109,11 +109,9 @@ export const AssetsCard: React.FC<AssetsCardProps> = ({
                     <DropdownMenuContent className="w-56" side="bottom" align="end">
                       <DropdownMenuGroup>
                         <DropdownMenuItem
-                          onClick={async () => {
-                            const { success } = await createDialogFromComponent(EditAssetDialog, asset, {});
-                          }}
+                          onClick={() => createDialogFromComponent(EditAssetDialog, asset, { className: 'max-w-4xl' })}
                         >
-                          {t('details.setAsFeatured')}
+                          {t('details.editAsset')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onFeaturedAssetChange(asset.id)}>
                           {t('details.setAsFeatured')}

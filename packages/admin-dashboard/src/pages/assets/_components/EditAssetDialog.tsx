@@ -34,7 +34,9 @@ export function EditAssetDialog<T extends { id: string }>({
   const [nameInput, setNameInput] = useState(data.name);
   const { refetch } = useDetailList();
 
-  const onClose = close;
+  const onClose = () => {
+    close();
+  };
 
   const onSubmit = async () => {
     const input = {
@@ -48,13 +50,7 @@ export function EditAssetDialog<T extends { id: string }>({
     try {
       const { updateAsset } = await apiClient('mutation')(
         {
-          updateAsset: [
-            { input: $('input', 'UpdateAssetInput!') },
-            {
-              __typename: true,
-              '...on Asset': { id: true },
-            },
-          ],
+          updateAsset: [{ input: $('input', 'UpdateAssetInput!') }, { __typename: true, '...on Asset': { id: true } }],
         },
         { variables: { input } },
       );
@@ -155,7 +151,7 @@ export function EditAssetDialog<T extends { id: string }>({
           </div>
         </div>
 
-        <div className="flex w-full flex-col md:w-2/5">
+        <div className="flex w-full flex-col md:w-[45%]">
           <Card className="bg-card flex w-full flex-col border p-4 shadow-sm">
             <h3 className="text-muted-foreground mb-3 text-sm font-medium">{t('dialogs.details')}</h3>
 
@@ -197,7 +193,12 @@ export function EditAssetDialog<T extends { id: string }>({
                                   placeholder={t('dialogs.addTag')}
                                   className="text-sm"
                                 />
-                                <Button size="sm" variant="outline" onClick={handleAddTag} disabled={!tagInput.trim()}>
+                                <Button
+                                  className="h-10"
+                                  variant="outline"
+                                  onClick={handleAddTag}
+                                  disabled={!tagInput.trim()}
+                                >
                                   <TagIcon className="mr-1 h-4 w-4" />
                                   {t('dialogs.add')}
                                 </Button>
@@ -221,7 +222,7 @@ export function EditAssetDialog<T extends { id: string }>({
                             x: {value.x.toFixed(2)}, y: {value.y.toFixed(2)}
                           </span>
                         ) : key === 'preview' ? (
-                          <div className="flex items-center justify-between rounded-md bg-gray-100 p-2 font-mono text-sm">
+                          <div className="bg-secondary flex items-center justify-between rounded-md p-2 font-mono text-sm">
                             <span className="truncate">{String(value)}</span>
                             <button
                               onClick={() => {
