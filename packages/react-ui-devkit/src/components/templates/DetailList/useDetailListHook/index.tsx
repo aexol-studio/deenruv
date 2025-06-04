@@ -72,7 +72,7 @@ export const useDetailListHook = <
     if (query) {
       searchParams.set(SearchParamKey.SEARCH, query);
       setSearchParams(searchParams);
-    } else {
+    } else if (searchParams.has(SearchParamKey.SEARCH)) {
       searchParams.delete(SearchParamKey.SEARCH);
       setSearchParams(searchParams);
     }

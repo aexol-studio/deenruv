@@ -10,7 +10,7 @@ import {
 import { DetailViewMarker, checkUnsavedChanges } from "@/components";
 import { apiClient } from "@/zeus_client/deenruvAPICall";
 import { toast } from "sonner";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { GraphQLError } from "graphql";
 import type { EntityType, PropsType, StoreContextType } from "./types";
 import { useRouteGuard } from "@/hooks";
@@ -100,6 +100,7 @@ export const DetailViewStoreProvider = <
   const graphQLSchema = useServer((p) => p.graphQLSchema);
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [entity, setEntity] = useState<EntityType | null>(null);
   const [error, setError] = useState("");
@@ -114,6 +115,19 @@ export const DetailViewStoreProvider = <
   const markAsDirty = useCallback(() => {
     setMarkedAsDirty(true);
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("tab")) {
+      const newTab = searchParams.get("tab") as string;
+      if (tabs.some((t) => t.name === newTab)) {
+        setTab(newTab);
+      } else {
+        setTab(tabs[0].name);
+      }
+    } else {
+      setTab(tabs[0].name);
+    }
+  }, [searchParams, tabs]);
 
   useEffect(() => {
     if (id !== undefined) fetchEntity();

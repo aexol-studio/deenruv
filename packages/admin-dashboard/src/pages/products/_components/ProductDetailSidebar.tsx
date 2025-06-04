@@ -22,7 +22,11 @@ export const ProductDetailSidebar: React.FC<{ marker?: ReactNode }> = ({ marker 
   } = form;
 
   useEffect(() => {
-    if (!entity) return;
+    if (!entity) {
+      setField('facetValueIds', []);
+      setField('enabled', true);
+      return;
+    }
     setField(
       'facetValueIds',
       entity.facetValues.map((f) => f.id),

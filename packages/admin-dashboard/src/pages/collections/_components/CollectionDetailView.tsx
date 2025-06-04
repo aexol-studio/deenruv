@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import {
   CF,
@@ -19,7 +18,6 @@ import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
 
 export const CollectionsDetailView = () => {
-  const navigate = useNavigate();
   const { t } = useTranslation('collections');
   const contentLng = useSettings((p) => p.translationsLanguage);
   const selectedChannel = useSettings((p) => p.selectedChannel);
@@ -43,10 +41,6 @@ export const CollectionsDetailView = () => {
   useEffect(() => {
     (async () => {
       const resp = await fetchEntity();
-      if (resp === undefined) {
-        navigate(-1);
-        return;
-      }
       if (!resp) return;
 
       setField('translations', resp.translations);

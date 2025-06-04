@@ -9,7 +9,6 @@ import {
 import { useCallback, useEffect, useMemo } from 'react';
 import { BasicFieldsCard } from './BasicFieldsCard';
 import { AssetsCard } from './AssetsCard';
-import { useNavigate } from 'react-router-dom';
 
 export const PRODUCT_FORM_KEYS = [
   'CreateProductInput',
@@ -22,7 +21,6 @@ export const PRODUCT_FORM_KEYS = [
 ] as const;
 
 export const ProductDetailView = () => {
-  const navigate = useNavigate();
   const contentLng = useSettings((p) => p.translationsLanguage);
   const selectedChannel = useSettings((p) => p.selectedChannel);
   const { entity, id, form, loading, fetchEntity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
@@ -33,10 +31,6 @@ export const ProductDetailView = () => {
   useEffect(() => {
     (async () => {
       const res = await fetchEntity();
-      if (res === undefined) {
-        navigate(-1);
-        return;
-      }
       if (!res) return;
       setField('translations', res.translations);
       setField(
