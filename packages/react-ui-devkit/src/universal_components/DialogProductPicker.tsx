@@ -59,7 +59,6 @@ export const DialogProductPicker = ({
   const [selectedItems, setSelectedItems] = useState<DialogProductPickerType[]>(
     [],
   );
-
   const { objects, Paginate, refetch, setFilterField } = useList({
     route: async ({ page, perPage, filter }) => {
       const { search } = await apiClient("query")({
@@ -214,63 +213,65 @@ export const DialogProductPicker = ({
                 <div className="p-4 text-center">No products found</div>
               ) : (
                 <div className="divide-y">
-                  {objects?.map((item) => (
-                    <div
-                      key={
-                        mode === "product"
-                          ? item.productId
-                          : item.productVariantId
-                      }
-                      className="hover:bg-muted flex cursor-pointer items-center p-3"
-                      onClick={() => handleSelect(item)}
-                    >
-                      <div className="mr-3 shrink-0">
-                        {multiple ? (
-                          <Checkbox
-                            checked={isItemSelected(item)}
-                            onCheckedChange={() => handleSelect(item)}
-                          />
-                        ) : (
-                          <RadioGroup
-                            value={isItemSelected(item) ? "selected" : ""}
-                          >
-                            <RadioGroupItem
-                              value="selected"
+                  {objects
+                    ?.filter((item) => item.enabled)
+                    .map((item) => (
+                      <div
+                        key={
+                          mode === "product"
+                            ? item.productId
+                            : item.productVariantId
+                        }
+                        className="hover:bg-muted flex cursor-pointer items-center p-3"
+                        onClick={() => handleSelect(item)}
+                      >
+                        <div className="mr-3 shrink-0">
+                          {multiple ? (
+                            <Checkbox
                               checked={isItemSelected(item)}
+                              onCheckedChange={() => handleSelect(item)}
                             />
-                          </RadioGroup>
-                        )}
-                      </div>
-
-                      <div className="mr-3 shrink-0">
-                        <img
-                          src={
-                            item.productAsset?.preview ||
-                            "/placeholder.svg?height=40&width=40" ||
-                            "/placeholder.svg"
-                          }
-                          alt={item.productName}
-                          className="size-10 rounded object-cover"
-                        />
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate font-medium">
-                          {item.productName}
+                          ) : (
+                            <RadioGroup
+                              value={isItemSelected(item) ? "selected" : ""}
+                            >
+                              <RadioGroupItem
+                                value="selected"
+                                checked={isItemSelected(item)}
+                              />
+                            </RadioGroup>
+                          )}
                         </div>
-                        {mode === "variant" && (
-                          <div className="text-muted-foreground truncate text-sm">
-                            {item.productVariantName}
-                          </div>
-                        )}
-                        <div className="text-sm">{getItemPrice(item)}</div>
-                      </div>
 
-                      <div className="text-muted-foreground ml-2 shrink-0 text-sm">
-                        {item.sku}
+                        <div className="mr-3 shrink-0">
+                          <img
+                            src={
+                              item.productAsset?.preview ||
+                              "/placeholder.svg?height=40&width=40" ||
+                              "/placeholder.svg"
+                            }
+                            alt={item.productName}
+                            className="size-10 rounded object-cover"
+                          />
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate font-medium">
+                            {item.productName}
+                          </div>
+                          {mode === "variant" && (
+                            <div className="text-muted-foreground truncate text-sm">
+                              {item.productVariantName}
+                            </div>
+                          )}
+                          <div className="text-sm">{getItemPrice(item)}</div>
+                        </div>
+
+                        <div className="text-muted-foreground ml-2 shrink-0 text-sm">
+                          {item.sku}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </div>
