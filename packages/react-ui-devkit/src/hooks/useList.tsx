@@ -25,6 +25,7 @@ import {
   PromisePaginated,
 } from "@/types/models";
 import { LogicalOperator, ModelTypes, SortOrder } from "@deenruv/admin-types";
+import { useTranslation } from "./useTranslation.js";
 
 type LimitKeys =
   | "10perPage"
@@ -131,6 +132,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
   removeFilterField: (filterField: keyof ModelTypes[ListType[K]]) => void;
   isFilterOn: boolean;
 } => {
+  const { t } = useTranslation("common");
   const { skip } = options || {};
 
   const [searchParams, setSearchParams] = options?.noSearchParams
@@ -352,7 +354,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
       <div className="flex gap-4">
         <div className="m-auto whitespace-nowrap text-center">
           {(searchParamValues.page - 1) * searchParamValues.perPage + 1} -{" "}
-          {searchParamValues.page * searchParamValues.perPage} of {total}
+          {searchParamValues.page * searchParamValues.perPage} / {total}
         </div>
         <div className="mx-auto">
           <Select
@@ -371,7 +373,7 @@ export const useList = <T extends PromisePaginated, K extends keyof ListType>({
             <SelectContent>
               {itemsPerPage.map((i) => (
                 <SelectItem key={i.name} value={i.value.toString()}>
-                  {i.name}
+                  {t(`perPage.${i.name}`)}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -19,6 +19,7 @@ import {
 } from "@/components/index.js";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { priceFormatter } from "@/utils/price-formatter.js";
+import { useTranslation } from "@/hooks/useTranslation.js";
 
 type DialogProductPickerProps = {
   mode: "product" | "variant";
@@ -53,6 +54,8 @@ export const DialogProductPicker = ({
   onSubmit,
   onCancel,
 }: DialogProductPickerProps) => {
+  const { t } = useTranslation("common");
+  const [once, setOnce] = useState(false);
   const [open, isOpen] = useState(false);
   const [searchString, setSearchString] = useState<string>("");
   const debouncedSearch = useDebounce(searchString, 500);
@@ -82,12 +85,11 @@ export const DialogProductPicker = ({
   });
 
   useEffect(() => {
-    if (debouncedSearch !== searchString) {
-      refetch();
-    }
-  }, [debouncedSearch, refetch]);
+    refetch();
+  }, [debouncedSearch]);
 
   useEffect(() => {
+    if (once) return;
     if (open && initialValue) {
       if (multiple && Array.isArray(initialValue)) {
         const initialIds = new Set(initialValue);
@@ -105,15 +107,16 @@ export const DialogProductPicker = ({
         );
         setSelectedItems(initialItem ? [initialItem] : []);
       }
+      setOnce(true);
     }
-  }, [open, initialValue, objects, mode, multiple]);
+  }, [open, initialValue, once, objects, mode, multiple]);
 
   const onOpenChange = (open: boolean) => {
     isOpen(open);
     if (!open) {
       setSearchString("");
       setSelectedItems([]);
-      onCancel && onCancel();
+      if (onCancel) onCancel();
     }
   };
 
@@ -173,24 +176,30 @@ export const DialogProductPicker = ({
     return "";
   };
 
+  const title = multiple
+    ? mode === "product"
+      ? t("Wybierz produkty")
+      : t("Wybierz warianty")
+    : mode === "product"
+      ? t("Wybierz produkt")
+      : t("Wybierz wariant");
+
   return (
     <div>
       <Button type="button" onClick={() => isOpen(true)}>
-        {mode === "product" ? "Select Product" : "Select Variant"}
+        {title}
       </Button>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full sm:max-w-[600px] md:max-w-[700px] lg:max-w-[800px]">
+        <DialogContent className="w-[90%] lg:max-w-[50vw]">
           <DialogHeader>
-            <DialogTitle>
-              {mode === "product" ? "Select Product" : "Select Product Variant"}
-            </DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="space-y-4 w-full max-w-[calc(90%-3rem)] lg:max-w-[calc(50vw-3rem)]">
             <div className="relative">
               <Search className="text-muted-foreground absolute left-2 top-2.5 size-4" />
               <Input
-                placeholder="Search products..."
+                placeholder={t("Szukaj")}
                 value={searchString}
                 onChange={(e) => setSearchString(e.target.value)}
                 className="pl-8"
@@ -210,7 +219,7 @@ export const DialogProductPicker = ({
 
             <div className="max-h-[400px] overflow-y-auto rounded-md border">
               {objects?.length === 0 ? (
-                <div className="p-4 text-center">No products found</div>
+                <div className="p-4 text-center">{t("Brak produktów")}</div>
               ) : (
                 <div className="divide-y">
                   {objects
@@ -246,9 +255,7 @@ export const DialogProductPicker = ({
                         <div className="mr-3 shrink-0">
                           <img
                             src={
-                              item.productAsset?.preview ||
-                              "/placeholder.svg?height=40&width=40" ||
-                              "/placeholder.svg"
+                              item.productAsset?.preview || "/placeholder.svg"
                             }
                             alt={item.productName}
                             className="size-10 rounded object-cover"
@@ -256,7 +263,7 @@ export const DialogProductPicker = ({
                         </div>
 
                         <div className="min-w-0 flex-1">
-                          <div className="truncate font-medium">
+                          <div className="text-sm font-medium truncate">
                             {item.productName}
                           </div>
                           {mode === "variant" && (
@@ -282,8 +289,7 @@ export const DialogProductPicker = ({
             <div>
               {selectedItems.length > 0 && (
                 <span className="text-sm">
-                  {selectedItems.length}{" "}
-                  {selectedItems.length === 1 ? "item" : "items"} selected
+                  {selectedItems.length} {t("Zaznaczonych")}
                 </span>
               )}
             </div>
@@ -294,7 +300,7 @@ export const DialogProductPicker = ({
                 onClick={() => onOpenChange(false)}
                 className="flex-1 sm:flex-none"
               >
-                Cancel
+                {t("Anuluj")}
               </Button>
               <Button
                 type="button"
@@ -305,7 +311,7 @@ export const DialogProductPicker = ({
                 }
                 className="flex-1 sm:flex-none"
               >
-                Confirm
+                {t("Zatwierdź")}
               </Button>
             </div>
           </DialogFooter>
