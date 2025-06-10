@@ -27,7 +27,7 @@ export const SelectIDColumn = <T extends { id: string }>(): ColumnDef<T> => {
       const checked =
         table.getIsAllPageRowsSelected() ||
         (table.getIsSomePageRowsSelected() && "indeterminate");
-      const amount = table.getSelectedRowModel().flatRows.length;
+      if (table.getRowModel().rows.length === 0) return null;
 
       return (
         <div className="relative flex gap-2 items-center">

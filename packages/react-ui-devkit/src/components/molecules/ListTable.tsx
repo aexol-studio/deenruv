@@ -46,7 +46,8 @@ const getCommonPinningStyles = <T,>(
   const isFirstRightPinnedColumn =
     isPinned === "right" && column.getIsFirstColumn("right");
   const narrowColumnWidth = 35;
-  const idColumnMaxWidth = 100;
+  const idColumnMaxWidth = 350;
+  const idColumnWidth = 100;
   const isNarrowColumn = ["select-id", "select", "actions"].includes(column.id);
   const columnWidth = isNarrowColumn ? narrowColumnWidth : undefined;
 
@@ -58,7 +59,7 @@ const getCommonPinningStyles = <T,>(
     position: isPinned ? ("sticky" as const) : ("relative" as const),
     minWidth: columnWidth,
     maxWidth: column.id === "id" ? idColumnMaxWidth : columnWidth,
-    width: column.id === "id" ? idColumnMaxWidth : columnWidth,
+    width: column.id === "id" ? idColumnWidth : columnWidth,
     zIndex: isPinned ? 1 : 0,
   };
 

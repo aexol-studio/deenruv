@@ -12,10 +12,11 @@ export const useRouteGuard = ({ shouldBlock }: UseRouteGuardProps) => {
   const hasIdParam = /\d+/.test(location.pathname);
 
   useBlocker((blocker) => {
-    if (hasIdParam && shouldBlock && !confirmed) {
-      setModalState(true, blocker.nextLocation.pathname);
-      return true;
-    } else return false;
+    // if (hasIdParam && shouldBlock && !confirmed) {
+    //     setModalState(true, blocker.nextLocation.pathname);
+    //     return true;
+    // } else return false;
+    return false;
   });
 
   useEffect(() => {

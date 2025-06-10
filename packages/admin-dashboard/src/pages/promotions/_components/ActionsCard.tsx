@@ -103,7 +103,7 @@ export const ActionsCard: React.FC<ActionsCardCardProps> = ({ value, onChange, e
               const translated = t(`actions.codes.${action.code}`);
               return (
                 <DropdownMenuItem key={action.code} onClick={() => addAction(action)}>
-                  {translated !== `actions.codes.${action.code}` ? translated : action.code}
+                  {translated !== `actions.codes.${action.code}` ? translated : action.description}
                 </DropdownMenuItem>
               );
             })}
