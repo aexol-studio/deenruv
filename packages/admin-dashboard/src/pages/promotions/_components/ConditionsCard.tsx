@@ -119,6 +119,8 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
           <p>{t('conditions.emptyState')}</p>
         ) : (
           value?.map((condition, index) => {
+            const translated = t(`conditions.codes.${condition.code}`);
+            const available = availableConditions.find((c) => c.code === condition.code);
             return (
               <div className="flex flex-col gap-4" key={index}>
                 <div className="flex items-center gap-3">
@@ -135,7 +137,11 @@ export const ConditionsCard: React.FC<ConditionsCardProps> = ({ value, onChange,
                       >
                         <X size={16} />
                       </Button>
-                      <h5>{t(`conditions.codes.${condition.code}`)}</h5>
+                      <h5>
+                        {translated !== `conditions.codes.${condition.code}`
+                          ? translated
+                          : available?.description || condition.code}
+                      </h5>
                     </>
                   )}
                 </div>
