@@ -24,6 +24,7 @@ import {
 import { Menu } from '@/components';
 import { GlobalSearch } from '@/components/GlobalSearch.js';
 import { DeenruvDeveloperIndicator } from '@/DeenruvDeveloperIndicator.js';
+import { CurrencyCode, LanguageCode, Permission } from '@deenruv/admin-types';
 
 const TAKE = 100;
 const getAllPaginatedCountries = async () => {
@@ -170,48 +171,58 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
       const activeAdministratorResponse = await apiClient('query')({
         activeAdministrator: activeAdministratorSelector,
       });
+      const roles = activeAdministratorResponse.activeAdministrator?.user.roles || [];
 
       if (!activeAdministratorResponse.activeAdministrator) {
         toast.error(t('setup.failedAdmin'));
       } else {
         setActiveAdministrator(activeAdministratorResponse.activeAdministrator);
-        setUserPermissions(
-          Array.from(
-            new Set(activeAdministratorResponse.activeAdministrator.user.roles.flatMap((role) => role.permissions)),
-          ),
-        );
-        const {
-          channels: { items: allChannels = [] },
-        } = await apiClient('query')({
-          channels: [
-            {},
-            {
-              items: {
-                id: true,
-                code: true,
-                token: true,
-                currencyCode: true,
-                defaultLanguageCode: true,
-                availableLanguageCodes: true,
+        setUserPermissions(Array.from(new Set(roles.flatMap((role) => role.permissions))));
+        if ([Permission.ReadChannel].some((p) => roles.some((r) => r.permissions.includes(p)))) {
+          const {
+            channels: { items: allChannels = [] },
+          } = await apiClient('query')({
+            channels: [
+              {},
+              {
+                items: {
+                  id: true,
+                  code: true,
+                  token: true,
+                  currencyCode: true,
+                  defaultLanguageCode: true,
+                  availableLanguageCodes: true,
+                },
               },
+            ],
+          });
+          setChannels(allChannels);
+          if (!channel) {
+            if (selectedChannel) {
+              const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
+              setSelectedChannel(foundChannel || allChannels[0]);
+            }
+            const existingChannel = allChannels.find(
+              (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+            );
+            if (existingChannel) {
+              setSelectedChannel(existingChannel);
+            }
+            const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
+            setSelectedChannel(defaultChannel);
+          }
+        } else {
+          const { activeChannel } = await apiClient('query')({
+            activeChannel: {
+              id: true,
+              code: true,
+              token: true,
+              currencyCode: true,
+              defaultLanguageCode: true,
+              availableLanguageCodes: true,
             },
-          ],
-        });
-
-        setChannels(allChannels);
-        if (!channel) {
-          if (selectedChannel) {
-            const foundChannel = allChannels.find((ch) => ch.code === selectedChannel.code);
-            setSelectedChannel(foundChannel || allChannels[0]);
-          }
-          const existingChannel = allChannels.find(
-            (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
-          );
-          if (existingChannel) {
-            setSelectedChannel(existingChannel);
-          }
-          const defaultChannel = allChannels.find((ch) => ch.code === DEFAULT_CHANNEL_CODE) || allChannels[0];
-          setSelectedChannel(defaultChannel);
+          });
+          setSelectedChannel(activeChannel);
         }
       }
 
@@ -232,35 +243,41 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
       initializeOrderCustomFields(globalSettings.serverConfig);
       setLoaded(true);
 
-      const [countriesResponse, paymentsResponse, fulfillmentsResponse] = await Promise.allSettled([
-        getAllPaginatedCountries(),
-        getAllPaymentMethods(),
-        apiClient('query')({ fulfillmentHandlers: configurableOperationDefinitionSelector }),
-      ]);
-      if (countriesResponse.status === 'rejected') {
-        toast.error(t('setup.failedServer'));
-      } else {
-        setServerConfig(globalSettings.serverConfig);
-        setAvailableLanguages(globalSettings.availableLanguages);
-        // const socket = serverConfigResponse.value.globalSettings.serverConfig.plugins?.find(
-        //   (plugin) => plugin.name === 'AexolAdminsPlugin',
-        // );
-        // if (socket && socket.active) setNeedSocket(true);
-      }
-      if (countriesResponse.status === 'rejected') {
-        toast.error(t('setup.failedCountries'));
-      } else {
-        setCountries(countriesResponse.value.countries);
-      }
-      if (paymentsResponse.status === 'rejected') {
-        toast.error(t('setup.failedPayments'));
-      } else {
-        setPaymentMethodsType(paymentsResponse.value.paymentMethods);
-      }
-      if (fulfillmentsResponse.status === 'rejected') {
-        toast.error(t('setup.failedFulfillments'));
-      } else {
-        setFulfillmentHandlers(fulfillmentsResponse.value.fulfillmentHandlers);
+      if (
+        [Permission.ReadCountry, Permission.ReadPaymentMethod, Permission.ReadOrder].some((p) =>
+          roles.some((r) => r.permissions.includes(p)),
+        )
+      ) {
+        const [countriesResponse, paymentsResponse, fulfillmentsResponse] = await Promise.allSettled([
+          getAllPaginatedCountries(),
+          getAllPaymentMethods(),
+          apiClient('query')({ fulfillmentHandlers: configurableOperationDefinitionSelector }),
+        ]);
+        if (countriesResponse.status === 'rejected') {
+          toast.error(t('setup.failedServer'));
+        } else {
+          setServerConfig(globalSettings.serverConfig);
+          setAvailableLanguages(globalSettings.availableLanguages);
+          // const socket = serverConfigResponse.value.globalSettings.serverConfig.plugins?.find(
+          //   (plugin) => plugin.name === 'AexolAdminsPlugin',
+          // );
+          // if (socket && socket.active) setNeedSocket(true);
+        }
+        if (countriesResponse.status === 'rejected') {
+          toast.error(t('setup.failedCountries'));
+        } else {
+          setCountries(countriesResponse.value.countries);
+        }
+        if (paymentsResponse.status === 'rejected') {
+          toast.error(t('setup.failedPayments'));
+        } else {
+          setPaymentMethodsType(paymentsResponse.value.paymentMethods);
+        }
+        if (fulfillmentsResponse.status === 'rejected') {
+          toast.error(t('setup.failedFulfillments'));
+        } else {
+          setFulfillmentHandlers(fulfillmentsResponse.value?.fulfillmentHandlers);
+        }
       }
     };
     fetchGraphQLSchema().then(async (schema) => {

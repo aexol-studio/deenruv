@@ -1085,6 +1085,10 @@
   },
   "noImage": "No image for the item",
   "validation": {
+    "conditionsCode": "At least one condition is required",
+    "conditionsArgs": "Fill in all fields",
+    "actionsCode": "At least one action is required",
+    "actionsArgs": "Fill in all fields",
     "fieldRequired": "This field is required",
     "nameRequired": "Name is required",
     "emailRequired": "Email is required",

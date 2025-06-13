@@ -1084,6 +1084,10 @@
   },
   "noImage": "Brak obrazu dla elementu",
   "validation": {
+    "conditionsCode": "At least one condition is required",
+    "conditionsArgs": "Fill in all fields",
+    "actionsCode": "At least one action is required",
+    "actionsArgs": "Fill in all fields",
     "fieldRequired": "To pole jest wymagane",
     "nameRequired": "Nazwa jest wymagana",
     "emailRequired": "Email jest wymagany",

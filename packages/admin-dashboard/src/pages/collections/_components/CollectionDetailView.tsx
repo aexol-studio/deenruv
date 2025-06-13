@@ -12,6 +12,7 @@ import {
   useSettings,
   RichTextEditor,
   useTranslation,
+  setInArrayBy,
 } from '@deenruv/react-ui-devkit';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
@@ -72,10 +73,10 @@ export const CollectionsDetailView = () => {
 
   const setTranslationField = useCallback(
     (field: string, e: string) => {
+      if (!currentTranslationValue) return;
       setField(
         'translations',
-        // @ts-ignore
-        setInArrayBy(translations, (t) => t.languageCode !== currentTranslationLng, {
+        setInArrayBy(translations, (t) => t.languageCode !== contentLng, {
           ...currentTranslationValue,
           [field]: e,
           languageCode: contentLng,

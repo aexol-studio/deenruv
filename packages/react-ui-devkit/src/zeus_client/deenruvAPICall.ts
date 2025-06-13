@@ -208,13 +208,13 @@ export const deenruvAPICall = (options?: CallOptions) => {
       })
       .then((response: GraphQLResponse) => {
         if (response.errors) {
-          const shouldLogout = response.errors.some(
-            (e: any) => "extensions" in e && e.extensions.code === "FORBIDDEN",
-          );
-          if (shouldLogout) {
-            useSettings.getState().logOut();
-            return response.data;
-          }
+          // const shouldLogout = response.errors.some(
+          //   (e: any) => "extensions" in e && e.extensions.code === "FORBIDDEN",
+          // );
+          // if (shouldLogout) {
+          //   useSettings.getState().logOut();
+          //   return response.data;
+          // }
           throw new GraphQLError(response);
         }
         return response.data;

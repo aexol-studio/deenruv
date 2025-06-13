@@ -45,126 +45,60 @@ export const PriceCard: React.FC<PriceCardProps> = ({
     value: number | undefined;
   }>();
 
+  useEffect(() => {
+    fetchTaxRates();
+  }, []);
+
   const fetchTaxRates = useCallback(async () => {
     const response = await apiClient('query')({
-      taxCategories: [
-        {},
-        {
-          items: {
-            id: true,
-            name: true,
-          },
-        },
-      ],
-      taxRates: [
-        {},
-        {
-          items: {
-            value: true,
-            category: {
-              id: true,
-            },
-          },
-        },
-      ],
+      taxCategories: [{}, { items: { id: true, name: true } }],
+      taxRates: [{}, { items: { value: true, category: { id: true } } }],
     });
 
-    const categoriesWithRates = response.taxCategories.items.map((c) => {
-      const rate = response.taxRates.items.find((r) => r.category.id === c.id);
-
-      return {
-        ...c,
-        value: rate?.value,
-      };
-    });
+    const categoriesWithRates = response.taxCategories.items.map((c) => ({
+      ...c,
+      value: response.taxRates.items.find((r) => r.category.id === c.id)?.value,
+    }));
 
     setTaxCategories(categoriesWithRates);
   }, []);
 
-  const currentPrice = useMemo(
-    () => priceValue?.find((p) => p.currencyCode === currencyCode),
-    [priceValue, currencyCode],
-  );
-
   const handlePriceChange = useCallback(
-    (field: 'price' | 'customFields', value: any) => {
-      if (!priceValue || !currentPrice) return;
-
-      const currentPriceInput = {
-        ...currentPrice,
-      };
-
-      if ('customFields' in currentPrice) {
-        delete currentPriceInput.customFields;
-      }
-
-      const newCurrentPrice = {
-        ...currentPriceInput,
-        [field]: field === 'price' ? +value : value,
-      };
-
-      const currentPriceIdx = priceValue.findIndex((p) => p.currencyCode === currencyCode);
-      priceValue[currentPriceIdx] = newCurrentPrice;
-
-      onPriceChange(priceValue);
+    (currencyCode: CurrencyCode, value: number) => {
+      const newPrices = priceValue?.map((p) => (p.currencyCode === currencyCode ? { ...p, price: value } : p));
+      onPriceChange(newPrices || []);
     },
-    [priceValue, currentPrice],
+    [priceValue, onPriceChange],
   );
-
-  useEffect(() => {
-    if (taxCategories.length) {
-      const _currentTaxRate = taxCategories.find((tR) => tR.id === taxRateValue);
-      _currentTaxRate && setCurrentTaxCategory(_currentTaxRate);
-    }
-  }, [taxRateValue, taxCategories]);
-
-  useEffect(() => {
-    fetchTaxRates();
-  }, [fetchTaxRates]);
 
   return (
     <CustomCard title={t('details.price')} color="rose" icon={<CardIcons.calc />}>
       <div className="flex flex-col gap-y-4">
-        <div className="flex items-center gap-x-2">
-          <Input
-            type="currency"
-            placeholder={t('price')}
-            value={currentPrice?.price}
-            onChange={(e) => handlePriceChange('price', e.target.value)}
-            step={0.01}
-            endAdornment={currencyCode}
-          />
-          <Select value={taxRateValue} onValueChange={(id) => onTaxRateChange(id)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Tax rate" />
-            </SelectTrigger>
-            <SelectContent>
-              {taxCategories.map((tR) => (
-                <SelectItem key={tR.id} value={tR.id.toString()}>
-                  {tR.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {priceValue?.map((price) => (
+          <div key={price.currencyCode} className="flex items-center gap-x-2">
+            <Input
+              type="currency"
+              placeholder={t('price')}
+              value={price.price}
+              onChange={(e) => handlePriceChange(price.currencyCode, +e.target.value)}
+              step={0.01}
+              startAdornment={price.currencyCode}
+            />
+          </div>
+        ))}
 
-        <EntityCustomFields
-          id={undefined}
-          entityName="productVariantPrice"
-          hideButton
-          initialValues={
-            currentPrice && 'customFields' in currentPrice
-              ? { customFields: currentPrice.customFields as any }
-              : { customFields: {} }
-          }
-          disabled
-          // onChange={(cf) => {
-          //   handlePriceChange('customFields', cf);
-          //   console.log('CF', cf);
-          // }}
-          additionalData={{}}
-          withoutBorder
-        />
+        <Select value={taxRateValue} onValueChange={onTaxRateChange}>
+          <SelectTrigger>
+            <SelectValue placeholder="Tax rate" />
+          </SelectTrigger>
+          <SelectContent>
+            {taxCategories.map((tR) => (
+              <SelectItem key={tR.id} value={tR.id.toString()}>
+                {tR.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
         {currentTaxCategory?.value !== undefined && `${t('details.taxRateDescription')} ${currentTaxCategory?.value}%`}
       </div>

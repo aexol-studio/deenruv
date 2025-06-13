@@ -227,6 +227,13 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               trackInventoryValue={state.trackInventory?.value}
             />
           )}
+          <PriceCard
+            currencyCode={variant?.currencyCode || CurrencyCode.PLN}
+            priceValue={state.prices?.value}
+            onPriceChange={(e) => setField('prices', e)}
+            taxRateValue={state.taxCategoryId?.value ?? undefined}
+            onTaxRateChange={(id) => setField('taxCategoryId', id)}
+          />
           <AssetsCard
             onAddAsset={handleAddAsset}
             featuredAssetId={state.featuredAssetId?.value}
@@ -273,13 +280,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             onChange={(e) => setField('optionIds', e)}
             createMode={!variant}
           />
-          <PriceCard
-            currencyCode={variant?.currencyCode || CurrencyCode.PLN}
-            priceValue={state.prices?.value}
-            onPriceChange={(e) => setField('prices', e)}
-            taxRateValue={state.taxCategoryId?.value ?? undefined}
-            onTaxRateChange={(id) => setField('taxCategoryId', id)}
-          />
+
           {!!variant && (
             <FacetValuesCard
               facetValuesIds={state.facetValueIds?.value ?? undefined}

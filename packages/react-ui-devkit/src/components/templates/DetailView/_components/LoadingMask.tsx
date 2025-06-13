@@ -11,7 +11,7 @@ export const LoadingMask: React.FC<{
   return (
     <motion.div
       className={cn(
-        "bg-background/90 absolute inset-0 z-50 flex h-screen w-full items-center justify-center backdrop-blur-sm",
+        "bg-background/90 sticky inset-0 z-50 flex h-screen w-full items-center justify-center backdrop-blur-sm",
         className,
       )}
       initial={{ opacity: 1 }}

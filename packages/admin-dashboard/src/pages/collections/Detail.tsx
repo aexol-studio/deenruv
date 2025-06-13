@@ -49,18 +49,8 @@ export const CollectionsDetailPage = () => {
         })),
       };
 
-      if (id) {
-        return update({
-          input: {
-            id,
-            ...inputData,
-          },
-        });
-      } else {
-        return create({
-          input: inputData,
-        });
-      }
+      if (id) return update({ input: { id, ...inputData } });
+      else return create({ input: inputData });
     },
     [id, update, create],
   );

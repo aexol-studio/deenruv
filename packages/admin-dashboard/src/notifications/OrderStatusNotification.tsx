@@ -4,22 +4,27 @@ export const ORDER_STATUS_NOTIFICATION = createNotification({
   id: 'order-states',
   interval: 60000,
   fetch: async () => {
+    return 0;
     const additionalStates = window.__DEENRUV_SETTINGS__.ui?.extras?.orderObservableStates || [];
-    const { orders } = await apiClient('query')({
-      orders: [
-        {
-          options: {
-            filter: {
-              state: {
-                in: [ORDER_STATE.PAYMENT_AUTHORIZED].concat(additionalStates as ORDER_STATE[]),
+    try {
+      const { orders } = await apiClient('query')({
+        orders: [
+          {
+            options: {
+              filter: {
+                state: {
+                  in: [ORDER_STATE.PAYMENT_AUTHORIZED].concat(additionalStates as ORDER_STATE[]),
+                },
               },
             },
           },
-        },
-        { totalItems: true },
-      ],
-    });
-    return orders.totalItems;
+          { totalItems: true },
+        ],
+      });
+      return orders.totalItems;
+    } catch {
+      return 0;
+    }
   },
   placements: {
     main: () => {

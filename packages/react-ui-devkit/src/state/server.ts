@@ -174,10 +174,10 @@ export const useServer = create<Server & Actions>()((set, get) => ({
     }
   },
   fetchPendingJobs: async () => {
-    const { jobQueues } = await apiClient("query")({
+    const response = await apiClient("query")({
       jobQueues: { name: true, running: true },
     });
-    set({ jobQueues });
+    set({ jobQueues: response?.jobQueues || [] });
   },
   fetchGraphQLSchema: async () => {
     try {
@@ -239,7 +239,7 @@ export const useServer = create<Server & Actions>()((set, get) => ({
   setJobQueue: (name, running) => {
     const { fetchPendingJobs } = get();
     set((state) => ({
-      jobQueues: state.jobQueues.map((jobQueue) =>
+      jobQueues: state.jobQueues?.map((jobQueue) =>
         jobQueue.name === name ? { ...jobQueue, running } : jobQueue,
       ),
     }));
