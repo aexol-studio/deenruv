@@ -1,19 +1,5 @@
-import {
-  Input,
-  Popover,
-  PopoverTrigger,
-  Button,
-  PopoverContent,
-  Calendar,
-  cn,
-  Label,
-  CustomCard,
-  CardIcons,
-  useTranslation,
-} from '@deenruv/react-ui-devkit';
+import { Input, CustomCard, CardIcons, useTranslation, DateTimePicker } from '@deenruv/react-ui-devkit';
 import React from 'react';
-import { CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
 
 interface OptionsCardProps {
   startsAt: string;
@@ -41,52 +27,18 @@ export const OptionsCard: React.FC<OptionsCardProps> = ({
     <CustomCard title={t('options.header')} color="orange" icon={<CardIcons.options />}>
       <div className="flex flex-1 flex-col gap-y-4">
         <div className="flex gap-3">
-          <Popover>
-            <div className="flex flex-1 flex-col">
-              <Label className="mb-2">{t('options.startsAt')}</Label>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={'outline'}
-                  className={cn('pl-3 text-left font-normal', !startsAt && 'text-muted-foreground')}
-                >
-                  {startsAt ? format(new Date(startsAt), 'PPP') : <span>{t('options.pickDate')}</span>}
-                  <CalendarIcon className="ml-auto size-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-            </div>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={startsAt as unknown as Date}
-                onSelect={(date) => setField('startsAt', date as unknown as string)}
-                disabled={(date) => date < new Date() || date < new Date('1900-01-01')}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <div className="flex flex-1 flex-col">
-              <Label className="mb-2">{t('options.endsAt')}</Label>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={'outline'}
-                  className={cn('pl-3 text-left font-normal', endsAt && 'text-muted-foreground')}
-                >
-                  {endsAt ? format(new Date(endsAt), 'PPP') : <span>{t('options.pickDate')}</span>}
-                  <CalendarIcon className="ml-auto size-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-            </div>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={endsAt as unknown as Date}
-                onSelect={(date) => setField('endsAt', date as unknown as string)}
-                disabled={(date) => date < new Date() || date < new Date('1900-01-01')}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+          <DateTimePicker
+            value={startsAt ? new Date(startsAt) : undefined}
+            onChange={(date) => setField('startsAt', date ? date.toISOString() : '')}
+            min={new Date()}
+            max={endsAt ? new Date(endsAt) : undefined}
+          />
+          <DateTimePicker
+            value={endsAt ? new Date(endsAt) : undefined}
+            onChange={(date) => setField('endsAt', date ? date.toISOString() : '')}
+            min={startsAt ? new Date(startsAt) : undefined}
+            max={new Date(new Date().getFullYear() + 10, 11, 31)}
+          />
         </div>
         <div className="flex gap-3">
           <Input
