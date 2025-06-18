@@ -27,6 +27,7 @@ import { ProductService } from "../../../service/services/product.service";
 import { RequestContext } from "../../common/request-context";
 import { RelationPaths, Relations } from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
+import { FacetValue } from "../../../entity/index.js";
 
 @Resolver()
 export class ShopProductsResolver {
@@ -170,6 +171,19 @@ export class ShopProductsResolver {
       },
     };
     return this.facetService.findAll(ctx, options || undefined, relations);
+  }
+
+  @Query()
+  facetValues(
+    @Ctx() ctx: RequestContext,
+    @Args() args: any,
+    @Relations(FacetValue) relations: RelationPaths<FacetValue>,
+  ): Promise<PaginatedList<Translated<FacetValue>>> {
+    return this.facetValueService.findAllList(
+      ctx,
+      args.options || undefined,
+      relations,
+    );
   }
 
   @Query()

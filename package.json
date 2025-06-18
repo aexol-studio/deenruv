@@ -2,6 +2,7 @@
   "name": "deenruv",
   "version": "0.0.5",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">= 18"
   },
@@ -12,7 +13,7 @@
     "docs:generate-typescript-docs": "node --import @deenruv/ts-node-register scripts/docs/generate-typescript-docs.ts",
     "docs:generate-graphql-docs": "node --import @deenruv/ts-node-register scripts/docs/generate-graphql-docs.ts --api=shop && node --import @deenruv/ts-node-register scripts/docs/generate-graphql-docs.ts --api=admin",
     "docs:build": "pnpm docs:generate-typescript-docs && pnpm docs:generate-graphql-docs",
-    "codegen": "node --import @deenruv/ts-node-register scripts/codegen/generate-graphql-types.ts",
+    "codegen": "tsx scripts/codegen/generate-graphql-types.ts",
     "version": "pnpm check-imports && pnpm check-angular-versions && pnpm build && pnpm check-core-type-defs && pnpm generate-changelog && git add CHANGELOG* && git add */version.ts",
     "start:server": "pnpm -filter=@deenruv/server run start",
     "start:admin-ui": "pnpm -filter=@deenruv/panel run dev",

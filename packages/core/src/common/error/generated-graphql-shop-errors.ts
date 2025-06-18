@@ -480,4 +480,9 @@ export const shopErrorOperationTypeResolvers = {
       return isGraphQLError(value) ? (value as any).__typename : 'CurrentUser';
     },
   },
+  PhoneNumberValidationResult: {
+    __resolveType(value: any) {
+      return isGraphQLError(value) ? (value as any).__typename : 'PhoneNumberValidationError';
+    },
+  },
 };
