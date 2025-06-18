@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
-    ChartEntry,
+    OldChartEntry,
     ChartFormatOptions,
     DataService,
     GetOrderChartDataDocument,
@@ -31,7 +31,7 @@ export const GET_ORDER_CHART_DATA = gql`
 })
 export class OrderChartWidgetComponent implements OnInit {
     constructor(private dataService: DataService) {}
-    metrics$: Observable<any[]>;
+    metrics$: Observable<OldChartEntry[]>;
     refresh$ = new Subject<boolean>();
     metricType$ = new BehaviorSubject(MetricType.OrderTotal);
     MetricType = MetricType;
