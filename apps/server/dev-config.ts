@@ -555,18 +555,18 @@ export const devConfig: DeenruvConfig = {
     // ],
   },
   plugins: [
-    DashboardWidgetsPlugin.init({
-      additionalOrderStates: [
-        {
-          selectedByDefault: true,
-          state: "InRealization",
-        },
-        {
-          selectedByDefault: true,
-          state: "PaymentAuthorized",
-        },
-      ],
-    }),
+    // DashboardWidgetsPlugin.init({
+    //   additionalOrderStates: [
+    //     {
+    //       selectedByDefault: true,
+    //       state: "InRealization",
+    //     },
+    //     {
+    //       selectedByDefault: true,
+    //       state: "PaymentAuthorized",
+    //     },
+    //   ],
+    // }),
     // MultivendorPlugin.init({
     //     platformFeePercent: 10,
     //     platformFeeSKU: 'FEE',

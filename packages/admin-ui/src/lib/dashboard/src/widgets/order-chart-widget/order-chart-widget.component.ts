@@ -31,7 +31,7 @@ export const GET_ORDER_CHART_DATA = gql`
 })
 export class OrderChartWidgetComponent implements OnInit {
     constructor(private dataService: DataService) {}
-    metrics$: Observable<ChartEntry[]>;
+    metrics$: Observable<any[]>;
     refresh$ = new Subject<boolean>();
     metricType$ = new BehaviorSubject(MetricType.OrderTotal);
     MetricType = MetricType;

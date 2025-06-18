@@ -19,7 +19,7 @@ export interface ChartFormatOptions {
     locale?: string;
 }
 
-export interface ChartEntry {
+export interface OldChartEntry {
     label: string;
     value: number;
     formatOptions: ChartFormatOptions;
@@ -32,7 +32,7 @@ export interface ChartEntry {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() entries: ChartEntry[] = [];
+    @Input() entries: OldChartEntry[] = [];
     @Input() options?: LineChartOptions = {};
     @ViewChild('chartDiv', { static: true }) private chartDivRef: ElementRef<HTMLDivElement>;
     private chart: LineChart;
@@ -115,7 +115,7 @@ export class ChartComponent implements OnInit, OnChanges, OnDestroy {
         this.chart?.detach();
     }
 
-    private entriesToLineChartData(entries: ChartEntry[]): LineChartData {
+    private entriesToLineChartData(entries: OldChartEntry[]): LineChartData {
         const labels = entries.map(({ label }) => label);
         const series = [
             entries.map(({ label, value, formatOptions }) => ({ meta: { label, formatOptions }, value })),
