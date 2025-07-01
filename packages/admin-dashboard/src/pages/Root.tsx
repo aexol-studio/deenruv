@@ -212,17 +212,17 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
             setSelectedChannel(defaultChannel);
           }
         } else {
-          const { activeChannel } = await apiClient('query')({
-            activeChannel: {
-              id: true,
-              code: true,
-              token: true,
-              currencyCode: true,
-              defaultLanguageCode: true,
-              availableLanguageCodes: true,
-            },
-          });
-          setSelectedChannel(activeChannel);
+          const possibleChannels = roles.flatMap((role) => role.channels);
+          if (possibleChannels.length > 0) {
+            const defaultChannel = possibleChannels.find(
+              (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
+            );
+            if (defaultChannel) {
+              setSelectedChannel(defaultChannel);
+            } else {
+              setSelectedChannel(possibleChannels[0]);
+            }
+          }
         }
       }
 
@@ -290,15 +290,21 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
   return (
     <>
       <div className="bg-background text-foreground flex max-h-screen w-full max-w-full overflow-hidden">
-        <Menu>
-          {/* <div className="flex h-full w-full flex-1 flex-col gap-y-4 space-y-4 overflow-y-auto"> */}
-          {loaded ? <Outlet /> : <></>}
-          {/* </div> */}
-        </Menu>
-        <CanLeaveRouteDialog />
+        {loaded ? (
+          <>
+            <Menu>
+              <Outlet />
+            </Menu>
+            <GlobalSearch />
+            <CanLeaveRouteDialog />
+            {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
+          </>
+        ) : (
+          <div className="flex h-screen w-full items-center justify-center">
+            <span className="animate-spin">⏳</span>
+          </div>
+        )}
       </div>
-      {isLocalhost ? <DeenruvDeveloperIndicator /> : null}
-      <GlobalSearch />
     </>
   );
 };
