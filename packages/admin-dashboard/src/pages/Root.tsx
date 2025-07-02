@@ -214,14 +214,7 @@ export const Root = ({ allPaths }: { allPaths: string[] }) => {
         } else {
           const possibleChannels = roles.flatMap((role) => role.channels);
           if (possibleChannels.length > 0) {
-            const defaultChannel = possibleChannels.find(
-              (ch) => ch.code === window?.__DEENRUV_SETTINGS__?.ui?.defaultChannelCode,
-            );
-            if (defaultChannel) {
-              setSelectedChannel(defaultChannel);
-            } else {
-              setSelectedChannel(possibleChannels[0]);
-            }
+            setSelectedChannel(possibleChannels[0]);
           }
         }
       }
