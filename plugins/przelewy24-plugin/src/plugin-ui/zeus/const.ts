@@ -174,10 +174,10 @@ export const AllTypesProps: Record<string,any> = {
 		metricSummary:{
 			input:"MetricSummaryInput"
 		},
-		remindPrzelewy24:{
+		getMerchantPlatformSettings:{
 
 		},
-		getRealizationURL:{
+		getMerchantPlatformInfo:{
 
 		}
 	},
@@ -656,14 +656,17 @@ export const AllTypesProps: Record<string,any> = {
 		removeMembersFromZone:{
 
 		},
-		copyOrder:{
+		sendAllProductsToMerchantPlatform:{
 
 		},
-		registerRealization:{
-			input:"OrderRealizationInput"
+		saveMerchantPlatformSettings:{
+			input:"SaveMerchantPlatformSettingInput"
 		},
-		sendInvoiceToWFirma:{
-			input:"SendInvoiceToWFirmaInput"
+		saveFurgonetkaSettings:{
+			input:"SaveFurgonetkaSettingsInput"
+		},
+		triggerCardMarketSynchronization:{
+			input:"TriggerCardMarketSynchronizationInput"
 		}
 	},
 	AdministratorListOptions:{
@@ -743,11 +746,11 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateCollectionTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"JSON"
+		customFields:"CreateCollectionTranslationInputCustomFields"
 	},
 	UpdateCollectionTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"JSON"
+		customFields:"UpdateCollectionTranslationInputCustomFields"
 	},
 	CreateCollectionInput:{
 		filters:"ConfigurableOperationInput",
@@ -851,11 +854,11 @@ export const AllTypesProps: Record<string,any> = {
 	CreateFacetInput:{
 		translations:"FacetTranslationInput",
 		values:"CreateFacetValueWithFacetInput",
-		customFields:"CreateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateFacetInput:{
 		translations:"FacetTranslationInput",
-		customFields:"UpdateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	FacetValueTranslationInput:{
 		languageCode:"LanguageCode",
@@ -866,11 +869,11 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateFacetValueInput:{
 		translations:"FacetValueTranslationInput",
-		customFields:"CreateFacetValueCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateFacetValueInput:{
 		translations:"FacetValueTranslationInput",
-		customFields:"UpdateFacetValueCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignFacetsToChannelInput:{
 
@@ -914,7 +917,9 @@ export const AllTypesProps: Record<string,any> = {
 		total:"NumberOperators",
 		totalWithTax:"NumberOperators",
 		_and:"OrderFilterParameter",
-		_or:"OrderFilterParameter"
+		_or:"OrderFilterParameter",
+		pickupPointId:"StringOperators",
+		pickupPointName:"StringOperators"
 	},
 	OrderSortParameter:{
 		customerLastName:"SortOrder",
@@ -933,7 +938,8 @@ export const AllTypesProps: Record<string,any> = {
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
 		totalWithTax:"SortOrder",
-		selectedPaymentMethod:"SortOrder"
+		pickupPointId:"SortOrder",
+		pickupPointName:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -1094,7 +1100,15 @@ export const AllTypesProps: Record<string,any> = {
 		description:"StringOperators",
 		enabled:"BooleanOperators",
 		_and:"ProductFilterParameter",
-		_or:"ProductFilterParameter"
+		_or:"ProductFilterParameter",
+		googleMerchantProductId:"StringOperators",
+		seoTitle:"StringOperators",
+		seoDescription:"StringOperators",
+		cardMarketProductId:"StringOperators",
+		cardMarketExpansionId:"StringOperators",
+		cardMarketLastSynchronized:"DateOperators",
+		cardReleasedAt:"DateOperators",
+		cardArtist:"StringOperators"
 	},
 	ProductVariantListOptions:{
 		sort:"ProductVariantSortParameter",
@@ -1121,19 +1135,27 @@ export const AllTypesProps: Record<string,any> = {
 		priceWithTax:"NumberOperators",
 		stockLevel:"StringOperators",
 		_and:"ProductVariantFilterParameter",
-		_or:"ProductVariantFilterParameter"
+		_or:"ProductVariantFilterParameter",
+		cardMarketProductId:"StringOperators",
+		cardMarketExpansionId:"StringOperators",
+		cardMarketLastSynchronized:"DateOperators",
+		cardMarketLanguage:"StringOperators",
+		cardMarketCondition:"StringOperators",
+		cardMarketFoil:"BooleanOperators",
+		cardMarketSigned:"BooleanOperators",
+		cardMarketAltered:"BooleanOperators"
 	},
 	ProductTranslationInput:{
 		languageCode:"LanguageCode",
-		customFields:"JSON"
+		customFields:"ProductTranslationInputCustomFields"
 	},
 	CreateProductInput:{
 		translations:"ProductTranslationInput",
-		customFields:"JSON"
+		customFields:"CreateProductCustomFieldsInput"
 	},
 	UpdateProductInput:{
 		translations:"ProductTranslationInput",
-		customFields:"JSON"
+		customFields:"UpdateProductCustomFieldsInput"
 	},
 	ProductVariantTranslationInput:{
 		languageCode:"LanguageCode",
@@ -1454,13 +1476,19 @@ export const AllTypesProps: Record<string,any> = {
 		interval:"MetricInterval",
 		types:"MetricType"
 	},
-	RealizationAssetInput:{
+	MerchantPlatformSettingInput:{
 
 	},
-	OrderRealizationInput:{
-		assets:"RealizationAssetInput"
+	SaveMerchantPlatformSettingInput:{
+		entries:"MerchantPlatformSettingInput"
 	},
-	SendInvoiceToWFirmaInput:{
+	SaveFurgonetkaSettingsInput:{
+		countryCode:"LanguageCode"
+	},
+	CreateExchangeRateInput:{
+
+	},
+	TriggerCardMarketSynchronizationInput:{
 
 	},
 	AdministratorFilterParameter:{
@@ -1544,7 +1572,10 @@ export const AllTypesProps: Record<string,any> = {
 		description:"StringOperators",
 		parentId:"IDOperators",
 		_and:"CollectionFilterParameter",
-		_or:"CollectionFilterParameter"
+		_or:"CollectionFilterParameter",
+		seoTitle:"StringOperators",
+		seoDescription:"StringOperators",
+		cardMarketGameId:"StringOperators"
 	},
 	CollectionSortParameter:{
 		id:"SortOrder",
@@ -1554,7 +1585,10 @@ export const AllTypesProps: Record<string,any> = {
 		slug:"SortOrder",
 		position:"SortOrder",
 		description:"SortOrder",
-		parentId:"SortOrder"
+		parentId:"SortOrder",
+		seoTitle:"SortOrder",
+		seoDescription:"SortOrder",
+		cardMarketGameId:"SortOrder"
 	},
 	ProductVariantSortParameter:{
 		stockOnHand:"SortOrder",
@@ -1568,7 +1602,15 @@ export const AllTypesProps: Record<string,any> = {
 		name:"SortOrder",
 		price:"SortOrder",
 		priceWithTax:"SortOrder",
-		stockLevel:"SortOrder"
+		stockLevel:"SortOrder",
+		cardMarketProductId:"SortOrder",
+		cardMarketExpansionId:"SortOrder",
+		cardMarketLastSynchronized:"SortOrder",
+		cardMarketLanguage:"SortOrder",
+		cardMarketCondition:"SortOrder",
+		cardMarketFoil:"SortOrder",
+		cardMarketSigned:"SortOrder",
+		cardMarketAltered:"SortOrder"
 	},
 	CountryFilterParameter:{
 		id:"IDOperators",
@@ -1625,20 +1667,14 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetFilterParameter",
-		_or:"FacetFilterParameter",
-		usedForColors:"BooleanOperators",
-		usedForProductCreations:"BooleanOperators",
-		colorsCollection:"BooleanOperators"
+		_or:"FacetFilterParameter"
 	},
 	FacetSortParameter:{
 		id:"SortOrder",
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder",
-		usedForColors:"SortOrder",
-		usedForProductCreations:"SortOrder",
-		colorsCollection:"SortOrder"
+		code:"SortOrder"
 	},
 	FacetValueFilterParameter:{
 		id:"IDOperators",
@@ -1649,10 +1685,7 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetValueFilterParameter",
-		_or:"FacetValueFilterParameter",
-		hexColor:"StringOperators",
-		isNew:"BooleanOperators",
-		isHidden:"BooleanOperators"
+		_or:"FacetValueFilterParameter"
 	},
 	FacetValueSortParameter:{
 		id:"SortOrder",
@@ -1660,11 +1693,7 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		facetId:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder",
-		hexColor:"SortOrder",
-		isNew:"SortOrder",
-		isHidden:"SortOrder",
-		image:"SortOrder"
+		code:"SortOrder"
 	},
 	JobFilterParameter:{
 		id:"IDOperators",
@@ -1717,7 +1746,15 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		name:"SortOrder",
 		slug:"SortOrder",
-		description:"SortOrder"
+		description:"SortOrder",
+		googleMerchantProductId:"SortOrder",
+		seoTitle:"SortOrder",
+		seoDescription:"SortOrder",
+		cardMarketProductId:"SortOrder",
+		cardMarketExpansionId:"SortOrder",
+		cardMarketLastSynchronized:"SortOrder",
+		cardReleasedAt:"SortOrder",
+		cardArtist:"SortOrder"
 	},
 	PromotionFilterParameter:{
 		id:"IDOperators",
@@ -1909,19 +1946,22 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder"
 	},
-	CreateFacetCustomFieldsInput:{
+	CreateCollectionTranslationInputCustomFields:{
 
 	},
-	UpdateFacetCustomFieldsInput:{
-
-	},
-	CreateFacetValueCustomFieldsInput:{
-
-	},
-	UpdateFacetValueCustomFieldsInput:{
+	UpdateCollectionTranslationInputCustomFields:{
 
 	},
 	UpdateOrderCustomFieldsInput:{
+
+	},
+	CreateProductCustomFieldsInput:{
+
+	},
+	UpdateProductCustomFieldsInput:{
+
+	},
+	ProductTranslationInputCustomFields:{
 
 	},
 	OrderLineCustomFieldsInput:{
@@ -2006,8 +2046,9 @@ export const ReturnTypes: Record<string,any> = {
 		zones:"ZoneList",
 		zone:"Zone",
 		metricSummary:"MetricSummary",
-		remindPrzelewy24:"Boolean",
-		getRealizationURL:"String"
+		getMerchantPlatformSettings:"MerchantPlatformSettingsEntity",
+		getMerchantPlatformInfo:"MerchantPlatformInfo",
+		getFurgonetkaSettings:"FurgonetkaSettings"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2172,9 +2213,11 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
 		removeMembersFromZone:"Zone",
-		copyOrder:"CopyOrderResult",
-		registerRealization:"OrderRealization",
-		sendInvoiceToWFirma:"WFirmaResponse"
+		sendAllProductsToMerchantPlatform:"Boolean",
+		saveMerchantPlatformSettings:"MerchantPlatformSettingsEntity",
+		saveFurgonetkaSettings:"FurgonetkaSettings",
+		triggerCardMarketSynchronization:"Boolean",
+		triggerFreeDataSynchronization:"Boolean"
 	},
 	Administrator:{
 		id:"ID",
@@ -2246,7 +2289,7 @@ export const ReturnTypes: Record<string,any> = {
 		filters:"ConfigurableOperation",
 		translations:"CollectionTranslation",
 		productVariants:"ProductVariantList",
-		customFields:"JSON"
+		customFields:"CollectionCustomFields"
 	},
 	Customer:{
 		groups:"CustomerGroup",
@@ -2306,7 +2349,7 @@ export const ReturnTypes: Record<string,any> = {
 		values:"FacetValue",
 		valueList:"FacetValueList",
 		translations:"FacetTranslation",
-		customFields:"FacetCustomFields"
+		customFields:"JSON"
 	},
 	FacetInUseError:{
 		errorCode:"ErrorCode",
@@ -2434,7 +2477,6 @@ export const ReturnTypes: Record<string,any> = {
 		totalWithTax:"Money",
 		taxSummary:"OrderTaxSummary",
 		history:"HistoryEntryList",
-		getRealization:"OrderRealization",
 		customFields:"OrderCustomFields"
 	},
 	Fulfillment:{
@@ -2447,7 +2489,7 @@ export const ReturnTypes: Record<string,any> = {
 		state:"String",
 		method:"String",
 		trackingCode:"String",
-		customFields:"JSON"
+		customFields:"FulfillmentCustomFields"
 	},
 	Payment:{
 		nextStates:"String",
@@ -2692,7 +2734,7 @@ export const ReturnTypes: Record<string,any> = {
 		facetValues:"FacetValue",
 		translations:"ProductTranslation",
 		collections:"Collection",
-		customFields:"JSON"
+		customFields:"ProductCustomFields"
 	},
 	ProductVariantPrice:{
 		currencyCode:"CurrencyCode",
@@ -2729,7 +2771,7 @@ export const ReturnTypes: Record<string,any> = {
 		options:"ProductOption",
 		facetValues:"FacetValue",
 		translations:"ProductVariantTranslation",
-		customFields:"JSON"
+		customFields:"ProductVariantCustomFields"
 	},
 	SearchResult:{
 		enabled:"Boolean",
@@ -2749,7 +2791,8 @@ export const ReturnTypes: Record<string,any> = {
 		facetIds:"ID",
 		facetValueIds:"ID",
 		collectionIds:"ID",
-		score:"Float"
+		score:"Float",
+		inStock:"Boolean"
 	},
 	ProductOptionInUseError:{
 		errorCode:"ErrorCode",
@@ -2974,7 +3017,8 @@ export const ReturnTypes: Record<string,any> = {
 		languageCode:"LanguageCode",
 		name:"String",
 		slug:"String",
-		description:"String"
+		description:"String",
+		customFields:"CollectionTranslationCustomFields"
 	},
 	CollectionList:{
 		items:"Collection",
@@ -3047,11 +3091,6 @@ export const ReturnTypes: Record<string,any> = {
 	NoActiveOrderError:{
 		errorCode:"ErrorCode",
 		message:"String"
-	},
-	OrderMiddlewareError:{
-		errorCode:"ErrorCode",
-		message:"String",
-		middlewareError:"String"
 	},
 	JSON: `scalar.JSON` as const,
 	DateTime: `scalar.DateTime` as const,
@@ -3131,6 +3170,8 @@ export const ReturnTypes: Record<string,any> = {
 		"...on User": "User",
 		"...on AuthenticationMethod": "AuthenticationMethod",
 		"...on Zone": "Zone",
+		"...on MerchantPlatformSettingsEntity": "MerchantPlatformSettingsEntity",
+		"...on FurgonetkaSettings": "FurgonetkaSettings",
 		id:"ID"
 	},
 	ErrorResult:{
@@ -3178,7 +3219,6 @@ export const ReturnTypes: Record<string,any> = {
 		"...on OrderModificationError": "OrderModificationError",
 		"...on IneligibleShippingMethodError": "IneligibleShippingMethodError",
 		"...on NoActiveOrderError": "NoActiveOrderError",
-		"...on OrderMiddlewareError": "OrderMiddlewareError",
 		errorCode:"ErrorCode",
 		message:"String"
 	},
@@ -3247,13 +3287,11 @@ export const ReturnTypes: Record<string,any> = {
 		"...on OrderModificationError":"OrderModificationError",
 		"...on OrderLimitError":"OrderLimitError",
 		"...on NegativeQuantityError":"NegativeQuantityError",
-		"...on InsufficientStockError":"InsufficientStockError",
-		"...on OrderMiddlewareError":"OrderMiddlewareError"
+		"...on InsufficientStockError":"InsufficientStockError"
 	},
 	RemoveOrderItemsResult:{
 		"...on Order":"Order",
-		"...on OrderModificationError":"OrderModificationError",
-		"...on OrderMiddlewareError":"OrderMiddlewareError"
+		"...on OrderModificationError":"OrderModificationError"
 	},
 	SetOrderShippingMethodResult:{
 		"...on Order":"Order",
@@ -3265,8 +3303,7 @@ export const ReturnTypes: Record<string,any> = {
 		"...on Order":"Order",
 		"...on CouponCodeExpiredError":"CouponCodeExpiredError",
 		"...on CouponCodeInvalidError":"CouponCodeInvalidError",
-		"...on CouponCodeLimitError":"CouponCodeLimitError",
-		"...on OrderMiddlewareError":"OrderMiddlewareError"
+		"...on CouponCodeLimitError":"CouponCodeLimitError"
 	},
 	CustomField:{
 		"...on StringCustomFieldConfig": "StringCustomFieldConfig",
@@ -3454,7 +3491,7 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		code:"String",
 		translations:"FacetValueTranslation",
-		customFields:"FacetValueCustomFields"
+		customFields:"JSON"
 	},
 	FacetValueTranslation:{
 		id:"ID",
@@ -3690,7 +3727,8 @@ export const ReturnTypes: Record<string,any> = {
 		languageCode:"LanguageCode",
 		name:"String",
 		slug:"String",
-		description:"String"
+		description:"String",
+		customFields:"ProductTranslationCustomFields"
 	},
 	ProductList:{
 		items:"Product",
@@ -3909,50 +3947,88 @@ export const ReturnTypes: Record<string,any> = {
 		label:"String",
 		value:"Float"
 	},
-	CopyOrderErrorResponse:{
-		message:"String"
-	},
-	CopyOrderResult:{
-		"...on Order":"Order",
-		"...on CopyOrderErrorResponse":"CopyOrderErrorResponse"
-	},
-	OrderRealization:{
-		orderID:"ID",
-		assetID:"ID",
-		plannedAt:"String",
-		finalPlannedAt:"String",
-		note:"String",
-		color:"String",
+	MerchantPlatformSetting:{
 		key:"String",
-		url:"String"
+		value:"String"
 	},
-	ShopOrderRealization:{
-		note:"String",
-		plannedAt:"String",
-		finalPlannedAt:"String"
+	MerchantPlatformSettingsEntity:{
+		id:"ID",
+		platform:"String",
+		entries:"MerchantPlatformSetting"
 	},
-	WFirmaResponse:{
-		url:"String"
+	MerchantPlatformInfo:{
+		isValidConnection:"Boolean",
+		productsCount:"Int"
 	},
-	FacetCustomFields:{
-		usedForColors:"Boolean",
-		usedForProductCreations:"Boolean",
-		colorsCollection:"Boolean"
+	FurgonetkaSettings:{
+		id:"ID",
+		createdAt:"DateTime",
+		updatedAt:"DateTime",
+		authBasicKey:"String",
+		username:"String",
+		password:"String",
+		service_id:"String",
+		company:"String",
+		name:"String",
+		countryCode:"LanguageCode",
+		email:"String",
+		phone:"String",
+		postCode:"String",
+		street:"String",
+		city:"String",
+		webhookToken:"String",
+		senderPickupPointId:"String"
 	},
-	FacetValueCustomFields:{
-		hexColor:"String",
-		isNew:"Boolean",
-		isHidden:"Boolean",
-		image:"Asset"
+	ExchangeRate:{
+		currency:"String",
+		rate:"Float"
+	},
+	CollectionCustomFields:{
+		seoTitle:"String",
+		seoDescription:"String",
+		cardMarketGameId:"String"
+	},
+	CollectionTranslationCustomFields:{
+		seoTitle:"String",
+		seoDescription:"String"
+	},
+	FulfillmentCustomFields:{
+		packageId:"String"
 	},
 	OrderCustomFields:{
-		selectedPaymentMethod:"PaymentMethod"
+		pickupPointId:"String",
+		pickupPointName:"String"
 	},
 	OrderLineCustomFields:{
-		discountBy:"Int",
-		modifiedListPrice:"String",
-		attributes:"String",
-		selectedImage:"Asset"
+		cardMarketLanguage:"String",
+		cardMarketCondition:"String",
+		cardMarketFoil:"Boolean",
+		cardMarketSigned:"Boolean",
+		cardMarketAltered:"Boolean"
+	},
+	ProductCustomFields:{
+		googleMerchantProductId:"String",
+		seoTitle:"String",
+		seoDescription:"String",
+		cardMarketProductId:"String",
+		cardMarketExpansionId:"String",
+		cardMarketLastSynchronized:"DateTime",
+		cardReleasedAt:"DateTime",
+		cardArtist:"String"
+	},
+	ProductTranslationCustomFields:{
+		seoTitle:"String",
+		seoDescription:"String"
+	},
+	ProductVariantCustomFields:{
+		cardMarketProductId:"String",
+		cardMarketExpansionId:"String",
+		cardMarketLastSynchronized:"DateTime",
+		cardMarketLanguage:"String",
+		cardMarketCondition:"String",
+		cardMarketFoil:"Boolean",
+		cardMarketSigned:"Boolean",
+		cardMarketAltered:"Boolean"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",

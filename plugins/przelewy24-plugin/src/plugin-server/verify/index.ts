@@ -1,10 +1,13 @@
-import { Przelewy24NotificationBody } from "../types";
+import { InternalServerError } from "@deenruv/core";
+import {
+  Przelewy24NotificationBody,
+  Przelewy24PluginConfiguration,
+} from "../types.js";
 import {
   generateSHA384Hash,
   getAxios,
   getPrzelewy24SecretsByChannel,
-} from "../utils";
-import { BadRequestException } from "@nestjs/common";
+} from "../utils.js";
 
 const currencyCodeToChannel = (currencyCode: string) => {
   switch (currencyCode) {
@@ -16,10 +19,11 @@ const currencyCodeToChannel = (currencyCode: string) => {
 };
 
 export const verifyPrzelewy24Payment = async (
+  options: Przelewy24PluginConfiguration,
   body: Przelewy24NotificationBody,
 ) => {
   const channel = currencyCodeToChannel(body.currency);
-  const przelewy24Secrets = getPrzelewy24SecretsByChannel(channel);
+  const przelewy24Secrets = getPrzelewy24SecretsByChannel(options, channel);
   const secrets = {
     pos_id: przelewy24Secrets.PRZELEWY24_POS_ID,
     crc: przelewy24Secrets.PRZELEWY24_CRC,
@@ -38,10 +42,10 @@ export const verifyPrzelewy24Payment = async (
       sign: generateSHA384Hash(sum),
     });
     if (!result.data.data) {
-      throw new BadRequestException();
+      throw new Error("malformed przelewy24 verify response");
     }
     return result.data.data.status;
   } catch (e) {
-    throw new BadRequestException(e);
+    throw new InternalServerError("Internal Server Error", { err: `${e}` });
   }
 };

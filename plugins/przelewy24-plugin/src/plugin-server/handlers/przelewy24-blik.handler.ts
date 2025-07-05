@@ -2,11 +2,17 @@ import { LanguageCode, PaymentMethodHandler } from "@deenruv/core";
 import { Przelewy24Service } from "../services/przelewy24.service.js";
 
 let service: Przelewy24Service;
-export const przelewy24PaymentMethodHandler = new PaymentMethodHandler({
-  code: "przelewy24PaymentMethodHandler",
+export const przelewy24BlikPaymentMethodHandler = new PaymentMethodHandler({
+  code: "przelewy24BlikPaymentMethodHandler",
   description: [
-    { languageCode: LanguageCode.en, value: "Przelewy24 Payment handler" },
-    { languageCode: LanguageCode.pl, value: "Obsługa płatności Przelewy24" },
+    {
+      languageCode: LanguageCode.en,
+      value: "BLIK Payment handler (by Przelewy24)",
+    },
+    {
+      languageCode: LanguageCode.pl,
+      value: "Obsługa płatności BLIK (przez Przelewy24)",
+    },
   ],
   args: {},
   init: (injector) => {
