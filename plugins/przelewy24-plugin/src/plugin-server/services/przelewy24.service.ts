@@ -57,61 +57,6 @@ export class Przelewy24Service {
     private readonly eventBus: EventBus,
   ) {}
 
-  async populateMethods() {
-    const methods = [
-      {
-        name: BLIK_METHOD_NAME,
-        code: przelewy24BlikPaymentMethodHandler.code,
-      },
-      {
-        name: PRZELEWY24_METHOD_NAME,
-        code: przelewy24PaymentMethodHandler.code,
-      },
-    ];
-    const methodsPerChannel: Record<string, PaymentMethod[]> = {};
-    for (const channelToken of Object.keys(this.options)) {
-      const channel =
-        await this.channelService.getChannelFromToken(channelToken);
-      const ctx = new RequestContext({
-        apiType: "admin",
-        authorizedAsOwnerOnly: true,
-        channel,
-        isAuthorized: true,
-      });
-      for (const { name, code } of methods) {
-        const exist = await this.paymentMethodService.findAll(ctx, {
-          filter: { code: { eq: code } },
-        });
-        if (exist.totalItems > 0) {
-          continue;
-        }
-        const method = await this.paymentMethodService.create(ctx, {
-          code: PRZELEWY24_METHOD_NAME,
-          translations: [LanguageCode.en, LanguageCode.pl].map(
-            (languageCode) => ({
-              languageCode,
-              name: name.toUpperCase(),
-            }),
-          ),
-          handler: { code, arguments: [] },
-          enabled: true,
-        });
-        if (!methodsPerChannel[channelToken]) {
-          methodsPerChannel[channelToken] = [];
-        }
-        methodsPerChannel[channelToken].push(method);
-      }
-    }
-    if (Object.keys(methodsPerChannel).length === 0) {
-      return;
-    }
-    Logger.log("Populated Przelewy24 payment methods", loggerCtx);
-  }
-
-  // onModuleInit() {
-  //   this.populateMethods();
-  // }
-
   async verifyPayment(body: Przelewy24NotificationBody) {
     return verifyPrzelewy24Payment(this.options, body);
   }

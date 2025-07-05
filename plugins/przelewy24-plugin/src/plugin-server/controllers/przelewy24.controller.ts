@@ -28,8 +28,6 @@ export class Przelewy24Controller {
     @Body() body: Przelewy24NotificationBody,
   ) {
     const status = await this.przelewy24Service.verifyPayment(body);
-    console.log("SETTLING body", body);
-    console.log("SETTLING status", status);
     if (status === "success") {
       try {
         const payment = await this.przelewy24Service.findPaymentByTransactionId(
