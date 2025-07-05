@@ -1,0 +1,15 @@
+export type Service =
+  | 'inpost_locker_allegro'
+  | 'inpost_locker_pass_thru'
+  | 'inpost_locker_standard'
+  | 'inpost_letter_allegro'
+  | 'inpost_courier_palette'
+  | 'inpost_courier_allegro'
+  | 'inpost_courier_standard'
+  | 'inpost_courier_express_1000'
+  | 'inpost_courier_express_1200'
+  | 'inpost_courier_express_1700'
+  | 'inpost_courier_c2c'
+  | 'inpost_locker_standard_smart'
+  | 'inpost_locker_allegro_smart'
+  | 'inpost_locker_economy';
