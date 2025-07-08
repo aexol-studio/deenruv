@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/przelewy24-plugin",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "type": "module",
@@ -23,12 +23,12 @@
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
-    "@deenruv/admin-types":"workspace:^",
-    "@deenruv/common":"workspace:^",
-    "@deenruv/core":"workspace:^",
-    "@deenruv/admin-ui":"workspace:^",
-    "@deenruv/ui-devkit":"workspace:^",
-    "@deenruv/react-ui-devkit":"workspace:^",
+    "@deenruv/admin-types": "workspace:^",
+    "@deenruv/common": "workspace:^",
+    "@deenruv/core": "workspace:^",
+    "@deenruv/admin-ui": "workspace:^",
+    "@deenruv/ui-devkit": "workspace:^",
+    "@deenruv/react-ui-devkit": "workspace:^",
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",
     "axios": "^1.7.9",
