@@ -64,18 +64,12 @@ import { InpostRefEntity } from "./entities/inpost-ref-entity.js";
     resolvers: [InpostAdminResolver],
   },
 })
-export class InpostPlugin {
+class InpostPlugin {
   static options: InpostPluginOptions;
   static init(options: InpostPluginOptions = {}) {
     this.options = options;
     return this;
   }
-
-  static ui: AdminUiExtension = {
-    id: "InPost-extension",
-    extensionPath: path.join(__dirname, "ui"),
-    providers: ["providers.ts"],
-    globalStyles: [path.join(__dirname, "ui/styles/overwrite.css")],
-    translations: {},
-  };
 }
+
+export { InpostPlugin };
