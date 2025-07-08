@@ -1,9 +1,9 @@
 import { registerReactCustomDetailComponent } from "@deenruv/admin-ui/react";
-// import { OrderDetailWFirma } from "./components/OrderDetailWFirma";
+import { Inpost } from "./Inpost";
 
 export default [
-  // registerReactCustomDetailComponent({
-  //   component: OrderDetailWFirma,
-  //   locationId: "order-detail",
-  // }),
+  registerReactCustomDetailComponent({
+    locationId: "shipping-method-detail",
+    component: Inpost,
+  }),
 ];

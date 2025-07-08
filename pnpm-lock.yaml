@@ -28,7 +28,7 @@ importers:
         version: 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/platform-express@10.4.19)
       '@nestjs/typeorm':
         specifier: ^10.0.2
-        version: 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))
+        version: 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.23
@@ -58,7 +58,7 @@ importers:
         version: 5.5.1(eslint-config-prettier@10.1.5(eslint@9.30.1(jiti@2.4.2)))(eslint@9.30.1(jiti@2.4.2))(prettier@3.6.2)
       eslint-plugin-tailwindcss:
         specifier: ^3.18.0
-        version: 3.18.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))
+        version: 3.18.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))
       graphql:
         specifier: ~16.9.0
         version: 16.9.0
@@ -82,17 +82,17 @@ importers:
         version: 18.3.1
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+        version: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
     devDependencies:
       '@aexol/dev-translate':
         specifier: ^0.0.8
-        version: 0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+        version: 0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       '@aexol/vite-plugin-dev-translate':
         specifier: ^0.1.0
-        version: 0.1.9(encoding@0.1.13)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 0.1.9(encoding@0.1.13)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       '@commitlint/cli':
         specifier: ^19.1.0
-        version: 19.8.1(@types/node@20.19.4)(typescript@5.3.3)
+        version: 19.8.1(@types/node@20.19.5)(typescript@5.3.3)
       '@commitlint/config-conventional':
         specifier: ^19.1.0
         version: 19.8.1
@@ -107,7 +107,7 @@ importers:
         version: 5.0.2(graphql@16.9.0)
       '@graphql-codegen/cli':
         specifier: 5.0.2
-        version: 5.0.2(@parcel/watcher@2.5.1)(@types/node@20.19.4)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.9.0)(typescript@5.3.3)
+        version: 5.0.2(@parcel/watcher@2.5.1)(@types/node@20.19.5)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.9.0)(typescript@5.3.3)
       '@graphql-codegen/fragment-matcher':
         specifier: 5.0.2
         version: 5.0.2(graphql@16.9.0)
@@ -143,7 +143,7 @@ importers:
         version: 6.0.5
       '@types/node':
         specifier: ^20.11.19
-        version: 20.19.4
+        version: 20.19.5
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
@@ -179,7 +179,7 @@ importers:
         version: 2.9.0
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -191,7 +191,7 @@ importers:
         version: 1.5.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(rollup@4.44.2)
       vitest:
         specifier: ^3.0.9
-        version: 3.2.4(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+        version: 3.2.4(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
 
   apps/panel:
     dependencies:
@@ -320,7 +320,7 @@ importers:
         version: 2.6.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)))
       use-debounce:
         specifier: ^10.0.0
         version: 10.0.5(react@18.3.1)
@@ -342,7 +342,7 @@ importers:
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)))
+        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)))
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.23
@@ -360,13 +360,13 @@ importers:
         version: 9.0.8
       '@vitejs/plugin-react-swc':
         specifier: ^3.5.0
-        version: 3.10.2(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 3.10.2(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.21(postcss@8.5.6)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
       i18next-resources-for-ts:
         specifier: ^1.5.0
         version: 1.6.0
@@ -375,7 +375,7 @@ importers:
         version: 8.5.6
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2))
+        version: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2))
       tsx:
         specifier: ^4.19.1
         version: 4.20.3
@@ -384,13 +384,13 @@ importers:
         version: 5.4.2
       vite:
         specifier: ^5.1.0
-        version: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+        version: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
       vite-plugin-i18next-loader:
         specifier: ^2.0.12
-        version: 2.0.14(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 2.0.14(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       vite-tsconfig-paths:
         specifier: ^4.3.1
-        version: 4.3.2(typescript@5.4.2)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 4.3.2(typescript@5.4.2)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
 
   apps/server:
     dependencies:
@@ -508,7 +508,7 @@ importers:
         version: 4.20.3
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+        version: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
 
   packages/admin-dashboard:
     dependencies:
@@ -718,7 +718,7 @@ importers:
         version: 2.6.0
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)))
       ts-patch:
         specifier: ^3.2.1
         version: 3.3.0
@@ -746,7 +746,7 @@ importers:
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)))
+        version: 0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)))
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.23
@@ -764,13 +764,13 @@ importers:
         version: 9.0.8
       '@vitejs/plugin-react-swc':
         specifier: ^3.5.0
-        version: 3.10.2(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 3.10.2(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.21(postcss@8.5.6)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
       i18next-resources-for-ts:
         specifier: ^1.5.0
         version: 1.6.0
@@ -779,7 +779,7 @@ importers:
         version: 8.5.6
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2))
+        version: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2))
       tsx:
         specifier: ^4.19.1
         version: 4.20.3
@@ -788,13 +788,13 @@ importers:
         version: 5.4.2
       vite:
         specifier: ^5.1.0
-        version: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+        version: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
       vite-plugin-i18next-loader:
         specifier: ^2.0.12
-        version: 2.0.14(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 2.0.14(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       vite-tsconfig-paths:
         specifier: ^4.3.1
-        version: 4.3.2(typescript@5.4.2)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+        version: 4.3.2(typescript@5.4.2)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
 
   packages/admin-types:
     dependencies:
@@ -807,7 +807,7 @@ importers:
     devDependencies:
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -988,7 +988,7 @@ importers:
         version: 2.0.13
       '@types/node':
         specifier: ^18.17.9
-        version: 18.19.115
+        version: 18.19.116
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.23
@@ -1027,7 +1027,7 @@ importers:
         version: 2.2.5(karma@6.3.20)
       ng-packagr:
         specifier: 17.2.1
-        version: 17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3)
+        version: 17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3)
       puppeteer:
         specifier: ^19.8.3
         version: 19.11.1(encoding@0.1.13)(typescript@5.3.3)
@@ -1119,7 +1119,7 @@ importers:
         version: 21.0.1
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
@@ -1177,7 +1177,7 @@ importers:
         version: 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)
       '@nestjs/terminus':
         specifier: ^10.2.3
-        version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)))
+        version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)))
       '@types/fs-extra':
         specifier: ^9.0.1
         version: 9.0.13
@@ -1268,7 +1268,7 @@ importers:
         version: 0.7.34
       '@types/node':
         specifier: ^18.19.23
-        version: 18.19.115
+        version: 18.19.116
       '@types/node-fetch':
         specifier: ^2.6.11
         version: 2.6.12
@@ -1310,7 +1310,7 @@ importers:
         version: 5.1.7
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)
+        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -1371,7 +1371,7 @@ importers:
         version: 5.0.10
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -1566,10 +1566,10 @@ importers:
         version: 2.6.0
       tailwindcss:
         specifier: ^3.4.1
-        version: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+        version: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
       tailwindcss-animate:
         specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))
+        version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))
       typescript-transform-paths:
         specifier: ^3.5.1
         version: 3.5.5(typescript@5.3.3)
@@ -1591,7 +1591,7 @@ importers:
         version: 18.3.7(@types/react@18.3.23)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       rimraf:
         specifier: ^5.0.5
         version: 5.0.10
@@ -1612,7 +1612,7 @@ importers:
         version: 5.3.3
       vite:
         specifier: ^5.1.0
-        version: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+        version: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
 
   packages/testing:
     dependencies:
@@ -1679,13 +1679,13 @@ importers:
     dependencies:
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)
+        version: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)
 
   packages/ui-devkit:
     dependencies:
       '@angular-devkit/build-angular':
         specifier: ^17.2.3
-        version: 17.3.17(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/express@4.17.23)(@types/node@20.19.4)(chokidar@3.6.0)(karma@6.3.20)(ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))(typescript@5.3.3)
+        version: 17.3.17(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/express@4.17.23)(@types/node@20.19.5)(chokidar@3.6.0)(karma@6.3.20)(ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))(typescript@5.3.3)
       '@angular/cli':
         specifier: ^17.2.3
         version: 17.3.17(chokidar@3.6.0)
@@ -1850,7 +1850,7 @@ importers:
         version: 3.2.0(date-fns@4.1.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -1920,7 +1920,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -1984,7 +1984,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       i:
         specifier: ^0.3.7
         version: 0.3.7
@@ -2048,7 +2048,7 @@ importers:
         version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
       '@nestjs/terminus':
         specifier: ^10.2.3
-        version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))
+        version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))
       deepmerge:
         specifier: ^4.2.2
         version: 4.3.1
@@ -2155,7 +2155,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2244,7 +2244,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2320,7 +2320,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2366,7 +2366,7 @@ importers:
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/terminus':
         specifier: ^10.2.3
-        version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))
+        version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))
     devDependencies:
       '@deenruv/common':
         specifier: workspace:^
@@ -2434,7 +2434,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2599,7 +2599,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2694,7 +2694,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^5.4.2
-        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2770,7 +2770,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -2843,7 +2843,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -3012,7 +3012,7 @@ importers:
         version: 2.12.6(graphql@16.9.0)
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       lucide-react:
         specifier: ^0.363.0
         version: 0.363.0(react@18.3.1)
@@ -7790,8 +7790,8 @@ packages:
   '@types/express-serve-static-core@4.19.6':
     resolution: {integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==}
 
-  '@types/express-serve-static-core@5.0.6':
-    resolution: {integrity: sha512-3xhRnjJPkULekpSzgtoNYYcTWgEZkp4myc+Saevii5JPnHNvHMRlBSHDbs7Bh1iPPoVTERHEZXyhyLbMEsExsA==}
+  '@types/express-serve-static-core@5.0.7':
+    resolution: {integrity: sha512-R+33OsgWw7rOhD1emjU7dzCDHucJrgJXMA5PYCzJxVil0dsyx5iBEPHqpPfiKNJQb7lZ1vxwoLR4Z87bBUpeGQ==}
 
   '@types/express@4.17.23':
     resolution: {integrity: sha512-Crp6WY9aTYP3qPi2wGDo9iUe/rceX01UMhnF1jmwDcKCFM6cx7YhGP/Mpr3y9AASpfHixIG0E6azCcL5OcDHsQ==}
@@ -7902,11 +7902,11 @@ packages:
   '@types/node@11.15.54':
     resolution: {integrity: sha512-1RWYiq+5UfozGsU6MwJyFX6BtktcT10XRjvcAQmskCtMcW3tPske88lM/nHv7BQG1w9KBXI1zPGuu5PnNCX14g==}
 
-  '@types/node@18.19.115':
-    resolution: {integrity: sha512-kNrFiTgG4a9JAn1LMQeLOv3MvXIPokzXziohMrMsvpYgLpdEt/mMiVYc4sGKtDfyxM5gIDF4VgrPRyCw4fHOYg==}
+  '@types/node@18.19.116':
+    resolution: {integrity: sha512-1SHF5oSE6UfsnhB1QtPTB8bhKI/ZL57kIesbl0+/Nj8jW1C4Pjc+E+7sMq0Np6lu1zhjOKmoqPsK+RUsmok7nQ==}
 
-  '@types/node@20.19.4':
-    resolution: {integrity: sha512-OP+We5WV8Xnbuvw0zC2m4qfB/BJvjyCwtNjhHdJxV1639SGSKrLmJkc3fMnp2Qy8nJyHp8RO6umxELN/dS1/EA==}
+  '@types/node@20.19.5':
+    resolution: {integrity: sha512-M4CtoNkoQrYOD7O80KM7DjGdzwMvoXZ12SGUbxc0X1AK6gfBKjkJswW/B4MyTPMIuU0sodukEgj8CzIJKEAQXQ==}
 
   '@types/nodemailer@6.4.17':
     resolution: {integrity: sha512-I9CCaIp6DTldEg7vyUTZi8+9Vo0hi1/T8gv3C89yk1rSAAzoKQ8H8ki/jBYJSFoH/BisgLP8tkZMlQ91CIquww==}
@@ -8798,9 +8798,9 @@ packages:
   capital-case@1.0.4:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
 
-  chai@5.2.0:
-    resolution: {integrity: sha512-mCuXncKXk5iCLhfhwTc0izo0gtEmpz5CtG2y8GiOINBlMVS6v8TMRc5TaLWKS6692m9+dVVfzgeVxR5UxWHTYw==}
-    engines: {node: '>=12'}
+  chai@5.2.1:
+    resolution: {integrity: sha512-5nFxhUrX0PqtyogoYOA8IPswy5sZFTOsBFl/9bNsmDLgsxYTzSZQJDPppDnZPTQbzSEm0hqGjWPzRemQCYbD6A==}
+    engines: {node: '>=18'}
 
   chalk@1.1.3:
     resolution: {integrity: sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==}
@@ -15494,9 +15494,9 @@ snapshots:
     dependencies:
       react: 18.3.1
 
-  '@aexol/dev-translate-config@0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)':
+  '@aexol/dev-translate-config@0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)':
     dependencies:
-      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -15522,9 +15522,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@aexol/dev-translate@0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)':
+  '@aexol/dev-translate@0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)':
     dependencies:
-      '@aexol/dev-translate-config': 0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      '@aexol/dev-translate-config': 0.0.8(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       '@aexol/dev-translate-core': 0.0.8
       chalk: 5.4.1
       chokidar: 3.6.0
@@ -15538,10 +15538,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@aexol/vite-plugin-dev-translate@0.1.9(encoding@0.1.13)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
+  '@aexol/vite-plugin-dev-translate@0.1.9(encoding@0.1.13)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
     dependencies:
       '@aexol/dev-translate-watch': 0.1.9(encoding@0.1.13)
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
     transitivePeerDependencies:
       - encoding
 
@@ -15559,7 +15559,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-angular@17.3.17(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/express@4.17.23)(@types/node@20.19.4)(chokidar@3.6.0)(karma@6.3.20)(ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))(typescript@5.3.3)':
+  '@angular-devkit/build-angular@17.3.17(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/express@4.17.23)(@types/node@20.19.5)(chokidar@3.6.0)(karma@6.3.20)(ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))(typescript@5.3.3)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1703.17(chokidar@3.6.0)
@@ -15577,7 +15577,7 @@ snapshots:
       '@babel/runtime': 7.26.10
       '@discoveryjs/json-ext': 0.5.7
       '@ngtools/webpack': 17.3.17(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(typescript@5.3.3)(webpack@5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1))
-      '@vitejs/plugin-basic-ssl': 1.1.0(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+      '@vitejs/plugin-basic-ssl': 1.1.0(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       ansi-colors: 4.1.3
       autoprefixer: 10.4.18(postcss@8.4.35)
       babel-loader: 9.1.3(@babel/core@7.26.10)(webpack@5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1))
@@ -15618,7 +15618,7 @@ snapshots:
       tree-kill: 1.2.2
       tslib: 2.6.2
       typescript: 5.3.3
-      vite: 5.4.19(@types/node@20.19.4)(less@4.2.0)(sass@1.71.1)(terser@5.29.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.2.0)(sass@1.71.1)(terser@5.29.1)
       watchpack: 2.4.0
       webpack: 5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1)
       webpack-dev-middleware: 6.1.2(webpack@5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1))
@@ -15628,8 +15628,8 @@ snapshots:
     optionalDependencies:
       esbuild: 0.20.1
       karma: 6.3.20
-      ng-packagr: 17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3)
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      ng-packagr: 17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3)
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
     transitivePeerDependencies:
       - '@rspack/core'
       - '@swc/core'
@@ -17346,11 +17346,11 @@ snapshots:
 
   '@colors/colors@1.5.0': {}
 
-  '@commitlint/cli@19.8.1(@types/node@20.19.4)(typescript@5.3.3)':
+  '@commitlint/cli@19.8.1(@types/node@20.19.5)(typescript@5.3.3)':
     dependencies:
       '@commitlint/format': 19.8.1
       '@commitlint/lint': 19.8.1
-      '@commitlint/load': 19.8.1(@types/node@20.19.4)(typescript@5.3.3)
+      '@commitlint/load': 19.8.1(@types/node@20.19.5)(typescript@5.3.3)
       '@commitlint/read': 19.8.1
       '@commitlint/types': 19.8.1
       tinyexec: 1.0.1
@@ -17397,7 +17397,7 @@ snapshots:
       '@commitlint/rules': 19.8.1
       '@commitlint/types': 19.8.1
 
-  '@commitlint/load@19.8.1(@types/node@20.19.4)(typescript@5.3.3)':
+  '@commitlint/load@19.8.1(@types/node@20.19.5)(typescript@5.3.3)':
     dependencies:
       '@commitlint/config-validator': 19.8.1
       '@commitlint/execute-rule': 19.8.1
@@ -17405,7 +17405,7 @@ snapshots:
       '@commitlint/types': 19.8.1
       chalk: 5.4.1
       cosmiconfig: 9.0.0(typescript@5.3.3)
-      cosmiconfig-typescript-loader: 6.1.0(@types/node@20.19.4)(cosmiconfig@9.0.0(typescript@5.3.3))(typescript@5.3.3)
+      cosmiconfig-typescript-loader: 6.1.0(@types/node@20.19.5)(cosmiconfig@9.0.0(typescript@5.3.3))(typescript@5.3.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -18057,7 +18057,7 @@ snapshots:
       graphql: 16.9.0
       tslib: 2.6.3
 
-  '@graphql-codegen/cli@5.0.2(@parcel/watcher@2.5.1)(@types/node@20.19.4)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.9.0)(typescript@5.3.3)':
+  '@graphql-codegen/cli@5.0.2(@parcel/watcher@2.5.1)(@types/node@20.19.5)(encoding@0.1.13)(enquirer@2.4.1)(graphql@16.9.0)(typescript@5.3.3)':
     dependencies:
       '@babel/generator': 7.28.0
       '@babel/template': 7.27.2
@@ -18068,12 +18068,12 @@ snapshots:
       '@graphql-tools/apollo-engine-loader': 8.0.20(graphql@16.9.0)
       '@graphql-tools/code-file-loader': 8.1.20(graphql@16.9.0)
       '@graphql-tools/git-loader': 8.0.24(graphql@16.9.0)
-      '@graphql-tools/github-loader': 8.0.20(@types/node@20.19.4)(graphql@16.9.0)
+      '@graphql-tools/github-loader': 8.0.20(@types/node@20.19.5)(graphql@16.9.0)
       '@graphql-tools/graphql-file-loader': 8.0.20(graphql@16.9.0)
       '@graphql-tools/json-file-loader': 8.0.18(graphql@16.9.0)
       '@graphql-tools/load': 8.1.0(graphql@16.9.0)
-      '@graphql-tools/prisma-loader': 8.0.17(@types/node@20.19.4)(encoding@0.1.13)(graphql@16.9.0)
-      '@graphql-tools/url-loader': 8.0.31(@types/node@20.19.4)(graphql@16.9.0)
+      '@graphql-tools/prisma-loader': 8.0.17(@types/node@20.19.5)(encoding@0.1.13)(graphql@16.9.0)
+      '@graphql-tools/url-loader': 8.0.31(@types/node@20.19.5)(graphql@16.9.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       '@whatwg-node/fetch': 0.8.8
       chalk: 4.1.2
@@ -18081,7 +18081,7 @@ snapshots:
       debounce: 1.2.1
       detect-indent: 6.1.0
       graphql: 16.9.0
-      graphql-config: 5.1.5(@types/node@20.19.4)(graphql@16.9.0)(typescript@5.3.3)
+      graphql-config: 5.1.5(@types/node@20.19.5)(graphql@16.9.0)(typescript@5.3.3)
       inquirer: 8.2.6
       is-glob: 4.0.3
       jiti: 1.21.7
@@ -18339,7 +18339,7 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
-  '@graphql-tools/executor-http@1.3.3(@types/node@20.19.4)(graphql@16.9.0)':
+  '@graphql-tools/executor-http@1.3.3(@types/node@20.19.5)(graphql@16.9.0)':
     dependencies:
       '@graphql-hive/signal': 1.0.0
       '@graphql-tools/executor-common': 0.0.4(graphql@16.9.0)
@@ -18349,7 +18349,7 @@ snapshots:
       '@whatwg-node/fetch': 0.10.8
       '@whatwg-node/promise-helpers': 1.3.2
       graphql: 16.9.0
-      meros: 1.3.1(@types/node@20.19.4)
+      meros: 1.3.1(@types/node@20.19.5)
       tslib: 2.8.1
     transitivePeerDependencies:
       - '@types/node'
@@ -18388,9 +18388,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@graphql-tools/github-loader@8.0.20(@types/node@20.19.4)(graphql@16.9.0)':
+  '@graphql-tools/github-loader@8.0.20(@types/node@20.19.5)(graphql@16.9.0)':
     dependencies:
-      '@graphql-tools/executor-http': 1.3.3(@types/node@20.19.4)(graphql@16.9.0)
+      '@graphql-tools/executor-http': 1.3.3(@types/node@20.19.5)(graphql@16.9.0)
       '@graphql-tools/graphql-tag-pluck': 8.3.19(graphql@16.9.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       '@whatwg-node/fetch': 0.10.8
@@ -18470,9 +18470,9 @@ snapshots:
       graphql: 16.9.0
       tslib: 2.6.3
 
-  '@graphql-tools/prisma-loader@8.0.17(@types/node@20.19.4)(encoding@0.1.13)(graphql@16.9.0)':
+  '@graphql-tools/prisma-loader@8.0.17(@types/node@20.19.5)(encoding@0.1.13)(graphql@16.9.0)':
     dependencies:
-      '@graphql-tools/url-loader': 8.0.31(@types/node@20.19.4)(graphql@16.9.0)
+      '@graphql-tools/url-loader': 8.0.31(@types/node@20.19.5)(graphql@16.9.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       '@types/js-yaml': 4.0.9
       '@whatwg-node/fetch': 0.10.8
@@ -18544,10 +18544,10 @@ snapshots:
       graphql: 16.9.0
       tslib: 2.8.1
 
-  '@graphql-tools/url-loader@8.0.31(@types/node@20.19.4)(graphql@16.9.0)':
+  '@graphql-tools/url-loader@8.0.31(@types/node@20.19.5)(graphql@16.9.0)':
     dependencies:
       '@graphql-tools/executor-graphql-ws': 2.0.5(graphql@16.9.0)
-      '@graphql-tools/executor-http': 1.3.3(@types/node@20.19.4)(graphql@16.9.0)
+      '@graphql-tools/executor-http': 1.3.3(@types/node@20.19.5)(graphql@16.9.0)
       '@graphql-tools/executor-legacy-ws': 1.1.17(graphql@16.9.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       '@graphql-tools/wrap': 10.1.2(graphql@16.9.0)
@@ -18606,7 +18606,7 @@ snapshots:
   '@grpc/grpc-js@1.6.12':
     dependencies:
       '@grpc/proto-loader': 0.7.15
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@grpc/proto-loader@0.6.9':
     dependencies:
@@ -19023,7 +19023,7 @@ snapshots:
     optionalDependencies:
       express: 4.21.2
 
-  '@nestjs/terminus@10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)))':
+  '@nestjs/terminus@10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)))':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.19)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -19035,10 +19035,10 @@ snapshots:
       '@grpc/grpc-js': 1.6.12
       '@grpc/proto-loader': 0.7.15
       '@nestjs/axios': 3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1)
-      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)))
-      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3))
+      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)))
+      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3))
 
-  '@nestjs/terminus@10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))':
+  '@nestjs/terminus@10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.19)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -19050,8 +19050,8 @@ snapshots:
       '@grpc/grpc-js': 1.6.12
       '@grpc/proto-loader': 0.7.15
       '@nestjs/axios': 3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1)
-      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))
-      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))
+      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
 
   '@nestjs/testing@10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/platform-express@10.4.19)':
     dependencies:
@@ -19061,23 +19061,23 @@ snapshots:
     optionalDependencies:
       '@nestjs/platform-express': 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)
 
-  '@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)))':
+  '@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)))':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.19)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
-      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3))
+      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3))
       uuid: 9.0.1
     optional: true
 
-  '@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))':
+  '@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))':
     dependencies:
       '@nestjs/common': 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.19(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.19)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
-      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      typeorm: 0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
       uuid: 9.0.1
 
   '@next/env@15.2.2': {}
@@ -20788,13 +20788,13 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)))':
+  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)))':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2))
 
   '@tanstack/react-table@8.21.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -20995,28 +20995,28 @@ snapshots:
 
   '@types/accepts@1.3.7':
     dependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   '@types/bcrypt@5.0.2':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/bonjour@3.5.13':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/braintree@3.4.0':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/busboy@1.5.4':
     dependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   '@types/chai@5.2.2':
     dependencies:
@@ -21024,18 +21024,18 @@ snapshots:
 
   '@types/connect-history-api-fallback@1.5.4':
     dependencies:
-      '@types/express-serve-static-core': 5.0.6
-      '@types/node': 18.19.115
+      '@types/express-serve-static-core': 5.0.7
+      '@types/node': 18.19.116
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/content-disposition@0.5.9': {}
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   '@types/cookie-session@2.0.49':
     dependencies:
@@ -21047,15 +21047,15 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/express': 4.17.23
       '@types/keygrip': 1.0.6
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/cross-spawn@6.0.6':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/d3-array@3.2.1': {}
 
@@ -21089,26 +21089,26 @@ snapshots:
 
   '@types/duplexify@3.6.4':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/estree@1.0.8': {}
 
   '@types/execa@0.9.0':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/expect@1.20.4': {}
 
   '@types/express-serve-static-core@4.19.6':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
 
-  '@types/express-serve-static-core@5.0.6':
+  '@types/express-serve-static-core@5.0.7':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.5
@@ -21125,15 +21125,15 @@ snapshots:
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/fs-extra@9.0.13':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/glob-stream@8.0.3':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/picomatch': 4.0.0
       '@types/streamx': 2.9.5
 
@@ -21141,13 +21141,13 @@ snapshots:
     dependencies:
       '@types/express': 4.17.23
       '@types/koa': 2.15.0
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       fs-capacitor: 8.0.0
       graphql: 16.9.0
 
   '@types/gulp@4.0.17':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/undertaker': 1.2.11
       '@types/vinyl-fs': 3.0.6
       chokidar: 3.6.0
@@ -21162,7 +21162,7 @@ snapshots:
 
   '@types/http-proxy@1.17.16':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/jasmine@4.3.6': {}
 
@@ -21178,13 +21178,13 @@ snapshots:
 
   '@types/jsonfile@6.1.4':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/keygrip@1.0.6': {}
 
   '@types/klaw-sync@6.0.5':
     dependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   '@types/koa-compose@3.2.8':
     dependencies:
@@ -21199,13 +21199,13 @@ snapshots:
       '@types/http-errors': 2.0.5
       '@types/keygrip': 1.0.6
       '@types/koa-compose': 3.2.8
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   '@types/linkify-it@5.0.0': {}
 
   '@types/localtunnel@2.0.4':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/lodash@4.17.20': {}
 
@@ -21232,30 +21232,30 @@ snapshots:
 
   '@types/mysql@2.15.27':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       form-data: 4.0.3
 
   '@types/node-forge@1.3.12':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/node@11.15.54': {}
 
-  '@types/node@18.19.115':
+  '@types/node@18.19.116':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@20.19.4':
+  '@types/node@20.19.5':
     dependencies:
       undici-types: 6.21.0
 
   '@types/nodemailer@6.4.17':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -21265,7 +21265,7 @@ snapshots:
 
   '@types/pg@8.15.4':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       pg-protocol: 1.10.3
       pg-types: 2.2.0
 
@@ -21273,11 +21273,11 @@ snapshots:
 
   '@types/progress@2.0.7':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/prompts@2.4.9':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       kleur: 3.0.3
 
   '@types/prop-types@15.7.15': {}
@@ -21315,7 +21315,7 @@ snapshots:
   '@types/send@0.17.5':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/serve-index@1.9.4':
     dependencies:
@@ -21324,16 +21324,16 @@ snapshots:
   '@types/serve-static@1.15.8':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/send': 0.17.5
 
   '@types/sockjs@0.3.36':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/streamx@2.9.5':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/trusted-types@2.0.7': {}
 
@@ -21341,7 +21341,7 @@ snapshots:
 
   '@types/undertaker@1.2.11':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/undertaker-registry': 1.0.4
       async-done: 1.3.2
 
@@ -21352,25 +21352,25 @@ snapshots:
   '@types/vinyl-fs@3.0.6':
     dependencies:
       '@types/glob-stream': 8.0.3
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       '@types/vinyl': 2.0.12
 
   '@types/vinyl@2.0.12':
     dependencies:
       '@types/expect': 1.20.4
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/xml2js@0.4.14':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
     optional: true
 
   '@typescript-eslint/eslint-plugin@8.36.0(@typescript-eslint/parser@8.36.0(eslint@9.30.1(jiti@2.4.2))(typescript@5.3.3))(eslint@9.30.1(jiti@2.4.2))(typescript@5.3.3)':
@@ -21507,15 +21507,15 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
-  '@vitejs/plugin-basic-ssl@1.1.0(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
+  '@vitejs/plugin-basic-ssl@1.1.0(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
     dependencies:
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
 
-  '@vitejs/plugin-react-swc@3.10.2(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
+  '@vitejs/plugin-react-swc@3.10.2(@swc/helpers@0.5.17)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.11
       '@swc/core': 1.12.11(@swc/helpers@0.5.17)
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -21524,16 +21524,16 @@ snapshots:
       '@types/chai': 5.2.2
       '@vitest/spy': 3.2.4
       '@vitest/utils': 3.2.4
-      chai: 5.2.0
+      chai: 5.2.1
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@3.2.4(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
+  '@vitest/mocker@3.2.4(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -22365,7 +22365,7 @@ snapshots:
       tslib: 2.8.1
       upper-case-first: 2.0.2
 
-  chai@5.2.0:
+  chai@5.2.1:
     dependencies:
       assertion-error: 2.0.1
       check-error: 2.1.1
@@ -22707,7 +22707,7 @@ snapshots:
       ini: 1.3.8
       proto-list: 1.2.4
 
-  config-maker@0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3):
+  config-maker@0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3):
     dependencies:
       adm-zip: 0.5.16
       archiver: 5.3.2
@@ -22728,7 +22728,7 @@ snapshots:
       pkg-install: 1.0.0
       qs: 6.14.0
       run-async: 2.4.1
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       ts-patch: 3.3.0
       ws: 8.18.3
       yargs: 17.7.2
@@ -22741,7 +22741,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  config-maker@0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2):
+  config-maker@0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2):
     dependencies:
       adm-zip: 0.5.16
       archiver: 5.3.2
@@ -22762,7 +22762,7 @@ snapshots:
       pkg-install: 1.0.0
       qs: 6.14.0
       run-async: 2.4.1
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)
       ts-patch: 3.3.0
       ws: 8.18.3
       yargs: 17.7.2
@@ -22890,9 +22890,9 @@ snapshots:
       object-assign: 4.1.1
       vary: 1.1.2
 
-  cosmiconfig-typescript-loader@6.1.0(@types/node@20.19.4)(cosmiconfig@9.0.0(typescript@5.3.3))(typescript@5.3.3):
+  cosmiconfig-typescript-loader@6.1.0(@types/node@20.19.5)(cosmiconfig@9.0.0(typescript@5.3.3))(typescript@5.3.3):
     dependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       cosmiconfig: 9.0.0(typescript@5.3.3)
       jiti: 2.4.2
       typescript: 5.3.3
@@ -23413,7 +23413,7 @@ snapshots:
   engine.io@6.6.4:
     dependencies:
       '@types/cors': 2.8.19
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.7.2
@@ -23781,11 +23781,11 @@ snapshots:
     optionalDependencies:
       eslint-config-prettier: 10.1.5(eslint@9.30.1(jiti@2.4.2))
 
-  eslint-plugin-tailwindcss@3.18.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))):
+  eslint-plugin-tailwindcss@3.18.0(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))):
     dependencies:
       fast-glob: 3.3.3
       postcss: 8.5.6
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
 
   eslint-scope@5.1.1:
     dependencies:
@@ -24608,13 +24608,13 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphql-config@5.1.5(@types/node@20.19.4)(graphql@16.9.0)(typescript@5.3.3):
+  graphql-config@5.1.5(@types/node@20.19.5)(graphql@16.9.0)(typescript@5.3.3):
     dependencies:
       '@graphql-tools/graphql-file-loader': 8.0.20(graphql@16.9.0)
       '@graphql-tools/json-file-loader': 8.0.18(graphql@16.9.0)
       '@graphql-tools/load': 8.1.0(graphql@16.9.0)
       '@graphql-tools/merge': 9.0.24(graphql@16.9.0)
-      '@graphql-tools/url-loader': 8.0.31(@types/node@20.19.4)(graphql@16.9.0)
+      '@graphql-tools/url-loader': 8.0.31(@types/node@20.19.5)(graphql@16.9.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       cosmiconfig: 8.3.6(typescript@5.3.3)
       graphql: 16.9.0
@@ -24667,7 +24667,7 @@ snapshots:
   graphql-upload@16.0.2(@types/express@4.17.23)(@types/koa@2.15.0)(graphql@16.9.0):
     dependencies:
       '@types/busboy': 1.5.4
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       '@types/object-path': 0.11.4
       busboy: 1.6.0
       fs-capacitor: 8.0.0
@@ -24718,9 +24718,9 @@ snapshots:
     optionalDependencies:
       graphql-ws: 6.0.5(graphql@16.9.0)(ws@8.18.3)
 
-  graphql-zeus@5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3):
+  graphql-zeus@5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3):
     dependencies:
-      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       cross-fetch: 3.2.0(encoding@0.1.13)
       graphql-zeus-core: 5.4.5(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))
       graphql-zeus-jsonschema: 5.4.5(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))
@@ -24736,9 +24736,9 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  graphql-zeus@7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3):
+  graphql-zeus@7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3):
     dependencies:
-      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
       cross-fetch: 3.2.0(encoding@0.1.13)
       graphql-zeus-core: 7.0.7(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))
       graphql-zeus-jsonschema: 7.0.7(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))
@@ -24754,9 +24754,9 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  graphql-zeus@7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2):
+  graphql-zeus@7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2):
     dependencies:
-      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)
+      config-maker: 0.0.6(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)
       cross-fetch: 3.2.0(encoding@0.1.13)
       graphql-zeus-core: 7.0.7(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))
       graphql-zeus-jsonschema: 7.0.7(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))
@@ -25492,7 +25492,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -26129,9 +26129,9 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  meros@1.3.1(@types/node@20.19.4):
+  meros@1.3.1(@types/node@20.19.5):
     optionalDependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
 
   messageformat-formatters@2.0.1: {}
 
@@ -26692,7 +26692,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3):
+  ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3):
     dependencies:
       '@angular/compiler-cli': 17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3)
       '@rollup/plugin-json': 6.1.0(rollup@4.44.2)
@@ -26722,9 +26722,9 @@ snapshots:
     optionalDependencies:
       esbuild: 0.20.2
       rollup: 4.44.2
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3))
 
-  ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3):
+  ng-packagr@17.2.1(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3))(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)))(tslib@2.8.1)(typescript@5.3.3):
     dependencies:
       '@angular/compiler-cli': 17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3)
       '@rollup/plugin-json': 6.1.0(rollup@4.44.2)
@@ -26754,7 +26754,7 @@ snapshots:
     optionalDependencies:
       esbuild: 0.20.2
       rollup: 4.44.2
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
     optional: true
 
   ngx-pagination@6.0.3(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)):
@@ -27430,30 +27430,30 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.5.6
 
-  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)):
+  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.0
     optionalDependencies:
       postcss: 8.5.6
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)
     optional: true
 
-  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)):
+  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.0
     optionalDependencies:
       postcss: 8.5.6
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
 
-  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)):
+  postcss-load-config@4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)):
     dependencies:
       lilconfig: 3.1.3
       yaml: 2.8.0
     optionalDependencies:
       postcss: 8.5.6
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)
 
   postcss-loader@8.1.1(postcss@8.4.35)(typescript@5.3.3)(webpack@5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1)):
     dependencies:
@@ -27748,7 +27748,7 @@ snapshots:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       long: 4.0.0
 
   protobufjs@7.5.3:
@@ -27763,7 +27763,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       long: 5.3.2
 
   proxy-addr@2.0.7:
@@ -28950,7 +28950,7 @@ snapshots:
 
   stripe@13.11.0:
     dependencies:
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       qs: 6.14.0
 
   strnum@1.1.2: {}
@@ -29030,15 +29030,15 @@ snapshots:
 
   tailwind-merge@2.6.0: {}
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))):
     dependencies:
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
 
-  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2))):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2))):
     dependencies:
-      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2))
+      tailwindcss: 3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2))
 
-  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -29057,7 +29057,7 @@ snapshots:
       postcss: 8.5.6
       postcss-import: 15.1.0(postcss@8.5.6)
       postcss-js: 4.0.1(postcss@8.5.6)
-      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3))
+      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3))
       postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -29066,7 +29066,7 @@ snapshots:
       - ts-node
     optional: true
 
-  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -29085,7 +29085,7 @@ snapshots:
       postcss: 8.5.6
       postcss-import: 15.1.0(postcss@8.5.6)
       postcss-js: 4.0.1(postcss@8.5.6)
-      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3))
+      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3))
       postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -29093,7 +29093,7 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
-  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2)):
+  tailwindcss@3.4.17(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -29112,7 +29112,7 @@ snapshots:
       postcss: 8.5.6
       postcss-import: 15.1.0(postcss@8.5.6)
       postcss-js: 4.0.1(postcss@8.5.6)
-      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2))
+      postcss-load-config: 4.0.2(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2))
       postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.10
@@ -29299,14 +29299,14 @@ snapshots:
       '@ts-morph/common': 0.22.0
       code-block-writer: 12.0.0
 
-  ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3):
+  ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 18.19.115
+      '@types/node': 18.19.116
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -29319,14 +29319,14 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.12.11(@swc/helpers@0.5.17)
 
-  ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3):
+  ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -29339,14 +29339,14 @@ snapshots:
     optionalDependencies:
       '@swc/core': 1.12.11(@swc/helpers@0.5.17)
 
-  ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.4.2):
+  ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.4.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -29470,7 +29470,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)):
+  typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 3.17.0
@@ -29493,13 +29493,13 @@ snapshots:
       pg: 8.16.3
       sql.js: 1.10.2
       sqlite3: 5.1.7
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.115)(typescript@5.3.3)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@18.19.116)(typescript@5.3.3)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
     optional: true
 
-  typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)):
+  typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 3.17.0
@@ -29522,7 +29522,7 @@ snapshots:
       pg: 8.16.3
       sql.js: 1.10.2
       sqlite3: 5.1.7
-      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.4)(typescript@5.3.3)
+      ts-node: 10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(typescript@5.3.3)
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
@@ -29759,13 +29759,13 @@ snapshots:
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
 
-  vite-node@3.2.4(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1):
+  vite-node@3.2.4(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.1
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -29777,7 +29777,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-i18next-loader@2.0.14(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)):
+  vite-plugin-i18next-loader@2.0.14(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)):
     dependencies:
       dot-prop: 9.0.0
       glob-all: 3.3.1
@@ -29785,54 +29785,54 @@ snapshots:
       marked: 13.0.3
       marked-terminal: 7.3.0(marked@13.0.3)
       ts-deepmerge: 7.0.3
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
 
-  vite-tsconfig-paths@4.3.2(typescript@5.4.2)(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)):
+  vite-tsconfig-paths@4.3.2(typescript@5.4.2)(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)):
     dependencies:
       debug: 4.4.1
       globrex: 0.1.2
       tsconfck: 3.1.6(typescript@5.4.2)
     optionalDependencies:
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.4.19(@types/node@20.19.4)(less@4.2.0)(sass@1.71.1)(terser@5.29.1):
+  vite@5.4.19(@types/node@20.19.5)(less@4.2.0)(sass@1.71.1)(terser@5.29.1):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.44.2
     optionalDependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       fsevents: 2.3.3
       less: 4.2.0
       sass: 1.71.1
       terser: 5.29.1
 
-  vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1):
+  vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.44.2
     optionalDependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
       fsevents: 2.3.3
       less: 4.3.0
       sass: 1.89.2
       terser: 5.43.1
 
-  vitest@3.2.4(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1):
+  vitest@3.2.4(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
+      '@vitest/mocker': 3.2.4(vite@5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1))
       '@vitest/pretty-format': 3.2.4
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
       '@vitest/spy': 3.2.4
       '@vitest/utils': 3.2.4
-      chai: 5.2.0
+      chai: 5.2.1
       debug: 4.4.1
       expect-type: 1.2.2
       magic-string: 0.30.17
@@ -29844,11 +29844,11 @@ snapshots:
       tinyglobby: 0.2.14
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 5.4.19(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
-      vite-node: 3.2.4(@types/node@20.19.4)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite: 5.4.19(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
+      vite-node: 3.2.4(@types/node@20.19.5)(less@4.3.0)(sass@1.89.2)(terser@5.43.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 20.19.4
+      '@types/node': 20.19.5
     transitivePeerDependencies:
       - less
       - lightningcss
