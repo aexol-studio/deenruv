@@ -19,6 +19,9 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "dependencies": {
+    "ts-patch": "^3.2.1"
+  },
   "devDependencies": {
     "rimraf": "^5.0.5"
   }

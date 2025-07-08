@@ -1377,6 +1377,10 @@ importers:
         version: 5.3.3
 
   packages/inpost:
+    dependencies:
+      ts-patch:
+        specifier: ^3.2.1
+        version: 3.3.0
     devDependencies:
       rimraf:
         specifier: ^5.0.5
@@ -19173,7 +19177,7 @@ snapshots:
       proc-log: 4.2.0
       promise-inflight: 1.0.1
       promise-retry: 2.0.1
-      semver: 7.6.0
+      semver: 7.7.2
       which: 4.0.0
     transitivePeerDependencies:
       - bluebird
@@ -19199,7 +19203,7 @@ snapshots:
       json-parse-even-better-errors: 3.0.2
       normalize-package-data: 6.0.2
       proc-log: 4.2.0
-      semver: 7.6.0
+      semver: 7.7.2
     transitivePeerDependencies:
       - bluebird
 
@@ -23008,7 +23012,7 @@ snapshots:
       postcss-modules-scope: 3.2.1(postcss@8.5.6)
       postcss-modules-values: 4.0.0(postcss@8.5.6)
       postcss-value-parser: 4.2.0
-      semver: 7.6.0
+      semver: 7.7.2
     optionalDependencies:
       webpack: 5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1)
 
@@ -26854,7 +26858,7 @@ snapshots:
       make-fetch-happen: 13.0.1
       nopt: 7.2.1
       proc-log: 4.2.0
-      semver: 7.6.0
+      semver: 7.7.2
       tar: 6.2.1
       which: 4.0.0
     transitivePeerDependencies:
@@ -26918,7 +26922,7 @@ snapshots:
 
   npm-install-checks@6.3.0:
     dependencies:
-      semver: 7.6.0
+      semver: 7.7.2
 
   npm-normalize-package-bin@3.0.1: {}
 
@@ -27460,7 +27464,7 @@ snapshots:
       cosmiconfig: 9.0.0(typescript@5.3.3)
       jiti: 1.21.7
       postcss: 8.4.35
-      semver: 7.6.0
+      semver: 7.7.2
     optionalDependencies:
       webpack: 5.94.0(@swc/core@1.12.11(@swc/helpers@0.5.17))(esbuild@0.20.1)
     transitivePeerDependencies:
