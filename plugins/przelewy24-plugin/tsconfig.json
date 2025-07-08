@@ -1,9 +1,12 @@
 {
-    "compilerOptions": {
-        "composite": true,
-        "declaration": true,
-        "declarationMap": true
-    },
-    "references": [{ "path": "./src/plugin-server" }, { "path": "src/plugin-ui" }],
-    "files": []
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "references": [
+    { "path": "./src/plugin-server" },
+    { "path": "./src/plugin-ui" }
+  ],
+  "files": []
 }

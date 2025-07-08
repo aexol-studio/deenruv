@@ -1,54 +1,41 @@
-import {
-  PluginCommonModule,
-  DeenruvPlugin,
-  LanguageCode,
-  Asset,
-  PaymentMethod,
-} from "@deenruv/core";
-import { Przelewy24PluginConfiguration } from "./types.js";
-import { przelewy24PaymentMethodHandler } from "./handlers/przelewy24.handler.js";
+import { PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
 import { Przelewy24Controller } from "./controllers/przelewy24.controller.js";
-import { AdminAPIExtension } from "./extensions/admin-api.extension.js";
-import { Przelewy24ReminderResolver } from "./api/reminder.resolver.js";
-import { PLUGIN_INIT_OPTIONS } from "./constants.js";
+import { PRZELEWY24_PLUGIN_OPTIONS } from "./constants.js";
+import { Przelewy24PluginConfiguration } from "./types.js";
 import { Przelewy24Service } from "./services/przelewy24.service.js";
-import { Przelewy24ReminderEvent } from "./email-event.js";
+import { przelewy24BlikPaymentMethodHandler } from "./handlers/przelewy24-blik.handler.js";
+import { przelewy24PaymentMethodHandler } from "./handlers/przelewy24.handler.js";
+import { Przelewy24RegularPaymentEvent } from "./email-events.js";
 
 @DeenruvPlugin({
-  compatibility: "^0.0.20",
+  compatibility: "0.0.1",
   imports: [PluginCommonModule],
   controllers: [Przelewy24Controller],
   providers: [
     Przelewy24Service,
-    { provide: PLUGIN_INIT_OPTIONS, useFactory: () => Przelewy24Plugin.config },
+    {
+      provide: PRZELEWY24_PLUGIN_OPTIONS,
+      useFactory: () => Przelewy24Plugin.options,
+    },
   ],
-  adminApiExtensions: {
-    resolvers: [Przelewy24ReminderResolver],
-    schema: AdminAPIExtension,
-  },
   configuration: (config) => {
-    config.paymentOptions.paymentMethodHandlers.push(
+    [
+      przelewy24BlikPaymentMethodHandler,
       przelewy24PaymentMethodHandler,
-    );
-    config.customFields.Order.push({
-      name: "selectedPaymentMethod",
-      type: "relation",
-      entity: PaymentMethod,
-      ui: { component: "payment-method-input" },
-      label: [
-        { languageCode: LanguageCode.en, value: "Payment" },
-        { languageCode: LanguageCode.pl, value: "Płatność" },
-      ],
+    ].forEach((handler) => {
+      config.paymentOptions.paymentMethodHandlers.push(handler);
     });
+
     return config;
   },
 })
 class Przelewy24Plugin {
-  static config: Przelewy24PluginConfiguration;
+  static options: Przelewy24PluginConfiguration;
 
-  static init(config: Przelewy24PluginConfiguration) {
-    this.config = config;
+  static init(options: Przelewy24PluginConfiguration) {
+    this.options = options;
     return this;
   }
 }
-export { Przelewy24Plugin, Przelewy24ReminderEvent };
+
+export { Przelewy24Plugin, Przelewy24RegularPaymentEvent };

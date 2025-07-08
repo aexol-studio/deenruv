@@ -1,10 +1,16 @@
 import axios from "axios";
 import * as crypto from "crypto";
 import { Order } from "@deenruv/core";
-import { Przelewy24SecretsByMarket, AllowedChannels } from "./types";
-import { METHOD_NAME } from "./constants";
-
-const allowedMarkets = ["pl-channel"] as AllowedChannels[];
+import {
+  AllowedChannels,
+  ENVS,
+  Przelewy24PluginConfiguration,
+} from "./types.js";
+import {
+  ALLOWED_MARKETS,
+  BLIK_METHOD_NAME,
+  PRZELEWY24_METHOD_NAME,
+} from "./constants.js";
 
 export const generateSHA384Hash = (sum: string) => {
   const hash = crypto.createHash("sha384");
@@ -15,7 +21,9 @@ export const generateSHA384Hash = (sum: string) => {
 
 export const getSessionId = (order: Order) => {
   const przelewy24payments = order.payments.filter(
-    (payment) => payment.method === METHOD_NAME,
+    (payment) =>
+      payment.method === PRZELEWY24_METHOD_NAME ||
+      payment.method === BLIK_METHOD_NAME,
   );
   const sessionId = !przelewy24payments.length
     ? `${order.code}`
@@ -23,29 +31,18 @@ export const getSessionId = (order: Order) => {
   return sessionId;
 };
 
-export const getPrzelewy24SecretsByChannel = (channel: string) => {
+export const getPrzelewy24SecretsByChannel = (
+  options: Przelewy24PluginConfiguration,
+  channel: string,
+) => {
   const _ch = channel.toLowerCase();
-  if (!allowedMarkets.includes(_ch as AllowedChannels)) {
+  if (!ALLOWED_MARKETS.includes(_ch as AllowedChannels)) {
     throw new Error(`Market ${_ch} is not supported`);
   }
-
-  const ch = _ch.split("-")[0];
-
-  const args = process.env as { [key: string]: string };
-  const envs = {
-    PRZELEWY24_POS_ID: args[`PRZELEWY24_POS_ID_${ch.toUpperCase()}`] as string,
-    PRZELEWY24_CRC: args[`PRZELEWY24_CRC_${ch.toUpperCase()}`] as string,
-    PRZELEWY24_CLIENT_SECRET: args[
-      `PRZELEWY24_CLIENT_SECRET_${ch.toUpperCase()}`
-    ] as string,
-  };
-  if (Object.values(envs).some((env) => !env)) {
-    throw new Error(`Missing env variables for market ${channel}`);
-  }
-  return envs;
+  return options[channel as AllowedChannels];
 };
 
-export const getAxios = (przelewy24Secrets: Przelewy24SecretsByMarket) => {
+export const getAxios = (przelewy24Secrets: ENVS) => {
   const basicAuth =
     "Basic " +
     Buffer.from(
@@ -60,7 +57,7 @@ export const getAxios = (przelewy24Secrets: Przelewy24SecretsByMarket) => {
     validateStatus: () => true,
     withCredentials: true,
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json; charset=utf-8",
       Authorization: basicAuth,
     },
   });

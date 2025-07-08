@@ -1,3 +1,24 @@
+import { Order, RequestContext } from "@deenruv/core";
+import { ALLOWED_MARKETS } from "./constants.js";
+export type AllowedChannels = (typeof ALLOWED_MARKETS)[number];
+
+export type ENVS = {
+  PRZELEWY24_POS_ID: string;
+  PRZELEWY24_CRC: string;
+  PRZELEWY24_CLIENT_SECRET: string;
+};
+
+export type Przelewy24PluginConfiguration = {
+  [market in AllowedChannels]: ENVS;
+} & {
+  apiUrl: string;
+  returnUrl: (
+    ctx: RequestContext,
+    payload: { order: Order },
+  ) => Promise<string> | string;
+  przelewy24Host: string;
+};
+
 export interface Przelewy24NotificationBody {
   merchantId: number;
   posId: number;
@@ -10,21 +31,3 @@ export interface Przelewy24NotificationBody {
   statement: string;
   sign: string;
 }
-
-export interface Przelewy24SecretsByMarket {
-  PRZELEWY24_POS_ID: string;
-  PRZELEWY24_CRC: string;
-  PRZELEWY24_CLIENT_SECRET: string;
-}
-
-export type AllowedChannels = "pl-channel";
-
-type ENVS = {
-  PRZELEWY24_POS_ID: string;
-  PRZELEWY24_CRC: string;
-  PRZELEWY24_CLIENT_SECRET: string;
-};
-
-export type Przelewy24PluginConfiguration = {
-  [key in AllowedChannels]?: ENVS;
-};
