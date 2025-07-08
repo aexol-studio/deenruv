@@ -439,6 +439,9 @@ importers:
       '@deenruv/in-realization-plugin':
         specifier: workspace:*
         version: link:../../plugins/in-realization-plugin
+      '@deenruv/inpost-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/inpost-plugin
       '@deenruv/job-queue-plugin':
         specifier: workspace:*
         version: link:../../plugins/job-queue-plugin
@@ -1373,7 +1376,11 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
 
-  packages/inpost: {}
+  packages/inpost:
+    devDependencies:
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.10
 
   packages/react-ui-devkit:
     dependencies:

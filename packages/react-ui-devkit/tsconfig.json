@@ -1,33 +1,33 @@
 {
-    "compilerOptions": {
-        "baseUrl": "./",
-        "jsx": "react",
-        "target": "es5",
-        "module": "ESNext",
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "importHelpers": true,
-        "removeComments": false,
-        "outDir": "dist",
-        "sourceMap": true,
-        "declaration": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "strictPropertyInitialization": false,
-        "lib": ["es2017", "dom", "esnext.asynciterable"],
-        "skipLibCheck": true, // TODO: @kamil temponary hack we can't resolve good dependecies.
-        "paths": {
-            "@/*": ["./src/*"]
-        },
-        "plugins": [
-            {
-                "transform": "typescript-transform-paths"
-            },
-            {
-                "transform": "typescript-transform-paths",
-                "afterDeclarations": true
-            }
-        ]
+  "compilerOptions": {
+    "baseUrl": "./",
+    "jsx": "react",
+    "target": "es5",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "removeComments": false,
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    "lib": ["es2017", "dom", "esnext.asynciterable"],
+    "skipLibCheck": true, // TODO: @kamil temponary hack we can't resolve good dependecies.
+    "paths": {
+      "@/*": ["./src/*"]
     },
-    "exclude": ["dist", "node_modules", "docs", "generate-docs.ts"]
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ]
+  },
+  "exclude": ["dist", "node_modules", "docs", "generate-docs.ts"]
 }

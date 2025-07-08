@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/inpost-plugin",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "files": [
@@ -8,6 +8,7 @@
   ],
   "main": "./dist/plugin-server/index.js",
   "exports": {
+    ".": "./dist/plugin-server/index.js",
     "./plugin-server": "./dist/plugin-server/index.js",
     "./plugin-server/ui": "./dist/plugin-server/ui.js",
     "./plugin-ui": "./dist/plugin-ui/index.js"

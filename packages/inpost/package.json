@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/inpost",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "type": "commonjs",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -13,11 +13,13 @@
       "default": "./dist/index.js"
     }
   },
-  "devDependencies": {},
   "scripts": {
-    "build": "tsc"
+    "build": "rimraf dist && tspc --build"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "rimraf": "^5.0.5"
+  }
 }
