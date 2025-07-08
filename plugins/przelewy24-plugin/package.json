@@ -20,10 +20,7 @@
     "watch": "tsc --watch",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td",
-    "test:server": "cd src/plugin-server && node --test '**/*.test.ts'",
-    "test:ui": "cd src/plugin-ui && node --test '**/*.test.ts'",
-    "test": "npm run test:server && npm run test:ui"
+    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
   },
   "dependencies": {
     "@deenruv/admin-types":"workspace:^",
