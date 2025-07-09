@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/create",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "license": "MIT",
   "bin": {
     "create": "./index.js"
