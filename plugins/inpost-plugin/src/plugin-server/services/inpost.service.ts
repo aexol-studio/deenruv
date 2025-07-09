@@ -67,6 +67,18 @@ export class InpostService implements OnModuleInit {
       });
   }
 
+  async isConnected(ctx: RequestContext): Promise<boolean> {
+    const config = await this.connection
+      .getRepository(ctx, InpostConfigEntity)
+      .findOne({});
+    return !!(
+      config?.host &&
+      config?.apiKey &&
+      config?.service &&
+      config?.inpostOrganization
+    );
+  }
+
   private async buyShipment(
     ctx: RequestContext,
     shipment: Shipment,

@@ -10,6 +10,10 @@ export const AdminExtension = gql`
     service: String!
   }
 
+  extend type Query {
+    inpostConnected: Boolean!
+  }
+
   extend type Mutation {
     setInpostShippingMethodConfig(
       input: SetInpostShippingMethodConfigInput!

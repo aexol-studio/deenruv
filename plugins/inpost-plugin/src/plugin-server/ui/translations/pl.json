@@ -23,6 +23,11 @@
     "service-inpost-courier-express-1200": "Przesyłka kurierska z doręczeniem do 12:00",
     "service-inpost-courier-express-1700": "Przesyłka kurierska z doręczeniem do 17:00",
     "service-inpost-courier-palette": "Przesyłka kurierska Paleta Standard",
-    "save": "Zapisz"
+    "save": "Zapisz",
+    "connection-label": "Połączenie",
+    "connection-tooltip": "Połączenie z API InPost",
+    "connected": "Połączono",
+    "not-connected": "Nie połączono",
+    "connection-error": "Błąd połączenia"
   }
 }

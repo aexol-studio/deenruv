@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DataService, I18nService } from "@deenruv/admin-ui/core";
 import {
+  useQuery,
   ActionBar,
   Card,
   FormField,
@@ -21,7 +22,14 @@ interface InpostConfig {
 export const Inpost: React.FC = () => {
   const t = useInjector(I18nService);
   const dataService = useInjector(DataService);
-
+  const { data: inpostConnected } = useQuery<boolean>(
+    gql`
+      query InpostConnected {
+        inpostConnected
+      }
+    `,
+    { fetchPolicy: "network-only" },
+  );
   const { entity, detailForm } = useDetailComponentData();
   const shippingMethodId = entity?.id as undefined | number;
   const fulfillmentHandlerControl = detailForm.controls["fulfillmentHandler"];
@@ -73,6 +81,24 @@ export const Inpost: React.FC = () => {
   return shippingMethodId && handler === "inpost-fulfillment" ? (
     <div style={{ marginBottom: "16px" }}>
       <Card title={t.translate("inpost-plugin.title")}>
+        <div style={{ marginTop: "16px", marginBottom: "16px" }}>
+          <FormField
+            label={t.translate("inpost-plugin.connection-label")}
+            tooltip={t.translate("inpost-plugin.connection-tooltip")}
+            invalid={!inpostConnected}
+            errorMessage={
+              inpostConnected
+                ? ""
+                : t.translate("inpost-plugin.connection-error")
+            }
+          >
+            <span>
+              {inpostConnected
+                ? t.translate("inpost-plugin.connected")
+                : t.translate("inpost-plugin.not-connected")}
+            </span>
+          </FormField>
+        </div>
         <div style={{ marginTop: "16px", marginBottom: "16px" }}>
           <FormField
             label={t.translate("inpost-plugin.host-label")}

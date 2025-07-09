@@ -21,6 +21,11 @@
     "service-inpost-courier-express-1200": "Courier shipment with delivery until 12:00",
     "service-inpost-courier-express-1700": "Courier shipment with delivery until 17:00",
     "service-inpost-courier-palette": "Courier shipment Pallet Standard",
-    "save": "Zapisz"
+    "save": "Zapisz",
+    "connection-label": "Connection",
+    "connection-tooltip": "Connection to InPost API",
+    "connected": "Connected",
+    "not-connected": "Not connected",
+    "connection-error": "Connection error"
   }
 }
