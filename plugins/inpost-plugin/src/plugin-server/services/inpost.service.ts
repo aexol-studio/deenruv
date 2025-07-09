@@ -34,7 +34,7 @@ declare module "@deenruv/core/dist/entity/custom-entity-fields" {
     inpostLabel?: Asset;
   }
   interface CustomOrderFields {
-    inpostPoint?: string;
+    pickupPointId?: string;
   }
 }
 
@@ -287,7 +287,7 @@ export class InpostService implements OnModuleInit {
       throw new Error("missing customer");
     }
     const address = shippingAddress || billingAddress;
-    const targetPoint = orders[0].customFields.inpostPoint;
+    const targetPoint = orders[0].customFields.pickupPointId;
     const client = new Client({ host: config.host, apiKey: config.apiKey });
     const refRepo = this.connection.getRepository(ctx, InpostRefEntity);
     const ref = await refRepo.insert({

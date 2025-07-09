@@ -44,21 +44,20 @@ import { ShopExtension } from "./extensions/inpost.shop.extenstion.js";
         },
       ],
     });
-    config.customFields.Order.push({
-      name: "inpostPoint",
-      type: "string",
-      nullable: true,
-      label: [
-        {
-          languageCode: LanguageCode.en,
-          value: "Inpost Pickup Point",
-        },
-        {
-          languageCode: LanguageCode.pl,
-          value: "Paczkomat Inpost",
-        },
-      ],
-    });
+    const existingPickupPointField = config.customFields.Order.find(
+      (field) => field.name === "pickupPointId",
+    );
+    if (!existingPickupPointField) {
+      config.customFields.Order.push({
+        name: "pickupPointId",
+        type: "string",
+        nullable: true,
+        label: [
+          { languageCode: LanguageCode.en, value: "Pickup Point ID" },
+          { languageCode: LanguageCode.pl, value: "ID punktu odbioru" },
+        ],
+      });
+    }
     return config;
   },
   adminApiExtensions: {
