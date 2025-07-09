@@ -15,6 +15,8 @@ import { InpostController } from "./controllers/inpost.controller.js";
 import { inpostFulfillmentHandler } from "./handlers/inpost.fulfillment.js";
 import { InpostConfigEntity } from "./entities/inpost-config-entity.js";
 import { InpostRefEntity } from "./entities/inpost-ref-entity.js";
+import { InpostShopResolver } from "./api/inpost-shop.resolver.js";
+import { ShopExtension } from "./extensions/inpost.shop.extenstion.js";
 
 @DeenruvPlugin({
   imports: [PluginCommonModule],
@@ -62,6 +64,10 @@ import { InpostRefEntity } from "./entities/inpost-ref-entity.js";
   adminApiExtensions: {
     schema: AdminExtension,
     resolvers: [InpostAdminResolver],
+  },
+  shopApiExtensions: {
+    schema: ShopExtension,
+    resolvers: [InpostShopResolver],
   },
 })
 class InpostPlugin {

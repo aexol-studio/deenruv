@@ -67,6 +67,20 @@ export class InpostService implements OnModuleInit {
       });
   }
 
+  async getGeowidgetKey(ctx: RequestContext) {
+    const config = await this.connection
+      .getRepository(ctx, InpostConfigEntity)
+      .findOne({});
+    if (!config?.host || !config?.apiKey || !config?.inpostOrganization) {
+      Logger.error(
+        `Misconfigured inpost config, host, apiKey and organization id are required`,
+        LOGGER_CTX,
+      );
+      return null;
+    }
+    return config.geowidgetKey;
+  }
+
   async isConnected(ctx: RequestContext): Promise<boolean> {
     const config = await this.connection
       .getRepository(ctx, InpostConfigEntity)
