@@ -13,11 +13,13 @@ import {
   TransactionalConnection,
   type ID,
   Logger,
+  FulfillmentService,
 } from "@deenruv/core";
 import { Client, CountryCode, Shipment } from "@deenruv/inpost";
 import { InpostConfigEntity } from "../entities/inpost-config-entity.js";
 import { InpostRefEntity } from "../entities/inpost-ref-entity.js";
 import {
+  InpostWebhookEvent,
   OrderProgressJob,
   SetInpostShippingMethodConfigInput,
 } from "../types.js";
@@ -46,6 +48,7 @@ export class InpostService implements OnModuleInit {
     private jobQueueService: JobQueueService,
     private assetService: AssetService,
     private customerService: CustomerService,
+    private fulfillmentService: FulfillmentService,
   ) {}
 
   async onModuleInit() {
@@ -354,9 +357,70 @@ export class InpostService implements OnModuleInit {
     );
     return shipment;
   }
+  async handleUpdateEvent(ctx: RequestContext, body: InpostWebhookEvent) {
+    if (
+      !body ||
+      !body.payload ||
+      !("status" in body.payload) ||
+      !body.payload.status ||
+      !body.payload.shipment_id
+    ) {
+      Logger.error(
+        `Invalid inpost webhook event received: ${JSON.stringify(body)}`,
+        LOGGER_CTX,
+      );
+      return;
+    }
 
-  async handleUpdateEvent(_: RequestContext, body: unknown) {
-    console.log(JSON.stringify(body));
+    const shipment = await this.connection
+      .getRepository(ctx, InpostRefEntity)
+      .findOne({
+        where: { inpostShipmentId: body.payload.shipment_id },
+        relations: ["inpostConfig", "orderLines"],
+      });
+    if (!shipment) {
+      Logger.error(
+        `Could not find inpost shipment with id ${body.payload.shipment_id}`,
+        LOGGER_CTX,
+      );
+      return;
+    }
+
+    const fulfillment = await this.connection
+      .getRepository(ctx, Fulfillment)
+      .findOne({ where: { trackingCode: `${shipment.inpostShipmentId}` } });
+    if (!fulfillment) {
+      Logger.error(
+        `Could not find fulfillment with tracking code ${shipment.inpostShipmentId}`,
+        LOGGER_CTX,
+      );
+      return;
+    }
+
+    switch (body.payload.status) {
+      case "delivered":
+        await this.fulfillmentService.transitionToState(
+          ctx,
+          fulfillment?.id,
+          "Delivered",
+        );
+        break;
+      case "taken_by_courier":
+      case "taken_by_courier_from_pok":
+        await this.fulfillmentService.transitionToState(
+          ctx,
+          fulfillment?.id,
+          "Shipped",
+        );
+        break;
+      case "canceled":
+        await this.fulfillmentService.transitionToState(
+          ctx,
+          fulfillment?.id,
+          "Cancelled",
+        );
+        break;
+    }
   }
 
   async setInpostConfig(
