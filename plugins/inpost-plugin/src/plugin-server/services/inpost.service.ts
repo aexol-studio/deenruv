@@ -67,10 +67,32 @@ export class InpostService implements OnModuleInit {
       });
   }
 
-  async getGeowidgetKey(ctx: RequestContext) {
-    const config = await this.connection
+  async getConfig(
+    ctx: RequestContext,
+  ): Promise<InpostConfigEntity | undefined> {
+    const configs = await this.connection
       .getRepository(ctx, InpostConfigEntity)
-      .findOne({});
+      .find({ take: 1, order: { createdAt: "DESC" } });
+    if (configs.length === 0) {
+      Logger.error(
+        `No inpost config found, please set up inpost config first`,
+        LOGGER_CTX,
+      );
+      return undefined;
+    }
+    const config = configs.at(0);
+    if (!config?.host || !config?.apiKey || !config?.inpostOrganization) {
+      Logger.error(
+        `Misconfigured inpost config, host, apiKey and organization id are required`,
+        LOGGER_CTX,
+      );
+      return undefined;
+    }
+    return config;
+  }
+
+  async getGeowidgetKey(ctx: RequestContext) {
+    const config = await this.getConfig(ctx);
     if (!config?.host || !config?.apiKey || !config?.inpostOrganization) {
       Logger.error(
         `Misconfigured inpost config, host, apiKey and organization id are required`,
@@ -82,9 +104,7 @@ export class InpostService implements OnModuleInit {
   }
 
   async isConnected(ctx: RequestContext): Promise<boolean> {
-    const config = await this.connection
-      .getRepository(ctx, InpostConfigEntity)
-      .findOne({});
+    const config = await this.getConfig(ctx);
     return !!(
       config?.host &&
       config?.apiKey &&
