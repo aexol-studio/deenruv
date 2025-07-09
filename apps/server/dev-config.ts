@@ -87,7 +87,7 @@ export const devConfig: DeenruvConfig = {
   shippingOptions: {},
   customFields: {},
   plugins: [
-    InpostPlugin.init({}),
+    // InpostPlugin.init({}),
     // Przelewy24Plugin.init({}),
     AdminUiPlugin.init({ route: "admin", port: 5001 }),
     AssetServerPlugin.init({

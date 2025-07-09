@@ -1,0 +1,28 @@
+{
+  "inpost-plugin": {
+    "title": "Skonfiguruj metodę wysyłki InPost",
+    "host-label": "Host API ShipX",
+    "host-tooltip": "Host API ShipX który powinien być użyty do komunikacji z API",
+    "api-key-label": "ShipX API klucz",
+    "api-key-tooltip": "Klucz prywatny do API ShipX",
+    "geowidget-key-label": "Klucz Geowidget",
+    "geowidget-key-tooltip": "Klucz publiczny do Geowidget",
+    "organization-select-label": "Organizacja",
+    "organization-select-tooltip": "Wybierz organizację w InPost",
+    "service-select-label": "Usługa",
+    "service-select-tooltip": "Wybierz usługę w InPost",
+    "service-inpost-locker-standard": "Przesyłka Paczkomat® - standardowa",
+    "service-inpost-locker-economy": "Przesyłka Paczkomat® - ekonomiczna",
+    "service-inpost-locker-allegro": "Przesyłka Paczkomat® - Allegro Paczkomat® InPost",
+    "service-inpost-locker-pass-thru": "Przesyłka Paczkomat® - Podaj Dalej",
+    "service-inpost-letter-allegro": "Przesyłka kurierska - Allegro MiniKurier24 InPost",
+    "service-inpost-courier-allegro": "Przesyłka kurierska - Allegro Kurier24 InPost",
+    "service-inpost-courier-c2c": "Przesyłka kurierska InPost Kurier C2C (usługa dla klienta detalicznego - prepaid)",
+    "service-inpost-courier-standard": "Przesyłka kurierska standardowa",
+    "service-inpost-courier-express-1000": "Przesyłka kurierska z doręczeniem do 10:00",
+    "service-inpost-courier-express-1200": "Przesyłka kurierska z doręczeniem do 12:00",
+    "service-inpost-courier-express-1700": "Przesyłka kurierska z doręczeniem do 17:00",
+    "service-inpost-courier-palette": "Przesyłka kurierska Paleta Standard",
+    "save": "Zapisz"
+  }
+}

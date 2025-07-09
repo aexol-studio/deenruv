@@ -5,5 +5,8 @@ export const ui: AdminUiExtension = {
   extensionPath: path.join(__dirname, "ui"),
   providers: ["providers.ts"],
   globalStyles: [path.join(__dirname, "ui/styles/overwrite.css")],
-  translations: {},
+  translations: {
+    pl: path.join(__dirname, "ui/translations/pl.json"),
+    en: path.join(__dirname, "ui/translations/en.json"),
+  },
 };

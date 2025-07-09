@@ -1,0 +1,26 @@
+{
+  "inpost-plugin": {
+    "title": "Configure InPost shipping method",
+    "host-label": "Host API ShipX",
+    "host-tooltip": "Host API ShipX that should be used to communicate with API",
+    "api-key-label": "ShipX API key",
+    "api-key-tooltip": "Private API key for ShipX API",
+    "organization-select-label": "Organization",
+    "organization-select-tooltip": "Select InPost organization",
+    "service-select-label": "Service",
+    "service-select-tooltip": "Select InPost service",
+    "service-inpost-locker-standard": "Parcel locker shipment - standard",
+    "service-inpost-locker-economy": "Parcel locker shipment - economy",
+    "service-inpost-locker-allegro": "Parcel locker shipment - Allegro Paczkomat® InPost.",
+    "service-inpost-locker-pass-thru": "Parcel locker shipment - Pass-Thru",
+    "service-inpost-letter-allegro": "Courier shipment - Allegro MiniKurier24 InPost",
+    "service-inpost-courier-allegro": "Courier shipment - Allegro Kurier24 InPost.",
+    "service-inpost-courier-c2c": "Courier shipment - InPost Courier C2C (service for a retail customer - prepaid)",
+    "service-inpost-courier-standard": "Courier shipment standard",
+    "service-inpost-courier-express-1000": "Courier shipment with delivery until 10:00",
+    "service-inpost-courier-express-1200": "Courier shipment with delivery until 12:00",
+    "service-inpost-courier-express-1700": "Courier shipment with delivery until 17:00",
+    "service-inpost-courier-palette": "Courier shipment Pallet Standard",
+    "save": "Zapisz"
+  }
+}
