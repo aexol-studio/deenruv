@@ -497,9 +497,9 @@ describe("ChannelAware Products and ProductVariants", () => {
           },
         },
       );
-      expect(
-        removeProductVariantsFromChannel[0].channels.map((c) => c.id),
-      ).toEqual(["T_1"]);
+      expect(removeProductVariantsFromChannel[0]).string(
+        assignProductVariantsToChannel[0].id,
+      );
 
       const { product } = await adminClient.query(
         GetProductWithVariantsDocument,
@@ -523,9 +523,9 @@ describe("ChannelAware Products and ProductVariants", () => {
         },
       );
 
-      expect(
-        removeProductVariantsFromChannel[0].channels.map((c) => c.id),
-      ).toEqual(["T_1"]);
+      expect(removeProductVariantsFromChannel[0]).string(
+        product1.variants[0].id,
+      );
 
       const { product } = await adminClient.query(
         GetProductWithVariantsDocument,

@@ -704,13 +704,7 @@ export const REMOVE_PRODUCTS_FROM_CHANNEL = gql`
 
 export const REMOVE_VARIANTS_FROM_CHANNEL = gql`
     mutation RemoveVariantsFromChannel($input: RemoveProductVariantsFromChannelInput!) {
-        removeProductVariantsFromChannel(input: $input) {
-            id
-            channels {
-                id
-                code
-            }
-        }
+        removeProductVariantsFromChannel(input: $input)
     }
 `;
 

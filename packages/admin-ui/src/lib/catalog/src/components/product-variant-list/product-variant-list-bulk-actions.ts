@@ -49,13 +49,13 @@ export const assignProductVariantsToChannelBulkAction: BulkAction<
 };
 
 export const removeProductVariantsFromChannelBulkAction = createBulkRemoveFromChannelAction<
-    ItemOf<GetProductVariantListQuery, 'productVariants'>
+   string
 >({
     location: 'product-variant-list',
     requiresPermission: userPermissions =>
         userPermissions.includes(Permission.UpdateCatalog) ||
         userPermissions.includes(Permission.UpdateProduct),
-    getItemName: item => item.name,
+    getItemName: item => item,
     bulkRemoveFromChannel: (dataService, ids, channelId) =>
         dataService.product
             .removeVariantsFromChannel({

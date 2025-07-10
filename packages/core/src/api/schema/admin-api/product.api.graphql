@@ -58,7 +58,7 @@ type Mutation {
     assignProductVariantsToChannel(input: AssignProductVariantsToChannelInput!): [ProductVariant!]!
 
     "Removes ProductVariants from the specified Channel"
-    removeProductVariantsFromChannel(input: RemoveProductVariantsFromChannelInput!): [ProductVariant!]!
+    removeProductVariantsFromChannel(input: RemoveProductVariantsFromChannelInput!): [ID!]!
 }
 
 input StockMovementListOptions {

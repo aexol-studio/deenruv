@@ -23,7 +23,7 @@ import {
   QueryProductVariantsArgs,
   RemoveOptionGroupFromProductResult,
 } from "@deenruv/common/lib/generated-types";
-import { PaginatedList } from "@deenruv/common/lib/shared-types";
+import { PaginatedList, ID } from "@deenruv/common/lib/shared-types";
 
 import { ErrorResultUnion } from "../../../common/error/error-result";
 import { UserInputError } from "../../../common/error/errors";
@@ -289,7 +289,7 @@ export class ProductResolver {
   async removeProductVariantsFromChannel(
     @Ctx() ctx: RequestContext,
     @Args() args: MutationRemoveProductVariantsFromChannelArgs,
-  ): Promise<Array<Translated<ProductVariant>>> {
+  ): Promise<ID[]> {
     return this.productVariantService.removeProductVariantsFromChannel(
       ctx,
       args.input,

@@ -1,5 +1,5 @@
 ---
-title: 'Mutations'
+title: "Mutations"
 isDefaultIndex: false
 generated: true
 ---
@@ -1344,7 +1344,7 @@ import MemberDescription from '@site/src/components/MemberDescription';
 <div class="graphql-code-line top-level comment">Removes ProductVariants from the specified Channel</div>
 <div class="graphql-code-line top-level comment">"""</div>
 <div class="graphql-code-line top-level">type <span class="graphql-code-identifier">Mutation</span> &#123;</div>
-<div class="graphql-code-line ">removeProductVariantsFromChannel(input: <a href="/reference/graphql-api/admin/input-types#removeproductvariantsfromchannelinput">RemoveProductVariantsFromChannelInput</a>!): [<a href="/reference/graphql-api/admin/object-types#productvariant">ProductVariant</a>!]!</div>
+<div class="graphql-code-line ">removeProductVariantsFromChannel(input: <a href="/reference/graphql-api/admin/input-types#removeproductvariantsfromchannelinput">RemoveProductVariantsFromChannelInput</a>!): [<a href="/reference/graphql-api/admin/object-types#productvariant">ID</a>!]!</div>
 
 <div class="graphql-code-line top-level">&#125;</div>
 </div>

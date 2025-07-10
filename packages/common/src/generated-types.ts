@@ -2893,7 +2893,7 @@ export type Mutation = {
   /** Removes PaymentMethods from the specified Channel */
   removePaymentMethodsFromChannel: Array<PaymentMethod>;
   /** Removes ProductVariants from the specified Channel */
-  removeProductVariantsFromChannel: Array<ProductVariant>;
+  removeProductVariantsFromChannel: Array<Scalars['ID']['output']>;
   /** Removes all ProductVariants of Product from the specified Channel */
   removeProductsFromChannel: Array<Product>;
   /** Removes Promotions from the specified Channel */

@@ -388,11 +388,8 @@ export const REMOVE_PRODUCTVARIANT_FROM_CHANNEL = gql`
   mutation RemoveProductVariantsFromChannel(
     $input: RemoveProductVariantsFromChannelInput!
   ) {
-    removeProductVariantsFromChannel(input: $input) {
-      ...ProductVariant
-    }
+    removeProductVariantsFromChannel(input: $input)
   }
-  ${PRODUCT_VARIANT_FRAGMENT}
 `;
 
 export const UPDATE_ASSET = gql`

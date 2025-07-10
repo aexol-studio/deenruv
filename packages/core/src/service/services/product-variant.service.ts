@@ -1157,7 +1157,7 @@ export class ProductVariantService {
   async removeProductVariantsFromChannel(
     ctx: RequestContext,
     input: RemoveProductVariantsFromChannelInput,
-  ): Promise<Array<Translated<ProductVariant>>> {
+  ): Promise<ID[]> {
     const hasPermission = await this.roleService.userHasPermissionOnChannel(
       ctx,
       input.channelId,
@@ -1207,10 +1207,10 @@ export class ProductVariantService {
         );
       }
     }
-    const result = await this.findByIds(
-      ctx,
-      variants.map((v) => v.id),
-    );
+    // const result = await this.findByIds(
+    //   ctx,
+    //   variants.map((v) => v.id),
+    // );
     // Publish the events at the latest possible stage to decrease the chance of race conditions
     // whereby an event listener triggers a query which does not yet have access to the changes
     // within the current transaction.
@@ -1224,7 +1224,8 @@ export class ProductVariantService {
         ),
       );
     }
-    return result;
+    return variants.map((v) => v.id);
+    // return result;
   }
 
   private async validateVariantOptionIds(
