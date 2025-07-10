@@ -27,7 +27,6 @@ import axios, { get } from "axios";
 import {
   PredictionType,
   StartOrderExportToReplicateInput,
-  StartModelTraningInput,
 } from "../graphql/generated-admin-types.js";
 import { SortOrder } from "@deenruv/common/lib/generated-types.js";
 import { mkdtemp, rm } from "fs/promises";
@@ -78,7 +77,7 @@ export class ReplicateService implements OnModuleInit {
     });
     this.jobQueueService.start();
   }
-  async modelTrainingJob(ctx: RequestContext, input: StartModelTraningInput) {
+  async modelTrainingJob(ctx: RequestContext, input: any) {
     const serializedContext = ctx.serialize();
     await this.modelTrainingQueue.add({
       serializedContext,
@@ -132,7 +131,7 @@ export class ReplicateService implements OnModuleInit {
     });
   }
 
-  async startModelTraining(ctx: RequestContext, input: StartModelTraningInput) {
+  async startModelTraining(ctx: RequestContext, input: any) {
     try {
       const { numLastOrder } = input;
 
