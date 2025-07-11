@@ -39,7 +39,8 @@
         "update": "Aktualizuj produkt",
         "createVariant": "Utwórz wariant",
         "updateVariant": "Aktualizacja wariantu",
-        "removeVariant": "Usuń wariant"
+        "removeVariant": "Usuń wariant",
+        "removeVariantFromChannel": "Usuń wariant z kanału"
     },
     "optionsTab": {
         "placeholder": "Wpisz, aby dodać nową wartość opcji",
@@ -99,6 +100,8 @@
         "updateProductVariantErrorToast": "Nie udało się zaktualizować wariantu",
         "deleteProductVariantSuccessToast": "Wariant został usunięty",
         "deleteProductVariantErrorToast": "Nie udało się usunąć wariantu",
+        "removeFromChannelProductVariantErrorToast": "Nie udało się usunąć wariantu z kanału",
+        "removeFromChannelProductVariantSuccessToast": "Wariant został usunięty z kanału",
         "createOptionSuccessToast": "Wariant utworzony pomyślnie",
         "createOptionInUseToast": "Opcja jest używana przez niektóre warianty. Usuń je najpierw.",
         "createOptionErrorToast": "Nie udało się utworzyć opcji",

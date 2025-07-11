@@ -34,6 +34,11 @@ export const EntityChannelManagementBulkAction = <
       withSlug = true;
       withCode = false;
       break;
+    case "productVariants-list-view":
+      mode = "productVariants";
+      withSlug = false;
+      withCode = false;
+      break;
     case "collections-list-view":
       mode = "collections";
       withSlug = true;
@@ -45,7 +50,7 @@ export const EntityChannelManagementBulkAction = <
       withCode = true;
       break;
   }
-  const withPriceFactor = mode === "products";
+  const withPriceFactor = mode === "products" || mode === "productVariants";
   const graphQLName = `${mode?.charAt(0).toUpperCase()}${mode?.slice(1)}`;
   const assignName = `assign${graphQLName}ToChannel`;
   const removeName = `remove${graphQLName}FromChannel`;
@@ -86,7 +91,10 @@ export const EntityChannelManagementBulkAction = <
                   name: true,
                   ...(withSlug ? { slug: true } : {}),
                   ...(withCode ? { code: true } : {}),
-                  ...(withPriceFactor
+                  ...(withPriceFactor && mode === "productVariants"
+                    ? { currencyCode: true, price: true, priceWithTax: true }
+                    : {}),
+                  ...(withPriceFactor && mode === "products"
                     ? {
                         variantList: [
                           {
@@ -114,7 +122,13 @@ export const EntityChannelManagementBulkAction = <
             await createDialogFromComponent(
               ManageEntityToChannelsDialog,
               {
-                items: (data as any).items,
+                items:
+                  mode === "products"
+                    ? (data as any).items
+                    : ((data as any).items as any[]).map((d) => ({
+                        ...d,
+                        variantList: { items: [d] },
+                      })),
                 withPriceFactor,
                 withSlug,
                 withCode,
@@ -191,20 +205,32 @@ export const EntityChannelManagementBulkAction = <
           const { [removeName]: result } = await apiClient("mutation")({
             [removeName]: [
               { input: { channelId, [inputParam]: ids } },
-              { __typename: true },
+              type === "productVariants-list-view"
+                ? true
+                : { __typename: true },
             ],
           } as any);
           let success = "";
-          const inUseEntities = (result as any).filter((item: any) =>
-            item.__typename.includes("InUseError"),
-          );
-          if (inUseEntities.length > 0) {
-            success = t(
-              `elementów nie można usunąć z kanału, ponieważ są używane`,
-              { count: inUseEntities.length },
-            );
+          if (type === "productVariants-list-view") {
+            if ((result as string[]).length === ids.length) {
+              success = t("Elementy zostały usunięte z kanału");
+            } else {
+              success = t(`Nie wszystkie elementy zostały usunięte z kanału`, {
+                count: (result as string[]).length,
+              });
+            }
           } else {
-            success = t("Elementy zostały usunięte z kanału");
+            const inUseEntities = (result as any).filter((item: any) =>
+              item.__typename.includes("InUseError"),
+            );
+            if (inUseEntities.length > 0) {
+              success = t(
+                `elementów nie można usunąć z kanału, ponieważ są używane`,
+                { count: inUseEntities.length },
+              );
+            } else {
+              success = t("Elementy zostały usunięte z kanału");
+            }
           }
           return { success };
         } catch (e) {

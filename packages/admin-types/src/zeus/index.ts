@@ -741,7 +741,10 @@ type IsScalar<S, SCLR extends ScalarDefinition> = S extends 'scalar' & { name: i
       ? ReturnType<SCLR[T]['decode']>
       : unknown
     : unknown
+  : S extends Array<infer R>
+  ? Array<IsScalar<R, SCLR>>
   : S;
+
 type IsArray<T, U, SCLR extends ScalarDefinition> = T extends Array<infer R>
   ? InputType<R, U, SCLR>[]
   : InputType<T, U, SCLR>;
@@ -863,6 +866,8 @@ type OptionalKeys<T> = {
 
 export type WithOptionalNullables<T> = OptionalKeys<WithNullableKeys<T>> & WithNonNullableKeys<T>;
 
+export type ComposableSelector<T extends keyof ValueTypes> = ReturnType<SelectionFunction<ValueTypes[T]>>;
+
 export type Variable<T extends GraphQLVariableType, Name extends string> = {
   ' __zeus_name': Name;
   ' __zeus_type': T;
@@ -976,8 +981,6 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["Zone"]],
-chartMetric?: [{	input: ValueTypes["ChartMetricInput"] | Variable<any, string>},ValueTypes["ChartMetrics"]],
-orderSummaryMetric?: [{	input: ValueTypes["OrderSummaryMetricInput"] | Variable<any, string>},ValueTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -1099,7 +1102,7 @@ deleteProductVariants?: [{	ids: Array<ValueTypes["ID"]> | Variable<any, string>}
 assignProductsToChannel?: [{	input: ValueTypes["AssignProductsToChannelInput"] | Variable<any, string>},ValueTypes["Product"]],
 removeProductsFromChannel?: [{	input: ValueTypes["RemoveProductsFromChannelInput"] | Variable<any, string>},ValueTypes["Product"]],
 assignProductVariantsToChannel?: [{	input: ValueTypes["AssignProductVariantsToChannelInput"] | Variable<any, string>},ValueTypes["ProductVariant"]],
-removeProductVariantsFromChannel?: [{	input: ValueTypes["RemoveProductVariantsFromChannelInput"] | Variable<any, string>},ValueTypes["ProductVariant"]],
+removeProductVariantsFromChannel?: [{	input: ValueTypes["RemoveProductVariantsFromChannelInput"] | Variable<any, string>},boolean | `@${string}`],
 createPromotion?: [{	input: ValueTypes["CreatePromotionInput"] | Variable<any, string>},ValueTypes["CreatePromotionResult"]],
 updatePromotion?: [{	input: ValueTypes["UpdatePromotionInput"] | Variable<any, string>},ValueTypes["UpdatePromotionResult"]],
 deletePromotion?: [{	id: ValueTypes["ID"] | Variable<any, string>},ValueTypes["DeletionResponse"]],
@@ -4532,60 +4535,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["ChartDataType"]: AliasType<{
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ValueTypes["ChartEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartMetrics"]: AliasType<{
-	data?:ValueTypes["ChartDataType"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryMetrics"]: AliasType<{
-	data?:ValueTypes["OrderSummaryDataMetric"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryDataMetric"]: AliasType<{
-	currencyCode?:boolean | `@${string}`,
-	total?:boolean | `@${string}`,
-	totalWithTax?:boolean | `@${string}`,
-	orderCount?:boolean | `@${string}`,
-	averageOrderValue?:boolean | `@${string}`,
-	averageOrderValueWithTax?:boolean | `@${string}`,
-	productCount?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricRangeType"]:MetricRangeType;
-	["MetricIntervalType"]:MetricIntervalType;
-	["ChartMetricType"]:ChartMetricType;
-	["ChartEntryAdditionalData"]: AliasType<{
-	id?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	quantity?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartEntry"]: AliasType<{
-	intervalTick?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-	additionalData?:ValueTypes["ChartEntryAdditionalData"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricRangeInput"]: {
-	start: ValueTypes["DateTime"] | Variable<any, string>,
-	end?: ValueTypes["DateTime"] | undefined | null | Variable<any, string>
-};
-	["OrderSummaryMetricInput"]: {
-	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
-	orderStates: Array<string> | Variable<any, string>
-};
-	["ChartMetricInput"]: {
-	range: ValueTypes["BetterMetricRangeInput"] | Variable<any, string>,
-	interval: ValueTypes["MetricIntervalType"] | Variable<any, string>,
-	types: Array<ValueTypes["ChartMetricType"]> | Variable<any, string>,
-	orderStates: Array<string> | Variable<any, string>,
-	productIDs?: Array<string> | undefined | null | Variable<any, string>
-};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -5080,7 +5029,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	customFields?:ValueTypes["CustomFieldConfig"],
 		__typename?: boolean | `@${string}`
 }>;
-	["ID"]:unknown
+	["ID"]:string
   }
 
 export type ResolverInputTypes = {
@@ -5157,8 +5106,6 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["Zone"]],
-chartMetric?: [{	input: ResolverInputTypes["ChartMetricInput"]},ResolverInputTypes["ChartMetrics"]],
-orderSummaryMetric?: [{	input: ResolverInputTypes["OrderSummaryMetricInput"]},ResolverInputTypes["OrderSummaryMetrics"]],
 metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
@@ -5280,7 +5227,7 @@ deleteProductVariants?: [{	ids: Array<ResolverInputTypes["ID"]>},ResolverInputTy
 assignProductsToChannel?: [{	input: ResolverInputTypes["AssignProductsToChannelInput"]},ResolverInputTypes["Product"]],
 removeProductsFromChannel?: [{	input: ResolverInputTypes["RemoveProductsFromChannelInput"]},ResolverInputTypes["Product"]],
 assignProductVariantsToChannel?: [{	input: ResolverInputTypes["AssignProductVariantsToChannelInput"]},ResolverInputTypes["ProductVariant"]],
-removeProductVariantsFromChannel?: [{	input: ResolverInputTypes["RemoveProductVariantsFromChannelInput"]},ResolverInputTypes["ProductVariant"]],
+removeProductVariantsFromChannel?: [{	input: ResolverInputTypes["RemoveProductVariantsFromChannelInput"]},boolean | `@${string}`],
 createPromotion?: [{	input: ResolverInputTypes["CreatePromotionInput"]},ResolverInputTypes["CreatePromotionResult"]],
 updatePromotion?: [{	input: ResolverInputTypes["UpdatePromotionInput"]},ResolverInputTypes["UpdatePromotionResult"]],
 deletePromotion?: [{	id: ResolverInputTypes["ID"]},ResolverInputTypes["DeletionResponse"]],
@@ -8745,60 +8692,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["ChartDataType"]: AliasType<{
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ResolverInputTypes["ChartEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartMetrics"]: AliasType<{
-	data?:ResolverInputTypes["ChartDataType"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryMetrics"]: AliasType<{
-	data?:ResolverInputTypes["OrderSummaryDataMetric"],
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderSummaryDataMetric"]: AliasType<{
-	currencyCode?:boolean | `@${string}`,
-	total?:boolean | `@${string}`,
-	totalWithTax?:boolean | `@${string}`,
-	orderCount?:boolean | `@${string}`,
-	averageOrderValue?:boolean | `@${string}`,
-	averageOrderValueWithTax?:boolean | `@${string}`,
-	productCount?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricRangeType"]:MetricRangeType;
-	["MetricIntervalType"]:MetricIntervalType;
-	["ChartMetricType"]:ChartMetricType;
-	["ChartEntryAdditionalData"]: AliasType<{
-	id?:boolean | `@${string}`,
-	name?:boolean | `@${string}`,
-	quantity?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ChartEntry"]: AliasType<{
-	intervalTick?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-	additionalData?:ResolverInputTypes["ChartEntryAdditionalData"],
-		__typename?: boolean | `@${string}`
-}>;
-	["BetterMetricRangeInput"]: {
-	start: ResolverInputTypes["DateTime"],
-	end?: ResolverInputTypes["DateTime"] | undefined | null
-};
-	["OrderSummaryMetricInput"]: {
-	range: ResolverInputTypes["BetterMetricRangeInput"],
-	orderStates: Array<string>
-};
-	["ChartMetricInput"]: {
-	range: ResolverInputTypes["BetterMetricRangeInput"],
-	interval: ResolverInputTypes["MetricIntervalType"],
-	types: Array<ResolverInputTypes["ChartMetricType"]>,
-	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
-};
 	["MetricSummary"]: AliasType<{
 	interval?:boolean | `@${string}`,
 	type?:boolean | `@${string}`,
@@ -9298,7 +9191,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	mutation?:ResolverInputTypes["Mutation"],
 		__typename?: boolean | `@${string}`
 }>;
-	["ID"]:unknown
+	["ID"]:string
   }
 
 export type ModelTypes = {
@@ -9384,8 +9277,6 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined | null,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined | null,
-	chartMetric: ModelTypes["ChartMetrics"],
-	orderSummaryMetric: ModelTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<ModelTypes["MetricSummary"]>
 };
@@ -9613,7 +9504,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Assigns ProductVariants to the specified Channel */
 	assignProductVariantsToChannel: Array<ModelTypes["ProductVariant"]>,
 	/** Removes ProductVariants from the specified Channel */
-	removeProductVariantsFromChannel: Array<ModelTypes["ProductVariant"]>,
+	removeProductVariantsFromChannel: Array<ModelTypes["ID"]>,
 	createPromotion: ModelTypes["CreatePromotionResult"],
 	updatePromotion: ModelTypes["UpdatePromotionResult"],
 	deletePromotion: ModelTypes["DeletionResponse"],
@@ -12540,54 +12431,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined | null
 };
-	["ChartDataType"]: {
-		type: ModelTypes["ChartMetricType"],
-	title: string,
-	entries: Array<ModelTypes["ChartEntry"]>
-};
-	["ChartMetrics"]: {
-		data: Array<ModelTypes["ChartDataType"]>
-};
-	["OrderSummaryMetrics"]: {
-		data: ModelTypes["OrderSummaryDataMetric"]
-};
-	["OrderSummaryDataMetric"]: {
-		currencyCode: ModelTypes["CurrencyCode"],
-	total: number,
-	totalWithTax: number,
-	orderCount: number,
-	averageOrderValue: number,
-	averageOrderValueWithTax: number,
-	productCount: number
-};
-	["MetricRangeType"]:MetricRangeType;
-	["MetricIntervalType"]:MetricIntervalType;
-	["ChartMetricType"]:ChartMetricType;
-	["ChartEntryAdditionalData"]: {
-		id: string,
-	name: string,
-	quantity: number
-};
-	["ChartEntry"]: {
-		intervalTick: number,
-	value: number,
-	additionalData?: Array<ModelTypes["ChartEntryAdditionalData"]> | undefined | null
-};
-	["BetterMetricRangeInput"]: {
-	start: ModelTypes["DateTime"],
-	end?: ModelTypes["DateTime"] | undefined | null
-};
-	["OrderSummaryMetricInput"]: {
-	range: ModelTypes["BetterMetricRangeInput"],
-	orderStates: Array<string>
-};
-	["ChartMetricInput"]: {
-	range: ModelTypes["BetterMetricRangeInput"],
-	interval: ModelTypes["MetricIntervalType"],
-	types: Array<ModelTypes["ChartMetricType"]>,
-	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
-};
 	["MetricSummary"]: {
 		interval: ModelTypes["MetricInterval"],
 	type: ModelTypes["MetricType"],
@@ -13082,7 +12925,7 @@ which allows custom fields to be defined on user-supplies entities. */
 	query?: ModelTypes["Query"] | undefined | null,
 	mutation?: ModelTypes["Mutation"] | undefined | null
 };
-	["ID"]:any
+	["ID"]:string
     }
 
 export type GraphQLTypes = {
@@ -13169,8 +13012,6 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined | null,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined | null,
-	chartMetric: GraphQLTypes["ChartMetrics"],
-	orderSummaryMetric: GraphQLTypes["OrderSummaryMetrics"],
 	/** Get metrics for the given interval and metric types. */
 	metricSummary: Array<GraphQLTypes["MetricSummary"]>
 };
@@ -13399,7 +13240,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Assigns ProductVariants to the specified Channel */
 	assignProductVariantsToChannel: Array<GraphQLTypes["ProductVariant"]>,
 	/** Removes ProductVariants from the specified Channel */
-	removeProductVariantsFromChannel: Array<GraphQLTypes["ProductVariant"]>,
+	removeProductVariantsFromChannel: Array<GraphQLTypes["ID"]>,
 	createPromotion: GraphQLTypes["CreatePromotionResult"],
 	updatePromotion: GraphQLTypes["UpdatePromotionResult"],
 	deletePromotion: GraphQLTypes["DeletionResponse"],
@@ -16903,60 +16744,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined | null
 };
-	["ChartDataType"]: {
-	__typename: "ChartDataType",
-	type: GraphQLTypes["ChartMetricType"],
-	title: string,
-	entries: Array<GraphQLTypes["ChartEntry"]>
-};
-	["ChartMetrics"]: {
-	__typename: "ChartMetrics",
-	data: Array<GraphQLTypes["ChartDataType"]>
-};
-	["OrderSummaryMetrics"]: {
-	__typename: "OrderSummaryMetrics",
-	data: GraphQLTypes["OrderSummaryDataMetric"]
-};
-	["OrderSummaryDataMetric"]: {
-	__typename: "OrderSummaryDataMetric",
-	currencyCode: GraphQLTypes["CurrencyCode"],
-	total: number,
-	totalWithTax: number,
-	orderCount: number,
-	averageOrderValue: number,
-	averageOrderValueWithTax: number,
-	productCount: number
-};
-	["MetricRangeType"]: MetricRangeType;
-	["MetricIntervalType"]: MetricIntervalType;
-	["ChartMetricType"]: ChartMetricType;
-	["ChartEntryAdditionalData"]: {
-	__typename: "ChartEntryAdditionalData",
-	id: string,
-	name: string,
-	quantity: number
-};
-	["ChartEntry"]: {
-	__typename: "ChartEntry",
-	intervalTick: number,
-	value: number,
-	additionalData?: Array<GraphQLTypes["ChartEntryAdditionalData"]> | undefined | null
-};
-	["BetterMetricRangeInput"]: {
-		start: GraphQLTypes["DateTime"],
-	end?: GraphQLTypes["DateTime"] | undefined | null
-};
-	["OrderSummaryMetricInput"]: {
-		range: GraphQLTypes["BetterMetricRangeInput"],
-	orderStates: Array<string>
-};
-	["ChartMetricInput"]: {
-		range: GraphQLTypes["BetterMetricRangeInput"],
-	interval: GraphQLTypes["MetricIntervalType"],
-	types: Array<GraphQLTypes["ChartMetricType"]>,
-	orderStates: Array<string>,
-	productIDs?: Array<string> | undefined | null
-};
 	["MetricSummary"]: {
 	__typename: "MetricSummary",
 	interval: GraphQLTypes["MetricInterval"],
@@ -18034,31 +17821,6 @@ export enum OrderType {
 	Seller = "Seller",
 	Aggregate = "Aggregate"
 }
-export enum MetricRangeType {
-	Today = "Today",
-	Yesterday = "Yesterday",
-	ThisWeek = "ThisWeek",
-	LastWeek = "LastWeek",
-	ThisMonth = "ThisMonth",
-	LastMonth = "LastMonth",
-	ThisYear = "ThisYear",
-	LastYear = "LastYear",
-	FirstQuarter = "FirstQuarter",
-	SecondQuarter = "SecondQuarter",
-	ThirdQuarter = "ThirdQuarter",
-	FourthQuarter = "FourthQuarter",
-	Custom = "Custom"
-}
-export enum MetricIntervalType {
-	Day = "Day",
-	Hour = "Hour"
-}
-export enum ChartMetricType {
-	OrderCount = "OrderCount",
-	OrderTotal = "OrderTotal",
-	AverageOrderValue = "AverageOrderValue",
-	OrderTotalProductsCount = "OrderTotalProductsCount"
-}
 export enum MetricInterval {
 	Daily = "Daily"
 }
@@ -18254,12 +18016,6 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
-	["MetricRangeType"]: ValueTypes["MetricRangeType"];
-	["MetricIntervalType"]: ValueTypes["MetricIntervalType"];
-	["ChartMetricType"]: ValueTypes["ChartMetricType"];
-	["BetterMetricRangeInput"]: ValueTypes["BetterMetricRangeInput"];
-	["OrderSummaryMetricInput"]: ValueTypes["OrderSummaryMetricInput"];
-	["ChartMetricInput"]: ValueTypes["ChartMetricInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];
 	["MetricType"]: ValueTypes["MetricType"];
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];

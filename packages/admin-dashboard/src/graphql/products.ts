@@ -125,6 +125,10 @@ export const ProductVariantSelector = Selector('ProductVariant')({
   stockLevels: StockLevelsSelector,
   sku: true,
   price: true,
+  channels: {
+    id: true,
+    code: true,
+  },
   assets: {
     id: true,
     name: true,

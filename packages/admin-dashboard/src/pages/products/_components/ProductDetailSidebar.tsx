@@ -1,10 +1,11 @@
-import { useDetailView } from '@deenruv/react-ui-devkit';
+import { EntityChannelManager, Routes, useDetailView } from '@deenruv/react-ui-devkit';
 import { ReactNode, useEffect } from 'react';
 
 import { SettingsCard } from './SettingsCard';
-import { ChannelsCard } from '@/pages/products/_components/ChannelsCard';
+
 import { CollectionsCard } from '@/pages/products/_components/CollectionsCard';
 import { FacetValuesCard } from '@/pages/products/_components/FacetValuesCard';
+import { useNavigate } from 'react-router-dom';
 
 const PRODUCT_FORM_KEYS = [
   'CreateProductInput',
@@ -17,6 +18,7 @@ const PRODUCT_FORM_KEYS = [
 
 export const ProductDetailSidebar: React.FC<{ marker?: ReactNode }> = ({ marker }) => {
   const { form, entity } = useDetailView('products-detail-view', ...PRODUCT_FORM_KEYS);
+  const navigate = useNavigate();
   const {
     base: { state, setField },
   } = form;
@@ -41,7 +43,16 @@ export const ProductDetailSidebar: React.FC<{ marker?: ReactNode }> = ({ marker 
         facetValuesIds={state.facetValueIds?.value ?? undefined}
         onChange={(e) => setField('facetValueIds', e)}
       />
-      {!!entity?.channels?.length && <ChannelsCard channels={entity.channels} />}
+      {!!entity?.channels?.length && (
+        <EntityChannelManager
+          entity="product"
+          entityChannels={entity.channels}
+          entityId={entity.id}
+          onRemoveSuccess={() => navigate(Routes.products.list)}
+          entitySlug={entity.slug}
+          entityName={entity.name}
+        />
+      )}
       {!!entity?.collections?.length && <CollectionsCard collections={entity.collections} />}
     </div>
   );

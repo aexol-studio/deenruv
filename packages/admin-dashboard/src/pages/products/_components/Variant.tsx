@@ -10,6 +10,8 @@ import {
   CF,
   EntityCustomFields,
   useTranslation,
+  useSettings,
+  EntityChannelManager,
 } from '@deenruv/react-ui-devkit';
 
 import { ProductVariantType } from '@/graphql/products';
@@ -234,6 +236,7 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
             taxRateValue={state.taxCategoryId?.value ?? undefined}
             onTaxRateChange={(id) => setField('taxCategoryId', id)}
           />
+
           <AssetsCard
             onAddAsset={handleAddAsset}
             featuredAssetId={state.featuredAssetId?.value}
@@ -273,6 +276,18 @@ export const Variant: React.FC<VariantProps> = ({ variant, currentTranslationLng
               />
             </div>
           </CustomCard>
+          <EntityChannelManager
+            entity="productVariant"
+            entityId={variant?.id}
+            entityChannels={variant?.channels ?? []}
+            onRemoveSuccess={onActionCompleted}
+            entityName={variant?.name}
+            entityVariantList={{
+              items: [
+                { price: variant?.price, priceWithTax: variant?.priceWithTax, currencyCode: variant?.currencyCode },
+              ],
+            }}
+          />
           <OptionsCard
             optionGroups={variant?.options || []}
             productId={productId}

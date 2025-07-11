@@ -13,16 +13,19 @@ import {
   RichTextEditor,
   useTranslation,
   setInArrayBy,
+  EntityChannelManager,
+  Routes,
 } from '@deenruv/react-ui-devkit';
 import { FiltersCard } from '@/pages/collections/_components/FiltersCard';
 import { ContentsCard } from '@/pages/collections/_components/ContentsCard';
 import { AssetsCard } from '@/pages/products/_components/AssetsCard.js';
+import { useNavigate } from 'react-router-dom';
 
 export const CollectionsDetailView = () => {
   const { t } = useTranslation('collections');
   const contentLng = useSettings((p) => p.translationsLanguage);
   const selectedChannel = useSettings((p) => p.selectedChannel);
-
+  const navigate = useNavigate();
   const { form, fetchEntity, entity, id } = useDetailView(
     'collections-detail-view',
     'CreateCollectionInput',
@@ -132,6 +135,12 @@ export const CollectionsDetailView = () => {
           assetsIds={state.assetIds?.value ?? undefined}
           onFeaturedAssetChange={(id) => setField('featuredAssetId', id)}
           onAssetsChange={(ids) => setField('assetIds', ids)}
+        />
+        <EntityChannelManager
+          entity="collection"
+          entityId={id}
+          entityChannels={[{ id: selectedChannel?.id, code: selectedChannel?.code }]}
+          onRemoveSuccess={() => navigate(Routes.collections.list)}
         />
         <FiltersCard
           currentFiltersValue={state.filters?.value ?? undefined}

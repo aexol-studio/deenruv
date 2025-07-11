@@ -11,3 +11,4 @@ export * from "./DraggableSelect.js";
 export * from "./SimpleTimePicker.js";
 export * from "./DateTimePicker.js";
 export * from "./DateTimeInput.js";
+export * from "./EntityChannelManager.js";
