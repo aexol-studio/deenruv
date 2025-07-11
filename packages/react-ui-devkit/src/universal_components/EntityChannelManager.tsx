@@ -204,7 +204,7 @@ export const EntityChannelManager: React.FC<EntityChannelManagerProps> = ({
       icon={<CardIcons.default />}
       upperRight={
         <Button size="sm" variant="secondary" onClick={onAssignToChannel}>
-          assign to channel
+          {t("channels:assignToChannel")}
         </Button>
       }
     >

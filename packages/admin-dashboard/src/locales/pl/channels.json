@@ -8,6 +8,7 @@
     "defaultChannel": "Kanał domyślny",
     "buttonDisabledTooltip": "Wypełnij wszystkie wymagane pola",
     "noChangesTooltip": "Nie wprowadzono żadnych zmian",
+    "assignToChannel": "Przypisz do kanału",
     "table": {
         "id": "Id",
         "code": "Kod",

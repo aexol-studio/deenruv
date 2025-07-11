@@ -8,6 +8,7 @@
     "defaultChannel": "Default channel",
     "buttonDisabledTooltip": "Fill in all required fields",
     "noChangesTooltip": "No changes have been made",
+    "assignToChannel": "Assign to channel",
     "table": {
         "id": "Id",
         "code": "Code",
