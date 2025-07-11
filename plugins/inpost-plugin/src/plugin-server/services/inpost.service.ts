@@ -14,6 +14,7 @@ import {
   type ID,
   Logger,
   FulfillmentService,
+  ProcessContext,
 } from "@deenruv/core";
 import { Client, CountryCode, Shipment } from "@deenruv/inpost";
 import { InpostConfigEntity } from "../entities/inpost-config-entity.js";
@@ -44,6 +45,7 @@ declare module "@deenruv/core/dist/entity/custom-entity-fields" {
 export class InpostService implements OnModuleInit {
   private orderProgressJob!: JobQueue<OrderProgressJob>;
   constructor(
+    private processContext: ProcessContext,
     private connection: TransactionalConnection,
     private jobQueueService: JobQueueService,
     private assetService: AssetService,
@@ -56,6 +58,7 @@ export class InpostService implements OnModuleInit {
       await this.jobQueueService.createQueue<OrderProgressJob>({
         name: "process-inpost-shipment",
         process: async (job) => {
+          if (this.processContext.isServer) return;
           const ctx = RequestContext.deserialize(job.data.context);
           await this.processInpostShipment(
             ctx,
@@ -240,9 +243,7 @@ export class InpostService implements OnModuleInit {
     const shippingMethodId = shippingLines[0]?.shippingMethodId;
     if (
       !shippingMethodId ||
-      shippingLines.find((el) => {
-        el.shippingMethodId !== shippingMethodId;
-      })
+      shippingLines.find((el) => el.shippingMethodId !== shippingMethodId)
     ) {
       Logger.error(
         `Mismatch on shipping method, multiplie shipping methods for fulfillment not supported`,
