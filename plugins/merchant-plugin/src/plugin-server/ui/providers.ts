@@ -1,6 +1,18 @@
-import { addNavMenuItem } from "@deenruv/admin-ui/core";
+import { addNavMenuSection, addNavMenuItem } from "@deenruv/admin-ui/core";
 
 export default [
+  addNavMenuSection(
+    {
+      id: "merchant-platform-integration",
+      label: "Merchant Platform Integration",
+      displayMode: "settings",
+      collapsible: true,
+      collapsedByDefault: true,
+      requiresPermission: (permissions) => permissions.includes("SuperAdmin"),
+      items: [],
+    },
+    "settings",
+  ),
   addNavMenuItem(
     {
       id: "google-merchant",

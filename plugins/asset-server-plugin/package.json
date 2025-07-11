@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/asset-server-plugin",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
