@@ -1,0 +1,61 @@
+{
+  "name": "@deenruv/upsell-plugin",
+  "version": "0.1.24",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    "./plugin-server": "./dist/plugin-server/index.js",
+    "./plugin-server/ui": "./dist/plugin-server/ui.js",
+    "./plugin-ui": "./dist/plugin-ui/index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --build",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"SERVER,UI\" -c \"yellow.bold,cyan.bold\" \"tsc --watch --project src/plugin-server/tsconfig.json\" \"tsc --watch --project src/plugin-ui/tsconfig.json\"",
+    "watch:ui": "tsc --watch --project src/plugin-ui/tsconfig.json",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint --fix ./src/**/*.ts",
+    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td --es",
+    "test:server": "cd src/plugin-server && node --test '**/*.test.ts'",
+    "test:ui": "cd src/plugin-ui && node --test '**/*.test.ts'",
+    "test": "npm run test:server && npm run test:ui",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.685.0",
+    "@aws-sdk/s3-request-presigner": "^3.726.1",
+    "@deenruv/admin-types":  "workspace:^",
+    "@deenruv/common":  "workspace:^",
+    "@deenruv/core":  "workspace:^",
+    "@deenruv/react-ui-devkit":  "workspace:^",
+    "@nestjs/common": "~10.3.10",
+    "@nestjs/graphql": "~12.2.0",
+    "date-fns": "^4.1.0",
+    "graphql": "~16.9.0",
+    "graphql-tag": "^2.12.6",
+    "graphql-zeus": "^5.4.2",
+    "lucide-react": "^0.363.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1",
+    "react-i18next": "^14.0.5",
+    "sonner": "^1.4.41",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@graphql-typed-document-node/core": "3.2.0",
+    "@types/express": "^4.17.21",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/stream-json": "^1.7.8",
+    "@types/xml2js": "^0.4.14",
+    "rimraf": "^5.0.10",
+    "tslib": "^2.6.2",
+    "typescript": "5.3.3"
+  }
+}

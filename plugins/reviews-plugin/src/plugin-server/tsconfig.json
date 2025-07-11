@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "useDefineForClassFields": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noLib": false,
+    "declaration": true,
+    "skipLibCheck": true,
+    "noEmitOnError": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "sourceMap": false,
+    "newLine": "LF",
+    "resolveJsonModule": true,
+    "outDir": "../../dist/plugin-server"
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist", "ui"]
+}

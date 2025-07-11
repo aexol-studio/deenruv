@@ -1,0 +1,107 @@
+{
+    "dialog": {
+        "bulkStateChangeTitle": "Zmiana stanu opinii",
+        "bulkStateChangeDescription": "Czy na pewno chcesz zmienić stan zaznaczonych opinii?",
+        "bulkStateChangeSelectLabel": "Wybierz stan opinii",
+        "bulkStateChangeSelectPlaceholder": "Wybierz stan opinii",
+        "bulkStateChangeSuccess": "Stan opinii został zmieniony",
+        "bulkStateChangeError": "Wystąpił błąd podczas zmiany stanu opinii",
+        "bulkStateChangeCancelled": "Zmiana stanu opinii została anulowana",
+        "bulkStateChangeNoSelection": "Nie wybrano opinii do zmiany stanu",
+        "singleStateChangeTitle": "Zmiana stanu opinii",
+        "singleStateChangeDescription": "Czy na pewno chcesz zmienić stan tej opinii?",
+        "singleStateChangeSelectLabel": "Wybierz stan opinii",
+        "singleStateChangeSelectPlaceholder": "Wybierz stan opinii",
+        "singleStateChangeSuccess": "Stan opinii został zmieniony",
+        "singleStateChangeError": "Wystąpił błąd podczas zmiany stanu opinii",
+        "singleStateChangeCancelled": "Zmiana stanu opinii została anulowana",
+        "singleStateChangeNoSelection": "Nie wybrano opinii do zmiany stanu",
+        "cancel": "Anuluj",
+        "submit": "Zatwierdź",
+        "selectError": "Wybierz stan opinii"
+    },
+    "state": {
+        "pending": "Oczekująca",
+        "accepted": "Zaakceptowana",
+        "declined": "Odrzucona"
+    },
+    "detail": {
+        "viewCustomer": "Zobacz klienta",
+        "id": "Opinia {{id}}",
+        "changeState": "Zmień stan opinii",
+        "changeStateSuccess": "Stan opinii został zmieniony",
+        "changeStateError": "Wystąpił błąd podczas zmiany stanu opinii",
+        "cancel": "Anuluj",
+        "confirm": "Potwierdź",
+        "selectState": "Wybierz stan opinii",
+        "businessResponsePlaceholder": "Opcjonalna odpowiedź na opinię",
+        "businessResponse": "Odpowiedź firmy",
+        "createdAt": "Utworzono",
+        "updatedAt": "Zaktualizowano",
+        "noFound": "Nie znaleziono opinii",
+        "reviewTranslations": "Tłumaczenia",
+        "reviewContent": "Treść opinii",
+        "generateAllMissingTranslations": "Generuj brakujące tłumaczenia",
+        "generateAllMissingTranslationsSuccess": "Wszystkie brakujące tłumaczenia zostały wygenerowane",
+        "generateAllMissingTranslationsError": "Wystąpił błąd podczas generowania brakujących tłumaczeń",
+        "updateReview": "Zaktualizuj opinię",
+        "noTranslation": "Brak dostępnego tłumaczenia",
+        "generateTranslation": "Generuj tłumaczenie",
+        "manualTranslation": "Utwórz ręczne tłumaczenie",
+        "reviewBody": "Treść opinii",
+        "review": "{{review}} z 5",
+        "stateRequired": "Stan opinii jest wymagany",
+        "rating": "Ocena {{rating}} z 5",
+        "assets": "Załączniki",
+        "manualTranslationPlaceholder": "Ręczne tłumaczenie treści",
+        "generatedTranslationBody": "Wygenerowana treść tłumaczenia"
+    },
+    "productInfo": {
+        "productReview": "Recenzja produktu",
+        "viewProduct": "Zobacz produkt",
+        "productId": "ID produktu",
+        "productName": "Nazwa produktu",
+        "variantName": "Nazwa wariantu"
+    },
+    "orderInfo": {
+        "orderReview": "Recenzja zamówienia",
+        "viewOrder": "Zobacz zamówienie",
+        "orderId": "ID zamówienia",
+        "orderCode": "Kod zamówienia",
+        "orderTotal": "Łączna kwota zamówienia",
+        "totalItems": "Łączna liczba przedmiotów"
+    },
+    "reviewOrder": {
+        "title": "Recenzja zamówienia",
+        "titleWithId": "Recenzja zamówienia #{{orderId}}"
+    },
+    "productReviewSidebar": {
+        "averageRating": "Średnia ocena",
+        "noAverageRating": "Brak średniej oceny",
+        "totalReviews": "Łączna liczba ocen",
+        "noTotalReviews": "Brak ocen",
+        "totalReviewsForProduct": "Łączna liczba ocen dla produktu",
+        "noTotalReviewsForProduct": "Brak ocen dla produktu",
+        "viewAllReviews": "Zobacz wszystkie opinie o produkcie"
+    },
+    "nav": {
+        "reviews": "Oceny",
+        "reviewsList": "Lista ocen"
+    },
+    "list": {
+        "bulkStateChange": "Zmiana stanu dla wielu",
+        "stateChange": "Zmień stan",
+        "productId": "ID produktu",
+        "orderId": "ID zamówienia",
+        "customerId": "ID klienta",
+        "reviewFor": "Recenzja dla",
+        "shopReview": "Recenzja sklepu",
+        "orderReview": "Recenzja zamówienia #{{orderId}}",
+        "responseDate": "Data odpowiedzi",
+        "state": "Stan",
+        "rating": "Ocena",
+        "noResponse": "Nie zareagowano",
+        "responseCreatedAt": "Odpowiedź utworzona",
+        "responseCreatedAtValue": "Zareagowano {{date}}"
+    }
+}

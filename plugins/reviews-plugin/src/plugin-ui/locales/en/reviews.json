@@ -1,0 +1,107 @@
+{
+    "dialog": {
+        "bulkStateChangeTitle": "Bulk change review state",
+        "bulkStateChangeDescription": "Are you sure you want to change the state of the selected reviews?",
+        "bulkStateChangeSelectLabel": "Select review state",
+        "bulkStateChangeSelectPlaceholder": "Select review state",
+        "bulkStateChangeSuccess": "Review state has been changed",
+        "bulkStateChangeError": "An error occurred while changing the review state",
+        "bulkStateChangeCancelled": "Bulk change of review state has been cancelled",
+        "bulkStateChangeNoSelection": "No reviews selected for state change",
+        "singleStateChangeTitle": "Single change review state",
+        "singleStateChangeDescription": "Are you sure you want to change the state of this review?",
+        "singleStateChangeSelectLabel": "Select review state",
+        "singleStateChangeSelectPlaceholder": "Select review state",
+        "singleStateChangeSuccess": "Review state has been changed",
+        "singleStateChangeError": "An error occurred while changing the review state",
+        "singleStateChangeCancelled": "Single change of review state has been cancelled",
+        "singleStateChangeNoSelection": "No review selected for state change",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "selectError": "Please select a review state"
+    },
+    "state": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined"
+    },
+    "detail": {
+        "viewCustomer": "View customer",
+        "id": "Review {{id}}",
+        "changeState": "Change review state",
+        "changeStateSuccess": "Review state has been changed",
+        "changeStateError": "An error occurred while changing the review state",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "selectState": "Select review state",
+        "businessResponsePlaceholder": "Optional response to the review",
+        "businessResponse": "Business response",
+        "createdAt": "Created at",
+        "updatedAt": "Updated at",
+        "noFound": "No review found",
+        "reviewTranslations": "Translations",
+        "reviewContent": "Review content",
+        "generateAllMissingTranslations": "Generate all missing translations",
+        "generateAllMissingTranslationsSuccess": "All missing translations have been generated",
+        "generateAllMissingTranslationsError": "An error occurred while generating missing translations",
+        "updateReview": "Update review",
+        "noTranslation": "No translation available",
+        "generateTranslation": "Generate translation",
+        "manualTranslation": "Create manual translation",
+        "reviewBody": "Review body",
+        "review": "{{review}} out of 5",
+        "stateRequired": "Review state is required",
+        "rating": "Rating {{rating}} out of 5",
+        "assets": "Attachments",
+        "manualTranslationPlaceholder": "Manual translation body",
+        "generatedTranslationBody": "Generated translation body"
+    },
+    "productInfo": {
+        "productReview": "Product review",
+        "viewProduct": "View product",
+        "productId": "Product ID",
+        "productName": "Product name",
+        "variantName": "Variant name"
+    },
+    "orderInfo": {
+        "orderReview": "Order review",
+        "viewOrder": "View order",
+        "orderId": "Order ID",
+        "orderCode": "Order code",
+        "orderTotal": "Order total",
+        "totalItems": "Total items"
+    },
+    "reviewOrder": {
+        "title": "Order review",
+        "titleWithId": "Order review #{{orderId}}"
+    },
+    "productReviewSidebar": {
+        "averageRating": "Average rating",
+        "noAverageRating": "No average rating",
+        "totalReviews": "Total reviews",
+        "noTotalReviews": "No total reviews",
+        "totalReviewsForProduct": "Total reviews for product",
+        "noTotalReviewsForProduct": "No total reviews for product",
+        "viewAllReviews": "See all reviews for this product"
+    },
+    "nav": {
+        "reviews": "Reviews",
+        "reviewsList": "Reviews List"
+    },
+    "list": {
+        "bulkStateChange": "Bulk change state",
+        "stateChange": "Change state",
+        "productId": "Product ID",
+        "orderId": "Order ID",
+        "customerId": "Customer ID",
+        "reviewFor": "Review for",
+        "shopReview": "Review for shop",
+        "orderReview": "Review for order #{{orderId}}",
+        "responseDate": "Response date",
+        "state": "State",
+        "rating": "Rating",
+        "noResponse": "No response",
+        "responseCreatedAt": "Response created at",
+        "responseCreatedAtValue": "Responded {{date}}"
+    }
+}

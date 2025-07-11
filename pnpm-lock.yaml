@@ -2397,6 +2397,100 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
 
+  plugins/merchant-plugin:
+    dependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
+      '@deenruv/admin-ui':
+        specifier: workspace:^
+        version: link:../../packages/admin-ui/package
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+      '@deenruv/ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/ui-devkit
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      facebook-nodejs-business-sdk:
+        specifier: ^21.0.5
+        version: 21.0.5
+      google-auth-library:
+        specifier: ^9.15.0
+        version: 9.15.1(encoding@0.1.13)
+      googleapis:
+        specifier: ^144.0.0
+        version: 144.0.0(encoding@0.1.13)
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      graphql-zeus:
+        specifier: ^5.4.2
+        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+      html-to-text:
+        specifier: ^9.0.5
+        version: 9.0.5
+      lucide-react:
+        specifier: ^0.363.0
+        version: 0.363.0(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^14.0.5
+        version: 14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts:
+        specifier: ^2.12.7
+        version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@graphql-typed-document-node/core':
+        specifier: 3.2.0
+        version: 3.2.0(graphql@16.9.0)
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.23
+      '@types/facebook-nodejs-business-sdk':
+        specifier: ^20.0.2
+        version: 20.0.3
+      '@types/html-to-text':
+        specifier: ^9.0.4
+        version: 9.0.4
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.23
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.7(@types/react@18.3.23)
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
   plugins/method-modal-plugin:
     dependencies:
       '@deenruv/common':
@@ -2412,6 +2506,49 @@ importers:
       rimraf:
         specifier: ^5.0.10
         version: 5.0.10
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
+  plugins/newsletter-plugin:
+    dependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      graphql-zeus:
+        specifier: ^5.4.2
+        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+    devDependencies:
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.23
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
       typescript:
         specifier: 5.3.3
         version: 5.3.3
@@ -2743,6 +2880,91 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
 
+  plugins/redis-strategy-plugin:
+    dependencies:
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      graphql-zeus:
+        specifier: ^5.4.2
+        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+      ioredis:
+        specifier: ^5.4.1
+        version: 5.6.1
+      lucide-react:
+        specifier: ^0.363.0
+        version: 0.363.0(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^14.0.5
+        version: 14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts:
+        specifier: ^2.12.7
+        version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      stream-json:
+        specifier: ^1.9.1
+        version: 1.9.1
+      xml2js:
+        specifier: ^0.6.2
+        version: 0.6.2
+    devDependencies:
+      '@graphql-typed-document-node/core':
+        specifier: 3.2.0
+        version: 3.2.0(graphql@16.9.0)
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.23
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.23
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.7(@types/react@18.3.23)
+      '@types/stream-json':
+        specifier: ^1.7.8
+        version: 1.7.8
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
   plugins/replicate-plugin:
     dependencies:
       '@deenruv/admin-types':
@@ -2895,6 +3117,94 @@ importers:
         specifier: 5.3.3
         version: 5.3.3
 
+  plugins/reviews-plugin:
+    dependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.685.0
+        version: 3.842.0
+      '@aws-sdk/s3-request-presigner':
+        specifier: ^3.726.1
+        version: 3.842.0
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      graphql-zeus:
+        specifier: ^5.4.2
+        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+      lucide-react:
+        specifier: ^0.363.0
+        version: 0.363.0(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^14.0.5
+        version: 14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.22.1
+        version: 6.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts:
+        specifier: ^2.12.7
+        version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sonner:
+        specifier: ^1.4.41
+        version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@graphql-typed-document-node/core':
+        specifier: 3.2.0
+        version: 3.2.0(graphql@16.9.0)
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.23
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.23
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.7(@types/react@18.3.23)
+      '@types/stream-json':
+        specifier: ^1.7.8
+        version: 1.7.8
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+
   plugins/sentry-plugin:
     dependencies:
       '@apollo/server':
@@ -2984,6 +3294,94 @@ importers:
       rxjs:
         specifier: 7.8.1
         version: 7.8.1
+
+  plugins/upsell-plugin:
+    dependencies:
+      '@aws-sdk/client-s3':
+        specifier: ^3.685.0
+        version: 3.842.0
+      '@aws-sdk/s3-request-presigner':
+        specifier: ^3.726.1
+        version: 3.842.0
+      '@deenruv/admin-types':
+        specifier: workspace:^
+        version: link:../../packages/admin-types
+      '@deenruv/common':
+        specifier: workspace:^
+        version: link:../../packages/common
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
+      '@deenruv/react-ui-devkit':
+        specifier: workspace:^
+        version: link:../../packages/react-ui-devkit
+      '@nestjs/common':
+        specifier: ~10.3.10
+        version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      '@nestjs/graphql':
+        specifier: ~12.2.0
+        version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      graphql:
+        specifier: ~16.9.0
+        version: 16.9.0
+      graphql-tag:
+        specifier: ^2.12.6
+        version: 2.12.6(graphql@16.9.0)
+      graphql-zeus:
+        specifier: ^5.4.2
+        version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+      lucide-react:
+        specifier: ^0.363.0
+        version: 0.363.0(react@18.3.1)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^14.0.5
+        version: 14.1.3(i18next@23.16.8)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-router-dom:
+        specifier: ^6.22.1
+        version: 6.30.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts:
+        specifier: ^2.12.7
+        version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sonner:
+        specifier: ^1.4.41
+        version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    devDependencies:
+      '@graphql-typed-document-node/core':
+        specifier: 3.2.0
+        version: 3.2.0(graphql@16.9.0)
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.23
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.23
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.7(@types/react@18.3.23)
+      '@types/stream-json':
+        specifier: ^1.7.8
+        version: 1.7.8
+      '@types/xml2js':
+        specifier: ^0.4.14
+        version: 0.4.14
+      rimraf:
+        specifier: ^5.0.10
+        version: 5.0.10
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
 
   plugins/wfirma-plugin:
     dependencies:
@@ -7800,6 +8198,9 @@ packages:
   '@types/express@4.17.23':
     resolution: {integrity: sha512-Crp6WY9aTYP3qPi2wGDo9iUe/rceX01UMhnF1jmwDcKCFM6cx7YhGP/Mpr3y9AASpfHixIG0E6azCcL5OcDHsQ==}
 
+  '@types/facebook-nodejs-business-sdk@20.0.3':
+    resolution: {integrity: sha512-x/iilSCliq/YqJWTiVoqnTsILF+hluSJdghhZF/cgWXHBNY+rHBGR5oGa3AfVyG5FVEXw/R/0fZAVui87pq7OA==}
+
   '@types/faker@5.5.9':
     resolution: {integrity: sha512-uCx6mP3UY5SIO14XlspxsGjgaemrxpssJI0Ol+GfhxtcKpv9pgRZYsS4eeKeHVLje6Qtc8lGszuBI461+gVZBA==}
 
@@ -7821,6 +8222,9 @@ packages:
   '@types/handlebars@4.1.0':
     resolution: {integrity: sha512-gq9YweFKNNB1uFK71eRqsd4niVkXrxHugqWFQkeLRJvGjnxsLr16bYtcsG4tOFwmYi0Bax+wCkbf1reUfdl4kA==}
     deprecated: This is a stub types definition. handlebars provides its own type definitions, so you do not need this installed.
+
+  '@types/html-to-text@9.0.4':
+    resolution: {integrity: sha512-pUY3cKH/Nm2yYrEmDlPR1mR7yszjGx4DrwPjQ702C4/D5CwHuZTgZdIdwPkRbcuhs7BAh2L5rg3CL5cbRiGTCQ==}
 
   '@types/http-assert@1.5.6':
     resolution: {integrity: sha512-TTEwmtjgVbYAzZYWyeHPrrtWnfVkm8tQkP8P21uQifPgMRgjrow3XDEYqucuC8SKZJT7pUnhU/JymvjggxO9vw==}
@@ -7986,6 +8390,12 @@ packages:
 
   '@types/sockjs@0.3.36':
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
+
+  '@types/stream-chain@2.1.0':
+    resolution: {integrity: sha512-guDyAl6s/CAzXUOWpGK2bHvdiopLIwpGu8v10+lb9hnQOyo4oj/ZUQFOvqFjKGsE3wJP1fpIesCcMvbXuWsqOg==}
+
+  '@types/stream-json@1.7.8':
+    resolution: {integrity: sha512-MU1OB1eFLcYWd1LjwKXrxdoPtXSRzRmAnnxs4Js/ayB5O/NvHraWwuOaqMWIebpYwM6khFlsJOHEhI9xK/ab4Q==}
 
   '@types/streamx@2.9.5':
     resolution: {integrity: sha512-IHYsa6jYrck8VEdSwpY141FTTf6D7boPeMq9jy4qazNrFMA4VbRz/sw5LSsfR7jwdDcx0QKWkUexZvsWBC2eIQ==}
@@ -9316,6 +9726,9 @@ packages:
   csv-stringify@6.5.2:
     resolution: {integrity: sha512-RFPahj0sXcmUyjrObAK+DOWtMvMIFV328n4qZJhgX3x2RqkQgOTU2mCUmiFR0CzM6AzChlRSUErjiJeEt8BaQA==}
 
+  currency-codes@1.5.1:
+    resolution: {integrity: sha512-hqy8vtlIYKzO6pe2TE0V4/riZALIc7nhtE9cvxk5FDRCvfGplgzUvpTmZlMsyO+NeK5U41j+sQXJOo8l8v9kdg==}
+
   currency.js@2.0.4:
     resolution: {integrity: sha512-6/OplJYgJ0RUlli74d93HJ/OsKVBi8lB1+Z6eJYS1YZzBuIp4qKKHpJ7ad+GvTlWmLR/hLJOWTykN5Nm8NJ7+w==}
     engines: {node: '>=4'}
@@ -10111,6 +10524,9 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
 
+  facebook-nodejs-business-sdk@21.0.5:
+    resolution: {integrity: sha512-WRmYZQtQYZWFHCrzlIqgj0tSRCDslSWd9IT2ccs8ah+Mr4QxC3uZrP7tVAkqYJshINKL1v30swlGDCGK5VmMTg==}
+
   faker@4.1.0:
     resolution: {integrity: sha512-ILKg69P6y/D8/wSmDXw35Ly0re8QzQ8pMfBCflsGiZG2ZjMUNLYNexA6lz5pkmJlepVdsiDFUxYAzPQ9/+iGLA==}
 
@@ -10268,6 +10684,9 @@ packages:
   find@0.3.0:
     resolution: {integrity: sha512-iSd+O4OEYV/I36Zl8MdYJO0xD82wH528SaCieTVHhclgiYNe9y+yPKSwK+A7/WsmHL1EZ+pYUJBXWTL5qofksw==}
 
+  first-match@0.0.1:
+    resolution: {integrity: sha512-VvKbnaxrC0polTFDC+teKPTdl2mn6B/KUW+WB3C9RzKDeNwbzfLdnUz3FxC+tnjvus6bI0jWrWicQyVIPdS37A==}
+
   flat-cache@3.2.0:
     resolution: {integrity: sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -10398,9 +10817,17 @@ packages:
     resolution: {integrity: sha512-gSaYYIO1Y3wUtdfHmjDUZ8LWaxJQpiavzbF5Kq53akSzvmVg0RfyOcFDbO1KJ/KCGRFz2qG+lS81F0nkr7cRJA==}
     engines: {node: '>=10'}
 
+  gaxios@6.7.1:
+    resolution: {integrity: sha512-LDODD4TMYx7XXdpwxAVRAIAuB0bzv0s+ywFonY46k126qzQHT9ygyoa9tncmOiQmmDrik65UYsEkv3lbfqQ3yQ==}
+    engines: {node: '>=14'}
+
   gcp-metadata@4.3.1:
     resolution: {integrity: sha512-x850LS5N7V1F3UcV7PoupzGsyD6iVwTVvsh3tbXfkctZnBnjW5yu5z1/3k3SehF7TyoTIe78rJs02GMMy+LF+A==}
     engines: {node: '>=10'}
+
+  gcp-metadata@6.1.1:
+    resolution: {integrity: sha512-a4tiq7E0/5fTjxPAaH4jpjkSv/uCaU2p5KC6HVGrvl0cDjA8iBZv4vv1gyzlmK0ZUKqwpOyQMKzZQe3lTit77A==}
+    engines: {node: '>=14'}
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -10544,16 +10971,32 @@ packages:
     resolution: {integrity: sha512-5Rk7iLNDFhFeBYc3s8l1CqzbEBcdhwR193RlD4vSNFajIcINKI8W8P0JLmBpwymHqqWbX34pJDQu39cSy/6RsA==}
     engines: {node: '>=10'}
 
+  google-auth-library@9.15.1:
+    resolution: {integrity: sha512-Jb6Z0+nvECVz+2lzSMt9u98UsoakXxA2HGHMCxh+so3n90XgYWkq5dur19JAJV7ONiJY22yBTyJB1TSkvPq9Ng==}
+    engines: {node: '>=14'}
+
   google-gax@2.30.3:
     resolution: {integrity: sha512-Zsd6hbJBMvAcJS3cYpAsmupvfsxygFR2meUZJcGeR7iUqYHCR/1Hf2aQNB9srrlXQMm91pNiUvW0Kz6Qld8QkA==}
     engines: {node: '>=10'}
     hasBin: true
+
+  google-logging-utils@0.0.2:
+    resolution: {integrity: sha512-NEgUnEcBiP5HrPzufUkBzJOD/Sxsco3rLNo1F1TNf7ieU8ryUzBhqba8r756CjLX7rn3fHl6iLEwPYuqpoKgQQ==}
+    engines: {node: '>=14'}
 
   google-p12-pem@3.1.4:
     resolution: {integrity: sha512-HHuHmkLgwjdmVRngf5+gSmpkyaRI6QmOg77J8tkNBHhNEI62sGHyw4/+UkgyZEI7h84NbWprXDJ+sa3xOYFvTg==}
     engines: {node: '>=10'}
     deprecated: Package is no longer maintained
     hasBin: true
+
+  googleapis-common@7.2.0:
+    resolution: {integrity: sha512-/fhDZEJZvOV3X5jmD+fKxMqma5q2Q9nZNSF3kn1F18tpxmA86BcTxAGBQdM0N89Z3bEaIs+HVznSmFJEAmMTjA==}
+    engines: {node: '>=14.0.0'}
+
+  googleapis@144.0.0:
+    resolution: {integrity: sha512-ELcWOXtJxjPX4vsKMh+7V+jZvgPwYMlEhQFiu2sa9Qmt5veX8nwXPksOWGGN6Zk4xCiLygUyaz7xGtcMO+Onxw==}
+    engines: {node: '>=14.0.0'}
 
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
@@ -10697,6 +11140,10 @@ packages:
   gtoken@5.3.2:
     resolution: {integrity: sha512-gkvEKREW7dXWF8NV8pVrKfW7WqReAmjjkMBh6lNCCGOM4ucS0r0YyXXl0r/9Yj8wcW/32ISkfc8h5mPTDbtifQ==}
     engines: {node: '>=10'}
+
+  gtoken@7.1.0:
+    resolution: {integrity: sha512-pCcEwRi+TKpMlxAQObHDQ56KawURgyAf6jtIY046fJ5tIv3zDe/LEIubckAO8fj6JnAxLdmWkUfNyulQ2iKdEw==}
+    engines: {node: '>=14.0.0'}
 
   handle-thing@2.0.1:
     resolution: {integrity: sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==}
@@ -11297,6 +11744,9 @@ packages:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
     engines: {node: '>=16'}
 
+  iso-3166-1@2.1.1:
+    resolution: {integrity: sha512-RZxXf8cw5Y8LyHZIwIRvKw8sWTIHh2/txBT+ehO0QroesVfnz3JNFFX4i/OC/Yuv2bDIVYrHna5PMvjtpefq5w==}
+
   isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
@@ -11380,6 +11830,9 @@ packages:
   js-cookie@3.0.5:
     resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
     engines: {node: '>=14'}
+
+  js-sha256@0.9.0:
+    resolution: {integrity: sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -12098,6 +12551,9 @@ packages:
   mitt@3.0.0:
     resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
 
+  mixwith@0.1.1:
+    resolution: {integrity: sha512-DQsf/liljH/9e+94jR+xfK8vlKceeKdOM9H9UEXLwGuvEEpO6debNtJ9yt1ZKzPKPrwqGxzMdu0BR1fnQb6i4A==}
+
   mjml-accordion@4.15.3:
     resolution: {integrity: sha512-LPNVSj1LyUVYT9G1gWwSw3GSuDzDsQCu0tPB2uDsq4VesYNnU6v3iLCQidMiR6azmIt13OEozG700ygAUuA6Ng==}
 
@@ -12600,6 +13056,9 @@ packages:
 
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
+
+  nub@0.0.0:
+    resolution: {integrity: sha512-dK0Ss9C34R/vV0FfYJXuqDAqHlaW9fvWVufq9MmGF2umCuDbd5GRfRD9fpi/LiM0l4ZXf8IBB+RYmZExqCrf0w==}
 
   nullthrows@1.1.1:
     resolution: {integrity: sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==}
@@ -14222,8 +14681,14 @@ packages:
   stream-browserify@3.0.0:
     resolution: {integrity: sha512-H73RAHsVBapbim0tU2JwwOiXUj+fikfiaoYAKHF3VJfA0pe2BCzkhAHBlLG6REzE+2WNZcxOXjK7lkso+9euLA==}
 
+  stream-chain@2.2.5:
+    resolution: {integrity: sha512-1TJmBx6aSWqZ4tx7aTpBDXK0/e2hhcNSTV8+CbFJtDjbb+I1mZ8lHit0Grw9GRT+6JbIrrDd8esncgBi8aBXGA==}
+
   stream-exhaust@1.0.2:
     resolution: {integrity: sha512-b/qaq/GlBK5xaq1yrK9/zFcyRSTNxmcZwFLGSTG0mXgZl/4Z6GgiyYOXOvY7N3eEvFRAG1bkDRz5EPGSvPYQlw==}
+
+  stream-json@1.9.1:
+    resolution: {integrity: sha512-uWkjJ+2Nt/LO9Z/JyKZbMusL8Dkh97uUBTv3AJQ74y07lVahLY4eEFsPsE97pxYBwr8nnjMAIch5eqI0gPShyw==}
 
   stream-shift@1.0.3:
     resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
@@ -14924,6 +15389,9 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  url-template@2.0.8:
+    resolution: {integrity: sha512-XdVKMF4SJ0nP/O7XIPB0JwAEuT9lDIYnNsK8yGVe43y0AWoKeJNdv3ZNWh7ksJ6KqQFjOO6ox/VEitLnaVNufw==}
 
   urlpattern-polyfill@10.1.0:
     resolution: {integrity: sha512-IGjKp/o0NL3Bso1PymYURCJxMPNAf/ILOpendP9f5B6e1rTJgdgiOvgfoT8VxCAdY+Wisb9uhGaJJf3yZ2V9nw==}
@@ -18459,7 +18927,7 @@ snapshots:
 
   '@graphql-tools/merge@9.0.11(graphql@16.9.0)':
     dependencies:
-      '@graphql-tools/utils': 10.6.1(graphql@16.9.0)
+      '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       graphql: 16.9.0
       tslib: 2.8.1
 
@@ -18472,7 +18940,7 @@ snapshots:
   '@graphql-tools/optimize@2.0.0(graphql@16.9.0)':
     dependencies:
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   '@graphql-tools/prisma-loader@8.0.17(@types/node@20.19.5)(encoding@0.1.13)(graphql@16.9.0)':
     dependencies:
@@ -18508,14 +18976,14 @@ snapshots:
       '@ardatan/relay-compiler': 12.0.3(encoding@0.1.13)(graphql@16.9.0)
       '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       graphql: 16.9.0
-      tslib: 2.6.3
+      tslib: 2.8.1
     transitivePeerDependencies:
       - encoding
 
   '@graphql-tools/schema@10.0.10(graphql@16.9.0)':
     dependencies:
-      '@graphql-tools/merge': 9.0.11(graphql@16.9.0)
-      '@graphql-tools/utils': 10.6.1(graphql@16.9.0)
+      '@graphql-tools/merge': 9.0.24(graphql@16.9.0)
+      '@graphql-tools/utils': 10.8.6(graphql@16.9.0)
       graphql: 16.9.0
       tslib: 2.8.1
       value-or-promise: 1.0.12
@@ -20999,7 +21467,7 @@ snapshots:
 
   '@types/accepts@1.3.7':
     dependencies:
-      '@types/node': 20.19.5
+      '@types/node': 18.19.116
 
   '@types/bcrypt@5.0.2':
     dependencies:
@@ -21020,7 +21488,7 @@ snapshots:
 
   '@types/busboy@1.5.4':
     dependencies:
-      '@types/node': 20.19.5
+      '@types/node': 18.19.116
 
   '@types/chai@5.2.2':
     dependencies:
@@ -21039,7 +21507,7 @@ snapshots:
 
   '@types/conventional-commits-parser@5.0.1':
     dependencies:
-      '@types/node': 20.19.5
+      '@types/node': 18.19.116
 
   '@types/cookie-session@2.0.49':
     dependencies:
@@ -21051,7 +21519,7 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/express': 4.17.23
       '@types/keygrip': 1.0.6
-      '@types/node': 20.19.5
+      '@types/node': 18.19.116
 
   '@types/cors@2.8.19':
     dependencies:
@@ -21124,6 +21592,8 @@ snapshots:
       '@types/qs': 6.14.0
       '@types/serve-static': 1.15.8
 
+  '@types/facebook-nodejs-business-sdk@20.0.3': {}
+
   '@types/faker@5.5.9': {}
 
   '@types/fs-extra@11.0.4':
@@ -21159,6 +21629,8 @@ snapshots:
   '@types/handlebars@4.1.0':
     dependencies:
       handlebars: 4.7.8
+
+  '@types/html-to-text@9.0.4': {}
 
   '@types/http-assert@1.5.6': {}
 
@@ -21203,7 +21675,7 @@ snapshots:
       '@types/http-errors': 2.0.5
       '@types/keygrip': 1.0.6
       '@types/koa-compose': 3.2.8
-      '@types/node': 20.19.5
+      '@types/node': 18.19.116
 
   '@types/linkify-it@5.0.0': {}
 
@@ -21334,6 +21806,15 @@ snapshots:
   '@types/sockjs@0.3.36':
     dependencies:
       '@types/node': 18.19.116
+
+  '@types/stream-chain@2.1.0':
+    dependencies:
+      '@types/node': 18.19.116
+
+  '@types/stream-json@1.7.8':
+    dependencies:
+      '@types/node': 18.19.116
+      '@types/stream-chain': 2.1.0
 
   '@types/streamx@2.9.5':
     dependencies:
@@ -23042,6 +23523,11 @@ snapshots:
 
   csv-stringify@6.5.2: {}
 
+  currency-codes@1.5.1:
+    dependencies:
+      first-match: 0.0.1
+      nub: 0.0.0
+
   currency.js@2.0.4: {}
 
   custom-event@1.0.1: {}
@@ -24043,13 +24529,23 @@ snapshots:
 
   extract-zip@2.0.1:
     dependencies:
-      debug: 4.3.4
+      debug: 4.4.1
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
       '@types/yauzl': 2.10.3
     transitivePeerDependencies:
       - supports-color
+
+  facebook-nodejs-business-sdk@21.0.5:
+    dependencies:
+      axios: 1.10.0
+      currency-codes: 1.5.1
+      iso-3166-1: 2.1.1
+      js-sha256: 0.9.0
+      mixwith: 0.1.1
+    transitivePeerDependencies:
+      - debug
 
   faker@4.1.0: {}
 
@@ -24242,6 +24738,8 @@ snapshots:
     dependencies:
       traverse-chain: 0.1.0
 
+  first-match@0.0.1: {}
+
   flat-cache@3.2.0:
     dependencies:
       flatted: 3.3.3
@@ -24392,9 +24890,29 @@ snapshots:
       - encoding
       - supports-color
 
+  gaxios@6.7.1(encoding@0.1.13):
+    dependencies:
+      extend: 3.0.2
+      https-proxy-agent: 7.0.6
+      is-stream: 2.0.1
+      node-fetch: 2.7.0(encoding@0.1.13)
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
   gcp-metadata@4.3.1(encoding@0.1.13):
     dependencies:
       gaxios: 4.3.3(encoding@0.1.13)
+      json-bigint: 1.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  gcp-metadata@6.1.1(encoding@0.1.13):
+    dependencies:
+      gaxios: 6.7.1(encoding@0.1.13)
+      google-logging-utils: 0.0.2
       json-bigint: 1.0.0
     transitivePeerDependencies:
       - encoding
@@ -24583,6 +25101,18 @@ snapshots:
       - encoding
       - supports-color
 
+  google-auth-library@9.15.1(encoding@0.1.13):
+    dependencies:
+      base64-js: 1.5.1
+      ecdsa-sig-formatter: 1.0.11
+      gaxios: 6.7.1(encoding@0.1.13)
+      gcp-metadata: 6.1.1(encoding@0.1.13)
+      gtoken: 7.1.0(encoding@0.1.13)
+      jws: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
   google-gax@2.30.3(encoding@0.1.13):
     dependencies:
       '@grpc/grpc-js': 1.6.12
@@ -24602,9 +25132,31 @@ snapshots:
       - encoding
       - supports-color
 
+  google-logging-utils@0.0.2: {}
+
   google-p12-pem@3.1.4:
     dependencies:
       node-forge: 1.3.1
+
+  googleapis-common@7.2.0(encoding@0.1.13):
+    dependencies:
+      extend: 3.0.2
+      gaxios: 6.7.1(encoding@0.1.13)
+      google-auth-library: 9.15.1(encoding@0.1.13)
+      qs: 6.14.0
+      url-template: 2.0.8
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  googleapis@144.0.0(encoding@0.1.13):
+    dependencies:
+      google-auth-library: 9.15.1(encoding@0.1.13)
+      googleapis-common: 7.2.0(encoding@0.1.13)
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
 
   gopd@1.2.0: {}
 
@@ -24784,6 +25336,14 @@ snapshots:
     dependencies:
       gaxios: 4.3.3(encoding@0.1.13)
       google-p12-pem: 3.1.4
+      jws: 4.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+
+  gtoken@7.1.0(encoding@0.1.13):
+    dependencies:
+      gaxios: 6.7.1(encoding@0.1.13)
       jws: 4.0.0
     transitivePeerDependencies:
       - encoding
@@ -25297,7 +25857,7 @@ snapshots:
 
   is-lower-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   is-map@2.0.3: {}
 
@@ -25384,7 +25944,7 @@ snapshots:
 
   is-upper-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   is-url@1.2.4: {}
 
@@ -25422,6 +25982,8 @@ snapshots:
   isexe@2.0.0: {}
 
   isexe@3.1.1: {}
+
+  iso-3166-1@2.1.1: {}
 
   isobject@3.0.1: {}
 
@@ -25515,6 +26077,8 @@ snapshots:
       nopt: 7.2.1
 
   js-cookie@3.0.5: {}
+
+  js-sha256@0.9.0: {}
 
   js-tokens@4.0.0: {}
 
@@ -25976,7 +26540,7 @@ snapshots:
 
   lower-case-first@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   lower-case@1.1.4: {}
 
@@ -26275,6 +26839,8 @@ snapshots:
       yallist: 4.0.0
 
   mitt@3.0.0: {}
+
+  mixwith@0.1.1: {}
 
   mjml-accordion@4.15.3(encoding@0.1.13):
     dependencies:
@@ -26989,6 +27555,8 @@ snapshots:
   nth-check@2.1.1:
     dependencies:
       boolbase: 1.0.0
+
+  nub@0.0.0: {}
 
   nullthrows@1.1.1: {}
 
@@ -28794,7 +29362,7 @@ snapshots:
 
   sponge-case@1.0.1:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   sprintf-js@1.0.3: {}
 
@@ -28853,7 +29421,13 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
+  stream-chain@2.2.5: {}
+
   stream-exhaust@1.0.2: {}
+
+  stream-json@1.9.1:
+    dependencies:
+      stream-chain: 2.2.5
 
   stream-shift@1.0.3: {}
 
@@ -29016,7 +29590,7 @@ snapshots:
 
   swap-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   symbol-observable@1.2.0: {}
 
@@ -29245,7 +29819,7 @@ snapshots:
 
   title-case@3.0.3:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   tmp@0.0.33:
     dependencies:
@@ -29676,6 +30250,8 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  url-template@2.0.8: {}
 
   urlpattern-polyfill@10.1.0: {}
 
