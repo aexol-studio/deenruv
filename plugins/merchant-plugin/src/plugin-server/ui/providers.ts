@@ -24,7 +24,7 @@ export default [
       ],
       requiresPermission: (permissions) => permissions.includes("SuperAdmin"),
     },
-    "extras",
+    "merchant-platform-integration",
   ),
   addNavMenuItem(
     {
@@ -37,6 +37,6 @@ export default [
       ],
       requiresPermission: (permissions) => permissions.includes("SuperAdmin"),
     },
-    "extras",
+    "merchant-platform-integration",
   ),
 ];
