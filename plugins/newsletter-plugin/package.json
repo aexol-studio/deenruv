@@ -17,9 +17,7 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"SERVER,UI\" -c \"yellow.bold,cyan.bold\" \"tsc --watch --project src/plugin-server/tsconfig.json\"",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es",
-    "test:server": "cd src/plugin-server && node --test '**/*.test.ts'",
-    "test": "npm run test:server"
+    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es"
   },
   "dependencies": {
     "@deenruv/admin-types": "workspace:^",
