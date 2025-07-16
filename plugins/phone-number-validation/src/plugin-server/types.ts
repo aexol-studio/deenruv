@@ -7,4 +7,7 @@ export type PhoneNumberValidationOptions = {
   defaultCountryCode?:
     | string
     | ((ctx: RequestContext, order: Order) => Promise<string> | string);
+  allowedCountryCodes?:
+    | string[]
+    | ((ctx: RequestContext) => Promise<string[]> | string[]);
 };

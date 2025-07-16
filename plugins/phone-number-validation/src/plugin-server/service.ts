@@ -12,6 +12,18 @@ export class PhoneNumberValidationService {
     private activeOrderService: ActiveOrderService,
   ) {}
 
+  private async getAllowedCountryCodes(
+    ctx: RequestContext,
+  ): Promise<string[] | void> {
+    const { allowedCountryCodes } = this.options;
+    if (typeof allowedCountryCodes === "function") {
+      return await allowedCountryCodes(ctx);
+    }
+    if (Array.isArray(allowedCountryCodes)) {
+      return allowedCountryCodes;
+    }
+  }
+
   private async getCountryCode(
     ctx: RequestContext,
     order: Order,
@@ -30,6 +42,10 @@ export class PhoneNumberValidationService {
     const { phoneNumber } = order.shippingAddress;
     if (!phoneNumber) {
       return requirePhoneNumber ? "missing required phone number" : undefined;
+    }
+    const allowedCountryCodes = await this.getAllowedCountryCodes(ctx);
+    if (allowedCountryCodes && !allowedCountryCodes.includes(phoneNumber)) {
+      return `phone number ${phoneNumber} is not allowed, allowed: ${allowedCountryCodes.join(", ")}`;
     }
     // Try to validate phone number before country hint.
     if (isValidPhoneNumber(phoneNumber)) {
