@@ -15,7 +15,8 @@
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@nestjs/graphql": "^12.2.0",
