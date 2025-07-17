@@ -23,8 +23,6 @@ describe("test phone validation plugin", () => {
     ...testConfig,
     dbConnectionOptions: {
       type: "postgres",
-      host: "localhost",
-      port: 5432,
       username: "deenruv",
       password: "deenruv",
       database: "deenruv",
