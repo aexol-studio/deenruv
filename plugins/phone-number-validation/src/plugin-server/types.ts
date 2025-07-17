@@ -1,4 +1,5 @@
 import { Order, OrderState, RequestContext } from "@deenruv/core";
+import { CountryCode } from "libphonenumber-js";
 
 export type PhoneNumberValidationOptions = {
   disableTransitionValidation?: boolean;
@@ -8,6 +9,6 @@ export type PhoneNumberValidationOptions = {
     | string
     | ((ctx: RequestContext, order: Order) => Promise<string> | string);
   allowedCountryCodes?:
-    | string[]
-    | ((ctx: RequestContext) => Promise<string[]> | string[]);
+    | CountryCode[]
+    | ((ctx: RequestContext) => Promise<CountryCode[]> | CountryCode[]);
 };

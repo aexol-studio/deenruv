@@ -2,6 +2,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ActiveOrderService, Order, RequestContext } from "@deenruv/core";
 import { PhoneNumberValidationOptions } from "./types.js";
 import { CountryCode, isValidPhoneNumber } from "libphonenumber-js";
+import parsePhoneNumber from "libphonenumber-js";
+
 import { PHONE_NUMBER_VALIDATION_OPTIONS } from "./symbol.js";
 
 @Injectable()
@@ -14,7 +16,7 @@ export class PhoneNumberValidationService {
 
   private async getAllowedCountryCodes(
     ctx: RequestContext,
-  ): Promise<string[] | void> {
+  ): Promise<CountryCode[] | void> {
     const { allowedCountryCodes } = this.options;
     if (typeof allowedCountryCodes === "function") {
       return await allowedCountryCodes(ctx);
@@ -34,6 +36,7 @@ export class PhoneNumberValidationService {
     if (typeof defaultCountryCode === "string") return defaultCountryCode;
     if (defaultCountryCode) return await defaultCountryCode(ctx, order);
   }
+
   async validatePhoneNumberForOrder(
     ctx: RequestContext,
     order: Order,
@@ -44,8 +47,14 @@ export class PhoneNumberValidationService {
       return requirePhoneNumber ? "missing required phone number" : undefined;
     }
     const allowedCountryCodes = await this.getAllowedCountryCodes(ctx);
-    if (allowedCountryCodes && !allowedCountryCodes.includes(phoneNumber)) {
-      return `phone number ${phoneNumber} is not allowed, allowed: ${allowedCountryCodes.join(", ")}`;
+    const phone = parsePhoneNumber(phoneNumber);
+    if (!phone) return "could not parse phone number";
+    if (
+      phone.country &&
+      allowedCountryCodes &&
+      !allowedCountryCodes.includes(phone.country)
+    ) {
+      return `phone number country ${phone.country} is not allowed`;
     }
     // Try to validate phone number before country hint.
     if (isValidPhoneNumber(phoneNumber)) {

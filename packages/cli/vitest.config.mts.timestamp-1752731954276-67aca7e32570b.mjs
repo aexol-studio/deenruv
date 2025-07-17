@@ -1,0 +1,15 @@
+// vitest.config.mts
+import swc from "file:///home/aleksander/deenruv/node_modules/.pnpm/unplugin-swc@1.5.5_@swc+core@1.12.11_@swc+helpers@0.5.17__rollup@4.44.2/node_modules/unplugin-swc/dist/index.js";
+import { defineConfig } from "file:///home/aleksander/deenruv/node_modules/.pnpm/vitest@3.2.4_@types+node@20.19.5_less@4.3.0_sass@1.89.2_terser@5.43.1/node_modules/vitest/dist/config.js";
+var vitest_config_default = defineConfig({
+  plugins: [
+    // SWC required to support decorators used in test plugins
+    // See https://github.com/vitest-dev/vitest/issues/708#issuecomment-1118628479
+    // Vite plugin
+    swc.vite()
+  ]
+});
+export {
+  vitest_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZXN0LmNvbmZpZy5tdHMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCIvaG9tZS9hbGVrc2FuZGVyL2RlZW5ydXYvcGFja2FnZXMvY2xpXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ZpbGVuYW1lID0gXCIvaG9tZS9hbGVrc2FuZGVyL2RlZW5ydXYvcGFja2FnZXMvY2xpL3ZpdGVzdC5jb25maWcubXRzXCI7Y29uc3QgX192aXRlX2luamVjdGVkX29yaWdpbmFsX2ltcG9ydF9tZXRhX3VybCA9IFwiZmlsZTovLy9ob21lL2FsZWtzYW5kZXIvZGVlbnJ1di9wYWNrYWdlcy9jbGkvdml0ZXN0LmNvbmZpZy5tdHNcIjtpbXBvcnQgc3djIGZyb20gXCJ1bnBsdWdpbi1zd2NcIjtcbmltcG9ydCB7IGRlZmluZUNvbmZpZyB9IGZyb20gXCJ2aXRlc3QvY29uZmlnXCI7XG5cbmV4cG9ydCBkZWZhdWx0IGRlZmluZUNvbmZpZyh7XG4gIHBsdWdpbnM6IFtcbiAgICAvLyBTV0MgcmVxdWlyZWQgdG8gc3VwcG9ydCBkZWNvcmF0b3JzIHVzZWQgaW4gdGVzdCBwbHVnaW5zXG4gICAgLy8gU2VlIGh0dHBzOi8vZ2l0aHViLmNvbS92aXRlc3QtZGV2L3ZpdGVzdC9pc3N1ZXMvNzA4I2lzc3VlY29tbWVudC0xMTE4NjI4NDc5XG4gICAgLy8gVml0ZSBwbHVnaW5cbiAgICBzd2Mudml0ZSgpLFxuICBdLFxufSk7XG4iXSwKICAibWFwcGluZ3MiOiAiO0FBQXVTLE9BQU8sU0FBUztBQUN2VCxTQUFTLG9CQUFvQjtBQUU3QixJQUFPLHdCQUFRLGFBQWE7QUFBQSxFQUMxQixTQUFTO0FBQUE7QUFBQTtBQUFBO0FBQUEsSUFJUCxJQUFJLEtBQUs7QUFBQSxFQUNYO0FBQ0YsQ0FBQzsiLAogICJuYW1lcyI6IFtdCn0K
