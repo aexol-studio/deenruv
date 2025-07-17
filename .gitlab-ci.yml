@@ -27,7 +27,7 @@ test:
     POSTGRES_USER: deenruv
     POSTGRES_PASSWORD: deenruv
     POSTGRES_HOST_AUTH_METHOD: trust
-    PGHOST: deenruv
+    PGHOST: postgres
     DB_SCHEMA: public
   services:
     - name: postgres
