@@ -23,6 +23,9 @@ describe("test phone validation plugin", () => {
     ...testConfig,
     dbConnectionOptions: {
       type: "postgres",
+      username: "deenruv",
+      password: "deenruv",
+      database: "deenruv",
     } as { type: "postgres" },
     plugins: [
       PhoneNumberValidationPlugin.init({

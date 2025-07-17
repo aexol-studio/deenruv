@@ -24,8 +24,11 @@ test:
   <<: *build_artifacts
   variables:
     POSTGRES_DB: deenruv
+    PGDATABASE: $POSTGRES_DB
     POSTGRES_USER: deenruv
+    PGUSER: $POSTGRES_USER
     POSTGRES_PASSWORD: deenruv
+    PGPASSWORD: $POSTGRES_PASSWORD
     POSTGRES_HOST_AUTH_METHOD: trust
     PGHOST: postgres
     DB_SCHEMA: public
