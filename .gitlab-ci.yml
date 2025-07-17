@@ -2,6 +2,17 @@ include:
     - project: 'ci/templates/node'
       file: ['pnpm-publish.yml']
 
+test:
+  variables:
+    POSTGRES_DB: deenruv
+    POSTGRES_USER: deenruv
+    POSTGRES_PASSWORD: deenruv
+    POSTGRES_HOST_AUTH_METHOD: trust
+    PGHOST: deenruv
+    DB_SCHEMA: public
+  services:
+    - name: postgres
+      alias: postgres
 
 .build artifacts: &build_artifacts
   artifacts:
