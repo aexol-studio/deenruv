@@ -181,8 +181,8 @@ export class InpostService implements OnModuleInit {
   ) {
     if (
       !shipment.status ||
-      shipment.status === "offer_selected" ||
-      shipment.status === "created"
+      shipment.status === "created" ||
+      shipment.status === "offer_selected"
     ) {
       await this.orderProgressJob.add({
         context: ctx.serialize(),
