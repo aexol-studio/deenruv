@@ -125,7 +125,12 @@ export class InpostService implements OnModuleInit {
     config: InpostConfigEntity,
     client: Client,
   ) {
-    if (!shipment.status || shipment.status === "created") {
+    if (
+      !shipment.status ||
+      shipment.status === "created" ||
+      shipment.status === "offer_selected" ||
+      shipment.selected_offer.status !== "bought"
+    ) {
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,
@@ -156,11 +161,7 @@ export class InpostService implements OnModuleInit {
     config: InpostConfigEntity,
     client: Client,
   ) {
-    if (
-      !shipment.status ||
-      shipment.status === "created" ||
-      shipment.status === "offer_selected"
-    ) {
+    if (!shipment.status || shipment.status === "created") {
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,

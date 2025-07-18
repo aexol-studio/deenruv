@@ -394,6 +394,27 @@ importers:
 
   apps/server:
     dependencies:
+      '@angular/cdk':
+        specifier: ^17.2.2
+        version: 17.3.10(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/cli':
+        specifier: ^17.2.3
+        version: 17.3.17(chokidar@3.6.0)
+      '@angular/common':
+        specifier: ^17.2.4
+        version: 17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1)
+      '@angular/core':
+        specifier: ^17.3.12
+        version: 17.3.12(rxjs@7.8.1)(zone.js@0.14.10)
+      '@angular/platform-browser':
+        specifier: ^17.2.4
+        version: 17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))
+      '@angular/platform-browser-dynamic':
+        specifier: ^17.2.4
+        version: 17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))
+      '@angular/router':
+        specifier: ^17.2.4
+        version: 17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
       '@aws-sdk/client-s3':
         specifier: ^3.583.0
         version: 3.842.0
@@ -406,6 +427,21 @@ importers:
       '@aws-sdk/s3-request-presigner':
         specifier: ^3.583.0
         version: 3.842.0
+      '@biesbjerg/ngx-translate-extract-marker':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@cds/core':
+        specifier: ^6.9.2
+        version: 6.15.1
+      '@clr/icons':
+        specifier: ^13.0.2
+        version: 13.0.2(@webcomponents/custom-elements@1.6.0)
+      '@clr/ui':
+        specifier: ^17.0.1
+        version: 17.10.0(@cds/core@6.15.1)
+      '@deenruv/admin-ui':
+        specifier: workspace:*
+        version: link:../../packages/admin-ui/package
       '@deenruv/admin-ui-plugin':
         specifier: workspace:*
         version: link:../../packages/admin-ui-plugin
@@ -439,6 +475,9 @@ importers:
       '@deenruv/in-realization-plugin':
         specifier: workspace:*
         version: link:../../plugins/in-realization-plugin
+      '@deenruv/inpost':
+        specifier: workspace:*
+        version: link:../../packages/inpost
       '@deenruv/inpost-plugin':
         specifier: workspace:*
         version: link:../../plugins/inpost-plugin
@@ -475,9 +514,18 @@ importers:
       '@nestjs/serve-static':
         specifier: ^4.0.2
         version: 4.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(express@4.21.2)
+      '@ng-select/ng-select':
+        specifier: ^12.0.7
+        version: 12.0.7(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@angular/forms@17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1))
+      tslib:
+        specifier: ^2.6.2
+        version: 2.8.1
       typescript:
         specifier: 5.3.3
         version: 5.3.3
+      zone.js:
+        specifier: ~0.14.4
+        version: 0.14.10
     devDependencies:
       '@deenruv/testing':
         specifier: workspace:*
@@ -807,7 +855,7 @@ importers:
     devDependencies:
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1

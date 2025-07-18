@@ -24,6 +24,7 @@ import { BullMQJobQueuePlugin } from "@deenruv/job-queue-plugin/package/bullmq";
 import path from "path";
 import { InpostPlugin } from "@deenruv/inpost-plugin";
 import { Przelewy24Plugin } from "@deenruv/przelewy24-plugin";
+import { customAdminUi } from "compile-admin-ui.js";
 // import { RestPlugin } from './test-plugins/rest-plugin';
 // import { s3Client } from './client-s3';
 /**
@@ -87,9 +88,13 @@ export const devConfig: DeenruvConfig = {
   shippingOptions: {},
   customFields: {},
   plugins: [
-    // InpostPlugin.init({}),
+    InpostPlugin.init({}),
     // Przelewy24Plugin.init({}),
-    AdminUiPlugin.init({ route: "admin", port: 5001 }),
+    AdminUiPlugin.init({
+      route: "admin",
+      port: 5001,
+      app: customAdminUi({ devMode: true, recompile: true }),
+    }),
     AssetServerPlugin.init({
       route: "assets",
       assetUploadDir: path.join(__dirname, "assets"),
