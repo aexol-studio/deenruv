@@ -3,6 +3,8 @@ import { Parcel } from "./parcel.js";
 import { Money } from "./money.js";
 import { Service } from "./service.js";
 import { Offer } from "./offer.js";
+import { Transaction } from "./transaction.js";
+
 export interface Shipment {
   id?: number;
   receiver: Person;
@@ -33,4 +35,5 @@ export interface Shipment {
   status?: "created" | "offer_selected";
   offers?: Offer[];
   selected_offer?: Offer;
+  transactions?: Transaction[];
 }

@@ -125,12 +125,7 @@ export class InpostService implements OnModuleInit {
     config: InpostConfigEntity,
     client: Client,
   ) {
-    if (
-      !shipment.status ||
-      shipment.status === "created" ||
-      shipment.status === "offer_selected" ||
-      shipment.selected_offer.status !== "bought"
-    ) {
+    if (!shipment.status || shipment.status === "created") {
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,
@@ -140,12 +135,35 @@ export class InpostService implements OnModuleInit {
       });
       return;
     }
+
     await client
       .shipments()
       .get(shipment.id || 0)
-      .buy({
-        offer_id: shipment.offers?.[0].id || 0,
+      .buy({ offer_id: shipment.offers?.[0].id || 0 });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const response = await client
+      .shipments()
+      .get(shipment.id || 0)
+      .fetch();
+
+    const found = response.transactions?.find(
+      (t) => t.status === "success" && t.offer_id === shipment.offers?.[0].id,
+    );
+    Logger.info(
+      `Inpost transactions: ${JSON.stringify(response?.transactions || [])} for shipment ${shipment.id}`,
+    );
+
+    if (!found) {
+      await this.orderProgressJob.add({
+        context: ctx.serialize(),
+        inpostConfigId: config.id,
+        nextStep: "buy",
+        shipmentId: shipment.id || 0,
+        delay: 5000,
       });
+      return;
+    }
+
     await this.orderProgressJob.add({
       context: ctx.serialize(),
       inpostConfigId: config.id,
@@ -161,7 +179,11 @@ export class InpostService implements OnModuleInit {
     config: InpostConfigEntity,
     client: Client,
   ) {
-    if (!shipment.status || shipment.status === "created") {
+    if (
+      !shipment.status ||
+      shipment.status === "offer_selected" ||
+      shipment.status === "created"
+    ) {
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,
