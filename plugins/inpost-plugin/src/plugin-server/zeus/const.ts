@@ -171,11 +171,11 @@ export const AllTypesProps: Record<string,any> = {
 		zone:{
 
 		},
+		getInpostOrganizations:{
+			input:"GetInpostOrganizationsInput"
+		},
 		metricSummary:{
 			input:"MetricSummaryInput"
-		},
-		getRealizationURL:{
-
 		}
 	},
 	Mutation:{
@@ -431,6 +431,9 @@ export const AllTypesProps: Record<string,any> = {
 		applyCouponCodeToDraftOrder:{
 
 		},
+		toggleExcludePromotionInOrder:{
+
+		},
 		removeCouponCodeFromDraftOrder:{
 
 		},
@@ -653,14 +656,8 @@ export const AllTypesProps: Record<string,any> = {
 		removeMembersFromZone:{
 
 		},
-		copyOrder:{
-
-		},
-		registerRealization:{
-			input:"OrderRealizationInput"
-		},
-		sendInvoiceToWFirma:{
-			input:"SendInvoiceToWFirmaInput"
+		setInpostShippingMethodConfig:{
+			input:"SetInpostShippingMethodConfigInput"
 		}
 	},
 	AdministratorListOptions:{
@@ -848,11 +845,11 @@ export const AllTypesProps: Record<string,any> = {
 	CreateFacetInput:{
 		translations:"FacetTranslationInput",
 		values:"CreateFacetValueWithFacetInput",
-		customFields:"CreateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateFacetInput:{
 		translations:"FacetTranslationInput",
-		customFields:"UpdateFacetCustomFieldsInput"
+		customFields:"JSON"
 	},
 	FacetValueTranslationInput:{
 		languageCode:"LanguageCode",
@@ -863,11 +860,11 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	CreateFacetValueInput:{
 		translations:"FacetValueTranslationInput",
-		customFields:"CreateFacetValueCustomFieldsInput"
+		customFields:"JSON"
 	},
 	UpdateFacetValueInput:{
 		translations:"FacetValueTranslationInput",
-		customFields:"UpdateFacetValueCustomFieldsInput"
+		customFields:"JSON"
 	},
 	AssignFacetsToChannelInput:{
 
@@ -911,7 +908,8 @@ export const AllTypesProps: Record<string,any> = {
 		total:"NumberOperators",
 		totalWithTax:"NumberOperators",
 		_and:"OrderFilterParameter",
-		_or:"OrderFilterParameter"
+		_or:"OrderFilterParameter",
+		pickupPointId:"StringOperators"
 	},
 	OrderSortParameter:{
 		customerLastName:"SortOrder",
@@ -929,7 +927,8 @@ export const AllTypesProps: Record<string,any> = {
 		shipping:"SortOrder",
 		shippingWithTax:"SortOrder",
 		total:"SortOrder",
-		totalWithTax:"SortOrder"
+		totalWithTax:"SortOrder",
+		pickupPointId:"SortOrder"
 	},
 	OrderListOptions:{
 		sort:"OrderSortParameter",
@@ -940,7 +939,7 @@ export const AllTypesProps: Record<string,any> = {
 
 	},
 	UpdateOrderInput:{
-		customFields:"JSON"
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	FulfillOrderInput:{
 		lines:"OrderLineInput",
@@ -956,7 +955,7 @@ export const AllTypesProps: Record<string,any> = {
 		amount:"Money"
 	},
 	OrderLineInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	SettleRefundInput:{
 
@@ -987,10 +986,11 @@ export const AllTypesProps: Record<string,any> = {
 		updateBillingAddress:"UpdateOrderAddressInput",
 		refund:"AdministratorRefundInput",
 		refunds:"AdministratorRefundInput",
-		options:"ModifyOrderOptions"
+		options:"ModifyOrderOptions",
+		customFields:"UpdateOrderCustomFieldsInput"
 	},
 	AddItemInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	SurchargeInput:{
 		price:"Money"
@@ -999,10 +999,10 @@ export const AllTypesProps: Record<string,any> = {
 		metadata:"JSON"
 	},
 	AddItemToDraftOrderInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	AdjustDraftOrderLineInput:{
-		customFields:"OrderLineCustomFieldsInput"
+
 	},
 	PaymentMethodListOptions:{
 		sort:"PaymentMethodSortParameter",
@@ -1443,20 +1443,17 @@ export const AllTypesProps: Record<string,any> = {
 	},
 	LanguageCode: "enum" as const,
 	OrderType: "enum" as const,
+	SetInpostShippingMethodConfigInput:{
+
+	},
+	GetInpostOrganizationsInput:{
+
+	},
 	MetricInterval: "enum" as const,
 	MetricType: "enum" as const,
 	MetricSummaryInput:{
 		interval:"MetricInterval",
 		types:"MetricType"
-	},
-	RealizationAssetInput:{
-
-	},
-	OrderRealizationInput:{
-		assets:"RealizationAssetInput"
-	},
-	SendInvoiceToWFirmaInput:{
-
 	},
 	AdministratorFilterParameter:{
 		id:"IDOperators",
@@ -1620,20 +1617,14 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetFilterParameter",
-		_or:"FacetFilterParameter",
-		usedForColors:"BooleanOperators",
-		usedForProductCreations:"BooleanOperators",
-		colorsCollection:"BooleanOperators"
+		_or:"FacetFilterParameter"
 	},
 	FacetSortParameter:{
 		id:"SortOrder",
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder",
-		usedForColors:"SortOrder",
-		usedForProductCreations:"SortOrder",
-		colorsCollection:"SortOrder"
+		code:"SortOrder"
 	},
 	FacetValueFilterParameter:{
 		id:"IDOperators",
@@ -1644,10 +1635,7 @@ export const AllTypesProps: Record<string,any> = {
 		name:"StringOperators",
 		code:"StringOperators",
 		_and:"FacetValueFilterParameter",
-		_or:"FacetValueFilterParameter",
-		hexColor:"StringOperators",
-		isNew:"BooleanOperators",
-		isHidden:"BooleanOperators"
+		_or:"FacetValueFilterParameter"
 	},
 	FacetValueSortParameter:{
 		id:"SortOrder",
@@ -1655,11 +1643,7 @@ export const AllTypesProps: Record<string,any> = {
 		updatedAt:"SortOrder",
 		facetId:"SortOrder",
 		name:"SortOrder",
-		code:"SortOrder",
-		hexColor:"SortOrder",
-		isNew:"SortOrder",
-		isHidden:"SortOrder",
-		image:"SortOrder"
+		code:"SortOrder"
 	},
 	JobFilterParameter:{
 		id:"IDOperators",
@@ -1904,24 +1888,13 @@ export const AllTypesProps: Record<string,any> = {
 		createdAt:"SortOrder",
 		updatedAt:"SortOrder"
 	},
-	CreateFacetCustomFieldsInput:{
-
-	},
-	UpdateFacetCustomFieldsInput:{
-
-	},
-	CreateFacetValueCustomFieldsInput:{
-
-	},
-	UpdateFacetValueCustomFieldsInput:{
-
-	},
-	OrderLineCustomFieldsInput:{
+	UpdateOrderCustomFieldsInput:{
 
 	},
 	NativeAuthInput:{
 
-	}
+	},
+	ID: `scalar.ID` as const
 }
 
 export const ReturnTypes: Record<string,any> = {
@@ -1997,8 +1970,9 @@ export const ReturnTypes: Record<string,any> = {
 		taxRate:"TaxRate",
 		zones:"ZoneList",
 		zone:"Zone",
-		metricSummary:"MetricSummary",
-		getRealizationURL:"String"
+		getInpostConfig:"InpostConfig",
+		getInpostOrganizations:"InpostOrganizationResponse",
+		metricSummary:"MetricSummary"
 	},
 	Mutation:{
 		createAdministrator:"Administrator",
@@ -2087,6 +2061,7 @@ export const ReturnTypes: Record<string,any> = {
 		setDraftOrderBillingAddress:"Order",
 		setDraftOrderCustomFields:"Order",
 		applyCouponCodeToDraftOrder:"ApplyCouponCodeResult",
+		toggleExcludePromotionInOrder:"Order",
 		removeCouponCodeFromDraftOrder:"Order",
 		setDraftOrderShippingMethod:"SetOrderShippingMethodResult",
 		createPaymentMethod:"PaymentMethod",
@@ -2116,7 +2091,7 @@ export const ReturnTypes: Record<string,any> = {
 		assignProductsToChannel:"Product",
 		removeProductsFromChannel:"Product",
 		assignProductVariantsToChannel:"ProductVariant",
-		removeProductVariantsFromChannel:"ProductVariant",
+		removeProductVariantsFromChannel:"ID",
 		createPromotion:"CreatePromotionResult",
 		updatePromotion:"UpdatePromotionResult",
 		deletePromotion:"DeletionResponse",
@@ -2163,9 +2138,7 @@ export const ReturnTypes: Record<string,any> = {
 		deleteZones:"DeletionResponse",
 		addMembersToZone:"Zone",
 		removeMembersFromZone:"Zone",
-		copyOrder:"CopyOrderResult",
-		registerRealization:"OrderRealization",
-		sendInvoiceToWFirma:"WFirmaResponse"
+		setInpostShippingMethodConfig:"Boolean"
 	},
 	Administrator:{
 		id:"ID",
@@ -2297,7 +2270,7 @@ export const ReturnTypes: Record<string,any> = {
 		values:"FacetValue",
 		valueList:"FacetValueList",
 		translations:"FacetTranslation",
-		customFields:"FacetCustomFields"
+		customFields:"JSON"
 	},
 	FacetInUseError:{
 		errorCode:"ErrorCode",
@@ -2411,6 +2384,7 @@ export const ReturnTypes: Record<string,any> = {
 		surcharges:"Surcharge",
 		discounts:"Discount",
 		couponCodes:"String",
+		excludedPromotionIds:"String",
 		promotions:"Promotion",
 		payments:"Payment",
 		fulfillments:"Fulfillment",
@@ -2425,8 +2399,7 @@ export const ReturnTypes: Record<string,any> = {
 		totalWithTax:"Money",
 		taxSummary:"OrderTaxSummary",
 		history:"HistoryEntryList",
-		getRealization:"OrderRealization",
-		customFields:"JSON"
+		customFields:"OrderCustomFields"
 	},
 	Fulfillment:{
 		nextStates:"String",
@@ -2438,7 +2411,7 @@ export const ReturnTypes: Record<string,any> = {
 		state:"String",
 		method:"String",
 		trackingCode:"String",
-		customFields:"JSON"
+		customFields:"FulfillmentCustomFields"
 	},
 	Payment:{
 		nextStates:"String",
@@ -3445,7 +3418,7 @@ export const ReturnTypes: Record<string,any> = {
 		name:"String",
 		code:"String",
 		translations:"FacetValueTranslation",
-		customFields:"FacetValueCustomFields"
+		customFields:"JSON"
 	},
 	FacetValueTranslation:{
 		id:"ID",
@@ -3540,7 +3513,7 @@ export const ReturnTypes: Record<string,any> = {
 		taxLines:"TaxLine",
 		order:"Order",
 		fulfillmentLines:"FulfillmentLine",
-		customFields:"OrderLineCustomFields"
+		customFields:"JSON"
 	},
 	RefundLine:{
 		orderLine:"OrderLine",
@@ -3890,6 +3863,22 @@ export const ReturnTypes: Record<string,any> = {
 		members:"Region",
 		customFields:"JSON"
 	},
+	InpostConfig:{
+		shippingMethodId:"ID",
+		host:"String",
+		apiKey:"String",
+		geowidgetKey:"String",
+		inpostOrganization:"Int",
+		service:"String"
+	},
+	InpostOrganization:{
+		id:"Int",
+		name:"String",
+		services:"String"
+	},
+	InpostOrganizationResponse:{
+		items:"InpostOrganization"
+	},
 	MetricSummary:{
 		interval:"MetricInterval",
 		type:"MetricType",
@@ -3900,47 +3889,11 @@ export const ReturnTypes: Record<string,any> = {
 		label:"String",
 		value:"Float"
 	},
-	CopyOrderErrorResponse:{
-		message:"String"
+	FulfillmentCustomFields:{
+		inpostLabel:"Asset"
 	},
-	CopyOrderResult:{
-		"...on Order":"Order",
-		"...on CopyOrderErrorResponse":"CopyOrderErrorResponse"
-	},
-	OrderRealization:{
-		orderID:"ID",
-		assetID:"ID",
-		plannedAt:"String",
-		finalPlannedAt:"String",
-		note:"String",
-		color:"String",
-		key:"String",
-		url:"String"
-	},
-	ShopOrderRealization:{
-		note:"String",
-		plannedAt:"String",
-		finalPlannedAt:"String"
-	},
-	WFirmaResponse:{
-		url:"String"
-	},
-	FacetCustomFields:{
-		usedForColors:"Boolean",
-		usedForProductCreations:"Boolean",
-		colorsCollection:"Boolean"
-	},
-	FacetValueCustomFields:{
-		hexColor:"String",
-		isNew:"Boolean",
-		isHidden:"Boolean",
-		image:"Asset"
-	},
-	OrderLineCustomFields:{
-		attributes:"String",
-		discountBy:"Int",
-		modifiedListPrice:"String",
-		selectedImage:"Asset"
+	OrderCustomFields:{
+		pickupPointId:"String"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",
@@ -3975,7 +3928,8 @@ export const ReturnTypes: Record<string,any> = {
 	EntityCustomFields:{
 		entityName:"String",
 		customFields:"CustomFieldConfig"
-	}
+	},
+	ID: `scalar.ID` as const
 }
 
 export const Ops = {

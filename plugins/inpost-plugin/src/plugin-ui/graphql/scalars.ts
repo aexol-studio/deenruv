@@ -1,4 +1,4 @@
-import { ZeusScalars } from "../zeus";
+import { FromSelector, GraphQLTypes, ZeusScalars } from "../zeus";
 
 export const scalars = ZeusScalars({
   DateTime: {
@@ -13,3 +13,9 @@ export const scalars = ZeusScalars({
     decode: (e) => e as number,
   },
 });
+export type ScalarsType = typeof scalars;
+
+export type FromSelectorWithScalars<
+  SELECTOR,
+  NAME extends keyof GraphQLTypes,
+> = FromSelector<SELECTOR, NAME, ScalarsType>;

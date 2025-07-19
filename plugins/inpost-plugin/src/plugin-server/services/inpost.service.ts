@@ -109,14 +109,23 @@ export class InpostService implements OnModuleInit {
     return config.geowidgetKey;
   }
 
-  async isConnected(ctx: RequestContext): Promise<boolean> {
-    const config = await this.getConfig(ctx);
-    return !!(
-      config?.host &&
-      config?.apiKey &&
-      config?.service &&
-      config?.inpostOrganization
-    );
+  async getInpostConfig(ctx: RequestContext) {
+    return this.getConfig(ctx);
+  }
+
+  async getInpostOrganizations(
+    ctx: RequestContext,
+    input: { host: string; apiKey: string },
+  ) {
+    const client = new Client(input);
+    const organizations = await client.organizations().list();
+    return {
+      items: organizations.items.map((org) => ({
+        id: org.id,
+        name: org.name,
+        services: org.services,
+      })),
+    };
   }
 
   private async buyShipment(
@@ -451,6 +460,18 @@ export class InpostService implements OnModuleInit {
     ctx: RequestContext,
     { shippingMethodId, ...rest }: SetInpostShippingMethodConfigInput,
   ) {
+    const existingConfig = await this.connection
+      .getRepository(ctx, InpostConfigEntity)
+      .findOne({ where: { shippingMethod: { id: shippingMethodId } } });
+    if (existingConfig) {
+      await this.connection
+        .getRepository(ctx, InpostConfigEntity)
+        .update(
+          { id: existingConfig.id },
+          { ...rest, shippingMethod: { id: shippingMethodId } },
+        );
+      return;
+    }
     await this.connection.getRepository(ctx, InpostConfigEntity).insert(
       new InpostConfigEntity({
         ...rest,

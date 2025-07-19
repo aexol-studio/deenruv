@@ -219,6 +219,9 @@ importers:
       '@deenruv/in-realization-plugin':
         specifier: workspace:*
         version: link:../../plugins/in-realization-plugin
+      '@deenruv/inpost-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/inpost-plugin
       '@deenruv/order-line-attributes-plugin':
         specifier: workspace:*
         version: link:../../plugins/order-attributes-plugin
@@ -855,7 +858,7 @@ importers:
     devDependencies:
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1

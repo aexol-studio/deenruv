@@ -9,8 +9,18 @@ export class InpostAdminResolver {
 
   @Query()
   @Allow(Permission.Owner)
-  async inpostConnected(@Ctx() ctx: RequestContext): Promise<boolean> {
-    return this.inpostService.isConnected(ctx);
+  async getInpostConfig(@Ctx() ctx: RequestContext) {
+    return this.inpostService.getInpostConfig(ctx);
+  }
+
+  @Query()
+  @Allow(Permission.Owner)
+  async getInpostOrganizations(
+    @Ctx() ctx: RequestContext,
+    @Args("input")
+    input: { host: string; apiKey: string; inpostOrganization: number },
+  ) {
+    return this.inpostService.getInpostOrganizations(ctx, input);
   }
 
   @Mutation()

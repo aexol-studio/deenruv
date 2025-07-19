@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { DataService, I18nService } from "@deenruv/admin-ui/core";
 import {
-  useQuery,
   ActionBar,
   Card,
   FormField,
   useDetailComponentData,
   useInjector,
+  useLazyQuery,
 } from "@deenruv/admin-ui/react";
 import { Client, Organization, Service } from "@deenruv/inpost";
 import gql from "graphql-tag";
@@ -22,14 +22,17 @@ interface InpostConfig {
 export const Inpost: React.FC = () => {
   const t = useInjector(I18nService);
   const dataService = useInjector(DataService);
-  const { data: inpostConnected } = useQuery<boolean>(
-    gql`
-      query InpostConnected {
-        inpostConnected
+  const [get, { data }] = useLazyQuery<{ getInpostConfig: InpostConfig }>(gql`
+    query InpostConfig {
+      getInpostConfig {
+        host
+        apiKey
+        geowidgetKey
+        inpostOrganization
+        service
       }
-    `,
-    { fetchPolicy: "network-only" },
-  );
+    }
+  `);
   const { entity, detailForm } = useDetailComponentData();
   const shippingMethodId = entity?.id as undefined | number;
   const fulfillmentHandlerControl = detailForm.controls["fulfillmentHandler"];
@@ -48,6 +51,14 @@ export const Inpost: React.FC = () => {
   });
   const [organizations, setOrganizations] = useState([] as Organization[]);
   const [modified, setModified] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const config = await get();
+      setInpostConfig(config.getInpostConfig);
+      setModified(false);
+    })();
+  }, [get]);
 
   useEffect(() => {
     (async () => {
@@ -85,15 +96,15 @@ export const Inpost: React.FC = () => {
           <FormField
             label={t.translate("inpost-plugin.connection-label")}
             tooltip={t.translate("inpost-plugin.connection-tooltip")}
-            invalid={!inpostConnected}
+            invalid={!data?.getInpostConfig}
             errorMessage={
-              inpostConnected
+              data?.getInpostConfig
                 ? ""
                 : t.translate("inpost-plugin.connection-error")
             }
           >
             <span>
-              {inpostConnected
+              {data?.getInpostConfig
                 ? t.translate("inpost-plugin.connected")
                 : t.translate("inpost-plugin.not-connected")}
             </span>
@@ -245,8 +256,7 @@ export const Inpost: React.FC = () => {
                       shippingMethodId,
                     },
                   )
-                  .subscribe((res) => {
-                    console.log(res);
+                  .subscribe(() => {
                     setModified(false);
                   });
               }}

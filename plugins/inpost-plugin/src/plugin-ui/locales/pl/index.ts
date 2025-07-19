@@ -1,3 +1,3 @@
-import wfirma from "./wfirma.json";
+import inpost from "./inpost.json";
 
-export default [wfirma];
+export default [inpost];

@@ -16,6 +16,7 @@
   "scripts": {
     "build": "rimraf dist && tsc --build && cp -r ./src/plugin-server/ui ./dist/plugin-server",
     "watch": "tsc --build --watch",
+    "watch:ui": "tsc --watch --project ./src/plugin-ui/tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --es --td"

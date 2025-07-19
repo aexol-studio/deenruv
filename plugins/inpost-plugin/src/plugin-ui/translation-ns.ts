@@ -1,1 +1,1 @@
-export const translationNS = Symbol("wfirma-plugin").toString();
+export const translationNS = Symbol("inpost-plugin").toString();

@@ -4,9 +4,9 @@ import { scalars } from "./scalars";
 
 const mutation = typedGql("mutation", { scalars });
 
-export const SEND_INVOICE = mutation({
-  sendInvoiceToWFirma: [
-    { input: $("input", "SendInvoiceToWFirmaInput!") },
-    { url: true },
+export const SET_INPOST_CONFIG = mutation({
+  setInpostShippingMethodConfig: [
+    { input: $("input", "SetInpostShippingMethodConfigInput!") },
+    true,
   ],
 });
