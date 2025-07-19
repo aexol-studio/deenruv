@@ -30,6 +30,7 @@ import {
   ImageWithPreview,
   useTranslation,
   priceFormatter,
+  DialogProductPicker,
 } from '@deenruv/react-ui-devkit';
 import {
   type DraftOrderLineType,
@@ -47,7 +48,6 @@ import type { OnPriceQuantityChangeApproveInput } from './OrderLineActionModal/t
 import { OrderLineActionModal } from './OrderLineActionModal/index.js';
 import { CustomComponent } from './CustomComponent.js';
 import { OrderLineCustomFields } from './OrderLineCustomFields.js';
-import { ProductVariantSearch } from '@/components';
 import { SpecialLineItem } from './SpecialLineItem.js';
 
 type AddItemCustomFieldsType = any;
@@ -374,10 +374,56 @@ export const ProductsCard: React.FC = () => {
       >
         <div className="grid gap-6">
           {mode !== 'view' && (
-            <ProductVariantSearch
-              onSelectItem={(i) =>
-                orderLineCustomFields.length ? openAddVariantDialog({ variant: i }) : addToOrder(i, 1)
-              }
+            <DialogProductPicker
+              initialValue={''}
+              mode="variant"
+              onSubmit={async (selectedProduct) => {
+                const payload = {
+                  variant: {
+                    id: selectedProduct.productVariantId,
+                    price:
+                      selectedProduct.price.__typename === 'SinglePrice'
+                        ? selectedProduct.price.value
+                        : selectedProduct.price.min,
+                    priceWithTax:
+                      selectedProduct.priceWithTax.__typename === 'SinglePrice'
+                        ? selectedProduct.priceWithTax.value
+                        : selectedProduct.priceWithTax.min,
+                    sku: selectedProduct.sku,
+                    currencyCode: selectedProduct.currencyCode,
+                    name: selectedProduct.productVariantName,
+                    productId: selectedProduct.productId,
+                    stockLevels: [{ stockOnHand: 0 }],
+                    product: {
+                      id: selectedProduct.productId,
+                      name: selectedProduct.productName,
+                      slug: selectedProduct.slug,
+                      featuredAsset: selectedProduct.productAsset,
+                    },
+                    featuredAsset: selectedProduct.productVariantAsset,
+                  },
+                  quantity: 1,
+                  customFields: {},
+                };
+                const variant = await apiClient('query')({
+                  productVariant: [
+                    { id: selectedProduct.productVariantId },
+                    { id: true, stockLevels: { id: true, stockOnHand: true } },
+                  ],
+                });
+                if ((variant?.productVariant as any)?.customFields) {
+                  const customFields = (variant?.productVariant as any)?.customFields as object;
+                  payload.customFields = customFields;
+                }
+                if (variant?.productVariant?.stockLevels) {
+                  payload.variant.stockLevels = variant.productVariant.stockLevels;
+                }
+                if (orderLineCustomFields.length) {
+                  openAddVariantDialog(payload);
+                } else {
+                  addToOrder(payload.variant, payload.quantity, payload.customFields);
+                }
+              }}
             />
           )}
 

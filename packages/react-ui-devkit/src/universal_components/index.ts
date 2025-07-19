@@ -12,3 +12,4 @@ export * from "./SimpleTimePicker.js";
 export * from "./DateTimePicker.js";
 export * from "./DateTimeInput.js";
 export * from "./EntityChannelManager.js";
+export * from "./CustomerSearch.js";

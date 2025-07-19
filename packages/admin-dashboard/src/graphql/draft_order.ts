@@ -61,16 +61,6 @@ export const productVariantSelector = Selector('ProductVariant')({
 
 export type ProductVariantType = FromSelectorWithScalars<typeof productVariantSelector, 'ProductVariant'>;
 
-export const searchCustomerSelector = Selector('Customer')({
-  firstName: true,
-  lastName: true,
-  id: true,
-  emailAddress: true,
-  phoneNumber: true,
-});
-
-export type SearchCustomerType = FromSelectorWithScalars<typeof searchCustomerSelector, 'Customer'>;
-
 export const draftOrderLineSelector = Selector('OrderLine')({
   id: true,
   quantity: true,

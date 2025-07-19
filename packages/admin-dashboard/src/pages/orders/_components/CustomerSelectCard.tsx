@@ -23,9 +23,8 @@ import {
   CustomCard,
   EntityCustomFields,
   useTranslation,
+  CustomerSearch,
 } from '@deenruv/react-ui-devkit';
-import { CustomerSearch } from '@/components/AutoComplete/CustomerSearch';
-import type { SearchCustomerType } from '@/graphql/draft_order';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -35,7 +34,7 @@ export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
   const { setOrder, mode, currentOrder: order, setCustomerAndAddressesForDraftOrder } = useOrder();
   const [tab, setTab] = useState<'select' | 'create'>('select');
-  const [selected, setSelected] = useState<SearchCustomerType | undefined>(order?.customer);
+  const [selected, setSelected] = useState(order?.customer);
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 

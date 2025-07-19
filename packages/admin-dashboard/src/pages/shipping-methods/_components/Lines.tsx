@@ -8,10 +8,9 @@ import {
   Table,
   Label,
   useTranslation,
+  DialogProductPicker,
 } from '@deenruv/react-ui-devkit';
-import { ProductVariantType } from '@/graphql/draft_order';
 import React, { useEffect, useState } from 'react';
-import { ProductVariantSearch } from '@/components';
 
 interface LinesProps {
   onLinesChange: (lines: { productVariantId: string; quantity: number }[]) => void;
@@ -19,7 +18,15 @@ interface LinesProps {
 
 export const Lines: React.FC<LinesProps> = ({ onLinesChange }) => {
   const { t } = useTranslation('shippingMethods');
-  const [currentProducts, setCurrentProducts] = useState<ProductVariantType[]>([]);
+  const [currentProducts, setCurrentProducts] = useState<
+    {
+      id: string;
+      featuredAsset?: { preview: string };
+      product: { name: string; featuredAsset?: { preview: string } };
+      price: number;
+      priceWithTax: number;
+    }[]
+  >([]);
 
   useEffect(() => {
     onLinesChange(currentProducts.map((p) => ({ productVariantId: p.id, quantity: 1 })));
@@ -28,9 +35,20 @@ export const Lines: React.FC<LinesProps> = ({ onLinesChange }) => {
   return (
     <div className="grid gap-6">
       <Label htmlFor="product">{t('details.lines.placeholder')}</Label>
-      <ProductVariantSearch
-        onSelectItem={(i: ProductVariantType) => {
-          setCurrentProducts((prev) => [...prev, i]);
+      <DialogProductPicker
+        initialValue={currentProducts.map((p) => p.id)}
+        multiple
+        mode="variant"
+        onSubmit={(selectedProducts) => {
+          const products = selectedProducts.map((product) => ({
+            id: product.productVariantId,
+            featuredAsset: product.productVariantAsset,
+            product: { name: product.productName, featuredAsset: product.productAsset },
+            price: product.price.__typename === 'SinglePrice' ? product.price.value : product.price.min,
+            priceWithTax:
+              product.priceWithTax.__typename === 'SinglePrice' ? product.priceWithTax.value : product.priceWithTax.min,
+          }));
+          setCurrentProducts(products);
         }}
       />
       <Table>
