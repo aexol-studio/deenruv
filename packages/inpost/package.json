@@ -1,7 +1,7 @@
 {
   "name": "@deenruv/inpost",
   "version": "0.1.28",
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,8 @@
     }
   },
   "scripts": {
-    "build": "rimraf dist && tspc --build"
+    "build": "rimraf dist && tspc --build",
+    "test": "node --import @deenruv/ts-node-register --test ./src/index.test.ts"
   },
   "author": "",
   "license": "ISC",

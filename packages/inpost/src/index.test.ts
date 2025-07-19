@@ -9,7 +9,8 @@ import { Writable } from "node:stream";
 
 const {
   INPOST_HOST: host = "sandbox-api-shipx-pl.easypack24.net",
-  INPOST_API_KEY: apiKey,
+  INPOST_API_KEY:
+    apiKey = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJkVzROZW9TeXk0OHpCOHg4emdZX2t5dFNiWHY3blZ0eFVGVFpzWV9TUFA4In0.eyJleHAiOjIwNjgyMTI4NTAsImlhdCI6MTc1Mjg1Mjg1MCwianRpIjoiOTMwZTgwMDktOWVlNS00ZDk3LWIyNGYtYTU4MjY0MDhjNmJlIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWxvZ2luLmlucG9zdC5wbC9hdXRoL3JlYWxtcy9leHRlcm5hbCIsInN1YiI6ImY6N2ZiZjQxYmEtYTEzZC00MGQzLTk1ZjYtOThhMmIxYmFlNjdiOjhwX1FJamx6NVdMdFFJbFFhYXQ1c2ciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzaGlweCIsInNlc3Npb25fc3RhdGUiOiIwZTQ1ZDk1YS04OGI3LTQ3NTUtOGRhZC01ZGNmNzQ0YTcwOWEiLCJzY29wZSI6Im9wZW5pZCBhcGk6YXBpcG9pbnRzIGFwaTpzaGlweCIsInNpZCI6IjBlNDVkOTVhLTg4YjctNDc1NS04ZGFkLTVkY2Y3NDRhNzA5YSIsImFsbG93ZWRfcmVmZXJyZXJzIjoiIiwidXVpZCI6IjYyMDA3YmMwLTI2YWUtNGVhMS1iMzAxLWNiMTI5YmJiZGFkMiIsImVtYWlsIjoiYWxla2I5OEB3cC5wbCJ9.fiA_978fXVdfYPCN11i_7c1KwnIkd9tmcUTiGnndaeG6mE6BNOdvfJOBjOzfGop7sR9kSaCLAyHuKq1SLQObjNhcq3IQO7dDzfuPdpYTY4HjzLZrVFG8xeMATO23Cq7LvchW_xyEeGbTir8qOx_AJvtrD4eWYvsv9qK-gI47tcmsYNUCed_ImLp0hOnNdZ1MQXXat2wF-zDy38nKOe0CfQ9QVEfiBS6Bh9nR5WKVtAXphGrxPJ8gs595t2bA2BGnr7XcIast7P8bzv2F9BI6xoiLobB0KKB_pSB065LyxgKD0el3VURCqvNZDsDCqUjax8lScbm3SvL1eIonx0470w",
 } = process.env as {
   INPOST_HOST: string;
   INPOST_API_KEY: string;
@@ -77,19 +78,41 @@ describe("inpost client tests", { skip: !apiKey }, () => {
             target_point: "KRA010",
           },
         });
+
       while (!shipment.status || shipment.status === "created") {
+        console.log("Waiting for shipment to be created...");
         await new Promise((resolve) => setTimeout(resolve, 500));
         shipment = await client.shipments().get(shipment.id).fetch();
       }
+
       shipment = await client
         .shipments()
         .get(shipment.id)
         .buy({ offer_id: shipment.offers[0].id });
+
+      let found = shipment.transactions?.find(
+        (t) => t.status === "success" && t.offer_id === shipment.offers?.[0].id,
+      );
+
+      while (!found) {
+        console.log("Waiting for transaction to succeed...");
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        shipment = await client.shipments().get(shipment.id).fetch();
+        found = shipment.transactions?.find((t) => t.status === "success");
+        if (!found) {
+          await client
+            .shipments()
+            .get(shipment.id)
+            .buy({ offer_id: shipment.offers[0].id });
+        }
+      }
+
       while (
         !shipment.status ||
         shipment.status === "created" ||
         shipment.status === "offer_selected"
       ) {
+        console.log("Waiting for shipment to be ready...");
         await new Promise((resolve) => setTimeout(resolve, 500));
         shipment = await client.shipments().get(shipment.id).fetch();
       }
