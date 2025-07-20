@@ -21,7 +21,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "ts-patch": "^3.2.1"
+    "ts-patch": "^3.2.1",  
+    "tsx": "^4.19.1"
   },
   "devDependencies": {
     "rimraf": "^5.0.5"
