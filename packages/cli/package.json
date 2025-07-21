@@ -50,5 +50,8 @@
     "@types/cross-spawn": "^6.0.6",
     "rimraf": "^5.0.5",
     "typescript": "5.3.3"
+  },
+  "peerDependencies": {
+    "@deenruv/core": "^0.1.0"
   }
 }

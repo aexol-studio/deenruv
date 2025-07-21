@@ -29,7 +29,6 @@
     "@deenruv/admin-types": "workspace:*",
     "@deenruv/admin-ui": "workspace:*",
     "@deenruv/common": "workspace:*",
-    "@deenruv/core": "workspace:*",
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/modifiers": "^7.0.0",
     "@dnd-kit/sortable": "^8.0.0",
@@ -94,6 +93,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@deenruv/core": "workspace:*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "graphql-zeus": "^7.0.0",
@@ -104,5 +104,8 @@
     "tslib": "^2.6.2",
     "typescript": "5.3.3",
     "vite": "^5.1.0"
+  },
+  "peerDependencies": {
+    "@deenruv/core": "^0.1.0"
   }
 }

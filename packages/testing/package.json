@@ -35,7 +35,8 @@
     "url": "https://github.com/deenruv-ecommerce/deenruv/issues"
   },
   "peerDependencies": {
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "@deenruv/core": "^0.1.0"
   },
   "dependencies": {
     "@deenruv/common": "workspace:*",

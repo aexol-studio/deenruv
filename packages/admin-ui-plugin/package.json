@@ -35,5 +35,8 @@
     "fs-extra": "^11.2.0",
     "graphql": "~16.9.0",
     "graphql-tag": "^2.12.6"
+  },
+  "peerDependencies": {
+    "@deenruv/core": "^0.1.0"
   }
 }
