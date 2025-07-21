@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useDebounce } from "use-debounce";
@@ -28,6 +27,8 @@ import {
   TableRow,
   Button,
   cn,
+  Checkbox,
+  Badge,
 } from "@/index.js";
 import {
   CustomerSearchSelector,
@@ -36,9 +37,11 @@ import {
 
 interface Props {
   /** Callback when a customer is selected */
-  onSelect: (selected: CustomerSearchType) => void;
-  /** Currently selected customer */
-  selectedCustomer?: CustomerSearchType;
+  onSelect: (selected: CustomerSearchType | CustomerSearchType[]) => void;
+  /** Currently selected customer(s) */
+  selectedCustomer?: CustomerSearchType | CustomerSearchType[];
+  /** Enable multiple selection */
+  multiple?: boolean;
   /** Maximum number of results to display */
   maxResults?: number;
   /** Custom placeholder text */
@@ -57,6 +60,8 @@ interface Props {
   showClearButton?: boolean;
   /** Custom CSS class for the container */
   className?: string;
+  /** Maximum number of customers that can be selected (only for multiple mode) */
+  maxSelections?: number;
 }
 
 const DEFAULT_MAX_RESULTS = 10;
@@ -65,6 +70,7 @@ const DEFAULT_DEBOUNCE_DELAY = 500;
 export const CustomerSearch: React.FC<Props> = ({
   onSelect,
   selectedCustomer,
+  multiple = false,
   maxResults = DEFAULT_MAX_RESULTS,
   placeholder,
   disabled = false,
@@ -74,6 +80,7 @@ export const CustomerSearch: React.FC<Props> = ({
   debounceDelay = DEFAULT_DEBOUNCE_DELAY,
   showClearButton = true,
   className,
+  maxSelections,
 }) => {
   const { t } = useTranslation("orders");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -88,11 +95,35 @@ export const CustomerSearch: React.FC<Props> = ({
   const [error, setError] = useState<string | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(-1);
 
+  // Normalize selected customers to always be an array for internal use
+  const selectedCustomers = useMemo(() => {
+    if (!selectedCustomer) return [];
+    return Array.isArray(selectedCustomer)
+      ? selectedCustomer
+      : [selectedCustomer];
+  }, [selectedCustomer]);
+
+  // Check if a customer is selected
+  const isCustomerSelected = useCallback(
+    (customer: CustomerSearchType) => {
+      return selectedCustomers.some((selected) => selected.id === customer.id);
+    },
+    [selectedCustomers],
+  );
+
+  // Get selection state for checkbox
+  const getSelectionState = useCallback(() => {
+    if (results.length === 0) return "none";
+    const selectedCount = results.filter(isCustomerSelected).length;
+    if (selectedCount === 0) return "none";
+    if (selectedCount === results.length) return "all";
+    return "partial";
+  }, [results, isCustomerSelected]);
+
   // Memoized search filter logic
   const createSearchFilter = useMemo(() => {
     return (searchTerm: string) => {
       const terms = searchTerm.split(" ").filter(Boolean);
-
       if (terms.length > 1) {
         return {
           OR: [
@@ -103,7 +134,6 @@ export const CustomerSearch: React.FC<Props> = ({
           ],
         };
       }
-
       return {
         firstName: { contains: searchTerm },
         lastName: { contains: searchTerm },
@@ -120,7 +150,6 @@ export const CustomerSearch: React.FC<Props> = ({
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
       }
-
       abortControllerRef.current = new AbortController();
 
       setIsSearching(true);
@@ -131,7 +160,6 @@ export const CustomerSearch: React.FC<Props> = ({
 
       try {
         const filter = createSearchFilter(searchTerm);
-
         const data = await apiClient("query")({
           customers: [
             {
@@ -193,6 +221,80 @@ export const CustomerSearch: React.FC<Props> = ({
     };
   }, [debouncedValue, performSearch]);
 
+  // Handle customer selection
+  const handleCustomerSelect = useCallback(
+    (customer: CustomerSearchType, index: number) => {
+      setSelectedIndex(index);
+
+      if (multiple) {
+        const isSelected = isCustomerSelected(customer);
+        let newSelection: CustomerSearchType[];
+
+        if (isSelected) {
+          // Remove from selection
+          newSelection = selectedCustomers.filter((c) => c.id !== customer.id);
+        } else {
+          // Add to selection (check max limit)
+          if (maxSelections && selectedCustomers.length >= maxSelections) {
+            return; // Don't add if at max limit
+          }
+          newSelection = [...selectedCustomers, customer];
+        }
+
+        onSelect(newSelection);
+      } else {
+        onSelect(customer);
+      }
+    },
+    [multiple, isCustomerSelected, selectedCustomers, onSelect, maxSelections],
+  );
+
+  // Handle select all/none for multiple mode
+  const handleSelectAll = useCallback(() => {
+    if (!multiple) return;
+
+    const selectionState = getSelectionState();
+    if (selectionState === "all" || selectionState === "partial") {
+      // Deselect all visible results
+      const newSelection = selectedCustomers.filter(
+        (selected) => !results.some((result) => result.id === selected.id),
+      );
+      onSelect(newSelection);
+    } else {
+      // Select all visible results (respecting max limit)
+      const unselectedResults = results.filter(
+        (result) => !isCustomerSelected(result),
+      );
+      let toAdd = unselectedResults;
+
+      if (maxSelections) {
+        const remainingSlots = maxSelections - selectedCustomers.length;
+        toAdd = unselectedResults.slice(0, remainingSlots);
+      }
+
+      const newSelection = [...selectedCustomers, ...toAdd];
+      onSelect(newSelection);
+    }
+  }, [
+    multiple,
+    getSelectionState,
+    selectedCustomers,
+    results,
+    onSelect,
+    isCustomerSelected,
+    maxSelections,
+  ]);
+
+  // Remove a selected customer (for multiple mode)
+  const handleRemoveCustomer = useCallback(
+    (customerId: string) => {
+      if (!multiple) return;
+      const newSelection = selectedCustomers.filter((c) => c.id !== customerId);
+      onSelect(newSelection);
+    },
+    [multiple, selectedCustomers, onSelect],
+  );
+
   // Keyboard navigation
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -212,7 +314,7 @@ export const CustomerSearch: React.FC<Props> = ({
         case "Enter":
           e.preventDefault();
           if (selectedIndex >= 0 && results[selectedIndex]) {
-            onSelect(results[selectedIndex]);
+            handleCustomerSelect(results[selectedIndex], selectedIndex);
           }
           break;
         case "Escape":
@@ -221,9 +323,15 @@ export const CustomerSearch: React.FC<Props> = ({
           setSelectedIndex(-1);
           inputRef.current?.blur();
           break;
+        case " ":
+          if (multiple && selectedIndex >= 0 && results[selectedIndex]) {
+            e.preventDefault();
+            handleCustomerSelect(results[selectedIndex], selectedIndex);
+          }
+          break;
       }
     },
-    [disabled, results, selectedIndex, onSelect],
+    [disabled, results, selectedIndex, handleCustomerSelect, multiple],
   );
 
   // Clear search
@@ -235,15 +343,6 @@ export const CustomerSearch: React.FC<Props> = ({
     setSelectedIndex(-1);
     inputRef.current?.focus();
   }, []);
-
-  // Handle customer selection
-  const handleCustomerSelect = useCallback(
-    (customer: CustomerSearchType, index: number) => {
-      setSelectedIndex(index);
-      onSelect(customer);
-    },
-    [onSelect],
-  );
 
   // Focus management for keyboard navigation
   useEffect(() => {
@@ -257,15 +356,52 @@ export const CustomerSearch: React.FC<Props> = ({
 
   const defaultPlaceholder = t(
     "create.selectCustomer.placeholder",
-    "Search by name, email, or ID...",
+    multiple
+      ? "Search customers to select..."
+      : "Search by name, email, or ID...",
   );
+
+  const selectionState = getSelectionState();
 
   return (
     <div className={cn("flex h-full flex-col gap-4 py-2", className)}>
       <div className="flex flex-col gap-2">
         <Label htmlFor="customer-search" className="text-sm font-medium">
           {t("create.selectCustomer.inputLabel", "Search for customers")}
+          {multiple && selectedCustomers.length > 0 && (
+            <span className="ml-2 text-xs text-muted-foreground">
+              ({selectedCustomers.length} selected
+              {maxSelections ? ` / ${maxSelections}` : ""})
+            </span>
+          )}
         </Label>
+
+        {/* Selected customers display for multiple mode */}
+        {multiple && selectedCustomers.length > 0 && (
+          <div className="flex flex-wrap gap-1 p-2 bg-muted/30 rounded-md">
+            {selectedCustomers.map((customer) => (
+              <Badge
+                key={customer.id}
+                variant="secondary"
+                className="flex items-center gap-1 pr-1"
+              >
+                <span className="text-xs">
+                  {customer.firstName} {customer.lastName}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                  onClick={() => handleRemoveCustomer(customer.id)}
+                  aria-label={`Remove ${customer.firstName} ${customer.lastName}`}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </Badge>
+            ))}
+          </div>
+        )}
+
         <div className="relative">
           <Input
             id="customer-search"
@@ -324,6 +460,20 @@ export const CustomerSearch: React.FC<Props> = ({
             <Table>
               <TableHeader className="bg-muted/50 sticky top-0">
                 <TableRow noHover className="hover:bg-transparent">
+                  {multiple && (
+                    <TableHead className="w-12 py-3">
+                      <Checkbox
+                        checked={selectionState === "all"}
+                        onCheckedChange={handleSelectAll}
+                        aria-label="Select all customers"
+                        disabled={
+                          !!maxSelections &&
+                          selectedCustomers.length >= maxSelections &&
+                          selectionState === "none"
+                        }
+                      />
+                    </TableHead>
+                  )}
                   <TableHead className="py-3 font-semibold">
                     {t("create.selectCustomer.name", "Name")}
                   </TableHead>
@@ -339,57 +489,78 @@ export const CustomerSearch: React.FC<Props> = ({
                 </TableRow>
               </TableHeader>
               <TableBody role="listbox">
-                {results.map((customer, index) => (
-                  <TableRow
-                    key={customer.id}
-                    id={`customer-${index}`}
-                    data-index={index}
-                    className={cn(
-                      "cursor-pointer transition-colors",
-                      customer.id === selectedCustomer?.id
-                        ? "bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:hover:bg-indigo-900/30"
-                        : selectedIndex === index
-                          ? "bg-muted/70 hover:bg-muted"
-                          : "hover:bg-muted/50",
-                    )}
-                    onClick={() => handleCustomerSelect(customer, index)}
-                    role="option"
-                    aria-selected={customer.id === selectedCustomer?.id}
-                    tabIndex={-1}
-                  >
-                    <TableCell className="py-3">
-                      <div className="flex items-center gap-2">
-                        {customer.id === selectedCustomer?.id ? (
-                          <UserCheck className="size-4 text-indigo-500" />
-                        ) : (
-                          <User className="text-muted-foreground size-4" />
-                        )}
-                        <div className="font-medium">
-                          {customer.firstName} {customer.lastName}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="py-3">
-                      <div className="flex items-center gap-2">
-                        <Mail className="text-muted-foreground size-4" />
-                        <span>{customer.emailAddress}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="py-3">
-                      {customer.phoneNumber ? (
-                        <div className="flex items-center gap-2">
-                          <Phone className="text-muted-foreground size-4" />
-                          <span>{customer.phoneNumber}</span>
-                        </div>
-                      ) : (
-                        <span className="text-muted-foreground">—</span>
+                {results.map((customer, index) => {
+                  const isSelected = isCustomerSelected(customer);
+
+                  const isAtMaxLimit =
+                    !!maxSelections &&
+                    selectedCustomers.length >= maxSelections &&
+                    !isSelected;
+
+                  return (
+                    <TableRow
+                      key={customer.id}
+                      id={`customer-${index}`}
+                      data-index={index}
+                      className={cn(
+                        "cursor-pointer transition-colors",
+                        isSelected
+                          ? "bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/20 dark:hover:bg-indigo-900/30"
+                          : selectedIndex === index
+                            ? "bg-muted/70 hover:bg-muted"
+                            : "hover:bg-muted/50",
+                        isAtMaxLimit && "opacity-50 cursor-not-allowed",
                       )}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground py-3 font-mono text-xs">
-                      {customer.id}
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      onClick={() =>
+                        !isAtMaxLimit && handleCustomerSelect(customer, index)
+                      }
+                      role="option"
+                      aria-selected={isSelected}
+                      tabIndex={-1}
+                    >
+                      {multiple && (
+                        <TableCell className="py-3">
+                          <Checkbox
+                            checked={isSelected}
+                            disabled={isAtMaxLimit}
+                            aria-label={`Select ${customer.firstName} ${customer.lastName}`}
+                          />
+                        </TableCell>
+                      )}
+                      <TableCell className="py-3">
+                        <div className="flex items-center gap-2">
+                          {!multiple && isSelected ? (
+                            <UserCheck className="size-4 text-indigo-500" />
+                          ) : (
+                            <User className="text-muted-foreground size-4" />
+                          )}
+                          <div className="font-medium">
+                            {customer.firstName} {customer.lastName}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-3">
+                        <div className="flex items-center gap-2">
+                          <Mail className="text-muted-foreground size-4" />
+                          <span>{customer.emailAddress}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="py-3">
+                        {customer.phoneNumber ? (
+                          <div className="flex items-center gap-2">
+                            <Phone className="text-muted-foreground size-4" />
+                            <span>{customer.phoneNumber}</span>
+                          </div>
+                        ) : (
+                          <span className="text-muted-foreground">—</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground py-3 font-mono text-xs">
+                        {customer.id}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </ScrollArea>
@@ -443,7 +614,9 @@ export const CustomerSearch: React.FC<Props> = ({
             <p className="text-muted-foreground mt-1 text-sm">
               {t(
                 "create.selectCustomer.searchHint",
-                "Enter a name, email, or ID to find customers",
+                multiple
+                  ? "Enter a name, email, or ID to find customers to select"
+                  : "Enter a name, email, or ID to find customers",
               )}
             </p>
           </div>

@@ -29,6 +29,7 @@ import type React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Edit, User, Check, Mail, Phone, Loader2, UserPlus, Search, AlertCircle } from 'lucide-react';
+import { CustomerSearchType } from '@deenruv/react-ui-devkit/dist/selectors/CustomerSearchSelector.js';
 
 export const CustomerSelectCard: React.FC = () => {
   const { t } = useTranslation('orders');
@@ -188,7 +189,10 @@ export const CustomerSelectCard: React.FC = () => {
                   </TabsTrigger>
                 </TabsList>
                 <TabsContent className="focus-visible:ring-transparent" value="select">
-                  <CustomerSearch selectedCustomer={selected} onSelect={(selected) => setSelected(selected)} />
+                  <CustomerSearch
+                    selectedCustomer={selected}
+                    onSelect={(selected) => setSelected(selected as CustomerSearchType)}
+                  />
                 </TabsContent>
                 <TabsContent value="create" className="h-fit max-h-[calc(80vh-230px)] overflow-y-auto pt-2">
                   <div className="space-y-4 px-1">
