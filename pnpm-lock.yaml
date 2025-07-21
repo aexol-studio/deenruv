@@ -858,7 +858,7 @@ importers:
     devDependencies:
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -1451,9 +1451,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:*
         version: link:../common
-      '@deenruv/core':
-        specifier: workspace:*
-        version: link:../core
       '@dnd-kit/core':
         specifier: ^6.1.0
         version: 6.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1641,6 +1638,9 @@ importers:
         specifier: ^4.5.2
         version: 4.5.7(@types/react@18.3.23)(react@18.3.1)
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:*
+        version: link:../core
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.23
@@ -2462,9 +2462,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
@@ -2517,6 +2514,9 @@ importers:
         specifier: ^2.12.7
         version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.9.0)
@@ -2572,9 +2572,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
@@ -2594,6 +2591,9 @@ importers:
         specifier: ^5.4.2
         version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.23
@@ -2860,9 +2860,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
@@ -2909,6 +2906,9 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.9.0)
@@ -2942,9 +2942,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
@@ -2991,6 +2988,9 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.9.0)
@@ -3185,9 +3185,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
@@ -3231,6 +3228,9 @@ importers:
         specifier: ^1.4.41
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.9.0)
@@ -3363,9 +3363,6 @@ importers:
       '@deenruv/common':
         specifier: workspace:^
         version: link:../../packages/common
-      '@deenruv/core':
-        specifier: workspace:^
-        version: link:../../packages/core
       '@deenruv/react-ui-devkit':
         specifier: workspace:^
         version: link:../../packages/react-ui-devkit
@@ -3409,6 +3406,9 @@ importers:
         specifier: ^1.4.41
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
+      '@deenruv/core':
+        specifier: workspace:^
+        version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.9.0)
@@ -3515,23 +3515,23 @@ packages:
       react: '>=17.0.2'
 
   '@aexol/dev-translate-config@0.0.8':
-    resolution: {integrity: sha512-KnO49EbYNpZgJhPdofb2WK4eFQ0OHMMWynVKyaJWkmiRJzJ6KHCFcoG7caQou0Wdfzj9La4lq7btZaflXKL3+Q==, tarball: https://registry.npmjs.org/@aexol/dev-translate-config/-/dev-translate-config-0.0.8.tgz}
+    resolution: {integrity: sha512-KnO49EbYNpZgJhPdofb2WK4eFQ0OHMMWynVKyaJWkmiRJzJ6KHCFcoG7caQou0Wdfzj9La4lq7btZaflXKL3+Q==}
 
   '@aexol/dev-translate-core@0.0.8':
-    resolution: {integrity: sha512-cJ2LNqL+ylgFB+ZL9hnLUeK4RQ2wdSdRjemOs5OgLKQxJSmK4v8kMArJEj8xIp/Y9rmug3ItwtCoBIXBfH9ZlA==, tarball: https://registry.npmjs.org/@aexol/dev-translate-core/-/dev-translate-core-0.0.8.tgz}
+    resolution: {integrity: sha512-cJ2LNqL+ylgFB+ZL9hnLUeK4RQ2wdSdRjemOs5OgLKQxJSmK4v8kMArJEj8xIp/Y9rmug3ItwtCoBIXBfH9ZlA==}
 
   '@aexol/dev-translate-core@0.1.9':
-    resolution: {integrity: sha512-zHOEj+mNEob6XgXEBqmCA4VtfNNTQ4HSu64seg/sttJwZMgDtLOS2U3L1hd4IiXAlZmoJjMC1vwf+c7qTi9yEw==, tarball: https://registry.npmjs.org/@aexol/dev-translate-core/-/dev-translate-core-0.1.9.tgz}
+    resolution: {integrity: sha512-zHOEj+mNEob6XgXEBqmCA4VtfNNTQ4HSu64seg/sttJwZMgDtLOS2U3L1hd4IiXAlZmoJjMC1vwf+c7qTi9yEw==}
 
   '@aexol/dev-translate-watch@0.1.9':
-    resolution: {integrity: sha512-Bth81qnCmZl7aBRSrShSDdQOrzkJELq7s338gzXF6CYywW24R8Vq5DDWakbgiCnvQM7HVTdcVuUl946SMoIgGQ==, tarball: https://registry.npmjs.org/@aexol/dev-translate-watch/-/dev-translate-watch-0.1.9.tgz}
+    resolution: {integrity: sha512-Bth81qnCmZl7aBRSrShSDdQOrzkJELq7s338gzXF6CYywW24R8Vq5DDWakbgiCnvQM7HVTdcVuUl946SMoIgGQ==}
 
   '@aexol/dev-translate@0.0.8':
-    resolution: {integrity: sha512-szyUM6kz4/oBSsjpiogczUPiJ4lMnIyjwAqHpxB8pjOeStH1UWs47YefRUcP0ldr2tjelw9N6Aa19eRu5RkdrQ==, tarball: https://registry.npmjs.org/@aexol/dev-translate/-/dev-translate-0.0.8.tgz}
+    resolution: {integrity: sha512-szyUM6kz4/oBSsjpiogczUPiJ4lMnIyjwAqHpxB8pjOeStH1UWs47YefRUcP0ldr2tjelw9N6Aa19eRu5RkdrQ==}
     hasBin: true
 
   '@aexol/vite-plugin-dev-translate@0.1.9':
-    resolution: {integrity: sha512-3tvByPafq8pNAWGTMuTNym6UGzwQoNILHPsOIia4ClaXXZnngg6iXQGk7Ndy6KgnzFwFhrU12JTTC+ApEW61Bg==, tarball: https://registry.npmjs.org/@aexol/vite-plugin-dev-translate/-/vite-plugin-dev-translate-0.1.9.tgz}
+    resolution: {integrity: sha512-3tvByPafq8pNAWGTMuTNym6UGzwQoNILHPsOIia4ClaXXZnngg6iXQGk7Ndy6KgnzFwFhrU12JTTC+ApEW61Bg==}
     peerDependencies:
       vite: '>=5'
 
