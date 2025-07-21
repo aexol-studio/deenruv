@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/inpost",
-  "version": "0.1.28",
+  "version": "0.1.29",
   "type": "commonjs",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -21,7 +21,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "ts-patch": "^3.2.1",  
+    "ts-patch": "^3.2.1",
     "tsx": "^4.19.1"
   },
   "devDependencies": {

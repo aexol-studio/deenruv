@@ -22,6 +22,8 @@ export default tseslint.config(
       "**/generated-e2e-shop-types.ts",
       "**/generated-e2e-admin-types.ts",
       "**/*.Dockerfile",
+      "**/server/admin-ui/**",
+      "**/server/assets/**",
     ],
   },
   {

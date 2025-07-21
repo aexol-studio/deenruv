@@ -12,7 +12,7 @@ export function customAdminUi(options: {
     return compileUiExtensions({
       command: "npm",
       outputPath: compiledAppPath,
-      extensions: [InpostUIPlugin],
+      extensions: [],
       devMode: options.devMode,
     });
   } else return { path: path.join(compiledAppPath, "dist") };

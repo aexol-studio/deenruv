@@ -135,6 +135,7 @@ export class InpostService implements OnModuleInit {
     client: Client,
   ) {
     if (!shipment.status || shipment.status === "created") {
+      // repeat buyShipment function after 1 second
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,
@@ -149,26 +150,23 @@ export class InpostService implements OnModuleInit {
       .shipments()
       .get(shipment.id || 0)
       .buy({ offer_id: shipment.offers?.[0].id || 0 });
+
     await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const response = await client
       .shipments()
       .get(shipment.id || 0)
       .fetch();
-
-    const found = response.transactions?.find(
-      (t) => t.status === "success" && t.offer_id === shipment.offers?.[0].id,
-    );
-    Logger.info(
-      `Inpost transactions: ${JSON.stringify(response?.transactions || [])} for shipment ${shipment.id}`,
-    );
+    const found = response.transactions?.find((t) => t.status === "success");
 
     if (!found) {
+      // repeat buyShipment function after 1 seconds
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,
         nextStep: "buy",
         shipmentId: shipment.id || 0,
-        delay: 5000,
+        delay: 1000,
       });
       return;
     }
@@ -263,6 +261,14 @@ export class InpostService implements OnModuleInit {
     lines: { orderLineId: ID }[],
     size: "small" | "medium" | "large" | "xlarge",
   ) {
+    const targetPoint = orders[0].customFields.pickupPointId;
+    if (!targetPoint) {
+      Logger.error(
+        `Order ${orders[0].id} is missing pickup point id`,
+        LOGGER_CTX,
+      );
+      throw new Error("Missing pickup point ID");
+    }
     const shippingLines = (
       await Promise.all(
         orders.map(async (o) =>
@@ -323,7 +329,6 @@ export class InpostService implements OnModuleInit {
       throw new Error("missing customer");
     }
     const address = shippingAddress || billingAddress;
-    const targetPoint = orders[0].customFields.pickupPointId;
     const client = new Client({ host: config.host, apiKey: config.apiKey });
     const refRepo = this.connection.getRepository(ctx, InpostRefEntity);
     const ref = await refRepo.insert({
@@ -372,9 +377,7 @@ export class InpostService implements OnModuleInit {
         },
         parcels: [{ template: size }],
         service: config.service,
-        ...(typeof targetPoint === "string" && {
-          custom_attributes: { target_point: targetPoint },
-        }),
+        custom_attributes: { target_point: targetPoint },
         reference: `INP${ref.identifiers[0]["id"]}`,
       });
     await refRepo.update(ref.identifiers[0], { inpostShipmentId: shipment.id });
