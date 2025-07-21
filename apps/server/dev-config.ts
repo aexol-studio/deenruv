@@ -93,7 +93,7 @@ export const devConfig: DeenruvConfig = {
     AdminUiPlugin.init({
       route: "admin",
       port: 5001,
-      app: customAdminUi({ devMode: true, recompile: true }),
+      // app: customAdminUi({ devMode: true, recompile: true }),
     }),
     AssetServerPlugin.init({
       route: "assets",
