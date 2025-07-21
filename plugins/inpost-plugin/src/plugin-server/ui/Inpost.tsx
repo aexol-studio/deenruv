@@ -135,7 +135,8 @@ export const Inpost: React.FC = () => {
             errorMessage=""
           >
             <input
-              type="password"
+              type="text"
+              value={inpostConfig.apiKey || ""}
               onChange={(ev) => {
                 setInpostConfig({ ...inpostConfig, apiKey: ev.target.value });
                 setModified(true);
@@ -152,6 +153,7 @@ export const Inpost: React.FC = () => {
           >
             <input
               type="text"
+              value={inpostConfig.geowidgetKey || ""}
               onChange={(ev) => {
                 setInpostConfig({
                   ...inpostConfig,
@@ -260,17 +262,6 @@ export const Inpost: React.FC = () => {
                     setModified(false);
                   });
               }}
-              disabled={
-                !inpostConfig.host ||
-                !inpostConfig.apiKey ||
-                !inpostConfig.inpostOrganization ||
-                !inpostConfig.service ||
-                (!modified &&
-                  !!inpostConfig.host &&
-                  !!inpostConfig.apiKey &&
-                  !!inpostConfig.inpostOrganization &&
-                  !!inpostConfig.service)
-              }
             >
               {t.translate("inpost-plugin.save")}
             </button>
