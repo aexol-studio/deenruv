@@ -12,7 +12,7 @@ export interface SetInpostShippingMethodConfigInput {
   service: Service;
 }
 
-export type OrderProgressStep = "buy" | "label";
+export type OrderProgressStep = "buy" | "purchasing" | "label";
 export interface OrderProgressJob {
   context: SerializedRequestContext;
   inpostConfigId: ID;

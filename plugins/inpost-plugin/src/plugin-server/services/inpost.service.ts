@@ -151,16 +151,45 @@ export class InpostService implements OnModuleInit {
       .get(shipment.id || 0)
       .buy({ offer_id: shipment.offers?.[0].id || 0 });
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await this.orderProgressJob.add({
+      context: ctx.serialize(),
+      inpostConfigId: config.id,
+      nextStep: "purchasing",
+      shipmentId: shipment.id || 0,
+      delay: 1000,
+    });
+  }
 
+  private async purchasingShipment(
+    ctx: RequestContext,
+    shipment: Shipment,
+    config: InpostConfigEntity,
+    client: Client,
+  ) {
     const response = await client
       .shipments()
       .get(shipment.id || 0)
       .fetch();
     const found = response.transactions?.find((t) => t.status === "success");
+    if (found) {
+      // shipment purchased, generate label
+      await this.orderProgressJob.add({
+        context: ctx.serialize(),
+        inpostConfigId: config.id,
+        nextStep: "label",
+        shipmentId: shipment.id || 0,
+        delay: 1000,
+      });
+      return;
+    }
 
-    if (!found) {
-      // repeat buyShipment function after 1 seconds
+    const failure = response.transactions?.find(
+      (t) =>
+        t.status === "failure" && t.offer_id === response.selected_offer?.id,
+    );
+
+    if (failure) {
+      // repeat buyShipment because payment failed
       await this.orderProgressJob.add({
         context: ctx.serialize(),
         inpostConfigId: config.id,
@@ -170,11 +199,10 @@ export class InpostService implements OnModuleInit {
       });
       return;
     }
-
     await this.orderProgressJob.add({
       context: ctx.serialize(),
       inpostConfigId: config.id,
-      nextStep: "label",
+      nextStep: "purchasing",
       shipmentId: shipment.id || 0,
       delay: 1000,
     });
@@ -248,6 +276,9 @@ export class InpostService implements OnModuleInit {
     switch (nextStep) {
       case "buy":
         await this.buyShipment(ctx, shipment, config, client);
+        break;
+      case "purchasing":
+        await this.purchasingShipment(ctx, shipment, config, client);
         break;
       case "label":
         await this.labelShipment(ctx, shipment, config, client);
