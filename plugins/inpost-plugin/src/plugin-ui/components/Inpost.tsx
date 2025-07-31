@@ -77,7 +77,10 @@ export const Inpost: React.FC = () => {
           if (organizations.items[0].services[0]) {
             change.service = organizations.items[0].services[0];
           }
-          setInpostConfig({ ...inpostConfig, ...change });
+          setInpostConfig((p) => ({
+            ...p,
+            ...change,
+          }));
         }
       }
     })();

@@ -1,6 +1,5 @@
 import { InjectableStrategy, Product, RequestContext } from "@deenruv/core";
 import { content_v2_1 } from "googleapis";
-import { ProductItem } from "facebook-nodejs-business-sdk";
 
 export type BaseProductData<T extends { communicateID: string }> = T | Array<T>;
 
@@ -11,7 +10,10 @@ export type MerchantPluginOptions = {
 export type GoogleProduct = Omit<content_v2_1.Schema$Product, "brand"> & {
   communicateID?: string;
 };
-export type FacebookProduct = ProductItem;
+
+export type FacebookProduct = Record<string, any> & {
+  communicateID?: string;
+};
 
 export interface MerchantExportStrategy<
   T extends BaseProductData<{ communicateID: string }>,

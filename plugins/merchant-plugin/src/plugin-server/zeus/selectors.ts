@@ -50,7 +50,6 @@ export const ProductSearchSelector = Selector("SearchResult")({
   facetValueIds: true,
   productAsset: { preview: true,
   },
-  inStock: true,
   description: true,
   sku: true,
   score: true,

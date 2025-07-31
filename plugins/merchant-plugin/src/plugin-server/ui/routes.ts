@@ -1,6 +1,6 @@
 import { registerReactRouteComponent } from "@deenruv/admin-ui/react";
-import { GooglePage } from "./pages/GooglePage.js";
-import { FacebookPage } from "./pages/FacebookPage.js";
+import { GooglePage } from "./pages/GooglePage";
+import { FacebookPage } from "./pages/FacebookPage";
 
 export default [
   registerReactRouteComponent({

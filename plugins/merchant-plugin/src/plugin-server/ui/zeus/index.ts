@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { AllTypesProps, ReturnTypes, Ops } from './const.js';
+import { AllTypesProps, ReturnTypes, Ops } from './const';
 export const HOST = "http://localhost:3000/admin-api"
 
 
@@ -940,10 +940,11 @@ taxRates?: [{	options?: ValueTypes["TaxRateListOptions"] | undefined | null | Va
 taxRate?: [{	id: string | Variable<any, string>},ValueTypes["TaxRate"]],
 zones?: [{	options?: ValueTypes["ZoneListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ZoneList"]],
 zone?: [{	id: string | Variable<any, string>},ValueTypes["Zone"]],
-metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
 getMerchantPlatformSettings?: [{	platform: string | Variable<any, string>},ValueTypes["MerchantPlatformSettingsEntity"]],
 getMerchantPlatformInfo?: [{	platform: string | Variable<any, string>},ValueTypes["MerchantPlatformInfo"]],
-	getFurgonetkaSettings?:ValueTypes["FurgonetkaSettings"],
+	getInpostConfig?:ValueTypes["InpostConfig"],
+getInpostOrganizations?: [{	input?: ValueTypes["GetInpostOrganizationsInput"] | undefined | null | Variable<any, string>},ValueTypes["InpostOrganizationResponse"]],
+metricSummary?: [{	input?: ValueTypes["MetricSummaryInput"] | undefined | null | Variable<any, string>},ValueTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -1034,6 +1035,7 @@ setDraftOrderShippingAddress?: [{	orderId: string | Variable<any, string>,	input
 setDraftOrderBillingAddress?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["CreateAddressInput"] | Variable<any, string>},ValueTypes["Order"]],
 setDraftOrderCustomFields?: [{	orderId: string | Variable<any, string>,	input: ValueTypes["UpdateOrderInput"] | Variable<any, string>},ValueTypes["Order"]],
 applyCouponCodeToDraftOrder?: [{	orderId: string | Variable<any, string>,	couponCode: string | Variable<any, string>},ValueTypes["ApplyCouponCodeResult"]],
+toggleExcludePromotionInOrder?: [{	orderId: string | Variable<any, string>,	promotionId: string | Variable<any, string>},ValueTypes["Order"]],
 removeCouponCodeFromDraftOrder?: [{	orderId: string | Variable<any, string>,	couponCode: string | Variable<any, string>},ValueTypes["Order"]],
 setDraftOrderShippingMethod?: [{	orderId: string | Variable<any, string>,	shippingMethodId: string | Variable<any, string>},ValueTypes["SetOrderShippingMethodResult"]],
 createPaymentMethod?: [{	input: ValueTypes["CreatePaymentMethodInput"] | Variable<any, string>},ValueTypes["PaymentMethod"]],
@@ -1063,7 +1065,7 @@ deleteProductVariants?: [{	ids: Array<string> | Variable<any, string>},ValueType
 assignProductsToChannel?: [{	input: ValueTypes["AssignProductsToChannelInput"] | Variable<any, string>},ValueTypes["Product"]],
 removeProductsFromChannel?: [{	input: ValueTypes["RemoveProductsFromChannelInput"] | Variable<any, string>},ValueTypes["Product"]],
 assignProductVariantsToChannel?: [{	input: ValueTypes["AssignProductVariantsToChannelInput"] | Variable<any, string>},ValueTypes["ProductVariant"]],
-removeProductVariantsFromChannel?: [{	input: ValueTypes["RemoveProductVariantsFromChannelInput"] | Variable<any, string>},ValueTypes["ProductVariant"]],
+removeProductVariantsFromChannel?: [{	input: ValueTypes["RemoveProductVariantsFromChannelInput"] | Variable<any, string>},boolean | `@${string}`],
 createPromotion?: [{	input: ValueTypes["CreatePromotionInput"] | Variable<any, string>},ValueTypes["CreatePromotionResult"]],
 updatePromotion?: [{	input: ValueTypes["UpdatePromotionInput"] | Variable<any, string>},ValueTypes["UpdatePromotionResult"]],
 deletePromotion?: [{	id: string | Variable<any, string>},ValueTypes["DeletionResponse"]],
@@ -1112,9 +1114,7 @@ addMembersToZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<s
 removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
 sendAllProductsToMerchantPlatform?: [{	platform: string | Variable<any, string>},boolean | `@${string}`],
 saveMerchantPlatformSettings?: [{	input: ValueTypes["SaveMerchantPlatformSettingInput"] | Variable<any, string>},ValueTypes["MerchantPlatformSettingsEntity"]],
-saveFurgonetkaSettings?: [{	input: ValueTypes["SaveFurgonetkaSettingsInput"] | Variable<any, string>},ValueTypes["FurgonetkaSettings"]],
-triggerCardMarketSynchronization?: [{	input?: ValueTypes["TriggerCardMarketSynchronizationInput"] | undefined | null | Variable<any, string>},boolean | `@${string}`],
-	triggerFreeDataSynchronization?:boolean | `@${string}`,
+setInpostShippingMethodConfig?: [{	input: ValueTypes["SetInpostShippingMethodConfigInput"] | Variable<any, string>},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -1319,7 +1319,7 @@ triggerCardMarketSynchronization?: [{	input?: ValueTypes["TriggerCardMarketSynch
 	filters?:ValueTypes["ConfigurableOperation"],
 	translations?:ValueTypes["CollectionTranslation"],
 productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined | null | Variable<any, string>},ValueTypes["ProductVariantList"]],
-	customFields?:ValueTypes["CollectionCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionListOptions"]: {
@@ -1345,7 +1345,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	name: string | Variable<any, string>,
 	slug: string | Variable<any, string>,
 	description: string | Variable<any, string>,
-	customFields?: ValueTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -1353,7 +1353,7 @@ productVariants?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefin
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null | Variable<any, string>,
@@ -1779,6 +1779,8 @@ methods. */
 	discounts?:ValueTypes["Discount"],
 	/** An array of all coupon codes applied to the Order */
 	couponCodes?:boolean | `@${string}`,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?:boolean | `@${string}`,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions?:ValueTypes["Promotion"],
 	payments?:ValueTypes["Payment"],
@@ -1875,8 +1877,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	totalWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
 	_or?: Array<ValueTypes["OrderFilterParameter"]> | undefined | null | Variable<any, string>,
-	pickupPointId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	pickupPointName?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	pickupPointId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -1895,8 +1896,7 @@ history?: [{	options?: ValueTypes["HistoryEntryListOptions"] | undefined | null 
 	shippingWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	total?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	totalWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	pickupPointId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	pickupPointName?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	pickupPointId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -1946,8 +1946,7 @@ version. */
 };
 	["OrderLineInput"]: {
 	orderLineId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>,
-	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
+	quantity: number | Variable<any, string>
 };
 	["SettleRefundInput"]: {
 	id: string | Variable<any, string>,
@@ -2011,8 +2010,7 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemInput"]: {
 	productVariantId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>,
-	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
+	quantity: number | Variable<any, string>
 };
 	["SurchargeInput"]: {
 	description: string | Variable<any, string>,
@@ -2030,13 +2028,11 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 	productVariantId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>,
-	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
+	quantity: number | Variable<any, string>
 };
 	["AdjustDraftOrderLineInput"]: {
 	orderLineId: string | Variable<any, string>,
-	quantity: number | Variable<any, string>,
-	customFields?: ValueTypes["OrderLineCustomFieldsInput"] | undefined | null | Variable<any, string>
+	quantity: number | Variable<any, string>
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: AliasType<{
@@ -2345,7 +2341,7 @@ variantList?: [{	options?: ValueTypes["ProductVariantListOptions"] | undefined |
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductTranslation"],
 	collections?:ValueTypes["Collection"],
-	customFields?:ValueTypes["ProductCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductVariantPrice"]: AliasType<{
@@ -2384,7 +2380,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	options?:ValueTypes["ProductOption"],
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductVariantTranslation"],
-	customFields?:ValueTypes["ProductVariantCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -2449,7 +2445,6 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	collectionIds?:boolean | `@${string}`,
 	/** A relevance score for the result. Differs between database implementations */
 	score?:boolean | `@${string}`,
-	inStock?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["StockMovementListOptions"]: {
@@ -2481,15 +2476,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	enabled?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>,
-	googleMerchantProductId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	seoTitle?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	seoDescription?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketProductId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketExpansionId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketLastSynchronized?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
-	cardReleasedAt?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
-	cardArtist?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["ProductFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -2523,15 +2510,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	priceWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	stockLevel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
-	cardMarketProductId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketExpansionId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketLastSynchronized?: ValueTypes["DateOperators"] | undefined | null | Variable<any, string>,
-	cardMarketLanguage?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketCondition?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketFoil?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
-	cardMarketSigned?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>,
-	cardMarketAltered?: ValueTypes["BooleanOperators"] | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -2539,7 +2518,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	name?: string | undefined | null | Variable<any, string>,
 	slug?: string | undefined | null | Variable<any, string>,
 	description?: string | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["ProductTranslationInputCustomFields"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null | Variable<any, string>,
@@ -2547,7 +2526,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	assetIds?: Array<string> | undefined | null | Variable<any, string>,
 	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
 	translations: Array<ValueTypes["ProductTranslationInput"]> | Variable<any, string>,
-	customFields?: ValueTypes["CreateProductCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["UpdateProductInput"]: {
 	id: string | Variable<any, string>,
@@ -2556,7 +2535,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	assetIds?: Array<string> | undefined | null | Variable<any, string>,
 	facetValueIds?: Array<string> | undefined | null | Variable<any, string>,
 	translations?: Array<ValueTypes["ProductTranslationInput"]> | undefined | null | Variable<any, string>,
-	customFields?: ValueTypes["UpdateProductCustomFieldsInput"] | undefined | null | Variable<any, string>
+	customFields?: ValueTypes["JSON"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -3208,7 +3187,6 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ValueTypes["CollectionTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionList"]: AliasType<{
@@ -3350,6 +3328,13 @@ current session. */
 	message?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: AliasType<{
+	errorCode?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	middlewareError?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:unknown;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -3435,7 +3420,6 @@ current session. */
 		['...on AuthenticationMethod']?: Omit<ValueTypes["AuthenticationMethod"],keyof ValueTypes["Node"]>;
 		['...on Zone']?: Omit<ValueTypes["Zone"],keyof ValueTypes["Node"]>;
 		['...on MerchantPlatformSettingsEntity']?: Omit<ValueTypes["MerchantPlatformSettingsEntity"],keyof ValueTypes["Node"]>;
-		['...on FurgonetkaSettings']?: Omit<ValueTypes["FurgonetkaSettings"],keyof ValueTypes["Node"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["ErrorResult"]:AliasType<{
@@ -3485,6 +3469,7 @@ current session. */
 		['...on OrderModificationError']?: Omit<ValueTypes["OrderModificationError"],keyof ValueTypes["ErrorResult"]>;
 		['...on IneligibleShippingMethodError']?: Omit<ValueTypes["IneligibleShippingMethodError"],keyof ValueTypes["ErrorResult"]>;
 		['...on NoActiveOrderError']?: Omit<ValueTypes["NoActiveOrderError"],keyof ValueTypes["ErrorResult"]>;
+		['...on OrderMiddlewareError']?: Omit<ValueTypes["OrderMiddlewareError"],keyof ValueTypes["ErrorResult"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Adjustment"]: AliasType<{
@@ -3629,8 +3614,7 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined | null | Variable<any, string>,
 	take?: number | undefined | null | Variable<any, string>,
 	skip?: number | undefined | null | Variable<any, string>,
-	sort?: ValueTypes["SearchResultSortParameter"] | undefined | null | Variable<any, string>,
-	inStock?: boolean | undefined | null | Variable<any, string>
+	sort?: ValueTypes["SearchResultSortParameter"] | undefined | null | Variable<any, string>
 };
 	["SearchResultSortParameter"]: {
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -3714,11 +3698,13 @@ If an invalid code is passed, the mutation will fail. */
 		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"],
 		["...on OrderLimitError"]?: ValueTypes["OrderLimitError"],
 		["...on NegativeQuantityError"]?: ValueTypes["NegativeQuantityError"],
-		["...on InsufficientStockError"]?: ValueTypes["InsufficientStockError"]
+		["...on InsufficientStockError"]?: ValueTypes["InsufficientStockError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	["RemoveOrderItemsResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
-		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"]
+		["...on OrderModificationError"]?: ValueTypes["OrderModificationError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	["SetOrderShippingMethodResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
@@ -3730,7 +3716,8 @@ If an invalid code is passed, the mutation will fail. */
 	["ApplyCouponCodeResult"]: AliasType<{		["...on Order"]?: ValueTypes["Order"],
 		["...on CouponCodeExpiredError"]?: ValueTypes["CouponCodeExpiredError"],
 		["...on CouponCodeInvalidError"]?: ValueTypes["CouponCodeInvalidError"],
-		["...on CouponCodeLimitError"]?: ValueTypes["CouponCodeLimitError"]
+		["...on CouponCodeLimitError"]?: ValueTypes["CouponCodeLimitError"],
+		["...on OrderMiddlewareError"]?: ValueTypes["OrderMiddlewareError"]
 		__typename?: boolean | `@${string}`
 }>;
 	/** @description
@@ -4112,7 +4099,7 @@ and refund calculations. */
 	taxLines?:ValueTypes["TaxLine"],
 	order?:ValueTypes["Order"],
 	fulfillmentLines?:ValueTypes["FulfillmentLine"],
-	customFields?:ValueTypes["OrderLineCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["RefundLine"]: AliasType<{
@@ -4279,7 +4266,6 @@ by the search, and in what quantity. */
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ValueTypes["ProductTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductList"]: AliasType<{
@@ -4519,25 +4505,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["MetricSummary"]: AliasType<{
-	interval?:boolean | `@${string}`,
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ValueTypes["MetricSummaryEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricInterval"]:MetricInterval;
-	["MetricType"]:MetricType;
-	["MetricSummaryEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricSummaryInput"]: {
-	interval: ValueTypes["MetricInterval"] | Variable<any, string>,
-	types: Array<ValueTypes["MetricType"]> | Variable<any, string>,
-	refresh?: boolean | undefined | null | Variable<any, string>
-};
 	["MerchantPlatformSetting"]: AliasType<{
 	key?:boolean | `@${string}`,
 	value?:boolean | `@${string}`,
@@ -4562,53 +4529,55 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	platform: string | Variable<any, string>,
 	entries?: Array<ValueTypes["MerchantPlatformSettingInput"]> | undefined | null | Variable<any, string>
 };
-	["FurgonetkaSettings"]: AliasType<{
+	["SetInpostShippingMethodConfigInput"]: {
+	shippingMethodId: string | Variable<any, string>,
+	host: string | Variable<any, string>,
+	apiKey: string | Variable<any, string>,
+	geowidgetKey?: string | undefined | null | Variable<any, string>,
+	inpostOrganization: number | Variable<any, string>,
+	service: string | Variable<any, string>
+};
+	["InpostConfig"]: AliasType<{
+	shippingMethodId?:boolean | `@${string}`,
+	host?:boolean | `@${string}`,
+	apiKey?:boolean | `@${string}`,
+	geowidgetKey?:boolean | `@${string}`,
+	inpostOrganization?:boolean | `@${string}`,
+	service?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["InpostOrganization"]: AliasType<{
 	id?:boolean | `@${string}`,
-	createdAt?:boolean | `@${string}`,
-	updatedAt?:boolean | `@${string}`,
-	authBasicKey?:boolean | `@${string}`,
-	username?:boolean | `@${string}`,
-	password?:boolean | `@${string}`,
-	service_id?:boolean | `@${string}`,
-	company?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
-	countryCode?:boolean | `@${string}`,
-	email?:boolean | `@${string}`,
-	phone?:boolean | `@${string}`,
-	postCode?:boolean | `@${string}`,
-	street?:boolean | `@${string}`,
-	city?:boolean | `@${string}`,
-	webhookToken?:boolean | `@${string}`,
-	senderPickupPointId?:boolean | `@${string}`,
+	services?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["SaveFurgonetkaSettingsInput"]: {
-	authBasicKey: string | Variable<any, string>,
-	username: string | Variable<any, string>,
-	password: string | Variable<any, string>,
-	service_id: string | Variable<any, string>,
-	company: string | Variable<any, string>,
-	name: string | Variable<any, string>,
-	countryCode: ValueTypes["LanguageCode"] | Variable<any, string>,
-	email: string | Variable<any, string>,
-	phone: string | Variable<any, string>,
-	postCode: string | Variable<any, string>,
-	street: string | Variable<any, string>,
-	city: string | Variable<any, string>,
-	webhookToken: string | Variable<any, string>,
-	senderPickupPointId?: string | undefined | null | Variable<any, string>
-};
-	["CreateExchangeRateInput"]: {
-	currency: string | Variable<any, string>,
-	rate: number | Variable<any, string>
-};
-	["ExchangeRate"]: AliasType<{
-	currency?:boolean | `@${string}`,
-	rate?:boolean | `@${string}`,
+	["InpostOrganizationResponse"]: AliasType<{
+	items?:ValueTypes["InpostOrganization"],
 		__typename?: boolean | `@${string}`
 }>;
-	["TriggerCardMarketSynchronizationInput"]: {
-	amount: number | Variable<any, string>
+	["GetInpostOrganizationsInput"]: {
+	host: string | Variable<any, string>,
+	apiKey: string | Variable<any, string>
+};
+	["MetricSummary"]: AliasType<{
+	interval?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ValueTypes["MetricSummaryEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricInterval"]:MetricInterval;
+	["MetricType"]:MetricType;
+	["MetricSummaryEntry"]: AliasType<{
+	label?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricSummaryInput"]: {
+	interval: ValueTypes["MetricInterval"] | Variable<any, string>,
+	types: Array<ValueTypes["MetricType"]> | Variable<any, string>,
+	refresh?: boolean | undefined | null | Variable<any, string>
 };
 	["AdministratorFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4691,10 +4660,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	parentId?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>,
-	seoTitle?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	seoDescription?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
-	cardMarketGameId?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["CollectionFilterParameter"]> | undefined | null | Variable<any, string>
 };
 	["CollectionSortParameter"]: {
 	id?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4704,10 +4670,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	position?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	parentId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	seoTitle?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	seoDescription?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketGameId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	parentId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
@@ -4721,15 +4684,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	price?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	priceWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketProductId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketExpansionId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketLastSynchronized?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketLanguage?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketCondition?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketFoil?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketSigned?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketAltered?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["CountryFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -4865,15 +4820,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	slug?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	googleMerchantProductId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	seoTitle?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	seoDescription?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketProductId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketExpansionId?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardMarketLastSynchronized?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardReleasedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	cardArtist?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	description?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["PromotionFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -5065,89 +5012,16 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	updatedAt?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
-	["CollectionCustomFields"]: AliasType<{
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-	cardMarketGameId?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CollectionTranslationCustomFields"]: AliasType<{
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateCollectionTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined | null | Variable<any, string>,
-	seoDescription?: string | undefined | null | Variable<any, string>
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined | null | Variable<any, string>,
-	seoDescription?: string | undefined | null | Variable<any, string>
-};
 	["FulfillmentCustomFields"]: AliasType<{
-	packageId?:boolean | `@${string}`,
+	inpostLabel?:ValueTypes["Asset"],
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderCustomFields"]: AliasType<{
 	pickupPointId?:boolean | `@${string}`,
-	pickupPointName?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["UpdateOrderCustomFieldsInput"]: {
-	pickupPointId?: string | undefined | null | Variable<any, string>,
-	pickupPointName?: string | undefined | null | Variable<any, string>
-};
-	["OrderLineCustomFields"]: AliasType<{
-	cardMarketLanguage?:boolean | `@${string}`,
-	cardMarketCondition?:boolean | `@${string}`,
-	cardMarketFoil?:boolean | `@${string}`,
-	cardMarketSigned?:boolean | `@${string}`,
-	cardMarketAltered?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ProductCustomFields"]: AliasType<{
-	googleMerchantProductId?:boolean | `@${string}`,
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-	cardMarketProductId?:boolean | `@${string}`,
-	cardMarketExpansionId?:boolean | `@${string}`,
-	cardMarketLastSynchronized?:boolean | `@${string}`,
-	cardReleasedAt?:boolean | `@${string}`,
-	cardArtist?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ProductTranslationCustomFields"]: AliasType<{
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateProductCustomFieldsInput"]: {
-	googleMerchantProductId?: string | undefined | null | Variable<any, string>
-};
-	["UpdateProductCustomFieldsInput"]: {
-	googleMerchantProductId?: string | undefined | null | Variable<any, string>
-};
-	["ProductTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined | null | Variable<any, string>,
-	seoDescription?: string | undefined | null | Variable<any, string>
-};
-	["ProductVariantCustomFields"]: AliasType<{
-	cardMarketProductId?:boolean | `@${string}`,
-	cardMarketExpansionId?:boolean | `@${string}`,
-	cardMarketLastSynchronized?:boolean | `@${string}`,
-	cardMarketLanguage?:boolean | `@${string}`,
-	cardMarketCondition?:boolean | `@${string}`,
-	cardMarketFoil?:boolean | `@${string}`,
-	cardMarketSigned?:boolean | `@${string}`,
-	cardMarketAltered?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderLineCustomFieldsInput"]: {
-	cardMarketLanguage?: string | undefined | null | Variable<any, string>,
-	cardMarketCondition?: string | undefined | null | Variable<any, string>,
-	cardMarketFoil?: boolean | undefined | null | Variable<any, string>,
-	cardMarketSigned?: boolean | undefined | null | Variable<any, string>,
-	cardMarketAltered?: boolean | undefined | null | Variable<any, string>
+	pickupPointId?: string | undefined | null | Variable<any, string>
 };
 	["NativeAuthInput"]: {
 	username: string | Variable<any, string>,
@@ -5267,10 +5141,11 @@ taxRates?: [{	options?: ResolverInputTypes["TaxRateListOptions"] | undefined | n
 taxRate?: [{	id: string},ResolverInputTypes["TaxRate"]],
 zones?: [{	options?: ResolverInputTypes["ZoneListOptions"] | undefined | null},ResolverInputTypes["ZoneList"]],
 zone?: [{	id: string},ResolverInputTypes["Zone"]],
-metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
 getMerchantPlatformSettings?: [{	platform: string},ResolverInputTypes["MerchantPlatformSettingsEntity"]],
 getMerchantPlatformInfo?: [{	platform: string},ResolverInputTypes["MerchantPlatformInfo"]],
-	getFurgonetkaSettings?:ResolverInputTypes["FurgonetkaSettings"],
+	getInpostConfig?:ResolverInputTypes["InpostConfig"],
+getInpostOrganizations?: [{	input?: ResolverInputTypes["GetInpostOrganizationsInput"] | undefined | null},ResolverInputTypes["InpostOrganizationResponse"]],
+metricSummary?: [{	input?: ResolverInputTypes["MetricSummaryInput"] | undefined | null},ResolverInputTypes["MetricSummary"]],
 		__typename?: boolean | `@${string}`
 }>;
 	["Mutation"]: AliasType<{
@@ -5361,6 +5236,7 @@ setDraftOrderShippingAddress?: [{	orderId: string,	input: ResolverInputTypes["Cr
 setDraftOrderBillingAddress?: [{	orderId: string,	input: ResolverInputTypes["CreateAddressInput"]},ResolverInputTypes["Order"]],
 setDraftOrderCustomFields?: [{	orderId: string,	input: ResolverInputTypes["UpdateOrderInput"]},ResolverInputTypes["Order"]],
 applyCouponCodeToDraftOrder?: [{	orderId: string,	couponCode: string},ResolverInputTypes["ApplyCouponCodeResult"]],
+toggleExcludePromotionInOrder?: [{	orderId: string,	promotionId: string},ResolverInputTypes["Order"]],
 removeCouponCodeFromDraftOrder?: [{	orderId: string,	couponCode: string},ResolverInputTypes["Order"]],
 setDraftOrderShippingMethod?: [{	orderId: string,	shippingMethodId: string},ResolverInputTypes["SetOrderShippingMethodResult"]],
 createPaymentMethod?: [{	input: ResolverInputTypes["CreatePaymentMethodInput"]},ResolverInputTypes["PaymentMethod"]],
@@ -5390,7 +5266,7 @@ deleteProductVariants?: [{	ids: Array<string>},ResolverInputTypes["DeletionRespo
 assignProductsToChannel?: [{	input: ResolverInputTypes["AssignProductsToChannelInput"]},ResolverInputTypes["Product"]],
 removeProductsFromChannel?: [{	input: ResolverInputTypes["RemoveProductsFromChannelInput"]},ResolverInputTypes["Product"]],
 assignProductVariantsToChannel?: [{	input: ResolverInputTypes["AssignProductVariantsToChannelInput"]},ResolverInputTypes["ProductVariant"]],
-removeProductVariantsFromChannel?: [{	input: ResolverInputTypes["RemoveProductVariantsFromChannelInput"]},ResolverInputTypes["ProductVariant"]],
+removeProductVariantsFromChannel?: [{	input: ResolverInputTypes["RemoveProductVariantsFromChannelInput"]},boolean | `@${string}`],
 createPromotion?: [{	input: ResolverInputTypes["CreatePromotionInput"]},ResolverInputTypes["CreatePromotionResult"]],
 updatePromotion?: [{	input: ResolverInputTypes["UpdatePromotionInput"]},ResolverInputTypes["UpdatePromotionResult"]],
 deletePromotion?: [{	id: string},ResolverInputTypes["DeletionResponse"]],
@@ -5439,9 +5315,7 @@ addMembersToZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTyp
 removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
 sendAllProductsToMerchantPlatform?: [{	platform: string},boolean | `@${string}`],
 saveMerchantPlatformSettings?: [{	input: ResolverInputTypes["SaveMerchantPlatformSettingInput"]},ResolverInputTypes["MerchantPlatformSettingsEntity"]],
-saveFurgonetkaSettings?: [{	input: ResolverInputTypes["SaveFurgonetkaSettingsInput"]},ResolverInputTypes["FurgonetkaSettings"]],
-triggerCardMarketSynchronization?: [{	input?: ResolverInputTypes["TriggerCardMarketSynchronizationInput"] | undefined | null},boolean | `@${string}`],
-	triggerFreeDataSynchronization?:boolean | `@${string}`,
+setInpostShippingMethodConfig?: [{	input: ResolverInputTypes["SetInpostShippingMethodConfigInput"]},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
 	["AdministratorListOptions"]: {
@@ -5651,7 +5525,7 @@ triggerCardMarketSynchronization?: [{	input?: ResolverInputTypes["TriggerCardMar
 	filters?:ResolverInputTypes["ConfigurableOperation"],
 	translations?:ResolverInputTypes["CollectionTranslation"],
 productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | undefined | null},ResolverInputTypes["ProductVariantList"]],
-	customFields?:ResolverInputTypes["CollectionCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionListOptions"]: {
@@ -5677,7 +5551,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: ResolverInputTypes["CreateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined | null,
@@ -5685,7 +5559,7 @@ productVariants?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] |
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ResolverInputTypes["UpdateCollectionTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined | null,
@@ -6116,6 +5990,8 @@ methods. */
 	discounts?:ResolverInputTypes["Discount"],
 	/** An array of all coupon codes applied to the Order */
 	couponCodes?:boolean | `@${string}`,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?:boolean | `@${string}`,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions?:ResolverInputTypes["Promotion"],
 	payments?:ResolverInputTypes["Payment"],
@@ -6212,8 +6088,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	totalWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
 	_or?: Array<ResolverInputTypes["OrderFilterParameter"]> | undefined | null,
-	pickupPointId?: ResolverInputTypes["StringOperators"] | undefined | null,
-	pickupPointName?: ResolverInputTypes["StringOperators"] | undefined | null
+	pickupPointId?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -6232,8 +6107,7 @@ history?: [{	options?: ResolverInputTypes["HistoryEntryListOptions"] | undefined
 	shippingWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
 	total?: ResolverInputTypes["SortOrder"] | undefined | null,
 	totalWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	pickupPointId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	pickupPointName?: ResolverInputTypes["SortOrder"] | undefined | null
+	pickupPointId?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6283,8 +6157,7 @@ version. */
 };
 	["OrderLineInput"]: {
 	orderLineId: string,
-	quantity: number,
-	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
+	quantity: number
 };
 	["SettleRefundInput"]: {
 	id: string,
@@ -6348,8 +6221,7 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemInput"]: {
 	productVariantId: string,
-	quantity: number,
-	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
+	quantity: number
 };
 	["SurchargeInput"]: {
 	description: string,
@@ -6367,13 +6239,11 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 	productVariantId: string,
-	quantity: number,
-	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
+	quantity: number
 };
 	["AdjustDraftOrderLineInput"]: {
 	orderLineId: string,
-	quantity: number,
-	customFields?: ResolverInputTypes["OrderLineCustomFieldsInput"] | undefined | null
+	quantity: number
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: AliasType<{
@@ -6694,7 +6564,7 @@ variantList?: [{	options?: ResolverInputTypes["ProductVariantListOptions"] | und
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductTranslation"],
 	collections?:ResolverInputTypes["Collection"],
-	customFields?:ResolverInputTypes["ProductCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductVariantPrice"]: AliasType<{
@@ -6733,7 +6603,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	options?:ResolverInputTypes["ProductOption"],
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductVariantTranslation"],
-	customFields?:ResolverInputTypes["ProductVariantCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -6798,7 +6668,6 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	collectionIds?:boolean | `@${string}`,
 	/** A relevance score for the result. Differs between database implementations */
 	score?:boolean | `@${string}`,
-	inStock?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["StockMovementListOptions"]: {
@@ -6830,15 +6699,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	description?: ResolverInputTypes["StringOperators"] | undefined | null,
 	enabled?: ResolverInputTypes["BooleanOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null,
-	googleMerchantProductId?: ResolverInputTypes["StringOperators"] | undefined | null,
-	seoTitle?: ResolverInputTypes["StringOperators"] | undefined | null,
-	seoDescription?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketProductId?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketExpansionId?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketLastSynchronized?: ResolverInputTypes["DateOperators"] | undefined | null,
-	cardReleasedAt?: ResolverInputTypes["DateOperators"] | undefined | null,
-	cardArtist?: ResolverInputTypes["StringOperators"] | undefined | null
+	_or?: Array<ResolverInputTypes["ProductFilterParameter"]> | undefined | null
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -6872,15 +6733,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	priceWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	stockLevel?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
-	cardMarketProductId?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketExpansionId?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketLastSynchronized?: ResolverInputTypes["DateOperators"] | undefined | null,
-	cardMarketLanguage?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketCondition?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketFoil?: ResolverInputTypes["BooleanOperators"] | undefined | null,
-	cardMarketSigned?: ResolverInputTypes["BooleanOperators"] | undefined | null,
-	cardMarketAltered?: ResolverInputTypes["BooleanOperators"] | undefined | null
+	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null,
@@ -6888,7 +6741,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	name?: string | undefined | null,
 	slug?: string | undefined | null,
 	description?: string | undefined | null,
-	customFields?: ResolverInputTypes["ProductTranslationInputCustomFields"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined | null,
@@ -6896,7 +6749,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	assetIds?: Array<string> | undefined | null,
 	facetValueIds?: Array<string> | undefined | null,
 	translations: Array<ResolverInputTypes["ProductTranslationInput"]>,
-	customFields?: ResolverInputTypes["CreateProductCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["UpdateProductInput"]: {
 	id: string,
@@ -6905,7 +6758,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	assetIds?: Array<string> | undefined | null,
 	facetValueIds?: Array<string> | undefined | null,
 	translations?: Array<ResolverInputTypes["ProductTranslationInput"]> | undefined | null,
-	customFields?: ResolverInputTypes["UpdateProductCustomFieldsInput"] | undefined | null
+	customFields?: ResolverInputTypes["JSON"] | undefined | null
 };
 	["ProductVariantTranslationInput"]: {
 	id?: string | undefined | null,
@@ -7561,7 +7414,6 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ResolverInputTypes["CollectionTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["CollectionList"]: AliasType<{
@@ -7703,6 +7555,13 @@ current session. */
 	message?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: AliasType<{
+	errorCode?:boolean | `@${string}`,
+	message?:boolean | `@${string}`,
+	middlewareError?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:unknown;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -7788,7 +7647,6 @@ current session. */
 		['...on AuthenticationMethod']?: Omit<ResolverInputTypes["AuthenticationMethod"],keyof ResolverInputTypes["Node"]>;
 		['...on Zone']?: Omit<ResolverInputTypes["Zone"],keyof ResolverInputTypes["Node"]>;
 		['...on MerchantPlatformSettingsEntity']?: Omit<ResolverInputTypes["MerchantPlatformSettingsEntity"],keyof ResolverInputTypes["Node"]>;
-		['...on FurgonetkaSettings']?: Omit<ResolverInputTypes["FurgonetkaSettings"],keyof ResolverInputTypes["Node"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["ErrorResult"]:AliasType<{
@@ -7838,6 +7696,7 @@ current session. */
 		['...on OrderModificationError']?: Omit<ResolverInputTypes["OrderModificationError"],keyof ResolverInputTypes["ErrorResult"]>;
 		['...on IneligibleShippingMethodError']?: Omit<ResolverInputTypes["IneligibleShippingMethodError"],keyof ResolverInputTypes["ErrorResult"]>;
 		['...on NoActiveOrderError']?: Omit<ResolverInputTypes["NoActiveOrderError"],keyof ResolverInputTypes["ErrorResult"]>;
+		['...on OrderMiddlewareError']?: Omit<ResolverInputTypes["OrderMiddlewareError"],keyof ResolverInputTypes["ErrorResult"]>;
 		__typename?: boolean | `@${string}`
 }>;
 	["Adjustment"]: AliasType<{
@@ -7982,8 +7841,7 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined | null,
 	take?: number | undefined | null,
 	skip?: number | undefined | null,
-	sort?: ResolverInputTypes["SearchResultSortParameter"] | undefined | null,
-	inStock?: boolean | undefined | null
+	sort?: ResolverInputTypes["SearchResultSortParameter"] | undefined | null
 };
 	["SearchResultSortParameter"]: {
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -8069,11 +7927,13 @@ If an invalid code is passed, the mutation will fail. */
 	OrderLimitError?:ResolverInputTypes["OrderLimitError"],
 	NegativeQuantityError?:ResolverInputTypes["NegativeQuantityError"],
 	InsufficientStockError?:ResolverInputTypes["InsufficientStockError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	["RemoveOrderItemsResult"]: AliasType<{
 	Order?:ResolverInputTypes["Order"],
 	OrderModificationError?:ResolverInputTypes["OrderModificationError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	["SetOrderShippingMethodResult"]: AliasType<{
@@ -8088,6 +7948,7 @@ If an invalid code is passed, the mutation will fail. */
 	CouponCodeExpiredError?:ResolverInputTypes["CouponCodeExpiredError"],
 	CouponCodeInvalidError?:ResolverInputTypes["CouponCodeInvalidError"],
 	CouponCodeLimitError?:ResolverInputTypes["CouponCodeLimitError"],
+	OrderMiddlewareError?:ResolverInputTypes["OrderMiddlewareError"],
 		__typename?: boolean | `@${string}`
 }>;
 	/** @description
@@ -8470,7 +8331,7 @@ and refund calculations. */
 	taxLines?:ResolverInputTypes["TaxLine"],
 	order?:ResolverInputTypes["Order"],
 	fulfillmentLines?:ResolverInputTypes["FulfillmentLine"],
-	customFields?:ResolverInputTypes["OrderLineCustomFields"],
+	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["RefundLine"]: AliasType<{
@@ -8638,7 +8499,6 @@ by the search, and in what quantity. */
 	name?:boolean | `@${string}`,
 	slug?:boolean | `@${string}`,
 	description?:boolean | `@${string}`,
-	customFields?:ResolverInputTypes["ProductTranslationCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductList"]: AliasType<{
@@ -8878,25 +8738,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	customFields?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["MetricSummary"]: AliasType<{
-	interval?:boolean | `@${string}`,
-	type?:boolean | `@${string}`,
-	title?:boolean | `@${string}`,
-	entries?:ResolverInputTypes["MetricSummaryEntry"],
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricInterval"]:MetricInterval;
-	["MetricType"]:MetricType;
-	["MetricSummaryEntry"]: AliasType<{
-	label?:boolean | `@${string}`,
-	value?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["MetricSummaryInput"]: {
-	interval: ResolverInputTypes["MetricInterval"],
-	types: Array<ResolverInputTypes["MetricType"]>,
-	refresh?: boolean | undefined | null
-};
 	["MerchantPlatformSetting"]: AliasType<{
 	key?:boolean | `@${string}`,
 	value?:boolean | `@${string}`,
@@ -8921,53 +8762,55 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	platform: string,
 	entries?: Array<ResolverInputTypes["MerchantPlatformSettingInput"]> | undefined | null
 };
-	["FurgonetkaSettings"]: AliasType<{
+	["SetInpostShippingMethodConfigInput"]: {
+	shippingMethodId: string,
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined | null,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostConfig"]: AliasType<{
+	shippingMethodId?:boolean | `@${string}`,
+	host?:boolean | `@${string}`,
+	apiKey?:boolean | `@${string}`,
+	geowidgetKey?:boolean | `@${string}`,
+	inpostOrganization?:boolean | `@${string}`,
+	service?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["InpostOrganization"]: AliasType<{
 	id?:boolean | `@${string}`,
-	createdAt?:boolean | `@${string}`,
-	updatedAt?:boolean | `@${string}`,
-	authBasicKey?:boolean | `@${string}`,
-	username?:boolean | `@${string}`,
-	password?:boolean | `@${string}`,
-	service_id?:boolean | `@${string}`,
-	company?:boolean | `@${string}`,
 	name?:boolean | `@${string}`,
-	countryCode?:boolean | `@${string}`,
-	email?:boolean | `@${string}`,
-	phone?:boolean | `@${string}`,
-	postCode?:boolean | `@${string}`,
-	street?:boolean | `@${string}`,
-	city?:boolean | `@${string}`,
-	webhookToken?:boolean | `@${string}`,
-	senderPickupPointId?:boolean | `@${string}`,
+	services?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
-	["SaveFurgonetkaSettingsInput"]: {
-	authBasicKey: string,
-	username: string,
-	password: string,
-	service_id: string,
-	company: string,
-	name: string,
-	countryCode: ResolverInputTypes["LanguageCode"],
-	email: string,
-	phone: string,
-	postCode: string,
-	street: string,
-	city: string,
-	webhookToken: string,
-	senderPickupPointId?: string | undefined | null
-};
-	["CreateExchangeRateInput"]: {
-	currency: string,
-	rate: number
-};
-	["ExchangeRate"]: AliasType<{
-	currency?:boolean | `@${string}`,
-	rate?:boolean | `@${string}`,
+	["InpostOrganizationResponse"]: AliasType<{
+	items?:ResolverInputTypes["InpostOrganization"],
 		__typename?: boolean | `@${string}`
 }>;
-	["TriggerCardMarketSynchronizationInput"]: {
-	amount: number
+	["GetInpostOrganizationsInput"]: {
+	host: string,
+	apiKey: string
+};
+	["MetricSummary"]: AliasType<{
+	interval?:boolean | `@${string}`,
+	type?:boolean | `@${string}`,
+	title?:boolean | `@${string}`,
+	entries?:ResolverInputTypes["MetricSummaryEntry"],
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricInterval"]:MetricInterval;
+	["MetricType"]:MetricType;
+	["MetricSummaryEntry"]: AliasType<{
+	label?:boolean | `@${string}`,
+	value?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
+	["MetricSummaryInput"]: {
+	interval: ResolverInputTypes["MetricInterval"],
+	types: Array<ResolverInputTypes["MetricType"]>,
+	refresh?: boolean | undefined | null
 };
 	["AdministratorFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9050,10 +8893,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ResolverInputTypes["StringOperators"] | undefined | null,
 	parentId?: ResolverInputTypes["IDOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null,
-	seoTitle?: ResolverInputTypes["StringOperators"] | undefined | null,
-	seoDescription?: ResolverInputTypes["StringOperators"] | undefined | null,
-	cardMarketGameId?: ResolverInputTypes["StringOperators"] | undefined | null
+	_or?: Array<ResolverInputTypes["CollectionFilterParameter"]> | undefined | null
 };
 	["CollectionSortParameter"]: {
 	id?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -9063,10 +8903,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
 	position?: ResolverInputTypes["SortOrder"] | undefined | null,
 	description?: ResolverInputTypes["SortOrder"] | undefined | null,
-	parentId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	seoTitle?: ResolverInputTypes["SortOrder"] | undefined | null,
-	seoDescription?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketGameId?: ResolverInputTypes["SortOrder"] | undefined | null
+	parentId?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ResolverInputTypes["SortOrder"] | undefined | null,
@@ -9080,15 +8917,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	price?: ResolverInputTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketProductId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketExpansionId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketLastSynchronized?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketLanguage?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketCondition?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketFoil?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketSigned?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketAltered?: ResolverInputTypes["SortOrder"] | undefined | null
+	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9224,15 +9053,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	slug?: ResolverInputTypes["SortOrder"] | undefined | null,
-	description?: ResolverInputTypes["SortOrder"] | undefined | null,
-	googleMerchantProductId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	seoTitle?: ResolverInputTypes["SortOrder"] | undefined | null,
-	seoDescription?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketProductId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketExpansionId?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardMarketLastSynchronized?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardReleasedAt?: ResolverInputTypes["SortOrder"] | undefined | null,
-	cardArtist?: ResolverInputTypes["SortOrder"] | undefined | null
+	description?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["PromotionFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9424,89 +9245,16 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ResolverInputTypes["SortOrder"] | undefined | null,
 	updatedAt?: ResolverInputTypes["SortOrder"] | undefined | null
 };
-	["CollectionCustomFields"]: AliasType<{
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-	cardMarketGameId?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CollectionTranslationCustomFields"]: AliasType<{
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateCollectionTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined | null,
-	seoDescription?: string | undefined | null
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined | null,
-	seoDescription?: string | undefined | null
-};
 	["FulfillmentCustomFields"]: AliasType<{
-	packageId?:boolean | `@${string}`,
+	inpostLabel?:ResolverInputTypes["Asset"],
 		__typename?: boolean | `@${string}`
 }>;
 	["OrderCustomFields"]: AliasType<{
 	pickupPointId?:boolean | `@${string}`,
-	pickupPointName?:boolean | `@${string}`,
 		__typename?: boolean | `@${string}`
 }>;
 	["UpdateOrderCustomFieldsInput"]: {
-	pickupPointId?: string | undefined | null,
-	pickupPointName?: string | undefined | null
-};
-	["OrderLineCustomFields"]: AliasType<{
-	cardMarketLanguage?:boolean | `@${string}`,
-	cardMarketCondition?:boolean | `@${string}`,
-	cardMarketFoil?:boolean | `@${string}`,
-	cardMarketSigned?:boolean | `@${string}`,
-	cardMarketAltered?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ProductCustomFields"]: AliasType<{
-	googleMerchantProductId?:boolean | `@${string}`,
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-	cardMarketProductId?:boolean | `@${string}`,
-	cardMarketExpansionId?:boolean | `@${string}`,
-	cardMarketLastSynchronized?:boolean | `@${string}`,
-	cardReleasedAt?:boolean | `@${string}`,
-	cardArtist?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["ProductTranslationCustomFields"]: AliasType<{
-	seoTitle?:boolean | `@${string}`,
-	seoDescription?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["CreateProductCustomFieldsInput"]: {
-	googleMerchantProductId?: string | undefined | null
-};
-	["UpdateProductCustomFieldsInput"]: {
-	googleMerchantProductId?: string | undefined | null
-};
-	["ProductTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined | null,
-	seoDescription?: string | undefined | null
-};
-	["ProductVariantCustomFields"]: AliasType<{
-	cardMarketProductId?:boolean | `@${string}`,
-	cardMarketExpansionId?:boolean | `@${string}`,
-	cardMarketLastSynchronized?:boolean | `@${string}`,
-	cardMarketLanguage?:boolean | `@${string}`,
-	cardMarketCondition?:boolean | `@${string}`,
-	cardMarketFoil?:boolean | `@${string}`,
-	cardMarketSigned?:boolean | `@${string}`,
-	cardMarketAltered?:boolean | `@${string}`,
-		__typename?: boolean | `@${string}`
-}>;
-	["OrderLineCustomFieldsInput"]: {
-	cardMarketLanguage?: string | undefined | null,
-	cardMarketCondition?: string | undefined | null,
-	cardMarketFoil?: boolean | undefined | null,
-	cardMarketSigned?: boolean | undefined | null,
-	cardMarketAltered?: boolean | undefined | null
+	pickupPointId?: string | undefined | null
 };
 	["NativeAuthInput"]: {
 	username: string,
@@ -9640,11 +9388,12 @@ export type ModelTypes = {
 	taxRate?: ModelTypes["TaxRate"] | undefined,
 	zones: ModelTypes["ZoneList"],
 	zone?: ModelTypes["Zone"] | undefined,
-	/** Get metrics for the given interval and metric types. */
-	metricSummary: Array<ModelTypes["MetricSummary"]>,
 	getMerchantPlatformSettings?: ModelTypes["MerchantPlatformSettingsEntity"] | undefined,
 	getMerchantPlatformInfo?: Array<ModelTypes["MerchantPlatformInfo"]> | undefined,
-	getFurgonetkaSettings?: ModelTypes["FurgonetkaSettings"] | undefined
+	getInpostConfig?: ModelTypes["InpostConfig"] | undefined,
+	getInpostOrganizations: ModelTypes["InpostOrganizationResponse"],
+	/** Get metrics for the given interval and metric types. */
+	metricSummary: Array<ModelTypes["MetricSummary"]>
 };
 	["Mutation"]: {
 		/** Create a new Administrator */
@@ -9808,6 +9557,8 @@ Payment. */
 	setDraftOrderCustomFields: ModelTypes["Order"],
 	/** Applies the given coupon code to the draft Order */
 	applyCouponCodeToDraftOrder: ModelTypes["ApplyCouponCodeResult"],
+	/** Toggle exclusion of given promotion from the draft Order */
+	toggleExcludePromotionInOrder?: ModelTypes["Order"] | undefined,
 	/** Removes the given coupon code from the draft Order */
 	removeCouponCodeFromDraftOrder?: ModelTypes["Order"] | undefined,
 	/** Sets the shipping method by id, which can be obtained with the `eligibleShippingMethodsForDraftOrder` query */
@@ -9868,7 +9619,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Assigns ProductVariants to the specified Channel */
 	assignProductVariantsToChannel: Array<ModelTypes["ProductVariant"]>,
 	/** Removes ProductVariants from the specified Channel */
-	removeProductVariantsFromChannel: Array<ModelTypes["ProductVariant"]>,
+	removeProductVariantsFromChannel: Array<string>,
 	createPromotion: ModelTypes["CreatePromotionResult"],
 	updatePromotion: ModelTypes["UpdatePromotionResult"],
 	deletePromotion: ModelTypes["DeletionResponse"],
@@ -9955,9 +9706,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	removeMembersFromZone: ModelTypes["Zone"],
 	sendAllProductsToMerchantPlatform?: boolean | undefined,
 	saveMerchantPlatformSettings: ModelTypes["MerchantPlatformSettingsEntity"],
-	saveFurgonetkaSettings: ModelTypes["FurgonetkaSettings"],
-	triggerCardMarketSynchronization?: boolean | undefined,
-	triggerFreeDataSynchronization?: boolean | undefined
+	setInpostShippingMethodConfig: boolean
 };
 	["AdministratorListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10140,7 +9889,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filters: Array<ModelTypes["ConfigurableOperation"]>,
 	translations: Array<ModelTypes["CollectionTranslation"]>,
 	productVariants: ModelTypes["ProductVariantList"],
-	customFields?: ModelTypes["CollectionCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["CollectionListOptions"]: {
 	topLevelOnly?: boolean | undefined,
@@ -10165,7 +9914,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: ModelTypes["CreateCollectionTranslationInputCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["UpdateCollectionTranslationInput"]: {
 	id?: string | undefined,
@@ -10173,7 +9922,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: ModelTypes["UpdateCollectionTranslationInputCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["CreateCollectionInput"]: {
 	isPrivate?: boolean | undefined,
@@ -10563,6 +10312,8 @@ methods. */
 	discounts: Array<ModelTypes["Discount"]>,
 	/** An array of all coupon codes applied to the Order */
 	couponCodes: Array<string>,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?: Array<string> | undefined,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions: Array<ModelTypes["Promotion"]>,
 	payments?: Array<ModelTypes["Payment"]> | undefined,
@@ -10654,8 +10405,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	totalWithTax?: ModelTypes["NumberOperators"] | undefined,
 	_and?: Array<ModelTypes["OrderFilterParameter"]> | undefined,
 	_or?: Array<ModelTypes["OrderFilterParameter"]> | undefined,
-	pickupPointId?: ModelTypes["StringOperators"] | undefined,
-	pickupPointName?: ModelTypes["StringOperators"] | undefined
+	pickupPointId?: ModelTypes["StringOperators"] | undefined
 };
 	["OrderSortParameter"]: {
 	customerLastName?: ModelTypes["SortOrder"] | undefined,
@@ -10674,8 +10424,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: ModelTypes["SortOrder"] | undefined,
 	total?: ModelTypes["SortOrder"] | undefined,
 	totalWithTax?: ModelTypes["SortOrder"] | undefined,
-	pickupPointId?: ModelTypes["SortOrder"] | undefined,
-	pickupPointName?: ModelTypes["SortOrder"] | undefined
+	pickupPointId?: ModelTypes["SortOrder"] | undefined
 };
 	["OrderListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -10725,8 +10474,7 @@ version. */
 };
 	["OrderLineInput"]: {
 	orderLineId: string,
-	quantity: number,
-	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	["SettleRefundInput"]: {
 	id: string,
@@ -10790,8 +10538,7 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemInput"]: {
 	productVariantId: string,
-	quantity: number,
-	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	["SurchargeInput"]: {
 	description: string,
@@ -10809,13 +10556,11 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 	productVariantId: string,
-	quantity: number,
-	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	["AdjustDraftOrderLineInput"]: {
 	orderLineId: string,
-	quantity: number,
-	customFields?: ModelTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: {
@@ -11035,7 +10780,7 @@ is not in the required state. */
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductTranslation"]>,
 	collections: Array<ModelTypes["Collection"]>,
-	customFields?: ModelTypes["ProductCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["ProductVariantPrice"]: {
 		currencyCode: ModelTypes["CurrencyCode"],
@@ -11072,7 +10817,7 @@ is not in the required state. */
 	options: Array<ModelTypes["ProductOption"]>,
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductVariantTranslation"]>,
-	customFields?: ModelTypes["ProductVariantCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["ProductOptionGroupTranslationInput"]: {
 	id?: string | undefined,
@@ -11135,8 +10880,7 @@ is not in the required state. */
 	/** An array of ids of the Collections in which this result appears */
 	collectionIds: Array<string>,
 	/** A relevance score for the result. Differs between database implementations */
-	score: number,
-	inStock: boolean
+	score: number
 };
 	["StockMovementListOptions"]: {
 	type?: ModelTypes["StockMovementType"] | undefined,
@@ -11167,15 +10911,7 @@ is not in the required state. */
 	description?: ModelTypes["StringOperators"] | undefined,
 	enabled?: ModelTypes["BooleanOperators"] | undefined,
 	_and?: Array<ModelTypes["ProductFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined,
-	googleMerchantProductId?: ModelTypes["StringOperators"] | undefined,
-	seoTitle?: ModelTypes["StringOperators"] | undefined,
-	seoDescription?: ModelTypes["StringOperators"] | undefined,
-	cardMarketProductId?: ModelTypes["StringOperators"] | undefined,
-	cardMarketExpansionId?: ModelTypes["StringOperators"] | undefined,
-	cardMarketLastSynchronized?: ModelTypes["DateOperators"] | undefined,
-	cardReleasedAt?: ModelTypes["DateOperators"] | undefined,
-	cardArtist?: ModelTypes["StringOperators"] | undefined
+	_or?: Array<ModelTypes["ProductFilterParameter"]> | undefined
 };
 	["ProductVariantListOptions"]: {
 	/** Skips the first n results, for use in pagination */
@@ -11209,15 +10945,7 @@ is not in the required state. */
 	priceWithTax?: ModelTypes["NumberOperators"] | undefined,
 	stockLevel?: ModelTypes["StringOperators"] | undefined,
 	_and?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined,
-	cardMarketProductId?: ModelTypes["StringOperators"] | undefined,
-	cardMarketExpansionId?: ModelTypes["StringOperators"] | undefined,
-	cardMarketLastSynchronized?: ModelTypes["DateOperators"] | undefined,
-	cardMarketLanguage?: ModelTypes["StringOperators"] | undefined,
-	cardMarketCondition?: ModelTypes["StringOperators"] | undefined,
-	cardMarketFoil?: ModelTypes["BooleanOperators"] | undefined,
-	cardMarketSigned?: ModelTypes["BooleanOperators"] | undefined,
-	cardMarketAltered?: ModelTypes["BooleanOperators"] | undefined
+	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined,
@@ -11225,7 +10953,7 @@ is not in the required state. */
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: ModelTypes["ProductTranslationInputCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["CreateProductInput"]: {
 	featuredAssetId?: string | undefined,
@@ -11233,7 +10961,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations: Array<ModelTypes["ProductTranslationInput"]>,
-	customFields?: ModelTypes["CreateProductCustomFieldsInput"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["UpdateProductInput"]: {
 	id: string,
@@ -11242,7 +10970,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations?: Array<ModelTypes["ProductTranslationInput"]> | undefined,
-	customFields?: ModelTypes["UpdateProductCustomFieldsInput"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["ProductVariantTranslationInput"]: {
 	id?: string | undefined,
@@ -11838,8 +11566,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	languageCode: ModelTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: ModelTypes["CollectionTranslationCustomFields"] | undefined
+	description: string
 };
 	["CollectionList"]: {
 		items: Array<ModelTypes["Collection"]>,
@@ -11935,6 +11662,12 @@ current session. */
 		errorCode: ModelTypes["ErrorCode"],
 	message: string
 };
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: {
+		errorCode: ModelTypes["ErrorCode"],
+	message: string,
+	middlewareError: string
+};
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]:any;
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -11944,8 +11677,8 @@ current session. */
 	/** The `Money` scalar type represents monetary values and supports signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). */
 ["Money"]:any;
 	["PaginatedList"]: ModelTypes["AdministratorList"] | ModelTypes["ChannelList"] | ModelTypes["CustomerGroupList"] | ModelTypes["JobList"] | ModelTypes["PaymentMethodList"] | ModelTypes["SellerList"] | ModelTypes["StockLocationList"] | ModelTypes["TaxCategoryList"] | ModelTypes["ZoneList"] | ModelTypes["AssetList"] | ModelTypes["CollectionList"] | ModelTypes["CustomerList"] | ModelTypes["FacetList"] | ModelTypes["FacetValueList"] | ModelTypes["HistoryEntryList"] | ModelTypes["OrderList"] | ModelTypes["ProductList"] | ModelTypes["ProductVariantList"] | ModelTypes["PromotionList"] | ModelTypes["CountryList"] | ModelTypes["ProvinceList"] | ModelTypes["RoleList"] | ModelTypes["ShippingMethodList"] | ModelTypes["TagList"] | ModelTypes["TaxRateList"];
-	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"] | ModelTypes["MerchantPlatformSettingsEntity"] | ModelTypes["FurgonetkaSettings"];
-	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
+	["Node"]: ModelTypes["Administrator"] | ModelTypes["Collection"] | ModelTypes["Customer"] | ModelTypes["Facet"] | ModelTypes["HistoryEntry"] | ModelTypes["Job"] | ModelTypes["Order"] | ModelTypes["Fulfillment"] | ModelTypes["Payment"] | ModelTypes["OrderModification"] | ModelTypes["Product"] | ModelTypes["ProductVariant"] | ModelTypes["StockLevel"] | ModelTypes["StockLocation"] | ModelTypes["StockAdjustment"] | ModelTypes["Allocation"] | ModelTypes["Sale"] | ModelTypes["Cancellation"] | ModelTypes["Return"] | ModelTypes["Release"] | ModelTypes["Address"] | ModelTypes["Asset"] | ModelTypes["Channel"] | ModelTypes["CustomerGroup"] | ModelTypes["FacetValue"] | ModelTypes["OrderLine"] | ModelTypes["Refund"] | ModelTypes["Surcharge"] | ModelTypes["PaymentMethod"] | ModelTypes["ProductOptionGroup"] | ModelTypes["ProductOption"] | ModelTypes["Promotion"] | ModelTypes["Region"] | ModelTypes["Country"] | ModelTypes["Province"] | ModelTypes["Role"] | ModelTypes["Seller"] | ModelTypes["ShippingMethod"] | ModelTypes["Tag"] | ModelTypes["TaxCategory"] | ModelTypes["TaxRate"] | ModelTypes["User"] | ModelTypes["AuthenticationMethod"] | ModelTypes["Zone"] | ModelTypes["MerchantPlatformSettingsEntity"];
+	["ErrorResult"]: ModelTypes["MimeTypeError"] | ModelTypes["LanguageNotAvailableError"] | ModelTypes["DuplicateEntityError"] | ModelTypes["FacetInUseError"] | ModelTypes["ChannelDefaultLanguageError"] | ModelTypes["SettlePaymentError"] | ModelTypes["CancelPaymentError"] | ModelTypes["EmptyOrderLineSelectionError"] | ModelTypes["ItemsAlreadyFulfilledError"] | ModelTypes["InvalidFulfillmentHandlerError"] | ModelTypes["CreateFulfillmentError"] | ModelTypes["InsufficientStockOnHandError"] | ModelTypes["MultipleOrderError"] | ModelTypes["CancelActiveOrderError"] | ModelTypes["PaymentOrderMismatchError"] | ModelTypes["RefundOrderStateError"] | ModelTypes["NothingToRefundError"] | ModelTypes["AlreadyRefundedError"] | ModelTypes["QuantityTooGreatError"] | ModelTypes["RefundAmountError"] | ModelTypes["RefundStateTransitionError"] | ModelTypes["PaymentStateTransitionError"] | ModelTypes["FulfillmentStateTransitionError"] | ModelTypes["OrderModificationStateError"] | ModelTypes["NoChangesSpecifiedError"] | ModelTypes["PaymentMethodMissingError"] | ModelTypes["RefundPaymentIdMissingError"] | ModelTypes["ManualPaymentStateError"] | ModelTypes["ProductOptionInUseError"] | ModelTypes["MissingConditionsError"] | ModelTypes["NativeAuthStrategyError"] | ModelTypes["InvalidCredentialsError"] | ModelTypes["OrderStateTransitionError"] | ModelTypes["EmailAddressConflictError"] | ModelTypes["GuestCheckoutError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"] | ModelTypes["OrderMiddlewareError"];
 	["Adjustment"]: {
 		adjustmentSource: string,
 	type: ModelTypes["AdjustmentType"],
@@ -12081,8 +11814,7 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined,
 	take?: number | undefined,
 	skip?: number | undefined,
-	sort?: ModelTypes["SearchResultSortParameter"] | undefined,
-	inStock?: boolean | undefined
+	sort?: ModelTypes["SearchResultSortParameter"] | undefined
 };
 	["SearchResultSortParameter"]: {
 	name?: ModelTypes["SortOrder"] | undefined,
@@ -12159,10 +11891,10 @@ If an invalid code is passed, the mutation will fail. */
 	eligibilityMessage?: string | undefined,
 	customFields?: ModelTypes["JSON"] | undefined
 };
-	["UpdateOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"];
-	["RemoveOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"];
+	["UpdateOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderLimitError"] | ModelTypes["NegativeQuantityError"] | ModelTypes["InsufficientStockError"] | ModelTypes["OrderMiddlewareError"];
+	["RemoveOrderItemsResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["OrderMiddlewareError"];
 	["SetOrderShippingMethodResult"]:ModelTypes["Order"] | ModelTypes["OrderModificationError"] | ModelTypes["IneligibleShippingMethodError"] | ModelTypes["NoActiveOrderError"];
-	["ApplyCouponCodeResult"]:ModelTypes["Order"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeLimitError"];
+	["ApplyCouponCodeResult"]:ModelTypes["Order"] | ModelTypes["CouponCodeExpiredError"] | ModelTypes["CouponCodeInvalidError"] | ModelTypes["CouponCodeLimitError"] | ModelTypes["OrderMiddlewareError"];
 	["CurrencyCode"]:CurrencyCode;
 	["CustomField"]: ModelTypes["StringCustomFieldConfig"] | ModelTypes["LocaleStringCustomFieldConfig"] | ModelTypes["IntCustomFieldConfig"] | ModelTypes["FloatCustomFieldConfig"] | ModelTypes["BooleanCustomFieldConfig"] | ModelTypes["DateTimeCustomFieldConfig"] | ModelTypes["RelationCustomFieldConfig"] | ModelTypes["TextCustomFieldConfig"] | ModelTypes["LocaleTextCustomFieldConfig"];
 	["StringCustomFieldConfig"]: {
@@ -12476,7 +12208,7 @@ and refund calculations. */
 	taxLines: Array<ModelTypes["TaxLine"]>,
 	order: ModelTypes["Order"],
 	fulfillmentLines?: Array<ModelTypes["FulfillmentLine"]> | undefined,
-	customFields?: ModelTypes["OrderLineCustomFields"] | undefined
+	customFields?: ModelTypes["JSON"] | undefined
 };
 	["RefundLine"]: {
 		orderLine: ModelTypes["OrderLine"],
@@ -12621,8 +12353,7 @@ by the search, and in what quantity. */
 	languageCode: ModelTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: ModelTypes["ProductTranslationCustomFields"] | undefined
+	description: string
 };
 	["ProductList"]: {
 		items: Array<ModelTypes["Product"]>,
@@ -12821,23 +12552,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<ModelTypes["Region"]>,
 	customFields?: ModelTypes["JSON"] | undefined
 };
-	["MetricSummary"]: {
-		interval: ModelTypes["MetricInterval"],
-	type: ModelTypes["MetricType"],
-	title: string,
-	entries: Array<ModelTypes["MetricSummaryEntry"]>
-};
-	["MetricInterval"]:MetricInterval;
-	["MetricType"]:MetricType;
-	["MetricSummaryEntry"]: {
-		label: string,
-	value: number
-};
-	["MetricSummaryInput"]: {
-	interval: ModelTypes["MetricInterval"],
-	types: Array<ModelTypes["MetricType"]>,
-	refresh?: boolean | undefined
-};
 	["MerchantPlatformSetting"]: {
 		key: string,
 	value: string
@@ -12859,51 +12573,50 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	platform: string,
 	entries?: Array<ModelTypes["MerchantPlatformSettingInput"]> | undefined
 };
-	["FurgonetkaSettings"]: {
-		id: string,
-	createdAt: ModelTypes["DateTime"],
-	updatedAt: ModelTypes["DateTime"],
-	authBasicKey: string,
-	username: string,
-	password: string,
-	service_id: string,
-	company: string,
+	["SetInpostShippingMethodConfigInput"]: {
+	shippingMethodId: string,
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostConfig"]: {
+		shippingMethodId: string,
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostOrganization"]: {
+		id: number,
 	name: string,
-	countryCode: ModelTypes["LanguageCode"],
-	email: string,
-	phone: string,
-	postCode: string,
-	street: string,
-	city: string,
-	webhookToken: string,
-	senderPickupPointId?: string | undefined
+	services: Array<string>
 };
-	["SaveFurgonetkaSettingsInput"]: {
-	authBasicKey: string,
-	username: string,
-	password: string,
-	service_id: string,
-	company: string,
-	name: string,
-	countryCode: ModelTypes["LanguageCode"],
-	email: string,
-	phone: string,
-	postCode: string,
-	street: string,
-	city: string,
-	webhookToken: string,
-	senderPickupPointId?: string | undefined
+	["InpostOrganizationResponse"]: {
+		items: Array<ModelTypes["InpostOrganization"]>
 };
-	["CreateExchangeRateInput"]: {
-	currency: string,
-	rate: number
+	["GetInpostOrganizationsInput"]: {
+	host: string,
+	apiKey: string
 };
-	["ExchangeRate"]: {
-		currency: string,
-	rate: number
+	["MetricSummary"]: {
+		interval: ModelTypes["MetricInterval"],
+	type: ModelTypes["MetricType"],
+	title: string,
+	entries: Array<ModelTypes["MetricSummaryEntry"]>
 };
-	["TriggerCardMarketSynchronizationInput"]: {
-	amount: number
+	["MetricInterval"]:MetricInterval;
+	["MetricType"]:MetricType;
+	["MetricSummaryEntry"]: {
+		label: string,
+	value: number
+};
+	["MetricSummaryInput"]: {
+	interval: ModelTypes["MetricInterval"],
+	types: Array<ModelTypes["MetricType"]>,
+	refresh?: boolean | undefined
 };
 	["AdministratorFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -12986,10 +12699,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: ModelTypes["StringOperators"] | undefined,
 	parentId?: ModelTypes["IDOperators"] | undefined,
 	_and?: Array<ModelTypes["CollectionFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["CollectionFilterParameter"]> | undefined,
-	seoTitle?: ModelTypes["StringOperators"] | undefined,
-	seoDescription?: ModelTypes["StringOperators"] | undefined,
-	cardMarketGameId?: ModelTypes["StringOperators"] | undefined
+	_or?: Array<ModelTypes["CollectionFilterParameter"]> | undefined
 };
 	["CollectionSortParameter"]: {
 	id?: ModelTypes["SortOrder"] | undefined,
@@ -12999,10 +12709,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: ModelTypes["SortOrder"] | undefined,
 	position?: ModelTypes["SortOrder"] | undefined,
 	description?: ModelTypes["SortOrder"] | undefined,
-	parentId?: ModelTypes["SortOrder"] | undefined,
-	seoTitle?: ModelTypes["SortOrder"] | undefined,
-	seoDescription?: ModelTypes["SortOrder"] | undefined,
-	cardMarketGameId?: ModelTypes["SortOrder"] | undefined
+	parentId?: ModelTypes["SortOrder"] | undefined
 };
 	["ProductVariantSortParameter"]: {
 	stockOnHand?: ModelTypes["SortOrder"] | undefined,
@@ -13016,15 +12723,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["SortOrder"] | undefined,
 	price?: ModelTypes["SortOrder"] | undefined,
 	priceWithTax?: ModelTypes["SortOrder"] | undefined,
-	stockLevel?: ModelTypes["SortOrder"] | undefined,
-	cardMarketProductId?: ModelTypes["SortOrder"] | undefined,
-	cardMarketExpansionId?: ModelTypes["SortOrder"] | undefined,
-	cardMarketLastSynchronized?: ModelTypes["SortOrder"] | undefined,
-	cardMarketLanguage?: ModelTypes["SortOrder"] | undefined,
-	cardMarketCondition?: ModelTypes["SortOrder"] | undefined,
-	cardMarketFoil?: ModelTypes["SortOrder"] | undefined,
-	cardMarketSigned?: ModelTypes["SortOrder"] | undefined,
-	cardMarketAltered?: ModelTypes["SortOrder"] | undefined
+	stockLevel?: ModelTypes["SortOrder"] | undefined
 };
 	["CountryFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -13160,15 +12859,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: ModelTypes["SortOrder"] | undefined,
 	name?: ModelTypes["SortOrder"] | undefined,
 	slug?: ModelTypes["SortOrder"] | undefined,
-	description?: ModelTypes["SortOrder"] | undefined,
-	googleMerchantProductId?: ModelTypes["SortOrder"] | undefined,
-	seoTitle?: ModelTypes["SortOrder"] | undefined,
-	seoDescription?: ModelTypes["SortOrder"] | undefined,
-	cardMarketProductId?: ModelTypes["SortOrder"] | undefined,
-	cardMarketExpansionId?: ModelTypes["SortOrder"] | undefined,
-	cardMarketLastSynchronized?: ModelTypes["SortOrder"] | undefined,
-	cardReleasedAt?: ModelTypes["SortOrder"] | undefined,
-	cardArtist?: ModelTypes["SortOrder"] | undefined
+	description?: ModelTypes["SortOrder"] | undefined
 };
 	["PromotionFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -13360,81 +13051,14 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: ModelTypes["SortOrder"] | undefined,
 	updatedAt?: ModelTypes["SortOrder"] | undefined
 };
-	["CollectionCustomFields"]: {
-		seoTitle?: string | undefined,
-	seoDescription?: string | undefined,
-	cardMarketGameId?: string | undefined
-};
-	["CollectionTranslationCustomFields"]: {
-		seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["CreateCollectionTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
 	["FulfillmentCustomFields"]: {
-		packageId?: string | undefined
+		inpostLabel?: ModelTypes["Asset"] | undefined
 };
 	["OrderCustomFields"]: {
-		pickupPointId?: string | undefined,
-	pickupPointName?: string | undefined
+		pickupPointId?: string | undefined
 };
 	["UpdateOrderCustomFieldsInput"]: {
-	pickupPointId?: string | undefined,
-	pickupPointName?: string | undefined
-};
-	["OrderLineCustomFields"]: {
-		cardMarketLanguage?: string | undefined,
-	cardMarketCondition?: string | undefined,
-	cardMarketFoil?: boolean | undefined,
-	cardMarketSigned?: boolean | undefined,
-	cardMarketAltered?: boolean | undefined
-};
-	["ProductCustomFields"]: {
-		googleMerchantProductId?: string | undefined,
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined,
-	cardMarketProductId?: string | undefined,
-	cardMarketExpansionId?: string | undefined,
-	cardMarketLastSynchronized?: ModelTypes["DateTime"] | undefined,
-	cardReleasedAt?: ModelTypes["DateTime"] | undefined,
-	cardArtist?: string | undefined
-};
-	["ProductTranslationCustomFields"]: {
-		seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["CreateProductCustomFieldsInput"]: {
-	googleMerchantProductId?: string | undefined
-};
-	["UpdateProductCustomFieldsInput"]: {
-	googleMerchantProductId?: string | undefined
-};
-	["ProductTranslationInputCustomFields"]: {
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["ProductVariantCustomFields"]: {
-		cardMarketProductId?: string | undefined,
-	cardMarketExpansionId?: string | undefined,
-	cardMarketLastSynchronized?: ModelTypes["DateTime"] | undefined,
-	cardMarketLanguage?: string | undefined,
-	cardMarketCondition?: string | undefined,
-	cardMarketFoil?: boolean | undefined,
-	cardMarketSigned?: boolean | undefined,
-	cardMarketAltered?: boolean | undefined
-};
-	["OrderLineCustomFieldsInput"]: {
-	cardMarketLanguage?: string | undefined,
-	cardMarketCondition?: string | undefined,
-	cardMarketFoil?: boolean | undefined,
-	cardMarketSigned?: boolean | undefined,
-	cardMarketAltered?: boolean | undefined
+	pickupPointId?: string | undefined
 };
 	["NativeAuthInput"]: {
 	username: string,
@@ -13566,11 +13190,12 @@ export type GraphQLTypes = {
 	taxRate?: GraphQLTypes["TaxRate"] | undefined,
 	zones: GraphQLTypes["ZoneList"],
 	zone?: GraphQLTypes["Zone"] | undefined,
-	/** Get metrics for the given interval and metric types. */
-	metricSummary: Array<GraphQLTypes["MetricSummary"]>,
 	getMerchantPlatformSettings?: GraphQLTypes["MerchantPlatformSettingsEntity"] | undefined,
 	getMerchantPlatformInfo?: Array<GraphQLTypes["MerchantPlatformInfo"]> | undefined,
-	getFurgonetkaSettings?: GraphQLTypes["FurgonetkaSettings"] | undefined
+	getInpostConfig?: GraphQLTypes["InpostConfig"] | undefined,
+	getInpostOrganizations: GraphQLTypes["InpostOrganizationResponse"],
+	/** Get metrics for the given interval and metric types. */
+	metricSummary: Array<GraphQLTypes["MetricSummary"]>
 };
 	["Mutation"]: {
 	__typename: "Mutation",
@@ -13735,6 +13360,8 @@ Payment. */
 	setDraftOrderCustomFields: GraphQLTypes["Order"],
 	/** Applies the given coupon code to the draft Order */
 	applyCouponCodeToDraftOrder: GraphQLTypes["ApplyCouponCodeResult"],
+	/** Toggle exclusion of given promotion from the draft Order */
+	toggleExcludePromotionInOrder?: GraphQLTypes["Order"] | undefined,
 	/** Removes the given coupon code from the draft Order */
 	removeCouponCodeFromDraftOrder?: GraphQLTypes["Order"] | undefined,
 	/** Sets the shipping method by id, which can be obtained with the `eligibleShippingMethodsForDraftOrder` query */
@@ -13795,7 +13422,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	/** Assigns ProductVariants to the specified Channel */
 	assignProductVariantsToChannel: Array<GraphQLTypes["ProductVariant"]>,
 	/** Removes ProductVariants from the specified Channel */
-	removeProductVariantsFromChannel: Array<GraphQLTypes["ProductVariant"]>,
+	removeProductVariantsFromChannel: Array<string>,
 	createPromotion: GraphQLTypes["CreatePromotionResult"],
 	updatePromotion: GraphQLTypes["UpdatePromotionResult"],
 	deletePromotion: GraphQLTypes["DeletionResponse"],
@@ -13882,9 +13509,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	removeMembersFromZone: GraphQLTypes["Zone"],
 	sendAllProductsToMerchantPlatform?: boolean | undefined,
 	saveMerchantPlatformSettings: GraphQLTypes["MerchantPlatformSettingsEntity"],
-	saveFurgonetkaSettings: GraphQLTypes["FurgonetkaSettings"],
-	triggerCardMarketSynchronization?: boolean | undefined,
-	triggerFreeDataSynchronization?: boolean | undefined
+	setInpostShippingMethodConfig: boolean
 };
 	["AdministratorListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14094,7 +13719,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	filters: Array<GraphQLTypes["ConfigurableOperation"]>,
 	translations: Array<GraphQLTypes["CollectionTranslation"]>,
 	productVariants: GraphQLTypes["ProductVariantList"],
-	customFields?: GraphQLTypes["CollectionCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["CollectionListOptions"]: {
 		topLevelOnly?: boolean | undefined,
@@ -14119,7 +13744,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name: string,
 	slug: string,
 	description: string,
-	customFields?: GraphQLTypes["CreateCollectionTranslationInputCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["UpdateCollectionTranslationInput"]: {
 		id?: string | undefined,
@@ -14127,7 +13752,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: GraphQLTypes["UpdateCollectionTranslationInputCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["CreateCollectionInput"]: {
 		isPrivate?: boolean | undefined,
@@ -14560,6 +14185,8 @@ methods. */
 	discounts: Array<GraphQLTypes["Discount"]>,
 	/** An array of all coupon codes applied to the Order */
 	couponCodes: Array<string>,
+	/** An array of all promotions excluded from the Order */
+	excludedPromotionIds?: Array<string> | undefined,
 	/** Promotions applied to the order. Only gets populated after the payment process has completed. */
 	promotions: Array<GraphQLTypes["Promotion"]>,
 	payments?: Array<GraphQLTypes["Payment"]> | undefined,
@@ -14655,8 +14282,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	totalWithTax?: GraphQLTypes["NumberOperators"] | undefined,
 	_and?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined,
 	_or?: Array<GraphQLTypes["OrderFilterParameter"]> | undefined,
-	pickupPointId?: GraphQLTypes["StringOperators"] | undefined,
-	pickupPointName?: GraphQLTypes["StringOperators"] | undefined
+	pickupPointId?: GraphQLTypes["StringOperators"] | undefined
 };
 	["OrderSortParameter"]: {
 		customerLastName?: GraphQLTypes["SortOrder"] | undefined,
@@ -14675,8 +14301,7 @@ sum of `OrderLine.discountedLinePrice` values. */
 	shippingWithTax?: GraphQLTypes["SortOrder"] | undefined,
 	total?: GraphQLTypes["SortOrder"] | undefined,
 	totalWithTax?: GraphQLTypes["SortOrder"] | undefined,
-	pickupPointId?: GraphQLTypes["SortOrder"] | undefined,
-	pickupPointName?: GraphQLTypes["SortOrder"] | undefined
+	pickupPointId?: GraphQLTypes["SortOrder"] | undefined
 };
 	["OrderListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -14726,8 +14351,7 @@ version. */
 };
 	["OrderLineInput"]: {
 		orderLineId: string,
-	quantity: number,
-	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	["SettleRefundInput"]: {
 		id: string,
@@ -14791,8 +14415,7 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemInput"]: {
 		productVariantId: string,
-	quantity: number,
-	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	["SurchargeInput"]: {
 		description: string,
@@ -14810,13 +14433,11 @@ applied in the case that multiple payment methods have been used on the order. *
 };
 	["AddItemToDraftOrderInput"]: {
 		productVariantId: string,
-	quantity: number,
-	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	["AdjustDraftOrderLineInput"]: {
 		orderLineId: string,
-	quantity: number,
-	customFields?: GraphQLTypes["OrderLineCustomFieldsInput"] | undefined
+	quantity: number
 };
 	/** Returned if the Payment settlement fails */
 ["SettlePaymentError"]: {
@@ -15139,7 +14760,7 @@ is not in the required state. */
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductTranslation"]>,
 	collections: Array<GraphQLTypes["Collection"]>,
-	customFields?: GraphQLTypes["ProductCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["ProductVariantPrice"]: {
 	__typename: "ProductVariantPrice",
@@ -15178,7 +14799,7 @@ is not in the required state. */
 	options: Array<GraphQLTypes["ProductOption"]>,
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductVariantTranslation"]>,
-	customFields?: GraphQLTypes["ProductVariantCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["ProductOptionGroupTranslationInput"]: {
 		id?: string | undefined,
@@ -15242,8 +14863,7 @@ is not in the required state. */
 	/** An array of ids of the Collections in which this result appears */
 	collectionIds: Array<string>,
 	/** A relevance score for the result. Differs between database implementations */
-	score: number,
-	inStock: boolean
+	score: number
 };
 	["StockMovementListOptions"]: {
 		type?: GraphQLTypes["StockMovementType"] | undefined,
@@ -15274,15 +14894,7 @@ is not in the required state. */
 	description?: GraphQLTypes["StringOperators"] | undefined,
 	enabled?: GraphQLTypes["BooleanOperators"] | undefined,
 	_and?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined,
-	googleMerchantProductId?: GraphQLTypes["StringOperators"] | undefined,
-	seoTitle?: GraphQLTypes["StringOperators"] | undefined,
-	seoDescription?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketProductId?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketExpansionId?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketLastSynchronized?: GraphQLTypes["DateOperators"] | undefined,
-	cardReleasedAt?: GraphQLTypes["DateOperators"] | undefined,
-	cardArtist?: GraphQLTypes["StringOperators"] | undefined
+	_or?: Array<GraphQLTypes["ProductFilterParameter"]> | undefined
 };
 	["ProductVariantListOptions"]: {
 		/** Skips the first n results, for use in pagination */
@@ -15316,15 +14928,7 @@ is not in the required state. */
 	priceWithTax?: GraphQLTypes["NumberOperators"] | undefined,
 	stockLevel?: GraphQLTypes["StringOperators"] | undefined,
 	_and?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined,
-	cardMarketProductId?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketExpansionId?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketLastSynchronized?: GraphQLTypes["DateOperators"] | undefined,
-	cardMarketLanguage?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketCondition?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketFoil?: GraphQLTypes["BooleanOperators"] | undefined,
-	cardMarketSigned?: GraphQLTypes["BooleanOperators"] | undefined,
-	cardMarketAltered?: GraphQLTypes["BooleanOperators"] | undefined
+	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined
 };
 	["ProductTranslationInput"]: {
 		id?: string | undefined,
@@ -15332,7 +14936,7 @@ is not in the required state. */
 	name?: string | undefined,
 	slug?: string | undefined,
 	description?: string | undefined,
-	customFields?: GraphQLTypes["ProductTranslationInputCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["CreateProductInput"]: {
 		featuredAssetId?: string | undefined,
@@ -15340,7 +14944,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations: Array<GraphQLTypes["ProductTranslationInput"]>,
-	customFields?: GraphQLTypes["CreateProductCustomFieldsInput"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["UpdateProductInput"]: {
 		id: string,
@@ -15349,7 +14953,7 @@ is not in the required state. */
 	assetIds?: Array<string> | undefined,
 	facetValueIds?: Array<string> | undefined,
 	translations?: Array<GraphQLTypes["ProductTranslationInput"]> | undefined,
-	customFields?: GraphQLTypes["UpdateProductCustomFieldsInput"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["ProductVariantTranslationInput"]: {
 		id?: string | undefined,
@@ -16005,8 +15609,7 @@ If the `delete` flag is `true`, the price will be deleted for the given Channel.
 	languageCode: GraphQLTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: GraphQLTypes["CollectionTranslationCustomFields"] | undefined
+	description: string
 };
 	["CollectionList"]: {
 	__typename: "CollectionList",
@@ -16147,6 +15750,13 @@ current session. */
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string
 };
+	/** Returned when an order operation is rejected by an OrderInterceptor method. */
+["OrderMiddlewareError"]: {
+	__typename: "OrderMiddlewareError",
+	errorCode: GraphQLTypes["ErrorCode"],
+	message: string,
+	middlewareError: string
+};
 	/** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
 ["JSON"]: "scalar" & { name: "JSON" };
 	/** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
@@ -16186,7 +15796,7 @@ current session. */
 	['...on TaxRateList']: '__union' & GraphQLTypes["TaxRateList"];
 };
 	["Node"]: {
-	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone" | "MerchantPlatformSettingsEntity" | "FurgonetkaSettings",
+	__typename:"Administrator" | "Collection" | "Customer" | "Facet" | "HistoryEntry" | "Job" | "Order" | "Fulfillment" | "Payment" | "OrderModification" | "Product" | "ProductVariant" | "StockLevel" | "StockLocation" | "StockAdjustment" | "Allocation" | "Sale" | "Cancellation" | "Return" | "Release" | "Address" | "Asset" | "Channel" | "CustomerGroup" | "FacetValue" | "OrderLine" | "Refund" | "Surcharge" | "PaymentMethod" | "ProductOptionGroup" | "ProductOption" | "Promotion" | "Region" | "Country" | "Province" | "Role" | "Seller" | "ShippingMethod" | "Tag" | "TaxCategory" | "TaxRate" | "User" | "AuthenticationMethod" | "Zone" | "MerchantPlatformSettingsEntity",
 	id: string
 	['...on Administrator']: '__union' & GraphQLTypes["Administrator"];
 	['...on Collection']: '__union' & GraphQLTypes["Collection"];
@@ -16233,10 +15843,9 @@ current session. */
 	['...on AuthenticationMethod']: '__union' & GraphQLTypes["AuthenticationMethod"];
 	['...on Zone']: '__union' & GraphQLTypes["Zone"];
 	['...on MerchantPlatformSettingsEntity']: '__union' & GraphQLTypes["MerchantPlatformSettingsEntity"];
-	['...on FurgonetkaSettings']: '__union' & GraphQLTypes["FurgonetkaSettings"];
 };
 	["ErrorResult"]: {
-	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError",
+	__typename:"MimeTypeError" | "LanguageNotAvailableError" | "DuplicateEntityError" | "FacetInUseError" | "ChannelDefaultLanguageError" | "SettlePaymentError" | "CancelPaymentError" | "EmptyOrderLineSelectionError" | "ItemsAlreadyFulfilledError" | "InvalidFulfillmentHandlerError" | "CreateFulfillmentError" | "InsufficientStockOnHandError" | "MultipleOrderError" | "CancelActiveOrderError" | "PaymentOrderMismatchError" | "RefundOrderStateError" | "NothingToRefundError" | "AlreadyRefundedError" | "QuantityTooGreatError" | "RefundAmountError" | "RefundStateTransitionError" | "PaymentStateTransitionError" | "FulfillmentStateTransitionError" | "OrderModificationStateError" | "NoChangesSpecifiedError" | "PaymentMethodMissingError" | "RefundPaymentIdMissingError" | "ManualPaymentStateError" | "ProductOptionInUseError" | "MissingConditionsError" | "NativeAuthStrategyError" | "InvalidCredentialsError" | "OrderStateTransitionError" | "EmailAddressConflictError" | "GuestCheckoutError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "CouponCodeInvalidError" | "CouponCodeExpiredError" | "CouponCodeLimitError" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError" | "OrderMiddlewareError",
 	errorCode: GraphQLTypes["ErrorCode"],
 	message: string
 	['...on MimeTypeError']: '__union' & GraphQLTypes["MimeTypeError"];
@@ -16283,6 +15892,7 @@ current session. */
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
 	['...on IneligibleShippingMethodError']: '__union' & GraphQLTypes["IneligibleShippingMethodError"];
 	['...on NoActiveOrderError']: '__union' & GraphQLTypes["NoActiveOrderError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["Adjustment"]: {
 	__typename: "Adjustment",
@@ -16426,8 +16036,7 @@ by FacetValue ID. Examples:
 	groupByProduct?: boolean | undefined,
 	take?: number | undefined,
 	skip?: number | undefined,
-	sort?: GraphQLTypes["SearchResultSortParameter"] | undefined,
-	inStock?: boolean | undefined
+	sort?: GraphQLTypes["SearchResultSortParameter"] | undefined
 };
 	["SearchResultSortParameter"]: {
 		name?: GraphQLTypes["SortOrder"] | undefined,
@@ -16508,17 +16117,19 @@ If an invalid code is passed, the mutation will fail. */
 	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["UpdateOrderItemsResult"]:{
-        	__typename:"Order" | "OrderModificationError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError"
+        	__typename:"Order" | "OrderModificationError" | "OrderLimitError" | "NegativeQuantityError" | "InsufficientStockError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
 	['...on OrderLimitError']: '__union' & GraphQLTypes["OrderLimitError"];
 	['...on NegativeQuantityError']: '__union' & GraphQLTypes["NegativeQuantityError"];
 	['...on InsufficientStockError']: '__union' & GraphQLTypes["InsufficientStockError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["RemoveOrderItemsResult"]:{
-        	__typename:"Order" | "OrderModificationError"
+        	__typename:"Order" | "OrderModificationError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on OrderModificationError']: '__union' & GraphQLTypes["OrderModificationError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	["SetOrderShippingMethodResult"]:{
         	__typename:"Order" | "OrderModificationError" | "IneligibleShippingMethodError" | "NoActiveOrderError"
@@ -16528,11 +16139,12 @@ If an invalid code is passed, the mutation will fail. */
 	['...on NoActiveOrderError']: '__union' & GraphQLTypes["NoActiveOrderError"];
 };
 	["ApplyCouponCodeResult"]:{
-        	__typename:"Order" | "CouponCodeExpiredError" | "CouponCodeInvalidError" | "CouponCodeLimitError"
+        	__typename:"Order" | "CouponCodeExpiredError" | "CouponCodeInvalidError" | "CouponCodeLimitError" | "OrderMiddlewareError"
         	['...on Order']: '__union' & GraphQLTypes["Order"];
 	['...on CouponCodeExpiredError']: '__union' & GraphQLTypes["CouponCodeExpiredError"];
 	['...on CouponCodeInvalidError']: '__union' & GraphQLTypes["CouponCodeInvalidError"];
 	['...on CouponCodeLimitError']: '__union' & GraphQLTypes["CouponCodeLimitError"];
+	['...on OrderMiddlewareError']: '__union' & GraphQLTypes["OrderMiddlewareError"];
 };
 	/** @description
 ISO 4217 currency code
@@ -16915,7 +16527,7 @@ and refund calculations. */
 	taxLines: Array<GraphQLTypes["TaxLine"]>,
 	order: GraphQLTypes["Order"],
 	fulfillmentLines?: Array<GraphQLTypes["FulfillmentLine"]> | undefined,
-	customFields?: GraphQLTypes["OrderLineCustomFields"] | undefined
+	customFields?: GraphQLTypes["JSON"] | undefined
 };
 	["RefundLine"]: {
 	__typename: "RefundLine",
@@ -17082,8 +16694,7 @@ by the search, and in what quantity. */
 	languageCode: GraphQLTypes["LanguageCode"],
 	name: string,
 	slug: string,
-	description: string,
-	customFields?: GraphQLTypes["ProductTranslationCustomFields"] | undefined
+	description: string
 };
 	["ProductList"]: {
 	__typename: "ProductList",
@@ -17322,25 +16933,6 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	members: Array<GraphQLTypes["Region"]>,
 	customFields?: GraphQLTypes["JSON"] | undefined
 };
-	["MetricSummary"]: {
-	__typename: "MetricSummary",
-	interval: GraphQLTypes["MetricInterval"],
-	type: GraphQLTypes["MetricType"],
-	title: string,
-	entries: Array<GraphQLTypes["MetricSummaryEntry"]>
-};
-	["MetricInterval"]: MetricInterval;
-	["MetricType"]: MetricType;
-	["MetricSummaryEntry"]: {
-	__typename: "MetricSummaryEntry",
-	label: string,
-	value: number
-};
-	["MetricSummaryInput"]: {
-		interval: GraphQLTypes["MetricInterval"],
-	types: Array<GraphQLTypes["MetricType"]>,
-	refresh?: boolean | undefined
-};
 	["MerchantPlatformSetting"]: {
 	__typename: "MerchantPlatformSetting",
 	key: string,
@@ -17365,53 +16957,55 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 		platform: string,
 	entries?: Array<GraphQLTypes["MerchantPlatformSettingInput"]> | undefined
 };
-	["FurgonetkaSettings"]: {
-	__typename: "FurgonetkaSettings",
-	id: string,
-	createdAt: GraphQLTypes["DateTime"],
-	updatedAt: GraphQLTypes["DateTime"],
-	authBasicKey: string,
-	username: string,
-	password: string,
-	service_id: string,
-	company: string,
+	["SetInpostShippingMethodConfigInput"]: {
+		shippingMethodId: string,
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostConfig"]: {
+	__typename: "InpostConfig",
+	shippingMethodId: string,
+	host: string,
+	apiKey: string,
+	geowidgetKey?: string | undefined,
+	inpostOrganization: number,
+	service: string
+};
+	["InpostOrganization"]: {
+	__typename: "InpostOrganization",
+	id: number,
 	name: string,
-	countryCode: GraphQLTypes["LanguageCode"],
-	email: string,
-	phone: string,
-	postCode: string,
-	street: string,
-	city: string,
-	webhookToken: string,
-	senderPickupPointId?: string | undefined
+	services: Array<string>
 };
-	["SaveFurgonetkaSettingsInput"]: {
-		authBasicKey: string,
-	username: string,
-	password: string,
-	service_id: string,
-	company: string,
-	name: string,
-	countryCode: GraphQLTypes["LanguageCode"],
-	email: string,
-	phone: string,
-	postCode: string,
-	street: string,
-	city: string,
-	webhookToken: string,
-	senderPickupPointId?: string | undefined
+	["InpostOrganizationResponse"]: {
+	__typename: "InpostOrganizationResponse",
+	items: Array<GraphQLTypes["InpostOrganization"]>
 };
-	["CreateExchangeRateInput"]: {
-		currency: string,
-	rate: number
+	["GetInpostOrganizationsInput"]: {
+		host: string,
+	apiKey: string
 };
-	["ExchangeRate"]: {
-	__typename: "ExchangeRate",
-	currency: string,
-	rate: number
+	["MetricSummary"]: {
+	__typename: "MetricSummary",
+	interval: GraphQLTypes["MetricInterval"],
+	type: GraphQLTypes["MetricType"],
+	title: string,
+	entries: Array<GraphQLTypes["MetricSummaryEntry"]>
 };
-	["TriggerCardMarketSynchronizationInput"]: {
-		amount: number
+	["MetricInterval"]: MetricInterval;
+	["MetricType"]: MetricType;
+	["MetricSummaryEntry"]: {
+	__typename: "MetricSummaryEntry",
+	label: string,
+	value: number
+};
+	["MetricSummaryInput"]: {
+		interval: GraphQLTypes["MetricInterval"],
+	types: Array<GraphQLTypes["MetricType"]>,
+	refresh?: boolean | undefined
 };
 	["AdministratorFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -17494,10 +17088,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	description?: GraphQLTypes["StringOperators"] | undefined,
 	parentId?: GraphQLTypes["IDOperators"] | undefined,
 	_and?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined,
-	seoTitle?: GraphQLTypes["StringOperators"] | undefined,
-	seoDescription?: GraphQLTypes["StringOperators"] | undefined,
-	cardMarketGameId?: GraphQLTypes["StringOperators"] | undefined
+	_or?: Array<GraphQLTypes["CollectionFilterParameter"]> | undefined
 };
 	["CollectionSortParameter"]: {
 		id?: GraphQLTypes["SortOrder"] | undefined,
@@ -17507,10 +17098,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	slug?: GraphQLTypes["SortOrder"] | undefined,
 	position?: GraphQLTypes["SortOrder"] | undefined,
 	description?: GraphQLTypes["SortOrder"] | undefined,
-	parentId?: GraphQLTypes["SortOrder"] | undefined,
-	seoTitle?: GraphQLTypes["SortOrder"] | undefined,
-	seoDescription?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketGameId?: GraphQLTypes["SortOrder"] | undefined
+	parentId?: GraphQLTypes["SortOrder"] | undefined
 };
 	["ProductVariantSortParameter"]: {
 		stockOnHand?: GraphQLTypes["SortOrder"] | undefined,
@@ -17524,15 +17112,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["SortOrder"] | undefined,
 	price?: GraphQLTypes["SortOrder"] | undefined,
 	priceWithTax?: GraphQLTypes["SortOrder"] | undefined,
-	stockLevel?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketProductId?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketExpansionId?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketLastSynchronized?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketLanguage?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketCondition?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketFoil?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketSigned?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketAltered?: GraphQLTypes["SortOrder"] | undefined
+	stockLevel?: GraphQLTypes["SortOrder"] | undefined
 };
 	["CountryFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -17668,15 +17248,7 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined,
 	name?: GraphQLTypes["SortOrder"] | undefined,
 	slug?: GraphQLTypes["SortOrder"] | undefined,
-	description?: GraphQLTypes["SortOrder"] | undefined,
-	googleMerchantProductId?: GraphQLTypes["SortOrder"] | undefined,
-	seoTitle?: GraphQLTypes["SortOrder"] | undefined,
-	seoDescription?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketProductId?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketExpansionId?: GraphQLTypes["SortOrder"] | undefined,
-	cardMarketLastSynchronized?: GraphQLTypes["SortOrder"] | undefined,
-	cardReleasedAt?: GraphQLTypes["SortOrder"] | undefined,
-	cardArtist?: GraphQLTypes["SortOrder"] | undefined
+	description?: GraphQLTypes["SortOrder"] | undefined
 };
 	["PromotionFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -17868,89 +17440,16 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	createdAt?: GraphQLTypes["SortOrder"] | undefined,
 	updatedAt?: GraphQLTypes["SortOrder"] | undefined
 };
-	["CollectionCustomFields"]: {
-	__typename: "CollectionCustomFields",
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined,
-	cardMarketGameId?: string | undefined
-};
-	["CollectionTranslationCustomFields"]: {
-	__typename: "CollectionTranslationCustomFields",
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["CreateCollectionTranslationInputCustomFields"]: {
-		seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["UpdateCollectionTranslationInputCustomFields"]: {
-		seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
 	["FulfillmentCustomFields"]: {
 	__typename: "FulfillmentCustomFields",
-	packageId?: string | undefined
+	inpostLabel?: GraphQLTypes["Asset"] | undefined
 };
 	["OrderCustomFields"]: {
 	__typename: "OrderCustomFields",
-	pickupPointId?: string | undefined,
-	pickupPointName?: string | undefined
+	pickupPointId?: string | undefined
 };
 	["UpdateOrderCustomFieldsInput"]: {
-		pickupPointId?: string | undefined,
-	pickupPointName?: string | undefined
-};
-	["OrderLineCustomFields"]: {
-	__typename: "OrderLineCustomFields",
-	cardMarketLanguage?: string | undefined,
-	cardMarketCondition?: string | undefined,
-	cardMarketFoil?: boolean | undefined,
-	cardMarketSigned?: boolean | undefined,
-	cardMarketAltered?: boolean | undefined
-};
-	["ProductCustomFields"]: {
-	__typename: "ProductCustomFields",
-	googleMerchantProductId?: string | undefined,
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined,
-	cardMarketProductId?: string | undefined,
-	cardMarketExpansionId?: string | undefined,
-	cardMarketLastSynchronized?: GraphQLTypes["DateTime"] | undefined,
-	cardReleasedAt?: GraphQLTypes["DateTime"] | undefined,
-	cardArtist?: string | undefined
-};
-	["ProductTranslationCustomFields"]: {
-	__typename: "ProductTranslationCustomFields",
-	seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["CreateProductCustomFieldsInput"]: {
-		googleMerchantProductId?: string | undefined
-};
-	["UpdateProductCustomFieldsInput"]: {
-		googleMerchantProductId?: string | undefined
-};
-	["ProductTranslationInputCustomFields"]: {
-		seoTitle?: string | undefined,
-	seoDescription?: string | undefined
-};
-	["ProductVariantCustomFields"]: {
-	__typename: "ProductVariantCustomFields",
-	cardMarketProductId?: string | undefined,
-	cardMarketExpansionId?: string | undefined,
-	cardMarketLastSynchronized?: GraphQLTypes["DateTime"] | undefined,
-	cardMarketLanguage?: string | undefined,
-	cardMarketCondition?: string | undefined,
-	cardMarketFoil?: boolean | undefined,
-	cardMarketSigned?: boolean | undefined,
-	cardMarketAltered?: boolean | undefined
-};
-	["OrderLineCustomFieldsInput"]: {
-		cardMarketLanguage?: string | undefined,
-	cardMarketCondition?: string | undefined,
-	cardMarketFoil?: boolean | undefined,
-	cardMarketSigned?: boolean | undefined,
-	cardMarketAltered?: boolean | undefined
+		pickupPointId?: string | undefined
 };
 	["NativeAuthInput"]: {
 		username: string,
@@ -18208,7 +17707,8 @@ export const enum ErrorCode {
 	COUPON_CODE_LIMIT_ERROR = "COUPON_CODE_LIMIT_ERROR",
 	ORDER_MODIFICATION_ERROR = "ORDER_MODIFICATION_ERROR",
 	INELIGIBLE_SHIPPING_METHOD_ERROR = "INELIGIBLE_SHIPPING_METHOD_ERROR",
-	NO_ACTIVE_ORDER_ERROR = "NO_ACTIVE_ORDER_ERROR"
+	NO_ACTIVE_ORDER_ERROR = "NO_ACTIVE_ORDER_ERROR",
+	ORDER_MIDDLEWARE_ERROR = "ORDER_MIDDLEWARE_ERROR"
 }
 export const enum LogicalOperator {
 	AND = "AND",
@@ -18770,14 +18270,13 @@ type ZEUS_VARIABLES = {
 	["HistoryEntryListOptions"]: ValueTypes["HistoryEntryListOptions"];
 	["LanguageCode"]: ValueTypes["LanguageCode"];
 	["OrderType"]: ValueTypes["OrderType"];
+	["MerchantPlatformSettingInput"]: ValueTypes["MerchantPlatformSettingInput"];
+	["SaveMerchantPlatformSettingInput"]: ValueTypes["SaveMerchantPlatformSettingInput"];
+	["SetInpostShippingMethodConfigInput"]: ValueTypes["SetInpostShippingMethodConfigInput"];
+	["GetInpostOrganizationsInput"]: ValueTypes["GetInpostOrganizationsInput"];
 	["MetricInterval"]: ValueTypes["MetricInterval"];
 	["MetricType"]: ValueTypes["MetricType"];
 	["MetricSummaryInput"]: ValueTypes["MetricSummaryInput"];
-	["MerchantPlatformSettingInput"]: ValueTypes["MerchantPlatformSettingInput"];
-	["SaveMerchantPlatformSettingInput"]: ValueTypes["SaveMerchantPlatformSettingInput"];
-	["SaveFurgonetkaSettingsInput"]: ValueTypes["SaveFurgonetkaSettingsInput"];
-	["CreateExchangeRateInput"]: ValueTypes["CreateExchangeRateInput"];
-	["TriggerCardMarketSynchronizationInput"]: ValueTypes["TriggerCardMarketSynchronizationInput"];
 	["AdministratorFilterParameter"]: ValueTypes["AdministratorFilterParameter"];
 	["AdministratorSortParameter"]: ValueTypes["AdministratorSortParameter"];
 	["AssetFilterParameter"]: ValueTypes["AssetFilterParameter"];
@@ -18823,12 +18322,6 @@ type ZEUS_VARIABLES = {
 	["ZoneSortParameter"]: ValueTypes["ZoneSortParameter"];
 	["HistoryEntryFilterParameter"]: ValueTypes["HistoryEntryFilterParameter"];
 	["HistoryEntrySortParameter"]: ValueTypes["HistoryEntrySortParameter"];
-	["CreateCollectionTranslationInputCustomFields"]: ValueTypes["CreateCollectionTranslationInputCustomFields"];
-	["UpdateCollectionTranslationInputCustomFields"]: ValueTypes["UpdateCollectionTranslationInputCustomFields"];
 	["UpdateOrderCustomFieldsInput"]: ValueTypes["UpdateOrderCustomFieldsInput"];
-	["CreateProductCustomFieldsInput"]: ValueTypes["CreateProductCustomFieldsInput"];
-	["UpdateProductCustomFieldsInput"]: ValueTypes["UpdateProductCustomFieldsInput"];
-	["ProductTranslationInputCustomFields"]: ValueTypes["ProductTranslationInputCustomFields"];
-	["OrderLineCustomFieldsInput"]: ValueTypes["OrderLineCustomFieldsInput"];
 	["NativeAuthInput"]: ValueTypes["NativeAuthInput"];
 }

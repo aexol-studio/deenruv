@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/merchant-plugin",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "license": "MIT",
   "type": "module",
   "publishConfig": {
@@ -10,16 +10,17 @@
     "dist/**/*"
   ],
   "exports": {
+    ".": "./dist/plugin-server/index.js",
     "./plugin-server": "./dist/plugin-server/index.js",
     "./plugin-server/ui": "./dist/plugin-server/ui.js",
     "./plugin-ui": "./dist/plugin-ui/index.js"
   },
   "scripts": {
-    "build": "rimraf dist && tsc --build && cp -r src/plugin-server/ui/styles dist/plugin-server/ui/styles",
+    "build": "rimraf dist && tsc --build && cp -r ./src/plugin-server/ui ./dist/plugin-server",
     "watch": "concurrently -k -p \"[{name}]\" -n \"SERVER,UI\" -c \"yellow.bold,cyan.bold\" \"tsc --watch --project src/plugin-server/tsconfig.json\" \"tsc --watch --project src/plugin-ui/tsconfig.json\"",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "eslint --fix ./src/**/*.ts",
-    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td --es && zeus http://localhost:3000/admin-api ./src/plugin-ui --td --es"
+    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --es && zeus http://localhost:3000/admin-api ./src/plugin-server/ui --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td --es"
   },
   "dependencies": {
     "@deenruv/admin-types": "workspace:^",
@@ -30,7 +31,7 @@
     "@nestjs/common": "~10.3.10",
     "@nestjs/graphql": "~12.2.0",
     "date-fns": "^4.1.0",
-    "facebook-nodejs-business-sdk": "^21.0.5",
+    "facebook-nodejs-business-sdk": "^23.0.1",
     "google-auth-library": "^9.15.0",
     "googleapis": "^144.0.0",
     "graphql": "~16.9.0",
@@ -41,6 +42,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.5",
+    "sonner": "^1.4.41",
     "recharts": "^2.12.7"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import { gql } from 'graphql-tag';
+import gql from 'graphql-tag';
 import {
   ValueTypes,
   GenericOperation,
@@ -11,8 +11,8 @@ import {
   ThunderGraphQLOptions,
   Zeus,
   ExtractVariables,
-} from './index.js';
-import { Ops } from './const.js';
+} from './';
+import { Ops } from './const';
 
 export const typedGql =
   <O extends keyof typeof Ops, SCLR extends ScalarDefinition, R extends keyof ValueTypes = GenericOperation<O>>(

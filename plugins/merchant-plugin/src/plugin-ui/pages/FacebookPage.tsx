@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
-  PageDetailLayout,
+  Label,
+  Input,
+  PageBlock,
   useLazyQuery,
   useMutation,
-  useInjector,
-} from "@deenruv/admin-ui/react";
-import { NotificationService } from "@deenruv/admin-ui/core";
+  Checkbox,
+  Button,
+} from "@deenruv/react-ui-devkit";
 import { QUERIES } from "../graphql/queries";
 import { MUTATIONS } from "../graphql/mutations";
+import { toast } from "sonner";
 
-export const GooglePage = () => {
-  const toast = useInjector(NotificationService);
+export const FacebookPage = () => {
   const [fetchMerchantPlatformSettings] = useLazyQuery(
     QUERIES["getMerchantPlatformSettings"],
   );
@@ -23,28 +25,6 @@ export const GooglePage = () => {
     connectionStatus: false,
   });
 
-  const handleSelectedFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result as string;
-        try {
-          const jsonObject = JSON.parse(result);
-          setSettingsForm({
-            ...settingsForm,
-            credentials: JSON.stringify(jsonObject),
-          });
-        } catch (error) {
-          console.error("Invalid JSON file:", error);
-        }
-      };
-      reader.onerror = (e) => {
-        console.error("Error reading file", e);
-      };
-      if (file) reader.readAsText(file);
-    }
-  };
   const [isLoading, setIsLoading] = useState(true);
   const [settingsForm, setSettingsForm] = useState({
     brand: "",
@@ -58,8 +38,8 @@ export const GooglePage = () => {
     try {
       setIsLoading(true);
       const [settingsData, infoData] = await Promise.all([
-        fetchMerchantPlatformSettings({ platform: "google" }),
-        fetchMerchantPlatformInfo({ platform: "google" }),
+        fetchMerchantPlatformSettings({ platform: "facebook" }),
+        fetchMerchantPlatformInfo({ platform: "facebook" }),
       ]);
       const settings =
         settingsData?.getMerchantPlatformSettings?.entries?.reduce(
@@ -112,7 +92,7 @@ export const GooglePage = () => {
     try {
       const { saveMerchantPlatformSettings } = await mutate({
         input: {
-          platform: "google",
+          platform: "facebook",
           entries: Object.entries(settingsForm).map(([key, value]) => ({
             key,
             value: (value as string).toString(),
@@ -132,8 +112,11 @@ export const GooglePage = () => {
   };
 
   return (
-    <PageDetailLayout>
-      <div style={{ position: "relative" }} className="flex flex-col p-4">
+    <PageBlock>
+      <div
+        style={{ position: "relative" }}
+        className="flex flex-col p-4 relative max-w-[800px] mx-auto"
+      >
         {isLoading && (
           <div
             style={{
@@ -161,12 +144,12 @@ export const GooglePage = () => {
               className="spinner"
             />
           </div>
-        )}
+        )}{" "}
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           <div className="flex justify-between gap-4">
             <div className="w-full flex flex-col gap-2">
-              <label>Brand</label>
-              <input
+              <Label>Brand</Label>
+              <Input
                 className="w-full"
                 value={settingsForm.brand}
                 onChange={(e) =>
@@ -175,8 +158,8 @@ export const GooglePage = () => {
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <label>Merchant ID</label>
-              <input
+              <Label>Catalog ID</Label>
+              <Input
                 className="w-full"
                 value={settingsForm.merchantId}
                 onChange={(e) =>
@@ -190,56 +173,52 @@ export const GooglePage = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
-              <label>Google Account Credentials</label>
-              <input
-                style={{
-                  border: "none",
-                  backgroundColor: "transparent",
-                  background: "none",
-                }}
-                type="file"
-                accept=".json"
-                onChange={handleSelectedFile}
-              />
-            </div>
-            <div className="flex gap-2 items-center">
-              <input
-                type="checkbox"
-                id="google-account-credentials"
-                checked={settingsForm.autoUpdate}
+              <Label>Facebook Access Token</Label>
+              <Input
+                className="w-full"
+                value={settingsForm.credentials}
                 onChange={(e) =>
                   setSettingsForm({
                     ...settingsForm,
-                    autoUpdate: e.target.checked,
+                    credentials: e.target.value,
                   })
                 }
               />
-              <label htmlFor="google-account-credentials">
+            </div>
+            <div className="flex gap-2 items-center">
+              <Checkbox
+                id="facebook-account-credentials"
+                checked={settingsForm.autoUpdate}
+                onCheckedChange={(checked) =>
+                  setSettingsForm({
+                    ...settingsForm,
+                    autoUpdate: typeof checked === "boolean" ? checked : false,
+                  })
+                }
+              />
+              <Label htmlFor="facebook-account-credentials">
                 Auto update on Product's change
-              </label>
+              </Label>
             </div>
           </div>
           <div className="flex justify-end">
             <div className="flex items-center gap-4">
               <div className="flex gap-2">
-                <label htmlFor="auto-update-on-products-change">
+                <Label htmlFor="auto-update-on-products-change">
                   Update ALL products with saving
-                </label>
-                <input
-                  type="checkbox"
+                </Label>
+                <Checkbox
                   id="auto-update-on-products-change"
                   checked={settingsForm.firstSync}
-                  onChange={(e) =>
+                  onCheckedChange={(checked) =>
                     setSettingsForm({
                       ...settingsForm,
-                      firstSync: e.target.checked,
+                      firstSync: typeof checked === "boolean" ? checked : false,
                     })
                   }
                 />
               </div>
-              <button type="submit" className="btn btn-primary">
-                Save
-              </button>
+              <Button>Save</Button>
             </div>
           </div>
         </form>
@@ -252,6 +231,6 @@ export const GooglePage = () => {
           <span>{serviceInfo.productsCount}</span>
         </div> */}
       </div>
-    </PageDetailLayout>
+    </PageBlock>
   );
 };

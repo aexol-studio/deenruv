@@ -19,10 +19,17 @@ import {
   LogLevel,
   DeenruvConfig,
   DefaultAssetNamingStrategy,
+  TypeORMHealthCheckStrategy,
 } from "@deenruv/core";
 import { BullMQJobQueuePlugin } from "@deenruv/job-queue-plugin/package/bullmq";
 import path from "path";
 import { InpostPlugin } from "@deenruv/inpost-plugin";
+// import {
+//   GoogleProduct,
+//   FacebookProduct,
+//   MerchantPlugin,
+//   MerchantExportStrategy as DefaultStrategy,
+// } from "@deenruv/merchant-plugin/plugin-server";
 import { Przelewy24Plugin } from "@deenruv/przelewy24-plugin";
 import { customAdminUi } from "compile-admin-ui.js";
 // import { RestPlugin } from './test-plugins/rest-plugin';
@@ -36,6 +43,9 @@ export const HOST =
   process.env.APP_ENV === "LOCAL" ? "http://localhost:3000" : "";
 
 export const devConfig: DeenruvConfig = {
+  systemOptions: {
+    healthChecks: [new TypeORMHealthCheckStrategy()],
+  },
   apiOptions: {
     port: API_PORT,
     adminApiPath: ADMIN_API_PATH,

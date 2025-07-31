@@ -1,14 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import {
-  RequestContext,
-  CustomerService,
-  TransactionalConnection,
-  Logger,
-} from "@deenruv/core";
+import { RequestContext, TransactionalConnection, Logger } from "@deenruv/core";
 import { ProductCatalog, FacebookAdsApi } from "facebook-nodejs-business-sdk";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
 import { BaseProductData } from "../types.js";
 import { Product } from "@deenruv/core";
+import { MerchantStrategyService } from "./merchant-strategy.service.js";
 
 @Injectable()
 export class FacebookPlatformIntegrationService {
@@ -17,11 +13,9 @@ export class FacebookPlatformIntegrationService {
     this.logger.log(message, "Merchant Platform Service");
 
   constructor(
-    readonly customerService: CustomerService,
-    private connection: TransactionalConnection,
-  ) {
-    this.setFacebookSettings();
-  }
+    private readonly connection: TransactionalConnection,
+    private readonly strategy: MerchantStrategyService,
+  ) {}
 
   async createProduct({
     ctx,
@@ -37,29 +31,27 @@ export class FacebookPlatformIntegrationService {
     try {
       const settings = await this.setFacebookSettings();
       if (!settings) throw new Error("Facebook platform settings not found");
-
       const { accessToken, catalogId, brand } = settings;
-
       FacebookAdsApi.init(accessToken);
-
       const productCatalog = new ProductCatalog(catalogId);
-
-      const bathPayload = products.flatMap((product) => {
-        return this.prepareFacebookProductPayload({
-          method: "CREATE",
-          productData: product,
-          brand,
-        });
+      const requests = await Promise.all(
+        products.map((productData) =>
+          this.prepareFacebookProductPayload({
+            ctx,
+            method: "CREATE",
+            productData,
+            brand,
+          }),
+        ),
+      );
+      const response = await productCatalog.createBatch([], {
+        requests: requests.flat(),
       });
-
-      const bathResult = await productCatalog.createBatch([], {
-        requests: bathPayload,
-      });
-
       this.log("Product created on Facebook");
+      console.dir(response, { depth: null });
       return { status: "success" };
     } catch (error) {
-      // console.log("error", error);
+      this.log("Error creating product on Facebook");
       return { status: "error" };
     }
   }
@@ -78,29 +70,27 @@ export class FacebookPlatformIntegrationService {
     try {
       const settings = await this.setFacebookSettings();
       if (!settings) throw new Error("Facebook platform settings not found");
-
       const { accessToken, catalogId, brand } = settings;
-
       FacebookAdsApi.init(accessToken);
-
       const productCatalog = new ProductCatalog(catalogId);
-
-      const bathPayload = productData.flatMap((product) => {
-        return this.prepareFacebookProductPayload({
-          method: "UPDATE",
-          productData: product,
-          brand,
-        });
+      const requests = await Promise.all(
+        productData.map((product) =>
+          this.prepareFacebookProductPayload({
+            ctx,
+            method: "UPDATE",
+            productData: product,
+            brand,
+          }),
+        ),
+      );
+      const response = await productCatalog.createBatch([], {
+        requests: requests.flat(),
       });
-
-      const bathResult = await productCatalog.createBatch([], {
-        requests: bathPayload,
-      });
-
       this.log("Product updated to Facebook");
+      console.dir(response, { depth: null });
       return { status: "success" };
     } catch (error) {
-      // console.log("error", error);
+      this.log("Error updating product to Facebook");
       return { status: "error" };
     }
   }
@@ -119,29 +109,24 @@ export class FacebookPlatformIntegrationService {
     try {
       const settings = await this.setFacebookSettings();
       if (!settings) throw new Error("Facebook platform settings not found");
-
       const { accessToken, catalogId, brand } = settings;
-
       FacebookAdsApi.init(accessToken);
-
       const productCatalog = new ProductCatalog(catalogId);
-
-      const bathPayload = productData.flatMap((product) => {
-        return this.prepareFacebookProductPayload({
-          method: "DELETE",
-          productData: product,
-          brand,
-        });
-      });
-
-      const bathResult = await productCatalog.createBatch([], {
-        requests: bathPayload,
-      });
-
+      const requests = await Promise.all(
+        productData.flatMap((product) =>
+          this.prepareFacebookProductPayload({
+            ctx,
+            method: "DELETE",
+            productData: product,
+            brand,
+          }),
+        ),
+      );
+      await productCatalog.createBatch([], { requests });
       this.log("Product deleted from Facebook");
       return { status: "success" };
     } catch (error) {
-      // console.log("error", error);
+      this.log("Error deleting product from Facebook");
       return { status: "error" };
     }
   }
@@ -150,21 +135,16 @@ export class FacebookPlatformIntegrationService {
     try {
       const settings = await this.setFacebookSettings();
       if (!settings) throw new Error("Facebook platform settings not found");
-
       const { accessToken, catalogId } = settings;
-
       FacebookAdsApi.init(accessToken);
-
       const productCatalog = new ProductCatalog(catalogId);
-
       const groupsData = await productCatalog.getProductGroups(
         [ProductCatalog.Fields.product_count, ProductCatalog.Fields.name],
         { summary: true },
       );
-
       return groupsData?.summary?.total_count ?? 0;
     } catch (error) {
-      // console.log("error on get facebook product counts", error);
+      this.log("Error getting Facebook product counts");
       return null;
     }
   }
@@ -172,7 +152,6 @@ export class FacebookPlatformIntegrationService {
   async setFacebookSettings(rawSettings?: MerchantPlatformSettingsEntity) {
     let settings: MerchantPlatformSettingsEntity | null | undefined =
       rawSettings;
-
     if (!settings) {
       settings = await this.connection
         .getRepository(RequestContext.empty(), MerchantPlatformSettingsEntity)
@@ -181,61 +160,62 @@ export class FacebookPlatformIntegrationService {
           where: { platform: "facebook" },
         });
     }
-
     if (!settings) return null;
-
     const autoUpdate = settings.entries.find(
       (entry) => entry.key === "autoUpdate",
     )?.value;
-
-    const accessToken = settings.entries.find(
-      (entry) => entry.key === "accessToken",
+    const credentials = settings.entries.find(
+      (entry) => entry.key === "credentials",
     )?.value;
-
-    const catalogId = settings.entries.find(
-      (entry) => entry.key === "catalogId",
+    const merchantId = settings.entries.find(
+      (entry) => entry.key === "merchantId",
     )?.value;
-
     const brand =
       settings.entries.find((entry) => entry.key === "brand")?.value ?? "";
-
-    if (!accessToken || !catalogId || !brand) return null;
-
+    if (!credentials || !merchantId || !brand) return null;
     return {
       autoUpdate: autoUpdate === "true",
-      accessToken,
-      catalogId,
+      accessToken: credentials,
+      catalogId: merchantId,
       brand,
     };
   }
 
-  private prepareFacebookProductPayload({
+  private async prepareFacebookProductPayload({
+    ctx,
     method,
     productData,
     brand,
   }: {
-    method: "CREATE" | "UPDATE" | "DELETE";
+    ctx: RequestContext;
+    method: string;
     productData: BaseProductData<{ communicateID: string }>;
     brand: string;
   }) {
-    if (Array.isArray(productData)) {
-      return [];
-    } else {
-      const { communicateID } = productData;
-
-      return [
-        {
+    if (method === "DELETE") {
+      if (Array.isArray(productData)) {
+        return productData.map(({ communicateID }) => ({
           retailer_id: `${communicateID}`,
           method,
-          data:
-            method === "DELETE"
-              ? {}
-              : JSON.stringify({
-                  retailer_product_group_id: communicateID,
-                  brand,
-                }),
-        },
-      ];
+          data: {},
+        }));
+      } else {
+        const { communicateID } = productData;
+        return [{ retailer_id: `${communicateID}`, method, data: {} }];
+      }
     }
+
+    const products = await this.strategy.prepareFacebookProductPayload(
+      ctx,
+      productData,
+    );
+    return products?.map(({ communicateID, ...product }) => ({
+      retailer_id: `${communicateID}`,
+      method,
+      data: {
+        ...product,
+        brand: "brand" in product && product.brand ? product.brand : brand,
+      },
+    }));
   }
 }

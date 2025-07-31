@@ -162,7 +162,6 @@ export class GooglePlatformIntegrationService {
       }
       return { status: "success" };
     } catch (error) {
-      console.log("error", error);
       return { status: "error", error };
     }
   }
@@ -221,8 +220,7 @@ export class GooglePlatformIntegrationService {
           (entry) => entry.errors,
         );
         if (haveErrors) {
-          console.log(`Error updating product in Google Merchant Center`);
-          console.dir(batchResponse.data, { depth: null });
+          this.log(`Error updating product in Google Merchant Center`);
           return { status: "error", ids: [] };
         }
         return { status: "success", ids: [] };
@@ -307,7 +305,7 @@ export class GooglePlatformIntegrationService {
       );
       return { status: "success" };
     } catch (e) {
-      console.log(e);
+      this.log("Error inserting products in Google Merchant Center");
       return { status: "error" };
     }
   }
@@ -337,7 +335,7 @@ export class GooglePlatformIntegrationService {
           "null",
       );
     } catch (e) {
-      console.log("Error parsing credentials", e);
+      this.log("Error parsing credentials");
       return null;
     }
 
@@ -367,11 +365,9 @@ export class GooglePlatformIntegrationService {
       payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
       payload = payload?.filter((item): item is GoogleProduct => !!item);
     }
-    return payload?.map((item) => {
-      const communicateID = item.communicateID?.toString();
-      delete item.communicateID;
+    return payload?.map(({ communicateID, ...item }) => {
       return {
-        offerId: communicateID,
+        offerId: communicateID?.toString(),
         ...item,
         ...this.googleContext,
         brand,

@@ -222,6 +222,9 @@ importers:
       '@deenruv/inpost-plugin':
         specifier: workspace:*
         version: link:../../plugins/inpost-plugin
+      '@deenruv/merchant-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/merchant-plugin
       '@deenruv/order-line-attributes-plugin':
         specifier: workspace:*
         version: link:../../plugins/order-attributes-plugin
@@ -487,6 +490,9 @@ importers:
       '@deenruv/job-queue-plugin':
         specifier: workspace:*
         version: link:../../plugins/job-queue-plugin
+      '@deenruv/merchant-plugin':
+        specifier: workspace:*
+        version: link:../../plugins/merchant-plugin
       '@deenruv/method-modal-plugin':
         specifier: workspace:*
         version: link:../../plugins/method-modal-plugin
@@ -508,6 +514,9 @@ importers:
       '@deenruv/wfirma-plugin':
         specifier: workspace:*
         version: link:../../plugins/wfirma-plugin
+      '@graphql-typed-document-node/core':
+        specifier: ^3.2.0
+        version: 3.2.0(graphql@16.9.0)
       '@nestjs/axios':
         specifier: ^3.0.2
         version: 3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1)
@@ -858,7 +867,7 @@ importers:
     devDependencies:
       graphql-zeus:
         specifier: ^7.0.0
-        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.4.2)
+        version: 7.0.7(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@20.19.5)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -2478,8 +2487,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       facebook-nodejs-business-sdk:
-        specifier: ^21.0.5
-        version: 21.0.5
+        specifier: ^23.0.1
+        version: 23.0.1
       google-auth-library:
         specifier: ^9.15.0
         version: 9.15.1(encoding@0.1.13)
@@ -2513,6 +2522,9 @@ importers:
       recharts:
         specifier: ^2.12.7
         version: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sonner:
+        specifier: ^1.4.41
+        version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
         specifier: workspace:^
@@ -3515,23 +3527,23 @@ packages:
       react: '>=17.0.2'
 
   '@aexol/dev-translate-config@0.0.8':
-    resolution: {integrity: sha512-KnO49EbYNpZgJhPdofb2WK4eFQ0OHMMWynVKyaJWkmiRJzJ6KHCFcoG7caQou0Wdfzj9La4lq7btZaflXKL3+Q==}
+    resolution: {integrity: sha512-KnO49EbYNpZgJhPdofb2WK4eFQ0OHMMWynVKyaJWkmiRJzJ6KHCFcoG7caQou0Wdfzj9La4lq7btZaflXKL3+Q==, tarball: https://registry.npmjs.org/@aexol/dev-translate-config/-/dev-translate-config-0.0.8.tgz}
 
   '@aexol/dev-translate-core@0.0.8':
-    resolution: {integrity: sha512-cJ2LNqL+ylgFB+ZL9hnLUeK4RQ2wdSdRjemOs5OgLKQxJSmK4v8kMArJEj8xIp/Y9rmug3ItwtCoBIXBfH9ZlA==}
+    resolution: {integrity: sha512-cJ2LNqL+ylgFB+ZL9hnLUeK4RQ2wdSdRjemOs5OgLKQxJSmK4v8kMArJEj8xIp/Y9rmug3ItwtCoBIXBfH9ZlA==, tarball: https://registry.npmjs.org/@aexol/dev-translate-core/-/dev-translate-core-0.0.8.tgz}
 
   '@aexol/dev-translate-core@0.1.9':
-    resolution: {integrity: sha512-zHOEj+mNEob6XgXEBqmCA4VtfNNTQ4HSu64seg/sttJwZMgDtLOS2U3L1hd4IiXAlZmoJjMC1vwf+c7qTi9yEw==}
+    resolution: {integrity: sha512-zHOEj+mNEob6XgXEBqmCA4VtfNNTQ4HSu64seg/sttJwZMgDtLOS2U3L1hd4IiXAlZmoJjMC1vwf+c7qTi9yEw==, tarball: https://registry.npmjs.org/@aexol/dev-translate-core/-/dev-translate-core-0.1.9.tgz}
 
   '@aexol/dev-translate-watch@0.1.9':
-    resolution: {integrity: sha512-Bth81qnCmZl7aBRSrShSDdQOrzkJELq7s338gzXF6CYywW24R8Vq5DDWakbgiCnvQM7HVTdcVuUl946SMoIgGQ==}
+    resolution: {integrity: sha512-Bth81qnCmZl7aBRSrShSDdQOrzkJELq7s338gzXF6CYywW24R8Vq5DDWakbgiCnvQM7HVTdcVuUl946SMoIgGQ==, tarball: https://registry.npmjs.org/@aexol/dev-translate-watch/-/dev-translate-watch-0.1.9.tgz}
 
   '@aexol/dev-translate@0.0.8':
-    resolution: {integrity: sha512-szyUM6kz4/oBSsjpiogczUPiJ4lMnIyjwAqHpxB8pjOeStH1UWs47YefRUcP0ldr2tjelw9N6Aa19eRu5RkdrQ==}
+    resolution: {integrity: sha512-szyUM6kz4/oBSsjpiogczUPiJ4lMnIyjwAqHpxB8pjOeStH1UWs47YefRUcP0ldr2tjelw9N6Aa19eRu5RkdrQ==, tarball: https://registry.npmjs.org/@aexol/dev-translate/-/dev-translate-0.0.8.tgz}
     hasBin: true
 
   '@aexol/vite-plugin-dev-translate@0.1.9':
-    resolution: {integrity: sha512-3tvByPafq8pNAWGTMuTNym6UGzwQoNILHPsOIia4ClaXXZnngg6iXQGk7Ndy6KgnzFwFhrU12JTTC+ApEW61Bg==}
+    resolution: {integrity: sha512-3tvByPafq8pNAWGTMuTNym6UGzwQoNILHPsOIia4ClaXXZnngg6iXQGk7Ndy6KgnzFwFhrU12JTTC+ApEW61Bg==, tarball: https://registry.npmjs.org/@aexol/vite-plugin-dev-translate/-/vite-plugin-dev-translate-0.1.9.tgz}
     peerDependencies:
       vite: '>=5'
 
@@ -10193,6 +10205,10 @@ packages:
   electron-to-chromium@1.5.180:
     resolution: {integrity: sha512-ED+GEyEh3kYMwt2faNmgMB0b8O5qtATGgR4RmRsIp4T6p7B8vdMbIedYndnvZfsaXvSzegtpfqRMDNCjjiSduA==}
 
+  email-validator@2.0.4:
+    resolution: {integrity: sha512-gYCwo7kh5S3IDyZPLZf6hSS0MnZT8QmJFqYvbqlDZSbwdZlY6QZWxJ4i/6UhITOJ4XzyI647Bm2MXKCLqnJ4nQ==}
+    engines: {node: '>4.0'}
+
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
 
@@ -10578,8 +10594,8 @@ packages:
     engines: {node: '>= 10.17.0'}
     hasBin: true
 
-  facebook-nodejs-business-sdk@21.0.5:
-    resolution: {integrity: sha512-WRmYZQtQYZWFHCrzlIqgj0tSRCDslSWd9IT2ccs8ah+Mr4QxC3uZrP7tVAkqYJshINKL1v30swlGDCGK5VmMTg==}
+  facebook-nodejs-business-sdk@23.0.1:
+    resolution: {integrity: sha512-mTiAqnnNIlm1yMcSJtdYH4tt9L2LqjCEfi4oMZ9h9qhx1/dOUEchr3iM0+RF/KV0eC2+0zPOfNFXsfp6diHOxg==}
 
   faker@4.1.0:
     resolution: {integrity: sha512-ILKg69P6y/D8/wSmDXw35Ly0re8QzQ8pMfBCflsGiZG2ZjMUNLYNexA6lz5pkmJlepVdsiDFUxYAzPQ9/+iGLA==}
@@ -23917,6 +23933,8 @@ snapshots:
 
   electron-to-chromium@1.5.180: {}
 
+  email-validator@2.0.4: {}
+
   emoji-regex@10.4.0: {}
 
   emoji-regex@8.0.0: {}
@@ -24591,10 +24609,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  facebook-nodejs-business-sdk@21.0.5:
+  facebook-nodejs-business-sdk@23.0.1:
     dependencies:
       axios: 1.10.0
       currency-codes: 1.5.1
+      email-validator: 2.0.4
       iso-3166-1: 2.1.1
       js-sha256: 0.9.0
       mixwith: 0.1.1

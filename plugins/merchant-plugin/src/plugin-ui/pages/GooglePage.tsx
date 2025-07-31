@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import {
-  PageDetailLayout,
+  Label,
+  Input,
+  PageBlock,
   useLazyQuery,
   useMutation,
-  useInjector,
-} from "@deenruv/admin-ui/react";
-import { NotificationService } from "@deenruv/admin-ui/core";
+  Checkbox,
+  Button,
+} from "@deenruv/react-ui-devkit";
 import { QUERIES } from "../graphql/queries";
 import { MUTATIONS } from "../graphql/mutations";
+import { toast } from "sonner";
 
 export const GooglePage = () => {
-  const toast = useInjector(NotificationService);
   const [fetchMerchantPlatformSettings] = useLazyQuery(
     QUERIES["getMerchantPlatformSettings"],
   );
@@ -132,8 +134,11 @@ export const GooglePage = () => {
   };
 
   return (
-    <PageDetailLayout>
-      <div style={{ position: "relative" }} className="flex flex-col p-4">
+    <PageBlock>
+      <div
+        style={{ position: "relative" }}
+        className="flex flex-col p-4 relative max-w-[800px] mx-auto"
+      >
         {isLoading && (
           <div
             style={{
@@ -165,8 +170,8 @@ export const GooglePage = () => {
         <form className="flex flex-col gap-4" onSubmit={onSubmit}>
           <div className="flex justify-between gap-4">
             <div className="w-full flex flex-col gap-2">
-              <label>Brand</label>
-              <input
+              <Label>Brand</Label>
+              <Input
                 className="w-full"
                 value={settingsForm.brand}
                 onChange={(e) =>
@@ -175,8 +180,8 @@ export const GooglePage = () => {
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <label>Merchant ID</label>
-              <input
+              <Label>Merchant ID</Label>
+              <Input
                 className="w-full"
                 value={settingsForm.merchantId}
                 onChange={(e) =>
@@ -190,8 +195,8 @@ export const GooglePage = () => {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col">
-              <label>Google Account Credentials</label>
-              <input
+              <Label>Google Account Credentials</Label>
+              <Input
                 style={{
                   border: "none",
                   backgroundColor: "transparent",
@@ -203,43 +208,39 @@ export const GooglePage = () => {
               />
             </div>
             <div className="flex gap-2 items-center">
-              <input
-                type="checkbox"
+              <Checkbox
                 id="google-account-credentials"
                 checked={settingsForm.autoUpdate}
-                onChange={(e) =>
+                onCheckedChange={(checked) =>
                   setSettingsForm({
                     ...settingsForm,
-                    autoUpdate: e.target.checked,
+                    autoUpdate: typeof checked === "boolean" ? checked : false,
                   })
                 }
               />
-              <label htmlFor="google-account-credentials">
+              <Label htmlFor="google-account-credentials">
                 Auto update on Product's change
-              </label>
+              </Label>
             </div>
           </div>
           <div className="flex justify-end">
             <div className="flex items-center gap-4">
               <div className="flex gap-2">
-                <label htmlFor="auto-update-on-products-change">
+                <Label htmlFor="auto-update-on-products-change">
                   Update ALL products with saving
-                </label>
-                <input
-                  type="checkbox"
+                </Label>
+                <Checkbox
                   id="auto-update-on-products-change"
                   checked={settingsForm.firstSync}
-                  onChange={(e) =>
+                  onCheckedChange={(checked) =>
                     setSettingsForm({
                       ...settingsForm,
-                      firstSync: e.target.checked,
+                      firstSync: typeof checked === "boolean" ? checked : false,
                     })
                   }
                 />
               </div>
-              <button type="submit" className="btn btn-primary">
-                Save
-              </button>
+              <Button>Save</Button>
             </div>
           </div>
         </form>
@@ -252,6 +253,6 @@ export const GooglePage = () => {
           <span>{serviceInfo.productsCount}</span>
         </div> */}
       </div>
-    </PageDetailLayout>
+    </PageBlock>
   );
 };

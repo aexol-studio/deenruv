@@ -1,6 +1,5 @@
 import { compileUiExtensions } from "@deenruv/ui-devkit/compiler/compile.js";
 import path from "path";
-import { ui as InpostUIPlugin } from "@deenruv/inpost-plugin/plugin-server/ui";
 
 export function customAdminUi(options: {
   recompile: boolean;

@@ -6,7 +6,6 @@ import {
   JobQueueService,
   Channel,
   ProductService,
-  Job,
 } from "@deenruv/core";
 import { GooglePlatformIntegrationService } from "./google-platform-integration.service.js";
 import { FacebookPlatformIntegrationService } from "./facebook-platform-integration.service.js";
@@ -121,8 +120,7 @@ export class PlatformIntegrationService implements OnModuleInit {
           }
         } catch (e) {
           const status = e instanceof Error ? e.message : "Unknown error";
-          console.log("error", e);
-          console.log("PAYLOAD: ", job?.data?.payload);
+          this.log(`Error processing job: ${status}`);
           throw new Error(status);
         }
       },

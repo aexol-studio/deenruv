@@ -15,14 +15,11 @@ export class PlatformIntegrationAdminResolver {
   ) {}
 
   @Query()
-  async getMerchantPlatformSettings(
+  getMerchantPlatformSettings(
     @Ctx() ctx: RequestContext,
     @Args() args: { platform: string },
   ) {
-    return await this.platformIntegrationService.getBaseSettings(
-      ctx,
-      args.platform,
-    );
+    return this.platformIntegrationService.getBaseSettings(ctx, args.platform);
   }
 
   @Query()

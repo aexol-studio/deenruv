@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "0.1.31",
+  "version": "0.1.32",
   "main": "index.js",
   "license": "MIT",
   "private": true,
@@ -49,6 +49,7 @@
     "@deenruv/inpost": "workspace:*",
     "@deenruv/inpost-plugin": "workspace:*",
     "@deenruv/job-queue-plugin": "workspace:*",
+    "@deenruv/merchant-plugin": "workspace:*",
     "@deenruv/method-modal-plugin": "workspace:*",
     "@deenruv/order-line-attributes-plugin": "workspace:*",
     "@deenruv/product-badges-plugin": "workspace:*",
@@ -56,6 +57,7 @@
     "@deenruv/przelewy24-plugin": "workspace:*",
     "@deenruv/seo-plugin": "workspace:*",
     "@deenruv/wfirma-plugin": "workspace:*",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/common": "~10.3.10",
     "@nestjs/serve-static": "^4.0.2",

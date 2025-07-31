@@ -6,8 +6,8 @@ import {
   useInjector,
 } from "@deenruv/admin-ui/react";
 import { NotificationService } from "@deenruv/admin-ui/core";
-import { QUERIES } from "../graphql/queries.js";
-import { MUTATIONS } from "../graphql/mutations.js";
+import { QUERIES } from "../graphql/queries";
+import { MUTATIONS } from "../graphql/mutations";
 
 export const FacebookPage = () => {
   const toast = useInjector(NotificationService);
@@ -42,19 +42,21 @@ export const FacebookPage = () => {
       const settings =
         settingsData?.getMerchantPlatformSettings?.entries?.reduce(
           (acc, { key, value }) => {
-            if (key === "brand")
-              setSettingsForm({ ...settingsForm, brand: value });
-            if (key === "merchantId")
-              setSettingsForm({ ...settingsForm, merchantId: value });
-            if (key === "credentials")
-              setSettingsForm({ ...settingsForm, credentials: value });
-            if (key === "autoUpdate")
-              setSettingsForm({
-                ...settingsForm,
-                autoUpdate: value === "true",
-              });
-            if (key === "firstSync")
-              setSettingsForm({ ...settingsForm, firstSync: value === "true" });
+            if (key === "brand") {
+              acc.brand = value;
+            }
+            if (key === "merchantId") {
+              acc.merchantId = value;
+            }
+            if (key === "credentials") {
+              acc.credentials = value;
+            }
+            if (key === "autoUpdate") {
+              acc.autoUpdate = value === "true";
+            }
+            if (key === "firstSync") {
+              acc.firstSync = value === "true";
+            }
             return acc;
           },
           {} as {
@@ -91,7 +93,7 @@ export const FacebookPage = () => {
           platform: "facebook",
           entries: Object.entries(settingsForm).map(([key, value]) => ({
             key,
-            value: value.toString(),
+            value: (value as string).toString(),
           })),
         },
       });
@@ -151,7 +153,7 @@ export const FacebookPage = () => {
               />
             </div>
             <div className="w-full flex flex-col gap-2">
-              <label>Merchant ID</label>
+              <label>Catalog ID</label>
               <input
                 className="w-full"
                 value={settingsForm.merchantId}
