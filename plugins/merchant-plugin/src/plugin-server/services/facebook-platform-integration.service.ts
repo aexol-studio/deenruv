@@ -44,11 +44,8 @@ export class FacebookPlatformIntegrationService {
           }),
         ),
       );
-      const response = await productCatalog.createBatch([], {
-        requests: requests.flat(),
-      });
+      await productCatalog.createBatch([], { requests: requests.flat() });
       this.log("Product created on Facebook");
-      console.dir(response, { depth: null });
       return { status: "success" };
     } catch (error) {
       this.log("Error creating product on Facebook");
@@ -83,11 +80,8 @@ export class FacebookPlatformIntegrationService {
           }),
         ),
       );
-      const response = await productCatalog.createBatch([], {
-        requests: requests.flat(),
-      });
+      await productCatalog.createBatch([], { requests: requests.flat() });
       this.log("Product updated to Facebook");
-      console.dir(response, { depth: null });
       return { status: "success" };
     } catch (error) {
       this.log("Error updating product to Facebook");
