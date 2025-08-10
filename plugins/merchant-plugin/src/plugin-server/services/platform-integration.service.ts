@@ -1,18 +1,18 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
+import { JobState } from "@deenruv/admin-types";
 import {
-  RequestContext,
-  TransactionalConnection,
+  Channel,
   JobQueue,
   JobQueueService,
-  Channel,
+  Logger,
   ProductService,
+  RequestContext,
+  TransactionalConnection,
 } from "@deenruv/core";
-import { GooglePlatformIntegrationService } from "./google-platform-integration.service.js";
-import { FacebookPlatformIntegrationService } from "./facebook-platform-integration.service.js";
-import { Logger } from "@deenruv/core";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
+import { FacebookPlatformIntegrationService } from "./facebook-platform-integration.service.js";
+import { GooglePlatformIntegrationService } from "./google-platform-integration.service.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
-import { JobState } from "@deenruv/admin-types";
 
 type JOB_PAYLOAD = {
   platform: string;
@@ -103,7 +103,7 @@ export class PlatformIntegrationService implements OnModuleInit {
               }
             }
             if (platform === "facebook") {
-              const response = await this.facebookService.createProduct({
+              const response = await this.facebookService.batchProductsAction({
                 ctx,
                 products,
               });

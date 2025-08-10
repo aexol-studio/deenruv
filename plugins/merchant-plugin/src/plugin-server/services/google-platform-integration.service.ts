@@ -1,15 +1,20 @@
-import { Injectable } from "@nestjs/common";
 import {
-  RequestContext,
-  ID,
-  TransactionalConnection,
   Logger,
   Product,
+  ProductVariant,
+  ProductVariantService,
+  RequestContext,
+  TransactionalConnection,
 } from "@deenruv/core";
+import { Injectable } from "@nestjs/common";
 import { google } from "googleapis";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
-import { BaseProductData, GoogleProduct } from "../types.js";
+import { BaseData, BaseProductData, GoogleProduct } from "../types.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
+import { In } from "typeorm";
+
+type GMethod = "insert" | "update" | "delete";
+type OpResult = { status: "success" } | { status: "error"; error?: unknown };
 
 @Injectable()
 export class GooglePlatformIntegrationService {
@@ -18,6 +23,12 @@ export class GooglePlatformIntegrationService {
   private readonly logger = new Logger();
   private log = (message: string) =>
     this.logger.log(message, "Merchant Platform Service");
+  private error = (message: string, err?: unknown) =>
+    this.logger.error(
+      message,
+      err instanceof Error ? err.stack : String(err),
+      "Merchant Platform Service",
+    );
 
   private googleContext = {
     channel: "online",
@@ -26,9 +37,7 @@ export class GooglePlatformIntegrationService {
   };
 
   private googleContextString = (id: string) =>
-    Object.values(this.googleContext)
-      .map((value) => value)
-      .join(":") + `:${id}`;
+    Object.values(this.googleContext).join(":") + `:${id}`;
 
   constructor(
     private readonly connection: TransactionalConnection,
@@ -37,9 +46,7 @@ export class GooglePlatformIntegrationService {
 
   private async getAuthorization() {
     const settings = await this.setGoogleSettings();
-    if (!settings) {
-      throw new Error("Google platform settings not found");
-    }
+    if (!settings) throw new Error("Google platform settings not found");
     const { accountId, credentials } = settings;
     const auth = new google.auth.GoogleAuth({
       credentials,
@@ -49,12 +56,8 @@ export class GooglePlatformIntegrationService {
       version: this.google_content_api_version,
       auth,
     });
-    if (!client) {
-      throw new Error("Content API client not found");
-    }
-    if (!accountId) {
-      throw new Error("Merchant ID not found");
-    }
+    if (!client) throw new Error("Content API client not found");
+    if (!accountId) throw new Error("Merchant ID not found");
     return { client, ...settings };
   }
 
@@ -65,249 +68,253 @@ export class GooglePlatformIntegrationService {
         merchantId: accountId,
         productId: this.googleContextString(communicateID),
       });
-      if (!response.data) return null;
-      return response.data;
+      return response.data ?? null;
     } catch (e) {
-      const error = e as { response: { status: number } } | Error;
-      if ("response" in error && error.response.status === 404) {
-        return null;
-      }
+      const err = e as { response?: { status: number } };
+      if (err.response?.status === 404) return null;
       throw e;
     }
   }
 
-  async getProductCount(
-    previousResult = 0,
-    pageToken = "0",
-  ): Promise<number | null> {
-    try {
-      const { accountId, client } = await this.getAuthorization();
-      const response = await client.products.list({
-        merchantId: accountId,
-        maxResults: 250,
-        pageToken,
-      });
-      if (!response.data) return null;
-      if (response.data.nextPageToken) {
-        return this.getProductCount(
-          previousResult + (response.data.resources?.length ?? 0),
-          response.data.nextPageToken,
-        );
-      }
-      return previousResult + (response.data.resources?.length ?? 0);
-    } catch {
-      return null;
-    }
-  }
-
-  async insertProduct<T extends { communicateID: string }>({
-    ctx,
-    data,
-    entity,
-    skipCheck,
-  }: {
+  async insertProduct<T extends BaseData>(opts: {
     ctx: RequestContext;
     data: BaseProductData<T>;
     entity: Product;
     skipCheck?: boolean;
-  }): Promise<{
-    status: "success" | "error";
-    error?: unknown;
-  }> {
-    let payload: GoogleProduct[] | undefined;
-    if (Array.isArray(data)) {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.flat().filter((item): item is GoogleProduct => !!item);
-    } else {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.filter((item): item is GoogleProduct => !!item);
-    }
+  }): Promise<OpResult> {
+    return this.sendBatch({ ...opts, method: "insert" });
+  }
+
+  async updateProduct(opts: {
+    ctx: RequestContext;
+    data: BaseProductData<BaseData>;
+    entity: Product;
+  }): Promise<OpResult> {
+    return this.sendBatch({ ...opts, method: "update" });
+  }
+
+  async deleteProduct(opts: {
+    ctx: RequestContext;
+    data: BaseProductData<BaseData>;
+    entity: Product;
+  }): Promise<OpResult> {
+    return this.sendBatch({ ...opts, method: "delete" });
+  }
+
+  async batchProductsAction(opts: {
+    ctx: RequestContext;
+    products: BaseProductData<BaseData>[];
+  }): Promise<OpResult> {
+    const { ctx, products } = opts;
     try {
       const { accountId, brand, client } = await this.getAuthorization();
-      for (const item of payload || []) {
-        if (!item.communicateID) continue;
-        try {
-          if (!skipCheck) {
-            const product = await this.getGoogleProduct({
+      const allPayloads = await Promise.all(
+        products.map((p) => this.buildPayload(ctx, p)),
+      ).then((arr) => arr.flat());
+      if (allPayloads.length === 0) return { status: "success" };
+
+      const insertProducts = this.mapInsertProducts(allPayloads, brand);
+      const entries = insertProducts.map((product, i) => ({
+        batchId: i + 1,
+        merchantId: accountId,
+        method: "insert" as const,
+        product,
+      }));
+
+      const resp = await client.products.custombatch({
+        requestBody: { entries },
+      });
+      if (resp.status !== 200) throw new Error("Batch insert failed");
+      const hasErrors = resp.data?.entries?.some((e) => e.errors);
+      if (hasErrors) throw new Error("Per-item insert errors");
+      this.log(
+        `Batch inserted ${resp.data?.entries?.length ?? insertProducts.length} product(s)`,
+      );
+
+      for (const product of products) {
+        for (const item of product) {
+          await this.connection
+            .getRepository(ctx, ProductVariant)
+            .update(
+              { id: item.variantID },
+              { customFields: { communicateID: item.communicateID } },
+            );
+        }
+      }
+
+      return { status: "success" };
+    } catch (e) {
+      this.error("Batch products action failed", e);
+      return { status: "error", error: e };
+    }
+  }
+
+  private async sendBatch(opts: {
+    ctx: RequestContext;
+    method: GMethod;
+    data: BaseProductData<BaseData>;
+    skipCheck?: boolean;
+  }): Promise<OpResult> {
+    const { ctx, method, data, skipCheck } = opts;
+    try {
+      const basePayload = await this.buildPayload(ctx, data);
+      if (basePayload.length === 0) return { status: "success" };
+
+      const { accountId, brand, client } = await this.getAuthorization();
+
+      let working = basePayload;
+
+      if (method === "insert" && !skipCheck) {
+        const filtered: GoogleProduct[] = [];
+        for (const item of working) {
+          if (!item.communicateID) continue;
+          try {
+            const exists = await this.getGoogleProduct({
               communicateID: item.communicateID,
             });
-            if (product) continue;
-          }
-          const productInput = await this.createProductInsertPayload({
-            ctx,
-            data,
-            brand,
-          });
-          const batchResponse = await client.products.custombatch({
-            requestBody: {
-              entries: productInput?.map((input, index) => ({
-                batchId: index + 1,
-                merchantId: accountId,
-                method: "insert",
-                product: input,
-              })),
-            },
-          });
-          if (batchResponse.status !== 200) {
-            throw new Error(
-              "Error inserting product in Google Merchant Center",
+            if (!exists) filtered.push(item);
+          } catch (e) {
+            this.log(
+              `Lookup failed for ${item.communicateID}, attempting insert. ${e}`,
             );
+            filtered.push(item);
           }
-          this.log(
-            `Product inserted to Google Merchant Center, ID: ${item.communicateID}`,
-          );
-        } catch (error) {
-          this.log("Error inserting product in Google Merchant Center" + error);
         }
+        working = filtered;
+        if (working.length === 0) return { status: "success" };
       }
-      return { status: "success" };
-    } catch (error) {
-      return { status: "error", error };
-    }
-  }
 
-  async updateProduct({
-    ctx,
-    data,
-    entity,
-  }: {
-    ctx: RequestContext;
-    data: BaseProductData<{ communicateID: string }>;
-    entity: Product;
-  }) {
-    let payload: GoogleProduct[] | undefined;
-    if (Array.isArray(data)) {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.flat().filter((item): item is GoogleProduct => !!item);
-    } else {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.filter((item): item is GoogleProduct => !!item);
-    }
-    const { accountId, brand, client } = await this.getAuthorization();
-    for (const item of payload || []) {
-      if (!item.communicateID) continue;
-      try {
-        const product = await this.getGoogleProduct({
-          communicateID: item.communicateID,
-        });
-        if (!product) {
-          await this.insertProduct({ ctx, data, entity, skipCheck: true });
-          return { status: "success", ids: [] };
-        }
-        const productInput = await this.createProductUpdatePayload({
-          ctx,
-          data,
-          brand,
-        });
-        const batchResponse = await client.products.custombatch({
-          requestBody: {
-            entries: productInput?.map(({ communicateID, ...rest }, index) => {
-              return {
-                batchId: index + 1,
-                merchantId: accountId,
-                method: "update",
-                product: rest,
-                productId: communicateID,
-              };
-            }),
-          },
-        });
-        if (batchResponse.status !== 200) {
-          throw new Error("Error updating product in Google Merchant Center");
-        }
-        this.log(`Product updated on Google Merchant Center.`);
-        const haveErrors = batchResponse.data?.entries?.some(
-          (entry) => entry.errors,
-        );
-        if (haveErrors) {
-          this.log(`Error updating product in Google Merchant Center`);
-          return { status: "error", ids: [] };
-        }
-        return { status: "success", ids: [] };
-      } catch (error) {
-        this.log("Error updating product in Google Merchant Center" + error);
-        return { status: "error", productId: `data.communicateID`, error };
-      }
-    }
-  }
+      let entries: Array<Record<string, unknown>> = [];
 
-  async deleteProduct({
-    ctx,
-    data,
-    entity,
-  }: {
-    ctx: RequestContext;
-    data: BaseProductData<{ communicateID: string }>;
-    entity: Product;
-  }) {
-    let payload: GoogleProduct[] | undefined;
-    if (Array.isArray(data)) {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.flat().filter((item): item is GoogleProduct => !!item);
-    } else {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.filter((item): item is GoogleProduct => !!item);
-    }
-    try {
-      const { accountId, client } = await this.getAuthorization();
-      const batchResponse = await client.products.custombatch({
-        requestBody: {
-          entries: payload?.map(({ communicateID }, index) => ({
-            batchId: index + 1,
+      if (method === "insert") {
+        const products = this.mapInsertProducts(working, brand);
+        entries = products.map((product, i) => ({
+          batchId: i + 1,
+          merchantId: accountId,
+          method,
+          product,
+        }));
+      } else if (method === "update") {
+        const products = this.mapUpdateProducts(working, brand);
+        if (products.length === 0) return { status: "success" };
+        entries = products.map(({ communicateID, product }, i) => ({
+          batchId: i + 1,
+          merchantId: accountId,
+          method,
+          productId: communicateID,
+          product,
+        }));
+      } else if (method === "delete") {
+        entries = working
+          .filter((p) => !!p.communicateID)
+          .map((p, i) => ({
+            batchId: i + 1,
             merchantId: accountId,
-            method: "delete",
-            productId: communicateID,
-          })),
-        },
-      });
-      if (batchResponse.status !== 200) {
-        throw new Error("Error deleting product in Google Merchant Center");
-      }
-      this.log("Product deleted from Google Merchant Center");
-      return { status: "success" };
-    } catch (error) {
-      return { status: "error", error };
-    }
-  }
-
-  async batchProductsAction({
-    ctx,
-    products,
-  }: {
-    ctx: RequestContext;
-    products: BaseProductData<{ communicateID: string }>[];
-  }) {
-    try {
-      const { accountId, brand, client } = await this.getAuthorization();
-      const batchProductsPayload = await Promise.all(
-        products.map((data) =>
-          this.createProductInsertPayload({ ctx, data, brand }),
-        ),
-      ).then((data) => data.flat());
-      const batchResponse = await client.products.custombatch({
-        requestBody: {
-          entries: batchProductsPayload
-            .filter((item) => !!item)
-            .map((input, index) => ({
-              batchId: index + 1,
-              merchantId: accountId,
-              method: "insert",
-              product: input,
-            })),
-        },
-      });
-      if (batchResponse.status !== 200) {
-        throw new Error(`Error inserting product in Google Merchant Center`);
+            method,
+            productId: this.googleContextString(p.communicateID),
+          }));
       }
 
+      if (entries.length === 0) return { status: "success" };
+
+      const resp = await client.products.custombatch({
+        requestBody: { entries },
+      });
+
+      if (resp.status !== 200)
+        throw new Error(`Batch ${method} HTTP status ${resp.status}`);
+
+      const perItemErrors = resp.data?.entries?.filter((e) => e.errors);
+      if (perItemErrors && perItemErrors.length > 0) {
+        this.error(
+          `Google batch ${method} per-item errors`,
+          perItemErrors.slice(0, 3),
+        );
+        return { status: "error", error: perItemErrors };
+      }
+
+      if (method !== "delete") {
+        const repo = this.connection.getRepository(ctx, ProductVariant);
+        const items = data.filter((d) => d.variantID);
+        const ids = [...new Set(items.map((i) => i.variantID as string))];
+        if (ids.length) {
+          const variants = await repo.find({ where: { id: In(ids) } });
+          const variantMap = new Map(variants.map((v) => [v.id, v]));
+          const toDelete: { communicateID: string; variantID: string }[] = [];
+          for (const item of items) {
+            const variant = variantMap.get(item.variantID as string);
+            if (!variant) continue;
+            const newCommId = item.communicateID;
+            const prevCommId = variant.customFields?.communicateID;
+            if (method === "update" && prevCommId && prevCommId !== newCommId) {
+              toDelete.push({
+                communicateID: prevCommId,
+                variantID: variant.id as string,
+              });
+            }
+            variant.customFields = {
+              ...variant.customFields,
+              communicateID: newCommId,
+            };
+          }
+          if (toDelete.length)
+            await this.sendBatch({ ctx, method: "delete", data: toDelete });
+          if (variants.length) await repo.save(variants, { chunk: 100 });
+        }
+      }
       this.log(
-        `Products (${batchResponse.data?.entries?.length}) sended to Google Merchant Center with batch method`,
+        `Google batch ${method} done (${resp.data?.entries?.length ?? entries.length} items)`,
       );
       return { status: "success" };
     } catch (e) {
-      this.log("Error inserting products in Google Merchant Center");
-      return { status: "error" };
+      this.error(`Google batch ${method} failed`, e);
+      return { status: "error", error: e };
     }
+  }
+
+  private async buildPayload(
+    ctx: RequestContext,
+    data: BaseProductData<BaseData>,
+  ): Promise<GoogleProduct[]> {
+    const payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
+    return (payload ?? []).filter(
+      (p): p is GoogleProduct => !!p && !!p.communicateID,
+    );
+  }
+
+  private mapInsertProducts(payload: GoogleProduct[], brand: string) {
+    return payload.map(({ communicateID, ...rest }) => ({
+      offerId: communicateID.toString(),
+      ...rest,
+      ...this.googleContext,
+      brand,
+    }));
+  }
+
+  private mapUpdateProducts(
+    payload: GoogleProduct[],
+    brand: string,
+  ): Array<{
+    communicateID: string;
+    product: Record<string, unknown>;
+  }> {
+    return payload
+      .filter((p) => !!p.communicateID)
+      .map(({ communicateID, ...rest }) => {
+        delete rest.offerId;
+        delete rest.feedLabel;
+        delete rest.contentLanguage;
+        delete rest.channel;
+        delete (rest as any).variantID;
+        const product = {
+          ...rest,
+          brand,
+        };
+        return {
+          communicateID: this.googleContextString(communicateID),
+          product,
+        };
+      });
   }
 
   async setGoogleSettings(rawSettings?: MerchantPlatformSettingsEntity) {
@@ -319,94 +326,25 @@ export class GooglePlatformIntegrationService {
         .findOne({ relations: ["entries"], where: { platform: "google" } });
     }
     if (!settings) return null;
-    const autoUpdate = settings.entries.find(
-      (entry) => entry.key === "autoUpdate",
-    )?.value;
-    const accountId = settings.entries.find(
-      (entry) => entry.key === "merchantId",
-    )?.value;
-    const brand =
-      settings.entries.find((entry) => entry.key === "brand")?.value ?? "";
+    const getVal = (k: string) =>
+      settings!.entries.find((e) => e.key === k)?.value;
 
+    const autoUpdate = getVal("autoUpdate");
+    const accountId = getVal("merchantId");
+    const brand = getVal("brand") ?? "";
     let credentials = null;
     try {
-      credentials = JSON.parse(
-        settings.entries.find((entry) => entry.key === "credentials")?.value ??
-          "null",
-      );
-    } catch (e) {
+      credentials = JSON.parse(getVal("credentials") ?? "null");
+    } catch {
       this.log("Error parsing credentials");
       return null;
     }
-
     if (!accountId || !credentials || !brand) return null;
     return {
-      autoUpdate: autoUpdate === "true",
+      autoUpdate: String(autoUpdate).toLowerCase() === "true",
       accountId,
       credentials,
       brand,
     };
-  }
-
-  private async createProductInsertPayload({
-    ctx,
-    data,
-    brand,
-  }: {
-    ctx: RequestContext;
-    data: BaseProductData<{ communicateID: string }>;
-    brand: string;
-  }) {
-    let payload: GoogleProduct[] | undefined;
-    if (Array.isArray(data)) {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.flat().filter((item): item is GoogleProduct => !!item);
-    } else {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.filter((item): item is GoogleProduct => !!item);
-    }
-    return payload?.map(({ communicateID, ...item }) => {
-      return {
-        offerId: communicateID?.toString(),
-        ...item,
-        ...this.googleContext,
-        brand,
-      };
-    });
-  }
-
-  private async createProductUpdatePayload({
-    ctx,
-    data,
-    brand,
-  }: {
-    ctx: RequestContext;
-    data: BaseProductData<{ communicateID: string }>;
-    brand: string;
-  }) {
-    let payload: GoogleProduct[] | undefined;
-    if (Array.isArray(data)) {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.flat().filter((item): item is GoogleProduct => !!item);
-    } else {
-      payload = await this.strategy.prepareGoogleProductPayload(ctx, data);
-      payload = payload?.filter((item): item is GoogleProduct => !!item);
-    }
-
-    const items = [];
-    for (const item of payload || []) {
-      if (!item.communicateID) continue;
-      if (item?.offerId) delete item.offerId;
-      if (item?.feedLabel) delete item.feedLabel;
-      if (item?.contentLanguage) delete item.contentLanguage;
-      if (item?.channel) delete item.channel;
-      if ("productId" in item) delete item.productId;
-      items.push({
-        ...item,
-        brand,
-        communicateID: this.googleContextString(item.communicateID),
-      });
-    }
-    return items;
   }
 }

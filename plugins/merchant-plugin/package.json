@@ -2,13 +2,13 @@
   "name": "@deenruv/merchant-plugin",
   "version": "0.1.33",
   "license": "MIT",
-  "type": "module",
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "dist/**/*"
   ],
+  "main": "./dist/plugin-server/index.js",
   "exports": {
     ".": "./dist/plugin-server/index.js",
     "./plugin-server": "./dist/plugin-server/index.js",

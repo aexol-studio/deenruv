@@ -1,22 +1,27 @@
-import { Injector, PluginCommonModule, DeenruvPlugin } from "@deenruv/core";
+import {
+  DeenruvPlugin,
+  Injector,
+  LanguageCode,
+  PluginCommonModule,
+} from "@deenruv/core";
+import { OnApplicationBootstrap } from "@nestjs/common";
+import { ModuleRef } from "@nestjs/core";
+import { PlatformIntegrationAdminResolver } from "./api/platform-integration-admin-resolver.js";
+import { MERCHANT_PLUGIN_OPTIONS } from "./constants.js";
+import { MerchantPlatformSetting } from "./entities/platform-integration-setting.entity.js";
+import { MerchantPlatformSettingsEntity } from "./entities/platform-integration-settings.entity.js";
 import { adminApiExtensions } from "./extensions/api-extensions.js";
 import { FacebookPlatformIntegrationService } from "./services/facebook-platform-integration.service.js";
 import { GooglePlatformIntegrationService } from "./services/google-platform-integration.service.js";
+import { MerchantStrategyService } from "./services/merchant-strategy.service.js";
 import { PlatformIntegrationService } from "./services/platform-integration.service.js";
-import { PlatformIntegrationAdminResolver } from "./api/platform-integration-admin-resolver.js";
-import { MerchantPlatformSetting } from "./entities/platform-integration-setting.entity.js";
-import { MerchantPlatformSettingsEntity } from "./entities/platform-integration-settings.entity.js";
+import { SubscriberService } from "./services/subscriber.service.js";
 import {
+  FacebookProduct,
+  GoogleProduct,
   MerchantExportStrategy,
   MerchantPluginOptions,
-  GoogleProduct,
-  FacebookProduct,
 } from "./types.js";
-import { MERCHANT_PLUGIN_OPTIONS } from "./constants.js";
-import { ModuleRef } from "@nestjs/core";
-import { OnApplicationBootstrap } from "@nestjs/common";
-import { MerchantStrategyService } from "./services/merchant-strategy.service.js";
-import { SubscriberService } from "./services/subscriber.service.js";
 @DeenruvPlugin({
   compatibility: "^2.0.0",
   imports: [PluginCommonModule],
@@ -37,7 +42,28 @@ import { SubscriberService } from "./services/subscriber.service.js";
     FacebookPlatformIntegrationService,
     SubscriberService,
   ],
-  configuration: (config) => config,
+  configuration: (config) => {
+    config.customFields.ProductVariant.push({
+      type: "string",
+      name: "communicateID",
+      readonly: true,
+      label: [
+        { languageCode: LanguageCode.pl, value: "ID komunikacji" },
+        { languageCode: LanguageCode.en, value: "Communication ID" },
+      ],
+      description: [
+        {
+          languageCode: LanguageCode.pl,
+          value: "ID do komunikacji z facebookiem lub googlem",
+        },
+        {
+          languageCode: LanguageCode.en,
+          value: "ID for communication with Facebook or Google",
+        },
+      ],
+    });
+    return config;
+  },
 })
 class MerchantPlugin implements OnApplicationBootstrap {
   static options: MerchantPluginOptions;
@@ -74,8 +100,8 @@ class MerchantPlugin implements OnApplicationBootstrap {
 }
 
 export {
-  MerchantPlugin,
-  MerchantExportStrategy,
-  GoogleProduct,
   FacebookProduct,
+  GoogleProduct,
+  MerchantExportStrategy,
+  MerchantPlugin,
 };

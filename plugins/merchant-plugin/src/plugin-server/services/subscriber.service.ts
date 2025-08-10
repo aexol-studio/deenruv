@@ -1,18 +1,32 @@
-import { Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { MerchantPluginOptions } from "../types.js";
-import { MERCHANT_PLUGIN_OPTIONS } from "../constants.js";
+import {
+  CreateProductInput,
+  CreateProductVariantInput,
+  UpdateProductInput,
+  UpdateProductVariantInput,
+} from "@deenruv/common/lib/generated-types.js";
 import {
   EventBus,
+  ID,
   Product,
   ProductEvent,
   ProductService,
   ProductVariantEvent,
   RequestContext,
 } from "@deenruv/core";
+import { Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
+import { MERCHANT_PLUGIN_OPTIONS } from "../constants.js";
+import { MerchantPluginOptions } from "../types.js";
 import { FacebookPlatformIntegrationService } from "./facebook-platform-integration.service.js";
 import { GooglePlatformIntegrationService } from "./google-platform-integration.service.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
 import { PlatformIntegrationService } from "./platform-integration.service.js";
+
+type ProductInputTypes = CreateProductInput | UpdateProductInput | ID;
+type ProductVariantInputTypes =
+  | CreateProductVariantInput[]
+  | UpdateProductVariantInput[]
+  | ID
+  | ID[];
 
 @Injectable()
 export class SubscriberService implements OnApplicationBootstrap {
@@ -24,7 +38,7 @@ export class SubscriberService implements OnApplicationBootstrap {
     private readonly googleService: GooglePlatformIntegrationService,
     private readonly facebookService: FacebookPlatformIntegrationService,
     private readonly strategy: MerchantStrategyService,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
   ) {}
 
   async onApplicationBootstrap() {
@@ -33,14 +47,14 @@ export class SubscriberService implements OnApplicationBootstrap {
     });
     this.eventBus
       .ofType(ProductVariantEvent)
-      .subscribe(async ({ ctx, entity, type }) => {
+      .subscribe(async ({ ctx, entity, type, input }) => {
         if (!entity || !entity.length) return;
         const product = await this.productService.findOne(
           ctx,
-          entity[0].productId
+          entity[0].productId,
         );
         if (!product) return;
-        await this.event({ ctx, entity: product, type });
+        await this.event({ ctx, entity: product, type, input });
       });
   }
 
@@ -48,75 +62,42 @@ export class SubscriberService implements OnApplicationBootstrap {
     ctx,
     entity,
     type,
+    input,
   }: {
     ctx: RequestContext;
     entity: Product;
     type: "created" | "updated" | "deleted";
+    input?: ProductInputTypes | ProductVariantInputTypes;
   }) {
-    if (!ctx || !entity || !(entity instanceof Product)) return;
+    if (!this.isValidEventData(ctx, entity)) return;
     const { googleAutoUpdate, facebookAutoUpdate } =
       await this.integrationService.getPlatformAutoUpdateSettings(ctx);
-    if (googleAutoUpdate || facebookAutoUpdate) {
-      const data = await this.strategy.getBaseData(ctx, entity);
-      if (!data) return;
-      switch (type) {
-        case "created":
-          // * Google create
-          if (googleAutoUpdate) {
-            this.googleService.insertProduct({
-              ctx,
-              data,
-              entity,
-            });
-          }
-          // * Facebook create
-          if (facebookAutoUpdate) {
-            this.facebookService.createProduct({
-              ctx,
-              products: [data],
-              entity,
-            });
-          }
-          break;
-        case "updated":
-          if (googleAutoUpdate) {
-            // * Google update if exists
-            this.googleService.updateProduct({
-              ctx,
-              data,
-              entity,
-            });
-          }
+    if (!googleAutoUpdate && !facebookAutoUpdate) return;
+    const data = await this.strategy.getBaseData(ctx, entity);
+    if (!data) return;
+    const operations = this.getOperationsForType(type);
+    const eventPayload = { ctx, data, entity };
+    await Promise.allSettled([
+      ...(googleAutoUpdate
+        ? [this.googleService[operations.google](eventPayload)]
+        : []),
+      ...(facebookAutoUpdate
+        ? [this.facebookService[operations.facebook](eventPayload)]
+        : []),
+    ]);
+  }
 
-          // * Facebook update
-          if (facebookAutoUpdate) {
-            this.facebookService.updateProduct({
-              ctx,
-              productData: [data],
-              entity,
-            });
-          }
-          break;
-        case "deleted":
-          // * Google delete
-          if (googleAutoUpdate) {
-            this.googleService.deleteProduct({
-              ctx,
-              data,
-              entity,
-            });
-          }
+  private isValidEventData(ctx: RequestContext, entity: Product): boolean {
+    return Boolean(ctx && entity && entity instanceof Product);
+  }
 
-          // * Facebook delete
-          if (facebookAutoUpdate) {
-            this.facebookService.deleteProduct({
-              ctx,
-              productData: [data],
-              entity,
-            });
-          }
-          break;
-      }
-    }
+  private getOperationsForType(type: "created" | "updated" | "deleted") {
+    const operationMap = {
+      created: { google: "insertProduct", facebook: "createProduct" },
+      updated: { google: "updateProduct", facebook: "updateProduct" },
+      deleted: { google: "deleteProduct", facebook: "deleteProduct" },
+    } as const;
+
+    return operationMap[type];
   }
 }

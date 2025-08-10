@@ -1,174 +1,209 @@
+import {
+  Logger,
+  Product,
+  RequestContext,
+  TransactionalConnection,
+  ProductVariant,
+} from "@deenruv/core";
 import { Injectable } from "@nestjs/common";
-import { RequestContext, TransactionalConnection, Logger } from "@deenruv/core";
-import { ProductCatalog, FacebookAdsApi } from "facebook-nodejs-business-sdk";
+import { FacebookAdsApi, ProductCatalog } from "facebook-nodejs-business-sdk";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
-import { BaseProductData } from "../types.js";
-import { Product } from "@deenruv/core";
+import { BaseData, BaseProductData } from "../types.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
+import { In } from "typeorm";
+
+type FbMethod = "CREATE" | "UPDATE" | "DELETE";
+type OpResult = { status: "success" | "error"; message?: string };
 
 @Injectable()
 export class FacebookPlatformIntegrationService {
   private readonly logger = new Logger();
   private log = (message: string) =>
     this.logger.log(message, "Merchant Platform Service");
+  private error = (message: string, err?: unknown) =>
+    this.logger.error(
+      message,
+      err instanceof Error ? err.stack : String(err),
+      "Merchant Platform Service",
+    );
 
   constructor(
     private readonly connection: TransactionalConnection,
     private readonly strategy: MerchantStrategyService,
   ) {}
 
+  private async withCatalog(ctx: RequestContext): Promise<{
+    catalog: ProductCatalog;
+    brand: string;
+  }> {
+    const settings = await this.setFacebookSettings(ctx);
+    if (!settings) {
+      throw new Error("Facebook platform settings not found");
+    }
+    const { accessToken, catalogId, brand } = settings;
+    FacebookAdsApi.init(accessToken);
+    const catalog = new ProductCatalog(catalogId);
+    return { catalog, brand };
+  }
+
+  private async sendBatch(opts: {
+    ctx: RequestContext;
+    method: FbMethod;
+    data: BaseProductData<BaseData>;
+  }): Promise<OpResult> {
+    const { ctx, method, data } = opts;
+    try {
+      const { catalog, brand } = await this.withCatalog(ctx);
+      const requests = await this.prepareFacebookProductPayload({
+        ctx,
+        method,
+        data,
+        brand,
+      });
+
+      if (!requests || requests.length === 0) {
+        return { status: "success", message: "No products to process" };
+      }
+      const response = await catalog.createBatch([], { requests });
+      const hasValidationErrors =
+        Array.isArray(response?._data?.validation_status) &&
+        response._data.validation_status.length > 0;
+
+      if (hasValidationErrors) {
+        this.error(`FB batch ${method} validation errors`);
+        return {
+          status: "error",
+          message: JSON.stringify(response._data.validation_status),
+        };
+      }
+      const items =
+        response._data?.responses ??
+        response._data?.results ??
+        response._data?.handles ??
+        response._data?.data ??
+        null;
+      if (Array.isArray(items)) {
+        const errored = items.filter(
+          (it) =>
+            it?.error ||
+            it?.error_message ||
+            it?.code >= 400 ||
+            (Array.isArray(it?.errors) && it.errors.length > 0),
+        );
+        if (errored.length > 0) {
+          this.error(`FB batch ${method} per-item errors`, errored);
+          return {
+            status: "error",
+            message: JSON.stringify(errored.slice(0, 3)),
+          };
+        }
+      }
+      if (method !== "DELETE") {
+        const repo = this.connection.getRepository(ctx, ProductVariant);
+        const items = data.filter((d) => d.variantID);
+        const ids = [...new Set(items.map((i) => i.variantID as string))];
+        if (ids.length) {
+          const variants = await repo.find({ where: { id: In(ids) } });
+          const variantMap = new Map(variants.map((v) => [v.id, v]));
+          const toDelete: { communicateID: string; variantID: string }[] = [];
+          for (const item of items) {
+            const variant = variantMap.get(item.variantID as string);
+            if (!variant) continue;
+            const newCommId = item.communicateID;
+            const prevCommId = variant.customFields?.communicateID;
+            if (method === "UPDATE" && prevCommId && prevCommId !== newCommId) {
+              toDelete.push({
+                communicateID: prevCommId,
+                variantID: variant.id as string,
+              });
+            }
+            variant.customFields = {
+              ...variant.customFields,
+              communicateID: newCommId,
+            };
+          }
+          if (toDelete.length)
+            await this.sendBatch({ ctx, method: "DELETE", data: toDelete });
+          if (variants.length) await repo.save(variants, { chunk: 100 });
+        }
+      }
+      this.log(`FB batch ${method} done`);
+      return { status: "success", message: "Products processed successfully" };
+    } catch (e) {
+      this.error(`FB batch ${method} failed`, e);
+      return { status: "error", message: e instanceof Error ? e.message : "" };
+    }
+  }
+
   async createProduct({
     ctx,
-    products,
-    entity,
+    data,
   }: {
     ctx: RequestContext;
-    products: BaseProductData<{ communicateID: string }>[];
+    data: BaseProductData<BaseData>;
     entity?: Product;
-  }): Promise<{
-    status: "success" | "error";
-  }> {
-    try {
-      const settings = await this.setFacebookSettings();
-      if (!settings) throw new Error("Facebook platform settings not found");
-      const { accessToken, catalogId, brand } = settings;
-      FacebookAdsApi.init(accessToken);
-      const productCatalog = new ProductCatalog(catalogId);
-      const requests = await Promise.all(
-        products.map((productData) =>
-          this.prepareFacebookProductPayload({
-            ctx,
-            method: "CREATE",
-            productData,
-            brand,
-          }),
-        ),
-      );
-      await productCatalog.createBatch([], { requests: requests.flat() });
-      this.log("Product created on Facebook");
-      return { status: "success" };
-    } catch (error) {
-      this.log("Error creating product on Facebook");
-      return { status: "error" };
-    }
+  }): Promise<OpResult> {
+    return this.sendBatch({ ctx, method: "CREATE", data });
   }
 
   async updateProduct({
     ctx,
-    productData,
-    entity,
+    data,
   }: {
     ctx: RequestContext;
-    productData: BaseProductData<{ communicateID: string }>[];
+    data: BaseProductData<BaseData>;
     entity?: Product;
-  }): Promise<{
-    status: "success" | "error";
-  }> {
-    try {
-      const settings = await this.setFacebookSettings();
-      if (!settings) throw new Error("Facebook platform settings not found");
-      const { accessToken, catalogId, brand } = settings;
-      FacebookAdsApi.init(accessToken);
-      const productCatalog = new ProductCatalog(catalogId);
-      const requests = await Promise.all(
-        productData.map((product) =>
-          this.prepareFacebookProductPayload({
-            ctx,
-            method: "UPDATE",
-            productData: product,
-            brand,
-          }),
-        ),
-      );
-      await productCatalog.createBatch([], { requests: requests.flat() });
-      this.log("Product updated to Facebook");
-      return { status: "success" };
-    } catch (error) {
-      this.log("Error updating product to Facebook");
-      return { status: "error" };
-    }
+  }): Promise<OpResult> {
+    return this.sendBatch({ ctx, method: "UPDATE", data });
   }
 
   async deleteProduct({
     ctx,
-    productData,
-    entity,
+    data,
   }: {
     ctx: RequestContext;
-    productData: BaseProductData<{ communicateID: string }>[];
+    data: BaseProductData<BaseData>;
     entity?: Product;
-  }): Promise<{
-    status: "success" | "error";
-  }> {
-    try {
-      const settings = await this.setFacebookSettings();
-      if (!settings) throw new Error("Facebook platform settings not found");
-      const { accessToken, catalogId, brand } = settings;
-      FacebookAdsApi.init(accessToken);
-      const productCatalog = new ProductCatalog(catalogId);
-      const requests = await Promise.all(
-        productData.flatMap((product) =>
-          this.prepareFacebookProductPayload({
-            ctx,
-            method: "DELETE",
-            productData: product,
-            brand,
-          }),
-        ),
-      );
-      await productCatalog.createBatch([], { requests });
-      this.log("Product deleted from Facebook");
-      return { status: "success" };
-    } catch (error) {
-      this.log("Error deleting product from Facebook");
-      return { status: "error" };
-    }
+  }): Promise<OpResult> {
+    return this.sendBatch({ ctx, method: "DELETE", data });
   }
 
-  async getProductsCount(): Promise<number | null> {
-    try {
-      const settings = await this.setFacebookSettings();
-      if (!settings) throw new Error("Facebook platform settings not found");
-      const { accessToken, catalogId } = settings;
-      FacebookAdsApi.init(accessToken);
-      const productCatalog = new ProductCatalog(catalogId);
-      const groupsData = await productCatalog.getProductGroups(
-        [ProductCatalog.Fields.product_count, ProductCatalog.Fields.name],
-        { summary: true },
-      );
-      return groupsData?.summary?.total_count ?? 0;
-    } catch (error) {
-      this.log("Error getting Facebook product counts");
-      return null;
+  async batchProductsAction({
+    ctx,
+    products,
+  }: {
+    ctx: RequestContext;
+    products: BaseProductData<BaseData>[];
+    entity?: Product;
+  }): Promise<OpResult> {
+    for (const product of products) {
+      await this.sendBatch({ ctx, method: "UPDATE", data: product });
     }
+    return { status: "success", message: "Products processed successfully" };
   }
 
-  async setFacebookSettings(rawSettings?: MerchantPlatformSettingsEntity) {
+  async setFacebookSettings(
+    ctx: RequestContext,
+    rawSettings?: MerchantPlatformSettingsEntity,
+  ) {
     let settings: MerchantPlatformSettingsEntity | null | undefined =
       rawSettings;
+
     if (!settings) {
       settings = await this.connection
-        .getRepository(RequestContext.empty(), MerchantPlatformSettingsEntity)
-        .findOne({
-          relations: ["entries"],
-          where: { platform: "facebook" },
-        });
+        .getRepository(ctx, MerchantPlatformSettingsEntity)
+        .findOne({ relations: ["entries"], where: { platform: "facebook" } });
     }
     if (!settings) return null;
-    const autoUpdate = settings.entries.find(
-      (entry) => entry.key === "autoUpdate",
-    )?.value;
-    const credentials = settings.entries.find(
-      (entry) => entry.key === "credentials",
-    )?.value;
-    const merchantId = settings.entries.find(
-      (entry) => entry.key === "merchantId",
-    )?.value;
-    const brand =
-      settings.entries.find((entry) => entry.key === "brand")?.value ?? "";
-    if (!credentials || !merchantId || !brand) return null;
+    const getVal = (key: string) =>
+      settings!.entries.find((e) => e.key === key)?.value;
+    const autoUpdate = getVal("autoUpdate");
+    const credentials = getVal("credentials");
+    const merchantId = getVal("merchantId");
+    const brand = getVal("brand") ?? "";
+    if (!credentials || !merchantId) return null;
     return {
-      autoUpdate: autoUpdate === "true",
+      autoUpdate: String(autoUpdate).toLowerCase() === "true",
       accessToken: credentials,
       catalogId: merchantId,
       brand,
@@ -178,38 +213,29 @@ export class FacebookPlatformIntegrationService {
   private async prepareFacebookProductPayload({
     ctx,
     method,
-    productData,
+    data,
     brand,
   }: {
     ctx: RequestContext;
-    method: string;
-    productData: BaseProductData<{ communicateID: string }>;
+    method: FbMethod;
+    data: BaseProductData<BaseData>;
     brand: string;
   }) {
     if (method === "DELETE") {
-      if (Array.isArray(productData)) {
-        return productData.map(({ communicateID }) => ({
-          retailer_id: `${communicateID}`,
-          method,
-          data: {},
-        }));
-      } else {
-        const { communicateID } = productData;
-        return [{ retailer_id: `${communicateID}`, method, data: {} }];
-      }
+      return data.map(({ communicateID }) => ({
+        retailer_id: `${communicateID}`,
+        method,
+        data: {},
+      }));
     }
-
     const products = await this.strategy.prepareFacebookProductPayload(
       ctx,
-      productData,
+      data,
     );
-    return products?.map(({ communicateID, ...product }) => ({
+    return products?.map(({ communicateID, variantID, ...product }) => ({
       retailer_id: `${communicateID}`,
       method,
-      data: {
-        ...product,
-        brand: "brand" in product && product.brand ? product.brand : brand,
-      },
+      data: { ...product, brand: product.brand ?? brand ?? "" },
     }));
   }
 }

@@ -6,7 +6,7 @@
   },
   "references": [
     { "path": "./src/plugin-server" },
-    { "path": "src/plugin-ui" }
+    { "path": "./src/plugin-ui" }
   ],
   "files": []
 }
