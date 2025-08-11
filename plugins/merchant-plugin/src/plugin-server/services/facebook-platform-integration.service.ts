@@ -176,6 +176,7 @@ export class FacebookPlatformIntegrationService {
     products: BaseProductData<BaseData>[];
     entity?: Product;
   }): Promise<OpResult> {
+    console.log(products);
     for (const product of products) {
       await this.sendBatch({ ctx, method: "UPDATE", data: product });
     }

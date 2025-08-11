@@ -226,10 +226,7 @@ export class GooglePlatformIntegrationService {
 
       const perItemErrors = resp.data?.entries?.filter((e) => e.errors);
       if (perItemErrors && perItemErrors.length > 0) {
-        this.error(
-          `Google batch ${method} per-item errors`,
-          perItemErrors.slice(0, 3),
-        );
+        this.error(`Google batch ${method} per-item errors`);
         return { status: "error", error: perItemErrors };
       }
 
