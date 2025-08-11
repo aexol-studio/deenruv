@@ -200,7 +200,9 @@ export class MerchantExportStrategy
     if (!product || !product.featuredAsset || !product.variants?.length) {
       return undefined;
     }
-    const variants = product.variants.filter((v) => v?.enabled && v?.sku);
+    const variants = product.variants.filter(
+      (v) => v?.enabled && v?.sku && !v.deletedAt,
+    );
     const hydrated = await Promise.all(
       variants?.map(async (v) => {
         await this.entityHydrator.hydrate(ctx, v, {
@@ -276,9 +278,9 @@ export const devConfig: DeenruvConfig = {
     type: "postgres",
     host: process.env.DB_HOST || "localhost",
     port: Number(process.env.DB_PORT) || 5432,
-    username: process.env.DB_USERNAME || "deenruv",
-    password: process.env.DB_PASSWORD || "deenruv",
-    database: process.env.DB_NAME || "deenruv",
+    username: process.env.DB_USERNAME || "liogalaktyka-shop",
+    password: process.env.DB_PASSWORD || "liogalaktyka-shop",
+    database: process.env.DB_NAME || "liogalaktyka-shop",
     schema: process.env.DB_SCHEMA || "public",
   },
   paymentOptions: {

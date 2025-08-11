@@ -130,7 +130,7 @@ export class FacebookPlatformIntegrationService {
       this.log(`FB batch ${method} done`);
       return { status: "success", message: "Products processed successfully" };
     } catch (e) {
-      this.error(`FB batch ${method} failed`, e);
+      this.error(`FB batch ${method} failed`);
       return { status: "error", message: e instanceof Error ? e.message : "" };
     }
   }
@@ -176,9 +176,11 @@ export class FacebookPlatformIntegrationService {
     products: BaseProductData<BaseData>[];
     entity?: Product;
   }): Promise<OpResult> {
-    console.log(products);
-    for (const product of products) {
-      await this.sendBatch({ ctx, method: "UPDATE", data: product });
+    const flatten = products.flat();
+    const batchSize = 500;
+    for (let i = 0; i < flatten.length; i += batchSize) {
+      const batch = flatten.slice(i, i + batchSize);
+      await this.sendBatch({ ctx, method: "UPDATE", data: batch });
     }
     return { status: "success", message: "Products processed successfully" };
   }

@@ -280,7 +280,7 @@ export class GooglePlatformIntegrationService {
   }
 
   private mapInsertProducts(payload: GoogleProduct[], brand: string) {
-    return payload.map(({ communicateID, ...rest }) => ({
+    return payload.map(({ communicateID, variantID, ...rest }) => ({
       offerId: communicateID.toString(),
       ...rest,
       ...this.googleContext,
@@ -297,12 +297,11 @@ export class GooglePlatformIntegrationService {
   }> {
     return payload
       .filter((p) => !!p.communicateID)
-      .map(({ communicateID, ...rest }) => {
+      .map(({ communicateID, variantID, ...rest }) => {
         delete rest.offerId;
         delete rest.feedLabel;
         delete rest.contentLanguage;
         delete rest.channel;
-        delete (rest as any).variantID;
         const product = {
           ...rest,
           brand,
