@@ -119,6 +119,9 @@ export class KubernetesCronJobExecutor implements CronJobsExecutorStrategy {
       const isNotFound = e.code === 404 && body?.reason === "NotFound";
       if (isNotFound) {
         this.log(`Secret ${this.secretName} does not exist, creating...`);
+        const token = Buffer.from(config.controllerAuthToken).toString(
+          "base64",
+        );
         await this.coreApi.createNamespacedSecret({
           namespace: this.namespace || context.namespace,
           body: {
@@ -133,9 +136,7 @@ export class KubernetesCronJobExecutor implements CronJobsExecutorStrategy {
               },
             },
             type: "Opaque",
-            data: {
-              token: Buffer.from(config.controllerAuthToken).toString("base64"),
-            },
+            data: { token },
           },
         });
         this.log(`Secret ${this.secretName} created`);
