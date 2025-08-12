@@ -253,7 +253,7 @@ export const GooglePage = () => {
           {serviceInfo.connectionStatus ? <div>💚</div> : <div>💔</div>}
         </div>
         {serviceInfo.connectionStatus ? (
-          <div>
+          <div style={{ marginTop: "12px" }}>
             <button
               className="btn btn-secondary"
               onClick={async () => {

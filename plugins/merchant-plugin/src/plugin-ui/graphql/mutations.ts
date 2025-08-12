@@ -11,13 +11,13 @@ export const merchantPlatformSettingsSelector = Selector(
   entries: { key: true, value: true },
 });
 
-const saveMerchantPlatformSettings = mutation({
+export const saveMerchantPlatformSettings = mutation({
   saveMerchantPlatformSettings: [
     { input: $("input", "SaveMerchantPlatformSettingInput!") },
     merchantPlatformSettingsSelector,
   ],
 });
 
-export const MUTATIONS = {
-  saveMerchantPlatformSettings,
-};
+export const removeOrphanItems = mutation({
+  removeOrphanItems: [{ platform: $("platform", "String!") }, true],
+});

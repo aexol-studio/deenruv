@@ -8,18 +8,23 @@ import {
   Checkbox,
   Button,
 } from "@deenruv/react-ui-devkit";
-import { QUERIES } from "../graphql/queries";
-import { MUTATIONS } from "../graphql/mutations";
+import {
+  getMerchantPlatformInfo,
+  getMerchantPlatformSettings,
+} from "../graphql/queries";
+import {
+  removeOrphanItems,
+  saveMerchantPlatformSettings,
+} from "../graphql/mutations";
 import { toast } from "sonner";
 
 export const GooglePage = () => {
   const [fetchMerchantPlatformSettings] = useLazyQuery(
-    QUERIES["getMerchantPlatformSettings"],
+    getMerchantPlatformSettings,
   );
-  const [fetchMerchantPlatformInfo] = useLazyQuery(
-    QUERIES["getMerchantPlatformInfo"],
-  );
-  const [mutate] = useMutation(MUTATIONS["saveMerchantPlatformSettings"]);
+  const [fetchMerchantPlatformInfo] = useLazyQuery(getMerchantPlatformInfo);
+  const [mutate] = useMutation(saveMerchantPlatformSettings);
+  const [removeOldItems] = useMutation(removeOrphanItems);
   const [serviceInfo, setServiceInfo] = useState({
     productsCount: 0,
     connectionStatus: false,
@@ -252,6 +257,24 @@ export const GooglePage = () => {
           <span>Products count</span>
           <span>{serviceInfo.productsCount}</span>
         </div> */}
+        {serviceInfo.connectionStatus ? (
+          <div className="mt-8">
+            <Button
+              onClick={async () => {
+                try {
+                  await removeOldItems({ platform: "facebook" });
+                  toast.success("Old items removed successfully");
+                  refetch();
+                } catch (error) {
+                  console.error(error);
+                  toast.error("Failed to remove old items");
+                }
+              }}
+            >
+              Remove old items
+            </Button>
+          </div>
+        ) : null}
       </div>
     </PageBlock>
   );
