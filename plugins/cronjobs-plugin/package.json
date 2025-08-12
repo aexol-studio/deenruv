@@ -1,0 +1,55 @@
+{
+  "name": "@deenruv/cronjobs-plugin",
+  "version": "1.0.0",
+  "homepage": "https://www.deenruv.com/",
+  "license": "MIT",
+  "files": [
+    "dist/**/*"
+  ],
+  "main": "./dist/plugin-server/index.js",
+  "exports": {
+    ".": "./dist/plugin-server/index.js",
+    "./plugin-server": "./dist/plugin-server/index.js",
+    "./plugin-ui": "./dist/plugin-ui/index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc --build",
+    "watch": "tsc --build --watch",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "eslint --fix ./src/**/*.ts",
+    "zeus": "zeus http://localhost:3000/admin-api ./src/plugin-server --td && zeus http://localhost:3000/admin-api ./src/plugin-ui --td"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^1.1.2",
+    "@deenruv/admin-types": "workspace:*",
+    "@deenruv/common": "workspace:*",
+    "@deenruv/core": "workspace:*",
+    "@deenruv/react-ui-devkit": "workspace:*",
+    "@nestjs/common": "^10.3.10",
+    "@nestjs/graphql": "^12.2.0",
+    "graphql-tag": "^2.12.6",
+    "graphql-zeus": "^7.0.0",
+    "lucide-react": "^0.363.0",
+    "react-hook-form": "^7.51.3",
+    "react-i18next": "^14.0.5",
+    "react-router-dom": "^6.22.1",
+    "sonner": "^1.4.41",
+    "zod": "^3.24.1",
+    "@hookform/resolvers": "^2.9.11"
+  },
+  "peerDependencies": {
+    "typeorm": "^0.3.20",
+    "react": ">=18.2.0 <19.0.0",
+    "react-dom": ">=18.2.0 <19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.14",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "typeorm": "^0.3.20",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^5.0.10",
+    "typescript": "5.3.3"
+  }
+}
