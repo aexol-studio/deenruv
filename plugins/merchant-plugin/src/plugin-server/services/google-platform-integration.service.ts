@@ -7,7 +7,7 @@ import {
   TransactionalConnection,
 } from "@deenruv/core";
 import { Injectable } from "@nestjs/common";
-import { google } from "googleapis";
+import { content_v2_1, google } from "googleapis";
 import { MerchantPlatformSettingsEntity } from "../entities/platform-integration-settings.entity.js";
 import { BaseData, BaseProductData, GoogleProduct } from "../types.js";
 import { MerchantStrategyService } from "./merchant-strategy.service.js";
@@ -43,6 +43,59 @@ export class GooglePlatformIntegrationService {
     private readonly connection: TransactionalConnection,
     private readonly strategy: MerchantStrategyService,
   ) {}
+
+  async removeOrphanItems(ctx: RequestContext, items: BaseData[]) {
+    const { accountId, client } = await this.getAuthorization();
+    const payload = items.map((item) => ({
+      merchantId: accountId,
+      productId: this.googleContextString(item.communicateID),
+    }));
+    if (payload.length > 0) {
+      await client.products.custombatch({
+        requestBody: {
+          entries: payload.map((p) => ({ ...p, method: "delete" })),
+        },
+      });
+    }
+  }
+
+  async getAllProducts(
+    ctx: RequestContext,
+  ): Promise<Array<{ communicateID: string; name?: string }>> {
+    const { accountId, client } = await this.getAuthorization();
+    const collected: Array<{ communicateID: string; name?: string }> = [];
+    let pageToken: string | undefined;
+    let page = 0;
+    try {
+      do {
+        const { data }: { data: content_v2_1.Schema$ProductsListResponse } =
+          await client.products.list({
+            merchantId: accountId,
+            pageToken,
+            maxResults: 250,
+          } as content_v2_1.Params$Resource$Products$List);
+        const resources = data.resources ?? [];
+        for (const p of resources) {
+          if (p.offerId) {
+            collected.push({
+              communicateID: p.offerId,
+              name: p.title ?? undefined,
+            });
+          }
+        }
+        pageToken = data.nextPageToken ?? undefined;
+        page++;
+        if (page > 500) {
+          this.error("Aborting products pagination: too many pages");
+          break;
+        }
+      } while (pageToken);
+      return collected;
+    } catch (e) {
+      this.error("Failed to retrieve products from Google", e);
+      return [];
+    }
+  }
 
   private async getAuthorization() {
     const settings = await this.setGoogleSettings();

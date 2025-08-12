@@ -668,6 +668,9 @@ export const AllTypesProps: Record<string,any> = {
 		saveMerchantPlatformSettings:{
 			input:"SaveMerchantPlatformSettingInput"
 		},
+		removeOrphanItems:{
+
+		},
 		setInpostShippingMethodConfig:{
 			input:"SetInpostShippingMethodConfigInput"
 		}
@@ -1128,7 +1131,8 @@ export const AllTypesProps: Record<string,any> = {
 		priceWithTax:"NumberOperators",
 		stockLevel:"StringOperators",
 		_and:"ProductVariantFilterParameter",
-		_or:"ProductVariantFilterParameter"
+		_or:"ProductVariantFilterParameter",
+		communicateID:"StringOperators"
 	},
 	ProductTranslationInput:{
 		languageCode:"LanguageCode",
@@ -1578,7 +1582,8 @@ export const AllTypesProps: Record<string,any> = {
 		name:"SortOrder",
 		price:"SortOrder",
 		priceWithTax:"SortOrder",
-		stockLevel:"SortOrder"
+		stockLevel:"SortOrder",
+		communicateID:"SortOrder"
 	},
 	CountryFilterParameter:{
 		id:"IDOperators",
@@ -2159,6 +2164,7 @@ export const ReturnTypes: Record<string,any> = {
 		removeMembersFromZone:"Zone",
 		sendAllProductsToMerchantPlatform:"Boolean",
 		saveMerchantPlatformSettings:"MerchantPlatformSettingsEntity",
+		removeOrphanItems:"Boolean",
 		setInpostShippingMethodConfig:"Boolean"
 	},
 	Administrator:{
@@ -2714,7 +2720,7 @@ export const ReturnTypes: Record<string,any> = {
 		options:"ProductOption",
 		facetValues:"FacetValue",
 		translations:"ProductVariantTranslation",
-		customFields:"JSON"
+		customFields:"ProductVariantCustomFields"
 	},
 	SearchResult:{
 		enabled:"Boolean",
@@ -3929,6 +3935,9 @@ export const ReturnTypes: Record<string,any> = {
 	},
 	OrderCustomFields:{
 		pickupPointId:"String"
+	},
+	ProductVariantCustomFields:{
+		communicateID:"String"
 	},
 	CustomFields:{
 		Address:"CustomFieldConfig",

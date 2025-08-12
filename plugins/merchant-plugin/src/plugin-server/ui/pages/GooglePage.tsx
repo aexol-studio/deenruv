@@ -6,18 +6,23 @@ import {
   useInjector,
 } from "@deenruv/admin-ui/react";
 import { NotificationService } from "@deenruv/admin-ui/core";
-import { QUERIES } from "../graphql/queries";
-import { MUTATIONS } from "../graphql/mutations";
+import {
+  removeOrphanItems,
+  saveMerchantPlatformSettings,
+} from "../graphql/mutations";
+import {
+  getMerchantPlatformInfo,
+  getMerchantPlatformSettings,
+} from "../graphql/queries";
 
 export const GooglePage = () => {
   const toast = useInjector(NotificationService);
   const [fetchMerchantPlatformSettings] = useLazyQuery(
-    QUERIES["getMerchantPlatformSettings"],
+    getMerchantPlatformSettings,
   );
-  const [fetchMerchantPlatformInfo] = useLazyQuery(
-    QUERIES["getMerchantPlatformInfo"],
-  );
-  const [mutate] = useMutation(MUTATIONS["saveMerchantPlatformSettings"]);
+  const [fetchMerchantPlatformInfo] = useLazyQuery(getMerchantPlatformInfo);
+  const [mutate] = useMutation(saveMerchantPlatformSettings);
+  const [removeOldItems] = useMutation(removeOrphanItems);
   const [serviceInfo, setServiceInfo] = useState({
     productsCount: 0,
     connectionStatus: false,
@@ -247,6 +252,25 @@ export const GooglePage = () => {
           <span>Connection status</span>
           {serviceInfo.connectionStatus ? <div>💚</div> : <div>💔</div>}
         </div>
+        {serviceInfo.connectionStatus ? (
+          <div>
+            <button
+              className="btn btn-secondary"
+              onClick={async () => {
+                try {
+                  await removeOldItems({ platform: "google" });
+                  toast.success("Old items removed successfully");
+                  refetch();
+                } catch (error) {
+                  console.error(error);
+                  toast.error("Failed to remove old items");
+                }
+              }}
+            >
+              Remove old items
+            </button>
+          </div>
+        ) : null}
         {/* <div className="flex gap-2">
           <span>Products count</span>
           <span>{serviceInfo.productsCount}</span>

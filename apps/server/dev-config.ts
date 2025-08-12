@@ -109,7 +109,6 @@ export class MerchantExportStrategy
     variants: ProductData[],
   ) {
     const result: FacebookProduct[] = [];
-
     for (const { product, ...variant } of variants) {
       const {
         title,
@@ -159,7 +158,6 @@ export class MerchantExportStrategy
         currency,
         price,
       } = this.getSharedData(ctx, product, variant);
-
       result.push({
         variantID: variant.id,
         communicateID: variant.sku,
@@ -229,7 +227,7 @@ export class MerchantExportStrategy
         };
       }),
     );
-    return hydrated.filter((item) => !!item);
+    return hydrated.filter((item): item is NonNullable<typeof item> => !!item);
   }
 }
 

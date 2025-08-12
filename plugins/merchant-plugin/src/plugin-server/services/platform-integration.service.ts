@@ -6,6 +6,7 @@ import {
   Logger,
   ProductService,
   RequestContext,
+  SerializedRequestContext,
   TransactionalConnection,
 } from "@deenruv/core";
 import { Injectable, OnModuleInit } from "@nestjs/common";
@@ -27,6 +28,9 @@ export class PlatformIntegrationService implements OnModuleInit {
     payload: JOB_PAYLOAD;
     worker: number;
   }>;
+  OrphanItemsQueue: JobQueue<{
+    platform: string;
+  }>;
   private readonly logger = new Logger();
   private log = (message: string) =>
     this.logger.log(message, "Merchant Platform Service");
@@ -39,6 +43,17 @@ export class PlatformIntegrationService implements OnModuleInit {
     private readonly productService: ProductService,
     private readonly strategy: MerchantStrategyService,
   ) {}
+
+  async removeOrphanItems(
+    ctx: RequestContext,
+    platform: string,
+  ): Promise<boolean> {
+    if (["facebook", "google"].includes(platform)) {
+      await this.OrphanItemsQueue.add({ platform });
+      return true;
+    }
+    return false;
+  }
 
   async *fetchProducts(
     input: { ctx: RequestContext; worker: number },
@@ -122,6 +137,45 @@ export class PlatformIntegrationService implements OnModuleInit {
           const status = e instanceof Error ? e.message : "Unknown error";
           this.log(`Error processing job: ${status}`);
           throw new Error(status);
+        }
+      },
+    });
+    this.OrphanItemsQueue = await this.jobQueueService.createQueue({
+      name: "MerchantPlatformOrphanItemsQueue",
+      process: async (job) => {
+        const { platform } = job.data;
+        const ctx = await this.createContext();
+        const map = {
+          google: this.googleService,
+          facebook: this.facebookService,
+        };
+        const service = map[platform as keyof typeof map];
+        if (!service) throw new Error("Unknown platform");
+        const results = await service.getAllProducts(ctx);
+        const products = [];
+        for await (const product of this.fetchProducts(
+          { ctx, worker: 0 },
+          (progress) => {
+            if (job.state === JobState.CANCELLED) {
+              throw new Error("Job was cancelled");
+            } else job.setProgress(progress);
+          },
+        )) {
+          products.push(...product);
+        }
+        const missingProducts = products.filter(
+          (product) =>
+            !results.find(
+              (result) => result.communicateID === product.communicateID,
+            ),
+        );
+        if (missingProducts.length > 0) {
+          this.log(
+            `Found ${missingProducts.length} orphan items for platform ${platform}`,
+          );
+          await service.removeOrphanItems(ctx, missingProducts);
+        } else {
+          this.log(`No orphan items found for platform ${platform}`);
         }
       },
     });

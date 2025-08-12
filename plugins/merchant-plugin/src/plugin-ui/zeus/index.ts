@@ -1114,6 +1114,7 @@ addMembersToZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<s
 removeMembersFromZone?: [{	zoneId: string | Variable<any, string>,	memberIds: Array<string> | Variable<any, string>},ValueTypes["Zone"]],
 sendAllProductsToMerchantPlatform?: [{	platform: string | Variable<any, string>},boolean | `@${string}`],
 saveMerchantPlatformSettings?: [{	input: ValueTypes["SaveMerchantPlatformSettingInput"] | Variable<any, string>},ValueTypes["MerchantPlatformSettingsEntity"]],
+removeOrphanItems?: [{	platform: string | Variable<any, string>},boolean | `@${string}`],
 setInpostShippingMethodConfig?: [{	input: ValueTypes["SetInpostShippingMethodConfigInput"] | Variable<any, string>},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
@@ -2380,7 +2381,7 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	options?:ValueTypes["ProductOption"],
 	facetValues?:ValueTypes["FacetValue"],
 	translations?:ValueTypes["ProductVariantTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ValueTypes["ProductVariantCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -2510,7 +2511,8 @@ stockMovements?: [{	options?: ValueTypes["StockMovementListOptions"] | undefined
 	priceWithTax?: ValueTypes["NumberOperators"] | undefined | null | Variable<any, string>,
 	stockLevel?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>,
 	_and?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
-	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>
+	_or?: Array<ValueTypes["ProductVariantFilterParameter"]> | undefined | null | Variable<any, string>,
+	communicateID?: ValueTypes["StringOperators"] | undefined | null | Variable<any, string>
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null | Variable<any, string>,
@@ -4684,7 +4686,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	price?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
 	priceWithTax?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
-	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
+	stockLevel?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>,
+	communicateID?: ValueTypes["SortOrder"] | undefined | null | Variable<any, string>
 };
 	["CountryFilterParameter"]: {
 	id?: ValueTypes["IDOperators"] | undefined | null | Variable<any, string>,
@@ -5023,6 +5026,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["UpdateOrderCustomFieldsInput"]: {
 	pickupPointId?: string | undefined | null | Variable<any, string>
 };
+	["ProductVariantCustomFields"]: AliasType<{
+	communicateID?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["NativeAuthInput"]: {
 	username: string | Variable<any, string>,
 	password: string | Variable<any, string>
@@ -5315,6 +5322,7 @@ addMembersToZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTyp
 removeMembersFromZone?: [{	zoneId: string,	memberIds: Array<string>},ResolverInputTypes["Zone"]],
 sendAllProductsToMerchantPlatform?: [{	platform: string},boolean | `@${string}`],
 saveMerchantPlatformSettings?: [{	input: ResolverInputTypes["SaveMerchantPlatformSettingInput"]},ResolverInputTypes["MerchantPlatformSettingsEntity"]],
+removeOrphanItems?: [{	platform: string},boolean | `@${string}`],
 setInpostShippingMethodConfig?: [{	input: ResolverInputTypes["SetInpostShippingMethodConfigInput"]},boolean | `@${string}`],
 		__typename?: boolean | `@${string}`
 }>;
@@ -6603,7 +6611,7 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	options?:ResolverInputTypes["ProductOption"],
 	facetValues?:ResolverInputTypes["FacetValue"],
 	translations?:ResolverInputTypes["ProductVariantTranslation"],
-	customFields?:boolean | `@${string}`,
+	customFields?:ResolverInputTypes["ProductVariantCustomFields"],
 		__typename?: boolean | `@${string}`
 }>;
 	["ProductOptionGroupTranslationInput"]: {
@@ -6733,7 +6741,8 @@ stockMovements?: [{	options?: ResolverInputTypes["StockMovementListOptions"] | u
 	priceWithTax?: ResolverInputTypes["NumberOperators"] | undefined | null,
 	stockLevel?: ResolverInputTypes["StringOperators"] | undefined | null,
 	_and?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
-	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null
+	_or?: Array<ResolverInputTypes["ProductVariantFilterParameter"]> | undefined | null,
+	communicateID?: ResolverInputTypes["StringOperators"] | undefined | null
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined | null,
@@ -8917,7 +8926,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ResolverInputTypes["SortOrder"] | undefined | null,
 	price?: ResolverInputTypes["SortOrder"] | undefined | null,
 	priceWithTax?: ResolverInputTypes["SortOrder"] | undefined | null,
-	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null
+	stockLevel?: ResolverInputTypes["SortOrder"] | undefined | null,
+	communicateID?: ResolverInputTypes["SortOrder"] | undefined | null
 };
 	["CountryFilterParameter"]: {
 	id?: ResolverInputTypes["IDOperators"] | undefined | null,
@@ -9256,6 +9266,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	["UpdateOrderCustomFieldsInput"]: {
 	pickupPointId?: string | undefined | null
 };
+	["ProductVariantCustomFields"]: AliasType<{
+	communicateID?:boolean | `@${string}`,
+		__typename?: boolean | `@${string}`
+}>;
 	["NativeAuthInput"]: {
 	username: string,
 	password: string
@@ -9706,6 +9720,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	removeMembersFromZone: ModelTypes["Zone"],
 	sendAllProductsToMerchantPlatform?: boolean | undefined,
 	saveMerchantPlatformSettings: ModelTypes["MerchantPlatformSettingsEntity"],
+	removeOrphanItems?: boolean | undefined,
 	setInpostShippingMethodConfig: boolean
 };
 	["AdministratorListOptions"]: {
@@ -10817,7 +10832,7 @@ is not in the required state. */
 	options: Array<ModelTypes["ProductOption"]>,
 	facetValues: Array<ModelTypes["FacetValue"]>,
 	translations: Array<ModelTypes["ProductVariantTranslation"]>,
-	customFields?: ModelTypes["JSON"] | undefined
+	customFields?: ModelTypes["ProductVariantCustomFields"] | undefined
 };
 	["ProductOptionGroupTranslationInput"]: {
 	id?: string | undefined,
@@ -10945,7 +10960,8 @@ is not in the required state. */
 	priceWithTax?: ModelTypes["NumberOperators"] | undefined,
 	stockLevel?: ModelTypes["StringOperators"] | undefined,
 	_and?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined,
-	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined
+	_or?: Array<ModelTypes["ProductVariantFilterParameter"]> | undefined,
+	communicateID?: ModelTypes["StringOperators"] | undefined
 };
 	["ProductTranslationInput"]: {
 	id?: string | undefined,
@@ -12723,7 +12739,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: ModelTypes["SortOrder"] | undefined,
 	price?: ModelTypes["SortOrder"] | undefined,
 	priceWithTax?: ModelTypes["SortOrder"] | undefined,
-	stockLevel?: ModelTypes["SortOrder"] | undefined
+	stockLevel?: ModelTypes["SortOrder"] | undefined,
+	communicateID?: ModelTypes["SortOrder"] | undefined
 };
 	["CountryFilterParameter"]: {
 	id?: ModelTypes["IDOperators"] | undefined,
@@ -13059,6 +13076,9 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["UpdateOrderCustomFieldsInput"]: {
 	pickupPointId?: string | undefined
+};
+	["ProductVariantCustomFields"]: {
+		communicateID?: string | undefined
 };
 	["NativeAuthInput"]: {
 	username: string,
@@ -13509,6 +13529,7 @@ as well as removing any of the group's options from the Product's ProductVariant
 	removeMembersFromZone: GraphQLTypes["Zone"],
 	sendAllProductsToMerchantPlatform?: boolean | undefined,
 	saveMerchantPlatformSettings: GraphQLTypes["MerchantPlatformSettingsEntity"],
+	removeOrphanItems?: boolean | undefined,
 	setInpostShippingMethodConfig: boolean
 };
 	["AdministratorListOptions"]: {
@@ -14799,7 +14820,7 @@ is not in the required state. */
 	options: Array<GraphQLTypes["ProductOption"]>,
 	facetValues: Array<GraphQLTypes["FacetValue"]>,
 	translations: Array<GraphQLTypes["ProductVariantTranslation"]>,
-	customFields?: GraphQLTypes["JSON"] | undefined
+	customFields?: GraphQLTypes["ProductVariantCustomFields"] | undefined
 };
 	["ProductOptionGroupTranslationInput"]: {
 		id?: string | undefined,
@@ -14928,7 +14949,8 @@ is not in the required state. */
 	priceWithTax?: GraphQLTypes["NumberOperators"] | undefined,
 	stockLevel?: GraphQLTypes["StringOperators"] | undefined,
 	_and?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined,
-	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined
+	_or?: Array<GraphQLTypes["ProductVariantFilterParameter"]> | undefined,
+	communicateID?: GraphQLTypes["StringOperators"] | undefined
 };
 	["ProductTranslationInput"]: {
 		id?: string | undefined,
@@ -17112,7 +17134,8 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 	name?: GraphQLTypes["SortOrder"] | undefined,
 	price?: GraphQLTypes["SortOrder"] | undefined,
 	priceWithTax?: GraphQLTypes["SortOrder"] | undefined,
-	stockLevel?: GraphQLTypes["SortOrder"] | undefined
+	stockLevel?: GraphQLTypes["SortOrder"] | undefined,
+	communicateID?: GraphQLTypes["SortOrder"] | undefined
 };
 	["CountryFilterParameter"]: {
 		id?: GraphQLTypes["IDOperators"] | undefined,
@@ -17450,6 +17473,10 @@ The `code` field is typically a 2-character ISO code such as "GB", "US", "DE" et
 };
 	["UpdateOrderCustomFieldsInput"]: {
 		pickupPointId?: string | undefined
+};
+	["ProductVariantCustomFields"]: {
+	__typename: "ProductVariantCustomFields",
+	communicateID?: string | undefined
 };
 	["NativeAuthInput"]: {
 		username: string,

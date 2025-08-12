@@ -37,6 +37,7 @@ export const adminApiExtensions = gql`
     saveMerchantPlatformSettings(
       input: SaveMerchantPlatformSettingInput!
     ): MerchantPlatformSettingsEntity!
+    removeOrphanItems(platform: String!): Boolean
   }
 
   extend type Query {

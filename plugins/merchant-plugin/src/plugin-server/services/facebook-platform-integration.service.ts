@@ -32,6 +32,40 @@ export class FacebookPlatformIntegrationService {
     private readonly strategy: MerchantStrategyService,
   ) {}
 
+  async removeOrphanItems(ctx: RequestContext, items: BaseData[]) {
+    const { catalog } = await this.withCatalog(ctx);
+    const payload = items.map((item) => ({
+      retailer_id: item.communicateID,
+      method: "DELETE",
+      data: {},
+    }));
+    if (payload.length > 0) {
+      await catalog.createBatch([], { requests: payload });
+    }
+  }
+
+  async getAllProducts(ctx: RequestContext) {
+    const { catalog } = await this.withCatalog(ctx);
+    let cursor = await catalog.getProducts(
+      ["retailer_id", "name"],
+      { limit: 200 },
+      false,
+    );
+    const collected = [];
+    while (true) {
+      collected.push(...cursor.map((p) => p["_data"]));
+      if (!cursor.hasNext || !cursor.hasNext()) break;
+      cursor = await cursor.next();
+      if (!cursor || cursor.length === 0) break;
+    }
+    return collected
+      .filter((item) => item && item.retailer_id)
+      .map((item) => ({
+        communicateID: item.retailer_id,
+        name: item.name,
+      }));
+  }
+
   private async withCatalog(ctx: RequestContext): Promise<{
     catalog: ProductCatalog;
     brand: string;

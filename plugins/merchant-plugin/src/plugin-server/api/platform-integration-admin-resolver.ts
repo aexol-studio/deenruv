@@ -1,5 +1,5 @@
 import { Args, Query, Resolver, Mutation } from "@nestjs/graphql";
-import { Ctx, RequestContext, Transaction } from "@deenruv/core";
+import { Ctx, RequestContext } from "@deenruv/core";
 import { GooglePlatformIntegrationService } from "../services/google-platform-integration.service.js";
 import { MerchantPlatformSetting } from "../entities/platform-integration-setting.entity.js";
 import { PlatformIntegrationService } from "../services/platform-integration.service.js";
@@ -55,7 +55,6 @@ export class PlatformIntegrationAdminResolver {
     return [{ productsCount: 0, isValidConnection: false }];
   }
 
-  @Transaction()
   @Mutation()
   async saveMerchantPlatformSettings(
     @Ctx() ctx: RequestContext,
@@ -75,5 +74,16 @@ export class PlatformIntegrationAdminResolver {
       );
 
     return settings;
+  }
+
+  @Mutation()
+  async removeOrphanItems(
+    @Ctx() ctx: RequestContext,
+    @Args() args: { platform: string },
+  ) {
+    return this.platformIntegrationService.removeOrphanItems(
+      ctx,
+      args.platform,
+    );
   }
 }
