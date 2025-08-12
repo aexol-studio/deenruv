@@ -276,9 +276,9 @@ export const devConfig: DeenruvConfig = {
     type: "postgres",
     host: process.env.DB_HOST || "localhost",
     port: Number(process.env.DB_PORT) || 5432,
-    username: process.env.DB_USERNAME || "liogalaktyka-shop",
-    password: process.env.DB_PASSWORD || "liogalaktyka-shop",
-    database: process.env.DB_NAME || "liogalaktyka-shop",
+    username: process.env.DB_USERNAME || "deenruv",
+    password: process.env.DB_PASSWORD || "deenruv",
+    database: process.env.DB_NAME || "deenruv",
     schema: process.env.DB_SCHEMA || "public",
   },
   paymentOptions: {
