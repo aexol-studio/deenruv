@@ -768,7 +768,6 @@ export class ProductVariantService {
           );
         }
         await this.assetService.updateFeaturedAsset(ctx, v, input);
-        await this.assetService.updateEntityAssets(ctx, v, input);
       },
       typeOrmSubscriberData: {
         channelId: ctx.channelId,
@@ -781,6 +780,9 @@ export class ProductVariantService {
       input,
       updatedVariant,
     );
+    // Update channel-scoped orderable assets after the variant has been persisted
+    // to avoid transient null FK values during the parent save cycle.
+    await this.assetService.updateEntityAssets(ctx, updatedVariant, input);
     if (input.price != null) {
       await this.createOrUpdateProductVariantPrice(
         ctx,

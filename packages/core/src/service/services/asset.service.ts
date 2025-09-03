@@ -21,7 +21,7 @@ import { IncomingMessage } from "http";
 import mime from "mime-types";
 import path from "path";
 import { Readable, Stream } from "stream";
-import { IsNull } from "typeorm";
+import { In, IsNull } from "typeorm";
 import { FindOneOptions } from "typeorm/find-options/FindOneOptions";
 import { camelCase } from "typeorm/util/StringUtils";
 
@@ -39,6 +39,7 @@ import { Asset } from "../../entity/asset/asset.entity";
 import { OrderableAsset } from "../../entity/asset/orderable-asset.entity";
 import { DeenruvEntity } from "../../entity/base/base.entity";
 import { Collection } from "../../entity/collection/collection.entity";
+import { Channel } from "../../entity/channel/channel.entity";
 import { Product } from "../../entity/product/product.entity";
 import { ProductVariant } from "../../entity/product-variant/product-variant.entity";
 import { EventBus } from "../../event-bus/event-bus";
@@ -262,8 +263,35 @@ export class AssetService {
     if (featuredAssetId === undefined) {
       return entity;
     }
-    const featuredAsset = await this.findOne(ctx, featuredAssetId);
+    // Load asset ignoring channel scoping so we can ensure it exists in all entity channels
+    const featuredAsset = await this.connection
+      .getRepository(ctx, Asset)
+      .findOne({ where: { id: featuredAssetId }, relations: ["channels"] });
     if (featuredAsset) {
+      if (this.channelService.isChannelAware(entity)) {
+        const entityType = Object.getPrototypeOf(entity).constructor;
+        const entityWithChannels = await this.connection
+          .getRepository(ctx, entityType)
+          .findOne({
+            where: { id: entity.id },
+            relations: ["channels"],
+          });
+        const entityChannelIds = entityWithChannels?.channels?.map(
+          (c: Channel) => c.id,
+        ) as ID[];
+        const assetChannelIds = featuredAsset.channels?.map((c) => c.id) || [];
+        const missing = (entityChannelIds || []).filter(
+          (id) => !assetChannelIds.find((aId) => idsAreEqual(aId, id)),
+        );
+        if (missing.length) {
+          await this.channelService.assignToChannels(
+            ctx,
+            Asset,
+            featuredAsset.id,
+            missing,
+          );
+        }
+      }
       entity.featuredAsset = featuredAsset;
     }
     return entity;
@@ -801,11 +829,25 @@ export class AssetService {
     ctx: RequestContext,
     entity: EntityWithAssets,
   ) {
+    // Delete only orderable assets linked to Assets available in the current channel.
+    // This prevents wiping assets assigned in other channels for the same entity.
     const propertyName = this.getHostEntityIdProperty(entity);
     const orderableAssetType = this.getOrderableAssetType(ctx, entity);
-    await this.connection.getRepository(ctx, orderableAssetType).delete({
-      [propertyName]: entity.id,
-    });
+    const repo = this.connection.getRepository(ctx, orderableAssetType);
+
+    const existingInChannel = await repo
+      .createQueryBuilder("oa")
+      .leftJoin("oa.asset", "asset")
+      .leftJoin("asset.channels", "asset_channel")
+      .where(`oa.${propertyName} = :id`, { id: entity.id })
+      .andWhere("asset_channel.id = :channelId", { channelId: ctx.channelId })
+      .select(["oa.id"])
+      .getMany();
+
+    const idsToDelete = existingInChannel.map((oa) => oa.id);
+    if (idsToDelete.length) {
+      await repo.delete({ id: In(idsToDelete) });
+    }
   }
 
   private getOrderableAssetType(
