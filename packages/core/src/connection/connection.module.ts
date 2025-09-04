@@ -33,7 +33,12 @@ export class ConnectionModule {
         useFactory: (configService: ConfigService) => {
           const { dbConnectionOptions, dataSourceHooks = [] } = configService;
           const logger = ConnectionModule.getTypeOrmLogger(dbConnectionOptions);
-          return { ...dbConnectionOptions, logger, dataSourceHooks };
+          return {
+            ...dbConnectionOptions,
+            logger,
+            dataSourceHooks,
+            manualInitialization: true,
+          };
         },
         dataSourceFactory: async (params) => {
           if (!params) {

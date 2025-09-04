@@ -1,7 +1,7 @@
 name: deenruv-local
 services:
     deenruv-postgres:
-        image: postgres:16.6
+        image: ghcr.io/cloudnative-pg/postgresql:16.3
         hostname: deenruv-postgres
         container_name: deenruv-postgres
         environment:
@@ -12,6 +12,8 @@ services:
             - 5432:5432
         expose:
             - 5432
+        volumes:
+            - ./initdb:/docker-entrypoint-initdb.d
     deenruv-redis:
         image: bitnami/redis:7.2
         hostname: deenruv-redis

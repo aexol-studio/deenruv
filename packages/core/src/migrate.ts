@@ -41,6 +41,9 @@ export async function runMigrations(
 ): Promise<string[]> {
   const config = await preBootstrapConfig(userConfig);
   const connection = await createConnection(createConnectionOptions(config));
+  for (const hook of config.dataSourceHooks || []) {
+    await hook(connection);
+  }
   const migrationsRan: string[] = [];
   try {
     const migrations = await disableForeignKeysForSqLite(connection, () =>
@@ -90,6 +93,9 @@ async function checkMigrationStatus(connection: Connection) {
 export async function revertLastMigration(userConfig: Partial<DeenruvConfig>) {
   const config = await preBootstrapConfig(userConfig);
   const connection = await createConnection(createConnectionOptions(config));
+  for (const hook of config.dataSourceHooks || []) {
+    await hook(connection);
+  }
   try {
     await disableForeignKeysForSqLite(connection, () =>
       connection.undoLastMigration({ transaction: "each" }),
@@ -122,7 +128,9 @@ export async function generateMigration(
 ): Promise<string | undefined> {
   const config = await preBootstrapConfig(userConfig);
   const connection = await createConnection(createConnectionOptions(config));
-
+  for (const hook of config.dataSourceHooks || []) {
+    await hook(connection);
+  }
   // TODO: This can hopefully be simplified if/when TypeORM exposes this CLI command directly.
   // See https://github.com/typeorm/typeorm/issues/4494
   const sqlInMemory = await connection.driver.createSchemaBuilder().log();
