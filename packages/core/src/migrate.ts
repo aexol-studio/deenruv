@@ -1,7 +1,7 @@
 import fs from "fs-extra";
 import path from "path";
 import pc from "picocolors";
-import { Connection, createConnection, DataSourceOptions } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 import { MysqlDriver } from "typeorm/driver/mysql/MysqlDriver";
 import { camelCase } from "typeorm/util/StringUtils";
 
@@ -40,10 +40,11 @@ export async function runMigrations(
   userConfig: Partial<DeenruvConfig>,
 ): Promise<string[]> {
   const config = await preBootstrapConfig(userConfig);
-  const connection = await createConnection(createConnectionOptions(config));
+  const dataSource = new DataSource(createConnectionOptions(config));
   for (const hook of config.dataSourceHooks || []) {
-    await hook(connection);
+    await hook(dataSource);
   }
+  const connection = await dataSource.initialize();
   const migrationsRan: string[] = [];
   try {
     const migrations = await disableForeignKeysForSqLite(connection, () =>
@@ -69,8 +70,8 @@ export async function runMigrations(
   return migrationsRan;
 }
 
-async function checkMigrationStatus(connection: Connection) {
-  const builderLog = await connection.driver.createSchemaBuilder().log();
+async function checkMigrationStatus(dataSource: DataSource) {
+  const builderLog = await dataSource.driver.createSchemaBuilder().log();
   if (builderLog.upQueries.length) {
     log(
       pc.yellow(
@@ -92,7 +93,11 @@ async function checkMigrationStatus(connection: Connection) {
  */
 export async function revertLastMigration(userConfig: Partial<DeenruvConfig>) {
   const config = await preBootstrapConfig(userConfig);
-  const connection = await createConnection(createConnectionOptions(config));
+  const dataSource = new DataSource(createConnectionOptions(config));
+  for (const hook of config.dataSourceHooks || []) {
+    await hook(dataSource);
+  }
+  const connection = await dataSource.initialize();
   for (const hook of config.dataSourceHooks || []) {
     await hook(connection);
   }
@@ -127,7 +132,11 @@ export async function generateMigration(
   options: MigrationOptions,
 ): Promise<string | undefined> {
   const config = await preBootstrapConfig(userConfig);
-  const connection = await createConnection(createConnectionOptions(config));
+  const dataSource = new DataSource(createConnectionOptions(config));
+  for (const hook of config.dataSourceHooks || []) {
+    await hook(dataSource);
+  }
+  const connection = await dataSource.initialize();
   for (const hook of config.dataSourceHooks || []) {
     await hook(connection);
   }
@@ -238,7 +247,7 @@ function createConnectionOptions(
  * See https://github.com/typeorm/typeorm/issues/2576#issuecomment-499506647
  */
 async function disableForeignKeysForSqLite<T>(
-  connection: Connection,
+  connection: DataSource,
   work: () => Promise<T>,
 ): Promise<T> {
   const isSqLite =
