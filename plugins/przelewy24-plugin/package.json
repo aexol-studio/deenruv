@@ -1,6 +1,6 @@
 {
   "name": "@deenruv/przelewy24-plugin",
-  "version": "0.1.38",
+  "version": "0.1.39",
   "homepage": "https://www.deenruv.com/",
   "license": "MIT",
   "type": "module",
