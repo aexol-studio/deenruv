@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { DataSourceOptions } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 
 import { ConfigModule } from "../config/config.module";
 import { ConfigService } from "../config/config.service";
@@ -9,8 +9,12 @@ import { TypeOrmLogger } from "../config/logger/typeorm-logger";
 import { TransactionSubscriber } from "./transaction-subscriber";
 import { TransactionWrapper } from "./transaction-wrapper";
 import { TransactionalConnection } from "./transactional-connection";
+import { DataSourceFactoryHook } from "../index.js";
 
 let defaultTypeOrmModule: DynamicModule;
+type DataSourceOptionsWithHooks = DataSourceOptions & {
+  dataSourceHooks: DataSourceFactoryHook[];
+};
 
 @Module({
   imports: [ConfigModule],
@@ -27,12 +31,22 @@ export class ConnectionModule {
       defaultTypeOrmModule = TypeOrmModule.forRootAsync({
         imports: [ConfigModule],
         useFactory: (configService: ConfigService) => {
-          const { dbConnectionOptions } = configService;
+          const { dbConnectionOptions, dataSourceHooks = [] } = configService;
           const logger = ConnectionModule.getTypeOrmLogger(dbConnectionOptions);
-          return {
-            ...dbConnectionOptions,
-            logger,
-          };
+          return { ...dbConnectionOptions, logger, dataSourceHooks };
+        },
+        dataSourceFactory: async (params) => {
+          if (!params) {
+            throw new Error("No DataSourceOptions were provided");
+          }
+          const { dataSourceHooks, ...options } =
+            params as DataSourceOptionsWithHooks;
+
+          const dataSource = await new DataSource(options).initialize();
+          for (const hook of dataSourceHooks || []) {
+            await hook(dataSource);
+          }
+          return dataSource;
         },
         inject: [ConfigService],
       });

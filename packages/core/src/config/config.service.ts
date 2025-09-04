@@ -22,6 +22,7 @@ import {
   SystemOptions,
   TaxOptions,
   DeenruvConfig,
+  DataSourceFactoryHook,
 } from "./deenruv-config";
 
 @Injectable()
@@ -120,6 +121,10 @@ export class ConfigService implements DeenruvConfig {
 
   get systemOptions(): Required<SystemOptions> {
     return this.activeConfig.systemOptions;
+  }
+
+  get dataSourceHooks(): DataSourceFactoryHook[] {
+    return this.activeConfig.dataSourceHooks || [];
   }
 
   private getCustomFieldsForAllEntities(): Required<CustomFields> {

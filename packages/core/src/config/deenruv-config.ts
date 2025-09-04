@@ -4,7 +4,7 @@ import { DynamicModule, Type } from "@nestjs/common";
 import { CorsOptions } from "@nestjs/common/interfaces/external/cors-options.interface";
 import { LanguageCode } from "@deenruv/common/lib/generated-types";
 import { ValidationContext } from "graphql";
-import { DataSourceOptions } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
 
 import { Middleware } from "../common";
 import { PermissionDefinition } from "../common/permission-definition";
@@ -60,6 +60,9 @@ import { TaxZoneStrategy } from "./tax/tax-zone-strategy";
 import { OrderMiddleware } from "./order/order-middleware";
 import { RequestContext } from "../api/common/request-context";
 
+export type DataSourceFactoryHook = (
+  datasource: DataSource,
+) => void | Promise<void>;
 /**
  * @description
  * The ApiOptions define how the Deenruv GraphQL APIs are exposed, as well as allowing the API layer
@@ -1201,6 +1204,16 @@ export interface DeenruvConfig {
    * @since 1.6.0
    */
   systemOptions?: SystemOptions;
+
+  /**
+   * @description
+   * An array of functions which are called during the creation of the TypeORM DataSource.
+   * This allows you to modify the DataSourceOptions before the DataSource is initialized.
+   *
+   * @since 0.1.36
+   * @experimental
+   */
+  dataSourceFactoryHooks?: DataSourceFactoryHook[];
 }
 
 /**
@@ -1225,6 +1238,7 @@ export interface RuntimeDeenruvConfig extends Required<DeenruvConfig> {
   shippingOptions: Required<ShippingOptions>;
   taxOptions: Required<TaxOptions>;
   systemOptions: Required<SystemOptions>;
+  dataSourceHooks?: DataSourceFactoryHook[];
 }
 
 type DeepPartialSimple<T> = {
