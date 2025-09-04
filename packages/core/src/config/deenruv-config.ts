@@ -1213,7 +1213,7 @@ export interface DeenruvConfig {
    * @since 0.1.36
    * @experimental
    */
-  dataSourceFactoryHooks?: DataSourceFactoryHook[];
+  dataSourceHooks?: DataSourceFactoryHook[];
 }
 
 /**
@@ -1238,7 +1238,6 @@ export interface RuntimeDeenruvConfig extends Required<DeenruvConfig> {
   shippingOptions: Required<ShippingOptions>;
   taxOptions: Required<TaxOptions>;
   systemOptions: Required<SystemOptions>;
-  dataSourceHooks?: DataSourceFactoryHook[];
 }
 
 type DeepPartialSimple<T> = {

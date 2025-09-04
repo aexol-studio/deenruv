@@ -62,6 +62,7 @@ import { RuntimeDeenruvConfig } from "./deenruv-config";
  * @docsCategory configuration
  */
 export const defaultConfig: RuntimeDeenruvConfig = {
+  dataSourceHooks: [],
   defaultChannelToken: null,
   defaultLanguageCode: LanguageCode.en,
   logger: new DefaultLogger(),
