@@ -42,10 +42,11 @@ export class ConnectionModule {
           const { dataSourceHooks, ...options } =
             params as DataSourceOptionsWithHooks;
 
-          const dataSource = await new DataSource(options).initialize();
+          const dataSource = new DataSource(options);
           for (const hook of dataSourceHooks || []) {
             await hook(dataSource);
           }
+          await dataSource.initialize();
           return dataSource;
         },
         inject: [ConfigService],
