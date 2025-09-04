@@ -1,7 +1,7 @@
 {
   "name": "panel",
   "private": true,
-  "version": "0.1.36",
+  "version": "0.1.37",
   "type": "module",
   "main": "dist/assets/index.js",
   "style": "dist/assets/index.css",
