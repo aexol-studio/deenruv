@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { ActiveRouteData, ExtensionMessage, MessageResponse } from '@deenruv/common/lib/extension-host-types';
+import { ActiveRouteData, ExtensionMessage, MessageResponse } from '@deenruv/common/extension-host-types';
 import { assertNever } from '@deenruv/common/shared-utils';
 import { parse } from 'graphql';
 import { merge, Observer, Subject } from 'rxjs';

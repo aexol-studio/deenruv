@@ -8,7 +8,7 @@ import {
     LanguageCode,
     ServerConfigService,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/normalize-string';
 
 @Component({
     selector: 'vdr-create-product-option-group-dialog',

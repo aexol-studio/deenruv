@@ -30,7 +30,7 @@ import {
     UpdateFacetValueInput,
 } from '@deenruv/admin-ui/core';
 import { SortOrder } from '@deenruv/common/generated-types';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/normalize-string';
 import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { gql } from 'apollo-angular';
 import { BehaviorSubject, combineLatest, EMPTY, forkJoin, Observable } from 'rxjs';

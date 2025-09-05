@@ -32,15 +32,6 @@ import { createReadStream, createWriteStream } from "fs";
 import { Writable } from "node:stream";
 import { randomBytes } from "crypto";
 
-declare module "@deenruv/core/dist/entity/custom-entity-fields" {
-  interface CustomFulfillmentFields {
-    inpostLabel?: Asset;
-  }
-  interface CustomOrderFields {
-    pickupPointId?: string;
-  }
-}
-
 @Injectable()
 export class InpostService implements OnModuleInit {
   private orderProgressJob!: JobQueue<OrderProgressJob>;
@@ -292,7 +283,7 @@ export class InpostService implements OnModuleInit {
     lines: { orderLineId: ID }[],
     size: "small" | "medium" | "large" | "xlarge",
   ) {
-    const targetPoint = orders[0].customFields.pickupPointId;
+    const targetPoint = (orders[0]?.customFields as any)?.pickupPointId;
     if (!targetPoint) {
       Logger.error(
         `Order ${orders[0].id} is missing pickup point id`,

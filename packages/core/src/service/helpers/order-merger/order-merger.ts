@@ -3,7 +3,7 @@ import type { ID } from "@deenruv/common/shared-types";
 import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 
 import { RequestContext } from "../../../api/common/request-context";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { ConfigService } from "../../../config/config.service";
 import { MergedOrderLine } from "../../../config/order/order-merge-strategy";
 import { Order } from "../../../entity/order/order.entity";

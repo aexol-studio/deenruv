@@ -15,7 +15,7 @@ import {
     UpdateProductVariantInput,
     UpdateProductVariantsMutation,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/normalize-string';
 import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { map, mergeMap, shareReplay, switchMap } from 'rxjs/operators';

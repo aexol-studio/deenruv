@@ -8,7 +8,7 @@ import {
   taxComponentOf,
   taxPayableOn,
 } from "../../common/tax-utils";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { HasCustomFields } from "../../config/custom-field/custom-field-types";
 import { DeenruvEntity } from "../base/base.entity";
 import { CustomTaxRateFields } from "../custom-entity-fields";

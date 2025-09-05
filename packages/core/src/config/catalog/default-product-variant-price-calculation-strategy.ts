@@ -1,7 +1,7 @@
 import { Injector } from "../../common/injector";
 import { roundMoney } from "../../common/round-money";
 import { PriceCalculationResult } from "../../common/types/common-types";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { TaxRateService } from "../../service/services/tax-rate.service";
 
 import {

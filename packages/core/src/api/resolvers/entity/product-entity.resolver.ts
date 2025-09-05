@@ -4,7 +4,7 @@ import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/shared-constants";
 import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { type Translated } from "../../../common/types/locale-types";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { Asset } from "../../../entity/asset/asset.entity";
 import { Channel } from "../../../entity/channel/channel.entity";
 import { Collection } from "../../../entity/collection/collection.entity";

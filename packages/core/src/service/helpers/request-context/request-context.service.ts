@@ -12,7 +12,7 @@ import ms from "ms";
 import { type ApiType, getApiType } from "../../../api/common/get-api-type";
 import { RequestContext } from "../../../api/common/request-context";
 import { UserInputError } from "../../../common/error/errors";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { ConfigService } from "../../../config/config.service";
 import {
   CachedSession,

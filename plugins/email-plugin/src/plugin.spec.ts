@@ -14,8 +14,8 @@ import {
   PluginCommonModule,
   RequestContext,
   DeenruvEvent,
+  ensureConfigLoaded,
 } from "@deenruv/core";
-import { ensureConfigLoaded } from "@deenruv/core/dist/config/config-helpers";
 import { TestingLogger } from "@deenruv/testing";
 import { createReadStream, readFileSync } from "fs";
 import path from "path";

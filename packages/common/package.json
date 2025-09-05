@@ -1,61 +1,100 @@
 {
   "name": "@deenruv/common",
   "version": "0.1.39",
+  "typesVersions": {
+    "*": {
+      "generated-types": ["lib/generated-types.d.ts"],
+      "generated-shop-types": ["lib/generated-shop-types.d.ts"],
+      "shared-types": ["lib/shared-types.d.ts"],
+      "shared-constants": ["lib/shared-constants.d.ts"],
+      "shared-utils": ["lib/shared-utils.d.ts"],
+      "normalize-string": ["lib/normalize-string.d.ts"],
+      "pick": ["lib/pick.d.ts"],
+      "unique": ["lib/unique.d.ts"],
+      "simple-deep-clone": ["lib/simple-deep-clone.d.ts"],
+      "filter-async": ["lib/filter-async.d.ts"],
+      "omit": ["lib/omit.d.ts"],
+      "*": ["lib/index.d.ts"]
+    }
+  },
   "exports": {
+    "./package.json": "./package.json",
     "./generated-types": {
       "bun": "./src/generated-types.ts",
       "import": "./lib/generated-types.js",
-      "require": "./lib/generated-types.js"
+      "require": "./lib/generated-types.js",
+      "default": "./lib/generated-types.js",
+      "types": "./lib/generated-types.d.ts"
     },
     "./shared-types": {
       "bun": "./src/shared-types.ts",
       "import": "./lib/shared-types.js",
-      "require": "./lib/shared-types.js"
+      "require": "./lib/shared-types.js",
+      "default": "./lib/shared-types.js",
+      "types": "./lib/shared-types.d.ts"
     },
     "./shared-constants": {
       "bun": "./src/shared-constants.ts",
       "import": "./lib/shared-constants.js",
-      "require": "./lib/shared-constants.js"
+      "require": "./lib/shared-constants.js",
+      "default": "./lib/shared-constants.js",
+      "types": "./lib/shared-constants.d.ts"
     },
     "./shared-utils": {
       "bun": "./src/shared-utils.ts",
       "import": "./lib/shared-utils.js",
-      "require": "./lib/shared-utils.js"
+      "require": "./lib/shared-utils.js",
+      "default": "./lib/shared-utils.js",
+      "types": "./lib/shared-utils.d.ts"
     },
     "./normalize-string": {
       "bun": "./src/normalize-string.ts",
       "import": "./lib/normalize-string.js",
-      "require": "./lib/normalize-string.js"
+      "require": "./lib/normalize-string.js",
+      "default": "./lib/normalize-string.js",
+      "types": "./lib/normalize-string.d.ts"
     },
     "./pick": {
       "bun": "./src/pick.ts",
       "import": "./lib/pick.js",
-      "require": "./lib/pick.js"
+      "require": "./lib/pick.js",
+      "default": "./lib/pick.js",
+      "types": "./lib/pick.d.ts"
     },
     "./unique": {
       "bun": "./src/unique.ts",
       "import": "./lib/unique.js",
-      "require": "./lib/unique.js"
+      "require": "./lib/unique.js",
+      "default": "./lib/unique.js",
+      "types": "./lib/unique.d.ts"
     },
     "./simple-deep-clone": {
       "bun": "./src/simple-deep-clone.ts",
       "import": "./lib/simple-deep-clone.js",
-      "require": "./lib/simple-deep-clone.js"
+      "require": "./lib/simple-deep-clone.js",
+      "default": "./lib/simple-deep-clone.js",
+      "types": "./lib/simple-deep-clone.d.ts"
     },
     "./generated-shop-types": {
       "bun": "./src/generated-shop-types.ts",
       "import": "./lib/generated-shop-types.js",
-      "require": "./lib/generated-shop-types.js"
+      "require": "./lib/generated-shop-types.js",
+      "default": "./lib/generated-shop-types.js",
+      "types": "./lib/generated-shop-types.d.ts"
     },
     "./filter-async": {
       "bun": "./src/filter-async.ts",
       "import": "./lib/filter-async.js",
-      "require": "./lib/filter-async.js"
+      "require": "./lib/filter-async.js",
+      "default": "./lib/filter-async.js",
+      "types": "./lib/filter-async.d.ts"
     },
     "./omit": {
       "bun": "./src/omit.ts",
       "import": "./lib/omit.js",
-      "require": "./lib/omit.js"
+      "require": "./lib/omit.js",
+      "default": "./lib/omit.js",
+      "types": "./lib/omit.d.ts"
     }
   },
   "license": "MIT",

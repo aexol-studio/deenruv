@@ -125,7 +125,7 @@ export class TranslatableSaver {
         loadEagerRelations: false,
         where: { base: { id: input.id } },
         relations: ["base"],
-      } as FindManyOptions<Translation<T>>);
+      } as unknown as FindManyOptions<Translation<T>>);
 
     const differ = new TranslationDiffer(translationType, this.connection);
     const diff = differ.diff(existingTranslations, input.translations);

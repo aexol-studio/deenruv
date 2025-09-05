@@ -8,7 +8,7 @@ import {
   RequestContext,
 } from "@deenruv/core";
 import { PLUGIN_INIT_OPTIONS } from "../constants";
-import { HistoryEntryType } from "@deenruv/common/generated-types.js";
+import { HistoryEntryType } from "@deenruv/common/generated-types";
 import { ResolveField, Resolver } from "@nestjs/graphql";
 import { CopyOrderPluginOptions } from "../types.js";
 

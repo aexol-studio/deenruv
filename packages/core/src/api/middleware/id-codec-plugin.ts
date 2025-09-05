@@ -7,7 +7,7 @@ import { isObject } from "@deenruv/common/shared-utils";
 import { DocumentNode } from "graphql";
 
 import { GraphqlValueTransformer } from "../common/graphql-value-transformer";
-import { type IDCodecService } from "../common/id-codec.service";
+import { IdCodecService } from "../common/id-codec.service";
 
 /**
  * Encodes the ids of outgoing responses according to the configured EntityIdStrategy.

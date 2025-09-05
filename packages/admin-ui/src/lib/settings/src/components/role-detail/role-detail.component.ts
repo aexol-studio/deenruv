@@ -13,7 +13,7 @@ import {
     TypedBaseDetailComponent,
     UpdateRoleInput,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/normalize-string';
 import { unique } from '@deenruv/common/unique';
 import { gql } from 'apollo-angular';
 import { mergeMap, take } from 'rxjs/operators';

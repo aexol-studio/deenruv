@@ -16,7 +16,7 @@ import {
 } from "../../common/error/generated-graphql-admin-errors";
 import { IneligiblePaymentMethodError } from "../../common/error/generated-graphql-shop-errors";
 import type { PaymentMetadata } from "../../common/types/common-types";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { Logger } from "../../config/logger/deenruv-logger";
 import { PaymentMethodHandler } from "../../config/payment/payment-method-handler";
 import { TransactionalConnection } from "../../connection/transactional-connection";

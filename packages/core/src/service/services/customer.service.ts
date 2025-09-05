@@ -13,13 +13,15 @@ import type {
   CustomerFilterParameter,
   CustomerListOptions,
   DeletionResponse,
-  DeletionResult,
-  HistoryEntryType,
   OrderAddress,
   UpdateAddressInput,
   UpdateCustomerInput,
   UpdateCustomerNoteInput,
   UpdateCustomerResult,
+} from "@deenruv/common/generated-types";
+import {
+  DeletionResult,
+  HistoryEntryType,
 } from "@deenruv/common/generated-types";
 import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 import { IsNull } from "typeorm";
@@ -66,8 +68,8 @@ import { AccountRegistrationEvent } from "../../event-bus/events/account-registr
 import { AccountVerifiedEvent } from "../../event-bus/events/account-verified-event";
 import { CustomerAddressEvent } from "../../event-bus/events/customer-address-event";
 import { CustomerEvent } from "../../event-bus/events/customer-event";
-import { type IDentifierChangeEvent } from "../../event-bus/events/identifier-change-event";
-import { type IDentifierChangeRequestEvent } from "../../event-bus/events/identifier-change-request-event";
+import { IdentifierChangeEvent } from "../../event-bus/events/identifier-change-event";
+import { IdentifierChangeRequestEvent } from "../../event-bus/events/identifier-change-request-event";
 import { PasswordResetEvent } from "../../event-bus/events/password-reset-event";
 import { PasswordResetVerifiedEvent } from "../../event-bus/events/password-reset-verified-event";
 import { CustomFieldRelationService } from "../helpers/custom-field-relation/custom-field-relation.service";

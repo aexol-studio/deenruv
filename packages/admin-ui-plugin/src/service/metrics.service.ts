@@ -27,11 +27,11 @@ import {
 } from "../config/metrics-strategies";
 import { loggerCtx } from "../constants";
 import type {
-  MetricInterval,
   MetricSummary,
   MetricSummaryEntry,
   MetricSummaryInput,
 } from "../types";
+import { MetricInterval } from "../types";
 
 export type MetricData = {
   date: Date;

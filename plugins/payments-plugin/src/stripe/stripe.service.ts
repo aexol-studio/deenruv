@@ -187,8 +187,8 @@ export class StripeService {
 
     const { customer } = order;
 
-    if (customer.customFields.stripeCustomerId) {
-      return customer.customFields.stripeCustomerId;
+    if ((customer.customFields as any).stripeCustomerId) {
+      return (customer.customFields as any).stripeCustomerId;
     }
 
     let stripeCustomerId;
@@ -221,7 +221,7 @@ export class StripeService {
       );
     }
 
-    customer.customFields.stripeCustomerId = stripeCustomerId;
+    (customer.customFields as any).stripeCustomerId = stripeCustomerId;
     await this.connection
       .getRepository(ctx, Customer)
       .save(customer, { reload: false });

@@ -253,7 +253,7 @@ import { BraintreePluginOptions } from "./types";
   ],
   configuration: (config) => {
     config.paymentOptions.paymentMethodHandlers.push(
-      braintreePaymentMethodHandler,
+      braintreePaymentMethodHandler as any,
     );
     if (BraintreePlugin.options.storeCustomersInBraintree === true) {
       config.customFields.Customer.push({

@@ -5,11 +5,9 @@ import {
   JobQueueService,
   Logger,
   DeenruvConfig,
-} from "@deenruv/core";
-import {
   preBootstrapConfig,
   configureSessionCookies,
-} from "@deenruv/core/dist/bootstrap";
+} from "@deenruv/core";
 
 import { populateForTesting } from "./data-population/populate-for-testing";
 import { getInitializerFor } from "./initializers/initializers";

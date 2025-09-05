@@ -3,7 +3,7 @@ import { unique } from "@deenruv/common/unique";
 
 import { RequestContext } from "../../../api";
 import { TtlCache } from "../../../common/ttl-cache";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { TransactionalConnection } from "../../../connection/transactional-connection";
 import { OrderLine } from "../../../entity/order-line/order-line.entity";
 import { ProductVariant } from "../../../entity/product-variant/product-variant.entity";

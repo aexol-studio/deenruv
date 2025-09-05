@@ -9,7 +9,7 @@ import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 import { In } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { ConfigService } from "../../config/config.service";
 import { ShippingCalculator } from "../../config/shipping-method/shipping-calculator";
 import { ShippingEligibilityChecker } from "../../config/shipping-method/shipping-eligibility-checker";

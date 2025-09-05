@@ -24,9 +24,9 @@ import {
   ProductVariant,
   ProductVariantService,
   RequestContext,
+  OrderStateMachine,
+  totalCoveredByPayments,
 } from "@deenruv/core";
-import { OrderStateMachine } from "@deenruv/core/";
-import { totalCoveredByPayments } from "@deenruv/core/dist/service/helpers/utils/order-utils";
 
 import { loggerCtx, PLUGIN_INIT_OPTIONS } from "./constants";
 import { OrderWithMollieReference } from "./custom-fields";

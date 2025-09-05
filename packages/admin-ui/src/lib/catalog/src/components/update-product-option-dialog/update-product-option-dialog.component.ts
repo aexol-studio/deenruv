@@ -9,7 +9,7 @@ import {
     Dialog,
 } from '@deenruv/admin-ui/core';
 
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/normalize-string';
 
 @Component({
     selector: 'vdr-update-product-option-dialog',

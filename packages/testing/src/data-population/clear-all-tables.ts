@@ -1,5 +1,4 @@
-import { DeenruvConfig } from "@deenruv/core";
-import { preBootstrapConfig } from "@deenruv/core/dist/bootstrap";
+import { preBootstrapConfig, type DeenruvConfig } from "@deenruv/core";
 import { createConnection } from "typeorm";
 
 /**

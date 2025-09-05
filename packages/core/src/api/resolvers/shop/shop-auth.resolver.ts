@@ -26,7 +26,7 @@ import type {
 } from "@deenruv/common/generated-shop-types";
 import { ErrorCode, Permission } from "@deenruv/common/generated-shop-types";
 import { HistoryEntryType } from "@deenruv/common/generated-types";
-import { type Request, typeResponse } from "express";
+import { type Request, type Response } from "express";
 
 import { isGraphQlErrorResult } from "../../../common/error/error-result";
 import { ForbiddenError } from "../../../common/error/errors";

@@ -8,7 +8,7 @@ import {
 } from "@deenruv/common/generated-types";
 import { IsNull } from "typeorm";
 
-import { type IDsAreEqual } from "../../../common";
+import { idsAreEqual } from "../../../common";
 import { InternalServerError } from "../../../common/error/errors";
 import { Injector } from "../../../common/injector";
 import { TransactionalConnection } from "../../../connection/transactional-connection";

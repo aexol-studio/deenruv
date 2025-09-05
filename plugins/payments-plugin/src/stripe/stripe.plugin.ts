@@ -175,7 +175,7 @@ import { StripePluginOptions } from "./types";
   ],
   configuration: (config) => {
     config.paymentOptions.paymentMethodHandlers.push(
-      stripePaymentMethodHandler,
+      stripePaymentMethodHandler as any,
     );
 
     config.apiOptions.middleware.push({

@@ -6,7 +6,7 @@ import { RequestContext } from "../../../api/common/request-context";
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
 import { CacheKey } from "../../../common/constants";
 import { InternalServerError } from "../../../common/error/errors";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { ConfigService } from "../../../config/config.service";
 import { OrderLine, TaxRate, TaxCategory } from "../../../entity";
 import { Order } from "../../../entity/order/order.entity";

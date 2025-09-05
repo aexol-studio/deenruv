@@ -6,7 +6,7 @@ import { In } from "typeorm";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { EntityNotFoundError } from "../../../common/error/errors";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { TransactionalConnection } from "../../../connection/transactional-connection";
 import { Order } from "../../../entity/order/order.entity";
 import { OrderLine } from "../../../entity/order-line/order-line.entity";

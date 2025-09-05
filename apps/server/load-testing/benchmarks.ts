@@ -7,12 +7,12 @@ import {
   LanguageCode,
   OrderService,
   RequestContextService,
+  ParsedProductWithVariants,
 } from "@deenruv/core";
 import { populate } from "@deenruv/core/cli/populate";
-import { ParsedProductWithVariants } from "@deenruv/core/src/index";
 import { clearAllTables } from "@deenruv/testing";
 import { spawn } from "child_process";
-import program from "commander";
+import { program } from "commander";
 import path from "path";
 import ProgressBar from "progress";
 

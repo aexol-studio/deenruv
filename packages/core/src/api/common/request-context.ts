@@ -8,7 +8,7 @@ import { isObject } from "@deenruv/common/shared-utils";
 import { Request } from "express";
 import { TFunction } from "i18next";
 
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { CachedSession } from "../../config/session-cache/session-cache-strategy";
 import { Channel } from "../../entity/channel/channel.entity";
 

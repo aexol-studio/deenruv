@@ -201,7 +201,9 @@ export interface MolliePluginOptions {
     { provide: PLUGIN_INIT_OPTIONS, useFactory: () => MolliePlugin.options },
   ],
   configuration: (config: RuntimeDeenruvConfig) => {
-    config.paymentOptions.paymentMethodHandlers.push(molliePaymentHandler);
+    config.paymentOptions.paymentMethodHandlers.push(
+      molliePaymentHandler as any,
+    );
     config.customFields.Order.push(...orderCustomFields);
     return config;
   },

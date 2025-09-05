@@ -22,7 +22,7 @@ import { ForbiddenError, UserInputError } from "../../common/error/errors";
 import { roundMoney } from "../../common/round-money";
 import { ListQueryOptions } from "../../common/types/common-types";
 import { type Translated } from "../../common/types/locale-types";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { UpdatedProductVariantPrice } from "../../config/catalog/product-variant-price-update-strategy";
 import { ConfigService } from "../../config/config.service";
 import { TransactionalConnection } from "../../connection/transactional-connection";

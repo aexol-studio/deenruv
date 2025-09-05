@@ -1,5 +1,5 @@
 import { RequestContext } from "../../api/common/request-context";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { ProductVariantPrice } from "../../entity/product-variant/product-variant-price.entity";
 
 import { ProductVariantPriceSelectionStrategy } from "./product-variant-price-selection-strategy";

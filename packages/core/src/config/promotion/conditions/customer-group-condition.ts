@@ -3,7 +3,7 @@ import type { ID } from "@deenruv/common/shared-types";
 import { Subscription } from "rxjs";
 
 import { TtlCache } from "../../../common/ttl-cache";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import { EventBus } from "../../../event-bus/event-bus";
 import { CustomerGroupChangeEvent } from "../../../event-bus/events/customer-group-change-event";
 import { PromotionCondition } from "../promotion-condition";

@@ -3,7 +3,7 @@ import {
   CreateProductVariantInput,
   UpdateProductInput,
   UpdateProductVariantInput,
-} from "@deenruv/common/generated-types.js";
+} from "@deenruv/common/generated-types";
 import {
   EventBus,
   ID,

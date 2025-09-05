@@ -28,7 +28,7 @@ import {
   PredictionType,
   StartOrderExportToReplicateInput,
 } from "../graphql/generated-admin-types.js";
-import { SortOrder } from "@deenruv/common/generated-types.js";
+import { SortOrder } from "@deenruv/common/generated-types";
 import { mkdtemp, rm } from "fs/promises";
 import { ReplicateEntity } from "../entites/replicate.entity.js";
 import { PredictionStatus } from "../zeus/index.js";

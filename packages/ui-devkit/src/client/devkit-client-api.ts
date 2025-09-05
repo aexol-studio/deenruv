@@ -5,7 +5,7 @@ import {
   MessageResponse,
   NotificationMessage,
   WatchQueryFetchPolicy,
-} from "@deenruv/common/lib/extension-host-types";
+} from "@deenruv/common/extension-host-types";
 import { Observable } from "rxjs";
 import { take } from "rxjs/operators";
 

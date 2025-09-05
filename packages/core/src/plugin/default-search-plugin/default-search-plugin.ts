@@ -6,7 +6,7 @@ import { buffer, debounceTime, delay, filter, map } from "rxjs/operators";
 import { Column } from "typeorm";
 
 import { Injector } from "../../common";
-import { type IDsAreEqual } from "../../common/utils";
+import { idsAreEqual } from "../../common/utils";
 import { EventBus } from "../../event-bus/event-bus";
 import { AssetEvent } from "../../event-bus/events/asset-event";
 import { CollectionModificationEvent } from "../../event-bus/events/collection-modification-event";

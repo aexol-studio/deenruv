@@ -9,7 +9,7 @@ import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
 import { type Translated } from "../../../common/types/locale-types";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import {
   Asset,
   Channel,

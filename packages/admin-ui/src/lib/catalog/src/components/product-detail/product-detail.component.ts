@@ -26,7 +26,7 @@ import {
     UpdateProductVariantInput,
     UpdateProductVariantsMutation,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { normalizeString } from '@deenruv/common/normalize-string';
 import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/shared-constants';
 import { unique } from '@deenruv/common/unique';
 import { gql } from 'apollo-angular';

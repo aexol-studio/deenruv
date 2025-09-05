@@ -38,7 +38,7 @@ import {
   NoActiveOrderError,
 } from "../../../common/error/generated-graphql-shop-errors";
 import { type Translated } from "../../../common/types/locale-types";
-import { type IDsAreEqual } from "../../../common/utils";
+import { idsAreEqual } from "../../../common/utils";
 import {
   ACTIVE_ORDER_INPUT_FIELD_NAME,
   ConfigService,
