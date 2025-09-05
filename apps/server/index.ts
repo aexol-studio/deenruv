@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { bootstrap, JobQueueService } from "@deenruv/core";
 
 import { devConfig } from "./dev-config";

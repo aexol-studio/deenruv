@@ -1,6 +1,5 @@
 import { DeenruvEntity, type DeepPartial } from "@deenruv/core";
 import { Entity, Column } from "typeorm";
-import "reflect-metadata";
 
 @Entity()
 export class ReplicateSimpleBgEntity extends DeenruvEntity {

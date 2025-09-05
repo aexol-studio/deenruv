@@ -29,4 +29,4 @@ export {
   AdjustmentType,
 } from "@deenruv/common/generated-types";
 
-export { configureSessionCookies, preBootstrapConfig } from "./bootstrap.js";
+export { configureSessionCookies, preBootstrapConfig } from "./bootstrap";

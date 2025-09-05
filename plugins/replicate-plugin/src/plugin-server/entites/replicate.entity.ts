@@ -1,7 +1,6 @@
 import { DeenruvEntity } from "@deenruv/core";
 import { Entity, Column, CreateDateColumn } from "typeorm";
 import type { DeepPartial, ID } from "@deenruv/core";
-import "reflect-metadata";
 
 @Entity()
 export class ReplicateEntity extends DeenruvEntity {

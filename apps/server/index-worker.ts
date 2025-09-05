@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { bootstrapWorker } from "@deenruv/core";
 
 import { devConfig } from "./dev-config";

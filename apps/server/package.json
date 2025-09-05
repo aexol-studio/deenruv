@@ -8,8 +8,10 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "populate": "tsx populate-dev-server.ts",
-    "run:server": "APP_ENV=LOCAL bun run index.ts",
-    "run:worker": "APP_ENV=LOCAL bun run index-worker.ts",
+    "bun:server": "APP_ENV=LOCAL bun run index.ts",
+    "bun:worker": "APP_ENV=LOCAL bun run index-worker.ts",
+    "run:server": "APP_ENV=LOCAL node --import @deenruv/ts-node-register index.ts",
+    "run:worker": "APP_ENV=LOCAL node --import @deenruv/ts-node-register index-worker.ts",
     "start": "concurrently npm:run*",
     "migration:generate": "tsx migration.ts generate",
     "migration:run": "tsx migration.ts run",
@@ -64,6 +66,7 @@
     "@ng-select/ng-select": "^12.0.7",
     "tslib": "^2.6.2",
     "typescript": "5.3.3",
+    "reflect-metadata": "^0.2.2",
     "zone.js": "~0.14.4"
   },
   "devDependencies": {

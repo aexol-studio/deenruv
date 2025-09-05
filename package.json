@@ -18,7 +18,7 @@
     "version": "pnpm check-imports && pnpm check-angular-versions && pnpm build && pnpm check-core-type-defs && pnpm generate-changelog && git add CHANGELOG* && git add */version.ts",
     "start:server": "pnpm -filter=@deenruv/server run start",
     "start:admin-ui": "pnpm -filter=@deenruv/panel run dev",
-    "start": "concurrently -n server,admin-ui -c green,blue \"bun run --filter=server start\" \"bun run --filter=panel dev\"",
+    "start": "concurrently -n server,admin-ui -c green,blue \"pnpm -filter=server run start\" \"pnpm -filter=panel run dev\"",
     "server-docker-up": "docker compose up -d",
     "server-docker-down": "docker compose down -v",
     "server-populate": "pnpm -filter=@deenruv/server populate",
