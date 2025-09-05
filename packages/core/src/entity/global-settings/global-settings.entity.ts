@@ -1,5 +1,5 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
-import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
+import { type DeepPartial } from "@deenruv/common/shared-types";
 import { Column, Entity } from "typeorm";
 
 import { DeenruvEntity } from "..";

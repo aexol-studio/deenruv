@@ -21,9 +21,9 @@ import type {
   QueryProductVariantArgs,
   QueryProductVariantsArgs,
   RemoveOptionGroupFromProductResult,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList, type ID } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList, type ID } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { ErrorResultUnion } from "../../../common/error/error-result";
 import { UserInputError } from "../../../common/error/errors";

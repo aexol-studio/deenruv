@@ -9,9 +9,9 @@ import type {
   MutationDeleteCustomerGroupsArgs,
   QueryCustomerGroupArgs,
   QueryCustomerGroupsArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { CustomerGroup } from "../../../entity/customer-group/customer-group.entity";
 import { CustomerGroupService } from "../../../service/services/customer-group.service";

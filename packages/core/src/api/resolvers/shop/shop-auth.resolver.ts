@@ -23,12 +23,9 @@ import type {
   UpdateCustomerEmailAddressResult,
   UpdateCustomerPasswordResult,
   VerifyCustomerAccountResult,
-} from "@deenruv/common/src/generated-shop-types";
-import {
-  ErrorCode,
-  Permission,
-} from "@deenruv/common/src/generated-shop-types";
-import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-shop-types";
+import { ErrorCode, Permission } from "@deenruv/common/generated-shop-types";
+import { HistoryEntryType } from "@deenruv/common/generated-types";
 import { type Request, typeResponse } from "express";
 
 import { isGraphQlErrorResult } from "../../../common/error/error-result";

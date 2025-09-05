@@ -1,6 +1,6 @@
-import { omit } from "@deenruv/common/src/omit";
-import { pick } from "@deenruv/common/src/pick";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { omit } from "@deenruv/common/omit";
+import { pick } from "@deenruv/common/pick";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import {
   createErrorResultGuard,
   createTestEnvironment,

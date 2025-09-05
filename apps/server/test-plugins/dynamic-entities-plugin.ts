@@ -1,5 +1,5 @@
 // product-review.entity.ts
-import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { type DeepPartial } from "@deenruv/common/shared-types";
 import { DeenruvEntity, DeenruvPlugin } from "@deenruv/core";
 import { Column, Entity } from "typeorm";
 

@@ -16,9 +16,9 @@ import type {
   QueryCustomersArgs,
   Success,
   UpdateCustomerResult,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { ErrorResultUnion } from "../../../common/error/error-result";
 import { Address } from "../../../entity/address/address.entity";

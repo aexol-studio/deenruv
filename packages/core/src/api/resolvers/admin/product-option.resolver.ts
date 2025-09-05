@@ -9,7 +9,7 @@ import type {
   MutationUpdateProductOptionGroupArgs,
   QueryProductOptionGroupArgs,
   QueryProductOptionGroupsArgs,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 
 import { type Translated } from "../../../common/types/locale-types";
 import { ProductOption } from "../../../entity/product-option/product-option.entity";
@@ -24,7 +24,7 @@ import {
 } from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 @Resolver()
 export class ProductOptionResolver {

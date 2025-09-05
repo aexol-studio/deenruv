@@ -7,9 +7,9 @@ import type {
   MutationDeleteTaxRatesArgs,
   QueryTaxRateArgs,
   QueryTaxRatesArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { TaxRate } from "../../../entity/tax-rate/tax-rate.entity";
 import { TaxRateService } from "../../../service/services/tax-rate.service";

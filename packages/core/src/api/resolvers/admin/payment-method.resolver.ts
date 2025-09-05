@@ -10,8 +10,8 @@ import type {
   MutationUpdatePaymentMethodArgs,
   QueryPaymentMethodArgs,
   QueryPaymentMethodsArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import type { Translated } from "../../../common/types/locale-types";
 import { PaymentMethod } from "../../../entity/payment-method/payment-method.entity";
@@ -24,7 +24,7 @@ import {
 } from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 @Resolver("PaymentMethod")
 export class PaymentMethodResolver {

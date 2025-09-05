@@ -14,9 +14,9 @@ import type {
   MutationUpdateGlobalSettingsArgs,
   ServerConfig,
   UpdateGlobalSettingsResult,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import {
   GraphQLOutputType,
   type GraphQLResolveInfo,

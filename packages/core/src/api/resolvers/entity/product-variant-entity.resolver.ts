@@ -3,9 +3,9 @@ import {
   CurrencyCode,
   ProductVariantPrice,
   StockMovementListOptions,
-} from "@deenruv/common/src/generated-types";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/shared-constants";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
 import { type Translated } from "../../../common/types/locale-types";

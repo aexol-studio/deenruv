@@ -2,8 +2,8 @@ import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import type {
   HistoryEntryListOptions,
   OrderHistoryArgs,
-} from "@deenruv/common/src/generated-types";
-import { SortOrder } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { SortOrder } from "@deenruv/common/generated-types";
 import { assertFound, idsAreEqual } from "../../../common/utils";
 import { Order } from "../../../entity/order/order.entity";
 import { CustomerService, TranslatorService } from "../../../service/index";

@@ -1,6 +1,6 @@
-import { JobState } from "@deenruv/common/src/generated-types";
-import { pick } from "@deenruv/common/src/pick";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { JobState } from "@deenruv/common/generated-types";
+import { pick } from "@deenruv/common/pick";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import ms from "ms";
 import { interval, Observable } from "rxjs";
 import {

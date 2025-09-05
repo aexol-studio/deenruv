@@ -3,8 +3,8 @@ import {
   AdjustmentType,
   LanguageCode,
   TaxLine,
-} from "@deenruv/common/src/generated-types";
-import { summate } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-types";
+import { summate } from "@deenruv/common/shared-utils";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { RequestContext } from "../../../api/common/request-context";

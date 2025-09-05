@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { OrderDetailFragment } from '@deenruv/admin-ui/core';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
-import { unique } from '@deenruv/common/src/unique';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
+import { unique } from '@deenruv/common/unique';
 
 export type FulfillmentStatus = 'full' | 'partial' | 'none';
 type Fulfillment = NonNullable<OrderDetailFragment['fulfillments']>[number];

@@ -6,7 +6,7 @@ import {
   OnModuleInit,
 } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
-import { unique } from "@deenruv/common/src/unique";
+import { unique } from "@deenruv/common/unique";
 import {
   Asset,
   asyncObservable,

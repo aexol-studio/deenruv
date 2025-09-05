@@ -1,5 +1,5 @@
 import { INestApplicationContext } from "@nestjs/common";
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 import { DeenruvConfig } from "@deenruv/core";
 import {
   importProductsFromCsv,

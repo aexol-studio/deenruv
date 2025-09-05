@@ -9,16 +9,16 @@ import type {
   PreviewCollectionVariantsInput,
   RemoveCollectionsFromChannelInput,
   UpdateCollectionInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   Permission,
   DeletionResult,
   JobState,
-} from "@deenruv/common/src/generated-types";
-import { pick } from "@deenruv/common/src/pick";
-import { ROOT_COLLECTION_NAME } from "@deenruv/common/src/shared-constants";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/generated-types";
+import { pick } from "@deenruv/common/pick";
+import { ROOT_COLLECTION_NAME } from "@deenruv/common/shared-constants";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import { merge } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { In, IsNull } from "typeorm";

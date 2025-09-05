@@ -1,5 +1,5 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
-import { type CustomFieldsObject, type ID } from "@deenruv/common/src/shared-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
+import { type CustomFieldsObject, type ID } from "@deenruv/common/shared-types";
 
 import { DeenruvEntity } from "../../entity/base/base.entity";
 import { TranslatableRelationsKeys } from "../../service/helpers/utils/translate-entity";

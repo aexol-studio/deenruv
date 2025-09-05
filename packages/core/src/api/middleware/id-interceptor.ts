@@ -5,7 +5,7 @@ import {
   NestInterceptor,
 } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
-import { type IdOperators } from "@deenruv/common/src/generated-types";
+import { type IdOperators } from "@deenruv/common/generated-types";
 import {
   GraphQLNamedType,
   GraphQLSchema,

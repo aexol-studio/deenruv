@@ -2,7 +2,7 @@ import { ApolloServerPlugin } from "@apollo/server";
 import { RenderPageOptions } from "@apollographql/graphql-playground-html";
 import { DynamicModule, Type } from "@nestjs/common";
 import { CorsOptions } from "@nestjs/common/interfaces/external/cors-options.interface";
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 import { ValidationContext } from "graphql";
 import { DataSource, DataSourceOptions } from "typeorm";
 

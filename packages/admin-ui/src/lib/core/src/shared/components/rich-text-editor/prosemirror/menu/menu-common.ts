@@ -1,4 +1,4 @@
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { NodeType } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';

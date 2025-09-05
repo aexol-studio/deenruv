@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { Channel } from "../../../entity/channel/channel.entity";
 import { CustomerGroup } from "../../../entity/customer-group/customer-group.entity";

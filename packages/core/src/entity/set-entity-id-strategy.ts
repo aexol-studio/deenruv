@@ -1,4 +1,4 @@
-import { type Type } from "@deenruv/common/src/shared-types";
+import { type Type } from "@deenruv/common/shared-types";
 import { Column, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 import { EntityIdStrategy } from "../config/entity/entity-id-strategy";

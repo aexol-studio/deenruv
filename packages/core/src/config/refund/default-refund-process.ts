@@ -1,4 +1,4 @@
-import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+import { HistoryEntryType } from "@deenruv/common/generated-types";
 
 import type { RefundState } from "../../service/helpers/refund-state-machine/refund-state";
 

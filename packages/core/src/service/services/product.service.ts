@@ -9,9 +9,9 @@ import {
   RemoveOptionGroupFromProductResult,
   RemoveProductsFromChannelInput,
   UpdateProductInput,
-} from "@deenruv/common/src/generated-types";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import { FindOptionsUtils, In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

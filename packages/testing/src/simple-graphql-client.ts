@@ -2,7 +2,7 @@ import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import {
   SUPER_ADMIN_USER_IDENTIFIER,
   SUPER_ADMIN_USER_PASSWORD,
-} from "@deenruv/common/src/shared-constants";
+} from "@deenruv/common/shared-constants";
 import { DeenruvConfig } from "@deenruv/core";
 import FormData from "form-data";
 import fs from "fs";

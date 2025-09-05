@@ -1,4 +1,4 @@
-import { SearchInput } from "@deenruv/common/src/generated-types";
+import { SearchInput } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { DeenruvEvent } from "../deenruv-event";

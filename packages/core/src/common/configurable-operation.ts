@@ -7,14 +7,14 @@ import type {
     LocalizedString,
     Maybe,
     StringFieldOption,
-} from '@deenruv/common/src/generated-types';
+} from '@deenruv/common/generated-types';
 import type {
   ConfigArgType,
   DefaultFormComponentConfig,
   ID,
   UiComponentConfig,
-} from "@deenruv/common/src/shared-types";
-import { assertNever } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/shared-types";
+import { assertNever } from "@deenruv/common/shared-utils";
 
 import { RequestContext } from "../api/common/request-context";
 

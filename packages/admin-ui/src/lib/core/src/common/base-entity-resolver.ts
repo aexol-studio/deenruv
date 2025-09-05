@@ -5,8 +5,8 @@ import {
     Router,
     RouterStateSnapshot,
 } from '@angular/router';
-import { Type } from '@deenruv/common/src/shared-types';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { Type } from '@deenruv/common/shared-types';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { Observable, of } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
 

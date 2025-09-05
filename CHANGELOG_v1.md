@@ -1971,7 +1971,7 @@ This release fixes an error in publishing the last release. No changes have been
     );
     ```
 -   The `'facetValueIds'` type has been removed from the `ConfigArgType` type, and replaced by `'ID'` and the `list` option. This change only affects you if you have created custom CollectionFilters of PromotionActions/Conditions using the `'facetValueIds'` type for an argument.
--   The `ID` type in `@deenruv/common/src/generated-types` & `@deenruv/common/lib/generated-shop-types` is now correctly typed as `string | number`, whereas previously it was `string`. If you are using any generated types in your plugin code, this may lead to TypeScript compiler errors which will need to be corrected.
+-   The `ID` type in `@deenruv/common/generated-types` & `@deenruv/common/lib/generated-shop-types` is now correctly typed as `string | number`, whereas previously it was `string`. If you are using any generated types in your plugin code, this may lead to TypeScript compiler errors which will need to be corrected.
 
 ## <small>0.14.1 (2020-08-18)</small>
 

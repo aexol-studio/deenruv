@@ -1,5 +1,5 @@
-import { AssetType } from "@deenruv/common/src/generated-types";
-import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { AssetType } from "@deenruv/common/generated-types";
+import { type DeepPartial } from "@deenruv/common/shared-types";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
 import { ChannelAware, Taggable } from "../../common/types/common-types";

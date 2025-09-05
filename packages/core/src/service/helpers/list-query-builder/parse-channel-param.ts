@@ -1,4 +1,4 @@
-import { type ID, type Type } from "@deenruv/common/src/shared-types";
+import { type ID, type Type } from "@deenruv/common/shared-types";
 import { Connection } from "typeorm";
 
 import { DeenruvEntity } from "../../../entity/base/base.entity";

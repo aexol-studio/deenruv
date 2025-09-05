@@ -1,4 +1,4 @@
-import { ConfigArg, OrderLineInput } from "@deenruv/common/src/generated-types";
+import { ConfigArg, OrderLineInput } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import {

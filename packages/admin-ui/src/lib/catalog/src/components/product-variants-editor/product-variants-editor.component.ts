@@ -14,8 +14,8 @@ import {
     NotificationService,
     SelectionManager,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/src/normalize-string';
-import { unique } from '@deenruv/common/src/unique';
+import { normalizeString } from '@deenruv/common/lib/normalize-string';
+import { unique } from '@deenruv/common/unique';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 

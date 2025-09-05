@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import {
     BehaviorSubject,
     combineLatest,

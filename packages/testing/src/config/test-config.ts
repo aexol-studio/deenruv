@@ -1,7 +1,7 @@
 import {
   ADMIN_API_PATH,
   SHOP_API_PATH,
-} from "@deenruv/common/src/shared-constants";
+} from "@deenruv/common/shared-constants";
 import {
   DefaultAssetNamingStrategy,
   defaultConfig,

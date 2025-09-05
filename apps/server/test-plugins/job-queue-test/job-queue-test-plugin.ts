@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { Args, Mutation, Resolver } from "@nestjs/graphql";
-import { JobState } from "@deenruv/common/src/generated-types";
+import { JobState } from "@deenruv/common/generated-types";
 import {
   JobQueue,
   JobQueueService,

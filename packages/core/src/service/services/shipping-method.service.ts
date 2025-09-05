@@ -6,14 +6,11 @@ import type {
   DeletionResponse,
   RemoveShippingMethodsFromChannelInput,
   UpdateShippingMethodInput,
-} from "@deenruv/common/src/generated-types";
-import { omit } from "@deenruv/common/src/omit";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { omit } from "@deenruv/common/omit";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 import { IsNull } from "typeorm";
-import {
-  Permission,
-  DeletionResult,
-} from "@deenruv/common/src/generated-types";
+import { Permission, DeletionResult } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { type RelationPaths } from "../../api/decorators/relations.decorator";

@@ -15,7 +15,7 @@ import {
     Permission,
     RemoveFacetsFromChannelMutation,
 } from '@deenruv/admin-ui/core';
-import { unique } from '@deenruv/common/src/unique';
+import { unique } from '@deenruv/common/unique';
 import { EMPTY, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 

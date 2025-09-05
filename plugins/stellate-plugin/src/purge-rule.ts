@@ -1,4 +1,4 @@
-import { type Type } from "@deenruv/common/src/shared-types";
+import { type Type } from "@deenruv/common/shared-types";
 import { DeenruvEvent, Injector } from "@deenruv/core";
 
 import { StellateService } from "./service/stellate.service";

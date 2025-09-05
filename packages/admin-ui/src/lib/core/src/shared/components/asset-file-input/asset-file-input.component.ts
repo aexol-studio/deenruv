@@ -7,7 +7,7 @@ import {
     OnInit,
     Output,
 } from '@angular/core';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 
 import { ServerConfigService } from '../../../data/server-config';
 

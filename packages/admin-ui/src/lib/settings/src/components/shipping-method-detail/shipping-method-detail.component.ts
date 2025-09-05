@@ -25,7 +25,7 @@ import {
     TypedBaseDetailComponent,
     UpdateShippingMethodInput,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/src/normalize-string';
+import { normalizeString } from '@deenruv/common/lib/normalize-string';
 import { gql } from 'apollo-angular';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { mergeMap, switchMap, take, takeUntil } from 'rxjs/operators';

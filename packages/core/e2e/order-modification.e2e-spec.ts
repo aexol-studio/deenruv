@@ -1,6 +1,6 @@
-import { omit } from "@deenruv/common/src/omit";
-import { pick } from "@deenruv/common/src/pick";
-import { summate } from "@deenruv/common/src/shared-utils";
+import { omit } from "@deenruv/common/omit";
+import { pick } from "@deenruv/common/pick";
+import { summate } from "@deenruv/common/shared-utils";
 import {
   defaultShippingCalculator,
   defaultShippingEligibilityChecker,

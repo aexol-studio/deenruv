@@ -1,5 +1,5 @@
-import { LogicalOperator } from "@deenruv/common/src/generated-types";
-import { type Type } from "@deenruv/common/src/shared-types";
+import { LogicalOperator } from "@deenruv/common/generated-types";
+import { type Type } from "@deenruv/common/shared-types";
 
 import { DeenruvEntity } from "../../entity/base/base.entity";
 import { Channel } from "../../entity/channel/channel.entity";

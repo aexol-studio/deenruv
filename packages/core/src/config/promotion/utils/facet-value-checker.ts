@@ -1,5 +1,5 @@
-import type { ID } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+import type { ID } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 
 import { RequestContext } from "../../../api";
 import { TtlCache } from "../../../common/ttl-cache";

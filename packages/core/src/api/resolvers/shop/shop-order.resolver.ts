@@ -23,10 +23,10 @@ import type {
   ShippingMethodQuote,
   TransitionOrderToStateResult,
   UpdateOrderItemsResult,
-} from "@deenruv/common/src/generated-shop-types";
-import type { QueryCountriesArgs } from "@deenruv/common/src/generated-types";
-import { unique } from "@deenruv/common/src/unique";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-shop-types";
+import type { QueryCountriesArgs } from "@deenruv/common/generated-types";
+import { unique } from "@deenruv/common/unique";
+import { Permission } from "@deenruv/common/generated-types";
 
 import {
   ErrorResultUnion,

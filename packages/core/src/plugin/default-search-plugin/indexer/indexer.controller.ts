@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { JobState, LanguageCode } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
-import { unique } from "@deenruv/common/src/unique";
+import { JobState, LanguageCode } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
+import { unique } from "@deenruv/common/unique";
 import { Observable } from "rxjs";
 import { Equal, FindManyOptions, FindOptionsWhere, In, IsNull } from "typeorm";
 

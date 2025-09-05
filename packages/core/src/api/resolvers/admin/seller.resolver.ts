@@ -8,8 +8,8 @@ import type {
   QuerySellerArgs,
   QuerySellersArgs,
   SellerList,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { Seller } from "../../../entity/seller/seller.entity";
 import { SellerService } from "../../../service/services/seller.service";

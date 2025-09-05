@@ -1,8 +1,8 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 import {
   AdminUiAppConfig,
   AdminUiAppDevModeConfig,
-} from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/shared-types";
 import { ChildProcess, spawn } from "child_process";
 import { FSWatcher, watch as chokidarWatch } from "chokidar";
 import * as fs from "fs-extra";

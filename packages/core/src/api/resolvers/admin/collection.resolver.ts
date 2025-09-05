@@ -12,9 +12,9 @@ import type {
   QueryCollectionArgs,
   QueryCollectionsArgs,
   QueryPreviewCollectionVariantsArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 import { UserInputError } from "../../../common/error/errors";
 import type { Translated } from "../../../common/types/locale-types";
 import { CollectionFilter } from "../../../config/catalog/collection-filter";

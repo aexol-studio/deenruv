@@ -3,8 +3,8 @@ import {
   CreateAdministratorInput,
   DeletionResult,
   UpdateAdministratorInput,
-} from "@deenruv/common/src/generated-types";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 import { In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

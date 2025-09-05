@@ -191,7 +191,7 @@ Here's an example of a custom field control for a `relation` field which relates
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { RelationCustomFieldConfig } from '@deenruv/common/src/generated-types';
+import { RelationCustomFieldConfig } from '@deenruv/common/generated-types';
 import { FormInputComponent, DataService, SharedModule } from '@deenruv/admin-ui/core';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

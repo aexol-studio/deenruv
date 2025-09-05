@@ -9,9 +9,9 @@ import type {
   MutationUpdateAdministratorArgs,
   QueryAdministratorArgs,
   QueryAdministratorsArgs,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { Administrator } from "../../../entity/administrator/administrator.entity";
 import { AdministratorService } from "../../../service/services/administrator.service";

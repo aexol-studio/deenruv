@@ -12,7 +12,7 @@ import {
     PageService,
     SharedModule,
 } from '@deenruv/admin-ui/core';
-import { SortOrder } from '@deenruv/common/src/generated-types';
+import { SortOrder } from '@deenruv/common/generated-types';
 
 import { createRoutes } from './catalog.routes';
 import { ApplyFacetDialogComponent } from './components/apply-facet-dialog/apply-facet-dialog.component';

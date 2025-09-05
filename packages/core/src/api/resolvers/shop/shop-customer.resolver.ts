@@ -3,11 +3,11 @@ import type {
   MutationDeleteCustomerAddressArgs,
   MutationUpdateCustomerArgs,
   Success,
-} from "@deenruv/common/src/generated-shop-types";
+} from "@deenruv/common/generated-shop-types";
 import type {
   MutationCreateCustomerAddressArgs,
   MutationUpdateCustomerAddressArgs,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 
 import {
   ForbiddenError,
@@ -20,7 +20,7 @@ import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 @Resolver()
 export class ShopCustomerResolver {

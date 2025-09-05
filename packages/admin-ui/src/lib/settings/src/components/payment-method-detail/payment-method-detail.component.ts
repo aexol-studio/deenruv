@@ -22,7 +22,7 @@ import {
     TypedBaseDetailComponent,
     UpdatePaymentMethodInput,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/src/normalize-string';
+import { normalizeString } from '@deenruv/common/lib/normalize-string';
 import { gql } from 'apollo-angular';
 import { combineLatest } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';

@@ -1,9 +1,6 @@
 import { Mutation, Query, ResolveField, Resolver } from "@nestjs/graphql";
-import {
-  Permission,
-  SearchResponse,
-} from "@deenruv/common/src/generated-types";
-import { Omit } from "@deenruv/common/src/omit";
+import { Permission, SearchResponse } from "@deenruv/common/generated-types";
+import { Omit } from "@deenruv/common/omit";
 
 import { InternalServerError } from "../../../common/error/errors";
 import type { Translated } from "../../../common/types/locale-types";

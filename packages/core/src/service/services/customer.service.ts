@@ -4,7 +4,7 @@ import {
   RegisterCustomerInput,
   UpdateCustomerInput as UpdateCustomerShopInput,
   VerifyCustomerAccountResult,
-} from "@deenruv/common/src/generated-shop-types";
+} from "@deenruv/common/generated-shop-types";
 import type {
   AddNoteToCustomerInput,
   CreateAddressInput,
@@ -20,8 +20,8 @@ import type {
   UpdateCustomerInput,
   UpdateCustomerNoteInput,
   UpdateCustomerResult,
-} from "@deenruv/common/src/generated-types";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 import { IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

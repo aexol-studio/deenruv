@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 import { fail } from "assert";
 import { describe, expect, it } from "vitest";
 

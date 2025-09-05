@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
-import { Permission } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
 import { Allow, Ctx, RequestContext, Transaction } from "@deenruv/core";
 
 class TemplateService {

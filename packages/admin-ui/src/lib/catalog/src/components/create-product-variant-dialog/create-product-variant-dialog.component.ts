@@ -6,7 +6,7 @@ import {
     Dialog,
     GetProductVariantOptionsQuery,
 } from '@deenruv/admin-ui/core';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { combineLatest } from 'rxjs';
 
 @Component({

@@ -1,4 +1,4 @@
-import { JobState } from "@deenruv/common/src/generated-types";
+import { JobState } from "@deenruv/common/generated-types";
 import { Subject, Subscription } from "rxjs";
 import { throttleTime } from "rxjs/operators";
 

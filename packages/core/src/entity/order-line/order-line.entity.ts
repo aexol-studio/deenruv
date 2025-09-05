@@ -2,11 +2,11 @@ import type {
   Adjustment,
   Discount,
   TaxLine,
-} from "@deenruv/common/src/generated-types";
-import { AdjustmentType } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { AdjustmentType } from "@deenruv/common/generated-types";
 
-import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
-import { summate } from "@deenruv/common/src/shared-utils";
+import { type DeepPartial, type ID } from "@deenruv/common/shared-types";
+import { summate } from "@deenruv/common/shared-utils";
 import {
   type Relation,
   Column,

@@ -14,9 +14,9 @@ import type {
   QueryFacetsArgs,
   QueryFacetValuesArgs,
   RemoveFacetFromChannelResult,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { EntityNotFoundError } from "../../../common/error/errors";
 import { ErrorResultUnion } from "../../../common/error/error-result";

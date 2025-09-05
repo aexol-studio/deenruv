@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import {
   ManualPaymentInput,
   RefundOrderInput,
-} from "@deenruv/common/src/generated-types";
-import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
-import { summate } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/shared-types";
+import { summate } from "@deenruv/common/shared-utils";
 import { In } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

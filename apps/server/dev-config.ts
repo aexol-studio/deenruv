@@ -5,7 +5,7 @@ import {
   ADMIN_API_PATH,
   API_PORT,
   SHOP_API_PATH,
-} from "@deenruv/common/src/shared-constants";
+} from "@deenruv/common/shared-constants";
 import {
   DeenruvConfig,
   DefaultAssetNamingStrategy,

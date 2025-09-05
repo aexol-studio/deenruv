@@ -1,4 +1,4 @@
-import { pick } from "@deenruv/common/src/pick";
+import { pick } from "@deenruv/common/pick";
 import { createTestEnvironment } from "@deenruv/testing";
 import path from "path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";

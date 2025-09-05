@@ -1,8 +1,8 @@
 import {
   CreateTaxCategoryInput,
   UpdateTaxCategoryInput,
-} from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { TaxCategory } from "../../entity";

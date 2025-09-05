@@ -7,9 +7,9 @@ import type {
   MutationUpdateCountryArgs,
   QueryCountriesArgs,
   QueryCountryArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import type { Translated } from "../../../common/types/locale-types";
 import { Country } from "../../../entity/region/country.entity";

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SingleExecutionResult, WatchQueryFetchPolicy } from '@apollo/client/core';
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
-import { simpleDeepClone } from '@deenruv/common/src/simple-deep-clone';
+import { simpleDeepClone } from '@deenruv/common/simple-deep-clone';
 import { Apollo } from 'apollo-angular';
 import { DocumentNode } from 'graphql/language/ast';
 import { Observable } from 'rxjs';

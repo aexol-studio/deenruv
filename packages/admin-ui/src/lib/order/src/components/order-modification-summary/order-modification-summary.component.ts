@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import type { OrderEditorComponent } from '../order-editor/order-editor.component';
 import { AddedLine, ModifyOrderData, OrderSnapshot } from '../../common/modify-order-types';
 

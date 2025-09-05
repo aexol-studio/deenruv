@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Args, Query, Resolver } from "@nestjs/graphql";
-import { type QueryOrdersArgs } from "@deenruv/common/src/generated-types";
-import { PaginatedList } from "@deenruv/common/src/shared-types";
+import { type QueryOrdersArgs } from "@deenruv/common/generated-types";
+import { PaginatedList } from "@deenruv/common/shared-types";
 import {
   Ctx,
   Order,

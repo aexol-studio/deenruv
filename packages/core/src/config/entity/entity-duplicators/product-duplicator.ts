@@ -5,7 +5,7 @@ import {
   LanguageCode,
   Permission,
   ProductTranslationInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import { IsNull } from "typeorm";
 
 import { type IDsAreEqual } from "../../../common";

@@ -1,4 +1,4 @@
-import type { TaxLine } from "@deenruv/common/src/generated-types";
+import type { TaxLine } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { InjectableStrategy } from "../../common/types/injectable-strategy";

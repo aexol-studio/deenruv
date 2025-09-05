@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
-import { VerifyCustomerAccountResult } from "@deenruv/common/src/generated-shop-types";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { VerifyCustomerAccountResult } from "@deenruv/common/generated-shop-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import {

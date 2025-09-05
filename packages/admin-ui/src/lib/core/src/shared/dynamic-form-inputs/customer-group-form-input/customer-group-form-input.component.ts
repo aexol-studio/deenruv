@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DefaultFormComponentConfig, DefaultFormComponentId } from '@deenruv/common/src/shared-types';
+import { DefaultFormComponentConfig, DefaultFormComponentId } from '@deenruv/common/shared-types';
 import { Observable } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 

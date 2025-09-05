@@ -2,7 +2,7 @@ import { Args, Mutation, Resolver } from "@nestjs/graphql";
 import {
   type MutationImportProductsArgs,
   Permission,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 
 import { Importer } from "../../../data-import/providers/importer/importer";
 import { RequestContext } from "../../common/request-context";

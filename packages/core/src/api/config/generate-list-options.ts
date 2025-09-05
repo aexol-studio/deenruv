@@ -1,4 +1,4 @@
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import {
   buildSchema,
   GraphQLEnumType,

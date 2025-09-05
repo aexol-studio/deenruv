@@ -7,9 +7,9 @@ import type {
   QueryProductArgs,
   QueryProductsArgs,
   SearchResponse,
-} from "@deenruv/common/src/generated-shop-types";
-import { Omit } from "@deenruv/common/src/omit";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-shop-types";
+import { Omit } from "@deenruv/common/omit";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import {
   InternalServerError,

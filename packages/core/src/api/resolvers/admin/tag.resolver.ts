@@ -7,8 +7,8 @@ import type {
   QueryTagArgs,
   QueryTagsArgs,
   TagList,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 import { Tag } from "../../../entity/tag/tag.entity";
 import { TagService } from "../../../service/services/tag.service";
 import { RequestContext } from "../../common/request-context";

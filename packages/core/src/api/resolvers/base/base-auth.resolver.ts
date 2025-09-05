@@ -1,7 +1,7 @@
 import {
   AuthenticationResult as ShopAuthenticationResult,
   PasswordValidationError,
-} from "@deenruv/common/src/generated-shop-types";
+} from "@deenruv/common/generated-shop-types";
 import type {
   AuthenticationResult as AdminAuthenticationResult,
   CurrentUser,
@@ -9,7 +9,7 @@ import type {
   MutationAuthenticateArgs,
   MutationLoginArgs,
   Success,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import { type Request, type Response } from "express";
 
 import { isGraphQlErrorResult } from "../../../common/error/error-result";

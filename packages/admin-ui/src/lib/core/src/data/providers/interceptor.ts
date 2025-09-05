@@ -9,8 +9,8 @@ import {
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { DEFAULT_AUTH_TOKEN_HEADER_KEY } from '@deenruv/common/src/shared-constants';
-import { AdminUiConfig } from '@deenruv/common/src/shared-types';
+import { DEFAULT_AUTH_TOKEN_HEADER_KEY } from '@deenruv/common/shared-constants';
+import { AdminUiConfig } from '@deenruv/common/shared-types';
 import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 

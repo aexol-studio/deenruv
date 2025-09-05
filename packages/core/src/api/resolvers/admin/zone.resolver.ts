@@ -9,9 +9,9 @@ import type {
   MutationUpdateZoneArgs,
   QueryZoneArgs,
   QueryZonesArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 import { Zone } from "../../../entity/zone/zone.entity";
 import { ZoneService } from "../../../service/services/zone.service";
 import { RequestContext } from "../../common/request-context";

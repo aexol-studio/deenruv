@@ -1,7 +1,4 @@
-import {
-  ConfigArg,
-  RefundOrderInput,
-} from "@deenruv/common/src/generated-types";
+import { ConfigArg, RefundOrderInput } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import {

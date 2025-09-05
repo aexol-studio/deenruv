@@ -1,7 +1,7 @@
-import { OrderLineInput } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { summate } from "@deenruv/common/src/shared-utils";
-import { unique } from "@deenruv/common/src/unique";
+import { OrderLineInput } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
+import { summate } from "@deenruv/common/shared-utils";
+import { unique } from "@deenruv/common/unique";
 import { In } from "typeorm";
 
 import { RequestContext } from "../../../api/common/request-context";

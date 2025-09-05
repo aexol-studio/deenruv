@@ -1,7 +1,7 @@
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { ProductVariantPrice } from "../../entity";

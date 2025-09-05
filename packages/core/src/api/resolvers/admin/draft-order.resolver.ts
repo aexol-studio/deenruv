@@ -5,7 +5,7 @@ import {
   RemoveOrderItemsResult,
   SetOrderShippingMethodResult,
   UpdateOrderItemsResult,
-} from "@deenruv/common/src/generated-shop-types";
+} from "@deenruv/common/generated-shop-types";
 import type {
   DeletionResponse,
   DeletionResult,
@@ -21,8 +21,8 @@ import type {
   MutationSetDraftOrderShippingMethodArgs,
   QueryEligibleShippingMethodsForDraftOrderArgs,
   ShippingMethodQuote,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import {
   ErrorResultUnion,
@@ -38,7 +38,7 @@ import { RequestContext } from "../../common/request-context";
 import { Allow } from "../../decorators/allow.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
-import type { ID } from "@deenruv/common/src/shared-types.js";
+import type { ID } from "@deenruv/common/shared-types.js";
 
 @Resolver()
 export class DraftOrderResolver {

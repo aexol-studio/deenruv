@@ -1,4 +1,4 @@
-import { Type } from "@deenruv/common/src/shared-types";
+import { Type } from "@deenruv/common/shared-types";
 import { fail } from "assert";
 import { DefaultNamingStrategy } from "typeorm";
 import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";

@@ -3,7 +3,7 @@ import {
   NestModule,
   OnApplicationBootstrap,
 } from "@nestjs/common";
-import { type Type } from "@deenruv/common/src/shared-types";
+import { type Type } from "@deenruv/common/shared-types";
 import {
   AssetStorageStrategy,
   Logger,
@@ -14,7 +14,11 @@ import {
   DeenruvPlugin,
 } from "@deenruv/core";
 import { createHash } from "crypto";
-import express, { type NextFunction, type Request, type Response } from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import fs from "fs-extra";
 import path from "path";
 

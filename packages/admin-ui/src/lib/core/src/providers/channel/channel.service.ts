@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/shared-constants';
 import { Observable } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 

@@ -11,7 +11,7 @@ import {
     UpdateVariantsBulkMutation,
     UpdateVariantsBulkMutationVariables,
 } from '@deenruv/admin-ui/core';
-import { unique } from '@deenruv/common/src/unique';
+import { unique } from '@deenruv/common/unique';
 import { Observable, Subscription } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 

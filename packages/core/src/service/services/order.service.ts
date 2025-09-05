@@ -7,7 +7,7 @@ import {
   RemoveOrderItemsResult,
   SetOrderShippingMethodResult,
   UpdateOrderItemsResult,
-} from "@deenruv/common/src/generated-shop-types";
+} from "@deenruv/common/generated-shop-types";
 import {
   AddFulfillmentToOrderResult,
   AddManualPaymentToOrderResult,
@@ -36,10 +36,10 @@ import {
   ShippingMethodQuote,
   TransitionPaymentToStateResult,
   UpdateOrderNoteInput,
-} from "@deenruv/common/src/generated-types";
-import { omit } from "@deenruv/common/src/omit";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
-import { summate } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-types";
+import { omit } from "@deenruv/common/omit";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
+import { summate } from "@deenruv/common/shared-utils";
 import { In, IsNull, getMetadataArgsStorage } from "typeorm";
 const FindOptionsUtils = {
   joinEagerRelations: (

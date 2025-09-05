@@ -1,5 +1,5 @@
 import { IFieldResolver, IResolvers } from "@graphql-tools/utils";
-import { StockMovementType } from "@deenruv/common/src/generated-types";
+import { StockMovementType } from "@deenruv/common/generated-types";
 import { GraphQLSchema } from "graphql";
 import { GraphQLDateTime, GraphQLJSON } from "graphql-scalars";
 

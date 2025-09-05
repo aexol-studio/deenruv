@@ -1,5 +1,5 @@
-import { isClassInstance, isObject } from "@deenruv/common/src/shared-utils";
-import { simpleDeepClone } from "@deenruv/common/src/simple-deep-clone";
+import { isClassInstance, isObject } from "@deenruv/common/shared-utils";
+import { simpleDeepClone } from "@deenruv/common/simple-deep-clone";
 
 import { PartialDeenruvConfig, DeenruvConfig } from "./deenruv-config";
 

@@ -1,5 +1,5 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { OrderLine } from "../../../entity/order-line/order-line.entity";
 import { PromotionCondition } from "../promotion-condition";

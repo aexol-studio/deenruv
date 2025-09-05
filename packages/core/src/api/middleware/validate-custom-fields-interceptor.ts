@@ -6,8 +6,8 @@ import {
 } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
 import { GqlExecutionContext } from "@nestjs/graphql";
-import { LanguageCode } from "@deenruv/common/src/generated-types";
-import { getGraphQlInputName } from "@deenruv/common/src/shared-utils";
+import { LanguageCode } from "@deenruv/common/generated-types";
+import { getGraphQlInputName } from "@deenruv/common/shared-utils";
 import {
   GraphQLInputType,
   GraphQLList,

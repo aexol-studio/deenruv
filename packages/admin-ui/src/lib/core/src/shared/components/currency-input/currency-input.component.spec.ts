@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ServerConfigService } from '@deenruv/admin-ui/core';
-import { Type } from '@deenruv/common/src/shared-types';
+import { Type } from '@deenruv/common/shared-types';
 import { of } from 'rxjs';
 
 import { LanguageCode } from '../../../common/generated-types';

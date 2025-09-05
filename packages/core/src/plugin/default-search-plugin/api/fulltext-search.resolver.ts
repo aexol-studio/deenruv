@@ -11,8 +11,8 @@ import {
   type QuerySearchArgs,
   SearchInput,
   SearchResponse,
-} from "@deenruv/common/src/generated-types";
-import { Omit } from "@deenruv/common/src/omit";
+} from "@deenruv/common/generated-types";
+import { Omit } from "@deenruv/common/omit";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { Allow } from "../../../api/decorators/allow.decorator";

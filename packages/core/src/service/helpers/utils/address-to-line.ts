@@ -1,4 +1,4 @@
-import { type OrderAddress } from "@deenruv/common/src/generated-types";
+import { type OrderAddress } from "@deenruv/common/generated-types";
 
 import { Address } from "../../../entity/address/address.entity";
 

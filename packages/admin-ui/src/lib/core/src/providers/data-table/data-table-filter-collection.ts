@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { CustomFieldType } from '@deenruv/common/src/shared-types';
-import { assertNever } from '@deenruv/common/src/shared-utils';
+import { CustomFieldType } from '@deenruv/common/shared-types';
+import { assertNever } from '@deenruv/common/shared-utils';
 import extend from 'just-extend';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, startWith, takeUntil } from 'rxjs/operators';

@@ -1,5 +1,5 @@
-import { JobListOptions } from "@deenruv/common/src/generated-types";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { JobListOptions } from "@deenruv/common/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 
 import { InjectableStrategy } from "../../common";
 import { JobData, JobQueueStrategyJobOptions } from "../../job-queue";

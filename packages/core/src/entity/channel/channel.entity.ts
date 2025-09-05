@@ -1,8 +1,5 @@
-import {
-  CurrencyCode,
-  LanguageCode,
-} from "@deenruv/common/src/generated-types";
-import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { CurrencyCode, LanguageCode } from "@deenruv/common/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/shared-types";
 import { Column, Entity, Index, ManyToMany, ManyToOne } from "typeorm";
 
 import {

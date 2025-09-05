@@ -1,7 +1,7 @@
 import { Args, Info, Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { ProductVariantListOptions } from "@deenruv/common/src/generated-types";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { ProductVariantListOptions } from "@deenruv/common/generated-types";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/shared-constants";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { type Translated } from "../../../common/types/locale-types";
 import { type IDsAreEqual } from "../../../common/utils";

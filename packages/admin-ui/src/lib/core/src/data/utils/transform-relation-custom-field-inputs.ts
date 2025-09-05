@@ -1,5 +1,5 @@
-import { getGraphQlInputName } from '@deenruv/common/src/shared-utils';
-import { simpleDeepClone } from '@deenruv/common/src/simple-deep-clone';
+import { getGraphQlInputName } from '@deenruv/common/shared-utils';
+import { simpleDeepClone } from '@deenruv/common/simple-deep-clone';
 
 import { CustomFieldConfig } from '../../common/generated-types';
 

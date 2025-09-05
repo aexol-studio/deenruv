@@ -1,5 +1,5 @@
-import { JobListOptions, JobState } from "@deenruv/common/src/generated-types";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
+import { JobListOptions, JobState } from "@deenruv/common/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
 import {
   Brackets,
   Connection,

@@ -1,5 +1,5 @@
-import { ConfigArg } from "@deenruv/common/src/generated-types";
-import { pick } from "@deenruv/common/src/pick";
+import { ConfigArg } from "@deenruv/common/generated-types";
+import { pick } from "@deenruv/common/pick";
 
 import { RequestContext } from "../../api/common/request-context";
 import {

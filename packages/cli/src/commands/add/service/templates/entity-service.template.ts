@@ -3,12 +3,12 @@ import {
   DeletionResponse,
   DeletionResult,
   LanguageCode,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   CustomFieldsObject,
   ID,
   PaginatedList,
-} from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/shared-types";
 import {
   assertFound,
   CustomFieldRelationService,

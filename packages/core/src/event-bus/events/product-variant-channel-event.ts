@@ -1,4 +1,4 @@
-import type { ID } from "@deenruv/common/src/shared-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { ProductVariant } from "../../entity";

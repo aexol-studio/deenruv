@@ -25,7 +25,7 @@ import test, { after, before, describe } from "node:test";
 import { ReplicatePlugin } from "../index.js";
 import { ReplicateService } from "../services/replicate.service.js";
 import fs from "fs";
-import { CreateAssetInput } from "@deenruv/common/src/generated-types.js";
+import { CreateAssetInput } from "@deenruv/common/generated-types.js";
 import { In } from "typeorm";
 import { ok } from "assert";
 

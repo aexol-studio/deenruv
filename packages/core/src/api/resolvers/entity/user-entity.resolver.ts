@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { AuthenticationMethod as AuthenticationMethodType } from "@deenruv/common/src/generated-types";
+import { AuthenticationMethod as AuthenticationMethodType } from "@deenruv/common/generated-types";
 
 import { NATIVE_AUTH_STRATEGY_NAME } from "../../../config/auth/native-authentication-strategy";
 import { AuthenticationMethod } from "../../../entity/authentication-method/authentication-method.entity";

@@ -2,9 +2,9 @@ import {
   CurrencyCode,
   LanguageCode,
   Permission,
-} from "@deenruv/common/src/generated-types";
-import { type ID, type JsonCompatible } from "@deenruv/common/src/shared-types";
-import { isObject } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-types";
+import { type ID, type JsonCompatible } from "@deenruv/common/shared-types";
+import { isObject } from "@deenruv/common/shared-utils";
 import { Request } from "express";
 import { TFunction } from "i18next";
 

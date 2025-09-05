@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { NgSelectComponent, SELECTION_MODEL_FACTORY } from '@ng-select/ng-select';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 
 import { SearchProductsQuery } from '../../../common/generated-types';
 import { SingleSearchSelectionModelFactory } from '../../../common/single-search-selection-model';

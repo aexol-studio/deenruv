@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ApplyCouponCodeResult } from "@deenruv/common/src/generated-shop-types";
+import { ApplyCouponCodeResult } from "@deenruv/common/generated-shop-types";
 import type {
   AssignPromotionsToChannelInput,
   ConfigurableOperation,
@@ -10,11 +10,11 @@ import type {
   RemovePromotionsFromChannelInput,
   UpdatePromotionInput,
   UpdatePromotionResult,
-} from "@deenruv/common/src/generated-types";
-import { DeletionResult } from "@deenruv/common/src/generated-types";
-import { omit } from "@deenruv/common/src/omit";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/generated-types";
+import { DeletionResult } from "@deenruv/common/generated-types";
+import { omit } from "@deenruv/common/omit";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import { In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

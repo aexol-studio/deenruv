@@ -4,12 +4,12 @@ import {
   DeletionResponse,
   DeletionResult,
   UpdateProvinceInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   type ID,
   type PaginatedList,
   type Type,
-} from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { type RelationPaths } from "../../api/decorators/relations.decorator";

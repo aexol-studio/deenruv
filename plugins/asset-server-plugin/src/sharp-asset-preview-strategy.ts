@@ -1,4 +1,4 @@
-import { AssetType } from "@deenruv/common/src/generated-types";
+import { AssetType } from "@deenruv/common/generated-types";
 import {
   AssetPreviewStrategy,
   getAssetType,

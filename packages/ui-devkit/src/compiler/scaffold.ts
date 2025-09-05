@@ -1,4 +1,4 @@
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import * as fs from "fs-extra";
 import { globSync } from "glob";
 import * as path from "path";

@@ -1,4 +1,4 @@
-import { type DeepPartial } from '@deenruv/common/src/shared-types';
+import { type DeepPartial } from '@deenruv/common/shared-types';
 
 import { CustomFieldConfig, LanguageCode, ProductDetailFragment } from '../generated-types';
 

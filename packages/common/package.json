@@ -2,7 +2,61 @@
   "name": "@deenruv/common",
   "version": "0.1.39",
   "exports": {
-    "./src/*": "./src/*.ts"
+    "./generated-types": {
+      "bun": "./src/generated-types.ts",
+      "import": "./lib/generated-types.js",
+      "require": "./lib/generated-types.js"
+    },
+    "./shared-types": {
+      "bun": "./src/shared-types.ts",
+      "import": "./lib/shared-types.js",
+      "require": "./lib/shared-types.js"
+    },
+    "./shared-constants": {
+      "bun": "./src/shared-constants.ts",
+      "import": "./lib/shared-constants.js",
+      "require": "./lib/shared-constants.js"
+    },
+    "./shared-utils": {
+      "bun": "./src/shared-utils.ts",
+      "import": "./lib/shared-utils.js",
+      "require": "./lib/shared-utils.js"
+    },
+    "./normalize-string": {
+      "bun": "./src/normalize-string.ts",
+      "import": "./lib/normalize-string.js",
+      "require": "./lib/normalize-string.js"
+    },
+    "./pick": {
+      "bun": "./src/pick.ts",
+      "import": "./lib/pick.js",
+      "require": "./lib/pick.js"
+    },
+    "./unique": {
+      "bun": "./src/unique.ts",
+      "import": "./lib/unique.js",
+      "require": "./lib/unique.js"
+    },
+    "./simple-deep-clone": {
+      "bun": "./src/simple-deep-clone.ts",
+      "import": "./lib/simple-deep-clone.js",
+      "require": "./lib/simple-deep-clone.js"
+    },
+    "./generated-shop-types": {
+      "bun": "./src/generated-shop-types.ts",
+      "import": "./lib/generated-shop-types.js",
+      "require": "./lib/generated-shop-types.js"
+    },
+    "./filter-async": {
+      "bun": "./src/filter-async.ts",
+      "import": "./lib/filter-async.js",
+      "require": "./lib/filter-async.js"
+    },
+    "./omit": {
+      "bun": "./src/omit.ts",
+      "import": "./lib/omit.js",
+      "require": "./lib/omit.js"
+    }
   },
   "license": "MIT",
   "scripts": {
@@ -18,7 +72,8 @@
     "access": "public"
   },
   "files": [
-    "src/**/*"
+    "src/**/*",
+    "lib/**/*"
   ],
   "devDependencies": {
     "rimraf": "^5.0.5",

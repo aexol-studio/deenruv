@@ -4,8 +4,8 @@ import {
   CollectionBreadcrumb,
   type ConfigurableOperation,
   ProductVariantListOptions,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { ListQueryOptions } from "../../../common/types/common-types";
 import { type Translated } from "../../../common/types/locale-types";

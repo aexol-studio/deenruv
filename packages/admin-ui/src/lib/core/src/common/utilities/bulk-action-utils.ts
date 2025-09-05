@@ -1,6 +1,6 @@
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
-import { unique } from '@deenruv/common/src/unique';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/shared-constants';
+import { unique } from '@deenruv/common/unique';
 import { EMPTY, from, lastValueFrom, Observable, of, switchMap } from 'rxjs';
 import { map, mapTo } from 'rxjs/operators';
 

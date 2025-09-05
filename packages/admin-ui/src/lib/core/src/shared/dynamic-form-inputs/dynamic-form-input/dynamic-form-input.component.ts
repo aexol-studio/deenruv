@@ -26,10 +26,10 @@ import {
     UntypedFormArray,
     UntypedFormControl,
 } from '@angular/forms';
-import { StringCustomFieldConfig } from '@deenruv/common/src/generated-types';
-import { ConfigArgType, CustomFieldType, DefaultFormComponentId } from '@deenruv/common/src/shared-types';
-import { assertNever, notNullOrUndefined } from '@deenruv/common/src/shared-utils';
-import { simpleDeepClone } from '@deenruv/common/src/simple-deep-clone';
+import { StringCustomFieldConfig } from '@deenruv/common/generated-types';
+import { ConfigArgType, CustomFieldType, DefaultFormComponentId } from '@deenruv/common/shared-types';
+import { assertNever, notNullOrUndefined } from '@deenruv/common/shared-utils';
+import { simpleDeepClone } from '@deenruv/common/simple-deep-clone';
 import { Subject, Subscription } from 'rxjs';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
 

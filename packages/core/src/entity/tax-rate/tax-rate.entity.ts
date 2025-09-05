@@ -1,5 +1,5 @@
-import type { TaxLine } from "@deenruv/common/src/generated-types";
-import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import type { TaxLine } from "@deenruv/common/generated-types";
+import { type DeepPartial } from "@deenruv/common/shared-types";
 import { Column, Entity, Index, ManyToOne, type Relation } from "typeorm";
 
 import {

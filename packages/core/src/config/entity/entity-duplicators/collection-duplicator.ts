@@ -3,7 +3,7 @@ import {
   CreateCollectionTranslationInput,
   LanguageCode,
   Permission,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 
 import { Injector } from "../../../common/injector";
 import { TransactionalConnection } from "../../../connection/transactional-connection";

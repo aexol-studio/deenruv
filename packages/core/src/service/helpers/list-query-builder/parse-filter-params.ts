@@ -1,6 +1,6 @@
-import { LogicalOperator } from "@deenruv/common/src/generated-types";
-import { type Type } from "@deenruv/common/src/shared-types";
-import { assertNever } from "@deenruv/common/src/shared-utils";
+import { LogicalOperator } from "@deenruv/common/generated-types";
+import { type Type } from "@deenruv/common/shared-types";
+import { assertNever } from "@deenruv/common/shared-utils";
 import { DataSource, DataSourceOptions } from "typeorm";
 
 const DateUtils = {

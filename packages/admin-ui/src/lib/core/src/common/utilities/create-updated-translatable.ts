@@ -1,4 +1,4 @@
-import { CustomFieldsObject, CustomFieldType } from '@deenruv/common/src/shared-types';
+import { CustomFieldsObject, CustomFieldType } from '@deenruv/common/shared-types';
 
 import { CustomFieldConfig, LanguageCode } from '../generated-types';
 

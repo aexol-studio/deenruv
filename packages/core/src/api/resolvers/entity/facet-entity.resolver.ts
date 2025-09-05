@@ -1,6 +1,6 @@
 import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { FacetValueListOptions } from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+import { FacetValueListOptions } from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
 import { Facet } from "../../../entity/facet/facet.entity";

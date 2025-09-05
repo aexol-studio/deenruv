@@ -11,8 +11,8 @@ import type {
   QueryPromotionArgs,
   QueryPromotionsArgs,
   UpdatePromotionResult,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { ErrorResultUnion } from "../../../common/error/error-result";
 import {
@@ -31,7 +31,7 @@ import {
 } from "../../decorators/relations.decorator";
 import { Ctx } from "../../decorators/request-context.decorator";
 import { Transaction } from "../../decorators/transaction.decorator";
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 @Resolver("Promotion")
 export class PromotionResolver {

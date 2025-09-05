@@ -26,8 +26,8 @@ import {
     transformRelationCustomFieldInputs,
     TypedBaseDetailComponent,
 } from '@deenruv/admin-ui/core';
-import { assertNever, notNullOrUndefined } from '@deenruv/common/src/shared-utils';
-import { simpleDeepClone } from '@deenruv/common/src/simple-deep-clone';
+import { assertNever, notNullOrUndefined } from '@deenruv/common/shared-utils';
+import { simpleDeepClone } from '@deenruv/common/simple-deep-clone';
 import { EMPTY, Observable, of } from 'rxjs';
 import { map, mapTo, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
 import {

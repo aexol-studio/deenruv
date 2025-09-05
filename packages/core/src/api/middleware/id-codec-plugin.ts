@@ -3,7 +3,7 @@ import {
   GraphQLRequestListener,
   GraphQLServerContext,
 } from "@apollo/server";
-import { isObject } from "@deenruv/common/src/shared-utils";
+import { isObject } from "@deenruv/common/shared-utils";
 import { DocumentNode } from "graphql";
 
 import { GraphqlValueTransformer } from "../common/graphql-value-transformer";

@@ -1,4 +1,4 @@
-import { ROOT_COLLECTION_NAME } from "@deenruv/common/src/shared-constants";
+import { ROOT_COLLECTION_NAME } from "@deenruv/common/shared-constants";
 import {
   DefaultJobQueuePlugin,
   facetValueCollectionFilter,

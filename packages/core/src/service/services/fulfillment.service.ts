@@ -2,10 +2,10 @@ import { Injectable } from "@nestjs/common";
 import {
   ConfigurableOperationInput,
   OrderLineInput,
-} from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { isObject } from "@deenruv/common/src/shared-utils";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
+import { isObject } from "@deenruv/common/shared-utils";
+import { unique } from "@deenruv/common/unique";
 import { In, Not } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

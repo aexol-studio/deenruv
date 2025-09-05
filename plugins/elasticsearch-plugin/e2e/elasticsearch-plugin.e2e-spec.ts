@@ -1,5 +1,5 @@
-import { CurrencyCode, SortOrder } from "@deenruv/common/src/generated-types";
-import { pick } from "@deenruv/common/src/pick";
+import { CurrencyCode, SortOrder } from "@deenruv/common/generated-types";
+import { pick } from "@deenruv/common/pick";
 import {
   DefaultJobQueuePlugin,
   DefaultLogger,

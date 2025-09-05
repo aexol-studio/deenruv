@@ -1,4 +1,4 @@
-import { CustomFieldType } from '@deenruv/common/src/shared-types';
+import { CustomFieldType } from '@deenruv/common/shared-types';
 import { useContext, useEffect, useState } from 'react';
 import { HostedComponentContext } from '../directives/react-component-host.directive';
 import { HostedReactComponentContext, ReactFormInputOptions } from '../types';

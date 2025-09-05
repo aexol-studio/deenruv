@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { ConfigurableOperationInput } from "@deenruv/common/src/generated-types";
-import { normalizeString } from "@deenruv/common/src/normalize-string";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { ConfigurableOperationInput } from "@deenruv/common/generated-types";
+import { normalizeString } from "@deenruv/common/normalize-string";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 
 import { RequestContext } from "../../../api/common/request-context";
 import {

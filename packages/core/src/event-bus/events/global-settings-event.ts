@@ -1,4 +1,4 @@
-import { UpdateGlobalSettingsInput } from "@deenruv/common/src/generated-types";
+import { UpdateGlobalSettingsInput } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api";
 import { GlobalSettings } from "../../entity/global-settings/global-settings.entity";

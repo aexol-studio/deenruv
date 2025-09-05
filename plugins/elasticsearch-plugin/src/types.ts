@@ -6,8 +6,8 @@ import {
   SearchInput,
   SearchResponse,
   SearchResult,
-} from "@deenruv/common/src/generated-types";
-import { type ID, type JsonCompatible } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type ID, type JsonCompatible } from "@deenruv/common/shared-types";
 import { Asset, SerializedRequestContext } from "@deenruv/core";
 
 export type ElasticSearchResult = SearchResult & {

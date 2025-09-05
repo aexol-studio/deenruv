@@ -1,4 +1,4 @@
-import { type DeepPartial } from "@deenruv/common/src/shared-types";
+import { type DeepPartial } from "@deenruv/common/shared-types";
 import { Column, Entity, Index, ManyToOne } from "typeorm";
 
 import { HasCustomFields } from "../../config/custom-field/custom-field-types";

@@ -1,5 +1,5 @@
-import { SearchInput as GeneratedSearchInput } from "@deenruv/common/src/generated-types";
-import { type ID, type JsonCompatible } from "@deenruv/common/src/shared-types";
+import { SearchInput as GeneratedSearchInput } from "@deenruv/common/generated-types";
+import { type ID, type JsonCompatible } from "@deenruv/common/shared-types";
 
 import { SerializedRequestContext } from "../../api/common/request-context";
 import { Asset } from "../../entity/asset/asset.entity";

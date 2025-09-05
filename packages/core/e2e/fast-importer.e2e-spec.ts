@@ -1,7 +1,7 @@
 import {
   CreateProductInput,
   ProductTranslationInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   ensureConfigLoaded,
   FastImporterService,

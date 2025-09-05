@@ -1,5 +1,5 @@
-import { SearchInput, SearchResult } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { SearchInput, SearchResult } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../../api";
 import { InjectableStrategy } from "../../../common";

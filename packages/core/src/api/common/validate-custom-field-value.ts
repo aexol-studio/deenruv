@@ -1,4 +1,4 @@
-import { assertNever } from "@deenruv/common/src/shared-utils";
+import { assertNever } from "@deenruv/common/shared-utils";
 
 import { UserInputError } from "../../common/error/errors";
 import { Injector } from "../../common/injector";

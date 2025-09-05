@@ -1,5 +1,5 @@
-import { AssetType } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { AssetType } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
 import { lastValueFrom, Observable, Observer } from "rxjs";
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations";
 

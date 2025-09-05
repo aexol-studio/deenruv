@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { UpdateCustomerInput as UpdateCustomerShopInput } from "@deenruv/common/src/generated-shop-types";
+import { UpdateCustomerInput as UpdateCustomerShopInput } from "@deenruv/common/generated-shop-types";
 import {
   HistoryEntryListOptions,
   HistoryEntryType,
   OrderLineInput,
   UpdateAddressInput,
   UpdateCustomerInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   type ID,
   type PaginatedList,
   type Type,
-} from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { TransactionalConnection } from "../../connection/transactional-connection";

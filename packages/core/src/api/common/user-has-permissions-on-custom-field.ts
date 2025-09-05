@@ -1,4 +1,4 @@
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { CustomFieldConfig } from "../../config/custom-field/custom-field-types";
 

@@ -123,7 +123,7 @@ decorator, you should use Deenruv's [`@Money()` decorator](/reference/typescript
 Using this decorator allows Deenruv to correctly store the value in the database according to the configured `MoneyStrategy` (see below).
 
 ```ts title="src/plugins/quote/entities/quote.entity.ts"
-import { DeepPartial } from '@deenruv/common/src/shared-types';
+import { DeepPartial } from '@deenruv/common/shared-types';
 import { DeenruvEntity, Order, EntityId, Money, CurrencyCode, ID } from '@deenruv/core';
 import { Column, Entity, ManyToOne } from 'typeorm';
 

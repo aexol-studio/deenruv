@@ -23,7 +23,7 @@ import {
     UpdateCustomerInput,
     UpdateCustomerMutation,
 } from '@deenruv/admin-ui/core';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { gql } from 'apollo-angular';
 import { EMPTY, forkJoin, from, Observable, Subject } from 'rxjs';
 import {

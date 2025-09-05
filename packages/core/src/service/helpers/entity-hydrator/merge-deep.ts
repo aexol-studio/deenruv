@@ -1,4 +1,4 @@
-import { isObject } from "@deenruv/common/src/shared-utils";
+import { isObject } from "@deenruv/common/shared-utils";
 
 /**
  * Merges properties into a target entity. This is needed for the cases in which a

@@ -1,4 +1,4 @@
-import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import { type DeepPartial, type ID } from "@deenruv/common/shared-types";
 import {
   type Relation,
   Column,

@@ -5,15 +5,15 @@ import {
   DeletionResult,
   Permission,
   UpdateRoleInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   CUSTOMER_ROLE_CODE,
   CUSTOMER_ROLE_DESCRIPTION,
   SUPER_ADMIN_ROLE_CODE,
   SUPER_ADMIN_ROLE_DESCRIPTION,
-} from "@deenruv/common/src/shared-constants";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/shared-constants";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 
 import { RequestContext } from "../../api/common/request-context";
 import { type RelationPaths } from "../../api/decorators/relations.decorator";

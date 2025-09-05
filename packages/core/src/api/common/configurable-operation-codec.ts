@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import {
   type ConfigurableOperation,
   ConfigurableOperationInput,
-} from "@deenruv/common/src/generated-types";
-import { type Type } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { type Type } from "@deenruv/common/shared-types";
 
 import { ConfigurableOperationDef } from "../../common/configurable-operation";
 import { InternalServerError } from "../../common/error/errors";

@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 import * as fs from "fs-extra";
 import { globSync } from "glob";
 import * as path from "path";

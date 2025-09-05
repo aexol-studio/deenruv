@@ -1,5 +1,5 @@
-import { JobState } from "@deenruv/common/src/generated-types";
-import { isClassInstance, isObject } from "@deenruv/common/src/shared-utils";
+import { JobState } from "@deenruv/common/generated-types";
+import { isClassInstance, isObject } from "@deenruv/common/shared-utils";
 
 import { Logger } from "../config/logger/deenruv-logger";
 

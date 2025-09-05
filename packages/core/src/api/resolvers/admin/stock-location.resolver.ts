@@ -8,8 +8,8 @@ import type {
   MutationUpdateStockLocationArgs,
   QueryStockLocationArgs,
   QueryStockLocationsArgs,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { StockLocationService } from "../../../service/services/stock-location.service";
 import { RequestContext } from "../../common/request-context";

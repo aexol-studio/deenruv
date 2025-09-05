@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { DefaultFormComponentId } from '@deenruv/common/src/shared-types';
+import { DefaultFormComponentId } from '@deenruv/common/shared-types';
 
 import { FormInputComponent, InputComponentConfig } from '../../../common/component-registry-types';
 import { FacetValueFragment } from '../../../common/generated-types';

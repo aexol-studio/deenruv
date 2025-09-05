@@ -9,7 +9,7 @@ import {
     GetCustomerAddressesDocument,
     OrderAddressFragment,
 } from '@deenruv/admin-ui/core';
-import { pick } from '@deenruv/common/src/pick';
+import { pick } from '@deenruv/common/pick';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

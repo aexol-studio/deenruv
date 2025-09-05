@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Type } from '@deenruv/common/src/shared-types';
+import { Type } from '@deenruv/common/shared-types';
 import { from, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 

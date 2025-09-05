@@ -1,9 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import {
-  SearchInput,
-  SearchResponse,
-} from "@deenruv/common/src/generated-types";
-import { Omit } from "@deenruv/common/src/omit";
+import { SearchInput, SearchResponse } from "@deenruv/common/generated-types";
+import { Omit } from "@deenruv/common/omit";
 
 import { RequestContext } from "../../api/common/request-context";
 import { InternalServerError } from "../../common/error/errors";

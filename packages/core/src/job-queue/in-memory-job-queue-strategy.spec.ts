@@ -1,4 +1,4 @@
-import { JobListOptions, SortOrder } from "@deenruv/common/src/generated-types";
+import { JobListOptions, SortOrder } from "@deenruv/common/generated-types";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { InMemoryJobQueueStrategy } from "./in-memory-job-queue-strategy";

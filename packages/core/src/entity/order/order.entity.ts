@@ -4,10 +4,10 @@ import type {
   OrderAddress,
   OrderTaxSummary,
   TaxLine,
-} from "@deenruv/common/src/generated-types";
-import { OrderType } from "@deenruv/common/src/generated-types";
-import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
-import { summate } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-types";
+import { OrderType } from "@deenruv/common/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/shared-types";
+import { summate } from "@deenruv/common/shared-utils";
 import {
   Column,
   Entity,

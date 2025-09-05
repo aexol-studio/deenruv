@@ -1,4 +1,4 @@
-import { LanguageCode, Permission } from "@deenruv/common/src/generated-types";
+import { LanguageCode, Permission } from "@deenruv/common/generated-types";
 import type { InitialData } from "@deenruv/core";
 
 export const initialData: InitialData = {

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import type { ID } from "@deenruv/common/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { ShippingCalculationResult } from "../../../config/shipping-method/shipping-calculator";

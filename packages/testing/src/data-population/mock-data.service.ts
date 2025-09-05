@@ -1,7 +1,7 @@
 import {
   CreateAddressInput,
   CreateCustomerInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import faker from "faker/locale/en_GB";
 import gql from "graphql-tag";
 

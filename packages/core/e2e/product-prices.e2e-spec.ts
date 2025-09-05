@@ -1,4 +1,4 @@
-import { pick } from "@deenruv/common/src/pick";
+import { pick } from "@deenruv/common/pick";
 import { mergeConfig } from "@deenruv/core";
 import {
   createErrorResultGuard,

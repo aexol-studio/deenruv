@@ -1,5 +1,5 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
-import { type Type } from "@deenruv/common/src/shared-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
+import { type Type } from "@deenruv/common/shared-types";
 import { Injector, Logger } from "@deenruv/core";
 
 import { serializeAttachments } from "../attachment-utils";

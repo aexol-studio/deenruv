@@ -2,9 +2,9 @@ import { Args, Parent, ResolveField, Resolver } from "@nestjs/graphql";
 import type {
   HistoryEntryListOptions,
   QueryOrdersArgs,
-} from "@deenruv/common/src/generated-types";
-import { SortOrder } from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { SortOrder } from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import { Address } from "../../../entity/address/address.entity";
 import { Customer } from "../../../entity/customer/customer.entity";

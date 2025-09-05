@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
-import { type Type } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+import { type Type } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import {
   getNamedType,
   type GraphQLResolveInfo,

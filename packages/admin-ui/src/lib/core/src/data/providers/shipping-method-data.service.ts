@@ -1,4 +1,4 @@
-import { pick } from '@deenruv/common/src/pick';
+import { pick } from '@deenruv/common/pick';
 
 import * as Codegen from '../../common/generated-types';
 import {

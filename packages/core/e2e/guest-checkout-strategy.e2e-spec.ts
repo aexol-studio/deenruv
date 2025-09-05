@@ -1,7 +1,7 @@
 import {
   CreateCustomerInput,
   SetCustomerForOrderResult,
-} from "@deenruv/common/src/generated-shop-types";
+} from "@deenruv/common/generated-shop-types";
 import {
   GuestCheckoutStrategy,
   Order,

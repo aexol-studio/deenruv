@@ -1,7 +1,7 @@
 import { OnApplicationBootstrap, OnApplicationShutdown } from "@nestjs/common";
 import { ModuleRef } from "@nestjs/core";
-import { SearchReindexResponse } from "@deenruv/common/src/generated-types";
-import { type ID, type Type } from "@deenruv/common/src/shared-types";
+import { SearchReindexResponse } from "@deenruv/common/generated-types";
+import { type ID, type Type } from "@deenruv/common/shared-types";
 import { buffer, debounceTime, delay, filter, map } from "rxjs/operators";
 import { Column } from "typeorm";
 

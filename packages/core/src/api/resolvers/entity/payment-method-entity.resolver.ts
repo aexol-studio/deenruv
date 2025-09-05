@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { type ConfigurableOperationDefinition } from "@deenruv/common/src/generated-types";
+import { type ConfigurableOperationDefinition } from "@deenruv/common/generated-types";
 
 import { PaymentMethod } from "../../../entity/payment-method/payment-method.entity";
 import { PaymentMethodService } from "../../../service/services/payment-method.service";

@@ -1,4 +1,4 @@
-import { AdminUiConfig } from '@deenruv/common/src/shared-types';
+import { AdminUiConfig } from '@deenruv/common/shared-types';
 
 let deenruvUiConfig: AdminUiConfig | undefined;
 

@@ -6,9 +6,9 @@ import {
   SearchResult,
   SearchResultAsset,
   SinglePrice,
-} from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import { Brackets, QueryBuilder, SelectQueryBuilder } from "typeorm";
 
 import { SearchIndexItem } from "../entities/search-index-item.entity";

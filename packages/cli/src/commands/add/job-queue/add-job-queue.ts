@@ -58,7 +58,7 @@ async function addJobQueue(
   });
 
   addImportsToFile(serviceRef.classDeclaration.getSourceFile(), {
-    moduleSpecifier: "@deenruv/common/src/generated-types",
+    moduleSpecifier: "@deenruv/common/generated-types",
     namedImports: ["JobState"],
   });
 

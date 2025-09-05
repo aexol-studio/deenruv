@@ -8,7 +8,7 @@ import {
     ROLE_FRAGMENT,
     TypedBaseListComponent,
 } from '@deenruv/admin-ui/core';
-import { CUSTOMER_ROLE_CODE, SUPER_ADMIN_ROLE_CODE } from '@deenruv/common/src/shared-constants';
+import { CUSTOMER_ROLE_CODE, SUPER_ADMIN_ROLE_CODE } from '@deenruv/common/shared-constants';
 import { gql } from 'apollo-angular';
 
 export const GET_ROLE_LIST = gql`

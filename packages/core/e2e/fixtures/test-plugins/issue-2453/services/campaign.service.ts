@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import {
   DeletionResponse,
   DeletionResult,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import type {
   ID,
   ListQueryOptions,

@@ -1,7 +1,7 @@
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { DynamicModule } from "@nestjs/common";
 import { GraphQLModule, GraphQLTypesLoader } from "@nestjs/graphql";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import {
   buildSchema,
   extendSchema,

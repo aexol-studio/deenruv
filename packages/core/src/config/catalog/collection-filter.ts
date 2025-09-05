@@ -1,4 +1,4 @@
-import { ConfigArg } from "@deenruv/common/src/generated-types";
+import { ConfigArg } from "@deenruv/common/generated-types";
 import { SelectQueryBuilder } from "typeorm";
 
 import {

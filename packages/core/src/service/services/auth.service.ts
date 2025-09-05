@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { ID } from "@deenruv/common/src/shared-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { type ApiType } from "../../api/common/get-api-type";
 import { RequestContext } from "../../api/common/request-context";

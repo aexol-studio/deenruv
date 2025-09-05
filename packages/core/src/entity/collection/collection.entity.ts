@@ -1,5 +1,5 @@
-import type { ConfigurableOperation } from "@deenruv/common/src/generated-types";
-import { type DeepPartial, type ID } from "@deenruv/common/src/shared-types";
+import type { ConfigurableOperation } from "@deenruv/common/generated-types";
+import { type DeepPartial, type ID } from "@deenruv/common/shared-types";
 import {
   Column,
   Entity,

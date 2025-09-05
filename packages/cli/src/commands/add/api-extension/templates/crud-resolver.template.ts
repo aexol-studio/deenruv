@@ -2,8 +2,8 @@ import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import {
   DeletionResponse,
   Permission,
-} from "@deenruv/common/src/generated-types";
-import { CustomFieldsObject } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { CustomFieldsObject } from "@deenruv/common/shared-types";
 import {
   Allow,
   Ctx,

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { HistoryEntryType } from "@deenruv/common/src/generated-types";
+import { HistoryEntryType } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { TransactionalConnection } from "../../../connection/transactional-connection";

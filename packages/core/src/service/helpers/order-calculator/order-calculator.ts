@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { filterAsync } from "@deenruv/common/src/filter-async";
-import { AdjustmentType } from "@deenruv/common/src/generated-types";
+import { filterAsync } from "@deenruv/common/filter-async";
+import { AdjustmentType } from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../../api/common/request-context";
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";

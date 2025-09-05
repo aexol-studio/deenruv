@@ -32,7 +32,7 @@ import {
     unicodePatternValidator,
     UpdateCollectionInput,
 } from '@deenruv/admin-ui/core';
-import { normalizeString } from '@deenruv/common/src/normalize-string';
+import { normalizeString } from '@deenruv/common/lib/normalize-string';
 import { gql } from 'apollo-angular';
 import { combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mergeMap, switchMap, take } from 'rxjs/operators';

@@ -1,5 +1,5 @@
-import { AdjustmentType } from "@deenruv/common/src/generated-types";
-import { summate } from "@deenruv/common/src/shared-utils";
+import { AdjustmentType } from "@deenruv/common/generated-types";
+import { summate } from "@deenruv/common/shared-utils";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import { ensureConfigLoaded } from "../../config/config-helpers";

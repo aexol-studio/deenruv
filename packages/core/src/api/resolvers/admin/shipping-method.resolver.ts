@@ -12,9 +12,9 @@ import type {
   QueryShippingMethodsArgs,
   QueryTestEligibleShippingMethodsArgs,
   QueryTestShippingMethodArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 import { type Translated } from "../../../common/types/locale-types";
 import { ShippingMethod } from "../../../entity/shipping-method/shipping-method.entity";
 import { OrderTestingService } from "../../../service/services/order-testing.service";

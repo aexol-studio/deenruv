@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { ImportInfo, LanguageCode } from "@deenruv/common/src/generated-types";
-import { normalizeString } from "@deenruv/common/src/normalize-string";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { ImportInfo, LanguageCode } from "@deenruv/common/generated-types";
+import { normalizeString } from "@deenruv/common/normalize-string";
+import type { ID } from "@deenruv/common/shared-types";
 import ProgressBar from "progress";
 import { Observable } from "rxjs";
 import { Stream } from "stream";

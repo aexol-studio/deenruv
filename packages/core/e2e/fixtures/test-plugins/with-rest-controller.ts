@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { Permission } from "@deenruv/common/src/generated-shop-types";
+import { Permission } from "@deenruv/common/generated-shop-types";
 import { Allow, InternalServerError, DeenruvPlugin } from "@deenruv/core";
 
 @Controller("test")

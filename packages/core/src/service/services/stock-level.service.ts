@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import type { ID } from "@deenruv/common/src/shared-types";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { AvailableStock } from "../../config/catalog/stock-location-strategy";

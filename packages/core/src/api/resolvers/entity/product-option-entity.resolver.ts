@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from "@nestjs/graphql";
-import { Permission } from "@deenruv/common/src/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { RequestContextCacheService } from "../../../cache/request-context-cache.service";
 import { type Translated } from "../../../common/types/locale-types";

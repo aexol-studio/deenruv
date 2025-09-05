@@ -1,6 +1,6 @@
 import { Component, inject, InjectionToken, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { notNullOrUndefined } from '@deenruv/common/src/shared-utils';
+import { notNullOrUndefined } from '@deenruv/common/shared-utils';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { BreadcrumbValue } from '../../providers/breadcrumb/breadcrumb.service';

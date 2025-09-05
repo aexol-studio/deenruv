@@ -1,7 +1,7 @@
 import {
   ConfigurableOperationInput,
   OrderLineInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 
 import { RequestContext } from "../../api";
 import { Order } from "../../entity";

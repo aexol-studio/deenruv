@@ -1,4 +1,4 @@
-import { pick } from '@deenruv/common/src/pick';
+import { pick } from '@deenruv/common/pick';
 import { from } from 'rxjs';
 import { bufferCount, concatMap } from 'rxjs/operators';
 

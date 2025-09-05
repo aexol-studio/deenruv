@@ -6,7 +6,7 @@ import {
     GetSellerOrdersQuery,
     GetSellerOrdersQueryVariables,
 } from '@deenruv/admin-ui/core';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/shared-constants';
 import { Observable } from 'rxjs';
 
 import { GET_SELLER_ORDERS } from './seller-orders-card.graphql';

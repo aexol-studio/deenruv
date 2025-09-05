@@ -1,4 +1,4 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 
 import { TransactionalConnection } from "../../../connection/transactional-connection";
 import { PromotionItemAction } from "../promotion-action";

@@ -1,5 +1,5 @@
-import { JobListOptions, JobState } from "@deenruv/common/src/generated-types";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
+import { JobListOptions, JobState } from "@deenruv/common/generated-types";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
 import {
   ID,
   Injector,

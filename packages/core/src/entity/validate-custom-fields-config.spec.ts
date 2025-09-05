@@ -1,4 +1,4 @@
-import { Type } from "@deenruv/common/src/shared-types";
+import { Type } from "@deenruv/common/shared-types";
 import { describe, expect, it } from "vitest";
 
 import { CustomFields } from "../config/custom-field/custom-field-types";

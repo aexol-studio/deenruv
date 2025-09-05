@@ -1,5 +1,5 @@
-import { omit } from "@deenruv/common/src/omit";
-import { pick } from "@deenruv/common/src/pick";
+import { omit } from "@deenruv/common/omit";
+import { pick } from "@deenruv/common/pick";
 import {
   defaultShippingCalculator,
   defaultShippingEligibilityChecker,

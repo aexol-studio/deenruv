@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/shared-constants';
 import { tap } from 'rxjs/operators';
 
 import { UserStatus } from '../../common/generated-types';

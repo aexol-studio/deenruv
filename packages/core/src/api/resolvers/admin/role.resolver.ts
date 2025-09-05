@@ -7,9 +7,9 @@ import type {
   MutationUpdateRoleArgs,
   QueryRoleArgs,
   QueryRolesArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 
 import { Role } from "../../../entity/role/role.entity";
 import { RoleService } from "../../../service/services/role.service";

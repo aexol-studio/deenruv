@@ -11,8 +11,8 @@ import {
   Permission,
   type QuerySearchArgs,
   SearchResponse,
-} from "@deenruv/common/src/generated-types";
-import { Omit } from "@deenruv/common/src/omit";
+} from "@deenruv/common/generated-types";
+import { Omit } from "@deenruv/common/omit";
 import {
   Allow,
   Collection,

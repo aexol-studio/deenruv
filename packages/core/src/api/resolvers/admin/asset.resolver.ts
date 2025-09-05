@@ -8,9 +8,9 @@ import type {
   MutationUpdateAssetArgs,
   QueryAssetArgs,
   QueryAssetsArgs,
-} from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
-import { Permission } from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
+import { Permission } from "@deenruv/common/generated-types";
 import { Administrator } from "../../../entity/administrator/administrator.entity";
 import { Asset } from "../../../entity/asset/asset.entity";
 import { AssetService } from "../../../service/services/asset.service";

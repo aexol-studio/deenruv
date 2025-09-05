@@ -1,9 +1,9 @@
-import { omit } from "@deenruv/common/src/omit";
+import { omit } from "@deenruv/common/omit";
 import {
   CUSTOMER_ROLE_CODE,
   DEFAULT_CHANNEL_CODE,
   SUPER_ADMIN_ROLE_CODE,
-} from "@deenruv/common/src/shared-constants";
+} from "@deenruv/common/shared-constants";
 import {
   createTestEnvironment,
   E2E_DEFAULT_CHANNEL_TOKEN,

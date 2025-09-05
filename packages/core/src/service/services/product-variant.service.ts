@@ -10,9 +10,9 @@ import {
   ProductVariantFilterParameter,
   RemoveProductVariantsFromChannelInput,
   UpdateProductVariantInput,
-} from "@deenruv/common/src/generated-types";
-import { type ID, type PaginatedList } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/generated-types";
+import { type ID, type PaginatedList } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import { In, IsNull } from "typeorm";
 
 import { RequestContext } from "../../api/common/request-context";

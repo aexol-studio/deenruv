@@ -9,7 +9,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { assertNever } from '@deenruv/common/src/shared-utils';
+import { assertNever } from '@deenruv/common/shared-utils';
 import { FormInputComponent } from '../../../common/component-registry-types';
 import { DateOperators } from '../../../common/generated-types';
 import { DataTableFilter, KindValueMap } from '../../../providers/data-table/data-table-filter';

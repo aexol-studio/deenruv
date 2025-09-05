@@ -10,7 +10,7 @@ import {
     WidgetLayout,
     WidgetLayoutDefinition,
 } from '@deenruv/admin-ui/core';
-import { assertNever } from '@deenruv/common/src/shared-utils';
+import { assertNever } from '@deenruv/common/shared-utils';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 

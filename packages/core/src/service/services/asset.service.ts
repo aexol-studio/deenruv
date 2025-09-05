@@ -10,15 +10,15 @@ import {
   LogicalOperator,
   Permission,
   UpdateAssetInput,
-} from "@deenruv/common/src/generated-types";
-import { omit } from "@deenruv/common/src/omit";
+} from "@deenruv/common/generated-types";
+import { omit } from "@deenruv/common/omit";
 import {
   type ID,
   type PaginatedList,
   type Type,
-} from "@deenruv/common/src/shared-types";
-import { notNullOrUndefined } from "@deenruv/common/src/shared-utils";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/shared-types";
+import { notNullOrUndefined } from "@deenruv/common/shared-utils";
+import { unique } from "@deenruv/common/unique";
 import { ReadStream as FSReadStream } from "fs";
 import { ReadStream } from "fs-extra";
 import { IncomingMessage } from "http";

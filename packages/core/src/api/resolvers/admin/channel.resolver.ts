@@ -9,9 +9,9 @@ import type {
   QueryChannelArgs,
   QueryChannelsArgs,
   UpdateChannelResult,
-} from "@deenruv/common/src/generated-types";
-import { Permission } from "@deenruv/common/src/generated-types";
-import { type PaginatedList } from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/generated-types";
+import { Permission } from "@deenruv/common/generated-types";
+import { type PaginatedList } from "@deenruv/common/shared-types";
 
 import {
   ErrorResultUnion,

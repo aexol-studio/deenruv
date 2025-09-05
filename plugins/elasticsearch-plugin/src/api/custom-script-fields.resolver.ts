@@ -1,6 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { ResolveField, Resolver } from "@nestjs/graphql";
-import { type DeepRequired } from "@deenruv/common/src/shared-types";
+import { type DeepRequired } from "@deenruv/common/shared-types";
 
 import { ELASTIC_SEARCH_OPTIONS } from "../constants";
 import { ElasticsearchOptions } from "../options";

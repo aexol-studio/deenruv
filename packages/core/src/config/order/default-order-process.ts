@@ -1,6 +1,6 @@
-import { HistoryEntryType } from "@deenruv/common/src/generated-types";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+import { HistoryEntryType } from "@deenruv/common/generated-types";
+import type { ID } from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 
 import { RequestContext } from "../../api/common/request-context";
 import { TransactionalConnection } from "../../connection/transactional-connection";

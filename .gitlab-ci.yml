@@ -1,0 +1,40 @@
+include:
+  - project: 'ci/templates/node'
+    file: ['pnpm-publish.yml']
+
+.build_artifacts: &build_artifacts
+  artifacts:
+    paths:
+      - packages/*/lib
+      - packages/*/dist
+      - packages/*/cli
+      - packages/*/package
+      - packages/*/client
+      - packages/*/assets
+      - packages/*/compiler
+      - plugins/*/dist
+      - plugins/*/lib
+      - plugins/*/package
+    expire_in: 1 week
+
+build:
+  <<: *build_artifacts
+
+test:
+  <<: *build_artifacts
+  variables:
+    POSTGRES_DB: deenruv
+    PGDATABASE: $POSTGRES_DB
+    POSTGRES_USER: deenruv
+    PGUSER: $POSTGRES_USER
+    POSTGRES_PASSWORD: deenruv
+    PGPASSWORD: $POSTGRES_PASSWORD
+    POSTGRES_HOST_AUTH_METHOD: trust
+    PGHOST: postgres
+    DB_SCHEMA: public
+  services:
+    - name: postgres
+      alias: postgres
+
+lint:
+  <<: *build_artifacts

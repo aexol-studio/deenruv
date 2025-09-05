@@ -1,5 +1,5 @@
 import { Mutation, Query, Resolver } from "@nestjs/graphql";
-import { LanguageCode } from "@deenruv/common/src/generated-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
 import {
   Allow,
   CrudPermissionDefinition,

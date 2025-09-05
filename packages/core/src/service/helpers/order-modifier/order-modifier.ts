@@ -5,13 +5,13 @@ import type {
   ModifyOrderResult,
   OrderLineInput,
   RefundOrderInput,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import {
   HistoryEntryType,
   AdjustmentType,
-} from "@deenruv/common/src/generated-shop-types";
-import type { ID } from "@deenruv/common/src/shared-types";
-import { getGraphQlInputName, summate } from "@deenruv/common/src/shared-utils";
+} from "@deenruv/common/generated-shop-types";
+import type { ID } from "@deenruv/common/shared-types";
+import { getGraphQlInputName, summate } from "@deenruv/common/shared-utils";
 
 import { RequestContext } from "../../../api/common/request-context";
 import {

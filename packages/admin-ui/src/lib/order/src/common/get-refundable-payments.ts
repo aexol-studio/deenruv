@@ -1,6 +1,6 @@
 import { FormControl, Validators } from '@angular/forms';
 import { OrderDetailFragment } from '@deenruv/admin-ui/core';
-import { summate } from '@deenruv/common/src/shared-utils';
+import { summate } from '@deenruv/common/shared-utils';
 
 export type Payment = NonNullable<OrderDetailFragment['payments']>[number];
 export type RefundablePayment = Payment & {

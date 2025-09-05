@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { assertNever } from "@deenruv/common/src/shared-utils";
+import { assertNever } from "@deenruv/common/shared-utils";
 import {
   ConfigService,
   Logger,

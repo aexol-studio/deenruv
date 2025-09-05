@@ -1,4 +1,4 @@
-import { type Type } from "@deenruv/common/src/shared-types";
+import { type Type } from "@deenruv/common/shared-types";
 
 interface MoneyColumnOptions {
   default?: number;

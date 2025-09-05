@@ -11,14 +11,14 @@ import {
   RelationCustomFieldConfig as GraphQLRelationCustomFieldConfig,
   StringCustomFieldConfig as GraphQLStringCustomFieldConfig,
   TextCustomFieldConfig as GraphQLTextCustomFieldConfig,
-} from "@deenruv/common/src/generated-types";
+} from "@deenruv/common/generated-types";
 import type {
   CustomFieldsObject,
   CustomFieldType,
   DefaultFormComponentId,
   Type,
   UiComponentConfig,
-} from "@deenruv/common/src/shared-types";
+} from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../../api/common/request-context";
 import { Injector } from "../../common/injector";

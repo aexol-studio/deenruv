@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { CHANNEL_FRAGMENT, GetChannelListDocument, TypedBaseListComponent } from '@deenruv/admin-ui/core';
-import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/src/shared-constants';
+import { DEFAULT_CHANNEL_CODE } from '@deenruv/common/shared-constants';
 import { gql } from 'apollo-angular';
 
 export const GET_CHANNEL_LIST = gql`

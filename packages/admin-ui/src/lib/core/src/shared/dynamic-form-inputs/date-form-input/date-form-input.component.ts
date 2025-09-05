@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { DefaultFormComponentConfig, DefaultFormComponentId } from '@deenruv/common/src/shared-types';
+import { DefaultFormComponentConfig, DefaultFormComponentId } from '@deenruv/common/shared-types';
 
 import { FormInputComponent } from '../../../common/component-registry-types';
 

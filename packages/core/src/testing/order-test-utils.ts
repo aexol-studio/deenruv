@@ -1,6 +1,6 @@
-import { LanguageCode } from "@deenruv/common/src/generated-types";
-import { Omit } from "@deenruv/common/src/omit";
-import type { ID } from "@deenruv/common/src/shared-types";
+import { LanguageCode } from "@deenruv/common/generated-types";
+import { Omit } from "@deenruv/common/omit";
+import type { ID } from "@deenruv/common/shared-types";
 
 import { RequestContext } from "../api/common/request-context";
 import { Surcharge } from "../entity";

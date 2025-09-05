@@ -104,7 +104,7 @@ The resolver will make use of the built-in [AssetService](/reference/typescript-
 
 ```ts title="src/plugins/customer-avatar/api/customer-avatar.resolver.ts"
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Asset } from '@deenruv/common/src/generated-types';
+import { Asset } from '@deenruv/common/generated-types';
 import {
     Allow,
     AssetService,

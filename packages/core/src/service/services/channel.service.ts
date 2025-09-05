@@ -7,14 +7,14 @@ import {
   DeletionResult,
   UpdateChannelInput,
   UpdateChannelResult,
-} from "@deenruv/common/src/generated-types";
-import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/src/shared-constants";
+} from "@deenruv/common/generated-types";
+import { DEFAULT_CHANNEL_CODE } from "@deenruv/common/shared-constants";
 import {
   type ID,
   type PaginatedList,
   type Type,
-} from "@deenruv/common/src/shared-types";
-import { unique } from "@deenruv/common/src/unique";
+} from "@deenruv/common/shared-types";
+import { unique } from "@deenruv/common/unique";
 import { FindOptionsWhere } from "typeorm";
 
 import { type RelationPaths } from "../../api";
