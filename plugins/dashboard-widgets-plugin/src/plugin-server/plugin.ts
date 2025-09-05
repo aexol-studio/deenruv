@@ -4,7 +4,7 @@ import { BetterMetricsService } from "./services/metrics.service";
 import gql from "graphql-tag";
 import { AdminUIController } from "./controllers/admin-ui-controller";
 import { PLUGIN_INIT_OPTIONS } from "./constants";
-import { DashboardWidgetsPluginOptions } from "./types";
+import { type DashboardWidgetsPluginOptions } from "./types";
 import { OrderSummaryViewEntity } from "./materialisedViewEntities/order_summary";
 import { TotalProductsViewEntity } from "./materialisedViewEntities/total_products";
 import { OrderSummaryWithStateViewEntity } from "./materialisedViewEntities/orders_summary_with_state";

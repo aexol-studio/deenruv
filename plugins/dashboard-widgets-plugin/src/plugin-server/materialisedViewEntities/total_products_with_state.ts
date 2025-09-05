@@ -1,4 +1,4 @@
-import { OrderState } from "@deenruv/core";
+import { type OrderState } from "@deenruv/core";
 import { Index, ViewColumn, ViewEntity } from "typeorm";
 
 @ViewEntity({

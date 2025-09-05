@@ -1,19 +1,22 @@
 import "reflect-metadata";
-import { bootstrap, JobQueueService } from "@deenruv/core";
+import { bootstrap, JobQueueService, runMigrations } from "@deenruv/core";
 
 import { devConfig } from "./dev-config";
-
+import { applyConfigFromJson } from "./plugin-config-loader";
 /**
  * This bootstraps the dev server, used for testing Deenruv during development.
  */
-bootstrap(devConfig)
-  .then(async (app) => {
-    if (process.env.RUN_JOB_QUEUE === "1") {
-      await app.get(JobQueueService).start();
-    }
-  })
-  .catch((err) => {
-    // eslint-disable-next-line
-        console.log(err);
-    process.exit(1);
-  });
+
+const main = async () => {
+  await applyConfigFromJson(devConfig, __dirname);
+  await runMigrations(devConfig);
+  const app = await bootstrap(devConfig);
+  if (process.env.RUN_JOB_QUEUE === "1") {
+    await app.get(JobQueueService).start();
+  }
+};
+
+main().catch((err) => {
+  console.log(err);
+  process.exit(1);
+});

@@ -1,6 +1,12 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@deenruv/core": ["../core/src/index.ts"],
+      "@deenruv/core/*": ["../core/src/*"],
+      "@deenruv/core/dist/*": ["../core/src/*"]
+    },
     "declaration": true,
     "removeComments": false,
     "noLib": false,

@@ -5,7 +5,7 @@ import type Stripe from "stripe";
 
 // Note: deep import is necessary here because CustomCustomerFields is also extended in the Braintree
 // plugin. Reference: https://github.com/microsoft/TypeScript/issues/46617
-declare module "@deenruv/core/dist/entity/custom-entity-fields" {
+declare module "@deenruv/core" {
   interface CustomCustomerFields {
     stripeCustomerId?: string;
   }

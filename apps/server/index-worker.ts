@@ -2,12 +2,16 @@ import "reflect-metadata";
 import { bootstrapWorker } from "@deenruv/core";
 
 import { devConfig } from "./dev-config";
+import { applyConfigFromJson } from "./plugin-config-loader";
 
-bootstrapWorker(devConfig)
-  .then((worker) => worker.startJobQueue())
-  // .then(worker => worker.startHealthCheckServer({ port: 3001 }))
-  .catch((err) => {
-    // eslint-disable-next-line
-        console.log(err);
-    process.exit(1);
-  });
+const main = async () => {
+  await applyConfigFromJson(devConfig, __dirname);
+
+  const worker = await bootstrapWorker(devConfig);
+  await worker.startJobQueue();
+};
+
+main().catch((err) => {
+  console.log(err);
+  process.exit(1);
+});

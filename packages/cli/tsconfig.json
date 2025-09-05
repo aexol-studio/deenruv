@@ -3,6 +3,11 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@deenruv/core": ["../core/src/index.ts"],
+      "@deenruv/core/*": ["../core/src/*"]
+    },
     "declaration": true,
     "removeComments": true,
     "strictPropertyInitialization": false,

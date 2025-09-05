@@ -5,11 +5,11 @@ import {
   Logger,
   mergeConfig,
 } from "@deenruv/core";
-import { populate } from "@deenruv/core/cli";
+import { populate } from "@deenruv/core";
 import { clearAllTables, populateCustomers } from "@deenruv/testing";
 import path from "path";
 
-import { initialData } from "@deenruv/core/mock-data/data-sources/initial-data";
+// import { initialData } from "@deenruv/core";
 
 import { devConfig } from "./dev-config";
 
@@ -42,7 +42,7 @@ if (require.main === module) {
             await app.get(JobQueueService).start();
             return app;
           }),
-        initialData,
+        {},
         path.join(__dirname, "../../packages/create/assets/products.csv"),
       ),
     )

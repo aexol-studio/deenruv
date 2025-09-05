@@ -1,4 +1,4 @@
-import { REQUEST_CONTEXT_KEY } from "@deenruv/core/src/common/constants";
+import { REQUEST_CONTEXT_KEY } from "@deenruv/core";
 import { Request } from "express";
 
 import { AssetServerOptions, ImageTransformFormat } from "./types";

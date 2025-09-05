@@ -1,5 +1,5 @@
 import { bootstrap, JobQueueService, Logger } from "@deenruv/core";
-import { populate } from "@deenruv/core/cli/populate";
+import { populate } from "@deenruv/core";
 import {
   clearAllTables,
   populateCustomers,

@@ -1,0 +1,114 @@
+{
+    "systemOptions": {
+        "healthChecks": [
+            { "$import": "@deenruv/core", "$class": "TypeORMHealthCheckStrategy" }
+        ]
+    },
+    "apiOptions": {
+        "port": 3000,
+        "adminApiPath": "/admin-api",
+        "adminApiPlayground": { "settings": { "request.credentials": "include" } },
+        "adminApiDebug": true,
+        "shopApiPath": "/shop-api",
+        "shopApiPlayground": { "settings": { "request.credentials": "include" } },
+        "shopApiDebug": true
+    },
+    "authOptions": {
+        "disableAuth": false,
+        "tokenMethod": ["bearer", "cookie"],
+        "requireVerification": true,
+        "superadminCredentials": {
+            "identifier": { "$env": "SUPERADMIN_IDENTIFIER", "default": "superadmin" },
+            "password": { "$env": "SUPERADMIN_PASSWORD", "default": "superpassword" }
+        },
+        "customPermissions": [],
+        "cookieOptions": { "secret": "abc" }
+    },
+    "dbConnectionOptions": {
+        "synchronize": false,
+        "logging": false,
+        "migrations": [ { "$joinDirname": ["migrations/*.ts"] } ],
+        "type": "postgres",
+        "host": { "$env": "DB_HOST", "default": "localhost" },
+        "port": { "$env": "DB_PORT", "default": 5432 },
+        "username": { "$env": "DB_USERNAME", "default": "deenruv" },
+        "password": { "$env": "DB_PASSWORD", "default": "deenruv" },
+        "database": { "$env": "DB_NAME", "default": "deenruv" },
+        "schema": { "$env": "DB_SCHEMA", "default": "public" }
+    },
+    "paymentOptions": { "paymentMethodHandlers": [] },
+    "logger": { "$import": "@deenruv/core", "$class": "DefaultLogger", "args": [ { "level": 3 } ] },
+    "importExportOptions": { "importAssetsDir": { "$joinDirname": ["import-assets"] } },
+    "shippingOptions": {},
+    "customFields": {},
+    "plugins": [
+        {
+            "name": "AssetServerPlugin",
+            "$import": "@deenruv/asset-server-plugin",
+            "$class": "AssetServerPlugin",
+            "options": {
+                "route": "assets",
+                "assetUploadDir": { "$joinDirname": ["assets"] },
+                "namingStrategy": {
+                    "$import": "@deenruv/core",
+                    "$class": "DefaultAssetNamingStrategy"
+                },
+                "assetUrlPrefix": "http://localhost:3000/assets/",
+                "storageStrategyFactory": {
+                    "$import": "@deenruv/asset-server-plugin",
+                    "$factory": "configureS3AssetStorage",
+                    "args": {
+                        "bucket": "deenruv-asset-bucket",
+                        "credentials": {
+                            "accessKeyId": "root",
+                            "secretAccessKey": "password"
+                        },
+                        "nativeS3Configuration": {
+                            "signatureVersion": "v4",
+                            "forcePathStyle": true,
+                            "region": "local",
+                            "endpoint": "http://localhost:9000"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "DashboardWidgetsPlugin",
+            "$import": "@deenruv/dashboard-widgets-plugin",
+            "$class": "DashboardWidgetsPlugin",
+            "options": {}
+        },
+        {
+            "name": "UpsellPlugin",
+            "$import": "@deenruv/upsell-plugin/plugin-server",
+            "$class": "UpsellPlugin",
+            "options": {}
+        },
+        {
+            "name": "BullMQJobQueuePlugin",
+            "$import": "@deenruv/job-queue-plugin/src/bullmq/index",
+            "$class": "BullMQJobQueuePlugin",
+            "options": {
+                "connection": {
+                    "host": "localhost",
+                    "password": "",
+                    "maxRetriesPerRequest": null,
+                    "connectTimeout": 5000,
+                    "port": 6379
+                },
+                "workerOptions": {
+                    "concurrency": 10,
+                    "removeOnComplete": { "count": 500, "age": 604800000 },
+                    "removeOnFail": { "count": 1000, "age": 604800000 }
+                }
+            }
+        },
+        {
+            "name": "DefaultSearchPlugin",
+            "$import": "@deenruv/core",
+            "$class": "DefaultSearchPlugin",
+            "options": { "bufferUpdates": false, "indexStockStatus": false }
+        }
+    ]
+}

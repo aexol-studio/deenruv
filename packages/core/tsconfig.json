@@ -3,6 +3,11 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "baseUrl": ".",
+    "paths": {
+      "@deenruv/core": ["src/index.ts"],
+      "@deenruv/core/*": ["src/*"]
+    },
     "declaration": true,
     "removeComments": true,
     "strictPropertyInitialization": false,

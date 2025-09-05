@@ -17,7 +17,7 @@ import {
   RequestContextService,
   TransactionalConnection,
 } from "@deenruv/core";
-import { OrderStateTransitionError } from "@deenruv/core/dist/common/error/generated-graphql-shop-errors";
+import { OrderStateTransitionError } from "@deenruv/core";
 import type { Response } from "express";
 import type Stripe from "stripe";
 

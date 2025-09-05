@@ -3,7 +3,7 @@
   "compilerOptions": {
     "removeComments": false,
     "outDir": "../dist",
-    "rootDirs": ["../src"]
+    "rootDir": "../"
   },
   "files": [
     "../src/index.ts",

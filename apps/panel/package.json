@@ -6,7 +6,8 @@
   "main": "dist/assets/index.js",
   "style": "dist/assets/index.css",
   "scripts": {
-    "dev": "bunx --bun vite",
+    "dev": "vite",
+    "dev:bun": "bunx --bun vite",
     "build": "tsc && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",

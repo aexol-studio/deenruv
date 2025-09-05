@@ -9,7 +9,7 @@ import {
   RequestContextService,
   ParsedProductWithVariants,
 } from "@deenruv/core";
-import { populate } from "@deenruv/core/cli/populate";
+import { populate } from "@deenruv/core";
 import { clearAllTables } from "@deenruv/testing";
 import { spawn } from "child_process";
 import { program } from "commander";

@@ -12,7 +12,7 @@ import {
   MetricIntervalType,
   ResolverInputTypes,
 } from "../zeus";
-import { DashboardWidgetsPluginOptions, MetricResponse } from "../types";
+import type { DashboardWidgetsPluginOptions, MetricResponse } from "../types";
 import {
   ORDER_AVERAGE_DAILY_SELECT,
   ORDER_AVERAGE_HOURLY_SELECT,
