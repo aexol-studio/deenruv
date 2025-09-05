@@ -22,7 +22,7 @@ export class WishlistService {
   async getWishlistItems(ctx: RequestContext): Promise<WishlistItem[]> {
     try {
       const customer = await this.getCustomerWithWishlistItems(ctx);
-      return customer.customFields.wishlistItems;
+      return (customer.customFields as any).wishlistItems;
     } catch (err: any) {
       return [];
     }
@@ -39,18 +39,18 @@ export class WishlistService {
         `No ProductVariant with the id ${variantId} could be found`,
       );
     }
-    const existingItem = customer.customFields.wishlistItems.find(
-      (i) => i.productVariantId === variantId,
-    );
+    const existingItem = (
+      (customer.customFields as any).wishlistItems as any[]
+    ).find((i) => i.productVariantId === variantId);
     if (existingItem) {
       // Item already exists in wishlist, do not
       // add it again
-      return customer.customFields.wishlistItems;
+      return (customer.customFields as any).wishlistItems;
     }
     const wishlistItem = await this.connection
       .getRepository(ctx, WishlistItem)
       .save(new WishlistItem({ productVariantId: variantId }));
-    customer.customFields.wishlistItems.push(wishlistItem);
+    (customer.customFields as any).wishlistItems.push(wishlistItem);
     await this.connection
       .getRepository(ctx, Customer)
       .save(customer, { reload: false });
@@ -62,15 +62,16 @@ export class WishlistService {
    */
   async removeItem(ctx: RequestContext, itemId: ID): Promise<WishlistItem[]> {
     const customer = await this.getCustomerWithWishlistItems(ctx);
-    const itemToRemove = customer.customFields.wishlistItems.find(
-      (i) => i.id === itemId,
-    );
+    const itemToRemove = (
+      (customer.customFields as any).wishlistItems as any[]
+    ).find((i) => i.id === itemId);
     if (itemToRemove) {
       await this.connection
         .getRepository(ctx, WishlistItem)
         .remove(itemToRemove);
-      customer.customFields.wishlistItems =
-        customer.customFields.wishlistItems.filter((i) => i.id !== itemId);
+      (customer.customFields as any).wishlistItems = (
+        (customer.customFields as any).wishlistItems as any[]
+      ).filter((i) => i.id !== itemId);
     }
     await this.connection.getRepository(ctx, Customer).save(customer);
     return this.getWishlistItems(ctx);

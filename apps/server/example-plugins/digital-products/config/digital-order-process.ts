@@ -20,7 +20,7 @@ export const digitalOrderProcess: OrderProcess<string> = {
       (toState === "PaymentAuthorized" || toState === "PaymentSettled")
     ) {
       const digitalOrderLines = data.order.lines.filter(
-        (l) => l.productVariant.customFields.isDigital,
+        (l) => (l.productVariant.customFields as any).isDigital,
       );
       if (digitalOrderLines.length) {
         await orderService.createFulfillment(data.ctx, {

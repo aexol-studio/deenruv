@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="../../core/typings.d.ts" />
 import { bootstrap, JobQueueService, Logger } from "@deenruv/core";
 import { populate } from "@deenruv/core/cli/populate";
 import {
@@ -7,11 +5,11 @@ import {
   populateCustomers,
   SimpleGraphQLClient,
 } from "@deenruv/testing";
-import stringify from "csv-stringify";
+import { stringify } from "csv-stringify";
 import fs from "fs";
 import path from "path";
 
-import { initialData } from "../../core/mock-data/data-sources/initial-data";
+// import { initialData } from "../../core/mock-data/data-sources/initial-data";
 
 import {
   getLoadTestConfig,
@@ -21,7 +19,7 @@ import {
   getProductCsvFilePath,
 } from "./load-test-config";
 
-import { awaitRunningJobs } from "../../core/e2e/utils/await-running-jobs";
+// import { awaitRunningJobs } from "../../core/e2e/utils/await-running-jobs";
 
 /**
  * A script used to populate a database with test data for load testing.
@@ -62,7 +60,7 @@ if (require.main === module) {
             );
             await adminClient.asSuperAdmin();
             await new Promise((resolve) => setTimeout(resolve, 5000));
-            await awaitRunningJobs(adminClient, 5000000);
+            // await awaitRunningJobs(adminClient, 5000000);
             return app;
           })
           .then(async (app) => {
@@ -236,11 +234,11 @@ function generateMockData(
 
 function getCategoryNames() {
   const allNames = new Set<string>();
-  for (const collection of initialData.collections) {
-    for (const filter of collection.filters || []) {
-      filter.args.facetValueNames.forEach((name) => allNames.add(name));
-    }
-  }
+  // for (const collection of initialData.collections) {
+  //   for (const filter of collection.filters || []) {
+  //     filter.args.facetValueNames.forEach((name) => allNames.add(name));
+  //   }
+  // }
   return Array.from(new Set(allNames));
 }
 

@@ -12,7 +12,7 @@ export const digitalShippingEligibilityChecker = new ShippingEligibilityChecker(
     args: {},
     check: (ctx, order, args) => {
       const digitalOrderLines = order.lines.filter(
-        (l) => l.productVariant.customFields.isDigital,
+        (l) => (l.productVariant.customFields as any).isDigital,
       );
       return digitalOrderLines.length > 0;
     },

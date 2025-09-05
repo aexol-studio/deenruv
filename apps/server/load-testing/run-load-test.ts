@@ -1,11 +1,9 @@
 import { INestApplication } from "@nestjs/common";
 import { bootstrap, JobQueueService } from "@deenruv/core";
 import { spawn } from "child_process";
-import stringify from "csv-stringify";
+import { stringify } from "csv-stringify";
 import fs from "fs";
 import path from "path";
-
-import { omit } from "../../common/src/omit";
 
 import { generateSummary, LoadTestSummary } from "./generate-summary";
 import {
@@ -13,6 +11,7 @@ import {
   getProductCount,
   getScriptToRun,
 } from "./load-test-config";
+import { omit } from "@deenruv/common/omit";
 
 const count = getProductCount();
 

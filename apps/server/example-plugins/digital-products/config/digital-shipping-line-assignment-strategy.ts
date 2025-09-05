@@ -19,11 +19,13 @@ export class DigitalShippingLineAssignmentStrategy
     shippingLine: ShippingLine,
     order: Order,
   ): OrderLine[] | Promise<OrderLine[]> {
-    if (shippingLine.shippingMethod.customFields.isDigital) {
-      return order.lines.filter((l) => l.productVariant.customFields.isDigital);
+    if ((shippingLine.shippingMethod.customFields as any).isDigital) {
+      return order.lines.filter(
+        (l) => (l.productVariant.customFields as any).isDigital,
+      );
     } else {
       return order.lines.filter(
-        (l) => !l.productVariant.customFields.isDigital,
+        (l) => !(l.productVariant.customFields as any).isDigital,
       );
     }
   }

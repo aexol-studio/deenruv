@@ -19,6 +19,7 @@
     "start:server": "pnpm -filter=@deenruv/server run start",
     "start:admin-ui": "pnpm -filter=@deenruv/panel run dev",
     "start": "concurrently -n server,admin-ui -c green,blue \"pnpm -filter=server run start\" \"pnpm -filter=panel run dev\"",
+    "start:bun": "concurrently -n server,admin-ui -c green,blue \"pnpm -filter=server run start:bun\" \"pnpm -filter=panel run dev\"",
     "server-docker-up": "docker compose up -d",
     "server-docker-down": "docker compose down -v",
     "server-populate": "pnpm -filter=@deenruv/server populate",

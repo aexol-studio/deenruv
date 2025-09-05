@@ -34,7 +34,6 @@ import {
 } from "../constants.js";
 import { przelewy24BlikPaymentMethodHandler } from "../handlers/przelewy24-blik.handler.js";
 import { przelewy24PaymentMethodHandler } from "../handlers/przelewy24.handler.js";
-import { ConfigArgValues } from "@deenruv/core/src/common/configurable-operation.js";
 import {
   getPrzelewy24SecretsByChannel,
   getAxios,
@@ -175,7 +174,7 @@ export class Przelewy24Service {
     ctx: RequestContext,
     order: Order,
     _1: number,
-    _2: ConfigArgValues<{}>,
+    _2: any,
     metadata: PaymentMetadata,
     method: PaymentMethod,
   ) {

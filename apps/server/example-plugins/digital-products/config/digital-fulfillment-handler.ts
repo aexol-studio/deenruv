@@ -38,7 +38,7 @@ export const digitalFulfillmentHandler = new FulfillmentHandler({
       },
     });
     for (const orderLine of orderLines) {
-      if (orderLine.productVariant.customFields.isDigital) {
+      if ((orderLine.productVariant.customFields as any).isDigital) {
         // This is a digital product, so generate a download url
         const downloadUrl = await generateDownloadUrl(orderLine);
         digitalDownloadUrls.push(downloadUrl);

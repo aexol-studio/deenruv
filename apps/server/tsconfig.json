@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "jsx": "react-jsx",
         "module": "commonjs",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
@@ -14,6 +15,6 @@
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "exclude": ["node_modules", "admin_ui", "dist", "static", "test-plugins"],
+    "exclude": ["node_modules", "admin_ui", "dist", "static", "./test-plugins", "./load-tesing", "./example-plugins"],
     "ts-node": { "files": true }
 }

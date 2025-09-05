@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "useDefineForClassFields": false,
     "target": "es2017",
     "strict": true,
     "strictPropertyInitialization": false,
