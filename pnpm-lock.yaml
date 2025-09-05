@@ -12,10 +12,10 @@ importers:
         specifier: ^4.10.4
         version: 4.12.2(encoding@0.1.13)(graphql@16.9.0)
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:packages/core
       '@deenruv/testing':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:packages/testing
       '@eslint/js':
         specifier: ^9.26.0
@@ -97,7 +97,7 @@ importers:
         specifier: ^19.1.0
         version: 19.8.1
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:packages/common
       '@deenruv/ts-node-register':
         specifier: workspace:*
@@ -1381,7 +1381,7 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../common
       commander:
         specifier: ^11.0.0
@@ -1409,7 +1409,7 @@ importers:
         version: 1.0.2
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@types/cross-spawn':
         specifier: ^6.0.6
@@ -1763,10 +1763,10 @@ importers:
         specifier: ^17.2.4
         version: 17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.3.3)
       '@deenruv/admin-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../admin-ui/package
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../common
       chalk:
         specifier: ^4.1.0
@@ -1782,7 +1782,7 @@ importers:
         version: 9.3.5
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../core
       '@rollup/plugin-node-resolve':
         specifier: ^15.2.3
@@ -1828,7 +1828,7 @@ importers:
         version: 12.2.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(graphql@16.9.0)(reflect-metadata@0.2.2)(ts-morph@21.0.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.10
@@ -1862,10 +1862,10 @@ importers:
         specifier: ^3.664.0
         version: 3.840.0
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@types/express':
         specifier: ^4.17.21
@@ -1892,13 +1892,13 @@ importers:
   plugins/copy-order-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -1938,7 +1938,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
@@ -2035,13 +2035,13 @@ importers:
   plugins/dashboard-widgets-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2084,7 +2084,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
@@ -2105,13 +2105,13 @@ importers:
   plugins/deenruv-examples-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2157,7 +2157,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
@@ -2178,7 +2178,7 @@ importers:
   plugins/elasticsearch-plugin:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@elastic/elasticsearch':
         specifier: ~7.9.1
@@ -2200,7 +2200,7 @@ importers:
         version: 3.1.3
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.5
@@ -2215,7 +2215,7 @@ importers:
   plugins/email-plugin:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2252,7 +2252,7 @@ importers:
         version: 4.0.3(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.89.2)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@types/dateformat':
         specifier: ^3.0.1
@@ -2279,13 +2279,13 @@ importers:
   plugins/facet-harmonica-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2316,7 +2316,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -2344,10 +2344,10 @@ importers:
         version: 0.12.0(graphql@16.9.0)
     devDependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.5
@@ -2362,13 +2362,13 @@ importers:
         specifier: ^3.583.0
         version: 3.842.0
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2408,7 +2408,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -2432,22 +2432,22 @@ importers:
   plugins/inpost-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/admin-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-ui/package
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/inpost':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/inpost
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@deenruv/ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2484,7 +2484,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -2512,10 +2512,10 @@ importers:
         version: 10.3.0(@grpc/grpc-js@1.6.12)(@grpc/proto-loader@0.7.15)(@nestjs/axios@3.1.3(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(axios@1.10.0)(rxjs@7.8.1))(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(@nestjs/typeorm@10.0.2(@nestjs/common@10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.19)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@22.17.1)(typescript@5.3.3))))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.25(better-sqlite3@9.6.0)(ioredis@5.6.1)(pg@8.16.3)(reflect-metadata@0.2.2)(sql.js@1.10.2)(sqlite3@5.1.7)(ts-node@10.9.2(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@22.17.1)(typescript@5.3.3)))
     devDependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@google-cloud/pubsub':
         specifier: ^2.8.0
@@ -2539,19 +2539,19 @@ importers:
   plugins/merchant-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/admin-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-ui/package
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@deenruv/ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/ui-devkit
       '@nestjs/common':
         specifier: ~10.3.10
@@ -2603,7 +2603,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -2636,14 +2636,14 @@ importers:
   plugins/method-modal-plugin:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.10
@@ -2655,13 +2655,13 @@ importers:
   plugins/newsletter-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ~10.3.10
@@ -2680,7 +2680,7 @@ importers:
         version: 5.4.5(@swc/core@1.12.11(@swc/helpers@0.5.17))(@types/node@22.17.1)(encoding@0.1.13)(graphql-ws@6.0.5(graphql@16.9.0)(ws@8.18.3))(typescript@5.3.3)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@types/express':
         specifier: ^4.17.21
@@ -2698,13 +2698,13 @@ importers:
   plugins/order-attributes-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2738,7 +2738,7 @@ importers:
         version: 9.0.1
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -2762,10 +2762,10 @@ importers:
   plugins/payments-plugin:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/testing':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/testing
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2790,7 +2790,7 @@ importers:
         version: 4.21.2
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@mollie/api-client':
         specifier: ^3.7.0
@@ -2838,10 +2838,10 @@ importers:
   plugins/phone-number-validation:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/graphql':
         specifier: ^12.2.0
@@ -2851,7 +2851,7 @@ importers:
         version: 1.12.9
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.10
@@ -2863,13 +2863,13 @@ importers:
   plugins/product-badges-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -2900,7 +2900,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -2921,14 +2921,14 @@ importers:
   plugins/product-options-fields-plugin:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.10
@@ -2940,19 +2940,19 @@ importers:
   plugins/przelewy24-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/admin-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-ui/package
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@deenruv/ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/ui-devkit
       '@nestjs/common':
         specifier: ~10.3.10
@@ -2995,7 +2995,7 @@ importers:
         version: 0.6.2
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -3025,13 +3025,13 @@ importers:
   plugins/redis-strategy-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ~10.3.10
@@ -3077,7 +3077,7 @@ importers:
         version: 0.6.2
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -3110,16 +3110,16 @@ importers:
   plugins/replicate-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@deenruv/testing':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/testing
       '@nestjs/common':
         specifier: ^10.3.10
@@ -3165,7 +3165,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -3186,13 +3186,13 @@ importers:
   plugins/replicate-simple-bg-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@hookform/resolvers':
         specifier: ^3.3.4
@@ -3241,7 +3241,7 @@ importers:
         version: 3.25.76
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -3268,13 +3268,13 @@ importers:
         specifier: ^3.726.1
         version: 3.842.0
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ~10.3.10
@@ -3317,7 +3317,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -3353,7 +3353,7 @@ importers:
         specifier: ^4.10.4
         version: 4.12.2(encoding@0.1.13)(graphql@16.9.0)
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@nestjs/common':
         specifier: ^10.3.10
@@ -3369,7 +3369,7 @@ importers:
         version: 4.21.2
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@sentry/node':
         specifier: 7.106.1
@@ -3387,14 +3387,14 @@ importers:
   plugins/seo-plugin:
     dependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       rimraf:
         specifier: ^5.0.10
@@ -3422,10 +3422,10 @@ importers:
         version: 2.7.0(encoding@0.1.13)
     devDependencies:
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@types/node-fetch':
         specifier: ^2.6.11
@@ -3446,13 +3446,13 @@ importers:
         specifier: ^3.726.1
         version: 3.842.0
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@nestjs/common':
         specifier: ~10.3.10
@@ -3495,7 +3495,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
@@ -3528,19 +3528,19 @@ importers:
   plugins/wfirma-plugin:
     dependencies:
       '@deenruv/admin-types':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-types
       '@deenruv/admin-ui':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/admin-ui/package
       '@deenruv/common':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/common
       '@deenruv/react-ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/react-ui-devkit
       '@deenruv/ui-devkit':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/ui-devkit
       '@nestjs/common':
         specifier: ^10.3.10
@@ -3577,7 +3577,7 @@ importers:
         version: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@deenruv/core':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/core
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
